@@ -1,0 +1,20 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Painel"
+    },
+    "languageSwitcher": {
+      "label": "Idioma"
+    }
+  },
+  "dashboard": {
+    "title": "Painel",
+    "welcome": "Bem-vindo ao LealFinance"
+  },
+  "currency": {
+    "fallbackRateWarning": "Taxa de câmbio indisponível — usando conversão 1:1 como aproximação."
+  }
+}

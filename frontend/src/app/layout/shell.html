@@ -1,0 +1,28 @@
+<div *transloco="let t" class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-4">
+    <a routerLink="/" class="text-lg font-semibold tracking-tight">{{ t('app.title') }}</a>
+
+    <nav class="flex items-center gap-4">
+      <a routerLink="/" class="text-sm font-medium text-slate-600 hover:text-slate-900">
+        {{ t('layout.nav.dashboard') }}
+      </a>
+
+      <label class="flex items-center gap-2 text-sm text-slate-600">
+        <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
+        <select
+          class="rounded-md border border-slate-300 bg-white px-2 py-1 text-sm"
+          [value]="activeLang()"
+          (change)="setLang($any($event.target).value)"
+        >
+          @for (lang of availableLangs; track lang) {
+            <option [value]="lang">{{ lang }}</option>
+          }
+        </select>
+      </label>
+    </nav>
+  </header>
+
+  <main class="flex-1 px-6 py-8">
+    <router-outlet />
+  </main>
+</div>

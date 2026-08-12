@@ -1,0 +1,145 @@
+# LealFinance — base stack.
+#
+# Local overrides (hot reload, exposed dev ports) live in
+# docker-compose.override.yml and are applied automatically by `docker
+# compose up` — no extra flag needed.
+
+services:
+  postgres:
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
+    volumes:
+      # Postgres 18+ images expect the mount at the parent directory, not
+      # .../data directly — the old convention makes the image refuse to
+      # start, treating any content at that exact path (even a filesystem's
+      # own lost+found) as an incompatible legacy layout.
+      - db_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lealfinance}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:8.8-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      API_SECRET_KEY: ${API_SECRET_KEY:-change-me-to-a-random-64-char-string}
+      API_CORS_ORIGINS: ${API_CORS_ORIGINS:-http://localhost:${WEB_PORT:-8080}}
+      AGENTS_ENABLED: ${AGENTS_ENABLED:-false}
+      OPENEXCHANGERATES_APP_ID: ${OPENEXCHANGERATES_APP_ID:-}
+      RUN_MIGRATIONS: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health/live', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      start_period: 10s
+      retries: 5
+
+  worker:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    command: ["celery", "-A", "app.workers.celery_app", "worker", "--loglevel=info"]
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      api:
+        condition: service_healthy
+    # The api image's built-in HEALTHCHECK pings an HTTP endpoint that only
+    # exists in the api container — worker doesn't run a webserver, so that
+    # check would fail forever. This checks the actual celery worker instead.
+    healthcheck:
+      test: ["CMD", "celery", "-A", "app.workers.celery_app", "inspect", "ping"]
+      interval: 15s
+      timeout: 10s
+      start_period: 15s
+      retries: 5
+
+  beat:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    command: ["celery", "-A", "app.workers.celery_app", "beat", "--loglevel=info"]
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      api:
+        condition: service_healthy
+    # No equivalent "is beat alive" ping exists (unlike worker's inspect
+    # ping) — beat just writes a schedule file on a timer. Disabling the
+    # inherited HTTP healthcheck rather than reporting a false negative;
+    # nothing else depends on beat's health anyway.
+    healthcheck:
+      disable: true
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # AI Agents — optional, off by default (see README.md). Not implemented
+  # yet: this is a placeholder that makes the profile gate itself testable
+  # (`COMPOSE_PROFILES=agents docker compose config` should include it)
+  # without pretending a real service exists. Replace `command`/`image`
+  # once the agents runtime lands.
+  agents:
+    image: busybox:latest
+    profiles: ["agents"]
+    command: ["echo", "AI Agents scaffold placeholder — not yet implemented. See README.md."]
+
+volumes:
+  db_data:
+  redis_data:

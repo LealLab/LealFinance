@@ -1,0 +1,37 @@
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Python / backend ---
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+backend/dist/
+backend/build/
+
+# --- Node / frontend ---
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+node_modules/
+
+# --- Docker ---
+docker/postgres/data/
+
+# --- Editors / OS ---
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log

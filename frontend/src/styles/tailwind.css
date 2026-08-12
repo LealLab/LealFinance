@@ -1,0 +1,5 @@
+/* Plain CSS on purpose: Angular runs Sass before PostCSS, and Sass treats
+   `@import "tailwindcss"` as a Sass module import (deprecated, and not what
+   we want) rather than passing it straight through to @tailwindcss/postcss.
+   Keeping this out of styles.scss avoids that entirely. */
+@import "tailwindcss";

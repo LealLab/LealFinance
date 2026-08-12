@@ -1,0 +1,98 @@
+# Cross-platform task runner. Install: https://taskfile.dev
+# Usage: task <name>   (e.g. `task backend:test`, `task up`)
+version: "3"
+
+tasks:
+  up:
+    desc: Start the full stack (build + detached)
+    cmds:
+      - docker compose up -d --build
+
+  down:
+    desc: Stop the full stack
+    cmds:
+      - docker compose down
+
+  logs:
+    desc: Tail logs for all services
+    cmds:
+      - docker compose logs -f
+
+  backend:sync:
+    desc: Install backend dependencies
+    dir: backend
+    cmds:
+      - uv sync
+
+  backend:dev:
+    desc: Run the API locally with reload
+    dir: backend
+    cmds:
+      - uv run uvicorn app.main:app --reload
+
+  backend:lint:
+    desc: Lint + format-check the backend
+    dir: backend
+    cmds:
+      - uv run ruff check .
+      - uv run ruff format --check .
+
+  backend:typecheck:
+    desc: Type-check the backend
+    dir: backend
+    cmds:
+      - uv run mypy app
+
+  backend:test:
+    desc: Run backend tests
+    dir: backend
+    cmds:
+      - uv run pytest -q
+
+  backend:migrate:
+    desc: Apply database migrations
+    dir: backend
+    cmds:
+      - uv run alembic upgrade head
+
+  backend:migration:
+    desc: 'Generate a new migration: task backend:migration -- "message"'
+    dir: backend
+    cmds:
+      - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+
+  frontend:install:
+    desc: Install frontend dependencies
+    dir: frontend
+    cmds:
+      - pnpm install
+
+  frontend:dev:
+    desc: Run the Angular dev server
+    dir: frontend
+    cmds:
+      - pnpm start
+
+  frontend:lint:
+    desc: Lint the frontend
+    dir: frontend
+    cmds:
+      - pnpm run lint
+
+  frontend:test:
+    desc: Run frontend unit tests
+    dir: frontend
+    cmds:
+      - pnpm run test
+
+  frontend:build:
+    desc: Production build of the frontend
+    dir: frontend
+    cmds:
+      - pnpm run build
+
+  i18n:validate:
+    desc: Check for missing/orphaned Transloco translation keys
+    dir: frontend
+    cmds:
+      - pnpm exec transloco-keys-manager find

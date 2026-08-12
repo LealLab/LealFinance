@@ -1,0 +1,27 @@
+# Applied automatically alongside docker-compose.yml (Compose merges this
+# file in by default — no extra flag needed). Not meant for production: it
+# exposes database ports on the host and runs the API with autoreload.
+#
+# The primary local dev workflow (see docs/development.md) runs the backend
+# and frontend directly on the host via Taskfile.yml for the fastest
+# iteration loop; this override exists for testing against the full
+# containerized stack without a separate production compose file.
+
+services:
+  postgres:
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+
+  redis:
+    ports:
+      - "${REDIS_HOST_PORT:-6379}:6379"
+
+  api:
+    build:
+      target: runtime
+    environment:
+      ENVIRONMENT: development
+    volumes:
+      - ./backend/app:/app/app:ro
+      - ./backend/alembic:/app/alembic:ro
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
