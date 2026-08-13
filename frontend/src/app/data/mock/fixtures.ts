@@ -100,18 +100,43 @@ function buildAccounts(): Account[] {
 function buildCategories(): Category[] {
   const c = CATEGORY_IDS;
   return [
-    { id: c.salary, name: 'Salário', kind: 'income', color: '#3E7D4C', icon: 'wallet', archived: false },
-    { id: c.freelance, name: 'Freelance', kind: 'income', color: '#3E7D4C', icon: 'chart', archived: false },
+    {
+      id: c.salary,
+      name: 'Salário',
+      kind: 'income',
+      color: '#3E7D4C',
+      icon: 'wallet',
+      archived: false,
+      position: 0
+    },
+    {
+      id: c.freelance,
+      name: 'Freelance',
+      kind: 'income',
+      color: '#3E7D4C',
+      icon: 'chart',
+      archived: false,
+      position: 1
+    },
     {
       id: c.otherIncome,
       name: 'Outras Receitas',
       kind: 'income',
       color: '#3E7D4C',
-      icon: 'plus',
-      archived: false
+      icon: 'archive',
+      archived: false,
+      position: 2
     },
 
-    { id: c.housing, name: 'Moradia', kind: 'expense', color: '#6D5DD3', icon: 'home', archived: false },
+    {
+      id: c.housing,
+      name: 'Moradia',
+      kind: 'expense',
+      color: '#6D5DD3',
+      icon: 'home',
+      archived: false,
+      position: 0
+    },
     {
       id: c.rent,
       name: 'Aluguel',
@@ -119,7 +144,8 @@ function buildCategories(): Category[] {
       parentId: c.housing,
       color: '#6D5DD3',
       icon: 'home',
-      archived: false
+      archived: false,
+      position: 0
     },
     {
       id: c.condo,
@@ -128,7 +154,8 @@ function buildCategories(): Category[] {
       parentId: c.housing,
       color: '#6D5DD3',
       icon: 'home',
-      archived: false
+      archived: false,
+      position: 1
     },
     {
       id: c.utilities,
@@ -137,10 +164,19 @@ function buildCategories(): Category[] {
       parentId: c.housing,
       color: '#6D5DD3',
       icon: 'sun',
-      archived: false
+      archived: false,
+      position: 2
     },
 
-    { id: c.food, name: 'Alimentação', kind: 'expense', color: '#DD8A3C', icon: 'archive', archived: false },
+    {
+      id: c.food,
+      name: 'Alimentação',
+      kind: 'expense',
+      color: '#DD8A3C',
+      icon: 'archive',
+      archived: false,
+      position: 1
+    },
     {
       id: c.groceries,
       name: 'Supermercado',
@@ -148,7 +184,8 @@ function buildCategories(): Category[] {
       parentId: c.food,
       color: '#DD8A3C',
       icon: 'archive',
-      archived: false
+      archived: false,
+      position: 0
     },
     {
       id: c.restaurants,
@@ -157,10 +194,19 @@ function buildCategories(): Category[] {
       parentId: c.food,
       color: '#DD8A3C',
       icon: 'tag',
-      archived: false
+      archived: false,
+      position: 1
     },
 
-    { id: c.transport, name: 'Transporte', kind: 'expense', color: '#3C9DDD', icon: 'swap', archived: false },
+    {
+      id: c.transport,
+      name: 'Transporte',
+      kind: 'expense',
+      color: '#3C9DDD',
+      icon: 'swap',
+      archived: false,
+      position: 2
+    },
     {
       id: c.fuel,
       name: 'Combustível',
@@ -168,7 +214,8 @@ function buildCategories(): Category[] {
       parentId: c.transport,
       color: '#3C9DDD',
       icon: 'swap',
-      archived: false
+      archived: false,
+      position: 0
     },
     {
       id: c.rideshare,
@@ -177,19 +224,45 @@ function buildCategories(): Category[] {
       parentId: c.transport,
       color: '#3C9DDD',
       icon: 'swap',
-      archived: false
+      archived: false,
+      position: 1
     },
 
-    { id: c.health, name: 'Saúde', kind: 'expense', color: '#DD5C6B', icon: 'alertTriangle', archived: false },
-    { id: c.leisure, name: 'Lazer', kind: 'expense', color: '#4DAE8B', icon: 'sun', archived: false },
-    { id: c.education, name: 'Educação', kind: 'expense', color: '#A16FE0', icon: 'pencil', archived: false },
+    {
+      id: c.health,
+      name: 'Saúde',
+      kind: 'expense',
+      color: '#DD5C6B',
+      icon: 'alertTriangle',
+      archived: false,
+      position: 3
+    },
+    {
+      id: c.leisure,
+      name: 'Lazer',
+      kind: 'expense',
+      color: '#4DAE8B',
+      icon: 'sun',
+      archived: false,
+      position: 4
+    },
+    {
+      id: c.education,
+      name: 'Educação',
+      kind: 'expense',
+      color: '#A16FE0',
+      icon: 'pencil',
+      archived: false,
+      position: 5
+    },
     {
       id: c.otherExpense,
       name: 'Outras Despesas',
       kind: 'expense',
       color: '#8A8A82',
       icon: 'tag',
-      archived: false
+      archived: false,
+      position: 6
     }
   ];
 }

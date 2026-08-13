@@ -20,4 +20,11 @@ export interface Category {
   color: string;
   icon: IconName;
   archived: boolean;
+  /**
+   * Sibling display order (0-based), scoped to categories sharing the same
+   * `kind` and `parentId` — top-level categories order among themselves,
+   * and each parent's children order among themselves, independently. Set
+   * by the store on create, updated only via `CategoryRepository.reorder`.
+   */
+  position: number;
 }

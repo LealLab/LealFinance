@@ -1,11 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
-import { Category } from '../../domain/models/category';
+import { Category, CategoryKind } from '../../domain/models/category';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { createFixtures } from './fixtures';
-import { findEntity, removeEntity, updateEntity } from './entity-list.utils';
+import { findEntity, removeEntity, reorderEntities, updateEntity } from './entity-list.utils';
 
 function newId(): string {
   return crypto.randomUUID();
@@ -89,8 +89,12 @@ export class MockStore {
 
   // --- Categories ---------------------------------------------------------
 
-  createCategory(input: Omit<Category, 'id'>): Category {
-    const category: Category = { ...input, id: newId() };
+  createCategory(input: Omit<Category, 'id' | 'position'>): Category {
+    const siblingPositions = this.categoriesSignal()
+      .filter((c) => c.kind === input.kind && c.parentId === input.parentId)
+      .map((c) => c.position);
+    const position = siblingPositions.length > 0 ? Math.max(...siblingPositions) + 1 : 0;
+    const category: Category = { ...input, id: newId(), position };
     this.categoriesSignal.update((list) => [...list, category]);
     return category;
   }
@@ -99,6 +103,28 @@ export class MockStore {
     if (!findEntity(this.categoriesSignal(), id)) notFound('Category', id);
     this.categoriesSignal.update((list) => updateEntity(list, id, changes));
     return findEntity(this.categoriesSignal(), id)!;
+  }
+
+  deleteCategory(id: string): void {
+    if (!findEntity(this.categoriesSignal(), id)) notFound('Category', id);
+    this.categoriesSignal.update((list) => removeEntity(list, id));
+  }
+
+  /**
+   * Reassigns sequential positions (0, 1, 2, ...) to exactly the categories
+   * in `orderedIds`, scoped to the given `kind`/`parentId` sibling group —
+   * other categories, including siblings not present in `orderedIds`, are
+   * left untouched. Ids that don't actually belong to that sibling group are
+   * ignored, so a caller can't accidentally reorder across groups.
+   */
+  reorderCategories(kind: CategoryKind, parentId: string | undefined, orderedIds: string[]): void {
+    const siblingIds = new Set(
+      this.categoriesSignal()
+        .filter((c) => c.kind === kind && c.parentId === parentId)
+        .map((c) => c.id)
+    );
+    const validOrderedIds = orderedIds.filter((id) => siblingIds.has(id));
+    this.categoriesSignal.update((list) => reorderEntities(list, validOrderedIds));
   }
 
   // --- Budgets --------------------------------------------------------------

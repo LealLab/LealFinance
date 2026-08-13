@@ -60,7 +60,15 @@ describe('totalsFor', () => {
 
 describe('categoryBreakdown', () => {
   const categories: Category[] = [
-    { id: 'transport', name: 'Transporte', kind: 'expense', color: '#000', icon: 'tag', archived: false },
+    {
+      id: 'transport',
+      name: 'Transporte',
+      kind: 'expense',
+      color: '#000',
+      icon: 'tag',
+      archived: false,
+      position: 0
+    },
     {
       id: 'uber',
       name: 'Uber',
@@ -68,9 +76,18 @@ describe('categoryBreakdown', () => {
       parentId: 'transport',
       color: '#000',
       icon: 'tag',
-      archived: false
+      archived: false,
+      position: 0
     },
-    { id: 'food', name: 'Alimentação', kind: 'expense', color: '#000', icon: 'tag', archived: false }
+    {
+      id: 'food',
+      name: 'Alimentação',
+      kind: 'expense',
+      color: '#000',
+      icon: 'tag',
+      archived: false,
+      position: 1
+    }
   ];
 
   it('rolls up child-category spend into the parent', () => {
