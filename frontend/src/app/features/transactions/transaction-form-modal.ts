@@ -7,8 +7,10 @@ import { TransactionRepository } from '../../data/transaction.repository';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
+import { Institution } from '../../domain/models/institution';
 import { RecurringFrequency } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
+import { groupAccountsByInstitution } from '../accounts/institution-grouping';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -23,6 +25,15 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
  * creates a RecurringRule from the same fields (edit doesn't offer this —
  * promoting an *existing* transaction into a rule after the fact is a
  * separate, more involved flow this scaffold doesn't cover).
+ *
+ * `fromInstitutionId`/`toInstitutionId` are transfer-only, UI-only filter
+ * controls — they narrow which accounts the two transfer selects offer,
+ * but are never part of the payload sent to TransactionRepository
+ * (Transaction itself has no institution fields; a transfer's institutions
+ * are implied by its two accounts). `toInstitutionId` defaults to the
+ * source account's own institution whenever the source account changes,
+ * so a same-institution transfer needs no extra clicks — see the
+ * `accountId.valueChanges` subscription below.
  */
 @Component({
   selector: 'app-transaction-form-modal',
@@ -39,12 +50,16 @@ export class TransactionFormModal {
   readonly transaction = input<Transaction | undefined>(undefined);
   readonly accounts = input.required<Account[]>();
   readonly categories = input.required<Category[]>();
+  readonly institutions = input<Institution[]>([]);
   readonly saved = output<void>();
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
   protected readonly frequencies = FREQUENCIES;
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
+
+  /** True while the constructor effect is repopulating the form on open — see the note above `clearAccountIfMismatched`. */
+  private applyingReset = false;
 
   protected readonly form = this.fb.nonNullable.group({
     type: ['expense' as TransactionType, Validators.required],
@@ -57,7 +72,9 @@ export class TransactionFormModal {
     notes: [''],
     repeat: [false],
     frequency: ['monthly' as RecurringFrequency],
-    interval: [1, [Validators.min(1)]]
+    interval: [1, [Validators.min(1)]],
+    fromInstitutionId: [''],
+    toInstitutionId: ['']
   });
 
   private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
@@ -68,6 +85,29 @@ export class TransactionFormModal {
   protected readonly categoryOptions = computed(() => {
     const kind = this.isTransfer() ? undefined : this.selectedType() === 'income' ? 'income' : 'expense';
     return this.categories().filter((category) => !category.archived && category.kind === kind);
+  });
+
+  /** <optgroup>-per-institution for the plain (non-transfer) account select. */
+  protected readonly accountGroups = computed(() =>
+    groupAccountsByInstitution(this.accounts(), this.institutions())
+  );
+
+  private readonly selectedFromInstitutionId = toSignal(this.form.controls.fromInstitutionId.valueChanges, {
+    initialValue: this.form.controls.fromInstitutionId.value
+  });
+  private readonly selectedToInstitutionId = toSignal(this.form.controls.toInstitutionId.valueChanges, {
+    initialValue: this.form.controls.toInstitutionId.value
+  });
+
+  protected readonly fromAccountOptions = computed(() => {
+    const institutionId = this.selectedFromInstitutionId();
+    const accounts = this.accounts();
+    return institutionId ? accounts.filter((account) => account.institutionId === institutionId) : accounts;
+  });
+  protected readonly toAccountOptions = computed(() => {
+    const institutionId = this.selectedToInstitutionId();
+    const accounts = this.accounts();
+    return institutionId ? accounts.filter((account) => account.institutionId === institutionId) : accounts;
   });
 
   /**
@@ -85,6 +125,16 @@ export class TransactionFormModal {
     effect(() => {
       if (!this.open()) return;
       const tx = this.transaction();
+      const accounts = this.accounts();
+      const fromAccount = accounts.find((account) => account.id === tx?.accountId);
+      const toAccount = accounts.find((account) => account.id === tx?.toAccountId);
+
+      // Guarded so the sync subscriptions below don't treat this
+      // programmatic repopulation as a user edit and clear the very
+      // selections it just set (e.g. a cross-institution transfer being
+      // edited would otherwise lose its toAccountId the instant the modal
+      // opens).
+      this.applyingReset = true;
       this.form.reset({
         type: tx?.type ?? 'expense',
         date: tx?.date ?? formatIsoDate(new Date()),
@@ -96,10 +146,47 @@ export class TransactionFormModal {
         notes: tx?.notes ?? '',
         repeat: false,
         frequency: 'monthly',
-        interval: 1
+        interval: 1,
+        fromInstitutionId: fromAccount?.institutionId ?? '',
+        toInstitutionId: toAccount?.institutionId ?? ''
       });
+      this.applyingReset = false;
       this.saveErrorKey.set(null);
     });
+
+    // Defaulting toInstitutionId to the source account's own institution
+    // whenever the source account changes — see the class-level doc
+    // comment for why, and clearAccountIfMismatched for the symmetric
+    // "narrowing a filter drops a now-invalid selection" behavior.
+    this.form.controls.accountId.valueChanges.subscribe((accountId) => {
+      if (this.applyingReset || this.form.controls.type.value !== 'transfer') return;
+      const account = this.accounts().find((a) => a.id === accountId);
+      this.form.controls.toInstitutionId.setValue(account?.institutionId ?? '');
+    });
+
+    this.form.controls.fromInstitutionId.valueChanges.subscribe((institutionId) => {
+      if (this.applyingReset) return;
+      this.clearAccountIfMismatched('accountId', institutionId);
+    });
+    this.form.controls.toInstitutionId.valueChanges.subscribe((institutionId) => {
+      if (this.applyingReset) return;
+      this.clearAccountIfMismatched('toAccountId', institutionId);
+    });
+  }
+
+  /**
+   * Narrowing an institution filter (fromInstitutionId/toInstitutionId) to
+   * something specific drops the currently-selected account on that side
+   * if it no longer belongs to that institution — rather than silently
+   * keeping a selection the filtered <select> no longer even lists.
+   */
+  private clearAccountIfMismatched(controlName: 'accountId' | 'toAccountId', institutionId: string): void {
+    if (!institutionId) return;
+    const control = this.form.controls[controlName];
+    const account = this.accounts().find((a) => a.id === control.value);
+    if (account && account.institutionId !== institutionId) {
+      control.setValue('');
+    }
   }
 
   protected submit(): void {

@@ -65,8 +65,12 @@
           <label class="form-label" for="rule-account">{{ t('transactions.form.fields.account') }}</label>
           <select id="rule-account" class="form-input" formControlName="accountId">
             <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
-            @for (account of accounts(); track account.id) {
-              <option [value]="account.id">{{ account.name }}</option>
+            @for (group of accountGroups(); track group.institution?.id ?? '__none__') {
+              <optgroup [label]="group.institution ? group.institution.name : t('accounts.noInstitution')">
+                @for (account of group.accounts; track account.id) {
+                  <option [value]="account.id">{{ account.name }}</option>
+                }
+              </optgroup>
             }
           </select>
         </div>
