@@ -1,41 +1,25 @@
 <div *transloco="let t" class="flex min-h-screen bg-surface-page text-content-primary">
   <aside
-    class="hidden shrink-0 flex-col border-r border-border bg-surface-raised md:flex md:w-16 lg:w-56"
+    class="hidden shrink-0 flex-col border-r border-border bg-surface-raised md:flex md:w-16 lg:w-60"
   >
-    <a routerLink="/" class="flex items-center gap-2 px-3 py-4">
-      <span
-        class="flex size-7 shrink-0 items-center justify-center rounded bg-accent font-mono text-sm font-semibold text-accent-content"
-        aria-hidden="true"
-      >
-        L
-      </span>
-      <span class="hidden text-sm font-semibold tracking-tight lg:inline">{{ t('app.title') }}</span>
-    </a>
-    <app-sidebar variant="rail" class="flex-1 overflow-y-auto" />
-  </aside>
-
-  <div class="flex min-w-0 flex-1 flex-col">
-    <header
-      class="flex items-center justify-between gap-4 border-b border-border bg-surface-raised px-4 py-3 md:px-6"
-    >
-      <div class="flex items-center gap-3">
+    <div class="flex items-center justify-between gap-2 px-3 py-4">
+      <a routerLink="/" class="flex min-w-0 items-center gap-2">
+        <app-logo [size]="26" class="shrink-0 text-accent" />
+        <span class="hidden truncate text-sm font-semibold tracking-tight lg:inline">{{ t('app.title') }}</span>
+      </a>
+      <div class="flex items-center gap-0.5">
         <button
           appButton
           variant="ghost"
           size="sm"
           type="button"
-          class="md:hidden"
-          (click)="mobileNavOpen.set(true)"
-          [attr.aria-label]="t('layout.sidebar.openMenu')"
+          (click)="balanceVisibility.toggle()"
+          [attr.aria-label]="
+            balanceVisibility.hidden() ? t('layout.balanceToggle.show') : t('layout.balanceToggle.hide')
+          "
         >
-          <app-icon name="menu" [size]="20" />
+          <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="18" />
         </button>
-        <a routerLink="/" class="text-sm font-semibold tracking-tight md:hidden">
-          {{ t('app.title') }}
-        </a>
-      </div>
-
-      <div class="flex items-center gap-2">
         <button
           appButton
           variant="ghost"
@@ -50,20 +34,66 @@
         >
           <app-icon [name]="theme.current() === 'dark' ? 'sun' : 'moon'" [size]="18" />
         </button>
-
-        <label class="flex items-center gap-2 text-sm text-content-muted">
-          <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
-          <select
-            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm"
-            [value]="activeLang()"
-            (change)="setLang($any($event.target).value)"
-          >
-            @for (lang of availableLangs; track lang) {
-              <option [value]="lang">{{ lang }}</option>
-            }
-          </select>
-        </label>
       </div>
+    </div>
+
+    <div class="px-3 pb-3">
+      <button
+        appButton
+        variant="secondary"
+        type="button"
+        class="w-full !justify-between !px-2.5 !py-1.5 text-content-muted"
+        (click)="commandPalette.show()"
+      >
+        <span class="flex items-center gap-2">
+          <app-icon name="search" [size]="16" />
+          <span class="hidden lg:inline">{{ t('layout.search.trigger') }}</span>
+        </span>
+        <span
+          class="hidden shrink-0 items-center gap-0.5 rounded border border-border px-1.5 py-0.5 font-mono text-[11px] text-content-subtle lg:flex"
+        >
+          {{ isMac ? '⌘K' : 'Ctrl K' }}
+        </span>
+      </button>
+    </div>
+
+    <app-sidebar variant="rail" class="flex-1 overflow-y-auto" />
+
+    <div class="border-t border-border p-3">
+      <label class="flex items-center gap-2 text-sm text-content-muted">
+        <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
+        <app-icon name="globe" [size]="16" class="hidden shrink-0 lg:block" />
+        <select
+          class="w-full rounded-md border border-border bg-surface-raised px-2 py-1 text-sm"
+          [value]="activeLang()"
+          (change)="setLang($any($event.target).value)"
+        >
+          @for (lang of availableLangs; track lang) {
+            <option [value]="lang">{{ lang }}</option>
+          }
+        </select>
+      </label>
+    </div>
+  </aside>
+
+  <div class="flex min-w-0 flex-1 flex-col">
+    <header
+      class="flex items-center gap-3 border-b border-border bg-surface-raised px-4 py-3 md:hidden"
+    >
+      <button
+        appButton
+        variant="ghost"
+        size="sm"
+        type="button"
+        (click)="mobileNavOpen.set(true)"
+        [attr.aria-label]="t('layout.sidebar.openMenu')"
+      >
+        <app-icon name="menu" [size]="20" />
+      </button>
+      <a routerLink="/" class="flex items-center gap-2 text-sm font-semibold tracking-tight">
+        <app-logo [size]="22" class="text-accent" />
+        {{ t('app.title') }}
+      </a>
     </header>
 
     <main class="flex-1 px-4 py-6 md:px-6 md:py-8">
@@ -85,7 +115,10 @@
   >
     <div class="flex h-full flex-col" (click)="$event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-border px-4 py-3">
-        <span class="text-sm font-semibold tracking-tight">{{ t('app.title') }}</span>
+        <span class="flex items-center gap-2 text-sm font-semibold tracking-tight">
+          <app-logo [size]="22" class="text-accent" />
+          {{ t('app.title') }}
+        </span>
         <button
           appButton
           variant="ghost"
@@ -97,6 +130,65 @@
           <app-icon name="close" [size]="16" />
         </button>
       </div>
+
+      <div class="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
+        <div class="flex items-center gap-0.5">
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            (click)="balanceVisibility.toggle()"
+            [attr.aria-label]="
+              balanceVisibility.hidden() ? t('layout.balanceToggle.show') : t('layout.balanceToggle.hide')
+            "
+          >
+            <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="18" />
+          </button>
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            (click)="theme.toggle()"
+            [attr.aria-label]="
+              theme.current() === 'dark'
+                ? t('layout.themeToggle.switchToLight')
+                : t('layout.themeToggle.switchToDark')
+            "
+          >
+            <app-icon [name]="theme.current() === 'dark' ? 'sun' : 'moon'" [size]="18" />
+          </button>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-content-muted">
+          <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
+          <select
+            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm"
+            [value]="activeLang()"
+            (change)="setLang($any($event.target).value)"
+          >
+            @for (lang of availableLangs; track lang) {
+              <option [value]="lang">{{ lang }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      <div class="border-b border-border px-4 py-2.5">
+        <button
+          appButton
+          variant="secondary"
+          type="button"
+          class="w-full !justify-between !px-2.5 !py-1.5 text-content-muted"
+          (click)="openCommandPalette()"
+        >
+          <span class="flex items-center gap-2">
+            <app-icon name="search" [size]="16" />
+            {{ t('layout.search.trigger') }}
+          </span>
+        </button>
+      </div>
+
       <app-sidebar
         variant="drawer"
         class="flex-1 overflow-y-auto"
@@ -106,5 +198,6 @@
   </dialog>
   <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
 
+  <app-command-palette />
   <app-confirm-dialog />
 </div>

@@ -2,6 +2,15 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
+import { AccountRepository } from '../data/account.repository';
+import { BudgetRepository } from '../data/budget.repository';
+import { CategoryRepository } from '../data/category.repository';
+import { MockAccountRepository } from '../data/mock/mock-account.repository';
+import { MockBudgetRepository } from '../data/mock/mock-budget.repository';
+import { MockCategoryRepository } from '../data/mock/mock-category.repository';
+import { MOCK_LATENCY_MS } from '../data/mock/mock-latency';
+import { MockTransactionRepository } from '../data/mock/mock-transaction.repository';
+import { TransactionRepository } from '../data/transaction.repository';
 import { Shell } from './shell';
 import ptBR from '../../../public/i18n/pt-BR.json';
 
@@ -15,7 +24,19 @@ describe('Shell', () => {
           translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
         })
       ],
-      providers: [provideZonelessChangeDetection(), provideRouter([])]
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        // Shell mounts <app-command-palette />, which injects the four
+        // repositories to build its "live data" groups (see
+        // command-palette/command-palette.ts) — it needs real DI tokens
+        // even though this spec never opens the palette.
+        { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: AccountRepository, useClass: MockAccountRepository },
+        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: TransactionRepository, useClass: MockTransactionRepository }
+      ]
     }).compileComponents();
   });
 
@@ -25,5 +46,18 @@ describe('Shell', () => {
 
     expect(fixture.componentInstance).toBeTruthy();
     expect(fixture.componentInstance['availableLangs']).toContain('pt-BR');
+  });
+
+  it('toggles the command palette open on Ctrl+K', () => {
+    const fixture = TestBed.createComponent(Shell);
+    fixture.detectChanges();
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }));
+    fixture.detectChanges();
+
+    const dialog = fixture.nativeElement.querySelector(
+      'app-command-palette dialog'
+    ) as HTMLDialogElement;
+    expect(dialog.open).toBe(true);
   });
 });
