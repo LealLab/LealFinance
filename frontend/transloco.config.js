@@ -3,7 +3,7 @@
 // Not used at runtime by the app itself; see src/app/core/transloco.providers.ts
 // for that.
 module.exports = {
-  langs: ['pt-BR'],
+  langs: ['en-US', 'pt-BR'],
   rootTranslationsPath: 'public/i18n/',
   keysManager: {
     input: ['src']

@@ -34,4 +34,9 @@ describe('resolveMonthBuckets', () => {
     expect(resolveMonthBuckets('custom')).toHaveLength(1);
     expect(resolveMonthBuckets('custom', '2026-05', '2026-01')).toHaveLength(1);
   });
+
+  it('formats month labels using the requested locale', () => {
+    expect(resolveMonthBuckets('custom', '2026-01', '2026-01', 'en-US')[0].label).toBe('Jan/26');
+    expect(resolveMonthBuckets('custom', '2026-01', '2026-01', 'pt-BR')[0].label).toBe('jan/26');
+  });
 });

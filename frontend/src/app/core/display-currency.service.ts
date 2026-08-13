@@ -1,7 +1,7 @@
 import { effect, Injectable, signal } from '@angular/core';
 
 const STORAGE_KEY = 'lealfinance.displayCurrency';
-const DEFAULT_CURRENCY = 'BRL';
+const DEFAULT_CURRENCY = 'USD';
 
 /**
  * The currency multi-currency figures (net worth, cross-account totals)

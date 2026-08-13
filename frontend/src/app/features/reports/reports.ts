@@ -70,7 +70,7 @@ export class Reports {
     });
 
   protected readonly buckets = computed<MonthBucket[]>(() =>
-    resolveMonthBuckets(this.period(), this.customFrom(), this.customTo())
+    resolveMonthBuckets(this.period(), this.customFrom(), this.customTo(), this.localeService.getLocale())
   );
 
   private readonly transactionsInRange = computed(() => {

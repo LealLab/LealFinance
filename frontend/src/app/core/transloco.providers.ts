@@ -6,18 +6,17 @@ import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
 import { HttpTranslocoLoader } from './transloco-loader';
 
 /**
- * LealFinance ships pt-BR only for now (see docs/i18n.md), but every part of
- * this setup — availableLangs, the locale/currency mapping, persistence — is
- * wired as if more languages exist, so adding one later is a config change,
- * not a rewrite.
+ * English is the default language, while Brazilian Portuguese remains
+ * available as an explicit user preference. Locale and currency mappings
+ * stay together here so language changes also update Intl formatting.
  */
 export function provideAppTransloco(): EnvironmentProviders[] {
   return [
     ...provideTransloco({
       config: {
-        availableLangs: ['pt-BR'],
-        defaultLang: 'pt-BR',
-        fallbackLang: 'pt-BR',
+        availableLangs: ['en-US', 'pt-BR'],
+        defaultLang: 'en-US',
+        fallbackLang: 'en-US',
         reRenderOnLangChange: true,
         prodMode: !isDevMode()
       },
@@ -25,9 +24,11 @@ export function provideAppTransloco(): EnvironmentProviders[] {
     }),
     ...provideTranslocoLocale({
       langToLocaleMapping: {
+        'en-US': 'en-US',
         'pt-BR': 'pt-BR'
       },
       localeToCurrencyMapping: {
+        'en-US': 'USD',
         'pt-BR': 'BRL'
       }
     }),

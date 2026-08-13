@@ -148,7 +148,10 @@ export class Dashboard {
     const labels: string[] = [];
     const income: number[] = [];
     const expense: number[] = [];
-    const monthFormatter = new Intl.DateTimeFormat('pt-BR', { month: 'short' });
+    const monthFormatter = new Intl.DateTimeFormat(this.localeService.getLocale(), {
+      month: 'short',
+      timeZone: 'UTC'
+    });
 
     for (let i = 0; i < CASH_FLOW_MONTHS; i++) {
       const monthStart = addMonthsClamped(start, i);

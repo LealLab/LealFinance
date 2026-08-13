@@ -1,0 +1,574 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Close",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "accounts": "Accounts",
+      "transactions": "Transactions",
+      "categories": "Categories",
+      "budgets": "Budgets",
+      "goals": "Goals",
+      "reports": "Reports",
+      "settings": "Settings",
+      "sections": {
+        "accounts": "Accounts",
+        "analysis": "Analysis",
+        "setup": "Setup"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Open menu"
+    },
+    "themeToggle": {
+      "switchToLight": "Switch to light theme",
+      "switchToDark": "Switch to dark theme"
+    },
+    "languageSwitcher": {
+      "label": "Language",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Hide balances",
+      "show": "Show balances"
+    },
+    "search": {
+      "trigger": "Search everything…"
+    },
+    "commandPalette": {
+      "placeholder": "Type a command or search...",
+      "empty": "No results found.",
+      "hints": {
+        "navigate": "navigate",
+        "select": "select",
+        "close": "close"
+      },
+      "groups": {
+        "quickActions": "Quick actions",
+        "goTo": "Go to",
+        "accounts": "Accounts",
+        "categories": "Categories",
+        "budgets": "Budgets",
+        "transactions": "Transactions"
+      },
+      "actions": {
+        "newTransaction": "New transaction",
+        "newAccount": "New account",
+        "newCategory": "New category",
+        "newBudget": "New budget",
+        "configureLanguage": "Configure language",
+        "configureCurrency": "Configure display currency",
+        "toggleTheme": "Toggle theme",
+        "toggleBalances": "Show or hide balances",
+        "resetMockData": "Reset demo data"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to LealFinance",
+    "empty": {
+      "title": "No data yet",
+      "description": "Add an account to start viewing your financial dashboard."
+    },
+    "stats": {
+      "netWorth": "Net worth",
+      "income": "Monthly income",
+      "expense": "Monthly expenses",
+      "savingsRate": "Savings rate"
+    },
+    "cashFlow": {
+      "title": "Cash flow (6 months)",
+      "income": "Income",
+      "expense": "Expenses"
+    },
+    "categoryChart": {
+      "title": "Spending by category (current month)",
+      "label": "Categories",
+      "empty": "No spending recorded this month yet."
+    },
+    "accounts": {
+      "title": "Accounts"
+    },
+    "recentTransactions": {
+      "title": "Recent transactions",
+      "empty": "No transactions recorded yet."
+    },
+    "budgets": {
+      "title": "Budgets",
+      "empty": "No budget set for this month."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Exchange rate unavailable — using a 1:1 conversion as an approximation."
+  },
+  "accounts": {
+    "title": "Accounts",
+    "description": "Your balances in one place.",
+    "showArchived": "Show archived accounts",
+    "archivedBadge": "Archived",
+    "noInstitution": "No institution",
+    "mixedCurrencies": "Multiple currencies",
+    "actions": {
+      "new": "New account",
+      "edit": "Edit",
+      "archive": "Archive",
+      "unarchive": "Unarchive"
+    },
+    "archive": {
+      "title": "Archive account?",
+      "message": "The account \"{{name}}\" will no longer appear in the main views. Do you want to continue?"
+    },
+    "empty": {
+      "title": "No accounts yet",
+      "description": "Create your first account to start tracking your balances."
+    },
+    "type": {
+      "checking": "Checking",
+      "savings": "Savings",
+      "cash": "Cash",
+      "credit_card": "Credit card",
+      "investment": "Investments",
+      "goal": "Goal"
+    },
+    "form": {
+      "newTitle": "New account",
+      "editTitle": "Edit account",
+      "saveError": "Could not save the account. Try again.",
+      "fields": {
+        "name": "Name",
+        "type": "Type",
+        "currency": "Currency",
+        "openingBalance": "Opening balance",
+        "institution": "Institution",
+        "creditLimit": "Credit limit",
+        "closingDay": "Closing day",
+        "dueDay": "Due day"
+      },
+      "errors": {
+        "required": "This field is required.",
+        "decimalAmount": "Enter a valid numeric amount."
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "detail": {
+      "back": "Back to accounts",
+      "notFound": "Account not found",
+      "history": "Transaction history",
+      "historyEmpty": {
+        "title": "No transactions in this account",
+        "description": "Transactions recorded in this account will appear here."
+      },
+      "creditCard": {
+        "title": "Credit card",
+        "used": "Used",
+        "owed": "Current balance",
+        "limit": "Limit",
+        "available": "Available",
+        "closingDay": "Closing"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "New institution",
+      "edit": "Edit institution",
+      "delete": "Delete institution"
+    },
+    "form": {
+      "newTitle": "New institution",
+      "editTitle": "Edit institution",
+      "saveError": "Could not save the institution. Try again.",
+      "deleteInUseError": "This institution still has linked accounts and cannot be deleted.",
+      "fields": {
+        "name": "Name",
+        "icon": "Icon",
+        "color": "Color"
+      },
+      "errors": {
+        "required": "This field is required."
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "delete": {
+      "title": "Delete institution",
+      "message": "This action cannot be undone. Do you want to delete this institution?"
+    },
+    "icon": {
+      "bank": "Bank",
+      "wallet": "Wallet",
+      "chart": "Investments",
+      "globe": "International",
+      "archive": "Other"
+    }
+  },
+  "transactions": {
+    "title": "Transactions",
+    "description": "Income, expenses, and transfers.",
+    "actions": {
+      "new": "New transaction",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "tabs": {
+      "transactions": "Transactions",
+      "recurring": "Recurring"
+    },
+    "type": {
+      "income": "Income",
+      "expense": "Expense",
+      "transfer": "Transfer"
+    },
+    "filters": {
+      "type": "Type",
+      "account": "Account",
+      "category": "Category",
+      "from": "From",
+      "to": "To",
+      "search": "Search",
+      "institution": "Institution",
+      "all": "All",
+      "clear": "Clear filters"
+    },
+    "empty": {
+      "title": "No transactions found",
+      "description": "Adjust the filters or add a new transaction."
+    },
+    "projected": {
+      "title": "Upcoming (projected)",
+      "badge": "Projected"
+    },
+    "delete": {
+      "title": "Delete transaction",
+      "message": "This action cannot be undone. Do you want to delete this transaction?"
+    },
+    "form": {
+      "newTitle": "New transaction",
+      "editTitle": "Edit transaction",
+      "saveError": "Could not save the transaction. Try again.",
+      "fields": {
+        "date": "Date",
+        "amount": "Amount",
+        "account": "Account",
+        "fromAccount": "Source account",
+        "toAccount": "Destination account",
+        "fromInstitution": "Source institution",
+        "toInstitution": "Destination institution",
+        "anyInstitution": "Any institution",
+        "category": "Category",
+        "description": "Description",
+        "notes": "Notes",
+        "repeat": "Repeat this transaction",
+        "frequency": "Frequency",
+        "interval": "Every",
+        "selectPlaceholder": "Select"
+      },
+      "errors": {
+        "invalid": "Check the required fields before saving."
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "yearly": "Yearly"
+      },
+      "everyN": "every {{n}}",
+      "nextOccurrence": "Next occurrence",
+      "actions": {
+        "new": "New recurring rule"
+      },
+      "empty": {
+        "title": "No recurring rules yet",
+        "description": "Turning a transaction into a recurring one creates a rule here."
+      },
+      "delete": {
+        "title": "Delete recurring rule",
+        "message": "This does not affect recorded transactions — only future projected occurrences will disappear."
+      },
+      "form": {
+        "newTitle": "New recurring rule",
+        "editTitle": "Edit recurring rule",
+        "saveError": "Could not save the recurring rule. Try again.",
+        "startDate": "Start",
+        "endDate": "End (optional)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Organize income and expenses by category.",
+    "showArchived": "Show archived categories",
+    "archivedBadge": "Archived",
+    "actions": {
+      "new": "New category",
+      "edit": "Edit",
+      "archive": "Archive",
+      "unarchive": "Unarchive",
+      "delete": "Delete",
+      "addChild": "New subcategory",
+      "collapse": "Collapse",
+      "expand": "Expand",
+      "dragHandle": "Reorder"
+    },
+    "empty": {
+      "title": "No categories yet",
+      "description": "Create categories to organize your transactions."
+    },
+    "sections": {
+      "income": "Income categories",
+      "expense": "Expense categories"
+    },
+    "delete": {
+      "title": "Delete category?",
+      "message": "This action cannot be undone. Do you want to delete the category \"{{name}}\"?",
+      "blockedTitle": "Cannot delete",
+      "blockedMessage": "This category is still in use: {{transactions}} transactions, {{budgets}} budgets, and {{children}} subcategories use it. Archive the category instead of deleting it."
+    },
+    "form": {
+      "newTitle": "New category",
+      "editTitle": "Edit category",
+      "saveError": "Could not save the category. Try again.",
+      "fields": {
+        "name": "Name",
+        "parent": "Parent category",
+        "noParent": "None (top-level category)",
+        "color": "Color",
+        "icon": "Icon"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "icon": {
+      "tag": "Tag",
+      "home": "Home",
+      "archive": "Archive",
+      "swap": "Transport",
+      "wallet": "Wallet",
+      "chart": "Chart",
+      "sun": "Energy",
+      "alertTriangle": "Alert",
+      "pencil": "Education",
+      "target": "Goal",
+      "repeat": "Recurring",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Budgets",
+    "description": "Plan how much to spend in each category every month.",
+    "list": {
+      "title": "Monthly limits"
+    },
+    "planner": {
+      "title": "Income-based budget",
+      "description": "Distribute your expected income across categories.",
+      "total": "Total",
+      "expectedIncome": "Expected income",
+      "chartLabel": "Distribution",
+      "fixed": "Fixed",
+      "empty": "Set percentages to view your distribution.",
+      "save": "Save distribution",
+      "errors": {
+        "total": "The distribution cannot exceed 100%.",
+        "income": "Enter the expected income for this month.",
+        "save": "Could not save the distribution. Try again."
+      }
+    },
+    "monthLabel": "Month",
+    "actions": {
+      "new": "New budget",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "totals": {
+      "budgeted": "Budgeted",
+      "spent": "Spent",
+      "remaining": "Remaining"
+    },
+    "empty": {
+      "title": "No budget this month",
+      "description": "Set a budget by category to track your spending."
+    },
+    "state": {
+      "over": "Over budget",
+      "near": "Near limit"
+    },
+    "unbudgeted": {
+      "title": "Spending without a budget",
+      "setBudget": "Set budget"
+    },
+    "delete": {
+      "title": "Delete budget",
+      "message": "This action cannot be undone. Do you want to delete this budget?"
+    },
+    "form": {
+      "newTitle": "New budget",
+      "editTitle": "Edit budget",
+      "saveError": "Could not save the budget. Try again.",
+      "fields": {
+        "month": "Month",
+        "category": "Category",
+        "selectCategory": "Select a category",
+        "amount": "Amount",
+        "currency": "Currency"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    }
+  },
+  "goals": {
+    "title": "Goals",
+    "description": "Save money for any goal and track your progress.",
+    "showArchived": "Show archived goals",
+    "accountLabel": "Account",
+    "archived": "Archived",
+    "overdue": "Overdue",
+    "actions": {
+      "new": "New goal",
+      "edit": "Edit goal",
+      "archive": "Archive goal",
+      "unarchive": "Unarchive goal",
+      "deposit": "Add money",
+      "withdraw": "Withdraw",
+      "interest": "Add interest"
+    },
+    "empty": {
+      "title": "No goals yet",
+      "description": "Create a goal to start saving money and tracking your progress."
+    },
+    "progress": {
+      "current": "Saved",
+      "target": "Target",
+      "remaining": "Remaining",
+      "contribution": "Suggested contribution",
+      "notConfigured": "No deadline",
+      "frequency": "Frequency",
+      "every": "every {{n}}",
+      "label": "Progress"
+    },
+    "frequency": {
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "history": {
+      "title": "Goal history",
+      "empty": "No activity recorded."
+    },
+    "form": {
+      "newTitle": "New goal",
+      "editTitle": "Edit goal",
+      "saveError": "Could not save the goal. Try again.",
+      "fields": {
+        "name": "Name",
+        "targetAmount": "Target amount",
+        "currency": "Currency",
+        "targetDate": "Target date",
+        "targetDateHint": "Optional: add a deadline to calculate the suggested contribution.",
+        "frequency": "Contribution frequency",
+        "interval": "Every"
+      },
+      "errors": {
+        "required": "This field is required."
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Add money to goal" },
+      "withdraw": { "title": "Withdraw from goal" },
+      "interest": { "title": "Add interest" },
+      "fields": {
+        "amount": "Amount",
+        "date": "Date",
+        "sourceAccount": "Source/destination account",
+        "description": "Description"
+      },
+      "saveError": "Could not record the activity. Try again."
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Analyze income, expenses, and balances over time.",
+    "period": {
+      "month": "This month",
+      "3m": "Last 3 months",
+      "6m": "Last 6 months",
+      "12m": "Last 12 months",
+      "custom": "Custom"
+    },
+    "empty": {
+      "title": "No transactions in this period",
+      "description": "Adjust the selected period to view your reports."
+    },
+    "charts": {
+      "incomeExpense": "Income vs. expenses",
+      "netFlow": "Net flow",
+      "byCategory": "Spending by category",
+      "balanceTrend": "Balance trend by account"
+    },
+    "series": {
+      "income": "Income",
+      "expense": "Expenses",
+      "netFlow": "Net flow",
+      "categories": "Categories"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Appearance, language, and demo-data preferences.",
+    "appearance": {
+      "title": "Appearance",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "language": "Language"
+    },
+    "currency": {
+      "title": "Display currency",
+      "description": "Used to convert and add values across accounts with different currencies, such as net worth on the dashboard."
+    },
+    "mockData": {
+      "title": "Demo data",
+      "description": "All account, transaction, category, and budget data is fictional and exists only in the browser's memory — it resets whenever the page reloads. Theme, language, and display currency are real preferences and remain saved.",
+      "reset": {
+        "action": "Reset data",
+        "confirmTitle": "Reset demo data",
+        "confirmMessage": "All accounts, transactions, categories, and budgets created or edited in this session will be replaced with the original demo data. Do you want to continue?"
+      }
+    },
+    "agents": {
+      "title": "AI agents",
+      "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default — configurable in Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Disabled"
+    }
+  }
+}

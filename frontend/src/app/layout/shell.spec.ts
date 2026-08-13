@@ -12,6 +12,7 @@ import { MOCK_LATENCY_MS } from '../data/mock/mock-latency';
 import { MockTransactionRepository } from '../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../data/transaction.repository';
 import { Shell } from './shell';
+import enUS from '../../../public/i18n/en-US.json';
 import ptBR from '../../../public/i18n/pt-BR.json';
 
 describe('Shell', () => {
@@ -20,8 +21,8 @@ describe('Shell', () => {
       imports: [
         Shell,
         TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
+          langs: { 'en-US': enUS, 'pt-BR': ptBR },
+          translocoConfig: { availableLangs: ['en-US', 'pt-BR'], defaultLang: 'en-US' }
         })
       ],
       providers: [
@@ -40,12 +41,31 @@ describe('Shell', () => {
     }).compileComponents();
   });
 
-  it('creates and lists pt-BR as an available language', () => {
+  it('defaults to English and lists both supported languages', () => {
     const fixture = TestBed.createComponent(Shell);
     fixture.detectChanges();
 
     expect(fixture.componentInstance).toBeTruthy();
+    expect(fixture.componentInstance['availableLangs']).toContain('en-US');
     expect(fixture.componentInstance['availableLangs']).toContain('pt-BR');
+    expect(fixture.componentInstance['activeLang']()).toBe('en-US');
+    expect(document.documentElement.lang).toBe('en-US');
+    expect(
+      Array.from((fixture.nativeElement.querySelector('select') as HTMLSelectElement).options).map(
+        (option) => option.textContent
+      )
+    ).toEqual(['English', 'Português (Brasil)']);
+  });
+
+  it('updates the document language when the active language changes', () => {
+    const fixture = TestBed.createComponent(Shell);
+    fixture.detectChanges();
+
+    fixture.componentInstance['setLang']('pt-BR');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['activeLang']()).toBe('pt-BR');
+    expect(document.documentElement.lang).toBe('pt-BR');
   });
 
   it('toggles the command palette open on Ctrl+K', () => {

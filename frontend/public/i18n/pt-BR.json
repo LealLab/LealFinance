@@ -33,7 +33,11 @@
       "switchToDark": "Mudar para tema escuro"
     },
     "languageSwitcher": {
-      "label": "Idioma"
+      "label": "Idioma",
+      "options": {
+        "en-US": "Inglês",
+        "pt-BR": "Português (Brasil)"
+      }
     },
     "balanceToggle": {
       "hide": "Ocultar saldos",

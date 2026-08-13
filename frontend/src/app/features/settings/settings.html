@@ -1,4 +1,5 @@
 <div *transloco="let t">
+  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) -->
   <app-page-header [title]="t('settings.title')" [description]="t('settings.description')" />
 
   <div class="flex max-w-2xl flex-col gap-6">
@@ -47,7 +48,7 @@
           (change)="setLang($any($event.target).value)"
         >
           @for (lang of availableLangs; track lang) {
-            <option [value]="lang">{{ lang }}</option>
+            <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
           }
         </select>
       </div>

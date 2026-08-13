@@ -12,12 +12,14 @@ export interface MonthBucket {
   end: Date;
 }
 
-const MONTH_FORMATTER = new Intl.DateTimeFormat('pt-BR', { month: 'short' });
 const MAX_CUSTOM_BUCKETS = 36;
 
-function toBucket(start: Date): MonthBucket {
+function toBucket(start: Date, locale: string): MonthBucket {
   const end = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0));
-  const label = `${MONTH_FORMATTER.format(start).replace('.', '')}/${String(start.getUTCFullYear()).slice(2)}`;
+  const month = new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'UTC' })
+    .format(start)
+    .replace('.', '');
+  const label = `${month}/${String(start.getUTCFullYear()).slice(2)}`;
   return { key: monthKey(formatIsoDate(start)), label, start, end };
 }
 
@@ -27,9 +29,9 @@ function currentMonthStart(): Date {
 }
 
 /** The last `count` months, ending with the current month (inclusive). */
-function trailingMonths(count: number): MonthBucket[] {
+function trailingMonths(count: number, locale: string): MonthBucket[] {
   const end = currentMonthStart();
-  return Array.from({ length: count }, (_, i) => toBucket(addMonthsClamped(end, -(count - 1 - i))));
+  return Array.from({ length: count }, (_, i) => toBucket(addMonthsClamped(end, -(count - 1 - i)), locale));
 }
 
 /**
@@ -41,22 +43,23 @@ function trailingMonths(count: number): MonthBucket[] {
 export function resolveMonthBuckets(
   period: ReportPeriod,
   customFrom?: string,
-  customTo?: string
+  customTo?: string,
+  locale = 'en-US'
 ): MonthBucket[] {
-  if (period === 'month') return trailingMonths(1);
-  if (period === '3m') return trailingMonths(3);
-  if (period === '6m') return trailingMonths(6);
-  if (period === '12m') return trailingMonths(12);
+  if (period === 'month') return trailingMonths(1, locale);
+  if (period === '3m') return trailingMonths(3, locale);
+  if (period === '6m') return trailingMonths(6, locale);
+  if (period === '12m') return trailingMonths(12, locale);
 
-  if (!customFrom || !customTo) return trailingMonths(1);
+  if (!customFrom || !customTo) return trailingMonths(1, locale);
   const start = new Date(`${customFrom}-01T00:00:00Z`);
   const end = new Date(`${customTo}-01T00:00:00Z`);
-  if (end.getTime() < start.getTime()) return trailingMonths(1);
+  if (end.getTime() < start.getTime()) return trailingMonths(1, locale);
 
   const buckets: MonthBucket[] = [];
   let cursor = start;
   while (cursor.getTime() <= end.getTime() && buckets.length < MAX_CUSTOM_BUCKETS) {
-    buckets.push(toBucket(cursor));
+    buckets.push(toBucket(cursor, locale));
     cursor = addMonthsClamped(cursor, 1);
   }
   return buckets;

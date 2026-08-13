@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -19,8 +20,7 @@ import { Sidebar } from './sidebar';
  * hamburger-triggered off-canvas drawer below `md`. Theme/balance-visibility
  * toggles, the language switcher, and the command-palette trigger all live
  * in the sidebar/drawer now (not the top `<header>`, which below `md` only
- * carries the hamburger + mobile title — see docs/i18n.md for why the
- * switcher exists with one language).
+ * carries the hamburger + mobile title).
  */
 @Component({
   selector: 'app-shell',
@@ -32,6 +32,7 @@ import { Sidebar } from './sidebar';
   }
 })
 export class Shell {
+  private readonly document = inject(DOCUMENT);
   private readonly transloco = inject(TranslocoService);
   protected readonly theme = inject(ThemeService);
   protected readonly balanceVisibility = inject(BalanceVisibilityService);
@@ -47,6 +48,10 @@ export class Shell {
   private readonly drawer = viewChild<ElementRef<HTMLDialogElement>>('drawer');
 
   constructor() {
+    effect(() => {
+      this.document.documentElement.lang = this.activeLang();
+    });
+
     effect(() => {
       const element = this.drawer()?.nativeElement;
       if (!element) return;
