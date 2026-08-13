@@ -5,7 +5,7 @@
   </a>
 
   @if (account(); as account) {
-    <app-page-header [title]="account.name" [description]="account.institution">
+    <app-page-header [title]="account.name" [description]="institutionName()">
       <button appButton variant="secondary" type="button" (click)="openEdit()">
         <app-icon name="pencil" [size]="16" />
         {{ t('accounts.actions.edit') }}

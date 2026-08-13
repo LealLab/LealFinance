@@ -4,7 +4,9 @@ import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { AccountRepository } from '../../data/account.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
+import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -27,7 +29,8 @@ describe('Accounts', () => {
         provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
-        { provide: TransactionRepository, useClass: MockTransactionRepository }
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository }
       ]
     }).compileComponents();
   });
@@ -71,5 +74,20 @@ describe('Accounts', () => {
 
     expect(dialog.open).toBe(false);
     expect(el.textContent).toContain('Conta de Teste E2E');
+  });
+
+  it('groups accounts by institution, including the "Sem instituição" bucket for accounts without one', async () => {
+    const fixture = TestBed.createComponent(Accounts);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
+    // Seeded fixtures: Banco Leal groups 3 BRL accounts, Corretora XP
+    // Europe groups the single EUR investment account, and the cash
+    // account has no institution — see data/mock/fixtures.ts.
+    expect(text).toContain('Banco Leal');
+    expect(text).toContain('Corretora XP Europe');
+    expect(text).toContain('Sem instituição');
   });
 });

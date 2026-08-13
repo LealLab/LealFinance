@@ -1,0 +1,70 @@
+<div *transloco="let t">
+  <!-- institutions.icon.* below is looked up dynamically (string
+       concatenation), which transloco-keys-manager's template extractor
+       can't resolve — see category-form-modal.html for the same "dynamic
+       markings" mechanism. -->
+  <!-- t(institutions.icon.bank) t(institutions.icon.wallet) t(institutions.icon.chart) -->
+  <!-- t(institutions.icon.globe) t(institutions.icon.archive) -->
+  <!-- @if…as (not a plain call) avoids a translation-argument pattern the
+       extractor mis-parses — see account-form-modal.html for the full
+       explanation. -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div>
+          <label class="form-label" for="institution-name">{{ t('institutions.form.fields.name') }}</label>
+          <input id="institution-name" type="text" class="form-input" formControlName="name" />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p class="form-error">{{ t('institutions.form.errors.required') }}</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="institution-color">{{ t('institutions.form.fields.color') }}</label>
+            <input id="institution-color" type="color" class="form-input h-10 p-1" formControlName="color" />
+          </div>
+          <div>
+            <label class="form-label" for="institution-icon">{{ t('institutions.form.fields.icon') }}</label>
+            <select id="institution-icon" class="form-input" formControlName="icon">
+              @for (icon of iconOptions; track icon) {
+                <option [value]="icon">{{ t('institutions.icon.' + icon) }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+        @if (deleteErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex items-center justify-between gap-2">
+          @if (institution()) {
+            <button
+              appButton
+              variant="ghost"
+              type="button"
+              [disabled]="deleting()"
+              (click)="deleteInstitution()"
+            >
+              {{ t('institutions.actions.delete') }}
+            </button>
+          } @else {
+            <span></span>
+          }
+          <div class="flex gap-2">
+            <button appButton type="button" variant="secondary" (click)="open.set(false)">
+              {{ t('institutions.form.actions.cancel') }}
+            </button>
+            <button appButton type="submit" variant="primary" [disabled]="saving()">
+              {{ t('institutions.form.actions.save') }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

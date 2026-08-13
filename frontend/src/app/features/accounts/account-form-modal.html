@@ -57,7 +57,23 @@
           <label class="form-label" for="account-institution">
             {{ t('accounts.form.fields.institution') }}
           </label>
-          <input id="account-institution" type="text" class="form-input" formControlName="institution" />
+          <div class="flex gap-2">
+            <select id="account-institution" class="form-input" formControlName="institutionId">
+              <option value="">{{ t('accounts.noInstitution') }}</option>
+              @for (institution of institutionsResource.value(); track institution.id) {
+                <option [value]="institution.id">{{ institution.name }}</option>
+              }
+            </select>
+            <button
+              appButton
+              variant="secondary"
+              type="button"
+              (click)="openCreateInstitution()"
+              [attr.aria-label]="t('institutions.actions.new')"
+            >
+              <app-icon name="plus" [size]="16" />
+            </button>
+          </div>
         </div>
 
         @if (isCreditCard()) {
@@ -116,4 +132,9 @@
       </form>
     </app-modal>
   }
+
+  <app-institution-form-modal
+    [(open)]="institutionFormOpen"
+    (saved)="onInstitutionCreated($event)"
+  />
 </div>

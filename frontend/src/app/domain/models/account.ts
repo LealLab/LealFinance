@@ -21,7 +21,8 @@ export interface Account {
   type: AccountType;
   currency: string;
   openingBalance: string;
-  institution?: string;
+  /** Grouping reference to an Institution (see domain/models/institution.ts) — absent for e.g. a cash account. */
+  institutionId?: string;
   archived: boolean;
   /** credit_card only: the card's credit line. */
   creditLimit?: string;

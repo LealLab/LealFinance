@@ -13,10 +13,12 @@ import { AccountRepository } from './data/account.repository';
 import { BudgetRepository } from './data/budget.repository';
 import { CategoryRepository } from './data/category.repository';
 import { ExchangeRateRepository } from './data/exchange-rate.repository';
+import { InstitutionRepository } from './data/institution.repository';
 import { MockAccountRepository } from './data/mock/mock-account.repository';
 import { MockBudgetRepository } from './data/mock/mock-budget.repository';
 import { MockCategoryRepository } from './data/mock/mock-category.repository';
 import { MockExchangeRateRepository } from './data/mock/mock-exchange-rate.repository';
+import { MockInstitutionRepository } from './data/mock/mock-institution.repository';
 import { MockRecurringRuleRepository } from './data/mock/mock-recurring-rule.repository';
 import { MockTransactionRepository } from './data/mock/mock-transaction.repository';
 import { RecurringRuleRepository } from './data/recurring-rule.repository';
@@ -41,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     { provide: CategoryRepository, useClass: MockCategoryRepository },
     { provide: BudgetRepository, useClass: MockBudgetRepository },
     { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
-    { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
+    { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
+    { provide: InstitutionRepository, useClass: MockInstitutionRepository }
   ]
 };

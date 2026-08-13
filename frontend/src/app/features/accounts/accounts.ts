@@ -3,9 +3,11 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AccountRepository } from '../../data/account.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { accountBalance } from '../../domain/calc/balances';
 import { Account } from '../../domain/models/account';
+import { Institution } from '../../domain/models/institution';
 import { Money, sum } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
@@ -15,7 +17,9 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { AccountFormModal } from './account-form-modal';
-import { ACCOUNT_TYPE_OPTIONS, AccountTypeOption } from './account-type';
+import { accountTypeOption } from './account-type';
+import { groupAccountsByInstitution } from './institution-grouping';
+import { InstitutionFormModal } from './institution-form-modal';
 
 interface AccountRow {
   account: Account;
@@ -23,7 +27,8 @@ interface AccountRow {
 }
 
 interface AccountGroup {
-  option: AccountTypeOption;
+  /** null is the "Sem instituição" bucket — e.g. a cash account. */
+  institution: Institution | null;
   rows: AccountRow[];
   /** null when the group mixes currencies and a single subtotal isn't meaningful. */
   subtotal: Money | null;
@@ -50,7 +55,8 @@ function trySum(amounts: Money[]): Money | null {
     EmptyState,
     Icon,
     PageHeader,
-    AccountFormModal
+    AccountFormModal,
+    InstitutionFormModal
   ],
   templateUrl: './accounts.html',
   styleUrl: './accounts.scss'
@@ -58,9 +64,11 @@ function trySum(amounts: Money[]): Money | null {
 export class Accounts {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly institutionRepository = inject(InstitutionRepository);
   private readonly router = inject(Router);
 
-  protected readonly accountTypeOptions = ACCOUNT_TYPE_OPTIONS;
+  /** Still used per-row (as a badge) — institution is the primary grouping axis now, type no longer is. */
+  protected readonly accountTypeOption = accountTypeOption;
 
   protected readonly accountsResource = rxResource({
     stream: () => this.accountRepository.list()
@@ -68,28 +76,35 @@ export class Accounts {
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
   });
+  protected readonly institutionsResource = rxResource({
+    stream: () => this.institutionRepository.list()
+  });
 
   protected readonly showArchived = signal(false);
   protected readonly formOpen = signal(false);
   protected readonly editingAccount = signal<Account | undefined>(undefined);
+  protected readonly institutionFormOpen = signal(false);
+  protected readonly editingInstitution = signal<Institution | undefined>(undefined);
 
   protected readonly groups = computed<AccountGroup[]>(() => {
     const accounts = this.accountsResource.value() ?? [];
+    const institutions = this.institutionsResource.value() ?? [];
     const transactions = this.transactionsResource.value() ?? [];
     const showArchived = this.showArchived();
 
-    return this.accountTypeOptions
-      .map((option) => {
-        const rows: AccountRow[] = accounts
-          .filter((account) => account.type === option.type && (showArchived || !account.archived))
-          .map((account) => ({ account, balance: accountBalance(account, transactions) }));
-        return {
-          option,
-          rows,
-          subtotal: trySum(rows.filter((row) => !row.account.archived).map((row) => row.balance))
-        };
-      })
-      .filter((group) => group.rows.length > 0);
+    const visibleAccounts = accounts.filter((account) => showArchived || !account.archived);
+
+    return groupAccountsByInstitution(visibleAccounts, institutions).map((group) => {
+      const rows: AccountRow[] = group.accounts.map((account) => ({
+        account,
+        balance: accountBalance(account, transactions)
+      }));
+      return {
+        institution: group.institution,
+        rows,
+        subtotal: trySum(rows.filter((row) => !row.account.archived).map((row) => row.balance))
+      };
+    });
   });
 
   protected readonly isEmpty = computed(
@@ -116,9 +131,33 @@ export class Accounts {
 
   protected onSaved(): void {
     this.accountsResource.reload();
+    // The account form can create a brand-new institution inline (its own
+    // nested InstitutionFormModal) — reload ours too so a just-created
+    // institution's group shows up immediately instead of the account
+    // landing in "Sem instituição" until the next full reload.
+    this.institutionsResource.reload();
   }
 
   protected openDetail(account: Account): void {
     this.router.navigate(['/accounts', account.id]);
+  }
+
+  protected openCreateInstitution(): void {
+    this.editingInstitution.set(undefined);
+    this.institutionFormOpen.set(true);
+  }
+
+  protected openEditInstitution(institution: Institution, event: Event): void {
+    event.stopPropagation();
+    this.editingInstitution.set(institution);
+    this.institutionFormOpen.set(true);
+  }
+
+  protected onInstitutionSaved(): void {
+    this.institutionsResource.reload();
+  }
+
+  protected onInstitutionDeleted(): void {
+    this.institutionsResource.reload();
   }
 }

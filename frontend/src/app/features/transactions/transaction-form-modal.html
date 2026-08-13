@@ -47,32 +47,69 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="form-label" for="tx-account">
-            {{ isTransfer() ? t('transactions.form.fields.fromAccount') : t('transactions.form.fields.account') }}
-          </label>
-          <select id="tx-account" class="form-input" formControlName="accountId">
-            <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
-            @for (account of accounts(); track account.id) {
-              <option [value]="account.id">{{ account.name }}</option>
-            }
-          </select>
+      @if (isTransfer()) {
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="tx-from-institution">
+              {{ t('transactions.form.fields.fromInstitution') }}
+            </label>
+            <select id="tx-from-institution" class="form-input" formControlName="fromInstitutionId">
+              <option value="">{{ t('transactions.form.fields.anyInstitution') }}</option>
+              @for (institution of institutions(); track institution.id) {
+                <option [value]="institution.id">{{ institution.name }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="tx-account">{{ t('transactions.form.fields.fromAccount') }}</label>
+            <select id="tx-account" class="form-input" formControlName="accountId">
+              <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+              @for (account of fromAccountOptions(); track account.id) {
+                <option [value]="account.id">{{ account.name }}</option>
+              }
+            </select>
+          </div>
         </div>
 
-        @if (isTransfer()) {
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="tx-to-institution">
+              {{ t('transactions.form.fields.toInstitution') }}
+            </label>
+            <select id="tx-to-institution" class="form-input" formControlName="toInstitutionId">
+              <option value="">{{ t('transactions.form.fields.anyInstitution') }}</option>
+              @for (institution of institutions(); track institution.id) {
+                <option [value]="institution.id">{{ institution.name }}</option>
+              }
+            </select>
+          </div>
           <div>
             <label class="form-label" for="tx-to-account">
               {{ t('transactions.form.fields.toAccount') }}
             </label>
             <select id="tx-to-account" class="form-input" formControlName="toAccountId">
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
-              @for (account of accounts(); track account.id) {
+              @for (account of toAccountOptions(); track account.id) {
                 <option [value]="account.id">{{ account.name }}</option>
               }
             </select>
           </div>
-        } @else {
+        </div>
+      } @else {
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="tx-account">{{ t('transactions.form.fields.account') }}</label>
+            <select id="tx-account" class="form-input" formControlName="accountId">
+              <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+              @for (group of accountGroups(); track group.institution?.id ?? '__none__') {
+                <optgroup [label]="group.institution ? group.institution.name : t('accounts.noInstitution')">
+                  @for (account of group.accounts; track account.id) {
+                    <option [value]="account.id">{{ account.name }}</option>
+                  }
+                </optgroup>
+              }
+            </select>
+          </div>
           <div>
             <label class="form-label" for="tx-category">{{ t('transactions.form.fields.category') }}</label>
             <select id="tx-category" class="form-input" formControlName="categoryId">
@@ -84,8 +121,8 @@
               }
             </select>
           </div>
-        }
-      </div>
+        </div>
+      }
 
       <div>
         <label class="form-label" for="tx-description">

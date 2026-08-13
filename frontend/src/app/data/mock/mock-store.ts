@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { Category, CategoryKind } from '../../domain/models/category';
+import { Institution } from '../../domain/models/institution';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { createFixtures } from './fixtures';
@@ -34,12 +35,14 @@ export class MockStore {
   private readonly categoriesSignal = signal<Category[]>([]);
   private readonly budgetsSignal = signal<Budget[]>([]);
   private readonly recurringRulesSignal = signal<RecurringRule[]>([]);
+  private readonly institutionsSignal = signal<Institution[]>([]);
 
   readonly accounts = this.accountsSignal.asReadonly();
   readonly transactions = this.transactionsSignal.asReadonly();
   readonly categories = this.categoriesSignal.asReadonly();
   readonly budgets = this.budgetsSignal.asReadonly();
   readonly recurringRules = this.recurringRulesSignal.asReadonly();
+  readonly institutions = this.institutionsSignal.asReadonly();
 
   constructor() {
     this.reset();
@@ -52,6 +55,7 @@ export class MockStore {
     this.categoriesSignal.set(fixtures.categories);
     this.budgetsSignal.set(fixtures.budgets);
     this.recurringRulesSignal.set(fixtures.recurringRules);
+    this.institutionsSignal.set(fixtures.institutions);
   }
 
   // --- Accounts ---------------------------------------------------------
@@ -66,6 +70,38 @@ export class MockStore {
     if (!findEntity(this.accountsSignal(), id)) notFound('Account', id);
     this.accountsSignal.update((list) => updateEntity(list, id, changes));
     return findEntity(this.accountsSignal(), id)!;
+  }
+
+  // --- Institutions -------------------------------------------------------
+
+  createInstitution(input: Omit<Institution, 'id'>): Institution {
+    const institution: Institution = { ...input, id: newId() };
+    this.institutionsSignal.update((list) => [...list, institution]);
+    return institution;
+  }
+
+  updateInstitution(id: string, changes: Partial<Omit<Institution, 'id'>>): Institution {
+    if (!findEntity(this.institutionsSignal(), id)) notFound('Institution', id);
+    this.institutionsSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.institutionsSignal(), id)!;
+  }
+
+  /**
+   * Refuses to delete an institution that any account still references —
+   * unlike Transactions/Budgets/RecurringRules (freely deletable), this is
+   * an invariant check enforced at the store level (the categories
+   * workstream's usage-guard equivalent lives one layer up instead; either
+   * placement is fine, this just needs to be the one used consistently
+   * here). A thrown Error is this repo's existing convention for a
+   * store-level invariant violation — see `notFound` above.
+   */
+  deleteInstitution(id: string): void {
+    if (!findEntity(this.institutionsSignal(), id)) notFound('Institution', id);
+    const inUse = this.accountsSignal().some((account) => account.institutionId === id);
+    if (inUse) {
+      throw new Error(`Institution "${id}" is still referenced by at least one account`);
+    }
+    this.institutionsSignal.update((list) => removeEntity(list, id));
   }
 
   // --- Transactions -------------------------------------------------------

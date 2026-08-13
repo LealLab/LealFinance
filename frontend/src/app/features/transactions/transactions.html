@@ -44,7 +44,7 @@
 
   @if (tab() === 'transactions') {
     <app-card class="mb-6">
-      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-7">
         <div>
           <label class="form-label" for="filter-type">{{ t('transactions.filters.type') }}</label>
           <select
@@ -116,6 +116,20 @@
             [value]="filters().search"
             (input)="setFilter('search', $any($event.target).value)"
           />
+        </div>
+        <div>
+          <label class="form-label" for="filter-institution">{{ t('transactions.filters.institution') }}</label>
+          <select
+            id="filter-institution"
+            class="form-input"
+            [value]="filters().institutionId"
+            (change)="setFilter('institutionId', $any($event.target).value)"
+          >
+            <option value="">{{ t('transactions.filters.all') }}</option>
+            @for (institution of institutionsResource.value(); track institution.id) {
+              <option [value]="institution.id">{{ institution.name }}</option>
+            }
+          </select>
         </div>
       </div>
       <div class="mt-3 flex justify-end">
@@ -306,6 +320,7 @@
     [transaction]="editingTx()"
     [accounts]="accountsResource.value() ?? []"
     [categories]="categoriesResource.value() ?? []"
+    [institutions]="institutionsResource.value() ?? []"
     (saved)="onTxSaved()"
   />
   <app-recurring-rule-form-modal
@@ -313,6 +328,7 @@
     [rule]="editingRule()"
     [accounts]="accountsResource.value() ?? []"
     [categories]="categoriesResource.value() ?? []"
+    [institutions]="institutionsResource.value() ?? []"
     (saved)="onRuleSaved()"
   />
 </div>

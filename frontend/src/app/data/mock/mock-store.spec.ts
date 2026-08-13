@@ -14,6 +14,7 @@ describe('MockStore', () => {
     expect(store.categories().length).toBeGreaterThan(0);
     expect(store.budgets().length).toBeGreaterThan(0);
     expect(store.recurringRules().length).toBeGreaterThan(0);
+    expect(store.institutions().length).toBeGreaterThan(0);
   });
 
   describe('accounts', () => {
@@ -238,6 +239,74 @@ describe('MockStore', () => {
         1
       );
       expect(store.budgets().find((b) => b.id === first.id)?.amount).toBe('250');
+    });
+  });
+
+  describe('institutions', () => {
+    it('creates and round-trips an institution', () => {
+      const created = store.createInstitution({
+        name: 'Nova Instituição',
+        icon: 'bank',
+        archived: false,
+        position: 99
+      });
+
+      expect(store.institutions()).toContainEqual(created);
+    });
+
+    it('updates an existing institution in place', () => {
+      const created = store.createInstitution({
+        name: 'Nova Instituição',
+        icon: 'bank',
+        archived: false,
+        position: 99
+      });
+
+      const updated = store.updateInstitution(created.id, { name: 'Renomeada' });
+
+      expect(updated.name).toBe('Renomeada');
+      expect(store.institutions().find((i) => i.id === created.id)?.name).toBe('Renomeada');
+    });
+
+    it('throws when updating an institution that does not exist', () => {
+      expect(() => store.updateInstitution('missing-id', { name: 'x' })).toThrow();
+    });
+
+    it('deletes an institution no account references', () => {
+      const created = store.createInstitution({
+        name: 'Instituição Vazia',
+        icon: 'bank',
+        archived: false,
+        position: 99
+      });
+
+      store.deleteInstitution(created.id);
+
+      expect(store.institutions().find((i) => i.id === created.id)).toBeUndefined();
+    });
+
+    it('refuses to delete an institution still referenced by an account', () => {
+      const institution = store.createInstitution({
+        name: 'Instituição em Uso',
+        icon: 'bank',
+        archived: false,
+        position: 99
+      });
+      store.createAccount({
+        name: 'Conta Vinculada',
+        type: 'checking',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false
+      });
+
+      expect(() => store.deleteInstitution(institution.id)).toThrow();
+      expect(store.institutions().find((i) => i.id === institution.id)).toBeDefined();
+    });
+
+    it('throws when deleting an institution that does not exist', () => {
+      expect(() => store.deleteInstitution('missing-id')).toThrow();
     });
   });
 
