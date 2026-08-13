@@ -1,0 +1,6 @@
+// The svg itself carries width/height/viewBox; this only sets the host's
+// own display so a caller's `class="size-7 shrink-0"` behaves predictably
+// inside a flex row, matching icon.scss's convention.
+:host {
+  display: inline-flex;
+}
