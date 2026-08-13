@@ -1,7 +1,9 @@
 import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
+import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
+import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
@@ -13,6 +15,9 @@ export interface Fixtures {
   budgets: Budget[];
   recurringRules: RecurringRule[];
   institutions: Institution[];
+  goals: Goal[];
+  allocations: BudgetAllocation[];
+  expectedIncome: ExpectedIncome[];
 }
 
 const ACCOUNT_IDS = {
@@ -20,12 +25,14 @@ const ACCOUNT_IDS = {
   savings: 'acc-savings',
   cash: 'acc-cash',
   creditCard: 'acc-credit-card',
-  investment: 'acc-investment'
+  investment: 'acc-investment',
+  vacationGoal: 'acc-goal-vacation'
 } as const;
 
 const INSTITUTION_IDS = {
   bancoLeal: 'inst-banco-leal',
-  xpEurope: 'inst-xp-europe'
+  xpEurope: 'inst-xp-europe',
+  goals: 'inst-goals'
 } as const;
 
 const CATEGORY_IDS = {
@@ -100,6 +107,15 @@ function buildAccounts(): Account[] {
       openingBalance: '2000',
       institutionId: INSTITUTION_IDS.xpEurope,
       archived: false
+    },
+    {
+      id: ACCOUNT_IDS.vacationGoal,
+      name: 'Viagem para Portugal',
+      type: 'goal',
+      currency: 'BRL',
+      openingBalance: '0',
+      institutionId: INSTITUTION_IDS.goals,
+      archived: false
     }
   ];
 }
@@ -127,6 +143,14 @@ function buildInstitutions(): Institution[] {
       color: '#6D5DD3',
       archived: false,
       position: 1
+    },
+    {
+      id: INSTITUTION_IDS.goals,
+      name: 'Metas',
+      icon: 'piggy',
+      color: '#D89B3D',
+      archived: false,
+      position: 2
     }
   ];
 }
@@ -433,6 +457,29 @@ function buildTransactionsAndRules(): { transactions: Transaction[]; recurringRu
     });
   }
 
+  const todayDate = formatIsoDate(today);
+  if (todayDate) {
+    transactions.push({
+      id: nextId(),
+      type: 'transfer',
+      date: todayDate,
+      amount: '1250.00',
+      currency: 'BRL',
+      accountId: ACCOUNT_IDS.checking,
+      toAccountId: ACCOUNT_IDS.vacationGoal,
+      description: 'Aporte inicial para viagem'
+    });
+    transactions.push({
+      id: nextId(),
+      type: 'interest',
+      date: todayDate,
+      amount: '36.40',
+      currency: 'BRL',
+      accountId: ACCOUNT_IDS.vacationGoal,
+      description: 'Rendimento da meta'
+    });
+  }
+
   const guaranteedFloor: {
     accountId: string;
     categoryId: string;
@@ -583,6 +630,33 @@ function buildBudgets(currentMonthKey: string): Budget[] {
   ];
 }
 
+function buildGoals(): Goal[] {
+  const today = new Date();
+  return [
+    {
+      id: 'goal-vacation',
+      accountId: ACCOUNT_IDS.vacationGoal,
+      name: 'Viagem para Portugal',
+      targetAmount: '12000.00',
+      currency: 'BRL',
+      targetDate: formatIsoDate(addMonthsClamped(today, 6)),
+      frequency: 'monthly',
+      interval: 1,
+      archived: false
+    }
+  ];
+}
+
+function buildAllocations(): BudgetAllocation[] {
+  return [
+    { id: 'allocation-other', categoryId: CATEGORY_IDS.otherExpense, percentage: '20' }
+  ];
+}
+
+function buildExpectedIncome(currentMonthKey: string): ExpectedIncome[] {
+  return [{ id: `income-${currentMonthKey}`, month: currentMonthKey, amount: '7200.00', currency: 'BRL' }];
+}
+
 export function createFixtures(): Fixtures {
   const today = new Date();
   const currentMonthKey = monthKey(
@@ -596,6 +670,9 @@ export function createFixtures(): Fixtures {
     transactions,
     recurringRules,
     budgets: buildBudgets(currentMonthKey),
-    institutions: buildInstitutions()
+    institutions: buildInstitutions(),
+    goals: buildGoals(),
+    allocations: buildAllocations(),
+    expectedIncome: buildExpectedIncome(currentMonthKey)
   };
 }

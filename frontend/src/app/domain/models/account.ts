@@ -3,7 +3,7 @@
  * treatment throughout (see calc/balances.ts) — its balance displays as an
  * amount owed, not a negative cash balance.
  */
-export type AccountType = 'checking' | 'savings' | 'cash' | 'credit_card' | 'investment';
+export type AccountType = 'checking' | 'savings' | 'cash' | 'credit_card' | 'investment' | 'goal';
 
 /**
  * A holding of money in one currency. Every monetary field on this app's

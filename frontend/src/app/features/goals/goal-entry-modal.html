@@ -1,0 +1,66 @@
+<div *transloco="let t">
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="goal-entry-amount">{{
+              t('goals.entries.fields.amount')
+            }}</label>
+            <input
+              id="goal-entry-amount"
+              type="text"
+              inputmode="decimal"
+              class="form-input font-mono"
+              formControlName="amount"
+            />
+          </div>
+          <div>
+            <label class="form-label" for="goal-entry-date">{{
+              t('goals.entries.fields.date')
+            }}</label>
+            <input id="goal-entry-date" type="date" class="form-input" formControlName="date" />
+          </div>
+        </div>
+
+        @if (!isInterest()) {
+          <div>
+            <label class="form-label" for="goal-entry-source">{{
+              t('goals.entries.fields.sourceAccount')
+            }}</label>
+            <select id="goal-entry-source" class="form-input" formControlName="sourceAccountId">
+              @for (account of sourceAccounts(); track account.id) {
+                <option [value]="account.id">{{ account.name }}</option>
+              }
+            </select>
+          </div>
+        }
+
+        <div>
+          <label class="form-label" for="goal-entry-description">{{
+            t('goals.entries.fields.description')
+          }}</label>
+          <input
+            id="goal-entry-description"
+            type="text"
+            class="form-input"
+            formControlName="description"
+          />
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('goals.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('goals.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

@@ -32,7 +32,8 @@ const ICON_FILES = {
   cornerDownLeft: 'corner-down-left.svg',
   zap: 'zap.svg',
   grip: 'grip.svg',
-  bank: 'bank.svg'
+  bank: 'bank.svg',
+  piggy: 'piggy.svg'
 } as const;
 
 export type IconName = keyof typeof ICON_FILES;

@@ -16,6 +16,7 @@
       "transactions": "Transações",
       "categories": "Categorias",
       "budgets": "Orçamentos",
+      "goals": "Metas",
       "reports": "Relatórios",
       "settings": "Configurações",
       "sections": {
@@ -61,7 +62,7 @@
         "newTransaction": "Nova transação",
         "newAccount": "Nova conta",
         "newCategory": "Nova categoria",
-        "newBudget": "Novo orçamento",
+      "newBudget": "Novo orçamento",
         "configureLanguage": "Configurar idioma",
         "configureCurrency": "Configurar moeda de exibição",
         "toggleTheme": "Alternar tema",
@@ -135,6 +136,7 @@
       "cash": "Dinheiro",
       "credit_card": "Cartão de crédito",
       "investment": "Investimentos"
+      ,"goal": "Meta"
     },
     "form": {
       "newTitle": "Nova conta",
@@ -374,6 +376,24 @@
   "budgets": {
     "title": "Orçamentos",
     "description": "Planeje quanto gastar por categoria a cada mês.",
+    "list": {
+      "title": "Limites do mês"
+    },
+    "planner": {
+      "title": "Orçamento baseado na renda",
+      "description": "Distribua sua renda esperada entre as categorias.",
+      "total": "Total",
+      "expectedIncome": "Renda esperada",
+      "chartLabel": "Distribuição",
+      "fixed": "Fixo",
+      "empty": "Defina percentuais para visualizar sua distribuição.",
+      "save": "Salvar distribuição",
+      "errors": {
+        "total": "A distribuição não pode ultrapassar 100%.",
+        "income": "Informe a renda esperada para este mês.",
+        "save": "Não foi possível salvar a distribuição. Tente novamente."
+      }
+    },
     "monthLabel": "Mês",
     "actions": {
       "new": "Novo orçamento",
@@ -416,6 +436,79 @@
         "cancel": "Cancelar",
         "save": "Salvar"
       }
+    }
+  },
+  "goals": {
+    "title": "Metas",
+    "description": "Guarde dinheiro para qualquer objetivo e acompanhe seu progresso.",
+    "showArchived": "Mostrar metas arquivadas",
+    "accountLabel": "Conta",
+    "archived": "Arquivada",
+    "overdue": "Atrasada",
+    "actions": {
+      "new": "Nova meta",
+      "edit": "Editar meta",
+      "archive": "Arquivar meta",
+      "unarchive": "Reativar meta",
+      "deposit": "Aportar",
+      "withdraw": "Resgatar",
+      "interest": "Adicionar rendimento"
+    },
+    "empty": {
+      "title": "Nenhuma meta cadastrada",
+      "description": "Crie uma meta para começar a guardar dinheiro e acompanhar seu progresso."
+    },
+    "progress": {
+      "current": "Guardado",
+      "target": "Objetivo",
+      "remaining": "Falta",
+      "contribution": "Aporte sugerido",
+      "notConfigured": "Sem prazo",
+      "frequency": "Frequência",
+      "every": "a cada {{n}}",
+      "label": "Progresso"
+    },
+    "frequency": {
+      "weekly": "Semanal",
+      "monthly": "Mensal",
+      "yearly": "Anual"
+    },
+    "history": {
+      "title": "Histórico da meta",
+      "empty": "Nenhuma movimentação registrada."
+    },
+    "form": {
+      "newTitle": "Nova meta",
+      "editTitle": "Editar meta",
+      "saveError": "Não foi possível salvar a meta. Tente novamente.",
+      "fields": {
+        "name": "Nome",
+        "targetAmount": "Valor objetivo",
+        "currency": "Moeda",
+        "targetDate": "Data objetivo",
+        "targetDateHint": "Opcional: adicione um prazo para calcular o aporte sugerido.",
+        "frequency": "Frequência do aporte",
+        "interval": "A cada"
+      },
+      "errors": {
+        "required": "Este campo é obrigatório."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Aportar na meta" },
+      "withdraw": { "title": "Resgatar da meta" },
+      "interest": { "title": "Adicionar rendimento" },
+      "fields": {
+        "amount": "Valor",
+        "date": "Data",
+        "sourceAccount": "Conta de origem/destino",
+        "description": "Descrição"
+      },
+      "saveError": "Não foi possível registrar a movimentação. Tente novamente."
     }
   },
   "reports": {

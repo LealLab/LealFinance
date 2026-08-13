@@ -16,7 +16,9 @@ import { add, isNegative, Money, money, negate, subtract, zero } from '../../sha
 export function accountBalance(account: Account, transactions: readonly Transaction[]): Money {
   const delta = transactions.reduce((total, tx) => {
     if (tx.accountId === account.id) {
-      if (tx.type === 'income') return add(total, money(tx.amount, account.currency));
+      if (tx.type === 'income' || tx.type === 'interest') {
+        return add(total, money(tx.amount, account.currency));
+      }
       // expense and the outgoing leg of a transfer both reduce the
       // balance of the account they're posted against.
       return subtract(total, money(tx.amount, account.currency));

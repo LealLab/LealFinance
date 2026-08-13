@@ -20,14 +20,15 @@ export interface AccountTypeOption {
  * These keys are only ever reached through that property path (never a
  * literal call the extractor can follow), so — again as in sidebar.ts —
  * they need restating here as a literal "dynamic markings" block:
- * t(accounts.type.checking, accounts.type.savings, accounts.type.cash, accounts.type.credit_card, accounts.type.investment)
+ * t(accounts.type.checking, accounts.type.savings, accounts.type.cash, accounts.type.credit_card, accounts.type.investment, accounts.type.goal)
  */
 export const ACCOUNT_TYPE_OPTIONS: readonly AccountTypeOption[] = [
   { type: 'checking', labelKey: 'accounts.type.checking', icon: 'wallet' },
   { type: 'savings', labelKey: 'accounts.type.savings', icon: 'archive' },
   { type: 'cash', labelKey: 'accounts.type.cash', icon: 'wallet' },
   { type: 'credit_card', labelKey: 'accounts.type.credit_card', icon: 'swap' },
-  { type: 'investment', labelKey: 'accounts.type.investment', icon: 'chart' }
+  { type: 'investment', labelKey: 'accounts.type.investment', icon: 'chart' },
+  { type: 'goal', labelKey: 'accounts.type.goal', icon: 'target' }
 ];
 
 const OPTIONS_BY_TYPE = new Map<AccountType, AccountTypeOption>(

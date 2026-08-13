@@ -143,7 +143,7 @@ export class AccountDetail {
   }
 
   protected transactionSign(accountId: string, tx: { accountId: string; type: string }): 'in' | 'out' {
-    if (tx.type === 'income') return 'in';
+    if (tx.type === 'income' || tx.type === 'interest') return 'in';
     if (tx.type === 'expense') return 'out';
     // transfer: incoming if this account is the destination, outgoing if it's the source
     return tx.accountId === accountId ? 'out' : 'in';

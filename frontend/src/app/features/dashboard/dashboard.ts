@@ -214,6 +214,7 @@ export class Dashboard {
   protected readonly recentTransactions = computed(() => {
     const accounts = new Map((this.accountsResource.value() ?? []).map((a: Account) => [a.id, a]));
     return (this.transactionsResource.value() ?? [])
+      .filter((tx) => tx.type !== 'interest')
       .slice()
       .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id))
       .slice(0, RECENT_TRANSACTIONS_LIMIT)

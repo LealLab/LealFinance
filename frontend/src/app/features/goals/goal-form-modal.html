@@ -1,0 +1,92 @@
+<div *transloco="let t">
+  <!-- t(goals.frequency.weekly, goals.frequency.monthly, goals.frequency.yearly) -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div>
+          <label class="form-label" for="goal-name">{{ t('goals.form.fields.name') }}</label>
+          <input id="goal-name" type="text" class="form-input" formControlName="name" />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p class="form-error">{{ t('goals.form.errors.required') }}</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="goal-target">{{
+              t('goals.form.fields.targetAmount')
+            }}</label>
+            <input
+              id="goal-target"
+              type="text"
+              inputmode="decimal"
+              class="form-input font-mono"
+              formControlName="targetAmount"
+            />
+          </div>
+          <div>
+            <label class="form-label" for="goal-currency">{{
+              t('goals.form.fields.currency')
+            }}</label>
+            <select
+              id="goal-currency"
+              class="form-input"
+              formControlName="currency"
+              [attr.disabled]="isEditing() ? '' : null"
+            >
+              @for (currency of currencyOptions; track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label" for="goal-date">{{ t('goals.form.fields.targetDate') }}</label>
+          <input id="goal-date" type="date" class="form-input" formControlName="targetDate" />
+          <p class="mt-1 text-xs text-content-muted">{{ t('goals.form.fields.targetDateHint') }}</p>
+        </div>
+
+        @if (form.controls.targetDate.value) {
+          <div class="grid grid-cols-2 gap-4 rounded-md border border-border bg-surface-sunken p-3">
+            <div>
+              <label class="form-label" for="goal-frequency">{{
+                t('goals.form.fields.frequency')
+              }}</label>
+              <select id="goal-frequency" class="form-input" formControlName="frequency">
+                @for (frequency of frequencies; track frequency) {
+                  <option [value]="frequency">{{ t('goals.frequency.' + frequency) }}</option>
+                }
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="goal-interval">{{
+                t('goals.form.fields.interval')
+              }}</label>
+              <input
+                id="goal-interval"
+                type="number"
+                min="1"
+                class="form-input"
+                formControlName="interval"
+              />
+            </div>
+          </div>
+        }
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('goals.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('goals.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

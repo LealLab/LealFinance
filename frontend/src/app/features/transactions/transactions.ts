@@ -87,6 +87,7 @@ export class Transactions {
     const filters = this.filters();
     const accountsById = this.accountsById();
     const rows = (this.transactionsResource.value() ?? [])
+      .filter((tx) => tx.type !== 'interest')
       .filter((tx) => matchesFilters(tx, filters, accountsById))
       .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
 

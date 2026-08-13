@@ -1,7 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
+import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category, CategoryKind } from '../../domain/models/category';
+import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
@@ -34,6 +36,9 @@ export class MockStore {
   private readonly transactionsSignal = signal<Transaction[]>([]);
   private readonly categoriesSignal = signal<Category[]>([]);
   private readonly budgetsSignal = signal<Budget[]>([]);
+  private readonly goalsSignal = signal<Goal[]>([]);
+  private readonly allocationsSignal = signal<BudgetAllocation[]>([]);
+  private readonly expectedIncomeSignal = signal<ExpectedIncome[]>([]);
   private readonly recurringRulesSignal = signal<RecurringRule[]>([]);
   private readonly institutionsSignal = signal<Institution[]>([]);
 
@@ -41,6 +46,9 @@ export class MockStore {
   readonly transactions = this.transactionsSignal.asReadonly();
   readonly categories = this.categoriesSignal.asReadonly();
   readonly budgets = this.budgetsSignal.asReadonly();
+  readonly goals = this.goalsSignal.asReadonly();
+  readonly allocations = this.allocationsSignal.asReadonly();
+  readonly expectedIncome = this.expectedIncomeSignal.asReadonly();
   readonly recurringRules = this.recurringRulesSignal.asReadonly();
   readonly institutions = this.institutionsSignal.asReadonly();
 
@@ -54,6 +62,9 @@ export class MockStore {
     this.transactionsSignal.set(fixtures.transactions);
     this.categoriesSignal.set(fixtures.categories);
     this.budgetsSignal.set(fixtures.budgets);
+    this.goalsSignal.set(fixtures.goals);
+    this.allocationsSignal.set(fixtures.allocations);
+    this.expectedIncomeSignal.set(fixtures.expectedIncome);
     this.recurringRulesSignal.set(fixtures.recurringRules);
     this.institutionsSignal.set(fixtures.institutions);
   }
@@ -181,6 +192,49 @@ export class MockStore {
   deleteBudget(id: string): void {
     if (!findEntity(this.budgetsSignal(), id)) notFound('Budget', id);
     this.budgetsSignal.update((list) => removeEntity(list, id));
+  }
+
+  // --- Goals --------------------------------------------------------------
+
+  createGoal(input: Omit<Goal, 'id'>): Goal {
+    const goal: Goal = { ...input, id: newId() };
+    this.goalsSignal.update((list) => [...list, goal]);
+    return goal;
+  }
+
+  updateGoal(id: string, changes: Partial<Omit<Goal, 'id'>>): Goal {
+    if (!findEntity(this.goalsSignal(), id)) notFound('Goal', id);
+    this.goalsSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.goalsSignal(), id)!;
+  }
+
+  // --- Percentage budget planner -----------------------------------------
+
+  upsertAllocation(input: Omit<BudgetAllocation, 'id'>): BudgetAllocation {
+    const existing = this.allocationsSignal().find((allocation) => allocation.categoryId === input.categoryId);
+    if (existing) {
+      this.allocationsSignal.update((list) => updateEntity(list, existing.id, input));
+      return findEntity(this.allocationsSignal(), existing.id)!;
+    }
+    const allocation: BudgetAllocation = { ...input, id: newId() };
+    this.allocationsSignal.update((list) => [...list, allocation]);
+    return allocation;
+  }
+
+  deleteAllocation(id: string): void {
+    if (!findEntity(this.allocationsSignal(), id)) notFound('Budget allocation', id);
+    this.allocationsSignal.update((list) => removeEntity(list, id));
+  }
+
+  upsertExpectedIncome(input: Omit<ExpectedIncome, 'id'>): ExpectedIncome {
+    const existing = this.expectedIncomeSignal().find((income) => income.month === input.month);
+    if (existing) {
+      this.expectedIncomeSignal.update((list) => updateEntity(list, existing.id, input));
+      return findEntity(this.expectedIncomeSignal(), existing.id)!;
+    }
+    const income: ExpectedIncome = { ...input, id: newId() };
+    this.expectedIncomeSignal.update((list) => [...list, income]);
+    return income;
   }
 
   // --- Recurring rules --------------------------------------------------

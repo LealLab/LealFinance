@@ -1,4 +1,4 @@
-export type TransactionType = 'income' | 'expense' | 'transfer';
+export type TransactionType = 'income' | 'expense' | 'transfer' | 'interest';
 
 /**
  * A single ledger entry. `amount` is always positive — `type` carries the
@@ -8,9 +8,9 @@ export type TransactionType = 'income' | 'expense' | 'transfer';
  * Transfers move money between two of the user's own accounts and are
  * *not* income or expense — every aggregation in domain/calc/ must
  * exclude them, or totals double-count money that never left the
- * household. `toAccountId` is set only for transfers; `categoryId` is
- * absent for them (a transfer isn't spending, so it doesn't have a
- * spending category).
+ * household. Interest is a positive account entry used by savings goals;
+ * it also never counts as household income. `toAccountId` is set only for
+ * transfers; `categoryId` is absent for transfers and interest entries.
  *
  * `recurringRuleId` is set when this occurrence was generated from a
  * RecurringRule — see domain/calc/recurrence.ts. A *projected* future
