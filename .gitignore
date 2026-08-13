@@ -37,3 +37,6 @@ Thumbs.db
 
 # --- Logs ---
 *.log
+
+# --- Agents stuff ---
+.claude/worktrees
