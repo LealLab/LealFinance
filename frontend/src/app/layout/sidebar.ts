@@ -3,10 +3,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Icon, IconName } from '../shared/ui/icon/icon';
 
-interface NavItem {
+export interface NavItem {
   path: string;
   labelKey: string;
   icon: IconName;
+}
+
+export interface NavSection {
+  labelKey: string;
+  items: NavItem[];
 }
 
 /**
@@ -16,17 +21,35 @@ interface NavItem {
  * below as orphaned. A JSDoc block is the tool's own escape hatch for
  * exactly this (its TS extractor calls it "dynamic markings"): a bare,
  * unquoted, comma-separated marker call naming every key actually in use.
+ * command-palette.ts's "Go to" group reuses these same NavItem entries
+ * (and their labelKey values) for its own dynamic label lookup (worded
+ * that way, not as a literal call, so this sentence itself doesn't
+ * register as a false usage site — see docs/i18n.md's "one gotcha"),
+ * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.reports, layout.nav.settings)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.reports, layout.nav.settings, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup)
  */
-const NAV_ITEMS: NavItem[] = [
-  { path: '/', labelKey: 'layout.nav.dashboard', icon: 'home' },
-  { path: '/accounts', labelKey: 'layout.nav.accounts', icon: 'wallet' },
-  { path: '/transactions', labelKey: 'layout.nav.transactions', icon: 'swap' },
-  { path: '/categories', labelKey: 'layout.nav.categories', icon: 'tag' },
-  { path: '/budgets', labelKey: 'layout.nav.budgets', icon: 'target' },
-  { path: '/reports', labelKey: 'layout.nav.reports', icon: 'chart' },
-  { path: '/settings', labelKey: 'layout.nav.settings', icon: 'settings' }
+export const NAV_SECTIONS: NavSection[] = [
+  {
+    labelKey: 'layout.nav.sections.accounts',
+    items: [
+      { path: '/', labelKey: 'layout.nav.dashboard', icon: 'home' },
+      { path: '/transactions', labelKey: 'layout.nav.transactions', icon: 'swap' },
+      { path: '/accounts', labelKey: 'layout.nav.accounts', icon: 'wallet' }
+    ]
+  },
+  {
+    labelKey: 'layout.nav.sections.analysis',
+    items: [{ path: '/reports', labelKey: 'layout.nav.reports', icon: 'chart' }]
+  },
+  {
+    labelKey: 'layout.nav.sections.setup',
+    items: [
+      { path: '/budgets', labelKey: 'layout.nav.budgets', icon: 'target' },
+      { path: '/categories', labelKey: 'layout.nav.categories', icon: 'tag' },
+      { path: '/settings', labelKey: 'layout.nav.settings', icon: 'settings' }
+    ]
+  }
 ];
 
 /**
@@ -52,8 +75,11 @@ export class Sidebar {
   readonly variant = input<'rail' | 'drawer'>('rail');
   readonly navigated = output<void>();
 
-  protected readonly navItems = NAV_ITEMS;
+  protected readonly navSections = NAV_SECTIONS;
   protected readonly labelClass = computed(() =>
     this.variant() === 'rail' ? 'md:hidden lg:inline' : ''
+  );
+  protected readonly sectionLabelClass = computed(() =>
+    this.variant() === 'rail' ? 'md:hidden lg:block' : 'block'
   );
 }

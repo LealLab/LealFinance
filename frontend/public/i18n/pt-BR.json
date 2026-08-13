@@ -17,7 +17,12 @@
       "categories": "Categorias",
       "budgets": "Orçamentos",
       "reports": "Relatórios",
-      "settings": "Configurações"
+      "settings": "Configurações",
+      "sections": {
+        "accounts": "Contas",
+        "analysis": "Análise",
+        "setup": "Configuração"
+      }
     },
     "sidebar": {
       "openMenu": "Abrir menu"

@@ -1,14 +1,23 @@
-<nav *transloco="let t" class="flex flex-col gap-0.5 p-2">
-  @for (item of navItems; track item.path) {
-    <a
-      [routerLink]="item.path"
-      routerLinkActive="bg-surface-sunken text-content-primary"
-      [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-      (click)="navigated.emit()"
-      class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-content-muted hover:bg-surface-sunken hover:text-content-primary"
-    >
-      <app-icon [name]="item.icon" [size]="18" />
-      <span [class]="labelClass()">{{ t(item.labelKey) }}</span>
-    </a>
+<nav *transloco="let t" class="flex flex-col gap-3 p-2">
+  @for (section of navSections; track section.labelKey) {
+    <div class="flex flex-col gap-0.5">
+      <span
+        [class]="'px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-content-subtle ' + sectionLabelClass()"
+      >
+        {{ t(section.labelKey) }}
+      </span>
+      @for (item of section.items; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="border-accent bg-surface-sunken text-content-primary"
+          [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+          (click)="navigated.emit()"
+          class="flex items-center gap-3 rounded-md border-l-2 border-transparent px-3 py-2 text-sm font-medium text-content-muted hover:bg-surface-sunken hover:text-content-primary"
+        >
+          <app-icon [name]="item.icon" [size]="18" />
+          <span [class]="labelClass()">{{ t(item.labelKey) }}</span>
+        </a>
+      }
+    </div>
   }
 </nav>
