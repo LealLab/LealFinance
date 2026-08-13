@@ -57,7 +57,7 @@ interface PaletteGroup {
  * settings.mockData.reset.* keys are likewise reused as-is for the reset
  * quick action's confirmation).
  *
- * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, layout.commandPalette.actions.resetMockData)
+ * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, layout.commandPalette.actions.resetMockData)
  */
 @Component({
   selector: 'app-command-palette',
@@ -275,6 +275,18 @@ export class CommandPalette {
         run: () => this.navigateToCreate('/budgets')
       },
       {
+        id: 'quick-configure-language',
+        labelKey: 'layout.commandPalette.actions.configureLanguage',
+        icon: 'globe',
+        run: () => this.navigateToSetting('settings-language')
+      },
+      {
+        id: 'quick-configure-currency',
+        labelKey: 'layout.commandPalette.actions.configureCurrency',
+        icon: 'wallet',
+        run: () => this.navigateToSetting('settings-display-currency')
+      },
+      {
         id: 'quick-toggle-theme',
         labelKey: 'layout.commandPalette.actions.toggleTheme',
         icon: 'sun',
@@ -305,6 +317,10 @@ export class CommandPalette {
   // together to finish.
   private navigateToCreate(path: string): void {
     this.router.navigate([path], { queryParams: { new: 1 } });
+  }
+
+  private navigateToSetting(fragment: string): void {
+    this.router.navigate(['/settings'], { fragment });
   }
 
   private async resetMockData(): Promise<void> {

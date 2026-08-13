@@ -62,6 +62,8 @@
         "newAccount": "Nova conta",
         "newCategory": "Nova categoria",
         "newBudget": "Novo orçamento",
+        "configureLanguage": "Configurar idioma",
+        "configureCurrency": "Configurar moeda de exibição",
         "toggleTheme": "Alternar tema",
         "toggleBalances": "Ocultar ou mostrar saldos",
         "resetMockData": "Redefinir dados de exemplo"
@@ -118,6 +120,10 @@
       "edit": "Editar",
       "archive": "Arquivar",
       "unarchive": "Reativar"
+    },
+    "archive": {
+      "title": "Arquivar conta?",
+      "message": "A conta \"{{name}}\" deixará de aparecer nas visualizações principais. Deseja continuar?"
     },
     "empty": {
       "title": "Nenhuma conta cadastrada",

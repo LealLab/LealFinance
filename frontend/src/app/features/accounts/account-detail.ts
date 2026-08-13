@@ -2,6 +2,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -21,6 +22,10 @@ import { accountTypeOption } from './account-type';
 /**
  * `id` binds directly from the `:id` route param — see
  * withComponentInputBinding() in app.config.ts.
+ *
+ * The confirmation keys below are passed dynamically through ConfirmService,
+ * so the i18n extractor needs explicit markers:
+ * t(accounts.archive.title, accounts.archive.message)
  */
 @Component({
   selector: 'app-account-detail',
@@ -44,6 +49,7 @@ export class AccountDetail {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly confirmService = inject(ConfirmService);
   private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
 
@@ -107,9 +113,19 @@ export class AccountDetail {
     this.formOpen.set(true);
   }
 
-  protected toggleArchived(): void {
+  protected async toggleArchived(): Promise<void> {
     const account = this.account();
     if (!account) return;
+    if (!account.archived) {
+      const confirmed = await this.confirmService.confirm(
+        'accounts.archive.title',
+        'accounts.archive.message',
+        'default',
+        { name: account.name }
+      );
+      if (!confirmed) return;
+    }
+
     this.accountRepository.setArchived(account.id, !account.archived).subscribe(() => {
       this.accountsResource.reload();
     });

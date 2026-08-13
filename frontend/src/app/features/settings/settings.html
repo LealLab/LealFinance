@@ -40,6 +40,7 @@
       <div>
         <label class="form-label" for="settings-language">{{ t('settings.appearance.language') }}</label>
         <select
+          #languageSelect
           id="settings-language"
           class="form-input max-w-xs"
           [value]="activeLang()"
@@ -56,12 +57,18 @@
       <h2 class="mb-4 text-sm font-semibold text-content-primary">{{ t('settings.currency.title') }}</h2>
       <p class="mb-3 text-sm text-content-muted">{{ t('settings.currency.description') }}</p>
       <select
+        #displayCurrencySelect
+        id="settings-display-currency"
         class="form-input max-w-xs"
-        [value]="displayCurrencyService.currency()"
         (change)="setDisplayCurrency($any($event.target).value)"
       >
         @for (currency of currencyOptions; track currency) {
-          <option [value]="currency">{{ currency }}</option>
+          <option
+            [value]="currency"
+            [selected]="currency === displayCurrencyService.currency()"
+          >
+            {{ currency }}
+          </option>
         }
       </select>
     </app-card>

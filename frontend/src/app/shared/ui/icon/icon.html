@@ -1,21 +1,7 @@
-<svg
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="1.75"
-  stroke-linecap="round"
-  stroke-linejoin="round"
+<span
+  class="icon"
   aria-hidden="true"
-  [attr.width]="size()"
-  [attr.height]="size()"
->
-  @for (d of shape.paths ?? []; track d) {
-    <path [attr.d]="d" />
-  }
-  @for (c of shape.circles ?? []; track c.cx + '-' + c.cy + '-' + c.r) {
-    <circle [attr.cx]="c.cx" [attr.cy]="c.cy" [attr.r]="c.r" />
-  }
-  @for (l of shape.lines ?? []; track l.x1 + '-' + l.y1 + '-' + l.x2) {
-    <line [attr.x1]="l.x1" [attr.y1]="l.y1" [attr.x2]="l.x2" [attr.y2]="l.y2" />
-  }
-</svg>
+  [style.width.px]="size()"
+  [style.height.px]="size()"
+  [style.--icon-url]="iconUrl()"
+></span>

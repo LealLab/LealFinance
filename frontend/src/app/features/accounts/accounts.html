@@ -88,6 +88,7 @@
                     variant="ghost"
                     size="sm"
                     type="button"
+                    class="hover:!bg-surface-raised"
                     (click)="openEdit(row.account, $event)"
                     [attr.aria-label]="t('accounts.actions.edit')"
                   >
@@ -98,6 +99,7 @@
                     variant="ghost"
                     size="sm"
                     type="button"
+                    class="hover:!bg-surface-raised"
                     (click)="toggleArchived(row.account, $event)"
                     [attr.aria-label]="
                       row.account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive')

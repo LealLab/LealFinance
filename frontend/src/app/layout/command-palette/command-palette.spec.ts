@@ -1,6 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { ThemeService } from '../../core/theme.service';
 import { CommandPaletteService } from '../../core/command-palette.service';
@@ -92,6 +92,30 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     expect((fixture.nativeElement.textContent as string)).toContain('Nenhum resultado encontrado');
+  });
+
+  it.each([
+    ['idioma', 'Configurar idioma', 'settings-language'],
+    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency']
+  ])('finds the %s setting and navigates to its control', (query, label, fragment) => {
+    const fixture = TestBed.createComponent(CommandPalette);
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    TestBed.inject(CommandPaletteService).show();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = query;
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
+      (button as HTMLButtonElement).textContent?.includes(label)
+    ) as HTMLButtonElement;
+    expect(result).toBeTruthy();
+
+    result.click();
+    expect(navigate).toHaveBeenCalledWith(['/settings'], { fragment });
   });
 
   it('ArrowDown/Enter runs the highlighted item and closes the palette', () => {

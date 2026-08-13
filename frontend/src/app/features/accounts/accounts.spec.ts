@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
@@ -89,5 +90,27 @@ describe('Accounts', () => {
     expect(text).toContain('Banco Leal');
     expect(text).toContain('Corretora XP Europe');
     expect(text).toContain('Sem instituição');
+  });
+
+  it('gives account actions a visible row-hover contrast and confirms before archiving', async () => {
+    const fixture = TestBed.createComponent(Accounts);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const archiveButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Arquivar"]'
+    ) as HTMLButtonElement;
+    expect(archiveButton.classList).toContain('hover:!bg-surface-raised');
+
+    archiveButton.click();
+    fixture.detectChanges();
+
+    const request = TestBed.inject(ConfirmService).request();
+    expect(request?.titleKey).toBe('accounts.archive.title');
+    expect(request?.messageKey).toBe('accounts.archive.message');
+    expect(request?.params?.['name']).toBeTruthy();
+
+    TestBed.inject(ConfirmService).respond(false);
   });
 });
