@@ -4,6 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { addDays, formatIsoDate } from '../../domain/calc/dates';
@@ -59,6 +60,7 @@ export class Transactions {
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly recurringRuleRepository = inject(RecurringRuleRepository);
+  private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
@@ -69,6 +71,7 @@ export class Transactions {
   protected readonly recurringRulesResource = rxResource({
     stream: () => this.recurringRuleRepository.list()
   });
+  protected readonly institutionsResource = rxResource({ stream: () => this.institutionRepository.list() });
 
   protected readonly tab = signal<'transactions' | 'recurring'>('transactions');
   protected readonly filters = signal<TransactionFilters>(EMPTY_FILTERS);
@@ -82,8 +85,9 @@ export class Transactions {
 
   protected readonly filteredGroups = computed<DateGroup[]>(() => {
     const filters = this.filters();
+    const accountsById = this.accountsById();
     const rows = (this.transactionsResource.value() ?? [])
-      .filter((tx) => matchesFilters(tx, filters))
+      .filter((tx) => matchesFilters(tx, filters, accountsById))
       .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
 
     const groups: DateGroup[] = [];
@@ -101,12 +105,13 @@ export class Transactions {
   protected readonly projectedRows = computed<ProjectedTransaction[]>(() => {
     const rules = this.recurringRulesResource.value() ?? [];
     const filters = this.filters();
+    const accountsById = this.accountsById();
     const from = formatIsoDate(new Date());
     const to = formatIsoDate(addDays(new Date(), PROJECTION_HORIZON_DAYS));
 
     return rules
       .flatMap((rule) => projectOccurrences(rule, from, to))
-      .filter((occurrence) => matchesFilters(occurrence, filters))
+      .filter((occurrence) => matchesFilters(occurrence, filters, accountsById))
       .sort((a, b) => a.date.localeCompare(b.date));
   });
 
