@@ -2,3 +2,11 @@
   display: inline-flex;
   flex: none;
 }
+
+.icon {
+  display: block;
+  flex: none;
+  background-color: currentColor;
+  mask: var(--icon-url) center / contain no-repeat;
+  -webkit-mask: var(--icon-url) center / contain no-repeat;
+}

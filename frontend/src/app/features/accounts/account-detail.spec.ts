@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
@@ -60,5 +61,30 @@ describe('AccountDetail', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain(account.name);
+  });
+
+  it('asks for confirmation before archiving from the detail page', async () => {
+    const repository = TestBed.inject(AccountRepository);
+    const account = await new Promise<Account>((resolve) => {
+      repository.list().subscribe((accounts) => resolve(accounts.find((item) => !item.archived)!));
+    });
+
+    const fixture = TestBed.createComponent(AccountDetail);
+    fixture.componentRef.setInput('id', account.id);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const archiveButton = Array.from(
+      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>
+    ).find((button) => button.textContent?.includes('Arquivar'))!;
+    archiveButton.click();
+    fixture.detectChanges();
+
+    const request = TestBed.inject(ConfirmService).request();
+    expect(request?.titleKey).toBe('accounts.archive.title');
+    expect(request?.params).toEqual({ name: account.name });
+
+    TestBed.inject(ConfirmService).respond(false);
   });
 });

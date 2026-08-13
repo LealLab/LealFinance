@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -65,6 +66,7 @@ export class Accounts {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly confirmService = inject(ConfirmService);
   private readonly router = inject(Router);
 
   /** Still used per-row (as a badge) — institution is the primary grouping axis now, type no longer is. */
@@ -122,8 +124,18 @@ export class Accounts {
     this.formOpen.set(true);
   }
 
-  protected toggleArchived(account: Account, event: Event): void {
+  protected async toggleArchived(account: Account, event: Event): Promise<void> {
     event.stopPropagation();
+    if (!account.archived) {
+      const confirmed = await this.confirmService.confirm(
+        'accounts.archive.title',
+        'accounts.archive.message',
+        'default',
+        { name: account.name }
+      );
+      if (!confirmed) return;
+    }
+
     this.accountRepository.setArchived(account.id, !account.archived).subscribe(() => {
       this.accountsResource.reload();
     });
