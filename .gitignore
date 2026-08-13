@@ -22,6 +22,8 @@ frontend/dist/
 frontend/.angular/
 frontend/coverage/
 node_modules/
+/.angular/
+/.playwright-mcp/
 
 # --- Docker ---
 docker/postgres/data/
