@@ -2,6 +2,7 @@ import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dat
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { Category } from '../../domain/models/category';
+import { Institution } from '../../domain/models/institution';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 
@@ -11,6 +12,7 @@ export interface Fixtures {
   transactions: Transaction[];
   budgets: Budget[];
   recurringRules: RecurringRule[];
+  institutions: Institution[];
 }
 
 const ACCOUNT_IDS = {
@@ -19,6 +21,11 @@ const ACCOUNT_IDS = {
   cash: 'acc-cash',
   creditCard: 'acc-credit-card',
   investment: 'acc-investment'
+} as const;
+
+const INSTITUTION_IDS = {
+  bancoLeal: 'inst-banco-leal',
+  xpEurope: 'inst-xp-europe'
 } as const;
 
 const CATEGORY_IDS = {
@@ -49,7 +56,7 @@ function buildAccounts(): Account[] {
       type: 'checking',
       currency: 'BRL',
       openingBalance: '5000',
-      institution: 'Banco Leal',
+      institutionId: INSTITUTION_IDS.bancoLeal,
       archived: false
     },
     {
@@ -58,7 +65,7 @@ function buildAccounts(): Account[] {
       type: 'savings',
       currency: 'BRL',
       openingBalance: '15000',
-      institution: 'Banco Leal',
+      institutionId: INSTITUTION_IDS.bancoLeal,
       archived: false
     },
     {
@@ -75,7 +82,7 @@ function buildAccounts(): Account[] {
       type: 'credit_card',
       currency: 'BRL',
       openingBalance: '0',
-      institution: 'Banco Leal',
+      institutionId: INSTITUTION_IDS.bancoLeal,
       archived: false,
       creditLimit: '8000',
       closingDay: 20,
@@ -91,8 +98,35 @@ function buildAccounts(): Account[] {
       type: 'investment',
       currency: 'EUR',
       openingBalance: '2000',
-      institution: 'Corretora XP Europe',
+      institutionId: INSTITUTION_IDS.xpEurope,
       archived: false
+    }
+  ];
+}
+
+/**
+ * Two institutions, matching buildAccounts' shape: Banco Leal groups 3 BRL
+ * accounts (checking/savings/credit card), XP Europe groups the single EUR
+ * investment account, and the cash account is left without an institution
+ * on purpose — that's the "Sem instituição" bucket on the Accounts screen.
+ */
+function buildInstitutions(): Institution[] {
+  return [
+    {
+      id: INSTITUTION_IDS.bancoLeal,
+      name: 'Banco Leal',
+      icon: 'bank',
+      color: '#1F5C6B',
+      archived: false,
+      position: 0
+    },
+    {
+      id: INSTITUTION_IDS.xpEurope,
+      name: 'Corretora XP Europe',
+      icon: 'bank',
+      color: '#6D5DD3',
+      archived: false,
+      position: 1
     }
   ];
 }
@@ -488,6 +522,7 @@ export function createFixtures(): Fixtures {
     categories: buildCategories(),
     transactions,
     recurringRules,
-    budgets: buildBudgets(currentMonthKey)
+    budgets: buildBudgets(currentMonthKey),
+    institutions: buildInstitutions()
   };
 }
