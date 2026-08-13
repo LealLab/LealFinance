@@ -5,7 +5,15 @@ import { Transaction } from '../models/transaction';
 import { budgetProgress, unbudgetedSpend } from './budgets';
 
 const categories: Category[] = [
-  { id: 'transport', name: 'Transporte', kind: 'expense', color: '#000', icon: 'tag', archived: false },
+  {
+    id: 'transport',
+    name: 'Transporte',
+    kind: 'expense',
+    color: '#000',
+    icon: 'tag',
+    archived: false,
+    position: 0
+  },
   {
     id: 'uber',
     name: 'Uber',
@@ -13,9 +21,18 @@ const categories: Category[] = [
     parentId: 'transport',
     color: '#000',
     icon: 'tag',
-    archived: false
+    archived: false,
+    position: 0
   },
-  { id: 'food', name: 'Alimentação', kind: 'expense', color: '#000', icon: 'tag', archived: false }
+  {
+    id: 'food',
+    name: 'Alimentação',
+    kind: 'expense',
+    color: '#000',
+    icon: 'tag',
+    archived: false,
+    position: 1
+  }
 ];
 
 function tx(overrides: Partial<Transaction>): Transaction {

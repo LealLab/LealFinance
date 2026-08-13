@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoryRepository } from '../category.repository';
-import { Category } from '../../domain/models/category';
+import { Category, CategoryKind } from '../../domain/models/category';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 import { MockStore } from './mock-store';
@@ -15,7 +15,7 @@ export class MockCategoryRepository extends CategoryRepository {
     return mockResult(() => this.store.categories(), this.latencyMs);
   }
 
-  create(input: Omit<Category, 'id'>): Observable<Category> {
+  create(input: Omit<Category, 'id' | 'position'>): Observable<Category> {
     return mockResult(() => this.store.createCategory(input), this.latencyMs);
   }
 
@@ -25,5 +25,13 @@ export class MockCategoryRepository extends CategoryRepository {
 
   setArchived(id: string, archived: boolean): Observable<Category> {
     return mockResult(() => this.store.updateCategory(id, { archived }), this.latencyMs);
+  }
+
+  delete(id: string): Observable<void> {
+    return mockResult(() => this.store.deleteCategory(id), this.latencyMs);
+  }
+
+  reorder(kind: CategoryKind, parentId: string | undefined, orderedIds: string[]): Observable<void> {
+    return mockResult(() => this.store.reorderCategories(kind, parentId, orderedIds), this.latencyMs);
   }
 }

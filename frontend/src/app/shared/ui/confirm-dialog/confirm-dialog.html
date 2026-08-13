@@ -1,7 +1,7 @@
 @if (confirmService.request(); as request) {
   <div *transloco="let t">
     <app-modal [open]="open()" (openChange)="onOpenChange($event)" [titleText]="t(request.titleKey)">
-      <p class="text-sm text-content-primary">{{ t(request.messageKey) }}</p>
+      <p class="text-sm text-content-primary">{{ t(request.messageKey, request.params) }}</p>
       <div class="mt-4 flex justify-end gap-2">
         <button appButton variant="secondary" type="button" (click)="respond(false)">
           {{ t('common.actions.cancel') }}

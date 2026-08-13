@@ -99,6 +99,112 @@ describe('MockStore', () => {
       expect(store.categories().find((c) => c.id === category.id)).toBeDefined();
       expect(store.transactions().find((t) => t.id === transaction.id)?.categoryId).toBe(category.id);
     });
+
+    it('assigns position 0 to the first category in a new kind/parentId group, and increments after that', () => {
+      // The fixtures already seed several top-level categories for both
+      // kinds, so use a fresh parentId (a brand-new group with no
+      // pre-existing siblings) to observe position starting at 0.
+      const parent = store.createCategory({
+        name: 'Grupo Novo',
+        kind: 'expense',
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+      const first = store.createCategory({
+        name: 'Primeira',
+        kind: 'expense',
+        parentId: parent.id,
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+      const second = store.createCategory({
+        name: 'Segunda',
+        kind: 'expense',
+        parentId: parent.id,
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+
+      expect(first.position).toBe(0);
+      expect(second.position).toBe(first.position + 1);
+    });
+
+    it('scopes position assignment to the same kind/parentId group, not the whole list', () => {
+      const parent = store.createCategory({
+        name: 'Pai',
+        kind: 'expense',
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+      const child = store.createCategory({
+        name: 'Filho',
+        kind: 'expense',
+        parentId: parent.id,
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+
+      // The child starts its own sibling group at position 0 even though
+      // many top-level categories with higher positions already exist.
+      expect(child.position).toBe(0);
+    });
+
+    it('deletes an unreferenced category', () => {
+      const category = store.createCategory({
+        name: 'Descartável',
+        kind: 'expense',
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+
+      store.deleteCategory(category.id);
+
+      expect(store.categories().find((c) => c.id === category.id)).toBeUndefined();
+    });
+
+    it('throws when deleting a category that does not exist', () => {
+      expect(() => store.deleteCategory('missing-id')).toThrow();
+    });
+
+    it('reorders only the categories passed, leaving other categories untouched', () => {
+      const a = store.createCategory({ name: 'A', kind: 'expense', color: '#000', icon: 'tag', archived: false });
+      const b = store.createCategory({ name: 'B', kind: 'expense', color: '#000', icon: 'tag', archived: false });
+      const c = store.createCategory({ name: 'C', kind: 'expense', color: '#000', icon: 'tag', archived: false });
+      const untouchedPosition = store.categories().find((cat) => cat.name === 'Moradia')?.position;
+
+      store.reorderCategories('expense', undefined, [c.id, a.id, b.id]);
+
+      const byId = new Map(store.categories().map((cat) => [cat.id, cat]));
+      expect(byId.get(c.id)?.position).toBe(0);
+      expect(byId.get(a.id)?.position).toBe(1);
+      expect(byId.get(b.id)?.position).toBe(2);
+      expect(store.categories().find((cat) => cat.name === 'Moradia')?.position).toBe(untouchedPosition);
+    });
+
+    it('ignores ids in the reorder list that do not belong to the given kind/parentId group', () => {
+      const a = store.createCategory({ name: 'A2', kind: 'expense', color: '#000', icon: 'tag', archived: false });
+      const incomeOnly = store.createCategory({
+        name: 'Renda Extra',
+        kind: 'income',
+        color: '#000',
+        icon: 'tag',
+        archived: false
+      });
+      const positionBefore = incomeOnly.position;
+
+      store.reorderCategories('expense', undefined, [incomeOnly.id, a.id]);
+
+      // The income category's position must be untouched by an 'expense' reorder call,
+      // since it doesn't belong to that kind/parentId sibling group.
+      expect(store.categories().find((cat) => cat.id === incomeOnly.id)?.position).toBe(positionBefore);
+      expect(store.categories().find((cat) => cat.id === a.id)?.position).toBe(0);
+    });
   });
 
   describe('budgets', () => {

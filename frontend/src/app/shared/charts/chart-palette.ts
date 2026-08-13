@@ -43,13 +43,22 @@ const CATEGORICAL_DARK: readonly string[] = [
 
 /**
  * Builds a *stable* categoryId → color map from a fixed-order list of ids
- * (e.g. categories as fetched, not as sorted by this month's spend) — so a
+ * (categories as fetched, not as sorted by this month's spend) — so a
  * category keeps the same color every time it's rendered regardless of
  * its current rank. Re-coloring survivors when a filter changes their
  * order is exactly what the palette's ordering rule exists to prevent.
  * Past the 8-slot ceiling, ids fold onto slot 8 (the palette's own "past
  * the token ceiling, fold the tail" guidance) rather than generating a
  * 9th hue, which would be indistinguishable from an existing one under CVD.
+ *
+ * "As fetched" now means "in the user's chosen `Category.position` order"
+ * — the Categories screen supports manual drag/keyboard reordering (see
+ * features/categories/categories.ts), so a category's color can change
+ * when the user reorders its siblings. That's intended: the user picked
+ * the new order, so a new color assignment following it is a consequence
+ * of *their* choice, not the instability this function's ordering
+ * contract was written to prevent (which is about *unrelated* state —
+ * e.g. this month's spend changing — silently reshuffling colors).
  */
 export function categoryColorMap(orderedIds: readonly string[], theme: Theme): Map<string, string> {
   const palette = theme === 'dark' ? CATEGORICAL_DARK : CATEGORICAL_LIGHT;

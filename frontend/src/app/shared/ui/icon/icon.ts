@@ -166,6 +166,16 @@ const ICONS = {
   },
   zap: {
     paths: ['M13 2 3 14h9l-1 8 10-12h-9l1-8Z']
+  },
+  grip: {
+    circles: [
+      { cx: 9, cy: 6, r: 1.25 },
+      { cx: 15, cy: 6, r: 1.25 },
+      { cx: 9, cy: 12, r: 1.25 },
+      { cx: 15, cy: 12, r: 1.25 },
+      { cx: 9, cy: 18, r: 1.25 },
+      { cx: 15, cy: 18, r: 1.25 }
+    ]
   }
 } as const satisfies Record<string, IconShape>;
 
