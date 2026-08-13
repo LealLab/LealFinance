@@ -15,15 +15,21 @@ import { Shell } from './shell';
 import enUS from '../../../public/i18n/en-US.json';
 import ptBR from '../../../public/i18n/pt-BR.json';
 
+function mockMatchMedia(matches: boolean): void {
+  window.matchMedia = vi.fn().mockReturnValue({ matches } as MediaQueryList);
+}
+
 describe('Shell', () => {
   beforeEach(async () => {
+    mockMatchMedia(false);
+
     await TestBed.configureTestingModule({
       imports: [
         Shell,
         TranslocoTestingModule.forRoot({
           langs: { 'en-US': enUS, 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['en-US', 'pt-BR'], defaultLang: 'en-US' }
-        })
+          translocoConfig: { availableLangs: ['en-US', 'pt-BR'], defaultLang: 'en-US' },
+        }),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -36,8 +42,8 @@ describe('Shell', () => {
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
-        { provide: TransactionRepository, useClass: MockTransactionRepository }
-      ]
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
+      ],
     }).compileComponents();
   });
 
@@ -52,8 +58,8 @@ describe('Shell', () => {
     expect(document.documentElement.lang).toBe('en-US');
     expect(
       Array.from((fixture.nativeElement.querySelector('select') as HTMLSelectElement).options).map(
-        (option) => option.textContent
-      )
+        (option) => option.textContent,
+      ),
     ).toEqual(['English', 'Português (Brasil)']);
   });
 
@@ -68,6 +74,34 @@ describe('Shell', () => {
     expect(document.documentElement.lang).toBe('pt-BR');
   });
 
+  it('follows the desktop breakpoint and toggles the sidebar for the session', () => {
+    mockMatchMedia(true);
+
+    const fixture = TestBed.createComponent(Shell);
+    fixture.detectChanges();
+
+    const sidebar = fixture.nativeElement.querySelector('#desktop-sidebar') as HTMLElement;
+    const toggle = sidebar.querySelector(
+      'button[aria-controls="desktop-sidebar"]',
+    ) as HTMLButtonElement;
+    const languageSelect = sidebar.querySelector('select') as HTMLSelectElement;
+
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(sidebar.classList.contains('is-expanded')).toBe(true);
+    expect(sidebar.querySelector('app-icon[name="globe"]')).not.toBeNull();
+    expect(languageSelect.classList.contains('w-full')).toBe(true);
+
+    toggle.click();
+    fixture.detectChanges();
+
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(sidebar.classList.contains('is-collapsed')).toBe(true);
+    expect(sidebar.querySelector('app-icon[name="globe"]')).toBeNull();
+    expect(languageSelect.classList.contains('w-8')).toBe(true);
+    expect(languageSelect.classList.contains('opacity-0')).toBe(true);
+    expect(languageSelect.classList.contains('text-transparent')).toBe(false);
+  });
+
   it('toggles the command palette open on Ctrl+K', () => {
     const fixture = TestBed.createComponent(Shell);
     fixture.detectChanges();
@@ -76,7 +110,7 @@ describe('Shell', () => {
     fixture.detectChanges();
 
     const dialog = fixture.nativeElement.querySelector(
-      'app-command-palette dialog'
+      'app-command-palette dialog',
     ) as HTMLDialogElement;
     expect(dialog.open).toBe(true);
   });

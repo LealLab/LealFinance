@@ -23,6 +23,7 @@
     "@jsverse/transloco-locale": "^8.4.0",
     "@jsverse/transloco-persist-lang": "^8.4.0",
     "chart.js": "^4.5.1",
+    "playwright": "^1.62.1",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.3.3",
     "tslib": "^2.3.0"
