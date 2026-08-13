@@ -92,6 +92,50 @@ describe('Accounts', () => {
     expect(text).toContain('Sem instituição');
   });
 
+  it('makes a newly created institution visible in the list and the new-account form', async () => {
+    const fixture = TestBed.createComponent(Accounts);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const newButton = el.querySelector('app-page-header button') as HTMLButtonElement;
+    expect(newButton.textContent).toContain('Nova instituição');
+    newButton.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const institutionModal = Array.from(el.querySelectorAll('app-institution-form-modal')).at(-1)!;
+    const dialog = institutionModal.querySelector('dialog') as HTMLDialogElement;
+    expect(dialog.open).toBe(true);
+    const nameInput = Array.from(el.querySelectorAll<HTMLInputElement>('#institution-name')).at(-1)!;
+    nameInput.value = 'Banco sem contas';
+    nameInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const form = nameInput.closest('form') as HTMLFormElement;
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(dialog.open).toBe(false);
+    expect(el.textContent).toContain('Banco sem contas');
+
+    const newAccountButton = Array.from(el.querySelectorAll('app-page-header button')).find(
+      (button) => button.textContent?.includes('Nova conta')
+    ) as HTMLButtonElement;
+    newAccountButton.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const institutionSelect = el.querySelector('#account-institution') as HTMLSelectElement;
+    const institutionNames = Array.from(institutionSelect.options).map((option) => option.textContent?.trim());
+    expect(institutionNames).toContain('Banco sem contas');
+  });
+
   it('gives account actions a visible row-hover contrast and confirms before archiving', async () => {
     const fixture = TestBed.createComponent(Accounts);
     fixture.detectChanges();

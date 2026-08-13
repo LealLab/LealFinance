@@ -96,7 +96,10 @@ export class Accounts {
 
     const visibleAccounts = accounts.filter((account) => showArchived || !account.archived);
 
-    return groupAccountsByInstitution(visibleAccounts, institutions).map((group) => {
+    // Keep empty institution groups visible. A newly created institution has
+    // no accounts yet, but it must still appear so the save has visible
+    // feedback and the institution remains available for editing/deletion.
+    return groupAccountsByInstitution(visibleAccounts, institutions, true).map((group) => {
       const rows: AccountRow[] = group.accounts.map((account) => ({
         account,
         balance: accountBalance(account, transactions)

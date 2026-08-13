@@ -17,7 +17,8 @@ export interface InstitutionAccountGroup {
  */
 export function groupAccountsByInstitution(
   accounts: readonly Account[],
-  institutions: readonly Institution[]
+  institutions: readonly Institution[],
+  includeEmptyInstitutions = false
 ): InstitutionAccountGroup[] {
   const sortedInstitutions = [...institutions].sort((a, b) => a.position - b.position);
   const groups = sortedInstitutions.map((institution) => ({ institution, accounts: [] as Account[] }));
@@ -29,5 +30,7 @@ export function groupAccountsByInstitution(
     (group ?? noInstitutionGroup).accounts.push(account);
   }
 
-  return [...groups, noInstitutionGroup].filter((group) => group.accounts.length > 0);
+  return [...groups, noInstitutionGroup].filter(
+    (group) => group.accounts.length > 0 || (includeEmptyInstitutions && group.institution !== null)
+  );
 }

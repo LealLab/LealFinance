@@ -89,6 +89,10 @@ export class AccountFormModal {
     // serve both "new" (account undefined) and "edit" (account set).
     effect(() => {
       if (!this.open()) return;
+      // This resource is owned by the account modal, so it may be stale
+      // after an institution was created from the Accounts page while the
+      // modal was closed.
+      this.institutionsResource.reload();
       const account = this.account();
       this.form.reset({
         name: account?.name ?? '',
