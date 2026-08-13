@@ -33,6 +33,39 @@
     },
     "languageSwitcher": {
       "label": "Idioma"
+    },
+    "balanceToggle": {
+      "hide": "Ocultar saldos",
+      "show": "Mostrar saldos"
+    },
+    "search": {
+      "trigger": "Buscar tudo…"
+    },
+    "commandPalette": {
+      "placeholder": "Digite um comando ou pesquise...",
+      "empty": "Nenhum resultado encontrado.",
+      "hints": {
+        "navigate": "navegar",
+        "select": "selecionar",
+        "close": "fechar"
+      },
+      "groups": {
+        "quickActions": "Ações rápidas",
+        "goTo": "Ir para",
+        "accounts": "Contas",
+        "categories": "Categorias",
+        "budgets": "Orçamentos",
+        "transactions": "Transações"
+      },
+      "actions": {
+        "newTransaction": "Nova transação",
+        "newAccount": "Nova conta",
+        "newCategory": "Nova categoria",
+        "newBudget": "Novo orçamento",
+        "toggleTheme": "Alternar tema",
+        "toggleBalances": "Ocultar ou mostrar saldos",
+        "resetMockData": "Redefinir dados de exemplo"
+      }
     }
   },
   "dashboard": {
