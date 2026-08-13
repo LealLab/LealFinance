@@ -73,6 +73,8 @@
     "description": "Seus saldos em um só lugar.",
     "showArchived": "Mostrar contas arquivadas",
     "archivedBadge": "Arquivada",
+    "noInstitution": "Sem instituição",
+    "mixedCurrencies": "Moedas mistas",
     "actions": {
       "new": "Nova conta",
       "edit": "Editar",
@@ -131,6 +133,42 @@
       }
     }
   },
+  "institutions": {
+    "actions": {
+      "new": "Nova instituição",
+      "edit": "Editar instituição",
+      "delete": "Excluir instituição"
+    },
+    "form": {
+      "newTitle": "Nova instituição",
+      "editTitle": "Editar instituição",
+      "saveError": "Não foi possível salvar a instituição. Tente novamente.",
+      "deleteInUseError": "Esta instituição ainda tem contas vinculadas e não pode ser excluída.",
+      "fields": {
+        "name": "Nome",
+        "icon": "Ícone",
+        "color": "Cor"
+      },
+      "errors": {
+        "required": "Este campo é obrigatório."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    },
+    "delete": {
+      "title": "Excluir instituição",
+      "message": "Esta ação não pode ser desfeita. Deseja excluir esta instituição?"
+    },
+    "icon": {
+      "bank": "Banco",
+      "wallet": "Carteira",
+      "chart": "Investimentos",
+      "globe": "Internacional",
+      "archive": "Outro"
+    }
+  },
   "transactions": {
     "title": "Transações",
     "description": "Lançamentos de receitas, despesas e transferências.",
@@ -155,6 +193,7 @@
       "from": "De",
       "to": "Até",
       "search": "Buscar",
+      "institution": "Instituição",
       "all": "Todas",
       "clear": "Limpar filtros"
     },
@@ -180,6 +219,9 @@
         "account": "Conta",
         "fromAccount": "Conta de origem",
         "toAccount": "Conta de destino",
+        "fromInstitution": "Instituição de origem",
+        "toInstitution": "Instituição de destino",
+        "anyInstitution": "Qualquer instituição",
         "category": "Categoria",
         "description": "Descrição",
         "notes": "Notas",

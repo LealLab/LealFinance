@@ -1,8 +1,9 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { AccountRepository } from '../../data/account.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { accountBalance, creditCardSummary } from '../../domain/calc/balances';
 import { ratio } from '../../shared/money/money';
@@ -42,6 +43,8 @@ import { accountTypeOption } from './account-type';
 export class AccountDetail {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
 
   readonly id = input.required<string>();
@@ -52,10 +55,22 @@ export class AccountDetail {
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
   });
+  protected readonly institutionsResource = rxResource({
+    stream: () => this.institutionRepository.list()
+  });
 
   protected readonly account = computed(() =>
     this.accountsResource.value()?.find((account) => account.id === this.id())
   );
+
+  protected readonly institutionName = computed(() => {
+    const account = this.account();
+    if (!account) return undefined;
+    const institution = this.institutionsResource
+      .value()
+      ?.find((institution) => institution.id === account.institutionId);
+    return institution ? institution.name : this.transloco.translate('accounts.noInstitution');
+  });
 
   protected readonly typeOption = computed(() => {
     const account = this.account();
@@ -102,6 +117,9 @@ export class AccountDetail {
 
   protected onSaved(): void {
     this.accountsResource.reload();
+    // See accounts.ts's onSaved for why: the account form can create a
+    // brand-new institution inline via its own nested InstitutionFormModal.
+    this.institutionsResource.reload();
   }
 
   protected goBack(): void {

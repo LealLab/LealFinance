@@ -4,6 +4,10 @@
       <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
       {{ t('accounts.showArchived') }}
     </label>
+    <button appButton variant="secondary" type="button" (click)="openCreateInstitution()">
+      <app-icon name="bank" [size]="16" />
+      {{ t('institutions.actions.new') }}
+    </button>
     <button appButton variant="primary" type="button" (click)="openCreate()">
       <app-icon name="plus" [size]="16" />
       {{ t('accounts.actions.new') }}
@@ -22,17 +26,34 @@
     </app-empty-state>
   } @else {
     <div class="flex flex-col gap-6">
-      @for (group of groups(); track group.option.type) {
+      @for (group of groups(); track group.institution?.id ?? '__none__') {
         <app-card [padded]="false">
           <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
             <div class="flex items-center gap-2 text-sm font-semibold text-content-primary">
-              <app-icon [name]="group.option.icon" [size]="16" />
-              {{ t(group.option.labelKey) }}
+              @if (group.institution; as institution) {
+                <app-icon [name]="institution.icon" [size]="16" [style.color]="institution.color" />
+                {{ institution.name }}
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="openEditInstitution(institution, $event)"
+                  [attr.aria-label]="t('institutions.actions.edit')"
+                >
+                  <app-icon name="pencil" [size]="14" />
+                </button>
+              } @else {
+                <app-icon name="wallet" [size]="16" class="text-content-muted" />
+                {{ t('accounts.noInstitution') }}
+              }
             </div>
             @if (group.subtotal) {
               <span class="font-mono text-sm font-semibold tabular-nums">
                 {{ group.subtotal.amount | money: group.subtotal.currency }}
               </span>
+            } @else if (group.rows.length > 0) {
+              <span class="text-xs text-content-muted">{{ t('accounts.mixedCurrencies') }}</span>
             }
           </div>
 
@@ -52,9 +73,10 @@
                       <app-badge tone="neutral">{{ t('accounts.archivedBadge') }}</app-badge>
                     }
                   </span>
-                  @if (row.account.institution) {
-                    <span class="text-xs text-content-muted">{{ row.account.institution }}</span>
-                  }
+                  <app-badge tone="accent">
+                    <app-icon [name]="accountTypeOption(row.account.type).icon" [size]="12" />
+                    {{ t(accountTypeOption(row.account.type).labelKey) }}
+                  </app-badge>
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -96,5 +118,12 @@
     [(open)]="formOpen"
     [account]="editingAccount()"
     (saved)="onSaved()"
+  />
+  <app-institution-form-modal
+    [(open)]="institutionFormOpen"
+    [institution]="editingInstitution()"
+    [existingInstitutions]="institutionsResource.value() ?? []"
+    (saved)="onInstitutionSaved()"
+    (deleted)="onInstitutionDeleted()"
   />
 </div>

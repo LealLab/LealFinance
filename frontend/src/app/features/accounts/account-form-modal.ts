@@ -1,14 +1,18 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Account, AccountType } from '../../domain/models/account';
 import { AccountRepository } from '../../data/account.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
+import { Institution } from '../../domain/models/institution';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { CURRENCY_OPTIONS } from '../../shared/currency-options';
 import { Button } from '../../shared/ui/button/button';
+import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 import { ACCOUNT_TYPE_OPTIONS } from './account-type';
+import { InstitutionFormModal } from './institution-form-modal';
 
 /**
  * Create/edit form for an Account, in a modal (per the project's decision
@@ -16,15 +20,25 @@ import { ACCOUNT_TYPE_OPTIONS } from './account-type';
  * reused by the accounts list and detail screens for both "new" and "edit"
  * — which mode it's in is entirely driven by whether `account` is set, and
  * the form repopulates whenever the modal opens.
+ *
+ * The institution picker's "+ Nova instituição" affordance is a small
+ * button next to the `<select>` that opens a second, nested
+ * `InstitutionFormModal` — not a native `<dialog>`-in-`<dialog>` triggered
+ * by a special `<option>` value. Both are viable (native `<dialog>`s do
+ * stack correctly), but a dedicated button keeps the interaction obvious
+ * and keeps "create a new institution" out of the `<select>`'s own value
+ * space, so accidentally selecting it can't be confused with picking a
+ * real institution.
  */
 @Component({
   selector: 'app-account-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, InstitutionFormModal],
   templateUrl: './account-form-modal.html',
   styleUrl: './account-form-modal.scss'
 })
 export class AccountFormModal {
   private readonly accounts = inject(AccountRepository);
+  private readonly institutions = inject(InstitutionRepository);
   private readonly fb = inject(FormBuilder);
 
   readonly open = model.required<boolean>();
@@ -34,6 +48,11 @@ export class AccountFormModal {
   protected readonly accountTypeOptions = ACCOUNT_TYPE_OPTIONS;
   protected readonly currencyOptions = CURRENCY_OPTIONS;
 
+  protected readonly institutionsResource = rxResource({
+    stream: () => this.institutions.list()
+  });
+  protected readonly institutionFormOpen = signal(false);
+
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
@@ -42,7 +61,7 @@ export class AccountFormModal {
     type: ['checking' as AccountType, Validators.required],
     currency: ['BRL', Validators.required],
     openingBalance: ['0', [Validators.required, decimalAmountValidator()]],
-    institution: [''],
+    institutionId: [''],
     creditLimit: ['', decimalAmountValidator()],
     closingDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)]),
     dueDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)])
@@ -76,7 +95,7 @@ export class AccountFormModal {
         type: account?.type ?? 'checking',
         currency: account?.currency ?? 'BRL',
         openingBalance: account?.openingBalance ?? '0',
-        institution: account?.institution ?? '',
+        institutionId: account?.institutionId ?? '',
         creditLimit: account?.creditLimit ?? '',
         closingDay: account?.closingDay ?? null,
         dueDay: account?.dueDay ?? null
@@ -98,7 +117,7 @@ export class AccountFormModal {
       type: raw.type,
       currency: raw.currency,
       openingBalance: raw.openingBalance,
-      institution: raw.institution.trim() || undefined,
+      institutionId: raw.institutionId || undefined,
       archived: this.account()?.archived ?? false,
       creditLimit: isCreditCard && raw.creditLimit ? raw.creditLimit : undefined,
       closingDay: isCreditCard && raw.closingDay ? raw.closingDay : undefined,
@@ -120,5 +139,15 @@ export class AccountFormModal {
         this.saveErrorKey.set('accounts.form.saveError');
       }
     });
+  }
+
+  protected openCreateInstitution(): void {
+    this.institutionFormOpen.set(true);
+  }
+
+  /** After creating one from within this form, pick it and refresh the list it's drawn from. */
+  protected onInstitutionCreated(institution: Institution): void {
+    this.institutionsResource.reload();
+    this.form.controls.institutionId.setValue(institution.id);
   }
 }
