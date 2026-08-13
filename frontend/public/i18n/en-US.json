@@ -44,7 +44,7 @@
       "show": "Show balances"
     },
     "search": {
-      "trigger": "Search everything…"
+      "trigger": "Search"
     },
     "commandPalette": {
       "placeholder": "Type a command or search...",

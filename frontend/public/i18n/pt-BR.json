@@ -44,7 +44,7 @@
       "show": "Mostrar saldos"
     },
     "search": {
-      "trigger": "Buscar tudo…"
+      "trigger": "Buscar"
     },
     "commandPalette": {
       "placeholder": "Digite um comando ou pesquise...",
