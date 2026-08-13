@@ -1,5 +1,8 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
+import { BalanceVisibilityService } from '../../core/balance-visibility.service';
+
+const MASK = '••••';
 
 /**
  * Formats a monetary amount for display.
@@ -24,12 +27,27 @@ import { TranslocoLocaleService } from '@jsverse/transloco-locale';
  * JPY, BHD, etc. format correctly once they're added.
  *
  * Usage: {{ '1234.50' | money: 'BRL' }} → "R$ 1.234,50"
+ *
+ * `pure: false`: this pipe also reads BalanceVisibilityService.hidden() to
+ * mask the amount when the sidebar's eye toggle is off. A *pure* pipe only
+ * re-invokes `transform` when its own bound arguments (`amount`,
+ * `currencyCode`) change reference between change-detection runs — a
+ * signal read inside `transform` isn't one of those arguments, so toggling
+ * `hidden` alone would leave every already-rendered amount stale until
+ * something else happened to change `amount`/`currencyCode` too. Marking
+ * the pipe impure makes Angular call `transform` on every CD pass instead,
+ * which is what makes the toggle affect every `| money` in the app
+ * immediately (see money.pipe.spec.ts's reactivity test).
  */
-@Pipe({ name: 'money', standalone: true })
+@Pipe({ name: 'money', standalone: true, pure: false })
 export class MoneyPipe implements PipeTransform {
   private readonly localeService = inject(TranslocoLocaleService);
+  private readonly balanceVisibility = inject(BalanceVisibilityService);
 
   transform(amount: string, currencyCode: string): string {
+    if (this.balanceVisibility.hidden()) {
+      return MASK;
+    }
     return this.localeService.localizeNumber(amount, 'currency', undefined, {
       currency: currencyCode,
       currencyDisplay: 'symbol'
