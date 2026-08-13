@@ -1,1 +1,29 @@
-// Utility classes in categories.html cover all styling.
+// Utility classes in categories.html cover all styling except the
+// Angular CDK drag-drop visuals below, which target CDK-generated classes
+// that Tailwind's utility syntax can't reach.
+
+:host ::ng-deep {
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    box-shadow:
+      0 4px 10px rgba(0, 0, 0, 0.15),
+      0 1px 4px rgba(0, 0, 0, 0.1);
+    background: var(--color-surface-raised, #fff);
+    opacity: 0.95;
+  }
+
+  .cdk-drag-placeholder {
+    opacity: 0.3;
+  }
+
+  .cdk-drag-animating {
+    transition:
+      transform 200ms cubic-bezier(0, 0, 0.2, 1),
+      opacity 200ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}

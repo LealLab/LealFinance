@@ -15,12 +15,13 @@
           @for (kind of ['expense', 'income']; track kind) {
             <button
               type="button"
-              class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              class="rounded px-2 py-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60"
               [class]="
                 form.controls.kind.value === kind
                   ? 'bg-surface-raised text-content-primary shadow-sm'
                   : 'text-content-muted hover:text-content-primary'
               "
+              [disabled]="kindLocked()"
               (click)="form.controls.kind.setValue($any(kind))"
             >
               {{ t('transactions.type.' + kind) }}

@@ -233,7 +233,12 @@
       "new": "Nova categoria",
       "edit": "Editar",
       "archive": "Arquivar",
-      "unarchive": "Reativar"
+      "unarchive": "Reativar",
+      "delete": "Excluir",
+      "addChild": "Nova subcategoria",
+      "collapse": "Recolher",
+      "expand": "Expandir",
+      "dragHandle": "Reordenar"
     },
     "empty": {
       "title": "Nenhuma categoria cadastrada",
@@ -242,6 +247,12 @@
     "sections": {
       "income": "Categorias de receita",
       "expense": "Categorias de despesa"
+    },
+    "delete": {
+      "title": "Excluir categoria?",
+      "message": "Esta ação não pode ser desfeita. Deseja excluir a categoria \"{{name}}\"?",
+      "blockedTitle": "Não é possível excluir",
+      "blockedMessage": "Esta categoria ainda está em uso: {{transactions}} transações, {{budgets}} orçamentos e {{children}} subcategorias a utilizam. Arquive a categoria em vez de excluí-la."
     },
     "form": {
       "newTitle": "Nova categoria",

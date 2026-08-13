@@ -29,6 +29,14 @@ export class CategoryFormModal {
   readonly open = model.required<boolean>();
   readonly category = input<Category | undefined>(undefined);
   readonly allCategories = input.required<Category[]>();
+  /**
+   * When set and the modal opens for a *new* category (not editing), the
+   * form is pre-filled with this category as parent and its `kind` — used
+   * by the "add sub-category" affordance on each parent row in
+   * categories.html so the user doesn't have to re-pick the parent from
+   * the dropdown.
+   */
+  readonly presetParent = input<Category | undefined>(undefined);
   readonly saved = output<Category>();
 
   protected readonly iconOptions = CATEGORY_ICON_OPTIONS;
@@ -46,6 +54,9 @@ export class CategoryFormModal {
   private readonly selectedKind = toSignal(this.form.controls.kind.valueChanges, {
     initialValue: this.form.controls.kind.value
   });
+
+  /** True while creating a sub-category via the preset-parent shortcut — the kind picker is locked to the parent's kind. */
+  protected readonly kindLocked = computed(() => !this.category() && this.presetParent() !== undefined);
 
   protected readonly parentOptions = computed(() => {
     const editingId = this.category()?.id;
@@ -69,10 +80,11 @@ export class CategoryFormModal {
     effect(() => {
       if (!this.open()) return;
       const category = this.category();
+      const preset = category ? undefined : this.presetParent();
       this.form.reset({
         name: category?.name ?? '',
-        kind: category?.kind ?? 'expense',
-        parentId: category?.parentId ?? '',
+        kind: category?.kind ?? preset?.kind ?? 'expense',
+        parentId: category?.parentId ?? preset?.id ?? '',
         color: category?.color ?? DEFAULT_COLOR,
         icon: category?.icon ?? CATEGORY_ICON_OPTIONS[0]
       });
@@ -87,7 +99,7 @@ export class CategoryFormModal {
     }
 
     const raw = this.form.getRawValue();
-    const payload: Omit<Category, 'id'> = {
+    const payload: Omit<Category, 'id' | 'position'> = {
       name: raw.name.trim(),
       kind: raw.kind,
       parentId: raw.parentId || undefined,

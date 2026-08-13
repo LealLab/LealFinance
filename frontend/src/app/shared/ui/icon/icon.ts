@@ -130,6 +130,16 @@ const ICONS = {
   },
   refresh: {
     paths: ['M4.5 12a7.5 7.5 0 0 1 12.6-5.5M19.5 12a7.5 7.5 0 0 1-12.6 5.5', 'M17 3.5V7h-3.5', 'M7 20.5V17h3.5']
+  },
+  grip: {
+    circles: [
+      { cx: 9, cy: 6, r: 1.25 },
+      { cx: 15, cy: 6, r: 1.25 },
+      { cx: 9, cy: 12, r: 1.25 },
+      { cx: 15, cy: 12, r: 1.25 },
+      { cx: 9, cy: 18, r: 1.25 },
+      { cx: 15, cy: 18, r: 1.25 }
+    ]
   }
 } as const satisfies Record<string, IconShape>;
 

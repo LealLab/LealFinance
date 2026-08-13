@@ -1,8 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { ConfirmService } from '../../core/confirm.service';
+import { categoryUsage, isCategoryDeletable } from '../../domain/calc/category-usage';
 import { monthKey } from '../../domain/calc/dates';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { add, Money, money, zero } from '../../shared/money/money';
@@ -13,6 +17,7 @@ import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { CategoryCollapseService } from './category-collapse.service';
 import { CategoryFormModal } from './category-form-modal';
 
 const DISPLAY_CURRENCY = 'BRL';
@@ -23,6 +28,13 @@ interface CategoryRow {
   children: CategoryRow[];
 }
 
+/**
+ * The literal keys passed to `confirmService.confirm(...)` below are real
+ * string literals, but the call itself isn't to the `t` marker function,
+ * so transloco-keys-manager's extractor never sees them — same "dynamic
+ * markings" situation as transactions.ts / budgets.ts:
+ * t(categories.delete.title, categories.delete.message, categories.delete.blockedTitle, categories.delete.blockedMessage)
+ */
 @Component({
   selector: 'app-categories',
   imports: [
@@ -34,7 +46,10 @@ interface CategoryRow {
     EmptyState,
     Icon,
     PageHeader,
-    CategoryFormModal
+    CategoryFormModal,
+    CdkDropList,
+    CdkDrag,
+    CdkDragHandle
   ],
   templateUrl: './categories.html',
   styleUrl: './categories.scss'
@@ -42,15 +57,20 @@ interface CategoryRow {
 export class Categories {
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly budgetRepository = inject(BudgetRepository);
+  private readonly confirmService = inject(ConfirmService);
+  protected readonly collapseService = inject(CategoryCollapseService);
 
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
   });
+  protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
 
   protected readonly showArchived = signal(false);
   protected readonly formOpen = signal(false);
   protected readonly editingCategory = signal<Category | undefined>(undefined);
+  protected readonly presetParent = signal<Category | undefined>(undefined);
 
   private readonly spendByCategory = computed<Map<string, Money>>(() => {
     const currentMonth = monthKey(new Date().toISOString());
@@ -74,13 +94,14 @@ export class Categories {
     const spend = this.spendByCategory();
     const showArchived = this.showArchived();
 
-    const parents = categories.filter(
-      (c) => c.kind === kind && !c.parentId && (showArchived || !c.archived)
-    );
+    const parents = categories
+      .filter((c) => c.kind === kind && !c.parentId && (showArchived || !c.archived))
+      .sort((a, b) => a.position - b.position);
 
     return parents.map((parent) => {
       const children = categories
         .filter((c) => c.parentId === parent.id && (showArchived || !c.archived))
+        .sort((a, b) => a.position - b.position)
         .map((child) => ({ category: child, spend: spend.get(child.id) ?? zero(DISPLAY_CURRENCY), children: [] }));
 
       const ownSpend = spend.get(parent.id) ?? zero(DISPLAY_CURRENCY);
@@ -114,11 +135,19 @@ export class Categories {
 
   protected openCreate(): void {
     this.editingCategory.set(undefined);
+    this.presetParent.set(undefined);
+    this.formOpen.set(true);
+  }
+
+  protected openCreateChild(parent: Category): void {
+    this.editingCategory.set(undefined);
+    this.presetParent.set(parent);
     this.formOpen.set(true);
   }
 
   protected openEdit(category: Category): void {
     this.editingCategory.set(category);
+    this.presetParent.set(undefined);
     this.formOpen.set(true);
   }
 
@@ -128,7 +157,62 @@ export class Categories {
     });
   }
 
+  protected toggleCollapsed(category: Category): void {
+    this.collapseService.toggle(category.id);
+  }
+
+  protected isCollapsed(category: Category): boolean {
+    return this.collapseService.isCollapsed(category.id);
+  }
+
   protected onSaved(): void {
     this.categoriesResource.reload();
+  }
+
+  protected async deleteCategory(category: Category): Promise<void> {
+    const categories = this.categoriesResource.value() ?? [];
+    const transactions = this.transactionsResource.value() ?? [];
+    const budgets = this.budgetsResource.value() ?? [];
+    const usage = categoryUsage(category.id, categories, transactions, budgets);
+
+    if (isCategoryDeletable(usage)) {
+      const confirmed = await this.confirmService.confirm(
+        'categories.delete.title',
+        'categories.delete.message',
+        'danger',
+        { name: category.name }
+      );
+      if (!confirmed) return;
+      this.categoryRepository.delete(category.id).subscribe(() => this.categoriesResource.reload());
+      return;
+    }
+
+    await this.confirmService.confirm('categories.delete.blockedTitle', 'categories.delete.blockedMessage', 'default', {
+      transactions: usage.transactions,
+      budgets: usage.budgets,
+      children: usage.children
+    });
+  }
+
+  protected onParentDrop(kind: CategoryKind, event: CdkDragDrop<Category[]>): void {
+    if (event.previousIndex === event.currentIndex) return;
+    const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
+    const orderedIds = rows.map((row) => row.category.id);
+    moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
+    this.categoryRepository
+      .reorder(kind, undefined, orderedIds)
+      .subscribe(() => this.categoriesResource.reload());
+  }
+
+  protected onChildDrop(kind: CategoryKind, parentId: string, event: CdkDragDrop<Category[]>): void {
+    if (event.previousIndex === event.currentIndex) return;
+    const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
+    const parent = rows.find((row) => row.category.id === parentId);
+    if (!parent) return;
+    const orderedIds = parent.children.map((row) => row.category.id);
+    moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
+    this.categoryRepository
+      .reorder(kind, parentId, orderedIds)
+      .subscribe(() => this.categoriesResource.reload());
   }
 }

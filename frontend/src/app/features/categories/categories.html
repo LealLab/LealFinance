@@ -28,11 +28,35 @@
             <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
               {{ t(section.titleKey) }}
             </h2>
-            <ul>
+            <ul
+              cdkDropList
+              [id]="'categories-parents-' + section.kind"
+              (cdkDropListDropped)="onParentDrop(section.kind, $event)"
+            >
               @for (row of section.rows; track row.category.id) {
-                <li class="border-b border-border last:border-b-0">
+                <li cdkDrag class="border-b border-border last:border-b-0">
                   <div class="flex items-center justify-between gap-4 px-4 py-3">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1">
+                      <button
+                        cdkDragHandle
+                        type="button"
+                        class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing"
+                        [attr.aria-label]="t('categories.actions.dragHandle')"
+                      >
+                        <app-icon name="grip" [size]="14" />
+                      </button>
+                      <button
+                        type="button"
+                        class="flex size-6 items-center justify-center text-content-muted hover:text-content-primary"
+                        [attr.aria-expanded]="!isCollapsed(row.category)"
+                        [attr.aria-label]="isCollapsed(row.category) ? t('categories.actions.expand') : t('categories.actions.collapse')"
+                        [disabled]="row.children.length === 0"
+                        (click)="toggleCollapsed(row.category)"
+                      >
+                        @if (row.children.length > 0) {
+                          <app-icon [name]="isCollapsed(row.category) ? 'chevronRight' : 'chevronDown'" [size]="14" />
+                        }
+                      </button>
                       <span
                         class="flex size-7 items-center justify-center rounded-full"
                         [style.background-color]="row.category.color + '1A'"
@@ -49,6 +73,16 @@
                       <span class="font-mono text-sm font-semibold tabular-nums">
                         {{ row.spend.amount | money: row.spend.currency }}
                       </span>
+                      <button
+                        appButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        (click)="openCreateChild(row.category)"
+                        [attr.aria-label]="t('categories.actions.addChild')"
+                      >
+                        <app-icon name="plus" [size]="16" />
+                      </button>
                       <button
                         appButton
                         variant="ghost"
@@ -71,14 +105,37 @@
                       >
                         <app-icon name="archive" [size]="16" />
                       </button>
+                      <button
+                        appButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        (click)="deleteCategory(row.category)"
+                        [attr.aria-label]="t('categories.actions.delete')"
+                      >
+                        <app-icon name="trash" [size]="16" />
+                      </button>
                     </div>
                   </div>
 
-                  @if (row.children.length > 0) {
-                    <ul class="border-t border-border bg-surface-sunken">
+                  @if (row.children.length > 0 && !isCollapsed(row.category)) {
+                    <ul
+                      cdkDropList
+                      [id]="'categories-children-' + row.category.id"
+                      class="border-t border-border bg-surface-sunken"
+                      (cdkDropListDropped)="onChildDrop(section.kind, row.category.id, $event)"
+                    >
                       @for (child of row.children; track child.category.id) {
-                        <li class="flex items-center justify-between gap-4 py-2 pr-4 pl-10">
+                        <li cdkDrag class="flex items-center justify-between gap-4 py-2 pr-4 pl-6">
                           <div class="flex items-center gap-2">
+                            <button
+                              cdkDragHandle
+                              type="button"
+                              class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing"
+                              [attr.aria-label]="t('categories.actions.dragHandle')"
+                            >
+                              <app-icon name="grip" [size]="12" />
+                            </button>
                             <span
                               class="flex size-6 items-center justify-center rounded-full"
                               [style.background-color]="child.category.color + '1A'"
@@ -119,6 +176,16 @@
                             >
                               <app-icon name="archive" [size]="14" />
                             </button>
+                            <button
+                              appButton
+                              variant="ghost"
+                              size="sm"
+                              type="button"
+                              (click)="deleteCategory(child.category)"
+                              [attr.aria-label]="t('categories.actions.delete')"
+                            >
+                              <app-icon name="trash" [size]="14" />
+                            </button>
                           </div>
                         </li>
                       }
@@ -137,6 +204,7 @@
     [(open)]="formOpen"
     [category]="editingCategory()"
     [allCategories]="categoriesResource.value() ?? []"
+    [presetParent]="presetParent()"
     (saved)="onSaved()"
   />
 </div>
