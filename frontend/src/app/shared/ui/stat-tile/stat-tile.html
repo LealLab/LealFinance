@@ -1,0 +1,9 @@
+<div class="flex flex-col gap-1 rounded-md border border-border bg-surface-raised p-4">
+  <span class="text-xs font-medium tracking-wide text-content-muted uppercase">{{ label() }}</span>
+  <span class="font-mono text-2xl font-semibold tabular-nums" [class]="toneClass[tone()]">
+    {{ value() }}
+  </span>
+  @if (hint()) {
+    <span class="text-xs text-content-subtle">{{ hint() }}</span>
+  }
+</div>

@@ -69,7 +69,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "setupFiles": ["src/testing/dialog-polyfill.ts"]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",

@@ -1,0 +1,100 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('accounts.title')" [description]="t('accounts.description')">
+    <label class="flex items-center gap-2 text-sm text-content-muted">
+      <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
+      {{ t('accounts.showArchived') }}
+    </label>
+    <button appButton variant="primary" type="button" (click)="openCreate()">
+      <app-icon name="plus" [size]="16" />
+      {{ t('accounts.actions.new') }}
+    </button>
+  </app-page-header>
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="wallet"
+      [title]="t('accounts.empty.title')"
+      [description]="t('accounts.empty.description')"
+    >
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        {{ t('accounts.actions.new') }}
+      </button>
+    </app-empty-state>
+  } @else {
+    <div class="flex flex-col gap-6">
+      @for (group of groups(); track group.option.type) {
+        <app-card [padded]="false">
+          <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
+            <div class="flex items-center gap-2 text-sm font-semibold text-content-primary">
+              <app-icon [name]="group.option.icon" [size]="16" />
+              {{ t(group.option.labelKey) }}
+            </div>
+            @if (group.subtotal) {
+              <span class="font-mono text-sm font-semibold tabular-nums">
+                {{ group.subtotal.amount | money: group.subtotal.currency }}
+              </span>
+            }
+          </div>
+
+          <ul>
+            @for (row of group.rows; track row.account.id) {
+              <li
+                tabindex="0"
+                role="button"
+                class="flex cursor-pointer items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-sunken"
+                (click)="openDetail(row.account)"
+                (keydown.enter)="openDetail(row.account)"
+              >
+                <div class="flex flex-col gap-0.5">
+                  <span class="flex items-center gap-2 text-sm font-medium text-content-primary">
+                    {{ row.account.name }}
+                    @if (row.account.archived) {
+                      <app-badge tone="neutral">{{ t('accounts.archivedBadge') }}</app-badge>
+                    }
+                  </span>
+                  @if (row.account.institution) {
+                    <span class="text-xs text-content-muted">{{ row.account.institution }}</span>
+                  }
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <span class="font-mono text-sm font-semibold tabular-nums">
+                    {{ row.balance.amount | money: row.balance.currency }}
+                  </span>
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    (click)="openEdit(row.account, $event)"
+                    [attr.aria-label]="t('accounts.actions.edit')"
+                  >
+                    <app-icon name="pencil" [size]="16" />
+                  </button>
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    (click)="toggleArchived(row.account, $event)"
+                    [attr.aria-label]="
+                      row.account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive')
+                    "
+                  >
+                    <app-icon name="archive" [size]="16" />
+                  </button>
+                </div>
+              </li>
+            }
+          </ul>
+        </app-card>
+      }
+    </div>
+  }
+
+  <app-account-form-modal
+    [(open)]="formOpen"
+    [account]="editingAccount()"
+    (saved)="onSaved()"
+  />
+</div>

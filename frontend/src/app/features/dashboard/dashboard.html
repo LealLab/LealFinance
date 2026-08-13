@@ -1,4 +1,131 @@
-<div *transloco="let t" class="max-w-2xl">
-  <h1 class="text-2xl font-semibold tracking-tight">{{ t('dashboard.title') }}</h1>
-  <p class="mt-2 text-slate-600">{{ t('dashboard.welcome') }}</p>
+<div *transloco="let t">
+  <app-page-header [title]="t('dashboard.title')" [description]="t('dashboard.welcome')" />
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="home"
+      [title]="t('dashboard.empty.title')"
+      [description]="t('dashboard.empty.description')"
+    />
+  } @else {
+    @if (hasFallbackRate()) {
+      <div class="mb-6">
+        <app-exchange-rate-warning [isFallback]="true" />
+      </div>
+    }
+
+    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
+      <app-stat-tile
+        [label]="t('dashboard.stats.income')"
+        [value]="monthTotals().income.amount | money: monthTotals().income.currency"
+        tone="positive"
+      />
+      <app-stat-tile
+        [label]="t('dashboard.stats.expense')"
+        [value]="monthTotals().expense.amount | money: monthTotals().expense.currency"
+        tone="negative"
+      />
+      <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
+    </div>
+
+    <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <app-card>
+        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.cashFlow.title') }}</h2>
+        <div class="h-64">
+          <app-chart kind="bar" [labels]="cashFlowChart().labels" [datasets]="cashFlowChart().datasets" [formatValue]="formatMoney" />
+        </div>
+      </app-card>
+
+      <app-card>
+        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.categoryChart.title') }}</h2>
+        @if (hasCategorySpend()) {
+          <div class="h-64">
+            <app-chart
+              kind="doughnut"
+              [labels]="categoryChart().labels"
+              [datasets]="categoryChart().datasets"
+              [formatValue]="formatMoney"
+            />
+          </div>
+        } @else {
+          <p class="py-8 text-center text-sm text-content-muted">{{ t('dashboard.categoryChart.empty') }}</p>
+        }
+      </app-card>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <app-card [padded]="false">
+        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+          {{ t('dashboard.accounts.title') }}
+        </h2>
+        <ul>
+          @for (row of accountRows(); track row.account.id) {
+            <li class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0">
+              <span class="text-sm text-content-primary">{{ row.account.name }}</span>
+              <span class="font-mono text-sm font-medium tabular-nums">
+                {{ row.balance.amount | money: row.balance.currency }}
+              </span>
+            </li>
+          }
+        </ul>
+      </app-card>
+
+      <app-card [padded]="false">
+        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+          {{ t('dashboard.recentTransactions.title') }}
+        </h2>
+        @if (recentTransactions().length === 0) {
+          <p class="p-4 text-sm text-content-muted">{{ t('dashboard.recentTransactions.empty') }}</p>
+        } @else {
+          <ul>
+            @for (row of recentTransactions(); track row.tx.id) {
+              <li class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0">
+                <div class="flex min-w-0 flex-col">
+                  <span class="truncate text-sm text-content-primary">{{ row.tx.description }}</span>
+                  <span class="text-xs text-content-subtle">{{ row.tx.date }}</span>
+                </div>
+                <span
+                  class="font-mono text-sm font-medium tabular-nums"
+                  [class]="
+                    row.tx.type === 'income'
+                      ? 'text-positive'
+                      : row.tx.type === 'expense'
+                        ? 'text-negative'
+                        : 'text-content-primary'
+                  "
+                >
+                  {{ row.tx.amount | money: row.tx.currency }}
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      </app-card>
+
+      <app-card [padded]="false">
+        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+          {{ t('dashboard.budgets.title') }}
+        </h2>
+        @if (budgetPreview().length === 0) {
+          <p class="p-4 text-sm text-content-muted">{{ t('dashboard.budgets.empty') }}</p>
+        } @else {
+          <ul class="flex flex-col gap-3 p-4">
+            @for (row of budgetPreview(); track row.categoryId) {
+              <li class="flex flex-col gap-1">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-content-primary">{{ row.categoryName }}</span>
+                  <span class="font-mono text-xs text-content-muted tabular-nums">
+                    {{ row.spent.amount | money: row.spent.currency }} /
+                    {{ row.budgeted.amount | money: row.budgeted.currency }}
+                  </span>
+                </div>
+                <app-progress-bar [ratio]="row.ratio" />
+              </li>
+            }
+          </ul>
+        }
+      </app-card>
+    </div>
+  }
 </div>

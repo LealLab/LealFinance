@@ -1,0 +1,76 @@
+<div *transloco="let t">
+  <!-- categories.icon.* and transactions.type.* below are looked up
+       dynamically (string concatenation), which transloco-keys-manager's
+       template extractor can't resolve — these marker-only comments are
+       its "dynamic markings" mechanism (see account-form-modal.html for
+       the related @if…as note, used below for the same reason on
+       titleKey/saveErrorKey). -->
+  <!-- t(categories.icon.tag) t(categories.icon.home) t(categories.icon.archive) t(categories.icon.swap) -->
+  <!-- t(categories.icon.wallet) t(categories.icon.chart) t(categories.icon.sun) t(categories.icon.alertTriangle) -->
+  <!-- t(categories.icon.pencil) t(categories.icon.target) t(categories.icon.repeat) t(categories.icon.globe) -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+          @for (kind of ['expense', 'income']; track kind) {
+            <button
+              type="button"
+              class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              [class]="
+                form.controls.kind.value === kind
+                  ? 'bg-surface-raised text-content-primary shadow-sm'
+                  : 'text-content-muted hover:text-content-primary'
+              "
+              (click)="form.controls.kind.setValue($any(kind))"
+            >
+              {{ t('transactions.type.' + kind) }}
+            </button>
+          }
+        </div>
+
+        <div>
+          <label class="form-label" for="category-name">{{ t('categories.form.fields.name') }}</label>
+          <input id="category-name" type="text" class="form-input" formControlName="name" />
+        </div>
+
+        <div>
+          <label class="form-label" for="category-parent">{{ t('categories.form.fields.parent') }}</label>
+          <select id="category-parent" class="form-input" formControlName="parentId">
+            <option value="">{{ t('categories.form.fields.noParent') }}</option>
+            @for (option of parentOptions(); track option.id) {
+              <option [value]="option.id">{{ option.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="category-color">{{ t('categories.form.fields.color') }}</label>
+            <input id="category-color" type="color" class="form-input h-10 p-1" formControlName="color" />
+          </div>
+          <div>
+            <label class="form-label" for="category-icon">{{ t('categories.form.fields.icon') }}</label>
+            <select id="category-icon" class="form-input" formControlName="icon">
+              @for (icon of iconOptions; track icon) {
+                <option [value]="icon">{{ t('categories.icon.' + icon) }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('categories.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('categories.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

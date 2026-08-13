@@ -35,6 +35,9 @@ importers:
       '@jsverse/transloco-persist-lang':
         specifier: ^8.4.0
         version: 8.4.0(@angular/core@22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2))(@jsverse/transloco@8.4.0(@angular/core@22.1.1(@angular/compiler@22.1.1)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3))(@jsverse/utils@1.0.0-beta.5)
+      chart.js:
+        specifier: ^4.5.1
+        version: 4.5.1
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -856,6 +859,9 @@ packages:
 
   '@jsverse/utils@1.0.0-beta.5':
     resolution: {integrity: sha512-z7IdlV6BdSeF3Veii8Yyk64KuyTjNIQnFaW5PAhmDx0wN29lB2BFp8WO6+tJPLPjtlz2yKeNrjkp1XqnMPaeHA==}
+
+  '@kurkle/color@0.3.4':
+    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
   '@listr2/prompt-adapter-inquirer@4.2.4':
     resolution: {integrity: sha512-/KRI2DMD7JGSYaREF0Ygl7AefJ/2ase4Gc5cBiKqT5l4tFjsSJfhFGcc5nSkgl0Sp9LkCQNzl/cqbVJYP2L3dw==}
@@ -1897,6 +1903,10 @@ packages:
 
   chardet@2.2.0:
     resolution: {integrity: sha512-rddelWYNPRrXq6PtNEN2S3f6t9ILzvqaN5pVgi4kqt9jHQaXIial9PznB5iSPVlQSLNaaH22ItWz3EJtQ10+OA==}
+
+  chart.js@4.5.1:
+    resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
+    engines: {pnpm: '>=8'}
 
   cheerio-select@2.1.0:
     resolution: {integrity: sha512-9v9kG0LvzrlcungtnJtpGNxY+fzECQKhK4EGJX2vByejiMX84MFNQw4UxPJl3bFbTMw+Dfs37XaIkCwTZfLh4g==}
@@ -4197,6 +4207,8 @@ snapshots:
 
   '@jsverse/utils@1.0.0-beta.5': {}
 
+  '@kurkle/color@0.3.4': {}
+
   '@listr2/prompt-adapter-inquirer@4.2.4(@inquirer/prompts@8.5.2)(listr2@10.2.2)':
     dependencies:
       '@inquirer/prompts': 8.5.2
@@ -5045,6 +5057,10 @@ snapshots:
   chalk@5.6.2: {}
 
   chardet@2.2.0: {}
+
+  chart.js@4.5.1:
+    dependencies:
+      '@kurkle/color': 0.3.4
 
   cheerio-select@2.1.0:
     dependencies:

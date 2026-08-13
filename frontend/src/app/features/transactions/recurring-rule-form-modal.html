@@ -1,0 +1,118 @@
+<div *transloco="let t">
+  <!-- transactions.recurring.frequency.* is looked up dynamically here too
+       — see transaction-form-modal.html for why this comment exists. -->
+  <!-- t(transactions.recurring.frequency.weekly) t(transactions.recurring.frequency.monthly) t(transactions.recurring.frequency.yearly) -->
+  <!-- t(transactions.type.income) t(transactions.type.expense) -->
+  <!-- @if…as (not a plain call) avoids a translation-argument pattern the
+       extractor mis-parses — see account-form-modal.html for the full
+       explanation. -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+    <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+      <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+        @for (type of ['expense', 'income']; track type) {
+          <button
+            type="button"
+            class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+            [class]="
+              form.controls.type.value === type
+                ? 'bg-surface-raised text-content-primary shadow-sm'
+                : 'text-content-muted hover:text-content-primary'
+            "
+            (click)="form.controls.type.setValue($any(type))"
+          >
+            {{ t('transactions.type.' + type) }}
+          </button>
+        }
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label" for="rule-frequency">
+            {{ t('transactions.form.fields.frequency') }}
+          </label>
+          <select id="rule-frequency" class="form-input" formControlName="frequency">
+            @for (frequency of frequencies; track frequency) {
+              <option [value]="frequency">{{ t('transactions.recurring.frequency.' + frequency) }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="rule-interval">
+            {{ t('transactions.form.fields.interval') }}
+          </label>
+          <input id="rule-interval" type="number" min="1" class="form-input" formControlName="interval" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label" for="rule-start-date">
+            {{ t('transactions.recurring.form.startDate') }}
+          </label>
+          <input id="rule-start-date" type="date" class="form-input" formControlName="startDate" />
+        </div>
+        <div>
+          <label class="form-label" for="rule-end-date">
+            {{ t('transactions.recurring.form.endDate') }}
+          </label>
+          <input id="rule-end-date" type="date" class="form-input" formControlName="endDate" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label" for="rule-account">{{ t('transactions.form.fields.account') }}</label>
+          <select id="rule-account" class="form-input" formControlName="accountId">
+            <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+            @for (account of accounts(); track account.id) {
+              <option [value]="account.id">{{ account.name }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="rule-category">{{ t('transactions.form.fields.category') }}</label>
+          <select id="rule-category" class="form-input" formControlName="categoryId">
+            <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+            @for (category of categoryOptions(); track category.id) {
+              <option [value]="category.id">{{ category.parentId ? '— ' : '' }}{{ category.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label" for="rule-amount">{{ t('transactions.form.fields.amount') }}</label>
+          <input
+            id="rule-amount"
+            type="text"
+            inputmode="decimal"
+            class="form-input font-mono"
+            formControlName="amount"
+          />
+        </div>
+        <div>
+          <label class="form-label" for="rule-description">
+            {{ t('transactions.form.fields.description') }}
+          </label>
+          <input id="rule-description" type="text" class="form-input" formControlName="description" />
+        </div>
+      </div>
+
+      @if (saveErrorKey(); as errorKey) {
+        <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+      }
+
+      <div class="mt-2 flex justify-end gap-2">
+        <button appButton type="button" variant="secondary" (click)="open.set(false)">
+          {{ t('transactions.form.actions.cancel') }}
+        </button>
+        <button appButton type="submit" variant="primary" [disabled]="saving()">
+          {{ t('transactions.form.actions.save') }}
+        </button>
+      </div>
+    </form>
+    </app-modal>
+  }
+</div>

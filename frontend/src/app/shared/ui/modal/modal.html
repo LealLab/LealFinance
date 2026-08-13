@@ -1,0 +1,33 @@
+<!-- Backdrop-click-to-dismiss is a mouse convenience on top of the dialog's
+     native Escape handling, not the only way to close it, and the two
+     wrapper divs below only stop click bubbling (no user action) — the two
+     rules below don't apply to any of the three. -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+<dialog
+  #dialog
+  *transloco="let t"
+  class="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-md border border-border bg-surface-raised p-0 text-content-primary backdrop:bg-black/40"
+  (close)="onNativeClose()"
+  (click)="onBackdropClick($event)"
+>
+  <div
+    class="flex items-center justify-between gap-4 border-b border-border px-4 py-3"
+    (click)="$event.stopPropagation()"
+  >
+    <h2 class="text-sm font-semibold">{{ titleText() }}</h2>
+    <button
+      appButton
+      variant="ghost"
+      size="sm"
+      type="button"
+      (click)="requestClose()"
+      [attr.aria-label]="t('common.actions.close')"
+    >
+      <app-icon name="close" [size]="16" />
+    </button>
+  </div>
+  <div class="max-h-[70vh] overflow-y-auto px-4 py-4" (click)="$event.stopPropagation()">
+    <ng-content />
+  </div>
+</dialog>
+<!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->

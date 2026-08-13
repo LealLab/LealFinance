@@ -1,0 +1,9 @@
+// Fills whatever height the caller's wrapper gives it — Chart.js with
+// maintainAspectRatio:false needs an explicitly-sized ancestor, not this
+// component; see chart.ts's class doc comment.
+:host {
+  display: block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}

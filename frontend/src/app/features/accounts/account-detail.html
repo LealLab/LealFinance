@@ -1,0 +1,111 @@
+<div *transloco="let t">
+  <a routerLink="/accounts" class="mb-4 inline-flex items-center gap-1 text-sm text-content-muted hover:text-content-primary">
+    <app-icon name="chevronRight" [size]="14" class="rotate-180" />
+    {{ t('accounts.detail.back') }}
+  </a>
+
+  @if (account(); as account) {
+    <app-page-header [title]="account.name" [description]="account.institution">
+      <button appButton variant="secondary" type="button" (click)="openEdit()">
+        <app-icon name="pencil" [size]="16" />
+        {{ t('accounts.actions.edit') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="toggleArchived()">
+        <app-icon name="archive" [size]="16" />
+        {{ account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive') }}
+      </button>
+    </app-page-header>
+
+    <div class="flex flex-col gap-6">
+      <app-card>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            @if (typeOption(); as typeOption) {
+              <app-badge tone="accent">
+                <app-icon [name]="typeOption.icon" [size]="14" />
+                {{ t(typeOption.labelKey) }}
+              </app-badge>
+            }
+            @if (account.archived) {
+              <app-badge tone="neutral">{{ t('accounts.archivedBadge') }}</app-badge>
+            }
+          </div>
+          @if (balance(); as balance) {
+            <span class="font-mono text-3xl font-semibold tabular-nums">
+              {{ balance.amount | money: balance.currency }}
+            </span>
+          }
+        </div>
+      </app-card>
+
+      @if (creditCard(); as card) {
+        <app-card>
+          <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('accounts.detail.creditCard.title') }}</h2>
+          <app-progress-bar [ratio]="creditCardRatio()" [label]="t('accounts.detail.creditCard.used')" />
+          <div class="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <p class="text-xs text-content-muted">{{ t('accounts.detail.creditCard.owed') }}</p>
+              <p class="font-mono text-sm font-semibold tabular-nums">
+                {{ card.owed.amount | money: card.owed.currency }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-content-muted">{{ t('accounts.detail.creditCard.limit') }}</p>
+              <p class="font-mono text-sm font-semibold tabular-nums">
+                {{ card.limit.amount | money: card.limit.currency }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-content-muted">{{ t('accounts.detail.creditCard.available') }}</p>
+              <p class="font-mono text-sm font-semibold tabular-nums">
+                {{ card.available.amount | money: card.available.currency }}
+              </p>
+            </div>
+            @if (account.closingDay) {
+              <div>
+                <p class="text-xs text-content-muted">{{ t('accounts.detail.creditCard.closingDay') }}</p>
+                <p class="text-sm font-semibold">{{ account.closingDay }}</p>
+              </div>
+            }
+          </div>
+        </app-card>
+      }
+
+      <app-card [padded]="false">
+        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+          {{ t('accounts.detail.history') }}
+        </h2>
+        @if (accountTransactions().length === 0) {
+          <div class="p-4">
+            <app-empty-state
+              icon="swap"
+              [title]="t('accounts.detail.historyEmpty.title')"
+              [description]="t('accounts.detail.historyEmpty.description')"
+            />
+          </div>
+        } @else {
+          <ul>
+            @for (tx of accountTransactions(); track tx.id) {
+              <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
+                <div class="flex flex-col gap-0.5">
+                  <span class="text-sm font-medium text-content-primary">{{ tx.description }}</span>
+                  <span class="text-xs text-content-muted">{{ tx.date }}</span>
+                </div>
+                <span
+                  class="font-mono text-sm font-semibold tabular-nums"
+                  [class]="transactionSign(id(), tx) === 'out' ? 'text-negative' : 'text-positive'"
+                >
+                  {{ transactionSign(id(), tx) === 'out' ? '−' : '+' }}{{ tx.amount | money: tx.currency }}
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      </app-card>
+    </div>
+  } @else {
+    <app-empty-state icon="wallet" [title]="t('accounts.detail.notFound')" />
+  }
+
+  <app-account-form-modal [(open)]="formOpen" [account]="account()" (saved)="onSaved()" />
+</div>

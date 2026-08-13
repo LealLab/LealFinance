@@ -1,0 +1,142 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('categories.title')" [description]="t('categories.description')">
+    <label class="flex items-center gap-2 text-sm text-content-muted">
+      <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
+      {{ t('categories.showArchived') }}
+    </label>
+    <button appButton variant="primary" type="button" (click)="openCreate()">
+      <app-icon name="plus" [size]="16" />
+      {{ t('categories.actions.new') }}
+    </button>
+  </app-page-header>
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="tag"
+      [title]="t('categories.empty.title')"
+      [description]="t('categories.empty.description')"
+    >
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        {{ t('categories.actions.new') }}
+      </button>
+    </app-empty-state>
+  } @else {
+    <div class="flex flex-col gap-6">
+      @for (section of sections(); track section.kind) {
+        @if (section.rows.length > 0) {
+          <app-card [padded]="false">
+            <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+              {{ t(section.titleKey) }}
+            </h2>
+            <ul>
+              @for (row of section.rows; track row.category.id) {
+                <li class="border-b border-border last:border-b-0">
+                  <div class="flex items-center justify-between gap-4 px-4 py-3">
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="flex size-7 items-center justify-center rounded-full"
+                        [style.background-color]="row.category.color + '1A'"
+                        [style.color]="row.category.color"
+                      >
+                        <app-icon [name]="row.category.icon" [size]="14" />
+                      </span>
+                      <span class="text-sm font-medium text-content-primary">{{ row.category.name }}</span>
+                      @if (row.category.archived) {
+                        <app-badge tone="neutral">{{ t('categories.archivedBadge') }}</app-badge>
+                      }
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="font-mono text-sm font-semibold tabular-nums">
+                        {{ row.spend.amount | money: row.spend.currency }}
+                      </span>
+                      <button
+                        appButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        (click)="openEdit(row.category)"
+                        [attr.aria-label]="t('categories.actions.edit')"
+                      >
+                        <app-icon name="pencil" [size]="16" />
+                      </button>
+                      <button
+                        appButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        (click)="toggleArchived(row.category)"
+                        [attr.aria-label]="
+                          row.category.archived ? t('categories.actions.unarchive') : t('categories.actions.archive')
+                        "
+                      >
+                        <app-icon name="archive" [size]="16" />
+                      </button>
+                    </div>
+                  </div>
+
+                  @if (row.children.length > 0) {
+                    <ul class="border-t border-border bg-surface-sunken">
+                      @for (child of row.children; track child.category.id) {
+                        <li class="flex items-center justify-between gap-4 py-2 pr-4 pl-10">
+                          <div class="flex items-center gap-2">
+                            <span
+                              class="flex size-6 items-center justify-center rounded-full"
+                              [style.background-color]="child.category.color + '1A'"
+                              [style.color]="child.category.color"
+                            >
+                              <app-icon [name]="child.category.icon" [size]="12" />
+                            </span>
+                            <span class="text-sm text-content-primary">{{ child.category.name }}</span>
+                            @if (child.category.archived) {
+                              <app-badge tone="neutral">{{ t('categories.archivedBadge') }}</app-badge>
+                            }
+                          </div>
+                          <div class="flex items-center gap-3">
+                            <span class="font-mono text-xs font-medium tabular-nums text-content-muted">
+                              {{ child.spend.amount | money: child.spend.currency }}
+                            </span>
+                            <button
+                              appButton
+                              variant="ghost"
+                              size="sm"
+                              type="button"
+                              (click)="openEdit(child.category)"
+                              [attr.aria-label]="t('categories.actions.edit')"
+                            >
+                              <app-icon name="pencil" [size]="14" />
+                            </button>
+                            <button
+                              appButton
+                              variant="ghost"
+                              size="sm"
+                              type="button"
+                              (click)="toggleArchived(child.category)"
+                              [attr.aria-label]="
+                                child.category.archived
+                                  ? t('categories.actions.unarchive')
+                                  : t('categories.actions.archive')
+                              "
+                            >
+                              <app-icon name="archive" [size]="14" />
+                            </button>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </li>
+              }
+            </ul>
+          </app-card>
+        }
+      }
+    </div>
+  }
+
+  <app-category-form-modal
+    [(open)]="formOpen"
+    [category]="editingCategory()"
+    [allCategories]="categoriesResource.value() ?? []"
+    (saved)="onSaved()"
+  />
+</div>

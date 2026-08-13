@@ -1,0 +1,124 @@
+import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { Account, AccountType } from '../../domain/models/account';
+import { AccountRepository } from '../../data/account.repository';
+import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
+import { CURRENCY_OPTIONS } from '../../shared/currency-options';
+import { Button } from '../../shared/ui/button/button';
+import { Modal } from '../../shared/ui/modal/modal';
+import { ACCOUNT_TYPE_OPTIONS } from './account-type';
+
+/**
+ * Create/edit form for an Account, in a modal (per the project's decision
+ * for all create/edit flows — see the brainstorming spec). One instance is
+ * reused by the accounts list and detail screens for both "new" and "edit"
+ * — which mode it's in is entirely driven by whether `account` is set, and
+ * the form repopulates whenever the modal opens.
+ */
+@Component({
+  selector: 'app-account-form-modal',
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  templateUrl: './account-form-modal.html',
+  styleUrl: './account-form-modal.scss'
+})
+export class AccountFormModal {
+  private readonly accounts = inject(AccountRepository);
+  private readonly fb = inject(FormBuilder);
+
+  readonly open = model.required<boolean>();
+  readonly account = input<Account | undefined>(undefined);
+  readonly saved = output<Account>();
+
+  protected readonly accountTypeOptions = ACCOUNT_TYPE_OPTIONS;
+  protected readonly currencyOptions = CURRENCY_OPTIONS;
+
+  protected readonly saving = signal(false);
+  protected readonly saveErrorKey = signal<string | null>(null);
+
+  protected readonly form = this.fb.nonNullable.group({
+    name: ['', Validators.required],
+    type: ['checking' as AccountType, Validators.required],
+    currency: ['BRL', Validators.required],
+    openingBalance: ['0', [Validators.required, decimalAmountValidator()]],
+    institution: [''],
+    creditLimit: ['', decimalAmountValidator()],
+    closingDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)]),
+    dueDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)])
+  });
+
+  private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
+    initialValue: this.form.controls.type.value
+  });
+  protected readonly isCreditCard = computed(() => this.selectedType() === 'credit_card');
+
+  /**
+   * titleKey/saveErrorKey below hold these as plain string literals, only
+   * ever reached through the template's translation call — see
+   * layout/sidebar.ts for why that needs a JSDoc "dynamic markings" block
+   * to avoid a false orphaned-key report:
+   * t(accounts.form.editTitle, accounts.form.newTitle, accounts.form.saveError)
+   */
+  protected readonly titleKey = computed(() =>
+    this.account() ? 'accounts.form.editTitle' : 'accounts.form.newTitle'
+  );
+
+  constructor() {
+    // Repopulate the form every time the modal opens, from whatever
+    // `account` currently is — this is what lets one modal instance
+    // serve both "new" (account undefined) and "edit" (account set).
+    effect(() => {
+      if (!this.open()) return;
+      const account = this.account();
+      this.form.reset({
+        name: account?.name ?? '',
+        type: account?.type ?? 'checking',
+        currency: account?.currency ?? 'BRL',
+        openingBalance: account?.openingBalance ?? '0',
+        institution: account?.institution ?? '',
+        creditLimit: account?.creditLimit ?? '',
+        closingDay: account?.closingDay ?? null,
+        dueDay: account?.dueDay ?? null
+      });
+      this.saveErrorKey.set(null);
+    });
+  }
+
+  protected submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const raw = this.form.getRawValue();
+    const isCreditCard = raw.type === 'credit_card';
+    const payload: Omit<Account, 'id'> = {
+      name: raw.name.trim(),
+      type: raw.type,
+      currency: raw.currency,
+      openingBalance: raw.openingBalance,
+      institution: raw.institution.trim() || undefined,
+      archived: this.account()?.archived ?? false,
+      creditLimit: isCreditCard && raw.creditLimit ? raw.creditLimit : undefined,
+      closingDay: isCreditCard && raw.closingDay ? raw.closingDay : undefined,
+      dueDay: isCreditCard && raw.dueDay ? raw.dueDay : undefined
+    };
+
+    this.saving.set(true);
+    const existing = this.account();
+    const request$ = existing ? this.accounts.update(existing.id, payload) : this.accounts.create(payload);
+
+    request$.subscribe({
+      next: (account) => {
+        this.saving.set(false);
+        this.open.set(false);
+        this.saved.emit(account);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.saveErrorKey.set('accounts.form.saveError');
+      }
+    });
+  }
+}

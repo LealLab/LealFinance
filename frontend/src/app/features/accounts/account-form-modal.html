@@ -1,0 +1,119 @@
+<div *transloco="let t">
+  <!-- The @if…as below (rather than a plain expression) is deliberate:
+       transloco-keys-manager's template parser mis-extracts a garbage
+       "key" when a translation call's argument is itself a nested
+       function call. A plain property path — an @if…as binding, or a
+       field on a looped-over item — resolves fine (see
+       account-type.ts's ACCOUNT_TYPE_OPTIONS for the same reasoning
+       applied to the type <select> below). -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div>
+          <label class="form-label" for="account-name">{{ t('accounts.form.fields.name') }}</label>
+          <input id="account-name" type="text" class="form-input" formControlName="name" />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p class="form-error">{{ t('accounts.form.errors.required') }}</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="account-type">{{ t('accounts.form.fields.type') }}</label>
+            <select id="account-type" class="form-input" formControlName="type">
+              @for (option of accountTypeOptions; track option.type) {
+                <option [value]="option.type">{{ t(option.labelKey) }}</option>
+              }
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" for="account-currency">{{ t('accounts.form.fields.currency') }}</label>
+            <select id="account-currency" class="form-input" formControlName="currency">
+              @for (currency of currencyOptions; track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label" for="account-opening-balance">
+            {{ t('accounts.form.fields.openingBalance') }}
+          </label>
+          <input
+            id="account-opening-balance"
+            type="text"
+            inputmode="decimal"
+            class="form-input font-mono"
+            formControlName="openingBalance"
+          />
+          @if (form.controls.openingBalance.invalid && form.controls.openingBalance.touched) {
+            <p class="form-error">{{ t('accounts.form.errors.decimalAmount') }}</p>
+          }
+        </div>
+
+        <div>
+          <label class="form-label" for="account-institution">
+            {{ t('accounts.form.fields.institution') }}
+          </label>
+          <input id="account-institution" type="text" class="form-input" formControlName="institution" />
+        </div>
+
+        @if (isCreditCard()) {
+          <div class="grid grid-cols-3 gap-4 rounded-md border border-border bg-surface-sunken p-3">
+            <div class="col-span-3">
+              <label class="form-label" for="account-credit-limit">
+                {{ t('accounts.form.fields.creditLimit') }}
+              </label>
+              <input
+                id="account-credit-limit"
+                type="text"
+                inputmode="decimal"
+                class="form-input font-mono"
+                formControlName="creditLimit"
+              />
+            </div>
+            <div>
+              <label class="form-label" for="account-closing-day">
+                {{ t('accounts.form.fields.closingDay') }}
+              </label>
+              <input
+                id="account-closing-day"
+                type="number"
+                min="1"
+                max="31"
+                class="form-input"
+                formControlName="closingDay"
+              />
+            </div>
+            <div>
+              <label class="form-label" for="account-due-day">{{ t('accounts.form.fields.dueDay') }}</label>
+              <input
+                id="account-due-day"
+                type="number"
+                min="1"
+                max="31"
+                class="form-input"
+                formControlName="dueDay"
+              />
+            </div>
+          </div>
+        }
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('accounts.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('accounts.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

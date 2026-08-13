@@ -1,0 +1,86 @@
+<div *transloco="let t">
+  <!-- reports.period.* is looked up dynamically below. -->
+  <!-- t(reports.period.month) t(reports.period.3m) t(reports.period.6m) t(reports.period.12m) t(reports.period.custom) -->
+  <app-page-header [title]="t('reports.title')" [description]="t('reports.description')">
+    <select
+      class="form-input mt-0"
+      [value]="period()"
+      (change)="onPeriodChange($any($event.target).value)"
+    >
+      @for (option of periodOptions; track option) {
+        <option [value]="option">{{ t('reports.period.' + option) }}</option>
+      }
+    </select>
+    @if (period() === 'custom') {
+      <input
+        type="month"
+        class="form-input mt-0"
+        [value]="customFrom()"
+        (change)="customFrom.set($any($event.target).value)"
+      />
+      <input
+        type="month"
+        class="form-input mt-0"
+        [value]="customTo()"
+        (change)="customTo.set($any($event.target).value)"
+      />
+    }
+  </app-page-header>
+
+  @if (isEmpty()) {
+    <app-empty-state icon="chart" [title]="t('reports.empty.title')" [description]="t('reports.empty.description')" />
+  } @else {
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <app-card>
+        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.incomeExpense') }}</h2>
+        <div class="h-64">
+          <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
+        </div>
+      </app-card>
+
+      <app-card>
+        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.netFlow') }}</h2>
+        <div class="h-64">
+          <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
+        </div>
+      </app-card>
+
+      <app-card>
+        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.byCategory') }}</h2>
+        <div class="h-64">
+          <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
+        </div>
+        <table class="mt-4 w-full text-sm">
+          <tbody>
+            @for (row of categoryTable(); track row.categoryId) {
+              <tr class="border-t border-border">
+                <td class="py-2 pr-2">
+                  <span class="inline-flex items-center gap-2">
+                    <span class="size-2.5 rounded-full" [style.background-color]="row.color"></span>
+                    {{ row.name }}
+                  </span>
+                </td>
+                <td class="py-2 pr-2 text-right font-mono tabular-nums">
+                  {{ row.total.amount | money: row.total.currency }}
+                </td>
+                <td class="py-2 text-right text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </app-card>
+
+      <app-card>
+        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.balanceTrend') }}</h2>
+        <div class="h-64">
+          <app-chart
+            kind="line"
+            [labels]="balanceTrendChart().labels"
+            [datasets]="balanceTrendChart().datasets"
+            [formatValue]="formatMoney"
+          />
+        </div>
+      </app-card>
+    </div>
+  }
+</div>

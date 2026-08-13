@@ -1,0 +1,6 @@
+// Utility classes in sidebar.html cover all styling; this only sets the
+// host's own display so `class="flex-1 ..."` from a parent flex container
+// behaves predictably.
+:host {
+  display: block;
+}

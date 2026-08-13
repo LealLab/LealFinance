@@ -1,0 +1,147 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('budgets.title')" [description]="t('budgets.description')">
+    <label class="flex items-center gap-2 text-sm text-content-muted">
+      <span class="sr-only">{{ t('budgets.monthLabel') }}</span>
+      <input
+        type="month"
+        class="form-input mt-0"
+        [value]="selectedMonth()"
+        (change)="onMonthChange($any($event.target).value)"
+      />
+    </label>
+    <button appButton variant="primary" type="button" (click)="openCreate()">
+      <app-icon name="plus" [size]="16" />
+      {{ t('budgets.actions.new') }}
+    </button>
+  </app-page-header>
+
+  @if (!isEmpty()) {
+    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <app-stat-tile [label]="t('budgets.totals.budgeted')" [value]="totals().budgeted.amount | money: totals().budgeted.currency" />
+      <app-stat-tile
+        [label]="t('budgets.totals.spent')"
+        [value]="totals().spent.amount | money: totals().spent.currency"
+      />
+      <app-stat-tile
+        [label]="t('budgets.totals.remaining')"
+        [value]="totals().remaining.amount | money: totals().remaining.currency"
+        [tone]="totals().remaining.amount.startsWith('-') ? 'negative' : 'positive'"
+      />
+    </div>
+  }
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="target"
+      [title]="t('budgets.empty.title')"
+      [description]="t('budgets.empty.description')"
+    >
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        {{ t('budgets.actions.new') }}
+      </button>
+    </app-empty-state>
+  } @else {
+    <div class="flex flex-col gap-6">
+      @if (budgetRows().length > 0) {
+        <app-card [padded]="false">
+          <ul>
+            @for (row of budgetRows(); track row.budget.id) {
+              <li class="flex flex-col gap-2 border-b border-border px-4 py-4 last:border-b-0">
+                <div class="flex items-center justify-between gap-4">
+                  <div class="flex items-center gap-2">
+                    @if (row.category; as category) {
+                      <span
+                        class="flex size-7 items-center justify-center rounded-full"
+                        [style.background-color]="category.color + '1A'"
+                        [style.color]="category.color"
+                      >
+                        <app-icon [name]="category.icon" [size]="14" />
+                      </span>
+                      <span class="text-sm font-medium text-content-primary">{{ category.name }}</span>
+                    }
+                    @if (row.state === 'over') {
+                      <app-badge tone="negative">{{ t('budgets.state.over') }}</app-badge>
+                    } @else if (row.state === 'near') {
+                      <app-badge tone="warning">{{ t('budgets.state.near') }}</app-badge>
+                    }
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="font-mono text-sm font-semibold tabular-nums">
+                      {{ row.spent.amount | money: row.spent.currency }} /
+                      {{ row.budgeted.amount | money: row.budgeted.currency }}
+                    </span>
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      (click)="openEdit(row.budget)"
+                      [attr.aria-label]="t('budgets.actions.edit')"
+                    >
+                      <app-icon name="pencil" [size]="16" />
+                    </button>
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      (click)="deleteBudget(row.budget)"
+                      [attr.aria-label]="t('budgets.actions.delete')"
+                    >
+                      <app-icon name="trash" [size]="16" />
+                    </button>
+                  </div>
+                </div>
+                <app-progress-bar [ratio]="row.ratio" />
+              </li>
+            }
+          </ul>
+        </app-card>
+      }
+
+      @if (unbudgetedRows().length > 0) {
+        <div>
+          <h2 class="mb-2 text-sm font-semibold text-content-primary">{{ t('budgets.unbudgeted.title') }}</h2>
+          <app-card [padded]="false">
+            <ul>
+              @for (row of unbudgetedRows(); track row.categoryId) {
+                <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
+                  <div class="flex items-center gap-2">
+                    @if (row.category; as category) {
+                      <span
+                        class="flex size-7 items-center justify-center rounded-full"
+                        [style.background-color]="category.color + '1A'"
+                        [style.color]="category.color"
+                      >
+                        <app-icon [name]="category.icon" [size]="14" />
+                      </span>
+                      <span class="text-sm font-medium text-content-primary">{{ category.name }}</span>
+                    }
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="font-mono text-sm font-semibold tabular-nums text-content-muted">
+                      {{ row.spent.amount | money: row.spent.currency }}
+                    </span>
+                    <button appButton variant="secondary" size="sm" type="button" (click)="openCreateFor(row.categoryId)">
+                      {{ t('budgets.unbudgeted.setBudget') }}
+                    </button>
+                  </div>
+                </li>
+              }
+            </ul>
+          </app-card>
+        </div>
+      }
+    </div>
+  }
+
+  <app-budget-form-modal
+    [(open)]="formOpen"
+    [budget]="editingBudget()"
+    [prefillCategoryId]="prefillCategoryId()"
+    [month]="selectedMonth()"
+    [availableCategories]="availableCategoriesForNewBudget()"
+    [allCategories]="categoriesResource.value() ?? []"
+    (saved)="onSaved()"
+  />
+</div>

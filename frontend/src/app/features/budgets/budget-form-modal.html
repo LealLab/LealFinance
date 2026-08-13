@@ -1,0 +1,60 @@
+<div *transloco="let t">
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div>
+          <span class="form-label">{{ t('budgets.form.fields.month') }}</span>
+          <p class="mt-1 text-sm font-medium text-content-primary">{{ month() }}</p>
+        </div>
+
+        <div>
+          <label class="form-label" for="budget-category">{{ t('budgets.form.fields.category') }}</label>
+          @if (isEditing()) {
+            <p class="mt-1 text-sm font-medium text-content-primary">{{ editingCategoryName() }}</p>
+          } @else {
+            <select id="budget-category" class="form-input" formControlName="categoryId">
+              <option value="" disabled>{{ t('budgets.form.fields.selectCategory') }}</option>
+              @for (category of availableCategories(); track category.id) {
+                <option [value]="category.id">{{ category.name }}</option>
+              }
+            </select>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="budget-amount">{{ t('budgets.form.fields.amount') }}</label>
+            <input
+              id="budget-amount"
+              type="text"
+              inputmode="decimal"
+              class="form-input font-mono"
+              formControlName="amount"
+            />
+          </div>
+          <div>
+            <label class="form-label" for="budget-currency">{{ t('budgets.form.fields.currency') }}</label>
+            <select id="budget-currency" class="form-input" formControlName="currency">
+              @for (currency of currencyOptions; track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('budgets.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('budgets.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

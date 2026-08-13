@@ -1,28 +1,110 @@
-<div *transloco="let t" class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
-  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-4">
-    <a routerLink="/" class="text-lg font-semibold tracking-tight">{{ t('app.title') }}</a>
+<div *transloco="let t" class="flex min-h-screen bg-surface-page text-content-primary">
+  <aside
+    class="hidden shrink-0 flex-col border-r border-border bg-surface-raised md:flex md:w-16 lg:w-56"
+  >
+    <a routerLink="/" class="flex items-center gap-2 px-3 py-4">
+      <span
+        class="flex size-7 shrink-0 items-center justify-center rounded bg-accent font-mono text-sm font-semibold text-accent-content"
+        aria-hidden="true"
+      >
+        L
+      </span>
+      <span class="hidden text-sm font-semibold tracking-tight lg:inline">{{ t('app.title') }}</span>
+    </a>
+    <app-sidebar variant="rail" class="flex-1 overflow-y-auto" />
+  </aside>
 
-    <nav class="flex items-center gap-4">
-      <a routerLink="/" class="text-sm font-medium text-slate-600 hover:text-slate-900">
-        {{ t('layout.nav.dashboard') }}
-      </a>
-
-      <label class="flex items-center gap-2 text-sm text-slate-600">
-        <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
-        <select
-          class="rounded-md border border-slate-300 bg-white px-2 py-1 text-sm"
-          [value]="activeLang()"
-          (change)="setLang($any($event.target).value)"
+  <div class="flex min-w-0 flex-1 flex-col">
+    <header
+      class="flex items-center justify-between gap-4 border-b border-border bg-surface-raised px-4 py-3 md:px-6"
+    >
+      <div class="flex items-center gap-3">
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          class="md:hidden"
+          (click)="mobileNavOpen.set(true)"
+          [attr.aria-label]="t('layout.sidebar.openMenu')"
         >
-          @for (lang of availableLangs; track lang) {
-            <option [value]="lang">{{ lang }}</option>
-          }
-        </select>
-      </label>
-    </nav>
-  </header>
+          <app-icon name="menu" [size]="20" />
+        </button>
+        <a routerLink="/" class="text-sm font-semibold tracking-tight md:hidden">
+          {{ t('app.title') }}
+        </a>
+      </div>
 
-  <main class="flex-1 px-6 py-8">
-    <router-outlet />
-  </main>
+      <div class="flex items-center gap-2">
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          (click)="theme.toggle()"
+          [attr.aria-label]="
+            theme.current() === 'dark'
+              ? t('layout.themeToggle.switchToLight')
+              : t('layout.themeToggle.switchToDark')
+          "
+        >
+          <app-icon [name]="theme.current() === 'dark' ? 'sun' : 'moon'" [size]="18" />
+        </button>
+
+        <label class="flex items-center gap-2 text-sm text-content-muted">
+          <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
+          <select
+            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm"
+            [value]="activeLang()"
+            (change)="setLang($any($event.target).value)"
+          >
+            @for (lang of availableLangs; track lang) {
+              <option [value]="lang">{{ lang }}</option>
+            }
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="flex-1 px-4 py-6 md:px-6 md:py-8">
+      <router-outlet />
+    </main>
+  </div>
+
+  <!-- Backdrop-click-to-dismiss is a mouse convenience on top of the
+       dialog's native Escape handling, not the only way to close it, and
+       the inner div below only stops click bubbling (no user action) — the
+       two rules below don't apply to either. -->
+  <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <dialog
+    #drawer
+    class="m-0 h-dvh max-h-none w-72 max-w-[85vw] rounded-none border-0 border-r border-border bg-surface-raised p-0 backdrop:bg-black/40"
+    style="inset: 0 auto 0 0"
+    (close)="onDrawerNativeClose()"
+    (click)="onDrawerBackdropClick($event)"
+  >
+    <div class="flex h-full flex-col" (click)="$event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-border px-4 py-3">
+        <span class="text-sm font-semibold tracking-tight">{{ t('app.title') }}</span>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          (click)="mobileNavOpen.set(false)"
+          [attr.aria-label]="t('common.actions.close')"
+        >
+          <app-icon name="close" [size]="16" />
+        </button>
+      </div>
+      <app-sidebar
+        variant="drawer"
+        class="flex-1 overflow-y-auto"
+        (navigated)="mobileNavOpen.set(false)"
+      />
+    </div>
+  </dialog>
+  <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+
+  <app-confirm-dialog />
 </div>

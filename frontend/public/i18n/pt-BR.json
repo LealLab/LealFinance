@@ -2,9 +2,29 @@
   "app": {
     "title": "LealFinance"
   },
+  "common": {
+    "actions": {
+      "close": "Fechar",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar"
+    }
+  },
   "layout": {
     "nav": {
-      "dashboard": "Painel"
+      "dashboard": "Painel",
+      "accounts": "Contas",
+      "transactions": "Transações",
+      "categories": "Categorias",
+      "budgets": "Orçamentos",
+      "reports": "Relatórios",
+      "settings": "Configurações"
+    },
+    "sidebar": {
+      "openMenu": "Abrir menu"
+    },
+    "themeToggle": {
+      "switchToLight": "Mudar para tema claro",
+      "switchToDark": "Mudar para tema escuro"
     },
     "languageSwitcher": {
       "label": "Idioma"
@@ -12,9 +32,349 @@
   },
   "dashboard": {
     "title": "Painel",
-    "welcome": "Bem-vindo ao LealFinance"
+    "welcome": "Bem-vindo ao LealFinance",
+    "empty": {
+      "title": "Nenhum dado ainda",
+      "description": "Cadastre uma conta para começar a ver seu painel financeiro."
+    },
+    "stats": {
+      "netWorth": "Patrimônio líquido",
+      "income": "Receita do mês",
+      "expense": "Despesa do mês",
+      "savingsRate": "Taxa de poupança"
+    },
+    "cashFlow": {
+      "title": "Fluxo de caixa (6 meses)",
+      "income": "Receita",
+      "expense": "Despesa"
+    },
+    "categoryChart": {
+      "title": "Gastos por categoria (mês atual)",
+      "label": "Categorias",
+      "empty": "Nenhum gasto registrado neste mês ainda."
+    },
+    "accounts": {
+      "title": "Contas"
+    },
+    "recentTransactions": {
+      "title": "Transações recentes",
+      "empty": "Nenhuma transação lançada ainda."
+    },
+    "budgets": {
+      "title": "Orçamentos",
+      "empty": "Nenhum orçamento definido neste mês."
+    }
   },
   "currency": {
     "fallbackRateWarning": "Taxa de câmbio indisponível — usando conversão 1:1 como aproximação."
+  },
+  "accounts": {
+    "title": "Contas",
+    "description": "Seus saldos em um só lugar.",
+    "showArchived": "Mostrar contas arquivadas",
+    "archivedBadge": "Arquivada",
+    "actions": {
+      "new": "Nova conta",
+      "edit": "Editar",
+      "archive": "Arquivar",
+      "unarchive": "Reativar"
+    },
+    "empty": {
+      "title": "Nenhuma conta cadastrada",
+      "description": "Crie sua primeira conta para começar a acompanhar seus saldos."
+    },
+    "type": {
+      "checking": "Conta corrente",
+      "savings": "Poupança",
+      "cash": "Dinheiro",
+      "credit_card": "Cartão de crédito",
+      "investment": "Investimentos"
+    },
+    "form": {
+      "newTitle": "Nova conta",
+      "editTitle": "Editar conta",
+      "saveError": "Não foi possível salvar a conta. Tente novamente.",
+      "fields": {
+        "name": "Nome",
+        "type": "Tipo",
+        "currency": "Moeda",
+        "openingBalance": "Saldo inicial",
+        "institution": "Instituição",
+        "creditLimit": "Limite do cartão",
+        "closingDay": "Dia de fechamento",
+        "dueDay": "Dia de vencimento"
+      },
+      "errors": {
+        "required": "Este campo é obrigatório.",
+        "decimalAmount": "Informe um valor numérico válido."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    },
+    "detail": {
+      "back": "Voltar para contas",
+      "notFound": "Conta não encontrada",
+      "history": "Histórico de transações",
+      "historyEmpty": {
+        "title": "Nenhuma transação nesta conta",
+        "description": "Transações lançadas nesta conta aparecerão aqui."
+      },
+      "creditCard": {
+        "title": "Cartão de crédito",
+        "used": "Utilizado",
+        "owed": "Fatura atual",
+        "limit": "Limite",
+        "available": "Disponível",
+        "closingDay": "Fechamento"
+      }
+    }
+  },
+  "transactions": {
+    "title": "Transações",
+    "description": "Lançamentos de receitas, despesas e transferências.",
+    "actions": {
+      "new": "Nova transação",
+      "edit": "Editar",
+      "delete": "Excluir"
+    },
+    "tabs": {
+      "transactions": "Transações",
+      "recurring": "Recorrências"
+    },
+    "type": {
+      "income": "Receita",
+      "expense": "Despesa",
+      "transfer": "Transferência"
+    },
+    "filters": {
+      "type": "Tipo",
+      "account": "Conta",
+      "category": "Categoria",
+      "from": "De",
+      "to": "Até",
+      "search": "Buscar",
+      "all": "Todas",
+      "clear": "Limpar filtros"
+    },
+    "empty": {
+      "title": "Nenhuma transação encontrada",
+      "description": "Ajuste os filtros ou lance uma nova transação."
+    },
+    "projected": {
+      "title": "Próximas (previstas)",
+      "badge": "Prevista"
+    },
+    "delete": {
+      "title": "Excluir transação",
+      "message": "Esta ação não pode ser desfeita. Deseja excluir esta transação?"
+    },
+    "form": {
+      "newTitle": "Nova transação",
+      "editTitle": "Editar transação",
+      "saveError": "Não foi possível salvar a transação. Tente novamente.",
+      "fields": {
+        "date": "Data",
+        "amount": "Valor",
+        "account": "Conta",
+        "fromAccount": "Conta de origem",
+        "toAccount": "Conta de destino",
+        "category": "Categoria",
+        "description": "Descrição",
+        "notes": "Notas",
+        "repeat": "Repetir esta transação",
+        "frequency": "Frequência",
+        "interval": "A cada",
+        "selectPlaceholder": "Selecione"
+      },
+      "errors": {
+        "invalid": "Verifique os campos obrigatórios antes de salvar."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Semanal",
+        "monthly": "Mensal",
+        "yearly": "Anual"
+      },
+      "everyN": "a cada {{n}}",
+      "nextOccurrence": "Próxima ocorrência",
+      "actions": {
+        "new": "Nova recorrência"
+      },
+      "empty": {
+        "title": "Nenhuma recorrência cadastrada",
+        "description": "Transformar uma transação em recorrente cria uma regra aqui."
+      },
+      "delete": {
+        "title": "Excluir recorrência",
+        "message": "Isso não afeta transações já lançadas — apenas as próximas ocorrências previstas deixam de aparecer."
+      },
+      "form": {
+        "newTitle": "Nova recorrência",
+        "editTitle": "Editar recorrência",
+        "saveError": "Não foi possível salvar a recorrência. Tente novamente.",
+        "startDate": "Início",
+        "endDate": "Término (opcional)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Categorias",
+    "description": "Organize receitas e despesas por categoria.",
+    "showArchived": "Mostrar categorias arquivadas",
+    "archivedBadge": "Arquivada",
+    "actions": {
+      "new": "Nova categoria",
+      "edit": "Editar",
+      "archive": "Arquivar",
+      "unarchive": "Reativar"
+    },
+    "empty": {
+      "title": "Nenhuma categoria cadastrada",
+      "description": "Crie categorias para organizar suas transações."
+    },
+    "sections": {
+      "income": "Categorias de receita",
+      "expense": "Categorias de despesa"
+    },
+    "form": {
+      "newTitle": "Nova categoria",
+      "editTitle": "Editar categoria",
+      "saveError": "Não foi possível salvar a categoria. Tente novamente.",
+      "fields": {
+        "name": "Nome",
+        "parent": "Categoria principal",
+        "noParent": "Nenhuma (categoria principal)",
+        "color": "Cor",
+        "icon": "Ícone"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    },
+    "icon": {
+      "tag": "Etiqueta",
+      "home": "Casa",
+      "archive": "Arquivo",
+      "swap": "Transporte",
+      "wallet": "Carteira",
+      "chart": "Gráfico",
+      "sun": "Energia",
+      "alertTriangle": "Alerta",
+      "pencil": "Educação",
+      "target": "Meta",
+      "repeat": "Recorrente",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Orçamentos",
+    "description": "Planeje quanto gastar por categoria a cada mês.",
+    "monthLabel": "Mês",
+    "actions": {
+      "new": "Novo orçamento",
+      "edit": "Editar",
+      "delete": "Excluir"
+    },
+    "totals": {
+      "budgeted": "Orçado",
+      "spent": "Gasto",
+      "remaining": "Restante"
+    },
+    "empty": {
+      "title": "Nenhum orçamento neste mês",
+      "description": "Defina um orçamento por categoria para acompanhar seus gastos."
+    },
+    "state": {
+      "over": "Estourado",
+      "near": "Perto do limite"
+    },
+    "unbudgeted": {
+      "title": "Gastos sem orçamento definido",
+      "setBudget": "Definir orçamento"
+    },
+    "delete": {
+      "title": "Excluir orçamento",
+      "message": "Esta ação não pode ser desfeita. Deseja excluir este orçamento?"
+    },
+    "form": {
+      "newTitle": "Novo orçamento",
+      "editTitle": "Editar orçamento",
+      "saveError": "Não foi possível salvar o orçamento. Tente novamente.",
+      "fields": {
+        "month": "Mês",
+        "category": "Categoria",
+        "selectCategory": "Selecione uma categoria",
+        "amount": "Valor",
+        "currency": "Moeda"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    }
+  },
+  "reports": {
+    "title": "Relatórios",
+    "description": "Analise receitas, despesas e saldos ao longo do tempo.",
+    "period": {
+      "month": "Este mês",
+      "3m": "Últimos 3 meses",
+      "6m": "Últimos 6 meses",
+      "12m": "Últimos 12 meses",
+      "custom": "Personalizado"
+    },
+    "empty": {
+      "title": "Nenhuma transação no período",
+      "description": "Ajuste o período selecionado para ver seus relatórios."
+    },
+    "charts": {
+      "incomeExpense": "Receita x Despesa",
+      "netFlow": "Fluxo líquido",
+      "byCategory": "Gastos por categoria",
+      "balanceTrend": "Evolução de saldo por conta"
+    },
+    "series": {
+      "income": "Receita",
+      "expense": "Despesa",
+      "netFlow": "Fluxo líquido",
+      "categories": "Categorias"
+    }
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Preferências de aparência, idioma e dados de demonstração.",
+    "appearance": {
+      "title": "Aparência",
+      "theme": "Tema",
+      "light": "Claro",
+      "dark": "Escuro",
+      "language": "Idioma"
+    },
+    "currency": {
+      "title": "Moeda de exibição",
+      "description": "Usada para converter e somar valores entre contas de moedas diferentes, como no patrimônio líquido do painel."
+    },
+    "mockData": {
+      "title": "Dados de demonstração",
+      "description": "Todos os dados de contas, transações, categorias e orçamentos são fictícios e existem apenas na memória do navegador — eles são reiniciados sempre que a página é recarregada. Tema, idioma e moeda de exibição são preferências reais e continuam salvos.",
+      "reset": {
+        "action": "Reiniciar dados",
+        "confirmTitle": "Reiniciar dados de demonstração",
+        "confirmMessage": "Todas as contas, transações, categorias e orçamentos criados ou editados nesta sessão serão substituídos pelos dados de exemplo originais. Deseja continuar?"
+      }
+    },
+    "agents": {
+      "title": "Agentes de IA",
+      "description": "Assistentes de IA sobre os seus dados financeiros, com múltiplos provedores e ferramentas via MCP. Desativado por padrão — configurável no Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Desativado"
+    }
   }
 }

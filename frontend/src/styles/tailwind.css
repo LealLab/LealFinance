@@ -3,3 +3,126 @@
    we want) rather than passing it straight through to @tailwindcss/postcss.
    Keeping this out of styles.scss avoids that entirely. */
 @import "tailwindcss";
+
+/* Dark mode is opt-in via a `data-theme="dark"` attribute on <html>, toggled
+   by ThemeService (src/app/core/theme.service.ts) — not bare
+   `prefers-color-scheme`, because the app has a user-facing toggle and the
+   attribute needs to be able to win over the OS setting once the user picks
+   one explicitly. */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/*
+ * Design tokens — the "ledger" palette.
+ *
+ * LealFinance is a self-hosted tool for people who run their own
+ * infrastructure, not a consumer fintech app, and the palette leans into
+ * that: a precise, slightly cool neutral rather than the warm-cream or
+ * slate-SaaS defaults, one petrol-teal accent (deliberately not the blue or
+ * green every finance dashboard reaches for), and semantic color used
+ * *only* for money direction (positive/negative), never decoratively.
+ *
+ * Values live as plain custom properties on :root / [data-theme=dark] and
+ * are re-exposed under Tailwind's --color-* namespace below so utilities
+ * like `bg-surface-page` / `text-content-muted` resolve at *runtime* — that
+ * is what lets one attribute repaint the whole app instead of every
+ * component duplicating a `dark:` variant.
+ */
+:root {
+  --surface-page: #f6f6f4;
+  --surface-raised: #ffffff;
+  --surface-sunken: #ecebe7;
+  --border: #dedcd6;
+  --border-strong: #c7c5bd;
+  --content-primary: #17171a;
+  --content-muted: #6b6a63;
+  --content-subtle: #9b9a92;
+  --accent: #1f5c6b;
+  --accent-content: #ffffff;
+  --positive: #3e7d4c;
+  --negative: #b0453b;
+  --warning: #96650f;
+}
+
+[data-theme='dark'] {
+  --surface-page: #14161a;
+  --surface-raised: #1b1e23;
+  --surface-sunken: #0f1114;
+  --border: #2b2f35;
+  --border-strong: #3a3f46;
+  --content-primary: #e8e9ea;
+  --content-muted: #9ba0a6;
+  --content-subtle: #6b7076;
+  --accent: #5bb0bb;
+  --accent-content: #0b1113;
+  --positive: #5fae6e;
+  --negative: #e07a6e;
+  --warning: #d9a441;
+}
+
+@theme {
+  --color-surface-page: var(--surface-page);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-content-primary: var(--content-primary);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-accent: var(--accent);
+  --color-accent-content: var(--accent-content);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-warning: var(--warning);
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  /* Amounts render in this face everywhere MoneyPipe output appears — the
+     one deliberate visual signature of the UI. Real monospace (not just
+     `tabular-nums` on the body face) makes every balance read like a ledger
+     printout, with columns of figures lining up digit-for-digit. */
+  --font-mono:
+    ui-monospace, 'Cascadia Code', 'Segoe UI Mono', 'SFMono-Regular', Consolas,
+    'Liberation Mono', monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-surface-page);
+    color: var(--color-content-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Shared form-field classes — every create/edit form (accounts,
+   transactions, categories, budgets) uses these instead of repeating the
+   same utility-class string in every template. */
+@layer components {
+  .form-label {
+    @apply block text-sm font-medium text-content-primary;
+  }
+
+  .form-input {
+    @apply mt-1 block w-full rounded-md border border-border bg-surface-raised px-3 py-2 text-sm text-content-primary placeholder:text-content-subtle focus:border-accent focus:outline-none;
+  }
+
+  .form-error {
+    @apply mt-1 text-xs text-negative;
+  }
+
+  .form-hint {
+    @apply mt-1 text-xs text-content-muted;
+  }
+}

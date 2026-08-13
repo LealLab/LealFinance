@@ -25,11 +25,14 @@ module.exports = defineConfig([
       ],
       '@angular-eslint/component-selector': [
         'error',
-        {
-          type: 'element',
-          prefix: 'app',
-          style: 'kebab-case',
-        },
+        [
+          { type: 'element', prefix: 'app', style: 'kebab-case' },
+          // A handful of components (e.g. Button, shared/ui/button/button.ts)
+          // attach to a native element (`button[appButton]`) instead of
+          // wrapping one, so real button/input/etc. attributes stay
+          // directly settable by the caller.
+          { type: 'attribute', prefix: 'app', style: 'camelCase' },
+        ],
       ],
     },
   },
