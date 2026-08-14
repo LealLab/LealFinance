@@ -6,6 +6,7 @@ import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { ConfirmService } from '../../core/confirm.service';
+import { MutationErrorService } from '../../core/mutation-error.service';
 import { categoryUsage, isCategoryDeletable } from '../../domain/calc/category-usage';
 import { monthKey } from '../../domain/calc/dates';
 import { Category, CategoryKind } from '../../domain/models/category';
@@ -55,6 +56,7 @@ interface CategoryRow {
   styleUrl: './categories.scss'
 })
 export class Categories {
+  private readonly mutationErrors = inject(MutationErrorService);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly budgetRepository = inject(BudgetRepository);
@@ -152,8 +154,9 @@ export class Categories {
   }
 
   protected toggleArchived(category: Category): void {
-    this.categoryRepository.setArchived(category.id, !category.archived).subscribe(() => {
-      this.categoriesResource.reload();
+    this.categoryRepository.setArchived(category.id, !category.archived).subscribe({
+      next: () => this.categoriesResource.reload(),
+      error: () => this.mutationErrors.show(),
     });
   }
 
@@ -183,7 +186,10 @@ export class Categories {
         { name: category.name }
       );
       if (!confirmed) return;
-      this.categoryRepository.delete(category.id).subscribe(() => this.categoriesResource.reload());
+      this.categoryRepository.delete(category.id).subscribe({
+        next: () => this.categoriesResource.reload(),
+        error: () => this.mutationErrors.show(),
+      });
       return;
     }
 
@@ -201,7 +207,10 @@ export class Categories {
     moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
     this.categoryRepository
       .reorder(kind, undefined, orderedIds)
-      .subscribe(() => this.categoriesResource.reload());
+      .subscribe({
+        next: () => this.categoriesResource.reload(),
+        error: () => this.mutationErrors.show(),
+      });
   }
 
   protected onChildDrop(kind: CategoryKind, parentId: string, event: CdkDragDrop<Category[]>): void {
@@ -213,6 +222,9 @@ export class Categories {
     moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
     this.categoryRepository
       .reorder(kind, parentId, orderedIds)
-      .subscribe(() => this.categoriesResource.reload());
+      .subscribe({
+        next: () => this.categoriesResource.reload(),
+        error: () => this.mutationErrors.show(),
+      });
   }
 }

@@ -4,12 +4,11 @@ import { Router } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { BalanceVisibilityService } from '../../core/balance-visibility.service';
 import { CommandPaletteService } from '../../core/command-palette.service';
-import { ConfirmService } from '../../core/confirm.service';
+import { PreferenceService } from '../../core/preference.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
-import { MockStore } from '../../data/mock/mock-store';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Icon, IconName } from '../../shared/ui/icon/icon';
 import { NAV_SECTIONS } from '../sidebar';
@@ -53,11 +52,9 @@ interface PaletteGroup {
  * resolve back to a literal - same "dynamic markings" situation as
  * layout/sidebar.ts (whose layout.nav.* keys are reused
  * as-is here for the "Go to" group, via NAV_SECTIONS, and so don't need
- * re-marking) and features/settings/settings.ts (whose
- * settings.mockData.reset.* keys are likewise reused as-is for the reset
- * quick action's confirmation).
+ * re-marking).
  *
- * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, layout.commandPalette.actions.resetMockData)
+ * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances)
  */
 @Component({
   selector: 'app-command-palette',
@@ -71,8 +68,7 @@ export class CommandPalette {
   private readonly transloco = inject(TranslocoService);
   private readonly theme = inject(ThemeService);
   private readonly balanceVisibility = inject(BalanceVisibilityService);
-  private readonly confirmService = inject(ConfirmService);
-  private readonly mockStore = inject(MockStore);
+  private readonly preferences = inject(PreferenceService);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly budgetRepository = inject(BudgetRepository);
@@ -290,19 +286,13 @@ export class CommandPalette {
         id: 'quick-toggle-theme',
         labelKey: 'layout.commandPalette.actions.toggleTheme',
         icon: 'sun',
-        run: () => this.theme.toggle()
+        run: () => this.preferences.setTheme(this.theme.current() === 'dark' ? 'light' : 'dark')
       },
       {
         id: 'quick-toggle-balances',
         labelKey: 'layout.commandPalette.actions.toggleBalances',
         icon: 'eye',
-        run: () => this.balanceVisibility.toggle()
-      },
-      {
-        id: 'quick-reset-mock-data',
-        labelKey: 'layout.commandPalette.actions.resetMockData',
-        icon: 'refresh',
-        run: () => void this.resetMockData()
+        run: () => this.preferences.setBalancesHidden(!this.balanceVisibility.hidden())
       }
     ];
   }
@@ -321,22 +311,6 @@ export class CommandPalette {
 
   private navigateToSetting(fragment: string): void {
     this.router.navigate(['/settings'], { fragment });
-  }
-
-  private async resetMockData(): Promise<void> {
-    // Same confirm-then-reset-then-reload flow as
-    // features/settings/settings.ts's resetMockData - reusing it here
-    // rather than duplicating the mechanics, just triggered from the
-    // palette instead of a settings-page button.
-    const confirmed = await this.confirmService.confirm(
-      'settings.mockData.reset.confirmTitle',
-      'settings.mockData.reset.confirmMessage',
-      'danger'
-    );
-    if (!confirmed) return;
-
-    this.mockStore.reset();
-    window.location.reload();
   }
 
   private goToItems(): PaletteItem[] {

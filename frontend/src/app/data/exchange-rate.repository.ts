@@ -9,5 +9,5 @@ import { ExchangeRate } from '../domain/models/exchange-rate';
  * account balances) until that domain is wired together for real.
  */
 export abstract class ExchangeRateRepository {
-  abstract getRate(baseCode: string, quoteCode: string): Observable<ExchangeRate>;
+  abstract getRate(baseCode: string, quoteCode: string, asOf?: string): Observable<ExchangeRate>;
 }

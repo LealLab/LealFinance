@@ -16,6 +16,9 @@ import { BalanceVisibilityService } from '../core/balance-visibility.service';
 import { CommandPaletteService } from '../core/command-palette.service';
 import { isMacPlatform } from '../core/platform';
 import { ThemeService } from '../core/theme.service';
+import { PreferenceService } from '../core/preference.service';
+import { SessionService } from '../core/session.service';
+import { MutationErrorService } from '../core/mutation-error.service';
 import { Button } from '../shared/ui/button/button';
 import { ConfirmDialog } from '../shared/ui/confirm-dialog/confirm-dialog';
 import { Icon } from '../shared/ui/icon/icon';
@@ -57,6 +60,9 @@ export class Shell {
   protected readonly theme = inject(ThemeService);
   protected readonly balanceVisibility = inject(BalanceVisibilityService);
   protected readonly commandPalette = inject(CommandPaletteService);
+  protected readonly preferences = inject(PreferenceService);
+  protected readonly session = inject(SessionService);
+  protected readonly mutationErrors = inject(MutationErrorService);
 
   protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];
   protected readonly activeLang = toSignal(this.transloco.langChanges$, {
@@ -104,7 +110,15 @@ export class Shell {
   }
 
   protected setLang(lang: string): void {
-    this.transloco.setActiveLang(lang);
+    this.preferences.setLocale(lang);
+  }
+
+  protected toggleTheme(): void {
+    this.preferences.setTheme(this.theme.current() === 'dark' ? 'light' : 'dark');
+  }
+
+  protected toggleBalances(): void {
+    this.preferences.setBalancesHidden(!this.balanceVisibility.hidden());
   }
 
   protected toggleSidebar(): void {

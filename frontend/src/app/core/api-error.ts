@@ -14,10 +14,26 @@ export interface ApiErrorBody {
   };
 }
 
+export class ApiError extends Error {
+  constructor(
+    readonly status: number,
+    readonly code: string,
+    readonly params: Record<string, unknown>,
+  ) {
+    super(code);
+    this.name = 'ApiError';
+  }
+}
+
 export function isApiErrorBody(value: unknown): value is ApiErrorBody {
   if (typeof value !== 'object' || value === null || !('error' in value)) {
     return false;
   }
   const err = (value as { error: unknown }).error;
-  return typeof err === 'object' && err !== null && 'code' in err;
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'code' in err &&
+    typeof (err as { code: unknown }).code === 'string'
+  );
 }

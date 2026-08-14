@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ConfirmService } from '../../core/confirm.service';
+import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -56,6 +57,7 @@ interface DateGroup {
   styleUrl: './transactions.scss'
 })
 export class Transactions {
+  private readonly mutationErrors = inject(MutationErrorService);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
@@ -163,7 +165,10 @@ export class Transactions {
       'danger'
     );
     if (!confirmed) return;
-    this.transactionRepository.delete(tx.id).subscribe(() => this.transactionsResource.reload());
+    this.transactionRepository.delete(tx.id).subscribe({
+      next: () => this.transactionsResource.reload(),
+      error: () => this.mutationErrors.show(),
+    });
   }
 
   protected openCreateRule(): void {
@@ -187,7 +192,10 @@ export class Transactions {
       'danger'
     );
     if (!confirmed) return;
-    this.recurringRuleRepository.delete(rule.id).subscribe(() => this.recurringRulesResource.reload());
+    this.recurringRuleRepository.delete(rule.id).subscribe({
+      next: () => this.recurringRulesResource.reload(),
+      error: () => this.mutationErrors.show(),
+    });
   }
 
   protected nextOccurrence(rule: RecurringRule): string | undefined {

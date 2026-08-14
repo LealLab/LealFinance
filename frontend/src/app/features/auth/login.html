@@ -1,0 +1,38 @@
+<main *transloco="let t" class="auth-page">
+  <section class="auth-card">
+    <div class="mb-6 flex items-center gap-2 text-lg font-semibold">
+      <app-logo [size]="30" class="text-accent" />
+      {{ t('app.title') }}
+    </div>
+    <h1 class="text-2xl font-semibold">{{ t('auth.login.title') }}</h1>
+    <p class="mt-1 text-sm text-content-muted">{{ t('auth.login.description') }}</p>
+
+    <form class="mt-6 flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        <span class="form-label">{{ t('auth.fields.email') }}</span>
+        <input class="form-input" type="email" autocomplete="email" formControlName="email" />
+      </label>
+      <label>
+        <span class="form-label">{{ t('auth.fields.password') }}</span>
+        <input
+          class="form-input"
+          type="password"
+          autocomplete="current-password"
+          formControlName="password"
+        />
+      </label>
+      @if (errorCode(); as code) {
+        <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+      }
+      <button appButton type="submit" [disabled]="form.invalid || submitting()">
+        {{ submitting() ? t('common.actions.saving') : t('auth.login.action') }}
+      </button>
+    </form>
+    <p class="mt-5 text-sm text-content-muted">
+      {{ t('auth.login.invited') }}
+      <a class="text-accent hover:underline" routerLink="/register">{{
+        t('auth.register.action')
+      }}</a>
+    </p>
+  </section>
+</main>

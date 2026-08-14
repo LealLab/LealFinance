@@ -19,6 +19,7 @@ import { MockTransactionRepository } from '../../data/mock/mock-transaction.repo
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Account } from '../../domain/models/account';
+import { MetadataService } from '../../core/metadata.service';
 import { Exchange } from './exchange';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -46,6 +47,15 @@ describe('Exchange', () => {
         { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository }
       ]
     }).compileComponents();
+    TestBed.inject(MetadataService).currencies.set(
+      ['BRL', 'USD', 'EUR', 'GBP'].map((code) => ({
+        code,
+        name: code,
+        symbol: code,
+        decimalDigits: 2,
+        isActive: true,
+      })),
+    );
   });
 
   it('renders the "needs attention" and "manual rates" empty states when there is no cross-currency activity', async () => {

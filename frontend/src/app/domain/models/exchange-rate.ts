@@ -12,4 +12,7 @@ export interface ExchangeRate {
   quoteCode: string;
   rate: string;
   isFallback: boolean;
+  source: 'manual' | 'quote' | 'fallback';
+  /** Effective date used by the rate resolver, preserved as an ISO date. */
+  asOf: string;
 }

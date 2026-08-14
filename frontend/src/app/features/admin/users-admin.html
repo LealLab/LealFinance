@@ -1,0 +1,128 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('admin.title')" [description]="t('admin.description')" />
+
+  @if (errorCode(); as code) {
+    <p
+      class="mb-4 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+      role="alert"
+    >
+      {{ t('errors.' + code) }}
+    </p>
+  }
+
+  <div class="grid gap-6 xl:grid-cols-2">
+    <app-card>
+      <h2 class="mb-4 text-sm font-semibold">{{ t('admin.users.title') }}</h2>
+      <div class="flex flex-col gap-3">
+        @for (user of users(); track user.id) {
+          <div class="rounded-md border border-border p-3">
+            <div class="grid gap-3 sm:grid-cols-[1fr_8rem_auto_auto] sm:items-end">
+              <label>
+                <span class="form-label">{{ user.email }}</span>
+                <input class="form-input" [(ngModel)]="user.displayName" />
+              </label>
+              <label>
+                <span class="form-label">{{ t('admin.users.role') }}</span>
+                <select class="form-input" [(ngModel)]="user.role">
+                  <option value="member">{{ t('admin.roles.member') }}</option>
+                  <option value="admin">{{ t('admin.roles.admin') }}</option>
+                </select>
+              </label>
+              <label class="flex items-center gap-2 pb-2 text-sm">
+                <input type="checkbox" [(ngModel)]="user.isActive" />
+                {{ t('admin.users.active') }}
+              </label>
+              <button appButton variant="secondary" type="button" (click)="saveUser(user)">
+                {{ t('common.actions.save') }}
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <p class="text-sm text-content-muted">{{ t('admin.users.empty') }}</p>
+        }
+      </div>
+    </app-card>
+
+    <div class="flex flex-col gap-6">
+      <app-card>
+        <h2 class="mb-4 text-sm font-semibold">{{ t('admin.invitations.createTitle') }}</h2>
+        <form
+          class="grid gap-3 sm:grid-cols-[1fr_8rem_auto] sm:items-end"
+          (ngSubmit)="createInvitation()"
+        >
+          <label>
+            <span class="form-label">{{ t('auth.fields.email') }}</span>
+            <input
+              class="form-input"
+              type="email"
+              [ngModel]="inviteEmail()"
+              (ngModelChange)="inviteEmail.set($event)"
+              name="email"
+            />
+          </label>
+          <label>
+            <span class="form-label">{{ t('admin.users.role') }}</span>
+            <select
+              class="form-input"
+              [ngModel]="inviteRole()"
+              (ngModelChange)="inviteRole.set($event)"
+              name="role"
+            >
+              <option value="member">{{ t('admin.roles.member') }}</option>
+              <option value="admin">{{ t('admin.roles.admin') }}</option>
+            </select>
+          </label>
+          <button appButton type="submit" [disabled]="busy() || !inviteEmail()">
+            {{ t('admin.invitations.create') }}
+          </button>
+        </form>
+
+        @if (issued(); as invitation) {
+          <div class="mt-4 rounded-md border border-accent/40 bg-accent/10 p-3">
+            <p class="text-sm font-medium">{{ t('admin.invitations.tokenOnce') }}</p>
+            <code class="mt-2 block break-all text-xs">{{ invitation.token }}</code>
+            <input class="form-input mt-2" readonly [value]="registrationLink(invitation)" />
+            <button
+              appButton
+              variant="secondary"
+              class="mt-2"
+              type="button"
+              (click)="copyLink(invitation)"
+            >
+              {{ t('admin.invitations.copyLink') }}
+            </button>
+          </div>
+        }
+      </app-card>
+
+      <app-card>
+        <h2 class="mb-4 text-sm font-semibold">{{ t('admin.invitations.title') }}</h2>
+        <div class="flex flex-col gap-2">
+          @for (invitation of invitations(); track invitation.id) {
+            <div
+              class="flex items-center justify-between gap-3 rounded-md border border-border p-3 text-sm"
+            >
+              <div>
+                <p class="font-medium">{{ invitation.email }}</p>
+                <p class="text-content-muted">{{ t('admin.roles.' + invitation.role) }}</p>
+              </div>
+              @if (!invitation.acceptedAt && !invitation.revokedAt) {
+                <button
+                  appButton
+                  variant="danger"
+                  size="sm"
+                  type="button"
+                  (click)="revoke(invitation)"
+                >
+                  {{ t('admin.invitations.revoke') }}
+                </button>
+              }
+            </div>
+          } @empty {
+            <p class="text-sm text-content-muted">{{ t('admin.invitations.empty') }}</p>
+          }
+        </div>
+      </app-card>
+    </div>
+  </div>
+</div>

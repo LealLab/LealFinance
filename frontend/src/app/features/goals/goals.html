@@ -15,6 +15,10 @@
     </button>
   </app-page-header>
 
+  @if (actionErrorKey(); as key) {
+    <p class="mb-4 text-sm text-negative" role="alert">{{ t(key) }}</p>
+  }
+
   @if (isEmpty()) {
     <app-empty-state
       icon="target"
@@ -196,12 +200,7 @@
     </div>
   }
 
-  <app-goal-form-modal
-    [(open)]="formOpen"
-    [goal]="editingGoal()"
-    [accountsById]="accountsById()"
-    (saved)="onGoalSaved()"
-  />
+  <app-goal-form-modal [(open)]="formOpen" [goal]="editingGoal()" (saved)="onGoalSaved()" />
   @if (entryGoal(); as goal) {
     @if (accountsById().get(goal.accountId); as account) {
       <app-goal-entry-modal

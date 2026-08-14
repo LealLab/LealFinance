@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GoalRepository } from '../goal.repository';
+import { GoalCreate, GoalRepository, GoalUpdate } from '../goal.repository';
 import { Goal } from '../../domain/models/goal';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
@@ -15,11 +15,37 @@ export class MockGoalRepository extends GoalRepository {
     return mockResult(() => this.store.goals(), this.latencyMs);
   }
 
-  create(input: Omit<Goal, 'id'>): Observable<Goal> {
-    return mockResult(() => this.store.createGoal(input), this.latencyMs);
+  create(input: GoalCreate): Observable<Goal> {
+    return mockResult(() => {
+      const account = this.store.createAccount({
+        name: input.name,
+        type: 'goal',
+        currency: input.currency,
+        openingBalance: '0',
+        archived: input.archived,
+      });
+      return this.store.createGoal({ ...input, accountId: account.id });
+    }, this.latencyMs);
   }
 
-  update(id: string, changes: Partial<Omit<Goal, 'id'>>): Observable<Goal> {
-    return mockResult(() => this.store.updateGoal(id, changes), this.latencyMs);
+  update(id: string, changes: GoalUpdate): Observable<Goal> {
+    return mockResult(() => {
+      const goal = this.store.updateGoal(id, changes);
+      this.store.updateAccount(goal.accountId, {
+        ...(Object.prototype.hasOwnProperty.call(changes, 'name') ? { name: changes.name } : {}),
+        ...(Object.prototype.hasOwnProperty.call(changes, 'currency')
+          ? { currency: changes.currency }
+          : {}),
+      });
+      return goal;
+    }, this.latencyMs);
+  }
+
+  setArchived(id: string, archived: boolean): Observable<Goal> {
+    return mockResult(() => {
+      const goal = this.store.updateGoal(id, { archived });
+      this.store.updateAccount(goal.accountId, { archived });
+      return goal;
+    }, this.latencyMs);
   }
 }

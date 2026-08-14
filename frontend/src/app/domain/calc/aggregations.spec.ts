@@ -219,7 +219,15 @@ describe('netWorth', () => {
 
 describe('converterFromRates', () => {
   function rate(overrides: Partial<ExchangeRate> = {}): ExchangeRate {
-    return { baseCode: 'USD', quoteCode: 'BRL', rate: '5.2', isFallback: false, ...overrides };
+    return {
+      baseCode: 'USD',
+      quoteCode: 'BRL',
+      rate: '5.2',
+      isFallback: false,
+      source: 'quote',
+      asOf: '2026-08-14',
+      ...overrides,
+    };
   }
 
   it('passes a same-currency amount through unchanged', () => {

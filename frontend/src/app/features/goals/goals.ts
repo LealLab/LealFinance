@@ -7,7 +7,11 @@ import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { GoalRepository } from '../../data/goal.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { convertedOrNull, converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
+import {
+  convertedOrNull,
+  converterFromRates,
+  CurrencyConverter,
+} from '../../domain/calc/aggregations';
 import { GoalProgress, goalProgress } from '../../domain/calc/goals';
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
@@ -33,6 +37,8 @@ interface GoalRow {
   convertedCurrent: Money | null;
   convertedTarget: Money | null;
 }
+
+/** t(goals.archiveError) */
 
 @Component({
   selector: 'app-goals',
@@ -70,6 +76,7 @@ export class Goals {
   protected readonly entryOpen = signal(false);
   protected readonly entryMode = signal<GoalEntryMode>('deposit');
   protected readonly entryGoal = signal<Goal | undefined>(undefined);
+  protected readonly actionErrorKey = signal<string | undefined>(undefined);
 
   protected readonly accountsById = computed(
     () => new Map(this.accountsResource.value()?.map((account) => [account.id, account]) ?? []),
@@ -89,10 +96,16 @@ export class Goals {
     stream: ({ params }) =>
       params.currencies.length === 0
         ? of([] as ExchangeRate[])
-        : forkJoin(params.currencies.map((currency) => this.exchangeRateRepository.getRate(currency, params.display)))
+        : forkJoin(
+            params.currencies.map((currency) =>
+              this.exchangeRateRepository.getRate(currency, params.display),
+            ),
+          ),
   });
 
-  private readonly converter = computed<CurrencyConverter>(() => converterFromRates(this.ratesResource.value() ?? []));
+  private readonly converter = computed<CurrencyConverter>(() =>
+    converterFromRates(this.ratesResource.value() ?? []),
+  );
 
   protected readonly rows = computed<GoalRow[]>(() => {
     const accounts = this.accountsById();
@@ -110,7 +123,7 @@ export class Goals {
           account,
           progress,
           convertedCurrent: convertedOrNull(progress.current, display, convert),
-          convertedTarget: convertedOrNull(progress.target, display, convert)
+          convertedTarget: convertedOrNull(progress.target, display, convert),
         };
       })
       .filter((row): row is GoalRow => Boolean(row));
@@ -149,11 +162,12 @@ export class Goals {
   }
 
   protected archive(goal: Goal): void {
-    this.goalRepository.update(goal.id, { archived: !goal.archived }).subscribe(() => {
-      this.accountRepository.setArchived(goal.accountId, !goal.archived).subscribe(() => {
+    this.goalRepository.setArchived(goal.id, !goal.archived).subscribe({
+      next: () => {
         this.goalsResource.reload();
         this.accountsResource.reload();
-      });
+      },
+      error: () => this.actionErrorKey.set('goals.archiveError'),
     });
   }
 
