@@ -4,6 +4,7 @@ import { ActivatedRoute, provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { BehaviorSubject } from 'rxjs';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
+import { MetadataService } from '../../core/metadata.service';
 import { Settings } from './settings';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -29,9 +30,13 @@ describe('Settings', () => {
         }
       ]
     }).compileComponents();
+    TestBed.inject(MetadataService).currencies.set([
+      { code: 'BRL', name: 'Real', symbol: 'R$', decimalDigits: 2, isActive: true },
+      { code: 'USD', name: 'US Dollar', symbol: '$', decimalDigits: 2, isActive: true },
+    ]);
   });
 
-  it('renders appearance, currency, mock-data, and agents sections without error', () => {
+  it('renders appearance, currency, and agents sections without mock controls', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
@@ -39,7 +44,7 @@ describe('Settings', () => {
     expect(text).toContain('Configurações');
     expect(text).toContain('Aparência');
     expect(text).toContain('Moeda de exibição');
-    expect(text).toContain('Dados de demonstração');
+    expect(text).not.toContain('Dados de demonstração');
     expect(text).toContain('Agentes de IA');
   });
 

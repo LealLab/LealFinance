@@ -8,7 +8,7 @@
               {{ t('exchange.manualRates.form.fields.baseCode') }}
             </label>
             <select id="manual-rate-base" class="form-input" formControlName="baseCode">
-              @for (currency of currencyOptions; track currency) {
+              @for (currency of currencyOptions(); track currency) {
                 <option [value]="currency">{{ currency }}</option>
               }
             </select>
@@ -18,7 +18,7 @@
               {{ t('exchange.manualRates.form.fields.quoteCode') }}
             </label>
             <select id="manual-rate-quote" class="form-input" formControlName="quoteCode">
-              @for (currency of currencyOptions; track currency) {
+              @for (currency of currencyOptions(); track currency) {
                 <option [value]="currency">{{ currency }}</option>
               }
             </select>

@@ -5,6 +5,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
+import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -71,6 +72,7 @@ function trySum(amounts: Money[]): Money | null {
   styleUrl: './accounts.scss'
 })
 export class Accounts {
+  private readonly mutationErrors = inject(MutationErrorService);
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
@@ -172,8 +174,9 @@ export class Accounts {
       if (!confirmed) return;
     }
 
-    this.accountRepository.setArchived(account.id, !account.archived).subscribe(() => {
-      this.accountsResource.reload();
+    this.accountRepository.setArchived(account.id, !account.archived).subscribe({
+      next: () => this.accountsResource.reload(),
+      error: () => this.mutationErrors.show(),
     });
   }
 

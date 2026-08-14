@@ -34,7 +34,7 @@
               formControlName="currency"
               [attr.disabled]="isEditing() ? '' : null"
             >
-              @for (currency of currencyOptions; track currency) {
+              @for (currency of currencyOptions(); track currency) {
                 <option [value]="currency">{{ currency }}</option>
               }
             </select>

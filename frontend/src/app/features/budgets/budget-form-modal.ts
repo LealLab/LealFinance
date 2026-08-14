@@ -4,7 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { BudgetRepository } from '../../data/budget.repository';
 import { Budget } from '../../domain/models/budget';
 import { Category } from '../../domain/models/category';
-import { CURRENCY_OPTIONS } from '../../shared/currency-options';
+import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -19,11 +19,12 @@ import { Modal } from '../../shared/ui/modal/modal';
   selector: 'app-budget-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
   templateUrl: './budget-form-modal.html',
-  styleUrl: './budget-form-modal.scss'
+  styleUrl: './budget-form-modal.scss',
 })
 export class BudgetFormModal {
   private readonly budgets = inject(BudgetRepository);
   private readonly fb = inject(FormBuilder);
+  private readonly metadata = inject(MetadataService);
 
   readonly open = model.required<boolean>();
   readonly budget = input<Budget | undefined>(undefined);
@@ -35,14 +36,16 @@ export class BudgetFormModal {
   readonly allCategories = input.required<Category[]>();
   readonly saved = output<Budget>();
 
-  protected readonly currencyOptions = CURRENCY_OPTIONS;
+  protected readonly currencyOptions = computed(() =>
+    this.metadata.currencies().map((row) => row.code),
+  );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
     categoryId: ['', Validators.required],
     amount: ['', [Validators.required, decimalAmountValidator()]],
-    currency: ['BRL', Validators.required]
+    currency: ['BRL', Validators.required],
   });
 
   protected readonly isEditing = computed(() => this.budget() !== undefined);
@@ -56,7 +59,7 @@ export class BudgetFormModal {
    * t(budgets.form.editTitle, budgets.form.newTitle, budgets.form.saveError)
    */
   protected readonly titleKey = computed(() =>
-    this.budget() ? 'budgets.form.editTitle' : 'budgets.form.newTitle'
+    this.budget() ? 'budgets.form.editTitle' : 'budgets.form.newTitle',
   );
 
   constructor() {
@@ -66,7 +69,7 @@ export class BudgetFormModal {
       this.form.reset({
         categoryId: budget?.categoryId ?? this.prefillCategoryId() ?? '',
         amount: budget?.amount ?? '',
-        currency: budget?.currency ?? 'BRL'
+        currency: budget?.currency ?? 'BRL',
       });
       this.saveErrorKey.set(null);
     });
@@ -83,7 +86,7 @@ export class BudgetFormModal {
       categoryId: raw.categoryId,
       month: this.month(),
       amount: raw.amount,
-      currency: raw.currency
+      currency: raw.currency,
     };
 
     this.saving.set(true);
@@ -96,7 +99,7 @@ export class BudgetFormModal {
       error: () => {
         this.saving.set(false);
         this.saveErrorKey.set('budgets.form.saveError');
-      }
+      },
     });
   }
 }

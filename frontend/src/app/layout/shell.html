@@ -46,7 +46,7 @@
           variant="ghost"
           size="sm"
           type="button"
-          (click)="balanceVisibility.toggle()"
+          (click)="toggleBalances()"
           [attr.aria-label]="
             balanceVisibility.hidden()
               ? t('layout.balanceToggle.show')
@@ -60,7 +60,7 @@
           variant="ghost"
           size="sm"
           type="button"
-          (click)="theme.toggle()"
+          (click)="toggleTheme()"
           [attr.aria-label]="
             theme.current() === 'dark'
               ? t('layout.themeToggle.switchToLight')
@@ -137,6 +137,17 @@
           </select>
         </div>
       </label>
+      <button
+        appButton
+        variant="ghost"
+        size="sm"
+        type="button"
+        class="mt-2 w-full"
+        (click)="session.logout()"
+      >
+        <span [class.hidden]="!sidebarExpanded()">{{ t('auth.logout') }}</span>
+        <app-icon name="arrowDownLeft" [size]="16" />
+      </button>
     </div>
   </aside>
 
@@ -161,6 +172,12 @@
     </header>
 
     <main class="flex-1 px-4 py-6 md:px-6 md:py-8">
+      @if (mutationErrors.translationKey(); as key) {
+        <div class="mb-4 flex items-center justify-between gap-3 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative" role="alert">
+          {{ t(key) }}
+          <button type="button" class="font-medium" (click)="mutationErrors.clear()">{{ t('common.actions.close') }}</button>
+        </div>
+      }
       <router-outlet />
     </main>
   </div>
@@ -202,7 +219,7 @@
             variant="ghost"
             size="sm"
             type="button"
-            (click)="balanceVisibility.toggle()"
+            (click)="toggleBalances()"
             [attr.aria-label]="
               balanceVisibility.hidden()
                 ? t('layout.balanceToggle.show')
@@ -216,7 +233,7 @@
             variant="ghost"
             size="sm"
             type="button"
-            (click)="theme.toggle()"
+            (click)="toggleTheme()"
             [attr.aria-label]="
               theme.current() === 'dark'
                 ? t('layout.themeToggle.switchToLight')
@@ -260,6 +277,17 @@
         class="flex-1 overflow-y-auto"
         (navigated)="mobileNavOpen.set(false)"
       />
+      <div class="border-t border-border p-3">
+        <button
+          appButton
+          variant="secondary"
+          type="button"
+          class="w-full"
+          (click)="session.logout()"
+        >
+          {{ t('auth.logout') }}
+        </button>
+      </div>
     </div>
   </dialog>
   <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->

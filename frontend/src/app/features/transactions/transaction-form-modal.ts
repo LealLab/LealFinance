@@ -14,7 +14,7 @@ import { RecurringFrequency } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
 import { buildTransactionConversion, prefillConvertedAmount } from './conversion-form';
-import { CURRENCY_OPTIONS } from '../../shared/currency-options';
+import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { money, subtract, zero } from '../../shared/money/money';
 import { effectiveRate } from '../../shared/money/rate';
@@ -62,6 +62,7 @@ export class TransactionFormModal {
   private readonly recurringRules = inject(RecurringRuleRepository);
   private readonly exchangeRates = inject(ExchangeRateRepository);
   private readonly fb = inject(FormBuilder);
+  private readonly metadata = inject(MetadataService);
 
   readonly open = model.required<boolean>();
   readonly transaction = input<Transaction | undefined>(undefined);
@@ -72,7 +73,9 @@ export class TransactionFormModal {
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
   protected readonly frequencies = FREQUENCIES;
-  protected readonly currencyOptions = CURRENCY_OPTIONS;
+  protected readonly currencyOptions = computed(() =>
+    this.metadata.currencies().map((row) => row.code)
+  );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
@@ -143,6 +146,9 @@ export class TransactionFormModal {
   private readonly selectedCurrency = toSignal(this.form.controls.currency.valueChanges, {
     initialValue: this.form.controls.currency.value
   });
+  private readonly selectedDate = toSignal(this.form.controls.date.valueChanges, {
+    initialValue: this.form.controls.date.value
+  });
   private readonly selectedAmount = toSignal(this.form.controls.amount.valueChanges, {
     initialValue: this.form.controls.amount.value
   });
@@ -183,11 +189,12 @@ export class TransactionFormModal {
     params: () => ({
       crossCurrency: this.crossCurrency(),
       origin: this.originCurrency(),
-      destination: this.destinationCurrency()
+      destination: this.destinationCurrency(),
+      asOf: this.selectedDate()
     }),
     stream: ({ params }) =>
       params.crossCurrency && params.origin && params.destination
-        ? this.exchangeRates.getRate(params.origin, params.destination)
+        ? this.exchangeRates.getRate(params.origin, params.destination, params.asOf)
         : of(undefined)
   });
   protected readonly rateIsFallback = computed(() => this.rateResource.value()?.isFallback ?? false);

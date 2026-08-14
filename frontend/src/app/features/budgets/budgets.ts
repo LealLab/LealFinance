@@ -3,6 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
+import { MutationErrorService } from '../../core/mutation-error.service';
 import { ThemeService } from '../../core/theme.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
@@ -75,6 +76,7 @@ interface BudgetRow extends BudgetProgress {
   styleUrl: './budgets.scss',
 })
 export class Budgets {
+  private readonly mutationErrors = inject(MutationErrorService);
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly budgetPlanRepository = inject(BudgetPlanRepository);
   private readonly categoryRepository = inject(CategoryRepository);
@@ -385,6 +387,9 @@ export class Budgets {
       'danger',
     );
     if (!confirmed) return;
-    this.budgetRepository.delete(budget.id).subscribe(() => this.budgetsResource.reload());
+    this.budgetRepository.delete(budget.id).subscribe({
+      next: () => this.budgetsResource.reload(),
+      error: () => this.mutationErrors.show(),
+    });
   }
 }

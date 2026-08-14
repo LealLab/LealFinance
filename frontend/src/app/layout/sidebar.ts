@@ -1,7 +1,8 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Icon, IconName } from '../shared/ui/icon/icon';
+import { SessionService } from '../core/session.service';
 
 export interface NavItem {
   path: string;
@@ -27,7 +28,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -67,6 +68,7 @@ export const NAV_SECTIONS: NavSection[] = [
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
+  private readonly session = inject(SessionService);
   /**
    * 'rail' (default): the persistent desktop sidebar. Its labels follow the
    * `expanded` input so Shell can keep responsive defaults while supporting a
@@ -78,7 +80,18 @@ export class Sidebar {
   readonly expanded = input(true);
   readonly navigated = output<void>();
 
-  protected readonly navSections = NAV_SECTIONS;
+  protected readonly navSections = computed(() => {
+    if (this.session.user()?.role !== 'admin') return NAV_SECTIONS;
+    return [
+      ...NAV_SECTIONS,
+      {
+        labelKey: 'layout.nav.sections.admin',
+        items: [
+          { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
+        ],
+      },
+    ];
+  });
   protected readonly labelClass = computed(() =>
     this.variant() === 'rail' && !this.expanded() ? 'hidden' : '',
   );

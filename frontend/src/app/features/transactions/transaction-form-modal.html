@@ -51,7 +51,7 @@
         <div>
           <label class="form-label" for="tx-currency">{{ t('transactions.form.fields.currency') }}</label>
           <select id="tx-currency" class="form-input" formControlName="currency">
-            @for (currency of currencyOptions; track currency) {
+            @for (currency of currencyOptions(); track currency) {
               <option [value]="currency">{{ currency }}</option>
             }
           </select>

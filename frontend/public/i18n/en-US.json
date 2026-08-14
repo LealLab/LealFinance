@@ -6,7 +6,9 @@
     "actions": {
       "close": "Close",
       "cancel": "Cancel",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "save": "Save",
+      "saving": "Saving…"
     }
   },
   "layout": {
@@ -20,10 +22,12 @@
       "reports": "Reports",
       "exchange": "Exchange",
       "settings": "Settings",
+      "adminUsers": "Users & invitations",
       "sections": {
         "accounts": "Accounts",
         "analysis": "Analysis",
-        "setup": "Setup"
+        "setup": "Setup",
+        "admin": "Administration"
       }
     },
     "sidebar": {
@@ -73,8 +77,7 @@
         "configureLanguage": "Configure language",
         "configureCurrency": "Configure display currency",
         "toggleTheme": "Toggle theme",
-        "toggleBalances": "Show or hide balances",
-        "resetMockData": "Reset demo data"
+        "toggleBalances": "Show or hide balances"
       }
     }
   },
@@ -458,6 +461,7 @@
     "title": "Goals",
     "description": "Save money for any goal and track your progress.",
     "showArchived": "Show archived goals",
+    "archiveError": "Could not update the goal archive state. Try again.",
     "accountLabel": "Account",
     "archived": "Archived",
     "overdue": "Overdue",
@@ -632,19 +636,66 @@
       "title": "Display currency",
       "description": "Used to convert and add values across accounts with different currencies, such as net worth on the dashboard."
     },
-    "mockData": {
-      "title": "Demo data",
-      "description": "All account, transaction, category, and budget data is fictional and exists only in the browser's memory - it resets whenever the page reloads. Theme, language, and display currency are real preferences and remain saved.",
-      "reset": {
-        "action": "Reset data",
-        "confirmTitle": "Reset demo data",
-        "confirmMessage": "All accounts, transactions, categories, and budgets created or edited in this session will be replaced with the original demo data. Do you want to continue?"
-      }
-    },
     "agents": {
       "title": "AI agents",
       "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default - configurable in Docker Compose (AGENTS_ENABLED).",
-      "disabled": "Disabled"
+      "disabled": "Disabled",
+      "enabled": "Enabled"
     }
+  },
+  "auth": {
+    "logout": "Log out",
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "displayName": "Display name",
+      "invitationToken": "Invitation token"
+    },
+    "login": {
+      "title": "Sign in",
+      "description": "Use your LealFinance account to continue.",
+      "action": "Sign in",
+      "invited": "Have an invitation?"
+    },
+    "register": {
+      "title": "Accept invitation",
+      "description": "Create your account with the invitation sent by an administrator.",
+      "action": "Create account",
+      "passwordHint": "Use at least 12 characters.",
+      "backToLogin": "Back to sign in"
+    }
+  },
+  "admin": {
+    "title": "Users & invitations",
+    "description": "Manage access to this LealFinance instance.",
+    "roles": { "member": "Member", "admin": "Administrator" },
+    "users": { "title": "Users", "role": "Role", "active": "Active", "empty": "No users found." },
+    "invitations": {
+      "title": "Invitations",
+      "createTitle": "Create invitation",
+      "create": "Invite",
+      "tokenOnce": "This token and registration link are shown only now. Save them before leaving.",
+      "copyLink": "Copy registration link",
+      "revoke": "Revoke",
+      "empty": "No invitations found."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Something went wrong. Please try again." },
+    "auth": {
+      "invalid_credentials": "The email or password is incorrect.",
+      "csrf_invalid": "This form expired. Refresh the page and try again.",
+      "last_admin": "At least one active administrator is required.",
+      "account_inactive": "This account is inactive.",
+      "admin_required": "Administrator access is required."
+    },
+    "invitation": {
+      "not_found": "The invitation is invalid.",
+      "expired": "This invitation has expired.",
+      "revoked": "This invitation was revoked.",
+      "already_accepted": "This invitation was already accepted.",
+      "already_pending": "An invitation is already pending for this email."
+    },
+    "user": { "email_taken": "An account already uses this email." }
   }
 }

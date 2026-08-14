@@ -4,7 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ManualRateRepository } from '../../data/manual-rate.repository';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { ManualRate } from '../../domain/models/manual-rate';
-import { CURRENCY_OPTIONS } from '../../shared/currency-options';
+import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -20,11 +20,12 @@ import { Modal } from '../../shared/ui/modal/modal';
   selector: 'app-manual-rate-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
   templateUrl: './manual-rate-form-modal.html',
-  styleUrl: './manual-rate-form-modal.scss'
+  styleUrl: './manual-rate-form-modal.scss',
 })
 export class ManualRateFormModal {
   private readonly manualRates = inject(ManualRateRepository);
   private readonly fb = inject(FormBuilder);
+  private readonly metadata = inject(MetadataService);
 
   readonly open = model.required<boolean>();
   readonly rate = input<ManualRate | undefined>(undefined);
@@ -33,7 +34,9 @@ export class ManualRateFormModal {
   readonly prefillQuoteCode = input<string | undefined>(undefined);
   readonly saved = output<ManualRate>();
 
-  protected readonly currencyOptions = CURRENCY_OPTIONS;
+  protected readonly currencyOptions = computed(() =>
+    this.metadata.currencies().map((row) => row.code),
+  );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
@@ -41,14 +44,14 @@ export class ManualRateFormModal {
     baseCode: ['USD', Validators.required],
     quoteCode: ['BRL', Validators.required],
     rate: ['', [Validators.required, decimalAmountValidator()]],
-    asOf: [formatIsoDate(new Date()), Validators.required]
+    asOf: [formatIsoDate(new Date()), Validators.required],
   });
 
   /**
    * t(exchange.manualRates.form.editTitle, exchange.manualRates.form.newTitle, exchange.manualRates.form.saveError, exchange.manualRates.form.errors.samePair)
    */
   protected readonly titleKey = computed(() =>
-    this.rate() ? 'exchange.manualRates.form.editTitle' : 'exchange.manualRates.form.newTitle'
+    this.rate() ? 'exchange.manualRates.form.editTitle' : 'exchange.manualRates.form.newTitle',
   );
 
   constructor() {
@@ -59,7 +62,7 @@ export class ManualRateFormModal {
         baseCode: rate?.baseCode ?? this.prefillBaseCode() ?? 'USD',
         quoteCode: rate?.quoteCode ?? this.prefillQuoteCode() ?? 'BRL',
         rate: rate?.rate ?? '',
-        asOf: rate?.asOf ?? formatIsoDate(new Date())
+        asOf: rate?.asOf ?? formatIsoDate(new Date()),
       });
       this.saveErrorKey.set(null);
     });
@@ -72,7 +75,9 @@ export class ManualRateFormModal {
     if (this.form.invalid || samePair) {
       this.form.markAllAsTouched();
       this.saveErrorKey.set(
-        samePair ? 'exchange.manualRates.form.errors.samePair' : 'exchange.manualRates.form.saveError'
+        samePair
+          ? 'exchange.manualRates.form.errors.samePair'
+          : 'exchange.manualRates.form.saveError',
       );
       return;
     }
@@ -87,7 +92,7 @@ export class ManualRateFormModal {
       error: () => {
         this.saving.set(false);
         this.saveErrorKey.set('exchange.manualRates.form.saveError');
-      }
+      },
     });
   }
 }

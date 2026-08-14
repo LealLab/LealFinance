@@ -4,7 +4,9 @@
 
   <div class="flex max-w-2xl flex-col gap-6">
     <app-card>
-      <h2 class="mb-4 text-sm font-semibold text-content-primary">{{ t('settings.appearance.title') }}</h2>
+      <h2 class="mb-4 text-sm font-semibold text-content-primary">
+        {{ t('settings.appearance.title') }}
+      </h2>
 
       <div class="mb-4">
         <span class="form-label">{{ t('settings.appearance.theme') }}</span>
@@ -39,7 +41,9 @@
       </div>
 
       <div>
-        <label class="form-label" for="settings-language">{{ t('settings.appearance.language') }}</label>
+        <label class="form-label" for="settings-language">{{
+          t('settings.appearance.language')
+        }}</label>
         <select
           #languageSelect
           id="settings-language"
@@ -55,7 +59,9 @@
     </app-card>
 
     <app-card>
-      <h2 class="mb-4 text-sm font-semibold text-content-primary">{{ t('settings.currency.title') }}</h2>
+      <h2 class="mb-4 text-sm font-semibold text-content-primary">
+        {{ t('settings.currency.title') }}
+      </h2>
       <p class="mb-3 text-sm text-content-muted">{{ t('settings.currency.description') }}</p>
       <select
         #displayCurrencySelect
@@ -63,25 +69,25 @@
         class="form-input max-w-xs"
         (change)="setDisplayCurrency($any($event.target).value)"
       >
-        @for (currency of currencyOptions; track currency) {
+        @for (currency of currencyOptions(); track currency.code) {
           <option
-            [value]="currency"
-            [selected]="currency === displayCurrencyService.currency()"
+            [value]="currency.code"
+            [selected]="currency.code === displayCurrencyService.currency()"
           >
-            {{ currency }}
+            {{ currency.code }} — {{ currency.name }}
           </option>
         }
       </select>
     </app-card>
 
-    <app-card>
-      <h2 class="mb-2 text-sm font-semibold text-content-primary">{{ t('settings.mockData.title') }}</h2>
-      <p class="mb-4 text-sm text-content-muted">{{ t('settings.mockData.description') }}</p>
-      <button appButton variant="secondary" type="button" (click)="resetMockData()">
-        <app-icon name="refresh" [size]="16" />
-        {{ t('settings.mockData.reset.action') }}
-      </button>
-    </app-card>
+    @if (preferences.errorCode(); as code) {
+      <p
+        class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+        role="alert"
+      >
+        {{ t('errors.' + code) }}
+      </p>
+    }
 
     <app-card>
       <div class="flex items-start justify-between gap-4">
@@ -91,8 +97,14 @@
           </h2>
           <p class="max-w-md text-sm text-content-muted">{{ t('settings.agents.description') }}</p>
         </div>
-        <span class="shrink-0 rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted">
-          {{ t('settings.agents.disabled') }}
+        <span
+          class="shrink-0 rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted"
+        >
+          {{
+            metadata.settings()?.agentsEnabled
+              ? t('settings.agents.enabled')
+              : t('settings.agents.disabled')
+          }}
         </span>
       </div>
     </app-card>

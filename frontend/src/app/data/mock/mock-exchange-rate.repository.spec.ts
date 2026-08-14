@@ -14,14 +14,17 @@ describe('MockExchangeRateRepository', () => {
     store = TestBed.inject(MockStore);
   });
 
-  function getRate(baseCode: string, quoteCode: string): ExchangeRate {
+  function getRate(baseCode: string, quoteCode: string, asOf = '2026-08-14'): ExchangeRate {
     let result: ExchangeRate | undefined;
-    repository.getRate(baseCode, quoteCode).subscribe((rate) => (result = rate));
+    repository.getRate(baseCode, quoteCode, asOf).subscribe((rate) => (result = rate));
     return result!;
   }
 
   it('resolves same-code pairs to 1 without checking manual rates or KNOWN_RATES', () => {
-    expect(getRate('BRL', 'BRL')).toEqual({ baseCode: 'BRL', quoteCode: 'BRL', rate: '1', isFallback: false });
+    expect(getRate('BRL', 'BRL')).toEqual({
+      baseCode: 'BRL', quoteCode: 'BRL', rate: '1', isFallback: false,
+      source: 'quote', asOf: '2026-08-14'
+    });
   });
 
   it('prefers a manual rate over the built-in KNOWN_RATES table', () => {
@@ -31,7 +34,9 @@ describe('MockExchangeRateRepository', () => {
       baseCode: 'USD',
       quoteCode: 'BRL',
       rate: '5.55',
-      isFallback: false
+      isFallback: false,
+      source: 'manual',
+      asOf: '2020-01-01'
     });
   });
 
@@ -42,7 +47,9 @@ describe('MockExchangeRateRepository', () => {
       baseCode: 'BRL',
       quoteCode: 'USD',
       rate: '0.2000000000',
-      isFallback: false
+      isFallback: false,
+      source: 'manual',
+      asOf: '2020-01-01'
     });
   });
 
@@ -65,11 +72,16 @@ describe('MockExchangeRateRepository', () => {
       baseCode: 'USD',
       quoteCode: 'BRL',
       rate: '5.20',
-      isFallback: false
+      isFallback: false,
+      source: 'quote',
+      asOf: '2026-08-14'
     });
   });
 
   it('falls back to a 1:1 approximation, flagged, for an unrecognized pair', () => {
-    expect(getRate('USD', 'EUR')).toEqual({ baseCode: 'USD', quoteCode: 'EUR', rate: '1', isFallback: true });
+    expect(getRate('USD', 'EUR')).toEqual({
+      baseCode: 'USD', quoteCode: 'EUR', rate: '1', isFallback: true,
+      source: 'fallback', asOf: '2026-08-14'
+    });
   });
 });

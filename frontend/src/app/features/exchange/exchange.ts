@@ -5,6 +5,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
+import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -51,6 +52,7 @@ import { ManualRateFormModal } from './manual-rate-form-modal';
   styleUrl: './exchange.scss'
 })
 export class Exchange {
+  private readonly mutationErrors = inject(MutationErrorService);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
@@ -216,6 +218,9 @@ export class Exchange {
       'danger'
     );
     if (!confirmed) return;
-    this.manualRateRepository.delete(rate.id).subscribe(() => this.manualRatesResource.reload());
+    this.manualRateRepository.delete(rate.id).subscribe({
+      next: () => this.manualRatesResource.reload(),
+      error: () => this.mutationErrors.show(),
+    });
   }
 }

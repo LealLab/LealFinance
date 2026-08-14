@@ -6,7 +6,9 @@
     "actions": {
       "close": "Fechar",
       "cancel": "Cancelar",
-      "confirm": "Confirmar"
+      "confirm": "Confirmar",
+      "save": "Salvar",
+      "saving": "Salvando…"
     }
   },
   "layout": {
@@ -20,10 +22,12 @@
       "reports": "Relatórios",
       "exchange": "Câmbio",
       "settings": "Configurações",
+      "adminUsers": "Usuários e convites",
       "sections": {
         "accounts": "Contas",
         "analysis": "Análise",
-        "setup": "Configuração"
+        "setup": "Configuração",
+        "admin": "Administração"
       }
     },
     "sidebar": {
@@ -69,12 +73,11 @@
         "newTransaction": "Nova transação",
         "newAccount": "Nova conta",
         "newCategory": "Nova categoria",
-      "newBudget": "Novo orçamento",
+        "newBudget": "Novo orçamento",
         "configureLanguage": "Configurar idioma",
         "configureCurrency": "Configurar moeda de exibição",
         "toggleTheme": "Alternar tema",
-        "toggleBalances": "Ocultar ou mostrar saldos",
-        "resetMockData": "Redefinir dados de exemplo"
+        "toggleBalances": "Ocultar ou mostrar saldos"
       }
     }
   },
@@ -143,8 +146,8 @@
       "savings": "Poupança",
       "cash": "Dinheiro",
       "credit_card": "Cartão de crédito",
-      "investment": "Investimentos"
-      ,"goal": "Meta"
+      "investment": "Investimentos",
+      "goal": "Meta"
     },
     "form": {
       "newTitle": "Nova conta",
@@ -458,6 +461,7 @@
     "title": "Metas",
     "description": "Guarde dinheiro para qualquer objetivo e acompanhe seu progresso.",
     "showArchived": "Mostrar metas arquivadas",
+    "archiveError": "Não foi possível atualizar o arquivamento da meta. Tente novamente.",
     "accountLabel": "Conta",
     "archived": "Arquivada",
     "overdue": "Atrasada",
@@ -632,19 +636,71 @@
       "title": "Moeda de exibição",
       "description": "Usada para converter e somar valores entre contas de moedas diferentes, como no patrimônio líquido do painel."
     },
-    "mockData": {
-      "title": "Dados de demonstração",
-      "description": "Todos os dados de contas, transações, categorias e orçamentos são fictícios e existem apenas na memória do navegador - eles são reiniciados sempre que a página é recarregada. Tema, idioma e moeda de exibição são preferências reais e continuam salvos.",
-      "reset": {
-        "action": "Reiniciar dados",
-        "confirmTitle": "Reiniciar dados de demonstração",
-        "confirmMessage": "Todas as contas, transações, categorias e orçamentos criados ou editados nesta sessão serão substituídos pelos dados de exemplo originais. Deseja continuar?"
-      }
-    },
     "agents": {
       "title": "Agentes de IA",
       "description": "Assistentes de IA sobre os seus dados financeiros, com múltiplos provedores e ferramentas via MCP. Desativado por padrão - configurável no Docker Compose (AGENTS_ENABLED).",
-      "disabled": "Desativado"
+      "disabled": "Desativado",
+      "enabled": "Ativado"
     }
+  },
+  "auth": {
+    "logout": "Sair",
+    "fields": {
+      "email": "E-mail",
+      "password": "Senha",
+      "displayName": "Nome de exibição",
+      "invitationToken": "Token do convite"
+    },
+    "login": {
+      "title": "Entrar",
+      "description": "Use sua conta LealFinance para continuar.",
+      "action": "Entrar",
+      "invited": "Recebeu um convite?"
+    },
+    "register": {
+      "title": "Aceitar convite",
+      "description": "Crie sua conta com o convite enviado por um administrador.",
+      "action": "Criar conta",
+      "passwordHint": "Use pelo menos 12 caracteres.",
+      "backToLogin": "Voltar para entrar"
+    }
+  },
+  "admin": {
+    "title": "Usuários e convites",
+    "description": "Gerencie o acesso a esta instância do LealFinance.",
+    "roles": { "member": "Membro", "admin": "Administrador" },
+    "users": {
+      "title": "Usuários",
+      "role": "Função",
+      "active": "Ativo",
+      "empty": "Nenhum usuário encontrado."
+    },
+    "invitations": {
+      "title": "Convites",
+      "createTitle": "Criar convite",
+      "create": "Convidar",
+      "tokenOnce": "Este token e link de cadastro são exibidos somente agora. Salve-os antes de sair.",
+      "copyLink": "Copiar link de cadastro",
+      "revoke": "Revogar",
+      "empty": "Nenhum convite encontrado."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Algo deu errado. Tente novamente." },
+    "auth": {
+      "invalid_credentials": "O e-mail ou a senha está incorreto.",
+      "csrf_invalid": "Este formulário expirou. Atualize a página e tente novamente.",
+      "last_admin": "É necessário manter ao menos um administrador ativo.",
+      "account_inactive": "Esta conta está inativa.",
+      "admin_required": "É necessário acesso de administrador."
+    },
+    "invitation": {
+      "not_found": "O convite é inválido.",
+      "expired": "Este convite expirou.",
+      "revoked": "Este convite foi revogado.",
+      "already_accepted": "Este convite já foi aceito.",
+      "already_pending": "Já existe um convite pendente para este e-mail."
+    },
+    "user": { "email_taken": "Já existe uma conta com este e-mail." }
   }
 }

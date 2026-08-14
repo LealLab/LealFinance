@@ -6,8 +6,8 @@ import { Account, AccountType } from '../../domain/models/account';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { Institution } from '../../domain/models/institution';
+import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
-import { CURRENCY_OPTIONS } from '../../shared/currency-options';
 import { Button } from '../../shared/ui/button/button';
 import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -34,22 +34,25 @@ import { InstitutionFormModal } from './institution-form-modal';
   selector: 'app-account-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, InstitutionFormModal],
   templateUrl: './account-form-modal.html',
-  styleUrl: './account-form-modal.scss'
+  styleUrl: './account-form-modal.scss',
 })
 export class AccountFormModal {
   private readonly accounts = inject(AccountRepository);
   private readonly institutions = inject(InstitutionRepository);
   private readonly fb = inject(FormBuilder);
+  private readonly metadata = inject(MetadataService);
 
   readonly open = model.required<boolean>();
   readonly account = input<Account | undefined>(undefined);
   readonly saved = output<Account>();
 
   protected readonly accountTypeOptions = ACCOUNT_TYPE_OPTIONS;
-  protected readonly currencyOptions = CURRENCY_OPTIONS;
+  protected readonly currencyOptions = computed(() =>
+    this.metadata.currencies().map((row) => row.code),
+  );
 
   protected readonly institutionsResource = rxResource({
-    stream: () => this.institutions.list()
+    stream: () => this.institutions.list(),
   });
   protected readonly institutionFormOpen = signal(false);
 
@@ -64,11 +67,11 @@ export class AccountFormModal {
     institutionId: [''],
     creditLimit: ['', decimalAmountValidator()],
     closingDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)]),
-    dueDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)])
+    dueDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)]),
   });
 
   private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
-    initialValue: this.form.controls.type.value
+    initialValue: this.form.controls.type.value,
   });
   protected readonly isCreditCard = computed(() => this.selectedType() === 'credit_card');
 
@@ -80,7 +83,7 @@ export class AccountFormModal {
    * t(accounts.form.editTitle, accounts.form.newTitle, accounts.form.saveError)
    */
   protected readonly titleKey = computed(() =>
-    this.account() ? 'accounts.form.editTitle' : 'accounts.form.newTitle'
+    this.account() ? 'accounts.form.editTitle' : 'accounts.form.newTitle',
   );
 
   constructor() {
@@ -102,7 +105,7 @@ export class AccountFormModal {
         institutionId: account?.institutionId ?? '',
         creditLimit: account?.creditLimit ?? '',
         closingDay: account?.closingDay ?? null,
-        dueDay: account?.dueDay ?? null
+        dueDay: account?.dueDay ?? null,
       });
       this.saveErrorKey.set(null);
     });
@@ -125,12 +128,14 @@ export class AccountFormModal {
       archived: this.account()?.archived ?? false,
       creditLimit: isCreditCard && raw.creditLimit ? raw.creditLimit : undefined,
       closingDay: isCreditCard && raw.closingDay ? raw.closingDay : undefined,
-      dueDay: isCreditCard && raw.dueDay ? raw.dueDay : undefined
+      dueDay: isCreditCard && raw.dueDay ? raw.dueDay : undefined,
     };
 
     this.saving.set(true);
     const existing = this.account();
-    const request$ = existing ? this.accounts.update(existing.id, payload) : this.accounts.create(payload);
+    const request$ = existing
+      ? this.accounts.update(existing.id, payload)
+      : this.accounts.create(payload);
 
     request$.subscribe({
       next: (account) => {
@@ -141,7 +146,7 @@ export class AccountFormModal {
       error: () => {
         this.saving.set(false);
         this.saveErrorKey.set('accounts.form.saveError');
-      }
+      },
     });
   }
 

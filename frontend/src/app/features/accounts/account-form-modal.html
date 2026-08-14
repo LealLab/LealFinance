@@ -19,7 +19,9 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="form-label" for="account-type">{{ t('accounts.form.fields.type') }}</label>
+            <label class="form-label" for="account-type">{{
+              t('accounts.form.fields.type')
+            }}</label>
             <select id="account-type" class="form-input" formControlName="type">
               @for (option of accountTypeOptions; track option.type) {
                 <option [value]="option.type">{{ t(option.labelKey) }}</option>
@@ -28,9 +30,11 @@
           </div>
 
           <div>
-            <label class="form-label" for="account-currency">{{ t('accounts.form.fields.currency') }}</label>
+            <label class="form-label" for="account-currency">{{
+              t('accounts.form.fields.currency')
+            }}</label>
             <select id="account-currency" class="form-input" formControlName="currency">
-              @for (currency of currencyOptions; track currency) {
+              @for (currency of currencyOptions(); track currency) {
                 <option [value]="currency">{{ currency }}</option>
               }
             </select>
@@ -104,7 +108,9 @@
               />
             </div>
             <div>
-              <label class="form-label" for="account-due-day">{{ t('accounts.form.fields.dueDay') }}</label>
+              <label class="form-label" for="account-due-day">{{
+                t('accounts.form.fields.dueDay')
+              }}</label>
               <input
                 id="account-due-day"
                 type="number"

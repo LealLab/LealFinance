@@ -8,7 +8,9 @@
         </div>
 
         <div>
-          <label class="form-label" for="budget-category">{{ t('budgets.form.fields.category') }}</label>
+          <label class="form-label" for="budget-category">{{
+            t('budgets.form.fields.category')
+          }}</label>
           @if (isEditing()) {
             <p class="mt-1 text-sm font-medium text-content-primary">{{ editingCategoryName() }}</p>
           } @else {
@@ -23,7 +25,9 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="form-label" for="budget-amount">{{ t('budgets.form.fields.amount') }}</label>
+            <label class="form-label" for="budget-amount">{{
+              t('budgets.form.fields.amount')
+            }}</label>
             <input
               id="budget-amount"
               type="text"
@@ -33,9 +37,11 @@
             />
           </div>
           <div>
-            <label class="form-label" for="budget-currency">{{ t('budgets.form.fields.currency') }}</label>
+            <label class="form-label" for="budget-currency">{{
+              t('budgets.form.fields.currency')
+            }}</label>
             <select id="budget-currency" class="form-input" formControlName="currency">
-              @for (currency of currencyOptions; track currency) {
+              @for (currency of currencyOptions(); track currency) {
                 <option [value]="currency">{{ currency }}</option>
               }
             </select>

@@ -1,7 +1,7 @@
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
-  provideZonelessChangeDetection
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
@@ -17,16 +17,16 @@ import { ExchangeRateRepository } from './data/exchange-rate.repository';
 import { InstitutionRepository } from './data/institution.repository';
 import { GoalRepository } from './data/goal.repository';
 import { ManualRateRepository } from './data/manual-rate.repository';
-import { MockAccountRepository } from './data/mock/mock-account.repository';
-import { MockBudgetRepository } from './data/mock/mock-budget.repository';
-import { MockBudgetPlanRepository } from './data/mock/mock-budget-plan.repository';
-import { MockCategoryRepository } from './data/mock/mock-category.repository';
-import { MockExchangeRateRepository } from './data/mock/mock-exchange-rate.repository';
-import { MockGoalRepository } from './data/mock/mock-goal.repository';
-import { MockInstitutionRepository } from './data/mock/mock-institution.repository';
-import { MockManualRateRepository } from './data/mock/mock-manual-rate.repository';
-import { MockRecurringRuleRepository } from './data/mock/mock-recurring-rule.repository';
-import { MockTransactionRepository } from './data/mock/mock-transaction.repository';
+import { HttpAccountRepository } from './data/http/http-account.repository';
+import { HttpBudgetPlanRepository } from './data/http/http-budget-plan.repository';
+import { HttpBudgetRepository } from './data/http/http-budget.repository';
+import { HttpCategoryRepository } from './data/http/http-category.repository';
+import { HttpExchangeRateRepository } from './data/http/http-exchange-rate.repository';
+import { HttpGoalRepository } from './data/http/http-goal.repository';
+import { HttpInstitutionRepository } from './data/http/http-institution.repository';
+import { HttpManualRateRepository } from './data/http/http-manual-rate.repository';
+import { HttpRecurringRuleRepository } from './data/http/http-recurring-rule.repository';
+import { HttpTransactionRepository } from './data/http/http-transaction.repository';
 import { RecurringRuleRepository } from './data/recurring-rule.repository';
 import { TransactionRepository } from './data/transaction.repository';
 
@@ -40,19 +40,15 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([httpErrorInterceptor])),
     provideAppTransloco(),
-    // Every screen is built against mock data for now (no domain backend
-    // yet - see CLAUDE.md). Swapping to real HTTP later is limited to
-    // this block: each abstract *Repository stays the DI token components
-    // inject, only `useClass` changes.
-    { provide: AccountRepository, useClass: MockAccountRepository },
-    { provide: TransactionRepository, useClass: MockTransactionRepository },
-    { provide: CategoryRepository, useClass: MockCategoryRepository },
-    { provide: BudgetRepository, useClass: MockBudgetRepository },
-    { provide: BudgetPlanRepository, useClass: MockBudgetPlanRepository },
-    { provide: GoalRepository, useClass: MockGoalRepository },
-    { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
-    { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
-    { provide: InstitutionRepository, useClass: MockInstitutionRepository },
-    { provide: ManualRateRepository, useClass: MockManualRateRepository }
-  ]
+    { provide: AccountRepository, useClass: HttpAccountRepository },
+    { provide: TransactionRepository, useClass: HttpTransactionRepository },
+    { provide: CategoryRepository, useClass: HttpCategoryRepository },
+    { provide: BudgetRepository, useClass: HttpBudgetRepository },
+    { provide: BudgetPlanRepository, useClass: HttpBudgetPlanRepository },
+    { provide: GoalRepository, useClass: HttpGoalRepository },
+    { provide: RecurringRuleRepository, useClass: HttpRecurringRuleRepository },
+    { provide: ExchangeRateRepository, useClass: HttpExchangeRateRepository },
+    { provide: InstitutionRepository, useClass: HttpInstitutionRepository },
+    { provide: ManualRateRepository, useClass: HttpManualRateRepository },
+  ],
 };
