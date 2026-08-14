@@ -1,9 +1,8 @@
 """Category CRUD, one-level nesting, sibling ordering, and the delete/
 kind-change guards that keep a category consistent with what references it.
 
-`_category_in_use` currently checks children and budgets only - Phase 5
-(transactions) extends it to also check transactions once that table
-exists, per the frontend contract ("Category deletion fails when
+`_category_in_use` checks children, budgets, and transactions - the full
+set the frontend contract specifies ("Category deletion fails when
 referenced by transactions, budgets, or children").
 """
 
@@ -15,6 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.errors import ConflictError, ValidationAppError
 from app.models.budget import Budget
 from app.models.category import Category
+from app.models.transaction import Transaction
 from app.schemas.category import CategoryCreate, CategoryUpdate
 from app.services import ownership
 
@@ -39,8 +39,13 @@ async def _has_children(db: AsyncSession, category_id: UUID) -> bool:
 async def _category_in_use(db: AsyncSession, category_id: UUID) -> bool:
     if await _has_children(db, category_id):
         return True
-    result = await db.execute(select(Budget.id).where(Budget.category_id == category_id).limit(1))
-    return result.scalar_one_or_none() is not None
+    budget = await db.execute(select(Budget.id).where(Budget.category_id == category_id).limit(1))
+    if budget.scalar_one_or_none() is not None:
+        return True
+    transaction = await db.execute(
+        select(Transaction.id).where(Transaction.category_id == category_id).limit(1)
+    )
+    return transaction.scalar_one_or_none() is not None
 
 
 async def _next_position(db: AsyncSession, user_id: UUID, kind: str, parent_id: UUID | None) -> int:

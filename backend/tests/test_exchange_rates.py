@@ -13,7 +13,6 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
-from app.models.currency import Currency
 from app.services import exchange_rates as rates_service
 
 
@@ -62,8 +61,7 @@ async def test_successful_fetch_is_cached_and_reused_without_refetching(
     db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    db_session.add(Currency(code="USD", name="US Dollar", symbol="$", decimal_digits=2))
-    await db_session.commit()
+    # USD is already seeded by the db_session fixture (see tests/conftest.py).
 
     call_count = 0
 

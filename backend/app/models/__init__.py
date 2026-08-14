@@ -10,6 +10,8 @@ from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
 from app.models.category import Category
 from app.models.currency import Currency, ExchangeRate
 from app.models.institution import Institution
+from app.models.recurring import RecurringRule
+from app.models.transaction import Transaction
 from app.models.user import Invitation, Session, User
 
 __all__ = [
@@ -22,6 +24,8 @@ __all__ = [
     "ExpectedIncome",
     "Institution",
     "Invitation",
+    "RecurringRule",
     "Session",
+    "Transaction",
     "User",
 ]

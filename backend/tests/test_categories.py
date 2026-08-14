@@ -231,6 +231,36 @@ async def test_delete_category_referenced_by_budget_is_blocked(
     assert response.json()["error"]["code"] == "category.in_use"
 
 
+async def test_delete_category_referenced_by_transaction_is_blocked(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """Phase 5 extends the delete guard to check transactions too - see
+    app/services/categories.py::_category_in_use."""
+    await _authed(client, db_session, "quinn@example.com")
+    category = await _create_category(client, name="Groceries")
+    account_response = await client.post(
+        "/api/v1/accounts", json={"name": "Checking", "type": "checking", "currency": "BRL"}
+    )
+    account_id = account_response.json()["id"]
+    transaction_response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-01",
+            "amount": "50.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": category["id"],
+            "description": "Groceries run",
+        },
+    )
+    assert transaction_response.status_code == 201
+
+    response = await client.delete(f"/api/v1/categories/{category['id']}")
+    assert response.status_code == 409
+    assert response.json()["error"]["code"] == "category.in_use"
+
+
 async def test_reorder_categories(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "quentin@example.com")
     first = await _create_category(client, name="First")

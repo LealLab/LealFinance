@@ -60,7 +60,17 @@ async def db_session(_engine: AsyncEngine) -> AsyncGenerator[AsyncSession]:
             bind=conn, expire_on_commit=False, join_transaction_mode="create_savepoint"
         )
 
-        session.add(Currency(code="BRL", name="Brazilian Real", symbol="R$", decimal_digits=2))
+        # Matches the currencies seeded by the migrations (baseline + USD/EUR/GBP,
+        # see alembic/versions/*_seed_usd_eur_gbp_currencies.py) - tests rely on
+        # all four being present, not just BRL.
+        session.add_all(
+            [
+                Currency(code="BRL", name="Brazilian Real", symbol="R$", decimal_digits=2),
+                Currency(code="USD", name="US Dollar", symbol="$", decimal_digits=2),
+                Currency(code="EUR", name="Euro", symbol="€", decimal_digits=2),
+                Currency(code="GBP", name="Pound Sterling", symbol="£", decimal_digits=2),
+            ]
+        )
         await session.commit()
 
         yield session
