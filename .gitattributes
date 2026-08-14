@@ -1,0 +1,16 @@
+# Normalize line endings to LF for everything by default. Without this,
+# line endings depend entirely on each contributor's local `core.autocrlf`
+# setting - on Windows with the common `autocrlf=true` default, git
+# silently checks text files out with CRLF, which is fatal for
+# backend/docker-entrypoint.sh: a `#!/bin/sh\r` shebang fails inside the
+# Linux container with "no such file or directory", breaking the api/
+# worker/beat services with no indication why.
+* text=auto eol=lf
+
+# Known binary assets - never touched by the above.
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.woff binary
+*.woff2 binary

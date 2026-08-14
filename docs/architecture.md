@@ -43,15 +43,53 @@ on a fresh install.
 ```text
 backend/app/
 ├── main.py                 # FastAPI app factory
-├── core/                   # config, db engines (async + sync), logging, errors
-├── api/v1/                 # routers - health, meta (currencies/settings)
-├── models/                 # SQLAlchemy models; types.py holds the MoneyAmount column type every money-bearing model should reuse
-├── schemas/                # Pydantic DTOs
-├── services/               # empty - no domain logic yet (see below)
-└── workers/                # Celery app + tasks
+├── dev.py                  # local dev-server entrypoint (task backend:dev) - see "Windows dev server" below
+├── cli/                     # `python -m app.cli create-admin` - one-time bootstrap
+├── core/                   # config, db engines (async + sync), logging, errors, security, cookies
+├── api/
+│   ├── deps.py              # DbSession, CurrentUser, AdminUser, CurrentSession
+│   └── v1/                  # one router module per resource - see docs/backend-api.md
+├── models/                 # SQLAlchemy models; types.py holds MoneyAmount/CurrencyCode/
+│                            # ExchangeRateValue/PercentageValue; base.py's UserOwnedModel is
+│                            # what every user-owned table subclasses
+├── schemas/                # Pydantic DTOs (snake_case wire format, Decimals as strings)
+├── services/                # business logic - one module per domain, plus ownership.py
+│                            # (the single query-scoping helper every domain service uses)
+└── workers/                 # Celery app + tasks
 ```
 
 `app/core/db.py` (async engine, used by FastAPI) and `app/core/db_sync.py` (sync engine, used by Celery workers) are separate on purpose, Celery's worker model isn't async-native, and sharing an async engine across the two would be fragile.
+
+### Windows dev server
+
+`task backend:dev` runs `app/dev.py`, not the `uvicorn` CLI directly. On native
+Windows, `uvicorn app.main:app` creates its event loop (Proactor, the asyncio
+default) *before* importing the ASGI app string, so a Windows-selector-loop
+patch inside `app/main.py` itself would run too late for psycopg's async
+driver. `app/dev.py` sets the loop policy first, then calls `uvicorn.run()`
+in-process, so the ordering is correct. This only matters for the native
+host-run dev server; Docker/production run plain Linux containers, where
+there's no Proactor/Selector distinction at all.
+
+## Identity and ownership
+
+Every table except `currencies`, `exchange_rates` (the provider rate cache),
+and the identity tables themselves (`users`, `sessions`, `invitations`)
+belongs to exactly one user. `app/models/base.py`'s `UserOwnedModel` declares
+the `user_id` foreign key once, for every subclass, rather than repeating it
+per model; `app/services/ownership.py` is the one place a `user_id` filter is
+applied to a query (`get_owned`/`list_owned`/`get_many_owned`), and every
+domain service goes through it. A cross-user id resolves to `404`, never
+`403` - a `403` would confirm the id exists at all, which is an enumeration
+oracle across other users' data.
+
+Registration is invite-only (see `docs/backend-api.md` for the full flow):
+there is no open sign-up endpoint. The first administrator is created by a
+one-time CLI bootstrap (`python -m app.cli create-admin`), and only an
+existing admin can invite anyone after that. Sessions are opaque HttpOnly
+cookies (not JWTs); a per-session double-submit CSRF token is folded into the
+same `CurrentUser` dependency that resolves the session, so no route can
+forget to check it.
 
 ## Frontend layout
 
@@ -68,5 +106,18 @@ See [`i18n.md`](i18n.md) for the Transloco setup and [`money-and-currency.md`](m
 
 ## What's not here yet
 
-No domain models - no accounts, transactions, categories, or budgets. This scaffold is deliberately just the skeleton: tooling, Docker topology, migration baseline (`currencies` + `exchange_rates` only), i18n wiring, and CI.
-The domain schema is a separate, future piece of work.
+The backend domain schema and API are in place (see
+[`docs/backend-api.md`](backend-api.md) for the full endpoint list), but the
+frontend still runs entirely on in-memory mock repositories
+(`frontend/src/app/data/mock/`) - nothing in the UI calls the real API yet
+except the one exchange-rate lookup on the Exchange page. Swapping the mock
+repositories for HTTP-backed ones, and reconciling the frontend's camelCase
+domain models with the backend's snake_case wire format, is a separate,
+future piece of work.
+
+Recurring rules are projections only: there is no posting workflow that
+turns a rule into real transactions, so occurrences are computed client-side
+(`domain/calc/recurrence.ts`) and never affect balances, budgets, or reports.
+
+The AI Agents feature (`AGENTS_ENABLED` + the `agents` Compose profile) is
+still an unimplemented placeholder.

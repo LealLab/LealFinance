@@ -13,8 +13,13 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
-from app.models.currency import Currency
 from app.services import exchange_rates as rates_service
+from tests.factories import login_as, make_user
+
+
+async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
+    user, password = await make_user(db_session, email=email)
+    await login_as(client, email=user.email, password=password)
 
 
 async def test_identity_pair_returns_one_without_touching_settings_or_db(
@@ -62,8 +67,7 @@ async def test_successful_fetch_is_cached_and_reused_without_refetching(
     db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    db_session.add(Currency(code="USD", name="US Dollar", symbol="$", decimal_digits=2))
-    await db_session.commit()
+    # USD is already seeded by the db_session fixture (see tests/conftest.py).
 
     call_count = 0
 
@@ -107,9 +111,18 @@ async def test_unrecognized_currency_pair_returns_rate_without_caching(
     assert cached is None
 
 
+async def test_exchange_rate_endpoint_requires_authentication(client: AsyncClient) -> None:
+    response = await client.get(
+        "/api/v1/meta/exchange-rate", params={"base": "USD", "quote": "BRL"}
+    )
+    assert response.status_code == 401
+
+
 async def test_exchange_rate_endpoint_returns_fallback_with_warning_flag(
-    client: AsyncClient,
+    client: AsyncClient, db_session: AsyncSession
 ) -> None:
+    await _authed(client, db_session, "exchange-rate-endpoint@example.com")
+
     response = await client.get(
         "/api/v1/meta/exchange-rate", params={"base": "USD", "quote": "BRL"}
     )

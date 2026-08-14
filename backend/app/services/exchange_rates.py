@@ -1,20 +1,31 @@
 """On-demand currency conversion rates.
 
+Resolution precedence:
+
+1. Same-currency identity rate.
+2. The caller's manual rate effective on or before the requested date
+   (newest such rate wins).
+3. The inverse of the caller's manual rate for the reversed pair.
+4. A cached provider rate for today.
+5. A live provider lookup, cached for reuse the rest of the day.
+6. A safe 1:1 fallback, flagged `is_fallback=True`.
+
 Fetches a live rate from Open Exchange Rates when OPENEXCHANGERATES_APP_ID
 is configured, caching successful lookups in `exchange_rates` for the day.
 Without a key - or if the provider call fails - this returns a 1:1
 fallback rate, flagged so callers can show a warning rather than silently
-using a wrong number.
+using a wrong number. Provider failures never propagate as an error - a
+broken exchange-rate lookup should never be why a request fails.
 
-Not yet called from a transaction-creation flow: there is no transactions
-domain in this scaffold yet (see CLAUDE.md). This is the service that flow
-is expected to call once it exists - see docs/money-and-currency.md.
+Manual rates (steps 2-3) are user-scoped and only consulted when a caller
+passes `user_id` - see app/services/manual_rates.py for the CRUD side.
 """
 
 import logging
 from dataclasses import dataclass
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
+from uuid import UUID
 
 import httpx
 from sqlalchemy import select
@@ -23,12 +34,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.models.currency import Currency, ExchangeRate
+from app.models.manual_rate import ManualRate
 
 logger = logging.getLogger(__name__)
 
 OXR_SOURCE = "openexchangerates"
 FALLBACK_SOURCE = "fallback_1to1"
 IDENTITY_SOURCE = "identity"
+MANUAL_SOURCE = "manual"
 
 _OXR_LATEST_URL = "https://openexchangerates.org/api/latest.json"
 _RATE_QUANTUM = Decimal("0.0000000001")  # matches ExchangeRateValue: NUMERIC(19, 10)
@@ -42,13 +55,26 @@ class RateResult:
     as_of: date
 
 
-async def get_exchange_rate(db: AsyncSession, base_code: str, quote_code: str) -> RateResult:
+async def get_exchange_rate(
+    db: AsyncSession,
+    base_code: str,
+    quote_code: str,
+    *,
+    user_id: UUID | None = None,
+    as_of: date | None = None,
+) -> RateResult:
     base_code = base_code.upper()
     quote_code = quote_code.upper()
     today = date.today()
+    as_of = as_of or today
 
     if base_code == quote_code:
         return RateResult(rate=Decimal("1"), is_fallback=False, source=IDENTITY_SOURCE, as_of=today)
+
+    if user_id is not None:
+        manual = await _get_manual_rate(db, user_id, base_code, quote_code, as_of)
+        if manual is not None:
+            return manual
 
     cached = await _get_cached_rate(db, base_code, quote_code, today)
     if cached is not None:
@@ -78,6 +104,45 @@ async def get_exchange_rate(db: AsyncSession, base_code: str, quote_code: str) -
 
     await _cache_rate(db, base_code, quote_code, rate, today)
     return RateResult(rate=rate, is_fallback=False, source=OXR_SOURCE, as_of=today)
+
+
+async def _get_manual_rate(
+    db: AsyncSession, user_id: UUID, base_code: str, quote_code: str, as_of: date
+) -> RateResult | None:
+    direct = await db.execute(
+        select(ManualRate)
+        .where(
+            ManualRate.user_id == user_id,
+            ManualRate.base_code == base_code,
+            ManualRate.quote_code == quote_code,
+            ManualRate.as_of <= as_of,
+        )
+        .order_by(ManualRate.as_of.desc())
+        .limit(1)
+    )
+    row = direct.scalars().first()
+    if row is not None:
+        return RateResult(rate=row.rate, is_fallback=False, source=MANUAL_SOURCE, as_of=row.as_of)
+
+    inverse = await db.execute(
+        select(ManualRate)
+        .where(
+            ManualRate.user_id == user_id,
+            ManualRate.base_code == quote_code,
+            ManualRate.quote_code == base_code,
+            ManualRate.as_of <= as_of,
+        )
+        .order_by(ManualRate.as_of.desc())
+        .limit(1)
+    )
+    inverse_row = inverse.scalars().first()
+    if inverse_row is None:
+        return None
+
+    inverted_rate = (Decimal(1) / inverse_row.rate).quantize(_RATE_QUANTUM, rounding=ROUND_HALF_UP)
+    return RateResult(
+        rate=inverted_rate, is_fallback=False, source=MANUAL_SOURCE, as_of=inverse_row.as_of
+    )
 
 
 async def _get_cached_rate(

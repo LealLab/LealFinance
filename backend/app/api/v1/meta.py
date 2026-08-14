@@ -1,12 +1,14 @@
 """Read-only reference data: currencies, active settings, exchange rates."""
 
+from datetime import date
+
 from fastapi import APIRouter
 from sqlalchemy import select
 
-from app.api.deps import DbSession
+from app.api.deps import CurrentUser, DbSession
 from app.core.config import get_settings
 from app.models.currency import Currency
-from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead
+from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead, PublicSettingsRead
 from app.services.exchange_rates import get_exchange_rate
 
 router = APIRouter(prefix="/meta", tags=["meta"])
@@ -19,20 +21,24 @@ async def list_currencies(db: DbSession) -> list[Currency]:
     return list(result.scalars().all())
 
 
-@router.get("/settings")
-async def get_public_settings() -> dict[str, str]:
-    return {
-        "default_currency": settings.default_currency,
-        "default_locale": settings.default_locale,
-        "agents_enabled": str(settings.agents_enabled).lower(),
-    }
+@router.get("/settings", response_model=PublicSettingsRead)
+async def get_public_settings() -> PublicSettingsRead:
+    return PublicSettingsRead(
+        default_currency=settings.default_currency,
+        default_locale=settings.default_locale,
+        agents_enabled=settings.agents_enabled,
+    )
 
 
 @router.get("/exchange-rate", response_model=ExchangeRateQuoteRead)
-async def get_exchange_rate_quote(base: str, quote: str, db: DbSession) -> ExchangeRateQuoteRead:
+async def get_exchange_rate_quote(
+    base: str, quote: str, user: CurrentUser, db: DbSession, as_of: date | None = None
+) -> ExchangeRateQuoteRead:
     """On-demand conversion rate lookup - see app/services/exchange_rates.py
-    for the fetch/cache/fallback behavior this wraps."""
-    result = await get_exchange_rate(db, base, quote)
+    for the full fetch/cache/fallback precedence this wraps. Authenticated
+    (unlike /currencies and /settings) because resolution now consults the
+    caller's own manual rates."""
+    result = await get_exchange_rate(db, base, quote, user_id=user.id, as_of=as_of)
     return ExchangeRateQuoteRead(
         base_code=base.upper(),
         quote_code=quote.upper(),

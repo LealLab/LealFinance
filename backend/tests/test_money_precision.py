@@ -54,14 +54,18 @@ async def test_money_amount_round_trips_without_precision_loss(
     db_session: AsyncSession,
 ) -> None:
     # This table lives outside Base.metadata (see _ScratchBase above), so the
-    # db_session fixture's create_all/drop_all never touches it - it's
-    # created and dropped here instead, defensively idempotent so a prior
-    # failed run never breaks this one.
-    async with db_session.bind.begin() as conn:  # type: ignore[union-attr]
-        await conn.run_sync(
-            lambda sync_conn: _ScratchBase.metadata.drop_all(sync_conn, checkfirst=True)
-        )
-        await conn.run_sync(_ScratchBase.metadata.create_all)
+    # db_session fixture's session-scoped create_all/drop_all never touches
+    # it - it's created and dropped here instead, defensively idempotent so
+    # a prior failed run never breaks this one. db_session.bind is the same
+    # connection the fixture already opened an outer transaction on (see
+    # conftest.py), so DDL runs directly on it rather than via a fresh
+    # conn.begin() - the connection can't begin a second root transaction.
+    conn = db_session.bind
+    assert conn is not None
+    await conn.run_sync(
+        lambda sync_conn: _ScratchBase.metadata.drop_all(sync_conn, checkfirst=True)
+    )
+    await conn.run_sync(_ScratchBase.metadata.create_all)
 
     try:
         row = _ScratchLedgerLine(amount=EXACT_AMOUNT, currency="BRL")
@@ -83,11 +87,10 @@ async def test_money_amount_round_trips_without_precision_loss(
         assert isinstance(dumped["amount"], str)
     finally:
         # db_session's SELECT above left it in an open transaction holding a
-        # read lock on the scratch table. Dropping that table over a
-        # *different* connection (bind.begin() below) would block forever
-        # waiting for that lock - db_session's own transaction only ends
-        # when the fixture tears down, which happens after this function
-        # returns. Rolling back here releases it before we drop.
+        # read lock on the scratch table. Dropping that table over the same
+        # connection while that lock is still held would block forever -
+        # db_session's own (savepoint) transaction only ends when the
+        # fixture tears down, which happens after this function returns.
+        # Rolling back here releases it before we drop.
         await db_session.rollback()
-        async with db_session.bind.begin() as conn:  # type: ignore[union-attr]
-            await conn.run_sync(_ScratchBase.metadata.drop_all)
+        await conn.run_sync(_ScratchBase.metadata.drop_all)

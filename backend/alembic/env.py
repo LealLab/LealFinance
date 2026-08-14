@@ -12,10 +12,11 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
-from app.core.config import get_settings
 
-# Import every model module so Base.metadata is fully populated for autogenerate.
-from app.models import currency  # noqa: F401
+# app.models re-exports every model module so Base.metadata is fully
+# populated for autogenerate - see app/models/__init__.py.
+from app import models  # noqa: F401
+from app.core.config import get_settings
 from app.models.base import Base
 
 # this is the Alembic Config object, which provides

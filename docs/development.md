@@ -54,6 +54,7 @@ docker compose down -v                 # stop + wipe data (fresh start)
 | Backend type check | `task backend:typecheck` |
 | Backend tests | `task backend:test` |
 | New migration | `task backend:migration -- "add accounts table"` |
+| Bootstrap the first admin | `task backend:create-admin -- --email you@example.com --display-name "You"` |
 | Frontend lint | `task frontend:lint` |
 | Frontend tests | `task frontend:test` |
 | Frontend build | `task frontend:build` |
@@ -61,7 +62,33 @@ docker compose down -v                 # stop + wipe data (fresh start)
 
 ## Running backend tests
 
-Tests need a real Postgres reachable (no SQLite fallback - see `backend/tests/conftest.py`, which creates/tears down schema per test directly from the ORM metadata). `docker compose up -d postgres redis` is enough; point `DATABASE_URL`/`REDIS_URL` env vars at them if not using the defaults from `.env`.
+Tests need a real Postgres reachable (no SQLite fallback - see `backend/tests/conftest.py`, which builds the schema once per test session directly from the ORM metadata, then isolates each test in a transaction that's rolled back at teardown). `docker compose up -d postgres redis` is enough; point `DATABASE_URL`/`REDIS_URL` env vars at them if not using the defaults from `.env`.
+
+`.env`'s `POSTGRES_HOST=postgres`/`REDIS_HOST=redis` only resolve inside the Docker Compose network - `docker-compose.yml` sets those directly for the `api`/`worker`/`beat` containers regardless of this file. Anything run natively on the host (`task backend:migrate`, `backend:test`, `backend:dev`, `backend:create-admin`) needs the host-exposed ports instead (`POSTGRES_HOST_PORT`/`REDIS_HOST_PORT`, default `55433`/`6379`) - `.env`'s commented-out `DATABASE_URL`/`REDIS_URL` lines are exactly that override; uncomment them for local host-native work.
+
+Don't run `task backend:migrate` and `task backend:test` back-to-back against the same database without a reset in between: migrations leave committed data behind (the seeded currencies, any admin you bootstrapped), while `backend:test` builds and seeds its own schema from ORM metadata on top of whatever's already there - the two collide (e.g. a duplicate-key error re-inserting BRL). `backend:test`'s teardown always leaves the database empty afterward, so tests will pass again immediately if you just rerun them; if you want to poke around manually with `backend:migrate`/`backend:create-admin`/`backend:dev`, do that *after* your last test run, not interleaved with it.
+
+## Bootstrapping the first admin
+
+Registration is invite-only - there's no sign-up endpoint. The first
+administrator is created with a one-time CLI command, which refuses to run
+if any administrator already exists:
+
+```bash
+task backend:create-admin -- --email you@example.com --display-name "You"
+```
+
+It prompts for a password interactively (`getpass`, minimum 12 characters,
+typed twice to confirm) - never pass it as a CLI argument, that would land in
+shell history and process listings. In Docker, run it inside the `api`
+container instead: `docker compose exec api python -m app.cli create-admin
+--email you@example.com --display-name "You"`.
+
+Once an admin exists, they issue invitations (`POST /api/v1/auth/invitations`)
+for everyone else; the response includes the raw invitation token exactly
+once, for out-of-band delivery (there's no email provider in v1). See
+[`docs/backend-api.md`](backend-api.md) for the full auth flow, endpoint
+list, and error codes.
 
 ## Migrations
 

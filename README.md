@@ -34,7 +34,10 @@
 - [x] Docker Compose stack with FastAPI, Angular, PostgreSQL, and Redis
 - [x] English (`en-US`) and Portuguese (`pt-BR`) UI with locale-aware formatting
 - [x] Multi-currency-aware money and exchange-rate scaffolding
-- [ ] Persist account, transaction, budget, and goal data through the backend API
+- [x] Backend domain API - invite-only auth, institutions, accounts, categories,
+      budgets, transactions, recurring rules, manual exchange rates, and goals
+      (see [`docs/backend-api.md`](docs/backend-api.md))
+- [ ] Wire the frontend's mock repositories to the real backend API
 - [ ] Replace the AI-agent Compose placeholder with a working runtime
 
 ## Stack
@@ -47,6 +50,7 @@
 ## Documentation
 
 - [`docs/architecture.md`](docs/architecture.md) - services, data flow, project layout
+- [`docs/backend-api.md`](docs/backend-api.md) - endpoints, ownership, error codes, bootstrap
 - [`docs/development.md`](docs/development.md) - local dev workflow
 - [`docs/homelab-deploy.md`](docs/homelab-deploy.md) - self-hosting notes, backups
 - [`docs/i18n.md`](docs/i18n.md) - translation workflow

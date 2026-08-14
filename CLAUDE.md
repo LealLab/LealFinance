@@ -46,10 +46,25 @@ templateUrl/styleUrl siblings, commit/PR rules) still apply on top of this.
   separate, unrelated (and still unimplemented) idea; don't conflate them.
 - No `OPENEXCHANGERATES_APP_ID` configured → 1:1 fallback, `is_fallback=True`.
   Never let a missing key or a provider failure raise - always fall back.
-- Not yet called from anywhere real: there's no transaction-creation flow
-  in this scaffold yet. It's called directly from
-  `GET /api/v1/meta/exchange-rate` today, only as a way to exercise/expose
-  it; wire it into transaction creation once that domain exists.
+- Precedence is identity → caller's manual rate → its inverse → cached
+  provider rate → live provider fetch → 1:1 fallback. See
+  `docs/money-and-currency.md` for the full rule and
+  `docs/backend-api.md` for the endpoint.
+- Called from transaction/recurring-rule creation (cross-currency
+  conversion validation, `app/services/conversion.py`) and from
+  `GET /api/v1/meta/exchange-rate` (now authenticated - it consults the
+  caller's own manual rates).
+
+## Backend domain model
+
+- All of it exists now: users/sessions/invitations, institutions, accounts,
+  categories, budgets, budget allocations, expected income, transactions,
+  recurring rules, manual rates, goals. See `docs/backend-api.md` for
+  endpoints/ownership/error codes and `docs/architecture.md` for the
+  identity/ownership pattern (`UserOwnedModel`,
+  `app/services/ownership.py`).
+- The frontend still runs entirely on `frontend/src/app/data/mock/` -
+  wiring it to the real API is separate, not-yet-done work.
 
 ## Workflow
 
@@ -58,6 +73,6 @@ templateUrl/styleUrl siblings, commit/PR rules) still apply on top of this.
   invocations.
 - Alembic migrations must round-trip: `alembic upgrade head` then
   `alembic downgrade base` then `alembic upgrade head` again, cleanly.
-- No domain models (accounts, transactions, budgets, categories) exist yet
-  as of the initial scaffold - only `currencies` and `exchange_rates`
-  reference tables. Confirm with the user before assuming a schema.
+- Don't run `task backend:migrate` and `task backend:test` back-to-back
+  against the same database without a reset in between - see
+  `docs/development.md`.

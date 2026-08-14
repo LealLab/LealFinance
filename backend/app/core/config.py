@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     api_secret_key: str = "change-me-to-a-random-64-char-string"
     api_cors_origins: str = "http://localhost:4200"
 
+    # --- Auth / sessions ---
+    session_ttl_days: int = 30
+    invitation_ttl_days: int = 7
+
     # --- AI Agents (optional, off by default) ---
     agents_enabled: bool = False
 

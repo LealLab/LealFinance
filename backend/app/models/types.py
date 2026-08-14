@@ -21,3 +21,7 @@ CurrencyCode = Annotated[str, mapped_column(String(3))]
 # Exchange rates need more decimal precision than money amounts (e.g. BRL/JPY
 # can have many significant digits) but bound the integer part more tightly.
 ExchangeRateValue = Annotated[Decimal, mapped_column(Numeric(19, 10))]
+
+# Budget allocation percentages: 0-100, with sub-percent precision. 3
+# integer digits is all that's meaningful for a percentage.
+PercentageValue = Annotated[Decimal, mapped_column(Numeric(7, 4))]

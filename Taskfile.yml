@@ -28,7 +28,7 @@ tasks:
     desc: Run the API locally with reload
     dir: backend
     cmds:
-      - uv run uvicorn app.main:app --reload
+      - uv run python -m app.dev
 
   backend:lint:
     desc: Lint + format-check the backend
@@ -60,6 +60,12 @@ tasks:
     dir: backend
     cmds:
       - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+
+  backend:create-admin:
+    desc: 'One-time admin bootstrap: task backend:create-admin -- --email you@example.com --display-name "You"'
+    dir: backend
+    cmds:
+      - uv run python -m app.cli create-admin {{.CLI_ARGS}}
 
   frontend:install:
     desc: Install frontend dependencies
