@@ -18,7 +18,7 @@ export function findEntity<T extends { id: string }>(list: readonly T[], id: str
 
 /**
  * Reassigns sequential 0-based `position` values, in `orderedIds` order, to
- * exactly the items whose id appears in `orderedIds` — every other item's
+ * exactly the items whose id appears in `orderedIds` - every other item's
  * `position` is left untouched. Ids not present in `list` are ignored.
  */
 export function reorderEntities<T extends { id: string; position: number }>(

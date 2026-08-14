@@ -38,7 +38,7 @@ describe('money', () => {
 
   describe('add / subtract / negate', () => {
     it('adds exactly, without float drift', () => {
-      // 0.1 + 0.2 !== 0.3 in float64 — this must not leak through.
+      // 0.1 + 0.2 !== 0.3 in float64 - this must not leak through.
       expect(add(money('0.1', 'BRL'), money('0.2', 'BRL'))).toEqual(money('0.3', 'BRL'));
     });
 
@@ -98,7 +98,7 @@ describe('money', () => {
     });
 
     it('rounds the rescaled product half away from zero', () => {
-      // 0.7071 × 0.7071 = 0.49999041 exactly — rounds up to 0.5000 at scale 4.
+      // 0.7071 × 0.7071 = 0.49999041 exactly - rounds up to 0.5000 at scale 4.
       expect(multiply(money('0.7071', 'USD'), '0.7071', 'BRL').amount).toBe('0.5000');
     });
   });

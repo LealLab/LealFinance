@@ -4,7 +4,7 @@ import { Translation, TranslocoLoader } from '@jsverse/transloco';
 import { Observable } from 'rxjs';
 
 /**
- * Fetches translation files from /i18n/{lang}.json — served from
+ * Fetches translation files from /i18n/{lang}.json - served from
  * public/i18n/ (Angular 22's default static-assets directory, not the
  * legacy src/assets/).
  */

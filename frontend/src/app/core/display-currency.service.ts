@@ -5,7 +5,7 @@ const DEFAULT_CURRENCY = 'USD';
 
 /**
  * The currency multi-currency figures (net worth, cross-account totals)
- * convert into for display — a UI preference, like ThemeService, so it
+ * convert into for display - a UI preference, like ThemeService, so it
  * persists across reloads independently of the in-memory mock domain
  * data. Read by the dashboard; changed from Settings.
  */
@@ -20,7 +20,7 @@ export class DisplayCurrencyService {
       try {
         localStorage.setItem(STORAGE_KEY, this.currencySignal());
       } catch {
-        // Storage unavailable — preference still applies for this session.
+        // Storage unavailable - preference still applies for this session.
       }
     });
   }

@@ -1,6 +1,6 @@
 """Tests for the on-demand currency conversion service.
 
-See app/services/exchange_rates.py — no network calls happen in these
+See app/services/exchange_rates.py - no network calls happen in these
 tests; the provider fetch is monkeypatched everywhere except implicitly
 proving it's *not* called (cache hit, identity pair).
 """
@@ -31,7 +31,7 @@ async def test_no_api_key_configured_falls_back_to_one_to_one(
 ) -> None:
     # Falsy, not "is None": a .env with OPENEXCHANGERATES_APP_ID= (present,
     # empty) is exactly as "not configured" as the key being absent
-    # entirely — `if not settings.openexchangerates_app_id` in the service
+    # entirely - `if not settings.openexchangerates_app_id` in the service
     # treats them the same, so the test should too, rather than assuming a
     # specific unset representation.
     monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "")
@@ -90,7 +90,7 @@ async def test_successful_fetch_is_cached_and_reused_without_refetching(
 async def test_unrecognized_currency_pair_returns_rate_without_caching(
     db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """XYZ isn't in the `currencies` table — exchange_rates has a foreign
+    """XYZ isn't in the `currencies` table - exchange_rates has a foreign
     key to it, so this must not attempt to persist (and must not crash)."""
     monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
 

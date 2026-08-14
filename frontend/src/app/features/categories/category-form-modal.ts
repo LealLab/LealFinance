@@ -12,7 +12,7 @@ const DEFAULT_COLOR = '#1F5C6B';
 
 /**
  * Create/edit form for a Category. `parentOptions` is restricted to
- * top-level categories of the same kind — categories nest one level deep
+ * top-level categories of the same kind - categories nest one level deep
  * (see the Category model), so a child can't itself have children, and a
  * category can't become its own parent.
  */
@@ -31,7 +31,7 @@ export class CategoryFormModal {
   readonly allCategories = input.required<Category[]>();
   /**
    * When set and the modal opens for a *new* category (not editing), the
-   * form is pre-filled with this category as parent and its `kind` — used
+   * form is pre-filled with this category as parent and its `kind` - used
    * by the "add sub-category" affordance on each parent row in
    * categories.html so the user doesn't have to re-pick the parent from
    * the dropdown.
@@ -55,7 +55,7 @@ export class CategoryFormModal {
     initialValue: this.form.controls.kind.value
   });
 
-  /** True while creating a sub-category via the preset-parent shortcut — the kind picker is locked to the parent's kind. */
+  /** True while creating a sub-category via the preset-parent shortcut - the kind picker is locked to the parent's kind. */
   protected readonly kindLocked = computed(() => !this.category() && this.presetParent() !== undefined);
 
   protected readonly parentOptions = computed(() => {
@@ -67,7 +67,7 @@ export class CategoryFormModal {
 
   /**
    * titleKey/saveErrorKey hold these as plain string literals, only ever
-   * reached through the template's translation call — see
+   * reached through the template's translation call - see
    * account-form-modal.ts / layout/sidebar.ts for why that needs this
    * JSDoc "dynamic markings" block:
    * t(categories.form.editTitle, categories.form.newTitle, categories.form.saveError)

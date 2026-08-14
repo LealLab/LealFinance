@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 /**
  * Thin wrapper around HttpClient that prefixes every call with the API base
  * path. nginx proxies `/api` to the backend in every environment (dev
- * proxy, docker compose, homelab) — see docker/nginx/default.conf — so this
+ * proxy, docker compose, homelab) - see docker/nginx/default.conf - so this
  * never needs environment-specific base URLs.
  */
 @Injectable({ providedIn: 'root' })

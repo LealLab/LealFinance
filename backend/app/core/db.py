@@ -1,6 +1,6 @@
 """Async database engine and session factory for the FastAPI app.
 
-Celery workers use the separate sync engine in db_sync.py instead — Celery's
+Celery workers use the separate sync engine in db_sync.py instead - Celery's
 worker model is not async-native, and mixing event loops across the two
 would be fragile.
 """
@@ -46,7 +46,7 @@ async def session_scope() -> AsyncGenerator[AsyncSession]:
 
 
 async def check_database_connection() -> bool:
-    """Used by the readiness probe — returns False rather than raising."""
+    """Used by the readiness probe - returns False rather than raising."""
     from sqlalchemy import text
 
     try:

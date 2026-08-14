@@ -19,20 +19,20 @@ const TRANSACTION_TYPES: readonly TransactionType[] = ['expense', 'income', 'tra
 const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly'];
 
 /**
- * Create/edit form for a Transaction — income/expense/transfer share one
+ * Create/edit form for a Transaction - income/expense/transfer share one
  * modal with a segmented type control that swaps which fields apply (see
  * transaction-form-modal.html). Creating with "repeat" checked also
- * creates a RecurringRule from the same fields (edit doesn't offer this —
+ * creates a RecurringRule from the same fields (edit doesn't offer this -
  * promoting an *existing* transaction into a rule after the fact is a
  * separate, more involved flow this scaffold doesn't cover).
  *
  * `fromInstitutionId`/`toInstitutionId` are transfer-only, UI-only filter
- * controls — they narrow which accounts the two transfer selects offer,
+ * controls - they narrow which accounts the two transfer selects offer,
  * but are never part of the payload sent to TransactionRepository
  * (Transaction itself has no institution fields; a transfer's institutions
  * are implied by its two accounts). `toInstitutionId` defaults to the
  * source account's own institution whenever the source account changes,
- * so a same-institution transfer needs no extra clicks — see the
+ * so a same-institution transfer needs no extra clicks - see the
  * `accountId.valueChanges` subscription below.
  */
 @Component({
@@ -58,7 +58,7 @@ export class TransactionFormModal {
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
-  /** True while the constructor effect is repopulating the form on open — see the note above `clearAccountIfMismatched`. */
+  /** True while the constructor effect is repopulating the form on open - see the note above `clearAccountIfMismatched`. */
   private applyingReset = false;
 
   protected readonly form = this.fb.nonNullable.group({
@@ -112,7 +112,7 @@ export class TransactionFormModal {
 
   /**
    * titleKey/saveErrorKey hold these as plain string literals, only ever
-   * passed to the marker function from the template — see
+   * passed to the marker function from the template - see
    * account-form-modal.ts / layout/sidebar.ts for why that needs this
    * JSDoc "dynamic markings" block:
    * t(transactions.form.editTitle, transactions.form.newTitle, transactions.form.saveError, transactions.form.errors.invalid)
@@ -155,7 +155,7 @@ export class TransactionFormModal {
     });
 
     // Defaulting toInstitutionId to the source account's own institution
-    // whenever the source account changes — see the class-level doc
+    // whenever the source account changes - see the class-level doc
     // comment for why, and clearAccountIfMismatched for the symmetric
     // "narrowing a filter drops a now-invalid selection" behavior.
     this.form.controls.accountId.valueChanges.subscribe((accountId) => {
@@ -177,7 +177,7 @@ export class TransactionFormModal {
   /**
    * Narrowing an institution filter (fromInstitutionId/toInstitutionId) to
    * something specific drops the currently-selected account on that side
-   * if it no longer belongs to that institution — rather than silently
+   * if it no longer belongs to that institution - rather than silently
    * keeping a selection the filtered <select> no longer even lists.
    */
   private clearAccountIfMismatched(controlName: 'accountId' | 'toAccountId', institutionId: string): void {

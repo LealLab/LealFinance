@@ -1,10 +1,10 @@
 <div *transloco="let t">
   <!-- transactions.recurring.frequency.* is looked up dynamically here too
-       — see transaction-form-modal.html for why this comment exists. -->
+       - see transaction-form-modal.html for why this comment exists. -->
   <!-- t(transactions.recurring.frequency.weekly) t(transactions.recurring.frequency.monthly) t(transactions.recurring.frequency.yearly) -->
   <!-- t(transactions.type.income) t(transactions.type.expense) -->
   <!-- @if…as (not a plain call) avoids a translation-argument pattern the
-       extractor mis-parses — see account-form-modal.html for the full
+       extractor mis-parses - see account-form-modal.html for the full
        explanation. -->
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
@@ -79,7 +79,7 @@
           <select id="rule-category" class="form-input" formControlName="categoryId">
             <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
             @for (category of categoryOptions(); track category.id) {
-              <option [value]="category.id">{{ category.parentId ? '— ' : '' }}{{ category.name }}</option>
+              <option [value]="category.id">{{ category.parentId ? '- ' : '' }}{{ category.name }}</option>
             }
           </select>
         </div>

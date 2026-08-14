@@ -2,13 +2,13 @@
 
 Fetches a live rate from Open Exchange Rates when OPENEXCHANGERATES_APP_ID
 is configured, caching successful lookups in `exchange_rates` for the day.
-Without a key — or if the provider call fails — this returns a 1:1
+Without a key - or if the provider call fails - this returns a 1:1
 fallback rate, flagged so callers can show a warning rather than silently
 using a wrong number.
 
 Not yet called from a transaction-creation flow: there is no transactions
 domain in this scaffold yet (see CLAUDE.md). This is the service that flow
-is expected to call once it exists — see docs/money-and-currency.md.
+is expected to call once it exists - see docs/money-and-currency.md.
 """
 
 import logging
@@ -103,7 +103,7 @@ async def _get_cached_rate(
 
 async def _fetch_rate_from_provider(app_id: str, base_code: str, quote_code: str) -> Decimal:
     """Open Exchange Rates' free plan only allows `base=USD` (changing the
-    base currency requires a paid plan) — so cross rates are computed via a
+    base currency requires a paid plan) - so cross rates are computed via a
     USD bridge from a single request: rate(A->B) = rates[B] / rates[A],
     where rates[X] is "how many X per 1 USD" (rates["USD"] is always 1).
     """
@@ -126,7 +126,7 @@ async def _cache_rate(
     db: AsyncSession, base_code: str, quote_code: str, rate: Decimal, as_of: date
 ) -> None:
     """Only persists when both currencies already exist in `currencies`
-    (exchange_rates has a foreign key to it) — an unrecognized currency
+    (exchange_rates has a foreign key to it) - an unrecognized currency
     still gets a live rate returned to the caller, it just isn't cached."""
     known = await db.execute(
         select(Currency.code).where(Currency.code.in_([base_code, quote_code]))
@@ -146,6 +146,6 @@ async def _cache_rate(
     try:
         await db.commit()
     except IntegrityError:
-        # Another concurrent request cached the same pair first — fine,
+        # Another concurrent request cached the same pair first - fine,
         # the rate we already computed is still correct to return.
         await db.rollback()

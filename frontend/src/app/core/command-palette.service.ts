@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 /**
  * Open/closed state for the global Ctrl+K / Cmd+K command palette
  * (layout/command-palette/command-palette.ts), mounted once in
- * layout/shell.html next to <app-confirm-dialog /> — same singleton,
+ * layout/shell.html next to <app-confirm-dialog /> - same singleton,
  * signal-backed-state-in-a-service pattern as ConfirmService
  * (core/confirm.service.ts), just without a request payload: there's only
  * one palette, so "open" is enough state to carry.

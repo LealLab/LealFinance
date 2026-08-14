@@ -43,7 +43,7 @@ plugins = ["pydantic.mypy"]
 module = ["celery.*"]
 ignore_missing_imports = true
 
-# @celery_app.task(...) is untyped because of the above — can't be typed away
+# @celery_app.task(...) is untyped because of the above - can't be typed away
 # from the call site, only from the module doing the decorating.
 [[tool.mypy.overrides]]
 module = ["app.workers.tasks.*"]

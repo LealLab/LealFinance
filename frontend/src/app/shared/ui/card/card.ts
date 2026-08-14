@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
 
 /**
- * The base surface for grouped content across the app. Deliberately plain —
- * a 1px border and a raised background, no shadow — per the "borders and
+ * The base surface for grouped content across the app. Deliberately plain -
+ * a 1px border and a raised background, no shadow - per the "borders and
  * spacing carry hierarchy, not shadows" design direction.
  */
 @Component({

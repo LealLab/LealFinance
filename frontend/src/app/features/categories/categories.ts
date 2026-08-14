@@ -31,7 +31,7 @@ interface CategoryRow {
 /**
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals, but the call itself isn't to the `t` marker function,
- * so transloco-keys-manager's extractor never sees them — same "dynamic
+ * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as transactions.ts / budgets.ts:
  * t(categories.delete.title, categories.delete.message, categories.delete.blockedTitle, categories.delete.blockedMessage)
  */
@@ -116,7 +116,7 @@ export class Categories {
 
   /**
    * A plain array (not built inline in the template) so each section's
-   * translation key is a property path the extractor can follow — see
+   * translation key is a property path the extractor can follow - see
    * layout/sidebar.ts's NAV_ITEMS for the same reasoning.
    *
    * t(categories.sections.expense, categories.sections.income)

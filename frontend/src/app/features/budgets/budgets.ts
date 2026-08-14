@@ -51,7 +51,7 @@ interface BudgetRow extends BudgetProgress {
 /**
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals, but the call itself isn't to the `t` marker function,
- * so transloco-keys-manager's extractor never sees them — same "dynamic
+ * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as transactions.ts:
  * t(budgets.delete.title, budgets.delete.message)
  */

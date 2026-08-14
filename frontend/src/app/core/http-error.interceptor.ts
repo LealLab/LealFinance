@@ -5,7 +5,7 @@ import { isApiErrorBody } from './api-error';
 
 /**
  * Normalizes failed API responses so callers always deal with the same
- * shape. Never translates anything here — see docs/i18n.md: translation
+ * shape. Never translates anything here - see docs/i18n.md: translation
  * only happens in components, from the error `code` this interceptor
  * surfaces untouched.
  */

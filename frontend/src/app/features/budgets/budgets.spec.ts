@@ -48,7 +48,7 @@ describe('Budgets', () => {
     const text = fixture.nativeElement.textContent as string;
     expect(text).toContain('Orçamentos');
     // Fixtures deliberately size Alimentação over budget and leave
-    // Saúde/Educação unbudgeted this month (see data/mock/fixtures.ts) —
+    // Saúde/Educação unbudgeted this month (see data/mock/fixtures.ts) -
     // asserting on that is a real regression check, not just a smoke test.
     expect(text).toContain('Estourado');
     expect(text).toContain('Gastos sem orçamento definido');

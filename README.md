@@ -1,79 +1,53 @@
-# LealFinance
+<!-- markdownlint-disable-file MD033 MD041 -->
+<p align="center">
+  <img src="docs/images/logo.svg" width="200" alt="LealFinance" />
+</p>
+<h1 align="center">LealFinance</h1>
+<p align="center">
+  <a href="https://github.com/LealLab/LealFinance/actions/workflows/ci.yml"><img src="https://github.com/LealLab/LealFinance/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL--3.0-blue.svg" alt="License: AGPL-3.0" /></a>
+</p>
 
-LealFinance is a self-hosted financial management platform, built with homelabs in mind.
+<p align="center">
+  A self-hosted personal finance platform built with homelabs in mind.
+  The current scaffold includes a Docker Compose stack, an English-first UI
+  with Portuguese support, and multi-currency money handling.
+</p>
+
+## Quick Start
+
+1. Install [Docker](https://www.docker.com).
+
+2. Clone the repository and start the stack:
+
+    ```bash
+    git clone https://github.com/LealLab/LealFinance.git && cd LealFinance
+    cp .env.example .env
+    # Edit .env: at minimum change POSTGRES_PASSWORD and API_SECRET_KEY.
+    docker compose up -d --build
+    ```
+
+3. Open `http://localhost:${WEB_PORT}` (default `8080`). The web container serves the UI and proxies the API under `/api`.
+
+## Current status and roadmap
+
+- [x] Docker Compose stack with FastAPI, Angular, PostgreSQL, and Redis
+- [x] English (`en-US`) and Portuguese (`pt-BR`) UI with locale-aware formatting
+- [x] Multi-currency-aware money and exchange-rate scaffolding
+- [ ] Persist account, transaction, budget, and goal data through the backend API
+- [ ] Replace the AI-agent Compose placeholder with a working runtime
 
 ## Stack
 
-| Layer    | Stack                                            |
-| -------- | ------------------------------------------------- |
-| Backend  | FastAPI, SQLAlchemy 2, Alembic, Celery             |
-| Frontend | Angular, TypeScript, Tailwind CSS, Transloco       |
-| Database | PostgreSQL                                         |
-| Queue    | Redis + Celery                                     |
-
-## Localization
-
-The UI ships in Brazilian Portuguese (`pt-BR`) first, built on Transloco so
-additional languages are a config change, not a rewrite. See
-[`docs/i18n.md`](docs/i18n.md).
-
-## Currency
-
-All monetary values are stored as `NUMERIC(19,4)` alongside an ISO 4217
-currency code — see [`docs/money-and-currency.md`](docs/money-and-currency.md).
-The platform starts with BRL only; multi-currency support (live exchange
-rates, per-account currencies) is designed for but not yet enabled.
-
-### Automatic currency conversion (optional)
-
-For automatic currency conversion, add a free [Open Exchange
-Rates](https://openexchangerates.org/signup/free) key to `.env`:
-
-```bash
-OPENEXCHANGERATES_APP_ID=your-app-id
-```
-
-Rates are fetched on-demand and cached for the day. Without a key, or if
-the provider call fails, cross-currency amounts fall back to a 1:1 rate,
-flagged so the UI can show a warning rather than use it silently.
-
-## AI Agents (optional)
-
-Self-hosted AI assistants over your LealFinance data — multi-provider
-(OpenAI, Anthropic, Ollama, OpenAI-compatible), tool-use via MCP, per-agent
-RAG knowledge base. Off by default; zero cost when off.
-
-```bash
-# in .env
-AGENTS_ENABLED=true
-COMPOSE_PROFILES=agents
-```
-
-```bash
-docker compose up -d
-```
-
-Then configure a provider under Settings → AI Agents.
-
-## Getting started
-
-See [`docs/development.md`](docs/development.md) for local setup (backend,
-frontend, and full-stack via Docker Compose) and
-[`docs/homelab-deploy.md`](docs/homelab-deploy.md) for running this in a
-homelab.
-
-```bash
-cp .env.example .env
-docker compose up -d --build
-```
-
-The web UI is served on `http://localhost:${WEB_PORT}` (default `8080`),
-proxying the API under `/api`.
+- **Backend** - FastAPI, SQLAlchemy 2, Alembic, Celery
+- **Frontend** - Angular, TypeScript, Tailwind CSS, Transloco
+- **Database** - PostgreSQL
+- **Queue** - Redis + Celery
 
 ## Documentation
 
-- [`docs/architecture.md`](docs/architecture.md) — services, data flow, project layout
-- [`docs/development.md`](docs/development.md) — local dev workflow
-- [`docs/homelab-deploy.md`](docs/homelab-deploy.md) — self-hosting notes, backups
-- [`docs/i18n.md`](docs/i18n.md) — translation workflow
-- [`docs/money-and-currency.md`](docs/money-and-currency.md) — monetary data rules
+- [`docs/architecture.md`](docs/architecture.md) - services, data flow, project layout
+- [`docs/development.md`](docs/development.md) - local dev workflow
+- [`docs/homelab-deploy.md`](docs/homelab-deploy.md) - self-hosting notes, backups
+- [`docs/i18n.md`](docs/i18n.md) - translation workflow
+- [`docs/money-and-currency.md`](docs/money-and-currency.md) - monetary data rules

@@ -22,11 +22,11 @@ export const EMPTY_FILTERS: TransactionFilters = {
 };
 
 /**
- * Shared by the real-transaction list and the projected-occurrence list —
+ * Shared by the real-transaction list and the projected-occurrence list -
  * both are shaped closely enough to `Transaction` (a ProjectedTransaction
  * is a Transaction template plus a date, minus an id) that one predicate
  * covers both. `accountsById` resolves each leg's account so the
- * institution predicate can look up `Account.institutionId` — Transaction
+ * institution predicate can look up `Account.institutionId` - Transaction
  * itself carries no institution field.
  */
 export function matchesFilters(

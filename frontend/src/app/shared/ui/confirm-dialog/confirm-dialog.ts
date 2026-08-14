@@ -29,7 +29,7 @@ export class ConfirmDialog {
 
   protected onOpenChange(open: boolean): void {
     // The modal can close itself (Escape, backdrop click) without going
-    // through respond() — treat that the same as cancelling.
+    // through respond() - treat that the same as cancelling.
     if (!open) this.confirmService.respond(false);
   }
 }

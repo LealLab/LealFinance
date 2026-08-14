@@ -25,7 +25,7 @@ import { Sidebar } from './sidebar';
 
 /**
  * App shell: a persistent sidebar on `md+` screens (icon rail from `md` to
- * `lg`, full labels from `lg` up — see sidebar.ts), collapsing to a
+ * `lg`, full labels from `lg` up - see sidebar.ts), collapsing to a
  * hamburger-triggered off-canvas drawer below `md`. Theme/balance-visibility
  * toggles, the language switcher, and the command-palette trigger all live
  * in the sidebar/drawer now (not the top `<header>`, which below `md` only

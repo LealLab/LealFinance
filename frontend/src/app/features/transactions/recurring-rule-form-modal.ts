@@ -17,7 +17,7 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
 
 /**
  * Create/edit form for a RecurringRule directly (the recurring rules tab
- * on the transactions screen). Limited to income/expense — a recurring
+ * on the transactions screen). Limited to income/expense - a recurring
  * *transfer* is a real pattern in principle, but this scaffold keeps
  * recurrence to the income/expense case transaction-form-modal.ts also
  * covers, rather than doubling the surface for a less common case.
@@ -61,13 +61,13 @@ export class RecurringRuleFormModal {
   protected readonly categoryOptions = computed(() =>
     this.categories().filter((category) => !category.archived && category.kind === this.selectedType())
   );
-  /** <optgroup>-per-institution for the account select (display-only — no transfer support here). */
+  /** <optgroup>-per-institution for the account select (display-only - no transfer support here). */
   protected readonly accountGroups = computed(() =>
     groupAccountsByInstitution(this.accounts(), this.institutions())
   );
   /**
    * titleKey/saveErrorKey hold these as plain string literals, only ever
-   * passed to the marker function from the template — see
+   * passed to the marker function from the template - see
    * account-form-modal.ts / layout/sidebar.ts for why that needs this
    * JSDoc "dynamic markings" block:
    * t(transactions.recurring.form.editTitle, transactions.recurring.form.newTitle, transactions.recurring.form.saveError)

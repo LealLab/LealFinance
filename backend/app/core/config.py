@@ -47,7 +47,7 @@ class Settings(BaseSettings):
 
     # --- Currency conversion (optional) ---
     # Free key from https://openexchangerates.org/signup/free. Without one,
-    # cross-currency rates fall back to 1:1 — see app/services/exchange_rates.py.
+    # cross-currency rates fall back to 1:1 - see app/services/exchange_rates.py.
     openexchangerates_app_id: str | None = None
 
     @computed_field  # type: ignore[prop-decorator]

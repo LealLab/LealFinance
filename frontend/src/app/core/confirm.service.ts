@@ -12,7 +12,7 @@ export interface ConfirmRequest {
   titleKey: string;
   messageKey: string;
   tone: 'default' | 'danger';
-  /** Interpolation values for `messageKey`, e.g. `{{count}}` placeholders — see t() usage in confirm-dialog.html. */
+  /** Interpolation values for `messageKey`, e.g. `{{count}}` placeholders - see t() usage in confirm-dialog.html. */
   params?: ConfirmParams;
 }
 
@@ -23,7 +23,7 @@ interface PendingConfirm extends ConfirmRequest {
 /**
  * App-wide "are you sure?" confirmation, backed by a single
  * <app-confirm-dialog> mounted once in the shell (see layout/shell.html)
- * rather than one per delete button — every destructive action across
+ * rather than one per delete button - every destructive action across
  * Transactions/Categories/Budgets/Accounts calls `confirm()` and awaits
  * the answer instead of each screen owning its own dialog markup.
  */

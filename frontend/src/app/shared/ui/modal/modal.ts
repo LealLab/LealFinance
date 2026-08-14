@@ -9,7 +9,7 @@ import { Icon } from '../icon/icon';
  * top-layer stacking all come from the platform, with no CDK dependency
  * and no focus-trap logic to get wrong.
  *
- * `open` is a two-way model — `[(open)]="isOpen"` — so both the caller
+ * `open` is a two-way model - `[(open)]="isOpen"` - so both the caller
  * setting it false *and* the user pressing Escape (which the browser closes
  * the dialog for on its own) land in the same place: the `close` native
  * event is the single source of truth that flips the model back.
@@ -17,7 +17,7 @@ import { Icon } from '../icon/icon';
  * Usage: `<app-modal [(open)]="isOpen" [titleText]="..." >...form...</app-modal>`,
  * with titleText bound to a Transloco-translated string from the caller
  * (not shown as a literal call here, so transloco-keys-manager doesn't
- * mistake this comment for a real usage site — see api-error.ts for the
+ * mistake this comment for a real usage site - see api-error.ts for the
  * same pattern).
  */
 @Component({

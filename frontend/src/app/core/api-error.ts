@@ -2,7 +2,7 @@
  * Mirrors the backend's error envelope (app/core/errors.py):
  * { "error": { "code": "account.insufficient_balance", "params": {...} } }
  *
- * The code is a Transloco key suffix, not a translated string — see
+ * The code is a Transloco key suffix, not a translated string - see
  * docs/i18n.md. Callers prefix it with "errors." to get the translation
  * key themselves (not shown as a literal call here, so transloco-keys-manager
  * doesn't mistake this comment for a real usage site).

@@ -9,7 +9,7 @@ const TONE_CLASSES: Record<StatTone, string> = {
 };
 
 /**
- * A single labeled figure — the dashboard's stat row and account/budget
+ * A single labeled figure - the dashboard's stat row and account/budget
  * summaries are built from these. The value renders in the monospace
  * "ledger" face (see tailwind.css --font-mono) since it's always a
  * pre-formatted amount or count, never prose.

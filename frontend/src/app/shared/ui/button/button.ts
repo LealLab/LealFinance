@@ -22,12 +22,12 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
 
 /**
  * Attaches to a native `<button>` (selector `button[appButton]`) rather than
- * wrapping one — that keeps `type`, `disabled`, and `form` as real button
+ * wrapping one - that keeps `type`, `disabled`, and `form` as real button
  * attributes the caller sets directly, so this primitive doesn't have to
  * re-declare and forward them.
  *
  * Usage: `<button appButton variant="primary">` with a Transloco-translated
- * label as content (not shown as a literal call here — see api-error.ts).
+ * label as content (not shown as a literal call here - see api-error.ts).
  */
 @Component({
   selector: 'button[appButton]',

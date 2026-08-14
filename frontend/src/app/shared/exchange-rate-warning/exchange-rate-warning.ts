@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 /**
- * Warning banner for a fallback (1:1) exchange rate — see
+ * Warning banner for a fallback (1:1) exchange rate - see
  * docs/money-and-currency.md. Not yet used anywhere: there's no
  * transaction UI in this scaffold to attach it to. Intended usage, once
  * that exists:

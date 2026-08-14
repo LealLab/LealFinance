@@ -19,13 +19,13 @@ function notFound(entity: string, id: string): never {
 }
 
 /**
- * The single in-memory source of truth behind every Mock*Repository — see
+ * The single in-memory source of truth behind every Mock*Repository - see
  * data/*.repository.ts for the abstractions built on top of it. Backed by
  * signals so components could in principle read it reactively, though in
  * practice everything goes through the repository interfaces to keep the
  * eventual swap to real HTTP a provider change, not a call-site change.
  *
- * State is in-memory only by design (see docs/superpowers/specs — mock
+ * State is in-memory only by design (see docs/superpowers/specs - mock
  * persistence decision): a reload always comes back to `reset()`'s
  * fixtures. `reset()` is also exposed directly to the Settings screen's
  * "reset mock data" action.
@@ -98,13 +98,13 @@ export class MockStore {
   }
 
   /**
-   * Refuses to delete an institution that any account still references —
+   * Refuses to delete an institution that any account still references -
    * unlike Transactions/Budgets/RecurringRules (freely deletable), this is
    * an invariant check enforced at the store level (the categories
    * workstream's usage-guard equivalent lives one layer up instead; either
    * placement is fine, this just needs to be the one used consistently
    * here). A thrown Error is this repo's existing convention for a
-   * store-level invariant violation — see `notFound` above.
+   * store-level invariant violation - see `notFound` above.
    */
   deleteInstitution(id: string): void {
     if (!findEntity(this.institutionsSignal(), id)) notFound('Institution', id);
@@ -159,7 +159,7 @@ export class MockStore {
 
   /**
    * Reassigns sequential positions (0, 1, 2, ...) to exactly the categories
-   * in `orderedIds`, scoped to the given `kind`/`parentId` sibling group —
+   * in `orderedIds`, scoped to the given `kind`/`parentId` sibling group -
    * other categories, including siblings not present in `orderedIds`, are
    * left untouched. Ids that don't actually belong to that sibling group are
    * ignored, so a caller can't accidentally reorder across groups.

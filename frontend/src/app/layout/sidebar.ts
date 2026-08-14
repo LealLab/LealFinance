@@ -17,14 +17,14 @@ export interface NavSection {
 /**
  * sidebar.html renders each label by looking up a key stored on this
  * array, which transloco-keys-manager's static extractor can't resolve
- * back to string literals — it would otherwise flag every layout.nav.* key
+ * back to string literals - it would otherwise flag every layout.nav.* key
  * below as orphaned. A JSDoc block is the tool's own escape hatch for
  * exactly this (its TS extractor calls it "dynamic markings"): a bare,
  * unquoted, comma-separated marker call naming every key actually in use.
  * command-palette.ts's "Go to" group reuses these same NavItem entries
  * (and their labelKey values) for its own dynamic label lookup (worded
  * that way, not as a literal call, so this sentence itself doesn't
- * register as a false usage site — see docs/i18n.md's "one gotcha"),
+ * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
  * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.settings, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup)
@@ -70,7 +70,7 @@ export class Sidebar {
    * 'rail' (default): the persistent desktop sidebar. Its labels follow the
    * `expanded` input so Shell can keep responsive defaults while supporting a
    * manual tablet/desktop toggle.
-   * 'drawer': the mobile off-canvas panel — always shows full labels since
+   * 'drawer': the mobile off-canvas panel - always shows full labels since
    * width isn't a constraint once it's an overlay.
    */
   readonly variant = input<'rail' | 'drawer'>('rail');

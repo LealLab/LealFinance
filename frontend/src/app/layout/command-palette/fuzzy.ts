@@ -1,5 +1,5 @@
 /**
- * Small hand-rolled fuzzy matcher for the command palette — no library, no
+ * Small hand-rolled fuzzy matcher for the command palette - no library, no
  * PaletteItem awareness, just string in, string out. Diacritics are
  * stripped and both strings lowercased before comparing, so a query typed
  * without accents ("alimentacao") still matches accented data
@@ -11,11 +11,11 @@
  *    occurrences score higher than ones buried later in the string.
  *  - Failing that, a subsequence match (every query character appears in
  *    order, not necessarily contiguous) still scores, with a bonus for
- *    runs of consecutive matching characters — "wal" matching "Wallet"
+ *    runs of consecutive matching characters - "wal" matching "Wallet"
  *    contiguously should outscore "wal" matching scattered letters in a
  *    longer string.
  */
-// Combining Diacritical Marks block (U+0300-U+036F) — stripped after NFD
+// Combining Diacritical Marks block (U+0300-U+036F) - stripped after NFD
 // decomposition so "ç"/"ã"/"õ" etc. reduce to their bare base letter. Built
 // as a codepoint range check rather than a `̀-ͯ` regex literal
 // only to sidestep escape-sequence mangling through this file's edit

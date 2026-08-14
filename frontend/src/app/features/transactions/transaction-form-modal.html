@@ -2,13 +2,13 @@
   <!-- transactions.type.* and transactions.recurring.frequency.* below are
        looked up dynamically (t('transactions.type.' + type)), which
        transloco-keys-manager's template extractor can't resolve on its
-       own — this comment is its own "dynamic markings" mechanism for
+       own - this comment is its own "dynamic markings" mechanism for
        templates (must contain nothing but marker calls, see
        keepMarkingCommentsOnly in the tool's source, or it gets ignored). -->
   <!-- t(transactions.type.expense) t(transactions.type.income) t(transactions.type.transfer) -->
   <!-- t(transactions.recurring.frequency.weekly) t(transactions.recurring.frequency.monthly) t(transactions.recurring.frequency.yearly) -->
   <!-- @if…as (not a plain call) avoids a translation-argument pattern the
-       extractor mis-parses — see account-form-modal.html for the full
+       extractor mis-parses - see account-form-modal.html for the full
        explanation. -->
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
@@ -116,7 +116,7 @@
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
               @for (category of categoryOptions(); track category.id) {
                 <option [value]="category.id">
-                  {{ category.parentId ? '— ' : '' }}{{ category.name }}
+                  {{ category.parentId ? '- ' : '' }}{{ category.name }}
                 </option>
               }
             </select>

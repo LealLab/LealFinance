@@ -8,7 +8,7 @@ const STORAGE_KEY = 'lealfinance.balancesHidden';
  * Structurally identical to ThemeService (src/app/core/theme.service.ts):
  * a boolean signal persisted to localStorage, read back on startup, writes
  * wrapped in try/catch since private browsing can throw on storage access.
- * Default is `false` (balances shown) — there's no OS-level signal to
+ * Default is `false` (balances shown) - there's no OS-level signal to
  * derive an initial value from the way theme has `prefers-color-scheme`.
  */
 @Injectable({ providedIn: 'root' })
@@ -39,7 +39,7 @@ export class BalanceVisibilityService {
     try {
       return localStorage.getItem(STORAGE_KEY);
     } catch {
-      // Private browsing / storage disabled — fall back to the default.
+      // Private browsing / storage disabled - fall back to the default.
       return null;
     }
   }
@@ -48,7 +48,7 @@ export class BalanceVisibilityService {
     try {
       localStorage.setItem(STORAGE_KEY, String(value));
     } catch {
-      // Storage unavailable — preference still applies for the current session.
+      // Storage unavailable - preference still applies for the current session.
     }
   }
 }

@@ -1,5 +1,5 @@
 # Applied automatically alongside docker-compose.yml (Compose merges this
-# file in by default — no extra flag needed). Not meant for production: it
+# file in by default - no extra flag needed). Not meant for production: it
 # exposes database ports on the host and runs the API with autoreload.
 #
 # The primary local dev workflow (see docs/development.md) runs the backend

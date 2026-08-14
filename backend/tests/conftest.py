@@ -3,7 +3,7 @@
 Tests run against a real Postgres instance (see docs/development.md for how
 to start one locally; CI provides one as a service container). Schema is
 created directly from the ORM metadata per test function and torn down
-afterwards — this is faster than running Alembic per test and exercises the
+afterwards - this is faster than running Alembic per test and exercises the
 same models the migration was hand-written to match (see
 alembic/versions/b0b0888983a8_*.py, which is round-trip tested separately).
 """

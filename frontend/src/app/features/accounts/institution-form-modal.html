@@ -1,12 +1,12 @@
 <div *transloco="let t">
   <!-- institutions.icon.* below is looked up dynamically (string
        concatenation), which transloco-keys-manager's template extractor
-       can't resolve — see category-form-modal.html for the same "dynamic
+       can't resolve - see category-form-modal.html for the same "dynamic
        markings" mechanism. -->
   <!-- t(institutions.icon.bank) t(institutions.icon.wallet) t(institutions.icon.chart) -->
   <!-- t(institutions.icon.globe) t(institutions.icon.archive) -->
   <!-- @if…as (not a plain call) avoids a translation-argument pattern the
-       extractor mis-parses — see account-form-modal.html for the full
+       extractor mis-parses - see account-form-modal.html for the full
        explanation. -->
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">

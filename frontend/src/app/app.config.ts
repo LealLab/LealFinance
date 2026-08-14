@@ -33,13 +33,13 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     // withComponentInputBinding: route params (e.g. `:id`) bind straight
-    // to a matching `input()` on the routed component — see
+    // to a matching `input()` on the routed component - see
     // features/accounts/account-detail.ts for the pattern.
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([httpErrorInterceptor])),
     provideAppTransloco(),
     // Every screen is built against mock data for now (no domain backend
-    // yet — see CLAUDE.md). Swapping to real HTTP later is limited to
+    // yet - see CLAUDE.md). Swapping to real HTTP later is limited to
     // this block: each abstract *Repository stays the DI token components
     // inject, only `useClass` changes.
     { provide: AccountRepository, useClass: MockAccountRepository },

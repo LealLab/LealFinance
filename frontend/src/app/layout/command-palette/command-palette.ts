@@ -47,10 +47,10 @@ interface PaletteGroup {
  *
  * Every labelKey/sublabelKey below is read dynamically in
  * command-palette.html (worded that way, not as a literal call, so this
- * docstring itself doesn't register as a false usage site — see
+ * docstring itself doesn't register as a false usage site - see
  * docs/i18n.md's "one gotcha" and core/api-error.ts for the same
  * wording pattern), which transloco-keys-manager's static extractor can't
- * resolve back to a literal — same "dynamic markings" situation as
+ * resolve back to a literal - same "dynamic markings" situation as
  * layout/sidebar.ts (whose layout.nav.* keys are reused
  * as-is here for the "Go to" group, via NAV_SECTIONS, and so don't need
  * re-marking) and features/settings/settings.ts (whose
@@ -82,11 +82,11 @@ export class CommandPalette {
   protected readonly highlightedIndex = signal(0);
 
   // Not `.required()`: same reasoning as Modal (shared/ui/modal/modal.ts)
-  // — the constructor effect's first pass can beat view-query resolution.
+  // - the constructor effect's first pass can beat view-query resolution.
   private readonly dialog = viewChild<ElementRef<HTMLDialogElement>>('dialog');
   private readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
-  // Loaded once per "open" — params re-evaluates to a fresh object only
+  // Loaded once per "open" - params re-evaluates to a fresh object only
   // when isOpen() actually flips to true, not on every change-detection
   // pass, so re-opening the palette refreshes the lists without polling
   // while it's closed.
@@ -131,7 +131,7 @@ export class CommandPalette {
     // same effect+native-close pattern as Modal (shared/ui/modal/modal.ts)
     // and Shell's mobile drawer. showModal() natively autofocuses the
     // first focusable element (the search <input>, since it's the dialog's
-    // first child) — the explicit .focus() call below is a defensive
+    // first child) - the explicit .focus() call below is a defensive
     // backstop, not a workaround for that not working.
     effect(() => {
       const element = this.dialog()?.nativeElement;
@@ -197,7 +197,7 @@ export class CommandPalette {
       default:
       // Escape is left to the native dialog: pressing it while the
       // input is focused still fires the dialog's native `cancel` →
-      // `close` sequence, which onNativeClose() above already handles —
+      // `close` sequence, which onNativeClose() above already handles -
       // no explicit handler needed here.
     }
   }
@@ -312,7 +312,7 @@ export class CommandPalette {
   // enabled in app.config.ts) and auto-open their create-form modal when
   // present. Those four feature components are being edited concurrently
   // in other worktrees as part of this same UI-improvements plan, so that
-  // wiring intentionally isn't done here — this only navigates with the
+  // wiring intentionally isn't done here - this only navigates with the
   // query param already attached, ready for whoever merges the branches
   // together to finish.
   private navigateToCreate(path: string): void {
@@ -325,7 +325,7 @@ export class CommandPalette {
 
   private async resetMockData(): Promise<void> {
     // Same confirm-then-reset-then-reload flow as
-    // features/settings/settings.ts's resetMockData — reusing it here
+    // features/settings/settings.ts's resetMockData - reusing it here
     // rather than duplicating the mechanics, just triggered from the
     // palette instead of a settings-page button.
     const confirmed = await this.confirmService.confirm(
