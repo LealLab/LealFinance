@@ -310,6 +310,59 @@ describe('MockStore', () => {
     });
   });
 
+  describe('manualRates', () => {
+    it('upsert creates a new rate for a pair/date that has none yet', () => {
+      const created = store.upsertManualRate({
+        baseCode: 'USD',
+        quoteCode: 'BRL',
+        rate: '5.2',
+        asOf: '2026-05-01'
+      });
+
+      expect(store.manualRates()).toContainEqual(created);
+    });
+
+    it('upsert updates the existing row for the same pair/date instead of duplicating it', () => {
+      const first = store.upsertManualRate({
+        baseCode: 'EUR',
+        quoteCode: 'BRL',
+        rate: '5.6',
+        asOf: '2026-05-02'
+      });
+      const second = store.upsertManualRate({
+        baseCode: 'EUR',
+        quoteCode: 'BRL',
+        rate: '5.65',
+        asOf: '2026-05-02'
+      });
+
+      expect(second.id).toBe(first.id);
+      expect(
+        store
+          .manualRates()
+          .filter((r) => r.baseCode === 'EUR' && r.quoteCode === 'BRL' && r.asOf === '2026-05-02')
+      ).toHaveLength(1);
+      expect(store.manualRates().find((r) => r.id === first.id)?.rate).toBe('5.65');
+    });
+
+    it('deletes an existing manual rate', () => {
+      const created = store.upsertManualRate({
+        baseCode: 'GBP',
+        quoteCode: 'BRL',
+        rate: '6.5',
+        asOf: '2026-05-03'
+      });
+
+      store.deleteManualRate(created.id);
+
+      expect(store.manualRates().find((r) => r.id === created.id)).toBeUndefined();
+    });
+
+    it('throws when deleting a manual rate that does not exist', () => {
+      expect(() => store.deleteManualRate('missing-id')).toThrow();
+    });
+  });
+
   describe('reset', () => {
     it('discards created entities and restores the seeded fixtures', () => {
       const seededCount = store.accounts().length;

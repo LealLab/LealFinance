@@ -36,4 +36,29 @@ describe('ExchangeRateWarning', () => {
     const alert = compiled.querySelector('[role="alert"]');
     expect(alert?.textContent).toContain('Taxa de câmbio indisponível');
   });
+
+  it('renders no action button when actionLabelKey is not set', () => {
+    const fixture = TestBed.createComponent(ExchangeRateWarning);
+    fixture.componentRef.setInput('isFallback', true);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('button')).toBeNull();
+  });
+
+  it('renders a translated action button and emits action() when clicked', () => {
+    const fixture = TestBed.createComponent(ExchangeRateWarning);
+    fixture.componentRef.setInput('isFallback', true);
+    fixture.componentRef.setInput('actionLabelKey', 'currency.fallbackRateWarningAction');
+    let emitted = 0;
+    fixture.componentInstance.action.subscribe(() => emitted++);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const button = compiled.querySelector('button');
+    expect(button?.textContent).toContain('Definir taxa');
+
+    button?.click();
+    expect(emitted).toBe(1);
+  });
 });

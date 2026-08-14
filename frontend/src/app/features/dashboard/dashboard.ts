@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { forkJoin, of } from 'rxjs';
@@ -11,12 +12,18 @@ import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { accountBalance } from '../../domain/calc/balances';
-import { categoryBreakdown, CurrencyConverter, netWorth, totalsFor } from '../../domain/calc/aggregations';
+import {
+  categoryBreakdown,
+  converterFromRates,
+  CurrencyConverter,
+  netWorth,
+  totalsFor
+} from '../../domain/calc/aggregations';
 import { budgetProgress } from '../../domain/calc/budgets';
 import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
-import { compare, isNegative, isZero, multiply, ratio, toNumber } from '../../shared/money/money';
+import { compare, isNegative, isZero, ratio, toNumber } from '../../shared/money/money';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -48,6 +55,7 @@ const BUDGET_PREVIEW_LIMIT = 4;
   styleUrl: './dashboard.scss'
 })
 export class Dashboard {
+  private readonly router = inject(Router);
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly categoryRepository = inject(CategoryRepository);
@@ -92,21 +100,9 @@ export class Dashboard {
     (this.exchangeRatesResource.value() ?? []).some((rate) => rate.isFallback)
   );
 
-  private readonly converter = computed<CurrencyConverter>(() => {
-    const rateByCurrency = new Map(
-      (this.exchangeRatesResource.value() ?? []).map((rate) => [rate.baseCode, rate])
-    );
-    return (amount, targetCurrency) => {
-      if (amount.currency === targetCurrency) return amount;
-      const rate = rateByCurrency.get(amount.currency);
-      // No rate resolved for this currency (shouldn't happen - every
-      // foreign currency in use gets a request - but the mock repository
-      // never fails a request outright, so this is just defense in depth,
-      // matching "never let a missing rate raise").
-      if (!rate) return amount;
-      return multiply(amount, rate.rate, targetCurrency);
-    };
-  });
+  private readonly converter = computed<CurrencyConverter>(() =>
+    converterFromRates(this.exchangeRatesResource.value() ?? [])
+  );
 
   private readonly currentMonth = monthKey(new Date().toISOString());
 
@@ -242,4 +238,8 @@ export class Dashboard {
   protected readonly isEmpty = computed(
     () => !this.accountsResource.isLoading() && (this.accountsResource.value() ?? []).length === 0
   );
+
+  protected goToExchange(): void {
+    this.router.navigate(['/exchange']);
+  }
 }

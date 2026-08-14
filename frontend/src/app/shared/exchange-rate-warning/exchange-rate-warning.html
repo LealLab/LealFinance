@@ -1,10 +1,21 @@
+<!-- `actionLabelKey` is looked up dynamically (t(labelKey)) since it's
+     caller-supplied - transloco-keys-manager's extractor can't resolve
+     that on its own, so a "dynamic markings" comment below covers the one
+     key currently passed in (see docs/i18n.md; the marker comment must
+     contain nothing but marker calls or the tool ignores it). -->
+<!-- t(currency.fallbackRateWarningAction) -->
 @if (isFallback()) {
   <div
     *transloco="let t"
     role="alert"
-    class="flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800"
+    class="flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning"
   >
     <span aria-hidden="true">⚠</span>
-    <span>{{ t('currency.fallbackRateWarning') }}</span>
+    <span class="flex-1">{{ t('currency.fallbackRateWarning') }}</span>
+    @if (actionLabelKey(); as labelKey) {
+      <button appButton type="button" variant="secondary" size="sm" (click)="action.emit()">
+        {{ t(labelKey) }}
+      </button>
+    }
   </div>
 }

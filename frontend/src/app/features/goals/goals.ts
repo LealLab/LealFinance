@@ -1,12 +1,18 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { forkJoin, of } from 'rxjs';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { GoalRepository } from '../../data/goal.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { convertedOrNull, converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { GoalProgress, goalProgress } from '../../domain/calc/goals';
 import { Account } from '../../domain/models/account';
+import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Goal } from '../../domain/models/goal';
+import { Money } from '../../shared/money/money';
 import { Transaction } from '../../domain/models/transaction';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
@@ -23,6 +29,9 @@ interface GoalRow {
   goal: Goal;
   account: Account;
   progress: GoalProgress;
+  /** progress.current converted to the display currency - null when it's already in that currency, or no rate could convert it. */
+  convertedCurrent: Money | null;
+  convertedTarget: Money | null;
 }
 
 @Component({
@@ -47,6 +56,8 @@ export class Goals {
   private readonly goalRepository = inject(GoalRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   protected readonly goalsResource = rxResource({ stream: () => this.goalRepository.list() });
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
@@ -63,16 +74,44 @@ export class Goals {
   protected readonly accountsById = computed(
     () => new Map(this.accountsResource.value()?.map((account) => [account.id, account]) ?? []),
   );
+
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
+
+  /** Currencies any goal is denominated in, other than the display currency - drives the rate fetch below, mirroring features/dashboard/dashboard.ts. */
+  private readonly foreignCurrencies = computed(() => {
+    const display = this.displayCurrency();
+    const currencies = (this.goalsResource.value() ?? []).map((goal) => goal.currency);
+    return Array.from(new Set(currencies.filter((currency) => currency !== display)));
+  });
+
+  protected readonly ratesResource = rxResource({
+    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
+    stream: ({ params }) =>
+      params.currencies.length === 0
+        ? of([] as ExchangeRate[])
+        : forkJoin(params.currencies.map((currency) => this.exchangeRateRepository.getRate(currency, params.display)))
+  });
+
+  private readonly converter = computed<CurrencyConverter>(() => converterFromRates(this.ratesResource.value() ?? []));
+
   protected readonly rows = computed<GoalRow[]>(() => {
     const accounts = this.accountsById();
     const transactions = this.transactionsResource.value() ?? [];
+    const display = this.displayCurrency();
+    const convert = this.converter();
     return (this.goalsResource.value() ?? [])
       .filter((goal) => this.showArchived() || !goal.archived)
       .map((goal) => {
         const account = accounts.get(goal.accountId);
-        return account
-          ? { goal, account, progress: goalProgress(goal, account, transactions) }
-          : undefined;
+        if (!account) return undefined;
+        const progress = goalProgress(goal, account, transactions);
+        return {
+          goal,
+          account,
+          progress,
+          convertedCurrent: convertedOrNull(progress.current, display, convert),
+          convertedTarget: convertedOrNull(progress.target, display, convert)
+        };
       })
       .filter((row): row is GoalRow => Boolean(row));
   });

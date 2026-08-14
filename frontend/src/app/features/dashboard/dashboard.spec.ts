@@ -1,6 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { AccountRepository } from '../../data/account.repository';
@@ -64,5 +64,22 @@ describe('Dashboard', () => {
     // this warning on a real screen.
     expect(text).toContain('Taxa de câmbio indisponível');
     expect(text).toContain('Conta Corrente');
+  });
+
+  it('navigates to /exchange when the fallback-rate warning action is clicked', async () => {
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    const button = Array.from(fixture.nativeElement.querySelectorAll('button')).find((el) =>
+      (el as HTMLButtonElement).textContent?.includes('Definir taxa')
+    ) as HTMLButtonElement | undefined;
+    button?.click();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/exchange']);
   });
 });

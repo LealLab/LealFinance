@@ -85,12 +85,22 @@
               <p class="text-xs text-content-muted">{{ t('goals.progress.current') }}</p>
               <p class="font-mono text-2xl font-semibold tabular-nums text-content-primary">
                 {{ row.progress.current.amount | money: row.progress.current.currency }}
+                @if (row.convertedCurrent; as converted) {
+                  <span class="text-sm font-normal text-content-muted"
+                    >({{ converted.amount | money: converted.currency }})</span
+                  >
+                }
               </p>
             </div>
             <div class="text-right">
               <p class="text-xs text-content-muted">{{ t('goals.progress.target') }}</p>
               <p class="font-mono text-sm font-semibold tabular-nums">
                 {{ row.progress.target.amount | money: row.progress.target.currency }}
+                @if (row.convertedTarget; as converted) {
+                  <span class="font-normal text-content-muted"
+                    >({{ converted.amount | money: converted.currency }})</span
+                  >
+                }
               </p>
             </div>
           </div>

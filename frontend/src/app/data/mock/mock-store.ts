@@ -5,6 +5,7 @@ import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-pla
 import { Category, CategoryKind } from '../../domain/models/category';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
+import { ManualRate } from '../../domain/models/manual-rate';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { createFixtures } from './fixtures';
@@ -41,6 +42,7 @@ export class MockStore {
   private readonly expectedIncomeSignal = signal<ExpectedIncome[]>([]);
   private readonly recurringRulesSignal = signal<RecurringRule[]>([]);
   private readonly institutionsSignal = signal<Institution[]>([]);
+  private readonly manualRatesSignal = signal<ManualRate[]>([]);
 
   readonly accounts = this.accountsSignal.asReadonly();
   readonly transactions = this.transactionsSignal.asReadonly();
@@ -51,6 +53,7 @@ export class MockStore {
   readonly expectedIncome = this.expectedIncomeSignal.asReadonly();
   readonly recurringRules = this.recurringRulesSignal.asReadonly();
   readonly institutions = this.institutionsSignal.asReadonly();
+  readonly manualRates = this.manualRatesSignal.asReadonly();
 
   constructor() {
     this.reset();
@@ -67,6 +70,7 @@ export class MockStore {
     this.expectedIncomeSignal.set(fixtures.expectedIncome);
     this.recurringRulesSignal.set(fixtures.recurringRules);
     this.institutionsSignal.set(fixtures.institutions);
+    this.manualRatesSignal.set(fixtures.manualRates);
   }
 
   // --- Accounts ---------------------------------------------------------
@@ -254,5 +258,32 @@ export class MockStore {
   deleteRecurringRule(id: string): void {
     if (!findEntity(this.recurringRulesSignal(), id)) notFound('RecurringRule', id);
     this.recurringRulesSignal.update((list) => removeEntity(list, id));
+  }
+
+  // --- Manual exchange rates ----------------------------------------------
+
+  /**
+   * Keyed on (baseCode, quoteCode, asOf) rather than a caller-supplied id -
+   * same "upsert" shape as `upsertBudget` above - so re-entering a rate for
+   * a pair/date that already has one edits it in place instead of
+   * accumulating duplicates for the same day.
+   */
+  upsertManualRate(input: Omit<ManualRate, 'id'>): ManualRate {
+    const existing = this.manualRatesSignal().find(
+      (rate) =>
+        rate.baseCode === input.baseCode && rate.quoteCode === input.quoteCode && rate.asOf === input.asOf
+    );
+    if (existing) {
+      this.manualRatesSignal.update((list) => updateEntity(list, existing.id, input));
+      return findEntity(this.manualRatesSignal(), existing.id)!;
+    }
+    const rate: ManualRate = { ...input, id: newId() };
+    this.manualRatesSignal.update((list) => [...list, rate]);
+    return rate;
+  }
+
+  deleteManualRate(id: string): void {
+    if (!findEntity(this.manualRatesSignal(), id)) notFound('Manual rate', id);
+    this.manualRatesSignal.update((list) => removeEntity(list, id));
   }
 }

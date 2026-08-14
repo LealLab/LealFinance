@@ -18,6 +18,7 @@
       "budgets": "Budgets",
       "goals": "Goals",
       "reports": "Reports",
+      "exchange": "Exchange",
       "settings": "Settings",
       "sections": {
         "accounts": "Accounts",
@@ -113,7 +114,8 @@
     }
   },
   "currency": {
-    "fallbackRateWarning": "Exchange rate unavailable - using a 1:1 conversion as an approximation."
+    "fallbackRateWarning": "Exchange rate unavailable - using a 1:1 conversion as an approximation.",
+    "fallbackRateWarningAction": "Set a rate"
   },
   "accounts": {
     "title": "Accounts",
@@ -268,6 +270,9 @@
       "fields": {
         "date": "Date",
         "amount": "Amount",
+        "currency": "Currency",
+        "convertedAmount": "Converted amount",
+        "conversionFee": "Conversion fee/tax (optional)",
         "account": "Account",
         "fromAccount": "Source account",
         "toAccount": "Destination account",
@@ -282,8 +287,13 @@
         "interval": "Every",
         "selectPlaceholder": "Select"
       },
+      "hints": {
+        "effectiveRate": "Effective rate: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Repeating isn't available for a cross-currency transaction - the rate would need to be set again for every occurrence."
+      },
       "errors": {
-        "invalid": "Check the required fields before saving."
+        "invalid": "Check the required fields before saving.",
+        "convertedAmountRequired": "Enter the converted amount before saving."
       },
       "actions": {
         "cancel": "Cancel",
@@ -542,6 +552,70 @@
       "expense": "Expenses",
       "netFlow": "Net flow",
       "categories": "Categories"
+    }
+  },
+  "exchange": {
+    "title": "Exchange",
+    "description": "Manual exchange rates and the conversions that used them.",
+    "stats": {
+      "feesPaid": "Conversion fees paid",
+      "needsAttention": "Transactions needing attention",
+      "currenciesNeedingRate": "Currencies without a rate"
+    },
+    "needsAttention": {
+      "title": "Needs attention",
+      "description": "These transactions were converted using a 1:1 approximation - fix them with the real rate, or set a manual rate below.",
+      "empty": {
+        "title": "Nothing needs attention",
+        "description": "Every cross-currency transaction has a real rate on record."
+      },
+      "actions": {
+        "fix": "Fix"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Currencies without a rate",
+      "description": "These account currencies have no real rate to your display currency yet, so balances in them are shown as a 1:1 approximation - not tied to any specific transaction.",
+      "empty": {
+        "title": "No currency needs a rate",
+        "description": "Every account currency already resolves to a real rate."
+      }
+    },
+    "manualRates": {
+      "title": "Manual rates",
+      "description": "Rates you set by hand take priority over the automatic provider - useful for today's actual bank rate, or when no provider is configured.",
+      "actions": {
+        "add": "Add rate",
+        "edit": "Edit rate",
+        "delete": "Delete rate"
+      },
+      "empty": {
+        "title": "No manual rates yet",
+        "description": "Add a rate for a currency pair to use it instead of the automatic 1:1 fallback."
+      },
+      "delete": {
+        "title": "Delete manual rate",
+        "message": "This action cannot be undone. Do you want to delete this rate?"
+      },
+      "form": {
+        "newTitle": "New manual rate",
+        "editTitle": "Edit manual rate",
+        "saveError": "Could not save the rate. Try again.",
+        "fields": {
+          "baseCode": "From currency",
+          "quoteCode": "To currency",
+          "rate": "Rate",
+          "asOf": "Effective from"
+        },
+        "errors": {
+          "invalid": "Enter a valid rate.",
+          "samePair": "Choose two different currencies."
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "save": "Save"
+        }
+      }
     }
   },
   "settings": {

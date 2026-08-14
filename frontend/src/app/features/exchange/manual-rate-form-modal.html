@@ -1,0 +1,66 @@
+<div *transloco="let t">
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="manual-rate-base">
+              {{ t('exchange.manualRates.form.fields.baseCode') }}
+            </label>
+            <select id="manual-rate-base" class="form-input" formControlName="baseCode">
+              @for (currency of currencyOptions; track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="manual-rate-quote">
+              {{ t('exchange.manualRates.form.fields.quoteCode') }}
+            </label>
+            <select id="manual-rate-quote" class="form-input" formControlName="quoteCode">
+              @for (currency of currencyOptions; track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label" for="manual-rate-rate">
+            {{ t('exchange.manualRates.form.fields.rate') }}
+          </label>
+          <input
+            id="manual-rate-rate"
+            type="text"
+            inputmode="decimal"
+            class="form-input font-mono"
+            formControlName="rate"
+          />
+          @if (form.controls.rate.invalid && form.controls.rate.touched) {
+            <p class="form-error">{{ t('exchange.manualRates.form.errors.invalid') }}</p>
+          }
+        </div>
+
+        <div>
+          <label class="form-label" for="manual-rate-as-of">
+            {{ t('exchange.manualRates.form.fields.asOf') }}
+          </label>
+          <input id="manual-rate-as-of" type="date" class="form-input" formControlName="asOf" />
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('exchange.manualRates.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('exchange.manualRates.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

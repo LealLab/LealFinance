@@ -1,9 +1,12 @@
 import { money } from '../../shared/money/money';
 import { Account } from '../models/account';
 import { Category } from '../models/category';
+import { ExchangeRate } from '../models/exchange-rate';
 import { Transaction } from '../models/transaction';
 import {
   categoryBreakdown,
+  convertedOrNull,
+  converterFromRates,
   CurrencyConverter,
   groupByMonth,
   netWorth,
@@ -55,6 +58,20 @@ describe('totalsFor', () => {
     const convert: CurrencyConverter = () => money('520', 'BRL');
 
     expect(totalsFor(transactions, 'BRL', convert).income).toEqual(money('520', 'BRL'));
+  });
+
+  it('uses the recorded conversion amount, not the origin amount, for a cross-currency transaction', () => {
+    const transactions = [
+      tx({
+        id: '1',
+        type: 'expense',
+        amount: '50',
+        currency: 'USD',
+        conversion: { amount: '260', currency: 'BRL', rate: '5.2', source: 'manual' }
+      })
+    ];
+
+    expect(totalsFor(transactions, 'BRL').expense).toEqual(money('260', 'BRL'));
   });
 });
 
@@ -128,6 +145,22 @@ describe('categoryBreakdown', () => {
 
     expect(breakdown).toEqual([{ categoryId: 'food', total: money('10', 'BRL') }]);
   });
+
+  it('uses the recorded conversion amount for a foreign-currency expense', () => {
+    const transactions = [
+      tx({
+        id: '1',
+        categoryId: 'food',
+        amount: '50',
+        currency: 'USD',
+        conversion: { amount: '260', currency: 'BRL', rate: '5.2', source: 'manual' }
+      })
+    ];
+
+    expect(categoryBreakdown(transactions, categories, 'BRL')).toEqual([
+      { categoryId: 'food', total: money('260', 'BRL') }
+    ]);
+  });
 });
 
 describe('groupByMonth', () => {
@@ -181,5 +214,43 @@ describe('netWorth', () => {
     const convert: CurrencyConverter = () => money('520', 'BRL');
 
     expect(netWorth(accounts, [], 'BRL', convert)).toEqual(money('520', 'BRL'));
+  });
+});
+
+describe('converterFromRates', () => {
+  function rate(overrides: Partial<ExchangeRate> = {}): ExchangeRate {
+    return { baseCode: 'USD', quoteCode: 'BRL', rate: '5.2', isFallback: false, ...overrides };
+  }
+
+  it('passes a same-currency amount through unchanged', () => {
+    const convert = converterFromRates([rate()]);
+    expect(convert(money('100', 'BRL'), 'BRL')).toEqual(money('100', 'BRL'));
+  });
+
+  it('converts using the rate whose baseCode matches the amount currency', () => {
+    const convert = converterFromRates([rate({ baseCode: 'USD', quoteCode: 'BRL', rate: '5.2' })]);
+    expect(convert(money('100', 'USD'), 'BRL')).toEqual(money('520', 'BRL'));
+  });
+
+  it('returns the amount unconverted when no rate covers its currency', () => {
+    const convert = converterFromRates([rate({ baseCode: 'GBP' })]);
+    expect(convert(money('100', 'USD'), 'BRL')).toEqual(money('100', 'USD'));
+  });
+});
+
+describe('convertedOrNull', () => {
+  const identity: CurrencyConverter = (amount) => amount;
+  const toBRL: CurrencyConverter = (amount, target) => money('520', target);
+
+  it('returns null when the amount is already in the target currency', () => {
+    expect(convertedOrNull(money('100', 'BRL'), 'BRL', toBRL)).toBeNull();
+  });
+
+  it('returns the converted amount when the converter actually changed currency', () => {
+    expect(convertedOrNull(money('100', 'USD'), 'BRL', toBRL)).toEqual(money('520', 'BRL'));
+  });
+
+  it('returns null when the converter could not convert (no rate, amount passed through unchanged)', () => {
+    expect(convertedOrNull(money('100', 'USD'), 'BRL', identity)).toBeNull();
   });
 });

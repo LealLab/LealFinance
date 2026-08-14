@@ -1,0 +1,175 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')" />
+
+  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <app-stat-tile
+      [label]="t('exchange.stats.feesPaid')"
+      [value]="totalFees().amount | money: totalFees().currency"
+    />
+    <app-stat-tile
+      [label]="t('exchange.stats.needsAttention')"
+      [value]="needsAttentionRows().length + ''"
+      [tone]="needsAttentionRows().length > 0 ? 'negative' : 'default'"
+    />
+    <app-stat-tile
+      [label]="t('exchange.stats.currenciesNeedingRate')"
+      [value]="currenciesNeedingRate().length + ''"
+      [tone]="currenciesNeedingRate().length > 0 ? 'negative' : 'default'"
+    />
+  </div>
+
+  <div class="mb-6">
+    <h2 class="mb-1 text-sm font-semibold text-content-primary">
+      {{ t('exchange.needsAttention.title') }}
+    </h2>
+    <p class="mb-3 text-sm text-content-muted">{{ t('exchange.needsAttention.description') }}</p>
+
+    @if (isNeedsAttentionEmpty()) {
+      <app-empty-state
+        icon="refresh"
+        [title]="t('exchange.needsAttention.empty.title')"
+        [description]="t('exchange.needsAttention.empty.description')"
+      />
+    } @else {
+      <app-card [padded]="false">
+        <ul>
+          @for (row of needsAttentionRows(); track row.tx.id) {
+            <li
+              class="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 last:border-b-0"
+            >
+              <div>
+                <p class="text-sm font-medium text-content-primary">
+                  {{ row.tx.description || row.account?.name }}
+                </p>
+                <p class="text-xs text-content-muted">
+                  {{ row.tx.date }} · {{ row.tx.currency }} → {{ row.tx.conversion!.currency }}
+                </p>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-sm tabular-nums text-content-muted">
+                  {{ row.tx.amount | money: row.tx.currency }} →
+                  {{ row.tx.conversion!.amount | money: row.tx.conversion!.currency }}
+                </span>
+                <button appButton variant="secondary" size="sm" type="button" (click)="openFix(row.tx)">
+                  {{ t('exchange.needsAttention.actions.fix') }}
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      </app-card>
+    }
+  </div>
+
+  <div class="mb-6">
+    <h2 class="mb-1 text-sm font-semibold text-content-primary">
+      {{ t('exchange.currenciesNeedingRate.title') }}
+    </h2>
+    <p class="mb-3 text-sm text-content-muted">{{ t('exchange.currenciesNeedingRate.description') }}</p>
+
+    @if (isCurrenciesNeedingRateEmpty()) {
+      <app-empty-state
+        icon="refresh"
+        [title]="t('exchange.currenciesNeedingRate.empty.title')"
+        [description]="t('exchange.currenciesNeedingRate.empty.description')"
+      />
+    } @else {
+      <app-card [padded]="false">
+        <ul>
+          @for (currency of currenciesNeedingRate(); track currency) {
+            <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
+              <span class="font-mono text-sm font-semibold text-content-primary">
+                {{ currency }} → {{ displayCurrency() }}
+              </span>
+              <button appButton variant="secondary" size="sm" type="button" (click)="openCreateRateFor(currency)">
+                {{ t('currency.fallbackRateWarningAction') }}
+              </button>
+            </li>
+          }
+        </ul>
+      </app-card>
+    }
+  </div>
+
+  <div #manualRatesSection>
+    <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 class="text-sm font-semibold text-content-primary">{{ t('exchange.manualRates.title') }}</h2>
+        <p class="text-sm text-content-muted">{{ t('exchange.manualRates.description') }}</p>
+      </div>
+      <button appButton variant="primary" type="button" (click)="openCreateRate()">
+        <app-icon name="plus" [size]="16" />
+        {{ t('exchange.manualRates.actions.add') }}
+      </button>
+    </div>
+
+    @if (isManualRatesEmpty()) {
+      <app-empty-state
+        icon="swap"
+        [title]="t('exchange.manualRates.empty.title')"
+        [description]="t('exchange.manualRates.empty.description')"
+      >
+        <button appButton variant="primary" type="button" (click)="openCreateRate()">
+          {{ t('exchange.manualRates.actions.add') }}
+        </button>
+      </app-empty-state>
+    } @else {
+      <app-card [padded]="false">
+        <ul>
+          @for (rate of manualRates(); track rate.id) {
+            <li
+              class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0"
+            >
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-sm font-semibold text-content-primary">
+                  {{ rate.baseCode }} → {{ rate.quoteCode }}
+                </span>
+                <span class="text-xs text-content-muted">{{ rate.asOf }}</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-sm tabular-nums text-content-primary">{{ rate.rate }}</span>
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="openEditRate(rate)"
+                  [attr.aria-label]="t('exchange.manualRates.actions.edit')"
+                >
+                  <app-icon name="pencil" [size]="16" />
+                </button>
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="deleteRate(rate)"
+                  [attr.aria-label]="t('exchange.manualRates.actions.delete')"
+                >
+                  <app-icon name="trash" [size]="16" />
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      </app-card>
+    }
+  </div>
+
+  <app-transaction-form-modal
+    [(open)]="txFormOpen"
+    [transaction]="editingTx()"
+    [accounts]="accountsResource.value() ?? []"
+    [categories]="categoriesResource.value() ?? []"
+    [institutions]="institutionsResource.value() ?? []"
+    (saved)="onTxSaved()"
+  />
+
+  <app-manual-rate-form-modal
+    [(open)]="rateFormOpen"
+    [rate]="editingRate()"
+    [prefillBaseCode]="prefillRatePair()?.baseCode"
+    [prefillQuoteCode]="prefillRatePair()?.quoteCode"
+    (saved)="onRateSaved()"
+  />
+</div>

@@ -60,6 +60,40 @@ describe('accountBalance', () => {
     expect(accountBalance(checking, [transfer])).toEqual(money('700', 'BRL'));
     expect(accountBalance(savings, [transfer])).toEqual(money('300', 'BRL'));
   });
+
+  it('debits the source in its own currency and credits the destination with the converted amount on a cross-currency transfer', () => {
+    // Regression test: the incoming leg used to be relabelled with the
+    // destination currency instead of converted - a 100 USD transfer would
+    // credit BRL 100, not BRL 520.
+    const checking = account({ id: 'checking', currency: 'USD', openingBalance: '1000' });
+    const savings = account({ id: 'savings', currency: 'BRL', openingBalance: '0' });
+    const transfer = tx({
+      type: 'transfer',
+      amount: '100',
+      currency: 'USD',
+      accountId: 'checking',
+      toAccountId: 'savings',
+      categoryId: undefined,
+      conversion: { amount: '520', currency: 'BRL', rate: '5.2', source: 'quote' }
+    });
+
+    expect(accountBalance(checking, [transfer])).toEqual(money('900', 'USD'));
+    expect(accountBalance(savings, [transfer])).toEqual(money('520', 'BRL'));
+  });
+
+  it('posts the converted amount for a foreign-currency expense', () => {
+    const card = account({ id: 'card', currency: 'BRL', openingBalance: '0' });
+    const purchase = tx({
+      type: 'expense',
+      amount: '50',
+      currency: 'USD',
+      accountId: 'card',
+      categoryId: 'cat-1',
+      conversion: { amount: '260', currency: 'BRL', rate: '5.2', source: 'manual' }
+    });
+
+    expect(accountBalance(card, [purchase])).toEqual(money('-260', 'BRL'));
+  });
 });
 
 describe('creditCardSummary', () => {

@@ -8,6 +8,7 @@ import {
   identityConverter,
   topLevelCategoryId
 } from './aggregations';
+import { effectiveAmount } from './conversion';
 import { monthKey } from './dates';
 
 export type BudgetState = 'under' | 'near' | 'over';
@@ -61,7 +62,7 @@ export function budgetProgress(
   const spent = sum(
     transactions
       .filter(matches)
-      .map((tx) => convert(money(tx.amount, tx.currency), budget.currency)),
+      .map((tx) => convert(effectiveAmount(tx), budget.currency)),
     budget.currency
   );
   const remaining = subtract(budgeted, spent);

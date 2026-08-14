@@ -27,7 +27,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.settings, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -48,6 +48,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { path: '/budgets', labelKey: 'layout.nav.budgets', icon: 'piggy' },
       { path: '/goals', labelKey: 'layout.nav.goals', icon: 'target' },
       { path: '/categories', labelKey: 'layout.nav.categories', icon: 'tag' },
+      { path: '/exchange', labelKey: 'layout.nav.exchange', icon: 'refresh' },
       { path: '/settings', labelKey: 'layout.nav.settings', icon: 'settings' },
     ],
   },

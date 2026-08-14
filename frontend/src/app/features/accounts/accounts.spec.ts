@@ -5,8 +5,10 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
+import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
@@ -31,7 +33,8 @@ describe('Accounts', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: InstitutionRepository, useClass: MockInstitutionRepository }
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
   });
@@ -134,6 +137,21 @@ describe('Accounts', () => {
     const institutionSelect = el.querySelector('#account-institution') as HTMLSelectElement;
     const institutionNames = Array.from(institutionSelect.options).map((option) => option.textContent?.trim());
     expect(institutionNames).toContain('Banco sem contas');
+  });
+
+  it('shows the display-currency equivalent next to a foreign-currency account balance', async () => {
+    const fixture = TestBed.createComponent(Accounts);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const row = Array.from(el.querySelectorAll('li')).find((li) =>
+      li.textContent?.includes('Investimentos (Europa)')
+    )!;
+    expect(row).toBeTruthy();
+    expect(row.textContent).toContain('€');
+    expect(row.textContent).toMatch(/\(US\$\s*[\d.,]+\)/);
   });
 
   it('gives account actions a visible row-hover contrast and confirms before archiving', async () => {

@@ -51,6 +51,11 @@
             @if (group.subtotal) {
               <span class="font-mono text-sm font-semibold tabular-nums">
                 {{ group.subtotal.amount | money: group.subtotal.currency }}
+                @if (group.convertedSubtotal; as converted) {
+                  <span class="font-normal text-content-muted"
+                    >({{ converted.amount | money: converted.currency }})</span
+                  >
+                }
               </span>
             } @else if (group.rows.length > 0) {
               <span class="text-xs text-content-muted">{{ t('accounts.mixedCurrencies') }}</span>
@@ -82,6 +87,11 @@
                 <div class="flex items-center gap-3">
                   <span class="font-mono text-sm font-semibold tabular-nums">
                     {{ row.balance.amount | money: row.balance.currency }}
+                    @if (row.convertedBalance; as converted) {
+                      <span class="font-normal text-content-muted"
+                        >({{ converted.amount | money: converted.currency }})</span
+                      >
+                    }
                   </span>
                   <button
                     appButton

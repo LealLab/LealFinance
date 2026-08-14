@@ -2,10 +2,14 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { convertedOrNull, converterFromRates } from '../../domain/calc/aggregations';
 import { accountBalance, creditCardSummary } from '../../domain/calc/balances';
 import { ratio } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -49,9 +53,11 @@ export class AccountDetail {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   readonly id = input.required<string>();
 
@@ -93,6 +99,26 @@ export class AccountDetail {
   protected readonly balance = computed(() => {
     const account = this.account();
     return account ? accountBalance(account, this.transactionsResource.value() ?? []) : undefined;
+  });
+
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
+
+  protected readonly ratesResource = rxResource({
+    params: () => {
+      const currency = this.account()?.currency;
+      const display = this.displayCurrency();
+      return { currency: currency && currency !== display ? currency : undefined, display };
+    },
+    stream: ({ params }) =>
+      params.currency ? this.exchangeRateRepository.getRate(params.currency, params.display) : of(undefined)
+  });
+
+  /** The balance converted to the display currency - null when it's already in that currency, or no rate could convert it. */
+  protected readonly convertedBalance = computed(() => {
+    const balance = this.balance();
+    const rate = this.ratesResource.value();
+    if (!balance || !rate) return null;
+    return convertedOrNull(balance, this.displayCurrency(), converterFromRates([rate]));
   });
 
   protected readonly creditCard = computed(() => {

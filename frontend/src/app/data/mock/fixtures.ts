@@ -5,6 +5,7 @@ import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-pla
 import { Category } from '../../domain/models/category';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
+import { ManualRate } from '../../domain/models/manual-rate';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 
@@ -18,6 +19,13 @@ export interface Fixtures {
   goals: Goal[];
   allocations: BudgetAllocation[];
   expectedIncome: ExpectedIncome[];
+  /**
+   * Seeded empty on purpose: the seeded EUR investment account (see
+   * buildAccounts) exists specifically to exercise the fallback-rate
+   * warning and the Exchange page's "needs attention" flow, which only
+   * happens while no manual rate covers it.
+   */
+  manualRates: ManualRate[];
 }
 
 const ACCOUNT_IDS = {
@@ -673,6 +681,7 @@ export function createFixtures(): Fixtures {
     institutions: buildInstitutions(),
     goals: buildGoals(),
     allocations: buildAllocations(),
-    expectedIncome: buildExpectedIncome(currentMonthKey)
+    expectedIncome: buildExpectedIncome(currentMonthKey),
+    manualRates: []
   };
 }
