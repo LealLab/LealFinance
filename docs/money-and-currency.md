@@ -86,43 +86,43 @@ Display rounding uses the currency's own decimal digit count (`Intl` derives thi
 
 ## Multi-currency scaffolding that already exists
 
-Two reference tables, seeded with BRL only
-(`backend/alembic/versions/b0b0888983a8_baseline_currencies_and_exchange_rates.py`):
+Reference tables, seeded with BRL, USD, EUR, and GBP
+(`backend/alembic/versions/b0b0888983a8_baseline_currencies_and_exchange_rates.py`
+plus `..._seed_usd_eur_gbp_currencies.py`):
 
 - `currencies` - code (ISO 4217), name, symbol, decimal digits, active flag.
-- `exchange_rates` - base/quote code, rate, as-of date, source. Ships **empty**, populated lazily by the conversion service below as pairs are actually requested (not pre-seeded).
+- `exchange_rates` - the **provider rate cache**: base/quote code, rate, as-of date, source. Ships empty, populated lazily as pairs are actually requested. Global, not user-owned - one cached rate per pair per day serves every user.
+- `manual_rates` - **user-owned** overrides: one `{base_code, quote_code, rate, as_of}` per pair per effective date per user. See "Manual rates" below.
 
 ## Automatic currency conversion
 
-`backend/app/services/exchange_rates.py` (`get_exchange_rate(db, base, quote)`) fetches a conversion rate **on demand** - not on a schedule - and caches it in `exchange_rates` for the rest of the day:
+`backend/app/services/exchange_rates.py` (`get_exchange_rate(db, base, quote, *, user_id=None, as_of=None)`) resolves a rate through this precedence:
 
 1. Same currency → `1`, always, no lookup.
-2. A cached rate for today already exists → returned as-is, no network call.
-3. `OPENEXCHANGERATES_APP_ID` isn't set → **1:1 fallback**, flagged `is_fallback=True`. Nothing is cached (so setting a key later takes effect immediately, same day, without a stale fallback row in the way).
-4. Otherwise, fetch from [Open Exchange Rates](https://openexchangerates.org/) and cache the result (`source="openexchangerates"`).
+2. The caller's manual rate effective on or before `as_of` (defaults to today) - the newest such rate wins. Only consulted when `user_id` is passed.
+3. The inverse of the caller's manual rate for the reversed pair, same effective-date rule.
+4. A cached provider rate for **today** already exists → returned as-is, no network call. (The provider cache is always "today's rate" - manual rates are the only precedence step that supports an arbitrary historical `as_of`.)
+5. `OPENEXCHANGERATES_APP_ID` isn't set → **1:1 fallback**, flagged `is_fallback=True`. Nothing is cached (so setting a key later takes effect immediately, same day, without a stale fallback row in the way).
+6. Otherwise, fetch from [Open Exchange Rates](https://openexchangerates.org/) and cache the result (`source="openexchangerates"`).
 
    The free plan only allows `base=USD` - changing the base currency requires a paid plan - so non-USD pairs are computed via a USD bridge in a single request: `rate(A→B) = rates[B] / rates[A]`, where `rates[X]` is "how many X per 1 USD."
 
-5. If the provider call fails for any reason, same 1:1 fallback as (3) rather than propagating the error - a broken exchange-rate lookup should never be why a request fails.
+7. If the provider call fails for any reason, same 1:1 fallback as (5) rather than propagating the error - a broken exchange-rate lookup should never be why a request fails.
 
 A currency pair is only cached if *both* codes already exist in `currencies` (`exchange_rates` has a foreign key to it) - an unrecognized code still gets a computed/fallback rate returned, it just isn't persisted.
 
-`ExchangeRateQuoteRead` (`backend/app/schemas/currency.py`) is the response shape, exposed at `GET /api/v1/meta/exchange-rate?base=...&quote=...` - `rate` as a string per the wire-format rule above, plus `is_fallback` and `source` so a caller can decide whether to show a warning.
+`ExchangeRateQuoteRead` (`backend/app/schemas/currency.py`) is the response shape, exposed at `GET /api/v1/meta/exchange-rate?base=...&quote=...&as_of=...` - `rate` as a string per the wire-format rule above, plus `is_fallback` and `source` so a caller can decide whether to show a warning. This endpoint is authenticated (unlike `/meta/currencies` and `/meta/settings`), since resolution now consults the caller's own manual rates.
 
-**Not yet wired to anything that creates a transaction** - there is no transactions domain in this scaffold yet (see the last section). This service is what that flow is expected to call once it exists; the scheduled-refresh Celery task (`backend/app/workers/tasks/rates.py`, `refresh_exchange_rates`) is unrelated and still disabled - on-demand lookup is the actual design here, not a batch job.
+Called from transaction creation/update (`backend/app/services/conversion.py`, see below) and from `POST/PATCH /api/v1/recurring-rules` for a rule's template. The scheduled-refresh Celery task (`backend/app/workers/tasks/rates.py`, `refresh_exchange_rates`) is unrelated and still disabled - on-demand lookup is the actual design here, not a batch job.
 
-## Recorded conversions (frontend scaffold)
+## Recorded conversions
 
-The backend has no transactions domain yet (see below), so cross-currency
-transactions - and the record of how they were converted - exist only in
-the frontend's mock data layer today: `domain/models/transaction.ts`'s
-`Transaction.conversion?: TransactionConversion`.
-
-A transaction is cross-currency in one of two ways: a transfer between two
-accounts of different currencies, or an income/expense denominated in a
-currency other than its account's own. Either way, `conversion` records
-what actually happened on the *destination* side - the account whose
-currency differs from `Transaction.currency`:
+Transactions record a conversion in five `conversion_*` columns
+(`backend/app/models/transaction.py`) - flat columns, not JSONB, so the
+destination currency still gets a real foreign key, the amount/rate still
+get real `NUMERIC` typing and CHECK constraints, and they can't silently
+drift from the money rules above. `Transaction.conversion` is a read-only
+`@property` that exposes them as the nested object the frontend expects:
 
 ```ts
 interface TransactionConversion {
@@ -134,28 +134,34 @@ interface TransactionConversion {
 }
 ```
 
-The fee is deducted **before** conversion, in the transaction's own
-(origin) currency - `converted = (amount − fee) × rate` - and the origin
-account is still debited the full `Transaction.amount`; the fee is the
-slice of it that didn't make it across, not an extra charge on top. See
-`features/transactions/conversion-form.ts` for the implementation and
-`domain/calc/conversion.ts` for the read-side helpers every balance/total
-calculation uses instead of touching `amount`/`currency` directly.
+A transaction is cross-currency in one of two ways: a transfer between two
+accounts of different currencies, or an income/expense/interest denominated
+in a currency other than its account's own. Either way, `conversion` records
+what actually happened on the *destination* side - the account whose
+currency differs from `Transaction.currency`.
+
+The fee is deducted **before** conversion, in the transaction's own (origin)
+currency - `converted = (amount − fee) × rate` - and the origin account is
+still debited the full `Transaction.amount`; the fee is the slice of it that
+didn't make it across, not an extra charge on top. `backend/app/services/conversion.py::resolve_conversion` **recomputes and validates** this arithmetic server-side rather than trusting the client blindly: currency, fee-not-exceeding-amount, and the multiplication are all re-checked (rounded to the destination currency's own `decimal_digits`, with a one-ULP tolerance for the client's own rounding), and a mismatch is rejected with `transaction.conversion_mismatch`. If the client omits `conversion.amount`, the server fills it in. `source` is stored exactly as sent, including `'fallback'` - it is never silently upgraded to `'quote'`.
+
+On the frontend, see `features/transactions/conversion-form.ts` for how the
+form builds this payload and `domain/calc/conversion.ts` for the read-side
+helpers every balance/total calculation uses instead of touching
+`amount`/`currency` directly.
 
 Once a transaction is saved, its recorded `conversion` is authoritative -
-nothing re-derives it from a live rate afterward. `source: 'fallback'`
-means it was saved with a 1:1 approximation; those are the Exchange
-page's ("Câmbio" in pt-BR) "needs attention" queue.
+nothing re-derives it from a live rate afterward, on either side. This is
+about *later reads*, though, not a license to skip validating the arithmetic
+at write time (see above). `source: 'fallback'` means it was saved with a
+1:1 approximation; those are the Exchange page's ("Câmbio" in pt-BR) "needs
+attention" queue - `GET /api/v1/transactions?type=...` plus a client-side
+filter on `conversion.source === 'fallback'` today; there is no dedicated
+server-side query for it yet.
 
-**Manual rates** (`domain/models/manual-rate.ts`, one `{baseCode,
-quoteCode, rate, asOf}` per pair per day) let a user override the
-automatic rate - useful for today's actual bank rate, or when no
-provider is configured. They outrank both the mock rate table and a live
-provider quote: `data/mock/mock-exchange-rate.repository.ts` checks for a
-manual rate (direct or inverted) before falling through to anything else.
-The real backend's `get_exchange_rate` doesn't have a manual-rate
-concept yet - if this ports to the backend, manual rates should outrank
-`get_exchange_rate`'s provider lookup there too, the same way they do here.
+Recurring rules mirror the same shape for their `template` (`template_conversion_*` columns, `RecurringRule.template_conversion` and `.template` properties) and are validated with the exact same `resolve_conversion`/`validate_transaction_shape` functions a real transaction uses - one source of truth for the invariant, not two copies that can drift.
+
+**Manual rates** (`PUT /api/v1/manual-rates/{pair}/{date}`, e.g. `PUT /api/v1/manual-rates/USD_BRL/2026-01-15`, body `{"rate": "5.20"}`) let a user override the automatic rate - useful for today's actual bank rate, or when no provider is configured. Uniqueness is scoped by user, base currency, quote currency, and effective date (`uq_manual_rates_user_pair_as_of`). They outrank both the cached provider rate and a live provider quote when resolving a conversion - see the precedence list above - matching how `frontend/src/app/data/mock/mock-exchange-rate.repository.ts` already prioritizes them today.
 
 **Coverage gaps aren't only a transaction thing.** An account balance or
 goal amount can be shown as a 1:1 approximation purely because no rate
@@ -180,4 +186,14 @@ the currency) are the shared helpers behind this - reused by
 
 ## What doesn't exist yet
 
-No accounts, transactions, or balances - this scaffold has no domain model, only the currency reference tables and the conversion service above. When that model gets built, every balance/amount column should use `MoneyAmount` + `CurrencyCode` from day one, and transaction creation in a non-default currency is where `get_exchange_rate` should be called.
+The backend domain model, transaction conversion validation, and manual
+rates described above are all implemented (see
+[`backend-api.md`](backend-api.md) for the full endpoint list). What's still
+missing is the frontend side: the UI still runs entirely on
+`frontend/src/app/data/mock/` and doesn't call any of these endpoints yet
+(the mock exchange-rate repository already implements the same manual-rate
+precedence independently, in TypeScript - see
+`data/mock/mock-exchange-rate.repository.ts`). Wiring the frontend
+repositories to the real API, including reconciling camelCase domain models
+with the backend's snake_case wire format, is a separate, future piece of
+work.
