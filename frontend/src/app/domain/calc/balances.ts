@@ -1,6 +1,7 @@
 import { Account } from '../models/account';
 import { Transaction } from '../models/transaction';
 import { add, isNegative, Money, money, negate, subtract, zero } from '../../shared/money/money';
+import { effectiveAmount, sourceAmount } from './conversion';
 
 /**
  * An account's current balance = opening balance + every transaction that
@@ -12,19 +13,37 @@ import { add, isNegative, Money, money, negate, subtract, zero } from '../../sha
  * zero, exactly like an expense would for a checking account. That
  * negative number *is* what's owed - see `creditCardSummary` below for
  * the debt-oriented presentation built on top of it.
+ *
+ * Income/interest/expense and a transfer's incoming leg all post
+ * `effectiveAmount(tx)` - for a cross-currency transaction (a foreign-
+ * currency expense, or a transfer between accounts of different
+ * currencies) that's the converted amount, in the account's own currency.
+ * A transfer's outgoing leg posts `sourceAmount(tx)` instead, since
+ * `tx.currency` already *is* the source account's currency. See
+ * domain/calc/conversion.ts. Reading `tx.amount` directly here would
+ * either throw (mismatched currency) or, worse, silently relabel the
+ * origin amount as if it were the destination currency.
  */
 export function accountBalance(account: Account, transactions: readonly Transaction[]): Money {
   const delta = transactions.reduce((total, tx) => {
     if (tx.accountId === account.id) {
       if (tx.type === 'income' || tx.type === 'interest') {
-        return add(total, money(tx.amount, account.currency));
+        // effectiveAmount, not sourceAmount: a foreign-currency income
+        // still posts in the account's own currency.
+        return add(total, effectiveAmount(tx));
       }
-      // expense and the outgoing leg of a transfer both reduce the
-      // balance of the account they're posted against.
-      return subtract(total, money(tx.amount, account.currency));
+      if (tx.type === 'expense') {
+        return subtract(total, effectiveAmount(tx));
+      }
+      // The outgoing leg of a transfer always debits the source account by
+      // its own (origin) amount, in the source account's own currency -
+      // `tx.currency` is that currency by the Transaction model's
+      // invariant, so `sourceAmount` never needs conversion here. Any
+      // fee/conversion only affects what the destination account receives.
+      return subtract(total, sourceAmount(tx));
     }
     if (tx.type === 'transfer' && tx.toAccountId === account.id) {
-      return add(total, money(tx.amount, account.currency));
+      return add(total, effectiveAmount(tx));
     }
     return total;
   }, zero(account.currency));

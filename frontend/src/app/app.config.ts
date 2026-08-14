@@ -16,6 +16,7 @@ import { CategoryRepository } from './data/category.repository';
 import { ExchangeRateRepository } from './data/exchange-rate.repository';
 import { InstitutionRepository } from './data/institution.repository';
 import { GoalRepository } from './data/goal.repository';
+import { ManualRateRepository } from './data/manual-rate.repository';
 import { MockAccountRepository } from './data/mock/mock-account.repository';
 import { MockBudgetRepository } from './data/mock/mock-budget.repository';
 import { MockBudgetPlanRepository } from './data/mock/mock-budget-plan.repository';
@@ -23,6 +24,7 @@ import { MockCategoryRepository } from './data/mock/mock-category.repository';
 import { MockExchangeRateRepository } from './data/mock/mock-exchange-rate.repository';
 import { MockGoalRepository } from './data/mock/mock-goal.repository';
 import { MockInstitutionRepository } from './data/mock/mock-institution.repository';
+import { MockManualRateRepository } from './data/mock/mock-manual-rate.repository';
 import { MockRecurringRuleRepository } from './data/mock/mock-recurring-rule.repository';
 import { MockTransactionRepository } from './data/mock/mock-transaction.repository';
 import { RecurringRuleRepository } from './data/recurring-rule.repository';
@@ -50,6 +52,7 @@ export const appConfig: ApplicationConfig = {
     { provide: GoalRepository, useClass: MockGoalRepository },
     { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
     { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
-    { provide: InstitutionRepository, useClass: MockInstitutionRepository }
+    { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+    { provide: ManualRateRepository, useClass: MockManualRateRepository }
   ]
 };

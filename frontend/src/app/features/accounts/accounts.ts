@@ -2,12 +2,17 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { convertedOrNull, converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { accountBalance } from '../../domain/calc/balances';
 import { Account } from '../../domain/models/account';
+import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Institution } from '../../domain/models/institution';
 import { Money, sum } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -25,6 +30,8 @@ import { InstitutionFormModal } from './institution-form-modal';
 interface AccountRow {
   account: Account;
   balance: Money;
+  /** The balance converted to the display currency - null when it's already in that currency, or no rate could convert it. */
+  convertedBalance: Money | null;
 }
 
 interface AccountGroup {
@@ -33,6 +40,7 @@ interface AccountGroup {
   rows: AccountRow[];
   /** null when the group mixes currencies and a single subtotal isn't meaningful. */
   subtotal: Money | null;
+  convertedSubtotal: Money | null;
 }
 
 /** Sums same-currency amounts; returns null instead of throwing on a mismatch. */
@@ -66,8 +74,10 @@ export class Accounts {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly router = inject(Router);
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   /** Still used per-row (as a badge) - institution is the primary grouping axis now, type no longer is. */
   protected readonly accountTypeOption = accountTypeOption;
@@ -88,11 +98,32 @@ export class Accounts {
   protected readonly institutionFormOpen = signal(false);
   protected readonly editingInstitution = signal<Institution | undefined>(undefined);
 
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
+
+  /** Currencies any account holds, other than the display currency - drives the rate fetch below, mirroring features/dashboard/dashboard.ts. */
+  private readonly foreignCurrencies = computed(() => {
+    const display = this.displayCurrency();
+    const currencies = (this.accountsResource.value() ?? []).map((account) => account.currency);
+    return Array.from(new Set(currencies.filter((currency) => currency !== display)));
+  });
+
+  protected readonly ratesResource = rxResource({
+    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
+    stream: ({ params }) =>
+      params.currencies.length === 0
+        ? of([] as ExchangeRate[])
+        : forkJoin(params.currencies.map((currency) => this.exchangeRateRepository.getRate(currency, params.display)))
+  });
+
+  private readonly converter = computed<CurrencyConverter>(() => converterFromRates(this.ratesResource.value() ?? []));
+
   protected readonly groups = computed<AccountGroup[]>(() => {
     const accounts = this.accountsResource.value() ?? [];
     const institutions = this.institutionsResource.value() ?? [];
     const transactions = this.transactionsResource.value() ?? [];
     const showArchived = this.showArchived();
+    const display = this.displayCurrency();
+    const convert = this.converter();
 
     const visibleAccounts = accounts.filter((account) => showArchived || !account.archived);
 
@@ -100,14 +131,16 @@ export class Accounts {
     // no accounts yet, but it must still appear so the save has visible
     // feedback and the institution remains available for editing/deletion.
     return groupAccountsByInstitution(visibleAccounts, institutions, true).map((group) => {
-      const rows: AccountRow[] = group.accounts.map((account) => ({
-        account,
-        balance: accountBalance(account, transactions)
-      }));
+      const rows: AccountRow[] = group.accounts.map((account) => {
+        const balance = accountBalance(account, transactions);
+        return { account, balance, convertedBalance: convertedOrNull(balance, display, convert) };
+      });
+      const subtotal = trySum(rows.filter((row) => !row.account.archived).map((row) => row.balance));
       return {
         institution: group.institution,
         rows,
-        subtotal: trySum(rows.filter((row) => !row.account.archived).map((row) => row.balance))
+        subtotal,
+        convertedSubtotal: subtotal ? convertedOrNull(subtotal, display, convert) : null
       };
     });
   });

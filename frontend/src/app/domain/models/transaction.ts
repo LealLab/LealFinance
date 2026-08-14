@@ -1,5 +1,35 @@
 export type TransactionType = 'income' | 'expense' | 'transfer' | 'interest';
 
+/** Where a transaction's `conversion` rate came from. */
+export type ConversionSource = 'manual' | 'quote' | 'fallback';
+
+/**
+ * Records what actually happened when a transaction's `amount`/`currency`
+ * (the ORIGIN side) differ from the currency of the account it's affecting
+ * (the DESTINATION side) - see domain/calc/conversion.ts for the read-side
+ * helpers built on this, and docs/money-and-currency.md for the full rule.
+ *
+ * `amount`/`currency` here are always the DESTINATION side - what actually
+ * posted to the account whose currency differs from `Transaction.currency`:
+ * - transfer: `Transaction.currency` is the source account's; `conversion`
+ *   is the destination account's.
+ * - income/expense/interest: `Transaction.currency` is the currency the
+ *   money was denominated in; `conversion` is the account's own currency.
+ *
+ * `fee` is in the ORIGIN currency (`Transaction.currency`), deducted
+ * *before* conversion: `conversion.amount = (Transaction.amount - fee) *
+ * conversion.rate`. The origin account is still debited the full
+ * `Transaction.amount` - the fee is what didn't make it across, not an
+ * extra charge on top.
+ */
+export interface TransactionConversion {
+  amount: string;
+  currency: string;
+  fee?: string;
+  rate: string;
+  source: ConversionSource;
+}
+
 /**
  * A single ledger entry. `amount` is always positive - `type` carries the
  * direction, so there's exactly one way to represent "spent 50", never a
@@ -11,6 +41,12 @@ export type TransactionType = 'income' | 'expense' | 'transfer' | 'interest';
  * household. Interest is a positive account entry used by savings goals;
  * it also never counts as household income. `toAccountId` is set only for
  * transfers; `categoryId` is absent for transfers and interest entries.
+ *
+ * `conversion` is present iff this transaction is cross-currency (its own
+ * `currency` differs from the currency of the account it affects) - see
+ * `TransactionConversion` above. Every read of "how much moved" must go
+ * through domain/calc/conversion.ts rather than `amount`/`currency`
+ * directly, or it'll see the origin side instead of what actually landed.
  *
  * `recurringRuleId` is set when this occurrence was generated from a
  * RecurringRule - see domain/calc/recurrence.ts. A *projected* future
@@ -29,4 +65,5 @@ export interface Transaction {
   description: string;
   notes?: string;
   recurringRuleId?: string;
+  conversion?: TransactionConversion;
 }

@@ -6,10 +6,12 @@ import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockRecurringRuleRepository } from '../../data/mock/mock-recurring-rule.repository';
@@ -39,7 +41,8 @@ describe('Transactions', () => {
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
-        { provide: InstitutionRepository, useClass: MockInstitutionRepository }
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
   });

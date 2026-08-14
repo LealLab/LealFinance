@@ -111,6 +111,73 @@ A currency pair is only cached if *both* codes already exist in `currencies` (`e
 
 **Not yet wired to anything that creates a transaction** - there is no transactions domain in this scaffold yet (see the last section). This service is what that flow is expected to call once it exists; the scheduled-refresh Celery task (`backend/app/workers/tasks/rates.py`, `refresh_exchange_rates`) is unrelated and still disabled - on-demand lookup is the actual design here, not a batch job.
 
+## Recorded conversions (frontend scaffold)
+
+The backend has no transactions domain yet (see below), so cross-currency
+transactions - and the record of how they were converted - exist only in
+the frontend's mock data layer today: `domain/models/transaction.ts`'s
+`Transaction.conversion?: TransactionConversion`.
+
+A transaction is cross-currency in one of two ways: a transfer between two
+accounts of different currencies, or an income/expense denominated in a
+currency other than its account's own. Either way, `conversion` records
+what actually happened on the *destination* side - the account whose
+currency differs from `Transaction.currency`:
+
+```ts
+interface TransactionConversion {
+  amount: string;   // what posted to the destination account
+  currency: string;
+  fee?: string;      // tax/spread, in the ORIGIN currency
+  rate: string;       // amount ÷ (Transaction.amount − fee)
+  source: 'manual' | 'quote' | 'fallback';
+}
+```
+
+The fee is deducted **before** conversion, in the transaction's own
+(origin) currency - `converted = (amount − fee) × rate` - and the origin
+account is still debited the full `Transaction.amount`; the fee is the
+slice of it that didn't make it across, not an extra charge on top. See
+`features/transactions/conversion-form.ts` for the implementation and
+`domain/calc/conversion.ts` for the read-side helpers every balance/total
+calculation uses instead of touching `amount`/`currency` directly.
+
+Once a transaction is saved, its recorded `conversion` is authoritative -
+nothing re-derives it from a live rate afterward. `source: 'fallback'`
+means it was saved with a 1:1 approximation; those are the Exchange
+page's ("Câmbio" in pt-BR) "needs attention" queue.
+
+**Manual rates** (`domain/models/manual-rate.ts`, one `{baseCode,
+quoteCode, rate, asOf}` per pair per day) let a user override the
+automatic rate - useful for today's actual bank rate, or when no
+provider is configured. They outrank both the mock rate table and a live
+provider quote: `data/mock/mock-exchange-rate.repository.ts` checks for a
+manual rate (direct or inverted) before falling through to anything else.
+The real backend's `get_exchange_rate` doesn't have a manual-rate
+concept yet - if this ports to the backend, manual rates should outrank
+`get_exchange_rate`'s provider lookup there too, the same way they do here.
+
+**Coverage gaps aren't only a transaction thing.** An account balance or
+goal amount can be shown as a 1:1 approximation purely because no rate
+covers its currency yet, with no transaction involved at all - e.g. an
+account holds EUR, the display currency is USD, and nothing has ever set
+a EUR/USD rate. `features/exchange/exchange.ts`'s "Currencies without a
+rate" section detects this directly (fetching a live quote per
+foreign-currency account and checking `isFallback`), separately from the
+transaction-level "needs attention" list above, and its "Set a rate"
+action opens the manual-rate form pre-filled with that pair.
+
+**Converted-value display.** Accounts (list and detail) and Goals show
+the display-currency equivalent next to a foreign-currency amount - `€
+2.000,00 (US$ 2.000,00)` - using the same rate resolution (manual rate,
+then the mock table, then a flagged 1:1 fallback) as the dashboard's net
+worth figure. `domain/calc/aggregations.ts`'s `converterFromRates` (turns
+a batch of fetched `ExchangeRate`s into a `CurrencyConverter`) and
+`convertedOrNull` (only returns a value when conversion actually changed
+the currency) are the shared helpers behind this - reused by
+`dashboard.ts`, `exchange.ts`, `accounts.ts`, `account-detail.ts`, and
+`goals.ts` rather than each page re-deriving its own rate map.
+
 ## What doesn't exist yet
 
 No accounts, transactions, or balances - this scaffold has no domain model, only the currency reference tables and the conversion service above. When that model gets built, every balance/amount column should use `MoneyAmount` + `CurrencyCode` from day one, and transaction creation in a non-default currency is where `get_exchange_rate` should be called.

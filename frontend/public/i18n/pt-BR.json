@@ -18,6 +18,7 @@
       "budgets": "Orçamentos",
       "goals": "Metas",
       "reports": "Relatórios",
+      "exchange": "Câmbio",
       "settings": "Configurações",
       "sections": {
         "accounts": "Contas",
@@ -113,7 +114,8 @@
     }
   },
   "currency": {
-    "fallbackRateWarning": "Taxa de câmbio indisponível - usando conversão 1:1 como aproximação."
+    "fallbackRateWarning": "Taxa de câmbio indisponível - usando conversão 1:1 como aproximação.",
+    "fallbackRateWarningAction": "Definir taxa"
   },
   "accounts": {
     "title": "Contas",
@@ -268,6 +270,9 @@
       "fields": {
         "date": "Data",
         "amount": "Valor",
+        "currency": "Moeda",
+        "convertedAmount": "Valor convertido",
+        "conversionFee": "Taxa/imposto de conversão (opcional)",
         "account": "Conta",
         "fromAccount": "Conta de origem",
         "toAccount": "Conta de destino",
@@ -282,8 +287,13 @@
         "interval": "A cada",
         "selectPlaceholder": "Selecione"
       },
+      "hints": {
+        "effectiveRate": "Taxa efetiva: {{rate}}",
+        "recurringUnavailableCrossCurrency": "A repetição não está disponível para uma transação em outra moeda - a taxa precisaria ser definida novamente a cada ocorrência."
+      },
       "errors": {
-        "invalid": "Verifique os campos obrigatórios antes de salvar."
+        "invalid": "Verifique os campos obrigatórios antes de salvar.",
+        "convertedAmountRequired": "Informe o valor convertido antes de salvar."
       },
       "actions": {
         "cancel": "Cancelar",
@@ -542,6 +552,70 @@
       "expense": "Despesa",
       "netFlow": "Fluxo líquido",
       "categories": "Categorias"
+    }
+  },
+  "exchange": {
+    "title": "Câmbio",
+    "description": "Taxas de câmbio manuais e as conversões que as utilizaram.",
+    "stats": {
+      "feesPaid": "Taxas de conversão pagas",
+      "needsAttention": "Transações que precisam de atenção",
+      "currenciesNeedingRate": "Moedas sem taxa definida"
+    },
+    "needsAttention": {
+      "title": "Precisa de atenção",
+      "description": "Estas transações foram convertidas usando uma aproximação 1:1 - corrija-as com a taxa real, ou defina uma taxa manual abaixo.",
+      "empty": {
+        "title": "Nada precisa de atenção",
+        "description": "Toda transação em outra moeda tem uma taxa real registrada."
+      },
+      "actions": {
+        "fix": "Corrigir"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Moedas sem taxa definida",
+      "description": "Estas moedas de conta ainda não têm uma taxa real para sua moeda de exibição, então os saldos nelas são exibidos com uma aproximação 1:1 - sem estar ligado a nenhuma transação específica.",
+      "empty": {
+        "title": "Nenhuma moeda precisa de uma taxa",
+        "description": "Toda moeda de conta já resolve para uma taxa real."
+      }
+    },
+    "manualRates": {
+      "title": "Taxas manuais",
+      "description": "Taxas definidas manualmente têm prioridade sobre o provedor automático - útil para a taxa real do banco hoje, ou quando nenhum provedor está configurado.",
+      "actions": {
+        "add": "Adicionar taxa",
+        "edit": "Editar taxa",
+        "delete": "Excluir taxa"
+      },
+      "empty": {
+        "title": "Nenhuma taxa manual ainda",
+        "description": "Adicione uma taxa para um par de moedas para usá-la em vez da aproximação automática 1:1."
+      },
+      "delete": {
+        "title": "Excluir taxa manual",
+        "message": "Esta ação não pode ser desfeita. Deseja excluir esta taxa?"
+      },
+      "form": {
+        "newTitle": "Nova taxa manual",
+        "editTitle": "Editar taxa manual",
+        "saveError": "Não foi possível salvar a taxa. Tente novamente.",
+        "fields": {
+          "baseCode": "Moeda de origem",
+          "quoteCode": "Moeda de destino",
+          "rate": "Taxa",
+          "asOf": "Vigente a partir de"
+        },
+        "errors": {
+          "invalid": "Informe uma taxa válida.",
+          "samePair": "Escolha duas moedas diferentes."
+        },
+        "actions": {
+          "cancel": "Cancelar",
+          "save": "Salvar"
+        }
+      }
     }
   },
   "settings": {

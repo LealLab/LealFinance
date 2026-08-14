@@ -5,8 +5,10 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
+import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
@@ -32,7 +34,8 @@ describe('AccountDetail', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: InstitutionRepository, useClass: MockInstitutionRepository }
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
   });
@@ -61,6 +64,23 @@ describe('AccountDetail', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain(account.name);
+  });
+
+  it('shows the display-currency equivalent next to a foreign-currency account balance', async () => {
+    const repository = TestBed.inject(AccountRepository);
+    const account = await new Promise<Account>((resolve) => {
+      repository.list().subscribe((accounts) => resolve(accounts.find((a) => a.currency === 'EUR')!));
+    });
+
+    const fixture = TestBed.createComponent(AccountDetail);
+    fixture.componentRef.setInput('id', account.id);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('€');
+    expect(text).toMatch(/\(US\$\s*[\d.,]+\)/);
   });
 
   it('asks for confirmation before archiving from the detail page', async () => {

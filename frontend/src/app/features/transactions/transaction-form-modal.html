@@ -47,6 +47,17 @@
         </div>
       </div>
 
+      @if (!isTransfer()) {
+        <div>
+          <label class="form-label" for="tx-currency">{{ t('transactions.form.fields.currency') }}</label>
+          <select id="tx-currency" class="form-input" formControlName="currency">
+            @for (currency of currencyOptions; track currency) {
+              <option [value]="currency">{{ currency }}</option>
+            }
+          </select>
+        </div>
+      }
+
       @if (isTransfer()) {
         <div class="grid grid-cols-2 gap-4">
           <div>
@@ -124,6 +135,40 @@
         </div>
       }
 
+      @if (crossCurrency()) {
+        <div class="flex flex-col gap-3 rounded-md border border-border bg-surface-sunken p-3">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label" for="tx-converted-amount">
+                {{ t('transactions.form.fields.convertedAmount') }} ({{ destinationCurrency() }})
+              </label>
+              <input
+                id="tx-converted-amount"
+                type="text"
+                inputmode="decimal"
+                class="form-input font-mono"
+                formControlName="convertedAmount"
+              />
+              @if (form.controls.convertedAmount.invalid && form.controls.convertedAmount.touched) {
+                <p class="form-error">{{ t('transactions.form.errors.invalid') }}</p>
+              }
+            </div>
+            <div>
+              <label class="form-label" for="tx-fee">
+                {{ t('transactions.form.fields.conversionFee') }} ({{ originCurrency() }})
+              </label>
+              <input id="tx-fee" type="text" inputmode="decimal" class="form-input font-mono" formControlName="fee" />
+            </div>
+          </div>
+          @if (effectiveRateHint(); as hint) {
+            <p class="text-xs text-content-muted">
+              {{ t('transactions.form.hints.effectiveRate', { rate: hint }) }}
+            </p>
+          }
+          <app-exchange-rate-warning [isFallback]="rateIsFallback()" />
+        </div>
+      }
+
       <div>
         <label class="form-label" for="tx-description">
           {{ t('transactions.form.fields.description') }}
@@ -137,39 +182,45 @@
       </div>
 
       @if (!transaction() && !isTransfer()) {
-        <div class="rounded-md border border-border bg-surface-sunken p-3">
-          <label class="flex items-center gap-2 text-sm font-medium text-content-primary">
-            <input type="checkbox" formControlName="repeat" />
-            {{ t('transactions.form.fields.repeat') }}
-          </label>
+        @if (crossCurrency()) {
+          <p class="text-xs text-content-muted">
+            {{ t('transactions.form.hints.recurringUnavailableCrossCurrency') }}
+          </p>
+        } @else {
+          <div class="rounded-md border border-border bg-surface-sunken p-3">
+            <label class="flex items-center gap-2 text-sm font-medium text-content-primary">
+              <input type="checkbox" formControlName="repeat" />
+              {{ t('transactions.form.fields.repeat') }}
+            </label>
 
-          @if (form.controls.repeat.value) {
-            <div class="mt-3 grid grid-cols-2 gap-4">
-              <div>
-                <label class="form-label" for="tx-frequency">
-                  {{ t('transactions.form.fields.frequency') }}
-                </label>
-                <select id="tx-frequency" class="form-input" formControlName="frequency">
-                  @for (frequency of frequencies; track frequency) {
-                    <option [value]="frequency">{{ t('transactions.recurring.frequency.' + frequency) }}</option>
-                  }
-                </select>
+            @if (form.controls.repeat.value) {
+              <div class="mt-3 grid grid-cols-2 gap-4">
+                <div>
+                  <label class="form-label" for="tx-frequency">
+                    {{ t('transactions.form.fields.frequency') }}
+                  </label>
+                  <select id="tx-frequency" class="form-input" formControlName="frequency">
+                    @for (frequency of frequencies; track frequency) {
+                      <option [value]="frequency">{{ t('transactions.recurring.frequency.' + frequency) }}</option>
+                    }
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label" for="tx-interval">
+                    {{ t('transactions.form.fields.interval') }}
+                  </label>
+                  <input
+                    id="tx-interval"
+                    type="number"
+                    min="1"
+                    class="form-input"
+                    formControlName="interval"
+                  />
+                </div>
               </div>
-              <div>
-                <label class="form-label" for="tx-interval">
-                  {{ t('transactions.form.fields.interval') }}
-                </label>
-                <input
-                  id="tx-interval"
-                  type="number"
-                  min="1"
-                  class="form-input"
-                  formControlName="interval"
-                />
-              </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       }
 
       @if (saveErrorKey(); as errorKey) {

@@ -10,7 +10,11 @@
   } @else {
     @if (hasFallbackRate()) {
       <div class="mb-6">
-        <app-exchange-rate-warning [isFallback]="true" />
+        <app-exchange-rate-warning
+          [isFallback]="true"
+          actionLabelKey="currency.fallbackRateWarningAction"
+          (action)="goToExchange()"
+        />
       </div>
     }
 

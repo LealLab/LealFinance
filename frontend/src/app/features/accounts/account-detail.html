@@ -33,6 +33,11 @@
           @if (balance(); as balance) {
             <span class="font-mono text-3xl font-semibold tabular-nums">
               {{ balance.amount | money: balance.currency }}
+              @if (convertedBalance(); as converted) {
+                <span class="text-lg font-normal text-content-muted"
+                  >({{ converted.amount | money: converted.currency }})</span
+                >
+              }
             </span>
           }
         </div>

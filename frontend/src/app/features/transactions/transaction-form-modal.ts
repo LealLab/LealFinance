@@ -1,7 +1,9 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { of } from 'rxjs';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { formatIsoDate } from '../../domain/calc/dates';
@@ -11,8 +13,13 @@ import { Institution } from '../../domain/models/institution';
 import { RecurringFrequency } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
+import { buildTransactionConversion, prefillConvertedAmount } from './conversion-form';
+import { CURRENCY_OPTIONS } from '../../shared/currency-options';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
+import { money, subtract, zero } from '../../shared/money/money';
+import { effectiveRate } from '../../shared/money/rate';
 import { Button } from '../../shared/ui/button/button';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const TRANSACTION_TYPES: readonly TransactionType[] = ['expense', 'income', 'transfer'];
@@ -34,16 +41,26 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
  * source account's own institution whenever the source account changes,
  * so a same-institution transfer needs no extra clicks - see the
  * `accountId.valueChanges` subscription below.
+ *
+ * `currency`/`convertedAmount`/`fee` back the "Conversion" fieldset that
+ * appears whenever this transaction is cross-currency - a transfer between
+ * accounts of different currencies, or (for income/expense) a `currency`
+ * different from the posting account's own. The converted amount prefills
+ * from a live/mock quote (`rateResource`) net of the fee, per
+ * docs/money-and-currency.md's `converted = (amount - fee) * rate` rule -
+ * see conversion-form.ts for that math - but a user edit to the converted
+ * amount is never overwritten again (`convertedTouched`).
  */
 @Component({
   selector: 'app-transaction-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ExchangeRateWarning],
   templateUrl: './transaction-form-modal.html',
   styleUrl: './transaction-form-modal.scss'
 })
 export class TransactionFormModal {
   private readonly transactions = inject(TransactionRepository);
   private readonly recurringRules = inject(RecurringRuleRepository);
+  private readonly exchangeRates = inject(ExchangeRateRepository);
   private readonly fb = inject(FormBuilder);
 
   readonly open = model.required<boolean>();
@@ -55,16 +72,21 @@ export class TransactionFormModal {
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
   protected readonly frequencies = FREQUENCIES;
+  protected readonly currencyOptions = CURRENCY_OPTIONS;
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
   /** True while the constructor effect is repopulating the form on open - see the note above `clearAccountIfMismatched`. */
   private applyingReset = false;
 
+  /** True once the user has typed into `convertedAmount` themselves - the prefill effect below never overwrites it again. */
+  protected readonly convertedTouched = signal(false);
+
   protected readonly form = this.fb.nonNullable.group({
     type: ['expense' as TransactionType, Validators.required],
     date: [formatIsoDate(new Date()), Validators.required],
     amount: ['', [Validators.required, decimalAmountValidator()]],
+    currency: ['BRL', Validators.required],
     accountId: ['', Validators.required],
     toAccountId: [''],
     categoryId: [''],
@@ -74,7 +96,9 @@ export class TransactionFormModal {
     frequency: ['monthly' as RecurringFrequency],
     interval: [1, [Validators.min(1)]],
     fromInstitutionId: [''],
-    toInstitutionId: ['']
+    toInstitutionId: [''],
+    convertedAmount: ['', decimalAmountValidator()],
+    fee: ['', decimalAmountValidator()]
   });
 
   private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
@@ -110,12 +134,86 @@ export class TransactionFormModal {
     return institutionId ? accounts.filter((account) => account.institutionId === institutionId) : accounts;
   });
 
+  private readonly selectedAccountId = toSignal(this.form.controls.accountId.valueChanges, {
+    initialValue: this.form.controls.accountId.value
+  });
+  private readonly selectedToAccountId = toSignal(this.form.controls.toAccountId.valueChanges, {
+    initialValue: this.form.controls.toAccountId.value
+  });
+  private readonly selectedCurrency = toSignal(this.form.controls.currency.valueChanges, {
+    initialValue: this.form.controls.currency.value
+  });
+  private readonly selectedAmount = toSignal(this.form.controls.amount.valueChanges, {
+    initialValue: this.form.controls.amount.value
+  });
+  private readonly selectedFee = toSignal(this.form.controls.fee.valueChanges, {
+    initialValue: this.form.controls.fee.value
+  });
+  private readonly selectedConvertedAmount = toSignal(this.form.controls.convertedAmount.valueChanges, {
+    initialValue: this.form.controls.convertedAmount.value
+  });
+
+  private readonly sourceAccount = computed(() =>
+    this.accounts().find((account) => account.id === this.selectedAccountId())
+  );
+  private readonly destinationAccount = computed(() =>
+    this.accounts().find((account) => account.id === this.selectedToAccountId())
+  );
+
+  /**
+   * The transaction's own currency (what `Transaction.currency` will be) -
+   * the source account's currency for a transfer, or the freely-chosen
+   * `currency` control for income/expense. See domain/models/transaction.ts.
+   */
+  protected readonly originCurrency = computed(() =>
+    this.isTransfer() ? this.sourceAccount()?.currency : this.selectedCurrency()
+  );
+  /** The currency of the account this transaction actually posts to. */
+  protected readonly destinationCurrency = computed(() =>
+    this.isTransfer() ? this.destinationAccount()?.currency : this.sourceAccount()?.currency
+  );
+  protected readonly crossCurrency = computed(() => {
+    const origin = this.originCurrency();
+    const destination = this.destinationCurrency();
+    return !!origin && !!destination && origin !== destination;
+  });
+
+  /** Live/mock quote for the current pair - only fetched while this transaction is actually cross-currency. */
+  protected readonly rateResource = rxResource({
+    params: () => ({
+      crossCurrency: this.crossCurrency(),
+      origin: this.originCurrency(),
+      destination: this.destinationCurrency()
+    }),
+    stream: ({ params }) =>
+      params.crossCurrency && params.origin && params.destination
+        ? this.exchangeRates.getRate(params.origin, params.destination)
+        : of(undefined)
+  });
+  protected readonly rateIsFallback = computed(() => this.rateResource.value()?.isFallback ?? false);
+
+  /** What `converted ÷ (amount - fee)` currently works out to, for display next to the converted-amount field - `null` until there's enough to compute it. */
+  protected readonly effectiveRateHint = computed(() => {
+    const origin = this.originCurrency();
+    const destination = this.destinationCurrency();
+    const amount = this.selectedAmount();
+    const convertedAmount = this.selectedConvertedAmount();
+    if (!origin || !destination || !amount || !convertedAmount) return null;
+    try {
+      const fee = this.selectedFee();
+      const netOrigin = subtract(money(amount, origin), fee ? money(fee, origin) : zero(origin));
+      return effectiveRate(netOrigin, money(convertedAmount, destination));
+    } catch {
+      return null;
+    }
+  });
+
   /**
    * titleKey/saveErrorKey hold these as plain string literals, only ever
    * passed to the marker function from the template - see
    * account-form-modal.ts / layout/sidebar.ts for why that needs this
    * JSDoc "dynamic markings" block:
-   * t(transactions.form.editTitle, transactions.form.newTitle, transactions.form.saveError, transactions.form.errors.invalid)
+   * t(transactions.form.editTitle, transactions.form.newTitle, transactions.form.saveError, transactions.form.errors.invalid, transactions.form.errors.convertedAmountRequired)
    */
   protected readonly titleKey = computed(() =>
     this.transaction() ? 'transactions.form.editTitle' : 'transactions.form.newTitle'
@@ -139,6 +237,7 @@ export class TransactionFormModal {
         type: tx?.type ?? 'expense',
         date: tx?.date ?? formatIsoDate(new Date()),
         amount: tx?.amount ?? '',
+        currency: tx?.currency ?? fromAccount?.currency ?? 'BRL',
         accountId: tx?.accountId ?? '',
         toAccountId: tx?.toAccountId ?? '',
         categoryId: tx?.categoryId ?? '',
@@ -148,20 +247,72 @@ export class TransactionFormModal {
         frequency: 'monthly',
         interval: 1,
         fromInstitutionId: fromAccount?.institutionId ?? '',
-        toInstitutionId: toAccount?.institutionId ?? ''
+        toInstitutionId: toAccount?.institutionId ?? '',
+        convertedAmount: tx?.conversion?.amount ?? '',
+        fee: tx?.conversion?.fee ?? ''
       });
       this.applyingReset = false;
+      // A conversion already on record is treated as "touched" so the
+      // prefill effect below doesn't immediately overwrite it with a fresh
+      // quote the moment the modal opens.
+      this.convertedTouched.set(!!tx?.conversion);
       this.saveErrorKey.set(null);
     });
 
+    // Prefills convertedAmount from the live/mock rate, net of the fee -
+    // but never once the user has edited it themselves (convertedTouched).
+    // emitEvent: false so this programmatic write doesn't itself flip
+    // convertedTouched back to true via the subscription below.
+    effect(() => {
+      const rate = this.rateResource.value();
+      const origin = this.originCurrency();
+      const destination = this.destinationCurrency();
+      const amount = this.selectedAmount();
+      const fee = this.selectedFee();
+      if (!this.crossCurrency() || !rate || !origin || !destination || !amount || this.convertedTouched()) {
+        return;
+      }
+      try {
+        const prefilled = prefillConvertedAmount(amount, origin, fee || null, rate.rate, destination);
+        this.form.controls.convertedAmount.setValue(prefilled, { emitEvent: false });
+      } catch {
+        // amount/fee isn't a valid decimal yet - leave the field as-is until it is.
+      }
+    });
+
     // Defaulting toInstitutionId to the source account's own institution
+    // (transfers) or currency to the account's own (income/expense)
     // whenever the source account changes - see the class-level doc
     // comment for why, and clearAccountIfMismatched for the symmetric
-    // "narrowing a filter drops a now-invalid selection" behavior.
+    // "narrowing a filter drops a now-invalid selection" behavior. Any
+    // account change also means "this is a different currency pair now",
+    // so any prior converted-amount edit no longer applies.
     this.form.controls.accountId.valueChanges.subscribe((accountId) => {
-      if (this.applyingReset || this.form.controls.type.value !== 'transfer') return;
+      if (this.applyingReset) return;
+      this.convertedTouched.set(false);
       const account = this.accounts().find((a) => a.id === accountId);
-      this.form.controls.toInstitutionId.setValue(account?.institutionId ?? '');
+      if (this.form.controls.type.value === 'transfer') {
+        this.form.controls.toInstitutionId.setValue(account?.institutionId ?? '');
+      } else {
+        this.form.controls.currency.setValue(account?.currency ?? 'BRL');
+      }
+    });
+
+    this.form.controls.toAccountId.valueChanges.subscribe(() => {
+      if (this.applyingReset) return;
+      this.convertedTouched.set(false);
+    });
+    this.form.controls.currency.valueChanges.subscribe(() => {
+      if (this.applyingReset) return;
+      this.convertedTouched.set(false);
+    });
+    this.form.controls.type.valueChanges.subscribe(() => {
+      if (this.applyingReset) return;
+      this.convertedTouched.set(false);
+    });
+    this.form.controls.convertedAmount.valueChanges.subscribe(() => {
+      if (this.applyingReset) return;
+      this.convertedTouched.set(true);
     });
 
     this.form.controls.fromInstitutionId.valueChanges.subscribe((institutionId) => {
@@ -192,34 +343,60 @@ export class TransactionFormModal {
   protected submit(): void {
     const raw = this.form.getRawValue();
     const isTransfer = raw.type === 'transfer';
+    const crossCurrency = this.crossCurrency();
 
     if (
       this.form.controls.type.invalid ||
       this.form.controls.date.invalid ||
       this.form.controls.amount.invalid ||
+      this.form.controls.currency.invalid ||
       this.form.controls.accountId.invalid ||
       this.form.controls.description.invalid ||
+      this.form.controls.fee.invalid ||
       (isTransfer && (!raw.toAccountId || raw.toAccountId === raw.accountId)) ||
-      (!isTransfer && !raw.categoryId)
+      (!isTransfer && !raw.categoryId) ||
+      (crossCurrency && (this.form.controls.convertedAmount.invalid || !raw.convertedAmount))
     ) {
       this.form.markAllAsTouched();
-      this.saveErrorKey.set('transactions.form.errors.invalid');
+      this.saveErrorKey.set(
+        crossCurrency && !raw.convertedAmount
+          ? 'transactions.form.errors.convertedAmountRequired'
+          : 'transactions.form.errors.invalid'
+      );
       return;
     }
 
     const account = this.accounts().find((a) => a.id === raw.accountId);
     if (!account) return;
+    const toAccount = isTransfer ? this.accounts().find((a) => a.id === raw.toAccountId) : undefined;
+
+    const originCurrency = isTransfer ? account.currency : raw.currency;
+    const destinationCurrency = isTransfer ? toAccount?.currency : account.currency;
+
+    const conversion =
+      crossCurrency && destinationCurrency
+        ? buildTransactionConversion({
+            originAmount: raw.amount,
+            originCurrency,
+            fee: raw.fee || null,
+            convertedAmount: raw.convertedAmount,
+            destinationCurrency,
+            quoteSource: this.rateResource.value()?.isFallback ? 'fallback' : 'quote',
+            convertedTouched: this.convertedTouched()
+          })
+        : undefined;
 
     const basePayload: Omit<Transaction, 'id'> = {
       type: raw.type,
       date: raw.date,
       amount: raw.amount,
-      currency: account.currency,
+      currency: originCurrency,
       accountId: raw.accountId,
       toAccountId: isTransfer ? raw.toAccountId : undefined,
       categoryId: isTransfer ? undefined : raw.categoryId,
       description: raw.description.trim(),
-      notes: raw.notes.trim() || undefined
+      notes: raw.notes.trim() || undefined,
+      conversion
     };
 
     this.saving.set(true);
@@ -233,7 +410,7 @@ export class TransactionFormModal {
       return;
     }
 
-    if (raw.repeat && !isTransfer) {
+    if (raw.repeat && !isTransfer && !crossCurrency) {
       this.recurringRules
         .create({
           frequency: raw.frequency,

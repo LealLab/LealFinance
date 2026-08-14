@@ -1,8 +1,10 @@
 import { Account } from '../models/account';
 import { Category } from '../models/category';
+import { ExchangeRate } from '../models/exchange-rate';
 import { Transaction } from '../models/transaction';
-import { add, compare, Money, money, sum, subtract, zero } from '../../shared/money/money';
+import { add, compare, Money, multiply, sum, subtract, zero } from '../../shared/money/money';
 import { accountBalance } from './balances';
+import { effectiveAmount } from './conversion';
 import { monthKey } from './dates';
 
 /**
@@ -44,13 +46,13 @@ export function totalsFor(
   const income = sum(
     transactions
       .filter((tx) => tx.type === 'income')
-      .map((tx) => convert(money(tx.amount, tx.currency), targetCurrency)),
+      .map((tx) => convert(effectiveAmount(tx), targetCurrency)),
     targetCurrency
   );
   const expense = sum(
     transactions
       .filter((tx) => tx.type === 'expense')
-      .map((tx) => convert(money(tx.amount, tx.currency), targetCurrency)),
+      .map((tx) => convert(effectiveAmount(tx), targetCurrency)),
     targetCurrency
   );
 
@@ -90,7 +92,7 @@ export function categoryBreakdown(
   for (const tx of transactions) {
     if (tx.type !== 'expense' || !tx.categoryId) continue;
     const topLevelId = topLevelCategoryId(tx.categoryId, categories);
-    const converted = convert(money(tx.amount, tx.currency), targetCurrency);
+    const converted = convert(effectiveAmount(tx), targetCurrency);
     totals.set(topLevelId, add(totals.get(topLevelId) ?? zero(targetCurrency), converted));
   }
 
@@ -126,4 +128,42 @@ export function netWorth(
     .map((account) => convert(accountBalance(account, transactions), targetCurrency));
 
   return sum(balances, targetCurrency);
+}
+
+/**
+ * Builds a `CurrencyConverter` from a batch of fetched rates (one
+ * `ExchangeRate` per currency, keyed by `baseCode`) - the shape every
+ * screen gets back from forking a `ExchangeRateRepository.getRate()` call
+ * per foreign currency in use (see features/dashboard/dashboard.ts for the
+ * canonical fetch). Falls through to the original amount, unconverted, if
+ * no rate covers its currency - the caller's problem to handle (or ignore
+ * via `convertedOrNull` below), never this function's to throw over.
+ */
+export function converterFromRates(rates: readonly ExchangeRate[]): CurrencyConverter {
+  const rateByCurrency = new Map(rates.map((rate) => [rate.baseCode, rate]));
+  return (amount, targetCurrency) => {
+    if (amount.currency === targetCurrency) return amount;
+    const rate = rateByCurrency.get(amount.currency);
+    if (!rate) return amount;
+    return multiply(amount, rate.rate, targetCurrency);
+  };
+}
+
+/**
+ * Converts `amount` into `targetCurrency`, or `null` if it's already in
+ * that currency *or* nothing was available to convert it (the converter
+ * passed the original amount through unchanged - see `converterFromRates`
+ * above). Built for "show the converted value alongside the original,
+ * only when there's actually a second currency to show" UI: an account
+ * balance or goal amount in a foreign currency, displayed next to its
+ * display-currency equivalent.
+ */
+export function convertedOrNull(
+  amount: Money,
+  targetCurrency: string,
+  convert: CurrencyConverter
+): Money | null {
+  if (amount.currency === targetCurrency) return null;
+  const converted = convert(amount, targetCurrency);
+  return converted.currency !== amount.currency ? converted : null;
 }
