@@ -90,6 +90,8 @@ describe('Shell', () => {
     expect(sidebar.classList.contains('is-expanded')).toBe(true);
     expect(sidebar.querySelector('app-icon[name="globe"]')).not.toBeNull();
     expect(languageSelect.classList.contains('w-full')).toBe(true);
+    expect(languageSelect.classList.contains('bg-surface-raised')).toBe(true);
+    expect(languageSelect.classList.contains('text-content-muted')).toBe(true);
 
     toggle.click();
     fixture.detectChanges();
@@ -98,6 +100,8 @@ describe('Shell', () => {
     expect(sidebar.classList.contains('is-collapsed')).toBe(true);
     expect(sidebar.querySelector('app-icon[name="globe"]')).toBeNull();
     expect(languageSelect.classList.contains('w-8')).toBe(true);
+    expect(languageSelect.classList.contains('bg-surface-raised')).toBe(true);
+    expect(languageSelect.classList.contains('text-content-muted')).toBe(true);
     expect(languageSelect.classList.contains('opacity-0')).toBe(true);
     expect(languageSelect.classList.contains('text-transparent')).toBe(false);
   });

@@ -124,8 +124,8 @@
           <select
             [class]="
               sidebarExpanded()
-                ? 'w-full min-w-0 rounded-md border border-border bg-surface-raised px-2 py-1 text-sm'
-                : 'absolute inset-0 h-8 w-8 cursor-pointer opacity-0'
+                ? 'w-full min-w-0 rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted'
+                : 'absolute inset-0 h-8 w-8 cursor-pointer bg-surface-raised text-content-muted opacity-0'
             "
             [attr.aria-label]="t('layout.languageSwitcher.label')"
             [value]="activeLang()"
@@ -229,7 +229,7 @@
         <label class="flex items-center gap-2 text-sm text-content-muted">
           <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
           <select
-            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm"
+            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted"
             [value]="activeLang()"
             (change)="setLang($any($event.target).value)"
           >
