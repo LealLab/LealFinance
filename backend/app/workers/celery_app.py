@@ -1,7 +1,7 @@
 """Celery application and beat schedule.
 
 Workers use the sync engine (app.core.db_sync) rather than the async engine
-FastAPI uses — Celery's worker model isn't async-native.
+FastAPI uses - Celery's worker model isn't async-native.
 """
 
 from celery import Celery

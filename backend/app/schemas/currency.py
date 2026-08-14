@@ -1,6 +1,6 @@
 """Pydantic DTOs for currency and exchange-rate data.
 
-Amounts and rates are serialized as strings, never JSON numbers — see
+Amounts and rates are serialized as strings, never JSON numbers - see
 docs/money-and-currency.md for why (NUMERIC(19,4) exceeds float64 precision).
 """
 
@@ -34,7 +34,7 @@ class ExchangeRateRead(BaseModel):
 
 
 class ExchangeRateQuoteRead(BaseModel):
-    """Response for an on-demand rate lookup — see app/services/exchange_rates.py.
+    """Response for an on-demand rate lookup - see app/services/exchange_rates.py.
 
     `is_fallback=True` means no live rate was available (no API key
     configured, or the provider call failed) and `rate` is the 1:1

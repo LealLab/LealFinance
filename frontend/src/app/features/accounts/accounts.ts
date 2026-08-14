@@ -28,7 +28,7 @@ interface AccountRow {
 }
 
 interface AccountGroup {
-  /** null is the "Sem instituição" bucket — e.g. a cash account. */
+  /** null is the "Sem instituição" bucket - e.g. a cash account. */
   institution: Institution | null;
   rows: AccountRow[];
   /** null when the group mixes currencies and a single subtotal isn't meaningful. */
@@ -69,7 +69,7 @@ export class Accounts {
   private readonly confirmService = inject(ConfirmService);
   private readonly router = inject(Router);
 
-  /** Still used per-row (as a badge) — institution is the primary grouping axis now, type no longer is. */
+  /** Still used per-row (as a badge) - institution is the primary grouping axis now, type no longer is. */
   protected readonly accountTypeOption = accountTypeOption;
 
   protected readonly accountsResource = rxResource({
@@ -147,7 +147,7 @@ export class Accounts {
   protected onSaved(): void {
     this.accountsResource.reload();
     // The account form can create a brand-new institution inline (its own
-    // nested InstitutionFormModal) — reload ours too so a just-created
+    // nested InstitutionFormModal) - reload ours too so a just-created
     // institution's group shows up immediately instead of the account
     // landing in "Sem instituição" until the next full reload.
     this.institutionsResource.reload();

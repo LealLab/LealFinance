@@ -6,7 +6,7 @@ import { addDays, addMonthsClamped, formatIsoDate, parseIsoDate } from './dates'
  * directly from the rule's start date every time rather than by stepping
  * from the previous occurrence. That matters for month-end anchors: a
  * monthly rule starting Jan 31 must land on Mar 31 (not Mar 28) even
- * though the Feb occurrence in between clamped to 28 — stepping from a
+ * though the Feb occurrence in between clamped to 28 - stepping from a
  * clamped date would permanently lose the day-31 anchor, recomputing from
  * `start` every time doesn't.
  */
@@ -28,7 +28,7 @@ const MAX_OCCURRENCES = 2000;
 /**
  * Expands a RecurringRule into its projected occurrences within
  * [rangeStart, rangeEnd] (inclusive, ISO dates). These are projections
- * only — see RecurringRule's doc comment — never persisted, and callers
+ * only - see RecurringRule's doc comment - never persisted, and callers
  * must keep them out of balance/total/budget calculations.
  */
 export function projectOccurrences(

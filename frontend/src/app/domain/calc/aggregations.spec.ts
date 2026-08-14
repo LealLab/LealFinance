@@ -38,7 +38,7 @@ describe('totalsFor', () => {
     expect(totals.net).toEqual(money('1500', 'BRL'));
   });
 
-  it('excludes transfers from both income and expense — they are not earnings or spending', () => {
+  it('excludes transfers from both income and expense - they are not earnings or spending', () => {
     const transactions = [
       tx({ id: '1', type: 'income', amount: '1000' }),
       tx({ id: '2', type: 'transfer', amount: '5000', accountId: 'checking', toAccountId: 'savings' })

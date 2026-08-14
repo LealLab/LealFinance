@@ -96,7 +96,7 @@ describe('Categories', () => {
     const confirmService = TestBed.inject(ConfirmService);
 
     // "Moradia" (housing) has three child categories in the fixtures
-    // (Aluguel/Condomínio/Energia) — deleting it must be blocked.
+    // (Aluguel/Condomínio/Energia) - deleting it must be blocked.
     findRowDeleteButton(el, 'Moradia').click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -113,7 +113,7 @@ describe('Categories', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    // Still there — the blocked path must never call delete().
+    // Still there - the blocked path must never call delete().
     expect(el.textContent).toContain('Moradia');
   });
 

@@ -3,7 +3,7 @@ import { Transaction } from './transaction';
 export type RecurringFrequency = 'weekly' | 'monthly' | 'yearly';
 
 /**
- * A rule that *projects* future transactions rather than storing them — a
+ * A rule that *projects* future transactions rather than storing them - a
  * monthly rent entry is one RecurringRule, not twelve pre-created
  * Transaction rows. domain/calc/recurrence.ts expands a rule into
  * occurrences on demand; those projections are visually distinct in the UI
@@ -14,7 +14,7 @@ export type RecurringFrequency = 'weekly' | 'monthly' | 'yearly';
 export interface RecurringRule {
   id: string;
   frequency: RecurringFrequency;
-  /** Repeat every N periods — 1 = every period, 2 = every other, etc. */
+  /** Repeat every N periods - 1 = every period, 2 = every other, etc. */
   interval: number;
   startDate: string;
   endDate?: string;
@@ -23,7 +23,7 @@ export interface RecurringRule {
 
 /**
  * One projected occurrence of a RecurringRule, shaped like a Transaction so
- * it can render in the same list — but never assigned an id or persisted.
+ * it can render in the same list - but never assigned an id or persisted.
  */
 export interface ProjectedTransaction
   extends Omit<Transaction, 'id' | 'recurringRuleId'> {

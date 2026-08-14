@@ -86,7 +86,7 @@ describe('Accounts', () => {
     const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
     // Seeded fixtures: Banco Leal groups 3 BRL accounts, Corretora XP
     // Europe groups the single EUR investment account, and the cash
-    // account has no institution — see data/mock/fixtures.ts.
+    // account has no institution - see data/mock/fixtures.ts.
     expect(text).toContain('Banco Leal');
     expect(text).toContain('Corretora XP Europe');
     expect(text).toContain('Sem instituição');

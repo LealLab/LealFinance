@@ -61,7 +61,7 @@ jobs:
         run: uv run mypy app
 
       - name: Migration round-trip
-        # Ends on downgrade (empty schema), not upgrade — pytest's fixtures
+        # Ends on downgrade (empty schema), not upgrade - pytest's fixtures
         # build their own schema directly from the ORM metadata (see
         # tests/conftest.py) and would collide with Alembic's seeded BRL
         # row if this left the DB at head.

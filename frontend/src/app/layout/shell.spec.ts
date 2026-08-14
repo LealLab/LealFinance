@@ -36,7 +36,7 @@ describe('Shell', () => {
         provideRouter([]),
         // Shell mounts <app-command-palette />, which injects the four
         // repositories to build its "live data" groups (see
-        // command-palette/command-palette.ts) — it needs real DI tokens
+        // command-palette/command-palette.ts) - it needs real DI tokens
         // even though this spec never opens the palette.
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },

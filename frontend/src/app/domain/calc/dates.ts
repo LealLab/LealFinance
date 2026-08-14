@@ -1,8 +1,8 @@
 /**
  * Small ISO-date ('YYYY-MM-DD') helpers shared by the aggregation and
- * recurrence calculations. Everything here works in UTC — parsing a date
+ * recurrence calculations. Everything here works in UTC - parsing a date
  * via `new Date(iso + 'T00:00:00Z')` and formatting back via
- * `toISOString().slice(0, 10)` — so a date never shifts by a day because
+ * `toISOString().slice(0, 10)` - so a date never shifts by a day because
  * of the machine's local timezone.
  */
 
@@ -14,7 +14,7 @@ export function formatIsoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-/** The 'YYYY-MM' bucket a date falls in — matches Budget.month's format. */
+/** The 'YYYY-MM' bucket a date falls in - matches Budget.month's format. */
 export function monthKey(iso: string): string {
   return iso.slice(0, 7);
 }
@@ -27,7 +27,7 @@ export function addDays(date: Date, days: number): Date {
 
 /**
  * Adds calendar months to a date, clamping the day-of-month to whatever
- * the target month actually has — Jan 31 + 1 month lands on Feb 28 (or
+ * the target month actually has - Jan 31 + 1 month lands on Feb 28 (or
  * 29), not an overflowed Mar 3. `months` may be negative.
  */
 export function addMonthsClamped(date: Date, months: number): Date {

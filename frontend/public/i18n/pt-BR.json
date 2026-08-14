@@ -113,7 +113,7 @@
     }
   },
   "currency": {
-    "fallbackRateWarning": "Taxa de câmbio indisponível — usando conversão 1:1 como aproximação."
+    "fallbackRateWarning": "Taxa de câmbio indisponível - usando conversão 1:1 como aproximação."
   },
   "accounts": {
     "title": "Contas",
@@ -307,7 +307,7 @@
       },
       "delete": {
         "title": "Excluir recorrência",
-        "message": "Isso não afeta transações já lançadas — apenas as próximas ocorrências previstas deixam de aparecer."
+        "message": "Isso não afeta transações já lançadas - apenas as próximas ocorrências previstas deixam de aparecer."
       },
       "form": {
         "newTitle": "Nova recorrência",
@@ -560,7 +560,7 @@
     },
     "mockData": {
       "title": "Dados de demonstração",
-      "description": "Todos os dados de contas, transações, categorias e orçamentos são fictícios e existem apenas na memória do navegador — eles são reiniciados sempre que a página é recarregada. Tema, idioma e moeda de exibição são preferências reais e continuam salvos.",
+      "description": "Todos os dados de contas, transações, categorias e orçamentos são fictícios e existem apenas na memória do navegador - eles são reiniciados sempre que a página é recarregada. Tema, idioma e moeda de exibição são preferências reais e continuam salvos.",
       "reset": {
         "action": "Reiniciar dados",
         "confirmTitle": "Reiniciar dados de demonstração",
@@ -569,7 +569,7 @@
     },
     "agents": {
       "title": "Agentes de IA",
-      "description": "Assistentes de IA sobre os seus dados financeiros, com múltiplos provedores e ferramentas via MCP. Desativado por padrão — configurável no Docker Compose (AGENTS_ENABLED).",
+      "description": "Assistentes de IA sobre os seus dados financeiros, com múltiplos provedores e ferramentas via MCP. Desativado por padrão - configurável no Docker Compose (AGENTS_ENABLED).",
       "disabled": "Desativado"
     }
   }

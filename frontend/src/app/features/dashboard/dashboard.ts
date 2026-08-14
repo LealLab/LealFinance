@@ -99,8 +99,8 @@ export class Dashboard {
     return (amount, targetCurrency) => {
       if (amount.currency === targetCurrency) return amount;
       const rate = rateByCurrency.get(amount.currency);
-      // No rate resolved for this currency (shouldn't happen — every
-      // foreign currency in use gets a request — but the mock repository
+      // No rate resolved for this currency (shouldn't happen - every
+      // foreign currency in use gets a request - but the mock repository
       // never fails a request outright, so this is just defense in depth,
       // matching "never let a missing rate raise").
       if (!rate) return amount;

@@ -1,7 +1,7 @@
 """Liveness and readiness probes.
 
 Liveness only proves the process is up. Readiness proves its dependencies
-(database, cache) are actually reachable, and must be able to fail — see
+(database, cache) are actually reachable, and must be able to fail - see
 docs/development.md for how this is exercised in verification.
 """
 

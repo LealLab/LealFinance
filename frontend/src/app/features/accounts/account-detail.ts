@@ -20,7 +20,7 @@ import { AccountFormModal } from './account-form-modal';
 import { accountTypeOption } from './account-type';
 
 /**
- * `id` binds directly from the `:id` route param — see
+ * `id` binds directly from the `:id` route param - see
  * withComponentInputBinding() in app.config.ts.
  *
  * The confirmation keys below are passed dynamically through ConfirmService,

@@ -11,8 +11,8 @@ import { Modal } from '../../shared/ui/modal/modal';
 
 /**
  * Create/edit for a Budget (a category's spending limit for one month).
- * The month is always the one currently selected on the budgets screen —
- * never an editable field here — so "new budget" always means "for the
+ * The month is always the one currently selected on the budgets screen -
+ * never an editable field here - so "new budget" always means "for the
  * month I'm looking at," and editing only ever touches the amount.
  */
 @Component({
@@ -29,7 +29,7 @@ export class BudgetFormModal {
   readonly budget = input<Budget | undefined>(undefined);
   readonly prefillCategoryId = input<string | undefined>(undefined);
   readonly month = input.required<string>();
-  /** Top-level expense categories not yet budgeted for `month` — the create-mode picker. */
+  /** Top-level expense categories not yet budgeted for `month` - the create-mode picker. */
   readonly availableCategories = input.required<Category[]>();
   /** Every category, for resolving the (read-only, non-editable) category name in edit mode. */
   readonly allCategories = input.required<Category[]>();

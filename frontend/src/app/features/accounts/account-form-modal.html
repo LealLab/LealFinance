@@ -2,8 +2,8 @@
   <!-- The @if…as below (rather than a plain expression) is deliberate:
        transloco-keys-manager's template parser mis-extracts a garbage
        "key" when a translation call's argument is itself a nested
-       function call. A plain property path — an @if…as binding, or a
-       field on a looped-over item — resolves fine (see
+       function call. A plain property path - an @if…as binding, or a
+       field on a looped-over item - resolves fine (see
        account-type.ts's ACCOUNT_TYPE_OPTIONS for the same reasoning
        applied to the type <select> below). -->
   @if (titleKey(); as title) {

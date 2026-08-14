@@ -16,14 +16,14 @@ import { InstitutionFormModal } from './institution-form-modal';
 
 /**
  * Create/edit form for an Account, in a modal (per the project's decision
- * for all create/edit flows — see the brainstorming spec). One instance is
+ * for all create/edit flows - see the brainstorming spec). One instance is
  * reused by the accounts list and detail screens for both "new" and "edit"
- * — which mode it's in is entirely driven by whether `account` is set, and
+ * - which mode it's in is entirely driven by whether `account` is set, and
  * the form repopulates whenever the modal opens.
  *
  * The institution picker's "+ Nova instituição" affordance is a small
  * button next to the `<select>` that opens a second, nested
- * `InstitutionFormModal` — not a native `<dialog>`-in-`<dialog>` triggered
+ * `InstitutionFormModal` - not a native `<dialog>`-in-`<dialog>` triggered
  * by a special `<option>` value. Both are viable (native `<dialog>`s do
  * stack correctly), but a dedicated button keeps the interaction obvious
  * and keeps "create a new institution" out of the `<select>`'s own value
@@ -74,7 +74,7 @@ export class AccountFormModal {
 
   /**
    * titleKey/saveErrorKey below hold these as plain string literals, only
-   * ever reached through the template's translation call — see
+   * ever reached through the template's translation call - see
    * layout/sidebar.ts for why that needs a JSDoc "dynamic markings" block
    * to avoid a false orphaned-key report:
    * t(accounts.form.editTitle, accounts.form.newTitle, accounts.form.saveError)
@@ -85,7 +85,7 @@ export class AccountFormModal {
 
   constructor() {
     // Repopulate the form every time the modal opens, from whatever
-    // `account` currently is — this is what lets one modal instance
+    // `account` currently is - this is what lets one modal instance
     // serve both "new" (account undefined) and "edit" (account set).
     effect(() => {
       if (!this.open()) return;

@@ -6,7 +6,7 @@ import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 
 /**
- * Fixed rates for a small set of pairs — enough to make the dashboard's
+ * Fixed rates for a small set of pairs - enough to make the dashboard's
  * multi-currency conversion feel real without needing a live provider.
  * EUR is deliberately absent: the seeded EUR investment account (see
  * data/mock/fixtures.ts) exists specifically to fall through to the 1:1
@@ -39,7 +39,7 @@ export class MockExchangeRateRepository extends ExchangeRateRepository {
       return { baseCode, quoteCode, rate: knownRate, isFallback: false };
     }
 
-    // Never raise on a missing rate — always fall back to 1:1, flagged so
+    // Never raise on a missing rate - always fall back to 1:1, flagged so
     // the UI can show a warning rather than use it silently.
     return { baseCode, quoteCode, rate: '1', isFallback: true };
   }

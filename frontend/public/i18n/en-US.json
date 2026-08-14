@@ -113,7 +113,7 @@
     }
   },
   "currency": {
-    "fallbackRateWarning": "Exchange rate unavailable — using a 1:1 conversion as an approximation."
+    "fallbackRateWarning": "Exchange rate unavailable - using a 1:1 conversion as an approximation."
   },
   "accounts": {
     "title": "Accounts",
@@ -307,7 +307,7 @@
       },
       "delete": {
         "title": "Delete recurring rule",
-        "message": "This does not affect recorded transactions — only future projected occurrences will disappear."
+        "message": "This does not affect recorded transactions - only future projected occurrences will disappear."
       },
       "form": {
         "newTitle": "New recurring rule",
@@ -560,7 +560,7 @@
     },
     "mockData": {
       "title": "Demo data",
-      "description": "All account, transaction, category, and budget data is fictional and exists only in the browser's memory — it resets whenever the page reloads. Theme, language, and display currency are real preferences and remain saved.",
+      "description": "All account, transaction, category, and budget data is fictional and exists only in the browser's memory - it resets whenever the page reloads. Theme, language, and display currency are real preferences and remain saved.",
       "reset": {
         "action": "Reset data",
         "confirmTitle": "Reset demo data",
@@ -569,7 +569,7 @@
     },
     "agents": {
       "title": "AI agents",
-      "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default — configurable in Docker Compose (AGENTS_ENABLED).",
+      "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default - configurable in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disabled"
     }
   }

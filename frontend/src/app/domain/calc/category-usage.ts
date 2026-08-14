@@ -2,7 +2,7 @@ import { Budget } from '../models/budget';
 import { Category } from '../models/category';
 import { Transaction } from '../models/transaction';
 
-/** Per-kind counts of what still references a category — see `isCategoryDeletable`. */
+/** Per-kind counts of what still references a category - see `isCategoryDeletable`. */
 export interface CategoryUsage {
   transactions: number;
   budgets: number;

@@ -34,7 +34,7 @@ interface DateGroup {
 /**
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals, but the call itself isn't to the `t` marker function,
- * so transloco-keys-manager's extractor never sees them — same "dynamic
+ * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as account-form-modal.ts / layout/sidebar.ts:
  * t(transactions.delete.title, transactions.delete.message, transactions.recurring.delete.title, transactions.recurring.delete.message)
  */
@@ -138,7 +138,7 @@ export class Transactions {
   );
 
   protected categoryLabel(category: Category): string {
-    return category.parentId ? `— ${category.name}` : category.name;
+    return category.parentId ? `- ${category.name}` : category.name;
   }
 
   protected openCreateTx(): void {

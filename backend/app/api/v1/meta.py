@@ -30,7 +30,7 @@ async def get_public_settings() -> dict[str, str]:
 
 @router.get("/exchange-rate", response_model=ExchangeRateQuoteRead)
 async def get_exchange_rate_quote(base: str, quote: str, db: DbSession) -> ExchangeRateQuoteRead:
-    """On-demand conversion rate lookup — see app/services/exchange_rates.py
+    """On-demand conversion rate lookup - see app/services/exchange_rates.py
     for the fetch/cache/fallback behavior this wraps."""
     result = await get_exchange_rate(db, base, quote)
     return ExchangeRateQuoteRead(

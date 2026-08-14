@@ -4,7 +4,7 @@ const STORAGE_KEY = 'lealfinance.categories.collapsed';
 
 /**
  * Tracks which parent categories the user has collapsed on the Categories
- * screen, persisted to localStorage (serialized as a JSON array of ids) —
+ * screen, persisted to localStorage (serialized as a JSON array of ids) -
  * like ThemeService's theme preference, this is a UI setting, not mock
  * domain data, so it survives a reload on purpose.
  */
@@ -43,7 +43,7 @@ export class CategoryCollapseService {
       const parsed = JSON.parse(raw);
       return Array.isArray(parsed) ? new Set(parsed) : new Set();
     } catch {
-      // Private browsing / storage disabled / malformed JSON — start empty.
+      // Private browsing / storage disabled / malformed JSON - start empty.
       return new Set();
     }
   }
@@ -52,7 +52,7 @@ export class CategoryCollapseService {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
     } catch {
-      // Storage unavailable — collapse state still applies for the current session.
+      // Storage unavailable - collapse state still applies for the current session.
     }
   }
 }

@@ -2,7 +2,7 @@ import { Account } from '../../domain/models/account';
 import { Institution } from '../../domain/models/institution';
 
 export interface InstitutionAccountGroup {
-  /** null is the "no institution" bucket — e.g. a cash account. */
+  /** null is the "no institution" bucket - e.g. a cash account. */
   institution: Institution | null;
   accounts: Account[];
 }

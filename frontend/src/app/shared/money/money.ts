@@ -2,16 +2,16 @@
  * Currency-aware decimal arithmetic for monetary amounts.
  *
  * Amounts travel as decimal *strings* everywhere in this app (matching the
- * backend's NUMERIC(19,4) columns and JSON-string wire format — see
+ * backend's NUMERIC(19,4) columns and JSON-string wire format - see
  * docs/money-and-currency.md), and every operation here works on those
  * strings via `bigint` minor units rather than JS `number`, so nothing
  * routes through IEEE-754 float precision. `toNumber` is the one
- * deliberate exception — it exists solely for the display/chart boundary
+ * deliberate exception - it exists solely for the display/chart boundary
  * (Chart.js datasets, percentage math) and is documented as such at its
  * call sites.
  *
  * Every binary operation asserts its two operands share a currency and
- * throws otherwise — mixing currencies without an explicit conversion
+ * throws otherwise - mixing currencies without an explicit conversion
  * (`multiply`, driven by an exchange rate) is a bug, not a valid state.
  */
 
@@ -75,7 +75,7 @@ export function money(amount: string, currency: string): Money {
   return { amount: formatFromMinorUnits(parseToMinorUnits(amount)), currency };
 }
 
-/** Zero in the given currency — the identity for `add`/`sum`. */
+/** Zero in the given currency - the identity for `add`/`sum`. */
 export function zero(currency: string): Money {
   return { amount: formatFromMinorUnits(0n), currency };
 }
@@ -123,8 +123,8 @@ export function isNegative(a: Money): boolean {
 /**
  * Converts an amount by a decimal exchange-rate factor into another
  * currency. The factor arrives as a string (matching ExchangeRateQuote's
- * wire format) and is parsed the same way any amount is — rounded to
- * scale 4 — before the multiplication happens in bigint space; the
+ * wire format) and is parsed the same way any amount is - rounded to
+ * scale 4 - before the multiplication happens in bigint space; the
  * product is then rescaled back down to scale 4, rounding again if the
  * exact product isn't a multiple of the scale factor.
  */
@@ -136,7 +136,7 @@ export function multiply(a: Money, factor: string, resultCurrency: string): Mone
 }
 
 /**
- * Plain-number ratio of two same-currency amounts (`a ÷ b`) — for progress
+ * Plain-number ratio of two same-currency amounts (`a ÷ b`) - for progress
  * bars and percentages only, per the `toNumber` display-boundary rule
  * above. A zero `b` follows normal JS division semantics (±Infinity or
  * NaN for 0÷0); callers with a meaningful zero-budget case (see
@@ -149,7 +149,7 @@ export function ratio(a: Money, b: Money): number {
 }
 
 /**
- * Converts to a JS number — the display/chart boundary only (Chart.js
+ * Converts to a JS number - the display/chart boundary only (Chart.js
  * datasets, percentage math). float64 is exact well past any realistic
  * account balance, but this is deliberately not where precision
  * guarantees live; see the module doc comment above.

@@ -21,7 +21,7 @@ export interface BudgetProgress {
    * spent ÷ budgeted. A zero budget is a real state (someone budgeted
    * R$0 for a category on purpose) rather than an error, so this never
    * throws or divides by zero: 0 with nothing spent, `Infinity` with
-   * anything spent at all — both read as "over" for display purposes,
+   * anything spent at all - both read as "over" for display purposes,
    * see `state`.
    */
   ratio: number;
@@ -36,8 +36,8 @@ function stateFor(ratio: number): BudgetState {
 
 /**
  * How a single budget is tracking against actual spend. If the budget is
- * on a top-level category, spend on its children rolls up into it too —
- * see `topLevelCategoryId` — matching how `categoryBreakdown` reports
+ * on a top-level category, spend on its children rolls up into it too -
+ * see `topLevelCategoryId` - matching how `categoryBreakdown` reports
  * spend on the dashboard/reports screens.
  */
 export function budgetProgress(
@@ -77,7 +77,7 @@ export interface UnbudgetedSpend {
 
 /**
  * Top-level categories with expense in `month` but no Budget entry for
- * that month at all — the "spent here without a plan" list on the
+ * that month at all - the "spent here without a plan" list on the
  * budgets screen.
  */
 export function unbudgetedSpend(

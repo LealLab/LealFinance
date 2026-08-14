@@ -1,4 +1,4 @@
-"""Exchange rate refresh — registered with Celery beat but disabled.
+"""Exchange rate refresh - registered with Celery beat but disabled.
 
 LealFinance starts BRL-only, so there is nothing to refresh yet. This task
 is the intended seam for multi-currency support: once a rate provider is

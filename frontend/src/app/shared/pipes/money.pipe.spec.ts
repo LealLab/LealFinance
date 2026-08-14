@@ -38,7 +38,7 @@ describe('MoneyPipe', () => {
   });
 
   it("uses BRL's 2 decimal digits without a hardcoded default", () => {
-    // No fraction-digit option is passed by MoneyPipe — Intl derives 2
+    // No fraction-digit option is passed by MoneyPipe - Intl derives 2
     // decimal places from the currency code itself (ISO 4217), which is
     // the point: it isn't hardcoded, so JPY/BHD would format correctly
     // too, with 0 or 3 digits respectively, once supported.
@@ -84,7 +84,7 @@ describe('MoneyPipe reactivity to BalanceVisibilityService', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toBe(`R$${NBSP}1.234,50`);
 
-    // Only the service's own signal changes here — `amount` on the host
+    // Only the service's own signal changes here - `amount` on the host
     // component never does. If MoneyPipe were still a pure pipe, this
     // single detectChanges() (standing in for the CD pass zoneless mode
     // schedules automatically off the back of the signal write) would not

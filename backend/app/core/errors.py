@@ -1,6 +1,6 @@
 """Machine-readable application errors.
 
-The API never returns pre-translated error strings — only a stable `code`
+The API never returns pre-translated error strings - only a stable `code`
 plus structured `params`. The frontend maps codes to Transloco keys, which
 keeps every translation in exactly one place. See docs/i18n.md.
 """
@@ -36,7 +36,7 @@ class ValidationAppError(AppError):
 async def app_error_handler(_request: Request, exc: Exception) -> JSONResponse:
     # FastAPI's add_exception_handler is keyed by the exact exception class at
     # registration time, so this handler only ever receives an AppError at
-    # runtime — the broader Exception signature here is just to satisfy
+    # runtime - the broader Exception signature here is just to satisfy
     # Starlette's handler type, which isn't generic over the exception type.
     assert isinstance(exc, AppError)
     return JSONResponse(

@@ -42,7 +42,7 @@ USER app
 
 EXPOSE 8000
 
-# 127.0.0.1, not localhost — some resolvers try ::1 first, which nothing
+# 127.0.0.1, not localhost - some resolvers try ::1 first, which nothing
 # listens on here, and the tool doing the check doesn't always fall back.
 # worker/beat (same image, different CMD) override or disable this in
 # docker-compose.yml since they don't run a webserver.

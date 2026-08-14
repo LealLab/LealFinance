@@ -1,8 +1,8 @@
-# LealFinance — base stack.
+# LealFinance - base stack.
 #
 # Local overrides (hot reload, exposed dev ports) live in
 # docker-compose.override.yml and are applied automatically by `docker
-# compose up` — no extra flag needed.
+# compose up` - no extra flag needed.
 
 services:
   postgres:
@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
     volumes:
       # Postgres 18+ images expect the mount at the parent directory, not
-      # .../data directly — the old convention makes the image refuse to
+      # .../data directly - the old convention makes the image refuse to
       # start, treating any content at that exact path (even a filesystem's
       # own lost+found) as an incompatible legacy layout.
       - db_data:/var/lib/postgresql
@@ -85,7 +85,7 @@ services:
       api:
         condition: service_healthy
     # The api image's built-in HEALTHCHECK pings an HTTP endpoint that only
-    # exists in the api container — worker doesn't run a webserver, so that
+    # exists in the api container - worker doesn't run a webserver, so that
     # check would fail forever. This checks the actual celery worker instead.
     healthcheck:
       test: ["CMD", "celery", "-A", "app.workers.celery_app", "inspect", "ping"]
@@ -113,7 +113,7 @@ services:
       api:
         condition: service_healthy
     # No equivalent "is beat alive" ping exists (unlike worker's inspect
-    # ping) — beat just writes a schedule file on a timer. Disabling the
+    # ping) - beat just writes a schedule file on a timer. Disabling the
     # inherited HTTP healthcheck rather than reporting a false negative;
     # nothing else depends on beat's health anyway.
     healthcheck:
@@ -130,7 +130,7 @@ services:
       api:
         condition: service_healthy
 
-  # AI Agents — optional, off by default (see README.md). Not implemented
+  # AI Agents - optional, off by default (see README.md). Not implemented
   # yet: this is a placeholder that makes the profile gate itself testable
   # (`COMPOSE_PROFILES=agents docker compose config` should include it)
   # without pretending a real service exists. Replace `command`/`image`
@@ -138,7 +138,7 @@ services:
   agents:
     image: busybox:latest
     profiles: ["agents"]
-    command: ["echo", "AI Agents scaffold placeholder — not yet implemented. See README.md."]
+    command: ["echo", "AI Agents scaffold placeholder - not yet implemented. See README.md."]
 
 volumes:
   db_data:

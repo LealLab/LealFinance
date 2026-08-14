@@ -30,7 +30,7 @@ class Currency(Base, TimestampMixin):
 class ExchangeRate(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     """A point-in-time rate between two currencies.
 
-    Empty at scaffold time — populated later by a scheduled refresh task
+    Empty at scaffold time - populated later by a scheduled refresh task
     once multi-currency support is actually built.
     """
 

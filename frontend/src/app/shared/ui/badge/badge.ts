@@ -10,7 +10,7 @@ const TONE_CLASSES: Record<BadgeTone, string> = {
   accent: 'bg-accent/10 text-accent'
 };
 
-/** Small pill for status/kind labels — transaction type, budget state, etc. */
+/** Small pill for status/kind labels - transaction type, budget state, etc. */
 @Component({
   selector: 'app-badge',
   templateUrl: './badge.html',

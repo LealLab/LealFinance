@@ -97,7 +97,7 @@ function buildAccounts(): Account[] {
     },
     {
       // Deliberately a currency the mock exchange-rate repository doesn't
-      // map (see data/mock/mock-exchange-rate.repository.ts) — this
+      // map (see data/mock/mock-exchange-rate.repository.ts) - this
       // account is what exercises the fallback-rate warning on real
       // screens instead of leaving that component dead code.
       id: ACCOUNT_IDS.investment,
@@ -124,7 +124,7 @@ function buildAccounts(): Account[] {
  * Two institutions, matching buildAccounts' shape: Banco Leal groups 3 BRL
  * accounts (checking/savings/credit card), XP Europe groups the single EUR
  * investment account, and the cash account is left without an institution
- * on purpose — that's the "Sem instituição" bucket on the Accounts screen.
+ * on purpose - that's the "Sem instituição" bucket on the Accounts screen.
  */
 function buildInstitutions(): Institution[] {
   return [
@@ -528,7 +528,7 @@ function buildTransactionsAndRules(): { transactions: Transaction[]; recurringRu
       description: 'Combustível'
     }
   ];
-  // Dated on the 1st of the current month — not `push`/`onOrBeforeToday`,
+  // Dated on the 1st of the current month - not `push`/`onOrBeforeToday`,
   // and deliberately not "today minus a few days" either: an offset from
   // today can land in the *previous* month whenever today is early in the
   // month, which would silently drop these out of the current month's
@@ -598,14 +598,14 @@ function buildTransactionsAndRules(): { transactions: Transaction[]; recurringRu
 }
 
 /**
- * Budgets for the current month only — the budgets screen's month
+ * Budgets for the current month only - the budgets screen's month
  * selector has nothing to show for other months by design, the same way
  * a real user wouldn't have planned a budget for a month they haven't
  * reached yet.
  *
  * Sized against buildTransactionsAndRules' generation formulas to land in
- * under/over/near states respectively, and — this is the part that took a
- * bug to get right — sized so that holds on *any* day of the month, not
+ * under/over/near states respectively, and - this is the part that took a
+ * bug to get right - sized so that holds on *any* day of the month, not
  * just by the time the day-of-month pattern above has fully played out.
  * `guaranteedFloor` there posts a fixed amount on the 1st regardless of
  * what today is; food/transport's budgets are set low enough that that

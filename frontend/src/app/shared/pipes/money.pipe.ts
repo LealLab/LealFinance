@@ -15,15 +15,15 @@ const MASK = '••••';
  * service with no such constraint, so it's safe to inject here.
  *
  * Accepts the amount as a *string* to match the API's wire format (see
- * docs/money-and-currency.md — amounts are serialized as JSON strings, not
+ * docs/money-and-currency.md - amounts are serialized as JSON strings, not
  * numbers). Note this is a *display-only* guarantee: the formatter below
  * converts through a JS `number` (via Intl.NumberFormat) to render it, same
- * as any currency formatter. That's fine for every realistic balance —
- * float64 is exact well past what any real account holds — but this pipe
+ * as any currency formatter. That's fine for every realistic balance -
+ * float64 is exact well past what any real account holds - but this pipe
  * is not where the NUMERIC(19,4) precision guarantee lives; that's the
  * storage/transport layer (backend Decimal + JSON string).
  *
- * Digit count comes from Intl's per-currency rules, not a hardcoded `2` —
+ * Digit count comes from Intl's per-currency rules, not a hardcoded `2` -
  * JPY, BHD, etc. format correctly once they're added.
  *
  * Usage: {{ '1234.50' | money: 'BRL' }} → "R$ 1.234,50"
@@ -31,7 +31,7 @@ const MASK = '••••';
  * `pure: false`: this pipe also reads BalanceVisibilityService.hidden() to
  * mask the amount when the sidebar's eye toggle is off. A *pure* pipe only
  * re-invokes `transform` when its own bound arguments (`amount`,
- * `currencyCode`) change reference between change-detection runs — a
+ * `currencyCode`) change reference between change-detection runs - a
  * signal read inside `transform` isn't one of those arguments, so toggling
  * `hidden` alone would leave every already-rendered amount stale until
  * something else happened to change `amount`/`currencyCode` too. Marking

@@ -52,7 +52,7 @@ export interface ChartDataset {
 }
 
 /**
- * Thin Chart.js wrapper — the one place chart theming/lifecycle lives, per
+ * Thin Chart.js wrapper - the one place chart theming/lifecycle lives, per
  * the design decision to hand-roll chart components instead of adding
  * ECharts/Chart.js-with-a-wrapper-library (see the brainstorming spec).
  * Registers only the controllers/elements this app's three chart kinds
@@ -60,7 +60,7 @@ export interface ChartDataset {
  *
  * Chart.js resolves colors into the canvas at config/update time, so a
  * theme toggle needs an explicit re-read of the CSS custom properties
- * (see `themeColors()`) and a manual `update()` — it doesn't pick up
+ * (see `themeColors()`) and a manual `update()` - it doesn't pick up
  * `prefers-color-scheme`/`data-theme` changes on its own the way CSS does.
  */
 @Component({
@@ -75,7 +75,7 @@ export class Chart {
   readonly kind = input.required<ChartKind>();
   readonly labels = input.required<readonly string[]>();
   readonly datasets = input.required<readonly ChartDataset[]>();
-  /** Formats a raw value for the tooltip/axis — usually a MoneyPipe-style formatter. */
+  /** Formats a raw value for the tooltip/axis - usually a MoneyPipe-style formatter. */
   readonly formatValue = input<(value: number) => string>((value) => String(value));
 
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
@@ -166,7 +166,7 @@ export class Chart {
     return {
       responsive: true,
       maintainAspectRatio: false,
-      // Chart.js drives its own rAF loop for animation/resize — none of
+      // Chart.js drives its own rAF loop for animation/resize - none of
       // that needs Angular change detection, so no zone/signal wiring here.
       animation: { duration: 200 },
       plugins: {
@@ -184,7 +184,7 @@ export class Chart {
           padding: 8,
           callbacks: {
             // `context.parsed` is a plain number for doughnut/pie but a
-            // {x, y} point for bar/line — its Chart.js type is a big union
+            // {x, y} point for bar/line - its Chart.js type is a big union
             // keyed by chart kind, which a chart-kind-agnostic options
             // builder like this one can't narrow statically, hence the cast.
             label: (context) => {

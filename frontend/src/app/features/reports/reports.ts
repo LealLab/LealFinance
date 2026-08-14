@@ -45,7 +45,7 @@ export class Reports {
   private readonly transloco = inject(TranslocoService);
   // Chart dataset/legend labels are built here in the component (Chart.js
   // reads plain strings, not template bindings), so they need an explicit
-  // reactive read of the active language — a signal, not a one-off
+  // reactive read of the active language - a signal, not a one-off
   // `.translate()` call, so these computed signals re-run on a language
   // switch instead of only on their other dependencies.
   private readonly lang = toSignal(this.transloco.langChanges$, {

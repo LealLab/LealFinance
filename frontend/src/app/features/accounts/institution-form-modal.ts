@@ -12,7 +12,7 @@ const DEFAULT_COLOR = '#1F5C6B';
 const DEFAULT_ICON = INSTITUTION_ICON_OPTIONS[0];
 
 /**
- * Create/edit form for an Institution — the grouping layer above Accounts
+ * Create/edit form for an Institution - the grouping layer above Accounts
  * (see domain/models/institution.ts). Structurally mirrors
  * category-form-modal.ts: one instance is reused by the Accounts screen
  * for both "new" (institution undefined) and "edit", and the form
@@ -55,7 +55,7 @@ export class InstitutionFormModal {
 
   /**
    * titleKey/saveErrorKey/deleteErrorKey below hold these as plain string
-   * literals, only ever reached through the template's translation call —
+   * literals, only ever reached through the template's translation call -
    * see account-form-modal.ts for why that needs this JSDoc "dynamic
    * markings" block:
    * t(institutions.form.editTitle, institutions.form.newTitle, institutions.form.saveError, institutions.form.deleteInUseError, institutions.delete.title, institutions.delete.message)

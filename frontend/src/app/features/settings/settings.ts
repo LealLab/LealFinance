@@ -15,7 +15,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 /**
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals, but the call itself isn't to the `t` marker function,
- * so transloco-keys-manager's extractor never sees them — same "dynamic
+ * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as transactions.ts/budgets.ts:
  * t(settings.mockData.reset.confirmTitle, settings.mockData.reset.confirmMessage)
  */
@@ -79,7 +79,7 @@ export class Settings {
 
     this.mockStore.reset();
     // A full reload is the simplest way to guarantee every already-mounted
-    // screen's own resources start over clean — each feature owns its own
+    // screen's own resources start over clean - each feature owns its own
     // rxResource instances, so resetting the store alone wouldn't refresh
     // whichever ones are currently on screen.
     window.location.reload();

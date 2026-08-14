@@ -7,7 +7,7 @@ import { monthKey } from './dates';
 
 /**
  * Converts an amount into `targetCurrency`. Every aggregation below takes
- * one of these rather than doing currency conversion itself — conversion
+ * one of these rather than doing currency conversion itself - conversion
  * needs a live (or mock) exchange rate, which is IO, and these functions
  * stay pure. `identityConverter` is the default: it passes same-currency
  * amounts through and throws on anything else, so a caller that forgets
@@ -32,7 +32,7 @@ export interface PeriodTotals {
 /**
  * Income/expense totals across a set of transactions. Transfers move
  * money between the user's own accounts rather than earning or spending
- * it, so they're excluded here — this is the one calculation most likely
+ * it, so they're excluded here - this is the one calculation most likely
  * to double-count if that filter is ever lost, which is why it's covered
  * explicitly in aggregations.spec.ts.
  */
@@ -58,8 +58,8 @@ export function totalsFor(
 }
 
 /**
- * The top-level category a category belongs to — itself if it has no
- * parent, its parent if it does (categories nest one level deep — see the
+ * The top-level category a category belongs to - itself if it has no
+ * parent, its parent if it does (categories nest one level deep - see the
  * Category model). Shared by `categoryBreakdown` here and by
  * domain/calc/budgets.ts, which rolls child-category spend up into a
  * parent's budget the same way.

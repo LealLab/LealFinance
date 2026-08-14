@@ -9,7 +9,7 @@ const FILL_CLASSES: Record<ProgressTone, string> = {
 };
 
 /**
- * A budget/limit progress bar. `ratio` is spent÷budgeted and can exceed 1 —
+ * A budget/limit progress bar. `ratio` is spent÷budgeted and can exceed 1 -
  * the fill visually clamps at 100% but the color escalates
  * accent → warning → negative so an over-budget category is unmistakable
  * even before reading the numbers next to it.
