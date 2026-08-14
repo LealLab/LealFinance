@@ -1,9 +1,11 @@
 """Read-only reference data: currencies, active settings, exchange rates."""
 
+from datetime import date
+
 from fastapi import APIRouter
 from sqlalchemy import select
 
-from app.api.deps import DbSession
+from app.api.deps import CurrentUser, DbSession
 from app.core.config import get_settings
 from app.models.currency import Currency
 from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead
@@ -29,10 +31,14 @@ async def get_public_settings() -> dict[str, str]:
 
 
 @router.get("/exchange-rate", response_model=ExchangeRateQuoteRead)
-async def get_exchange_rate_quote(base: str, quote: str, db: DbSession) -> ExchangeRateQuoteRead:
+async def get_exchange_rate_quote(
+    base: str, quote: str, user: CurrentUser, db: DbSession, as_of: date | None = None
+) -> ExchangeRateQuoteRead:
     """On-demand conversion rate lookup - see app/services/exchange_rates.py
-    for the fetch/cache/fallback behavior this wraps."""
-    result = await get_exchange_rate(db, base, quote)
+    for the full fetch/cache/fallback precedence this wraps. Authenticated
+    (unlike /currencies and /settings) because resolution now consults the
+    caller's own manual rates."""
+    result = await get_exchange_rate(db, base, quote, user_id=user.id, as_of=as_of)
     return ExchangeRateQuoteRead(
         base_code=base.upper(),
         quote_code=quote.upper(),

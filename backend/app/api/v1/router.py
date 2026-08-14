@@ -8,8 +8,10 @@ from app.api.v1 import (
     budget_plan,
     budgets,
     categories,
+    goals,
     health,
     institutions,
+    manual_rates,
     meta,
     recurring_rules,
     transactions,
@@ -27,3 +29,5 @@ api_v1_router.include_router(budget_plan.allocations_router)
 api_v1_router.include_router(budget_plan.expected_income_router)
 api_v1_router.include_router(transactions.router)
 api_v1_router.include_router(recurring_rules.router)
+api_v1_router.include_router(manual_rates.router)
+api_v1_router.include_router(goals.router)
