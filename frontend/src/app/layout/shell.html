@@ -1,14 +1,46 @@
 <div *transloco="let t" class="flex min-h-screen bg-surface-page text-content-primary">
   <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) -->
   <aside
-    class="hidden shrink-0 flex-col border-r border-border bg-surface-raised md:sticky md:top-0 md:flex md:h-screen md:w-16 md:self-start lg:w-60"
+    id="desktop-sidebar"
+    class="desktop-sidebar relative hidden shrink-0 flex-col border-r border-border bg-surface-raised md:sticky md:top-0 md:flex md:h-screen md:self-start"
+    [class.is-expanded]="sidebarExpanded()"
+    [class.is-collapsed]="!sidebarExpanded()"
   >
-    <div class="flex items-center justify-between gap-2 px-3 py-4 md:flex-col lg:flex-row">
+    <button
+      appButton
+      variant="secondary"
+      size="sm"
+      type="button"
+      class="absolute right-0 top-1/2 z-20 !h-8 !w-8 !-translate-y-1/2 !translate-x-1/2 !rounded-full !p-0 shadow-sm"
+      (click)="toggleSidebar()"
+      [attr.aria-controls]="'desktop-sidebar'"
+      [attr.aria-expanded]="sidebarExpanded()"
+      [attr.aria-label]="
+        sidebarExpanded() ? t('layout.sidebar.collapse') : t('layout.sidebar.expand')
+      "
+    >
+      <app-icon name="chevronRight" [size]="14" [class.rotate-180]="sidebarExpanded()" />
+    </button>
+
+    <div
+      class="flex items-center justify-between gap-2 px-3 py-4"
+      [class.flex-col]="!sidebarExpanded()"
+      [class.flex-row]="sidebarExpanded()"
+    >
       <a routerLink="/" class="flex min-w-0 items-center gap-2">
         <app-logo [size]="26" class="shrink-0 text-accent" />
-        <span class="hidden truncate text-sm font-semibold tracking-tight lg:inline">{{ t('app.title') }}</span>
+        <span
+          class="truncate text-sm font-semibold tracking-tight"
+          [class.hidden]="!sidebarExpanded()"
+        >
+          {{ t('app.title') }}
+        </span>
       </a>
-      <div class="flex items-center gap-0.5 md:flex-col lg:flex-row">
+      <div
+        class="flex items-center gap-0.5"
+        [class.flex-col]="!sidebarExpanded()"
+        [class.flex-row]="sidebarExpanded()"
+      >
         <button
           appButton
           variant="ghost"
@@ -16,7 +48,9 @@
           type="button"
           (click)="balanceVisibility.toggle()"
           [attr.aria-label]="
-            balanceVisibility.hidden() ? t('layout.balanceToggle.show') : t('layout.balanceToggle.hide')
+            balanceVisibility.hidden()
+              ? t('layout.balanceToggle.show')
+              : t('layout.balanceToggle.hide')
           "
         >
           <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="18" />
@@ -48,31 +82,60 @@
       >
         <span class="flex items-center gap-2">
           <app-icon name="search" [size]="16" />
-          <span class="hidden lg:inline">{{ t('layout.search.trigger') }}</span>
+          <span [class.hidden]="!sidebarExpanded()">{{ t('layout.search.trigger') }}</span>
         </span>
         <span
-          class="hidden shrink-0 items-center gap-0.5 rounded border border-border px-1.5 py-0.5 font-mono text-[11px] text-content-subtle lg:flex"
+          class="shrink-0 items-center gap-0.5 rounded border border-border px-1.5 py-0.5 font-mono text-[11px] text-content-subtle"
+          [class.hidden]="!sidebarExpanded()"
+          [class.flex]="sidebarExpanded()"
         >
           {{ isMac ? '⌘K' : 'Ctrl K' }}
         </span>
       </button>
     </div>
 
-    <app-sidebar variant="rail" class="flex-1 overflow-y-auto" />
+    <app-sidebar variant="rail" [expanded]="sidebarExpanded()" class="flex-1 overflow-y-auto" />
 
-    <div class="border-t border-border p-3">
-      <label class="flex items-center gap-2 text-sm text-content-muted">
+    <div
+      class="border-t border-border"
+      [class.p-1]="!sidebarExpanded()"
+      [class.p-3]="sidebarExpanded()"
+    >
+      <label
+        class="flex items-center text-sm text-content-muted"
+        [class.gap-1]="!sidebarExpanded()"
+        [class.gap-2]="sidebarExpanded()"
+        [class.justify-center]="!sidebarExpanded()"
+      >
         <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
-        <app-icon name="globe" [size]="16" class="hidden shrink-0 lg:block" />
-        <select
-          class="w-full min-w-0 rounded-md border border-border bg-surface-raised px-1 py-1 text-xs lg:px-2 lg:text-sm"
-          [value]="activeLang()"
-          (change)="setLang($any($event.target).value)"
-        >
-          @for (lang of availableLangs; track lang) {
-            <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
+        @if (sidebarExpanded()) {
+          <app-icon name="globe" [size]="16" class="shrink-0" />
+        }
+        <div class="relative" [class.w-full]="sidebarExpanded()">
+          @if (!sidebarExpanded()) {
+            <div
+              aria-hidden="true"
+              class="flex h-8 w-8 items-center justify-between rounded-md border border-border bg-surface-raised px-1 text-xs font-medium text-content-muted"
+            >
+              <span>{{ activeLangCode() }}</span>
+              <app-icon name="chevronDown" [size]="10" />
+            </div>
           }
-        </select>
+          <select
+            [class]="
+              sidebarExpanded()
+                ? 'w-full min-w-0 rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted'
+                : 'absolute inset-0 h-8 w-8 cursor-pointer bg-surface-raised text-content-muted opacity-0'
+            "
+            [attr.aria-label]="t('layout.languageSwitcher.label')"
+            [value]="activeLang()"
+            (change)="setLang($any($event.target).value)"
+          >
+            @for (lang of availableLangs; track lang) {
+              <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
+            }
+          </select>
+        </div>
       </label>
     </div>
   </aside>
@@ -141,7 +204,9 @@
             type="button"
             (click)="balanceVisibility.toggle()"
             [attr.aria-label]="
-              balanceVisibility.hidden() ? t('layout.balanceToggle.show') : t('layout.balanceToggle.hide')
+              balanceVisibility.hidden()
+                ? t('layout.balanceToggle.show')
+                : t('layout.balanceToggle.hide')
             "
           >
             <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="18" />
@@ -164,7 +229,7 @@
         <label class="flex items-center gap-2 text-sm text-content-muted">
           <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
           <select
-            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm"
+            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted"
             [value]="activeLang()"
             (change)="setLang($any($event.target).value)"
           >

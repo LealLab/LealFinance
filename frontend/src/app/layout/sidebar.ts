@@ -35,12 +35,12 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { path: '/', labelKey: 'layout.nav.dashboard', icon: 'home' },
       { path: '/transactions', labelKey: 'layout.nav.transactions', icon: 'swap' },
-      { path: '/accounts', labelKey: 'layout.nav.accounts', icon: 'wallet' }
-    ]
+      { path: '/accounts', labelKey: 'layout.nav.accounts', icon: 'wallet' },
+    ],
   },
   {
     labelKey: 'layout.nav.sections.analysis',
-    items: [{ path: '/reports', labelKey: 'layout.nav.reports', icon: 'chart' }]
+    items: [{ path: '/reports', labelKey: 'layout.nav.reports', icon: 'chart' }],
   },
   {
     labelKey: 'layout.nav.sections.setup',
@@ -48,39 +48,40 @@ export const NAV_SECTIONS: NavSection[] = [
       { path: '/budgets', labelKey: 'layout.nav.budgets', icon: 'piggy' },
       { path: '/goals', labelKey: 'layout.nav.goals', icon: 'target' },
       { path: '/categories', labelKey: 'layout.nav.categories', icon: 'tag' },
-      { path: '/settings', labelKey: 'layout.nav.settings', icon: 'settings' }
-    ]
-  }
+      { path: '/settings', labelKey: 'layout.nav.settings', icon: 'settings' },
+    ],
+  },
 ];
 
 /**
  * Section nav, shared by the desktop rail and the mobile drawer (Shell
  * decides which chrome wraps it). Icon-only vs. icon+label is handled
- * entirely by responsive Tailwind classes in sidebar.html — no JS
- * collapse state — except inside the mobile drawer, which always shows
- * labels and needs a tap on a link to close itself (`navigated`).
+ * by the `expanded` input for the desktop rail. The mobile drawer always
+ * shows labels and needs a tap on a link to close itself (`navigated`).
  */
 @Component({
   selector: 'app-sidebar',
   imports: [RouterLink, RouterLinkActive, TranslocoDirective, Icon],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.scss'
+  styleUrl: './sidebar.scss',
 })
 export class Sidebar {
   /**
-   * 'rail' (default): the persistent desktop sidebar — labels collapse to
-   * icon-only between `md` and `lg` so the rail stays narrow on tablets.
+   * 'rail' (default): the persistent desktop sidebar. Its labels follow the
+   * `expanded` input so Shell can keep responsive defaults while supporting a
+   * manual tablet/desktop toggle.
    * 'drawer': the mobile off-canvas panel — always shows full labels since
    * width isn't a constraint once it's an overlay.
    */
   readonly variant = input<'rail' | 'drawer'>('rail');
+  readonly expanded = input(true);
   readonly navigated = output<void>();
 
   protected readonly navSections = NAV_SECTIONS;
   protected readonly labelClass = computed(() =>
-    this.variant() === 'rail' ? 'md:hidden lg:inline' : ''
+    this.variant() === 'rail' && !this.expanded() ? 'hidden' : '',
   );
   protected readonly sectionLabelClass = computed(() =>
-    this.variant() === 'rail' ? 'md:hidden lg:block' : 'block'
+    this.variant() === 'rail' && !this.expanded() ? 'hidden' : 'block',
   );
 }

@@ -26,7 +26,9 @@
       }
     },
     "sidebar": {
-      "openMenu": "Open menu"
+      "openMenu": "Open menu",
+      "expand": "Expand sidebar",
+      "collapse": "Collapse sidebar"
     },
     "themeToggle": {
       "switchToLight": "Switch to light theme",

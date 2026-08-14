@@ -26,7 +26,9 @@
       }
     },
     "sidebar": {
-      "openMenu": "Abrir menu"
+      "openMenu": "Abrir menu",
+      "expand": "Expandir barra lateral",
+      "collapse": "Recolher barra lateral"
     },
     "themeToggle": {
       "switchToLight": "Mudar para tema claro",

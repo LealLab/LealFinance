@@ -1,5 +1,14 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -24,15 +33,26 @@ import { Sidebar } from './sidebar';
  */
 @Component({
   selector: 'app-shell',
-  imports: [RouterLink, RouterOutlet, TranslocoDirective, Icon, Logo, Button, Sidebar, ConfirmDialog, CommandPalette],
+  imports: [
+    RouterLink,
+    RouterOutlet,
+    TranslocoDirective,
+    Icon,
+    Logo,
+    Button,
+    Sidebar,
+    ConfirmDialog,
+    CommandPalette,
+  ],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',
   host: {
-    '(document:keydown)': 'onGlobalKeydown($event)'
-  }
+    '(document:keydown)': 'onGlobalKeydown($event)',
+  },
 })
 export class Shell {
   private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly transloco = inject(TranslocoService);
   protected readonly theme = inject(ThemeService);
   protected readonly balanceVisibility = inject(BalanceVisibilityService);
@@ -40,14 +60,34 @@ export class Shell {
 
   protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];
   protected readonly activeLang = toSignal(this.transloco.langChanges$, {
-    initialValue: this.transloco.getActiveLang()
+    initialValue: this.transloco.getActiveLang(),
   });
+  protected readonly activeLangCode = computed(() => this.activeLang().slice(0, 2).toUpperCase());
   protected readonly isMac = isMacPlatform();
 
+  private readonly desktopSidebarMedia =
+    typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+      ? window.matchMedia('(min-width: 1024px)')
+      : null;
+  private readonly viewportIsDesktop = signal(this.desktopSidebarMedia?.matches ?? false);
+  private readonly sidebarOverride = signal<boolean | null>(null);
+  protected readonly sidebarExpanded = computed(
+    () => this.sidebarOverride() ?? this.viewportIsDesktop(),
+  );
   protected readonly mobileNavOpen = signal(false);
   private readonly drawer = viewChild<ElementRef<HTMLDialogElement>>('drawer');
 
   constructor() {
+    const media = this.desktopSidebarMedia;
+    if (media && typeof media.addEventListener === 'function') {
+      const onMediaChange = (event: MediaQueryListEvent) => {
+        this.viewportIsDesktop.set(event.matches);
+      };
+
+      media.addEventListener('change', onMediaChange);
+      this.destroyRef.onDestroy(() => media.removeEventListener('change', onMediaChange));
+    }
+
     effect(() => {
       this.document.documentElement.lang = this.activeLang();
     });
@@ -65,6 +105,10 @@ export class Shell {
 
   protected setLang(lang: string): void {
     this.transloco.setActiveLang(lang);
+  }
+
+  protected toggleSidebar(): void {
+    this.sidebarOverride.set(!this.sidebarExpanded());
   }
 
   protected onDrawerNativeClose(): void {

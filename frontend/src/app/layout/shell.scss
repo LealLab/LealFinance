@@ -1,2 +1,17 @@
 // Layout-specific overrides go here. Utility classes in shell.html (Tailwind)
 // cover most styling; keep this file for things Tailwind can't express.
+
+.desktop-sidebar {
+  width: 4rem;
+  transition: width 180ms ease;
+}
+
+.desktop-sidebar.is-expanded {
+  width: 15rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-sidebar {
+    transition: none;
+  }
+}
