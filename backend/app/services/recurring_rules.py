@@ -33,6 +33,7 @@ async def _resolve_template(
         account_id=template.account_id,
         to_account_id=template.to_account_id,
         category_id=template.category_id,
+        currency=template.currency,
     )
     destination_currency = to_account.currency if to_account is not None else account.currency
     return await resolve_conversion(

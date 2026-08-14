@@ -261,6 +261,73 @@ async def test_delete_category_referenced_by_transaction_is_blocked(
     assert response.json()["error"]["code"] == "category.in_use"
 
 
+async def test_allocated_category_cannot_change_kind_become_child_or_be_deleted(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "allocation-guard@example.com")
+    category = await _create_category(client, name="Needs")
+    parent = await _create_category(client, name="Other")
+    allocation_response = await client.put(
+        "/api/v1/budget-allocations",
+        json={"category_id": category["id"], "percentage": "25.00"},
+    )
+    assert allocation_response.status_code == 200
+
+    parent_response = await client.patch(
+        f"/api/v1/categories/{category['id']}", json={"parent_id": parent["id"]}
+    )
+    assert parent_response.status_code == 422
+    assert parent_response.json()["error"]["code"] == "category.parent_not_top_level"
+
+    kind_response = await client.patch(
+        f"/api/v1/categories/{category['id']}", json={"kind": "income"}
+    )
+    assert kind_response.status_code == 409
+    assert kind_response.json()["error"]["code"] == "category.kind_immutable"
+
+    delete_response = await client.delete(f"/api/v1/categories/{category['id']}")
+    assert delete_response.status_code == 409
+    assert delete_response.json()["error"]["code"] == "category.in_use"
+
+
+async def test_recurring_template_category_blocks_kind_change_and_delete(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "recurring-category-guard@example.com")
+    category = await _create_category(client, name="Rent")
+    account_response = await client.post(
+        "/api/v1/accounts", json={"name": "Checking", "type": "checking", "currency": "BRL"}
+    )
+    assert account_response.status_code == 201
+    recurring_response = await client.post(
+        "/api/v1/recurring-rules",
+        json={
+            "frequency": "monthly",
+            "interval": 1,
+            "start_date": "2026-01-01",
+            "template": {
+                "type": "expense",
+                "amount": "100.00",
+                "currency": "BRL",
+                "account_id": account_response.json()["id"],
+                "category_id": category["id"],
+                "description": "Rent",
+            },
+        },
+    )
+    assert recurring_response.status_code == 201, recurring_response.text
+
+    kind_response = await client.patch(
+        f"/api/v1/categories/{category['id']}", json={"kind": "income"}
+    )
+    assert kind_response.status_code == 409
+    assert kind_response.json()["error"]["code"] == "category.kind_immutable"
+
+    delete_response = await client.delete(f"/api/v1/categories/{category['id']}")
+    assert delete_response.status_code == 409
+    assert delete_response.json()["error"]["code"] == "category.in_use"
+
+
 async def test_reorder_categories(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "quentin@example.com")
     first = await _create_category(client, name="First")

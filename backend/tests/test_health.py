@@ -20,3 +20,13 @@ async def test_currencies_returns_seeded_brl(client: AsyncClient) -> None:
     assert response.status_code == 200
     codes = [c["code"] for c in response.json()]
     assert "BRL" in codes
+
+
+async def test_public_settings_has_typed_agents_flag(client: AsyncClient) -> None:
+    response = await client.get("/api/v1/meta/settings")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert isinstance(body["default_currency"], str)
+    assert isinstance(body["default_locale"], str)
+    assert isinstance(body["agents_enabled"], bool)

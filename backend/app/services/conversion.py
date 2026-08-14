@@ -55,8 +55,11 @@ async def resolve_conversion(
         )
 
     fee = payload.fee or Decimal("0")
-    if fee > origin_amount:
+    if fee >= origin_amount:
         raise ValidationAppError(code="transaction.conversion_fee_exceeds_amount")
+
+    if payload.amount is not None and payload.amount <= 0:
+        raise ValidationAppError(code="transaction.conversion_amount_not_positive")
 
     destination = await get_active_currency(db, destination_currency)
     quantum = Decimal(1).scaleb(-destination.decimal_digits)

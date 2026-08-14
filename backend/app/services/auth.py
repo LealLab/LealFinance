@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
@@ -28,6 +28,7 @@ from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, ROLES, THEMES, Invitation, Session, User
 
 _SESSION_TOUCH_INTERVAL = timedelta(minutes=5)
+_LAST_ADMIN_LOCK_KEY = 0x4C4641444D494E
 
 # Verified on every login attempt for an email that doesn't match any user,
 # so a nonexistent account and a wrong password take indistinguishable
@@ -231,13 +232,19 @@ async def update_user(
     is_active: bool | None,
     display_name: str | None,
 ) -> User:
-    user = await db.get(User, target_id)
+    if (role is not None and role != ROLE_ADMIN) or is_active is False:
+        # Serialize every transition that could remove an active admin. The
+        # target and remaining-admin count must both be read after the lock;
+        # otherwise two concurrent requests can each observe the other admin.
+        await db.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": _LAST_ADMIN_LOCK_KEY})
+
+    user = await db.scalar(select(User).where(User.id == target_id).with_for_update())
     if user is None:
         raise NotFoundError(code="user.not_found")
 
     demoting = role is not None and role != ROLE_ADMIN and user.role == ROLE_ADMIN
     deactivating = is_active is False and user.is_active
-    if user.role == ROLE_ADMIN and (demoting or deactivating):
+    if user.role == ROLE_ADMIN and user.is_active and (demoting or deactivating):
         remaining = await db.execute(
             select(func.count(User.id)).where(
                 User.role == ROLE_ADMIN, User.is_active.is_(True), User.id != user.id

@@ -1,9 +1,9 @@
 """Category CRUD, one-level nesting, sibling ordering, and the delete/
 kind-change guards that keep a category consistent with what references it.
 
-`_category_in_use` checks children, budgets, and transactions - the full
-set the frontend contract specifies ("Category deletion fails when
-referenced by transactions, budgets, or children").
+`_category_in_use` checks every model that references a category so delete
+and kind changes fail with a stable domain error instead of reaching a
+foreign-key violation or corrupting a stored template.
 """
 
 from uuid import UUID
@@ -12,8 +12,9 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError, ValidationAppError
-from app.models.budget import Budget
+from app.models.budget import Budget, BudgetAllocation
 from app.models.category import Category
+from app.models.recurring import RecurringRule
 from app.models.transaction import Transaction
 from app.schemas.category import CategoryCreate, CategoryUpdate
 from app.services import ownership
@@ -36,16 +37,30 @@ async def _has_children(db: AsyncSession, category_id: UUID) -> bool:
     return result.scalar_one_or_none() is not None
 
 
+async def _has_allocation(db: AsyncSession, category_id: UUID) -> bool:
+    result = await db.execute(
+        select(BudgetAllocation.id).where(BudgetAllocation.category_id == category_id).limit(1)
+    )
+    return result.scalar_one_or_none() is not None
+
+
 async def _category_in_use(db: AsyncSession, category_id: UUID) -> bool:
     if await _has_children(db, category_id):
         return True
     budget = await db.execute(select(Budget.id).where(Budget.category_id == category_id).limit(1))
     if budget.scalar_one_or_none() is not None:
         return True
+    if await _has_allocation(db, category_id):
+        return True
     transaction = await db.execute(
         select(Transaction.id).where(Transaction.category_id == category_id).limit(1)
     )
-    return transaction.scalar_one_or_none() is not None
+    if transaction.scalar_one_or_none() is not None:
+        return True
+    recurring_rule = await db.execute(
+        select(RecurringRule.id).where(RecurringRule.template_category_id == category_id).limit(1)
+    )
+    return recurring_rule.scalar_one_or_none() is not None
 
 
 async def _next_position(db: AsyncSession, user_id: UUID, kind: str, parent_id: UUID | None) -> int:
@@ -99,6 +114,10 @@ async def update_category(
     if parent_changing and new_parent_id is not None and await _has_children(db, category_id):
         # This category already has children of its own - giving it a
         # parent too would create a second level of nesting.
+        raise ValidationAppError(code="category.parent_not_top_level")
+
+    if parent_changing and new_parent_id is not None and await _has_allocation(db, category_id):
+        # Allocations are defined only for top-level expense categories.
         raise ValidationAppError(code="category.parent_not_top_level")
 
     if kind_changing or parent_changing:

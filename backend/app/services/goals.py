@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.errors import ConflictError, ValidationAppError
 from app.models.account import ACCOUNT_TYPE_GOAL, Account
 from app.models.goal import Goal
-from app.schemas.goal import GoalCreate, GoalUpdate
+from app.schemas.goal import GoalCreate, GoalUpdate, GoalWithAccountCreate, GoalWithAccountUpdate
+from app.services import accounts as accounts_service
 from app.services import ownership
 from app.services.currencies import get_active_currency
 
@@ -91,3 +92,85 @@ async def set_goal_archived(db: AsyncSession, user_id: UUID, goal_id: UUID, arch
     await db.commit()
     await db.refresh(goal)
     return goal
+
+
+def _validate_schedule(frequency: str | None, interval: int | None) -> None:
+    if interval is not None and frequency is None:
+        raise ValidationAppError(code="goal.interval_requires_frequency")
+
+
+async def create_goal_with_account(
+    db: AsyncSession, user_id: UUID, data: GoalWithAccountCreate
+) -> tuple[Goal, Account]:
+    _validate_schedule(data.frequency, data.interval)
+    await get_active_currency(db, data.currency)
+    account = Account(
+        user_id=user_id,
+        name=data.name,
+        type=ACCOUNT_TYPE_GOAL,
+        currency=data.currency,
+        opening_balance=0,
+        institution_id=None,
+        archived=data.archived,
+    )
+    db.add(account)
+    try:
+        await db.flush()
+        goal = Goal(user_id=user_id, account_id=account.id, **data.model_dump())
+        db.add(goal)
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        raise
+    await db.refresh(account)
+    await db.refresh(goal)
+    return goal, account
+
+
+async def update_goal_with_account(
+    db: AsyncSession, user_id: UUID, goal_id: UUID, data: GoalWithAccountUpdate
+) -> tuple[Goal, Account]:
+    goal = await ownership.get_owned(db, Goal, goal_id, user_id)
+    account = await ownership.get_owned(db, Account, goal.account_id, user_id)
+    changes = data.model_dump(exclude_unset=True)
+    _validate_schedule(
+        changes.get("frequency", goal.frequency), changes.get("interval", goal.interval)
+    )
+    currency = changes.get("currency", goal.currency)
+    if "currency" in changes:
+        await get_active_currency(db, currency)
+    if currency != account.currency and await accounts_service.account_has_ledger_references(
+        db, account.id
+    ):
+        raise ValidationAppError(code="account.currency_in_use")
+    if "name" in changes:
+        account.name = changes["name"]
+    if "currency" in changes:
+        account.currency = currency
+    for field, value in changes.items():
+        setattr(goal, field, value)
+    try:
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        raise
+    await db.refresh(account)
+    await db.refresh(goal)
+    return goal, account
+
+
+async def set_goal_with_account_archived(
+    db: AsyncSession, user_id: UUID, goal_id: UUID, archived: bool
+) -> tuple[Goal, Account]:
+    goal = await ownership.get_owned(db, Goal, goal_id, user_id)
+    account = await ownership.get_owned(db, Account, goal.account_id, user_id)
+    goal.archived = archived
+    account.archived = archived
+    try:
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        raise
+    await db.refresh(account)
+    await db.refresh(goal)
+    return goal, account

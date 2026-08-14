@@ -5,7 +5,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.schemas.common import IconName
+from app.schemas.common import IconName, PatchModel
 
 CategoryKind = Literal["income", "expense"]
 
@@ -35,7 +35,9 @@ class CategoryCreate(BaseModel):
     # Omit<Category, 'id' | 'position'>.
 
 
-class CategoryUpdate(BaseModel):
+class CategoryUpdate(PatchModel):
+    non_nullable_fields = frozenset({"name", "kind", "color", "icon", "archived", "position"})
+
     name: str | None = Field(default=None, min_length=1, max_length=100)
     kind: CategoryKind | None = None
     parent_id: UUID | None = None

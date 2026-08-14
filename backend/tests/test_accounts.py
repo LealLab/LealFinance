@@ -1,5 +1,6 @@
 """Account CRUD, credit-card field validation, and ownership isolation."""
 
+import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -167,6 +168,93 @@ async def test_update_account_can_clear_institution(
     )
     assert update_response.status_code == 200
     assert update_response.json()["institution_id"] is None
+
+
+@pytest.mark.parametrize("reference_kind", ["transaction", "recurring"])
+@pytest.mark.parametrize("referenced_leg", ["source", "destination"])
+async def test_account_currency_change_rejects_all_ledger_references(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    reference_kind: str,
+    referenced_leg: str,
+) -> None:
+    await _authed(
+        client,
+        db_session,
+        f"account-{reference_kind}-{referenced_leg}@example.com",
+    )
+    source = await client.post(
+        "/api/v1/accounts", json={"name": "Source", "type": "checking", "currency": "BRL"}
+    )
+    destination = await client.post(
+        "/api/v1/accounts",
+        json={"name": "Destination", "type": "savings", "currency": "BRL"},
+    )
+    source_id = source.json()["id"]
+    destination_id = destination.json()["id"]
+    template = {
+        "type": "transfer",
+        "amount": "10.00",
+        "currency": "BRL",
+        "account_id": source_id,
+        "to_account_id": destination_id,
+        "description": "Referenced account",
+    }
+    if reference_kind == "transaction":
+        response = await client.post(
+            "/api/v1/transactions", json={**template, "date": "2026-01-01"}
+        )
+    else:
+        response = await client.post(
+            "/api/v1/recurring-rules",
+            json={
+                "frequency": "monthly",
+                "start_date": "2026-01-01",
+                "template": template,
+            },
+        )
+    assert response.status_code == 201, response.text
+
+    account_id = source_id if referenced_leg == "source" else destination_id
+    update_response = await client.patch(f"/api/v1/accounts/{account_id}", json={"currency": "USD"})
+
+    assert update_response.status_code == 422
+    assert update_response.json()["error"]["code"] == "account.currency_in_use"
+
+
+@pytest.mark.parametrize(
+    ("changes", "error_code"),
+    [
+        ({"type": "checking"}, "account.goal_requires_goal_type"),
+        ({"currency": "USD"}, "account.goal_currency_mismatch"),
+    ],
+)
+async def test_account_change_cannot_break_linked_goal(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    changes: dict[str, str],
+    error_code: str,
+) -> None:
+    await _authed(client, db_session, f"goal-guard-{error_code}@example.com")
+    account_response = await client.post(
+        "/api/v1/accounts", json={"name": "Goal account", "type": "goal", "currency": "BRL"}
+    )
+    account_id = account_response.json()["id"]
+    goal_response = await client.post(
+        "/api/v1/goals",
+        json={
+            "account_id": account_id,
+            "name": "Goal",
+            "target_amount": "1000.00",
+            "currency": "BRL",
+        },
+    )
+    assert goal_response.status_code == 201
+
+    response = await client.patch(f"/api/v1/accounts/{account_id}", json=changes)
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == error_code
 
 
 async def test_archive_and_unarchive_account(client: AsyncClient, db_session: AsyncSession) -> None:

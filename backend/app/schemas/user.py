@@ -9,6 +9,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.schemas.common import CurrencyCodeInput, PatchModel
+
 
 class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -21,7 +23,9 @@ class UserRead(BaseModel):
     created_at: datetime
 
 
-class UserUpdate(BaseModel):
+class UserUpdate(PatchModel):
+    non_nullable_fields = frozenset({"role", "is_active", "display_name"})
+
     role: str | None = None
     is_active: bool | None = None
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
@@ -36,8 +40,10 @@ class PreferencesRead(BaseModel):
     balances_hidden: bool
 
 
-class PreferencesUpdate(BaseModel):
+class PreferencesUpdate(PatchModel):
+    non_nullable_fields = frozenset({"locale", "theme", "display_currency", "balances_hidden"})
+
     locale: str | None = Field(default=None, min_length=2, max_length=10)
     theme: str | None = None
-    display_currency: str | None = Field(default=None, min_length=3, max_length=3)
+    display_currency: CurrencyCodeInput | None = None
     balances_hidden: bool | None = None

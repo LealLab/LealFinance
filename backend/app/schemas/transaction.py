@@ -7,7 +7,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
-from app.schemas.common import serialize_decimal
+from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal
 
 TransactionType = Literal["income", "expense", "transfer", "interest"]
 ConversionSource = Literal["manual", "quote", "fallback"]
@@ -34,7 +34,7 @@ class ConversionInput(BaseModel):
     rate` when it is."""
 
     amount: Decimal | None = None
-    currency: str = Field(min_length=3, max_length=3)
+    currency: CurrencyCodeInput
     fee: Decimal | None = Field(default=None, ge=0)
     rate: Decimal = Field(gt=0)
     source: ConversionSource
@@ -65,7 +65,7 @@ class TransactionCreate(BaseModel):
     type: TransactionType
     date: date_type
     amount: Decimal = Field(gt=0)
-    currency: str = Field(min_length=3, max_length=3)
+    currency: CurrencyCodeInput
     account_id: UUID
     to_account_id: UUID | None = None
     category_id: UUID | None = None
@@ -75,11 +75,15 @@ class TransactionCreate(BaseModel):
     conversion: ConversionInput | None = None
 
 
-class TransactionUpdate(BaseModel):
+class TransactionUpdate(PatchModel):
+    non_nullable_fields = frozenset(
+        {"type", "date", "amount", "currency", "account_id", "description"}
+    )
+
     type: TransactionType | None = None
     date: date_type | None = None
     amount: Decimal | None = Field(default=None, gt=0)
-    currency: str | None = Field(default=None, min_length=3, max_length=3)
+    currency: CurrencyCodeInput | None = None
     account_id: UUID | None = None
     to_account_id: UUID | None = None
     category_id: UUID | None = None

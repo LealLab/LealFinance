@@ -5,6 +5,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
+from app.schemas.common import CurrencyCodeInput
+
 _MONTH_PATTERN = r"^\d{4}-(0[1-9]|1[0-2])$"
 
 
@@ -26,4 +28,4 @@ class BudgetUpsert(BaseModel):
     category_id: UUID
     month: str = Field(pattern=_MONTH_PATTERN)
     amount: Decimal = Field(ge=0)
-    currency: str = Field(min_length=3, max_length=3)
+    currency: CurrencyCodeInput

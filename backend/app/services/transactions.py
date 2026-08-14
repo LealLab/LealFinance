@@ -45,10 +45,16 @@ async def validate_transaction_shape(
     account_id: UUID,
     to_account_id: UUID | None,
     category_id: UUID | None,
+    currency: str,
 ) -> tuple[Account, Account | None]:
     account = await ownership.get_owned(db, Account, account_id, user_id)
 
     if type_ == TRANSACTION_TYPE_TRANSFER:
+        if currency != account.currency:
+            raise ValidationAppError(
+                code="transaction.currency_must_match_source_account",
+                params={"expected": account.currency, "received": currency},
+            )
         if to_account_id is None:
             raise ValidationAppError(code="transaction.transfer_requires_destination")
         if to_account_id == account_id:
@@ -157,6 +163,7 @@ async def create_transaction(
         account_id=data.account_id,
         to_account_id=data.to_account_id,
         category_id=data.category_id,
+        currency=data.currency,
     )
     await ownership.get_owned_or_none(db, RecurringRule, data.recurring_rule_id, user_id)
 
@@ -216,6 +223,7 @@ async def update_transaction(
         account_id=effective_account_id,
         to_account_id=effective_to_account_id,
         category_id=effective_category_id,
+        currency=effective_currency,
     )
 
     shape_changed = any(

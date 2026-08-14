@@ -26,19 +26,20 @@ monetary/conversion rules referenced below.
   the frontend, never a translated message. Validation failures use
   `error.validation` with `params.errors` holding FastAPI's per-field error
   list.
-- Every route except `/health/*`, `/meta/currencies`, and `/meta/settings`
-  requires an authenticated session (`auth.unauthenticated`, 401, if the
-  session cookie is missing or invalid).
+- Every route except `/health/*`, `/meta/currencies`, `/meta/settings`,
+  `/auth/login`, and `/auth/register` requires an authenticated session
+  (`auth.unauthenticated`, 401, if the session cookie is missing or invalid).
 - Every route scoped to a single resource (`GET/PATCH/DELETE .../{id}`)
   returns `404` with a domain-specific `*.not_found` code for an id that
   either doesn't exist or belongs to another user - never `403`. A `403`
   would confirm the id exists at all, which is an enumeration oracle across
   other users' data. See `app/services/ownership.py`.
-- State-changing requests (anything but `GET`/`HEAD`/`OPTIONS`) need the
-  `X-XSRF-TOKEN` header set to the value of the readable `XSRF-TOKEN`
-  cookie issued at login - see "Sessions and CSRF" below. Angular's
-  `HttpClient` does this automatically by default; nothing extra is needed
-  on the frontend once it talks to this API for real.
+- Authenticated state-changing requests (anything but `GET`/`HEAD`/`OPTIONS`)
+  need the `X-XSRF-TOKEN` header set to the value of the readable `XSRF-TOKEN`
+  cookie issued at login. The public `/auth/login` and `/auth/register`
+  endpoints are the only state-changing exceptions. See "Sessions and CSRF"
+  below. Angular's `HttpClient` does this automatically by default; nothing
+  extra is needed on the frontend once it talks to this API for real.
 
 ## Bootstrap and identity
 
@@ -86,6 +87,7 @@ Registration is invite-only; there is no open sign-up endpoint.
 | `auth.last_admin` | 409 | Attempt to demote or deactivate the only remaining admin. |
 | `auth.invalid_role` | 422 | Role isn't `admin` or `member`. |
 | `auth.invalid_theme` | 422 | Theme preference isn't `light` or `dark`. |
+| `user.not_found` | 404 | An administrator tried to update a user id that doesn't exist. |
 | `invitation.not_found` | 404 | Token doesn't exist, or the email doesn't match the token's invitation (deliberately the same code for both - see "email mismatch" in the phase's test suite). |
 | `invitation.revoked` | 409 | Invitation was revoked before being accepted. |
 | `invitation.already_accepted` | 409 | Token already used (single-use). |
@@ -100,7 +102,7 @@ Registration is invite-only; there is no open sign-up endpoint.
 | GET | `/health/live` | public | Process liveness only. |
 | GET | `/health/ready` | public | 503 unless both Postgres and Redis are reachable. |
 | GET | `/meta/currencies` | public | Active currencies only. |
-| GET | `/meta/settings` | public | `default_currency`, `default_locale`, `agents_enabled`. |
+| GET | `/meta/settings` | public | `default_currency`, `default_locale`, and boolean `agents_enabled`. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |
 | POST | `/auth/invitations` | admin | Body `{email, role}`. Returns the raw token once. |
 | GET | `/auth/invitations` | admin | Never includes the token. |
@@ -122,7 +124,7 @@ Registration is invite-only; there is no open sign-up endpoint.
 | GET/POST | `/categories` | user | `position` is server-assigned on create. |
 | PATCH | `/categories/{id}` | user | |
 | POST | `/categories/{id}/archive` | user | |
-| DELETE | `/categories/{id}` | user | Blocked while referenced by children, budgets, or transactions (409). |
+| DELETE | `/categories/{id}` | user | Blocked while referenced by children, budgets, budget allocations, transactions, or recurring templates (409). |
 | POST | `/categories/reorder` | user | Body `{kind, parent_id, ordered_ids}`. 204. Ids outside the `(kind, parent_id)` sibling group are silently ignored, matching the frontend mock store. |
 | GET | `/budgets` | user | |
 | PUT | `/budgets` | user | Upsert, keyed on `(category_id, month)`. |
@@ -220,8 +222,10 @@ the `(kind, parent_id)` sibling group, and server-assigned on create
 (`max(sibling positions) + 1`, or `0`).
 
 Changing `kind` on a category that has children or is referenced by a
-budget is blocked (`category.kind_immutable`) - the plan is to extend this
-the same way the delete guard covers transactions, budgets, and children.
+budget, budget allocation, transaction, or recurring template is blocked
+(`category.kind_immutable`). The same complete reference check protects
+deletion (`category.in_use`). An allocated category also cannot be moved
+under another category because allocations are defined only at the top level.
 
 | Code | Status |
 | --- | --- |

@@ -10,7 +10,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
-from app.schemas.common import serialize_decimal
+from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal
 
 AccountType = Literal["checking", "savings", "cash", "credit_card", "investment", "goal"]
 
@@ -37,7 +37,7 @@ class AccountRead(BaseModel):
 class AccountCreate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
     type: AccountType
-    currency: str = Field(min_length=3, max_length=3)
+    currency: CurrencyCodeInput
     opening_balance: Decimal = Decimal("0")
     institution_id: UUID | None = None
     archived: bool = False
@@ -46,10 +46,12 @@ class AccountCreate(BaseModel):
     due_day: int | None = Field(default=None, ge=1, le=31)
 
 
-class AccountUpdate(BaseModel):
+class AccountUpdate(PatchModel):
+    non_nullable_fields = frozenset({"name", "type", "currency", "opening_balance", "archived"})
+
     name: str | None = Field(default=None, min_length=1, max_length=100)
     type: AccountType | None = None
-    currency: str | None = Field(default=None, min_length=3, max_length=3)
+    currency: CurrencyCodeInput | None = None
     opening_balance: Decimal | None = None
     institution_id: UUID | None = None
     archived: bool | None = None

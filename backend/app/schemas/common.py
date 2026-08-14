@@ -1,9 +1,38 @@
 """Shared Pydantic building blocks used across domain DTOs."""
 
 from decimal import Decimal
-from typing import Literal
+from typing import Annotated, ClassVar, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, BeforeValidator, Field, model_validator
+
+
+def _uppercase_currency_code(value: object) -> object:
+    return value.upper() if isinstance(value, str) else value
+
+
+CurrencyCodeInput = Annotated[
+    str,
+    BeforeValidator(_uppercase_currency_code),
+    Field(min_length=3, max_length=3),
+]
+
+
+class PatchModel(BaseModel):
+    """Distinguish an omitted PATCH field from an explicit JSON null."""
+
+    non_nullable_fields: ClassVar[frozenset[str]] = frozenset()
+
+    @model_validator(mode="before")
+    @classmethod
+    def _reject_null_required_fields(cls, data: object) -> object:
+        if isinstance(data, dict):
+            null_fields = sorted(
+                field for field in cls.non_nullable_fields if field in data and data[field] is None
+            )
+            if null_fields:
+                raise ValueError(f"fields may not be null: {', '.join(null_fields)}")
+        return data
+
 
 # The frontend's closed icon-name union (shared/ui/icon/icon.ts) - Institution
 # and Category both carry one. Kept here rather than duplicated per schema

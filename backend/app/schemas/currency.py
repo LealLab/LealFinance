@@ -20,6 +20,12 @@ class CurrencyRead(BaseModel):
     is_active: bool
 
 
+class PublicSettingsRead(BaseModel):
+    default_currency: str
+    default_locale: str
+    agents_enabled: bool
+
+
 class ExchangeRateRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

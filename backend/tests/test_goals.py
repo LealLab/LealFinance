@@ -1,9 +1,16 @@
 """Goal CRUD, the goal-account/currency-matching invariants, archive
 semantics (no delete), and ownership isolation."""
 
+from decimal import Decimal
+
+import pytest
 from httpx import AsyncClient
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.account import Account
+from app.services import goals as goals_service
 from tests.factories import login_as, make_user
 
 
@@ -150,6 +157,116 @@ async def test_update_goal(client: AsyncClient, db_session: AsyncSession) -> Non
     assert response.json()["target_amount"] == "2000.0000"
 
 
+async def test_create_goal_with_account_is_atomic_aggregate(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "aggregate-create@example.com")
+
+    response = await client.post(
+        "/api/v1/goals/with-account",
+        json={
+            "name": "Trip to Japan",
+            "target_amount": "10000.00",
+            "currency": "BRL",
+        },
+    )
+
+    assert response.status_code == 201, response.text
+    body = response.json()
+    assert body["goal"]["account_id"] == body["account"]["id"]
+    assert body["goal"]["name"] == body["account"]["name"] == "Trip to Japan"
+    assert body["goal"]["currency"] == body["account"]["currency"] == "BRL"
+    assert body["account"]["type"] == "goal"
+    assert body["account"]["opening_balance"] == "0.0000"
+    assert body["account"]["institution_id"] is None
+
+
+async def test_update_goal_with_account_updates_both_records(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "aggregate-update@example.com")
+    created = await client.post(
+        "/api/v1/goals/with-account",
+        json={"name": "Original", "target_amount": "1000.00", "currency": "BRL"},
+    )
+    goal_id = created.json()["goal"]["id"]
+
+    response = await client.patch(
+        f"/api/v1/goals/{goal_id}/with-account",
+        json={"name": "Renamed", "target_amount": "2000.00", "currency": "USD"},
+    )
+
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["goal"]["name"] == body["account"]["name"] == "Renamed"
+    assert body["goal"]["currency"] == body["account"]["currency"] == "USD"
+    assert body["goal"]["target_amount"] == "2000.0000"
+
+
+async def test_update_goal_with_account_rejects_referenced_currency_change(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "aggregate-currency-guard@example.com")
+    created = await client.post(
+        "/api/v1/goals/with-account",
+        json={"name": "Referenced goal", "target_amount": "1000.00", "currency": "BRL"},
+    )
+    goal = created.json()["goal"]
+    account = created.json()["account"]
+    source = await client.post(
+        "/api/v1/accounts",
+        json={"name": "Funding source", "type": "checking", "currency": "BRL"},
+    )
+    transfer = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "transfer",
+            "date": "2026-01-01",
+            "amount": "100.00",
+            "currency": "BRL",
+            "account_id": source.json()["id"],
+            "to_account_id": account["id"],
+            "description": "Fund goal",
+        },
+    )
+    assert transfer.status_code == 201
+
+    response = await client.patch(
+        f"/api/v1/goals/{goal['id']}/with-account", json={"currency": "USD"}
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "account.currency_in_use"
+    accounts = (await client.get("/api/v1/accounts")).json()
+    goals = (await client.get("/api/v1/goals")).json()
+    assert next(item for item in accounts if item["id"] == account["id"])["currency"] == "BRL"
+    assert next(item for item in goals if item["id"] == goal["id"])["currency"] == "BRL"
+
+
+async def test_create_goal_with_account_rolls_back_when_goal_insert_fails(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    await _authed(client, db_session, "aggregate-rollback@example.com")
+    real_goal = goals_service.Goal
+
+    def invalid_goal(**values: object) -> object:
+        values["target_amount"] = Decimal("0")
+        return real_goal(**values)
+
+    monkeypatch.setattr(goals_service, "Goal", invalid_goal)
+
+    with pytest.raises(IntegrityError):
+        await client.post(
+            "/api/v1/goals/with-account",
+            json={"name": "Must roll back", "target_amount": "1000.00", "currency": "BRL"},
+        )
+
+    result = await db_session.execute(select(Account).where(Account.name == "Must roll back"))
+    assert result.scalar_one_or_none() is None
+
+
 async def test_archive_and_unarchive_goal(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "grace@example.com")
     account_id = await _create_account(client)
@@ -168,12 +285,14 @@ async def test_archive_and_unarchive_goal(client: AsyncClient, db_session: Async
         f"/api/v1/goals/{goal_id}/archive", json={"archived": True}
     )
     assert archive_response.status_code == 200
-    assert archive_response.json()["archived"] is True
+    assert archive_response.json()["goal"]["archived"] is True
+    assert archive_response.json()["account"]["archived"] is True
 
     unarchive_response = await client.post(
         f"/api/v1/goals/{goal_id}/archive", json={"archived": False}
     )
-    assert unarchive_response.json()["archived"] is False
+    assert unarchive_response.json()["goal"]["archived"] is False
+    assert unarchive_response.json()["account"]["archived"] is False
 
 
 async def test_goal_routes_require_authentication(client: AsyncClient) -> None:

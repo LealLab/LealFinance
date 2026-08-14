@@ -8,6 +8,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.errors import ValidationAppError
 from app.models.budget import BudgetAllocation, ExpectedIncome
 from app.models.category import Category
 from app.schemas.budget_plan import BudgetAllocationUpsert, ExpectedIncomeUpsert
@@ -24,7 +25,9 @@ async def list_allocations(db: AsyncSession, user_id: UUID) -> list[BudgetAlloca
 async def upsert_allocation(
     db: AsyncSession, user_id: UUID, data: BudgetAllocationUpsert
 ) -> BudgetAllocation:
-    await ownership.get_owned(db, Category, data.category_id, user_id)
+    category = await ownership.get_owned(db, Category, data.category_id, user_id)
+    if category.kind != "expense" or category.parent_id is not None:
+        raise ValidationAppError(code="budget_allocation.category_must_be_top_level_expense")
 
     result = await db.execute(
         select(BudgetAllocation).where(

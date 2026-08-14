@@ -98,6 +98,60 @@ async def test_create_transfer_transaction(client: AsyncClient, db_session: Asyn
     assert response.json()["to_account_id"] == dest_id
 
 
+async def test_transfer_currency_must_match_source_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "transfer-currency@example.com")
+    source_id = await _create_account(client, name="Dollar source", currency="USD")
+    dest_id = await _create_account(client, name="Real destination", currency="BRL")
+
+    response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "transfer",
+            "date": "2026-01-10",
+            "amount": "200.00",
+            "currency": "BRL",
+            "account_id": source_id,
+            "to_account_id": dest_id,
+            "description": "Wrong source currency",
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"] == {
+        "code": "transaction.currency_must_match_source_account",
+        "params": {"expected": "USD", "received": "BRL"},
+    }
+
+
+async def test_update_transfer_revalidates_source_currency(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "update-transfer-currency@example.com")
+    source_id = await _create_account(client, name="Source")
+    dest_id = await _create_account(client, name="Destination")
+    created = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "transfer",
+            "date": "2026-01-10",
+            "amount": "200.00",
+            "currency": "BRL",
+            "account_id": source_id,
+            "to_account_id": dest_id,
+            "description": "Valid transfer",
+        },
+    )
+
+    response = await client.patch(
+        f"/api/v1/transactions/{created.json()['id']}", json={"currency": "USD"}
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.currency_must_match_source_account"
+
+
 async def test_create_interest_transaction(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "dave@example.com")
     account_id = await _create_account(client, name="Savings")
@@ -469,6 +523,66 @@ async def test_conversion_fee_exceeding_amount_is_rejected(
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "transaction.conversion_fee_exceeds_amount"
+
+
+async def test_conversion_fee_equal_to_amount_is_rejected(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "full-fee@example.com")
+    account_id = await _create_account(client, currency="USD")
+    category_id = await _create_category(client)
+
+    response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-01",
+            "amount": "100.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": category_id,
+            "description": "No proceeds",
+            "conversion": {
+                "fee": "100.00",
+                "currency": "USD",
+                "rate": "0.2",
+                "source": "manual",
+            },
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.conversion_fee_exceeds_amount"
+
+
+async def test_supplied_conversion_amount_must_be_positive(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "non-positive-conversion@example.com")
+    account_id = await _create_account(client, currency="USD")
+    category_id = await _create_category(client)
+
+    response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-01",
+            "amount": "100.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": category_id,
+            "description": "Invalid converted amount",
+            "conversion": {
+                "amount": "0",
+                "currency": "USD",
+                "rate": "0.2",
+                "source": "manual",
+            },
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.conversion_amount_not_positive"
 
 
 async def test_get_and_update_transaction(client: AsyncClient, db_session: AsyncSession) -> None:

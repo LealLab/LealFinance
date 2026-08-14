@@ -8,6 +8,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
+from app.schemas.common import CurrencyCodeInput, PatchModel
 from app.schemas.transaction import ConversionInput, ConversionRead, TransactionType
 
 RecurringFrequency = Literal["weekly", "monthly", "yearly"]
@@ -34,7 +35,7 @@ class RecurringTemplateRead(BaseModel):
 class RecurringTemplateInput(BaseModel):
     type: TransactionType
     amount: Decimal = Field(gt=0)
-    currency: str = Field(min_length=3, max_length=3)
+    currency: CurrencyCodeInput
     account_id: UUID
     to_account_id: UUID | None = None
     category_id: UUID | None = None
@@ -62,7 +63,9 @@ class RecurringRuleCreate(BaseModel):
     template: RecurringTemplateInput
 
 
-class RecurringRuleUpdate(BaseModel):
+class RecurringRuleUpdate(PatchModel):
+    non_nullable_fields = frozenset({"frequency", "interval", "start_date", "template"})
+
     frequency: RecurringFrequency | None = None
     interval: int | None = Field(default=None, ge=1)
     start_date: date | None = None

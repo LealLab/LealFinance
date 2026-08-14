@@ -4,7 +4,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.schemas.common import IconName
+from app.schemas.common import IconName, PatchModel
 
 
 class InstitutionRead(BaseModel):
@@ -26,7 +26,9 @@ class InstitutionCreate(BaseModel):
     position: int = 0
 
 
-class InstitutionUpdate(BaseModel):
+class InstitutionUpdate(PatchModel):
+    non_nullable_fields = frozenset({"name", "icon", "archived", "position"})
+
     name: str | None = Field(default=None, min_length=1, max_length=100)
     icon: IconName | None = None
     color: str | None = Field(default=None, max_length=9)

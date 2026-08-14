@@ -118,6 +118,34 @@ async def test_template_reuses_transaction_shape_validation(
     assert response.json()["error"]["code"] == "transaction.transfer_has_category"
 
 
+async def test_transfer_template_currency_must_match_source_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "template-currency@example.com")
+    source_id = await _create_account(client, name="Dollar source", currency="USD")
+    dest_id = await _create_account(client, name="Real destination", currency="BRL")
+
+    response = await client.post(
+        "/api/v1/recurring-rules",
+        json={
+            "frequency": "monthly",
+            "interval": 1,
+            "start_date": "2026-01-01",
+            "template": {
+                "type": "transfer",
+                "amount": "200.00",
+                "currency": "BRL",
+                "account_id": source_id,
+                "to_account_id": dest_id,
+                "description": "Wrong source currency",
+            },
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.currency_must_match_source_account"
+
+
 async def test_template_with_foreign_account_is_not_found(
     client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
 ) -> None:

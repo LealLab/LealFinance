@@ -4,14 +4,19 @@ See tests/test_invitations.py for the invite -> register flow this doesn't
 cover, and tests/factories.py for make_user/login_as.
 """
 
+import asyncio
 from datetime import UTC, datetime, timedelta
+from uuid import UUID
 
 from httpx import AsyncClient
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import delete, select
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from app.models.user import ROLE_ADMIN
+from app.core.errors import ConflictError
+from app.models.currency import Currency
+from app.models.user import ROLE_ADMIN, User
 from app.models.user import Session as UserSession
+from app.services import auth as auth_service
 from tests.factories import DEFAULT_PASSWORD, login_as, make_user
 
 
@@ -208,6 +213,49 @@ async def test_cannot_demote_the_last_admin(client: AsyncClient, db_session: Asy
 
     assert response.status_code == 409
     assert response.json()["error"]["code"] == "auth.last_admin"
+
+
+async def test_concurrent_admin_demotions_leave_one_active_admin(_engine: AsyncEngine) -> None:
+    session_factory = async_sessionmaker(_engine, expire_on_commit=False)
+    admin_ids: list[UUID] = []
+    try:
+        async with session_factory() as setup:
+            setup.add(Currency(code="BRL", name="Brazilian Real", symbol="R$", decimal_digits=2))
+            await setup.commit()
+            first, _ = await make_user(
+                setup, email="concurrent-admin-a@example.com", role=ROLE_ADMIN
+            )
+            second, _ = await make_user(
+                setup, email="concurrent-admin-b@example.com", role=ROLE_ADMIN
+            )
+            admin_ids = [first.id, second.id]
+
+        async def demote(target_id: UUID) -> User:
+            async with session_factory() as session:
+                return await auth_service.update_user(
+                    session,
+                    target_id=target_id,
+                    role="member",
+                    is_active=None,
+                    display_name=None,
+                )
+
+        results = await asyncio.gather(
+            demote(admin_ids[0]), demote(admin_ids[1]), return_exceptions=True
+        )
+        assert sum(isinstance(result, ConflictError) for result in results) == 1
+
+        async with session_factory() as verify:
+            active_admins = await verify.scalars(
+                select(User).where(User.role == ROLE_ADMIN, User.is_active.is_(True))
+            )
+            assert len(active_admins.all()) == 1
+    finally:
+        async with session_factory() as cleanup:
+            if admin_ids:
+                await cleanup.execute(delete(User).where(User.id.in_(admin_ids)))
+            await cleanup.execute(delete(Currency).where(Currency.code == "BRL"))
+            await cleanup.commit()
 
 
 async def test_preferences_round_trip(client: AsyncClient, db_session: AsyncSession) -> None:

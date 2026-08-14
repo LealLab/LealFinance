@@ -8,7 +8,7 @@ from sqlalchemy import select
 from app.api.deps import CurrentUser, DbSession
 from app.core.config import get_settings
 from app.models.currency import Currency
-from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead
+from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead, PublicSettingsRead
 from app.services.exchange_rates import get_exchange_rate
 
 router = APIRouter(prefix="/meta", tags=["meta"])
@@ -21,13 +21,13 @@ async def list_currencies(db: DbSession) -> list[Currency]:
     return list(result.scalars().all())
 
 
-@router.get("/settings")
-async def get_public_settings() -> dict[str, str]:
-    return {
-        "default_currency": settings.default_currency,
-        "default_locale": settings.default_locale,
-        "agents_enabled": str(settings.agents_enabled).lower(),
-    }
+@router.get("/settings", response_model=PublicSettingsRead)
+async def get_public_settings() -> PublicSettingsRead:
+    return PublicSettingsRead(
+        default_currency=settings.default_currency,
+        default_locale=settings.default_locale,
+        agents_enabled=settings.agents_enabled,
+    )
 
 
 @router.get("/exchange-rate", response_model=ExchangeRateQuoteRead)
