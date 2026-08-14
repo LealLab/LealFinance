@@ -8,6 +8,7 @@ keeps every translation in exactly one place. See docs/i18n.md.
 from typing import Any
 
 from fastapi import Request, status
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -65,11 +66,24 @@ async def app_error_handler(_request: Request, exc: Exception) -> JSONResponse:
 async def validation_error_handler(_request: Request, exc: Exception) -> JSONResponse:
     """Wraps FastAPI's default `{"detail": [...]}` payload in the same
     `{"error": {"code", "params"}}` envelope every other error uses, so the
-    frontend's `isApiErrorBody`/`httpErrorInterceptor` can handle it too."""
+    frontend's `isApiErrorBody`/`httpErrorInterceptor` can handle it too.
+
+    `exc.errors()` can embed non-JSON-native values in `ctx` - e.g. a
+    `Field(le=100)` constraint on a Decimal puts a raw `Decimal` in
+    `ctx["le"]` - which the default encoder can't serialize. This is
+    diagnostic metadata about a rejected request, not a monetary response
+    value, so jsonable_encoder's float conversion here doesn't conflict
+    with the "amounts are never JSON numbers" wire-format rule.
+    """
     assert isinstance(exc, RequestValidationError)
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
-        content={"error": {"code": "error.validation", "params": {"errors": exc.errors()}}},
+        content={
+            "error": {
+                "code": "error.validation",
+                "params": {"errors": jsonable_encoder(exc.errors())},
+            }
+        },
     )
 
 
