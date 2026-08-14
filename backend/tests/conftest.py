@@ -79,3 +79,20 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient]:
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
     app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture
+async def other_client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient]:
+    """A second HTTP client with its own cookie jar, sharing the same
+    db_session (and therefore the same test transaction) as `client` - for
+    tests that need two independently-authenticated users, e.g. session
+    isolation and (from Phase 2 onward) cross-user ownership checks."""
+
+    async def _override_get_session() -> AsyncGenerator[AsyncSession]:
+        yield db_session
+
+    app.dependency_overrides[get_session] = _override_get_session
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        yield ac
+    app.dependency_overrides.clear()

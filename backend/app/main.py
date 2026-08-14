@@ -1,5 +1,7 @@
 """FastAPI application factory."""
 
+import asyncio
+import sys
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
@@ -7,6 +9,14 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+# Same Windows event-loop caveat as alembic/env.py, tests/conftest.py, and
+# app/cli/__main__.py: psycopg's async mode requires the selector loop, not
+# the proactor loop Windows defaults to. Set here, at the module uvicorn
+# imports as its ASGI app target, so it takes effect before uvicorn creates
+# its event loop.
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 from app.api.v1.router import api_v1_router
 from app.core.config import get_settings

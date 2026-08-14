@@ -6,8 +6,12 @@ Every new model module must be imported here, or Alembic autogenerate and
 """
 
 from app.models.currency import Currency, ExchangeRate
+from app.models.user import Invitation, Session, User
 
 __all__ = [
     "Currency",
     "ExchangeRate",
+    "Invitation",
+    "Session",
+    "User",
 ]

@@ -15,6 +15,8 @@ dependencies = [
     "redis>=5.0.2,<6.5",
     # Runtime dep: app/services/exchange_rates.py calls Open Exchange Rates.
     "httpx>=0.28.1",
+    "argon2-cffi>=25.1.0",
+    "email-validator>=2.3.0",
 ]
 
 [dependency-groups]
