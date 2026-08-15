@@ -9,9 +9,8 @@ monetary/conversion rules referenced below.
 
 - All routes are versioned under `/api/v1`.
 - Wire format is snake_case, matching the ORM/schema field names exactly -
-  no camelCase alias generator. The frontend's domain models are camelCase;
-  reconciling the two is a separate, not-yet-done integration task (see
-  `architecture.md`).
+  there is no camelCase alias generator. The frontend's domain models are
+  camelCase and its HTTP repositories map them to this wire format.
 - UUIDs serialize as strings. Decimal amounts and rates serialize as JSON
   **strings**, never numbers (see `money-and-currency.md`).
 - Every error response uses one envelope, regardless of source (a domain
@@ -145,7 +144,9 @@ Registration is invite-only; there is no open sign-up endpoint.
 | PUT | `/manual-rates/{pair}/{date}` | user | `{pair}` like `USD_BRL`; `{date}` is `YYYY-MM-DD`. Body `{rate}`. |
 | DELETE | `/manual-rates/{id}` | user | |
 | GET/POST | `/goals` | user | No delete - archive only. |
+| POST | `/goals/with-account` | user | Creates a goal and its goal-type account in one response. |
 | PATCH | `/goals/{id}` | user | |
+| PATCH | `/goals/{id}/with-account` | user | Updates a goal and its linked account in one response. |
 | POST | `/goals/{id}/archive` | user | |
 
 ## Transactions

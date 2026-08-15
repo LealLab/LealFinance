@@ -1,1 +1,5 @@
-Generic single-database configuration with an async dbapi.
+Alembic migrations for the LealFinance backend live in this directory.
+
+Run migration commands from the repository root with the Taskfile commands
+documented in [`docs/development.md`](../../docs/development.md), especially
+`task backend:migrate` and `task backend:migration -- "message"`.
