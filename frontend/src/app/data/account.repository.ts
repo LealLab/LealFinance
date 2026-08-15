@@ -3,11 +3,10 @@ import { Account } from '../domain/models/account';
 
 /**
  * Abstract class used as the DI token (see app.config.ts) - components
- * inject `AccountRepository`, never the mock implementation directly, so
- * swapping in a real HTTP-backed repository later is a provider change,
- * not a call-site change. Every method returns an Observable to match
- * that eventual HTTP shape even though the mock resolves synchronously
- * underneath (with simulated latency - see data/mock/mock-store.ts).
+ * inject `AccountRepository`, never a concrete implementation directly, so
+ * the application can select the HTTP provider while tests can select the
+ * in-memory provider without changing call sites. Every method returns an
+ * Observable so both implementations share the same contract.
  */
 export abstract class AccountRepository {
   abstract list(): Observable<Account[]>;

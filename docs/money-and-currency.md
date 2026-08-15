@@ -5,14 +5,15 @@ So adding a new currency touches only config and data, not the core money-handli
 
 ## Available in the current UI
 
-- [x] Brazilian Real (`BRL`) - seeded backend currency and default demo-data currency
-- [x] US Dollar (`USD`) - default display currency for new users
-- [x] Euro (`EUR`) - available as an account currency and exercises the fallback-rate warning
-- [x] British Pound (`GBP`) - available as an account currency with mock exchange rates
+- [x] Brazilian Real (`BRL`) - seeded backend currency, default demo-data currency,
+  and default persisted display currency for new users
+- [x] US Dollar (`USD`) - seeded backend currency and frontend pre-auth display fallback
+- [x] Euro (`EUR`) - seeded backend currency and available as an account currency
+- [x] British Pound (`GBP`) - seeded backend currency and available as an account currency
 
-The backend migration currently seeds BRL only. The other currencies are
-available in the frontend scaffold and mock data; persistent multi-currency
-domain data will be wired to the API later.
+The migrations seed BRL, USD, EUR, and GBP. The frontend's HTTP repositories
+use the persistent API domain; mock data remains available for tests and local
+test doubles.
 
 ## Planned
 
@@ -88,7 +89,7 @@ Display rounding uses the currency's own decimal digit count (`Intl` derives thi
 
 Reference tables, seeded with BRL, USD, EUR, and GBP
 (`backend/alembic/versions/b0b0888983a8_baseline_currencies_and_exchange_rates.py`
-plus `..._seed_usd_eur_gbp_currencies.py`):
+plus `backend/alembic/versions/47379d62fa35_seed_usd_eur_gbp_currencies.py`):
 
 - `currencies` - code (ISO 4217), name, symbol, decimal digits, active flag.
 - `exchange_rates` - the **provider rate cache**: base/quote code, rate, as-of date, source. Ships empty, populated lazily as pairs are actually requested. Global, not user-owned - one cached rate per pair per day serves every user.
@@ -184,16 +185,11 @@ the currency) are the shared helpers behind this - reused by
 `dashboard.ts`, `exchange.ts`, `accounts.ts`, `account-detail.ts`, and
 `goals.ts` rather than each page re-deriving its own rate map.
 
-## What doesn't exist yet
+## Frontend integration status
 
-The backend domain model, transaction conversion validation, and manual
-rates described above are all implemented (see
-[`backend-api.md`](backend-api.md) for the full endpoint list). What's still
-missing is the frontend side: the UI still runs entirely on
-`frontend/src/app/data/mock/` and doesn't call any of these endpoints yet
-(the mock exchange-rate repository already implements the same manual-rate
-precedence independently, in TypeScript - see
-`data/mock/mock-exchange-rate.repository.ts`). Wiring the frontend
-repositories to the real API, including reconciling camelCase domain models
-with the backend's snake_case wire format, is a separate, future piece of
-work.
+The backend domain model, transaction conversion validation, manual rates, and
+the HTTP-backed frontend repositories are implemented (see
+[`backend-api.md`](backend-api.md) for the full endpoint list). The frontend
+maps the backend's snake_case wire format into camelCase domain models. Mock
+repositories still provide an in-memory test double with equivalent rate
+precedence, but they are not the production providers.

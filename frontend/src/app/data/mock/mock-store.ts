@@ -22,12 +22,11 @@ function notFound(entity: string, id: string): never {
 /**
  * The single in-memory source of truth behind every Mock*Repository - see
  * data/*.repository.ts for the abstractions built on top of it. Backed by
- * signals so components could in principle read it reactively, though in
- * practice everything goes through the repository interfaces to keep the
- * eventual swap to real HTTP a provider change, not a call-site change.
+ * signals so components could in principle read it reactively. Everything
+ * goes through the repository interfaces, allowing this store to remain a
+ * test double while the application uses HTTP providers.
  *
- * State is in-memory only by design (see docs/superpowers/specs - mock
- * persistence decision): a reload always comes back to `reset()`'s
+ * State is in-memory only by design: a reload always comes back to `reset()`'s
  * fixtures. `reset()` is also exposed directly to the Settings screen's
  * "reset mock data" action.
  */

@@ -7,7 +7,7 @@
 | `postgres` | Primary datastore. |
 | `redis` | Celery broker + result backend. |
 | `api` | FastAPI app. Runs Alembic migrations on startup (see below). |
-| `worker` | Celery worker - background tasks (for example, exchange-rate refresh once enabled). |
+| `worker` | Celery worker for background tasks. The scheduled exchange-rate refresh is currently disabled. |
 | `beat` | Celery beat - schedules periodic tasks for `worker` to pick up. |
 | `web` | nginx serving the built Angular SPA and proxying `/api/` to `api`. |
 | `agents` | Optional, behind the `agents` Compose profile. Not yet implemented; see README.md. |
@@ -24,11 +24,12 @@ Browser → web (nginx, :8080) ─┬─> static files (Angular SPA)
                                └─> /api/* → api (FastAPI, :8000) → postgres / redis
 ```
 
-Only `web`'s port is published to the host in production (`docker-compose.yml`);
-`api`, `postgres`, and `redis` are reachable only on the internal Compose
-network. `docker-compose.override.yml` (applied automatically in dev)
-additionally exposes `postgres`/`redis` on the host for local `psql`/`redis-cli`
-access.
+When the base file is used for a homelab deployment
+(`docker compose -f docker-compose.yml`), only `web`'s port is published to the
+host; `api`, `postgres`, and `redis` are reachable only on the internal Compose
+network. Plain `docker compose` also loads `docker-compose.override.yml`, which
+is development-oriented and exposes `postgres`/`redis` on the host for local
+`psql`/`redis-cli` access.
 
 ## Migrations
 
@@ -104,16 +105,16 @@ frontend/src/app/
 Angular 22, zoneless, standalone components, signals.
 See [`i18n.md`](i18n.md) for the Transloco setup and [`money-and-currency.md`](money-and-currency.md) for `MoneyPipe`.
 
-## What's not here yet
+## Frontend integration status
 
-The backend domain schema and API are in place (see
-[`docs/backend-api.md`](backend-api.md) for the full endpoint list), but the
-frontend still runs entirely on in-memory mock repositories
-(`frontend/src/app/data/mock/`) - nothing in the UI calls the real API yet
-except the one exchange-rate lookup on the Exchange page. Swapping the mock
-repositories for HTTP-backed ones, and reconciling the frontend's camelCase
-domain models with the backend's snake_case wire format, is a separate,
-future piece of work.
+The application uses HTTP-backed repositories in
+`frontend/src/app/app.config.ts`. The HTTP layer maps the frontend's camelCase
+domain models to the backend's snake_case wire format. In-memory mock
+repositories remain available as test doubles and are not the providers used by
+the application configuration.
+
+The backend domain schema and API are documented in
+[`backend-api.md`](backend-api.md).
 
 Recurring rules are projections only: there is no posting workflow that
 turns a rule into real transactions, so occurrences are computed client-side

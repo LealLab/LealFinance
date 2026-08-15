@@ -2,8 +2,9 @@
 
 ## Prerequisites
 
-- [uv](https://docs.astral.sh/uv/) (Python 3.13 - `uv sync` picks up the pinned version automatically from `.python-version`; do not use whatever `python3.14` you may have as default, Celery doesn't support 3.14 yet)
-- [pnpm](https://pnpm.io/) + Node 24
+- [uv](https://docs.astral.sh/uv/) with Python 3.13 (the backend requires
+  `>=3.13,<3.14`; do not use Python 3.14)
+- [pnpm](https://pnpm.io/) 11.13.0 + Node 24
 - Docker + Docker Compose (for Postgres/Redis locally, or the full stack)
 
 All commands below assume a task runner (`Taskfile.yml` - install from <https://taskfile.dev>, or run the underlying `uv`/`pnpm`/`docker compose` commands directly, shown in parentheses).
@@ -18,7 +19,7 @@ docker compose up -d postgres redis   # (or: task up, then stop api/worker/beat/
 
 task backend:sync                     # uv sync
 task backend:migrate                  # uv run alembic upgrade head
-task backend:dev                      # uv run uvicorn app.main:app --reload
+task backend:dev                      # uv run python -m app.dev
 
 task frontend:install                 # pnpm install
 task frontend:dev                     # pnpm start (ng serve)
@@ -35,7 +36,11 @@ cp .env.example .env
 docker compose up -d --build           # (or: task up)
 ```
 
-`docker-compose.override.yml` is applied automatically (no flag needed) and adds hot-reload for the API (`--reload`, source bind-mounted) plus exposes `postgres`/`redis` on the host. The web UI is at `http://localhost:${WEB_PORT}` (default `8080`).
+`docker-compose.override.yml` is applied automatically (no flag needed) and adds
+hot-reload for the API (`--reload`, source bind-mounted) plus exposes
+`postgres`/`redis` on the host. The web UI is at `http://localhost:${WEB_PORT}`;
+the copied `.env.example` uses `8081`, while Compose falls back to `8080` when
+`WEB_PORT` is unset.
 
 If port 8080 or 5432 is already taken on your machine (e.g. by another Compose project), override `WEB_PORT` / `POSTGRES_HOST_PORT` / `REDIS_HOST_PORT` in `.env` - see the comments there.
 
@@ -62,9 +67,21 @@ docker compose down -v                 # stop + wipe data (fresh start)
 
 ## Running backend tests
 
-Tests need a real Postgres reachable (no SQLite fallback - see `backend/tests/conftest.py`, which builds the schema once per test session directly from the ORM metadata, then isolates each test in a transaction that's rolled back at teardown). `docker compose up -d postgres redis` is enough; point `DATABASE_URL`/`REDIS_URL` env vars at them if not using the defaults from `.env`.
+Tests need a real Postgres reachable (no SQLite fallback - see
+`backend/tests/conftest.py`, which builds the schema once per test session
+directly from the ORM metadata, then isolates each test in a transaction that's
+rolled back at teardown). `docker compose up -d postgres redis` is enough.
 
-`.env`'s `POSTGRES_HOST=postgres`/`REDIS_HOST=redis` only resolve inside the Docker Compose network - `docker-compose.yml` sets those directly for the `api`/`worker`/`beat` containers regardless of this file. Anything run natively on the host (`task backend:migrate`, `backend:test`, `backend:dev`, `backend:create-admin`) needs the host-exposed ports instead (`POSTGRES_HOST_PORT`/`REDIS_HOST_PORT`, default `55433`/`6379`) - `.env`'s commented-out `DATABASE_URL`/`REDIS_URL` lines are exactly that override; uncomment them for local host-native work.
+`.env`'s `POSTGRES_HOST=postgres`/`REDIS_HOST=redis` values resolve inside the
+Compose network. Anything run natively on the host (`task backend:migrate`,
+`backend:test`, `backend:dev`, `backend:create-admin`) must use host endpoints
+instead. After starting `postgres` and `redis`, set these values in `.env` (or
+in the shell environment), adjusting ports if you changed the host mappings:
+
+```dotenv
+DATABASE_URL=postgresql+psycopg://lealfinance:change-me@localhost:55433/lealfinance
+REDIS_URL=redis://localhost:6379/0
+```
 
 Don't run `task backend:migrate` and `task backend:test` back-to-back against the same database without a reset in between: migrations leave committed data behind (the seeded currencies, any admin you bootstrapped), while `backend:test` builds and seeds its own schema from ORM metadata on top of whatever's already there - the two collide (e.g. a duplicate-key error re-inserting BRL). `backend:test`'s teardown always leaves the database empty afterward, so tests will pass again immediately if you just rerun them; if you want to poke around manually with `backend:migrate`/`backend:create-admin`/`backend:dev`, do that *after* your last test run, not interleaved with it.
 
@@ -100,7 +117,7 @@ uv run alembic downgrade base
 uv run alembic upgrade head
 ```
 
-CI enforces this on every push (see `.github/workflows/ci.yml`).
+CI enforces this on every push (see [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
 
 ## Money and i18n
 

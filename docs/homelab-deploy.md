@@ -1,6 +1,7 @@
 # Homelab Deployment
 
-LealFinance is designed to run as a single `docker compose up -d` on a homelab box, no cloud dependencies, and no external services required.
+LealFinance is designed to run as a single Docker Compose stack on a homelab
+box, with no cloud dependencies or external services required.
 
 ## Basic deploy
 
@@ -8,26 +9,40 @@ LealFinance is designed to run as a single `docker compose up -d` on a homelab b
 git clone https://github.com/LealLab/LealFinance.git && cd LealFinance
 cp .env.example .env
 # Edit .env: at minimum change POSTGRES_PASSWORD and API_SECRET_KEY.
-docker compose up -d --build
+docker compose -f docker-compose.yml up -d --build
 ```
 
-The web UI is served on `http://<host>:${WEB_PORT}` (default `8080`).
+The web UI is served on `http://<host>:${WEB_PORT}`. The copied
+`.env.example` sets `WEB_PORT=8081`; Compose falls back to `8080` only when the
+variable is unset.
+
+Use the explicit base file for homelab operation. Plain `docker compose up`
+automatically merges `docker-compose.override.yml`, which is a development
+override that enables API reload and publishes Postgres/Redis ports on the
+host.
 
 ## Running multiple Compose projects on one host
 
 If you run more than one LealFinance checkout, or another Compose project that happens to reuse service names like `db`/`api`, set an explicit project name to keep them fully isolated:
 
 ```bash
-docker compose -p lealfinance-prod up -d
+docker compose -f docker-compose.yml -p lealfinance-prod up -d
 # or: export COMPOSE_PROJECT_NAME=lealfinance-prod
 ```
 
-Without this, two projects sharing a name can end up sharing a network and, worse, a service defined under the same name in both files can be adopted or replaced by whichever `docker compose up` runs last.
-If you're ever unsure what a `docker compose down -v` in a given directory would actually remove, run `docker compose config` first, the `name:`, resolved volume names, and resolved network name are all shown up front.
+Without this, two projects sharing a name can end up sharing a network and, worse,
+a service defined under the same name in both files can be adopted or replaced
+by whichever Compose command runs last. If you're ever unsure what a
+`docker compose down -v` in a given directory would actually remove, run
+`docker compose -f docker-compose.yml config` first; the resolved project,
+volume, and network names are shown up front.
 
 ## Ports
 
-If `${WEB_PORT}` (or, in dev, `${POSTGRES_HOST_PORT}` / `${REDIS_HOST_PORT}` from `docker-compose.override.yml`) collides with something else already running, change it in `.env`, nothing else needs to change.
+If `${WEB_PORT}` collides with something else already running, change it in
+`.env`. When using the development override, also change
+`${POSTGRES_HOST_PORT}` or `${REDIS_HOST_PORT}` as needed. The base homelab
+stack does not publish those database ports.
 
 ## Reverse proxy / TLS
 
@@ -36,15 +51,17 @@ LealFinance doesn't bundle one, to stay agnostic about what homelab users alread
 
 ## Backups
 
-All state lives in two named volumes: the Postgres data directory and the Redis data directory (`docker compose config` shows their resolved names, see above).
+All state lives in two named volumes: the Postgres data directory and the Redis
+data directory (`docker compose -f docker-compose.yml config` shows their
+resolved names, see above).
 Only Postgres needs backing up; Redis here is only a Celery broker/result cache, not a source of truth.
 
 ```bash
 # Backup
-docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > backup.sql
+docker compose -f docker-compose.yml exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > backup.sql
 
 # Restore (into a fresh, empty database)
-docker compose exec -T postgres sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"' < backup.sql
+docker compose -f docker-compose.yml exec -T postgres sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"' < backup.sql
 ```
 
 Automate this with cron + the above, or your homelab's existing backup tooling pointed at the named volume directly.
@@ -53,8 +70,8 @@ Automate this with cron + the above, or your homelab's existing backup tooling p
 
 ```bash
 git pull
-docker compose build
-docker compose up -d
+docker compose -f docker-compose.yml build
+docker compose -f docker-compose.yml up -d
 ```
 
 The `api` container runs `alembic upgrade head` on startup before serving traffic (see [`architecture.md`](architecture.md#migrations)), so schema migrations apply automatically, no manual migration step needed on upgrade.

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/LealLab/LealFinance/security/advisories/new
+    about: Do not report security vulnerabilities in public issues.
+  - name: Support guidance
+    url: https://github.com/LealLab/LealFinance/blob/main/SUPPORT.md
+    about: Check the support guide before opening a usage question.
