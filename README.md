@@ -18,34 +18,38 @@
 
 1. Install [Docker](https://www.docker.com).
 
-2. Clone the repository and start the stack:
+2. Clone the repository
 
     ```bash
     git clone https://github.com/LealLab/LealFinance.git && cd LealFinance
-    cp .env.example .env
-    # Edit .env: at minimum change POSTGRES_PASSWORD and API_SECRET_KEY.
-    docker compose up -d --build
     ```
 
-3. Open `http://localhost:${WEB_PORT}` (default `8080`). The web container serves the UI and proxies the API under `/api`.
+3. Copy the .env.example to .env
+  
+    ```bash
+    cp .env.example .env
+    ```
 
-## Current status and roadmap
+    > Make sure to change `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
 
-- [x] Docker Compose stack with FastAPI, Angular, PostgreSQL, and Redis
-- [x] English (`en-US`) and Portuguese (`pt-BR`) UI with locale-aware formatting
-- [x] Multi-currency-aware money and exchange-rate scaffolding
-- [x] Backend domain API - invite-only auth, institutions, accounts, categories,
-      budgets, transactions, recurring rules, manual exchange rates, and goals
-      (see [`docs/backend-api.md`](docs/backend-api.md))
-- [ ] Wire the frontend's mock repositories to the real backend API
-- [ ] Replace the AI-agent Compose placeholder with a working runtime
+4. Build and start
 
-## Stack
+    ```bash
+    docker compose up -d --build
+    docker compose ps
+    ```
 
-- **Backend** - FastAPI, SQLAlchemy 2, Alembic, Celery
-- **Frontend** - Angular, TypeScript, Tailwind CSS, Transloco
-- **Database** - PostgreSQL
-- **Queue** - Redis + Celery
+    > Wait until api, web, postgres, and redis are healthy.
+
+5. Create the first administrator account
+
+    ```bash
+    docker compose exec api python -m app.cli create-admin --email email@example.com --display-name "Your Name"
+    ```
+
+    > Enter a password of at least 12 characters when prompted. Never pass the password as a command argument.
+
+6. Open <http://localhost:8081> (make sure to check the .env `WEB_PORT`)
 
 ## Documentation
 
