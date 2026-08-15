@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Zavřít",
+      "cancel": "Zrušit",
+      "confirm": "Potvrdit",
+      "save": "Uložit",
+      "saving": "Ukládání…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Přehled",
+      "accounts": "Účty",
+      "transactions": "Transakce",
+      "categories": "Kategorie",
+      "budgets": "Rozpočty",
+      "goals": "Cíle",
+      "reports": "Přehledy",
+      "exchange": "Směna měn",
+      "settings": "Nastavení",
+      "adminUsers": "Uživatelé a pozvánky",
+      "sections": {
+        "accounts": "Účty",
+        "analysis": "Analýza",
+        "setup": "Nastavení",
+        "admin": "Správa"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Otevřít nabídku",
+      "expand": "Rozbalit postranní panel",
+      "collapse": "Sbalit postranní panel"
+    },
+    "themeToggle": {
+      "switchToLight": "Přepnout na světlý motiv",
+      "switchToDark": "Přepnout na tmavý motiv"
+    },
+    "languageSwitcher": {
+      "label": "Jazyk",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Skrýt zůstatky",
+      "show": "Zobrazit zůstatky"
+    },
+    "search": {
+      "trigger": "Hledat"
+    },
+    "commandPalette": {
+      "placeholder": "Zadejte příkaz nebo vyhledávaný text...",
+      "empty": "Nebyly nalezeny žádné výsledky.",
+      "hints": {
+        "navigate": "procházet",
+        "select": "vybrat",
+        "close": "zavřít"
+      },
+      "groups": {
+        "quickActions": "Rychlé akce",
+        "goTo": "Přejít na",
+        "accounts": "Účty",
+        "categories": "Kategorie",
+        "budgets": "Rozpočty",
+        "transactions": "Transakce"
+      },
+      "actions": {
+        "newTransaction": "Nová transakce",
+        "newAccount": "Nový účet",
+        "newCategory": "Nová kategorie",
+        "newBudget": "Nový rozpočet",
+        "configureLanguage": "Nastavit jazyk",
+        "configureCurrency": "Nastavit měnu zobrazení",
+        "toggleTheme": "Přepnout motiv",
+        "toggleBalances": "Zobrazit nebo skrýt zůstatky"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Přehled",
+    "welcome": "Vítejte v LealFinance",
+    "empty": {
+      "title": "Zatím tu nejsou žádná data",
+      "description": "Přidejte účet a začněte sledovat své finance."
+    },
+    "stats": {
+      "netWorth": "Čisté jmění",
+      "income": "Měsíční příjmy",
+      "expense": "Měsíční výdaje",
+      "savingsRate": "Míra úspor"
+    },
+    "cashFlow": {
+      "title": "Peněžní tok (6 měsíců)",
+      "income": "Příjmy",
+      "expense": "Výdaje"
+    },
+    "categoryChart": {
+      "title": "Výdaje podle kategorií (aktuální měsíc)",
+      "label": "Kategorie",
+      "empty": "Tento měsíc zatím nebyly zaznamenány žádné výdaje."
+    },
+    "accounts": {
+      "title": "Účty"
+    },
+    "recentTransactions": {
+      "title": "Nedávné transakce",
+      "empty": "Zatím nebyly zaznamenány žádné transakce."
+    },
+    "budgets": {
+      "title": "Rozpočty",
+      "empty": "Pro tento měsíc není nastaven žádný rozpočet."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Směnný kurz není k dispozici – jako odhad se používá převod 1:1.",
+    "fallbackRateWarningAction": "Nastavit kurz"
+  },
+  "accounts": {
+    "title": "Účty",
+    "description": "Všechny vaše zůstatky na jednom místě.",
+    "showArchived": "Zobrazit archivované účty",
+    "archivedBadge": "Archivováno",
+    "noInstitution": "Bez instituce",
+    "mixedCurrencies": "Více měn",
+    "actions": {
+      "new": "Nový účet",
+      "edit": "Upravit",
+      "archive": "Archivovat",
+      "unarchive": "Obnovit z archivu"
+    },
+    "archive": {
+      "title": "Archivovat účet?",
+      "message": "Účet „{{name}}“ se již nebude zobrazovat v hlavních přehledech. Chcete pokračovat?"
+    },
+    "empty": {
+      "title": "Zatím nemáte žádné účty",
+      "description": "Vytvořte svůj první účet a začněte sledovat zůstatky."
+    },
+    "type": {
+      "checking": "Běžný účet",
+      "savings": "Spořicí účet",
+      "cash": "Hotovost",
+      "credit_card": "Kreditní karta",
+      "investment": "Investice",
+      "goal": "Cíl"
+    },
+    "form": {
+      "newTitle": "Nový účet",
+      "editTitle": "Upravit účet",
+      "saveError": "Účet se nepodařilo uložit. Zkuste to znovu.",
+      "fields": {
+        "name": "Název",
+        "type": "Typ",
+        "currency": "Měna",
+        "openingBalance": "Počáteční zůstatek",
+        "institution": "Instituce",
+        "creditLimit": "Úvěrový limit",
+        "closingDay": "Den uzávěrky",
+        "dueDay": "Den splatnosti"
+      },
+      "errors": {
+        "required": "Toto pole je povinné.",
+        "decimalAmount": "Zadejte platnou číselnou částku."
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    },
+    "detail": {
+      "back": "Zpět na účty",
+      "notFound": "Účet nebyl nalezen",
+      "history": "Historie transakcí",
+      "historyEmpty": {
+        "title": "Na tomto účtu nejsou žádné transakce",
+        "description": "Zde se zobrazí transakce zaznamenané na tomto účtu."
+      },
+      "creditCard": {
+        "title": "Kreditní karta",
+        "used": "Vyčerpáno",
+        "owed": "Aktuální zůstatek",
+        "limit": "Úvěrový limit",
+        "available": "K dispozici",
+        "closingDay": "Uzávěrka"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Nová instituce",
+      "edit": "Upravit instituci",
+      "delete": "Odstranit instituci"
+    },
+    "form": {
+      "newTitle": "Nová instituce",
+      "editTitle": "Upravit instituci",
+      "saveError": "Instituci se nepodařilo uložit. Zkuste to znovu.",
+      "deleteInUseError": "Tato instituce má stále propojené účty, a proto ji nelze odstranit.",
+      "fields": {
+        "name": "Název",
+        "icon": "Ikona",
+        "color": "Barva"
+      },
+      "errors": {
+        "required": "Toto pole je povinné."
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    },
+    "delete": {
+      "title": "Odstranit instituci",
+      "message": "Tuto akci nelze vrátit zpět. Chcete tuto instituci odstranit?"
+    },
+    "icon": {
+      "bank": "Banka",
+      "wallet": "Peněženka",
+      "chart": "Investice",
+      "globe": "Mezinárodní",
+      "archive": "Ostatní"
+    }
+  },
+  "transactions": {
+    "title": "Transakce",
+    "description": "Příjmy, výdaje a převody.",
+    "actions": {
+      "new": "Nová transakce",
+      "edit": "Upravit",
+      "delete": "Odstranit"
+    },
+    "tabs": {
+      "transactions": "Transakce",
+      "recurring": "Opakované"
+    },
+    "type": {
+      "income": "Příjem",
+      "expense": "Výdaj",
+      "transfer": "Převod"
+    },
+    "filters": {
+      "type": "Typ",
+      "account": "Účet",
+      "category": "Kategorie",
+      "from": "Od",
+      "to": "Do",
+      "search": "Hledat",
+      "institution": "Instituce",
+      "all": "Vše",
+      "clear": "Vymazat filtry"
+    },
+    "empty": {
+      "title": "Nebyly nalezeny žádné transakce",
+      "description": "Upravte filtry nebo přidejte novou transakci."
+    },
+    "projected": {
+      "title": "Nadcházející (plánované)",
+      "badge": "Plánovaná"
+    },
+    "delete": {
+      "title": "Odstranit transakci",
+      "message": "Tuto akci nelze vrátit zpět. Chcete tuto transakci odstranit?"
+    },
+    "form": {
+      "newTitle": "Nová transakce",
+      "editTitle": "Upravit transakci",
+      "saveError": "Transakci se nepodařilo uložit. Zkuste to znovu.",
+      "fields": {
+        "date": "Datum",
+        "amount": "Částka",
+        "currency": "Měna",
+        "convertedAmount": "Převedená částka",
+        "conversionFee": "Poplatek/daň za převod (volitelné)",
+        "account": "Účet",
+        "fromAccount": "Zdrojový účet",
+        "toAccount": "Cílový účet",
+        "fromInstitution": "Zdrojová instituce",
+        "toInstitution": "Cílová instituce",
+        "anyInstitution": "Libovolná instituce",
+        "category": "Kategorie",
+        "description": "Popis",
+        "notes": "Poznámky",
+        "repeat": "Opakovat tuto transakci",
+        "frequency": "Frekvence",
+        "interval": "Každých",
+        "selectPlaceholder": "Vyberte"
+      },
+      "hints": {
+        "effectiveRate": "Efektivní kurz: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Opakování není dostupné pro transakce mezi různými měnami – kurz by bylo nutné nastavit znovu pro každý výskyt."
+      },
+      "errors": {
+        "invalid": "Před uložením zkontrolujte povinná pole.",
+        "convertedAmountRequired": "Před uložením zadejte převedenou částku."
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Týdně",
+        "monthly": "Měsíčně",
+        "yearly": "Ročně"
+      },
+      "everyN": "každých {{n}}",
+      "nextOccurrence": "Další výskyt",
+      "actions": {
+        "new": "Nové pravidlo opakování"
+      },
+      "empty": {
+        "title": "Zatím nemáte žádná pravidla opakování",
+        "description": "Když nastavíte transakci jako opakovanou, zde se vytvoří pravidlo."
+      },
+      "delete": {
+        "title": "Odstranit pravidlo opakování",
+        "message": "Zaznamenané transakce zůstanou beze změny – zmizí pouze budoucí plánované výskyty."
+      },
+      "form": {
+        "newTitle": "Nové pravidlo opakování",
+        "editTitle": "Upravit pravidlo opakování",
+        "saveError": "Pravidlo opakování se nepodařilo uložit. Zkuste to znovu.",
+        "startDate": "Začátek",
+        "endDate": "Konec (volitelné)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Kategorie",
+    "description": "Uspořádejte příjmy a výdaje podle kategorií.",
+    "showArchived": "Zobrazit archivované kategorie",
+    "archivedBadge": "Archivováno",
+    "actions": {
+      "new": "Nová kategorie",
+      "edit": "Upravit",
+      "archive": "Archivovat",
+      "unarchive": "Obnovit z archivu",
+      "delete": "Odstranit",
+      "addChild": "Nová podkategorie",
+      "collapse": "Sbalit",
+      "expand": "Rozbalit",
+      "dragHandle": "Změnit pořadí"
+    },
+    "empty": {
+      "title": "Zatím nemáte žádné kategorie",
+      "description": "Vytvořte kategorie a uspořádejte si transakce."
+    },
+    "sections": {
+      "income": "Kategorie příjmů",
+      "expense": "Kategorie výdajů"
+    },
+    "delete": {
+      "title": "Odstranit kategorii?",
+      "message": "Tuto akci nelze vrátit zpět. Chcete odstranit kategorii „{{name}}“?",
+      "blockedTitle": "Nelze odstranit",
+      "blockedMessage": "Tato kategorie se stále používá: využívá ji {{transactions}} transakcí, {{budgets}} rozpočtů a {{children}} podkategorií. Místo odstranění kategorii archivujte."
+    },
+    "form": {
+      "newTitle": "Nová kategorie",
+      "editTitle": "Upravit kategorii",
+      "saveError": "Kategorii se nepodařilo uložit. Zkuste to znovu.",
+      "fields": {
+        "name": "Název",
+        "parent": "Nadřazená kategorie",
+        "noParent": "Žádná (kategorie nejvyšší úrovně)",
+        "color": "Barva",
+        "icon": "Ikona"
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    },
+    "icon": {
+      "tag": "Štítek",
+      "home": "Domov",
+      "archive": "Archiv",
+      "swap": "Doprava",
+      "wallet": "Peněženka",
+      "chart": "Graf",
+      "sun": "Energie",
+      "alertTriangle": "Upozornění",
+      "pencil": "Vzdělávání",
+      "target": "Cíl",
+      "repeat": "Opakování",
+      "globe": "Globální"
+    }
+  },
+  "budgets": {
+    "title": "Rozpočty",
+    "description": "Naplánujte si, kolik každý měsíc utratíte v jednotlivých kategoriích.",
+    "list": {
+      "title": "Měsíční limity"
+    },
+    "planner": {
+      "title": "Rozpočet podle příjmů",
+      "description": "Rozdělte očekávaný příjem mezi kategorie.",
+      "total": "Celkem",
+      "expectedIncome": "Očekávaný příjem",
+      "chartLabel": "Rozdělení",
+      "fixed": "Pevná částka",
+      "empty": "Nastavte procenta a zobrazte si rozdělení.",
+      "save": "Uložit rozdělení",
+      "errors": {
+        "total": "Rozdělení nesmí překročit 100 %.",
+        "income": "Zadejte očekávaný příjem pro tento měsíc.",
+        "save": "Rozdělení se nepodařilo uložit. Zkuste to znovu."
+      }
+    },
+    "monthLabel": "Měsíc",
+    "actions": {
+      "new": "Nový rozpočet",
+      "edit": "Upravit",
+      "delete": "Odstranit"
+    },
+    "totals": {
+      "budgeted": "Rozpočtováno",
+      "spent": "Utraceno",
+      "remaining": "Zbývá"
+    },
+    "empty": {
+      "title": "Tento měsíc nemáte žádný rozpočet",
+      "description": "Nastavte rozpočet podle kategorií a sledujte své výdaje."
+    },
+    "state": {
+      "over": "Překročený rozpočet",
+      "near": "Blízko limitu"
+    },
+    "unbudgeted": {
+      "title": "Výdaje bez rozpočtu",
+      "setBudget": "Nastavit rozpočet"
+    },
+    "delete": {
+      "title": "Odstranit rozpočet",
+      "message": "Tuto akci nelze vrátit zpět. Chcete tento rozpočet odstranit?"
+    },
+    "form": {
+      "newTitle": "Nový rozpočet",
+      "editTitle": "Upravit rozpočet",
+      "saveError": "Rozpočet se nepodařilo uložit. Zkuste to znovu.",
+      "fields": {
+        "month": "Měsíc",
+        "category": "Kategorie",
+        "selectCategory": "Vyberte kategorii",
+        "amount": "Částka",
+        "currency": "Měna"
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    }
+  },
+  "goals": {
+    "title": "Cíle",
+    "description": "Spořte na libovolný cíl a sledujte svůj pokrok.",
+    "showArchived": "Zobrazit archivované cíle",
+    "archiveError": "Stav archivace cíle se nepodařilo aktualizovat. Zkuste to znovu.",
+    "accountLabel": "Účet",
+    "archived": "Archivováno",
+    "overdue": "Po termínu",
+    "actions": {
+      "new": "Nový cíl",
+      "edit": "Upravit cíl",
+      "archive": "Archivovat cíl",
+      "unarchive": "Obnovit cíl z archivu",
+      "deposit": "Přidat peníze",
+      "withdraw": "Vybrat",
+      "interest": "Přidat úrok"
+    },
+    "empty": {
+      "title": "Zatím nemáte žádné cíle",
+      "description": "Vytvořte si cíl, začněte spořit a sledujte svůj pokrok."
+    },
+    "progress": {
+      "current": "Naspořeno",
+      "target": "Cílová částka",
+      "remaining": "Zbývá",
+      "contribution": "Doporučený příspěvek",
+      "notConfigured": "Bez termínu",
+      "frequency": "Frekvence",
+      "every": "každých {{n}}",
+      "label": "Pokrok"
+    },
+    "frequency": {
+      "weekly": "Týdně",
+      "monthly": "Měsíčně",
+      "yearly": "Ročně"
+    },
+    "history": {
+      "title": "Historie cíle",
+      "empty": "Nebyla zaznamenána žádná aktivita."
+    },
+    "form": {
+      "newTitle": "Nový cíl",
+      "editTitle": "Upravit cíl",
+      "saveError": "Cíl se nepodařilo uložit. Zkuste to znovu.",
+      "fields": {
+        "name": "Název",
+        "targetAmount": "Cílová částka",
+        "currency": "Měna",
+        "targetDate": "Cílové datum",
+        "targetDateHint": "Volitelné: přidejte termín pro výpočet doporučeného příspěvku.",
+        "frequency": "Frekvence příspěvků",
+        "interval": "Každých"
+      },
+      "errors": {
+        "required": "Toto pole je povinné."
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Přidat peníze k cíli" },
+      "withdraw": { "title": "Vybrat peníze z cíle" },
+      "interest": { "title": "Přidat úrok" },
+      "fields": {
+        "amount": "Částka",
+        "date": "Datum",
+        "sourceAccount": "Zdrojový/cílový účet",
+        "description": "Popis"
+      },
+      "saveError": "Aktivitu se nepodařilo zaznamenat. Zkuste to znovu."
+    }
+  },
+  "reports": {
+    "title": "Přehledy",
+    "description": "Analyzujte vývoj příjmů, výdajů a zůstatků v čase.",
+    "period": {
+      "month": "Tento měsíc",
+      "3m": "Poslední 3 měsíce",
+      "6m": "Posledních 6 měsíců",
+      "12m": "Posledních 12 měsíců",
+      "custom": "Vlastní období"
+    },
+    "empty": {
+      "title": "V tomto období nejsou žádné transakce",
+      "description": "Upravte vybrané období a zobrazte si přehledy."
+    },
+    "charts": {
+      "incomeExpense": "Příjmy a výdaje",
+      "netFlow": "Čistý peněžní tok",
+      "byCategory": "Výdaje podle kategorií",
+      "balanceTrend": "Vývoj zůstatků podle účtů"
+    },
+    "series": {
+      "income": "Příjmy",
+      "expense": "Výdaje",
+      "netFlow": "Čistý peněžní tok",
+      "categories": "Kategorie"
+    }
+  },
+  "exchange": {
+    "title": "Směna měn",
+    "description": "Ručně zadané směnné kurzy a převody, které je použily.",
+    "stats": {
+      "feesPaid": "Zaplacené poplatky za převod",
+      "needsAttention": "Transakce vyžadující pozornost",
+      "currenciesNeedingRate": "Měny bez kurzu"
+    },
+    "needsAttention": {
+      "title": "Vyžaduje pozornost",
+      "description": "Tyto transakce byly převedeny pomocí odhadu 1:1 – opravte je zadáním skutečného kurzu nebo níže nastavte ruční kurz.",
+      "empty": {
+        "title": "Nic nevyžaduje pozornost",
+        "description": "U všech transakcí mezi různými měnami je zaznamenán skutečný kurz."
+      },
+      "actions": {
+        "fix": "Opravit"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Měny bez kurzu",
+      "description": "Tyto měny účtů zatím nemají skutečný kurz vůči měně zobrazení, proto se jejich zůstatky zobrazují s odhadem 1:1, který není spojen s žádnou konkrétní transakcí.",
+      "empty": {
+        "title": "Žádná měna nepotřebuje kurz",
+        "description": "Pro každou měnu účtu je již dostupný skutečný kurz."
+      }
+    },
+    "manualRates": {
+      "title": "Ruční kurzy",
+      "description": "Ručně zadané kurzy mají přednost před automatickým poskytovatelem – hodí se pro skutečný dnešní kurz vaší banky nebo když není žádný poskytovatel nastaven.",
+      "actions": {
+        "add": "Přidat kurz",
+        "edit": "Upravit kurz",
+        "delete": "Odstranit kurz"
+      },
+      "empty": {
+        "title": "Zatím nemáte žádné ruční kurzy",
+        "description": "Přidejte kurz pro dvojici měn a použijte jej místo automatického náhradního kurzu 1:1."
+      },
+      "delete": {
+        "title": "Odstranit ruční kurz",
+        "message": "Tuto akci nelze vrátit zpět. Chcete tento kurz odstranit?"
+      },
+      "form": {
+        "newTitle": "Nový ruční kurz",
+        "editTitle": "Upravit ruční kurz",
+        "saveError": "Kurz se nepodařilo uložit. Zkuste to znovu.",
+        "fields": {
+          "baseCode": "Z měny",
+          "quoteCode": "Na měnu",
+          "rate": "Kurz",
+          "asOf": "Platnost od"
+        },
+        "errors": {
+          "invalid": "Zadejte platný kurz.",
+          "samePair": "Vyberte dvě různé měny."
+        },
+        "actions": {
+          "cancel": "Zrušit",
+          "save": "Uložit"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Nastavení",
+    "description": "Vzhled, jazyk a nastavení ukázkových dat.",
+    "appearance": {
+      "title": "Vzhled",
+      "theme": "Motiv",
+      "light": "Světlý",
+      "dark": "Tmavý",
+      "language": "Jazyk"
+    },
+    "currency": {
+      "title": "Měna zobrazení",
+      "description": "Používá se k převodu a sčítání hodnot na účtech v různých měnách, například čistého jmění v přehledu."
+    },
+    "agents": {
+      "title": "AI agenti",
+      "description": "AI asistenti pracující s vašimi finančními daty, s podporou více poskytovatelů a nástrojů přes MCP. Ve výchozím nastavení jsou vypnuti – lze je nastavit v Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Vypnuto",
+      "enabled": "Zapnuto"
+    }
+  },
+  "auth": {
+    "logout": "Odhlásit se",
+    "fields": {
+      "email": "E-mail",
+      "password": "Heslo",
+      "displayName": "Zobrazované jméno",
+      "invitationToken": "Token pozvánky"
+    },
+    "login": {
+      "title": "Přihlášení",
+      "description": "Pokračujte přihlášením ke svému účtu LealFinance.",
+      "action": "Přihlásit se",
+      "invited": "Máte pozvánku?"
+    },
+    "register": {
+      "title": "Přijmout pozvánku",
+      "description": "Vytvořte si účet pomocí pozvánky od správce.",
+      "action": "Vytvořit účet",
+      "passwordHint": "Použijte alespoň 12 znaků.",
+      "backToLogin": "Zpět na přihlášení",
+      "setup": {
+        "title": "Vytvořit účet správce",
+        "description": "Toto je první účet v této instanci – bude mít úplný přístup správce."
+      }
+    }
+  },
+  "admin": {
+    "title": "Uživatelé a pozvánky",
+    "description": "Spravujte přístup k této instanci LealFinance.",
+    "roles": { "member": "Člen", "admin": "Správce" },
+    "users": { "title": "Uživatelé", "role": "Uživatelská role", "active": "Aktivní", "empty": "Nebyli nalezeni žádní uživatelé." },
+    "invitations": {
+      "title": "Pozvánky",
+      "createTitle": "Vytvořit pozvánku",
+      "create": "Pozvat",
+      "tokenOnce": "Tento token a registrační odkaz se zobrazují pouze nyní. Než odejdete, uložte si je.",
+      "copyLink": "Kopírovat registrační odkaz",
+      "revoke": "Odvolat",
+      "empty": "Nebyly nalezeny žádné pozvánky."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Něco se pokazilo. Zkuste to prosím znovu." },
+    "auth": {
+      "invalid_credentials": "E-mail nebo heslo nejsou správné.",
+      "csrf_invalid": "Platnost tohoto formuláře vypršela. Obnovte stránku a zkuste to znovu.",
+      "last_admin": "Je vyžadován alespoň jeden aktivní správce.",
+      "account_inactive": "Tento účet je neaktivní.",
+      "admin_required": "Je vyžadován přístup správce."
+    },
+    "invitation": {
+      "not_found": "Pozvánka není platná.",
+      "expired": "Platnost této pozvánky vypršela.",
+      "revoked": "Tato pozvánka byla odvolána.",
+      "already_accepted": "Tato pozvánka již byla přijata.",
+      "already_pending": "Pro tento e-mail již existuje nevyřízená pozvánka."
+    },
+    "user": { "email_taken": "Tento e-mail již používá jiný účet." }
+  }
+}

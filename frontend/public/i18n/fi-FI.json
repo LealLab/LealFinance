@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Sulje",
+      "cancel": "Peruuta",
+      "confirm": "Vahvista",
+      "save": "Tallenna",
+      "saving": "Tallennetaan…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Yhteenveto",
+      "accounts": "Tilit",
+      "transactions": "Tapahtumat",
+      "categories": "Luokat",
+      "budgets": "Budjetit",
+      "goals": "Tavoitteet",
+      "reports": "Raportit",
+      "exchange": "Valuuttakurssit",
+      "settings": "Asetukset",
+      "adminUsers": "Käyttäjät ja kutsut",
+      "sections": {
+        "accounts": "Tilit",
+        "analysis": "Analyysit",
+        "setup": "Määritykset",
+        "admin": "Hallinta"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Avaa valikko",
+      "expand": "Laajenna sivupalkki",
+      "collapse": "Pienennä sivupalkki"
+    },
+    "themeToggle": {
+      "switchToLight": "Vaihda vaaleaan teemaan",
+      "switchToDark": "Vaihda tummaan teemaan"
+    },
+    "languageSwitcher": {
+      "label": "Kieli",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Piilota saldot",
+      "show": "Näytä saldot"
+    },
+    "search": {
+      "trigger": "Haku"
+    },
+    "commandPalette": {
+      "placeholder": "Kirjoita komento tai hakusana...",
+      "empty": "Tuloksia ei löytynyt.",
+      "hints": {
+        "navigate": "siirry",
+        "select": "valitse",
+        "close": "sulje"
+      },
+      "groups": {
+        "quickActions": "Pikatoiminnot",
+        "goTo": "Siirry kohteeseen",
+        "accounts": "Tilit",
+        "categories": "Luokat",
+        "budgets": "Budjetit",
+        "transactions": "Tapahtumat"
+      },
+      "actions": {
+        "newTransaction": "Uusi tapahtuma",
+        "newAccount": "Uusi tili",
+        "newCategory": "Uusi luokka",
+        "newBudget": "Uusi budjetti",
+        "configureLanguage": "Määritä kieli",
+        "configureCurrency": "Määritä näyttövaluutta",
+        "toggleTheme": "Vaihda teemaa",
+        "toggleBalances": "Näytä tai piilota saldot"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Yhteenveto",
+    "welcome": "Tervetuloa LealFinanceen",
+    "empty": {
+      "title": "Ei vielä tietoja",
+      "description": "Lisää tili, niin voit tarkastella taloutesi yhteenvetoa."
+    },
+    "stats": {
+      "netWorth": "Nettovarallisuus",
+      "income": "Kuukauden tulot",
+      "expense": "Kuukauden menot",
+      "savingsRate": "Säästöaste"
+    },
+    "cashFlow": {
+      "title": "Kassavirta (6 kuukautta)",
+      "income": "Tulot",
+      "expense": "Menot"
+    },
+    "categoryChart": {
+      "title": "Menot luokittain (kuluva kuukausi)",
+      "label": "Luokat",
+      "empty": "Tälle kuukaudelle ei ole vielä kirjattu menoja."
+    },
+    "accounts": {
+      "title": "Tilit"
+    },
+    "recentTransactions": {
+      "title": "Viimeisimmät tapahtumat",
+      "empty": "Tapahtumia ei ole vielä kirjattu."
+    },
+    "budgets": {
+      "title": "Budjetit",
+      "empty": "Tälle kuukaudelle ei ole asetettu budjettia."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Valuuttakurssia ei ole saatavilla – arviona käytetään muuntosuhdetta 1:1.",
+    "fallbackRateWarningAction": "Aseta kurssi"
+  },
+  "accounts": {
+    "title": "Tilit",
+    "description": "Kaikki saldosi yhdessä paikassa.",
+    "showArchived": "Näytä arkistoidut tilit",
+    "archivedBadge": "Arkistoitu",
+    "noInstitution": "Ei rahoituslaitosta",
+    "mixedCurrencies": "Useita valuuttoja",
+    "actions": {
+      "new": "Uusi tili",
+      "edit": "Muokkaa",
+      "archive": "Arkistoi",
+      "unarchive": "Palauta arkistosta"
+    },
+    "archive": {
+      "title": "Arkistoidaanko tili?",
+      "message": "Tili \"{{name}}\" ei enää näy päänäkymissä. Haluatko jatkaa?"
+    },
+    "empty": {
+      "title": "Ei vielä tilejä",
+      "description": "Luo ensimmäinen tilisi, niin voit alkaa seurata saldojasi."
+    },
+    "type": {
+      "checking": "Käyttötili",
+      "savings": "Säästötili",
+      "cash": "Käteinen",
+      "credit_card": "Luottokortti",
+      "investment": "Sijoitukset",
+      "goal": "Tavoite"
+    },
+    "form": {
+      "newTitle": "Uusi tili",
+      "editTitle": "Muokkaa tiliä",
+      "saveError": "Tilin tallentaminen epäonnistui. Yritä uudelleen.",
+      "fields": {
+        "name": "Nimi",
+        "type": "Tyyppi",
+        "currency": "Valuutta",
+        "openingBalance": "Alkusaldo",
+        "institution": "Rahoituslaitos",
+        "creditLimit": "Luottoraja",
+        "closingDay": "Katkaisupäivä",
+        "dueDay": "Eräpäivä"
+      },
+      "errors": {
+        "required": "Tämä kenttä on pakollinen.",
+        "decimalAmount": "Anna kelvollinen lukuarvo."
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    },
+    "detail": {
+      "back": "Takaisin tileihin",
+      "notFound": "Tiliä ei löytynyt",
+      "history": "Tapahtumahistoria",
+      "historyEmpty": {
+        "title": "Tällä tilillä ei ole tapahtumia",
+        "description": "Tälle tilille kirjatut tapahtumat näkyvät täällä."
+      },
+      "creditCard": {
+        "title": "Luottokortti",
+        "used": "Käytetty",
+        "owed": "Nykyinen saldo",
+        "limit": "Luottoraja",
+        "available": "Käytettävissä",
+        "closingDay": "Katkaisupäivä"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Uusi rahoituslaitos",
+      "edit": "Muokkaa rahoituslaitosta",
+      "delete": "Poista rahoituslaitos"
+    },
+    "form": {
+      "newTitle": "Uusi rahoituslaitos",
+      "editTitle": "Muokkaa rahoituslaitosta",
+      "saveError": "Rahoituslaitoksen tallentaminen epäonnistui. Yritä uudelleen.",
+      "deleteInUseError": "Rahoituslaitokseen on edelleen liitetty tilejä, joten sitä ei voi poistaa.",
+      "fields": {
+        "name": "Nimi",
+        "icon": "Kuvake",
+        "color": "Väri"
+      },
+      "errors": {
+        "required": "Tämä kenttä on pakollinen."
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    },
+    "delete": {
+      "title": "Poista rahoituslaitos",
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän rahoituslaitoksen?"
+    },
+    "icon": {
+      "bank": "Pankki",
+      "wallet": "Lompakko",
+      "chart": "Sijoitukset",
+      "globe": "Kansainvälinen",
+      "archive": "Muu"
+    }
+  },
+  "transactions": {
+    "title": "Tapahtumat",
+    "description": "Tulot, menot ja tilisiirrot.",
+    "actions": {
+      "new": "Uusi tapahtuma",
+      "edit": "Muokkaa",
+      "delete": "Poista"
+    },
+    "tabs": {
+      "transactions": "Tapahtumat",
+      "recurring": "Toistuvat"
+    },
+    "type": {
+      "income": "Tulo",
+      "expense": "Meno",
+      "transfer": "Tilisiirto"
+    },
+    "filters": {
+      "type": "Tyyppi",
+      "account": "Tili",
+      "category": "Luokka",
+      "from": "Alkaen",
+      "to": "Asti",
+      "search": "Haku",
+      "institution": "Rahoituslaitos",
+      "all": "Kaikki",
+      "clear": "Tyhjennä suodattimet"
+    },
+    "empty": {
+      "title": "Tapahtumia ei löytynyt",
+      "description": "Muuta suodattimia tai lisää uusi tapahtuma."
+    },
+    "projected": {
+      "title": "Tulevat (ennuste)",
+      "badge": "Ennuste"
+    },
+    "delete": {
+      "title": "Poista tapahtuma",
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän tapahtuman?"
+    },
+    "form": {
+      "newTitle": "Uusi tapahtuma",
+      "editTitle": "Muokkaa tapahtumaa",
+      "saveError": "Tapahtuman tallentaminen epäonnistui. Yritä uudelleen.",
+      "fields": {
+        "date": "Päivämäärä",
+        "amount": "Summa",
+        "currency": "Valuutta",
+        "convertedAmount": "Muunnettu summa",
+        "conversionFee": "Vaihtokulu tai vero (valinnainen)",
+        "account": "Tili",
+        "fromAccount": "Lähdetili",
+        "toAccount": "Kohdetili",
+        "fromInstitution": "Lähteen rahoituslaitos",
+        "toInstitution": "Kohteen rahoituslaitos",
+        "anyInstitution": "Mikä tahansa rahoituslaitos",
+        "category": "Luokka",
+        "description": "Kuvaus",
+        "notes": "Muistiinpanot",
+        "repeat": "Toista tämä tapahtuma",
+        "frequency": "Toistuvuus",
+        "interval": "Joka",
+        "selectPlaceholder": "Valitse"
+      },
+      "hints": {
+        "effectiveRate": "Todellinen kurssi: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Eri valuuttojen välistä tapahtumaa ei voi toistaa, koska kurssi pitäisi määrittää uudelleen jokaiselle tapahtumakerralle."
+      },
+      "errors": {
+        "invalid": "Tarkista pakolliset kentät ennen tallentamista.",
+        "convertedAmountRequired": "Anna muunnettu summa ennen tallentamista."
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Viikoittain",
+        "monthly": "Kuukausittain",
+        "yearly": "Vuosittain"
+      },
+      "everyN": "joka {{n}}.",
+      "nextOccurrence": "Seuraava tapahtumakerta",
+      "actions": {
+        "new": "Uusi toistumissääntö"
+      },
+      "empty": {
+        "title": "Ei vielä toistumissääntöjä",
+        "description": "Kun muutat tapahtuman toistuvaksi, sitä varten luodaan sääntö tänne."
+      },
+      "delete": {
+        "title": "Poista toistumissääntö",
+        "message": "Tämä ei vaikuta kirjattuihin tapahtumiin – vain tulevat ennustetut tapahtumakerrat poistuvat."
+      },
+      "form": {
+        "newTitle": "Uusi toistumissääntö",
+        "editTitle": "Muokkaa toistumissääntöä",
+        "saveError": "Toistumissäännön tallentaminen epäonnistui. Yritä uudelleen.",
+        "startDate": "Alkaa",
+        "endDate": "Päättyy (valinnainen)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Luokat",
+    "description": "Järjestä tulot ja menot luokkiin.",
+    "showArchived": "Näytä arkistoidut luokat",
+    "archivedBadge": "Arkistoitu",
+    "actions": {
+      "new": "Uusi luokka",
+      "edit": "Muokkaa",
+      "archive": "Arkistoi",
+      "unarchive": "Palauta arkistosta",
+      "delete": "Poista",
+      "addChild": "Uusi alaluokka",
+      "collapse": "Pienennä",
+      "expand": "Laajenna",
+      "dragHandle": "Muuta järjestystä"
+    },
+    "empty": {
+      "title": "Ei vielä luokkia",
+      "description": "Luo luokkia tapahtumiesi järjestämistä varten."
+    },
+    "sections": {
+      "income": "Tuloluokat",
+      "expense": "Menoluokat"
+    },
+    "delete": {
+      "title": "Poistetaanko luokka?",
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa luokan \"{{name}}\"?",
+      "blockedTitle": "Poistaminen ei onnistu",
+      "blockedMessage": "Tämä luokka on edelleen käytössä: sitä käyttää {{transactions}} tapahtumaa, {{budgets}} budjettia ja {{children}} alaluokkaa. Arkistoi luokka poistamisen sijaan."
+    },
+    "form": {
+      "newTitle": "Uusi luokka",
+      "editTitle": "Muokkaa luokkaa",
+      "saveError": "Luokan tallentaminen epäonnistui. Yritä uudelleen.",
+      "fields": {
+        "name": "Nimi",
+        "parent": "Yläluokka",
+        "noParent": "Ei mitään (ylimmän tason luokka)",
+        "color": "Väri",
+        "icon": "Kuvake"
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    },
+    "icon": {
+      "tag": "Tunniste",
+      "home": "Koti",
+      "archive": "Arkisto",
+      "swap": "Liikenne",
+      "wallet": "Lompakko",
+      "chart": "Kaavio",
+      "sun": "Energia",
+      "alertTriangle": "Varoitus",
+      "pencil": "Koulutus",
+      "target": "Tavoite",
+      "repeat": "Toistuva",
+      "globe": "Maailmanlaajuinen"
+    }
+  },
+  "budgets": {
+    "title": "Budjetit",
+    "description": "Suunnittele, kuinka paljon käytät kuhunkin luokkaan kuukausittain.",
+    "list": {
+      "title": "Kuukausirajat"
+    },
+    "planner": {
+      "title": "Tuloihin perustuva budjetti",
+      "description": "Jaa odotetut tulosi eri luokkiin.",
+      "total": "Yhteensä",
+      "expectedIncome": "Odotetut tulot",
+      "chartLabel": "Jakauma",
+      "fixed": "Kiinteä",
+      "empty": "Aseta prosenttiosuudet nähdäksesi jakauman.",
+      "save": "Tallenna jakauma",
+      "errors": {
+        "total": "Jakauma ei voi ylittää 100 prosenttia.",
+        "income": "Anna tämän kuukauden odotetut tulot.",
+        "save": "Jakauman tallentaminen epäonnistui. Yritä uudelleen."
+      }
+    },
+    "monthLabel": "Kuukausi",
+    "actions": {
+      "new": "Uusi budjetti",
+      "edit": "Muokkaa",
+      "delete": "Poista"
+    },
+    "totals": {
+      "budgeted": "Budjetoitu",
+      "spent": "Käytetty",
+      "remaining": "Jäljellä"
+    },
+    "empty": {
+      "title": "Ei budjettia tälle kuukaudelle",
+      "description": "Aseta luokkakohtainen budjetti menojesi seurantaa varten."
+    },
+    "state": {
+      "over": "Budjetti ylitetty",
+      "near": "Lähellä rajaa"
+    },
+    "unbudgeted": {
+      "title": "Budjetoimattomat menot",
+      "setBudget": "Aseta budjetti"
+    },
+    "delete": {
+      "title": "Poista budjetti",
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän budjetin?"
+    },
+    "form": {
+      "newTitle": "Uusi budjetti",
+      "editTitle": "Muokkaa budjettia",
+      "saveError": "Budjetin tallentaminen epäonnistui. Yritä uudelleen.",
+      "fields": {
+        "month": "Kuukausi",
+        "category": "Luokka",
+        "selectCategory": "Valitse luokka",
+        "amount": "Summa",
+        "currency": "Valuutta"
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    }
+  },
+  "goals": {
+    "title": "Tavoitteet",
+    "description": "Säästä haluamaasi tavoitteeseen ja seuraa edistymistäsi.",
+    "showArchived": "Näytä arkistoidut tavoitteet",
+    "archiveError": "Tavoitteen arkistointitilan päivittäminen epäonnistui. Yritä uudelleen.",
+    "accountLabel": "Tili",
+    "archived": "Arkistoitu",
+    "overdue": "Myöhässä",
+    "actions": {
+      "new": "Uusi tavoite",
+      "edit": "Muokkaa tavoitetta",
+      "archive": "Arkistoi tavoite",
+      "unarchive": "Palauta tavoite arkistosta",
+      "deposit": "Lisää rahaa",
+      "withdraw": "Nosta rahaa",
+      "interest": "Lisää korko"
+    },
+    "empty": {
+      "title": "Ei vielä tavoitteita",
+      "description": "Luo tavoite, niin voit aloittaa säästämisen ja seurata edistymistäsi."
+    },
+    "progress": {
+      "current": "Säästetty",
+      "target": "Tavoite",
+      "remaining": "Jäljellä",
+      "contribution": "Ehdotettu säästösumma",
+      "notConfigured": "Ei määräpäivää",
+      "frequency": "Toistuvuus",
+      "every": "joka {{n}}.",
+      "label": "Edistyminen"
+    },
+    "frequency": {
+      "weekly": "Viikoittain",
+      "monthly": "Kuukausittain",
+      "yearly": "Vuosittain"
+    },
+    "history": {
+      "title": "Tavoitteen historia",
+      "empty": "Ei kirjattuja tapahtumia."
+    },
+    "form": {
+      "newTitle": "Uusi tavoite",
+      "editTitle": "Muokkaa tavoitetta",
+      "saveError": "Tavoitteen tallentaminen epäonnistui. Yritä uudelleen.",
+      "fields": {
+        "name": "Nimi",
+        "targetAmount": "Tavoitesumma",
+        "currency": "Valuutta",
+        "targetDate": "Tavoitepäivä",
+        "targetDateHint": "Valinnainen: lisää määräpäivä ehdotetun säästösumman laskemista varten.",
+        "frequency": "Säästöjen toistuvuus",
+        "interval": "Joka"
+      },
+      "errors": {
+        "required": "Tämä kenttä on pakollinen."
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Lisää rahaa tavoitteeseen" },
+      "withdraw": { "title": "Nosta rahaa tavoitteesta" },
+      "interest": { "title": "Lisää korko" },
+      "fields": {
+        "amount": "Summa",
+        "date": "Päivämäärä",
+        "sourceAccount": "Lähde- tai kohdetili",
+        "description": "Kuvaus"
+      },
+      "saveError": "Tapahtuman kirjaaminen epäonnistui. Yritä uudelleen."
+    }
+  },
+  "reports": {
+    "title": "Raportit",
+    "description": "Analysoi tulojen, menojen ja saldojen kehitystä.",
+    "period": {
+      "month": "Tämä kuukausi",
+      "3m": "Viimeiset 3 kuukautta",
+      "6m": "Viimeiset 6 kuukautta",
+      "12m": "Viimeiset 12 kuukautta",
+      "custom": "Mukautettu"
+    },
+    "empty": {
+      "title": "Tällä ajanjaksolla ei ole tapahtumia",
+      "description": "Muuta valittua ajanjaksoa nähdäksesi raportit."
+    },
+    "charts": {
+      "incomeExpense": "Tulot ja menot",
+      "netFlow": "Nettokassavirta",
+      "byCategory": "Menot luokittain",
+      "balanceTrend": "Saldon kehitys tileittäin"
+    },
+    "series": {
+      "income": "Tulot",
+      "expense": "Menot",
+      "netFlow": "Nettokassavirta",
+      "categories": "Luokat"
+    }
+  },
+  "exchange": {
+    "title": "Valuuttakurssit",
+    "description": "Itse määritetyt valuuttakurssit ja niitä käyttäneet muunnokset.",
+    "stats": {
+      "feesPaid": "Maksetut vaihtokulut",
+      "needsAttention": "Tarkistettavat tapahtumat",
+      "currenciesNeedingRate": "Valuutat, joilta puuttuu kurssi"
+    },
+    "needsAttention": {
+      "title": "Tarkistettavaa",
+      "description": "Nämä tapahtumat muunnettiin arviolta suhteessa 1:1. Korjaa ne todellisella kurssilla tai aseta itse määritetty kurssi alla.",
+      "empty": {
+        "title": "Ei tarkistettavaa",
+        "description": "Jokaiselle eri valuuttojen väliselle tapahtumalle on tallennettu todellinen kurssi."
+      },
+      "actions": {
+        "fix": "Korjaa"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Valuutat, joilta puuttuu kurssi",
+      "description": "Näille tilien valuutoille ei ole vielä todellista kurssia näyttövaluuttaan. Niiden saldot näytetään siksi arviona suhteessa 1:1, eikä arvio liity mihinkään tiettyyn tapahtumaan.",
+      "empty": {
+        "title": "Yksikään valuutta ei tarvitse kurssia",
+        "description": "Jokaiselle tilivaluutalle löytyy jo todellinen kurssi."
+      }
+    },
+    "manualRates": {
+      "title": "Itse määritetyt kurssit",
+      "description": "Itse asettamasi kurssit ohittavat automaattisen palveluntarjoajan. Niitä voi käyttää esimerkiksi pankin tämänpäiväiseen todelliseen kurssiin tai silloin, kun palveluntarjoajaa ei ole määritetty.",
+      "actions": {
+        "add": "Lisää kurssi",
+        "edit": "Muokkaa kurssia",
+        "delete": "Poista kurssi"
+      },
+      "empty": {
+        "title": "Ei vielä itse määritettyjä kursseja",
+        "description": "Lisää valuuttaparille kurssi, jotta sitä käytetään automaattisen 1:1-varakurssin sijaan."
+      },
+      "delete": {
+        "title": "Poista itse määritetty kurssi",
+        "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän kurssin?"
+      },
+      "form": {
+        "newTitle": "Uusi itse määritetty kurssi",
+        "editTitle": "Muokkaa itse määritettyä kurssia",
+        "saveError": "Kurssin tallentaminen epäonnistui. Yritä uudelleen.",
+        "fields": {
+          "baseCode": "Lähtövaluutta",
+          "quoteCode": "Kohdevaluutta",
+          "rate": "Kurssi",
+          "asOf": "Voimassa alkaen"
+        },
+        "errors": {
+          "invalid": "Anna kelvollinen kurssi.",
+          "samePair": "Valitse kaksi eri valuuttaa."
+        },
+        "actions": {
+          "cancel": "Peruuta",
+          "save": "Tallenna"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Asetukset",
+    "description": "Ulkoasun, kielen ja esimerkkitietojen asetukset.",
+    "appearance": {
+      "title": "Ulkoasu",
+      "theme": "Teema",
+      "light": "Vaalea",
+      "dark": "Tumma",
+      "language": "Kieli"
+    },
+    "currency": {
+      "title": "Näyttövaluutta",
+      "description": "Sen avulla muunnetaan ja lasketaan yhteen eri valuutoissa olevien tilien arvoja, kuten yhteenvedon nettovarallisuus."
+    },
+    "agents": {
+      "title": "Tekoälyagentit",
+      "description": "Taloustietojasi käsittelevät tekoälyavustajat, jotka tukevat useita palveluntarjoajia ja MCP-työkaluja. Oletuksena pois käytöstä – määritettävissä Docker Composessa (AGENTS_ENABLED).",
+      "disabled": "Pois käytöstä",
+      "enabled": "Käytössä"
+    }
+  },
+  "auth": {
+    "logout": "Kirjaudu ulos",
+    "fields": {
+      "email": "Sähköposti",
+      "password": "Salasana",
+      "displayName": "Näyttönimi",
+      "invitationToken": "Kutsutunnus"
+    },
+    "login": {
+      "title": "Kirjaudu sisään",
+      "description": "Jatka kirjautumalla LealFinance-tilillesi.",
+      "action": "Kirjaudu sisään",
+      "invited": "Onko sinulla kutsu?"
+    },
+    "register": {
+      "title": "Hyväksy kutsu",
+      "description": "Luo tili järjestelmänvalvojan lähettämällä kutsulla.",
+      "action": "Luo tili",
+      "passwordHint": "Käytä vähintään 12 merkkiä.",
+      "backToLogin": "Takaisin kirjautumiseen",
+      "setup": {
+        "title": "Luo järjestelmänvalvojan tili",
+        "description": "Tämä on tämän asennuksen ensimmäinen tili, joten sillä on täydet järjestelmänvalvojan oikeudet."
+      }
+    }
+  },
+  "admin": {
+    "title": "Käyttäjät ja kutsut",
+    "description": "Hallitse tämän LealFinance-asennuksen käyttöoikeuksia.",
+    "roles": { "member": "Jäsen", "admin": "Järjestelmänvalvoja" },
+    "users": { "title": "Käyttäjät", "role": "Rooli", "active": "Aktiivinen", "empty": "Käyttäjiä ei löytynyt." },
+    "invitations": {
+      "title": "Kutsut",
+      "createTitle": "Luo kutsu",
+      "create": "Kutsu",
+      "tokenOnce": "Tämä tunnus ja rekisteröitymislinkki näytetään vain nyt. Tallenna ne ennen poistumista.",
+      "copyLink": "Kopioi rekisteröitymislinkki",
+      "revoke": "Peruuta kutsu",
+      "empty": "Kutsuja ei löytynyt."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Jokin meni pieleen. Yritä uudelleen." },
+    "auth": {
+      "invalid_credentials": "Sähköpostiosoite tai salasana on väärä.",
+      "csrf_invalid": "Tämä lomake on vanhentunut. Päivitä sivu ja yritä uudelleen.",
+      "last_admin": "Vähintään yhden järjestelmänvalvojan on oltava aktiivinen.",
+      "account_inactive": "Tämä tili ei ole aktiivinen.",
+      "admin_required": "Toiminto edellyttää järjestelmänvalvojan oikeuksia."
+    },
+    "invitation": {
+      "not_found": "Kutsu ei ole kelvollinen.",
+      "expired": "Tämä kutsu on vanhentunut.",
+      "revoked": "Tämä kutsu on peruttu.",
+      "already_accepted": "Tämä kutsu on jo hyväksytty.",
+      "already_pending": "Tälle sähköpostiosoitteelle on jo voimassa oleva kutsu."
+    },
+    "user": { "email_taken": "Tämä sähköpostiosoite on jo toisen tilin käytössä." }
+  }
+}

@@ -1,0 +1,736 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Cerrar",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "save": "Guardar",
+      "saving": "Guardando…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Panel",
+      "accounts": "Cuentas",
+      "transactions": "Movimientos",
+      "categories": "Categorías",
+      "budgets": "Presupuestos",
+      "goals": "Objetivos",
+      "reports": "Informes",
+      "exchange": "Cambio de divisas",
+      "settings": "Ajustes",
+      "adminUsers": "Usuarios e invitaciones",
+      "sections": {
+        "accounts": "Cuentas",
+        "analysis": "Análisis",
+        "setup": "Configuración",
+        "admin": "Administración"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Abrir menú",
+      "expand": "Expandir barra lateral",
+      "collapse": "Contraer barra lateral"
+    },
+    "themeToggle": {
+      "switchToLight": "Cambiar al tema claro",
+      "switchToDark": "Cambiar al tema oscuro"
+    },
+    "languageSwitcher": {
+      "label": "Idioma",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Ocultar saldos",
+      "show": "Mostrar saldos"
+    },
+    "search": {
+      "trigger": "Buscar"
+    },
+    "commandPalette": {
+      "placeholder": "Escribe un comando o busca…",
+      "empty": "No se han encontrado resultados.",
+      "hints": {
+        "navigate": "navegar",
+        "select": "seleccionar",
+        "close": "cerrar"
+      },
+      "groups": {
+        "quickActions": "Acciones rápidas",
+        "goTo": "Ir a",
+        "accounts": "Cuentas",
+        "categories": "Categorías",
+        "budgets": "Presupuestos",
+        "transactions": "Movimientos"
+      },
+      "actions": {
+        "newTransaction": "Nuevo movimiento",
+        "newAccount": "Nueva cuenta",
+        "newCategory": "Nueva categoría",
+        "newBudget": "Nuevo presupuesto",
+        "configureLanguage": "Configurar idioma",
+        "configureCurrency": "Configurar moneda de visualización",
+        "toggleTheme": "Cambiar tema",
+        "toggleBalances": "Mostrar u ocultar saldos"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcome": "Te damos la bienvenida a LealFinance",
+    "empty": {
+      "title": "Aún no hay datos",
+      "description": "Añade una cuenta para empezar a ver tu panel financiero."
+    },
+    "stats": {
+      "netWorth": "Patrimonio neto",
+      "income": "Ingresos mensuales",
+      "expense": "Gastos mensuales",
+      "savingsRate": "Porcentaje de ahorro"
+    },
+    "cashFlow": {
+      "title": "Flujo de caja (6 meses)",
+      "income": "Ingresos",
+      "expense": "Gastos"
+    },
+    "categoryChart": {
+      "title": "Gastos por categoría (mes actual)",
+      "label": "Categorías",
+      "empty": "Aún no hay gastos registrados este mes."
+    },
+    "accounts": {
+      "title": "Cuentas"
+    },
+    "recentTransactions": {
+      "title": "Movimientos recientes",
+      "empty": "Aún no hay movimientos registrados."
+    },
+    "budgets": {
+      "title": "Presupuestos",
+      "empty": "No hay presupuesto para este mes."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "No hay ningún tipo de cambio disponible; se usará una conversión aproximada 1:1.",
+    "fallbackRateWarningAction": "Establecer un tipo de cambio"
+  },
+  "accounts": {
+    "title": "Cuentas",
+    "description": "Tus saldos en un solo lugar.",
+    "showArchived": "Mostrar cuentas archivadas",
+    "archivedBadge": "Archivada",
+    "noInstitution": "Sin entidad",
+    "mixedCurrencies": "Varias monedas",
+    "actions": {
+      "new": "Nueva cuenta",
+      "edit": "Editar",
+      "archive": "Archivar",
+      "unarchive": "Desarchivar"
+    },
+    "archive": {
+      "title": "¿Archivar la cuenta?",
+      "message": "La cuenta «{{name}}» dejará de aparecer en las vistas principales. ¿Quieres continuar?"
+    },
+    "empty": {
+      "title": "Aún no hay cuentas",
+      "description": "Crea tu primera cuenta para empezar a controlar tus saldos."
+    },
+    "type": {
+      "checking": "Cuenta corriente",
+      "savings": "Cuenta de ahorro",
+      "cash": "Efectivo",
+      "credit_card": "Tarjeta de crédito",
+      "investment": "Inversiones",
+      "goal": "Objetivo"
+    },
+    "form": {
+      "newTitle": "Nueva cuenta",
+      "editTitle": "Editar cuenta",
+      "saveError": "No se ha podido guardar la cuenta. Inténtalo de nuevo.",
+      "fields": {
+        "name": "Nombre",
+        "type": "Tipo",
+        "currency": "Moneda",
+        "openingBalance": "Saldo inicial",
+        "institution": "Entidad",
+        "creditLimit": "Límite de crédito",
+        "closingDay": "Día de cierre",
+        "dueDay": "Día de vencimiento"
+      },
+      "errors": {
+        "required": "Este campo es obligatorio.",
+        "decimalAmount": "Introduce un importe numérico válido."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    },
+    "detail": {
+      "back": "Volver a las cuentas",
+      "notFound": "No se ha encontrado la cuenta.",
+      "history": "Historial de movimientos",
+      "historyEmpty": {
+        "title": "No hay movimientos en esta cuenta",
+        "description": "Los movimientos registrados en esta cuenta aparecerán aquí."
+      },
+      "creditCard": {
+        "title": "Tarjeta de crédito",
+        "used": "Utilizado",
+        "owed": "Saldo actual",
+        "limit": "Límite",
+        "available": "Disponible",
+        "closingDay": "Cierre"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Nueva entidad",
+      "edit": "Editar entidad",
+      "delete": "Eliminar entidad"
+    },
+    "form": {
+      "newTitle": "Nueva entidad",
+      "editTitle": "Editar entidad",
+      "saveError": "No se ha podido guardar la entidad. Inténtalo de nuevo.",
+      "deleteInUseError": "Esta entidad todavía tiene cuentas vinculadas y no se puede eliminar.",
+      "fields": {
+        "name": "Nombre",
+        "icon": "Icono",
+        "color": "Color"
+      },
+      "errors": {
+        "required": "Este campo es obligatorio."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    },
+    "delete": {
+      "title": "Eliminar entidad",
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar esta entidad?"
+    },
+    "icon": {
+      "bank": "Banco",
+      "wallet": "Cartera",
+      "chart": "Inversiones",
+      "globe": "Internacional",
+      "archive": "Otro"
+    }
+  },
+  "transactions": {
+    "title": "Movimientos",
+    "description": "Ingresos, gastos y transferencias.",
+    "actions": {
+      "new": "Nuevo movimiento",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "tabs": {
+      "transactions": "Movimientos",
+      "recurring": "Recurrentes"
+    },
+    "type": {
+      "income": "Ingreso",
+      "expense": "Gasto",
+      "transfer": "Transferencia"
+    },
+    "filters": {
+      "type": "Tipo",
+      "account": "Cuenta",
+      "category": "Categoría",
+      "from": "Desde",
+      "to": "Hasta",
+      "search": "Buscar",
+      "institution": "Entidad",
+      "all": "Todos",
+      "clear": "Borrar filtros"
+    },
+    "empty": {
+      "title": "No se han encontrado movimientos",
+      "description": "Ajusta los filtros o añade un movimiento nuevo."
+    },
+    "projected": {
+      "title": "Próximos (previstos)",
+      "badge": "Previsto"
+    },
+    "delete": {
+      "title": "Eliminar movimiento",
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este movimiento?"
+    },
+    "form": {
+      "newTitle": "Nuevo movimiento",
+      "editTitle": "Editar movimiento",
+      "saveError": "No se ha podido guardar el movimiento. Inténtalo de nuevo.",
+      "fields": {
+        "date": "Fecha",
+        "amount": "Importe",
+        "currency": "Moneda",
+        "convertedAmount": "Importe convertido",
+        "conversionFee": "Comisión/impuesto de conversión (opcional)",
+        "account": "Cuenta",
+        "fromAccount": "Cuenta de origen",
+        "toAccount": "Cuenta de destino",
+        "fromInstitution": "Entidad de origen",
+        "toInstitution": "Entidad de destino",
+        "anyInstitution": "Cualquier entidad",
+        "category": "Categoría",
+        "description": "Descripción",
+        "notes": "Notas",
+        "repeat": "Repetir este movimiento",
+        "frequency": "Frecuencia",
+        "interval": "Cada",
+        "selectPlaceholder": "Seleccionar"
+      },
+      "hints": {
+        "effectiveRate": "Tipo de cambio efectivo: {{rate}}",
+        "recurringUnavailableCrossCurrency": "No se puede repetir un movimiento entre distintas monedas: habría que establecer el tipo de cambio de nuevo en cada ocurrencia."
+      },
+      "errors": {
+        "invalid": "Comprueba los campos obligatorios antes de guardar.",
+        "convertedAmountRequired": "Introduce el importe convertido antes de guardar."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Semanal",
+        "monthly": "Mensual",
+        "yearly": "Anual"
+      },
+      "everyN": "cada {{n}}",
+      "nextOccurrence": "Próxima ocurrencia",
+      "actions": {
+        "new": "Nueva regla recurrente"
+      },
+      "empty": {
+        "title": "Aún no hay reglas recurrentes",
+        "description": "Convertir un movimiento en recurrente crea aquí una regla."
+      },
+      "delete": {
+        "title": "Eliminar regla recurrente",
+        "message": "Esto no afecta a los movimientos registrados; solo desaparecerán las próximas ocurrencias previstas."
+      },
+      "form": {
+        "newTitle": "Nueva regla recurrente",
+        "editTitle": "Editar regla recurrente",
+        "saveError": "No se ha podido guardar la regla recurrente. Inténtalo de nuevo.",
+        "startDate": "Inicio",
+        "endDate": "Fin (opcional)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Categorías",
+    "description": "Organiza ingresos y gastos por categoría.",
+    "showArchived": "Mostrar categorías archivadas",
+    "archivedBadge": "Archivada",
+    "actions": {
+      "new": "Nueva categoría",
+      "edit": "Editar",
+      "archive": "Archivar",
+      "unarchive": "Desarchivar",
+      "delete": "Eliminar",
+      "addChild": "Nueva subcategoría",
+      "collapse": "Contraer",
+      "expand": "Expandir",
+      "dragHandle": "Reordenar"
+    },
+    "empty": {
+      "title": "Aún no hay categorías",
+      "description": "Crea categorías para organizar tus movimientos."
+    },
+    "sections": {
+      "income": "Categorías de ingresos",
+      "expense": "Categorías de gastos"
+    },
+    "delete": {
+      "title": "¿Eliminar la categoría?",
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar la categoría «{{name}}»?",
+      "blockedTitle": "No se puede eliminar",
+      "blockedMessage": "Esta categoría sigue en uso (movimientos: {{transactions}}; presupuestos: {{budgets}}; subcategorías: {{children}}). Archívala en lugar de eliminarla."
+    },
+    "form": {
+      "newTitle": "Nueva categoría",
+      "editTitle": "Editar categoría",
+      "saveError": "No se ha podido guardar la categoría. Inténtalo de nuevo.",
+      "fields": {
+        "name": "Nombre",
+        "parent": "Categoría superior",
+        "noParent": "Ninguna (categoría principal)",
+        "color": "Color",
+        "icon": "Icono"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    },
+    "icon": {
+      "tag": "Etiqueta",
+      "home": "Hogar",
+      "archive": "Archivo",
+      "swap": "Transporte",
+      "wallet": "Cartera",
+      "chart": "Gráfico",
+      "sun": "Energía",
+      "alertTriangle": "Alerta",
+      "pencil": "Educación",
+      "target": "Objetivo",
+      "repeat": "Recurrente",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Presupuestos",
+    "description": "Planifica cuánto gastar en cada categoría cada mes.",
+    "list": {
+      "title": "Límites mensuales"
+    },
+    "planner": {
+      "title": "Presupuesto basado en ingresos",
+      "description": "Distribuye tus ingresos previstos entre las categorías.",
+      "total": "Total",
+      "expectedIncome": "Ingresos previstos",
+      "chartLabel": "Distribución",
+      "fixed": "Fijo",
+      "empty": "Establece porcentajes para ver la distribución.",
+      "save": "Guardar distribución",
+      "errors": {
+        "total": "La distribución no puede superar el 100 %.",
+        "income": "Introduce los ingresos previstos de este mes.",
+        "save": "No se ha podido guardar la distribución. Inténtalo de nuevo."
+      }
+    },
+    "monthLabel": "Mes",
+    "actions": {
+      "new": "Nuevo presupuesto",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "totals": {
+      "budgeted": "Presupuestado",
+      "spent": "Gastado",
+      "remaining": "Restante"
+    },
+    "empty": {
+      "title": "No hay presupuesto para este mes",
+      "description": "Establece un presupuesto por categoría para controlar tus gastos."
+    },
+    "state": {
+      "over": "Presupuesto excedido",
+      "near": "Cerca del límite"
+    },
+    "unbudgeted": {
+      "title": "Gastos sin presupuesto",
+      "setBudget": "Establecer presupuesto"
+    },
+    "delete": {
+      "title": "Eliminar presupuesto",
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este presupuesto?"
+    },
+    "form": {
+      "newTitle": "Nuevo presupuesto",
+      "editTitle": "Editar presupuesto",
+      "saveError": "No se ha podido guardar el presupuesto. Inténtalo de nuevo.",
+      "fields": {
+        "month": "Mes",
+        "category": "Categoría",
+        "selectCategory": "Selecciona una categoría",
+        "amount": "Importe",
+        "currency": "Moneda"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    }
+  },
+  "goals": {
+    "title": "Objetivos",
+    "description": "Ahorra para cualquier objetivo y sigue tu progreso.",
+    "showArchived": "Mostrar objetivos archivados",
+    "archiveError": "No se ha podido actualizar el estado de archivo del objetivo. Inténtalo de nuevo.",
+    "accountLabel": "Cuenta",
+    "archived": "Archivado",
+    "overdue": "Vencido",
+    "actions": {
+      "new": "Nuevo objetivo",
+      "edit": "Editar objetivo",
+      "archive": "Archivar objetivo",
+      "unarchive": "Desarchivar objetivo",
+      "deposit": "Aportar",
+      "withdraw": "Retirar",
+      "interest": "Añadir intereses"
+    },
+    "empty": {
+      "title": "Aún no hay objetivos",
+      "description": "Crea un objetivo para empezar a ahorrar y seguir tu progreso."
+    },
+    "progress": {
+      "current": "Ahorrado",
+      "target": "Objetivo",
+      "remaining": "Restante",
+      "contribution": "Aportación sugerida",
+      "notConfigured": "Sin fecha límite",
+      "frequency": "Frecuencia",
+      "every": "cada {{n}}",
+      "label": "Progreso"
+    },
+    "frequency": {
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "yearly": "Anual"
+    },
+    "history": {
+      "title": "Historial del objetivo",
+      "empty": "No se ha registrado ninguna actividad."
+    },
+    "form": {
+      "newTitle": "Nuevo objetivo",
+      "editTitle": "Editar objetivo",
+      "saveError": "No se ha podido guardar el objetivo. Inténtalo de nuevo.",
+      "fields": {
+        "name": "Nombre",
+        "targetAmount": "Importe objetivo",
+        "currency": "Moneda",
+        "targetDate": "Fecha objetivo",
+        "targetDateHint": "Opcional: añade una fecha límite para calcular la aportación sugerida.",
+        "frequency": "Frecuencia de aportación",
+        "interval": "Cada"
+      },
+      "errors": {
+        "required": "Este campo es obligatorio."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Aportar al objetivo" },
+      "withdraw": { "title": "Retirar del objetivo" },
+      "interest": { "title": "Añadir intereses" },
+      "fields": {
+        "amount": "Importe",
+        "date": "Fecha",
+        "sourceAccount": "Cuenta de origen/destino",
+        "description": "Descripción"
+      },
+      "saveError": "No se ha podido registrar la actividad. Inténtalo de nuevo."
+    }
+  },
+  "reports": {
+    "title": "Informes",
+    "description": "Analiza ingresos, gastos y saldos a lo largo del tiempo.",
+    "period": {
+      "month": "Este mes",
+      "3m": "Últimos 3 meses",
+      "6m": "Últimos 6 meses",
+      "12m": "Últimos 12 meses",
+      "custom": "Personalizado"
+    },
+    "empty": {
+      "title": "No hay movimientos en este período",
+      "description": "Ajusta el período seleccionado para ver tus informes."
+    },
+    "charts": {
+      "incomeExpense": "Ingresos frente a gastos",
+      "netFlow": "Flujo neto",
+      "byCategory": "Gastos por categoría",
+      "balanceTrend": "Evolución del saldo por cuenta"
+    },
+    "series": {
+      "income": "Ingresos",
+      "expense": "Gastos",
+      "netFlow": "Flujo neto",
+      "categories": "Categorías"
+    }
+  },
+  "exchange": {
+    "title": "Cambio de divisas",
+    "description": "Tipos de cambio manuales y conversiones realizadas con ellos.",
+    "stats": {
+      "feesPaid": "Comisiones de conversión pagadas",
+      "needsAttention": "Movimientos que requieren atención",
+      "currenciesNeedingRate": "Monedas sin tipo de cambio"
+    },
+    "needsAttention": {
+      "title": "Requieren atención",
+      "description": "Estos movimientos se han convertido usando una aproximación 1:1. Corrígelos con el tipo de cambio real o establece un tipo de cambio manual más abajo.",
+      "empty": {
+        "title": "No hay nada que revisar",
+        "description": "Todos los movimientos entre distintas monedas tienen registrado un tipo de cambio real."
+      },
+      "actions": {
+        "fix": "Corregir"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Monedas sin tipo de cambio",
+      "description": "Estas monedas de cuenta todavía no tienen un tipo de cambio real respecto a tu moneda de visualización, por lo que sus saldos se muestran con una aproximación 1:1 y no están asociados a ningún movimiento concreto.",
+      "empty": {
+        "title": "Ninguna moneda necesita un tipo de cambio",
+        "description": "Todas las monedas de cuenta ya tienen un tipo de cambio real."
+      }
+    },
+    "manualRates": {
+      "title": "Tipos de cambio manuales",
+      "description": "Los tipos de cambio que estableces manualmente tienen prioridad sobre el proveedor automático. Son útiles para usar el tipo de cambio real del banco de hoy o cuando no hay ningún proveedor configurado.",
+      "actions": {
+        "add": "Añadir tipo de cambio",
+        "edit": "Editar tipo de cambio",
+        "delete": "Eliminar tipo de cambio"
+      },
+      "empty": {
+        "title": "Aún no hay tipos de cambio manuales",
+        "description": "Añade un tipo de cambio para un par de monedas y úsalo en lugar de la aproximación automática 1:1."
+      },
+      "delete": {
+        "title": "Eliminar tipo de cambio manual",
+        "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este tipo de cambio?"
+      },
+      "form": {
+        "newTitle": "Nuevo tipo de cambio manual",
+        "editTitle": "Editar tipo de cambio manual",
+        "saveError": "No se ha podido guardar el tipo de cambio. Inténtalo de nuevo.",
+        "fields": {
+          "baseCode": "Moneda de origen",
+          "quoteCode": "Moneda de destino",
+          "rate": "Tipo de cambio",
+          "asOf": "Vigente desde"
+        },
+        "errors": {
+          "invalid": "Introduce un tipo de cambio válido.",
+          "samePair": "Elige dos monedas distintas."
+        },
+        "actions": {
+          "cancel": "Cancelar",
+          "save": "Guardar"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "description": "Preferencias de apariencia, idioma y datos de demostración.",
+    "appearance": {
+      "title": "Apariencia",
+      "theme": "Tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "language": "Idioma"
+    },
+    "currency": {
+      "title": "Moneda de visualización",
+      "description": "Se utiliza para convertir y sumar valores entre cuentas con monedas distintas, como el patrimonio neto del panel."
+    },
+    "agents": {
+      "title": "Agentes de IA",
+      "description": "Asistentes de IA para tus datos financieros, con varios proveedores y herramientas a través de MCP. Desactivados de forma predeterminada; se pueden configurar en Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Desactivados",
+      "enabled": "Activados"
+    }
+  },
+  "auth": {
+    "logout": "Cerrar sesión",
+    "fields": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "displayName": "Nombre visible",
+      "invitationToken": "Token de invitación"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "description": "Usa tu cuenta de LealFinance para continuar.",
+      "action": "Iniciar sesión",
+      "invited": "¿Tienes una invitación?"
+    },
+    "register": {
+      "title": "Aceptar invitación",
+      "description": "Crea tu cuenta con la invitación que te ha enviado un administrador.",
+      "action": "Crear cuenta",
+      "passwordHint": "Usa al menos 12 caracteres.",
+      "backToLogin": "Volver a iniciar sesión",
+      "setup": {
+        "title": "Crear la cuenta de administrador",
+        "description": "Esta es la primera cuenta de esta instancia; tendrá acceso total de administrador."
+      }
+    }
+  },
+  "admin": {
+    "title": "Usuarios e invitaciones",
+    "description": "Gestiona el acceso a esta instancia de LealFinance.",
+    "roles": { "member": "Miembro", "admin": "Administrador" },
+    "users": {
+      "title": "Usuarios",
+      "role": "Rol",
+      "active": "Activo",
+      "empty": "No se han encontrado usuarios."
+    },
+    "invitations": {
+      "title": "Invitaciones",
+      "createTitle": "Crear invitación",
+      "create": "Invitar",
+      "tokenOnce": "Este token y el enlace de registro solo se mostrarán ahora. Guárdalos antes de salir.",
+      "copyLink": "Copiar enlace de registro",
+      "revoke": "Revocar",
+      "empty": "No se han encontrado invitaciones."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Algo ha salido mal. Inténtalo de nuevo." },
+    "auth": {
+      "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",
+      "csrf_invalid": "Este formulario ha caducado. Actualiza la página e inténtalo de nuevo.",
+      "last_admin": "Debe haber al menos un administrador activo.",
+      "account_inactive": "Esta cuenta está inactiva.",
+      "admin_required": "Se requiere acceso de administrador."
+    },
+    "invitation": {
+      "not_found": "La invitación no es válida.",
+      "expired": "Esta invitación ha caducado.",
+      "revoked": "Esta invitación ha sido revocada.",
+      "already_accepted": "Esta invitación ya se ha aceptado.",
+      "already_pending": "Ya hay una invitación pendiente para este correo electrónico."
+    },
+    "user": { "email_taken": "Ya existe una cuenta con este correo electrónico." }
+  }
+}

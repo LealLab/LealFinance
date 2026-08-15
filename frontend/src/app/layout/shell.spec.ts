@@ -55,7 +55,6 @@ describe('Shell', () => {
     expect(fixture.componentInstance['availableLangs']).toContain('en-US');
     expect(fixture.componentInstance['availableLangs']).toContain('pt-BR');
     expect(fixture.componentInstance['activeLang']()).toBe('en-US');
-    expect(document.documentElement.lang).toBe('en-US');
     expect(
       Array.from((fixture.nativeElement.querySelector('select') as HTMLSelectElement).options).map(
         (option) => option.textContent,
@@ -71,7 +70,6 @@ describe('Shell', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance['activeLang']()).toBe('pt-BR');
-    expect(document.documentElement.lang).toBe('pt-BR');
   });
 
   it('follows the desktop breakpoint and toggles the sidebar for the session', () => {

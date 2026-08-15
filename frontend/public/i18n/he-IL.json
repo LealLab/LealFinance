@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "סגירה",
+      "cancel": "ביטול",
+      "confirm": "אישור",
+      "save": "שמירה",
+      "saving": "שומר…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "לוח בקרה",
+      "accounts": "חשבונות",
+      "transactions": "תנועות",
+      "categories": "קטגוריות",
+      "budgets": "תקציבים",
+      "goals": "יעדים",
+      "reports": "דוחות",
+      "exchange": "המרת מטבע",
+      "settings": "הגדרות",
+      "adminUsers": "משתמשים והזמנות",
+      "sections": {
+        "accounts": "חשבונות",
+        "analysis": "ניתוח",
+        "setup": "הגדרה",
+        "admin": "ניהול"
+      }
+    },
+    "sidebar": {
+      "openMenu": "פתיחת תפריט",
+      "expand": "הרחבת סרגל הצד",
+      "collapse": "כיווץ סרגל הצד"
+    },
+    "themeToggle": {
+      "switchToLight": "מעבר לערכת נושא בהירה",
+      "switchToDark": "מעבר לערכת נושא כהה"
+    },
+    "languageSwitcher": {
+      "label": "שפה",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "הסתרת יתרות",
+      "show": "הצגת יתרות"
+    },
+    "search": {
+      "trigger": "חיפוש"
+    },
+    "commandPalette": {
+      "placeholder": "הקלידו פקודה או חפשו…",
+      "empty": "לא נמצאו תוצאות.",
+      "hints": {
+        "navigate": "ניווט",
+        "select": "בחירה",
+        "close": "סגירה"
+      },
+      "groups": {
+        "quickActions": "פעולות מהירות",
+        "goTo": "מעבר אל",
+        "accounts": "חשבונות",
+        "categories": "קטגוריות",
+        "budgets": "תקציבים",
+        "transactions": "תנועות"
+      },
+      "actions": {
+        "newTransaction": "תנועה חדשה",
+        "newAccount": "חשבון חדש",
+        "newCategory": "קטגוריה חדשה",
+        "newBudget": "תקציב חדש",
+        "configureLanguage": "הגדרת שפה",
+        "configureCurrency": "הגדרת מטבע תצוגה",
+        "toggleTheme": "החלפת ערכת נושא",
+        "toggleBalances": "הצגה או הסתרה של יתרות"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "לוח בקרה",
+    "welcome": "ברוכים הבאים ל־LealFinance",
+    "empty": {
+      "title": "עדיין אין נתונים",
+      "description": "הוסיפו חשבון כדי להתחיל לצפות בלוח הבקרה הפיננסי שלכם."
+    },
+    "stats": {
+      "netWorth": "הון נטו",
+      "income": "הכנסה חודשית",
+      "expense": "הוצאות חודשיות",
+      "savingsRate": "שיעור החיסכון"
+    },
+    "cashFlow": {
+      "title": "תזרים מזומנים (6 חודשים)",
+      "income": "הכנסות",
+      "expense": "הוצאות"
+    },
+    "categoryChart": {
+      "title": "הוצאות לפי קטגוריה (החודש הנוכחי)",
+      "label": "קטגוריות",
+      "empty": "עדיין לא נרשמו הוצאות החודש."
+    },
+    "accounts": {
+      "title": "חשבונות"
+    },
+    "recentTransactions": {
+      "title": "תנועות אחרונות",
+      "empty": "עדיין לא נרשמו תנועות."
+    },
+    "budgets": {
+      "title": "תקציבים",
+      "empty": "לא הוגדר תקציב לחודש זה."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "שער חליפין אינו זמין – נעשה שימוש בהמרה משוערת ביחס של 1:1.",
+    "fallbackRateWarningAction": "הגדרת שער"
+  },
+  "accounts": {
+    "title": "חשבונות",
+    "description": "היתרות שלכם במקום אחד.",
+    "showArchived": "הצגת חשבונות שהועברו לארכיון",
+    "archivedBadge": "בארכיון",
+    "noInstitution": "ללא מוסד פיננסי",
+    "mixedCurrencies": "מספר מטבעות",
+    "actions": {
+      "new": "חשבון חדש",
+      "edit": "עריכה",
+      "archive": "העברה לארכיון",
+      "unarchive": "שחזור מהארכיון"
+    },
+    "archive": {
+      "title": "להעביר את החשבון לארכיון?",
+      "message": "החשבון ״{{name}}״ לא יוצג עוד בתצוגות הראשיות. להמשיך?"
+    },
+    "empty": {
+      "title": "עדיין אין חשבונות",
+      "description": "צרו את החשבון הראשון שלכם כדי להתחיל לעקוב אחר היתרות."
+    },
+    "type": {
+      "checking": "חשבון עו״ש",
+      "savings": "חשבון חיסכון",
+      "cash": "מזומן",
+      "credit_card": "כרטיס אשראי",
+      "investment": "השקעות",
+      "goal": "יעד"
+    },
+    "form": {
+      "newTitle": "חשבון חדש",
+      "editTitle": "עריכת חשבון",
+      "saveError": "לא ניתן לשמור את החשבון. נסו שוב.",
+      "fields": {
+        "name": "שם",
+        "type": "סוג",
+        "currency": "מטבע",
+        "openingBalance": "יתרת פתיחה",
+        "institution": "מוסד פיננסי",
+        "creditLimit": "מסגרת אשראי",
+        "closingDay": "יום סגירת החיוב",
+        "dueDay": "יום התשלום"
+      },
+      "errors": {
+        "required": "שדה חובה.",
+        "decimalAmount": "הזינו סכום מספרי תקין."
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    },
+    "detail": {
+      "back": "חזרה לחשבונות",
+      "notFound": "החשבון לא נמצא",
+      "history": "היסטוריית תנועות",
+      "historyEmpty": {
+        "title": "אין תנועות בחשבון הזה",
+        "description": "תנועות שנרשמו בחשבון הזה יופיעו כאן."
+      },
+      "creditCard": {
+        "title": "כרטיס אשראי",
+        "used": "בשימוש",
+        "owed": "יתרה נוכחית",
+        "limit": "מסגרת",
+        "available": "זמין",
+        "closingDay": "סגירה"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "מוסד חדש",
+      "edit": "עריכת מוסד",
+      "delete": "מחיקת מוסד"
+    },
+    "form": {
+      "newTitle": "מוסד חדש",
+      "editTitle": "עריכת מוסד",
+      "saveError": "לא ניתן לשמור את המוסד. נסו שוב.",
+      "deleteInUseError": "למוסד הזה עדיין משויכים חשבונות ולכן אי אפשר למחוק אותו.",
+      "fields": {
+        "name": "שם",
+        "icon": "סמל",
+        "color": "צבע"
+      },
+      "errors": {
+        "required": "שדה חובה."
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    },
+    "delete": {
+      "title": "מחיקת מוסד",
+      "message": "לא ניתן לבטל פעולה זו. למחוק את המוסד?"
+    },
+    "icon": {
+      "bank": "בנק",
+      "wallet": "ארנק",
+      "chart": "השקעות",
+      "globe": "בינלאומי",
+      "archive": "אחר"
+    }
+  },
+  "transactions": {
+    "title": "תנועות",
+    "description": "הכנסות, הוצאות והעברות.",
+    "actions": {
+      "new": "תנועה חדשה",
+      "edit": "עריכה",
+      "delete": "מחיקה"
+    },
+    "tabs": {
+      "transactions": "תנועות",
+      "recurring": "חוזרות"
+    },
+    "type": {
+      "income": "הכנסה",
+      "expense": "הוצאה",
+      "transfer": "העברה"
+    },
+    "filters": {
+      "type": "סוג",
+      "account": "חשבון",
+      "category": "קטגוריה",
+      "from": "מתאריך",
+      "to": "עד",
+      "search": "חיפוש",
+      "institution": "מוסד פיננסי",
+      "all": "הכול",
+      "clear": "ניקוי מסננים"
+    },
+    "empty": {
+      "title": "לא נמצאו תנועות",
+      "description": "התאימו את המסננים או הוסיפו תנועה חדשה."
+    },
+    "projected": {
+      "title": "עתידיות (חזויות)",
+      "badge": "חזויה"
+    },
+    "delete": {
+      "title": "מחיקת תנועה",
+      "message": "לא ניתן לבטל פעולה זו. למחוק את התנועה?"
+    },
+    "form": {
+      "newTitle": "תנועה חדשה",
+      "editTitle": "עריכת תנועה",
+      "saveError": "לא ניתן לשמור את התנועה. נסו שוב.",
+      "fields": {
+        "date": "תאריך",
+        "amount": "סכום",
+        "currency": "מטבע",
+        "convertedAmount": "סכום מומר",
+        "conversionFee": "עמלת/מס המרה (אופציונלי)",
+        "account": "חשבון",
+        "fromAccount": "חשבון מקור",
+        "toAccount": "חשבון יעד",
+        "fromInstitution": "מוסד המקור",
+        "toInstitution": "מוסד היעד",
+        "anyInstitution": "כל מוסד",
+        "category": "קטגוריה",
+        "description": "תיאור",
+        "notes": "הערות",
+        "repeat": "חזרה על תנועה זו",
+        "frequency": "תדירות",
+        "interval": "כל",
+        "selectPlaceholder": "בחירה"
+      },
+      "hints": {
+        "effectiveRate": "שער אפקטיבי: {{rate}}",
+        "recurringUnavailableCrossCurrency": "לא ניתן להגדיר תנועה מחזורית במטבעות שונים – יהיה צורך להזין את השער מחדש בכל מופע."
+      },
+      "errors": {
+        "invalid": "בדקו את שדות החובה לפני השמירה.",
+        "convertedAmountRequired": "הזינו את הסכום המומר לפני השמירה."
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "שבועי",
+        "monthly": "חודשי",
+        "yearly": "שנתי"
+      },
+      "everyN": "כל {{n}}",
+      "nextOccurrence": "המופע הבא",
+      "actions": {
+        "new": "כלל מחזורי חדש"
+      },
+      "empty": {
+        "title": "עדיין אין כללים מחזוריים",
+        "description": "הפיכת תנועה למחזורית תיצור כאן כלל."
+      },
+      "delete": {
+        "title": "מחיקת כלל מחזורי",
+        "message": "הפעולה לא תשפיע על תנועות שנרשמו – רק מופעים חזויים עתידיים ייעלמו."
+      },
+      "form": {
+        "newTitle": "כלל מחזורי חדש",
+        "editTitle": "עריכת כלל מחזורי",
+        "saveError": "לא ניתן לשמור את הכלל המחזורי. נסו שוב.",
+        "startDate": "התחלה",
+        "endDate": "סיום (אופציונלי)"
+      }
+    }
+  },
+  "categories": {
+    "title": "קטגוריות",
+    "description": "ארגנו הכנסות והוצאות לפי קטגוריות.",
+    "showArchived": "הצגת קטגוריות שהועברו לארכיון",
+    "archivedBadge": "בארכיון",
+    "actions": {
+      "new": "קטגוריה חדשה",
+      "edit": "עריכה",
+      "archive": "העברה לארכיון",
+      "unarchive": "שחזור מהארכיון",
+      "delete": "מחיקה",
+      "addChild": "תת־קטגוריה חדשה",
+      "collapse": "כיווץ",
+      "expand": "הרחבה",
+      "dragHandle": "שינוי סדר"
+    },
+    "empty": {
+      "title": "עדיין אין קטגוריות",
+      "description": "צרו קטגוריות כדי לארגן את התנועות שלכם."
+    },
+    "sections": {
+      "income": "קטגוריות הכנסה",
+      "expense": "קטגוריות הוצאה"
+    },
+    "delete": {
+      "title": "למחוק את הקטגוריה?",
+      "message": "לא ניתן לבטל פעולה זו. למחוק את הקטגוריה ״{{name}}״?",
+      "blockedTitle": "לא ניתן למחוק",
+      "blockedMessage": "קטגוריה זו עדיין בשימוש (תנועות: {{transactions}}, תקציבים: {{budgets}}, תתי־קטגוריות: {{children}}). העבירו את הקטגוריה לארכיון במקום למחוק אותה."
+    },
+    "form": {
+      "newTitle": "קטגוריה חדשה",
+      "editTitle": "עריכת קטגוריה",
+      "saveError": "לא ניתן לשמור את הקטגוריה. נסו שוב.",
+      "fields": {
+        "name": "שם",
+        "parent": "קטגוריית אב",
+        "noParent": "ללא קטגוריה (קטגוריה ברמה העליונה)",
+        "color": "צבע",
+        "icon": "סמל"
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    },
+    "icon": {
+      "tag": "תגית",
+      "home": "בית",
+      "archive": "ארכיון",
+      "swap": "תחבורה",
+      "wallet": "ארנק",
+      "chart": "תרשים",
+      "sun": "אנרגיה",
+      "alertTriangle": "התראה",
+      "pencil": "חינוך",
+      "target": "יעד",
+      "repeat": "מחזורי",
+      "globe": "גלובלי"
+    }
+  },
+  "budgets": {
+    "title": "תקציבים",
+    "description": "תכננו כמה להוציא בכל קטגוריה מדי חודש.",
+    "list": {
+      "title": "מגבלות חודשיות"
+    },
+    "planner": {
+      "title": "תקציב מבוסס הכנסה",
+      "description": "חלקו את ההכנסה הצפויה בין הקטגוריות.",
+      "total": "סך הכול",
+      "expectedIncome": "הכנסה צפויה",
+      "chartLabel": "חלוקה",
+      "fixed": "קבוע",
+      "empty": "הגדירו אחוזים כדי לצפות בחלוקה.",
+      "save": "שמירת החלוקה",
+      "errors": {
+        "total": "החלוקה לא יכולה לחרוג מ־100%.",
+        "income": "הזינו את ההכנסה הצפויה לחודש זה.",
+        "save": "לא ניתן לשמור את החלוקה. נסו שוב."
+      }
+    },
+    "monthLabel": "חודש",
+    "actions": {
+      "new": "תקציב חדש",
+      "edit": "עריכה",
+      "delete": "מחיקה"
+    },
+    "totals": {
+      "budgeted": "מתוקצב",
+      "spent": "הוצאה בפועל",
+      "remaining": "נותר"
+    },
+    "empty": {
+      "title": "אין תקציב לחודש זה",
+      "description": "הגדירו תקציב לפי קטגוריה כדי לעקוב אחר ההוצאות."
+    },
+    "state": {
+      "over": "חריגה מהתקציב",
+      "near": "קרוב למגבלה"
+    },
+    "unbudgeted": {
+      "title": "הוצאות ללא תקציב",
+      "setBudget": "הגדרת תקציב"
+    },
+    "delete": {
+      "title": "מחיקת תקציב",
+      "message": "לא ניתן לבטל פעולה זו. למחוק את התקציב?"
+    },
+    "form": {
+      "newTitle": "תקציב חדש",
+      "editTitle": "עריכת תקציב",
+      "saveError": "לא ניתן לשמור את התקציב. נסו שוב.",
+      "fields": {
+        "month": "חודש",
+        "category": "קטגוריה",
+        "selectCategory": "בחירת קטגוריה",
+        "amount": "סכום",
+        "currency": "מטבע"
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    }
+  },
+  "goals": {
+    "title": "יעדים",
+    "description": "חסכו כסף לכל יעד ועקבו אחר ההתקדמות.",
+    "showArchived": "הצגת יעדים שהועברו לארכיון",
+    "archiveError": "לא ניתן לעדכן את מצב הארכיון של היעד. נסו שוב.",
+    "accountLabel": "חשבון",
+    "archived": "בארכיון",
+    "overdue": "באיחור",
+    "actions": {
+      "new": "יעד חדש",
+      "edit": "עריכת יעד",
+      "archive": "העברת יעד לארכיון",
+      "unarchive": "שחזור יעד מהארכיון",
+      "deposit": "הוספת כסף",
+      "withdraw": "משיכת כסף",
+      "interest": "הוספת ריבית"
+    },
+    "empty": {
+      "title": "עדיין אין יעדים",
+      "description": "צרו יעד כדי להתחיל לחסוך ולעקוב אחר ההתקדמות."
+    },
+    "progress": {
+      "current": "נחסך",
+      "target": "יעד",
+      "remaining": "נותר",
+      "contribution": "הפקדה מומלצת",
+      "notConfigured": "ללא מועד יעד",
+      "frequency": "תדירות",
+      "every": "כל {{n}}",
+      "label": "התקדמות"
+    },
+    "frequency": {
+      "weekly": "שבועית",
+      "monthly": "חודשית",
+      "yearly": "שנתית"
+    },
+    "history": {
+      "title": "היסטוריית יעד",
+      "empty": "עדיין לא נרשמה פעילות."
+    },
+    "form": {
+      "newTitle": "יעד חדש",
+      "editTitle": "עריכת יעד",
+      "saveError": "לא ניתן לשמור את היעד. נסו שוב.",
+      "fields": {
+        "name": "שם",
+        "targetAmount": "סכום יעד",
+        "currency": "מטבע",
+        "targetDate": "תאריך יעד",
+        "targetDateHint": "אופציונלי: הוסיפו מועד יעד לחישוב ההפקדה המומלצת.",
+        "frequency": "תדירות ההפקדה",
+        "interval": "כל"
+      },
+      "errors": {
+        "required": "שדה חובה."
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "הוספת כסף ליעד" },
+      "withdraw": { "title": "משיכת כסף מהיעד" },
+      "interest": { "title": "הוספת ריבית" },
+      "fields": {
+        "amount": "סכום",
+        "date": "תאריך",
+        "sourceAccount": "חשבון מקור/יעד",
+        "description": "תיאור"
+      },
+      "saveError": "לא ניתן לרשום את הפעילות. נסו שוב."
+    }
+  },
+  "reports": {
+    "title": "דוחות",
+    "description": "נתחו הכנסות, הוצאות ויתרות לאורך זמן.",
+    "period": {
+      "month": "החודש",
+      "3m": "3 החודשים האחרונים",
+      "6m": "6 החודשים האחרונים",
+      "12m": "12 החודשים האחרונים",
+      "custom": "מותאם אישית"
+    },
+    "empty": {
+      "title": "אין תנועות בתקופה הזו",
+      "description": "התאימו את התקופה שנבחרה כדי לצפות בדוחות."
+    },
+    "charts": {
+      "incomeExpense": "הכנסות לעומת הוצאות",
+      "netFlow": "תזרים נטו",
+      "byCategory": "הוצאות לפי קטגוריה",
+      "balanceTrend": "מגמת יתרה לפי חשבון"
+    },
+    "series": {
+      "income": "הכנסות",
+      "expense": "הוצאות",
+      "netFlow": "תזרים נטו",
+      "categories": "קטגוריות"
+    }
+  },
+  "exchange": {
+    "title": "המרת מטבע",
+    "description": "שערי המרה ידניים וההמרות שהשתמשו בהם.",
+    "stats": {
+      "feesPaid": "עמלות המרה ששולמו",
+      "needsAttention": "תנועות הדורשות טיפול",
+      "currenciesNeedingRate": "מטבעות ללא שער"
+    },
+    "needsAttention": {
+      "title": "דורש טיפול",
+      "description": "תנועות אלה הומרו באמצעות קירוב של 1:1 – תקנו אותן באמצעות השער האמיתי או הגדירו למטה שער ידני.",
+      "empty": {
+        "title": "אין דבר הדורש טיפול",
+        "description": "לכל תנועה במטבעות שונים רשום שער אמיתי."
+      },
+      "actions": {
+        "fix": "תיקון"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "מטבעות ללא שער",
+      "description": "למטבעות החשבונות האלה עדיין אין שער אמיתי מול מטבע התצוגה, לכן היתרות מוצגות כקירוב של 1:1 – ללא קשר לתנועה מסוימת.",
+      "empty": {
+        "title": "אין מטבע שדורש שער",
+        "description": "לכל מטבעות החשבונות יש כבר שער אמיתי."
+      }
+    },
+    "manualRates": {
+      "title": "שערים ידניים",
+      "description": "שערים שהגדרתם ידנית מקבלים עדיפות על פני הספק האוטומטי – שימושי עבור שער הבנק בפועל היום או כאשר לא מוגדר ספק.",
+      "actions": {
+        "add": "הוספת שער",
+        "edit": "עריכת שער",
+        "delete": "מחיקת שער"
+      },
+      "empty": {
+        "title": "עדיין אין שערים ידניים",
+        "description": "הוסיפו שער לצמד מטבעות כדי להשתמש בו במקום ברירת המחדל האוטומטית של 1:1."
+      },
+      "delete": {
+        "title": "מחיקת שער ידני",
+        "message": "לא ניתן לבטל פעולה זו. למחוק את השער?"
+      },
+      "form": {
+        "newTitle": "שער ידני חדש",
+        "editTitle": "עריכת שער ידני",
+        "saveError": "לא ניתן לשמור את השער. נסו שוב.",
+        "fields": {
+          "baseCode": "ממטבע",
+          "quoteCode": "למטבע",
+          "rate": "שער",
+          "asOf": "בתוקף מתאריך"
+        },
+        "errors": {
+          "invalid": "הזינו שער תקין.",
+          "samePair": "בחרו שני מטבעות שונים."
+        },
+        "actions": {
+          "cancel": "ביטול",
+          "save": "שמירה"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "הגדרות",
+    "description": "העדפות מראה, שפה ונתוני הדגמה.",
+    "appearance": {
+      "title": "מראה",
+      "theme": "ערכת נושא",
+      "light": "בהירה",
+      "dark": "כהה",
+      "language": "שפה"
+    },
+    "currency": {
+      "title": "מטבע תצוגה",
+      "description": "משמש להמרה ולהוספת ערכים בין חשבונות במטבעות שונים, כגון ההון נטו בלוח הבקרה."
+    },
+    "agents": {
+      "title": "סוכני AI",
+      "description": "עוזרי AI מעל הנתונים הפיננסיים שלכם, עם כמה ספקים וכלים דרך MCP. מושבתים כברירת מחדל – ניתנים להגדרה ב־Docker Compose (AGENTS_ENABLED).",
+      "disabled": "מושבתים",
+      "enabled": "מופעלים"
+    }
+  },
+  "auth": {
+    "logout": "התנתקות",
+    "fields": {
+      "email": "אימייל",
+      "password": "סיסמה",
+      "displayName": "שם תצוגה",
+      "invitationToken": "אסימון הזמנה"
+    },
+    "login": {
+      "title": "כניסה",
+      "description": "השתמשו בחשבון LealFinance שלכם כדי להמשיך.",
+      "action": "כניסה",
+      "invited": "יש לכם הזמנה?"
+    },
+    "register": {
+      "title": "קבלת הזמנה",
+      "description": "צרו את החשבון שלכם באמצעות ההזמנה שנשלחה על ידי מנהל.",
+      "action": "יצירת חשבון",
+      "passwordHint": "השתמשו בלפחות 12 תווים.",
+      "backToLogin": "חזרה לכניסה",
+      "setup": {
+        "title": "יצירת חשבון המנהל",
+        "description": "זהו החשבון הראשון במופע זה – תהיה לו גישת מנהל מלאה."
+      }
+    }
+  },
+  "admin": {
+    "title": "משתמשים והזמנות",
+    "description": "ניהול הגישה למופע LealFinance זה.",
+    "roles": { "member": "חבר", "admin": "מנהל מערכת" },
+    "users": { "title": "משתמשים", "role": "תפקיד", "active": "פעיל", "empty": "לא נמצאו משתמשים." },
+    "invitations": {
+      "title": "הזמנות",
+      "createTitle": "יצירת הזמנה",
+      "create": "הזמנה",
+      "tokenOnce": "האסימון וקישור ההרשמה מוצגים רק עכשיו. שמרו אותם לפני היציאה.",
+      "copyLink": "העתקת קישור הרשמה",
+      "revoke": "ביטול",
+      "empty": "לא נמצאו הזמנות."
+    }
+  },
+  "errors": {
+    "error": { "generic": "משהו השתבש. נסו שוב." },
+    "auth": {
+      "invalid_credentials": "האימייל או הסיסמה שגויים.",
+      "csrf_invalid": "תוקף הטופס פג. רעננו את הדף ונסו שוב.",
+      "last_admin": "נדרש לפחות מנהל מערכת פעיל אחד.",
+      "account_inactive": "חשבון זה אינו פעיל.",
+      "admin_required": "נדרשת גישת מנהל מערכת."
+    },
+    "invitation": {
+      "not_found": "ההזמנה אינה תקפה.",
+      "expired": "פג תוקף ההזמנה הזו.",
+      "revoked": "ההזמנה הזו בוטלה.",
+      "already_accepted": "ההזמנה הזו כבר אושרה.",
+      "already_pending": "כבר קיימת הזמנה ממתינה עבור אימייל זה."
+    },
+    "user": { "email_taken": "כבר קיים חשבון המשתמש באימייל הזה." }
+  }
+}

@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "닫기",
+      "cancel": "취소",
+      "confirm": "확인",
+      "save": "저장",
+      "saving": "저장 중…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "대시보드",
+      "accounts": "계좌",
+      "transactions": "거래내역",
+      "categories": "카테고리",
+      "budgets": "예산",
+      "goals": "목표",
+      "reports": "보고서",
+      "exchange": "환율",
+      "settings": "설정",
+      "adminUsers": "사용자 및 초대",
+      "sections": {
+        "accounts": "계좌",
+        "analysis": "분석",
+        "setup": "관리",
+        "admin": "관리자"
+      }
+    },
+    "sidebar": {
+      "openMenu": "메뉴 열기",
+      "expand": "사이드바 펼치기",
+      "collapse": "사이드바 접기"
+    },
+    "themeToggle": {
+      "switchToLight": "라이트 테마로 전환",
+      "switchToDark": "다크 테마로 전환"
+    },
+    "languageSwitcher": {
+      "label": "언어",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "잔액 숨기기",
+      "show": "잔액 표시"
+    },
+    "search": {
+      "trigger": "검색"
+    },
+    "commandPalette": {
+      "placeholder": "명령을 입력하거나 검색하세요…",
+      "empty": "검색 결과가 없습니다.",
+      "hints": {
+        "navigate": "이동",
+        "select": "선택",
+        "close": "닫기"
+      },
+      "groups": {
+        "quickActions": "빠른 작업",
+        "goTo": "이동",
+        "accounts": "계좌",
+        "categories": "카테고리",
+        "budgets": "예산",
+        "transactions": "거래내역"
+      },
+      "actions": {
+        "newTransaction": "거래 추가",
+        "newAccount": "계좌 추가",
+        "newCategory": "카테고리 추가",
+        "newBudget": "예산 추가",
+        "configureLanguage": "언어 설정",
+        "configureCurrency": "표시 통화 설정",
+        "toggleTheme": "테마 전환",
+        "toggleBalances": "잔액 표시 또는 숨기기"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "대시보드",
+    "welcome": "LealFinance에 오신 것을 환영합니다",
+    "empty": {
+      "title": "아직 데이터가 없습니다",
+      "description": "계좌를 추가하면 재무 대시보드를 확인할 수 있습니다."
+    },
+    "stats": {
+      "netWorth": "순자산",
+      "income": "월 수입",
+      "expense": "월 지출",
+      "savingsRate": "저축률"
+    },
+    "cashFlow": {
+      "title": "현금 흐름(최근 6개월)",
+      "income": "수입",
+      "expense": "지출"
+    },
+    "categoryChart": {
+      "title": "카테고리별 지출(이번 달)",
+      "label": "카테고리",
+      "empty": "이번 달에는 아직 지출 기록이 없습니다."
+    },
+    "accounts": {
+      "title": "계좌"
+    },
+    "recentTransactions": {
+      "title": "최근 거래내역",
+      "empty": "아직 거래 기록이 없습니다."
+    },
+    "budgets": {
+      "title": "예산",
+      "empty": "이번 달 예산이 아직 설정되지 않았습니다."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "환율을 불러올 수 없어 1:1 환산값을 임시로 사용합니다.",
+    "fallbackRateWarningAction": "환율 설정"
+  },
+  "accounts": {
+    "title": "계좌",
+    "description": "모든 잔액을 한곳에서 확인하세요.",
+    "showArchived": "보관된 계좌 표시",
+    "archivedBadge": "보관됨",
+    "noInstitution": "금융기관 없음",
+    "mixedCurrencies": "여러 통화",
+    "actions": {
+      "new": "계좌 추가",
+      "edit": "수정",
+      "archive": "보관",
+      "unarchive": "보관 해제"
+    },
+    "archive": {
+      "title": "계좌를 보관할까요?",
+      "message": "‘{{name}}’ 계좌는 주요 화면에 더 이상 표시되지 않습니다. 계속하시겠어요?"
+    },
+    "empty": {
+      "title": "아직 계좌가 없습니다",
+      "description": "첫 계좌를 만들어 잔액 관리를 시작하세요."
+    },
+    "type": {
+      "checking": "입출금 계좌",
+      "savings": "저축예금",
+      "cash": "현금",
+      "credit_card": "신용카드",
+      "investment": "투자",
+      "goal": "목표"
+    },
+    "form": {
+      "newTitle": "계좌 추가",
+      "editTitle": "계좌 수정",
+      "saveError": "계좌를 저장하지 못했습니다. 다시 시도하세요.",
+      "fields": {
+        "name": "이름",
+        "type": "유형",
+        "currency": "통화",
+        "openingBalance": "기초 잔액",
+        "institution": "금융기관",
+        "creditLimit": "신용 한도",
+        "closingDay": "결제일",
+        "dueDay": "납부일"
+      },
+      "errors": {
+        "required": "필수 입력 항목입니다.",
+        "decimalAmount": "유효한 금액을 입력하세요."
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    },
+    "detail": {
+      "back": "계좌 목록으로 돌아가기",
+      "notFound": "계좌를 찾을 수 없습니다",
+      "history": "거래내역",
+      "historyEmpty": {
+        "title": "이 계좌에는 거래가 없습니다",
+        "description": "이 계좌에서 기록한 거래가 여기에 표시됩니다."
+      },
+      "creditCard": {
+        "title": "신용카드",
+        "used": "사용 금액",
+        "owed": "현재 결제 예정 금액",
+        "limit": "한도",
+        "available": "사용 가능 금액",
+        "closingDay": "결제일"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "금융기관 추가",
+      "edit": "금융기관 수정",
+      "delete": "금융기관 삭제"
+    },
+    "form": {
+      "newTitle": "금융기관 추가",
+      "editTitle": "금융기관 수정",
+      "saveError": "금융기관을 저장하지 못했습니다. 다시 시도하세요.",
+      "deleteInUseError": "이 금융기관에는 연결된 계좌가 있어 삭제할 수 없습니다.",
+      "fields": {
+        "name": "이름",
+        "icon": "아이콘",
+        "color": "색상"
+      },
+      "errors": {
+        "required": "필수 입력 항목입니다."
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    },
+    "delete": {
+      "title": "금융기관 삭제",
+      "message": "이 작업은 되돌릴 수 없습니다. 이 금융기관을 삭제하시겠어요?"
+    },
+    "icon": {
+      "bank": "은행",
+      "wallet": "지갑",
+      "chart": "투자",
+      "globe": "해외",
+      "archive": "기타"
+    }
+  },
+  "transactions": {
+    "title": "거래내역",
+    "description": "수입, 지출 및 이체를 관리하세요.",
+    "actions": {
+      "new": "거래 추가",
+      "edit": "수정",
+      "delete": "삭제"
+    },
+    "tabs": {
+      "transactions": "거래내역",
+      "recurring": "반복 거래"
+    },
+    "type": {
+      "income": "수입",
+      "expense": "지출",
+      "transfer": "이체"
+    },
+    "filters": {
+      "type": "유형",
+      "account": "계좌",
+      "category": "카테고리",
+      "from": "시작일",
+      "to": "종료일",
+      "search": "검색",
+      "institution": "금융기관",
+      "all": "전체",
+      "clear": "필터 지우기"
+    },
+    "empty": {
+      "title": "거래를 찾을 수 없습니다",
+      "description": "필터를 조정하거나 새 거래를 추가하세요."
+    },
+    "projected": {
+      "title": "예정 거래(예상)",
+      "badge": "예상"
+    },
+    "delete": {
+      "title": "거래 삭제",
+      "message": "이 작업은 되돌릴 수 없습니다. 이 거래를 삭제하시겠어요?"
+    },
+    "form": {
+      "newTitle": "거래 추가",
+      "editTitle": "거래 수정",
+      "saveError": "거래를 저장하지 못했습니다. 다시 시도하세요.",
+      "fields": {
+        "date": "날짜",
+        "amount": "금액",
+        "currency": "통화",
+        "convertedAmount": "환산 금액",
+        "conversionFee": "환산 수수료/세금(선택 사항)",
+        "account": "계좌",
+        "fromAccount": "출금 계좌",
+        "toAccount": "입금 계좌",
+        "fromInstitution": "출발 금융기관",
+        "toInstitution": "도착 금융기관",
+        "anyInstitution": "모든 금융기관",
+        "category": "카테고리",
+        "description": "설명",
+        "notes": "메모",
+        "repeat": "이 거래를 반복 거래로 설정",
+        "frequency": "반복 주기",
+        "interval": "간격",
+        "selectPlaceholder": "선택"
+      },
+      "hints": {
+        "effectiveRate": "적용 환율: {{rate}}",
+        "recurringUnavailableCrossCurrency": "다중 통화 거래에는 반복 설정을 사용할 수 없습니다. 매번 환율을 다시 설정해야 합니다."
+      },
+      "errors": {
+        "invalid": "저장하기 전에 필수 입력 항목을 확인하세요.",
+        "convertedAmountRequired": "저장하기 전에 환산 금액을 입력하세요."
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "매주",
+        "monthly": "매월",
+        "yearly": "매년"
+      },
+      "everyN": "{{n}}회마다",
+      "nextOccurrence": "다음 발생일",
+      "actions": {
+        "new": "반복 규칙 추가"
+      },
+      "empty": {
+        "title": "아직 반복 규칙이 없습니다",
+        "description": "거래를 반복 거래로 설정하면 여기에 규칙이 만들어집니다."
+      },
+      "delete": {
+        "title": "반복 규칙 삭제",
+        "message": "기록된 거래에는 영향을 주지 않으며, 앞으로 예정된 거래만 사라집니다."
+      },
+      "form": {
+        "newTitle": "반복 규칙 추가",
+        "editTitle": "반복 규칙 수정",
+        "saveError": "반복 규칙을 저장하지 못했습니다. 다시 시도하세요.",
+        "startDate": "시작일",
+        "endDate": "종료일(선택 사항)"
+      }
+    }
+  },
+  "categories": {
+    "title": "카테고리",
+    "description": "카테고리별로 수입과 지출을 정리하세요.",
+    "showArchived": "보관된 카테고리 표시",
+    "archivedBadge": "보관됨",
+    "actions": {
+      "new": "카테고리 추가",
+      "edit": "수정",
+      "archive": "보관",
+      "unarchive": "보관 해제",
+      "delete": "삭제",
+      "addChild": "하위 카테고리 추가",
+      "collapse": "접기",
+      "expand": "펼치기",
+      "dragHandle": "순서 변경"
+    },
+    "empty": {
+      "title": "아직 카테고리가 없습니다",
+      "description": "카테고리를 만들어 거래를 정리하세요."
+    },
+    "sections": {
+      "income": "수입 카테고리",
+      "expense": "지출 카테고리"
+    },
+    "delete": {
+      "title": "카테고리를 삭제할까요?",
+      "message": "이 작업은 되돌릴 수 없습니다. ‘{{name}}’ 카테고리를 삭제하시겠어요?",
+      "blockedTitle": "삭제할 수 없습니다",
+      "blockedMessage": "이 카테고리는 아직 사용 중입니다. 거래 {{transactions}}건, 예산 {{budgets}}개, 하위 카테고리 {{children}}개에서 사용 중입니다. 삭제 대신 보관 처리하세요."
+    },
+    "form": {
+      "newTitle": "카테고리 추가",
+      "editTitle": "카테고리 수정",
+      "saveError": "카테고리를 저장하지 못했습니다. 다시 시도하세요.",
+      "fields": {
+        "name": "이름",
+        "parent": "상위 카테고리",
+        "noParent": "없음(최상위 카테고리)",
+        "color": "색상",
+        "icon": "아이콘"
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    },
+    "icon": {
+      "tag": "태그",
+      "home": "주거",
+      "archive": "보관",
+      "swap": "교통",
+      "wallet": "지갑",
+      "chart": "차트",
+      "sun": "에너지",
+      "alertTriangle": "주의",
+      "pencil": "교육",
+      "target": "목표",
+      "repeat": "반복",
+      "globe": "국제"
+    }
+  },
+  "budgets": {
+    "title": "예산",
+    "description": "매월 카테고리별 지출 금액을 계획하세요.",
+    "list": {
+      "title": "월별 한도"
+    },
+    "planner": {
+      "title": "수입 기반 예산",
+      "description": "예상 수입을 카테고리별로 배분하세요.",
+      "total": "합계",
+      "expectedIncome": "예상 수입",
+      "chartLabel": "배분",
+      "fixed": "고정",
+      "empty": "비율을 설정하면 배분 내역을 확인할 수 있습니다.",
+      "save": "배분 저장",
+      "errors": {
+        "total": "배분 비율의 합계는 100%를 초과할 수 없습니다.",
+        "income": "이번 달 예상 수입을 입력하세요.",
+        "save": "배분 내역을 저장하지 못했습니다. 다시 시도하세요."
+      }
+    },
+    "monthLabel": "월",
+    "actions": {
+      "new": "예산 추가",
+      "edit": "수정",
+      "delete": "삭제"
+    },
+    "totals": {
+      "budgeted": "예산",
+      "spent": "지출",
+      "remaining": "잔액"
+    },
+    "empty": {
+      "title": "이번 달 예산이 없습니다",
+      "description": "지출을 관리하려면 카테고리별 예산을 설정하세요."
+    },
+    "state": {
+      "over": "예산 초과",
+      "near": "한도에 근접"
+    },
+    "unbudgeted": {
+      "title": "예산 없는 지출",
+      "setBudget": "예산 설정"
+    },
+    "delete": {
+      "title": "예산 삭제",
+      "message": "이 작업은 되돌릴 수 없습니다. 이 예산을 삭제하시겠어요?"
+    },
+    "form": {
+      "newTitle": "예산 추가",
+      "editTitle": "예산 수정",
+      "saveError": "예산을 저장하지 못했습니다. 다시 시도하세요.",
+      "fields": {
+        "month": "월",
+        "category": "카테고리",
+        "selectCategory": "카테고리 선택",
+        "amount": "금액",
+        "currency": "통화"
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    }
+  },
+  "goals": {
+    "title": "목표",
+    "description": "목표를 위해 저축하고 진행 상황을 확인하세요.",
+    "showArchived": "보관된 목표 표시",
+    "archiveError": "목표의 보관 상태를 변경하지 못했습니다. 다시 시도하세요.",
+    "accountLabel": "계좌",
+    "archived": "보관됨",
+    "overdue": "기한 지남",
+    "actions": {
+      "new": "목표 추가",
+      "edit": "목표 수정",
+      "archive": "목표 보관",
+      "unarchive": "목표 보관 해제",
+      "deposit": "금액 추가",
+      "withdraw": "금액 인출",
+      "interest": "이자 추가"
+    },
+    "empty": {
+      "title": "아직 목표가 없습니다",
+      "description": "목표를 만들어 저축과 진행 상황 관리를 시작하세요."
+    },
+    "progress": {
+      "current": "현재 저축액",
+      "target": "목표 금액",
+      "remaining": "남은 금액",
+      "contribution": "권장 납입액",
+      "notConfigured": "기한 없음",
+      "frequency": "주기",
+      "every": "{{n}}회마다",
+      "label": "진행률"
+    },
+    "frequency": {
+      "weekly": "매주",
+      "monthly": "매월",
+      "yearly": "매년"
+    },
+    "history": {
+      "title": "목표 내역",
+      "empty": "기록된 활동이 없습니다."
+    },
+    "form": {
+      "newTitle": "목표 추가",
+      "editTitle": "목표 수정",
+      "saveError": "목표를 저장하지 못했습니다. 다시 시도하세요.",
+      "fields": {
+        "name": "이름",
+        "targetAmount": "목표 금액",
+        "currency": "통화",
+        "targetDate": "목표 날짜",
+        "targetDateHint": "선택 사항: 기한을 추가하면 권장 납입액을 계산할 수 있습니다.",
+        "frequency": "납입 주기",
+        "interval": "간격"
+      },
+      "errors": {
+        "required": "필수 입력 항목입니다."
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "목표에 금액 추가" },
+      "withdraw": { "title": "목표에서 금액 인출" },
+      "interest": { "title": "이자 추가" },
+      "fields": {
+        "amount": "금액",
+        "date": "날짜",
+        "sourceAccount": "출처/목표 계좌",
+        "description": "설명"
+      },
+      "saveError": "활동을 기록하지 못했습니다. 다시 시도하세요."
+    }
+  },
+  "reports": {
+    "title": "보고서",
+    "description": "시간에 따른 수입, 지출 및 잔액을 분석하세요.",
+    "period": {
+      "month": "이번 달",
+      "3m": "최근 3개월",
+      "6m": "최근 6개월",
+      "12m": "최근 12개월",
+      "custom": "사용자 지정"
+    },
+    "empty": {
+      "title": "이 기간에는 거래가 없습니다",
+      "description": "선택한 기간을 조정하면 보고서를 확인할 수 있습니다."
+    },
+    "charts": {
+      "incomeExpense": "수입과 지출 비교",
+      "netFlow": "순현금 흐름",
+      "byCategory": "카테고리별 지출",
+      "balanceTrend": "계좌별 잔액 추이"
+    },
+    "series": {
+      "income": "수입",
+      "expense": "지출",
+      "netFlow": "순현금 흐름",
+      "categories": "카테고리"
+    }
+  },
+  "exchange": {
+    "title": "환율",
+    "description": "수동으로 설정한 환율과 해당 환율을 사용한 환산 내역입니다.",
+    "stats": {
+      "feesPaid": "납부한 환산 수수료",
+      "needsAttention": "확인이 필요한 거래",
+      "currenciesNeedingRate": "환율이 없는 통화"
+    },
+    "needsAttention": {
+      "title": "확인 필요",
+      "description": "이 거래에는 1:1 근사 환율이 사용되었습니다. 실제 환율로 수정하거나 아래에서 수동 환율을 설정하세요.",
+      "empty": {
+        "title": "확인이 필요한 항목이 없습니다",
+        "description": "모든 다중 통화 거래에 실제 환율이 기록되어 있습니다."
+      },
+      "actions": {
+        "fix": "수정"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "환율이 없는 통화",
+      "description": "이 계좌 통화에는 아직 표시 통화와의 실제 환율이 없어 잔액이 1:1 근사값으로 표시됩니다. 특정 거래에 연결된 환율은 아닙니다.",
+      "empty": {
+        "title": "환율을 설정할 통화가 없습니다",
+        "description": "모든 계좌 통화에 실제 환율이 적용됩니다."
+      }
+    },
+    "manualRates": {
+      "title": "수동 환율",
+      "description": "직접 설정한 환율은 자동 제공업체보다 우선 적용됩니다. 오늘의 실제 은행 환율을 사용하거나 자동 제공업체가 설정되지 않은 경우에 유용합니다.",
+      "actions": {
+        "add": "환율 추가",
+        "edit": "환율 수정",
+        "delete": "환율 삭제"
+      },
+      "empty": {
+        "title": "아직 수동 환율이 없습니다",
+        "description": "통화 쌍의 환율을 추가하면 자동 1:1 대체 환율 대신 사용할 수 있습니다."
+      },
+      "delete": {
+        "title": "수동 환율 삭제",
+        "message": "이 작업은 되돌릴 수 없습니다. 이 환율을 삭제하시겠어요?"
+      },
+      "form": {
+        "newTitle": "수동 환율 추가",
+        "editTitle": "수동 환율 수정",
+        "saveError": "환율을 저장하지 못했습니다. 다시 시도하세요.",
+        "fields": {
+          "baseCode": "기준 통화",
+          "quoteCode": "대상 통화",
+          "rate": "환율",
+          "asOf": "적용 시작일"
+        },
+        "errors": {
+          "invalid": "유효한 환율을 입력하세요.",
+          "samePair": "서로 다른 두 통화를 선택하세요."
+        },
+        "actions": {
+          "cancel": "취소",
+          "save": "저장"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "설정",
+    "description": "화면 표시, 언어 및 데모 데이터 환경설정입니다.",
+    "appearance": {
+      "title": "화면 표시",
+      "theme": "테마",
+      "light": "라이트",
+      "dark": "다크",
+      "language": "언어"
+    },
+    "currency": {
+      "title": "표시 통화",
+      "description": "대시보드의 순자산처럼 통화가 다른 계좌의 금액을 환산하고 합산할 때 사용합니다."
+    },
+    "agents": {
+      "title": "AI 에이전트",
+      "description": "MCP를 통해 여러 제공업체와 도구로 금융 데이터를 다루는 AI 도우미입니다. 기본적으로 비활성화되어 있으며 Docker Compose에서 설정할 수 있습니다(AGENTS_ENABLED).",
+      "disabled": "비활성화됨",
+      "enabled": "활성화됨"
+    }
+  },
+  "auth": {
+    "logout": "로그아웃",
+    "fields": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "displayName": "표시 이름",
+      "invitationToken": "초대 토큰"
+    },
+    "login": {
+      "title": "로그인",
+      "description": "LealFinance 계정으로 계속하세요.",
+      "action": "로그인",
+      "invited": "초대장이 있으신가요?"
+    },
+    "register": {
+      "title": "초대 수락",
+      "description": "관리자가 보낸 초대장으로 계정을 만드세요.",
+      "action": "계정 만들기",
+      "passwordHint": "12자 이상 입력하세요.",
+      "backToLogin": "로그인으로 돌아가기",
+      "setup": {
+        "title": "관리자 계정 만들기",
+        "description": "이 인스턴스의 첫 번째 계정이며 모든 관리자 권한을 갖게 됩니다."
+      }
+    }
+  },
+  "admin": {
+    "title": "사용자 및 초대",
+    "description": "이 LealFinance 인스턴스의 접근 권한을 관리하세요.",
+    "roles": { "member": "멤버", "admin": "관리자" },
+    "users": { "title": "사용자", "role": "역할", "active": "활성", "empty": "사용자를 찾을 수 없습니다." },
+    "invitations": {
+      "title": "초대",
+      "createTitle": "초대 만들기",
+      "create": "초대",
+      "tokenOnce": "이 토큰과 가입 링크는 지금 한 번만 표시됩니다. 나가기 전에 저장하세요.",
+      "copyLink": "가입 링크 복사",
+      "revoke": "취소",
+      "empty": "초대를 찾을 수 없습니다."
+    }
+  },
+  "errors": {
+    "error": { "generic": "문제가 발생했습니다. 다시 시도하세요." },
+    "auth": {
+      "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
+      "csrf_invalid": "이 양식은 만료되었습니다. 페이지를 새로 고친 후 다시 시도하세요.",
+      "last_admin": "활성 관리자 계정이 한 명 이상 필요합니다.",
+      "account_inactive": "이 계정은 비활성 상태입니다.",
+      "admin_required": "관리자 권한이 필요합니다."
+    },
+    "invitation": {
+      "not_found": "초대장이 유효하지 않습니다.",
+      "expired": "이 초대장은 만료되었습니다.",
+      "revoked": "이 초대장은 취소되었습니다.",
+      "already_accepted": "이 초대장은 이미 수락되었습니다.",
+      "already_pending": "이 이메일에는 이미 처리 대기 중인 초대장이 있습니다."
+    },
+    "user": { "email_taken": "이 이메일을 사용하는 계정이 이미 있습니다." }
+  }
+}

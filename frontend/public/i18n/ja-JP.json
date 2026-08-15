@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "閉じる",
+      "cancel": "キャンセル",
+      "confirm": "確認",
+      "save": "保存",
+      "saving": "保存中…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "ダッシュボード",
+      "accounts": "口座",
+      "transactions": "取引",
+      "categories": "カテゴリ",
+      "budgets": "予算",
+      "goals": "目標",
+      "reports": "レポート",
+      "exchange": "為替",
+      "settings": "設定",
+      "adminUsers": "ユーザーと招待",
+      "sections": {
+        "accounts": "口座",
+        "analysis": "分析",
+        "setup": "初期設定",
+        "admin": "管理"
+      }
+    },
+    "sidebar": {
+      "openMenu": "メニューを開く",
+      "expand": "サイドバーを展開",
+      "collapse": "サイドバーを折りたたむ"
+    },
+    "themeToggle": {
+      "switchToLight": "ライトテーマに切り替え",
+      "switchToDark": "ダークテーマに切り替え"
+    },
+    "languageSwitcher": {
+      "label": "言語",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "残高を隠す",
+      "show": "残高を表示"
+    },
+    "search": {
+      "trigger": "検索"
+    },
+    "commandPalette": {
+      "placeholder": "コマンドを入力または検索…",
+      "empty": "結果が見つかりません。",
+      "hints": {
+        "navigate": "移動",
+        "select": "選択",
+        "close": "閉じる"
+      },
+      "groups": {
+        "quickActions": "クイックアクション",
+        "goTo": "移動",
+        "accounts": "口座",
+        "categories": "カテゴリ",
+        "budgets": "予算",
+        "transactions": "取引"
+      },
+      "actions": {
+        "newTransaction": "新しい取引",
+        "newAccount": "新しい口座",
+        "newCategory": "新しいカテゴリ",
+        "newBudget": "新しい予算",
+        "configureLanguage": "言語を設定",
+        "configureCurrency": "表示通貨を設定",
+        "toggleTheme": "テーマを切り替え",
+        "toggleBalances": "残高を表示／非表示"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "welcome": "LealFinanceへようこそ",
+    "empty": {
+      "title": "まだデータがありません",
+      "description": "口座を追加すると、財務状況を確認できます。"
+    },
+    "stats": {
+      "netWorth": "純資産",
+      "income": "月間収入",
+      "expense": "月間支出",
+      "savingsRate": "貯蓄率"
+    },
+    "cashFlow": {
+      "title": "キャッシュフロー（過去6か月）",
+      "income": "収入",
+      "expense": "支出"
+    },
+    "categoryChart": {
+      "title": "カテゴリ別支出（今月）",
+      "label": "カテゴリ",
+      "empty": "今月の支出記録はまだありません。"
+    },
+    "accounts": {
+      "title": "口座"
+    },
+    "recentTransactions": {
+      "title": "最近の取引",
+      "empty": "取引記録はまだありません。"
+    },
+    "budgets": {
+      "title": "予算",
+      "empty": "今月の予算はまだ設定されていません。"
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "為替レートを取得できないため、1:1換算を近似値として使用しています。",
+    "fallbackRateWarningAction": "レートを設定"
+  },
+  "accounts": {
+    "title": "口座",
+    "description": "すべての残高をまとめて確認できます。",
+    "showArchived": "アーカイブ済みの口座を表示",
+    "archivedBadge": "アーカイブ済み",
+    "noInstitution": "金融機関未設定",
+    "mixedCurrencies": "複数の通貨",
+    "actions": {
+      "new": "新しい口座",
+      "edit": "編集",
+      "archive": "アーカイブ",
+      "unarchive": "アーカイブ解除"
+    },
+    "archive": {
+      "title": "口座をアーカイブしますか？",
+      "message": "口座「{{name}}」はメイン画面に表示されなくなります。続行しますか？"
+    },
+    "empty": {
+      "title": "口座はまだありません",
+      "description": "最初の口座を作成して、残高の管理を始めましょう。"
+    },
+    "type": {
+      "checking": "普通預金口座",
+      "savings": "貯蓄口座",
+      "cash": "現金",
+      "credit_card": "クレジットカード",
+      "investment": "投資",
+      "goal": "目標"
+    },
+    "form": {
+      "newTitle": "新しい口座",
+      "editTitle": "口座を編集",
+      "saveError": "口座を保存できませんでした。もう一度お試しください。",
+      "fields": {
+        "name": "名前",
+        "type": "種類",
+        "currency": "通貨",
+        "openingBalance": "開始残高",
+        "institution": "金融機関",
+        "creditLimit": "クレジット限度額",
+        "closingDay": "締め日",
+        "dueDay": "支払日"
+      },
+      "errors": {
+        "required": "この項目は必須です。",
+        "decimalAmount": "有効な数値を入力してください。"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    },
+    "detail": {
+      "back": "口座一覧に戻る",
+      "notFound": "口座が見つかりません",
+      "history": "取引履歴",
+      "historyEmpty": {
+        "title": "この口座には取引がありません",
+        "description": "この口座で記録した取引がここに表示されます。"
+      },
+      "creditCard": {
+        "title": "クレジットカード",
+        "used": "利用額",
+        "owed": "利用残高",
+        "limit": "限度額",
+        "available": "利用可能額",
+        "closingDay": "締め日"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "新しい金融機関",
+      "edit": "金融機関を編集",
+      "delete": "金融機関を削除"
+    },
+    "form": {
+      "newTitle": "新しい金融機関",
+      "editTitle": "金融機関を編集",
+      "saveError": "金融機関を保存できませんでした。もう一度お試しください。",
+      "deleteInUseError": "この金融機関には関連付けられた口座があるため、削除できません。",
+      "fields": {
+        "name": "名前",
+        "icon": "アイコン",
+        "color": "色"
+      },
+      "errors": {
+        "required": "この項目は必須です。"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    },
+    "delete": {
+      "title": "金融機関を削除",
+      "message": "この操作は取り消せません。この金融機関を削除しますか？"
+    },
+    "icon": {
+      "bank": "銀行",
+      "wallet": "ウォレット",
+      "chart": "投資",
+      "globe": "国際",
+      "archive": "その他"
+    }
+  },
+  "transactions": {
+    "title": "取引",
+    "description": "収入、支出、振替を管理します。",
+    "actions": {
+      "new": "新しい取引",
+      "edit": "編集",
+      "delete": "削除"
+    },
+    "tabs": {
+      "transactions": "取引",
+      "recurring": "定期取引"
+    },
+    "type": {
+      "income": "収入",
+      "expense": "支出",
+      "transfer": "振替"
+    },
+    "filters": {
+      "type": "種類",
+      "account": "口座",
+      "category": "カテゴリ",
+      "from": "開始日",
+      "to": "終了日",
+      "search": "検索",
+      "institution": "金融機関",
+      "all": "すべて",
+      "clear": "フィルタをクリア"
+    },
+    "empty": {
+      "title": "取引が見つかりません",
+      "description": "フィルタを調整するか、新しい取引を追加してください。"
+    },
+    "projected": {
+      "title": "今後の予定（予測）",
+      "badge": "予定"
+    },
+    "delete": {
+      "title": "取引を削除",
+      "message": "この操作は取り消せません。この取引を削除しますか？"
+    },
+    "form": {
+      "newTitle": "新しい取引",
+      "editTitle": "取引を編集",
+      "saveError": "取引を保存できませんでした。もう一度お試しください。",
+      "fields": {
+        "date": "日付",
+        "amount": "金額",
+        "currency": "通貨",
+        "convertedAmount": "換算後の金額",
+        "conversionFee": "換算手数料／税（任意）",
+        "account": "口座",
+        "fromAccount": "出金元口座",
+        "toAccount": "入金先口座",
+        "fromInstitution": "出金元の金融機関",
+        "toInstitution": "入金先の金融機関",
+        "anyInstitution": "任意の金融機関",
+        "category": "カテゴリ",
+        "description": "説明",
+        "notes": "メモ",
+        "repeat": "この取引を繰り返す",
+        "frequency": "頻度",
+        "interval": "毎",
+        "selectPlaceholder": "選択"
+      },
+      "hints": {
+        "effectiveRate": "実効為替レート：{{rate}}",
+        "recurringUnavailableCrossCurrency": "通貨が異なる取引では定期設定を利用できません。発生するたびに為替レートを再設定する必要があります。"
+      },
+      "errors": {
+        "invalid": "保存する前に必須項目を確認してください。",
+        "convertedAmountRequired": "保存する前に換算後の金額を入力してください。"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "毎週",
+        "monthly": "毎月",
+        "yearly": "毎年"
+      },
+      "everyN": "{{n}}回ごと",
+      "nextOccurrence": "次回発生日",
+      "actions": {
+        "new": "新しい定期ルール"
+      },
+      "empty": {
+        "title": "定期ルールはまだありません",
+        "description": "取引を定期取引にすると、ここにルールが作成されます。"
+      },
+      "delete": {
+        "title": "定期ルールを削除",
+        "message": "記録済みの取引には影響しません。今後予定されている発生分のみ表示されなくなります。"
+      },
+      "form": {
+        "newTitle": "新しい定期ルール",
+        "editTitle": "定期ルールを編集",
+        "saveError": "定期ルールを保存できませんでした。もう一度お試しください。",
+        "startDate": "開始日",
+        "endDate": "終了日（任意）"
+      }
+    }
+  },
+  "categories": {
+    "title": "カテゴリ",
+    "description": "収入と支出をカテゴリ別に整理します。",
+    "showArchived": "アーカイブ済みのカテゴリを表示",
+    "archivedBadge": "アーカイブ済み",
+    "actions": {
+      "new": "新しいカテゴリ",
+      "edit": "編集",
+      "archive": "アーカイブ",
+      "unarchive": "アーカイブ解除",
+      "delete": "削除",
+      "addChild": "新しいサブカテゴリ",
+      "collapse": "折りたたむ",
+      "expand": "展開",
+      "dragHandle": "並べ替え"
+    },
+    "empty": {
+      "title": "カテゴリはまだありません",
+      "description": "カテゴリを作成して、取引を整理しましょう。"
+    },
+    "sections": {
+      "income": "収入カテゴリ",
+      "expense": "支出カテゴリ"
+    },
+    "delete": {
+      "title": "カテゴリを削除しますか？",
+      "message": "この操作は取り消せません。カテゴリ「{{name}}」を削除しますか？",
+      "blockedTitle": "削除できません",
+      "blockedMessage": "このカテゴリは使用中です（取引：{{transactions}}件、予算：{{budgets}}件、サブカテゴリ：{{children}}件）。削除せず、アーカイブしてください。"
+    },
+    "form": {
+      "newTitle": "新しいカテゴリ",
+      "editTitle": "カテゴリを編集",
+      "saveError": "カテゴリを保存できませんでした。もう一度お試しください。",
+      "fields": {
+        "name": "名前",
+        "parent": "親カテゴリ",
+        "noParent": "なし（最上位カテゴリ）",
+        "color": "色",
+        "icon": "アイコン"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    },
+    "icon": {
+      "tag": "タグ",
+      "home": "住居",
+      "archive": "アーカイブ",
+      "swap": "交通",
+      "wallet": "ウォレット",
+      "chart": "グラフ",
+      "sun": "エネルギー",
+      "alertTriangle": "警告",
+      "pencil": "教育",
+      "target": "目標",
+      "repeat": "定期",
+      "globe": "グローバル"
+    }
+  },
+  "budgets": {
+    "title": "予算",
+    "description": "毎月カテゴリごとの支出額を計画します。",
+    "list": {
+      "title": "月間上限"
+    },
+    "planner": {
+      "title": "収入ベースの予算",
+      "description": "予想収入をカテゴリに配分します。",
+      "total": "合計",
+      "expectedIncome": "予想収入",
+      "chartLabel": "配分",
+      "fixed": "固定",
+      "empty": "パーセンテージを設定すると配分を表示できます。",
+      "save": "配分を保存",
+      "errors": {
+        "total": "配分は100%を超えられません。",
+        "income": "今月の予想収入を入力してください。",
+        "save": "配分を保存できませんでした。もう一度お試しください。"
+      }
+    },
+    "monthLabel": "月",
+    "actions": {
+      "new": "新しい予算",
+      "edit": "編集",
+      "delete": "削除"
+    },
+    "totals": {
+      "budgeted": "予算額",
+      "spent": "支出額",
+      "remaining": "残り"
+    },
+    "empty": {
+      "title": "今月の予算はありません",
+      "description": "カテゴリごとに予算を設定して、支出を管理しましょう。"
+    },
+    "state": {
+      "over": "予算超過",
+      "near": "上限間近"
+    },
+    "unbudgeted": {
+      "title": "予算なしの支出",
+      "setBudget": "予算を設定"
+    },
+    "delete": {
+      "title": "予算を削除",
+      "message": "この操作は取り消せません。この予算を削除しますか？"
+    },
+    "form": {
+      "newTitle": "新しい予算",
+      "editTitle": "予算を編集",
+      "saveError": "予算を保存できませんでした。もう一度お試しください。",
+      "fields": {
+        "month": "月",
+        "category": "カテゴリ",
+        "selectCategory": "カテゴリを選択",
+        "amount": "金額",
+        "currency": "通貨"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    }
+  },
+  "goals": {
+    "title": "目標",
+    "description": "目標に向けて貯蓄し、進捗を管理します。",
+    "showArchived": "アーカイブ済みの目標を表示",
+    "archiveError": "目標のアーカイブ状態を更新できませんでした。もう一度お試しください。",
+    "accountLabel": "口座",
+    "archived": "アーカイブ済み",
+    "overdue": "期限超過",
+    "actions": {
+      "new": "新しい目標",
+      "edit": "目標を編集",
+      "archive": "目標をアーカイブ",
+      "unarchive": "目標のアーカイブを解除",
+      "deposit": "入金",
+      "withdraw": "出金",
+      "interest": "利息を追加"
+    },
+    "empty": {
+      "title": "目標はまだありません",
+      "description": "目標を作成して、貯蓄と進捗の管理を始めましょう。"
+    },
+    "progress": {
+      "current": "貯蓄額",
+      "target": "目標額",
+      "remaining": "残り",
+      "contribution": "推奨積立額",
+      "notConfigured": "期限未設定",
+      "frequency": "頻度",
+      "every": "{{n}}回ごと",
+      "label": "進捗"
+    },
+    "frequency": {
+      "weekly": "毎週",
+      "monthly": "毎月",
+      "yearly": "毎年"
+    },
+    "history": {
+      "title": "目標の履歴",
+      "empty": "記録された活動はありません。"
+    },
+    "form": {
+      "newTitle": "新しい目標",
+      "editTitle": "目標を編集",
+      "saveError": "目標を保存できませんでした。もう一度お試しください。",
+      "fields": {
+        "name": "名前",
+        "targetAmount": "目標額",
+        "currency": "通貨",
+        "targetDate": "目標日",
+        "targetDateHint": "任意：期限を追加すると推奨積立額を計算できます。",
+        "frequency": "積立頻度",
+        "interval": "毎"
+      },
+      "errors": {
+        "required": "この項目は必須です。"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "目標に入金" },
+      "withdraw": { "title": "目標から出金" },
+      "interest": { "title": "利息を追加" },
+      "fields": {
+        "amount": "金額",
+        "date": "日付",
+        "sourceAccount": "出入金口座",
+        "description": "説明"
+      },
+      "saveError": "記録できませんでした。もう一度お試しください。"
+    }
+  },
+  "reports": {
+    "title": "レポート",
+    "description": "収入、支出、残高を時系列で分析します。",
+    "period": {
+      "month": "今月",
+      "3m": "過去3か月",
+      "6m": "過去6か月",
+      "12m": "過去12か月",
+      "custom": "カスタム"
+    },
+    "empty": {
+      "title": "この期間の取引はありません",
+      "description": "期間を調整するとレポートを表示できます。"
+    },
+    "charts": {
+      "incomeExpense": "収入と支出",
+      "netFlow": "純キャッシュフロー",
+      "byCategory": "カテゴリ別支出",
+      "balanceTrend": "口座別の残高推移"
+    },
+    "series": {
+      "income": "収入",
+      "expense": "支出",
+      "netFlow": "純キャッシュフロー",
+      "categories": "カテゴリ"
+    }
+  },
+  "exchange": {
+    "title": "為替",
+    "description": "手動で設定した為替レートと、それを使用した換算履歴。",
+    "stats": {
+      "feesPaid": "支払った換算手数料",
+      "needsAttention": "要対応の取引",
+      "currenciesNeedingRate": "レート未設定の通貨"
+    },
+    "needsAttention": {
+      "title": "要対応",
+      "description": "これらの取引は1:1の近似値で換算されています。実際のレートで修正するか、下で手動レートを設定してください。",
+      "empty": {
+        "title": "要対応の項目はありません",
+        "description": "すべての異なる通貨間の取引に実際のレートが記録されています。"
+      },
+      "actions": {
+        "fix": "修正"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "レート未設定の通貨",
+      "description": "これらの口座通貨には表示通貨への実際のレートがまだないため、残高は1:1の近似値で表示されます。特定の取引に紐づくものではありません。",
+      "empty": {
+        "title": "レートが必要な通貨はありません",
+        "description": "すべての口座通貨に実際のレートが設定されています。"
+      }
+    },
+    "manualRates": {
+      "title": "手動レート",
+      "description": "手動で設定したレートは自動プロバイダーより優先されます。今日の銀行レートを使いたい場合や、自動プロバイダーを設定していない場合に便利です。",
+      "actions": {
+        "add": "レートを追加",
+        "edit": "レートを編集",
+        "delete": "レートを削除"
+      },
+      "empty": {
+        "title": "手動レートはまだありません",
+        "description": "通貨ペアのレートを追加すると、自動の1:1フォールバックの代わりに使用できます。"
+      },
+      "delete": {
+        "title": "手動レートを削除",
+        "message": "この操作は取り消せません。このレートを削除しますか？"
+      },
+      "form": {
+        "newTitle": "新しい手動レート",
+        "editTitle": "手動レートを編集",
+        "saveError": "レートを保存できませんでした。もう一度お試しください。",
+        "fields": {
+          "baseCode": "交換元通貨",
+          "quoteCode": "交換先通貨",
+          "rate": "レート",
+          "asOf": "適用開始日"
+        },
+        "errors": {
+          "invalid": "有効なレートを入力してください。",
+          "samePair": "異なる2つの通貨を選択してください。"
+        },
+        "actions": {
+          "cancel": "キャンセル",
+          "save": "保存"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "description": "外観、言語、デモデータの設定。",
+    "appearance": {
+      "title": "外観",
+      "theme": "テーマ",
+      "light": "ライト",
+      "dark": "ダーク",
+      "language": "言語"
+    },
+    "currency": {
+      "title": "表示通貨",
+      "description": "異なる通貨の口座間で金額を換算・集計する際に使用します。ダッシュボードの純資産などに反映されます。"
+    },
+    "agents": {
+      "title": "AIエージェント",
+      "description": "複数のプロバイダーとMCPのツールを使って財務データを扱うAIアシスタントです。デフォルトでは無効で、Docker Compose（AGENTS_ENABLED）で設定できます。",
+      "disabled": "無効",
+      "enabled": "有効"
+    }
+  },
+  "auth": {
+    "logout": "ログアウト",
+    "fields": {
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "displayName": "表示名",
+      "invitationToken": "招待トークン"
+    },
+    "login": {
+      "title": "ログイン",
+      "description": "LealFinanceアカウントで続行してください。",
+      "action": "ログイン",
+      "invited": "招待をお持ちですか？"
+    },
+    "register": {
+      "title": "招待を受け入れる",
+      "description": "管理者から送られた招待でアカウントを作成します。",
+      "action": "アカウントを作成",
+      "passwordHint": "12文字以上を使用してください。",
+      "backToLogin": "ログインに戻る",
+      "setup": {
+        "title": "管理者アカウントを作成",
+        "description": "このインスタンスの最初のアカウントです。完全な管理者権限を持ちます。"
+      }
+    }
+  },
+  "admin": {
+    "title": "ユーザーと招待",
+    "description": "このLealFinanceインスタンスへのアクセスを管理します。",
+    "roles": { "member": "メンバー", "admin": "管理者" },
+    "users": { "title": "ユーザー", "role": "役割", "active": "有効", "empty": "ユーザーが見つかりません。" },
+    "invitations": {
+      "title": "招待",
+      "createTitle": "招待を作成",
+      "create": "招待する",
+      "tokenOnce": "このトークンと登録リンクは今回のみ表示されます。ページを離れる前に保存してください。",
+      "copyLink": "登録リンクをコピー",
+      "revoke": "取り消す",
+      "empty": "招待が見つかりません。"
+    }
+  },
+  "errors": {
+    "error": { "generic": "問題が発生しました。もう一度お試しください。" },
+    "auth": {
+      "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+      "csrf_invalid": "このフォームの有効期限が切れました。ページを更新してもう一度お試しください。",
+      "last_admin": "有効な管理者を1人以上残す必要があります。",
+      "account_inactive": "このアカウントは無効です。",
+      "admin_required": "管理者権限が必要です。"
+    },
+    "invitation": {
+      "not_found": "招待が無効です。",
+      "expired": "招待の有効期限が切れています。",
+      "revoked": "招待は取り消されました。",
+      "already_accepted": "招待はすでに承認されています。",
+      "already_pending": "このメールアドレスには保留中の招待がすでにあります。"
+    },
+    "user": { "email_taken": "このメールアドレスはすでに別のアカウントで使用されています。" }
+  }
+}

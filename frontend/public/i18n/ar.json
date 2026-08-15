@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد",
+      "save": "حفظ",
+      "saving": "جارٍ الحفظ…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "لوحة المعلومات",
+      "accounts": "الحسابات",
+      "transactions": "المعاملات",
+      "categories": "الفئات",
+      "budgets": "الميزانيات",
+      "goals": "الأهداف",
+      "reports": "التقارير",
+      "exchange": "الصرف",
+      "settings": "الإعدادات",
+      "adminUsers": "المستخدمون والدعوات",
+      "sections": {
+        "accounts": "الحسابات",
+        "analysis": "التحليل",
+        "setup": "الإعداد",
+        "admin": "الإدارة"
+      }
+    },
+    "sidebar": {
+      "openMenu": "فتح القائمة",
+      "expand": "توسيع الشريط الجانبي",
+      "collapse": "طي الشريط الجانبي"
+    },
+    "themeToggle": {
+      "switchToLight": "التبديل إلى المظهر الفاتح",
+      "switchToDark": "التبديل إلى المظهر الداكن"
+    },
+    "languageSwitcher": {
+      "label": "اللغة",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "إخفاء الأرصدة",
+      "show": "إظهار الأرصدة"
+    },
+    "search": {
+      "trigger": "بحث"
+    },
+    "commandPalette": {
+      "placeholder": "اكتب أمراً أو ابحث…",
+      "empty": "لم تُعثر على نتائج.",
+      "hints": {
+        "navigate": "تنقّل",
+        "select": "اختيار",
+        "close": "إغلاق"
+      },
+      "groups": {
+        "quickActions": "إجراءات سريعة",
+        "goTo": "انتقال إلى",
+        "accounts": "الحسابات",
+        "categories": "الفئات",
+        "budgets": "الميزانيات",
+        "transactions": "المعاملات"
+      },
+      "actions": {
+        "newTransaction": "معاملة جديدة",
+        "newAccount": "حساب جديد",
+        "newCategory": "فئة جديدة",
+        "newBudget": "ميزانية جديدة",
+        "configureLanguage": "إعداد اللغة",
+        "configureCurrency": "إعداد عملة العرض",
+        "toggleTheme": "تبديل المظهر",
+        "toggleBalances": "إظهار الأرصدة أو إخفاؤها"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "لوحة المعلومات",
+    "welcome": "مرحباً بك في LealFinance",
+    "empty": {
+      "title": "لا توجد بيانات بعد",
+      "description": "أضف حساباً لبدء عرض لوحة معلوماتك المالية."
+    },
+    "stats": {
+      "netWorth": "صافي الثروة",
+      "income": "الدخل الشهري",
+      "expense": "المصروفات الشهرية",
+      "savingsRate": "معدل الادخار"
+    },
+    "cashFlow": {
+      "title": "التدفق النقدي (6 أشهر)",
+      "income": "الدخل",
+      "expense": "المصروفات"
+    },
+    "categoryChart": {
+      "title": "الإنفاق حسب الفئة (الشهر الحالي)",
+      "label": "الفئات",
+      "empty": "لم يُسجّل أي إنفاق هذا الشهر بعد."
+    },
+    "accounts": {
+      "title": "الحسابات"
+    },
+    "recentTransactions": {
+      "title": "المعاملات الأخيرة",
+      "empty": "لم تُسجّل أي معاملات بعد."
+    },
+    "budgets": {
+      "title": "الميزانيات",
+      "empty": "لم تُحدّد ميزانية لهذا الشهر."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "تعذّر الحصول على سعر الصرف — سيُستخدم تحويل تقريبي بنسبة 1:1.",
+    "fallbackRateWarningAction": "تعيين سعر"
+  },
+  "accounts": {
+    "title": "الحسابات",
+    "description": "أرصدتك في مكان واحد.",
+    "showArchived": "إظهار الحسابات المؤرشفة",
+    "archivedBadge": "مؤرشف",
+    "noInstitution": "لا توجد جهة مالية",
+    "mixedCurrencies": "عملات متعددة",
+    "actions": {
+      "new": "حساب جديد",
+      "edit": "تعديل",
+      "archive": "أرشفة",
+      "unarchive": "إلغاء الأرشفة"
+    },
+    "archive": {
+      "title": "أرشفة الحساب؟",
+      "message": "لن يظهر الحساب «{{name}}» بعد الآن في الشاشات الرئيسية. هل تريد المتابعة؟"
+    },
+    "empty": {
+      "title": "لا توجد حسابات بعد",
+      "description": "أنشئ حسابك الأول لبدء تتبّع أرصدتك."
+    },
+    "type": {
+      "checking": "حساب جارٍ",
+      "savings": "حساب توفير",
+      "cash": "نقد",
+      "credit_card": "بطاقة ائتمانية",
+      "investment": "استثمارات",
+      "goal": "هدف ادخار"
+    },
+    "form": {
+      "newTitle": "حساب جديد",
+      "editTitle": "تعديل الحساب",
+      "saveError": "تعذّر حفظ الحساب. حاول مرة أخرى.",
+      "fields": {
+        "name": "الاسم",
+        "type": "النوع",
+        "currency": "العملة",
+        "openingBalance": "الرصيد الافتتاحي",
+        "institution": "الجهة المالية",
+        "creditLimit": "الحد الائتماني",
+        "closingDay": "يوم الإقفال",
+        "dueDay": "يوم الاستحقاق"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب.",
+        "decimalAmount": "أدخل مبلغاً رقمياً صالحاً."
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    },
+    "detail": {
+      "back": "العودة إلى الحسابات",
+      "notFound": "الحساب غير موجود",
+      "history": "سجل المعاملات",
+      "historyEmpty": {
+        "title": "لا توجد معاملات في هذا الحساب",
+        "description": "ستظهر هنا المعاملات المسجّلة في هذا الحساب."
+      },
+      "creditCard": {
+        "title": "بطاقة ائتمانية",
+        "used": "المستخدم",
+        "owed": "الرصيد الحالي",
+        "limit": "الحد",
+        "available": "المتاح",
+        "closingDay": "الإقفال"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "جهة مالية جديدة",
+      "edit": "تعديل الجهة المالية",
+      "delete": "حذف الجهة المالية"
+    },
+    "form": {
+      "newTitle": "جهة مالية جديدة",
+      "editTitle": "تعديل الجهة المالية",
+      "saveError": "تعذّر حفظ الجهة المالية. حاول مرة أخرى.",
+      "deleteInUseError": "لا يزال لدى هذه الجهة المالية حسابات مرتبطة، ولا يمكن حذفها.",
+      "fields": {
+        "name": "الاسم",
+        "icon": "الأيقونة",
+        "color": "اللون"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب."
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    },
+    "delete": {
+      "title": "حذف الجهة المالية",
+      "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف هذه الجهة المالية؟"
+    },
+    "icon": {
+      "bank": "بنك",
+      "wallet": "محفظة",
+      "chart": "استثمارات",
+      "globe": "دولي",
+      "archive": "أخرى"
+    }
+  },
+  "transactions": {
+    "title": "المعاملات",
+    "description": "الدخل والمصروفات والتحويلات.",
+    "actions": {
+      "new": "معاملة جديدة",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "tabs": {
+      "transactions": "المعاملات",
+      "recurring": "المتكررة"
+    },
+    "type": {
+      "income": "دخل",
+      "expense": "مصروف",
+      "transfer": "تحويل"
+    },
+    "filters": {
+      "type": "النوع",
+      "account": "الحساب",
+      "category": "الفئة",
+      "from": "من",
+      "to": "إلى",
+      "search": "بحث",
+      "institution": "الجهة المالية",
+      "all": "الكل",
+      "clear": "مسح عوامل التصفية"
+    },
+    "empty": {
+      "title": "لم تُعثر على معاملات",
+      "description": "عدّل عوامل التصفية أو أضف معاملة جديدة."
+    },
+    "projected": {
+      "title": "القادمة (متوقعة)",
+      "badge": "متوقعة"
+    },
+    "delete": {
+      "title": "حذف المعاملة",
+      "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف هذه المعاملة؟"
+    },
+    "form": {
+      "newTitle": "معاملة جديدة",
+      "editTitle": "تعديل المعاملة",
+      "saveError": "تعذّر حفظ المعاملة. حاول مرة أخرى.",
+      "fields": {
+        "date": "التاريخ",
+        "amount": "المبلغ",
+        "currency": "العملة",
+        "convertedAmount": "المبلغ بعد التحويل",
+        "conversionFee": "رسوم/ضريبة التحويل (اختياري)",
+        "account": "الحساب",
+        "fromAccount": "الحساب المصدر",
+        "toAccount": "الحساب الوجهة",
+        "fromInstitution": "الجهة المالية المصدر",
+        "toInstitution": "الجهة المالية الوجهة",
+        "anyInstitution": "أي جهة مالية",
+        "category": "الفئة",
+        "description": "الوصف",
+        "notes": "ملاحظات",
+        "repeat": "تكرار هذه المعاملة",
+        "frequency": "التكرار",
+        "interval": "كل",
+        "selectPlaceholder": "اختيار"
+      },
+      "hints": {
+        "effectiveRate": "سعر الصرف الفعلي: {{rate}}",
+        "recurringUnavailableCrossCurrency": "لا يتوفر التكرار للمعاملة متعددة العملات — يجب تحديد السعر من جديد لكل تكرار."
+      },
+      "errors": {
+        "invalid": "تحقّق من الحقول المطلوبة قبل الحفظ.",
+        "convertedAmountRequired": "أدخل المبلغ بعد التحويل قبل الحفظ."
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "أسبوعياً",
+        "monthly": "شهرياً",
+        "yearly": "سنوياً"
+      },
+      "everyN": "كل {{n}}",
+      "nextOccurrence": "التكرار التالي",
+      "actions": {
+        "new": "قاعدة تكرار جديدة"
+      },
+      "empty": {
+        "title": "لا توجد قواعد تكرار بعد",
+        "description": "عند جعل معاملة متكررة، تُنشأ قاعدة هنا."
+      },
+      "delete": {
+        "title": "حذف قاعدة التكرار",
+        "message": "لا يؤثر هذا في المعاملات المسجّلة — ستختفي التكرارات المتوقعة المستقبلية فقط."
+      },
+      "form": {
+        "newTitle": "قاعدة تكرار جديدة",
+        "editTitle": "تعديل قاعدة التكرار",
+        "saveError": "تعذّر حفظ قاعدة التكرار. حاول مرة أخرى.",
+        "startDate": "البداية",
+        "endDate": "النهاية (اختياري)"
+      }
+    }
+  },
+  "categories": {
+    "title": "الفئات",
+    "description": "نظّم الدخل والمصروفات حسب الفئة.",
+    "showArchived": "إظهار الفئات المؤرشفة",
+    "archivedBadge": "مؤرشفة",
+    "actions": {
+      "new": "فئة جديدة",
+      "edit": "تعديل",
+      "archive": "أرشفة",
+      "unarchive": "إلغاء الأرشفة",
+      "delete": "حذف",
+      "addChild": "فئة فرعية جديدة",
+      "collapse": "طيّ",
+      "expand": "توسيع",
+      "dragHandle": "إعادة الترتيب"
+    },
+    "empty": {
+      "title": "لا توجد فئات بعد",
+      "description": "أنشئ فئات لتنظيم معاملاتك."
+    },
+    "sections": {
+      "income": "فئات الدخل",
+      "expense": "فئات المصروفات"
+    },
+    "delete": {
+      "title": "حذف الفئة؟",
+      "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف الفئة «{{name}}»؟",
+      "blockedTitle": "يتعذّر الحذف",
+      "blockedMessage": "لا تزال هذه الفئة قيد الاستخدام (المعاملات: {{transactions}}، الميزانيات: {{budgets}}، الفئات الفرعية: {{children}}). أرشفها بدلاً من حذفها."
+    },
+    "form": {
+      "newTitle": "فئة جديدة",
+      "editTitle": "تعديل الفئة",
+      "saveError": "تعذّر حفظ الفئة. حاول مرة أخرى.",
+      "fields": {
+        "name": "الاسم",
+        "parent": "الفئة الأصلية",
+        "noParent": "لا يوجد (فئة رئيسية)",
+        "color": "اللون",
+        "icon": "الأيقونة"
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    },
+    "icon": {
+      "tag": "وسم",
+      "home": "المنزل",
+      "archive": "أرشيف",
+      "swap": "النقل",
+      "wallet": "محفظة",
+      "chart": "مخطط",
+      "sun": "الطاقة",
+      "alertTriangle": "تنبيه",
+      "pencil": "التعليم",
+      "target": "هدف",
+      "repeat": "متكرر",
+      "globe": "عالمي"
+    }
+  },
+  "budgets": {
+    "title": "الميزانيات",
+    "description": "خطّط لمقدار الإنفاق على كل فئة شهرياً.",
+    "list": {
+      "title": "الحدود الشهرية"
+    },
+    "planner": {
+      "title": "ميزانية حسب الدخل",
+      "description": "وزّع دخلك المتوقع على الفئات.",
+      "total": "الإجمالي",
+      "expectedIncome": "الدخل المتوقع",
+      "chartLabel": "التوزيع",
+      "fixed": "ثابت",
+      "empty": "حدّد النسب المئوية لعرض توزيعك.",
+      "save": "حفظ التوزيع",
+      "errors": {
+        "total": "لا يمكن أن يتجاوز التوزيع 100٪.",
+        "income": "أدخل الدخل المتوقع لهذا الشهر.",
+        "save": "تعذّر حفظ التوزيع. حاول مرة أخرى."
+      }
+    },
+    "monthLabel": "الشهر",
+    "actions": {
+      "new": "ميزانية جديدة",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "totals": {
+      "budgeted": "المخطط له",
+      "spent": "المنفق",
+      "remaining": "المتبقي"
+    },
+    "empty": {
+      "title": "لا توجد ميزانية لهذا الشهر",
+      "description": "حدّد ميزانية حسب الفئة لتتبّع إنفاقك."
+    },
+    "state": {
+      "over": "تجاوز الميزانية",
+      "near": "قريب من الحد"
+    },
+    "unbudgeted": {
+      "title": "إنفاق بلا ميزانية",
+      "setBudget": "تحديد ميزانية"
+    },
+    "delete": {
+      "title": "حذف الميزانية",
+      "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف هذه الميزانية؟"
+    },
+    "form": {
+      "newTitle": "ميزانية جديدة",
+      "editTitle": "تعديل الميزانية",
+      "saveError": "تعذّر حفظ الميزانية. حاول مرة أخرى.",
+      "fields": {
+        "month": "الشهر",
+        "category": "الفئة",
+        "selectCategory": "اختر فئة",
+        "amount": "المبلغ",
+        "currency": "العملة"
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    }
+  },
+  "goals": {
+    "title": "الأهداف",
+    "description": "ادّخر لأي هدف وتابع تقدّمك.",
+    "showArchived": "إظهار الأهداف المؤرشفة",
+    "archiveError": "تعذّر تحديث حالة أرشفة الهدف. حاول مرة أخرى.",
+    "accountLabel": "الحساب",
+    "archived": "مؤرشف",
+    "overdue": "متأخر",
+    "actions": {
+      "new": "هدف جديد",
+      "edit": "تعديل الهدف",
+      "archive": "أرشفة الهدف",
+      "unarchive": "إلغاء أرشفة الهدف",
+      "deposit": "إضافة أموال",
+      "withdraw": "سحب",
+      "interest": "إضافة فائدة"
+    },
+    "empty": {
+      "title": "لا توجد أهداف بعد",
+      "description": "أنشئ هدفاً لبدء الادخار وتتبّع تقدّمك."
+    },
+    "progress": {
+      "current": "المدخر",
+      "target": "الهدف",
+      "remaining": "المتبقي",
+      "contribution": "المساهمة المقترحة",
+      "notConfigured": "لا يوجد موعد نهائي",
+      "frequency": "التكرار",
+      "every": "كل {{n}}",
+      "label": "التقدّم"
+    },
+    "frequency": {
+      "weekly": "أسبوعياً",
+      "monthly": "شهرياً",
+      "yearly": "سنوياً"
+    },
+    "history": {
+      "title": "سجل الهدف",
+      "empty": "لم يُسجّل أي نشاط."
+    },
+    "form": {
+      "newTitle": "هدف جديد",
+      "editTitle": "تعديل الهدف",
+      "saveError": "تعذّر حفظ الهدف. حاول مرة أخرى.",
+      "fields": {
+        "name": "الاسم",
+        "targetAmount": "المبلغ المستهدف",
+        "currency": "العملة",
+        "targetDate": "التاريخ المستهدف",
+        "targetDateHint": "اختياري: أضف موعداً نهائياً لحساب المساهمة المقترحة.",
+        "frequency": "وتيرة المساهمة",
+        "interval": "كل"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب."
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "إضافة أموال إلى الهدف" },
+      "withdraw": { "title": "سحب أموال من الهدف" },
+      "interest": { "title": "إضافة فائدة" },
+      "fields": {
+        "amount": "المبلغ",
+        "date": "التاريخ",
+        "sourceAccount": "الحساب المصدر/الوجهة",
+        "description": "الوصف"
+      },
+      "saveError": "تعذّر تسجيل النشاط. حاول مرة أخرى."
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "description": "حلّل الدخل والمصروفات والأرصدة بمرور الوقت.",
+    "period": {
+      "month": "هذا الشهر",
+      "3m": "آخر 3 أشهر",
+      "6m": "آخر 6 أشهر",
+      "12m": "آخر 12 شهراً",
+      "custom": "مخصّص"
+    },
+    "empty": {
+      "title": "لا توجد معاملات في هذه الفترة",
+      "description": "عدّل الفترة المحددة لعرض تقاريرك."
+    },
+    "charts": {
+      "incomeExpense": "الدخل مقابل المصروفات",
+      "netFlow": "صافي التدفق",
+      "byCategory": "الإنفاق حسب الفئة",
+      "balanceTrend": "تغيّر الرصيد حسب الحساب"
+    },
+    "series": {
+      "income": "الدخل",
+      "expense": "المصروفات",
+      "netFlow": "صافي التدفق",
+      "categories": "الفئات"
+    }
+  },
+  "exchange": {
+    "title": "الصرف",
+    "description": "أسعار الصرف اليدوية والتحويلات التي استخدمتها.",
+    "stats": {
+      "feesPaid": "رسوم التحويل المدفوعة",
+      "needsAttention": "معاملات تحتاج إلى مراجعة",
+      "currenciesNeedingRate": "عملات بلا سعر صرف"
+    },
+    "needsAttention": {
+      "title": "تحتاج إلى مراجعة",
+      "description": "حُوّلت هذه المعاملات باستخدام تقريب بنسبة 1:1 — أصلحها بالسعر الفعلي أو عيّن سعراً يدوياً أدناه.",
+      "empty": {
+        "title": "لا شيء يحتاج إلى مراجعة",
+        "description": "لكل معاملة متعددة العملات سعر فعلي مسجّل."
+      },
+      "actions": {
+        "fix": "إصلاح"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "عملات بلا سعر صرف",
+      "description": "لا تملك عملات هذه الحسابات سعراً فعلياً مقابل عملة العرض بعد، لذلك تُعرض أرصدتها كتقريب بنسبة 1:1 — ولا يرتبط ذلك بأي معاملة محددة.",
+      "empty": {
+        "title": "لا توجد عملة تحتاج إلى سعر صرف",
+        "description": "لكل عملة حساب سعر فعلي متاح بالفعل."
+      }
+    },
+    "manualRates": {
+      "title": "أسعار يدوية",
+      "description": "تحظى الأسعار التي تعيّنها يدوياً بالأولوية على المزوّد التلقائي — وهي مفيدة لسعر البنك الفعلي اليوم أو عند عدم إعداد أي مزوّد.",
+      "actions": {
+        "add": "إضافة سعر",
+        "edit": "تعديل السعر",
+        "delete": "حذف السعر"
+      },
+      "empty": {
+        "title": "لا توجد أسعار يدوية بعد",
+        "description": "أضف سعراً لزوج من العملات لاستخدامه بدلاً من التقريب التلقائي بنسبة 1:1."
+      },
+      "delete": {
+        "title": "حذف السعر اليدوي",
+        "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف هذا السعر؟"
+      },
+      "form": {
+        "newTitle": "سعر يدوي جديد",
+        "editTitle": "تعديل السعر اليدوي",
+        "saveError": "تعذّر حفظ السعر. حاول مرة أخرى.",
+        "fields": {
+          "baseCode": "عملة المصدر",
+          "quoteCode": "عملة الوجهة",
+          "rate": "السعر",
+          "asOf": "ساري اعتباراً من"
+        },
+        "errors": {
+          "invalid": "أدخل سعراً صالحاً.",
+          "samePair": "اختر عملتين مختلفتين."
+        },
+        "actions": {
+          "cancel": "إلغاء",
+          "save": "حفظ"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "description": "تفضيلات المظهر واللغة والبيانات التجريبية.",
+    "appearance": {
+      "title": "المظهر",
+      "theme": "المظهر",
+      "light": "فاتح",
+      "dark": "داكن",
+      "language": "اللغة"
+    },
+    "currency": {
+      "title": "عملة العرض",
+      "description": "تُستخدم لتحويل القيم وإضافتها عبر الحسابات ذات العملات المختلفة، مثل صافي الثروة في لوحة المعلومات."
+    },
+    "agents": {
+      "title": "وكلاء الذكاء الاصطناعي",
+      "description": "مساعدون بالذكاء الاصطناعي يتعاملون مع بياناتك المالية، مع مزوّدين وأدوات متعددة عبر MCP. تكون هذه الميزة معطّلة افتراضياً — ويمكن إعدادها في Docker Compose (AGENTS_ENABLED).",
+      "disabled": "معطّل",
+      "enabled": "مفعّل"
+    }
+  },
+  "auth": {
+    "logout": "تسجيل الخروج",
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "displayName": "اسم العرض",
+      "invitationToken": "رمز الدعوة"
+    },
+    "login": {
+      "title": "تسجيل الدخول",
+      "description": "استخدم حسابك في LealFinance للمتابعة.",
+      "action": "تسجيل الدخول",
+      "invited": "لديك دعوة؟"
+    },
+    "register": {
+      "title": "قبول الدعوة",
+      "description": "أنشئ حسابك باستخدام الدعوة التي أرسلها المسؤول.",
+      "action": "إنشاء الحساب",
+      "passwordHint": "استخدم 12 حرفاً على الأقل.",
+      "backToLogin": "العودة إلى تسجيل الدخول",
+      "setup": {
+        "title": "إنشاء حساب المسؤول",
+        "description": "هذا هو الحساب الأول في هذه المنصة — وسيحصل على صلاحيات المسؤول الكاملة."
+      }
+    }
+  },
+  "admin": {
+    "title": "المستخدمون والدعوات",
+    "description": "إدارة الوصول إلى منصة LealFinance هذه.",
+    "roles": { "member": "عضو", "admin": "مسؤول" },
+    "users": { "title": "المستخدمون", "role": "الدور", "active": "نشط", "empty": "لم يُعثر على مستخدمين." },
+    "invitations": {
+      "title": "الدعوات",
+      "createTitle": "إنشاء دعوة",
+      "create": "دعوة",
+      "tokenOnce": "يُعرض هذا الرمز ورابط التسجيل الآن فقط. احفظهما قبل المغادرة.",
+      "copyLink": "نسخ رابط التسجيل",
+      "revoke": "إبطال",
+      "empty": "لم يُعثر على دعوات."
+    }
+  },
+  "errors": {
+    "error": { "generic": "حدث خطأ ما. يُرجى المحاولة مرة أخرى." },
+    "auth": {
+      "invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحين.",
+      "csrf_invalid": "انتهت صلاحية هذا النموذج. حدّث الصفحة وحاول مرة أخرى.",
+      "last_admin": "يلزم وجود مسؤول نشط واحد على الأقل.",
+      "account_inactive": "هذا الحساب غير نشط.",
+      "admin_required": "يلزم الوصول بصلاحيات المسؤول."
+    },
+    "invitation": {
+      "not_found": "الدعوة غير صالحة.",
+      "expired": "انتهت صلاحية هذه الدعوة.",
+      "revoked": "أُبطلت هذه الدعوة.",
+      "already_accepted": "قُبلت هذه الدعوة مسبقاً.",
+      "already_pending": "توجد دعوة معلّقة بالفعل لهذا البريد الإلكتروني."
+    },
+    "user": { "email_taken": "يوجد حساب يستخدم هذا البريد الإلكتروني بالفعل." }
+  }
+}

@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import {
   Component,
   computed,
@@ -54,7 +53,6 @@ import { Sidebar } from './sidebar';
   },
 })
 export class Shell {
-  private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
   private readonly transloco = inject(TranslocoService);
   protected readonly theme = inject(ThemeService);
@@ -93,10 +91,6 @@ export class Shell {
       media.addEventListener('change', onMediaChange);
       this.destroyRef.onDestroy(() => media.removeEventListener('change', onMediaChange));
     }
-
-    effect(() => {
-      this.document.documentElement.lang = this.activeLang();
-    });
 
     effect(() => {
       const element = this.drawer()?.nativeElement;

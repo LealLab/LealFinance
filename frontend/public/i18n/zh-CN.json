@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "关闭",
+      "cancel": "取消",
+      "confirm": "确认",
+      "save": "保存",
+      "saving": "保存中…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "仪表盘",
+      "accounts": "账户",
+      "transactions": "交易",
+      "categories": "分类",
+      "budgets": "预算",
+      "goals": "目标",
+      "reports": "报表",
+      "exchange": "汇率",
+      "settings": "设置",
+      "adminUsers": "用户与邀请",
+      "sections": {
+        "accounts": "账户",
+        "analysis": "分析",
+        "setup": "设置",
+        "admin": "管理"
+      }
+    },
+    "sidebar": {
+      "openMenu": "打开菜单",
+      "expand": "展开侧边栏",
+      "collapse": "收起侧边栏"
+    },
+    "themeToggle": {
+      "switchToLight": "切换到浅色主题",
+      "switchToDark": "切换到深色主题"
+    },
+    "languageSwitcher": {
+      "label": "语言",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "隐藏余额",
+      "show": "显示余额"
+    },
+    "search": {
+      "trigger": "搜索"
+    },
+    "commandPalette": {
+      "placeholder": "输入命令或搜索…",
+      "empty": "未找到结果。",
+      "hints": {
+        "navigate": "导航",
+        "select": "选择",
+        "close": "关闭"
+      },
+      "groups": {
+        "quickActions": "快捷操作",
+        "goTo": "前往",
+        "accounts": "账户",
+        "categories": "分类",
+        "budgets": "预算",
+        "transactions": "交易"
+      },
+      "actions": {
+        "newTransaction": "新建交易",
+        "newAccount": "新建账户",
+        "newCategory": "新建分类",
+        "newBudget": "新建预算",
+        "configureLanguage": "设置语言",
+        "configureCurrency": "设置显示货币",
+        "toggleTheme": "切换主题",
+        "toggleBalances": "显示或隐藏余额"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "welcome": "欢迎使用 LealFinance",
+    "empty": {
+      "title": "暂无数据",
+      "description": "添加账户后即可开始查看财务仪表盘。"
+    },
+    "stats": {
+      "netWorth": "净资产",
+      "income": "月收入",
+      "expense": "月支出",
+      "savingsRate": "储蓄率"
+    },
+    "cashFlow": {
+      "title": "现金流（近 6 个月）",
+      "income": "收入",
+      "expense": "支出"
+    },
+    "categoryChart": {
+      "title": "按分类统计支出（本月）",
+      "label": "分类",
+      "empty": "本月暂无支出记录。"
+    },
+    "accounts": {
+      "title": "账户"
+    },
+    "recentTransactions": {
+      "title": "近期交易",
+      "empty": "暂无交易记录。"
+    },
+    "budgets": {
+      "title": "预算",
+      "empty": "本月尚未设置预算。"
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "暂无汇率，暂使用 1:1 兑换作为近似值。",
+    "fallbackRateWarningAction": "设置汇率"
+  },
+  "accounts": {
+    "title": "账户",
+    "description": "集中查看所有余额。",
+    "showArchived": "显示已归档账户",
+    "archivedBadge": "已归档",
+    "noInstitution": "未设置机构",
+    "mixedCurrencies": "多种货币",
+    "actions": {
+      "new": "新建账户",
+      "edit": "编辑",
+      "archive": "归档",
+      "unarchive": "取消归档"
+    },
+    "archive": {
+      "title": "确认归档账户？",
+      "message": "账户“{{name}}”将不再显示在主要视图中。要继续吗？"
+    },
+    "empty": {
+      "title": "暂无账户",
+      "description": "创建你的第一个账户，开始跟踪余额。"
+    },
+    "type": {
+      "checking": "活期账户",
+      "savings": "储蓄账户",
+      "cash": "现金",
+      "credit_card": "信用卡",
+      "investment": "投资",
+      "goal": "目标"
+    },
+    "form": {
+      "newTitle": "新建账户",
+      "editTitle": "编辑账户",
+      "saveError": "无法保存账户。请重试。",
+      "fields": {
+        "name": "名称",
+        "type": "类型",
+        "currency": "货币",
+        "openingBalance": "期初余额",
+        "institution": "机构",
+        "creditLimit": "信用额度",
+        "closingDay": "账单日",
+        "dueDay": "还款日"
+      },
+      "errors": {
+        "required": "此字段为必填项。",
+        "decimalAmount": "请输入有效的数字金额。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    },
+    "detail": {
+      "back": "返回账户列表",
+      "notFound": "未找到账户",
+      "history": "交易记录",
+      "historyEmpty": {
+        "title": "此账户暂无交易",
+        "description": "记录在此账户中的交易会显示在这里。"
+      },
+      "creditCard": {
+        "title": "信用卡",
+        "used": "已使用",
+        "owed": "当前欠款",
+        "limit": "额度",
+        "available": "可用额度",
+        "closingDay": "账单日"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "新建机构",
+      "edit": "编辑机构",
+      "delete": "删除机构"
+    },
+    "form": {
+      "newTitle": "新建机构",
+      "editTitle": "编辑机构",
+      "saveError": "无法保存机构。请重试。",
+      "deleteInUseError": "此机构仍关联着账户，无法删除。",
+      "fields": {
+        "name": "名称",
+        "icon": "图标",
+        "color": "颜色"
+      },
+      "errors": {
+        "required": "此字段为必填项。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    },
+    "delete": {
+      "title": "删除机构",
+      "message": "此操作无法撤销。要删除此机构吗？"
+    },
+    "icon": {
+      "bank": "银行",
+      "wallet": "钱包",
+      "chart": "投资",
+      "globe": "国际",
+      "archive": "其他"
+    }
+  },
+  "transactions": {
+    "title": "交易",
+    "description": "收入、支出和转账。",
+    "actions": {
+      "new": "新建交易",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "tabs": {
+      "transactions": "交易",
+      "recurring": "周期性"
+    },
+    "type": {
+      "income": "收入",
+      "expense": "支出",
+      "transfer": "转账"
+    },
+    "filters": {
+      "type": "类型",
+      "account": "账户",
+      "category": "分类",
+      "from": "起始日期",
+      "to": "结束日期",
+      "search": "搜索",
+      "institution": "机构",
+      "all": "全部",
+      "clear": "清除筛选"
+    },
+    "empty": {
+      "title": "未找到交易",
+      "description": "调整筛选条件或添加新交易。"
+    },
+    "projected": {
+      "title": "即将发生（预计）",
+      "badge": "预计"
+    },
+    "delete": {
+      "title": "删除交易",
+      "message": "此操作无法撤销。要删除此交易吗？"
+    },
+    "form": {
+      "newTitle": "新建交易",
+      "editTitle": "编辑交易",
+      "saveError": "无法保存交易。请重试。",
+      "fields": {
+        "date": "日期",
+        "amount": "金额",
+        "currency": "货币",
+        "convertedAmount": "换算后金额",
+        "conversionFee": "换算费/税（可选）",
+        "account": "账户",
+        "fromAccount": "转出账户",
+        "toAccount": "转入账户",
+        "fromInstitution": "转出机构",
+        "toInstitution": "转入机构",
+        "anyInstitution": "任意机构",
+        "category": "分类",
+        "description": "描述",
+        "notes": "备注",
+        "repeat": "将此交易设为周期性",
+        "frequency": "频率",
+        "interval": "每",
+        "selectPlaceholder": "选择"
+      },
+      "hints": {
+        "effectiveRate": "有效汇率：{{rate}}",
+        "recurringUnavailableCrossCurrency": "跨币种交易无法设置周期性规则——每次发生时都需要重新设置汇率。"
+      },
+      "errors": {
+        "invalid": "保存前请检查必填字段。",
+        "convertedAmountRequired": "保存前请输入换算后金额。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "每周",
+        "monthly": "每月",
+        "yearly": "每年"
+      },
+      "everyN": "每 {{n}}",
+      "nextOccurrence": "下次发生时间",
+      "actions": {
+        "new": "新建周期性规则"
+      },
+      "empty": {
+        "title": "暂无周期性规则",
+        "description": "将交易设为周期性后，会在这里创建规则。"
+      },
+      "delete": {
+        "title": "删除周期性规则",
+        "message": "此操作不会影响已记录的交易——只会移除未来预计发生的记录。"
+      },
+      "form": {
+        "newTitle": "新建周期性规则",
+        "editTitle": "编辑周期性规则",
+        "saveError": "无法保存周期性规则。请重试。",
+        "startDate": "开始日期",
+        "endDate": "结束日期（可选）"
+      }
+    }
+  },
+  "categories": {
+    "title": "分类",
+    "description": "按分类整理收入和支出。",
+    "showArchived": "显示已归档分类",
+    "archivedBadge": "已归档",
+    "actions": {
+      "new": "新建分类",
+      "edit": "编辑",
+      "archive": "归档",
+      "unarchive": "取消归档",
+      "delete": "删除",
+      "addChild": "新建子分类",
+      "collapse": "收起",
+      "expand": "展开",
+      "dragHandle": "调整顺序"
+    },
+    "empty": {
+      "title": "暂无分类",
+      "description": "创建分类来整理交易。"
+    },
+    "sections": {
+      "income": "收入分类",
+      "expense": "支出分类"
+    },
+    "delete": {
+      "title": "确认删除分类？",
+      "message": "此操作无法撤销。要删除分类“{{name}}”吗？",
+      "blockedTitle": "无法删除",
+      "blockedMessage": "此分类仍在使用：{{transactions}} 笔交易、{{budgets}} 个预算和 {{children}} 个子分类正在使用它。请改为归档，而不是删除。"
+    },
+    "form": {
+      "newTitle": "新建分类",
+      "editTitle": "编辑分类",
+      "saveError": "无法保存分类。请重试。",
+      "fields": {
+        "name": "名称",
+        "parent": "上级分类",
+        "noParent": "无（顶级分类）",
+        "color": "颜色",
+        "icon": "图标"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    },
+    "icon": {
+      "tag": "标签",
+      "home": "住房",
+      "archive": "归档",
+      "swap": "交通",
+      "wallet": "钱包",
+      "chart": "图表",
+      "sun": "能源",
+      "alertTriangle": "警告",
+      "pencil": "教育",
+      "target": "目标",
+      "repeat": "周期性",
+      "globe": "全球"
+    }
+  },
+  "budgets": {
+    "title": "预算",
+    "description": "规划每月各分类的支出金额。",
+    "list": {
+      "title": "每月限额"
+    },
+    "planner": {
+      "title": "基于收入的预算",
+      "description": "将预计收入分配到各个分类。",
+      "total": "总计",
+      "expectedIncome": "预计收入",
+      "chartLabel": "分配",
+      "fixed": "固定",
+      "empty": "设置百分比后查看分配情况。",
+      "save": "保存分配",
+      "errors": {
+        "total": "分配比例不能超过 100%。",
+        "income": "请输入本月预计收入。",
+        "save": "无法保存分配。请重试。"
+      }
+    },
+    "monthLabel": "月份",
+    "actions": {
+      "new": "新建预算",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "totals": {
+      "budgeted": "已预算",
+      "spent": "已支出",
+      "remaining": "剩余"
+    },
+    "empty": {
+      "title": "本月暂无预算",
+      "description": "按分类设置预算，跟踪支出情况。"
+    },
+    "state": {
+      "over": "超出预算",
+      "near": "接近限额"
+    },
+    "unbudgeted": {
+      "title": "无预算的支出",
+      "setBudget": "设置预算"
+    },
+    "delete": {
+      "title": "删除预算",
+      "message": "此操作无法撤销。要删除此预算吗？"
+    },
+    "form": {
+      "newTitle": "新建预算",
+      "editTitle": "编辑预算",
+      "saveError": "无法保存预算。请重试。",
+      "fields": {
+        "month": "月份",
+        "category": "分类",
+        "selectCategory": "选择分类",
+        "amount": "金额",
+        "currency": "货币"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    }
+  },
+  "goals": {
+    "title": "目标",
+    "description": "为任意目标存钱并跟踪进度。",
+    "showArchived": "显示已归档目标",
+    "archiveError": "无法更新目标的归档状态。请重试。",
+    "accountLabel": "账户",
+    "archived": "已归档",
+    "overdue": "已逾期",
+    "actions": {
+      "new": "新建目标",
+      "edit": "编辑目标",
+      "archive": "归档目标",
+      "unarchive": "取消归档目标",
+      "deposit": "存入资金",
+      "withdraw": "提取资金",
+      "interest": "添加利息"
+    },
+    "empty": {
+      "title": "暂无目标",
+      "description": "创建目标，开始存钱并跟踪进度。"
+    },
+    "progress": {
+      "current": "已存入",
+      "target": "目标金额",
+      "remaining": "剩余",
+      "contribution": "建议存入",
+      "notConfigured": "未设置截止日期",
+      "frequency": "频率",
+      "every": "每 {{n}}",
+      "label": "进度"
+    },
+    "frequency": {
+      "weekly": "每周",
+      "monthly": "每月",
+      "yearly": "每年"
+    },
+    "history": {
+      "title": "目标记录",
+      "empty": "暂无活动记录。"
+    },
+    "form": {
+      "newTitle": "新建目标",
+      "editTitle": "编辑目标",
+      "saveError": "无法保存目标。请重试。",
+      "fields": {
+        "name": "名称",
+        "targetAmount": "目标金额",
+        "currency": "货币",
+        "targetDate": "目标日期",
+        "targetDateHint": "可选：添加截止日期以计算建议存入金额。",
+        "frequency": "存入频率",
+        "interval": "每"
+      },
+      "errors": {
+        "required": "此字段为必填项。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "存入目标" },
+      "withdraw": { "title": "从目标提取" },
+      "interest": { "title": "添加利息" },
+      "fields": {
+        "amount": "金额",
+        "date": "日期",
+        "sourceAccount": "来源/目标账户",
+        "description": "描述"
+      },
+      "saveError": "无法记录活动。请重试。"
+    }
+  },
+  "reports": {
+    "title": "报表",
+    "description": "分析一段时间内的收入、支出和余额。",
+    "period": {
+      "month": "本月",
+      "3m": "过去 3 个月",
+      "6m": "过去 6 个月",
+      "12m": "过去 12 个月",
+      "custom": "自定义"
+    },
+    "empty": {
+      "title": "此期间没有交易",
+      "description": "调整所选时间段以查看报表。"
+    },
+    "charts": {
+      "incomeExpense": "收入与支出",
+      "netFlow": "净现金流",
+      "byCategory": "按分类统计支出",
+      "balanceTrend": "按账户查看余额趋势"
+    },
+    "series": {
+      "income": "收入",
+      "expense": "支出",
+      "netFlow": "净现金流",
+      "categories": "分类"
+    }
+  },
+  "exchange": {
+    "title": "汇率",
+    "description": "手动设置汇率及使用过这些汇率的换算记录。",
+    "stats": {
+      "feesPaid": "已支付的换算费用",
+      "needsAttention": "需要处理的交易",
+      "currenciesNeedingRate": "没有汇率的货币"
+    },
+    "needsAttention": {
+      "title": "需要处理",
+      "description": "这些交易使用了 1:1 近似换算——请使用实际汇率修正，或在下方设置手动汇率。",
+      "empty": {
+        "title": "暂无需要处理的内容",
+        "description": "所有跨币种交易都已记录实际汇率。"
+      },
+      "actions": {
+        "fix": "修正"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "没有汇率的货币",
+      "description": "这些账户货币尚未设置到显示货币的实际汇率，因此其中的余额会按 1:1 近似值显示——这与任何特定交易无关。",
+      "empty": {
+        "title": "暂无货币需要设置汇率",
+        "description": "所有账户货币都已有实际汇率。"
+      }
+    },
+    "manualRates": {
+      "title": "手动汇率",
+      "description": "手动设置的汇率优先于自动服务——可用于今天银行的实际汇率，或在未配置自动服务时使用。",
+      "actions": {
+        "add": "添加汇率",
+        "edit": "编辑汇率",
+        "delete": "删除汇率"
+      },
+      "empty": {
+        "title": "尚未设置手动汇率",
+        "description": "添加货币对的汇率，即可替代自动的 1:1 备用汇率。"
+      },
+      "delete": {
+        "title": "删除手动汇率",
+        "message": "此操作无法撤销。要删除此汇率吗？"
+      },
+      "form": {
+        "newTitle": "新建手动汇率",
+        "editTitle": "编辑手动汇率",
+        "saveError": "无法保存汇率。请重试。",
+        "fields": {
+          "baseCode": "基准货币",
+          "quoteCode": "报价货币",
+          "rate": "汇率",
+          "asOf": "生效日期"
+        },
+        "errors": {
+          "invalid": "请输入有效汇率。",
+          "samePair": "请选择两种不同的货币。"
+        },
+        "actions": {
+          "cancel": "取消",
+          "save": "保存"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "description": "外观、语言和演示数据偏好。",
+    "appearance": {
+      "title": "外观",
+      "theme": "主题",
+      "light": "浅色",
+      "dark": "深色",
+      "language": "语言"
+    },
+    "currency": {
+      "title": "显示货币",
+      "description": "用于在不同货币的账户之间换算并汇总金额，例如仪表盘上的净资产。"
+    },
+    "agents": {
+      "title": "AI 代理",
+      "description": "使用 MCP 通过多个服务商和工具处理你的财务数据的 AI 助手。默认禁用——可在 Docker Compose 中配置（AGENTS_ENABLED）。",
+      "disabled": "已禁用",
+      "enabled": "已启用"
+    }
+  },
+  "auth": {
+    "logout": "退出登录",
+    "fields": {
+      "email": "电子邮箱",
+      "password": "密码",
+      "displayName": "显示名称",
+      "invitationToken": "邀请令牌"
+    },
+    "login": {
+      "title": "登录",
+      "description": "使用你的 LealFinance 账户继续。",
+      "action": "登录",
+      "invited": "有邀请？"
+    },
+    "register": {
+      "title": "接受邀请",
+      "description": "使用管理员发送的邀请创建账户。",
+      "action": "创建账户",
+      "passwordHint": "至少使用 12 个字符。",
+      "backToLogin": "返回登录",
+      "setup": {
+        "title": "创建管理员账户",
+        "description": "这是此实例上的第一个账户——将拥有完整的管理员权限。"
+      }
+    }
+  },
+  "admin": {
+    "title": "用户与邀请",
+    "description": "管理此 LealFinance 实例的访问权限。",
+    "roles": { "member": "成员", "admin": "管理员" },
+    "users": { "title": "用户", "role": "角色", "active": "活跃", "empty": "未找到用户。" },
+    "invitations": {
+      "title": "邀请",
+      "createTitle": "创建邀请",
+      "create": "邀请",
+      "tokenOnce": "此令牌和注册链接仅显示这一次。离开前请保存。",
+      "copyLink": "复制注册链接",
+      "revoke": "撤销",
+      "empty": "未找到邀请。"
+    }
+  },
+  "errors": {
+    "error": { "generic": "出错了。请重试。" },
+    "auth": {
+      "invalid_credentials": "邮箱或密码不正确。",
+      "csrf_invalid": "表单已过期。请刷新页面后重试。",
+      "last_admin": "至少需要一名活跃的管理员。",
+      "account_inactive": "此账户未启用。",
+      "admin_required": "需要管理员权限。"
+    },
+    "invitation": {
+      "not_found": "邀请无效。",
+      "expired": "此邀请已过期。",
+      "revoked": "此邀请已撤销。",
+      "already_accepted": "此邀请已被接受。",
+      "already_pending": "此邮箱已有待处理的邀请。"
+    },
+    "user": { "email_taken": "已有账户使用此邮箱。" }
+  }
+}

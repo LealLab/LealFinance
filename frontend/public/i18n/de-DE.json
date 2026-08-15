@@ -1,0 +1,736 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Schließen",
+      "cancel": "Abbrechen",
+      "confirm": "Bestätigen",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Übersicht",
+      "accounts": "Konten",
+      "transactions": "Transaktionen",
+      "categories": "Kategorien",
+      "budgets": "Budgets",
+      "goals": "Sparziele",
+      "reports": "Auswertungen",
+      "exchange": "Wechselkurse",
+      "settings": "Einstellungen",
+      "adminUsers": "Benutzer und Einladungen",
+      "sections": {
+        "accounts": "Konten",
+        "analysis": "Auswertungen",
+        "setup": "Einrichtung",
+        "admin": "Administration"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Menü öffnen",
+      "expand": "Seitenleiste erweitern",
+      "collapse": "Seitenleiste einklappen"
+    },
+    "themeToggle": {
+      "switchToLight": "Helles Design aktivieren",
+      "switchToDark": "Dunkles Design aktivieren"
+    },
+    "languageSwitcher": {
+      "label": "Sprache",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Kontostände ausblenden",
+      "show": "Kontostände einblenden"
+    },
+    "search": {
+      "trigger": "Suchen"
+    },
+    "commandPalette": {
+      "placeholder": "Befehl eingeben oder suchen …",
+      "empty": "Keine Ergebnisse gefunden.",
+      "hints": {
+        "navigate": "navigieren",
+        "select": "auswählen",
+        "close": "schließen"
+      },
+      "groups": {
+        "quickActions": "Schnellaktionen",
+        "goTo": "Gehe zu",
+        "accounts": "Konten",
+        "categories": "Kategorien",
+        "budgets": "Budgets",
+        "transactions": "Transaktionen"
+      },
+      "actions": {
+        "newTransaction": "Neue Transaktion",
+        "newAccount": "Neues Konto",
+        "newCategory": "Neue Kategorie",
+        "newBudget": "Neues Budget",
+        "configureLanguage": "Sprache konfigurieren",
+        "configureCurrency": "Anzeigewährung konfigurieren",
+        "toggleTheme": "Design wechseln",
+        "toggleBalances": "Kontostände ein- oder ausblenden"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Übersicht",
+    "welcome": "Willkommen bei LealFinance",
+    "empty": {
+      "title": "Noch keine Daten",
+      "description": "Fügen Sie ein Konto hinzu, um Ihre Finanzübersicht anzuzeigen."
+    },
+    "stats": {
+      "netWorth": "Nettovermögen",
+      "income": "Monatliche Einnahmen",
+      "expense": "Monatliche Ausgaben",
+      "savingsRate": "Sparquote"
+    },
+    "cashFlow": {
+      "title": "Cashflow (6 Monate)",
+      "income": "Einnahmen",
+      "expense": "Ausgaben"
+    },
+    "categoryChart": {
+      "title": "Ausgaben nach Kategorie (aktueller Monat)",
+      "label": "Kategorien",
+      "empty": "Diesen Monat wurden noch keine Ausgaben erfasst."
+    },
+    "accounts": {
+      "title": "Konten"
+    },
+    "recentTransactions": {
+      "title": "Letzte Transaktionen",
+      "empty": "Noch keine Transaktionen erfasst."
+    },
+    "budgets": {
+      "title": "Budgets",
+      "empty": "Für diesen Monat ist noch kein Budget festgelegt."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Wechselkurs nicht verfügbar – es wird eine 1:1-Umrechnung als Näherung verwendet.",
+    "fallbackRateWarningAction": "Wechselkurs festlegen"
+  },
+  "accounts": {
+    "title": "Konten",
+    "description": "Alle Kontostände an einem Ort.",
+    "showArchived": "Archivierte Konten anzeigen",
+    "archivedBadge": "Archiviert",
+    "noInstitution": "Kein Institut",
+    "mixedCurrencies": "Mehrere Währungen",
+    "actions": {
+      "new": "Neues Konto",
+      "edit": "Bearbeiten",
+      "archive": "Archivieren",
+      "unarchive": "Archivierung aufheben"
+    },
+    "archive": {
+      "title": "Konto archivieren?",
+      "message": "Das Konto „{{name}}“ wird nicht mehr in den Hauptansichten angezeigt. Möchten Sie fortfahren?"
+    },
+    "empty": {
+      "title": "Noch keine Konten",
+      "description": "Erstellen Sie Ihr erstes Konto, um Ihre Kontostände im Blick zu behalten."
+    },
+    "type": {
+      "checking": "Girokonto",
+      "savings": "Sparkonto",
+      "cash": "Bargeld",
+      "credit_card": "Kreditkarte",
+      "investment": "Anlagen",
+      "goal": "Sparziel"
+    },
+    "form": {
+      "newTitle": "Neues Konto",
+      "editTitle": "Konto bearbeiten",
+      "saveError": "Das Konto konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "fields": {
+        "name": "Name",
+        "type": "Typ",
+        "currency": "Währung",
+        "openingBalance": "Anfangssaldo",
+        "institution": "Institut",
+        "creditLimit": "Kreditrahmen",
+        "closingDay": "Abrechnungstag",
+        "dueDay": "Fälligkeitstag"
+      },
+      "errors": {
+        "required": "Dieses Feld ist erforderlich.",
+        "decimalAmount": "Geben Sie einen gültigen Betrag ein."
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    },
+    "detail": {
+      "back": "Zurück zu den Konten",
+      "notFound": "Konto nicht gefunden",
+      "history": "Transaktionsverlauf",
+      "historyEmpty": {
+        "title": "Keine Transaktionen in diesem Konto",
+        "description": "In diesem Konto erfasste Transaktionen werden hier angezeigt."
+      },
+      "creditCard": {
+        "title": "Kreditkarte",
+        "used": "Verwendet",
+        "owed": "Offener Betrag",
+        "limit": "Limit",
+        "available": "Verfügbar",
+        "closingDay": "Abrechnung"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Neues Institut",
+      "edit": "Institut bearbeiten",
+      "delete": "Institut löschen"
+    },
+    "form": {
+      "newTitle": "Neues Institut",
+      "editTitle": "Institut bearbeiten",
+      "saveError": "Das Institut konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "deleteInUseError": "Dieses Institut hat noch verknüpfte Konten und kann nicht gelöscht werden.",
+      "fields": {
+        "name": "Name",
+        "icon": "Symbol",
+        "color": "Farbe"
+      },
+      "errors": {
+        "required": "Dieses Feld ist erforderlich."
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    },
+    "delete": {
+      "title": "Institut löschen",
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie dieses Institut löschen?"
+    },
+    "icon": {
+      "bank": "Bank",
+      "wallet": "Geldbörse",
+      "chart": "Anlagen",
+      "globe": "International",
+      "archive": "Sonstiges"
+    }
+  },
+  "transactions": {
+    "title": "Transaktionen",
+    "description": "Einnahmen, Ausgaben und Umbuchungen.",
+    "actions": {
+      "new": "Neue Transaktion",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "tabs": {
+      "transactions": "Transaktionen",
+      "recurring": "Wiederkehrend"
+    },
+    "type": {
+      "income": "Einnahme",
+      "expense": "Ausgabe",
+      "transfer": "Umbuchung"
+    },
+    "filters": {
+      "type": "Typ",
+      "account": "Konto",
+      "category": "Kategorie",
+      "from": "Von",
+      "to": "Bis",
+      "search": "Suchen",
+      "institution": "Institut",
+      "all": "Alle",
+      "clear": "Filter löschen"
+    },
+    "empty": {
+      "title": "Keine Transaktionen gefunden",
+      "description": "Passen Sie die Filter an oder fügen Sie eine neue Transaktion hinzu."
+    },
+    "projected": {
+      "title": "Anstehend (voraussichtlich)",
+      "badge": "Voraussichtlich"
+    },
+    "delete": {
+      "title": "Transaktion löschen",
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diese Transaktion löschen?"
+    },
+    "form": {
+      "newTitle": "Neue Transaktion",
+      "editTitle": "Transaktion bearbeiten",
+      "saveError": "Die Transaktion konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "fields": {
+        "date": "Datum",
+        "amount": "Betrag",
+        "currency": "Währung",
+        "convertedAmount": "Umgerechneter Betrag",
+        "conversionFee": "Umrechnungsgebühr/-steuer (optional)",
+        "account": "Konto",
+        "fromAccount": "Quellkonto",
+        "toAccount": "Zielkonto",
+        "fromInstitution": "Quellinstitut",
+        "toInstitution": "Zielinstitut",
+        "anyInstitution": "Beliebiges Institut",
+        "category": "Kategorie",
+        "description": "Beschreibung",
+        "notes": "Notizen",
+        "repeat": "Diese Transaktion wiederholen",
+        "frequency": "Häufigkeit",
+        "interval": "Alle",
+        "selectPlaceholder": "Auswählen"
+      },
+      "hints": {
+        "effectiveRate": "Effektiver Wechselkurs: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Wiederholungen sind für Transaktionen in einer anderen Währung nicht verfügbar – der Wechselkurs müsste für jede Ausführung erneut festgelegt werden."
+      },
+      "errors": {
+        "invalid": "Prüfen Sie vor dem Speichern die erforderlichen Felder.",
+        "convertedAmountRequired": "Geben Sie vor dem Speichern den umgerechneten Betrag ein."
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Wöchentlich",
+        "monthly": "Monatlich",
+        "yearly": "Jährlich"
+      },
+      "everyN": "alle {{n}}",
+      "nextOccurrence": "Nächste Ausführung",
+      "actions": {
+        "new": "Neue Wiederholungsregel"
+      },
+      "empty": {
+        "title": "Noch keine Wiederholungsregeln",
+        "description": "Wenn Sie eine Transaktion als wiederkehrend festlegen, wird hier eine Regel erstellt."
+      },
+      "delete": {
+        "title": "Wiederholungsregel löschen",
+        "message": "Diese Aktion betrifft keine erfassten Transaktionen – nur zukünftige voraussichtliche Ausführungen werden nicht mehr angezeigt."
+      },
+      "form": {
+        "newTitle": "Neue Wiederholungsregel",
+        "editTitle": "Wiederholungsregel bearbeiten",
+        "saveError": "Die Wiederholungsregel konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+        "startDate": "Beginn",
+        "endDate": "Ende (optional)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Kategorien",
+    "description": "Organisieren Sie Einnahmen und Ausgaben nach Kategorien.",
+    "showArchived": "Archivierte Kategorien anzeigen",
+    "archivedBadge": "Archiviert",
+    "actions": {
+      "new": "Neue Kategorie",
+      "edit": "Bearbeiten",
+      "archive": "Archivieren",
+      "unarchive": "Archivierung aufheben",
+      "delete": "Löschen",
+      "addChild": "Neue Unterkategorie",
+      "collapse": "Einklappen",
+      "expand": "Ausklappen",
+      "dragHandle": "Reihenfolge ändern"
+    },
+    "empty": {
+      "title": "Noch keine Kategorien",
+      "description": "Erstellen Sie Kategorien, um Ihre Transaktionen zu organisieren."
+    },
+    "sections": {
+      "income": "Einnahmekategorien",
+      "expense": "Ausgabenkategorien"
+    },
+    "delete": {
+      "title": "Kategorie löschen?",
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie die Kategorie „{{name}}“ löschen?",
+      "blockedTitle": "Löschen nicht möglich",
+      "blockedMessage": "Diese Kategorie wird noch verwendet (Transaktionen: {{transactions}}, Budgets: {{budgets}}, Unterkategorien: {{children}}). Archivieren Sie die Kategorie, statt sie zu löschen."
+    },
+    "form": {
+      "newTitle": "Neue Kategorie",
+      "editTitle": "Kategorie bearbeiten",
+      "saveError": "Die Kategorie konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "fields": {
+        "name": "Name",
+        "parent": "Übergeordnete Kategorie",
+        "noParent": "Keine (Oberkategorie)",
+        "color": "Farbe",
+        "icon": "Symbol"
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    },
+    "icon": {
+      "tag": "Schlagwort",
+      "home": "Wohnen",
+      "archive": "Archiv",
+      "swap": "Verkehr",
+      "wallet": "Geldbörse",
+      "chart": "Diagramm",
+      "sun": "Energie",
+      "alertTriangle": "Warnung",
+      "pencil": "Bildung",
+      "target": "Ziel",
+      "repeat": "Wiederkehrend",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Budgets",
+    "description": "Planen Sie, wie viel Sie monatlich in den einzelnen Kategorien ausgeben möchten.",
+    "list": {
+      "title": "Monatslimits"
+    },
+    "planner": {
+      "title": "Einkommensbasiertes Budget",
+      "description": "Verteilen Sie Ihre erwarteten Einnahmen auf die Kategorien.",
+      "total": "Gesamt",
+      "expectedIncome": "Erwartete Einnahmen",
+      "chartLabel": "Verteilung",
+      "fixed": "Festgelegt",
+      "empty": "Legen Sie Prozentsätze fest, um Ihre Verteilung anzuzeigen.",
+      "save": "Verteilung speichern",
+      "errors": {
+        "total": "Die Verteilung darf 100 % nicht überschreiten.",
+        "income": "Geben Sie die erwarteten Einnahmen für diesen Monat ein.",
+        "save": "Die Verteilung konnte nicht gespeichert werden. Versuchen Sie es erneut."
+      }
+    },
+    "monthLabel": "Monat",
+    "actions": {
+      "new": "Neues Budget",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "totals": {
+      "budgeted": "Budgetiert",
+      "spent": "Ausgegeben",
+      "remaining": "Verbleibend"
+    },
+    "empty": {
+      "title": "Kein Budget für diesen Monat",
+      "description": "Legen Sie ein Budget pro Kategorie fest, um Ihre Ausgaben zu verfolgen."
+    },
+    "state": {
+      "over": "Budget überschritten",
+      "near": "Nahe am Limit"
+    },
+    "unbudgeted": {
+      "title": "Ausgaben ohne Budget",
+      "setBudget": "Budget festlegen"
+    },
+    "delete": {
+      "title": "Budget löschen",
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie dieses Budget löschen?"
+    },
+    "form": {
+      "newTitle": "Neues Budget",
+      "editTitle": "Budget bearbeiten",
+      "saveError": "Das Budget konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "fields": {
+        "month": "Monat",
+        "category": "Kategorie",
+        "selectCategory": "Kategorie auswählen",
+        "amount": "Betrag",
+        "currency": "Währung"
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    }
+  },
+  "goals": {
+    "title": "Sparziele",
+    "description": "Sparen Sie für jedes Ziel und verfolgen Sie Ihren Fortschritt.",
+    "showArchived": "Archivierte Sparziele anzeigen",
+    "archiveError": "Der Archivierungsstatus des Sparziels konnte nicht aktualisiert werden. Versuchen Sie es erneut.",
+    "accountLabel": "Konto",
+    "archived": "Archiviert",
+    "overdue": "Überfällig",
+    "actions": {
+      "new": "Neues Sparziel",
+      "edit": "Sparziel bearbeiten",
+      "archive": "Sparziel archivieren",
+      "unarchive": "Archivierung des Sparziels aufheben",
+      "deposit": "Einzahlen",
+      "withdraw": "Auszahlen",
+      "interest": "Zinsen hinzufügen"
+    },
+    "empty": {
+      "title": "Noch keine Sparziele",
+      "description": "Erstellen Sie ein Sparziel, um mit dem Sparen zu beginnen und Ihren Fortschritt zu verfolgen."
+    },
+    "progress": {
+      "current": "Gespart",
+      "target": "Zielbetrag",
+      "remaining": "Verbleibend",
+      "contribution": "Empfohlene Sparrate",
+      "notConfigured": "Kein Zieldatum",
+      "frequency": "Sparintervall",
+      "every": "alle {{n}}",
+      "label": "Fortschritt"
+    },
+    "frequency": {
+      "weekly": "Wöchentlich",
+      "monthly": "Monatlich",
+      "yearly": "Jährlich"
+    },
+    "history": {
+      "title": "Sparzielverlauf",
+      "empty": "Noch keine Aktivität erfasst."
+    },
+    "form": {
+      "newTitle": "Neues Sparziel",
+      "editTitle": "Sparziel bearbeiten",
+      "saveError": "Das Sparziel konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "fields": {
+        "name": "Name",
+        "targetAmount": "Zielbetrag",
+        "currency": "Währung",
+        "targetDate": "Zieldatum",
+        "targetDateHint": "Optional: Legen Sie ein Zieldatum fest, um die empfohlene Sparrate zu berechnen.",
+        "frequency": "Sparintervall",
+        "interval": "Alle"
+      },
+      "errors": {
+        "required": "Dieses Feld ist erforderlich."
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Geld in das Sparziel einzahlen" },
+      "withdraw": { "title": "Geld aus dem Sparziel entnehmen" },
+      "interest": { "title": "Zinsen hinzufügen" },
+      "fields": {
+        "amount": "Betrag",
+        "date": "Datum",
+        "sourceAccount": "Quell-/Zielkonto",
+        "description": "Beschreibung"
+      },
+      "saveError": "Die Aktivität konnte nicht erfasst werden. Versuchen Sie es erneut."
+    }
+  },
+  "reports": {
+    "title": "Auswertungen",
+    "description": "Analysieren Sie Einnahmen, Ausgaben und Kontostände im Zeitverlauf.",
+    "period": {
+      "month": "Dieser Monat",
+      "3m": "Letzte 3 Monate",
+      "6m": "Letzte 6 Monate",
+      "12m": "Letzte 12 Monate",
+      "custom": "Benutzerdefiniert"
+    },
+    "empty": {
+      "title": "Keine Transaktionen in diesem Zeitraum",
+      "description": "Passen Sie den ausgewählten Zeitraum an, um Ihre Auswertungen anzuzeigen."
+    },
+    "charts": {
+      "incomeExpense": "Einnahmen im Vergleich zu Ausgaben",
+      "netFlow": "Netto-Cashflow",
+      "byCategory": "Ausgaben nach Kategorie",
+      "balanceTrend": "Kontostandsentwicklung nach Konto"
+    },
+    "series": {
+      "income": "Einnahmen",
+      "expense": "Ausgaben",
+      "netFlow": "Netto-Cashflow",
+      "categories": "Kategorien"
+    }
+  },
+  "exchange": {
+    "title": "Wechselkurse",
+    "description": "Manuelle Wechselkurse und die Umrechnungen, bei denen sie verwendet wurden.",
+    "stats": {
+      "feesPaid": "Bezahlte Umrechnungsgebühren",
+      "needsAttention": "Transaktionen mit Handlungsbedarf",
+      "currenciesNeedingRate": "Währungen ohne Wechselkurs"
+    },
+    "needsAttention": {
+      "title": "Prüfung erforderlich",
+      "description": "Diese Transaktionen wurden mit einer 1:1-Näherung umgerechnet – korrigieren Sie sie mit dem tatsächlichen Wechselkurs oder legen Sie unten einen manuellen Wechselkurs fest.",
+      "empty": {
+        "title": "Kein Handlungsbedarf",
+        "description": "Für jede Transaktion in einer anderen Währung ist ein tatsächlicher Wechselkurs hinterlegt."
+      },
+      "actions": {
+        "fix": "Korrigieren"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Währungen ohne Wechselkurs",
+      "description": "Diese Kontowährungen haben noch keinen tatsächlichen Wechselkurs zu Ihrer Anzeigewährung. Daher werden die Kontostände mit einer 1:1-Näherung angezeigt – sie ist keiner bestimmten Transaktion zugeordnet.",
+      "empty": {
+        "title": "Für keine Währung wird ein Wechselkurs benötigt",
+        "description": "Für jede Kontowährung ist bereits ein tatsächlicher Wechselkurs verfügbar."
+      }
+    },
+    "manualRates": {
+      "title": "Manuelle Wechselkurse",
+      "description": "Manuell festgelegte Wechselkurse haben Vorrang vor dem automatischen Anbieter – nützlich für den heutigen tatsächlichen Bankkurs oder wenn kein Anbieter konfiguriert ist.",
+      "actions": {
+        "add": "Wechselkurs hinzufügen",
+        "edit": "Wechselkurs bearbeiten",
+        "delete": "Wechselkurs löschen"
+      },
+      "empty": {
+        "title": "Noch keine manuellen Wechselkurse",
+        "description": "Fügen Sie einen Wechselkurs für ein Währungspaar hinzu, um ihn anstelle der automatischen 1:1-Näherung zu verwenden."
+      },
+      "delete": {
+        "title": "Manuellen Wechselkurs löschen",
+        "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diesen Wechselkurs löschen?"
+      },
+      "form": {
+        "newTitle": "Neuer manueller Wechselkurs",
+        "editTitle": "Manuellen Wechselkurs bearbeiten",
+        "saveError": "Der Wechselkurs konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+        "fields": {
+          "baseCode": "Ausgangswährung",
+          "quoteCode": "Zielwährung",
+          "rate": "Wechselkurs",
+          "asOf": "Gültig ab"
+        },
+        "errors": {
+          "invalid": "Geben Sie einen gültigen Wechselkurs ein.",
+          "samePair": "Wählen Sie zwei unterschiedliche Währungen aus."
+        },
+        "actions": {
+          "cancel": "Abbrechen",
+          "save": "Speichern"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Einstellungen für Darstellung, Sprache und Demodaten.",
+    "appearance": {
+      "title": "Darstellung",
+      "theme": "Design",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "language": "Sprache"
+    },
+    "currency": {
+      "title": "Anzeigewährung",
+      "description": "Wird verwendet, um Beträge zwischen Konten mit unterschiedlichen Währungen umzurechnen und zu addieren, z. B. beim Nettovermögen in der Übersicht."
+    },
+    "agents": {
+      "title": "KI-Agenten",
+      "description": "KI-Agenten für Ihre Finanzdaten mit mehreren Anbietern und Tools über MCP. Standardmäßig deaktiviert – in Docker Compose konfigurierbar (AGENTS_ENABLED).",
+      "disabled": "Deaktiviert",
+      "enabled": "Aktiviert"
+    }
+  },
+  "auth": {
+    "logout": "Abmelden",
+    "fields": {
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "displayName": "Anzeigename",
+      "invitationToken": "Einladungstoken"
+    },
+    "login": {
+      "title": "Anmelden",
+      "description": "Verwenden Sie Ihr LealFinance-Konto, um fortzufahren.",
+      "action": "Anmelden",
+      "invited": "Haben Sie eine Einladung?"
+    },
+    "register": {
+      "title": "Einladung annehmen",
+      "description": "Erstellen Sie Ihr Konto mit der von einem Administrator gesendeten Einladung.",
+      "action": "Konto erstellen",
+      "passwordHint": "Verwenden Sie mindestens 12 Zeichen.",
+      "backToLogin": "Zurück zur Anmeldung",
+      "setup": {
+        "title": "Administratorkonto erstellen",
+        "description": "Dies ist das erste Konto dieser Instanz – es erhält vollständigen Administratorzugriff."
+      }
+    }
+  },
+  "admin": {
+    "title": "Benutzer und Einladungen",
+    "description": "Verwalten Sie den Zugriff auf diese LealFinance-Instanz.",
+    "roles": { "member": "Mitglied", "admin": "Administrator" },
+    "users": {
+      "title": "Benutzer",
+      "role": "Rolle",
+      "active": "Aktiv",
+      "empty": "Keine Benutzer gefunden."
+    },
+    "invitations": {
+      "title": "Einladungen",
+      "createTitle": "Einladung erstellen",
+      "create": "Einladen",
+      "tokenOnce": "Dieser Token und der Registrierungslink werden nur jetzt angezeigt. Speichern Sie beides, bevor Sie die Seite verlassen.",
+      "copyLink": "Registrierungslink kopieren",
+      "revoke": "Widerrufen",
+      "empty": "Keine Einladungen gefunden."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut." },
+    "auth": {
+      "invalid_credentials": "E-Mail-Adresse oder Passwort ist falsch.",
+      "csrf_invalid": "Dieses Formular ist abgelaufen. Aktualisieren Sie die Seite und versuchen Sie es erneut.",
+      "last_admin": "Mindestens ein aktiver Administrator ist erforderlich.",
+      "account_inactive": "Dieses Konto ist inaktiv.",
+      "admin_required": "Administratorzugriff ist erforderlich."
+    },
+    "invitation": {
+      "not_found": "Die Einladung ist ungültig.",
+      "expired": "Diese Einladung ist abgelaufen.",
+      "revoked": "Diese Einladung wurde widerrufen.",
+      "already_accepted": "Diese Einladung wurde bereits angenommen.",
+      "already_pending": "Für diese E-Mail-Adresse liegt bereits eine ausstehende Einladung vor."
+    },
+    "user": { "email_taken": "Für diese E-Mail-Adresse existiert bereits ein Konto." }
+  }
+}
