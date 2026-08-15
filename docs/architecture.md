@@ -45,7 +45,6 @@ on a fresh install.
 backend/app/
 ├── main.py                 # FastAPI app factory
 ├── dev.py                  # local dev-server entrypoint (task backend:dev) - see "Windows dev server" below
-├── cli/                     # `python -m app.cli create-admin` - one-time bootstrap
 ├── core/                   # config, db engines (async + sync), logging, errors, security, cookies
 ├── api/
 │   ├── deps.py              # DbSession, CurrentUser, AdminUser, CurrentSession
@@ -84,10 +83,10 @@ domain service goes through it. A cross-user id resolves to `404`, never
 `403` - a `403` would confirm the id exists at all, which is an enumeration
 oracle across other users' data.
 
-Registration is invite-only (see `docs/backend-api.md` for the full flow):
-there is no open sign-up endpoint. The first administrator is created by a
-one-time CLI bootstrap (`python -m app.cli create-admin`), and only an
-existing admin can invite anyone after that. Sessions are opaque HttpOnly
+Registration is invite-only (see `docs/backend-api.md` for the full flow),
+except the very first user on an instance: while the `users` table is empty,
+registering with no invitation token creates that user as the administrator.
+Only an existing admin can invite anyone after that. Sessions are opaque HttpOnly
 cookies (not JWTs); a per-session double-submit CSRF token is folded into the
 same `CurrentUser` dependency that resolves the session, so no route can
 forget to check it.

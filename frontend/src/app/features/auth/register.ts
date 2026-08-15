@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
+import { IdentityApiService } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { Logo } from '../../shared/ui/logo/logo';
@@ -15,10 +16,14 @@ import { Logo } from '../../shared/ui/logo/logo';
 })
 export class Register {
   private readonly session = inject(SessionService);
+  private readonly identityApi = inject(IdentityApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   protected readonly submitting = signal(false);
   protected readonly errorCode = signal<string | undefined>(undefined);
+  /** True while this instance has no users yet - the first registration
+   * becomes the administrator and needs no invitation token. */
+  protected readonly needsSetup = signal(false);
   protected readonly form = new FormGroup({
     displayName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     email: new FormControl(this.route.snapshot.queryParamMap.get('email') ?? '', {
@@ -34,6 +39,15 @@ export class Register {
       validators: [Validators.required, Validators.minLength(12)],
     }),
   });
+
+  constructor() {
+    this.identityApi.setupStatus().subscribe((needed) => {
+      if (!needed) return;
+      this.needsSetup.set(true);
+      this.form.controls.token.removeValidators(Validators.required);
+      this.form.controls.token.updateValueAndValidity();
+    });
+  }
 
   protected async submit(): Promise<void> {
     if (this.form.invalid || this.submitting()) return;

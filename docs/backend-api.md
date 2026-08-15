@@ -26,8 +26,9 @@ monetary/conversion rules referenced below.
   `error.validation` with `params.errors` holding FastAPI's per-field error
   list.
 - Every route except `/health/*`, `/meta/currencies`, `/meta/settings`,
-  `/auth/login`, and `/auth/register` requires an authenticated session
-  (`auth.unauthenticated`, 401, if the session cookie is missing or invalid).
+  `/auth/login`, `/auth/register`, and `/auth/setup-status` requires an
+  authenticated session (`auth.unauthenticated`, 401, if the session cookie
+  is missing or invalid).
 - Every route scoped to a single resource (`GET/PATCH/DELETE .../{id}`)
   returns `404` with a domain-specific `*.not_found` code for an id that
   either doesn't exist or belongs to another user - never `403`. A `403`
@@ -42,12 +43,15 @@ monetary/conversion rules referenced below.
 
 ## Bootstrap and identity
 
-Registration is invite-only; there is no open sign-up endpoint.
+Registration is invite-only, except the very first user on an instance.
 
-1. **First admin**: `python -m app.cli create-admin --email you@example.com
-   --display-name "You"` (or `task backend:create-admin -- ...`) - refuses
-   to run if any administrator already exists. Prompts for a password
-   interactively, never as a CLI argument.
+1. **First admin**: while the `users` table is empty, `POST /auth/register`
+   accepts a request with no `token` field and creates that user with
+   `role=admin`. `GET /auth/setup-status` (public) returns
+   `{"needs_setup": true}` until that happens, so the frontend can hide the
+   invitation-token field for the very first registration. Once any user
+   exists, a token-less register is rejected with `invitation.not_found`,
+   the same code an unknown/wrong token gets.
 2. **Invite everyone else**: an admin calls `POST /auth/invitations`; the
    response includes the raw, one-time invitation token - the only time it
    is ever exposed. Delivery is out-of-band (no email provider in v1).

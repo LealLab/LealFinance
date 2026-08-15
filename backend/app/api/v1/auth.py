@@ -1,7 +1,7 @@
 """Identity: invitations, registration, login/logout, users, preferences.
 
-Registration is invite-only - see app/services/auth.py and
-app/cli/__main__.py for the one-time admin bootstrap.
+Registration is invite-only, except the first user on an instance - see
+app/services/auth.py for the bootstrap rule.
 """
 
 from uuid import UUID
@@ -17,6 +17,7 @@ from app.schemas.auth import (
     InvitationRead,
     LoginRequest,
     RegisterRequest,
+    SetupStatus,
 )
 from app.schemas.user import PreferencesRead, PreferencesUpdate, UserRead, UserUpdate
 from app.services import auth as auth_service
@@ -51,9 +52,14 @@ async def revoke_invitation(invitation_id: UUID, _admin: AdminUser, db: DbSessio
 # --- Registration & session lifecycle --------------------------------------------
 
 
+@router.get("/setup-status", response_model=SetupStatus)
+async def setup_status(db: DbSession) -> SetupStatus:
+    return SetupStatus(needs_setup=await auth_service.needs_setup(db))
+
+
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 async def register(payload: RegisterRequest, response: Response, db: DbSession) -> User:
-    issued = await auth_service.register_with_invitation(
+    issued = await auth_service.register(
         db,
         email=payload.email,
         token=payload.token,

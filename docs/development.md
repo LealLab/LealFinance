@@ -59,7 +59,6 @@ docker compose down -v                 # stop + wipe data (fresh start)
 | Backend type check | `task backend:typecheck` |
 | Backend tests | `task backend:test` |
 | New migration | `task backend:migration -- "add accounts table"` |
-| Bootstrap the first admin | `task backend:create-admin -- --email you@example.com --display-name "You"` |
 | Frontend lint | `task frontend:lint` |
 | Frontend tests | `task frontend:test` |
 | Frontend build | `task frontend:build` |
@@ -74,32 +73,24 @@ rolled back at teardown). `docker compose up -d postgres redis` is enough.
 
 `.env`'s `POSTGRES_HOST=postgres`/`REDIS_HOST=redis` values resolve inside the
 Compose network. Anything run natively on the host (`task backend:migrate`,
-`backend:test`, `backend:dev`, `backend:create-admin`) must use host endpoints
-instead. After starting `postgres` and `redis`, set these values in `.env` (or
-in the shell environment), adjusting ports if you changed the host mappings:
+`backend:test`, `backend:dev`) must use host endpoints instead. After
+starting `postgres` and `redis`, set these values in `.env` (or in the shell
+environment), adjusting ports if you changed the host mappings:
 
 ```dotenv
 DATABASE_URL=postgresql+psycopg://lealfinance:change-me@localhost:55433/lealfinance
 REDIS_URL=redis://localhost:6379/0
 ```
 
-Don't run `task backend:migrate` and `task backend:test` back-to-back against the same database without a reset in between: migrations leave committed data behind (the seeded currencies, any admin you bootstrapped), while `backend:test` builds and seeds its own schema from ORM metadata on top of whatever's already there - the two collide (e.g. a duplicate-key error re-inserting BRL). `backend:test`'s teardown always leaves the database empty afterward, so tests will pass again immediately if you just rerun them; if you want to poke around manually with `backend:migrate`/`backend:create-admin`/`backend:dev`, do that *after* your last test run, not interleaved with it.
+Don't run `task backend:migrate` and `task backend:test` back-to-back against the same database without a reset in between: migrations leave committed data behind (the seeded currencies, any account you registered), while `backend:test` builds and seeds its own schema from ORM metadata on top of whatever's already there - the two collide (e.g. a duplicate-key error re-inserting BRL). `backend:test`'s teardown always leaves the database empty afterward, so tests will pass again immediately if you just rerun them; if you want to poke around manually with `backend:migrate`/`backend:dev`, do that *after* your last test run, not interleaved with it.
 
 ## Bootstrapping the first admin
 
-Registration is invite-only - there's no sign-up endpoint. The first
-administrator is created with a one-time CLI command, which refuses to run
-if any administrator already exists:
-
-```bash
-task backend:create-admin -- --email you@example.com --display-name "You"
-```
-
-It prompts for a password interactively (`getpass`, minimum 12 characters,
-typed twice to confirm) - never pass it as a CLI argument, that would land in
-shell history and process listings. In Docker, run it inside the `api`
-container instead: `docker compose exec api python -m app.cli create-admin
---email you@example.com --display-name "You"`.
+Registration is invite-only, with one exception: while the instance has no
+users at all, `POST /api/v1/auth/register` accepts a request with no
+invitation token and creates that user as the administrator. In practice,
+just open the frontend and register - the first account created becomes the
+admin.
 
 Once an admin exists, they issue invitations (`POST /api/v1/auth/invitations`)
 for everyone else; the response includes the raw invitation token exactly

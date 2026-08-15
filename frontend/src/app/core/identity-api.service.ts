@@ -98,18 +98,26 @@ export class IdentityApiService {
 
   register(input: {
     email: string;
-    token: string;
+    token?: string;
     password: string;
     displayName: string;
   }): Observable<User> {
     return this.api
       .post<UserWire>('/auth/register', {
         email: input.email,
-        token: input.token,
+        ...(input.token ? { token: input.token } : {}),
         password: input.password,
         display_name: input.displayName,
       })
       .pipe(map(mapUser));
+  }
+
+  /** Public probe: true while the instance has no users yet, meaning
+   * POST /auth/register will accept a request with no invitation token. */
+  setupStatus(): Observable<boolean> {
+    return this.api
+      .get<{ needs_setup: boolean }>('/auth/setup-status')
+      .pipe(map((r) => r.needs_setup));
   }
 
   logout(): Observable<void> {

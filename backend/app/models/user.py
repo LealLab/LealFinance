@@ -1,9 +1,8 @@
 """Identity: users, their active sessions, and pending invitations.
 
-Registration is invite-only (see app/services/auth.py) - there is no public
-sign-up endpoint. The first administrator is created by a one-time CLI
-bootstrap (`python -m app.cli create-admin`, see app/cli/__main__.py), not
-through this schema.
+Registration is invite-only (see app/services/auth.py), except the very
+first user on an instance, who registers with no invitation and becomes the
+administrator.
 """
 
 import uuid

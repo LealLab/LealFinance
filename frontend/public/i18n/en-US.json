@@ -662,7 +662,11 @@
       "description": "Create your account with the invitation sent by an administrator.",
       "action": "Create account",
       "passwordHint": "Use at least 12 characters.",
-      "backToLogin": "Back to sign in"
+      "backToLogin": "Back to sign in",
+      "setup": {
+        "title": "Create the administrator account",
+        "description": "This is the first account on this instance - it will have full administrator access."
+      }
     }
   },
   "admin": {
