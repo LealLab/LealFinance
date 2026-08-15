@@ -4,8 +4,12 @@
       <app-logo [size]="30" class="text-accent" />
       {{ t('app.title') }}
     </div>
-    <h1 class="text-2xl font-semibold">{{ t('auth.register.title') }}</h1>
-    <p class="mt-1 text-sm text-content-muted">{{ t('auth.register.description') }}</p>
+    <h1 class="text-2xl font-semibold">
+      {{ needsSetup() ? t('auth.register.setup.title') : t('auth.register.title') }}
+    </h1>
+    <p class="mt-1 text-sm text-content-muted">
+      {{ needsSetup() ? t('auth.register.setup.description') : t('auth.register.description') }}
+    </p>
     <form class="mt-6 flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
       <label>
         <span class="form-label">{{ t('auth.fields.displayName') }}</span>
@@ -15,10 +19,12 @@
         <span class="form-label">{{ t('auth.fields.email') }}</span>
         <input class="form-input" type="email" autocomplete="email" formControlName="email" />
       </label>
-      <label>
-        <span class="form-label">{{ t('auth.fields.invitationToken') }}</span>
-        <input class="form-input" autocomplete="off" formControlName="token" />
-      </label>
+      @if (!needsSetup()) {
+        <label>
+          <span class="form-label">{{ t('auth.fields.invitationToken') }}</span>
+          <input class="form-input" autocomplete="off" formControlName="token" />
+        </label>
+      }
       <label>
         <span class="form-label">{{ t('auth.fields.password') }}</span>
         <input

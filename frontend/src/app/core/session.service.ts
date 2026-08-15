@@ -48,7 +48,7 @@ export class SessionService {
 
   register(input: {
     email: string;
-    token: string;
+    token?: string;
     password: string;
     displayName: string;
   }): Observable<User> {

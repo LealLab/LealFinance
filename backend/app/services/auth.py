@@ -1,11 +1,13 @@
 """Identity business logic: invitations, registration, login/logout, users,
 and preferences.
 
-There is no open registration - see app/cli/__main__.py for the one-time
-admin bootstrap and POST /auth/invitations for how everyone after that gets
-in. Services here raise AppError subclasses directly (see app/core/errors.py)
-so routers stay a thin call-then-serialize layer, matching
-app/services/exchange_rates.py's existing style.
+Registration is invite-only, except the very first user: when the users
+table is empty, POST /auth/register accepts a request with no invitation
+token and mints that user as the administrator (see register() below).
+Everyone after that goes through POST /auth/invitations. Services here raise
+AppError subclasses directly (see app/core/errors.py) so routers stay a thin
+call-then-serialize layer, matching app/services/exchange_rates.py's
+existing style.
 """
 
 from dataclasses import dataclass
@@ -29,6 +31,7 @@ from app.models.user import ROLE_ADMIN, ROLES, THEMES, Invitation, Session, User
 
 _SESSION_TOUCH_INTERVAL = timedelta(minutes=5)
 _LAST_ADMIN_LOCK_KEY = 0x4C4641444D494E
+_BOOTSTRAP_LOCK_KEY = 0x4C46424F4F54
 
 # Verified on every login attempt for an email that doesn't match any user,
 # so a nonexistent account and a wrong password take indistinguishable
@@ -188,10 +191,30 @@ async def _resolve_invitation(db: AsyncSession, *, email: str, token: str) -> In
     return invitation
 
 
-async def register_with_invitation(
-    db: AsyncSession, *, email: str, token: str, password: str, display_name: str
+async def needs_setup(db: AsyncSession) -> bool:
+    """True while the instance has no users - the one window in which
+    registration is allowed without an invitation."""
+    return await db.scalar(select(User.id).limit(1)) is None
+
+
+async def register(
+    db: AsyncSession, *, email: str, token: str | None, password: str, display_name: str
 ) -> IssuedSession:
-    invitation = await _resolve_invitation(db, email=email, token=token)
+    invitation: Invitation | None = None
+    if token:
+        invitation = await _resolve_invitation(db, email=email, token=token)
+        role = invitation.role
+    else:
+        # Serialize the bootstrap path so two concurrent token-less requests
+        # can't both observe an empty users table and both mint an admin.
+        # The emptiness check below must happen after the lock is held.
+        await db.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": _BOOTSTRAP_LOCK_KEY})
+        if not await needs_setup(db):
+            # Same "not_found" as an unknown/wrong invitation token - a
+            # missing token shouldn't disclose whether the instance is
+            # already set up.
+            raise NotFoundError(code="invitation.not_found")
+        role = ROLE_ADMIN
 
     normalized = normalize_email(email)
     existing = await db.execute(select(User).where(User.normalized_email == normalized))
@@ -203,10 +226,11 @@ async def register_with_invitation(
         normalized_email=normalized,
         password_hash=hash_password(password),
         display_name=display_name.strip(),
-        role=invitation.role,
+        role=role,
     )
     db.add(user)
-    invitation.accepted_at = datetime.now(UTC)
+    if invitation is not None:
+        invitation.accepted_at = datetime.now(UTC)
     await db.flush()  # assigns user.id, needed by _mint_session below
 
     # User creation, invitation acceptance, and session creation are one

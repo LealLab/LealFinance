@@ -2,6 +2,9 @@
 
 See tests/test_auth.py for login/logout/session/CSRF/admin-authorization
 coverage this file doesn't repeat.
+
+test_bootstrap_* below cover the one exception to invite-only registration:
+the very first user on an instance, who registers with no token at all.
 """
 
 from datetime import UTC, datetime, timedelta
@@ -249,6 +252,64 @@ async def test_register_rejects_revoked_invitation(
     )
     assert response.status_code == 409
     assert response.json()["error"]["code"] == "invitation.revoked"
+
+
+async def test_setup_status_reports_true_before_and_false_after_bootstrap(
+    client: AsyncClient,
+) -> None:
+    before = await client.get("/api/v1/auth/setup-status")
+    assert before.status_code == 200
+    assert before.json()["needs_setup"] is True
+
+    register_response = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "first@example.com",
+            "password": "a-perfectly-fine-password",
+            "display_name": "First User",
+        },
+    )
+    assert register_response.status_code == 201
+
+    after = await client.get("/api/v1/auth/setup-status")
+    assert after.json()["needs_setup"] is False
+
+
+async def test_registering_with_no_token_on_an_empty_instance_becomes_admin(
+    client: AsyncClient,
+) -> None:
+    response = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "bootstrap@example.com",
+            "password": "a-perfectly-fine-password",
+            "display_name": "Bootstrap Admin",
+        },
+    )
+    assert response.status_code == 201
+    assert response.json()["role"] == "admin"
+
+    # Registering also logs the new admin in immediately.
+    me_response = await client.get("/api/v1/auth/me")
+    assert me_response.status_code == 200
+    assert me_response.json()["email"] == "bootstrap@example.com"
+
+
+async def test_registering_with_no_token_once_a_user_exists_is_rejected(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await make_user(db_session, email="already-here@example.com")
+
+    response = await other_client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "late@example.com",
+            "password": "a-perfectly-fine-password",
+            "display_name": "Too Late",
+        },
+    )
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "invitation.not_found"
 
 
 async def test_register_rejects_short_password_with_unified_error_envelope(

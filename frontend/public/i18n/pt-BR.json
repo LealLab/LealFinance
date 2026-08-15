@@ -662,7 +662,11 @@
       "description": "Crie sua conta com o convite enviado por um administrador.",
       "action": "Criar conta",
       "passwordHint": "Use pelo menos 12 caracteres.",
-      "backToLogin": "Voltar para entrar"
+      "backToLogin": "Voltar para entrar",
+      "setup": {
+        "title": "Criar a conta de administrador",
+        "description": "Esta é a primeira conta desta instância - ela terá acesso total de administrador."
+      }
     }
   },
   "admin": {

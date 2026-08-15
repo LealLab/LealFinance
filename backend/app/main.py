@@ -10,11 +10,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-# Same Windows event-loop caveat as alembic/env.py, tests/conftest.py, and
-# app/cli/__main__.py: psycopg's async mode requires the selector loop, not
-# the proactor loop Windows defaults to. Set here, at the module uvicorn
-# imports as its ASGI app target, so it takes effect before uvicorn creates
-# its event loop.
+# Same Windows event-loop caveat as alembic/env.py and tests/conftest.py:
+# psycopg's async mode requires the selector loop, not the proactor loop
+# Windows defaults to. Set here, at the module uvicorn imports as its ASGI
+# app target, so it takes effect before uvicorn creates its event loop.
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

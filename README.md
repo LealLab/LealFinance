@@ -50,15 +50,8 @@
 
     > Wait until api, web, postgres, and redis are healthy.
 
-5. Create the first administrator account
-
-    ```bash
-    docker compose -f docker-compose.yml exec api python -m app.cli create-admin --email email@example.com --display-name "Your Name"
-    ```
-
-    > Enter a password of at least 12 characters when prompted. Never pass the password as a command argument.
-
-6. Open <http://localhost:8081>. The copied `.env.example` sets `WEB_PORT=8081`;
+5. Open <http://localhost:8081> and register. The first account created
+   becomes the administrator; the copied `.env.example` sets `WEB_PORT=8081`,
    use the value in `.env` if you changed it.
 
 > `docker compose up` automatically merges `docker-compose.override.yml`, which

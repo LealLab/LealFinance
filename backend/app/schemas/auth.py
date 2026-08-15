@@ -13,9 +13,13 @@ class LoginRequest(BaseModel):
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    token: str = Field(min_length=1)
+    token: str | None = None
     password: str = Field(min_length=12)
     display_name: str = Field(min_length=1, max_length=100)
+
+
+class SetupStatus(BaseModel):
+    needs_setup: bool
 
 
 class InvitationCreate(BaseModel):

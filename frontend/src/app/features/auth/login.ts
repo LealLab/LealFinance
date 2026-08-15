@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
+import { IdentityApiService } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { Logo } from '../../shared/ui/logo/logo';
@@ -15,6 +16,7 @@ import { Logo } from '../../shared/ui/logo/logo';
 })
 export class Login {
   private readonly session = inject(SessionService);
+  private readonly identityApi = inject(IdentityApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -27,6 +29,14 @@ export class Login {
     }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
+
+  constructor() {
+    // A fresh instance has no one to log in as yet - send whoever lands
+    // here straight to registration, which becomes the admin bootstrap.
+    this.identityApi.setupStatus().subscribe((needed) => {
+      if (needed) void this.router.navigateByUrl('/register');
+    });
+  }
 
   protected async submit(): Promise<void> {
     if (this.form.invalid || this.submitting()) return;
