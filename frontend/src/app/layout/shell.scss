@@ -10,6 +10,35 @@
   width: 15rem;
 }
 
+:host-context([dir='rtl']) {
+  .desktop-sidebar {
+    border-right-width: 0;
+    border-left-width: 1px;
+  }
+
+  [data-sidebar-toggle] {
+    right: auto;
+    left: 0;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  [data-sidebar-toggle] app-icon {
+    transform: scaleX(-1);
+  }
+
+  [data-sidebar-toggle] app-icon.rotate-180 {
+    transform: scaleX(-1) rotate(180deg);
+  }
+
+  .mobile-drawer {
+    right: 0;
+    left: auto;
+    inset: 0 0 0 auto !important;
+    border-right-width: 0;
+    border-left-width: 1px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .desktop-sidebar {
     transition: none;

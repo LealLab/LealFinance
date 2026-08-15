@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Đóng",
+      "cancel": "Hủy",
+      "confirm": "Xác nhận",
+      "save": "Lưu",
+      "saving": "Đang lưu…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Bảng điều khiển",
+      "accounts": "Tài khoản",
+      "transactions": "Giao dịch",
+      "categories": "Danh mục",
+      "budgets": "Ngân sách",
+      "goals": "Mục tiêu",
+      "reports": "Báo cáo",
+      "exchange": "Tỷ giá",
+      "settings": "Cài đặt",
+      "adminUsers": "Người dùng và lời mời",
+      "sections": {
+        "accounts": "Tài khoản",
+        "analysis": "Phân tích",
+        "setup": "Thiết lập",
+        "admin": "Quản trị"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Mở menu",
+      "expand": "Mở rộng thanh bên",
+      "collapse": "Thu gọn thanh bên"
+    },
+    "themeToggle": {
+      "switchToLight": "Chuyển sang giao diện sáng",
+      "switchToDark": "Chuyển sang giao diện tối"
+    },
+    "languageSwitcher": {
+      "label": "Ngôn ngữ",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Ẩn số dư",
+      "show": "Hiện số dư"
+    },
+    "search": {
+      "trigger": "Tìm kiếm"
+    },
+    "commandPalette": {
+      "placeholder": "Nhập lệnh hoặc tìm kiếm…",
+      "empty": "Không tìm thấy kết quả.",
+      "hints": {
+        "navigate": "điều hướng",
+        "select": "chọn",
+        "close": "đóng"
+      },
+      "groups": {
+        "quickActions": "Thao tác nhanh",
+        "goTo": "Đi tới",
+        "accounts": "Tài khoản",
+        "categories": "Danh mục",
+        "budgets": "Ngân sách",
+        "transactions": "Giao dịch"
+      },
+      "actions": {
+        "newTransaction": "Giao dịch mới",
+        "newAccount": "Tài khoản mới",
+        "newCategory": "Danh mục mới",
+        "newBudget": "Ngân sách mới",
+        "configureLanguage": "Thiết lập ngôn ngữ",
+        "configureCurrency": "Thiết lập tiền tệ hiển thị",
+        "toggleTheme": "Đổi giao diện",
+        "toggleBalances": "Hiện hoặc ẩn số dư"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "welcome": "Chào mừng bạn đến với LealFinance",
+    "empty": {
+      "title": "Chưa có dữ liệu",
+      "description": "Thêm tài khoản để bắt đầu theo dõi tình hình tài chính của bạn."
+    },
+    "stats": {
+      "netWorth": "Giá trị tài sản ròng",
+      "income": "Thu nhập hàng tháng",
+      "expense": "Chi tiêu hàng tháng",
+      "savingsRate": "Tỷ lệ tiết kiệm"
+    },
+    "cashFlow": {
+      "title": "Dòng tiền (6 tháng)",
+      "income": "Thu nhập",
+      "expense": "Chi tiêu"
+    },
+    "categoryChart": {
+      "title": "Chi tiêu theo danh mục (tháng này)",
+      "label": "Danh mục",
+      "empty": "Chưa ghi nhận khoản chi nào trong tháng này."
+    },
+    "accounts": {
+      "title": "Tài khoản"
+    },
+    "recentTransactions": {
+      "title": "Giao dịch gần đây",
+      "empty": "Chưa có giao dịch nào được ghi nhận."
+    },
+    "budgets": {
+      "title": "Ngân sách",
+      "empty": "Chưa đặt ngân sách cho tháng này."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Không có tỷ giá - đang dùng quy đổi 1:1 để ước tính.",
+    "fallbackRateWarningAction": "Đặt tỷ giá"
+  },
+  "accounts": {
+    "title": "Tài khoản",
+    "description": "Tất cả số dư của bạn ở một nơi.",
+    "showArchived": "Hiển thị tài khoản đã lưu trữ",
+    "archivedBadge": "Đã lưu trữ",
+    "noInstitution": "Chưa có tổ chức tài chính",
+    "mixedCurrencies": "Nhiều loại tiền tệ",
+    "actions": {
+      "new": "Tài khoản mới",
+      "edit": "Chỉnh sửa",
+      "archive": "Lưu trữ",
+      "unarchive": "Bỏ lưu trữ"
+    },
+    "archive": {
+      "title": "Lưu trữ tài khoản?",
+      "message": "Tài khoản \"{{name}}\" sẽ không còn hiển thị trong các chế độ xem chính. Bạn có muốn tiếp tục không?"
+    },
+    "empty": {
+      "title": "Chưa có tài khoản nào",
+      "description": "Tạo tài khoản đầu tiên để bắt đầu theo dõi số dư của bạn."
+    },
+    "type": {
+      "checking": "Tài khoản thanh toán",
+      "savings": "Tài khoản tiết kiệm",
+      "cash": "Tiền mặt",
+      "credit_card": "Thẻ tín dụng",
+      "investment": "Khoản đầu tư",
+      "goal": "Mục tiêu"
+    },
+    "form": {
+      "newTitle": "Tài khoản mới",
+      "editTitle": "Chỉnh sửa tài khoản",
+      "saveError": "Không thể lưu tài khoản. Vui lòng thử lại.",
+      "fields": {
+        "name": "Tên",
+        "type": "Loại",
+        "currency": "Tiền tệ",
+        "openingBalance": "Số dư đầu kỳ",
+        "institution": "Tổ chức tài chính",
+        "creditLimit": "Hạn mức tín dụng",
+        "closingDay": "Ngày chốt sao kê",
+        "dueDay": "Ngày đến hạn"
+      },
+      "errors": {
+        "required": "Trường này là bắt buộc.",
+        "decimalAmount": "Nhập số tiền hợp lệ."
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    },
+    "detail": {
+      "back": "Quay lại tài khoản",
+      "notFound": "Không tìm thấy tài khoản",
+      "history": "Lịch sử giao dịch",
+      "historyEmpty": {
+        "title": "Chưa có giao dịch trong tài khoản này",
+        "description": "Các giao dịch được ghi nhận trong tài khoản này sẽ xuất hiện ở đây."
+      },
+      "creditCard": {
+        "title": "Thẻ tín dụng",
+        "used": "Đã sử dụng",
+        "owed": "Dư nợ hiện tại",
+        "limit": "Hạn mức",
+        "available": "Còn khả dụng",
+        "closingDay": "Ngày chốt sao kê"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Tổ chức tài chính mới",
+      "edit": "Chỉnh sửa tổ chức tài chính",
+      "delete": "Xóa tổ chức tài chính"
+    },
+    "form": {
+      "newTitle": "Tổ chức tài chính mới",
+      "editTitle": "Chỉnh sửa tổ chức tài chính",
+      "saveError": "Không thể lưu tổ chức tài chính. Vui lòng thử lại.",
+      "deleteInUseError": "Tổ chức tài chính này vẫn có tài khoản được liên kết nên không thể xóa.",
+      "fields": {
+        "name": "Tên",
+        "icon": "Biểu tượng",
+        "color": "Màu sắc"
+      },
+      "errors": {
+        "required": "Trường này là bắt buộc."
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    },
+    "delete": {
+      "title": "Xóa tổ chức tài chính",
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa tổ chức tài chính này không?"
+    },
+    "icon": {
+      "bank": "Ngân hàng",
+      "wallet": "Ví",
+      "chart": "Đầu tư",
+      "globe": "Quốc tế",
+      "archive": "Khác"
+    }
+  },
+  "transactions": {
+    "title": "Giao dịch",
+    "description": "Thu nhập, chi tiêu và các khoản chuyển tiền.",
+    "actions": {
+      "new": "Giao dịch mới",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa"
+    },
+    "tabs": {
+      "transactions": "Giao dịch",
+      "recurring": "Giao dịch định kỳ"
+    },
+    "type": {
+      "income": "Thu nhập",
+      "expense": "Chi tiêu",
+      "transfer": "Chuyển tiền"
+    },
+    "filters": {
+      "type": "Loại",
+      "account": "Tài khoản",
+      "category": "Danh mục",
+      "from": "Từ",
+      "to": "Đến",
+      "search": "Tìm kiếm",
+      "institution": "Tổ chức tài chính",
+      "all": "Tất cả",
+      "clear": "Xóa bộ lọc"
+    },
+    "empty": {
+      "title": "Không tìm thấy giao dịch nào",
+      "description": "Điều chỉnh bộ lọc hoặc thêm giao dịch mới."
+    },
+    "projected": {
+      "title": "Sắp tới (dự kiến)",
+      "badge": "Dự kiến"
+    },
+    "delete": {
+      "title": "Xóa giao dịch",
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa giao dịch này không?"
+    },
+    "form": {
+      "newTitle": "Giao dịch mới",
+      "editTitle": "Chỉnh sửa giao dịch",
+      "saveError": "Không thể lưu giao dịch. Vui lòng thử lại.",
+      "fields": {
+        "date": "Ngày",
+        "amount": "Số tiền",
+        "currency": "Tiền tệ",
+        "convertedAmount": "Số tiền sau quy đổi",
+        "conversionFee": "Phí/thuế quy đổi (tùy chọn)",
+        "account": "Tài khoản",
+        "fromAccount": "Tài khoản nguồn",
+        "toAccount": "Tài khoản đích",
+        "fromInstitution": "Tổ chức nguồn",
+        "toInstitution": "Tổ chức đích",
+        "anyInstitution": "Bất kỳ tổ chức nào",
+        "category": "Danh mục",
+        "description": "Mô tả",
+        "notes": "Ghi chú",
+        "repeat": "Lặp lại giao dịch này",
+        "frequency": "Tần suất",
+        "interval": "Mỗi",
+        "selectPlaceholder": "Chọn"
+      },
+      "hints": {
+        "effectiveRate": "Tỷ giá thực tế: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Không thể lặp lại giao dịch giữa các loại tiền tệ - cần thiết lập lại tỷ giá cho mỗi lần phát sinh."
+      },
+      "errors": {
+        "invalid": "Kiểm tra các trường bắt buộc trước khi lưu.",
+        "convertedAmountRequired": "Nhập số tiền sau quy đổi trước khi lưu."
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Hàng tuần",
+        "monthly": "Hàng tháng",
+        "yearly": "Hàng năm"
+      },
+      "everyN": "mỗi {{n}}",
+      "nextOccurrence": "Lần phát sinh tiếp theo",
+      "actions": {
+        "new": "Quy tắc định kỳ mới"
+      },
+      "empty": {
+        "title": "Chưa có quy tắc định kỳ nào",
+        "description": "Chuyển một giao dịch thành giao dịch định kỳ sẽ tạo quy tắc ở đây."
+      },
+      "delete": {
+        "title": "Xóa quy tắc định kỳ",
+        "message": "Thao tác này không ảnh hưởng đến các giao dịch đã ghi nhận - chỉ các lần phát sinh dự kiến trong tương lai sẽ bị xóa khỏi danh sách."
+      },
+      "form": {
+        "newTitle": "Quy tắc định kỳ mới",
+        "editTitle": "Chỉnh sửa quy tắc định kỳ",
+        "saveError": "Không thể lưu quy tắc định kỳ. Vui lòng thử lại.",
+        "startDate": "Bắt đầu",
+        "endDate": "Kết thúc (tùy chọn)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Danh mục",
+    "description": "Sắp xếp thu nhập và chi tiêu theo danh mục.",
+    "showArchived": "Hiển thị danh mục đã lưu trữ",
+    "archivedBadge": "Đã lưu trữ",
+    "actions": {
+      "new": "Danh mục mới",
+      "edit": "Chỉnh sửa",
+      "archive": "Lưu trữ",
+      "unarchive": "Bỏ lưu trữ",
+      "delete": "Xóa",
+      "addChild": "Danh mục con mới",
+      "collapse": "Thu gọn",
+      "expand": "Mở rộng",
+      "dragHandle": "Sắp xếp lại"
+    },
+    "empty": {
+      "title": "Chưa có danh mục nào",
+      "description": "Tạo danh mục để sắp xếp các giao dịch của bạn."
+    },
+    "sections": {
+      "income": "Danh mục thu nhập",
+      "expense": "Danh mục chi tiêu"
+    },
+    "delete": {
+      "title": "Xóa danh mục?",
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa danh mục \"{{name}}\" không?",
+      "blockedTitle": "Không thể xóa",
+      "blockedMessage": "Danh mục này vẫn đang được sử dụng: {{transactions}} giao dịch, {{budgets}} ngân sách và {{children}} danh mục con đang sử dụng danh mục này. Hãy lưu trữ danh mục thay vì xóa."
+    },
+    "form": {
+      "newTitle": "Danh mục mới",
+      "editTitle": "Chỉnh sửa danh mục",
+      "saveError": "Không thể lưu danh mục. Vui lòng thử lại.",
+      "fields": {
+        "name": "Tên",
+        "parent": "Danh mục cha",
+        "noParent": "Không có (danh mục cấp cao nhất)",
+        "color": "Màu sắc",
+        "icon": "Biểu tượng"
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    },
+    "icon": {
+      "tag": "Thẻ",
+      "home": "Nhà",
+      "archive": "Lưu trữ",
+      "swap": "Di chuyển",
+      "wallet": "Ví",
+      "chart": "Biểu đồ",
+      "sun": "Năng lượng",
+      "alertTriangle": "Cảnh báo",
+      "pencil": "Giáo dục",
+      "target": "Mục tiêu",
+      "repeat": "Định kỳ",
+      "globe": "Toàn cầu"
+    }
+  },
+  "budgets": {
+    "title": "Ngân sách",
+    "description": "Lập kế hoạch số tiền chi tiêu cho từng danh mục mỗi tháng.",
+    "list": {
+      "title": "Hạn mức hàng tháng"
+    },
+    "planner": {
+      "title": "Ngân sách theo thu nhập",
+      "description": "Phân bổ thu nhập dự kiến cho các danh mục.",
+      "total": "Tổng",
+      "expectedIncome": "Thu nhập dự kiến",
+      "chartLabel": "Phân bổ",
+      "fixed": "Cố định",
+      "empty": "Đặt tỷ lệ phần trăm để xem phân bổ.",
+      "save": "Lưu phân bổ",
+      "errors": {
+        "total": "Tổng phân bổ không được vượt quá 100%.",
+        "income": "Nhập thu nhập dự kiến cho tháng này.",
+        "save": "Không thể lưu phân bổ. Vui lòng thử lại."
+      }
+    },
+    "monthLabel": "Tháng",
+    "actions": {
+      "new": "Ngân sách mới",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa"
+    },
+    "totals": {
+      "budgeted": "Đã lập ngân sách",
+      "spent": "Đã chi",
+      "remaining": "Còn lại"
+    },
+    "empty": {
+      "title": "Chưa có ngân sách cho tháng này",
+      "description": "Đặt ngân sách theo danh mục để theo dõi chi tiêu."
+    },
+    "state": {
+      "over": "Vượt ngân sách",
+      "near": "Gần chạm hạn mức"
+    },
+    "unbudgeted": {
+      "title": "Chi tiêu chưa có ngân sách",
+      "setBudget": "Đặt ngân sách"
+    },
+    "delete": {
+      "title": "Xóa ngân sách",
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa ngân sách này không?"
+    },
+    "form": {
+      "newTitle": "Ngân sách mới",
+      "editTitle": "Chỉnh sửa ngân sách",
+      "saveError": "Không thể lưu ngân sách. Vui lòng thử lại.",
+      "fields": {
+        "month": "Tháng",
+        "category": "Danh mục",
+        "selectCategory": "Chọn một danh mục",
+        "amount": "Số tiền",
+        "currency": "Tiền tệ"
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    }
+  },
+  "goals": {
+    "title": "Mục tiêu",
+    "description": "Tiết kiệm cho bất kỳ mục tiêu nào và theo dõi tiến độ.",
+    "showArchived": "Hiển thị mục tiêu đã lưu trữ",
+    "archiveError": "Không thể cập nhật trạng thái lưu trữ của mục tiêu. Vui lòng thử lại.",
+    "accountLabel": "Tài khoản",
+    "archived": "Đã lưu trữ",
+    "overdue": "Quá hạn",
+    "actions": {
+      "new": "Mục tiêu mới",
+      "edit": "Chỉnh sửa mục tiêu",
+      "archive": "Lưu trữ mục tiêu",
+      "unarchive": "Bỏ lưu trữ mục tiêu",
+      "deposit": "Thêm tiền",
+      "withdraw": "Rút tiền",
+      "interest": "Thêm tiền lãi"
+    },
+    "empty": {
+      "title": "Chưa có mục tiêu nào",
+      "description": "Tạo mục tiêu để bắt đầu tiết kiệm và theo dõi tiến độ."
+    },
+    "progress": {
+      "current": "Đã tiết kiệm",
+      "target": "Mục tiêu",
+      "remaining": "Còn lại",
+      "contribution": "Khoản đóng góp đề xuất",
+      "notConfigured": "Không có thời hạn",
+      "frequency": "Tần suất",
+      "every": "mỗi {{n}}",
+      "label": "Tiến độ"
+    },
+    "frequency": {
+      "weekly": "Hàng tuần",
+      "monthly": "Hàng tháng",
+      "yearly": "Hàng năm"
+    },
+    "history": {
+      "title": "Lịch sử mục tiêu",
+      "empty": "Chưa ghi nhận hoạt động nào."
+    },
+    "form": {
+      "newTitle": "Mục tiêu mới",
+      "editTitle": "Chỉnh sửa mục tiêu",
+      "saveError": "Không thể lưu mục tiêu. Vui lòng thử lại.",
+      "fields": {
+        "name": "Tên",
+        "targetAmount": "Số tiền mục tiêu",
+        "currency": "Tiền tệ",
+        "targetDate": "Ngày đạt mục tiêu",
+        "targetDateHint": "Tùy chọn: thêm thời hạn để tính khoản đóng góp đề xuất.",
+        "frequency": "Tần suất đóng góp",
+        "interval": "Mỗi"
+      },
+      "errors": {
+        "required": "Trường này là bắt buộc."
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Thêm tiền vào mục tiêu" },
+      "withdraw": { "title": "Rút tiền khỏi mục tiêu" },
+      "interest": { "title": "Thêm tiền lãi" },
+      "fields": {
+        "amount": "Số tiền",
+        "date": "Ngày",
+        "sourceAccount": "Tài khoản nguồn/đích",
+        "description": "Mô tả"
+      },
+      "saveError": "Không thể ghi nhận hoạt động. Vui lòng thử lại."
+    }
+  },
+  "reports": {
+    "title": "Báo cáo",
+    "description": "Phân tích thu nhập, chi tiêu và số dư theo thời gian.",
+    "period": {
+      "month": "Tháng này",
+      "3m": "3 tháng gần đây",
+      "6m": "6 tháng gần đây",
+      "12m": "12 tháng gần đây",
+      "custom": "Tùy chỉnh"
+    },
+    "empty": {
+      "title": "Không có giao dịch trong giai đoạn này",
+      "description": "Điều chỉnh giai đoạn đã chọn để xem báo cáo."
+    },
+    "charts": {
+      "incomeExpense": "Thu nhập so với chi tiêu",
+      "netFlow": "Dòng tiền ròng",
+      "byCategory": "Chi tiêu theo danh mục",
+      "balanceTrend": "Xu hướng số dư theo tài khoản"
+    },
+    "series": {
+      "income": "Thu nhập",
+      "expense": "Chi tiêu",
+      "netFlow": "Dòng tiền ròng",
+      "categories": "Danh mục"
+    }
+  },
+  "exchange": {
+    "title": "Tỷ giá",
+    "description": "Tỷ giá thủ công và các giao dịch quy đổi đã sử dụng chúng.",
+    "stats": {
+      "feesPaid": "Phí quy đổi đã trả",
+      "needsAttention": "Giao dịch cần chú ý",
+      "currenciesNeedingRate": "Loại tiền tệ chưa có tỷ giá"
+    },
+    "needsAttention": {
+      "title": "Cần chú ý",
+      "description": "Các giao dịch này được quy đổi theo tỷ lệ xấp xỉ 1:1 - hãy sửa bằng tỷ giá thực tế hoặc đặt tỷ giá thủ công bên dưới.",
+      "empty": {
+        "title": "Không có gì cần chú ý",
+        "description": "Mọi giao dịch khác loại tiền tệ đều đã có tỷ giá thực tế được ghi nhận."
+      },
+      "actions": {
+        "fix": "Sửa"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Loại tiền tệ chưa có tỷ giá",
+      "description": "Các loại tiền tệ của tài khoản này chưa có tỷ giá thực tế với tiền tệ hiển thị, nên số dư được hiển thị theo tỷ lệ xấp xỉ 1:1 - không gắn với giao dịch cụ thể nào.",
+      "empty": {
+        "title": "Không có loại tiền tệ nào cần tỷ giá",
+        "description": "Mọi loại tiền tệ của tài khoản đều đã quy đổi được theo tỷ giá thực tế."
+      }
+    },
+    "manualRates": {
+      "title": "Tỷ giá thủ công",
+      "description": "Tỷ giá bạn tự đặt được ưu tiên hơn nhà cung cấp tự động - hữu ích khi cần tỷ giá ngân hàng thực tế hôm nay hoặc khi chưa cấu hình nhà cung cấp.",
+      "actions": {
+        "add": "Thêm tỷ giá",
+        "edit": "Chỉnh sửa tỷ giá",
+        "delete": "Xóa tỷ giá"
+      },
+      "empty": {
+        "title": "Chưa có tỷ giá thủ công nào",
+        "description": "Thêm tỷ giá cho một cặp tiền tệ để dùng thay cho quy đổi tự động 1:1."
+      },
+      "delete": {
+        "title": "Xóa tỷ giá thủ công",
+        "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa tỷ giá này không?"
+      },
+      "form": {
+        "newTitle": "Tỷ giá thủ công mới",
+        "editTitle": "Chỉnh sửa tỷ giá thủ công",
+        "saveError": "Không thể lưu tỷ giá. Vui lòng thử lại.",
+        "fields": {
+          "baseCode": "Tiền tệ nguồn",
+          "quoteCode": "Tiền tệ đích",
+          "rate": "Tỷ giá",
+          "asOf": "Có hiệu lực từ"
+        },
+        "errors": {
+          "invalid": "Nhập tỷ giá hợp lệ.",
+          "samePair": "Chọn hai loại tiền tệ khác nhau."
+        },
+        "actions": {
+          "cancel": "Hủy",
+          "save": "Lưu"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "description": "Tùy chọn giao diện, ngôn ngữ và dữ liệu mẫu.",
+    "appearance": {
+      "title": "Giao diện",
+      "theme": "Giao diện",
+      "light": "Sáng",
+      "dark": "Tối",
+      "language": "Ngôn ngữ"
+    },
+    "currency": {
+      "title": "Tiền tệ hiển thị",
+      "description": "Dùng để quy đổi và cộng các giá trị giữa những tài khoản có loại tiền tệ khác nhau, chẳng hạn như giá trị tài sản ròng trên bảng điều khiển."
+    },
+    "agents": {
+      "title": "Tác nhân AI",
+      "description": "Trợ lý AI trên dữ liệu tài chính của bạn, với nhiều nhà cung cấp và công cụ thông qua MCP. Tắt theo mặc định - có thể cấu hình trong Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Đã tắt",
+      "enabled": "Đã bật"
+    }
+  },
+  "auth": {
+    "logout": "Đăng xuất",
+    "fields": {
+      "email": "Email",
+      "password": "Mật khẩu",
+      "displayName": "Tên hiển thị",
+      "invitationToken": "Mã lời mời"
+    },
+    "login": {
+      "title": "Đăng nhập",
+      "description": "Sử dụng tài khoản LealFinance của bạn để tiếp tục.",
+      "action": "Đăng nhập",
+      "invited": "Bạn có lời mời?"
+    },
+    "register": {
+      "title": "Chấp nhận lời mời",
+      "description": "Tạo tài khoản bằng lời mời do quản trị viên gửi.",
+      "action": "Tạo tài khoản",
+      "passwordHint": "Sử dụng ít nhất 12 ký tự.",
+      "backToLogin": "Quay lại đăng nhập",
+      "setup": {
+        "title": "Tạo tài khoản quản trị viên",
+        "description": "Đây là tài khoản đầu tiên trên hệ thống này - tài khoản sẽ có toàn quyền quản trị."
+      }
+    }
+  },
+  "admin": {
+    "title": "Người dùng và lời mời",
+    "description": "Quản lý quyền truy cập vào hệ thống LealFinance này.",
+    "roles": { "member": "Thành viên", "admin": "Quản trị viên" },
+    "users": { "title": "Người dùng", "role": "Vai trò", "active": "Đang hoạt động", "empty": "Không tìm thấy người dùng nào." },
+    "invitations": {
+      "title": "Lời mời",
+      "createTitle": "Tạo lời mời",
+      "create": "Mời",
+      "tokenOnce": "Mã này và liên kết đăng ký chỉ hiển thị lần này. Hãy lưu lại trước khi rời đi.",
+      "copyLink": "Sao chép liên kết đăng ký",
+      "revoke": "Thu hồi",
+      "empty": "Không tìm thấy lời mời nào."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Đã xảy ra lỗi. Vui lòng thử lại." },
+    "auth": {
+      "invalid_credentials": "Email hoặc mật khẩu không chính xác.",
+      "csrf_invalid": "Biểu mẫu đã hết hạn. Hãy tải lại trang và thử lại.",
+      "last_admin": "Phải có ít nhất một quản trị viên đang hoạt động.",
+      "account_inactive": "Tài khoản này không hoạt động.",
+      "admin_required": "Cần có quyền quản trị viên."
+    },
+    "invitation": {
+      "not_found": "Lời mời không hợp lệ.",
+      "expired": "Lời mời này đã hết hạn.",
+      "revoked": "Lời mời này đã bị thu hồi.",
+      "already_accepted": "Lời mời này đã được chấp nhận.",
+      "already_pending": "Đã có lời mời đang chờ xử lý cho email này."
+    },
+    "user": { "email_taken": "Đã có tài khoản sử dụng email này." }
+  }
+}

@@ -4,3 +4,8 @@
 :host {
   display: block;
 }
+
+:host-context([dir='rtl']) .sidebar-nav-link {
+  border-left-width: 0;
+  border-right-width: 2px;
+}

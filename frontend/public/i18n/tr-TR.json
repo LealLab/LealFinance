@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Kapat",
+      "cancel": "İptal",
+      "confirm": "Onayla",
+      "save": "Kaydet",
+      "saving": "Kaydediliyor…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Genel bakış",
+      "accounts": "Hesaplar",
+      "transactions": "İşlemler",
+      "categories": "Kategoriler",
+      "budgets": "Bütçeler",
+      "goals": "Hedefler",
+      "reports": "Raporlar",
+      "exchange": "Döviz",
+      "settings": "Ayarlar",
+      "adminUsers": "Kullanıcılar ve davetler",
+      "sections": {
+        "accounts": "Hesaplar",
+        "analysis": "Analiz",
+        "setup": "Kurulum",
+        "admin": "Yönetim"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Menüyü aç",
+      "expand": "Kenar çubuğunu genişlet",
+      "collapse": "Kenar çubuğunu daralt"
+    },
+    "themeToggle": {
+      "switchToLight": "Açık temaya geç",
+      "switchToDark": "Koyu temaya geç"
+    },
+    "languageSwitcher": {
+      "label": "Dil",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Bakiyeleri gizle",
+      "show": "Bakiyeleri göster"
+    },
+    "search": {
+      "trigger": "Ara"
+    },
+    "commandPalette": {
+      "placeholder": "Komut yazın veya arayın…",
+      "empty": "Sonuç bulunamadı.",
+      "hints": {
+        "navigate": "gezin",
+        "select": "seçin",
+        "close": "kapatın"
+      },
+      "groups": {
+        "quickActions": "Hızlı işlemler",
+        "goTo": "Git",
+        "accounts": "Hesaplar",
+        "categories": "Kategoriler",
+        "budgets": "Bütçeler",
+        "transactions": "İşlemler"
+      },
+      "actions": {
+        "newTransaction": "Yeni işlem",
+        "newAccount": "Yeni hesap",
+        "newCategory": "Yeni kategori",
+        "newBudget": "Yeni bütçe",
+        "configureLanguage": "Dili ayarla",
+        "configureCurrency": "Görüntüleme para birimini ayarla",
+        "toggleTheme": "Temayı değiştir",
+        "toggleBalances": "Bakiyeleri göster veya gizle"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Genel bakış",
+    "welcome": "LealFinance'a hoş geldiniz",
+    "empty": {
+      "title": "Henüz veri yok",
+      "description": "Finansal genel bakışınızı görmeye başlamak için bir hesap ekleyin."
+    },
+    "stats": {
+      "netWorth": "Net varlık",
+      "income": "Aylık gelir",
+      "expense": "Aylık gider",
+      "savingsRate": "Tasarruf oranı"
+    },
+    "cashFlow": {
+      "title": "Nakit akışı (6 ay)",
+      "income": "Gelir",
+      "expense": "Giderler"
+    },
+    "categoryChart": {
+      "title": "Kategoriye göre harcamalar (bu ay)",
+      "label": "Kategoriler",
+      "empty": "Bu ay için henüz harcama kaydı yok."
+    },
+    "accounts": {
+      "title": "Hesaplar"
+    },
+    "recentTransactions": {
+      "title": "Son işlemler",
+      "empty": "Henüz işlem kaydı yok."
+    },
+    "budgets": {
+      "title": "Bütçeler",
+      "empty": "Bu ay için henüz bütçe belirlenmedi."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Döviz kuru kullanılamıyor; yaklaşık olarak 1:1 dönüşüm kullanılıyor.",
+    "fallbackRateWarningAction": "Kur belirle"
+  },
+  "accounts": {
+    "title": "Hesaplar",
+    "description": "Bakiyeleriniz tek bir yerde.",
+    "showArchived": "Arşivlenmiş hesapları göster",
+    "archivedBadge": "Arşivlendi",
+    "noInstitution": "Finans kuruluşu yok",
+    "mixedCurrencies": "Birden fazla para birimi",
+    "actions": {
+      "new": "Yeni hesap",
+      "edit": "Düzenle",
+      "archive": "Arşivle",
+      "unarchive": "Arşivden çıkar"
+    },
+    "archive": {
+      "title": "Hesap arşivlensin mi?",
+      "message": "\"{{name}}\" hesabı artık ana görünümlerde gösterilmeyecek. Devam etmek istiyor musunuz?"
+    },
+    "empty": {
+      "title": "Henüz hesap yok",
+      "description": "Bakiyelerinizi takip etmeye başlamak için ilk hesabınızı oluşturun."
+    },
+    "type": {
+      "checking": "Vadesiz hesap",
+      "savings": "Tasarruf hesabı",
+      "cash": "Nakit",
+      "credit_card": "Kredi kartı",
+      "investment": "Yatırımlar",
+      "goal": "Hedef"
+    },
+    "form": {
+      "newTitle": "Yeni hesap",
+      "editTitle": "Hesabı düzenle",
+      "saveError": "Hesap kaydedilemedi. Tekrar deneyin.",
+      "fields": {
+        "name": "Ad",
+        "type": "Tür",
+        "currency": "Para birimi",
+        "openingBalance": "Açılış bakiyesi",
+        "institution": "Finans kuruluşu",
+        "creditLimit": "Kredi limiti",
+        "closingDay": "Hesap kesim günü",
+        "dueDay": "Son ödeme günü"
+      },
+      "errors": {
+        "required": "Bu alan zorunludur.",
+        "decimalAmount": "Geçerli bir sayısal tutar girin."
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    },
+    "detail": {
+      "back": "Hesaplara dön",
+      "notFound": "Hesap bulunamadı",
+      "history": "İşlem geçmişi",
+      "historyEmpty": {
+        "title": "Bu hesapta işlem yok",
+        "description": "Bu hesapta kaydedilen işlemler burada görünür."
+      },
+      "creditCard": {
+        "title": "Kredi kartı",
+        "used": "Kullanılan",
+        "owed": "Güncel borç",
+        "limit": "Limit",
+        "available": "Kullanılabilir",
+        "closingDay": "Hesap kesimi"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Yeni finans kuruluşu",
+      "edit": "Finans kuruluşunu düzenle",
+      "delete": "Finans kuruluşunu sil"
+    },
+    "form": {
+      "newTitle": "Yeni finans kuruluşu",
+      "editTitle": "Finans kuruluşunu düzenle",
+      "saveError": "Finans kuruluşu kaydedilemedi. Tekrar deneyin.",
+      "deleteInUseError": "Bu finans kuruluşuna bağlı hesaplar hâlâ var ve silinemiyor.",
+      "fields": {
+        "name": "Ad",
+        "icon": "Simge",
+        "color": "Renk"
+      },
+      "errors": {
+        "required": "Bu alan zorunludur."
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    },
+    "delete": {
+      "title": "Finans kuruluşu silinsin mi?",
+      "message": "Bu işlem geri alınamaz. Bu finans kuruluşunu silmek istiyor musunuz?"
+    },
+    "icon": {
+      "bank": "Banka",
+      "wallet": "Cüzdan",
+      "chart": "Yatırımlar",
+      "globe": "Uluslararası",
+      "archive": "Diğer"
+    }
+  },
+  "transactions": {
+    "title": "İşlemler",
+    "description": "Gelirler, giderler ve transferler.",
+    "actions": {
+      "new": "Yeni işlem",
+      "edit": "Düzenle",
+      "delete": "Sil"
+    },
+    "tabs": {
+      "transactions": "İşlemler",
+      "recurring": "Tekrarlayan"
+    },
+    "type": {
+      "income": "Gelir",
+      "expense": "Gider",
+      "transfer": "Transfer"
+    },
+    "filters": {
+      "type": "Tür",
+      "account": "Hesap",
+      "category": "Kategori",
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "search": "Ara",
+      "institution": "Finans kuruluşu",
+      "all": "Tümü",
+      "clear": "Filtreleri temizle"
+    },
+    "empty": {
+      "title": "İşlem bulunamadı",
+      "description": "Filtreleri değiştirin veya yeni bir işlem ekleyin."
+    },
+    "projected": {
+      "title": "Yaklaşan (öngörülen)",
+      "badge": "Öngörülen"
+    },
+    "delete": {
+      "title": "İşlem silinsin mi?",
+      "message": "Bu işlem geri alınamaz. Bu işlemi silmek istiyor musunuz?"
+    },
+    "form": {
+      "newTitle": "Yeni işlem",
+      "editTitle": "İşlemi düzenle",
+      "saveError": "İşlem kaydedilemedi. Tekrar deneyin.",
+      "fields": {
+        "date": "Tarih",
+        "amount": "Tutar",
+        "currency": "Para birimi",
+        "convertedAmount": "Dönüştürülen tutar",
+        "conversionFee": "Dönüşüm ücreti/vergi (isteğe bağlı)",
+        "account": "Hesap",
+        "fromAccount": "Kaynak hesap",
+        "toAccount": "Hedef hesap",
+        "fromInstitution": "Kaynak finans kuruluşu",
+        "toInstitution": "Hedef finans kuruluşu",
+        "anyInstitution": "Herhangi bir finans kuruluşu",
+        "category": "Kategori",
+        "description": "Açıklama",
+        "notes": "Notlar",
+        "repeat": "Bu işlemi tekrarla",
+        "frequency": "Sıklık",
+        "interval": "Her",
+        "selectPlaceholder": "Seçin"
+      },
+      "hints": {
+        "effectiveRate": "Geçerli kur: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Para birimleri farklı olan işlemler tekrarlanamaz; her yineleme için kurun yeniden belirlenmesi gerekir."
+      },
+      "errors": {
+        "invalid": "Kaydetmeden önce zorunlu alanları kontrol edin.",
+        "convertedAmountRequired": "Kaydetmeden önce dönüştürülen tutarı girin."
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Haftalık",
+        "monthly": "Aylık",
+        "yearly": "Yıllık"
+      },
+      "everyN": "{{n}}'de bir",
+      "nextOccurrence": "Sonraki yineleme",
+      "actions": {
+        "new": "Yeni tekrarlama kuralı"
+      },
+      "empty": {
+        "title": "Henüz tekrarlama kuralı yok",
+        "description": "Bir işlemi tekrarlanan olarak ayarladığınızda burada bir kural oluşturulur."
+      },
+      "delete": {
+        "title": "Tekrarlama kuralı silinsin mi?",
+        "message": "Bu işlem kaydedilmiş işlemleri etkilemez; yalnızca gelecekteki öngörülen yinelemeler kaldırılır."
+      },
+      "form": {
+        "newTitle": "Yeni tekrarlama kuralı",
+        "editTitle": "Tekrarlama kuralını düzenle",
+        "saveError": "Tekrarlama kuralı kaydedilemedi. Tekrar deneyin.",
+        "startDate": "Başlangıç",
+        "endDate": "Bitiş (isteğe bağlı)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Kategoriler",
+    "description": "Gelir ve giderlerinizi kategorilere göre düzenleyin.",
+    "showArchived": "Arşivlenmiş kategorileri göster",
+    "archivedBadge": "Arşivlendi",
+    "actions": {
+      "new": "Yeni kategori",
+      "edit": "Düzenle",
+      "archive": "Arşivle",
+      "unarchive": "Arşivden çıkar",
+      "delete": "Sil",
+      "addChild": "Yeni alt kategori",
+      "collapse": "Daralt",
+      "expand": "Genişlet",
+      "dragHandle": "Sıralamayı değiştir"
+    },
+    "empty": {
+      "title": "Henüz kategori yok",
+      "description": "İşlemlerinizi düzenlemek için kategoriler oluşturun."
+    },
+    "sections": {
+      "income": "Gelir kategorileri",
+      "expense": "Gider kategorileri"
+    },
+    "delete": {
+      "title": "Kategori silinsin mi?",
+      "message": "Bu işlem geri alınamaz. \"{{name}}\" kategorisini silmek istiyor musunuz?",
+      "blockedTitle": "Silinemiyor",
+      "blockedMessage": "Bu kategori hâlâ kullanılıyor: {{transactions}} işlem, {{budgets}} bütçe ve {{children}} alt kategori bu kategoriyi kullanıyor. Kategoriyi silmek yerine arşivleyin."
+    },
+    "form": {
+      "newTitle": "Yeni kategori",
+      "editTitle": "Kategoriyi düzenle",
+      "saveError": "Kategori kaydedilemedi. Tekrar deneyin.",
+      "fields": {
+        "name": "Ad",
+        "parent": "Üst kategori",
+        "noParent": "Yok (üst düzey kategori)",
+        "color": "Renk",
+        "icon": "Simge"
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    },
+    "icon": {
+      "tag": "Etiket",
+      "home": "Ev",
+      "archive": "Arşiv",
+      "swap": "Ulaşım",
+      "wallet": "Cüzdan",
+      "chart": "Grafik",
+      "sun": "Enerji",
+      "alertTriangle": "Uyarı",
+      "pencil": "Eğitim",
+      "target": "Hedef",
+      "repeat": "Tekrarlayan",
+      "globe": "Genel"
+    }
+  },
+  "budgets": {
+    "title": "Bütçeler",
+    "description": "Her ay her kategori için ne kadar harcayacağınızı planlayın.",
+    "list": {
+      "title": "Aylık limitler"
+    },
+    "planner": {
+      "title": "Gelir bazlı bütçe",
+      "description": "Beklenen gelirinizi kategorilere dağıtın.",
+      "total": "Toplam",
+      "expectedIncome": "Beklenen gelir",
+      "chartLabel": "Dağılım",
+      "fixed": "Sabit",
+      "empty": "Dağılımınızı görmek için yüzdeleri belirleyin.",
+      "save": "Dağılımı kaydet",
+      "errors": {
+        "total": "Dağılım %100'ü aşamaz.",
+        "income": "Bu ay için beklenen geliri girin.",
+        "save": "Dağılım kaydedilemedi. Tekrar deneyin."
+      }
+    },
+    "monthLabel": "Ay",
+    "actions": {
+      "new": "Yeni bütçe",
+      "edit": "Düzenle",
+      "delete": "Sil"
+    },
+    "totals": {
+      "budgeted": "Bütçelenen",
+      "spent": "Harcanan",
+      "remaining": "Kalan"
+    },
+    "empty": {
+      "title": "Bu ay için bütçe yok",
+      "description": "Harcamalarınızı takip etmek için kategori bazında bütçe belirleyin."
+    },
+    "state": {
+      "over": "Bütçe aşıldı",
+      "near": "Limite yaklaşıldı"
+    },
+    "unbudgeted": {
+      "title": "Bütçesiz harcama",
+      "setBudget": "Bütçe belirle"
+    },
+    "delete": {
+      "title": "Bütçe silinsin mi?",
+      "message": "Bu işlem geri alınamaz. Bu bütçeyi silmek istiyor musunuz?"
+    },
+    "form": {
+      "newTitle": "Yeni bütçe",
+      "editTitle": "Bütçeyi düzenle",
+      "saveError": "Bütçe kaydedilemedi. Tekrar deneyin.",
+      "fields": {
+        "month": "Ay",
+        "category": "Kategori",
+        "selectCategory": "Kategori seçin",
+        "amount": "Tutar",
+        "currency": "Para birimi"
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    }
+  },
+  "goals": {
+    "title": "Hedefler",
+    "description": "Her hedef için para biriktirin ve ilerlemenizi takip edin.",
+    "showArchived": "Arşivlenmiş hedefleri göster",
+    "archiveError": "Hedefin arşiv durumu güncellenemedi. Tekrar deneyin.",
+    "accountLabel": "Hesap",
+    "archived": "Arşivlendi",
+    "overdue": "Gecikmiş",
+    "actions": {
+      "new": "Yeni hedef",
+      "edit": "Hedefi düzenle",
+      "archive": "Hedefi arşivle",
+      "unarchive": "Hedefi arşivden çıkar",
+      "deposit": "Para ekle",
+      "withdraw": "Para çek",
+      "interest": "Faiz ekle"
+    },
+    "empty": {
+      "title": "Henüz hedef yok",
+      "description": "Para biriktirmeye ve ilerlemenizi takip etmeye başlamak için bir hedef oluşturun."
+    },
+    "progress": {
+      "current": "Biriken",
+      "target": "Hedef",
+      "remaining": "Kalan",
+      "contribution": "Önerilen katkı",
+      "notConfigured": "Son tarih yok",
+      "frequency": "Sıklık",
+      "every": "{{n}}'de bir",
+      "label": "İlerleme"
+    },
+    "frequency": {
+      "weekly": "Haftalık",
+      "monthly": "Aylık",
+      "yearly": "Yıllık"
+    },
+    "history": {
+      "title": "Hedef geçmişi",
+      "empty": "Henüz etkinlik kaydı yok."
+    },
+    "form": {
+      "newTitle": "Yeni hedef",
+      "editTitle": "Hedefi düzenle",
+      "saveError": "Hedef kaydedilemedi. Tekrar deneyin.",
+      "fields": {
+        "name": "Ad",
+        "targetAmount": "Hedef tutar",
+        "currency": "Para birimi",
+        "targetDate": "Hedef tarihi",
+        "targetDateHint": "İsteğe bağlı: önerilen katkıyı hesaplamak için bir son tarih ekleyin.",
+        "frequency": "Katkı sıklığı",
+        "interval": "Her"
+      },
+      "errors": {
+        "required": "Bu alan zorunludur."
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Hedefe para ekle" },
+      "withdraw": { "title": "Hedeften para çek" },
+      "interest": { "title": "Faiz ekle" },
+      "fields": {
+        "amount": "Tutar",
+        "date": "Tarih",
+        "sourceAccount": "Kaynak/hedef hesap",
+        "description": "Açıklama"
+      },
+      "saveError": "Etkinlik kaydedilemedi. Tekrar deneyin."
+    }
+  },
+  "reports": {
+    "title": "Raporlar",
+    "description": "Gelirleri, giderleri ve bakiyeleri zaman içinde analiz edin.",
+    "period": {
+      "month": "Bu ay",
+      "3m": "Son 3 ay",
+      "6m": "Son 6 ay",
+      "12m": "Son 12 ay",
+      "custom": "Özel"
+    },
+    "empty": {
+      "title": "Bu dönemde işlem yok",
+      "description": "Raporlarınızı görmek için seçilen dönemi değiştirin."
+    },
+    "charts": {
+      "incomeExpense": "Gelir ve gider karşılaştırması",
+      "netFlow": "Net akış",
+      "byCategory": "Kategoriye göre harcamalar",
+      "balanceTrend": "Hesaba göre bakiye eğilimi"
+    },
+    "series": {
+      "income": "Gelir",
+      "expense": "Giderler",
+      "netFlow": "Net akış",
+      "categories": "Kategoriler"
+    }
+  },
+  "exchange": {
+    "title": "Döviz",
+    "description": "Elle belirlediğiniz döviz kurları ve bu kurların kullanıldığı dönüşümler.",
+    "stats": {
+      "feesPaid": "Ödenen dönüşüm ücretleri",
+      "needsAttention": "İncelenmesi gereken işlemler",
+      "currenciesNeedingRate": "Kuru olmayan para birimleri"
+    },
+    "needsAttention": {
+      "title": "İncelenmesi gerekiyor",
+      "description": "Bu işlemler 1:1 yaklaşık dönüşüm kullanılarak dönüştürüldü; gerçek kurla düzeltin veya aşağıdan manuel kur belirleyin.",
+      "empty": {
+        "title": "İncelenecek bir şey yok",
+        "description": "Farklı para birimlerine sahip her işlem için gerçek bir kur kayıtlı."
+      },
+      "actions": {
+        "fix": "Düzelt"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Kuru olmayan para birimleri",
+      "description": "Bu hesap para birimleri için görüntüleme para biriminize karşı henüz gerçek bir kur yok. Bu nedenle bakiyeler belirli bir işleme bağlı olmadan 1:1 yaklaşık değer olarak gösteriliyor.",
+      "empty": {
+        "title": "Kur gerektiren para birimi yok",
+        "description": "Her hesap para birimi zaten gerçek bir kura dönüştürülebiliyor."
+      }
+    },
+    "manualRates": {
+      "title": "Manuel kurlar",
+      "description": "Elle belirlediğiniz kurlar otomatik sağlayıcıya öncelik verir; güncel banka kurunu kullanmak veya herhangi bir sağlayıcı yapılandırılmadığında faydalıdır.",
+      "actions": {
+        "add": "Kur ekle",
+        "edit": "Kuru düzenle",
+        "delete": "Kuru sil"
+      },
+      "empty": {
+        "title": "Henüz manuel kur yok",
+        "description": "Otomatik 1:1 varsayılanı yerine kullanmak için bir para birimi çifti için kur ekleyin."
+      },
+      "delete": {
+        "title": "Manuel kur silinsin mi?",
+        "message": "Bu işlem geri alınamaz. Bu kuru silmek istiyor musunuz?"
+      },
+      "form": {
+        "newTitle": "Yeni manuel kur",
+        "editTitle": "Manuel kuru düzenle",
+        "saveError": "Kur kaydedilemedi. Tekrar deneyin.",
+        "fields": {
+          "baseCode": "Kaynak para birimi",
+          "quoteCode": "Hedef para birimi",
+          "rate": "Kur",
+          "asOf": "Geçerlilik başlangıcı"
+        },
+        "errors": {
+          "invalid": "Geçerli bir kur girin.",
+          "samePair": "İki farklı para birimi seçin."
+        },
+        "actions": {
+          "cancel": "İptal",
+          "save": "Kaydet"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "description": "Görünüm, dil ve demo verisi tercihleri.",
+    "appearance": {
+      "title": "Görünüm",
+      "theme": "Tema",
+      "light": "Açık",
+      "dark": "Koyu",
+      "language": "Dil"
+    },
+    "currency": {
+      "title": "Görüntüleme para birimi",
+      "description": "Gösterge panelindeki net varlık gibi farklı para birimlerindeki hesaplar arasında değerleri dönüştürmek ve eklemek için kullanılır."
+    },
+    "agents": {
+      "title": "Yapay zekâ aracıları",
+      "description": "MCP üzerinden birden çok sağlayıcı ve araçla finansal verileriniz üzerinde çalışan yapay zekâ asistanları. Varsayılan olarak devre dışıdır; Docker Compose (AGENTS_ENABLED) üzerinden yapılandırılabilir.",
+      "disabled": "Devre dışı",
+      "enabled": "Etkin"
+    }
+  },
+  "auth": {
+    "logout": "Çıkış yap",
+    "fields": {
+      "email": "E-posta",
+      "password": "Parola",
+      "displayName": "Görünen ad",
+      "invitationToken": "Davet kodu"
+    },
+    "login": {
+      "title": "Giriş yap",
+      "description": "Devam etmek için LealFinance hesabınızı kullanın.",
+      "action": "Giriş yap",
+      "invited": "Davetiniz mi var?"
+    },
+    "register": {
+      "title": "Daveti kabul et",
+      "description": "Yönetici tarafından gönderilen davetle hesabınızı oluşturun.",
+      "action": "Hesap oluştur",
+      "passwordHint": "En az 12 karakter kullanın.",
+      "backToLogin": "Girişe dön",
+      "setup": {
+        "title": "Yönetici hesabı oluştur",
+        "description": "Bu, bu örnekteki ilk hesaptır ve tam yönetici erişimine sahip olacaktır."
+      }
+    }
+  },
+  "admin": {
+    "title": "Kullanıcılar ve davetler",
+    "description": "Bu LealFinance örneğine erişimi yönetin.",
+    "roles": { "member": "Üye", "admin": "Yönetici" },
+    "users": { "title": "Kullanıcılar", "role": "Rol", "active": "Etkin", "empty": "Kullanıcı bulunamadı." },
+    "invitations": {
+      "title": "Davetler",
+      "createTitle": "Davet oluştur",
+      "create": "Davet et",
+      "tokenOnce": "Bu kod ve kayıt bağlantısı yalnızca şimdi gösterilir. Ayrılmadan önce kaydedin.",
+      "copyLink": "Kayıt bağlantısını kopyala",
+      "revoke": "İptal et",
+      "empty": "Davet bulunamadı."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin." },
+    "auth": {
+      "invalid_credentials": "E-posta veya parola yanlış.",
+      "csrf_invalid": "Bu formun süresi doldu. Sayfayı yenileyip tekrar deneyin.",
+      "last_admin": "En az bir etkin yönetici gereklidir.",
+      "account_inactive": "Bu hesap etkin değil.",
+      "admin_required": "Yönetici erişimi gereklidir."
+    },
+    "invitation": {
+      "not_found": "Davet geçersiz.",
+      "expired": "Bu davetin süresi doldu.",
+      "revoked": "Bu davet iptal edildi.",
+      "already_accepted": "Bu davet zaten kabul edildi.",
+      "already_pending": "Bu e-posta için zaten bekleyen bir davet var."
+    },
+    "user": { "email_taken": "Bu e-posta zaten bir hesapta kullanılıyor." }
+  }
+}

@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Tutup",
+      "cancel": "Batal",
+      "confirm": "Konfirmasi",
+      "save": "Simpan",
+      "saving": "Menyimpan…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Dasbor",
+      "accounts": "Akun",
+      "transactions": "Transaksi",
+      "categories": "Kategori",
+      "budgets": "Anggaran",
+      "goals": "Target",
+      "reports": "Laporan",
+      "exchange": "Penukaran",
+      "settings": "Pengaturan",
+      "adminUsers": "Pengguna dan undangan",
+      "sections": {
+        "accounts": "Akun",
+        "analysis": "Analisis",
+        "setup": "Penyiapan",
+        "admin": "Administrasi"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Buka menu",
+      "expand": "Perluas bilah samping",
+      "collapse": "Ciutkan bilah samping"
+    },
+    "themeToggle": {
+      "switchToLight": "Beralih ke tema terang",
+      "switchToDark": "Beralih ke tema gelap"
+    },
+    "languageSwitcher": {
+      "label": "Bahasa",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Sembunyikan saldo",
+      "show": "Tampilkan saldo"
+    },
+    "search": {
+      "trigger": "Cari"
+    },
+    "commandPalette": {
+      "placeholder": "Ketik perintah atau cari…",
+      "empty": "Tidak ada hasil yang ditemukan.",
+      "hints": {
+        "navigate": "navigasi",
+        "select": "pilih",
+        "close": "tutup"
+      },
+      "groups": {
+        "quickActions": "Tindakan cepat",
+        "goTo": "Buka",
+        "accounts": "Akun",
+        "categories": "Kategori",
+        "budgets": "Anggaran",
+        "transactions": "Transaksi"
+      },
+      "actions": {
+        "newTransaction": "Transaksi baru",
+        "newAccount": "Akun baru",
+        "newCategory": "Kategori baru",
+        "newBudget": "Anggaran baru",
+        "configureLanguage": "Atur bahasa",
+        "configureCurrency": "Atur mata uang tampilan",
+        "toggleTheme": "Ganti tema",
+        "toggleBalances": "Tampilkan atau sembunyikan saldo"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dasbor",
+    "welcome": "Selamat datang di LealFinance",
+    "empty": {
+      "title": "Belum ada data",
+      "description": "Tambahkan akun untuk mulai melihat ringkasan keuangan Anda."
+    },
+    "stats": {
+      "netWorth": "Kekayaan bersih",
+      "income": "Pendapatan bulanan",
+      "expense": "Pengeluaran bulanan",
+      "savingsRate": "Tingkat tabungan"
+    },
+    "cashFlow": {
+      "title": "Arus kas (6 bulan)",
+      "income": "Pendapatan",
+      "expense": "Pengeluaran"
+    },
+    "categoryChart": {
+      "title": "Pengeluaran menurut kategori (bulan ini)",
+      "label": "Kategori",
+      "empty": "Belum ada pengeluaran yang tercatat bulan ini."
+    },
+    "accounts": {
+      "title": "Akun"
+    },
+    "recentTransactions": {
+      "title": "Transaksi terbaru",
+      "empty": "Belum ada transaksi yang tercatat."
+    },
+    "budgets": {
+      "title": "Anggaran",
+      "empty": "Belum ada anggaran untuk bulan ini."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Kurs tidak tersedia — menggunakan konversi 1:1 sebagai perkiraan.",
+    "fallbackRateWarningAction": "Atur kurs"
+  },
+  "accounts": {
+    "title": "Akun",
+    "description": "Saldo Anda dalam satu tempat.",
+    "showArchived": "Tampilkan akun yang diarsipkan",
+    "archivedBadge": "Diarsipkan",
+    "noInstitution": "Tanpa lembaga keuangan",
+    "mixedCurrencies": "Beberapa mata uang",
+    "actions": {
+      "new": "Akun baru",
+      "edit": "Edit",
+      "archive": "Arsipkan",
+      "unarchive": "Pulihkan dari arsip"
+    },
+    "archive": {
+      "title": "Arsipkan akun?",
+      "message": "Akun \"{{name}}\" tidak akan lagi ditampilkan di tampilan utama. Apakah Anda ingin melanjutkan?"
+    },
+    "empty": {
+      "title": "Belum ada akun",
+      "description": "Buat akun pertama Anda untuk mulai melacak saldo."
+    },
+    "type": {
+      "checking": "Giro",
+      "savings": "Tabungan",
+      "cash": "Tunai",
+      "credit_card": "Kartu kredit",
+      "investment": "Investasi",
+      "goal": "Target"
+    },
+    "form": {
+      "newTitle": "Akun baru",
+      "editTitle": "Edit akun",
+      "saveError": "Akun tidak dapat disimpan. Coba lagi.",
+      "fields": {
+        "name": "Nama",
+        "type": "Jenis",
+        "currency": "Mata uang",
+        "openingBalance": "Saldo awal",
+        "institution": "Lembaga keuangan",
+        "creditLimit": "Limit kredit",
+        "closingDay": "Hari penutupan",
+        "dueDay": "Hari jatuh tempo"
+      },
+      "errors": {
+        "required": "Kolom ini wajib diisi.",
+        "decimalAmount": "Masukkan nominal numerik yang valid."
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "detail": {
+      "back": "Kembali ke akun",
+      "notFound": "Akun tidak ditemukan",
+      "history": "Riwayat transaksi",
+      "historyEmpty": {
+        "title": "Belum ada transaksi di akun ini",
+        "description": "Transaksi yang dicatat di akun ini akan muncul di sini."
+      },
+      "creditCard": {
+        "title": "Kartu kredit",
+        "used": "Terpakai",
+        "owed": "Saldo terutang",
+        "limit": "Limit",
+        "available": "Tersedia",
+        "closingDay": "Penutupan"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Lembaga keuangan baru",
+      "edit": "Edit lembaga keuangan",
+      "delete": "Hapus lembaga keuangan"
+    },
+    "form": {
+      "newTitle": "Lembaga keuangan baru",
+      "editTitle": "Edit lembaga keuangan",
+      "saveError": "Lembaga keuangan tidak dapat disimpan. Coba lagi.",
+      "deleteInUseError": "Lembaga keuangan ini masih memiliki akun tertaut dan tidak dapat dihapus.",
+      "fields": {
+        "name": "Nama",
+        "icon": "Ikon",
+        "color": "Warna"
+      },
+      "errors": {
+        "required": "Kolom ini wajib diisi."
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "delete": {
+      "title": "Hapus lembaga keuangan",
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus lembaga keuangan ini?"
+    },
+    "icon": {
+      "bank": "Bank",
+      "wallet": "Dompet",
+      "chart": "Investasi",
+      "globe": "Internasional",
+      "archive": "Lainnya"
+    }
+  },
+  "transactions": {
+    "title": "Transaksi",
+    "description": "Pendapatan, pengeluaran, dan transfer.",
+    "actions": {
+      "new": "Transaksi baru",
+      "edit": "Edit",
+      "delete": "Hapus"
+    },
+    "tabs": {
+      "transactions": "Transaksi",
+      "recurring": "Berulang"
+    },
+    "type": {
+      "income": "Pendapatan",
+      "expense": "Pengeluaran",
+      "transfer": "Transfer"
+    },
+    "filters": {
+      "type": "Jenis",
+      "account": "Akun",
+      "category": "Kategori",
+      "from": "Dari",
+      "to": "Ke",
+      "search": "Cari",
+      "institution": "Lembaga keuangan",
+      "all": "Semua",
+      "clear": "Hapus filter"
+    },
+    "empty": {
+      "title": "Transaksi tidak ditemukan",
+      "description": "Sesuaikan filter atau tambahkan transaksi baru."
+    },
+    "projected": {
+      "title": "Mendatang (perkiraan)",
+      "badge": "Perkiraan"
+    },
+    "delete": {
+      "title": "Hapus transaksi",
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus transaksi ini?"
+    },
+    "form": {
+      "newTitle": "Transaksi baru",
+      "editTitle": "Edit transaksi",
+      "saveError": "Transaksi tidak dapat disimpan. Coba lagi.",
+      "fields": {
+        "date": "Tanggal",
+        "amount": "Jumlah",
+        "currency": "Mata uang",
+        "convertedAmount": "Jumlah hasil konversi",
+        "conversionFee": "Biaya/pajak konversi (opsional)",
+        "account": "Akun",
+        "fromAccount": "Akun sumber",
+        "toAccount": "Akun tujuan",
+        "fromInstitution": "Lembaga keuangan sumber",
+        "toInstitution": "Lembaga keuangan tujuan",
+        "anyInstitution": "Lembaga keuangan mana pun",
+        "category": "Kategori",
+        "description": "Deskripsi",
+        "notes": "Catatan",
+        "repeat": "Ulangi transaksi ini",
+        "frequency": "Frekuensi",
+        "interval": "Setiap",
+        "selectPlaceholder": "Pilih"
+      },
+      "hints": {
+        "effectiveRate": "Kurs efektif: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Transaksi dengan mata uang berbeda tidak dapat diulang — kurs perlu ditetapkan lagi untuk setiap kejadian."
+      },
+      "errors": {
+        "invalid": "Periksa kolom wajib sebelum menyimpan.",
+        "convertedAmountRequired": "Masukkan jumlah hasil konversi sebelum menyimpan."
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Mingguan",
+        "monthly": "Bulanan",
+        "yearly": "Tahunan"
+      },
+      "everyN": "setiap {{n}}",
+      "nextOccurrence": "Kejadian berikutnya",
+      "actions": {
+        "new": "Aturan berulang baru"
+      },
+      "empty": {
+        "title": "Belum ada aturan berulang",
+        "description": "Mengubah transaksi menjadi transaksi berulang akan membuat aturan di sini."
+      },
+      "delete": {
+        "title": "Hapus aturan berulang",
+        "message": "Tindakan ini tidak memengaruhi transaksi yang sudah dicatat — hanya kejadian mendatang yang diproyeksikan yang akan hilang."
+      },
+      "form": {
+        "newTitle": "Aturan berulang baru",
+        "editTitle": "Edit aturan berulang",
+        "saveError": "Aturan berulang tidak dapat disimpan. Coba lagi.",
+        "startDate": "Mulai",
+        "endDate": "Berakhir (opsional)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Kategori",
+    "description": "Atur pendapatan dan pengeluaran berdasarkan kategori.",
+    "showArchived": "Tampilkan kategori yang diarsipkan",
+    "archivedBadge": "Diarsipkan",
+    "actions": {
+      "new": "Kategori baru",
+      "edit": "Edit",
+      "archive": "Arsipkan",
+      "unarchive": "Pulihkan dari arsip",
+      "delete": "Hapus",
+      "addChild": "Subkategori baru",
+      "collapse": "Ciutkan",
+      "expand": "Perluas",
+      "dragHandle": "Urutkan ulang"
+    },
+    "empty": {
+      "title": "Belum ada kategori",
+      "description": "Buat kategori untuk mengatur transaksi Anda."
+    },
+    "sections": {
+      "income": "Kategori pendapatan",
+      "expense": "Kategori pengeluaran"
+    },
+    "delete": {
+      "title": "Hapus kategori?",
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus kategori \"{{name}}\"?",
+      "blockedTitle": "Tidak dapat menghapus",
+      "blockedMessage": "Kategori ini masih digunakan: {{transactions}} transaksi, {{budgets}} anggaran, dan {{children}} subkategori menggunakannya. Arsipkan kategori ini, bukan menghapusnya."
+    },
+    "form": {
+      "newTitle": "Kategori baru",
+      "editTitle": "Edit kategori",
+      "saveError": "Kategori tidak dapat disimpan. Coba lagi.",
+      "fields": {
+        "name": "Nama",
+        "parent": "Kategori induk",
+        "noParent": "Tidak ada (kategori tingkat atas)",
+        "color": "Warna",
+        "icon": "Ikon"
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "icon": {
+      "tag": "Label",
+      "home": "Rumah",
+      "archive": "Arsip",
+      "swap": "Transportasi",
+      "wallet": "Dompet",
+      "chart": "Grafik",
+      "sun": "Energi",
+      "alertTriangle": "Peringatan",
+      "pencil": "Pendidikan",
+      "target": "Target",
+      "repeat": "Berulang",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Anggaran",
+    "description": "Rencanakan jumlah yang akan dibelanjakan untuk setiap kategori setiap bulan.",
+    "list": {
+      "title": "Batas bulanan"
+    },
+    "planner": {
+      "title": "Anggaran berdasarkan pendapatan",
+      "description": "Bagikan pendapatan yang diharapkan ke berbagai kategori.",
+      "total": "Total",
+      "expectedIncome": "Pendapatan yang diharapkan",
+      "chartLabel": "Distribusi",
+      "fixed": "Tetap",
+      "empty": "Tetapkan persentase untuk melihat distribusi.",
+      "save": "Simpan distribusi",
+      "errors": {
+        "total": "Distribusi tidak boleh melebihi 100%.",
+        "income": "Masukkan pendapatan yang diharapkan untuk bulan ini.",
+        "save": "Distribusi tidak dapat disimpan. Coba lagi."
+      }
+    },
+    "monthLabel": "Bulan",
+    "actions": {
+      "new": "Anggaran baru",
+      "edit": "Edit",
+      "delete": "Hapus"
+    },
+    "totals": {
+      "budgeted": "Dianggarkan",
+      "spent": "Dibelanjakan",
+      "remaining": "Tersisa"
+    },
+    "empty": {
+      "title": "Belum ada anggaran bulan ini",
+      "description": "Tetapkan anggaran per kategori untuk melacak pengeluaran Anda."
+    },
+    "state": {
+      "over": "Melebihi anggaran",
+      "near": "Mendekati batas"
+    },
+    "unbudgeted": {
+      "title": "Pengeluaran tanpa anggaran",
+      "setBudget": "Tetapkan anggaran"
+    },
+    "delete": {
+      "title": "Hapus anggaran",
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus anggaran ini?"
+    },
+    "form": {
+      "newTitle": "Anggaran baru",
+      "editTitle": "Edit anggaran",
+      "saveError": "Anggaran tidak dapat disimpan. Coba lagi.",
+      "fields": {
+        "month": "Bulan",
+        "category": "Kategori",
+        "selectCategory": "Pilih kategori",
+        "amount": "Jumlah",
+        "currency": "Mata uang"
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    }
+  },
+  "goals": {
+    "title": "Target",
+    "description": "Menabung untuk tujuan apa pun dan lacak kemajuan Anda.",
+    "showArchived": "Tampilkan target yang diarsipkan",
+    "archiveError": "Status arsip target tidak dapat diperbarui. Coba lagi.",
+    "accountLabel": "Akun",
+    "archived": "Diarsipkan",
+    "overdue": "Terlambat",
+    "actions": {
+      "new": "Target baru",
+      "edit": "Edit target",
+      "archive": "Arsipkan target",
+      "unarchive": "Pulihkan target",
+      "deposit": "Tambah dana",
+      "withdraw": "Tarik dana",
+      "interest": "Tambah bunga"
+    },
+    "empty": {
+      "title": "Belum ada target",
+      "description": "Buat target untuk mulai menabung dan melacak kemajuan Anda."
+    },
+    "progress": {
+      "current": "Tersimpan",
+      "target": "Target",
+      "remaining": "Tersisa",
+      "contribution": "Setoran yang disarankan",
+      "notConfigured": "Tanpa tenggat waktu",
+      "frequency": "Frekuensi",
+      "every": "setiap {{n}}",
+      "label": "Kemajuan"
+    },
+    "frequency": {
+      "weekly": "Mingguan",
+      "monthly": "Bulanan",
+      "yearly": "Tahunan"
+    },
+    "history": {
+      "title": "Riwayat target",
+      "empty": "Belum ada aktivitas yang tercatat."
+    },
+    "form": {
+      "newTitle": "Target baru",
+      "editTitle": "Edit target",
+      "saveError": "Target tidak dapat disimpan. Coba lagi.",
+      "fields": {
+        "name": "Nama",
+        "targetAmount": "Nominal target",
+        "currency": "Mata uang",
+        "targetDate": "Tanggal target",
+        "targetDateHint": "Opsional: tambahkan tenggat waktu untuk menghitung setoran yang disarankan.",
+        "frequency": "Frekuensi setoran",
+        "interval": "Setiap"
+      },
+      "errors": {
+        "required": "Kolom ini wajib diisi."
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Tambah dana ke target" },
+      "withdraw": { "title": "Tarik dana dari target" },
+      "interest": { "title": "Tambah bunga" },
+      "fields": {
+        "amount": "Jumlah",
+        "date": "Tanggal",
+        "sourceAccount": "Akun sumber/tujuan",
+        "description": "Deskripsi"
+      },
+      "saveError": "Aktivitas tidak dapat dicatat. Coba lagi."
+    }
+  },
+  "reports": {
+    "title": "Laporan",
+    "description": "Analisis pendapatan, pengeluaran, dan saldo dari waktu ke waktu.",
+    "period": {
+      "month": "Bulan ini",
+      "3m": "3 bulan terakhir",
+      "6m": "6 bulan terakhir",
+      "12m": "12 bulan terakhir",
+      "custom": "Kustom"
+    },
+    "empty": {
+      "title": "Tidak ada transaksi dalam periode ini",
+      "description": "Sesuaikan periode yang dipilih untuk melihat laporan Anda."
+    },
+    "charts": {
+      "incomeExpense": "Pendapatan vs. pengeluaran",
+      "netFlow": "Arus bersih",
+      "byCategory": "Pengeluaran menurut kategori",
+      "balanceTrend": "Tren saldo per akun"
+    },
+    "series": {
+      "income": "Pendapatan",
+      "expense": "Pengeluaran",
+      "netFlow": "Arus bersih",
+      "categories": "Kategori"
+    }
+  },
+  "exchange": {
+    "title": "Penukaran",
+    "description": "Kurs manual dan konversi yang menggunakannya.",
+    "stats": {
+      "feesPaid": "Biaya konversi yang dibayar",
+      "needsAttention": "Transaksi yang perlu diperhatikan",
+      "currenciesNeedingRate": "Mata uang tanpa kurs"
+    },
+    "needsAttention": {
+      "title": "Perlu diperhatikan",
+      "description": "Transaksi ini dikonversi menggunakan perkiraan 1:1 — perbaiki dengan kurs sebenarnya, atau tetapkan kurs manual di bawah.",
+      "empty": {
+        "title": "Tidak ada yang perlu diperhatikan",
+        "description": "Semua transaksi dengan mata uang berbeda memiliki kurs sebenarnya yang tercatat."
+      },
+      "actions": {
+        "fix": "Perbaiki"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Mata uang tanpa kurs",
+      "description": "Mata uang akun ini belum memiliki kurs sebenarnya ke mata uang tampilan Anda, sehingga saldonya ditampilkan sebagai perkiraan 1:1 — tidak terkait dengan transaksi tertentu.",
+      "empty": {
+        "title": "Semua mata uang memiliki kurs",
+        "description": "Setiap mata uang akun sudah menggunakan kurs sebenarnya."
+      }
+    },
+    "manualRates": {
+      "title": "Kurs manual",
+      "description": "Kurs yang Anda tetapkan secara manual diprioritaskan daripada penyedia otomatis — berguna untuk kurs bank aktual hari ini atau saat penyedia belum dikonfigurasi.",
+      "actions": {
+        "add": "Tambah kurs",
+        "edit": "Edit kurs",
+        "delete": "Hapus kurs"
+      },
+      "empty": {
+        "title": "Belum ada kurs manual",
+        "description": "Tambahkan kurs untuk pasangan mata uang agar digunakan sebagai pengganti fallback otomatis 1:1."
+      },
+      "delete": {
+        "title": "Hapus kurs manual",
+        "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus kurs ini?"
+      },
+      "form": {
+        "newTitle": "Kurs manual baru",
+        "editTitle": "Edit kurs manual",
+        "saveError": "Kurs tidak dapat disimpan. Coba lagi.",
+        "fields": {
+          "baseCode": "Mata uang asal",
+          "quoteCode": "Mata uang tujuan",
+          "rate": "Kurs",
+          "asOf": "Berlaku mulai"
+        },
+        "errors": {
+          "invalid": "Masukkan kurs yang valid.",
+          "samePair": "Pilih dua mata uang yang berbeda."
+        },
+        "actions": {
+          "cancel": "Batal",
+          "save": "Simpan"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "description": "Tampilan, bahasa, dan preferensi data demo.",
+    "appearance": {
+      "title": "Tampilan",
+      "theme": "Tema",
+      "light": "Terang",
+      "dark": "Gelap",
+      "language": "Bahasa"
+    },
+    "currency": {
+      "title": "Mata uang tampilan",
+      "description": "Digunakan untuk mengonversi dan menjumlahkan nilai di akun dengan mata uang berbeda, seperti kekayaan bersih di dasbor."
+    },
+    "agents": {
+      "title": "Agen AI",
+      "description": "Asisten AI untuk data keuangan Anda, dengan berbagai penyedia dan alat melalui MCP. Dinonaktifkan secara default — dapat dikonfigurasi di Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Dinonaktifkan",
+      "enabled": "Diaktifkan"
+    }
+  },
+  "auth": {
+    "logout": "Keluar",
+    "fields": {
+      "email": "Email",
+      "password": "Kata sandi",
+      "displayName": "Nama tampilan",
+      "invitationToken": "Token undangan"
+    },
+    "login": {
+      "title": "Masuk",
+      "description": "Gunakan akun LealFinance Anda untuk melanjutkan.",
+      "action": "Masuk",
+      "invited": "Punya undangan?"
+    },
+    "register": {
+      "title": "Terima undangan",
+      "description": "Buat akun Anda menggunakan undangan yang dikirim oleh administrator.",
+      "action": "Buat akun",
+      "passwordHint": "Gunakan minimal 12 karakter.",
+      "backToLogin": "Kembali ke halaman masuk",
+      "setup": {
+        "title": "Buat akun administrator",
+        "description": "Ini adalah akun pertama pada instans ini — akun ini akan memiliki akses administrator penuh."
+      }
+    }
+  },
+  "admin": {
+    "title": "Pengguna dan undangan",
+    "description": "Kelola akses ke instans LealFinance ini.",
+    "roles": { "member": "Anggota", "admin": "Administrator" },
+    "users": { "title": "Pengguna", "role": "Peran", "active": "Aktif", "empty": "Pengguna tidak ditemukan." },
+    "invitations": {
+      "title": "Undangan",
+      "createTitle": "Buat undangan",
+      "create": "Undang",
+      "tokenOnce": "Token dan tautan pendaftaran ini hanya ditampilkan sekarang. Simpan sebelum meninggalkan halaman.",
+      "copyLink": "Salin tautan pendaftaran",
+      "revoke": "Cabut",
+      "empty": "Undangan tidak ditemukan."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Terjadi kesalahan. Silakan coba lagi." },
+    "auth": {
+      "invalid_credentials": "Email atau kata sandi salah.",
+      "csrf_invalid": "Formulir ini sudah kedaluwarsa. Segarkan halaman lalu coba lagi.",
+      "last_admin": "Setidaknya diperlukan satu administrator aktif.",
+      "account_inactive": "Akun ini tidak aktif.",
+      "admin_required": "Diperlukan akses administrator."
+    },
+    "invitation": {
+      "not_found": "Undangan ini tidak valid.",
+      "expired": "Undangan ini sudah kedaluwarsa.",
+      "revoked": "Undangan ini telah dicabut.",
+      "already_accepted": "Undangan ini sudah diterima.",
+      "already_pending": "Undangan untuk email ini sudah menunggu."
+    },
+    "user": { "email_taken": "Sudah ada akun yang menggunakan email ini." }
+  }
+}

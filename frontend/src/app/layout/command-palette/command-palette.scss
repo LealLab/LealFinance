@@ -3,3 +3,7 @@
 // native <dialog> UA stylesheet via showModal(), same as modal.scss. The
 // `mt-[12vh]` on the dialog itself (rather than perfect centering) is what
 // anchors it near the top of the viewport.
+
+:host-context([dir='rtl']) .command-palette-item {
+  text-align: right;
+}

@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Stäng",
+      "cancel": "Avbryt",
+      "confirm": "Bekräfta",
+      "save": "Spara",
+      "saving": "Sparar…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Översikt",
+      "accounts": "Konton",
+      "transactions": "Transaktioner",
+      "categories": "Kategorier",
+      "budgets": "Budgetar",
+      "goals": "Mål",
+      "reports": "Rapporter",
+      "exchange": "Valutaväxling",
+      "settings": "Inställningar",
+      "adminUsers": "Användare och inbjudningar",
+      "sections": {
+        "accounts": "Konton",
+        "analysis": "Analys",
+        "setup": "Konfiguration",
+        "admin": "Administration"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Öppna meny",
+      "expand": "Expandera sidofält",
+      "collapse": "Minimera sidofält"
+    },
+    "themeToggle": {
+      "switchToLight": "Byt till ljust tema",
+      "switchToDark": "Byt till mörkt tema"
+    },
+    "languageSwitcher": {
+      "label": "Språk",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Dölj saldon",
+      "show": "Visa saldon"
+    },
+    "search": {
+      "trigger": "Sök"
+    },
+    "commandPalette": {
+      "placeholder": "Skriv ett kommando eller sök …",
+      "empty": "Inga resultat hittades.",
+      "hints": {
+        "navigate": "navigera",
+        "select": "välj",
+        "close": "stäng"
+      },
+      "groups": {
+        "quickActions": "Snabbåtgärder",
+        "goTo": "Gå till",
+        "accounts": "Konton",
+        "categories": "Kategorier",
+        "budgets": "Budgetar",
+        "transactions": "Transaktioner"
+      },
+      "actions": {
+        "newTransaction": "Ny transaktion",
+        "newAccount": "Nytt konto",
+        "newCategory": "Ny kategori",
+        "newBudget": "Ny budget",
+        "configureLanguage": "Konfigurera språk",
+        "configureCurrency": "Konfigurera visningsvaluta",
+        "toggleTheme": "Växla tema",
+        "toggleBalances": "Visa eller dölj saldon"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Översikt",
+    "welcome": "Välkommen till LealFinance",
+    "empty": {
+      "title": "Ingen data ännu",
+      "description": "Lägg till ett konto för att börja se din ekonomiska översikt."
+    },
+    "stats": {
+      "netWorth": "Nettoförmögenhet",
+      "income": "Månadsinkomster",
+      "expense": "Månadens utgifter",
+      "savingsRate": "Sparandegrad"
+    },
+    "cashFlow": {
+      "title": "Kassaflöde (6 månader)",
+      "income": "Inkomster",
+      "expense": "Utgifter"
+    },
+    "categoryChart": {
+      "title": "Utgifter per kategori (denna månad)",
+      "label": "Kategorier",
+      "empty": "Inga utgifter har registrerats den här månaden ännu."
+    },
+    "accounts": {
+      "title": "Konton"
+    },
+    "recentTransactions": {
+      "title": "Senaste transaktionerna",
+      "empty": "Inga transaktioner har registrerats ännu."
+    },
+    "budgets": {
+      "title": "Budgetar",
+      "empty": "Ingen budget har angetts för den här månaden."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Växelkurs saknas – omräkning 1:1 används som uppskattning.",
+    "fallbackRateWarningAction": "Ange kurs"
+  },
+  "accounts": {
+    "title": "Konton",
+    "description": "Dina saldon på ett ställe.",
+    "showArchived": "Visa arkiverade konton",
+    "archivedBadge": "Arkiverat",
+    "noInstitution": "Inget finansiellt institut",
+    "mixedCurrencies": "Flera valutor",
+    "actions": {
+      "new": "Nytt konto",
+      "edit": "Redigera",
+      "archive": "Arkivera",
+      "unarchive": "Återställ"
+    },
+    "archive": {
+      "title": "Arkivera konto?",
+      "message": "Kontot \"{{name}}\" visas inte längre i huvudvyerna. Vill du fortsätta?"
+    },
+    "empty": {
+      "title": "Inga konton ännu",
+      "description": "Skapa ditt första konto för att börja hålla koll på dina saldon."
+    },
+    "type": {
+      "checking": "Betalkonto",
+      "savings": "Sparkonto",
+      "cash": "Kontanter",
+      "credit_card": "Kreditkort",
+      "investment": "Investeringar",
+      "goal": "Mål"
+    },
+    "form": {
+      "newTitle": "Nytt konto",
+      "editTitle": "Redigera konto",
+      "saveError": "Det gick inte att spara kontot. Försök igen.",
+      "fields": {
+        "name": "Namn",
+        "type": "Typ",
+        "currency": "Valuta",
+        "openingBalance": "Ingående saldo",
+        "institution": "Finansiellt institut",
+        "creditLimit": "Kreditgräns",
+        "closingDay": "Brytdag",
+        "dueDay": "Förfallodag"
+      },
+      "errors": {
+        "required": "Det här fältet är obligatoriskt.",
+        "decimalAmount": "Ange ett giltigt numeriskt belopp."
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    },
+    "detail": {
+      "back": "Tillbaka till konton",
+      "notFound": "Kontot hittades inte",
+      "history": "Transaktionshistorik",
+      "historyEmpty": {
+        "title": "Inga transaktioner på det här kontot",
+        "description": "Transaktioner som registreras på kontot visas här."
+      },
+      "creditCard": {
+        "title": "Kreditkort",
+        "used": "Använt",
+        "owed": "Aktuellt saldo",
+        "limit": "Gräns",
+        "available": "Tillgängligt",
+        "closingDay": "Brytdag"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Nytt finansiellt institut",
+      "edit": "Redigera finansiellt institut",
+      "delete": "Ta bort finansiellt institut"
+    },
+    "form": {
+      "newTitle": "Nytt finansiellt institut",
+      "editTitle": "Redigera finansiellt institut",
+      "saveError": "Det gick inte att spara det finansiella institutet. Försök igen.",
+      "deleteInUseError": "Det finansiella institutet har fortfarande kopplade konton och kan inte tas bort.",
+      "fields": {
+        "name": "Namn",
+        "icon": "Ikon",
+        "color": "Färg"
+      },
+      "errors": {
+        "required": "Det här fältet är obligatoriskt."
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    },
+    "delete": {
+      "title": "Ta bort finansiellt institut",
+      "message": "Åtgärden kan inte ångras. Vill du ta bort det finansiella institutet?"
+    },
+    "icon": {
+      "bank": "Bank",
+      "wallet": "Plånbok",
+      "chart": "Investeringar",
+      "globe": "Internationellt",
+      "archive": "Övrigt"
+    }
+  },
+  "transactions": {
+    "title": "Transaktioner",
+    "description": "Inkomster, utgifter och överföringar.",
+    "actions": {
+      "new": "Ny transaktion",
+      "edit": "Redigera",
+      "delete": "Ta bort"
+    },
+    "tabs": {
+      "transactions": "Transaktioner",
+      "recurring": "Återkommande"
+    },
+    "type": {
+      "income": "Inkomst",
+      "expense": "Utgift",
+      "transfer": "Överföring"
+    },
+    "filters": {
+      "type": "Typ",
+      "account": "Konto",
+      "category": "Kategori",
+      "from": "Från",
+      "to": "Till",
+      "search": "Sök",
+      "institution": "Finansiellt institut",
+      "all": "Alla",
+      "clear": "Rensa filter"
+    },
+    "empty": {
+      "title": "Inga transaktioner hittades",
+      "description": "Ändra filtren eller lägg till en ny transaktion."
+    },
+    "projected": {
+      "title": "Kommande (prognostiserade)",
+      "badge": "Prognostiserad"
+    },
+    "delete": {
+      "title": "Ta bort transaktion",
+      "message": "Åtgärden kan inte ångras. Vill du ta bort transaktionen?"
+    },
+    "form": {
+      "newTitle": "Ny transaktion",
+      "editTitle": "Redigera transaktion",
+      "saveError": "Det gick inte att spara transaktionen. Försök igen.",
+      "fields": {
+        "date": "Datum",
+        "amount": "Belopp",
+        "currency": "Valuta",
+        "convertedAmount": "Omräknat belopp",
+        "conversionFee": "Omräkningsavgift/skatt (valfritt)",
+        "account": "Konto",
+        "fromAccount": "Källkonto",
+        "toAccount": "Målkonto",
+        "fromInstitution": "Källinstitut",
+        "toInstitution": "Målinstitut",
+        "anyInstitution": "Valfritt finansiellt institut",
+        "category": "Kategori",
+        "description": "Beskrivning",
+        "notes": "Anteckningar",
+        "repeat": "Upprepa den här transaktionen",
+        "frequency": "Frekvens",
+        "interval": "Varje",
+        "selectPlaceholder": "Välj"
+      },
+      "hints": {
+        "effectiveRate": "Effektiv växelkurs: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Det går inte att upprepa en transaktion i flera valutor – kursen måste anges på nytt för varje förekomst."
+      },
+      "errors": {
+        "invalid": "Kontrollera de obligatoriska fälten innan du sparar.",
+        "convertedAmountRequired": "Ange det omräknade beloppet innan du sparar."
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Veckovis",
+        "monthly": "Månadsvis",
+        "yearly": "Årsvis"
+      },
+      "everyN": "var {{n}}",
+      "nextOccurrence": "Nästa förekomst",
+      "actions": {
+        "new": "Ny återkommande regel"
+      },
+      "empty": {
+        "title": "Inga återkommande regler ännu",
+        "description": "När du gör en transaktion återkommande skapas en regel här."
+      },
+      "delete": {
+        "title": "Ta bort återkommande regel",
+        "message": "Detta påverkar inte registrerade transaktioner – endast framtida prognostiserade förekomster tas bort."
+      },
+      "form": {
+        "newTitle": "Ny återkommande regel",
+        "editTitle": "Redigera återkommande regel",
+        "saveError": "Det gick inte att spara den återkommande regeln. Försök igen.",
+        "startDate": "Startdatum",
+        "endDate": "Slutdatum (valfritt)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Kategorier",
+    "description": "Organisera inkomster och utgifter efter kategori.",
+    "showArchived": "Visa arkiverade kategorier",
+    "archivedBadge": "Arkiverad",
+    "actions": {
+      "new": "Ny kategori",
+      "edit": "Redigera",
+      "archive": "Arkivera",
+      "unarchive": "Återställ",
+      "delete": "Ta bort",
+      "addChild": "Ny underkategori",
+      "collapse": "Fäll ihop",
+      "expand": "Expandera",
+      "dragHandle": "Ändra ordning"
+    },
+    "empty": {
+      "title": "Inga kategorier ännu",
+      "description": "Skapa kategorier för att organisera dina transaktioner."
+    },
+    "sections": {
+      "income": "Inkomstkategorier",
+      "expense": "Utgiftskategorier"
+    },
+    "delete": {
+      "title": "Ta bort kategori?",
+      "message": "Åtgärden kan inte ångras. Vill du ta bort kategorin \"{{name}}\"?",
+      "blockedTitle": "Kan inte ta bort",
+      "blockedMessage": "Kategorin används fortfarande (transaktioner: {{transactions}}, budgetar: {{budgets}}, underkategorier: {{children}}). Arkivera kategorin i stället för att ta bort den."
+    },
+    "form": {
+      "newTitle": "Ny kategori",
+      "editTitle": "Redigera kategori",
+      "saveError": "Det gick inte att spara kategorin. Försök igen.",
+      "fields": {
+        "name": "Namn",
+        "parent": "Överordnad kategori",
+        "noParent": "Ingen (kategori på toppnivå)",
+        "color": "Färg",
+        "icon": "Ikon"
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    },
+    "icon": {
+      "tag": "Tagg",
+      "home": "Hem",
+      "archive": "Arkiv",
+      "swap": "Transport",
+      "wallet": "Plånbok",
+      "chart": "Diagram",
+      "sun": "Energi",
+      "alertTriangle": "Varning",
+      "pencil": "Utbildning",
+      "target": "Mål",
+      "repeat": "Återkommande",
+      "globe": "Globalt"
+    }
+  },
+  "budgets": {
+    "title": "Budgetar",
+    "description": "Planera hur mycket du ska spendera i varje kategori varje månad.",
+    "list": {
+      "title": "Månadsgränser"
+    },
+    "planner": {
+      "title": "Inkomstbaserad budget",
+      "description": "Fördela din förväntade inkomst mellan kategorier.",
+      "total": "Totalt",
+      "expectedIncome": "Förväntad inkomst",
+      "chartLabel": "Fördelning",
+      "fixed": "Fast",
+      "empty": "Ange procentsatser för att se din fördelning.",
+      "save": "Spara fördelning",
+      "errors": {
+        "total": "Fördelningen får inte överstiga 100 %.",
+        "income": "Ange den förväntade inkomsten för den här månaden.",
+        "save": "Det gick inte att spara fördelningen. Försök igen."
+      }
+    },
+    "monthLabel": "Månad",
+    "actions": {
+      "new": "Ny budget",
+      "edit": "Redigera",
+      "delete": "Ta bort"
+    },
+    "totals": {
+      "budgeted": "Budgeterat",
+      "spent": "Spenderat",
+      "remaining": "Kvar"
+    },
+    "empty": {
+      "title": "Ingen budget den här månaden",
+      "description": "Ange en budget per kategori för att följa dina utgifter."
+    },
+    "state": {
+      "over": "Över budget",
+      "near": "Nära gränsen"
+    },
+    "unbudgeted": {
+      "title": "Utgifter utan budget",
+      "setBudget": "Ange budget"
+    },
+    "delete": {
+      "title": "Ta bort budget",
+      "message": "Åtgärden kan inte ångras. Vill du ta bort budgeten?"
+    },
+    "form": {
+      "newTitle": "Ny budget",
+      "editTitle": "Redigera budget",
+      "saveError": "Det gick inte att spara budgeten. Försök igen.",
+      "fields": {
+        "month": "Månad",
+        "category": "Kategori",
+        "selectCategory": "Välj en kategori",
+        "amount": "Belopp",
+        "currency": "Valuta"
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    }
+  },
+  "goals": {
+    "title": "Mål",
+    "description": "Spara pengar till valfritt mål och följ dina framsteg.",
+    "showArchived": "Visa arkiverade mål",
+    "archiveError": "Det gick inte att uppdatera målarkiveringen. Försök igen.",
+    "accountLabel": "Konto",
+    "archived": "Arkiverat",
+    "overdue": "Försenat",
+    "actions": {
+      "new": "Nytt mål",
+      "edit": "Redigera mål",
+      "archive": "Arkivera mål",
+      "unarchive": "Återställ mål",
+      "deposit": "Lägg till pengar",
+      "withdraw": "Ta ut pengar",
+      "interest": "Lägg till ränta"
+    },
+    "empty": {
+      "title": "Inga mål ännu",
+      "description": "Skapa ett mål för att börja spara pengar och följa dina framsteg."
+    },
+    "progress": {
+      "current": "Sparat",
+      "target": "Målbelopp",
+      "remaining": "Kvar",
+      "contribution": "Rekommenderad insättning",
+      "notConfigured": "Ingen tidsgräns",
+      "frequency": "Frekvens",
+      "every": "var {{n}}",
+      "label": "Framsteg"
+    },
+    "frequency": {
+      "weekly": "Veckovis",
+      "monthly": "Månadsvis",
+      "yearly": "Årsvis"
+    },
+    "history": {
+      "title": "Målhistorik",
+      "empty": "Ingen aktivitet har registrerats."
+    },
+    "form": {
+      "newTitle": "Nytt mål",
+      "editTitle": "Redigera mål",
+      "saveError": "Det gick inte att spara målet. Försök igen.",
+      "fields": {
+        "name": "Namn",
+        "targetAmount": "Målbelopp",
+        "currency": "Valuta",
+        "targetDate": "Måldatum",
+        "targetDateHint": "Valfritt: lägg till en tidsgräns för att beräkna den rekommenderade insättningen.",
+        "frequency": "Insättningsfrekvens",
+        "interval": "Varje"
+      },
+      "errors": {
+        "required": "Det här fältet är obligatoriskt."
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Lägg till pengar i målet" },
+      "withdraw": { "title": "Ta ut pengar från målet" },
+      "interest": { "title": "Lägg till ränta" },
+      "fields": {
+        "amount": "Belopp",
+        "date": "Datum",
+        "sourceAccount": "Käll-/målkonto",
+        "description": "Beskrivning"
+      },
+      "saveError": "Det gick inte att registrera aktiviteten. Försök igen."
+    }
+  },
+  "reports": {
+    "title": "Rapporter",
+    "description": "Analysera inkomster, utgifter och saldon över tid.",
+    "period": {
+      "month": "Den här månaden",
+      "3m": "De senaste 3 månaderna",
+      "6m": "De senaste 6 månaderna",
+      "12m": "De senaste 12 månaderna",
+      "custom": "Anpassad"
+    },
+    "empty": {
+      "title": "Inga transaktioner under den här perioden",
+      "description": "Ändra den valda perioden för att se dina rapporter."
+    },
+    "charts": {
+      "incomeExpense": "Inkomster jämfört med utgifter",
+      "netFlow": "Nettoflöde",
+      "byCategory": "Utgifter per kategori",
+      "balanceTrend": "Saldoutveckling per konto"
+    },
+    "series": {
+      "income": "Inkomster",
+      "expense": "Utgifter",
+      "netFlow": "Nettoflöde",
+      "categories": "Kategorier"
+    }
+  },
+  "exchange": {
+    "title": "Valutaväxling",
+    "description": "Manuella växelkurser och de omräkningar där de användes.",
+    "stats": {
+      "feesPaid": "Betalda omräkningsavgifter",
+      "needsAttention": "Transaktioner som kräver åtgärd",
+      "currenciesNeedingRate": "Valutor utan kurs"
+    },
+    "needsAttention": {
+      "title": "Kräver åtgärd",
+      "description": "Dessa transaktioner räknades om med en 1:1-uppskattning – korrigera dem med den riktiga kursen eller ange en manuell kurs nedan.",
+      "empty": {
+        "title": "Inget kräver åtgärd",
+        "description": "Alla transaktioner i flera valutor har en riktig kurs registrerad."
+      },
+      "actions": {
+        "fix": "Korrigera"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Valutor utan kurs",
+      "description": "Dessa kontovalutor har ännu ingen riktig kurs mot din visningsvaluta. Därför visas deras saldon som en 1:1-uppskattning – utan koppling till någon specifik transaktion.",
+      "empty": {
+        "title": "Ingen valuta saknar kurs",
+        "description": "Alla kontovalutor omräknas redan med en riktig kurs."
+      }
+    },
+    "manualRates": {
+      "title": "Manuella kurser",
+      "description": "Kurser du anger manuellt prioriteras framför den automatiska leverantören – användbart för dagens faktiska bankkurs eller när ingen leverantör är konfigurerad.",
+      "actions": {
+        "add": "Lägg till kurs",
+        "edit": "Redigera kurs",
+        "delete": "Ta bort kurs"
+      },
+      "empty": {
+        "title": "Inga manuella kurser ännu",
+        "description": "Lägg till en kurs för ett valutapar för att använda den i stället för den automatiska 1:1-uppskattningen."
+      },
+      "delete": {
+        "title": "Ta bort manuell kurs",
+        "message": "Åtgärden kan inte ångras. Vill du ta bort kursen?"
+      },
+      "form": {
+        "newTitle": "Ny manuell kurs",
+        "editTitle": "Redigera manuell kurs",
+        "saveError": "Det gick inte att spara kursen. Försök igen.",
+        "fields": {
+          "baseCode": "Frånvaluta",
+          "quoteCode": "Tillvaluta",
+          "rate": "Kurs",
+          "asOf": "Gäller från"
+        },
+        "errors": {
+          "invalid": "Ange en giltig kurs.",
+          "samePair": "Välj två olika valutor."
+        },
+        "actions": {
+          "cancel": "Avbryt",
+          "save": "Spara"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Inställningar",
+    "description": "Utseende, språk och inställningar för demodata.",
+    "appearance": {
+      "title": "Utseende",
+      "theme": "Tema",
+      "light": "Ljust",
+      "dark": "Mörkt",
+      "language": "Språk"
+    },
+    "currency": {
+      "title": "Visningsvaluta",
+      "description": "Används för att räkna om och lägga till värden mellan konton med olika valutor, till exempel nettoförmögenheten på översikten."
+    },
+    "agents": {
+      "title": "AI-agenter",
+      "description": "AI-assistenter för dina ekonomiska data, med flera leverantörer och verktyg via MCP. Inaktiverat som standard – kan konfigureras i Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Inaktiverade",
+      "enabled": "Aktiverade"
+    }
+  },
+  "auth": {
+    "logout": "Logga ut",
+    "fields": {
+      "email": "E-post",
+      "password": "Lösenord",
+      "displayName": "Visningsnamn",
+      "invitationToken": "Inbjudningstoken"
+    },
+    "login": {
+      "title": "Logga in",
+      "description": "Använd ditt LealFinance-konto för att fortsätta.",
+      "action": "Logga in",
+      "invited": "Har du en inbjudan?"
+    },
+    "register": {
+      "title": "Acceptera inbjudan",
+      "description": "Skapa ditt konto med inbjudan från en administratör.",
+      "action": "Skapa konto",
+      "passwordHint": "Använd minst 12 tecken.",
+      "backToLogin": "Tillbaka till inloggningen",
+      "setup": {
+        "title": "Skapa administratörskontot",
+        "description": "Det här är det första kontot på den här instansen – det får full administratörsbehörighet."
+      }
+    }
+  },
+  "admin": {
+    "title": "Användare och inbjudningar",
+    "description": "Hantera åtkomsten till den här LealFinance-instansen.",
+    "roles": { "member": "Medlem", "admin": "Administratör" },
+    "users": { "title": "Användare", "role": "Roll", "active": "Aktiv", "empty": "Inga användare hittades." },
+    "invitations": {
+      "title": "Inbjudningar",
+      "createTitle": "Skapa inbjudan",
+      "create": "Bjud in",
+      "tokenOnce": "Den här tokenen och registreringslänken visas bara nu. Spara dem innan du lämnar sidan.",
+      "copyLink": "Kopiera registreringslänk",
+      "revoke": "Återkalla",
+      "empty": "Inga inbjudningar hittades."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Något gick fel. Försök igen." },
+    "auth": {
+      "invalid_credentials": "E-postadressen eller lösenordet är felaktigt.",
+      "csrf_invalid": "Formuläret har gått ut. Uppdatera sidan och försök igen.",
+      "last_admin": "Minst en aktiv administratör krävs.",
+      "account_inactive": "Det här kontot är inaktivt.",
+      "admin_required": "Administratörsbehörighet krävs."
+    },
+    "invitation": {
+      "not_found": "Inbjudan är ogiltig.",
+      "expired": "Inbjudan har gått ut.",
+      "revoked": "Inbjudan har återkallats.",
+      "already_accepted": "Inbjudan har redan accepterats.",
+      "already_pending": "Det finns redan en väntande inbjudan för den här e-postadressen."
+    },
+    "user": { "email_taken": "Det finns redan ett konto med den här e-postadressen." }
+  }
+}

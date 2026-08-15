@@ -1,5 +1,5 @@
 <div *transloco="let t" class="flex min-h-screen bg-surface-page text-content-primary">
-  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) -->
+  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) -->
   <aside
     id="desktop-sidebar"
     class="desktop-sidebar relative hidden shrink-0 flex-col border-r border-border bg-surface-raised md:sticky md:top-0 md:flex md:h-screen md:self-start"
@@ -12,6 +12,7 @@
       size="sm"
       type="button"
       class="absolute right-0 top-1/2 z-20 !h-8 !w-8 !-translate-y-1/2 !translate-x-1/2 !rounded-full !p-0 shadow-sm"
+      data-sidebar-toggle
       (click)="toggleSidebar()"
       [attr.aria-controls]="'desktop-sidebar'"
       [attr.aria-expanded]="sidebarExpanded()"
@@ -189,7 +190,7 @@
   <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
   <dialog
     #drawer
-    class="m-0 h-dvh max-h-none w-72 max-w-[85vw] rounded-none border-0 border-r border-border bg-surface-raised p-0 backdrop:bg-black/40"
+    class="mobile-drawer m-0 h-dvh max-h-none w-72 max-w-[85vw] rounded-none border-0 border-r border-border bg-surface-raised p-0 backdrop:bg-black/40"
     style="inset: 0 auto 0 0"
     (close)="onDrawerNativeClose()"
     (click)="onDrawerBackdropClick($event)"

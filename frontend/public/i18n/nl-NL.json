@@ -1,0 +1,736 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Sluiten",
+      "cancel": "Annuleren",
+      "confirm": "Bevestigen",
+      "save": "Opslaan",
+      "saving": "Opslaan…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Overzicht",
+      "accounts": "Rekeningen",
+      "transactions": "Transacties",
+      "categories": "Categorieën",
+      "budgets": "Budgetten",
+      "goals": "Doelen",
+      "reports": "Rapporten",
+      "exchange": "Wisselkoersen",
+      "settings": "Instellingen",
+      "adminUsers": "Gebruikers en uitnodigingen",
+      "sections": {
+        "accounts": "Rekeningen",
+        "analysis": "Analyse",
+        "setup": "Instellen",
+        "admin": "Beheer"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Menu openen",
+      "expand": "Zijbalk uitklappen",
+      "collapse": "Zijbalk inklappen"
+    },
+    "themeToggle": {
+      "switchToLight": "Licht thema inschakelen",
+      "switchToDark": "Donker thema inschakelen"
+    },
+    "languageSwitcher": {
+      "label": "Taal",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Saldi verbergen",
+      "show": "Saldi tonen"
+    },
+    "search": {
+      "trigger": "Zoeken"
+    },
+    "commandPalette": {
+      "placeholder": "Typ een opdracht of zoekterm…",
+      "empty": "Geen resultaten gevonden.",
+      "hints": {
+        "navigate": "navigeren",
+        "select": "selecteren",
+        "close": "sluiten"
+      },
+      "groups": {
+        "quickActions": "Snelle acties",
+        "goTo": "Ga naar",
+        "accounts": "Rekeningen",
+        "categories": "Categorieën",
+        "budgets": "Budgetten",
+        "transactions": "Transacties"
+      },
+      "actions": {
+        "newTransaction": "Nieuwe transactie",
+        "newAccount": "Nieuwe rekening",
+        "newCategory": "Nieuwe categorie",
+        "newBudget": "Nieuw budget",
+        "configureLanguage": "Taal instellen",
+        "configureCurrency": "Weergavevaluta instellen",
+        "toggleTheme": "Thema wisselen",
+        "toggleBalances": "Saldi tonen of verbergen"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Overzicht",
+    "welcome": "Welkom bij LealFinance",
+    "empty": {
+      "title": "Nog geen gegevens",
+      "description": "Voeg een rekening toe om je financiële overzicht te bekijken."
+    },
+    "stats": {
+      "netWorth": "Nettovermogen",
+      "income": "Inkomsten deze maand",
+      "expense": "Uitgaven deze maand",
+      "savingsRate": "Spaarpercentage"
+    },
+    "cashFlow": {
+      "title": "Kasstroom (6 maanden)",
+      "income": "Inkomsten",
+      "expense": "Uitgaven"
+    },
+    "categoryChart": {
+      "title": "Uitgaven per categorie (deze maand)",
+      "label": "Categorieën",
+      "empty": "Er zijn deze maand nog geen uitgaven geregistreerd."
+    },
+    "accounts": {
+      "title": "Rekeningen"
+    },
+    "recentTransactions": {
+      "title": "Recente transacties",
+      "empty": "Er zijn nog geen transacties geregistreerd."
+    },
+    "budgets": {
+      "title": "Budgetten",
+      "empty": "Voor deze maand is nog geen budget ingesteld."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Wisselkoers niet beschikbaar – er wordt bij benadering een 1-op-1-conversie gebruikt.",
+    "fallbackRateWarningAction": "Koers instellen"
+  },
+  "accounts": {
+    "title": "Rekeningen",
+    "description": "Je saldi op één plek.",
+    "showArchived": "Gearchiveerde rekeningen tonen",
+    "archivedBadge": "Gearchiveerd",
+    "noInstitution": "Geen instelling",
+    "mixedCurrencies": "Meerdere valuta",
+    "actions": {
+      "new": "Nieuwe rekening",
+      "edit": "Bewerken",
+      "archive": "Archiveren",
+      "unarchive": "Uit archief halen"
+    },
+    "archive": {
+      "title": "Rekening archiveren?",
+      "message": "Rekening \"{{name}}\" wordt niet meer weergegeven in de hoofdweergaven. Wil je doorgaan?"
+    },
+    "empty": {
+      "title": "Nog geen rekeningen",
+      "description": "Maak je eerste rekening aan om je saldi bij te houden."
+    },
+    "type": {
+      "checking": "Betaalrekening",
+      "savings": "Spaarrekening",
+      "cash": "Contant geld",
+      "credit_card": "Creditcard",
+      "investment": "Beleggingen",
+      "goal": "Doelrekening"
+    },
+    "form": {
+      "newTitle": "Nieuwe rekening",
+      "editTitle": "Rekening bewerken",
+      "saveError": "De rekening kon niet worden opgeslagen. Probeer het opnieuw.",
+      "fields": {
+        "name": "Naam",
+        "type": "Type",
+        "currency": "Valuta",
+        "openingBalance": "Beginsaldo",
+        "institution": "Instelling",
+        "creditLimit": "Kredietlimiet",
+        "closingDay": "Afsluitdag",
+        "dueDay": "Vervaldag"
+      },
+      "errors": {
+        "required": "Dit veld is verplicht.",
+        "decimalAmount": "Voer een geldig numeriek bedrag in."
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    },
+    "detail": {
+      "back": "Terug naar rekeningen",
+      "notFound": "Rekening niet gevonden",
+      "history": "Transactiegeschiedenis",
+      "historyEmpty": {
+        "title": "Geen transacties op deze rekening",
+        "description": "Transacties op deze rekening worden hier weergegeven."
+      },
+      "creditCard": {
+        "title": "Creditcard",
+        "used": "Gebruikt",
+        "owed": "Openstaand saldo",
+        "limit": "Limiet",
+        "available": "Beschikbaar",
+        "closingDay": "Afsluiting"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Nieuwe instelling",
+      "edit": "Instelling bewerken",
+      "delete": "Instelling verwijderen"
+    },
+    "form": {
+      "newTitle": "Nieuwe instelling",
+      "editTitle": "Instelling bewerken",
+      "saveError": "De instelling kon niet worden opgeslagen. Probeer het opnieuw.",
+      "deleteInUseError": "Deze instelling heeft nog gekoppelde rekeningen en kan niet worden verwijderd.",
+      "fields": {
+        "name": "Naam",
+        "icon": "Pictogram",
+        "color": "Kleur"
+      },
+      "errors": {
+        "required": "Dit veld is verplicht."
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    },
+    "delete": {
+      "title": "Instelling verwijderen",
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze instelling verwijderen?"
+    },
+    "icon": {
+      "bank": "Bank",
+      "wallet": "Portemonnee",
+      "chart": "Beleggingen",
+      "globe": "Internationaal",
+      "archive": "Overig"
+    }
+  },
+  "transactions": {
+    "title": "Transacties",
+    "description": "Inkomsten, uitgaven en overboekingen.",
+    "actions": {
+      "new": "Nieuwe transactie",
+      "edit": "Bewerken",
+      "delete": "Verwijderen"
+    },
+    "tabs": {
+      "transactions": "Transacties",
+      "recurring": "Terugkerend"
+    },
+    "type": {
+      "income": "Inkomst",
+      "expense": "Uitgave",
+      "transfer": "Overboeking"
+    },
+    "filters": {
+      "type": "Type",
+      "account": "Rekening",
+      "category": "Categorie",
+      "from": "Vanaf",
+      "to": "Tot en met",
+      "search": "Zoeken",
+      "institution": "Instelling",
+      "all": "Alle",
+      "clear": "Filters wissen"
+    },
+    "empty": {
+      "title": "Geen transacties gevonden",
+      "description": "Pas de filters aan of voeg een nieuwe transactie toe."
+    },
+    "projected": {
+      "title": "Aankomend (verwacht)",
+      "badge": "Verwacht"
+    },
+    "delete": {
+      "title": "Transactie verwijderen",
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze transactie verwijderen?"
+    },
+    "form": {
+      "newTitle": "Nieuwe transactie",
+      "editTitle": "Transactie bewerken",
+      "saveError": "De transactie kon niet worden opgeslagen. Probeer het opnieuw.",
+      "fields": {
+        "date": "Datum",
+        "amount": "Bedrag",
+        "currency": "Valuta",
+        "convertedAmount": "Omgerekend bedrag",
+        "conversionFee": "Conversiekosten of -belasting (optioneel)",
+        "account": "Rekening",
+        "fromAccount": "Rekening van herkomst",
+        "toAccount": "Bestemmingsrekening",
+        "fromInstitution": "Instelling van herkomst",
+        "toInstitution": "Bestemmingsinstelling",
+        "anyInstitution": "Elke instelling",
+        "category": "Categorie",
+        "description": "Omschrijving",
+        "notes": "Notities",
+        "repeat": "Deze transactie herhalen",
+        "frequency": "Frequentie",
+        "interval": "Elke",
+        "selectPlaceholder": "Selecteer"
+      },
+      "hints": {
+        "effectiveRate": "Effectieve koers: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Herhaling is niet beschikbaar voor een transactie met verschillende valuta – de koers zou voor elke keer opnieuw moeten worden ingesteld."
+      },
+      "errors": {
+        "invalid": "Controleer de verplichte velden voordat je opslaat.",
+        "convertedAmountRequired": "Voer het omgerekende bedrag in voordat je opslaat."
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Wekelijks",
+        "monthly": "Maandelijks",
+        "yearly": "Jaarlijks"
+      },
+      "everyN": "elke {{n}}",
+      "nextOccurrence": "Volgende uitvoering",
+      "actions": {
+        "new": "Nieuwe terugkerende regel"
+      },
+      "empty": {
+        "title": "Nog geen terugkerende regels",
+        "description": "Als je een transactie terugkerend maakt, wordt hier een regel aangemaakt."
+      },
+      "delete": {
+        "title": "Terugkerende regel verwijderen",
+        "message": "Dit heeft geen invloed op geregistreerde transacties – alleen toekomstige verwachte uitvoeringen verdwijnen."
+      },
+      "form": {
+        "newTitle": "Nieuwe terugkerende regel",
+        "editTitle": "Terugkerende regel bewerken",
+        "saveError": "De terugkerende regel kon niet worden opgeslagen. Probeer het opnieuw.",
+        "startDate": "Startdatum",
+        "endDate": "Einddatum (optioneel)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Categorieën",
+    "description": "Organiseer inkomsten en uitgaven per categorie.",
+    "showArchived": "Gearchiveerde categorieën tonen",
+    "archivedBadge": "Gearchiveerd",
+    "actions": {
+      "new": "Nieuwe categorie",
+      "edit": "Bewerken",
+      "archive": "Archiveren",
+      "unarchive": "Uit archief halen",
+      "delete": "Verwijderen",
+      "addChild": "Nieuwe subcategorie",
+      "collapse": "Inklappen",
+      "expand": "Uitklappen",
+      "dragHandle": "Volgorde wijzigen"
+    },
+    "empty": {
+      "title": "Nog geen categorieën",
+      "description": "Maak categorieën aan om je transacties te ordenen."
+    },
+    "sections": {
+      "income": "Inkomstencategorieën",
+      "expense": "Uitgavencategorieën"
+    },
+    "delete": {
+      "title": "Categorie verwijderen?",
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je categorie \"{{name}}\" verwijderen?",
+      "blockedTitle": "Kan niet worden verwijderd",
+      "blockedMessage": "Deze categorie is nog in gebruik: transacties ({{transactions}}), budgetten ({{budgets}}) en subcategorieën ({{children}}). Archiveer de categorie in plaats van deze te verwijderen."
+    },
+    "form": {
+      "newTitle": "Nieuwe categorie",
+      "editTitle": "Categorie bewerken",
+      "saveError": "De categorie kon niet worden opgeslagen. Probeer het opnieuw.",
+      "fields": {
+        "name": "Naam",
+        "parent": "Hoofdcategorie",
+        "noParent": "Geen (hoofdcategorie)",
+        "color": "Kleur",
+        "icon": "Pictogram"
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    },
+    "icon": {
+      "tag": "Label",
+      "home": "Wonen",
+      "archive": "Archief",
+      "swap": "Vervoer",
+      "wallet": "Portemonnee",
+      "chart": "Grafiek",
+      "sun": "Energie",
+      "alertTriangle": "Waarschuwing",
+      "pencil": "Onderwijs",
+      "target": "Doel",
+      "repeat": "Terugkerend",
+      "globe": "Wereldwijd"
+    }
+  },
+  "budgets": {
+    "title": "Budgetten",
+    "description": "Plan je maandelijkse uitgaven per categorie.",
+    "list": {
+      "title": "Maandlimieten"
+    },
+    "planner": {
+      "title": "Budget op basis van inkomsten",
+      "description": "Verdeel je verwachte inkomsten over de categorieën.",
+      "total": "Totaal",
+      "expectedIncome": "Verwachte inkomsten",
+      "chartLabel": "Verdeling",
+      "fixed": "Vast",
+      "empty": "Stel percentages in om je verdeling te bekijken.",
+      "save": "Verdeling opslaan",
+      "errors": {
+        "total": "De verdeling mag niet hoger zijn dan 100%.",
+        "income": "Voer je verwachte inkomsten voor deze maand in.",
+        "save": "De verdeling kon niet worden opgeslagen. Probeer het opnieuw."
+      }
+    },
+    "monthLabel": "Maand",
+    "actions": {
+      "new": "Nieuw budget",
+      "edit": "Bewerken",
+      "delete": "Verwijderen"
+    },
+    "totals": {
+      "budgeted": "Begroot",
+      "spent": "Uitgegeven",
+      "remaining": "Resterend"
+    },
+    "empty": {
+      "title": "Geen budget voor deze maand",
+      "description": "Stel per categorie een budget in om je uitgaven bij te houden."
+    },
+    "state": {
+      "over": "Budget overschreden",
+      "near": "Bijna aan limiet"
+    },
+    "unbudgeted": {
+      "title": "Uitgaven zonder budget",
+      "setBudget": "Budget instellen"
+    },
+    "delete": {
+      "title": "Budget verwijderen",
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je dit budget verwijderen?"
+    },
+    "form": {
+      "newTitle": "Nieuw budget",
+      "editTitle": "Budget bewerken",
+      "saveError": "Het budget kon niet worden opgeslagen. Probeer het opnieuw.",
+      "fields": {
+        "month": "Maand",
+        "category": "Categorie",
+        "selectCategory": "Categorie selecteren",
+        "amount": "Bedrag",
+        "currency": "Valuta"
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    }
+  },
+  "goals": {
+    "title": "Doelen",
+    "description": "Spaar voor elk doel en houd je voortgang bij.",
+    "showArchived": "Gearchiveerde doelen tonen",
+    "archiveError": "Het doel kon niet worden gearchiveerd of uit het archief gehaald. Probeer het opnieuw.",
+    "accountLabel": "Rekening",
+    "archived": "Gearchiveerd",
+    "overdue": "Achter op schema",
+    "actions": {
+      "new": "Nieuw doel",
+      "edit": "Doel bewerken",
+      "archive": "Doel archiveren",
+      "unarchive": "Doel uit archief halen",
+      "deposit": "Geld toevoegen",
+      "withdraw": "Geld opnemen",
+      "interest": "Rendement toevoegen"
+    },
+    "empty": {
+      "title": "Nog geen doelen",
+      "description": "Maak een doel aan om te beginnen met sparen en je voortgang bij te houden."
+    },
+    "progress": {
+      "current": "Huidig saldo",
+      "target": "Doelbedrag",
+      "remaining": "Resterend",
+      "contribution": "Voorgestelde inleg",
+      "notConfigured": "Geen deadline",
+      "frequency": "Frequentie",
+      "every": "elke {{n}}",
+      "label": "Voortgang"
+    },
+    "frequency": {
+      "weekly": "Wekelijks",
+      "monthly": "Maandelijks",
+      "yearly": "Jaarlijks"
+    },
+    "history": {
+      "title": "Doelgeschiedenis",
+      "empty": "Geen activiteit geregistreerd."
+    },
+    "form": {
+      "newTitle": "Nieuw doel",
+      "editTitle": "Doel bewerken",
+      "saveError": "Het doel kon niet worden opgeslagen. Probeer het opnieuw.",
+      "fields": {
+        "name": "Naam",
+        "targetAmount": "Doelbedrag",
+        "currency": "Valuta",
+        "targetDate": "Doeldatum",
+        "targetDateHint": "Optioneel: voeg een deadline toe om de voorgestelde inleg te berekenen.",
+        "frequency": "Frequentie van inleg",
+        "interval": "Elke"
+      },
+      "errors": {
+        "required": "Dit veld is verplicht."
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Geld aan doel toevoegen" },
+      "withdraw": { "title": "Geld uit doel opnemen" },
+      "interest": { "title": "Rendement toevoegen" },
+      "fields": {
+        "amount": "Bedrag",
+        "date": "Datum",
+        "sourceAccount": "Rekening van herkomst/bestemming",
+        "description": "Omschrijving"
+      },
+      "saveError": "De activiteit kon niet worden geregistreerd. Probeer het opnieuw."
+    }
+  },
+  "reports": {
+    "title": "Rapporten",
+    "description": "Analyseer inkomsten, uitgaven en saldi in de loop van de tijd.",
+    "period": {
+      "month": "Deze maand",
+      "3m": "Afgelopen 3 maanden",
+      "6m": "Afgelopen 6 maanden",
+      "12m": "Afgelopen 12 maanden",
+      "custom": "Aangepast"
+    },
+    "empty": {
+      "title": "Geen transacties in deze periode",
+      "description": "Pas de geselecteerde periode aan om je rapporten te bekijken."
+    },
+    "charts": {
+      "incomeExpense": "Inkomsten versus uitgaven",
+      "netFlow": "Netto kasstroom",
+      "byCategory": "Uitgaven per categorie",
+      "balanceTrend": "Saldoontwikkeling per rekening"
+    },
+    "series": {
+      "income": "Inkomsten",
+      "expense": "Uitgaven",
+      "netFlow": "Netto kasstroom",
+      "categories": "Categorieën"
+    }
+  },
+  "exchange": {
+    "title": "Wisselkoersen",
+    "description": "Handmatige wisselkoersen en de conversies waarin ze zijn gebruikt.",
+    "stats": {
+      "feesPaid": "Betaalde conversiekosten",
+      "needsAttention": "Transacties die aandacht nodig hebben",
+      "currenciesNeedingRate": "Valuta zonder koers"
+    },
+    "needsAttention": {
+      "title": "Aandacht nodig",
+      "description": "Deze transacties zijn omgerekend met een 1-op-1-benadering – corrigeer ze met de echte koers of stel hieronder een handmatige koers in.",
+      "empty": {
+        "title": "Geen aandacht nodig",
+        "description": "Voor elke transactie met een andere valuta is een echte koers vastgelegd."
+      },
+      "actions": {
+        "fix": "Corrigeren"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Valuta zonder koers",
+      "description": "Voor deze rekeningvaluta is nog geen echte koers naar je weergavevaluta beschikbaar. De saldi worden daarom bij benadering 1-op-1 omgerekend; dit is niet gekoppeld aan een specifieke transactie.",
+      "empty": {
+        "title": "Geen valuta waarvoor een koers nodig is",
+        "description": "Voor elke rekeningvaluta is al een echte koers beschikbaar."
+      }
+    },
+    "manualRates": {
+      "title": "Handmatige koersen",
+      "description": "Zelf ingestelde koersen hebben voorrang op de automatische aanbieder – handig voor de actuele bankkoers van vandaag of wanneer geen aanbieder is geconfigureerd.",
+      "actions": {
+        "add": "Koers toevoegen",
+        "edit": "Koers bewerken",
+        "delete": "Koers verwijderen"
+      },
+      "empty": {
+        "title": "Nog geen handmatige koersen",
+        "description": "Voeg een koers toe voor een valutapaar om die te gebruiken in plaats van de automatische 1-op-1-terugval."
+      },
+      "delete": {
+        "title": "Handmatige koers verwijderen",
+        "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze koers verwijderen?"
+      },
+      "form": {
+        "newTitle": "Nieuwe handmatige koers",
+        "editTitle": "Handmatige koers bewerken",
+        "saveError": "De koers kon niet worden opgeslagen. Probeer het opnieuw.",
+        "fields": {
+          "baseCode": "Van valuta",
+          "quoteCode": "Naar valuta",
+          "rate": "Koers",
+          "asOf": "Geldig vanaf"
+        },
+        "errors": {
+          "invalid": "Voer een geldige koers in.",
+          "samePair": "Kies twee verschillende valuta."
+        },
+        "actions": {
+          "cancel": "Annuleren",
+          "save": "Opslaan"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Instellingen",
+    "description": "Voorkeuren voor uiterlijk, taal en demogegevens.",
+    "appearance": {
+      "title": "Uiterlijk",
+      "theme": "Thema",
+      "light": "Licht",
+      "dark": "Donker",
+      "language": "Taal"
+    },
+    "currency": {
+      "title": "Weergavevaluta",
+      "description": "Wordt gebruikt om waarden tussen rekeningen met verschillende valuta om te rekenen en op te tellen, zoals het nettovermogen op het overzicht."
+    },
+    "agents": {
+      "title": "AI-agents",
+      "description": "AI-agents voor je financiële gegevens, met meerdere aanbieders en tools via MCP. Standaard uitgeschakeld – instelbaar in Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Uitgeschakeld",
+      "enabled": "Ingeschakeld"
+    }
+  },
+  "auth": {
+    "logout": "Uitloggen",
+    "fields": {
+      "email": "E-mailadres",
+      "password": "Wachtwoord",
+      "displayName": "Weergavenaam",
+      "invitationToken": "Uitnodigingstoken"
+    },
+    "login": {
+      "title": "Inloggen",
+      "description": "Gebruik je LealFinance-account om door te gaan.",
+      "action": "Inloggen",
+      "invited": "Heb je een uitnodiging?"
+    },
+    "register": {
+      "title": "Uitnodiging accepteren",
+      "description": "Maak je account aan met de uitnodiging die een beheerder heeft verstuurd.",
+      "action": "Account aanmaken",
+      "passwordHint": "Gebruik minimaal 12 tekens.",
+      "backToLogin": "Terug naar inloggen",
+      "setup": {
+        "title": "Beheerdersaccount aanmaken",
+        "description": "Dit is het eerste account op deze instantie en krijgt volledige beheerdersrechten."
+      }
+    }
+  },
+  "admin": {
+    "title": "Gebruikers en uitnodigingen",
+    "description": "Beheer de toegang tot deze LealFinance-instantie.",
+    "roles": { "member": "Lid", "admin": "Beheerder" },
+    "users": {
+      "title": "Gebruikers",
+      "role": "Rol",
+      "active": "Actief",
+      "empty": "Geen gebruikers gevonden."
+    },
+    "invitations": {
+      "title": "Uitnodigingen",
+      "createTitle": "Uitnodiging maken",
+      "create": "Uitnodigen",
+      "tokenOnce": "Dit token en de registratielink worden alleen nu getoond. Sla ze op voordat je weggaat.",
+      "copyLink": "Registratielink kopiëren",
+      "revoke": "Intrekken",
+      "empty": "Geen uitnodigingen gevonden."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Er is iets misgegaan. Probeer het opnieuw." },
+    "auth": {
+      "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",
+      "csrf_invalid": "Dit formulier is verlopen. Vernieuw de pagina en probeer het opnieuw.",
+      "last_admin": "Er moet ten minste één actieve beheerder zijn.",
+      "account_inactive": "Dit account is inactief.",
+      "admin_required": "Beheerdersrechten zijn vereist."
+    },
+    "invitation": {
+      "not_found": "De uitnodiging is ongeldig.",
+      "expired": "Deze uitnodiging is verlopen.",
+      "revoked": "Deze uitnodiging is ingetrokken.",
+      "already_accepted": "Deze uitnodiging is al geaccepteerd.",
+      "already_pending": "Er is al een uitnodiging in behandeling voor dit e-mailadres."
+    },
+    "user": { "email_taken": "Er bestaat al een account met dit e-mailadres." }
+  }
+}

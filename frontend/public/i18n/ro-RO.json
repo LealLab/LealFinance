@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Închide",
+      "cancel": "Anulează",
+      "confirm": "Confirmă",
+      "save": "Salvează",
+      "saving": "Se salvează…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Panou de control",
+      "accounts": "Conturi",
+      "transactions": "Tranzacții",
+      "categories": "Categorii",
+      "budgets": "Bugete",
+      "goals": "Obiective",
+      "reports": "Rapoarte",
+      "exchange": "Schimb valutar",
+      "settings": "Setări",
+      "adminUsers": "Utilizatori și invitații",
+      "sections": {
+        "accounts": "Conturi",
+        "analysis": "Analiză",
+        "setup": "Configurare",
+        "admin": "Administrare"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Deschide meniul",
+      "expand": "Extinde bara laterală",
+      "collapse": "Restrânge bara laterală"
+    },
+    "themeToggle": {
+      "switchToLight": "Comută la tema luminoasă",
+      "switchToDark": "Comută la tema întunecată"
+    },
+    "languageSwitcher": {
+      "label": "Limbă",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Ascunde soldurile",
+      "show": "Afișează soldurile"
+    },
+    "search": {
+      "trigger": "Caută"
+    },
+    "commandPalette": {
+      "placeholder": "Introdu o comandă sau caută...",
+      "empty": "Nu s-a găsit niciun rezultat.",
+      "hints": {
+        "navigate": "navigare",
+        "select": "selectare",
+        "close": "închidere"
+      },
+      "groups": {
+        "quickActions": "Acțiuni rapide",
+        "goTo": "Accesează",
+        "accounts": "Conturi",
+        "categories": "Categorii",
+        "budgets": "Bugete",
+        "transactions": "Tranzacții"
+      },
+      "actions": {
+        "newTransaction": "Tranzacție nouă",
+        "newAccount": "Cont nou",
+        "newCategory": "Categorie nouă",
+        "newBudget": "Buget nou",
+        "configureLanguage": "Configurează limba",
+        "configureCurrency": "Configurează moneda de afișare",
+        "toggleTheme": "Schimbă tema",
+        "toggleBalances": "Afișează sau ascunde soldurile"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Panou de control",
+    "welcome": "Bun venit la LealFinance",
+    "empty": {
+      "title": "Nu există încă date",
+      "description": "Adaugă un cont pentru a începe să consulți panoul financiar."
+    },
+    "stats": {
+      "netWorth": "Avere netă",
+      "income": "Venit lunar",
+      "expense": "Cheltuieli lunare",
+      "savingsRate": "Rată de economisire"
+    },
+    "cashFlow": {
+      "title": "Flux de numerar (6 luni)",
+      "income": "Venituri",
+      "expense": "Cheltuieli"
+    },
+    "categoryChart": {
+      "title": "Cheltuieli pe categorii (luna curentă)",
+      "label": "Categorii",
+      "empty": "Nu există încă nicio cheltuială înregistrată luna aceasta."
+    },
+    "accounts": {
+      "title": "Conturi"
+    },
+    "recentTransactions": {
+      "title": "Tranzacții recente",
+      "empty": "Nu există încă tranzacții înregistrate."
+    },
+    "budgets": {
+      "title": "Bugete",
+      "empty": "Nu este stabilit niciun buget pentru luna aceasta."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Cursul de schimb nu este disponibil - se folosește cu aproximație o conversie de 1:1.",
+    "fallbackRateWarningAction": "Stabilește un curs"
+  },
+  "accounts": {
+    "title": "Conturi",
+    "description": "Toate soldurile tale într-un singur loc.",
+    "showArchived": "Afișează conturile arhivate",
+    "archivedBadge": "Arhivat",
+    "noInstitution": "Fără instituție",
+    "mixedCurrencies": "Mai multe monede",
+    "actions": {
+      "new": "Cont nou",
+      "edit": "Editează",
+      "archive": "Arhivează",
+      "unarchive": "Restaurează din arhivă"
+    },
+    "archive": {
+      "title": "Arhivezi contul?",
+      "message": "Contul „{{name}}” nu va mai apărea în ecranele principale. Vrei să continui?"
+    },
+    "empty": {
+      "title": "Nu există încă niciun cont",
+      "description": "Creează primul cont pentru a începe să-ți urmărești soldurile."
+    },
+    "type": {
+      "checking": "Cont curent",
+      "savings": "Cont de economii",
+      "cash": "Numerar",
+      "credit_card": "Card de credit",
+      "investment": "Investiții",
+      "goal": "Obiectiv"
+    },
+    "form": {
+      "newTitle": "Cont nou",
+      "editTitle": "Editează contul",
+      "saveError": "Contul nu a putut fi salvat. Încearcă din nou.",
+      "fields": {
+        "name": "Nume",
+        "type": "Tip",
+        "currency": "Monedă",
+        "openingBalance": "Sold inițial",
+        "institution": "Instituție",
+        "creditLimit": "Limită de credit",
+        "closingDay": "Ziua închiderii extrasului",
+        "dueDay": "Ziua scadenței"
+      },
+      "errors": {
+        "required": "Acest câmp este obligatoriu.",
+        "decimalAmount": "Introdu o sumă numerică validă."
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    },
+    "detail": {
+      "back": "Înapoi la conturi",
+      "notFound": "Contul nu a fost găsit",
+      "history": "Istoricul tranzacțiilor",
+      "historyEmpty": {
+        "title": "Nu există tranzacții în acest cont",
+        "description": "Tranzacțiile înregistrate în acest cont vor apărea aici."
+      },
+      "creditCard": {
+        "title": "Card de credit",
+        "used": "Utilizat",
+        "owed": "Sold curent",
+        "limit": "Limită",
+        "available": "Disponibil",
+        "closingDay": "Închidere"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Instituție nouă",
+      "edit": "Editează instituția",
+      "delete": "Șterge instituția"
+    },
+    "form": {
+      "newTitle": "Instituție nouă",
+      "editTitle": "Editează instituția",
+      "saveError": "Instituția nu a putut fi salvată. Încearcă din nou.",
+      "deleteInUseError": "Această instituție are în continuare conturi asociate și nu poate fi ștearsă.",
+      "fields": {
+        "name": "Nume",
+        "icon": "Pictogramă",
+        "color": "Culoare"
+      },
+      "errors": {
+        "required": "Acest câmp este obligatoriu."
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    },
+    "delete": {
+      "title": "Șterge instituția",
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această instituție?"
+    },
+    "icon": {
+      "bank": "Bancă",
+      "wallet": "Portofel",
+      "chart": "Investiții",
+      "globe": "Internațional",
+      "archive": "Altele"
+    }
+  },
+  "transactions": {
+    "title": "Tranzacții",
+    "description": "Venituri, cheltuieli și transferuri.",
+    "actions": {
+      "new": "Tranzacție nouă",
+      "edit": "Editează",
+      "delete": "Șterge"
+    },
+    "tabs": {
+      "transactions": "Tranzacții",
+      "recurring": "Recurente"
+    },
+    "type": {
+      "income": "Venit",
+      "expense": "Cheltuială",
+      "transfer": "Transfer"
+    },
+    "filters": {
+      "type": "Tip",
+      "account": "Cont",
+      "category": "Categorie",
+      "from": "De la",
+      "to": "Până la",
+      "search": "Caută",
+      "institution": "Instituție",
+      "all": "Toate",
+      "clear": "Șterge filtrele"
+    },
+    "empty": {
+      "title": "Nu s-a găsit nicio tranzacție",
+      "description": "Ajustează filtrele sau adaugă o tranzacție nouă."
+    },
+    "projected": {
+      "title": "Următoarele (estimate)",
+      "badge": "Estimată"
+    },
+    "delete": {
+      "title": "Șterge tranzacția",
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această tranzacție?"
+    },
+    "form": {
+      "newTitle": "Tranzacție nouă",
+      "editTitle": "Editează tranzacția",
+      "saveError": "Tranzacția nu a putut fi salvată. Încearcă din nou.",
+      "fields": {
+        "date": "Dată",
+        "amount": "Sumă",
+        "currency": "Monedă",
+        "convertedAmount": "Sumă convertită",
+        "conversionFee": "Comision/taxă de conversie (opțional)",
+        "account": "Cont",
+        "fromAccount": "Cont sursă",
+        "toAccount": "Cont destinație",
+        "fromInstitution": "Instituție sursă",
+        "toInstitution": "Instituție destinație",
+        "anyInstitution": "Orice instituție",
+        "category": "Categorie",
+        "description": "Descriere",
+        "notes": "Notițe",
+        "repeat": "Repetă această tranzacție",
+        "frequency": "Frecvență",
+        "interval": "La fiecare",
+        "selectPlaceholder": "Selectează"
+      },
+      "hints": {
+        "effectiveRate": "Curs efectiv: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Repetarea nu este disponibilă pentru o tranzacție între monede diferite - cursul ar trebui stabilit din nou la fiecare apariție."
+      },
+      "errors": {
+        "invalid": "Verifică toate câmpurile obligatorii înainte de salvare.",
+        "convertedAmountRequired": "Introdu suma convertită înainte de salvare."
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Săptămânal",
+        "monthly": "Lunar",
+        "yearly": "Anual"
+      },
+      "everyN": "la fiecare {{n}}",
+      "nextOccurrence": "Următoarea apariție",
+      "actions": {
+        "new": "Regulă recurentă nouă"
+      },
+      "empty": {
+        "title": "Nu există încă reguli recurente",
+        "description": "Transformarea unei tranzacții într-una recurentă creează aici o regulă."
+      },
+      "delete": {
+        "title": "Șterge regula recurentă",
+        "message": "Tranzacțiile înregistrate nu sunt afectate - vor dispărea doar aparițiile viitoare estimate."
+      },
+      "form": {
+        "newTitle": "Regulă recurentă nouă",
+        "editTitle": "Editează regula recurentă",
+        "saveError": "Regula recurentă nu a putut fi salvată. Încearcă din nou.",
+        "startDate": "Început",
+        "endDate": "Sfârșit (opțional)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Categorii",
+    "description": "Organizează veniturile și cheltuielile pe categorii.",
+    "showArchived": "Afișează categoriile arhivate",
+    "archivedBadge": "Arhivată",
+    "actions": {
+      "new": "Categorie nouă",
+      "edit": "Editează",
+      "archive": "Arhivează",
+      "unarchive": "Restaurează din arhivă",
+      "delete": "Șterge",
+      "addChild": "Subcategorie nouă",
+      "collapse": "Restrânge",
+      "expand": "Extinde",
+      "dragHandle": "Reordonează"
+    },
+    "empty": {
+      "title": "Nu există încă nicio categorie",
+      "description": "Creează categorii pentru a-ți organiza tranzacțiile."
+    },
+    "sections": {
+      "income": "Categorii de venituri",
+      "expense": "Categorii de cheltuieli"
+    },
+    "delete": {
+      "title": "Ștergi categoria?",
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi categoria „{{name}}”?",
+      "blockedTitle": "Categoria nu poate fi ștearsă",
+      "blockedMessage": "Această categorie este încă utilizată: {{transactions}} tranzacții, {{budgets}} bugete și {{children}} subcategorii o folosesc. Arhivează categoria în loc să o ștergi."
+    },
+    "form": {
+      "newTitle": "Categorie nouă",
+      "editTitle": "Editează categoria",
+      "saveError": "Categoria nu a putut fi salvată. Încearcă din nou.",
+      "fields": {
+        "name": "Nume",
+        "parent": "Categorie părinte",
+        "noParent": "Niciuna (categorie principală)",
+        "color": "Culoare",
+        "icon": "Pictogramă"
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    },
+    "icon": {
+      "tag": "Etichetă",
+      "home": "Locuință",
+      "archive": "Arhivă",
+      "swap": "Transport",
+      "wallet": "Portofel",
+      "chart": "Grafic",
+      "sun": "Energie",
+      "alertTriangle": "Avertizare",
+      "pencil": "Educație",
+      "target": "Obiectiv",
+      "repeat": "Recurent",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Bugete",
+    "description": "Planifică suma de cheltuit în fiecare categorie, în fiecare lună.",
+    "list": {
+      "title": "Limite lunare"
+    },
+    "planner": {
+      "title": "Buget bazat pe venituri",
+      "description": "Distribuie veniturile estimate între categorii.",
+      "total": "Total",
+      "expectedIncome": "Venit estimat",
+      "chartLabel": "Distribuție",
+      "fixed": "Fix",
+      "empty": "Stabilește procente pentru a vedea distribuția.",
+      "save": "Salvează distribuția",
+      "errors": {
+        "total": "Distribuția nu poate depăși 100%.",
+        "income": "Introdu venitul estimat pentru luna aceasta.",
+        "save": "Distribuția nu a putut fi salvată. Încearcă din nou."
+      }
+    },
+    "monthLabel": "Lună",
+    "actions": {
+      "new": "Buget nou",
+      "edit": "Editează",
+      "delete": "Șterge"
+    },
+    "totals": {
+      "budgeted": "Bugetat",
+      "spent": "Cheltuit",
+      "remaining": "Rămas"
+    },
+    "empty": {
+      "title": "Niciun buget pentru luna aceasta",
+      "description": "Stabilește un buget pe categorii pentru a-ți urmări cheltuielile."
+    },
+    "state": {
+      "over": "Buget depășit",
+      "near": "Aproape de limită"
+    },
+    "unbudgeted": {
+      "title": "Cheltuieli fără buget",
+      "setBudget": "Stabilește bugetul"
+    },
+    "delete": {
+      "title": "Șterge bugetul",
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi acest buget?"
+    },
+    "form": {
+      "newTitle": "Buget nou",
+      "editTitle": "Editează bugetul",
+      "saveError": "Bugetul nu a putut fi salvat. Încearcă din nou.",
+      "fields": {
+        "month": "Lună",
+        "category": "Categorie",
+        "selectCategory": "Selectează o categorie",
+        "amount": "Sumă",
+        "currency": "Monedă"
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    }
+  },
+  "goals": {
+    "title": "Obiective",
+    "description": "Economisește bani pentru orice obiectiv și urmărește-ți progresul.",
+    "showArchived": "Afișează obiectivele arhivate",
+    "archiveError": "Starea de arhivare a obiectivului nu a putut fi actualizată. Încearcă din nou.",
+    "accountLabel": "Cont",
+    "archived": "Arhivat",
+    "overdue": "Termen depășit",
+    "actions": {
+      "new": "Obiectiv nou",
+      "edit": "Editează obiectivul",
+      "archive": "Arhivează obiectivul",
+      "unarchive": "Restaurează obiectivul din arhivă",
+      "deposit": "Adaugă bani",
+      "withdraw": "Retrage",
+      "interest": "Adaugă dobândă"
+    },
+    "empty": {
+      "title": "Nu există încă niciun obiectiv",
+      "description": "Creează un obiectiv pentru a începe să economisești și să-ți urmărești progresul."
+    },
+    "progress": {
+      "current": "Economisit",
+      "target": "Țintă",
+      "remaining": "Rămas",
+      "contribution": "Contribuție recomandată",
+      "notConfigured": "Fără termen-limită",
+      "frequency": "Frecvență",
+      "every": "la fiecare {{n}}",
+      "label": "Progres"
+    },
+    "frequency": {
+      "weekly": "Săptămânal",
+      "monthly": "Lunar",
+      "yearly": "Anual"
+    },
+    "history": {
+      "title": "Istoricul obiectivului",
+      "empty": "Nu există activitate înregistrată."
+    },
+    "form": {
+      "newTitle": "Obiectiv nou",
+      "editTitle": "Editează obiectivul",
+      "saveError": "Obiectivul nu a putut fi salvat. Încearcă din nou.",
+      "fields": {
+        "name": "Nume",
+        "targetAmount": "Sumă-țintă",
+        "currency": "Monedă",
+        "targetDate": "Dată-țintă",
+        "targetDateHint": "Opțional: adaugă un termen-limită pentru a calcula contribuția recomandată.",
+        "frequency": "Frecvența contribuțiilor",
+        "interval": "La fiecare"
+      },
+      "errors": {
+        "required": "Acest câmp este obligatoriu."
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Adaugă bani la obiectiv" },
+      "withdraw": { "title": "Retrage bani din obiectiv" },
+      "interest": { "title": "Adaugă dobândă" },
+      "fields": {
+        "amount": "Sumă",
+        "date": "Dată",
+        "sourceAccount": "Cont sursă/destinație",
+        "description": "Descriere"
+      },
+      "saveError": "Activitatea nu a putut fi înregistrată. Încearcă din nou."
+    }
+  },
+  "reports": {
+    "title": "Rapoarte",
+    "description": "Analizează în timp veniturile, cheltuielile și soldurile.",
+    "period": {
+      "month": "Luna aceasta",
+      "3m": "Ultimele 3 luni",
+      "6m": "Ultimele 6 luni",
+      "12m": "Ultimele 12 luni",
+      "custom": "Personalizat"
+    },
+    "empty": {
+      "title": "Nicio tranzacție în această perioadă",
+      "description": "Ajustează perioada selectată pentru a vedea rapoartele."
+    },
+    "charts": {
+      "incomeExpense": "Venituri comparativ cu cheltuielile",
+      "netFlow": "Flux net",
+      "byCategory": "Cheltuieli pe categorii",
+      "balanceTrend": "Evoluția soldului pe conturi"
+    },
+    "series": {
+      "income": "Venituri",
+      "expense": "Cheltuieli",
+      "netFlow": "Flux net",
+      "categories": "Categorii"
+    }
+  },
+  "exchange": {
+    "title": "Schimb valutar",
+    "description": "Cursurile de schimb introduse manual și conversiile care le-au folosit.",
+    "stats": {
+      "feesPaid": "Comisioane de conversie plătite",
+      "needsAttention": "Tranzacții care necesită atenție",
+      "currenciesNeedingRate": "Monede fără curs"
+    },
+    "needsAttention": {
+      "title": "Necesită atenție",
+      "description": "Aceste tranzacții au fost convertite folosind o aproximare de 1:1 - corectează-le cu valoarea reală sau stabilește mai jos un curs manual.",
+      "empty": {
+        "title": "Nimic nu necesită atenție",
+        "description": "Fiecare tranzacție între monede diferite are înregistrat un curs real."
+      },
+      "actions": {
+        "fix": "Corectează"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Monede fără curs",
+      "description": "Aceste monede ale conturilor nu au încă un curs real față de moneda de afișare, astfel că soldurile lor sunt afișate folosind o aproximare de 1:1, fără legătură cu o anumită tranzacție.",
+      "empty": {
+        "title": "Nicio monedă nu necesită un curs",
+        "description": "Fiecare monedă a conturilor are deja un curs real."
+      }
+    },
+    "manualRates": {
+      "title": "Cursuri manuale",
+      "description": "Cursurile stabilite manual au prioritate față de furnizorul automat - sunt utile pentru cursul bancar real de astăzi sau când nu este configurat niciun furnizor.",
+      "actions": {
+        "add": "Adaugă un curs",
+        "edit": "Editează cursul",
+        "delete": "Șterge cursul"
+      },
+      "empty": {
+        "title": "Nu există încă niciun curs manual",
+        "description": "Adaugă un curs pentru o pereche valutară ca să îl folosești în locul conversiei automate de rezervă de 1:1."
+      },
+      "delete": {
+        "title": "Șterge cursul manual",
+        "message": "Această acțiune nu poate fi anulată. Vrei să ștergi acest curs?"
+      },
+      "form": {
+        "newTitle": "Curs manual nou",
+        "editTitle": "Editează cursul manual",
+        "saveError": "Cursul nu a putut fi salvat. Încearcă din nou.",
+        "fields": {
+          "baseCode": "Monedă sursă",
+          "quoteCode": "Monedă destinație",
+          "rate": "Curs",
+          "asOf": "Valabil începând cu"
+        },
+        "errors": {
+          "invalid": "Introdu un curs valid.",
+          "samePair": "Alege două monede diferite."
+        },
+        "actions": {
+          "cancel": "Anulează",
+          "save": "Salvează"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Setări",
+    "description": "Preferințe pentru aspect, limbă și date demonstrative.",
+    "appearance": {
+      "title": "Aspect",
+      "theme": "Temă",
+      "light": "Luminoasă",
+      "dark": "Întunecată",
+      "language": "Limbă"
+    },
+    "currency": {
+      "title": "Monedă de afișare",
+      "description": "Este folosită pentru conversia și însumarea valorilor din conturi cu monede diferite, de exemplu pentru averea netă din panoul de control."
+    },
+    "agents": {
+      "title": "Agenți AI",
+      "description": "Asistenți AI pentru datele tale financiare, cu mai mulți furnizori și instrumente prin MCP. Sunt dezactivați implicit și pot fi configurați în Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Dezactivați",
+      "enabled": "Activați"
+    }
+  },
+  "auth": {
+    "logout": "Deconectare",
+    "fields": {
+      "email": "E-mail",
+      "password": "Parolă",
+      "displayName": "Nume afișat",
+      "invitationToken": "Codul invitației"
+    },
+    "login": {
+      "title": "Autentificare",
+      "description": "Folosește contul LealFinance pentru a continua.",
+      "action": "Autentifică-te",
+      "invited": "Ai o invitație?"
+    },
+    "register": {
+      "title": "Acceptă invitația",
+      "description": "Creează-ți contul folosind invitația trimisă de un administrator.",
+      "action": "Creează contul",
+      "passwordHint": "Folosește cel puțin 12 caractere.",
+      "backToLogin": "Înapoi la autentificare",
+      "setup": {
+        "title": "Creează contul de administrator",
+        "description": "Acesta este primul cont din această instanță și va avea acces complet de administrator."
+      }
+    }
+  },
+  "admin": {
+    "title": "Utilizatori și invitații",
+    "description": "Gestionează accesul la această instanță LealFinance.",
+    "roles": { "member": "Membru", "admin": "Administrator" },
+    "users": { "title": "Utilizatori", "role": "Rol", "active": "Activ", "empty": "Nu s-a găsit niciun utilizator." },
+    "invitations": {
+      "title": "Invitații",
+      "createTitle": "Creează o invitație",
+      "create": "Invită",
+      "tokenOnce": "Acest cod și linkul de înregistrare sunt afișate doar acum. Salvează-le înainte să pleci.",
+      "copyLink": "Copiază linkul de înregistrare",
+      "revoke": "Revocă",
+      "empty": "Nu s-a găsit nicio invitație."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Ceva nu a funcționat. Încearcă din nou." },
+    "auth": {
+      "invalid_credentials": "Adresa de e-mail sau parola este incorectă.",
+      "csrf_invalid": "Acest formular a expirat. Reîncarcă pagina și încearcă din nou.",
+      "last_admin": "Este necesar cel puțin un administrator activ.",
+      "account_inactive": "Acest cont este inactiv.",
+      "admin_required": "Este necesar accesul de administrator."
+    },
+    "invitation": {
+      "not_found": "Invitația nu este validă.",
+      "expired": "Această invitație a expirat.",
+      "revoked": "Această invitație a fost revocată.",
+      "already_accepted": "Această invitație a fost deja acceptată.",
+      "already_pending": "Există deja o invitație în așteptare pentru această adresă de e-mail."
+    },
+    "user": { "email_taken": "Există deja un cont care folosește această adresă de e-mail." }
+  }
+}

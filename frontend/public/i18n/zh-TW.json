@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "關閉",
+      "cancel": "取消",
+      "confirm": "確認",
+      "save": "儲存",
+      "saving": "儲存中…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "儀表板",
+      "accounts": "帳戶",
+      "transactions": "交易",
+      "categories": "分類",
+      "budgets": "預算",
+      "goals": "目標",
+      "reports": "報表",
+      "exchange": "匯兌",
+      "settings": "設定",
+      "adminUsers": "使用者與邀請",
+      "sections": {
+        "accounts": "帳戶",
+        "analysis": "分析",
+        "setup": "設定",
+        "admin": "管理"
+      }
+    },
+    "sidebar": {
+      "openMenu": "開啟選單",
+      "expand": "展開側邊欄",
+      "collapse": "收合側邊欄"
+    },
+    "themeToggle": {
+      "switchToLight": "切換至淺色主題",
+      "switchToDark": "切換至深色主題"
+    },
+    "languageSwitcher": {
+      "label": "語言",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "隱藏餘額",
+      "show": "顯示餘額"
+    },
+    "search": {
+      "trigger": "搜尋"
+    },
+    "commandPalette": {
+      "placeholder": "輸入指令或搜尋…",
+      "empty": "找不到結果。",
+      "hints": {
+        "navigate": "導覽",
+        "select": "選取",
+        "close": "關閉"
+      },
+      "groups": {
+        "quickActions": "快速操作",
+        "goTo": "前往",
+        "accounts": "帳戶",
+        "categories": "分類",
+        "budgets": "預算",
+        "transactions": "交易"
+      },
+      "actions": {
+        "newTransaction": "新增交易",
+        "newAccount": "新增帳戶",
+        "newCategory": "新增分類",
+        "newBudget": "新增預算",
+        "configureLanguage": "設定語言",
+        "configureCurrency": "設定顯示貨幣",
+        "toggleTheme": "切換主題",
+        "toggleBalances": "顯示或隱藏餘額"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "儀表板",
+    "welcome": "歡迎使用 LealFinance",
+    "empty": {
+      "title": "尚無資料",
+      "description": "新增帳戶即可開始查看財務儀表板。"
+    },
+    "stats": {
+      "netWorth": "淨資產",
+      "income": "每月收入",
+      "expense": "每月支出",
+      "savingsRate": "儲蓄率"
+    },
+    "cashFlow": {
+      "title": "現金流（6 個月）",
+      "income": "收入",
+      "expense": "支出"
+    },
+    "categoryChart": {
+      "title": "本月各分類支出",
+      "label": "分類",
+      "empty": "本月尚無支出紀錄。"
+    },
+    "accounts": {
+      "title": "帳戶"
+    },
+    "recentTransactions": {
+      "title": "最近交易",
+      "empty": "尚無交易紀錄。"
+    },
+    "budgets": {
+      "title": "預算",
+      "empty": "本月尚未設定預算。"
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "匯率無法取得，將使用 1:1 換算作為估算。",
+    "fallbackRateWarningAction": "設定匯率"
+  },
+  "accounts": {
+    "title": "帳戶",
+    "description": "集中查看所有餘額。",
+    "showArchived": "顯示已封存帳戶",
+    "archivedBadge": "已封存",
+    "noInstitution": "無金融機構",
+    "mixedCurrencies": "多種貨幣",
+    "actions": {
+      "new": "新增帳戶",
+      "edit": "編輯",
+      "archive": "封存",
+      "unarchive": "取消封存"
+    },
+    "archive": {
+      "title": "要封存帳戶嗎？",
+      "message": "帳戶「{{name}}」將不再顯示於主要檢視畫面。要繼續嗎？"
+    },
+    "empty": {
+      "title": "尚無帳戶",
+      "description": "建立第一個帳戶，開始追蹤餘額。"
+    },
+    "type": {
+      "checking": "支票帳戶",
+      "savings": "儲蓄帳戶",
+      "cash": "現金",
+      "credit_card": "信用卡",
+      "investment": "投資",
+      "goal": "目標"
+    },
+    "form": {
+      "newTitle": "新增帳戶",
+      "editTitle": "編輯帳戶",
+      "saveError": "無法儲存帳戶，請再試一次。",
+      "fields": {
+        "name": "名稱",
+        "type": "類型",
+        "currency": "貨幣",
+        "openingBalance": "期初餘額",
+        "institution": "金融機構",
+        "creditLimit": "信用額度",
+        "closingDay": "結帳日",
+        "dueDay": "繳款到期日"
+      },
+      "errors": {
+        "required": "此欄位為必填。",
+        "decimalAmount": "請輸入有效的數字金額。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    },
+    "detail": {
+      "back": "返回帳戶",
+      "notFound": "找不到帳戶",
+      "history": "交易紀錄",
+      "historyEmpty": {
+        "title": "此帳戶沒有交易",
+        "description": "記錄在此帳戶中的交易會顯示於此。"
+      },
+      "creditCard": {
+        "title": "信用卡",
+        "used": "已使用",
+        "owed": "目前餘額",
+        "limit": "額度",
+        "available": "可用額度",
+        "closingDay": "結帳日"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "新增金融機構",
+      "edit": "編輯金融機構",
+      "delete": "刪除金融機構"
+    },
+    "form": {
+      "newTitle": "新增金融機構",
+      "editTitle": "編輯金融機構",
+      "saveError": "無法儲存金融機構，請再試一次。",
+      "deleteInUseError": "此金融機構仍有連結的帳戶，無法刪除。",
+      "fields": {
+        "name": "名稱",
+        "icon": "圖示",
+        "color": "顏色"
+      },
+      "errors": {
+        "required": "此欄位為必填。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    },
+    "delete": {
+      "title": "刪除金融機構",
+      "message": "此操作無法復原。要刪除此金融機構嗎？"
+    },
+    "icon": {
+      "bank": "銀行",
+      "wallet": "錢包",
+      "chart": "投資",
+      "globe": "國際",
+      "archive": "其他"
+    }
+  },
+  "transactions": {
+    "title": "交易",
+    "description": "收入、支出與轉帳。",
+    "actions": {
+      "new": "新增交易",
+      "edit": "編輯",
+      "delete": "刪除"
+    },
+    "tabs": {
+      "transactions": "交易",
+      "recurring": "週期性交易"
+    },
+    "type": {
+      "income": "收入",
+      "expense": "支出",
+      "transfer": "轉帳"
+    },
+    "filters": {
+      "type": "類型",
+      "account": "帳戶",
+      "category": "分類",
+      "from": "開始日期",
+      "to": "結束日期",
+      "search": "搜尋",
+      "institution": "金融機構",
+      "all": "全部",
+      "clear": "清除篩選條件"
+    },
+    "empty": {
+      "title": "找不到交易",
+      "description": "調整篩選條件或新增交易。"
+    },
+    "projected": {
+      "title": "即將發生（預估）",
+      "badge": "預估"
+    },
+    "delete": {
+      "title": "刪除交易",
+      "message": "此操作無法復原。要刪除此交易嗎？"
+    },
+    "form": {
+      "newTitle": "新增交易",
+      "editTitle": "編輯交易",
+      "saveError": "無法儲存交易，請再試一次。",
+      "fields": {
+        "date": "日期",
+        "amount": "金額",
+        "currency": "貨幣",
+        "convertedAmount": "換算後金額",
+        "conversionFee": "換算手續費／稅金（選填）",
+        "account": "帳戶",
+        "fromAccount": "來源帳戶",
+        "toAccount": "目的帳戶",
+        "fromInstitution": "來源金融機構",
+        "toInstitution": "目的金融機構",
+        "anyInstitution": "任何金融機構",
+        "category": "分類",
+        "description": "說明",
+        "notes": "備註",
+        "repeat": "重複此交易",
+        "frequency": "頻率",
+        "interval": "每",
+        "selectPlaceholder": "選取"
+      },
+      "hints": {
+        "effectiveRate": "實際匯率：{{rate}}",
+        "recurringUnavailableCrossCurrency": "跨貨幣交易無法重複，因為每次發生時都需要重新設定匯率。"
+      },
+      "errors": {
+        "invalid": "儲存前請檢查必填欄位。",
+        "convertedAmountRequired": "儲存前請輸入換算後金額。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "每週",
+        "monthly": "每月",
+        "yearly": "每年"
+      },
+      "everyN": "每 {{n}}",
+      "nextOccurrence": "下次發生日期",
+      "actions": {
+        "new": "新增週期性規則"
+      },
+      "empty": {
+        "title": "尚無週期性規則",
+        "description": "將交易設為週期性交易後，規則會建立於此。"
+      },
+      "delete": {
+        "title": "刪除週期性規則",
+        "message": "這不會影響已記錄的交易，只會移除未來預估的發生項目。"
+      },
+      "form": {
+        "newTitle": "新增週期性規則",
+        "editTitle": "編輯週期性規則",
+        "saveError": "無法儲存週期性規則，請再試一次。",
+        "startDate": "開始日期",
+        "endDate": "結束日期（選填）"
+      }
+    }
+  },
+  "categories": {
+    "title": "分類",
+    "description": "依分類整理收入與支出。",
+    "showArchived": "顯示已封存分類",
+    "archivedBadge": "已封存",
+    "actions": {
+      "new": "新增分類",
+      "edit": "編輯",
+      "archive": "封存",
+      "unarchive": "取消封存",
+      "delete": "刪除",
+      "addChild": "新增子分類",
+      "collapse": "收合",
+      "expand": "展開",
+      "dragHandle": "重新排序"
+    },
+    "empty": {
+      "title": "尚無分類",
+      "description": "建立分類來整理交易。"
+    },
+    "sections": {
+      "income": "收入分類",
+      "expense": "支出分類"
+    },
+    "delete": {
+      "title": "要刪除分類嗎？",
+      "message": "此操作無法復原。要刪除分類「{{name}}」嗎？",
+      "blockedTitle": "無法刪除",
+      "blockedMessage": "此分類仍在使用中（交易：{{transactions}}；預算：{{budgets}}；子分類：{{children}}）。請改為封存分類。"
+    },
+    "form": {
+      "newTitle": "新增分類",
+      "editTitle": "編輯分類",
+      "saveError": "無法儲存分類，請再試一次。",
+      "fields": {
+        "name": "名稱",
+        "parent": "上層分類",
+        "noParent": "無（最上層分類）",
+        "color": "顏色",
+        "icon": "圖示"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    },
+    "icon": {
+      "tag": "標籤",
+      "home": "居家",
+      "archive": "封存",
+      "swap": "交通",
+      "wallet": "錢包",
+      "chart": "圖表",
+      "sun": "能源",
+      "alertTriangle": "警示",
+      "pencil": "教育",
+      "target": "目標",
+      "repeat": "週期性",
+      "globe": "全球"
+    }
+  },
+  "budgets": {
+    "title": "預算",
+    "description": "規劃每月各分類的支出金額。",
+    "list": {
+      "title": "每月上限"
+    },
+    "planner": {
+      "title": "依收入規劃預算",
+      "description": "將預期收入分配至各個分類。",
+      "total": "總計",
+      "expectedIncome": "預期收入",
+      "chartLabel": "分配",
+      "fixed": "固定",
+      "empty": "設定百分比即可查看分配結果。",
+      "save": "儲存分配",
+      "errors": {
+        "total": "分配總和不能超過 100%。",
+        "income": "請輸入本月預期收入。",
+        "save": "無法儲存分配，請再試一次。"
+      }
+    },
+    "monthLabel": "月份",
+    "actions": {
+      "new": "新增預算",
+      "edit": "編輯",
+      "delete": "刪除"
+    },
+    "totals": {
+      "budgeted": "預算金額",
+      "spent": "已支出",
+      "remaining": "剩餘"
+    },
+    "empty": {
+      "title": "本月尚無預算",
+      "description": "依分類設定預算，追蹤支出狀況。"
+    },
+    "state": {
+      "over": "超出預算",
+      "near": "接近上限"
+    },
+    "unbudgeted": {
+      "title": "未編列預算的支出",
+      "setBudget": "設定預算"
+    },
+    "delete": {
+      "title": "刪除預算",
+      "message": "此操作無法復原。要刪除此預算嗎？"
+    },
+    "form": {
+      "newTitle": "新增預算",
+      "editTitle": "編輯預算",
+      "saveError": "無法儲存預算，請再試一次。",
+      "fields": {
+        "month": "月份",
+        "category": "分類",
+        "selectCategory": "選取分類",
+        "amount": "金額",
+        "currency": "貨幣"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    }
+  },
+  "goals": {
+    "title": "目標",
+    "description": "為任何目標存錢並追蹤進度。",
+    "showArchived": "顯示已封存目標",
+    "archiveError": "無法更新目標的封存狀態，請再試一次。",
+    "accountLabel": "帳戶",
+    "archived": "已封存",
+    "overdue": "已逾期",
+    "actions": {
+      "new": "新增目標",
+      "edit": "編輯目標",
+      "archive": "封存目標",
+      "unarchive": "取消封存目標",
+      "deposit": "存入金額",
+      "withdraw": "提領",
+      "interest": "新增利息"
+    },
+    "empty": {
+      "title": "尚無目標",
+      "description": "建立目標，開始存錢並追蹤進度。"
+    },
+    "progress": {
+      "current": "已儲蓄",
+      "target": "目標",
+      "remaining": "剩餘",
+      "contribution": "建議存入金額",
+      "notConfigured": "未設定期限",
+      "frequency": "頻率",
+      "every": "每 {{n}}",
+      "label": "進度"
+    },
+    "frequency": {
+      "weekly": "每週",
+      "monthly": "每月",
+      "yearly": "每年"
+    },
+    "history": {
+      "title": "目標紀錄",
+      "empty": "尚無活動紀錄。"
+    },
+    "form": {
+      "newTitle": "新增目標",
+      "editTitle": "編輯目標",
+      "saveError": "無法儲存目標，請再試一次。",
+      "fields": {
+        "name": "名稱",
+        "targetAmount": "目標金額",
+        "currency": "貨幣",
+        "targetDate": "目標日期",
+        "targetDateHint": "選填：新增期限即可計算建議存入金額。",
+        "frequency": "存入頻率",
+        "interval": "每"
+      },
+      "errors": {
+        "required": "此欄位為必填。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "存入目標" },
+      "withdraw": { "title": "從目標提領" },
+      "interest": { "title": "新增利息" },
+      "fields": {
+        "amount": "金額",
+        "date": "日期",
+        "sourceAccount": "來源／目的帳戶",
+        "description": "說明"
+      },
+      "saveError": "無法記錄活動，請再試一次。"
+    }
+  },
+  "reports": {
+    "title": "報表",
+    "description": "分析一段時間內的收入、支出與餘額。",
+    "period": {
+      "month": "本月",
+      "3m": "最近 3 個月",
+      "6m": "最近 6 個月",
+      "12m": "最近 12 個月",
+      "custom": "自訂"
+    },
+    "empty": {
+      "title": "此期間沒有交易",
+      "description": "調整所選期間以查看報表。"
+    },
+    "charts": {
+      "incomeExpense": "收入與支出",
+      "netFlow": "淨現金流",
+      "byCategory": "依分類的支出",
+      "balanceTrend": "各帳戶餘額趨勢"
+    },
+    "series": {
+      "income": "收入",
+      "expense": "支出",
+      "netFlow": "淨現金流",
+      "categories": "分類"
+    }
+  },
+  "exchange": {
+    "title": "匯兌",
+    "description": "手動匯率，以及使用這些匯率的換算。",
+    "stats": {
+      "feesPaid": "已支付的換算手續費",
+      "needsAttention": "需要處理的交易",
+      "currenciesNeedingRate": "沒有匯率的貨幣"
+    },
+    "needsAttention": {
+      "title": "需要處理",
+      "description": "這些交易使用 1:1 估算進行換算，請以實際匯率修正，或在下方設定手動匯率。",
+      "empty": {
+        "title": "沒有需要處理的項目",
+        "description": "所有跨貨幣交易都已記錄實際匯率。"
+      },
+      "actions": {
+        "fix": "修正"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "沒有匯率的貨幣",
+      "description": "這些帳戶貨幣目前沒有換算至顯示貨幣的實際匯率，因此其中的餘額會以 1:1 估算顯示，且不對應任何特定交易。",
+      "empty": {
+        "title": "沒有貨幣需要匯率",
+        "description": "所有帳戶貨幣都已對應至實際匯率。"
+      }
+    },
+    "manualRates": {
+      "title": "手動匯率",
+      "description": "手動設定的匯率會優先於自動提供者，適合使用今日銀行實際匯率，或在未設定提供者時使用。",
+      "actions": {
+        "add": "新增匯率",
+        "edit": "編輯匯率",
+        "delete": "刪除匯率"
+      },
+      "empty": {
+        "title": "尚無手動匯率",
+        "description": "新增貨幣對的匯率，即可取代自動的 1:1 備援匯率。"
+      },
+      "delete": {
+        "title": "刪除手動匯率",
+        "message": "此操作無法復原。要刪除此匯率嗎？"
+      },
+      "form": {
+        "newTitle": "新增手動匯率",
+        "editTitle": "編輯手動匯率",
+        "saveError": "無法儲存匯率，請再試一次。",
+        "fields": {
+          "baseCode": "來源貨幣",
+          "quoteCode": "目標貨幣",
+          "rate": "匯率",
+          "asOf": "生效日期"
+        },
+        "errors": {
+          "invalid": "請輸入有效的匯率。",
+          "samePair": "請選擇兩種不同的貨幣。"
+        },
+        "actions": {
+          "cancel": "取消",
+          "save": "儲存"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "description": "外觀、語言與示範資料偏好設定。",
+    "appearance": {
+      "title": "外觀",
+      "theme": "主題",
+      "light": "淺色",
+      "dark": "深色",
+      "language": "語言"
+    },
+    "currency": {
+      "title": "顯示貨幣",
+      "description": "用於在不同貨幣的帳戶間換算與加總，例如儀表板上的淨資產。"
+    },
+    "agents": {
+      "title": "AI 代理程式",
+      "description": "透過 MCP 使用多個提供者與工具，操作你的財務資料的 AI 助手。預設停用，可在 Docker Compose（AGENTS_ENABLED）中設定。",
+      "disabled": "已停用",
+      "enabled": "已啟用"
+    }
+  },
+  "auth": {
+    "logout": "登出",
+    "fields": {
+      "email": "電子郵件",
+      "password": "密碼",
+      "displayName": "顯示名稱",
+      "invitationToken": "邀請權杖"
+    },
+    "login": {
+      "title": "登入",
+      "description": "使用你的 LealFinance 帳戶繼續。",
+      "action": "登入",
+      "invited": "有邀請嗎？"
+    },
+    "register": {
+      "title": "接受邀請",
+      "description": "使用管理員寄送的邀請建立帳戶。",
+      "action": "建立帳戶",
+      "passwordHint": "請使用至少 12 個字元。",
+      "backToLogin": "返回登入",
+      "setup": {
+        "title": "建立管理員帳戶",
+        "description": "這是此執行個體上的第一個帳戶，將擁有完整的管理員存取權。"
+      }
+    }
+  },
+  "admin": {
+    "title": "使用者與邀請",
+    "description": "管理此 LealFinance 執行個體的存取權。",
+    "roles": { "member": "成員", "admin": "管理員" },
+    "users": { "title": "使用者", "role": "角色", "active": "啟用中", "empty": "找不到使用者。" },
+    "invitations": {
+      "title": "邀請",
+      "createTitle": "建立邀請",
+      "create": "邀請",
+      "tokenOnce": "此權杖與註冊連結只會顯示這一次。離開前請先儲存。",
+      "copyLink": "複製註冊連結",
+      "revoke": "撤銷",
+      "empty": "找不到邀請。"
+    }
+  },
+  "errors": {
+    "error": { "generic": "發生錯誤，請再試一次。" },
+    "auth": {
+      "invalid_credentials": "電子郵件或密碼不正確。",
+      "csrf_invalid": "此表單已過期。請重新整理頁面後再試一次。",
+      "last_admin": "至少需要一位啟用中的管理員。",
+      "account_inactive": "此帳戶目前未啟用。",
+      "admin_required": "需要管理員存取權。"
+    },
+    "invitation": {
+      "not_found": "邀請無效。",
+      "expired": "此邀請已過期。",
+      "revoked": "此邀請已撤銷。",
+      "already_accepted": "此邀請已接受。",
+      "already_pending": "此電子郵件已有待處理的邀請。"
+    },
+    "user": { "email_taken": "已有帳戶使用此電子郵件。" }
+  }
+}

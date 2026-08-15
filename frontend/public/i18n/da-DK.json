@@ -1,0 +1,731 @@
+{
+  "app": {
+    "title": "LealFinance"
+  },
+  "common": {
+    "actions": {
+      "close": "Luk",
+      "cancel": "Annuller",
+      "confirm": "Bekræft",
+      "save": "Gem",
+      "saving": "Gemmer…"
+    }
+  },
+  "layout": {
+    "nav": {
+      "dashboard": "Oversigt",
+      "accounts": "Konti",
+      "transactions": "Transaktioner",
+      "categories": "Kategorier",
+      "budgets": "Budgetter",
+      "goals": "Mål",
+      "reports": "Rapporter",
+      "exchange": "Valutakurser",
+      "settings": "Indstillinger",
+      "adminUsers": "Brugere og invitationer",
+      "sections": {
+        "accounts": "Konti",
+        "analysis": "Analyse",
+        "setup": "Opsætning",
+        "admin": "Administration"
+      }
+    },
+    "sidebar": {
+      "openMenu": "Åbn menu",
+      "expand": "Udvid sidepanelet",
+      "collapse": "Skjul sidepanelet"
+    },
+    "themeToggle": {
+      "switchToLight": "Skift til lyst tema",
+      "switchToDark": "Skift til mørkt tema"
+    },
+    "languageSwitcher": {
+      "label": "Sprog",
+      "options": {
+        "en-US": "English",
+        "pt-BR": "Português (Brasil)",
+        "es-ES": "Español (España)",
+        "fr-FR": "Français (France)",
+        "de-DE": "Deutsch (Deutschland)",
+        "it-IT": "Italiano (Italia)",
+        "nl-NL": "Nederlands (Nederland)",
+        "pl-PL": "Polski (Polska)",
+        "ru-RU": "Русский (Россия)",
+        "uk-UA": "Українська (Україна)",
+        "tr-TR": "Türkçe (Türkiye)",
+        "ar": "العربية",
+        "he-IL": "עברית (ישראל)",
+        "hi-IN": "हिन्दी (भारत)",
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "ja-JP": "日本語",
+        "ko-KR": "한국어",
+        "id-ID": "Bahasa Indonesia",
+        "vi-VN": "Tiếng Việt",
+        "th-TH": "ไทย",
+        "sv-SE": "Svenska (Sverige)",
+        "da-DK": "Dansk (Danmark)",
+        "nb-NO": "Norsk bokmål (Norge)",
+        "fi-FI": "Suomi (Suomi)",
+        "cs-CZ": "Čeština (Česko)",
+        "ro-RO": "Română (România)",
+        "el-GR": "Ελληνικά (Ελλάδα)"
+      }
+    },
+    "balanceToggle": {
+      "hide": "Skjul saldi",
+      "show": "Vis saldi"
+    },
+    "search": {
+      "trigger": "Søg"
+    },
+    "commandPalette": {
+      "placeholder": "Skriv en kommando eller søg…",
+      "empty": "Ingen resultater fundet.",
+      "hints": {
+        "navigate": "naviger",
+        "select": "vælg",
+        "close": "luk"
+      },
+      "groups": {
+        "quickActions": "Hurtige handlinger",
+        "goTo": "Gå til",
+        "accounts": "Konti",
+        "categories": "Kategorier",
+        "budgets": "Budgetter",
+        "transactions": "Transaktioner"
+      },
+      "actions": {
+        "newTransaction": "Ny transaktion",
+        "newAccount": "Ny konto",
+        "newCategory": "Ny kategori",
+        "newBudget": "Nyt budget",
+        "configureLanguage": "Konfigurer sprog",
+        "configureCurrency": "Konfigurer visningsvaluta",
+        "toggleTheme": "Skift tema",
+        "toggleBalances": "Vis eller skjul saldi"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Oversigt",
+    "welcome": "Velkommen til LealFinance",
+    "empty": {
+      "title": "Ingen data endnu",
+      "description": "Tilføj en konto for at begynde at se din økonomiske oversigt."
+    },
+    "stats": {
+      "netWorth": "Nettoformue",
+      "income": "Månedlige indtægter",
+      "expense": "Månedlige udgifter",
+      "savingsRate": "Opsparingsprocent"
+    },
+    "cashFlow": {
+      "title": "Pengestrøm (6 måneder)",
+      "income": "Indtægter",
+      "expense": "Udgifter"
+    },
+    "categoryChart": {
+      "title": "Forbrug efter kategori (indeværende måned)",
+      "label": "Kategorier",
+      "empty": "Der er endnu ikke registreret noget forbrug denne måned."
+    },
+    "accounts": {
+      "title": "Konti"
+    },
+    "recentTransactions": {
+      "title": "Seneste transaktioner",
+      "empty": "Ingen transaktioner registreret endnu."
+    },
+    "budgets": {
+      "title": "Budgetter",
+      "empty": "Der er ikke lagt noget budget for denne måned endnu."
+    }
+  },
+  "currency": {
+    "fallbackRateWarning": "Valutakurs ikke tilgængelig – bruger en 1:1-omregning som tilnærmelse.",
+    "fallbackRateWarningAction": "Angiv en kurs"
+  },
+  "accounts": {
+    "title": "Konti",
+    "description": "Dine saldi samlet ét sted.",
+    "showArchived": "Vis arkiverede konti",
+    "archivedBadge": "Arkiveret",
+    "noInstitution": "Ingen institution",
+    "mixedCurrencies": "Flere valutaer",
+    "actions": {
+      "new": "Ny konto",
+      "edit": "Rediger",
+      "archive": "Arkivér",
+      "unarchive": "Gendan"
+    },
+    "archive": {
+      "title": "Arkivér konto?",
+      "message": "Kontoen „{{name}}“ vises ikke længere i de vigtigste oversigter. Vil du fortsætte?"
+    },
+    "empty": {
+      "title": "Ingen konti endnu",
+      "description": "Opret din første konto for at begynde at holde styr på dine saldi."
+    },
+    "type": {
+      "checking": "Lønkonto",
+      "savings": "Opsparingskonto",
+      "cash": "Kontanter",
+      "credit_card": "Kreditkort",
+      "investment": "Investeringer",
+      "goal": "Mål"
+    },
+    "form": {
+      "newTitle": "Ny konto",
+      "editTitle": "Rediger konto",
+      "saveError": "Kontoen kunne ikke gemmes. Prøv igen.",
+      "fields": {
+        "name": "Navn",
+        "type": "Type",
+        "currency": "Valuta",
+        "openingBalance": "Startsaldo",
+        "institution": "Institution",
+        "creditLimit": "Kreditgrænse",
+        "closingDay": "Lukningsdag",
+        "dueDay": "Forfaldsdag"
+      },
+      "errors": {
+        "required": "Dette felt er påkrævet.",
+        "decimalAmount": "Angiv et gyldigt beløb."
+      },
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      }
+    },
+    "detail": {
+      "back": "Tilbage til konti",
+      "notFound": "Kontoen blev ikke fundet",
+      "history": "Transaktionshistorik",
+      "historyEmpty": {
+        "title": "Ingen transaktioner på denne konto",
+        "description": "Transaktioner, der registreres på denne konto, vises her."
+      },
+      "creditCard": {
+        "title": "Kreditkort",
+        "used": "Forbrugt",
+        "owed": "Aktuel saldo",
+        "limit": "Grænse",
+        "available": "Til rådighed",
+        "closingDay": "Lukning"
+      }
+    }
+  },
+  "institutions": {
+    "actions": {
+      "new": "Ny institution",
+      "edit": "Rediger institution",
+      "delete": "Slet institution"
+    },
+    "form": {
+      "newTitle": "Ny institution",
+      "editTitle": "Rediger institution",
+      "saveError": "Institutionen kunne ikke gemmes. Prøv igen.",
+      "deleteInUseError": "Denne institution har stadig tilknyttede konti og kan ikke slettes.",
+      "fields": {
+        "name": "Navn",
+        "icon": "Ikon",
+        "color": "Farve"
+      },
+      "errors": {
+        "required": "Dette felt er påkrævet."
+      },
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      }
+    },
+    "delete": {
+      "title": "Slet institution",
+      "message": "Denne handling kan ikke fortrydes. Vil du slette denne institution?"
+    },
+    "icon": {
+      "bank": "Bank",
+      "wallet": "Tegnebog",
+      "chart": "Investeringer",
+      "globe": "International",
+      "archive": "Andet"
+    }
+  },
+  "transactions": {
+    "title": "Transaktioner",
+    "description": "Indtægter, udgifter og overførsler.",
+    "actions": {
+      "new": "Ny transaktion",
+      "edit": "Rediger",
+      "delete": "Slet"
+    },
+    "tabs": {
+      "transactions": "Transaktioner",
+      "recurring": "Gentagne"
+    },
+    "type": {
+      "income": "Indtægt",
+      "expense": "Udgift",
+      "transfer": "Overførsel"
+    },
+    "filters": {
+      "type": "Type",
+      "account": "Konto",
+      "category": "Kategori",
+      "from": "Fra",
+      "to": "Til",
+      "search": "Søg",
+      "institution": "Institution",
+      "all": "Alle",
+      "clear": "Ryd filtre"
+    },
+    "empty": {
+      "title": "Ingen transaktioner fundet",
+      "description": "Juster filtrene, eller tilføj en ny transaktion."
+    },
+    "projected": {
+      "title": "Kommende (forventede)",
+      "badge": "Forventet"
+    },
+    "delete": {
+      "title": "Slet transaktion",
+      "message": "Denne handling kan ikke fortrydes. Vil du slette denne transaktion?"
+    },
+    "form": {
+      "newTitle": "Ny transaktion",
+      "editTitle": "Rediger transaktion",
+      "saveError": "Transaktionen kunne ikke gemmes. Prøv igen.",
+      "fields": {
+        "date": "Dato",
+        "amount": "Beløb",
+        "currency": "Valuta",
+        "convertedAmount": "Omregnet beløb",
+        "conversionFee": "Omregningsgebyr/-skat (valgfrit)",
+        "account": "Konto",
+        "fromAccount": "Kildekonto",
+        "toAccount": "Destinationskonto",
+        "fromInstitution": "Kildeinstitution",
+        "toInstitution": "Destinationsinstitution",
+        "anyInstitution": "Enhver institution",
+        "category": "Kategori",
+        "description": "Beskrivelse",
+        "notes": "Noter",
+        "repeat": "Gentag denne transaktion",
+        "frequency": "Hyppighed",
+        "interval": "Hver",
+        "selectPlaceholder": "Vælg"
+      },
+      "hints": {
+        "effectiveRate": "Effektiv kurs: {{rate}}",
+        "recurringUnavailableCrossCurrency": "Gentagelse er ikke tilgængelig for en transaktion i flere valutaer – kursen skulle angives igen for hver forekomst."
+      },
+      "errors": {
+        "invalid": "Kontrollér de påkrævede felter, før du gemmer.",
+        "convertedAmountRequired": "Angiv det omregnede beløb, før du gemmer."
+      },
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      }
+    },
+    "recurring": {
+      "frequency": {
+        "weekly": "Ugentligt",
+        "monthly": "Månedligt",
+        "yearly": "Årligt"
+      },
+      "everyN": "hver {{n}}",
+      "nextOccurrence": "Næste forekomst",
+      "actions": {
+        "new": "Ny gentagelsesregel"
+      },
+      "empty": {
+        "title": "Ingen gentagelsesregler endnu",
+        "description": "Når du gør en transaktion gentagen, oprettes der en regel her."
+      },
+      "delete": {
+        "title": "Slet gentagelsesregel",
+        "message": "Dette påvirker ikke registrerede transaktioner – kun fremtidige forventede forekomster forsvinder."
+      },
+      "form": {
+        "newTitle": "Ny gentagelsesregel",
+        "editTitle": "Rediger gentagelsesregel",
+        "saveError": "Gentagelsesreglen kunne ikke gemmes. Prøv igen.",
+        "startDate": "Start",
+        "endDate": "Slut (valgfrit)"
+      }
+    }
+  },
+  "categories": {
+    "title": "Kategorier",
+    "description": "Organiser indtægter og udgifter efter kategori.",
+    "showArchived": "Vis arkiverede kategorier",
+    "archivedBadge": "Arkiveret",
+    "actions": {
+      "new": "Ny kategori",
+      "edit": "Rediger",
+      "archive": "Arkivér",
+      "unarchive": "Gendan",
+      "delete": "Slet",
+      "addChild": "Ny underkategori",
+      "collapse": "Fold sammen",
+      "expand": "Udvid",
+      "dragHandle": "Omarranger"
+    },
+    "empty": {
+      "title": "Ingen kategorier endnu",
+      "description": "Opret kategorier for at organisere dine transaktioner."
+    },
+    "sections": {
+      "income": "Indtægtskategorier",
+      "expense": "Udgiftskategorier"
+    },
+    "delete": {
+      "title": "Slet kategori?",
+      "message": "Denne handling kan ikke fortrydes. Vil du slette kategorien „{{name}}“?",
+      "blockedTitle": "Kan ikke slette",
+      "blockedMessage": "Denne kategori er stadig i brug: {{transactions}} transaktioner, {{budgets}} budgetter og {{children}} underkategorier bruger den. Arkivér kategorien i stedet for at slette den."
+    },
+    "form": {
+      "newTitle": "Ny kategori",
+      "editTitle": "Rediger kategori",
+      "saveError": "Kategorien kunne ikke gemmes. Prøv igen.",
+      "fields": {
+        "name": "Navn",
+        "parent": "Overordnet kategori",
+        "noParent": "Ingen (kategori på øverste niveau)",
+        "color": "Farve",
+        "icon": "Ikon"
+      },
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      }
+    },
+    "icon": {
+      "tag": "Mærkat",
+      "home": "Hjem",
+      "archive": "Arkiv",
+      "swap": "Transport",
+      "wallet": "Tegnebog",
+      "chart": "Diagram",
+      "sun": "Energi",
+      "alertTriangle": "Advarsel",
+      "pencil": "Uddannelse",
+      "target": "Mål",
+      "repeat": "Gentagelse",
+      "globe": "Global"
+    }
+  },
+  "budgets": {
+    "title": "Budgetter",
+    "description": "Planlæg, hvor meget der skal bruges i hver kategori hver måned.",
+    "list": {
+      "title": "Månedlige grænser"
+    },
+    "planner": {
+      "title": "Indkomstbaseret budget",
+      "description": "Fordel din forventede indkomst på kategorier.",
+      "total": "I alt",
+      "expectedIncome": "Forventet indkomst",
+      "chartLabel": "Fordeling",
+      "fixed": "Fast",
+      "empty": "Angiv procenter for at se din fordeling.",
+      "save": "Gem fordeling",
+      "errors": {
+        "total": "Fordelingen må ikke overstige 100 %.",
+        "income": "Angiv den forventede indkomst for denne måned.",
+        "save": "Fordelingen kunne ikke gemmes. Prøv igen."
+      }
+    },
+    "monthLabel": "Måned",
+    "actions": {
+      "new": "Nyt budget",
+      "edit": "Rediger",
+      "delete": "Slet"
+    },
+    "totals": {
+      "budgeted": "Budgetteret",
+      "spent": "Forbrugt",
+      "remaining": "Resterende"
+    },
+    "empty": {
+      "title": "Intet budget for denne måned",
+      "description": "Læg et budget pr. kategori for at følge dit forbrug."
+    },
+    "state": {
+      "over": "Over budget",
+      "near": "Tæt på grænsen"
+    },
+    "unbudgeted": {
+      "title": "Forbrug uden budget",
+      "setBudget": "Læg budget"
+    },
+    "delete": {
+      "title": "Slet budget",
+      "message": "Denne handling kan ikke fortrydes. Vil du slette dette budget?"
+    },
+    "form": {
+      "newTitle": "Nyt budget",
+      "editTitle": "Rediger budget",
+      "saveError": "Budgettet kunne ikke gemmes. Prøv igen.",
+      "fields": {
+        "month": "Måned",
+        "category": "Kategori",
+        "selectCategory": "Vælg en kategori",
+        "amount": "Beløb",
+        "currency": "Valuta"
+      },
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      }
+    }
+  },
+  "goals": {
+    "title": "Mål",
+    "description": "Spar op til et mål, og følg din udvikling.",
+    "showArchived": "Vis arkiverede mål",
+    "archiveError": "Målets arkivstatus kunne ikke opdateres. Prøv igen.",
+    "accountLabel": "Konto",
+    "archived": "Arkiveret",
+    "overdue": "Overskredet",
+    "actions": {
+      "new": "Nyt mål",
+      "edit": "Rediger mål",
+      "archive": "Arkivér mål",
+      "unarchive": "Gendan mål",
+      "deposit": "Tilføj penge",
+      "withdraw": "Hæv",
+      "interest": "Tilføj renter"
+    },
+    "empty": {
+      "title": "Ingen mål endnu",
+      "description": "Opret et mål for at begynde at spare op og følge din udvikling."
+    },
+    "progress": {
+      "current": "Opsparet",
+      "target": "Mål",
+      "remaining": "Resterende",
+      "contribution": "Foreslået indbetaling",
+      "notConfigured": "Ingen deadline",
+      "frequency": "Hyppighed",
+      "every": "hver {{n}}",
+      "label": "Fremgang"
+    },
+    "frequency": {
+      "weekly": "Ugentligt",
+      "monthly": "Månedligt",
+      "yearly": "Årligt"
+    },
+    "history": {
+      "title": "Målhistorik",
+      "empty": "Ingen aktivitet registreret."
+    },
+    "form": {
+      "newTitle": "Nyt mål",
+      "editTitle": "Rediger mål",
+      "saveError": "Målet kunne ikke gemmes. Prøv igen.",
+      "fields": {
+        "name": "Navn",
+        "targetAmount": "Målbeløb",
+        "currency": "Valuta",
+        "targetDate": "Måldato",
+        "targetDateHint": "Valgfrit: Tilføj en deadline for at beregne den foreslåede indbetaling.",
+        "frequency": "Hyppighed for indbetaling",
+        "interval": "Hver"
+      },
+      "errors": {
+        "required": "Dette felt er påkrævet."
+      },
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      }
+    },
+    "entries": {
+      "deposit": { "title": "Tilføj penge til mål" },
+      "withdraw": { "title": "Hæv fra mål" },
+      "interest": { "title": "Tilføj renter" },
+      "fields": {
+        "amount": "Beløb",
+        "date": "Dato",
+        "sourceAccount": "Kilde-/destinationskonto",
+        "description": "Beskrivelse"
+      },
+      "saveError": "Aktiviteten kunne ikke registreres. Prøv igen."
+    }
+  },
+  "reports": {
+    "title": "Rapporter",
+    "description": "Analysér indtægter, udgifter og saldi over tid.",
+    "period": {
+      "month": "Denne måned",
+      "3m": "Sidste 3 måneder",
+      "6m": "Sidste 6 måneder",
+      "12m": "Sidste 12 måneder",
+      "custom": "Brugerdefineret"
+    },
+    "empty": {
+      "title": "Ingen transaktioner i denne periode",
+      "description": "Juster den valgte periode for at se dine rapporter."
+    },
+    "charts": {
+      "incomeExpense": "Indtægter vs. udgifter",
+      "netFlow": "Netto pengestrøm",
+      "byCategory": "Forbrug efter kategori",
+      "balanceTrend": "Saldoens udvikling pr. konto"
+    },
+    "series": {
+      "income": "Indtægter",
+      "expense": "Udgifter",
+      "netFlow": "Netto pengestrøm",
+      "categories": "Kategorier"
+    }
+  },
+  "exchange": {
+    "title": "Valutakurser",
+    "description": "Manuelle valutakurser og de omregninger, der brugte dem.",
+    "stats": {
+      "feesPaid": "Betalte omregningsgebyrer",
+      "needsAttention": "Transaktioner, der kræver opmærksomhed",
+      "currenciesNeedingRate": "Valutaer uden kurs"
+    },
+    "needsAttention": {
+      "title": "Kræver opmærksomhed",
+      "description": "Disse transaktioner blev omregnet med en 1:1-tilnærmelse – ret dem med den faktiske kurs, eller angiv en manuel kurs nedenfor.",
+      "empty": {
+        "title": "Intet kræver opmærksomhed",
+        "description": "Alle transaktioner på tværs af valutaer har en faktisk kurs registreret."
+      },
+      "actions": {
+        "fix": "Ret"
+      }
+    },
+    "currenciesNeedingRate": {
+      "title": "Valutaer uden kurs",
+      "description": "Disse kontovalutaer har endnu ingen faktisk kurs til din visningsvaluta, så saldi i dem vises som en 1:1-tilnærmelse – ikke knyttet til en bestemt transaktion.",
+      "empty": {
+        "title": "Ingen valuta mangler en kurs",
+        "description": "Alle kontovalutaer omregnes allerede med en faktisk kurs."
+      }
+    },
+    "manualRates": {
+      "title": "Manuelle kurser",
+      "description": "Kurser, du angiver manuelt, har prioritet over den automatiske udbyder – nyttigt til dagens faktiske bankkurs, eller når ingen udbyder er konfigureret.",
+      "actions": {
+        "add": "Tilføj kurs",
+        "edit": "Rediger kurs",
+        "delete": "Slet kurs"
+      },
+      "empty": {
+        "title": "Ingen manuelle kurser endnu",
+        "description": "Tilføj en kurs for et valutapar for at bruge den i stedet for den automatiske 1:1-fallback."
+      },
+      "delete": {
+        "title": "Slet manuel kurs",
+        "message": "Denne handling kan ikke fortrydes. Vil du slette denne kurs?"
+      },
+      "form": {
+        "newTitle": "Ny manuel kurs",
+        "editTitle": "Rediger manuel kurs",
+        "saveError": "Kursen kunne ikke gemmes. Prøv igen.",
+        "fields": {
+          "baseCode": "Fra valuta",
+          "quoteCode": "Til valuta",
+          "rate": "Kurs",
+          "asOf": "Gældende fra"
+        },
+        "errors": {
+          "invalid": "Angiv en gyldig kurs.",
+          "samePair": "Vælg to forskellige valutaer."
+        },
+        "actions": {
+          "cancel": "Annuller",
+          "save": "Gem"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Indstillinger",
+    "description": "Udseende, sprog og præferencer for demodata.",
+    "appearance": {
+      "title": "Udseende",
+      "theme": "Tema",
+      "light": "Lyst",
+      "dark": "Mørkt",
+      "language": "Sprog"
+    },
+    "currency": {
+      "title": "Visningsvaluta",
+      "description": "Bruges til at omregne og tilføje værdier på tværs af konti med forskellige valutaer, f.eks. nettoformuen på oversigten."
+    },
+    "agents": {
+      "title": "AI-agenter",
+      "description": "AI-assistenter til dine finansielle data med flere udbydere og værktøjer via MCP. De er deaktiveret som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
+      "disabled": "Deaktiveret",
+      "enabled": "Aktiveret"
+    }
+  },
+  "auth": {
+    "logout": "Log ud",
+    "fields": {
+      "email": "E-mail",
+      "password": "Adgangskode",
+      "displayName": "Visningsnavn",
+      "invitationToken": "Invitationstoken"
+    },
+    "login": {
+      "title": "Log ind",
+      "description": "Brug din LealFinance-konto til at fortsætte.",
+      "action": "Log ind",
+      "invited": "Har du en invitation?"
+    },
+    "register": {
+      "title": "Accepter invitation",
+      "description": "Opret din konto med invitationen, som en administrator har sendt.",
+      "action": "Opret konto",
+      "passwordHint": "Brug mindst 12 tegn.",
+      "backToLogin": "Tilbage til login",
+      "setup": {
+        "title": "Opret administratorkontoen",
+        "description": "Dette er den første konto på denne installation – den får fuld administratoradgang."
+      }
+    }
+  },
+  "admin": {
+    "title": "Brugere og invitationer",
+    "description": "Administrer adgangen til denne LealFinance-installation.",
+    "roles": { "member": "Medlem", "admin": "Administrator" },
+    "users": { "title": "Brugere", "role": "Rolle", "active": "Aktiv", "empty": "Ingen brugere fundet." },
+    "invitations": {
+      "title": "Invitationer",
+      "createTitle": "Opret invitation",
+      "create": "Inviter",
+      "tokenOnce": "Dette token og registreringslinket vises kun nu. Gem dem, før du forlader siden.",
+      "copyLink": "Kopiér registreringslink",
+      "revoke": "Tilbagekald",
+      "empty": "Ingen invitationer fundet."
+    }
+  },
+  "errors": {
+    "error": { "generic": "Noget gik galt. Prøv igen." },
+    "auth": {
+      "invalid_credentials": "E-mailadressen eller adgangskoden er forkert.",
+      "csrf_invalid": "Denne formular er udløbet. Opdater siden, og prøv igen.",
+      "last_admin": "Der kræves mindst én aktiv administrator.",
+      "account_inactive": "Denne konto er inaktiv.",
+      "admin_required": "Administratoradgang er påkrævet."
+    },
+    "invitation": {
+      "not_found": "Invitationen er ugyldig.",
+      "expired": "Denne invitation er udløbet.",
+      "revoked": "Denne invitation er trukket tilbage.",
+      "already_accepted": "Denne invitation er allerede accepteret.",
+      "already_pending": "Der er allerede en afventende invitation til denne e-mailadresse."
+    },
+    "user": { "email_taken": "Der findes allerede en konto med denne e-mailadresse." }
+  }
+}

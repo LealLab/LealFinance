@@ -96,3 +96,4 @@ tasks:
     dir: frontend
     cmds:
       - pnpm exec transloco-keys-manager find
+      - node scripts/validate-i18n.mjs
