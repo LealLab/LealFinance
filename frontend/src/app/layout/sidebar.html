@@ -15,7 +15,7 @@
           routerLinkActive="border-accent bg-surface-sunken text-content-primary"
           [routerLinkActiveOptions]="{ exact: item.path === '/' }"
           (click)="navigated.emit()"
-          class="sidebar-nav-link flex items-center gap-3 rounded-md border-l-2 border-transparent px-3 py-2 text-sm font-medium text-content-muted hover:bg-surface-sunken hover:text-content-primary"
+          class="flex items-center gap-3 rounded-md border-s-2 border-transparent px-3 py-2 text-sm font-medium text-content-muted hover:bg-surface-sunken hover:text-content-primary"
         >
           <app-icon [name]="item.icon" [size]="18" />
           <span [class]="labelClass()">{{ t(item.labelKey) }}</span>

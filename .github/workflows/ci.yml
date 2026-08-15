@@ -97,7 +97,9 @@ jobs:
         run: pnpm run lint
 
       - name: Validate translations (no missing/orphaned keys)
-        run: pnpm exec transloco-keys-manager find
+        run: |
+          pnpm exec transloco-keys-manager find
+          node scripts/validate-i18n.mjs
 
       - name: Test
         run: pnpm exec ng test
