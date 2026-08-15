@@ -176,9 +176,13 @@ action opens the manual-rate form pre-filled with that pair.
 
 **Converted-value display.** Accounts (list and detail) and Goals show
 the display-currency equivalent next to a foreign-currency amount - `€
-2.000,00 (US$ 2.000,00)` - using the same rate resolution (manual rate,
-then the mock table, then a flagged 1:1 fallback) as the dashboard's net
-worth figure. `domain/calc/aggregations.ts`'s `converterFromRates` (turns
+2.000,00 (US$ 2.000,00)` - using the same rate resolution as the dashboard's
+net worth figure. In production, the HTTP exchange-rate repository requests
+`GET /api/v1/meta/exchange-rate`, which applies the manual-rate, cached
+provider, live-provider, and flagged 1:1 fallback precedence described above;
+manual-rate changes use `/api/v1/manual-rates`. Tests that inject mock
+repositories use an equivalent in-memory table. `domain/calc/aggregations.ts`'s
+`converterFromRates` (turns
 a batch of fetched `ExchangeRate`s into a `CurrencyConverter`) and
 `convertedOrNull` (only returns a value when conversion actually changed
 the currency) are the shared helpers behind this - reused by
