@@ -15,11 +15,37 @@ async def test_readiness_ok_when_dependencies_reachable(client: AsyncClient) -> 
     assert body["database"] is True
 
 
-async def test_currencies_returns_seeded_brl(client: AsyncClient) -> None:
+async def test_currencies_returns_supported_locale_currencies(client: AsyncClient) -> None:
     response = await client.get("/api/v1/meta/currencies")
     assert response.status_code == 200
-    codes = [c["code"] for c in response.json()]
-    assert "BRL" in codes
+    currencies = response.json()
+    by_code = {currency["code"]: currency for currency in currencies}
+    assert {
+        "BRL",
+        "USD",
+        "EUR",
+        "GBP",
+        "PLN",
+        "RUB",
+        "UAH",
+        "TRY",
+        "AED",
+        "ILS",
+        "INR",
+        "CNY",
+        "TWD",
+        "JPY",
+        "KRW",
+        "IDR",
+        "VND",
+        "THB",
+        "SEK",
+        "DKK",
+        "NOK",
+        "CZK",
+        "RON",
+    } <= by_code.keys()
+    assert by_code["JPY"]["decimal_digits"] == 0
 
 
 async def test_public_settings_has_typed_agents_flag(client: AsyncClient) -> None:
