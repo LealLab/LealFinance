@@ -110,13 +110,13 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/auth/invitations` | admin | Body `{email, role}`. Returns the raw token once. |
 | GET | `/auth/invitations` | admin | Never includes the token. |
 | DELETE | `/auth/invitations/{id}` | admin | Revoke. |
-| POST | `/auth/register` | public | Body `{email, token, password, display_name}`. Logs in on success. |
+| POST | `/auth/register` | public | Body `{email, token, password, display_name, base_currency?}`. Logs in on success; the selected base currency also initializes display currency. |
 | POST | `/auth/login` | public | Body `{email, password}`. |
 | POST | `/auth/logout` | user | 204. |
 | GET | `/auth/me` | user | |
 | GET | `/auth/users` | admin | |
 | PATCH | `/auth/users/{id}` | admin | `{role?, is_active?, display_name?}`. |
-| GET/PATCH | `/auth/preferences` | user | `{locale, theme, display_currency, balances_hidden}` - stored as columns on `users`, not localStorage. |
+| GET/PATCH | `/auth/preferences` | user | `{locale, theme, base_currency, display_currency, balances_hidden}` - stored as columns on `users`, not localStorage; only display currency is changeable here. |
 | GET/POST | `/institutions` | user | |
 | GET/PATCH | `/institutions/{id}` | user | |
 | POST | `/institutions/{id}/archive` | user | Body `{archived}`. |

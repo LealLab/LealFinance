@@ -6,9 +6,11 @@ import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockBudgetPlanRepository } from '../../data/mock/mock-budget-plan.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -33,6 +35,7 @@ describe('Budgets', () => {
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: BudgetPlanRepository, useClass: MockBudgetPlanRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
       ],
     }).compileComponents();

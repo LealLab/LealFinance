@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MetadataService } from '../../core/metadata.service';
+import { PreferenceService } from '../../core/preference.service';
 import { GoalRepository } from '../../data/goal.repository';
 import { Goal } from '../../domain/models/goal';
 import { RecurringFrequency } from '../../domain/models/recurring';
@@ -22,6 +23,7 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
 export class GoalFormModal {
   private readonly goals = inject(GoalRepository);
   private readonly metadata = inject(MetadataService);
+  private readonly preferences = inject(PreferenceService);
   private readonly fb = inject(FormBuilder);
 
   readonly open = model.required<boolean>();
@@ -30,6 +32,9 @@ export class GoalFormModal {
 
   protected readonly currencyOptions = computed(() =>
     this.metadata.currencies().map((row) => row.code),
+  );
+  private readonly baseCurrency = computed(
+    () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );
   protected readonly frequencies = FREQUENCIES;
   protected readonly saving = signal(false);
@@ -42,7 +47,7 @@ export class GoalFormModal {
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     targetAmount: ['', [Validators.required, decimalAmountValidator()]],
-    currency: ['BRL', Validators.required],
+    currency: [this.baseCurrency(), Validators.required],
     targetDate: [''],
     frequency: ['monthly' as RecurringFrequency | ''],
     interval: [1, [Validators.min(1)]],
@@ -55,7 +60,7 @@ export class GoalFormModal {
       this.form.reset({
         name: goal?.name ?? '',
         targetAmount: goal?.targetAmount ?? '',
-        currency: goal?.currency ?? 'BRL',
+        currency: goal?.currency ?? this.baseCurrency(),
         targetDate: goal?.targetDate ?? '',
         frequency: goal?.frequency ?? 'monthly',
         interval: goal?.interval ?? 1,

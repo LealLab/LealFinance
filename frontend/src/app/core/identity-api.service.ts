@@ -29,6 +29,7 @@ interface UserWire {
 interface PreferencesWire {
   locale: string;
   theme: 'light' | 'dark';
+  base_currency: string;
   display_currency: string;
   balances_hidden: boolean;
 }
@@ -70,6 +71,7 @@ const mapUser = (value: UserWire): User => ({
 const mapPreferences = (value: PreferencesWire): Preferences => ({
   locale: value.locale,
   theme: value.theme,
+  baseCurrency: value.base_currency,
   displayCurrency: value.display_currency,
   balancesHidden: value.balances_hidden,
 });
@@ -101,6 +103,7 @@ export class IdentityApiService {
     token?: string;
     password: string;
     displayName: string;
+    baseCurrency: string;
   }): Observable<User> {
     return this.api
       .post<UserWire>('/auth/register', {
@@ -108,6 +111,7 @@ export class IdentityApiService {
         ...(input.token ? { token: input.token } : {}),
         password: input.password,
         display_name: input.displayName,
+        base_currency: input.baseCurrency,
       })
       .pipe(map(mapUser));
   }

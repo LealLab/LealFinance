@@ -65,6 +65,7 @@ async def register(payload: RegisterRequest, response: Response, db: DbSession) 
         token=payload.token,
         password=payload.password,
         display_name=payload.display_name,
+        base_currency=payload.base_currency,
     )
     set_session_cookies(
         response,

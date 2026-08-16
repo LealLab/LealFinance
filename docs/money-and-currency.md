@@ -5,9 +5,8 @@ So adding a new currency touches only config and data, not the core money-handli
 
 ## Available in the current UI
 
-- [x] Brazilian Real (`BRL`) - seeded backend currency, default demo-data currency,
-  and default persisted display currency for new users
-- [x] US Dollar (`USD`) - seeded backend currency and frontend pre-auth display fallback
+- [x] Brazilian Real (`BRL`) - seeded backend currency and default demo-data currency
+- [x] US Dollar (`USD`) - seeded backend currency, new/existing-user base default, and frontend pre-auth display fallback
 - [x] Euro (`EUR`) - seeded backend currency and available as an account currency
 - [x] British Pound (`GBP`) - seeded backend currency and available as an account currency
 - [x] Polish Złoty (`PLN`)

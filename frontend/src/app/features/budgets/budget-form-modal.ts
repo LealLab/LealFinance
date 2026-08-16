@@ -5,6 +5,7 @@ import { BudgetRepository } from '../../data/budget.repository';
 import { Budget } from '../../domain/models/budget';
 import { Category } from '../../domain/models/category';
 import { MetadataService } from '../../core/metadata.service';
+import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -25,6 +26,7 @@ export class BudgetFormModal {
   private readonly budgets = inject(BudgetRepository);
   private readonly fb = inject(FormBuilder);
   private readonly metadata = inject(MetadataService);
+  private readonly preferences = inject(PreferenceService);
 
   readonly open = model.required<boolean>();
   readonly budget = input<Budget | undefined>(undefined);
@@ -39,13 +41,16 @@ export class BudgetFormModal {
   protected readonly currencyOptions = computed(() =>
     this.metadata.currencies().map((row) => row.code),
   );
+  private readonly baseCurrency = computed(
+    () => this.preferences.preferences()?.baseCurrency ?? 'USD',
+  );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
     categoryId: ['', Validators.required],
     amount: ['', [Validators.required, decimalAmountValidator()]],
-    currency: ['BRL', Validators.required],
+    currency: [this.baseCurrency(), Validators.required],
   });
 
   protected readonly isEditing = computed(() => this.budget() !== undefined);
@@ -69,7 +74,7 @@ export class BudgetFormModal {
       this.form.reset({
         categoryId: budget?.categoryId ?? this.prefillCategoryId() ?? '',
         amount: budget?.amount ?? '',
-        currency: budget?.currency ?? 'BRL',
+        currency: budget?.currency ?? this.baseCurrency(),
       });
       this.saveErrorKey.set(null);
     });

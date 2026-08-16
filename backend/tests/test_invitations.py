@@ -13,6 +13,7 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, Invitation
 from tests.factories import login_as, make_user
 
@@ -106,11 +107,16 @@ async def test_register_with_valid_invitation_succeeds_and_logs_in(
             "token": token,
             "password": "a-perfectly-fine-password",
             "display_name": "New User",
+            "base_currency": "EUR",
         },
     )
     assert register_response.status_code == 201
     assert register_response.json()["email"] == "newuser@example.com"
     assert register_response.json()["role"] == "member"
+
+    preferences_response = await other_client.get("/api/v1/auth/preferences")
+    assert preferences_response.json()["base_currency"] == "EUR"
+    assert preferences_response.json()["display_currency"] == "EUR"
 
     # register_with_invitation logs the new user in immediately.
     me_response = await other_client.get("/api/v1/auth/me")
@@ -274,6 +280,10 @@ async def test_setup_status_reports_true_before_and_false_after_bootstrap(
     after = await client.get("/api/v1/auth/setup-status")
     assert after.json()["needs_setup"] is False
 
+    preferences_response = await client.get("/api/v1/auth/preferences")
+    assert preferences_response.json()["base_currency"] == "USD"
+    assert preferences_response.json()["display_currency"] == "USD"
+
 
 async def test_registering_with_no_token_on_an_empty_instance_becomes_admin(
     client: AsyncClient,
@@ -284,6 +294,7 @@ async def test_registering_with_no_token_on_an_empty_instance_becomes_admin(
             "email": "bootstrap@example.com",
             "password": "a-perfectly-fine-password",
             "display_name": "Bootstrap Admin",
+            "base_currency": "GBP",
         },
     )
     assert response.status_code == 201
@@ -293,6 +304,10 @@ async def test_registering_with_no_token_on_an_empty_instance_becomes_admin(
     me_response = await client.get("/api/v1/auth/me")
     assert me_response.status_code == 200
     assert me_response.json()["email"] == "bootstrap@example.com"
+
+    preferences_response = await client.get("/api/v1/auth/preferences")
+    assert preferences_response.json()["base_currency"] == "GBP"
+    assert preferences_response.json()["display_currency"] == "GBP"
 
 
 async def test_registering_with_no_token_once_a_user_exists_is_rejected(
@@ -332,3 +347,38 @@ async def test_register_rejects_short_password_with_unified_error_envelope(
     body = response.json()
     assert body["error"]["code"] == "error.validation"
     assert "params" in body["error"]
+
+
+async def test_register_rejects_unknown_base_currency(other_client: AsyncClient) -> None:
+    response = await other_client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "unknown-currency@example.com",
+            "password": "a-perfectly-fine-password",
+            "display_name": "Unknown Currency",
+            "base_currency": "XYZ",
+        },
+    )
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "currency.not_found"
+
+
+async def test_register_rejects_inactive_base_currency(
+    other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    currency = await db_session.get(Currency, "EUR")
+    assert currency is not None
+    currency.is_active = False
+    await db_session.commit()
+
+    response = await other_client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "inactive-currency@example.com",
+            "password": "a-perfectly-fine-password",
+            "display_name": "Inactive Currency",
+            "base_currency": "EUR",
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "currency.inactive"

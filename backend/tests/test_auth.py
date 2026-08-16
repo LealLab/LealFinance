@@ -221,6 +221,7 @@ async def test_concurrent_admin_demotions_leave_one_active_admin(_engine: AsyncE
     try:
         async with session_factory() as setup:
             setup.add(Currency(code="BRL", name="Brazilian Real", symbol="R$", decimal_digits=2))
+            setup.add(Currency(code="USD", name="US Dollar", symbol="$", decimal_digits=2))
             await setup.commit()
             first, _ = await make_user(
                 setup, email="concurrent-admin-a@example.com", role=ROLE_ADMIN
@@ -254,7 +255,7 @@ async def test_concurrent_admin_demotions_leave_one_active_admin(_engine: AsyncE
         async with session_factory() as cleanup:
             if admin_ids:
                 await cleanup.execute(delete(User).where(User.id.in_(admin_ids)))
-            await cleanup.execute(delete(Currency).where(Currency.code == "BRL"))
+            await cleanup.execute(delete(Currency).where(Currency.code.in_(("BRL", "USD"))))
             await cleanup.commit()
 
 
@@ -264,6 +265,7 @@ async def test_preferences_round_trip(client: AsyncClient, db_session: AsyncSess
 
     get_response = await client.get("/api/v1/auth/preferences")
     assert get_response.status_code == 200
+    assert get_response.json()["base_currency"] == "USD"
     assert get_response.json()["display_currency"] == "BRL"
 
     update_response = await client.patch(
@@ -274,6 +276,7 @@ async def test_preferences_round_trip(client: AsyncClient, db_session: AsyncSess
     body = update_response.json()
     assert body["theme"] == "dark"
     assert body["balances_hidden"] is True
+    assert body["base_currency"] == "USD"
 
 
 async def test_two_users_have_independent_sessions(

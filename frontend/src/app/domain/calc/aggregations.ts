@@ -140,10 +140,12 @@ export function netWorth(
  * via `convertedOrNull` below), never this function's to throw over.
  */
 export function converterFromRates(rates: readonly ExchangeRate[]): CurrencyConverter {
-  const rateByCurrency = new Map(rates.map((rate) => [rate.baseCode, rate]));
+  const rateByPair = new Map(
+    rates.map((rate) => [`${rate.baseCode}:${rate.quoteCode}`, rate]),
+  );
   return (amount, targetCurrency) => {
     if (amount.currency === targetCurrency) return amount;
-    const rate = rateByCurrency.get(amount.currency);
+    const rate = rateByPair.get(`${amount.currency}:${targetCurrency}`);
     if (!rate) return amount;
     return multiply(amount, rate.rate, targetCurrency);
   };

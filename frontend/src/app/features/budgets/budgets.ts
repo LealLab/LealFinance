@@ -4,16 +4,19 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
+import { PreferenceService } from '../../core/preference.service';
 import { ThemeService } from '../../core/theme.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import {
   allocationBudgets,
   allocationTotal,
   budgetPercentage,
 } from '../../domain/calc/budget-plan';
+import { effectiveAmount } from '../../domain/calc/conversion';
 import {
   BudgetProgress,
   budgetProgress,
@@ -24,7 +27,9 @@ import { monthKey } from '../../domain/calc/dates';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
+import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { subtract, sum } from '../../shared/money/money';
+import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -80,12 +85,17 @@ export class Budgets {
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly budgetPlanRepository = inject(BudgetPlanRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly preferences = inject(PreferenceService);
   private readonly transloco = inject(TranslocoService);
   private readonly theme = inject(ThemeService);
 
   protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
+  private readonly baseCurrency = computed(
+    () => this.preferences.preferences()?.baseCurrency ?? 'USD',
+  );
   protected readonly allocationsResource = rxResource({
     stream: () => this.budgetPlanRepository.listAllocations(),
   });
@@ -98,6 +108,33 @@ export class Budgets {
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list(),
   });
+  private readonly conversionPairs = computed<[string, string][]>(() => {
+    const targets = new Set([
+      DISPLAY_CURRENCY,
+      ...(this.budgetsResource.value() ?? []).map((budget) => budget.currency),
+    ]);
+    const sources = new Set([
+      ...(this.transactionsResource.value() ?? []).map(
+        (transaction) => effectiveAmount(transaction).currency,
+      ),
+      ...(this.budgetsResource.value() ?? []).map((budget) => budget.currency),
+    ]);
+    return [...sources].flatMap((source) =>
+      [...targets]
+        .filter((target) => target !== source)
+        .map((target) => [source, target] as [string, string]),
+    );
+  });
+  private readonly exchangeRatesResource = rxResource({
+    params: () => this.conversionPairs(),
+    stream: ({ params }) =>
+      params.length === 0
+        ? of([] as ExchangeRate[])
+        : forkJoin(params.map(([base, quote]) => this.exchangeRateRepository.getRate(base, quote))),
+  });
+  private readonly converter = computed<CurrencyConverter>(() =>
+    converterFromRates(this.exchangeRatesResource.value() ?? []),
+  );
 
   protected readonly selectedMonth = signal(monthKey(new Date().toISOString()));
   private readonly percentageDraft = signal<Record<string, string>>({});
@@ -118,7 +155,7 @@ export class Budgets {
     return budgets
       .filter((budget) => budget.month === month)
       .map((budget) => ({
-        ...budgetProgress(budget, transactions, categories),
+        ...budgetProgress(budget, transactions, categories, this.converter()),
         budget,
         category: byId.get(budget.categoryId),
         isPercentage: false,
@@ -172,7 +209,7 @@ export class Budgets {
     );
     const transactions = this.transactionsResource.value() ?? [];
     return budgets.map((entry) => ({
-      ...budgetProgress(entry.budget, transactions, categories),
+      ...budgetProgress(entry.budget, transactions, categories, this.converter()),
       budget: entry.budget,
       category: categories.find((category) => category.id === entry.categoryId),
       isPercentage: true,
@@ -218,17 +255,19 @@ export class Budgets {
       budgets,
       this.selectedMonth(),
       DISPLAY_CURRENCY,
+      this.converter(),
     ).map((entry) => ({ ...entry, category: byId.get(entry.categoryId) }));
   });
 
   protected readonly totals = computed(() => {
     const rows = this.budgetRows();
+    const convert = this.converter();
     const budgeted = sum(
-      rows.map((r) => r.budgeted),
+      rows.map((r) => convert(r.budgeted, DISPLAY_CURRENCY)),
       DISPLAY_CURRENCY,
     );
     const spent = sum(
-      rows.map((r) => r.spent),
+      rows.map((r) => convert(r.spent, DISPLAY_CURRENCY)),
       DISPLAY_CURRENCY,
     );
     return { budgeted, spent, remaining: subtract(budgeted, spent) };
@@ -365,7 +404,7 @@ export class Budgets {
       this.budgetPlanRepository.upsertExpectedIncome({
         month: this.selectedMonth(),
         amount: income,
-        currency: this.expectedIncome()?.currency ?? DISPLAY_CURRENCY,
+        currency: this.expectedIncome()?.currency ?? this.baseCurrency(),
       }),
       ...requests,
     ]).subscribe({
