@@ -10,10 +10,29 @@ So adding a new currency touches only config and data, not the core money-handli
 - [x] US Dollar (`USD`) - seeded backend currency and frontend pre-auth display fallback
 - [x] Euro (`EUR`) - seeded backend currency and available as an account currency
 - [x] British Pound (`GBP`) - seeded backend currency and available as an account currency
+- [x] Polish Złoty (`PLN`)
+- [x] Russian Ruble (`RUB`)
+- [x] Ukrainian Hryvnia (`UAH`)
+- [x] Turkish Lira (`TRY`)
+- [x] UAE Dirham (`AED`) - default for the generic Arabic locale (`ar`)
+- [x] Israeli New Shekel (`ILS`)
+- [x] Indian Rupee (`INR`)
+- [x] Chinese Yuan (`CNY`)
+- [x] New Taiwan Dollar (`TWD`)
+- [x] Japanese Yen (`JPY`)
+- [x] South Korean Won (`KRW`)
+- [x] Indonesian Rupiah (`IDR`)
+- [x] Vietnamese Đồng (`VND`)
+- [x] Thai Baht (`THB`)
+- [x] Swedish Krona (`SEK`)
+- [x] Danish Krone (`DKK`)
+- [x] Norwegian Krone (`NOK`)
+- [x] Czech Koruna (`CZK`)
+- [x] Romanian Leu (`RON`)
 
-The migrations seed BRL, USD, EUR, and GBP. The frontend's HTTP repositories
-use the persistent API domain; mock data remains available for tests and local
-test doubles.
+The migrations seed these currencies. The frontend's HTTP repositories use the
+persistent API domain; mock data remains available for tests and local test
+doubles.
 
 ## Planned
 
@@ -23,27 +42,8 @@ test doubles.
 - [ ] Colombian Peso (`COP`)
 - [ ] Peruvian Sol (`PEN`)
 - [ ] Uruguayan Peso (`UYU`)
-- [ ] Polish Złoty (`PLN`)
-- [ ] Russian Ruble (`RUB`)
-- [ ] Ukrainian Hryvnia (`UAH`)
-- [ ] Turkish Lira (`TRY`)
-- [ ] UAE Dirham (`AED`)
 - [ ] Saudi Riyal (`SAR`)
 - [ ] Egyptian Pound (`EGP`)
-- [ ] Israeli New Shekel (`ILS`)
-- [ ] Indian Rupee (`INR`)
-- [ ] Chinese Yuan (`CNY`)
-- [ ] New Taiwan Dollar (`TWD`)
-- [ ] Japanese Yen (`JPY`)
-- [ ] South Korean Won (`KRW`)
-- [ ] Indonesian Rupiah (`IDR`)
-- [ ] Vietnamese Đồng (`VND`)
-- [ ] Thai Baht (`THB`)
-- [ ] Swedish Krona (`SEK`)
-- [ ] Danish Krone (`DKK`)
-- [ ] Norwegian Krone (`NOK`)
-- [ ] Czech Koruna (`CZK`)
-- [ ] Romanian Leu (`RON`)
 
 ## The rule: `NUMERIC(19,4)` + a currency code, always
 

@@ -60,15 +60,33 @@ async def db_session(_engine: AsyncEngine) -> AsyncGenerator[AsyncSession]:
             bind=conn, expire_on_commit=False, join_transaction_mode="create_savepoint"
         )
 
-        # Matches the currencies seeded by the migrations (baseline + USD/EUR/GBP,
-        # see alembic/versions/*_seed_usd_eur_gbp_currencies.py) - tests rely on
-        # all four being present, not just BRL.
+        # Matches the currencies seeded by the migrations (baseline + existing
+        # currencies + supported-locale currencies).
         session.add_all(
             [
                 Currency(code="BRL", name="Brazilian Real", symbol="R$", decimal_digits=2),
                 Currency(code="USD", name="US Dollar", symbol="$", decimal_digits=2),
                 Currency(code="EUR", name="Euro", symbol="€", decimal_digits=2),
                 Currency(code="GBP", name="Pound Sterling", symbol="£", decimal_digits=2),
+                Currency(code="PLN", name="Polish Złoty", symbol="zł", decimal_digits=2),
+                Currency(code="RUB", name="Russian Ruble", symbol="₽", decimal_digits=2),
+                Currency(code="UAH", name="Ukrainian Hryvnia", symbol="₴", decimal_digits=2),
+                Currency(code="TRY", name="Turkish Lira", symbol="₺", decimal_digits=2),
+                Currency(code="AED", name="UAE Dirham", symbol="د.إ", decimal_digits=2),
+                Currency(code="ILS", name="Israeli New Shekel", symbol="₪", decimal_digits=2),
+                Currency(code="INR", name="Indian Rupee", symbol="₹", decimal_digits=2),
+                Currency(code="CNY", name="Chinese Yuan", symbol="¥", decimal_digits=2),
+                Currency(code="TWD", name="New Taiwan Dollar", symbol="NT$", decimal_digits=2),
+                Currency(code="JPY", name="Japanese Yen", symbol="¥", decimal_digits=0),
+                Currency(code="KRW", name="South Korean Won", symbol="₩", decimal_digits=0),
+                Currency(code="IDR", name="Indonesian Rupiah", symbol="Rp", decimal_digits=2),
+                Currency(code="VND", name="Vietnamese Đồng", symbol="₫", decimal_digits=0),
+                Currency(code="THB", name="Thai Baht", symbol="฿", decimal_digits=2),
+                Currency(code="SEK", name="Swedish Krona", symbol="kr", decimal_digits=2),
+                Currency(code="DKK", name="Danish Krone", symbol="kr", decimal_digits=2),
+                Currency(code="NOK", name="Norwegian Krone", symbol="kr", decimal_digits=2),
+                Currency(code="CZK", name="Czech Koruna", symbol="Kč", decimal_digits=2),
+                Currency(code="RON", name="Romanian Leu", symbol="lei", decimal_digits=2),
             ]
         )
         await session.commit()
