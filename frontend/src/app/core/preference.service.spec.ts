@@ -16,6 +16,7 @@ function mockMatchMedia(matches: boolean): void {
 const SERVER_PREFERENCES: Preferences = {
   locale: 'en-US',
   theme: 'light',
+  baseCurrency: 'USD',
   displayCurrency: 'USD',
   balancesHidden: false,
 };

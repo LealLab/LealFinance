@@ -40,7 +40,7 @@ def _in_check(column: str, values: tuple[str, ...]) -> str:
 class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     """An application user.
 
-    Preferences (locale/theme/display currency/balance visibility) live as
+    Preferences (locale/theme/base and display currency/balance visibility) live as
     plain columns here rather than a separate table - there's no hot,
     high-frequency path that needs to avoid them, and GET/PATCH
     /auth/preferences just reads and writes a handful of columns on a row
@@ -64,6 +64,11 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # --- Preferences (GET/PATCH /auth/preferences) ---
     locale: Mapped[str] = mapped_column(String(10), nullable=False, default="en-US")
     theme: Mapped[str] = mapped_column(String(10), nullable=False, default=THEME_LIGHT)
+    base_currency: Mapped[CurrencyCode] = mapped_column(
+        ForeignKey("currencies.code", name="fk_users_base_currency"),
+        nullable=False,
+        default="USD",
+    )
     display_currency: Mapped[CurrencyCode] = mapped_column(
         ForeignKey("currencies.code", name="fk_users_display_currency"),
         nullable=False,

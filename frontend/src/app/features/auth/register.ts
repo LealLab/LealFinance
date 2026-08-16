@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
+import { CurrencyMetadata } from '../../core/identity.models';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { LanguageSelect } from '../../shared/ui/language-select/language-select';
@@ -34,6 +35,8 @@ export class Register {
   /** True while this instance has no users yet - the first registration
    * becomes the administrator and needs no invitation token. */
   protected readonly needsSetup = signal(false);
+  protected readonly currencies = signal<CurrencyMetadata[]>([]);
+  protected readonly currencyOptions = computed(() => this.currencies().map((row) => row.code));
   protected readonly form = new FormGroup({
     displayName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     email: new FormControl(this.route.snapshot.queryParamMap.get('email') ?? '', {
@@ -48,9 +51,11 @@ export class Register {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(12)],
     }),
+    baseCurrency: new FormControl('USD', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor() {
+    this.identityApi.currencies().subscribe((currencies) => this.currencies.set(currencies));
     this.identityApi.setupStatus().subscribe((needed) => {
       if (!needed) return;
       this.needsSetup.set(true);

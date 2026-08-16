@@ -7,6 +7,7 @@ import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { Institution } from '../../domain/models/institution';
 import { MetadataService } from '../../core/metadata.service';
+import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
 import { Icon } from '../../shared/ui/icon/icon';
@@ -41,6 +42,7 @@ export class AccountFormModal {
   private readonly institutions = inject(InstitutionRepository);
   private readonly fb = inject(FormBuilder);
   private readonly metadata = inject(MetadataService);
+  private readonly preferences = inject(PreferenceService);
 
   readonly open = model.required<boolean>();
   readonly account = input<Account | undefined>(undefined);
@@ -49,6 +51,9 @@ export class AccountFormModal {
   protected readonly accountTypeOptions = ACCOUNT_TYPE_OPTIONS;
   protected readonly currencyOptions = computed(() =>
     this.metadata.currencies().map((row) => row.code),
+  );
+  private readonly baseCurrency = computed(
+    () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );
 
   protected readonly institutionsResource = rxResource({
@@ -62,7 +67,7 @@ export class AccountFormModal {
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     type: ['checking' as AccountType, Validators.required],
-    currency: ['BRL', Validators.required],
+    currency: [this.baseCurrency(), Validators.required],
     openingBalance: ['0', [Validators.required, decimalAmountValidator()]],
     institutionId: [''],
     creditLimit: ['', decimalAmountValidator()],
@@ -100,7 +105,7 @@ export class AccountFormModal {
       this.form.reset({
         name: account?.name ?? '',
         type: account?.type ?? 'checking',
-        currency: account?.currency ?? 'BRL',
+        currency: account?.currency ?? this.baseCurrency(),
         openingBalance: account?.openingBalance ?? '0',
         institutionId: account?.institutionId ?? '',
         creditLimit: account?.creditLimit ?? '',

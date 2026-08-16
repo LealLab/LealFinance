@@ -41,6 +41,14 @@
           t('auth.register.passwordHint')
         }}</span>
       </label>
+      <label>
+        <span class="form-label">{{ t('accounts.form.fields.currency') }}</span>
+        <select class="form-input" formControlName="baseCurrency">
+          @for (currency of currencyOptions(); track currency) {
+            <option [value]="currency">{{ currency }}</option>
+          }
+        </select>
+      </label>
       @if (errorCode(); as code) {
         <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }

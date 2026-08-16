@@ -28,6 +28,7 @@ from app.core.security import (
 )
 from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, ROLES, THEMES, Invitation, Session, User
+from app.services.currencies import get_active_currency
 
 _SESSION_TOUCH_INTERVAL = timedelta(minutes=5)
 _LAST_ADMIN_LOCK_KEY = 0x4C4641444D494E
@@ -198,7 +199,13 @@ async def needs_setup(db: AsyncSession) -> bool:
 
 
 async def register(
-    db: AsyncSession, *, email: str, token: str | None, password: str, display_name: str
+    db: AsyncSession,
+    *,
+    email: str,
+    token: str | None,
+    password: str,
+    display_name: str,
+    base_currency: str = "USD",
 ) -> IssuedSession:
     invitation: Invitation | None = None
     if token:
@@ -221,12 +228,16 @@ async def register(
     if existing.scalars().first() is not None:
         raise ConflictError(code="user.email_taken")
 
+    currency = await get_active_currency(db, base_currency)
+
     user = User(
         email=email.strip(),
         normalized_email=normalized,
         password_hash=hash_password(password),
         display_name=display_name.strip(),
         role=role,
+        base_currency=currency.code,
+        display_currency=currency.code,
     )
     db.add(user)
     if invitation is not None:

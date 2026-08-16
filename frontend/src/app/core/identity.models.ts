@@ -13,6 +13,7 @@ export interface User {
 export interface Preferences {
   locale: string;
   theme: UserTheme;
+  baseCurrency: string;
   displayCurrency: string;
   balancesHidden: boolean;
 }

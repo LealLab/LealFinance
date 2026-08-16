@@ -36,6 +36,7 @@ class PreferencesRead(BaseModel):
 
     locale: str
     theme: str
+    base_currency: str
     display_currency: str
     balances_hidden: bool
 

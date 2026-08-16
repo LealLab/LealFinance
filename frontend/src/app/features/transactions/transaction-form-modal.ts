@@ -15,6 +15,7 @@ import { Transaction, TransactionType } from '../../domain/models/transaction';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
 import { buildTransactionConversion, prefillConvertedAmount } from './conversion-form';
 import { MetadataService } from '../../core/metadata.service';
+import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { money, subtract, zero } from '../../shared/money/money';
 import { effectiveRate } from '../../shared/money/rate';
@@ -63,6 +64,7 @@ export class TransactionFormModal {
   private readonly exchangeRates = inject(ExchangeRateRepository);
   private readonly fb = inject(FormBuilder);
   private readonly metadata = inject(MetadataService);
+  private readonly preferences = inject(PreferenceService);
 
   readonly open = model.required<boolean>();
   readonly transaction = input<Transaction | undefined>(undefined);
@@ -75,6 +77,9 @@ export class TransactionFormModal {
   protected readonly frequencies = FREQUENCIES;
   protected readonly currencyOptions = computed(() =>
     this.metadata.currencies().map((row) => row.code)
+  );
+  private readonly baseCurrency = computed(
+    () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
@@ -89,7 +94,7 @@ export class TransactionFormModal {
     type: ['expense' as TransactionType, Validators.required],
     date: [formatIsoDate(new Date()), Validators.required],
     amount: ['', [Validators.required, decimalAmountValidator()]],
-    currency: ['BRL', Validators.required],
+    currency: [this.baseCurrency(), Validators.required],
     accountId: ['', Validators.required],
     toAccountId: [''],
     categoryId: [''],
@@ -244,7 +249,7 @@ export class TransactionFormModal {
         type: tx?.type ?? 'expense',
         date: tx?.date ?? formatIsoDate(new Date()),
         amount: tx?.amount ?? '',
-        currency: tx?.currency ?? fromAccount?.currency ?? 'BRL',
+        currency: tx?.currency ?? fromAccount?.currency ?? this.baseCurrency(),
         accountId: tx?.accountId ?? '',
         toAccountId: tx?.toAccountId ?? '',
         categoryId: tx?.categoryId ?? '',
@@ -301,7 +306,7 @@ export class TransactionFormModal {
       if (this.form.controls.type.value === 'transfer') {
         this.form.controls.toInstitutionId.setValue(account?.institutionId ?? '');
       } else {
-        this.form.controls.currency.setValue(account?.currency ?? 'BRL');
+        this.form.controls.currency.setValue(account?.currency ?? this.baseCurrency());
       }
     });
 

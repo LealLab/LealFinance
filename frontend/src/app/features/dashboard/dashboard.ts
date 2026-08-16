@@ -228,7 +228,7 @@ export class Dashboard {
 
     return budgets
       .map((budget) => ({
-        ...budgetProgress(budget, transactions, categories),
+        ...budgetProgress(budget, transactions, categories, this.converter()),
         categoryName: byId.get(budget.categoryId)?.name ?? budget.categoryId
       }))
       .sort((a, b) => b.ratio - a.ratio)

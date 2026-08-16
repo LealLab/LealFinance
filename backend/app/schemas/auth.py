@@ -5,6 +5,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from app.schemas.common import CurrencyCodeInput
+
 
 class LoginRequest(BaseModel):
     email: EmailStr
@@ -16,6 +18,7 @@ class RegisterRequest(BaseModel):
     token: str | None = None
     password: str = Field(min_length=12)
     display_name: str = Field(min_length=1, max_length=100)
+    base_currency: CurrencyCodeInput = "USD"
 
 
 class SetupStatus(BaseModel):
