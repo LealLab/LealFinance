@@ -1,0 +1,14 @@
+<ng-container *transloco="let t">
+  <button
+    appButton
+    variant="ghost"
+    size="sm"
+    type="button"
+    (click)="toggle()"
+    [attr.aria-label]="
+      theme.current() === 'dark' ? t('layout.themeToggle.switchToLight') : t('layout.themeToggle.switchToDark')
+    "
+  >
+    <app-icon [name]="theme.current() === 'dark' ? 'sun' : 'moon'" [size]="18" />
+  </button>
+</ng-container>

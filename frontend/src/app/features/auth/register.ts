@@ -6,11 +6,21 @@ import { firstValueFrom } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
+import { LanguageSelect } from '../../shared/ui/language-select/language-select';
 import { Logo } from '../../shared/ui/logo/logo';
+import { ThemeToggle } from '../../shared/ui/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoDirective, Button, Logo],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    TranslocoDirective,
+    Button,
+    Logo,
+    LanguageSelect,
+    ThemeToggle,
+  ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })

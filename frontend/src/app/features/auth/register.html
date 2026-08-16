@@ -1,4 +1,8 @@
-<main *transloco="let t" class="auth-page">
+<main *transloco="let t" class="auth-page relative">
+  <div class="absolute end-4 top-4 flex items-center gap-1">
+    <app-language-select compact />
+    <app-theme-toggle />
+  </div>
   <section class="auth-card">
     <div class="mb-6 flex items-center gap-2 text-lg font-semibold">
       <app-logo [size]="30" class="text-accent" />

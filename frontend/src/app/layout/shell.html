@@ -1,5 +1,4 @@
 <div *transloco="let t" class="flex min-h-screen bg-surface-page text-content-primary">
-  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) -->
   <aside
     id="desktop-sidebar"
     class="desktop-sidebar relative hidden shrink-0 flex-col border-e border-border bg-surface-raised md:sticky md:top-0 md:flex md:h-screen md:self-start"
@@ -60,20 +59,7 @@
         >
           <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="18" />
         </button>
-        <button
-          appButton
-          variant="ghost"
-          size="sm"
-          type="button"
-          (click)="toggleTheme()"
-          [attr.aria-label]="
-            theme.current() === 'dark'
-              ? t('layout.themeToggle.switchToLight')
-              : t('layout.themeToggle.switchToDark')
-          "
-        >
-          <app-icon [name]="theme.current() === 'dark' ? 'sun' : 'moon'" [size]="18" />
-        </button>
+        <app-theme-toggle />
       </div>
     </div>
 
@@ -106,42 +92,7 @@
       [class.p-1]="!sidebarExpanded()"
       [class.p-3]="sidebarExpanded()"
     >
-      <label
-        class="flex items-center text-sm text-content-muted"
-        [class.gap-1]="!sidebarExpanded()"
-        [class.gap-2]="sidebarExpanded()"
-        [class.justify-center]="!sidebarExpanded()"
-      >
-        <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
-        @if (sidebarExpanded()) {
-          <app-icon name="globe" [size]="16" class="shrink-0" />
-        }
-        <div class="relative" [class.w-full]="sidebarExpanded()">
-          @if (!sidebarExpanded()) {
-            <div
-              aria-hidden="true"
-              class="flex h-8 w-8 items-center justify-between rounded-md border border-border bg-surface-raised px-1 text-xs font-medium text-content-muted"
-            >
-              <span>{{ activeLangCode() }}</span>
-              <app-icon name="chevronDown" [size]="10" />
-            </div>
-          }
-          <select
-            [class]="
-              sidebarExpanded()
-                ? 'w-full min-w-0 rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted'
-                : 'absolute inset-0 h-8 w-8 cursor-pointer bg-surface-raised text-content-muted opacity-0'
-            "
-            [attr.aria-label]="t('layout.languageSwitcher.label')"
-            [value]="activeLang()"
-            (change)="setLang($any($event.target).value)"
-          >
-            @for (lang of availableLangs; track lang) {
-              <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
-            }
-          </select>
-        </div>
-      </label>
+      <app-language-select [compact]="!sidebarExpanded()" [showIcon]="sidebarExpanded()" />
       <button
         appButton
         variant="ghost"
@@ -233,33 +184,9 @@
           >
             <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="18" />
           </button>
-          <button
-            appButton
-            variant="ghost"
-            size="sm"
-            type="button"
-            (click)="toggleTheme()"
-            [attr.aria-label]="
-              theme.current() === 'dark'
-                ? t('layout.themeToggle.switchToLight')
-                : t('layout.themeToggle.switchToDark')
-            "
-          >
-            <app-icon [name]="theme.current() === 'dark' ? 'sun' : 'moon'" [size]="18" />
-          </button>
+          <app-theme-toggle />
         </div>
-        <label class="flex items-center gap-2 text-sm text-content-muted">
-          <span class="sr-only">{{ t('layout.languageSwitcher.label') }}</span>
-          <select
-            class="rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted"
-            [value]="activeLang()"
-            (change)="setLang($any($event.target).value)"
-          >
-            @for (lang of availableLangs; track lang) {
-              <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
-            }
-          </select>
-        </label>
+        <app-language-select />
       </div>
 
       <div class="border-b border-border px-4 py-2.5">
