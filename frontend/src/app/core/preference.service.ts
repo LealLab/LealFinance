@@ -15,16 +15,42 @@ export class PreferenceService {
   private readonly displayCurrency = inject(DisplayCurrencyService);
   private readonly balances = inject(BalanceVisibilityService);
   private readonly state = signal<Preferences | undefined>(undefined);
+  /**
+   * Changes made while logged out (e.g. the theme/language toggle on the
+   * login page) - applied locally right away by `update()`'s `!previous`
+   * branch, but not yet known to the account. `hydrate()` re-applies them
+   * over whatever the server returns and PATCHes them through, so an
+   * explicit pre-login pick survives sign-in instead of being clobbered by
+   * the account's saved theme/locale.
+   */
+  private pending: Partial<Preferences> = {};
 
   readonly preferences = this.state.asReadonly();
   readonly errorCode = signal<string | undefined>(undefined);
 
   hydrate(): Observable<Preferences> {
-    return this.api.getPreferences().pipe(tap((preferences) => this.apply(preferences)));
+    return this.api.getPreferences().pipe(
+      tap((preferences) => {
+        if (Object.keys(this.pending).length === 0) {
+          this.apply(preferences);
+          return;
+        }
+        const changes = this.pending;
+        this.pending = {};
+        this.apply({ ...preferences, ...changes });
+        this.api.updatePreferences(changes).subscribe({
+          next: (saved) => this.apply(saved),
+          // Sync failure shouldn't surface as a login error - the local
+          // values are already applied and persisted (localStorage etc.).
+          error: () => undefined,
+        });
+      }),
+    );
   }
 
   clear(): void {
     this.state.set(undefined);
+    this.pending = {};
     this.errorCode.set(undefined);
   }
 
@@ -47,14 +73,8 @@ export class PreferenceService {
   private update(changes: Partial<Preferences>): void {
     const previous = this.state();
     if (!previous) {
-      if (changes.locale !== undefined) this.transloco.setActiveLang(changes.locale);
-      if (changes.theme !== undefined) this.theme.setTheme(changes.theme);
-      if (changes.displayCurrency !== undefined) {
-        this.displayCurrency.setCurrency(changes.displayCurrency);
-      }
-      if (changes.balancesHidden !== undefined) {
-        this.balances.setHidden(changes.balancesHidden);
-      }
+      this.pending = { ...this.pending, ...changes };
+      this.applyPartial(changes);
       return;
     }
     this.errorCode.set(undefined);
@@ -70,10 +90,18 @@ export class PreferenceService {
 
   private apply(preferences: Preferences): void {
     this.state.set(preferences);
-    this.transloco.setActiveLang(preferences.locale);
-    this.theme.setTheme(preferences.theme);
-    this.displayCurrency.setCurrency(preferences.displayCurrency);
-    this.balances.setHidden(preferences.balancesHidden);
+    this.applyPartial(preferences);
+  }
+
+  private applyPartial(changes: Partial<Preferences>): void {
+    if (changes.locale !== undefined) this.transloco.setActiveLang(changes.locale);
+    if (changes.theme !== undefined) this.theme.setTheme(changes.theme);
+    if (changes.displayCurrency !== undefined) {
+      this.displayCurrency.setCurrency(changes.displayCurrency);
+    }
+    if (changes.balancesHidden !== undefined) {
+      this.balances.setHidden(changes.balancesHidden);
+    }
   }
 
   private codeOf(error: unknown): string {

@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
 import { AccountRepository } from '../data/account.repository';
 import { BudgetRepository } from '../data/budget.repository';
 import { CategoryRepository } from '../data/category.repository';
@@ -52,9 +52,9 @@ describe('Shell', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance).toBeTruthy();
-    expect(fixture.componentInstance['availableLangs']).toContain('en-US');
-    expect(fixture.componentInstance['availableLangs']).toContain('pt-BR');
-    expect(fixture.componentInstance['activeLang']()).toBe('en-US');
+    const transloco = TestBed.inject(TranslocoService);
+    expect(transloco.getAvailableLangs()).toEqual(expect.arrayContaining(['en-US', 'pt-BR']));
+    expect(transloco.getActiveLang()).toBe('en-US');
     expect(
       Array.from((fixture.nativeElement.querySelector('select') as HTMLSelectElement).options).map(
         (option) => option.textContent,
@@ -62,14 +62,16 @@ describe('Shell', () => {
     ).toEqual(['English', 'Português (Brasil)']);
   });
 
-  it('updates the document language when the active language changes', () => {
+  it('updates the active language when the language select changes', () => {
     const fixture = TestBed.createComponent(Shell);
     fixture.detectChanges();
 
-    fixture.componentInstance['setLang']('pt-BR');
+    const select = fixture.nativeElement.querySelector('select') as HTMLSelectElement;
+    select.value = 'pt-BR';
+    select.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
-    expect(fixture.componentInstance['activeLang']()).toBe('pt-BR');
+    expect(TestBed.inject(TranslocoService).getActiveLang()).toBe('pt-BR');
   });
 
   it('follows the desktop breakpoint and toggles the sidebar for the session', () => {

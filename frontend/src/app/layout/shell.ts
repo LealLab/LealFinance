@@ -8,30 +8,32 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { BalanceVisibilityService } from '../core/balance-visibility.service';
 import { CommandPaletteService } from '../core/command-palette.service';
 import { isMacPlatform } from '../core/platform';
-import { ThemeService } from '../core/theme.service';
 import { PreferenceService } from '../core/preference.service';
 import { SessionService } from '../core/session.service';
 import { MutationErrorService } from '../core/mutation-error.service';
 import { Button } from '../shared/ui/button/button';
 import { ConfirmDialog } from '../shared/ui/confirm-dialog/confirm-dialog';
 import { Icon } from '../shared/ui/icon/icon';
+import { LanguageSelect } from '../shared/ui/language-select/language-select';
 import { Logo } from '../shared/ui/logo/logo';
+import { ThemeToggle } from '../shared/ui/theme-toggle/theme-toggle';
 import { CommandPalette } from './command-palette/command-palette';
 import { Sidebar } from './sidebar';
 
 /**
  * App shell: a persistent sidebar on `md+` screens (icon rail from `md` to
  * `lg`, full labels from `lg` up - see sidebar.ts), collapsing to a
- * hamburger-triggered off-canvas drawer below `md`. Theme/balance-visibility
- * toggles, the language switcher, and the command-palette trigger all live
- * in the sidebar/drawer now (not the top `<header>`, which below `md` only
- * carries the hamburger + mobile title).
+ * hamburger-triggered off-canvas drawer below `md`. Balance-visibility
+ * toggle, the theme toggle, the language switcher, and the command-palette
+ * trigger all live in the sidebar/drawer now (not the top `<header>`, which
+ * below `md` only carries the hamburger + mobile title). Theme/language
+ * controls are `app-theme-toggle`/`app-language-select` (shared/ui) so the
+ * auth pages can reuse them too.
  */
 @Component({
   selector: 'app-shell',
@@ -45,6 +47,8 @@ import { Sidebar } from './sidebar';
     Sidebar,
     ConfirmDialog,
     CommandPalette,
+    LanguageSelect,
+    ThemeToggle,
   ],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',
@@ -54,19 +58,12 @@ import { Sidebar } from './sidebar';
 })
 export class Shell {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly transloco = inject(TranslocoService);
-  protected readonly theme = inject(ThemeService);
   protected readonly balanceVisibility = inject(BalanceVisibilityService);
   protected readonly commandPalette = inject(CommandPaletteService);
   protected readonly preferences = inject(PreferenceService);
   protected readonly session = inject(SessionService);
   protected readonly mutationErrors = inject(MutationErrorService);
 
-  protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];
-  protected readonly activeLang = toSignal(this.transloco.langChanges$, {
-    initialValue: this.transloco.getActiveLang(),
-  });
-  protected readonly activeLangCode = computed(() => this.activeLang().slice(0, 2).toUpperCase());
   protected readonly isMac = isMacPlatform();
 
   private readonly desktopSidebarMedia =
@@ -101,14 +98,6 @@ export class Shell {
         element.close();
       }
     });
-  }
-
-  protected setLang(lang: string): void {
-    this.preferences.setLocale(lang);
-  }
-
-  protected toggleTheme(): void {
-    this.preferences.setTheme(this.theme.current() === 'dark' ? 'light' : 'dark');
   }
 
   protected toggleBalances(): void {
