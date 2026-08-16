@@ -26,6 +26,7 @@ Run the checks relevant to your change before opening a pull request:
 | Frontend tests | `task frontend:test` |
 | Frontend production build | `task frontend:build` |
 | Translation keys | `task i18n:validate` |
+| Dependency security audit | `task security:audit` |
 
 If you change migrations, run the upgrade/downgrade round trip described in
 [`docs/development.md`](docs/development.md). If you add user-facing text,

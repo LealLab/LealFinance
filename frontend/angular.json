@@ -74,7 +74,12 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "setupFiles": ["src/testing/dialog-polyfill.ts"]
+            "setupFiles": ["src/testing/dialog-polyfill.ts"],
+            "coverage": true,
+            "coverageReporters": ["text-summary", "json-summary"],
+            "coverageThresholds": {
+              "lines": 80
+            }
           }
         },
         "lint": {

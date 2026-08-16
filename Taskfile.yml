@@ -97,3 +97,22 @@ tasks:
     cmds:
       - pnpm exec transloco-keys-manager find
       - node scripts/validate-i18n.mjs
+
+  security:audit:
+    desc: Audit backend and frontend dependencies for known vulnerabilities
+    cmds:
+      - task: security:audit:backend
+      - task: security:audit:frontend
+
+  security:audit:backend:
+    internal: true
+    dir: backend
+    cmds:
+      - uv export --no-dev --no-emit-project --format requirements.txt -o .pip-audit-requirements.txt
+      - uvx pip-audit -r .pip-audit-requirements.txt
+
+  security:audit:frontend:
+    internal: true
+    dir: frontend
+    cmds:
+      - pnpm audit --audit-level=high

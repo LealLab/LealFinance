@@ -63,6 +63,7 @@ docker compose down -v                 # stop + wipe data (fresh start)
 | Frontend tests | `task frontend:test` |
 | Frontend build | `task frontend:build` |
 | Check for missing/orphaned i18n keys | `task i18n:validate` |
+| Dependency security audit | `task security:audit` |
 
 ## Running backend tests
 
@@ -83,6 +84,8 @@ REDIS_URL=redis://localhost:6379/0
 ```
 
 Don't run `task backend:migrate` and `task backend:test` back-to-back against the same database without a reset in between: migrations leave committed data behind (the seeded currencies, any account you registered), while `backend:test` builds and seeds its own schema from ORM metadata on top of whatever's already there - the two collide (e.g. a duplicate-key error re-inserting BRL). `backend:test`'s teardown always leaves the database empty afterward, so tests will pass again immediately if you just rerun them; if you want to poke around manually with `backend:migrate`/`backend:dev`, do that *after* your last test run, not interleaved with it.
+
+`task backend:test` also enforces a minimum coverage of 80% (`--cov-fail-under=80` in `pyproject.toml`) and writes `coverage.json`, read by CI to update the coverage badge. `[tool.coverage.run]` sets `concurrency = ["greenlet"]` - without it, coverage.py's tracer loses line tracking after every `await db.execute(...)`/`await db.commit()` (SQLAlchemy's async engine suspends through a greenlet), undercounting real coverage by ~20 points.
 
 ## Bootstrapping the first admin
 
