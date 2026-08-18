@@ -5,9 +5,9 @@ configuration. Nothing else in the app should read os.environ directly.
 """
 
 from functools import lru_cache
-from typing import Literal
+from typing import Literal, Self
 
-from pydantic import computed_field
+from pydantic import computed_field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -53,6 +53,22 @@ class Settings(BaseSettings):
     # Free key from https://openexchangerates.org/signup/free. Without one,
     # cross-currency rates fall back to 1:1 - see app/services/exchange_rates.py.
     openexchangerates_app_id: str | None = None
+
+    @model_validator(mode="after")
+    def reject_production_placeholders(self) -> Self:
+        if self.environment != "production":
+            return self
+        if not self.api_secret_key.strip() or self.api_secret_key == (
+            "change-me-to-a-random-64-char-string"
+        ):
+            raise ValueError("API_SECRET_KEY must be replaced in production")
+        if (
+            not self.postgres_password.strip()
+            or self.postgres_password == "change-me"
+            or (self.database_url is not None and "change-me" in self.database_url)
+        ):
+            raise ValueError("POSTGRES_PASSWORD or DATABASE_URL must be replaced in production")
+        return self
 
     @computed_field  # type: ignore[prop-decorator]
     @property

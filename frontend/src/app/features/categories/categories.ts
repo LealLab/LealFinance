@@ -2,15 +2,21 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { forkJoin, of } from 'rxjs';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { categoryUsage, isCategoryDeletable } from '../../domain/calc/category-usage';
+import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
+import { effectiveAmount } from '../../domain/calc/conversion';
 import { monthKey } from '../../domain/calc/dates';
 import { Category, CategoryKind } from '../../domain/models/category';
-import { add, Money, money, zero } from '../../shared/money/money';
+import { ExchangeRate } from '../../domain/models/exchange-rate';
+import { add, Money, zero } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
@@ -20,8 +26,6 @@ import { Icon } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { CategoryCollapseService } from './category-collapse.service';
 import { CategoryFormModal } from './category-form-modal';
-
-const DISPLAY_CURRENCY = 'BRL';
 
 interface CategoryRow {
   category: Category;
@@ -58,9 +62,11 @@ interface CategoryRow {
 export class Categories {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly confirmService = inject(ConfirmService);
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly collapseService = inject(CategoryCollapseService);
 
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
@@ -68,6 +74,34 @@ export class Categories {
     stream: () => this.transactionRepository.list()
   });
   protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
+
+  private readonly foreignCurrencies = computed(() => {
+    const display = this.displayCurrency();
+    return Array.from(
+      new Set(
+        (this.transactionsResource.value() ?? []).map(
+          (transaction) => effectiveAmount(transaction).currency
+        )
+      )
+    ).filter((currency) => currency !== display);
+  });
+
+  protected readonly exchangeRatesResource = rxResource({
+    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
+    stream: ({ params }) =>
+      params.currencies.length === 0
+        ? of([] as ExchangeRate[])
+        : forkJoin(
+            params.currencies.map((currency) =>
+              this.exchangeRateRepository.getRate(currency, params.display)
+            )
+          )
+  });
+
+  private readonly converter = computed<CurrencyConverter>(() =>
+    converterFromRates(this.exchangeRatesResource.value() ?? [])
+  );
 
   protected readonly showArchived = signal(false);
   protected readonly formOpen = signal(false);
@@ -85,8 +119,11 @@ export class Categories {
       if (!tx.categoryId || monthKey(tx.date) !== currentMonth) continue;
       const kind = kindById.get(tx.categoryId);
       if (!kind || tx.type !== kind) continue;
-      const current = totals.get(tx.categoryId) ?? zero(DISPLAY_CURRENCY);
-      totals.set(tx.categoryId, add(current, money(tx.amount, DISPLAY_CURRENCY)));
+      const current = totals.get(tx.categoryId) ?? zero(this.displayCurrency());
+      totals.set(
+        tx.categoryId,
+        add(current, this.converter()(effectiveAmount(tx), this.displayCurrency()))
+      );
     }
     return totals;
   });
@@ -104,9 +141,13 @@ export class Categories {
       const children = categories
         .filter((c) => c.parentId === parent.id && (showArchived || !c.archived))
         .sort((a, b) => a.position - b.position)
-        .map((child) => ({ category: child, spend: spend.get(child.id) ?? zero(DISPLAY_CURRENCY), children: [] }));
+        .map((child) => ({
+          category: child,
+          spend: spend.get(child.id) ?? zero(this.displayCurrency()),
+          children: []
+        }));
 
-      const ownSpend = spend.get(parent.id) ?? zero(DISPLAY_CURRENCY);
+      const ownSpend = spend.get(parent.id) ?? zero(this.displayCurrency());
       const rolledUp = children.reduce((total, row) => add(total, row.spend), ownSpend);
 
       return { category: parent, spend: rolledUp, children };

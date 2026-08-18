@@ -2,13 +2,23 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
+import { forkJoin, of } from 'rxjs';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { accountBalance } from '../../domain/calc/balances';
-import { categoryBreakdown, totalsFor } from '../../domain/calc/aggregations';
+import {
+  categoryBreakdown,
+  converterFromRates,
+  CurrencyConverter,
+  totalsFor
+} from '../../domain/calc/aggregations';
+import { effectiveAmount } from '../../domain/calc/conversion';
 import { Account } from '../../domain/models/account';
+import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { compare, Money, toNumber } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
@@ -19,7 +29,6 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { MonthBucket, ReportPeriod, resolveMonthBuckets } from './report-period';
 
-const DISPLAY_CURRENCY = 'BRL';
 const PERIOD_OPTIONS: readonly ReportPeriod[] = ['month', '3m', '6m', '12m', 'custom'];
 
 interface CategoryTableRow {
@@ -39,8 +48,10 @@ interface CategoryTableRow {
 export class Reports {
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly theme = inject(ThemeService);
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   private readonly localeService = inject(TranslocoLocaleService);
   private readonly transloco = inject(TranslocoService);
   // Chart dataset/legend labels are built here in the component (Chart.js
@@ -63,9 +74,38 @@ export class Reports {
     stream: () => this.transactionRepository.list()
   });
 
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
+
+  private readonly foreignCurrencies = computed(() => {
+    const display = this.displayCurrency();
+    const accountCurrencies = (this.accountsResource.value() ?? []).map((account) => account.currency);
+    const transactionCurrencies = (this.transactionsResource.value() ?? []).map(
+      (transaction) => effectiveAmount(transaction).currency
+    );
+    return Array.from(new Set([...accountCurrencies, ...transactionCurrencies])).filter(
+      (currency) => currency !== display
+    );
+  });
+
+  protected readonly exchangeRatesResource = rxResource({
+    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
+    stream: ({ params }) =>
+      params.currencies.length === 0
+        ? of([] as ExchangeRate[])
+        : forkJoin(
+            params.currencies.map((currency) =>
+              this.exchangeRateRepository.getRate(currency, params.display)
+            )
+          )
+  });
+
+  private readonly converter = computed<CurrencyConverter>(() =>
+    converterFromRates(this.exchangeRatesResource.value() ?? [])
+  );
+
   protected readonly formatMoney = (value: number): string =>
     this.localeService.localizeNumber(String(value), 'currency', undefined, {
-      currency: DISPLAY_CURRENCY,
+      currency: this.displayCurrency(),
       currencyDisplay: 'symbol'
     });
 
@@ -98,7 +138,7 @@ export class Reports {
 
     for (const bucket of buckets) {
       const inBucket = transactions.filter((tx) => tx.date.slice(0, 7) === bucket.key);
-      const totals = totalsFor(inBucket, DISPLAY_CURRENCY);
+      const totals = totalsFor(inBucket, this.displayCurrency(), this.converter());
       income.push(toNumber(totals.income));
       expense.push(toNumber(totals.expense));
     }
@@ -117,7 +157,7 @@ export class Reports {
     const transactions = this.transactionsResource.value() ?? [];
     const net = buckets.map((bucket) => {
       const inBucket = transactions.filter((tx) => tx.date.slice(0, 7) === bucket.key);
-      return toNumber(totalsFor(inBucket, DISPLAY_CURRENCY).net);
+      return toNumber(totalsFor(inBucket, this.displayCurrency(), this.converter()).net);
     });
 
     const datasets: ChartDataset[] = [
@@ -135,7 +175,12 @@ export class Reports {
   protected readonly categoryTable = computed<CategoryTableRow[]>(() => {
     const categories = this.categoriesResource.value() ?? [];
     const transactions = this.transactionsInRange();
-    const breakdown = categoryBreakdown(transactions, categories, DISPLAY_CURRENCY);
+    const breakdown = categoryBreakdown(
+      transactions,
+      categories,
+      this.displayCurrency(),
+      this.converter()
+    );
     const colorMap = categoryColorMap(this.stableExpenseCategoryIds(), this.theme.current());
     const byId = new Map(categories.map((c) => [c.id, c]));
     const grandTotal = breakdown.reduce((total, entry) => total + toNumber(entry.total), 0);
@@ -180,7 +225,9 @@ export class Reports {
       data: buckets.map((bucket) => {
         const bucketEndIso = formatIsoDate(bucket.end);
         const upToBucketEnd = allTransactions.filter((tx) => tx.date <= bucketEndIso);
-        return toNumber(accountBalance(account, upToBucketEnd));
+        return toNumber(
+          this.converter()(accountBalance(account, upToBucketEnd), this.displayCurrency())
+        );
       })
     }));
 

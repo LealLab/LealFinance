@@ -3,10 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -15,6 +18,7 @@ import ptBR from '../../../../public/i18n/pt-BR.json';
 
 describe('Reports', () => {
   beforeEach(async () => {
+    localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [
         Reports,
@@ -30,7 +34,8 @@ describe('Reports', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: CategoryRepository, useClass: MockCategoryRepository }
+        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
   });
@@ -58,5 +63,25 @@ describe('Reports', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('input[type="month"]').length).toBe(2);
+  });
+
+  it('converts report totals when the display currency changes', async () => {
+    const displayCurrency = TestBed.inject(DisplayCurrencyService);
+    displayCurrency.setCurrency('BRL');
+    const fixture = TestBed.createComponent(Reports);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    displayCurrency.setCurrency('USD');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const rows = fixture.componentInstance['categoryTable']();
+    expect(rows.length).toBeGreaterThan(0);
+    expect(rows.every((row) => row.total.currency === 'USD')).toBe(true);
+    const foreignTrend = fixture.componentInstance['balanceTrendChart']().datasets.find(
+      (dataset) => dataset.label === 'Investimentos (Europa)',
+    );
+    expect(foreignTrend?.data.at(-1)).toBeGreaterThan(0);
   });
 });

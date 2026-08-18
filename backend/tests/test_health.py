@@ -7,6 +7,23 @@ async def test_liveness_ok(client: AsyncClient) -> None:
     assert response.json() == {"status": "ok"}
 
 
+async def test_cors_preflight_allows_frontend_requests(client: AsyncClient) -> None:
+    response = await client.options(
+        "/api/v1/health/live",
+        headers={
+            "Origin": "http://localhost:4200",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type,x-xsrf-token",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://localhost:4200"
+    assert response.headers["access-control-allow-methods"] == "GET, POST, PUT, PATCH, DELETE"
+    assert "content-type" in response.headers["access-control-allow-headers"].lower()
+    assert "x-xsrf-token" in response.headers["access-control-allow-headers"].lower()
+
+
 async def test_readiness_ok_when_dependencies_reachable(client: AsyncClient) -> None:
     response = await client.get("/api/v1/health/ready")
     assert response.status_code == 200

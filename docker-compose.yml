@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
       POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
     volumes:
       # Postgres 18+ images expect the mount at the parent directory, not
@@ -43,13 +43,13 @@ services:
       ENVIRONMENT: ${ENVIRONMENT:-production}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
       POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      API_SECRET_KEY: ${API_SECRET_KEY:-change-me-to-a-random-64-char-string}
+      API_SECRET_KEY: ${API_SECRET_KEY:?API_SECRET_KEY must be set}
       API_CORS_ORIGINS: ${API_CORS_ORIGINS:-http://localhost:${WEB_PORT:-8080}}
       SESSION_TTL_DAYS: ${SESSION_TTL_DAYS:-30}
       INVITATION_TTL_DAYS: ${INVITATION_TTL_DAYS:-7}
@@ -77,12 +77,13 @@ services:
       ENVIRONMENT: ${ENVIRONMENT:-production}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
       POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      API_SECRET_KEY: ${API_SECRET_KEY:?API_SECRET_KEY must be set}
     depends_on:
       api:
         condition: service_healthy
@@ -105,12 +106,13 @@ services:
       ENVIRONMENT: ${ENVIRONMENT:-production}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
       POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      API_SECRET_KEY: ${API_SECRET_KEY:?API_SECRET_KEY must be set}
     depends_on:
       api:
         condition: service_healthy
