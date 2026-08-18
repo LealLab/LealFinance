@@ -3,6 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { PreferenceService } from '../../core/preference.service';
 import { ThemeService } from '../../core/theme.service';
@@ -28,6 +29,7 @@ import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
+import { Transaction } from '../../domain/models/transaction';
 import { subtract, sum } from '../../shared/money/money';
 import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
@@ -42,8 +44,6 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { StatTile } from '../../shared/ui/stat-tile/stat-tile';
 import { BudgetFormModal } from './budget-form-modal';
-
-const DISPLAY_CURRENCY = 'BRL';
 
 /** t(budgets.planner.errors.total, budgets.planner.errors.income, budgets.planner.errors.save) */
 
@@ -88,6 +88,7 @@ export class Budgets {
   private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly confirmService = inject(ConfirmService);
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   private readonly preferences = inject(PreferenceService);
   private readonly transloco = inject(TranslocoService);
   private readonly theme = inject(ThemeService);
@@ -96,6 +97,7 @@ export class Budgets {
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
   protected readonly allocationsResource = rxResource({
     stream: () => this.budgetPlanRepository.listAllocations(),
   });
@@ -110,8 +112,9 @@ export class Budgets {
   });
   private readonly conversionPairs = computed<[string, string][]>(() => {
     const targets = new Set([
-      DISPLAY_CURRENCY,
+      this.displayCurrency(),
       ...(this.budgetsResource.value() ?? []).map((budget) => budget.currency),
+      ...(this.expectedIncomeResource.value() ?? []).map((income) => income.currency),
     ]);
     const sources = new Set([
       ...(this.transactionsResource.value() ?? []).map(
@@ -145,6 +148,17 @@ export class Budgets {
     () => new Map(this.categoriesResource.value()?.map((c) => [c.id, c]) ?? []),
   );
 
+  private displayBudgetProgress(
+    budget: Budget,
+    transactions: Transaction[],
+    categories: Category[],
+  ): BudgetProgress {
+    const progress = budgetProgress(budget, transactions, categories, this.converter());
+    const budgeted = this.converter()(progress.budgeted, this.displayCurrency());
+    const spent = this.converter()(progress.spent, this.displayCurrency());
+    return { ...progress, budgeted, spent, remaining: subtract(budgeted, spent) };
+  }
+
   protected readonly fixedBudgetRows = computed<BudgetRow[]>(() => {
     const budgets = this.budgetsResource.value() ?? [];
     const categories = this.categoriesResource.value() ?? [];
@@ -155,7 +169,7 @@ export class Budgets {
     return budgets
       .filter((budget) => budget.month === month)
       .map((budget) => ({
-        ...budgetProgress(budget, transactions, categories, this.converter()),
+        ...this.displayBudgetProgress(budget, transactions, categories),
         budget,
         category: byId.get(budget.categoryId),
         isPercentage: false,
@@ -209,7 +223,7 @@ export class Budgets {
     );
     const transactions = this.transactionsResource.value() ?? [];
     return budgets.map((entry) => ({
-      ...budgetProgress(entry.budget, transactions, categories, this.converter()),
+      ...this.displayBudgetProgress(entry.budget, transactions, categories),
       budget: entry.budget,
       category: categories.find((category) => category.id === entry.categoryId),
       isPercentage: true,
@@ -254,22 +268,15 @@ export class Budgets {
       categories,
       budgets,
       this.selectedMonth(),
-      DISPLAY_CURRENCY,
+      this.displayCurrency(),
       this.converter(),
     ).map((entry) => ({ ...entry, category: byId.get(entry.categoryId) }));
   });
 
   protected readonly totals = computed(() => {
     const rows = this.budgetRows();
-    const convert = this.converter();
-    const budgeted = sum(
-      rows.map((r) => convert(r.budgeted, DISPLAY_CURRENCY)),
-      DISPLAY_CURRENCY,
-    );
-    const spent = sum(
-      rows.map((r) => convert(r.spent, DISPLAY_CURRENCY)),
-      DISPLAY_CURRENCY,
-    );
+    const budgeted = sum(rows.map((r) => r.budgeted), this.displayCurrency());
+    const spent = sum(rows.map((r) => r.spent), this.displayCurrency());
     return { budgeted, spent, remaining: subtract(budgeted, spent) };
   });
 

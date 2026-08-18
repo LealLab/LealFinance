@@ -1,0 +1,22 @@
+# Pulls published images from GHCR instead of building from source. Layer
+# this on top of the base file:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# See docs/homelab-deploy.md#deploy-from-published-images. Images are only
+# published via the manual "Release" workflow (.github/workflows/release.yml)
+# - there is no image for a commit that hasn't been released.
+
+services:
+  api:
+    image: ghcr.io/leallab/lealfinance-api:${TAG:-latest}
+
+  worker:
+    image: ghcr.io/leallab/lealfinance-api:${TAG:-latest}
+
+  beat:
+    image: ghcr.io/leallab/lealfinance-api:${TAG:-latest}
+
+  web:
+    image: ghcr.io/leallab/lealfinance-web:${TAG:-latest}

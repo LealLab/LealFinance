@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "e2e": "node e2e/smoke.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
@@ -36,6 +37,7 @@
     "@eslint/js": "^10.0.1",
     "@jsverse/transloco-keys-manager": "^8.1.1",
     "@tailwindcss/postcss": "^4.3.3",
+    "@vitest/coverage-v8": "4.1.10",
     "angular-eslint": "22.1.0",
     "eslint": "^10.6.0",
     "jsdom": "^28.0.0",

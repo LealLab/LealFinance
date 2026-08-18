@@ -52,6 +52,11 @@ jobs:
 
       - run: uv sync --locked
 
+      - name: Dependency audit
+        run: |
+          uv export --no-dev --no-emit-project --format requirements.txt -o /tmp/requirements.txt
+          uvx pip-audit -r /tmp/requirements.txt
+
       - name: Lint
         run: |
           uv run ruff check .
@@ -72,7 +77,24 @@ jobs:
           uv run alembic downgrade base
 
       - name: Test
+        # Coverage (>=80% gate) is configured in pyproject.toml so it runs
+        # identically via `task backend:test` - nothing coverage-specific
+        # belongs here. Writes coverage.json, read by the badge step below.
         run: uv run pytest -q
+
+      - name: Coverage badge
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          mkdir -p /tmp/badges
+          pct=$(python -c "import json; print(round(json.load(open('coverage.json'))['totals']['percent_covered']))")
+          curl -fsSL -o /tmp/badges/coverage-backend.svg \
+            "https://img.shields.io/badge/backend%20coverage-${pct}%25-brightgreen"
+
+      - uses: actions/upload-artifact@v7.0.1
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        with:
+          name: coverage-badge-backend
+          path: /tmp/badges/coverage-backend.svg
 
   frontend:
     name: Frontend
@@ -93,6 +115,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Dependency audit
+        run: pnpm audit --audit-level=high
+
       - name: Lint
         run: pnpm run lint
 
@@ -102,7 +127,24 @@ jobs:
           node scripts/validate-i18n.mjs
 
       - name: Test
+        # Coverage (>=80% gate on lines) is configured in angular.json's
+        # test target, so this is identical to `task frontend:test`. Writes
+        # coverage/frontend/coverage-summary.json, read by the badge step.
         run: pnpm exec ng test
+
+      - name: Coverage badge
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          mkdir -p /tmp/badges
+          pct=$(node -e "console.log(Math.round(require('./coverage/frontend/coverage-summary.json').total.lines.pct))")
+          curl -fsSL -o /tmp/badges/coverage-frontend.svg \
+            "https://img.shields.io/badge/frontend%20coverage-${pct}%25-brightgreen"
+
+      - uses: actions/upload-artifact@v7.0.1
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        with:
+          name: coverage-badge-frontend
+          path: /tmp/badges/coverage-frontend.svg
 
       - name: Build
         run: pnpm run build
@@ -123,3 +165,48 @@ jobs:
 
       - name: Build images
         run: docker compose build
+
+      # worker/beat share the api image's Dockerfile/context byte-for-byte
+      # (see docker-compose.yml) - scanning api + web covers every distinct
+      # image actually built.
+      - name: Scan api image
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: lealfinance-api
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Scan web image
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: lealfinance-web
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+  coverage-badges:
+    name: Coverage badges
+    needs: [backend, frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          path: docs/badges
+          pattern: coverage-badge-*
+          merge-multiple: true
+
+      - name: Commit badges if changed
+        run: |
+          if ! git diff --quiet -- docs/badges; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add docs/badges
+            git commit -m "chore: update coverage badges [skip ci]"
+            git push
+          fi

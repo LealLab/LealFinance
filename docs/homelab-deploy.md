@@ -21,6 +21,35 @@ automatically merges `docker-compose.override.yml`, which is a development
 override that enables API reload and publishes Postgres/Redis ports on the
 host.
 
+## Deploy from published images
+
+By default `docker compose build` compiles the images locally from source.
+Alternatively, pull pre-built images from GHCR - published manually via the
+repo's [Release workflow](../.github/workflows/release.yml)
+(`workflow_dispatch`, run from the Actions tab with a tag such as `1.2.3`).
+
+The repository is **private**, so pulling requires authentication even for
+read access. Create a [personal access token](https://github.com/settings/tokens)
+with `read:packages` scope, then on the deploy host:
+
+```bash
+echo "$GHCR_TOKEN" | docker login ghcr.io -u <your-github-username> --password-stdin
+```
+
+Then layer `docker-compose.prod.yml` on top of the base file, which swaps
+`build:` for `image:` on every built service:
+
+```bash
+cp .env.example .env
+# Edit .env: set TAG to the release you want (defaults to "latest").
+docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+`docker-compose.yml`'s own `build:` keys are left in place, so nothing
+about the base file needs to change to support this - `pull` only touches
+what has an `image:`, and `up` only builds what doesn't.
+
 ## Running multiple Compose projects on one host
 
 If you run more than one LealFinance checkout, or another Compose project that happens to reuse service names like `db`/`api`, set an explicit project name to keep them fully isolated:
@@ -68,13 +97,23 @@ Automate this with cron + the above, or your homelab's existing backup tooling p
 
 ## Updating
 
+Building from source:
+
 ```bash
 git pull
 docker compose -f docker-compose.yml build
 docker compose -f docker-compose.yml up -d
 ```
 
-The `api` container runs `alembic upgrade head` on startup before serving traffic (see [`architecture.md`](architecture.md#migrations)), so schema migrations apply automatically, no manual migration step needed on upgrade.
+From published images (see above):
+
+```bash
+# Edit .env: bump TAG to the new release.
+docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+The `api` container runs `alembic upgrade head` on startup before serving traffic (see [`architecture.md`](architecture.md#migrations)), so schema migrations apply automatically, no manual migration step needed on upgrade, either way.
 
 ## AI Agents (Planned, not implemented yet)
 

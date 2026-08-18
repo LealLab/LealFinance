@@ -3,10 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -39,7 +42,8 @@ describe('Categories', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: BudgetRepository, useClass: MockBudgetRepository }
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
   });
@@ -199,5 +203,21 @@ describe('Categories', () => {
     );
     expect(namesAfter[0]).toBe('Alimentação');
     expect(namesAfter[1]).toBe('Moradia');
+  });
+
+  it('converts category spend when the display currency changes', async () => {
+    const displayCurrency = TestBed.inject(DisplayCurrencyService);
+    displayCurrency.setCurrency('BRL');
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    displayCurrency.setCurrency('USD');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const rows = [...fixture.componentInstance['expenseRows'](), ...fixture.componentInstance['incomeRows']()];
+    expect(rows.some((row) => row.spend.amount !== '0.0000')).toBe(true);
+    expect(rows.every((row) => row.spend.currency === 'USD')).toBe(true);
   });
 });

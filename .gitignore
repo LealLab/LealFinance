@@ -12,6 +12,8 @@ backend/.venv/
 .mypy_cache/
 .ruff_cache/
 .coverage
+backend/coverage.json
+backend/.pip-audit-requirements.txt
 htmlcov/
 backend/dist/
 backend/build/

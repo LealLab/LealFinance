@@ -95,10 +95,15 @@ forget to check it.
 
 ```text
 frontend/src/app/
-├── core/                     # HTTP client, error interceptor, Transloco setup
+├── core/                     # HTTP client, auth/session, preferences, Transloco setup
+├── data/                     # repository contracts plus HTTP and in-memory adapters
+├── domain/                   # models and pure money, balance, budget, and report calculations
+├── features/                 # route-level feature modules
+│   ├── auth/ admin/ settings/
+│   ├── dashboard/ accounts/ transactions/
+│   └── categories/ budgets/ goals/ reports/ exchange/
 ├── layout/                   # app shell - nav + language switcher
-├── features/dashboard/       # the one placeholder route
-└── shared/pipes/             # MoneyPipe
+└── shared/                   # reusable pipes, charts, forms, and UI components
 ```
 
 Angular 22, zoneless, standalone components, signals.
