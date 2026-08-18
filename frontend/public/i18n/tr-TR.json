@@ -337,6 +337,7 @@
       },
       "everyN": "{{n}}'de bir",
       "nextOccurrence": "Sonraki yineleme",
+      "lastPosted": "Son işlenme",
       "actions": {
         "new": "Yeni tekrarlama kuralı"
       },

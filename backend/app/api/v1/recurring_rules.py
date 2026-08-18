@@ -1,5 +1,5 @@
-"""Recurring rule CRUD. Rules are projections only - see
-app/services/recurring_rules.py."""
+"""Recurring rule CRUD. Posting due occurrences as transactions happens
+out of band on Celery beat - see app/services/recurring_posting.py."""
 
 from uuid import UUID
 

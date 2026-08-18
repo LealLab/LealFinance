@@ -337,6 +337,7 @@
       },
       "everyN": "每 {{n}}",
       "nextOccurrence": "下次發生日期",
+      "lastPosted": "上次入帳",
       "actions": {
         "new": "新增週期性規則"
       },

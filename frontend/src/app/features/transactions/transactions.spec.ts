@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { Observable, of } from 'rxjs';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
@@ -16,6 +17,9 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockRecurringRuleRepository } from '../../data/mock/mock-recurring-rule.repository';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
+import { formatIsoDate } from '../../domain/calc/dates';
+import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
+import { Transaction } from '../../domain/models/transaction';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Transactions } from './transactions';
@@ -114,5 +118,106 @@ describe('Transactions', () => {
     expect(dialog.open).toBe(false);
     expect(el.textContent).toContain('Transação de teste E2E');
     expect(el.textContent).toContain('42,50');
+  });
+});
+
+describe('Transactions - already-posted occurrences are not projected as ghosts', () => {
+  const today = formatIsoDate(new Date());
+
+  const rule: RecurringRule = {
+    id: 'rule-test',
+    frequency: 'weekly',
+    interval: 1,
+    startDate: today,
+    template: {
+      type: 'expense',
+      amount: '50.00',
+      currency: 'BRL',
+      accountId: 'acc-1',
+      categoryId: 'cat-1',
+      description: 'Assinatura de teste'
+    }
+  };
+
+  const postedTransaction: Transaction = {
+    id: 'tx-posted',
+    type: 'expense',
+    date: today,
+    amount: '50.00',
+    currency: 'BRL',
+    accountId: 'acc-1',
+    categoryId: 'cat-1',
+    description: 'Assinatura de teste',
+    recurringRuleId: rule.id
+  };
+
+  class StubTransactionRepository extends TransactionRepository {
+    override list(): Observable<Transaction[]> {
+      return of([postedTransaction]);
+    }
+    override get(): Observable<Transaction | undefined> {
+      return of(undefined);
+    }
+    override create(): Observable<Transaction> {
+      return of(postedTransaction);
+    }
+    override update(): Observable<Transaction> {
+      return of(postedTransaction);
+    }
+    override delete(): Observable<void> {
+      return of(undefined);
+    }
+  }
+
+  class StubRecurringRuleRepository extends RecurringRuleRepository {
+    override list(): Observable<RecurringRule[]> {
+      return of([rule]);
+    }
+    override create(): Observable<RecurringRule> {
+      return of(rule);
+    }
+    override update(): Observable<RecurringRule> {
+      return of(rule);
+    }
+    override delete(): Observable<void> {
+      return of(undefined);
+    }
+  }
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        Transactions,
+        TranslocoTestingModule.forRoot({
+          langs: { 'pt-BR': ptBR },
+          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
+        })
+      ],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: AccountRepository, useClass: MockAccountRepository },
+        { provide: TransactionRepository, useClass: StubTransactionRepository },
+        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: RecurringRuleRepository, useClass: StubRecurringRuleRepository },
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
+      ]
+    }).compileComponents();
+  });
+
+  it('excludes a projected occurrence whose (rule, date) already posted as a real transaction', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // Without the postedOccurrences guard, rule's weekly occurrence on
+    // `today` would show up here too, duplicating postedTransaction.
+    const projected: ProjectedTransaction[] = fixture.componentInstance['projectedRows']();
+    expect(projected.some((o) => o.recurringRuleId === rule.id && o.date === today)).toBe(false);
   });
 });

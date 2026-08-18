@@ -55,6 +55,21 @@ class RateResult:
     as_of: date
 
 
+def to_conversion_source(result: RateResult) -> str:
+    """Maps a RateResult's source vocabulary (identity/manual/
+    openexchangerates/fallback_1to1) onto app/models/_conversion.py's
+    CONVERSION_SOURCES (manual/quote/fallback) - the two are deliberately
+    different vocabularies (a rate lookup and a transaction's recorded
+    conversion aren't the same concept), but a caller that turns a live
+    rate into a posted conversion needs to bridge them. The frontend does
+    the same mapping in data/http/mappers.ts."""
+    if result.is_fallback:
+        return "fallback"
+    if result.source == MANUAL_SOURCE:
+        return "manual"
+    return "quote"
+
+
 async def get_exchange_rate(
     db: AsyncSession,
     base_code: str,

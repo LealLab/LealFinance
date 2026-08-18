@@ -337,6 +337,7 @@
       },
       "everyN": "setiap {{n}}",
       "nextOccurrence": "Kejadian berikutnya",
+      "lastPosted": "Terakhir diposting",
       "actions": {
         "new": "Aturan berulang baru"
       },

@@ -279,6 +279,11 @@
                     {{ t('transactions.recurring.nextOccurrence') }}: {{ next }}
                   </span>
                 }
+                @if (rule.lastPostedDate) {
+                  <span class="text-xs text-content-subtle">
+                    {{ t('transactions.recurring.lastPosted') }}: {{ rule.lastPostedDate }}
+                  </span>
+                }
               </div>
               <div class="flex items-center gap-3">
                 <span

@@ -337,6 +337,7 @@
       },
       "everyN": "každých {{n}}",
       "nextOccurrence": "Další výskyt",
+      "lastPosted": "Naposledy zaúčtováno",
       "actions": {
         "new": "Nové pravidlo opakování"
       },

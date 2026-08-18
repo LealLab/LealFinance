@@ -337,6 +337,7 @@
       },
       "everyN": "cada {{n}}",
       "nextOccurrence": "Próxima ocurrencia",
+      "lastPosted": "Último registro",
       "actions": {
         "new": "Nueva regla recurrente"
       },

@@ -337,6 +337,7 @@
       },
       "everyN": "每 {{n}}",
       "nextOccurrence": "下次发生时间",
+      "lastPosted": "上次入账",
       "actions": {
         "new": "新建周期性规则"
       },

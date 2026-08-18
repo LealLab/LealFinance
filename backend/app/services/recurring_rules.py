@@ -3,9 +3,10 @@ app/models/recurring.py) and is validated with the exact same shape and
 conversion rules as a real transaction
 (app/services/transactions.py::validate_transaction_shape).
 
-Rules never post transactions or affect balances/budgets themselves;
-occurrence projection is entirely a frontend concern
-(domain/calc/recurrence.ts).
+CRUD only - actually posting a rule's due occurrences as transactions is
+app/services/recurring_posting.py, run nightly by Celery beat. The
+frontend still projects *upcoming* occurrences on demand for display
+(domain/calc/recurrence.ts); those are separate from what gets posted.
 """
 
 from uuid import UUID

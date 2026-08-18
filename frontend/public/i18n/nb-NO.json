@@ -337,6 +337,7 @@
       },
       "everyN": "hver {{n}}",
       "nextOccurrence": "Neste forekomst",
+      "lastPosted": "Sist bokført",
       "actions": {
         "new": "Ny gjentakelsesregel"
       },

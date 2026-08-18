@@ -337,6 +337,7 @@
       },
       "everyN": "{{n}}회마다",
       "nextOccurrence": "다음 발생일",
+      "lastPosted": "마지막 등록일",
       "actions": {
         "new": "반복 규칙 추가"
       },

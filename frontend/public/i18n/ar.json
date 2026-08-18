@@ -337,6 +337,7 @@
       },
       "everyN": "كل {{n}}",
       "nextOccurrence": "التكرار التالي",
+      "lastPosted": "آخر ترحيل",
       "actions": {
         "new": "قاعدة تكرار جديدة"
       },

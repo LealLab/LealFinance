@@ -105,15 +105,32 @@ export class Transactions {
     return groups;
   });
 
+  // Occurrences the backend has already posted as real transactions (see
+  // recurring_posting.py) - keyed by rule + date so a projection for that
+  // same occurrence isn't drawn as a ghost row alongside the real one.
+  // Only covers whatever transactionsResource currently has loaded, so a
+  // narrow date filter could in principle let a stale ghost through; not
+  // worth fetching extra rows just to close that gap.
+  private readonly postedOccurrences = computed<Set<string>>(
+    () =>
+      new Set(
+        (this.transactionsResource.value() ?? [])
+          .filter((tx) => tx.recurringRuleId)
+          .map((tx) => `${tx.recurringRuleId}|${tx.date}`)
+      )
+  );
+
   protected readonly projectedRows = computed<ProjectedTransaction[]>(() => {
     const rules = this.recurringRulesResource.value() ?? [];
     const filters = this.filters();
     const accountsById = this.accountsById();
+    const posted = this.postedOccurrences();
     const from = formatIsoDate(new Date());
     const to = formatIsoDate(addDays(new Date(), PROJECTION_HORIZON_DAYS));
 
     return rules
       .flatMap((rule) => projectOccurrences(rule, from, to))
+      .filter((occurrence) => !posted.has(`${occurrence.recurringRuleId}|${occurrence.date}`))
       .filter((occurrence) => matchesFilters(occurrence, filters, accountsById))
       .sort((a, b) => a.date.localeCompare(b.date));
   });

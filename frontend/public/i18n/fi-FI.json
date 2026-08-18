@@ -337,6 +337,7 @@
       },
       "everyN": "joka {{n}}.",
       "nextOccurrence": "Seuraava tapahtumakerta",
+      "lastPosted": "Viimeksi kirjattu",
       "actions": {
         "new": "Uusi toistumissääntö"
       },

@@ -7,7 +7,7 @@
 | `postgres` | Primary datastore. |
 | `redis` | Celery broker + result backend. |
 | `api` | FastAPI app. Runs Alembic migrations on startup (see below). |
-| `worker` | Celery worker for background tasks. The scheduled exchange-rate refresh is currently disabled. |
+| `worker` | Celery worker for background tasks: daily recurring-rule posting (`app/services/recurring_posting.py`) is live; the scheduled exchange-rate refresh (`app/workers/tasks/rates.py`) is still disabled. |
 | `beat` | Celery beat - schedules periodic tasks for `worker` to pick up. |
 | `web` | nginx serving the built Angular SPA and proxying `/api/` to `api`. |
 | `agents` | Optional, behind the `agents` Compose profile. Not yet implemented; see README.md. |
@@ -58,7 +58,15 @@ backend/app/
 └── workers/                 # Celery app + tasks
 ```
 
-`app/core/db.py` (async engine, used by FastAPI) and `app/core/db_sync.py` (sync engine, used by Celery workers) are separate on purpose, Celery's worker model isn't async-native, and sharing an async engine across the two would be fragile.
+`app/core/db.py` (async engine, used by FastAPI) and `app/core/db_sync.py`
+(sync engine, the seam `app/workers/tasks/rates.py` is meant to use once
+it's implemented) are separate on purpose - Celery's worker model isn't
+async-native, and sharing FastAPI's pooled async engine across the two
+would be fragile. `app/workers/tasks/recurring.py` takes a third option:
+it opens its own short-lived async engine per run (`NullPool`, torn down
+after) so `post_all_due_occurrences` can reuse the same async services
+`transactions.py` and `conversion.py` use, rather than duplicating them
+as sync code.
 
 ### Windows dev server
 
@@ -120,9 +128,13 @@ the application configuration.
 The backend domain schema and API are documented in
 [`backend-api.md`](backend-api.md).
 
-Recurring rules are projections only: there is no posting workflow that
-turns a rule into real transactions, so occurrences are computed client-side
-(`domain/calc/recurrence.ts`) and never affect balances, budgets, or reports.
+Recurring rules post for real: a daily Celery beat task
+(`app/services/recurring_posting.py`) turns each rule's due occurrences
+into Transactions, which do affect balances, budgets, and reports like any
+other transaction. `domain/calc/recurrence.ts` still computes *upcoming*
+occurrences client-side for display, but that projection is separate from
+posting - see the "Recurring rules" section of
+[`backend-api.md`](backend-api.md#recurring-rules).
 
 The AI Agents feature (`AGENTS_ENABLED` + the `agents` Compose profile) is
 still an unimplemented placeholder.

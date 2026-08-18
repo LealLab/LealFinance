@@ -52,6 +52,7 @@ class RecurringRuleRead(BaseModel):
     interval: int
     start_date: date
     end_date: date | None
+    last_posted_date: date | None
     template: RecurringTemplateRead
 
 

@@ -337,6 +337,7 @@
       },
       "everyN": "co {{n}}",
       "nextOccurrence": "Następne wystąpienie",
+      "lastPosted": "Ostatnio zaksięgowano",
       "actions": {
         "new": "Nowa reguła cykliczna"
       },
