@@ -337,6 +337,7 @@
       },
       "everyN": "alle {{n}}",
       "nextOccurrence": "Nächste Ausführung",
+      "lastPosted": "Zuletzt gebucht",
       "actions": {
         "new": "Neue Wiederholungsregel"
       },

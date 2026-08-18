@@ -337,6 +337,7 @@
       },
       "everyN": "var {{n}}",
       "nextOccurrence": "Nästa förekomst",
+      "lastPosted": "Senast bokförd",
       "actions": {
         "new": "Ny återkommande regel"
       },

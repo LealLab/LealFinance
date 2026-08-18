@@ -337,6 +337,7 @@
       },
       "everyN": "a cada {{n}}",
       "nextOccurrence": "Próxima ocorrência",
+      "lastPosted": "Último lançamento",
       "actions": {
         "new": "Nova recorrência"
       },

@@ -51,9 +51,11 @@ templateUrl/styleUrl siblings, commit/PR rules) still apply on top of this.
   `docs/money-and-currency.md` for the full rule and
   `docs/backend-api.md` for the endpoint.
 - Called from transaction/recurring-rule creation (cross-currency
-  conversion validation, `app/services/conversion.py`) and from
-  `GET /api/v1/meta/exchange-rate` (now authenticated - it consults the
-  caller's own manual rates).
+  conversion validation, `app/services/conversion.py`), from recurring
+  rule posting (`app/services/recurring_posting.py` re-resolves a live
+  rate per occurrence rather than replaying the template's frozen one),
+  and from `GET /api/v1/meta/exchange-rate` (now authenticated - it
+  consults the caller's own manual rates).
 
 ## Backend domain model
 
@@ -63,8 +65,16 @@ templateUrl/styleUrl siblings, commit/PR rules) still apply on top of this.
   endpoints/ownership/error codes and `docs/architecture.md` for the
   identity/ownership pattern (`UserOwnedModel`,
   `app/services/ownership.py`).
-- The frontend still runs entirely on `frontend/src/app/data/mock/` -
-  wiring it to the real API is separate, not-yet-done work.
+- The frontend is wired to the real API (`app.config.ts` provides the
+  `Http*Repository` classes) - `frontend/src/app/data/mock/` still exists
+  and is exercised by unit tests, but is no longer what the running app
+  uses.
+- Recurring rules post for real: a Celery beat task
+  (`app/workers/tasks/recurring.py`, via
+  `app/services/recurring_posting.py`) materializes each rule's due
+  occurrences as Transactions daily. `domain/calc/recurrence.ts` still
+  projects *upcoming* occurrences client-side for display, but those are
+  separate from what actually posts - never conflate the two.
 
 ## Workflow
 

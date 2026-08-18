@@ -1,14 +1,20 @@
-"""Recurring rules project future transactions on demand (see the
-frontend's domain/calc/recurrence.ts) rather than pre-creating them.
+"""Recurring rules describe a repeating transaction; a Celery beat task
+(app/workers/tasks/recurring.py, via app/services/recurring_posting.py)
+posts each due occurrence as a real Transaction, linked back via
+Transaction.recurring_rule_id. `last_posted_date` is that task's cursor -
+the last occurrence date actually posted, so a rerun never posts the same
+occurrence twice (also enforced at the DB level, see
+Transaction.__table_args__'s partial unique index).
+
 `template_*` columns mirror Transaction minus id/date/recurring_rule_id,
 as real FKs rather than JSONB - the referenced account/category/currency
 must actually exist and belong to the same user, and the exact same
 transaction-shape and conversion validation applies (see
 app/services/transactions.py::validate_transaction_shape, reused here).
 
-Rules never post transactions themselves and have no effect on balances,
-budgets, or reports - there is no posting workflow in this scaffold, so
-every occurrence a rule would produce stays a frontend-only projection.
+The frontend still projects *upcoming* occurrences on demand for display
+(domain/calc/recurrence.ts) - those projections are never persisted and
+are distinct from what this module actually posts.
 """
 
 import uuid
@@ -93,6 +99,13 @@ class RecurringRule(UserOwnedModel):
     interval: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     start_date: Mapped[date_type] = mapped_column(Date, nullable=False)
     end_date: Mapped[date_type | None] = mapped_column(Date)
+    # Posting cursor: the last occurrence date actually posted by
+    # app/services/recurring_posting.py. NULL means nothing has posted yet
+    # (posting starts from start_date). Existing rules are backfilled to
+    # CURRENT_DATE by the migration that introduced this column, so
+    # deploying the posting feature doesn't retroactively post years of
+    # history for rules that predate it.
+    last_posted_date: Mapped[date_type | None] = mapped_column(Date)
 
     template_type: Mapped[str] = mapped_column(String(20), nullable=False)
     template_amount: Mapped[MoneyAmount] = mapped_column(nullable=False)

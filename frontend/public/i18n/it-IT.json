@@ -337,6 +337,7 @@
       },
       "everyN": "ogni {{n}}",
       "nextOccurrence": "Prossima occorrenza",
+      "lastPosted": "Ultima registrazione",
       "actions": {
         "new": "Nuova regola di ricorrenza"
       },

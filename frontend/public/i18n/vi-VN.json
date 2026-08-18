@@ -337,6 +337,7 @@
       },
       "everyN": "mỗi {{n}}",
       "nextOccurrence": "Lần phát sinh tiếp theo",
+      "lastPosted": "Lần ghi sổ gần nhất",
       "actions": {
         "new": "Quy tắc định kỳ mới"
       },

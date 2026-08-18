@@ -3,13 +3,14 @@ import { Transaction } from './transaction';
 export type RecurringFrequency = 'weekly' | 'monthly' | 'yearly';
 
 /**
- * A rule that *projects* future transactions rather than storing them - a
- * monthly rent entry is one RecurringRule, not twelve pre-created
- * Transaction rows. domain/calc/recurrence.ts expands a rule into
- * occurrences on demand; those projections are visually distinct in the UI
- * and never counted in balances, totals, or budget spend until (in a real
- * system) they're actually posted. This scaffold has no posting step, so
- * every occurrence a rule produces stays a projection.
+ * A rule that describes a repeating transaction. A backend Celery beat task
+ * posts each due occurrence as a real Transaction (see
+ * backend/app/services/recurring_posting.py), advancing `lastPostedDate` as
+ * it goes - that's the authoritative history. This app also still projects
+ * *upcoming* occurrences on demand for display
+ * (domain/calc/recurrence.ts::projectOccurrences); those projections are
+ * visually distinct in the UI and are never counted in balances, totals, or
+ * budget spend - only what actually posted is.
  */
 export interface RecurringRule {
   id: string;
@@ -18,6 +19,8 @@ export interface RecurringRule {
   interval: number;
   startDate: string;
   endDate?: string;
+  /** The last occurrence date actually posted by the backend, if any. */
+  lastPostedDate?: string;
   template: Omit<Transaction, 'id' | 'date' | 'recurringRuleId'>;
 }
 

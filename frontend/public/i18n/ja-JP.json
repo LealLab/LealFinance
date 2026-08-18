@@ -337,6 +337,7 @@
       },
       "everyN": "{{n}}回ごと",
       "nextOccurrence": "次回発生日",
+      "lastPosted": "前回計上日",
       "actions": {
         "new": "新しい定期ルール"
       },

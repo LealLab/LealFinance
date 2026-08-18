@@ -337,6 +337,7 @@
       },
       "everyN": "la fiecare {{n}}",
       "nextOccurrence": "Următoarea apariție",
+      "lastPosted": "Ultima înregistrare",
       "actions": {
         "new": "Regulă recurentă nouă"
       },

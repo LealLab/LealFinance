@@ -113,9 +113,11 @@ export interface RecurringRuleWire {
   interval: number;
   start_date: string;
   end_date: string | null;
+  last_posted_date: string | null;
   template: RecurringTemplateWire;
 }
-export type RecurringRuleInputWire = Omit<RecurringRuleWire, 'id'>;
+// last_posted_date is a server-managed posting cursor - never written by the client.
+export type RecurringRuleInputWire = Omit<RecurringRuleWire, 'id' | 'last_posted_date'>;
 export type RecurringRulePatchWire = NullablePatch<RecurringRuleInputWire>;
 
 export interface ManualRateWire {

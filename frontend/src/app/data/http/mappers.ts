@@ -259,6 +259,7 @@ export const mapRecurringRule = (wire: RecurringRuleWire): RecurringRule => ({
   interval: wire.interval,
   startDate: wire.start_date,
   endDate: wire.end_date ?? undefined,
+  lastPostedDate: wire.last_posted_date ?? undefined,
   template: mapRecurringTemplate(wire.template),
 });
 export const mapRecurringRuleCreate = (

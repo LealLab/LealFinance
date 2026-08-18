@@ -337,6 +337,7 @@
       },
       "everyN": "elke {{n}}",
       "nextOccurrence": "Volgende uitvoering",
+      "lastPosted": "Laatst geboekt",
       "actions": {
         "new": "Nieuwe terugkerende regel"
       },

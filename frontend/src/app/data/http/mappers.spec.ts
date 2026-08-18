@@ -55,6 +55,7 @@ describe('HTTP wire mappers', () => {
       interval: 2,
       start_date: '2026-01-31',
       end_date: null,
+      last_posted_date: null,
       template: {
         type: 'expense',
         amount: '10.2300',
@@ -69,6 +70,7 @@ describe('HTTP wire mappers', () => {
     });
     expect(result.startDate).toBe('2026-01-31');
     expect(result.endDate).toBeUndefined();
+    expect(result.lastPostedDate).toBeUndefined();
     expect(result.template.conversion?.rate).toBe('0.1955');
     expect(result.template.conversion?.fee).toBeUndefined();
   });

@@ -10,7 +10,7 @@ app/services/conversion.py for the validation this shape supports.
 import uuid
 from datetime import date as date_type
 
-from sqlalchemy import CheckConstraint, Date, ForeignKey, Index, String, Text
+from sqlalchemy import CheckConstraint, Date, ForeignKey, Index, String, Text, text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -57,6 +57,17 @@ class Transaction(UserOwnedModel):
         ),
         *conversion_constraints("transactions", "conversion_"),
         Index("ix_transactions_user_id_date", "user_id", "date"),
+        # Idempotency guard for recurring posting (see
+        # app/services/recurring_posting.py): the same rule can never post
+        # two transactions on the same occurrence date. Partial, since
+        # ordinary (non-recurring) transactions freely share a date.
+        Index(
+            "ux_transactions_recurring_rule_id_date",
+            "recurring_rule_id",
+            "date",
+            unique=True,
+            postgresql_where=text("recurring_rule_id IS NOT NULL"),
+        ),
     )
 
     type: Mapped[str] = mapped_column(String(20), nullable=False)

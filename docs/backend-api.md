@@ -208,10 +208,25 @@ template surfaces the matching `transaction.*` code, not a separate
 referenced account or category must exist and belong to the caller just
 like a real transaction's would.
 
-Rules are projections only: there is no posting workflow, and nothing here
-computes or stores occurrences - that stays entirely client-side
-(`domain/calc/recurrence.ts`) and never touches balances, budgets, or
-reports.
+This router is CRUD only. A Celery beat task (`app/workers/tasks/recurring.py`,
+running daily at 01:00 UTC) posts each rule's due occurrences as real
+Transactions via `app/services/recurring_posting.py` - there is no HTTP
+endpoint to trigger it. `RecurringRuleRead.last_posted_date` is that task's
+cursor: the last occurrence date actually posted, `null` if none yet.
+Posting is idempotent twice over - the cursor skips what it already posted,
+and a partial unique index on `transactions (recurring_rule_id, date)`
+makes a duplicate impossible at the database level even if a run is
+retried. Cross-currency occurrences re-resolve a live exchange rate as of
+each occurrence's own date rather than replaying the template's
+`conversion` (frozen from whenever the rule was last edited) - so a rule
+with a manual rate set after creation, or one that's simply been running
+a while, posts at the rate that was actually in effect that day.
+
+The frontend still projects *upcoming* occurrences on demand for display
+(`domain/calc/recurrence.ts`) - those projections are separate from what
+gets posted and are suppressed client-side once the matching transaction
+exists, so a due occurrence never renders as both a ghost row and a real
+one.
 
 | Code | Status |
 | --- | --- |

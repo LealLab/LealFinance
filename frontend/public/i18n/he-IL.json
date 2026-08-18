@@ -337,6 +337,7 @@
       },
       "everyN": "כל {{n}}",
       "nextOccurrence": "המופע הבא",
+      "lastPosted": "נרשם לאחרונה",
       "actions": {
         "new": "כלל מחזורי חדש"
       },
