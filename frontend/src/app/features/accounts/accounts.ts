@@ -9,13 +9,11 @@ import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
-import { TransactionRepository } from '../../data/transaction.repository';
 import { convertedOrNull, converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
-import { accountBalance } from '../../domain/calc/balances';
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Institution } from '../../domain/models/institution';
-import { Money, sum } from '../../shared/money/money';
+import { money, Money, sum } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
@@ -74,7 +72,6 @@ function trySum(amounts: Money[]): Money | null {
 export class Accounts {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly accountRepository = inject(AccountRepository);
-  private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly confirmService = inject(ConfirmService);
@@ -87,8 +84,8 @@ export class Accounts {
   protected readonly accountsResource = rxResource({
     stream: () => this.accountRepository.list()
   });
-  protected readonly transactionsResource = rxResource({
-    stream: () => this.transactionRepository.list()
+  protected readonly balancesResource = rxResource({
+    stream: () => this.accountRepository.balances()
   });
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutionRepository.list()
@@ -119,10 +116,14 @@ export class Accounts {
 
   private readonly converter = computed<CurrencyConverter>(() => converterFromRates(this.ratesResource.value() ?? []));
 
+  protected readonly balanceByAccountId = computed(
+    () => new Map((this.balancesResource.value() ?? []).map((b) => [b.accountId, b]))
+  );
+
   protected readonly groups = computed<AccountGroup[]>(() => {
     const accounts = this.accountsResource.value() ?? [];
     const institutions = this.institutionsResource.value() ?? [];
-    const transactions = this.transactionsResource.value() ?? [];
+    const balanceByAccountId = this.balanceByAccountId();
     const showArchived = this.showArchived();
     const display = this.displayCurrency();
     const convert = this.converter();
@@ -134,7 +135,8 @@ export class Accounts {
     // feedback and the institution remains available for editing/deletion.
     return groupAccountsByInstitution(visibleAccounts, institutions, true).map((group) => {
       const rows: AccountRow[] = group.accounts.map((account) => {
-        const balance = accountBalance(account, transactions);
+        const row = balanceByAccountId.get(account.id);
+        const balance = row ? money(row.balance, row.currency) : money('0', account.currency);
         return { account, balance, convertedBalance: convertedOrNull(balance, display, convert) };
       });
       const subtotal = trySum(rows.filter((row) => !row.account.archived).map((row) => row.balance));
@@ -182,6 +184,7 @@ export class Accounts {
 
   protected onSaved(): void {
     this.accountsResource.reload();
+    this.balancesResource.reload();
     // The account form can create a brand-new institution inline (its own
     // nested InstitutionFormModal) - reload ours too so a just-created
     // institution's group shows up immediately instead of the account

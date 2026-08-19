@@ -74,7 +74,10 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "setupFiles": ["src/testing/dialog-polyfill.ts"],
+            "setupFiles": [
+              "src/testing/dialog-polyfill.ts",
+              "src/testing/intersection-observer-polyfill.ts"
+            ],
             "coverage": true,
             "coverageReporters": ["text-summary", "json-summary"],
             "coverageThresholds": {

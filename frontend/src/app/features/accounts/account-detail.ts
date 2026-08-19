@@ -1,8 +1,8 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
@@ -11,18 +11,22 @@ import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { convertedOrNull, converterFromRates } from '../../domain/calc/aggregations';
-import { accountBalance, creditCardSummary } from '../../domain/calc/balances';
-import { ratio } from '../../shared/money/money';
+import { creditCardSummary } from '../../domain/calc/balances';
+import { Transaction } from '../../domain/models/transaction';
+import { money, ratio } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { AccountFormModal } from './account-form-modal';
 import { accountTypeOption } from './account-type';
+
+const PAGE_SIZE = 30;
 
 /**
  * `id` binds directly from the `:id` route param - see
@@ -43,6 +47,7 @@ import { accountTypeOption } from './account-type';
     Card,
     EmptyState,
     Icon,
+    InfiniteScroll,
     PageHeader,
     ProgressBar,
     AccountFormModal
@@ -66,12 +71,61 @@ export class AccountDetail {
   protected readonly accountsResource = rxResource({
     stream: () => this.accountRepository.list()
   });
-  protected readonly transactionsResource = rxResource({
-    stream: () => this.transactionRepository.list()
+  protected readonly balancesResource = rxResource({
+    stream: () => this.accountRepository.balances()
   });
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutionRepository.list()
   });
+
+  // Paginated transaction history for this account - accumulated across
+  // loadMore() calls rather than an rxResource, since rxResource replaces
+  // its value on every params change and this needs to append instead.
+  protected readonly rows = signal<Transaction[]>([]);
+  private readonly offset = signal(0);
+  protected readonly exhausted = signal(false);
+  private loadingMore = false;
+  private loadSubscription?: Subscription;
+
+  constructor() {
+    // untracked: loadMore() reads `exhausted` synchronously - without
+    // untracked that becomes an effect dependency too, and loadMore()'s
+    // own `exhausted.set(true)` (in its subscribe callback) would
+    // re-trigger this same effect, looping forever.
+    effect(() => {
+      this.id();
+      untracked(() => {
+        // Cancel any request still in flight for the previous id - without
+        // this, fast navigation between accounts would see loadMore() below
+        // no-op (loadingMore is still true from the stale request) and then
+        // have that stale request's response land in the just-cleared rows.
+        this.loadSubscription?.unsubscribe();
+        this.loadingMore = false;
+        this.rows.set([]);
+        this.offset.set(0);
+        this.exhausted.set(false);
+        this.loadMore();
+      });
+    });
+  }
+
+  protected loadMore(): void {
+    if (this.loadingMore || this.exhausted()) return;
+    this.loadingMore = true;
+    this.loadSubscription = this.transactionRepository
+      .list({ accountId: this.id(), limit: PAGE_SIZE, offset: this.offset() })
+      .subscribe({
+        next: (page) => {
+          this.rows.update((current) => [...current, ...page]);
+          this.offset.update((current) => current + page.length);
+          if (page.length < PAGE_SIZE) this.exhausted.set(true);
+          this.loadingMore = false;
+        },
+        error: () => {
+          this.loadingMore = false;
+        },
+      });
+  }
 
   protected readonly account = computed(() =>
     this.accountsResource.value()?.find((account) => account.id === this.id())
@@ -91,16 +145,11 @@ export class AccountDetail {
     return account ? accountTypeOption(account.type) : undefined;
   });
 
-  protected readonly accountTransactions = computed(() => {
-    const id = this.id();
-    return (this.transactionsResource.value() ?? [])
-      .filter((tx) => tx.accountId === id || tx.toAccountId === id)
-      .sort((a, b) => b.date.localeCompare(a.date));
-  });
-
   protected readonly balance = computed(() => {
     const account = this.account();
-    return account ? accountBalance(account, this.transactionsResource.value() ?? []) : undefined;
+    if (!account) return undefined;
+    const row = this.balancesResource.value()?.find((b) => b.accountId === account.id);
+    return row ? money(row.balance, row.currency) : money('0', account.currency);
   });
 
   protected readonly displayCurrency = this.displayCurrencyService.currency;
@@ -125,8 +174,9 @@ export class AccountDetail {
 
   protected readonly creditCard = computed(() => {
     const account = this.account();
-    if (!account || account.type !== 'credit_card') return undefined;
-    return creditCardSummary(account, this.transactionsResource.value() ?? []);
+    const balance = this.balance();
+    if (!account || !balance || account.type !== 'credit_card') return undefined;
+    return creditCardSummary(account, balance);
   });
 
   protected readonly creditCardRatio = computed(() => {
@@ -162,6 +212,7 @@ export class AccountDetail {
 
   protected onSaved(): void {
     this.accountsResource.reload();
+    this.balancesResource.reload();
     // See accounts.ts's onSaved for why: the account form can create a
     // brand-new institution inline via its own nested InstitutionFormModal.
     this.institutionsResource.reload();

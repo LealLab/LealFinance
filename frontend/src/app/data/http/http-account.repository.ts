@@ -1,17 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { ApiClient } from '../../core/api-client';
-import { Account } from '../../domain/models/account';
+import { Account, AccountBalance } from '../../domain/models/account';
 import { AccountRepository } from '../account.repository';
-import { mapAccount, mapAccountCreate, mapAccountPatch } from './mappers';
+import { mapAccount, mapAccountBalance, mapAccountCreate, mapAccountPatch } from './mappers';
 import { notFoundOrThrow } from './repository-errors';
-import { AccountWire } from './wire-dtos';
+import { AccountBalanceWire, AccountWire } from './wire-dtos';
 
 @Injectable({ providedIn: 'root' })
 export class HttpAccountRepository extends AccountRepository {
   private readonly api = inject(ApiClient);
   list(): Observable<Account[]> {
     return this.api.get<AccountWire[]>('/accounts').pipe(map((items) => items.map(mapAccount)));
+  }
+  balances(): Observable<AccountBalance[]> {
+    return this.api
+      .get<AccountBalanceWire[]>('/accounts/balances')
+      .pipe(map((items) => items.map(mapAccountBalance)));
   }
   get(id: string): Observable<Account | undefined> {
     return this.api.get<AccountWire>(`/accounts/${id}`).pipe(

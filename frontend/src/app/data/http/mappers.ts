@@ -1,4 +1,4 @@
-import type { Account } from '../../domain/models/account';
+import type { Account, AccountBalance } from '../../domain/models/account';
 import type { Budget } from '../../domain/models/budget';
 import type { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import type { Category } from '../../domain/models/category';
@@ -9,6 +9,7 @@ import type { ManualRate } from '../../domain/models/manual-rate';
 import type { RecurringRule } from '../../domain/models/recurring';
 import type { Transaction, TransactionConversion } from '../../domain/models/transaction';
 import type {
+  AccountBalanceWire,
   AccountInputWire,
   AccountPatchWire,
   AccountWire,
@@ -81,6 +82,12 @@ export function mapAccountPatch(input: Partial<Omit<Account, 'id'>>): AccountPat
   if (has(input, 'dueDay')) wire.due_day = nullable(input.dueDay);
   return wire;
 }
+
+export const mapAccountBalance = (wire: AccountBalanceWire): AccountBalance => ({
+  accountId: wire.account_id,
+  currency: wire.currency,
+  balance: wire.balance,
+});
 
 export const mapInstitution = (wire: InstitutionWire): Institution => ({
   id: wire.id,

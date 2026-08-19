@@ -11,7 +11,6 @@ import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { accountBalance } from '../../domain/calc/balances';
 import {
   categoryBreakdown,
   converterFromRates,
@@ -23,7 +22,7 @@ import { budgetProgress } from '../../domain/calc/budgets';
 import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
-import { compare, isNegative, isZero, ratio, toNumber } from '../../shared/money/money';
+import { compare, isNegative, isZero, money, ratio, toNumber, zero } from '../../shared/money/money';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -69,9 +68,23 @@ export class Dashboard {
     initialValue: this.transloco.getActiveLang()
   });
 
+  // The dashboard only ever shows the current month (totals, category
+  // breakdown, budget preview) and a CASH_FLOW_MONTHS-wide trend - never
+  // the full ledger. Net worth and per-account balances instead come from
+  // accountRepository.balances(), which covers all-time history server-side.
+  private readonly windowStartDate: string = formatIsoDate(
+    addMonthsClamped(
+      new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1)),
+      -(CASH_FLOW_MONTHS - 1)
+    )
+  );
+
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
+  protected readonly balancesResource = rxResource({
+    stream: () => this.accountRepository.balances()
+  });
   protected readonly transactionsResource = rxResource({
-    stream: () => this.transactionRepository.list()
+    stream: () => this.transactionRepository.list({ dateFrom: this.windowStartDate })
   });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
@@ -115,7 +128,7 @@ export class Dashboard {
   protected readonly netWorth = computed(() =>
     netWorth(
       this.accountsResource.value() ?? [],
-      this.transactionsResource.value() ?? [],
+      this.balancesResource.value() ?? [],
       this.displayCurrency(),
       this.converter()
     )
@@ -204,9 +217,15 @@ export class Dashboard {
 
   protected readonly accountRows = computed(() => {
     const accounts = (this.accountsResource.value() ?? []).filter((a) => !a.archived);
-    const transactions = this.transactionsResource.value() ?? [];
+    const balanceByAccountId = new Map(
+      (this.balancesResource.value() ?? []).map((b) => [b.accountId, b])
+    );
     return accounts
-      .map((account) => ({ account, balance: accountBalance(account, transactions) }))
+      .map((account) => {
+        const row = balanceByAccountId.get(account.id);
+        const balance = row ? money(row.balance, row.currency) : zero(account.currency);
+        return { account, balance };
+      })
       .sort((a, b) => (isNegative(a.balance) ? 1 : 0) - (isNegative(b.balance) ? 1 : 0));
   });
 

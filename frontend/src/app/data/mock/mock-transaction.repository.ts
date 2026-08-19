@@ -12,22 +12,41 @@ export class MockTransactionRepository extends TransactionRepository {
   private readonly latencyMs = inject(MOCK_LATENCY_MS);
 
   list(filters: TransactionFilters = {}): Observable<Transaction[]> {
-    return mockResult(
-      () =>
-        this.store
-          .transactions()
-          .filter(
-            (transaction) =>
-              (!filters.accountId ||
-                transaction.accountId === filters.accountId ||
-                transaction.toAccountId === filters.accountId) &&
-              (!filters.categoryId || transaction.categoryId === filters.categoryId) &&
-              (!filters.type || transaction.type === filters.type) &&
-              (!filters.dateFrom || transaction.date >= filters.dateFrom) &&
-              (!filters.dateTo || transaction.date <= filters.dateTo),
-          ),
-      this.latencyMs,
-    );
+    return mockResult(() => {
+      const institutionAccountIds = filters.institutionId
+        ? new Set(
+            this.store
+              .accounts()
+              .filter((account) => account.institutionId === filters.institutionId)
+              .map((account) => account.id),
+          )
+        : undefined;
+      const search = filters.search?.toLowerCase();
+
+      const rows = this.store
+        .transactions()
+        .filter(
+          (transaction) =>
+            (!filters.accountId ||
+              transaction.accountId === filters.accountId ||
+              transaction.toAccountId === filters.accountId) &&
+            (!filters.categoryId || transaction.categoryId === filters.categoryId) &&
+            (!filters.types || filters.types.includes(transaction.type)) &&
+            (!filters.dateFrom || transaction.date >= filters.dateFrom) &&
+            (!filters.dateTo || transaction.date <= filters.dateTo) &&
+            (!search || transaction.description.toLowerCase().includes(search)) &&
+            (!institutionAccountIds ||
+              institutionAccountIds.has(transaction.accountId) ||
+              (transaction.toAccountId !== undefined &&
+                institutionAccountIds.has(transaction.toAccountId))),
+        )
+        // Same tiebreaker the backend applies (date desc, id desc) - see
+        // app/services/transactions.py::list_transactions.
+        .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+
+      if (filters.limit === undefined) return rows;
+      return rows.slice(filters.offset ?? 0, (filters.offset ?? 0) + filters.limit);
+    }, this.latencyMs);
   }
 
   get(id: string): Observable<Transaction | undefined> {

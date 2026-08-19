@@ -80,7 +80,7 @@
         <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
           {{ t('accounts.detail.history') }}
         </h2>
-        @if (accountTransactions().length === 0) {
+        @if (rows().length === 0) {
           <div class="p-4">
             <app-empty-state
               icon="swap"
@@ -90,7 +90,7 @@
           </div>
         } @else {
           <ul>
-            @for (tx of accountTransactions(); track tx.id) {
+            @for (tx of rows(); track tx.id) {
               <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
                 <div class="flex flex-col gap-0.5">
                   <span class="text-sm font-medium text-content-primary">{{ tx.description }}</span>
@@ -105,6 +105,9 @@
               </li>
             }
           </ul>
+          @if (!exhausted()) {
+            <div appInfiniteScroll (visible)="loadMore()" class="h-1"></div>
+          }
         }
       </app-card>
     </div>

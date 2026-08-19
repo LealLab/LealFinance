@@ -31,3 +31,15 @@ export interface Account {
   /** credit_card only: day of month payment is due (1-31). */
   dueDay?: number;
 }
+
+/**
+ * A server-computed balance for one account - the same signed formula
+ * `calc/balances.ts::accountBalance` applies client-side, ported to SQL on
+ * the backend (see app/services/accounts.py::account_balances) so pages
+ * that only need current balances don't have to fetch the whole ledger.
+ */
+export interface AccountBalance {
+  accountId: string;
+  currency: string;
+  balance: string;
+}

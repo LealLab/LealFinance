@@ -1,5 +1,6 @@
 import {
   mapAccount,
+  mapAccountBalance,
   mapAccountPatch,
   mapExchangeRate,
   mapRecurringRule,
@@ -103,5 +104,13 @@ describe('HTTP wire mappers', () => {
         as_of: '2026-08-13',
       }).source,
     ).toBe('fallback');
+  });
+
+  it('maps an account balance wire row', () => {
+    expect(mapAccountBalance({ account_id: 'a', currency: 'BRL', balance: '300.0000' })).toEqual({
+      accountId: 'a',
+      currency: 'BRL',
+      balance: '300.0000',
+    });
   });
 });

@@ -1,6 +1,7 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -19,12 +20,14 @@ import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { EMPTY_FILTERS, matchesFilters, TransactionFilters } from './transaction-filters';
 import { TransactionFormModal } from './transaction-form-modal';
 import { RecurringRuleFormModal } from './recurring-rule-form-modal';
 
 const PROJECTION_HORIZON_DAYS = 60;
+const PAGE_SIZE = 30;
 const TRANSACTION_TYPES: readonly TransactionType[] = ['income', 'expense', 'transfer'];
 
 interface DateGroup {
@@ -49,6 +52,7 @@ interface DateGroup {
     Card,
     EmptyState,
     Icon,
+    InfiniteScroll,
     PageHeader,
     TransactionFormModal,
     RecurringRuleFormModal
@@ -67,7 +71,6 @@ export class Transactions {
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
 
-  protected readonly transactionsResource = rxResource({ stream: () => this.transactionRepository.list() });
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly recurringRulesResource = rxResource({
@@ -78,6 +81,78 @@ export class Transactions {
   protected readonly tab = signal<'transactions' | 'recurring'>('transactions');
   protected readonly filters = signal<TransactionFilters>(EMPTY_FILTERS);
 
+  // Real transaction rows, server-filtered and paginated - accumulated
+  // across loadMore() calls rather than an rxResource, since rxResource
+  // replaces its value on every params change and this needs to append.
+  protected readonly rows = signal<Transaction[]>([]);
+  private readonly offset = signal(0);
+  protected readonly exhausted = signal(false);
+  protected readonly loading = signal(false);
+
+  // Occurrences the backend has already posted as real transactions (see
+  // recurring_posting.py) - keyed by rule + date so a projection for that
+  // same occurrence isn't drawn as a ghost row alongside the real one.
+  // Fetched independently of the paginated rows() (unpaginated, from
+  // today onward) so the dedup set is exact rather than "whatever page
+  // happens to be loaded".
+  protected readonly postedOccurrencesResource = rxResource({
+    stream: () => this.transactionRepository.list({ dateFrom: formatIsoDate(new Date()) })
+  });
+
+  constructor() {
+    // untracked: resetAndLoad() -> loadMore() reads `loading`/`exhausted`
+    // synchronously - without untracked those become effect dependencies
+    // too, and loadMore()'s own signal writes (in its subscribe callback)
+    // would re-trigger this same effect, looping forever.
+    effect(() => {
+      this.filters();
+      untracked(() => this.resetAndLoad());
+    });
+  }
+
+  private loadSubscription?: Subscription;
+
+  // Cancels any request still in flight from a previous filter/page state -
+  // without this, a filter change (e.g. typing in the search box, which has
+  // no debounce) while a request is pending would see loadMore() below no-op
+  // (loading is still true from the stale request) and then have that stale
+  // request's response land in the just-cleared rows array once it resolves.
+  private resetAndLoad(): void {
+    this.loadSubscription?.unsubscribe();
+    this.loading.set(false);
+    this.rows.set([]);
+    this.offset.set(0);
+    this.exhausted.set(false);
+    this.loadMore();
+  }
+
+  protected loadMore(): void {
+    if (this.loading() || this.exhausted()) return;
+    this.loading.set(true);
+    const filters = this.filters();
+    this.loadSubscription = this.transactionRepository
+      .list({
+        accountId: filters.accountId || undefined,
+        categoryId: filters.categoryId || undefined,
+        institutionId: filters.institutionId || undefined,
+        types: filters.type ? [filters.type] : TRANSACTION_TYPES,
+        dateFrom: filters.from || undefined,
+        dateTo: filters.to || undefined,
+        search: filters.search || undefined,
+        limit: PAGE_SIZE,
+        offset: this.offset()
+      })
+      .subscribe({
+        next: (page) => {
+          this.rows.update((current) => [...current, ...page]);
+          this.offset.update((current) => current + page.length);
+          if (page.length < PAGE_SIZE) this.exhausted.set(true);
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false)
+      });
+  }
+
   protected readonly accountsById = computed(
     () => new Map(this.accountsResource.value()?.map((a) => [a.id, a]) ?? [])
   );
@@ -86,15 +161,8 @@ export class Transactions {
   );
 
   protected readonly filteredGroups = computed<DateGroup[]>(() => {
-    const filters = this.filters();
-    const accountsById = this.accountsById();
-    const rows = (this.transactionsResource.value() ?? [])
-      .filter((tx) => tx.type !== 'interest')
-      .filter((tx) => matchesFilters(tx, filters, accountsById))
-      .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
-
     const groups: DateGroup[] = [];
-    for (const row of rows) {
+    for (const row of this.rows()) {
       const lastGroup = groups.at(-1);
       if (lastGroup?.date === row.date) {
         lastGroup.rows.push(row);
@@ -105,16 +173,10 @@ export class Transactions {
     return groups;
   });
 
-  // Occurrences the backend has already posted as real transactions (see
-  // recurring_posting.py) - keyed by rule + date so a projection for that
-  // same occurrence isn't drawn as a ghost row alongside the real one.
-  // Only covers whatever transactionsResource currently has loaded, so a
-  // narrow date filter could in principle let a stale ghost through; not
-  // worth fetching extra rows just to close that gap.
   private readonly postedOccurrences = computed<Set<string>>(
     () =>
       new Set(
-        (this.transactionsResource.value() ?? [])
+        (this.postedOccurrencesResource.value() ?? [])
           .filter((tx) => tx.recurringRuleId)
           .map((tx) => `${tx.recurringRuleId}|${tx.date}`)
       )
@@ -135,9 +197,7 @@ export class Transactions {
       .sort((a, b) => a.date.localeCompare(b.date));
   });
 
-  protected readonly isEmpty = computed(
-    () => !this.transactionsResource.isLoading() && this.filteredGroups().length === 0
-  );
+  protected readonly isEmpty = computed(() => this.exhausted() && this.rows().length === 0);
 
   protected readonly txFormOpen = signal(false);
   protected readonly editingTx = signal<Transaction | undefined>(undefined);
@@ -171,7 +231,8 @@ export class Transactions {
   }
 
   protected onTxSaved(): void {
-    this.transactionsResource.reload();
+    this.resetAndLoad();
+    this.postedOccurrencesResource.reload();
     this.recurringRulesResource.reload();
   }
 
@@ -183,7 +244,10 @@ export class Transactions {
     );
     if (!confirmed) return;
     this.transactionRepository.delete(tx.id).subscribe({
-      next: () => this.transactionsResource.reload(),
+      next: () => {
+        this.resetAndLoad();
+        this.postedOccurrencesResource.reload();
+      },
       error: () => this.mutationErrors.show(),
     });
   }

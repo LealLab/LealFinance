@@ -23,6 +23,18 @@ import { effectiveAmount, sourceAmount } from './conversion';
  * domain/calc/conversion.ts. Reading `tx.amount` directly here would
  * either throw (mismatched currency) or, worse, silently relabel the
  * origin amount as if it were the destination currency.
+ *
+ * ponytail: app/services/accounts.py::account_balances ports this exact
+ * formula to a SQL aggregate so most pages can fetch a balance without the
+ * full ledger (see AccountRepository.balances()) - reports.ts is the one
+ * remaining caller of this function, for its net-worth trend over past
+ * months. Delete this once that trend also moves server-side; until then
+ * both implementations carry their own matching test coverage for every
+ * leg type (income/expense/both transfer legs/cross-currency) - see
+ * balances.spec.ts here and test_accounts.py's
+ * test_account_balances_* tests - deliberately not a literal shared
+ * fixture file, since no such cross-language harness exists elsewhere in
+ * this repo.
  */
 export function accountBalance(account: Account, transactions: readonly Transaction[]): Money {
   const delta = transactions.reduce((total, tx) => {
@@ -61,12 +73,11 @@ export interface CreditCardSummary {
 /**
  * Debt-oriented view of a credit_card account's balance: "owed" instead of
  * a raw (negative) balance, plus how much of the credit line remains.
+ * Takes the balance directly (rather than transactions to derive it from)
+ * since callers increasingly fetch it pre-computed - see
+ * AccountRepository.balances().
  */
-export function creditCardSummary(
-  account: Account,
-  transactions: readonly Transaction[]
-): CreditCardSummary {
-  const balance = accountBalance(account, transactions);
+export function creditCardSummary(account: Account, balance: Money): CreditCardSummary {
   const owed = isNegative(balance) ? negate(balance) : zero(account.currency);
   const limit = money(account.creditLimit ?? '0', account.currency);
   const available = subtract(limit, owed);

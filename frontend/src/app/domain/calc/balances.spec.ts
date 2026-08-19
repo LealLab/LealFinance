@@ -97,9 +97,9 @@ describe('accountBalance', () => {
 });
 
 describe('creditCardSummary', () => {
-  it('reports zero owed when the card has no expenses', () => {
+  it('reports zero owed when the balance is zero', () => {
     const card = account({ id: 'card', type: 'credit_card', openingBalance: '0', creditLimit: '2000' });
-    const summary = creditCardSummary(card, []);
+    const summary = creditCardSummary(card, money('0', 'BRL'));
 
     expect(summary.owed).toEqual(money('0', 'BRL'));
     expect(summary.available).toEqual(money('2000', 'BRL'));
@@ -107,9 +107,8 @@ describe('creditCardSummary', () => {
 
   it('turns a negative balance into a positive amount owed, and reduces availability', () => {
     const card = account({ id: 'card', type: 'credit_card', openingBalance: '0', creditLimit: '2000' });
-    const purchase = tx({ type: 'expense', amount: '350', accountId: 'card', categoryId: 'cat-1' });
 
-    const summary = creditCardSummary(card, [purchase]);
+    const summary = creditCardSummary(card, money('-350', 'BRL'));
 
     expect(summary.owed).toEqual(money('350', 'BRL'));
     expect(summary.available).toEqual(money('1650', 'BRL'));
@@ -117,8 +116,7 @@ describe('creditCardSummary', () => {
 
   it('caps owed at zero when the card is in credit (never a negative debt)', () => {
     const card = account({ id: 'card', type: 'credit_card', openingBalance: '0', creditLimit: '2000' });
-    const overpayment = tx({ type: 'income', amount: '50', accountId: 'card' });
 
-    expect(creditCardSummary(card, [overpayment]).owed).toEqual(money('0', 'BRL'));
+    expect(creditCardSummary(card, money('50', 'BRL')).owed).toEqual(money('0', 'BRL'));
   });
 });

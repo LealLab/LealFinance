@@ -192,28 +192,31 @@ describe('netWorth', () => {
   }
 
   it('sums balances across non-archived accounts', () => {
-    const accounts = [
-      account({ id: 'a', openingBalance: '1000' }),
-      account({ id: 'b', openingBalance: '500' })
+    const accounts = [account({ id: 'a' }), account({ id: 'b' })];
+    const balances = [
+      { accountId: 'a', currency: 'BRL', balance: '1000' },
+      { accountId: 'b', currency: 'BRL', balance: '500' }
     ];
 
-    expect(netWorth(accounts, [], 'BRL')).toEqual(money('1500', 'BRL'));
+    expect(netWorth(accounts, balances, 'BRL')).toEqual(money('1500', 'BRL'));
   });
 
   it('excludes archived accounts', () => {
-    const accounts = [
-      account({ id: 'a', openingBalance: '1000' }),
-      account({ id: 'b', openingBalance: '500', archived: true })
+    const accounts = [account({ id: 'a' }), account({ id: 'b', archived: true })];
+    const balances = [
+      { accountId: 'a', currency: 'BRL', balance: '1000' },
+      { accountId: 'b', currency: 'BRL', balance: '500' }
     ];
 
-    expect(netWorth(accounts, [], 'BRL')).toEqual(money('1000', 'BRL'));
+    expect(netWorth(accounts, balances, 'BRL')).toEqual(money('1000', 'BRL'));
   });
 
   it('converts each account balance through the given converter', () => {
-    const accounts = [account({ id: 'a', currency: 'USD', openingBalance: '100' })];
+    const accounts = [account({ id: 'a', currency: 'USD' })];
+    const balances = [{ accountId: 'a', currency: 'USD', balance: '100' }];
     const convert: CurrencyConverter = () => money('520', 'BRL');
 
-    expect(netWorth(accounts, [], 'BRL', convert)).toEqual(money('520', 'BRL'));
+    expect(netWorth(accounts, balances, 'BRL', convert)).toEqual(money('520', 'BRL'));
   });
 });
 
