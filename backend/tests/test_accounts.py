@@ -411,6 +411,55 @@ async def test_account_balances_use_converted_amount_for_cross_currency_expense(
     assert balances[account_id] == "80.0000"
 
 
+async def test_account_balances_use_converted_amount_for_cross_currency_transfer(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """Regression test: the incoming leg of a transfer must be credited with
+    the *converted* amount, not the source amount relabeled into the
+    destination currency - matching the frontend's balances.spec.ts
+    "debits the source in its own currency and credits the destination
+    with the converted amount" test, guarding the same bug on the backend's
+    SQL aggregate."""
+    await _authed(client, db_session, "quinn@example.com")
+    source_response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Dollar source",
+            "type": "checking",
+            "currency": "USD",
+            "opening_balance": "1000.00",
+        },
+    )
+    source_id = source_response.json()["id"]
+    dest_response = await client.post(
+        "/api/v1/accounts",
+        json={"name": "Real dest", "type": "savings", "currency": "BRL", "opening_balance": "0.00"},
+    )
+    dest_id = dest_response.json()["id"]
+
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "transfer",
+            "date": "2026-01-01",
+            "amount": "100.00",
+            "currency": "USD",
+            "account_id": source_id,
+            "to_account_id": dest_id,
+            "description": "Cross-currency transfer",
+            "conversion": {"currency": "BRL", "rate": "5.2", "source": "manual"},
+        },
+    )
+
+    response = await client.get("/api/v1/accounts/balances")
+    assert response.status_code == 200
+    balances = {row["account_id"]: row["balance"] for row in response.json()}
+    # 1000 - 100 (unconverted origin-side debit)
+    assert balances[source_id] == "900.0000"
+    # 0 + (100 * 5.2) (converted destination-side credit)
+    assert balances[dest_id] == "520.0000"
+
+
 async def test_account_balances_ownership_isolation(
     client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
 ) -> None:

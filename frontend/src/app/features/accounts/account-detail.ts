@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, signal, untracked } from '@
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
@@ -85,6 +85,7 @@ export class AccountDetail {
   private readonly offset = signal(0);
   protected readonly exhausted = signal(false);
   private loadingMore = false;
+  private loadSubscription?: Subscription;
 
   constructor() {
     // untracked: loadMore() reads `exhausted` synchronously - without
@@ -94,6 +95,12 @@ export class AccountDetail {
     effect(() => {
       this.id();
       untracked(() => {
+        // Cancel any request still in flight for the previous id - without
+        // this, fast navigation between accounts would see loadMore() below
+        // no-op (loadingMore is still true from the stale request) and then
+        // have that stale request's response land in the just-cleared rows.
+        this.loadSubscription?.unsubscribe();
+        this.loadingMore = false;
         this.rows.set([]);
         this.offset.set(0);
         this.exhausted.set(false);
@@ -105,7 +112,7 @@ export class AccountDetail {
   protected loadMore(): void {
     if (this.loadingMore || this.exhausted()) return;
     this.loadingMore = true;
-    this.transactionRepository
+    this.loadSubscription = this.transactionRepository
       .list({ accountId: this.id(), limit: PAGE_SIZE, offset: this.offset() })
       .subscribe({
         next: (page) => {

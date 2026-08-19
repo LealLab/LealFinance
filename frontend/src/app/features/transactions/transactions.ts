@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -109,7 +110,16 @@ export class Transactions {
     });
   }
 
+  private loadSubscription?: Subscription;
+
+  // Cancels any request still in flight from a previous filter/page state -
+  // without this, a filter change (e.g. typing in the search box, which has
+  // no debounce) while a request is pending would see loadMore() below no-op
+  // (loading is still true from the stale request) and then have that stale
+  // request's response land in the just-cleared rows array once it resolves.
   private resetAndLoad(): void {
+    this.loadSubscription?.unsubscribe();
+    this.loading.set(false);
     this.rows.set([]);
     this.offset.set(0);
     this.exhausted.set(false);
@@ -120,7 +130,7 @@ export class Transactions {
     if (this.loading() || this.exhausted()) return;
     this.loading.set(true);
     const filters = this.filters();
-    this.transactionRepository
+    this.loadSubscription = this.transactionRepository
       .list({
         accountId: filters.accountId || undefined,
         categoryId: filters.categoryId || undefined,

@@ -56,11 +56,15 @@ class AccountBalance:
 async def account_balances(db: AsyncSession, user_id: UUID) -> list[AccountBalance]:
     """Every owned account's balance = opening_balance + every transaction
     that touches it, computed as SQL aggregates rather than by loading the
-    whole ledger into Python - see docs/superpowers/specs (or the plan that
-    introduced this) for why. Ports the exact signed formula documented on
+    whole ledger into Python. Ports the exact signed formula documented on
     the frontend's domain/calc/balances.ts::accountBalance - keep the two in
-    sync; there's a shared-fixture test guarding that (test_accounts.py /
-    balances.spec.ts).
+    sync. Not a literal shared fixture (no such cross-language harness
+    exists in this repo - see balances.ts's ponytail note), but both sides
+    carry matching coverage per leg type, including the transfer +
+    cross-currency-conversion combination that a past bug was in (see
+    test_account_balances_use_converted_amount_for_cross_currency_transfer
+    here and balances.spec.ts's "debits the source ... credits the
+    destination" test).
     """
     accounts = list(await ownership.list_owned(db, Account, user_id))
     if not accounts:
