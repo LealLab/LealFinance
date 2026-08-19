@@ -14,9 +14,13 @@ export class HttpTransactionRepository extends TransactionRepository {
     const params: ApiQueryParams = {
       account_id: filters.accountId,
       category_id: filters.categoryId,
-      type: filters.type,
+      institution_id: filters.institutionId,
+      type: filters.types,
       date_from: filters.dateFrom,
       date_to: filters.dateTo,
+      search: filters.search,
+      limit: filters.limit,
+      offset: filters.offset,
     };
     return this.api
       .get<TransactionWire[]>('/transactions', params)

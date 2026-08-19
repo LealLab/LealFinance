@@ -46,6 +46,24 @@ class AccountCreate(BaseModel):
     due_day: int | None = Field(default=None, ge=1, le=31)
 
 
+class AccountBalanceRead(BaseModel):
+    """Server-computed balance for one account - see
+    app/services/accounts.py::account_balances for the formula. Ports the
+    same signed-delta logic the frontend's domain/calc/balances.ts applies
+    client-side, so the two must be kept in sync (see the ponytail note
+    there)."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    account_id: UUID
+    currency: str
+    balance: Decimal
+
+    @field_serializer("balance")
+    def _serialize_balance(self, value: Decimal) -> str:
+        return str(value)
+
+
 class AccountUpdate(PatchModel):
     non_nullable_fields = frozenset({"name", "type", "currency", "opening_balance", "archived"})
 

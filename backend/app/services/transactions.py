@@ -13,9 +13,11 @@ app/services/recurring_rules.py, since a rule's template is validated
 against the exact same rules as a real transaction.
 """
 
+from collections.abc import Sequence
 from datetime import date as date_type
 from uuid import UUID
 
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
@@ -125,24 +127,44 @@ async def list_transactions(
     *,
     account_id: UUID | None = None,
     category_id: UUID | None = None,
-    type_: str | None = None,
+    institution_id: UUID | None = None,
+    types: Sequence[str] | None = None,
     date_from: date_type | None = None,
     date_to: date_type | None = None,
+    search: str | None = None,
+    limit: int | None = None,
+    offset: int = 0,
 ) -> list[Transaction]:
     query = ownership.owned(Transaction, user_id)
     if account_id is not None:
         query = query.where(
             (Transaction.account_id == account_id) | (Transaction.to_account_id == account_id)
         )
+    if institution_id is not None:
+        institution_accounts = select(Account.id).where(
+            Account.user_id == user_id, Account.institution_id == institution_id
+        )
+        query = query.where(
+            or_(
+                Transaction.account_id.in_(institution_accounts),
+                Transaction.to_account_id.in_(institution_accounts),
+            )
+        )
     if category_id is not None:
         query = query.where(Transaction.category_id == category_id)
-    if type_ is not None:
-        query = query.where(Transaction.type == type_)
+    if types is not None:
+        query = query.where(Transaction.type.in_(types))
     if date_from is not None:
         query = query.where(Transaction.date >= date_from)
     if date_to is not None:
         query = query.where(Transaction.date <= date_to)
-    query = query.order_by(Transaction.date.desc())
+    if search:
+        query = query.where(Transaction.description.ilike(f"%{search}%"))
+    # id as a tiebreaker: date alone is non-deterministic for same-date rows,
+    # which would let limit/offset skip or duplicate rows across pages.
+    query = query.order_by(Transaction.date.desc(), Transaction.id.desc())
+    if limit is not None:
+        query = query.limit(limit).offset(offset)
 
     result = await db.execute(query)
     return list(result.scalars().all())

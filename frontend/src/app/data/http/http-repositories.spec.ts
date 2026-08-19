@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { HttpAccountRepository } from './http-account.repository';
 import { HttpExchangeRateRepository } from './http-exchange-rate.repository';
 import { HttpGoalRepository } from './http-goal.repository';
 import { HttpManualRateRepository } from './http-manual-rate.repository';
@@ -19,13 +20,43 @@ describe('HTTP repositories', () => {
 
   it('sends transaction filters with backend parameter names', () => {
     TestBed.inject(HttpTransactionRepository)
-      .list({ accountId: 'a', type: 'expense', dateFrom: '2026-08-01' })
+      .list({ accountId: 'a', types: ['expense'], dateFrom: '2026-08-01' })
       .subscribe();
     const req = http.expectOne((r) => r.url === '/api/v1/transactions');
     expect(req.request.params.get('account_id')).toBe('a');
-    expect(req.request.params.get('type')).toBe('expense');
+    expect(req.request.params.getAll('type')).toEqual(['expense']);
     expect(req.request.params.get('date_from')).toBe('2026-08-01');
     req.flush([]);
+  });
+
+  it('sends search, institution, repeated type, and paging params', () => {
+    TestBed.inject(HttpTransactionRepository)
+      .list({
+        search: 'coffee',
+        institutionId: 'i',
+        types: ['income', 'expense'],
+        limit: 20,
+        offset: 40,
+      })
+      .subscribe();
+    const req = http.expectOne((r) => r.url === '/api/v1/transactions');
+    expect(req.request.params.get('search')).toBe('coffee');
+    expect(req.request.params.get('institution_id')).toBe('i');
+    expect(req.request.params.getAll('type')).toEqual(['income', 'expense']);
+    expect(req.request.params.get('limit')).toBe('20');
+    expect(req.request.params.get('offset')).toBe('40');
+    req.flush([]);
+  });
+
+  it('fetches and maps account balances', () => {
+    let balances: unknown;
+    TestBed.inject(HttpAccountRepository)
+      .balances()
+      .subscribe((result) => (balances = result));
+    const req = http.expectOne('/api/v1/accounts/balances');
+    expect(req.request.method).toBe('GET');
+    req.flush([{ account_id: 'a', currency: 'BRL', balance: '300.0000' }]);
+    expect(balances).toEqual([{ accountId: 'a', currency: 'BRL', balance: '300.0000' }]);
   });
 
   it('uses the atomic goal create endpoint and maps its aggregate response', () => {

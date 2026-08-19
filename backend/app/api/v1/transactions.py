@@ -26,18 +26,26 @@ async def list_transactions(
     db: DbSession,
     account_id: UUID | None = None,
     category_id: UUID | None = None,
-    transaction_type: Annotated[TransactionType | None, Query(alias="type")] = None,
+    institution_id: UUID | None = None,
+    transaction_type: Annotated[list[TransactionType] | None, Query(alias="type")] = None,
     date_from: date | None = None,
     date_to: date | None = None,
+    search: str | None = None,
+    limit: Annotated[int | None, Query(ge=1, le=200)] = None,
+    offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[Transaction]:
     return await transactions_service.list_transactions(
         db,
         user.id,
         account_id=account_id,
         category_id=category_id,
-        type_=transaction_type,
+        institution_id=institution_id,
+        types=transaction_type,
         date_from=date_from,
         date_to=date_to,
+        search=search,
+        limit=limit,
+        offset=offset,
     )
 
 

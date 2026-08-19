@@ -1,9 +1,8 @@
-import { Account } from '../models/account';
+import { Account, AccountBalance } from '../models/account';
 import { Category } from '../models/category';
 import { ExchangeRate } from '../models/exchange-rate';
 import { Transaction } from '../models/transaction';
-import { add, compare, Money, multiply, sum, subtract, zero } from '../../shared/money/money';
-import { accountBalance } from './balances';
+import { add, compare, money, Money, multiply, sum, subtract, zero } from '../../shared/money/money';
 import { effectiveAmount } from './conversion';
 import { monthKey } from './dates';
 
@@ -116,18 +115,30 @@ export function groupByMonth(transactions: readonly Transaction[]): Map<string, 
   return groups;
 }
 
-/** Sum of every non-archived account's balance, converted to one display currency. */
+/**
+ * Sum of every non-archived account's balance, converted to one display
+ * currency. Takes server-computed balances (see AccountRepository.balances())
+ * rather than the full transaction ledger - callers no longer need to fetch
+ * every transaction just to show a total.
+ */
 export function netWorth(
   accounts: readonly Account[],
-  transactions: readonly Transaction[],
+  balances: readonly AccountBalance[],
   targetCurrency: string,
   convert: CurrencyConverter = identityConverter
 ): Money {
-  const balances = accounts
+  const balanceByAccountId = new Map(balances.map((b) => [b.accountId, b]));
+  const converted = accounts
     .filter((account) => !account.archived)
-    .map((account) => convert(accountBalance(account, transactions), targetCurrency));
+    .map((account) => {
+      const balance = balanceByAccountId.get(account.id);
+      return convert(
+        balance ? money(balance.balance, balance.currency) : zero(account.currency),
+        targetCurrency
+      );
+    });
 
-  return sum(balances, targetCurrency);
+  return sum(converted, targetCurrency);
 }
 
 /**

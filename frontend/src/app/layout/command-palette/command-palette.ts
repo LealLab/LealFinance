@@ -98,9 +98,18 @@ export class CommandPalette {
     params: () => (this.paletteService.isOpen() ? {} : undefined),
     stream: () => this.budgetRepository.list()
   });
+  // Transactions are searched server-side (there can be far more of them
+  // than fit in memory) rather than fetched whole and fuzzy-filtered like
+  // every other group below - re-evaluates on every query() change too, not
+  // just on open, but rxResource cancels the superseded request each
+  // keystroke so this doesn't need its own debounce.
   private readonly transactionsResource = rxResource({
-    params: () => (this.paletteService.isOpen() ? {} : undefined),
-    stream: () => this.transactionRepository.list()
+    params: () => (this.paletteService.isOpen() ? { search: this.query() } : undefined),
+    stream: ({ params }) =>
+      this.transactionRepository.list({
+        search: params.search || undefined,
+        limit: RECENT_TRANSACTIONS_LIMIT
+      })
   });
 
   protected readonly groups = computed<PaletteGroup[]>(() => {
@@ -111,7 +120,7 @@ export class CommandPalette {
       this.buildGroup('accounts', 'layout.commandPalette.groups.accounts', this.accountItems(), query),
       this.buildGroup('categories', 'layout.commandPalette.groups.categories', this.categoryItems(), query),
       this.buildGroup('budgets', 'layout.commandPalette.groups.budgets', this.budgetItems(), query),
-      this.buildGroup('transactions', 'layout.commandPalette.groups.transactions', this.transactionItems(), query)
+      this.transactionGroup()
     ];
     return groups.filter((group): group is PaletteGroup => group !== null);
   });
@@ -356,20 +365,29 @@ export class CommandPalette {
     }));
   }
 
+  // Already server-filtered by query() and limited to
+  // RECENT_TRANSACTIONS_LIMIT (see transactionsResource above), and the
+  // API already returns date-desc order - no further sort/slice needed.
   private transactionItems(): PaletteItem[] {
-    return [...(this.transactionsResource.value() ?? [])]
-      .sort((a, b) => b.date.localeCompare(a.date))
-      .slice(0, RECENT_TRANSACTIONS_LIMIT)
-      .map((transaction) => ({
-        id: `transaction-${transaction.id}`,
-        label: transaction.description,
-        sublabel: transaction.date,
-        icon: (transaction.type === 'income'
-          ? 'arrowDownLeft'
-          : transaction.type === 'expense'
-            ? 'arrowUpRight'
-            : 'swap') as IconName,
-        run: () => this.router.navigate(['/transactions'])
-      }));
+    return (this.transactionsResource.value() ?? []).map((transaction) => ({
+      id: `transaction-${transaction.id}`,
+      label: transaction.description,
+      sublabel: transaction.date,
+      icon: (transaction.type === 'income'
+        ? 'arrowDownLeft'
+        : transaction.type === 'expense'
+          ? 'arrowUpRight'
+          : 'swap') as IconName,
+      run: () => this.router.navigate(['/transactions'])
+    }));
+  }
+
+  // Bypasses buildGroup's client-side fuzzy filter - the items are already
+  // server-filtered by the current query (see transactionsResource above).
+  private transactionGroup(): PaletteGroup | null {
+    const items = this.transactionItems();
+    return items.length > 0
+      ? { key: 'transactions', labelKey: 'layout.commandPalette.groups.transactions', items }
+      : null;
   }
 }

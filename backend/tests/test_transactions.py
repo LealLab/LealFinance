@@ -743,3 +743,151 @@ async def test_transaction_ownership_isolation(
 
     list_response = await other_client.get("/api/v1/transactions")
     assert all(row["id"] != transaction_id for row in list_response.json())
+
+
+async def test_list_transactions_filters_by_search_and_institution(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "ines@example.com")
+    institution_response = await client.post(
+        "/api/v1/institutions", json={"name": "Bank A", "icon": "bank"}
+    )
+    assert institution_response.status_code == 201, institution_response.text
+    institution_id = institution_response.json()["id"]
+
+    linked_response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Linked",
+            "type": "checking",
+            "currency": "BRL",
+            "institution_id": institution_id,
+        },
+    )
+    assert linked_response.status_code == 201, linked_response.text
+    linked_account = linked_response.json()["id"]
+    unlinked_account = await _create_account(client, name="Unlinked")
+    category_id = await _create_category(client)
+
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-05",
+            "amount": "20.00",
+            "currency": "BRL",
+            "account_id": linked_account,
+            "category_id": category_id,
+            "description": "Coffee shop run",
+        },
+    )
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-06",
+            "amount": "30.00",
+            "currency": "BRL",
+            "account_id": unlinked_account,
+            "category_id": category_id,
+            "description": "Grocery store",
+        },
+    )
+
+    by_search = await client.get("/api/v1/transactions", params={"search": "coffee"})
+    assert by_search.status_code == 200
+    assert [row["description"] for row in by_search.json()] == ["Coffee shop run"]
+
+    by_institution = await client.get(
+        "/api/v1/transactions", params={"institution_id": institution_id}
+    )
+    assert by_institution.status_code == 200
+    assert [row["account_id"] for row in by_institution.json()] == [linked_account]
+
+
+async def test_list_transactions_filters_by_repeated_type(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "jorge@example.com")
+    account_id = await _create_account(client)
+    expense_category = await _create_category(client, name="Groceries", kind="expense")
+    income_category = await _create_category(client, name="Salary", kind="income")
+
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-05",
+            "amount": "20.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": expense_category,
+            "description": "Expense row",
+        },
+    )
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "income",
+            "date": "2026-01-06",
+            "amount": "500.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": income_category,
+            "description": "Income row",
+        },
+    )
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "interest",
+            "date": "2026-01-07",
+            "amount": "1.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "description": "Interest row",
+        },
+    )
+
+    response = await client.get("/api/v1/transactions", params={"type": ["income", "expense"]})
+    assert response.status_code == 200
+    types = {row["type"] for row in response.json()}
+    assert types == {"income", "expense"}
+
+
+async def test_list_transactions_pages_without_gaps_or_duplicates(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "karin@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+
+    # All on the same date, so the id tiebreaker is what keeps paging stable.
+    created_ids = []
+    for i in range(5):
+        response = await client.post(
+            "/api/v1/transactions",
+            json={
+                "type": "expense",
+                "date": "2026-01-05",
+                "amount": f"{i + 1}.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": f"Row {i}",
+            },
+        )
+        created_ids.append(response.json()["id"])
+
+    page1 = await client.get("/api/v1/transactions", params={"limit": 2, "offset": 0})
+    page2 = await client.get("/api/v1/transactions", params={"limit": 2, "offset": 2})
+    page3 = await client.get("/api/v1/transactions", params={"limit": 2, "offset": 4})
+
+    ids_seen = (
+        [row["id"] for row in page1.json()]
+        + [row["id"] for row in page2.json()]
+        + [row["id"] for row in page3.json()]
+    )
+    assert len(ids_seen) == len(set(ids_seen)) == 5
+    assert set(ids_seen) == set(created_ids)
+    assert len(page3.json()) == 1

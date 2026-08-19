@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccountRepository } from '../account.repository';
-import { Account } from '../../domain/models/account';
+import { Account, AccountBalance } from '../../domain/models/account';
+import { accountBalance } from '../../domain/calc/balances';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 import { MockStore } from './mock-store';
@@ -13,6 +14,17 @@ export class MockAccountRepository extends AccountRepository {
 
   list(): Observable<Account[]> {
     return mockResult(() => this.store.accounts(), this.latencyMs);
+  }
+
+  balances(): Observable<AccountBalance[]> {
+    return mockResult(() => {
+      const transactions = this.store.transactions();
+      return this.store.accounts().map((account) => ({
+        accountId: account.id,
+        currency: account.currency,
+        balance: accountBalance(account, transactions).amount,
+      }));
+    }, this.latencyMs);
   }
 
   get(id: string): Observable<Account | undefined> {

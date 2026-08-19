@@ -95,6 +95,12 @@ export interface TransactionWire {
 export type TransactionInputWire = Omit<TransactionWire, 'id'>;
 export type TransactionPatchWire = NullablePatch<TransactionInputWire>;
 
+export interface AccountBalanceWire {
+  account_id: string;
+  currency: string;
+  balance: string;
+}
+
 export interface RecurringTemplateWire {
   type: TransactionType;
   amount: string;

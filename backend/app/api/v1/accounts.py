@@ -7,7 +7,7 @@ from fastapi import APIRouter, status
 
 from app.api.deps import CurrentUser, DbSession
 from app.models.account import Account
-from app.schemas.account import AccountCreate, AccountRead, AccountUpdate
+from app.schemas.account import AccountBalanceRead, AccountCreate, AccountRead, AccountUpdate
 from app.schemas.common import ArchiveRequest
 from app.services import accounts as accounts_service
 
@@ -22,6 +22,15 @@ async def list_accounts(user: CurrentUser, db: DbSession) -> list[Account]:
 @router.post("", response_model=AccountRead, status_code=status.HTTP_201_CREATED)
 async def create_account(payload: AccountCreate, user: CurrentUser, db: DbSession) -> Account:
     return await accounts_service.create_account(db, user.id, payload)
+
+
+# Declared before /{account_id} - otherwise FastAPI tries to parse
+# "balances" as a UUID path param and this route never matches.
+@router.get("/balances", response_model=list[AccountBalanceRead])
+async def get_account_balances(
+    user: CurrentUser, db: DbSession
+) -> list[accounts_service.AccountBalance]:
+    return await accounts_service.account_balances(db, user.id)
 
 
 @router.get("/{account_id}", response_model=AccountRead)

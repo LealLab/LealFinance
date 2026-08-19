@@ -218,6 +218,9 @@
             </ul>
           </app-card>
         }
+        @if (!exhausted()) {
+          <div appInfiniteScroll (visible)="loadMore()" class="h-1"></div>
+        }
       </div>
     }
 
