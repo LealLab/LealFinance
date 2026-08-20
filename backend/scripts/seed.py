@@ -158,6 +158,9 @@ def prompt_config(use_defaults: bool) -> Config:
         secondary_currency = secondary_default
     start_month = ask_month("Start month (YYYY-MM)", default_start, use_defaults)
     end_month = ask_month("End month (YYYY-MM)", default_end, use_defaults)
+    while end_month < start_month:
+        print("  end month can't be before the start month, try again")
+        end_month = ask_month("End month (YYYY-MM)", default_end, use_defaults)
     tx_per_month = ask_int("Transactions per month", 40, use_defaults)
     institutions_count = ask_int("Institutions", 3, use_defaults)
     accounts_count = ask_int("Spending accounts", 4, use_defaults)
@@ -235,8 +238,10 @@ class MerchantSpec:
 
 
 # Keyed by leaf category name (a child if the parent has children, else the
-# parent itself) - every leaf in EXPENSE_CATEGORIES must have an entry here.
-# "Rent" is deliberately absent: it's posted by a RecurringRule instead.
+# parent itself) - most leaves in EXPENSE_CATEGORIES have an entry here.
+# "Rent" and "Subscriptions" are deliberately absent: they're posted by a
+# RecurringRule instead (see recurring_monthly_by_category below, which
+# folds their monthly-equivalent spend into the budget for those categories).
 MERCHANTS: dict[str, MerchantSpec] = {
     "Utilities": MerchantSpec(
         ("Power Co", "Water Utility", "Home Internet"), Decimal(40), Decimal(180), 8
@@ -439,6 +444,8 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
 
     salary_amount = random_amount(rng, Decimal(4000), Decimal(6000))
     rent_amount = random_amount(rng, Decimal(900), Decimal(1800))
+    subscription_amount = random_amount(rng, Decimal(9), Decimal(25))
+    annual_fee_amount = random_amount(rng, Decimal(60), Decimal(150))
     recurring_specs = (
         (
             RECURRING_FREQUENCY_MONTHLY,
@@ -462,7 +469,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             RECURRING_FREQUENCY_MONTHLY,
             date(range_start.year, range_start.month, 10),
             TRANSACTION_TYPE_EXPENSE,
-            random_amount(rng, Decimal(9), Decimal(25)),
+            subscription_amount,
             credit_card_account.id,
             categories_by_name["Subscriptions"].id,
             "Streaming Subscription",
@@ -471,7 +478,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             RECURRING_FREQUENCY_YEARLY,
             date(range_start.year, range_start.month, 1),
             TRANSACTION_TYPE_EXPENSE,
-            random_amount(rng, Decimal(60), Decimal(150)),
+            annual_fee_amount,
             credit_card_account.id,
             categories_by_name["Subscriptions"].id,
             "Annual Membership Fee",
@@ -504,26 +511,41 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
     # a fluctuating rate history ever matters for a test.
     secondary_rate = random_amount(rng, Decimal("0.75"), Decimal("1.25"), digits=4)
 
+    # Rent and the two Subscriptions recurring transactions post real
+    # monthly spend that MERCHANTS-derived budgets below can't see (neither
+    # has a MERCHANTS entry - see the comment above MERCHANTS) - fold their
+    # monthly-equivalent amount into the matching top-level category's
+    # budget so it isn't guaranteed to run over every month.
+    recurring_monthly_by_category: dict[str, Decimal] = {
+        "Housing": rent_amount,
+        "Subscriptions": subscription_amount + annual_fee_amount / Decimal(12),
+    }
+
     total_weight = sum(spec.weight for spec in MERCHANTS.values())
     budget_amount_by_category: dict[str, Decimal] = {}
     allocation_pct_by_category: dict[str, Decimal] = {}
     for spec in EXPENSE_CATEGORIES:
         leaves = [leaf for leaf in (spec.children or (spec.name,)) if leaf in MERCHANTS]
-        if not leaves:
-            budget_amount_by_category[spec.name] = Decimal(0)
-            allocation_pct_by_category[spec.name] = Decimal(0)
-            continue
         weight = sum(MERCHANTS[leaf].weight for leaf in leaves)
-        avg = sum((MERCHANTS[leaf].low + MERCHANTS[leaf].high) for leaf in leaves) / (
-            2 * len(leaves)
-        )
-        expected_tx = Decimal(cfg.tx_per_month) * Decimal(weight) / Decimal(total_weight)
-        budget_amount_by_category[spec.name] = (expected_tx * avg * Decimal("1.15")).quantize(
-            Decimal("0.01"), rounding=ROUND_HALF_UP
-        )
-        allocation_pct_by_category[spec.name] = (
-            Decimal(weight) / Decimal(total_weight) * Decimal(90)
+        if leaves:
+            avg = sum((MERCHANTS[leaf].low + MERCHANTS[leaf].high) for leaf in leaves) / (
+                2 * len(leaves)
+            )
+            expected_tx = Decimal(cfg.tx_per_month) * Decimal(weight) / Decimal(total_weight)
+            merchant_component = expected_tx * avg
+        else:
+            merchant_component = Decimal(0)
+        recurring_component = recurring_monthly_by_category.get(spec.name, Decimal(0))
+        budget_amount_by_category[spec.name] = (
+            (merchant_component + recurring_component) * Decimal("1.15")
         ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        allocation_pct_by_category[spec.name] = (
+            (Decimal(weight) / Decimal(total_weight) * Decimal(90)).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
+            if weight > 0
+            else Decimal(0)
+        )
     for spec in EXPENSE_CATEGORIES:
         pct = allocation_pct_by_category[spec.name]
         if pct > 0:
