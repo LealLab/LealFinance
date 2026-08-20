@@ -7,12 +7,14 @@ import { ConfirmService } from '../../../core/confirm.service';
 import { MutationErrorService } from '../../../core/mutation-error.service';
 import { AccountRepository } from '../../../data/account.repository';
 import { CategoryRepository } from '../../../data/category.repository';
+import { InstitutionRepository } from '../../../data/institution.repository';
 import { ImportOptions, TransactionRepository } from '../../../data/transaction.repository';
 import { Transaction, TransactionType } from '../../../domain/models/transaction';
 import { Button } from '../../../shared/ui/button/button';
 import { Card } from '../../../shared/ui/card/card';
 import { Icon } from '../../../shared/ui/icon/icon';
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
+import { groupAccountsByInstitution } from '../../accounts/institution-grouping';
 import { CsvImportRow, isImportable, isReviewable, reviewedCount, toImportRows } from './csv-import-row';
 
 type TargetField = 'date' | 'description' | 'amount' | 'category' | 'notes';
@@ -56,6 +58,7 @@ export class TransactionImport {
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly router = inject(Router);
@@ -65,6 +68,15 @@ export class TransactionImport {
 
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
+  protected readonly institutionsResource = rxResource({
+    stream: () => this.institutionRepository.list()
+  });
+
+  /** <optgroup>-per-institution for the account select - same helper the
+   * transaction form modal uses (institution-grouping.ts). */
+  protected readonly accountGroups = computed(() =>
+    groupAccountsByInstitution(this.accountsResource.value() ?? [], this.institutionsResource.value() ?? [])
+  );
 
   protected readonly fileName = signal<string | undefined>(undefined);
   private readonly csvContent = signal<string | undefined>(undefined);
@@ -100,6 +112,14 @@ export class TransactionImport {
     return (this.categoriesResource.value() ?? []).filter(
       (category) => !category.archived && category.kind === type
     );
+  }
+
+  /** Light income/expense tint so a row's direction reads at a glance,
+   * matching the positive/negative tokens badges already use elsewhere. */
+  protected rowBackgroundClass(row: CsvImportRow): string {
+    if (row.type === 'income') return 'bg-positive/10';
+    if (row.type === 'expense') return 'bg-negative/10';
+    return '';
   }
 
   protected async onFileSelected(event: Event): Promise<void> {

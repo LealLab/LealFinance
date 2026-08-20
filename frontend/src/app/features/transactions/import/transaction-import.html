@@ -25,8 +25,12 @@
           (change)="onAccountChange($any($event.target).value)"
         >
           <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
-          @for (account of accountsResource.value(); track account.id) {
-            <option [value]="account.id">{{ account.name }}</option>
+          @for (group of accountGroups(); track group.institution?.id ?? '__none__') {
+            <optgroup [label]="group.institution ? group.institution.name : t('accounts.noInstitution')">
+              @for (account of group.accounts; track account.id) {
+                <option [value]="account.id">{{ account.name }}</option>
+              }
+            </optgroup>
           }
         </select>
       </div>
@@ -130,8 +134,12 @@
           </thead>
           <tbody>
             @for (row of rows(); track row.index) {
-              <tr class="border-b border-border last:border-0" [class.opacity-50]="row.excluded">
-                <td class="p-3 align-top">
+              <tr
+                class="border-b border-border last:border-0"
+                [class]="rowBackgroundClass(row)"
+                [class.opacity-50]="row.excluded"
+              >
+                <td class="p-3 align-middle">
                   <input
                     type="checkbox"
                     [checked]="row.reviewed"
@@ -174,7 +182,9 @@
                   >
                     <option value="">{{ t('transactions.import.grid.noCategory') }}</option>
                     @for (category of categoriesForType(row.type); track category.id) {
-                      <option [value]="category.id">{{ category.name }}</option>
+                      <option [value]="category.id">
+                        {{ category.parentId ? '- ' : '' }}{{ category.name }}
+                      </option>
                     }
                   </select>
                 </td>
@@ -194,10 +204,12 @@
                     (change)="setRowNotes(row, $any($event.target).value)"
                   />
                 </td>
-                <td class="p-3 align-top">
+                <td class="p-3 align-middle">
                   <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
                     type="button"
-                    class="text-content-muted hover:text-negative"
                     [attr.aria-label]="t('transactions.import.grid.exclude')"
                     (click)="toggleExcluded(row)"
                   >

@@ -6,8 +6,10 @@ import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Observable, of } from 'rxjs';
 import { AccountRepository } from '../../../data/account.repository';
 import { CategoryRepository } from '../../../data/category.repository';
+import { InstitutionRepository } from '../../../data/institution.repository';
 import { MockAccountRepository } from '../../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../../data/mock/mock-category.repository';
+import { MockInstitutionRepository } from '../../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../../data/mock/mock-latency';
 import {
   ImportPreview,
@@ -68,7 +70,16 @@ interface TestableComponent {
   onAccountChange(id: string): Promise<void>;
   toggleReviewed(row: CsvImportRow): void;
   confirmImport(): Promise<void>;
+  rowBackgroundClass(row: CsvImportRow): string;
 }
+
+const baseRow: CsvImportRow = {
+  index: 0,
+  description: 'Coffee',
+  duplicate: false,
+  reviewed: false,
+  excluded: false
+};
 
 describe('TransactionImport', () => {
   let stubRepo: StubTransactionRepository;
@@ -92,6 +103,7 @@ describe('TransactionImport', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
         { provide: TransactionRepository, useValue: stubRepo }
       ]
     }).compileComponents();
@@ -212,5 +224,16 @@ describe('TransactionImport', () => {
 
     expect(stubRepo.lastCommitItems?.length).toBe(1);
     expect(stubRepo.lastCommitItems?.[0].description).toBe('Coffee');
+  });
+
+  it('tints a row by its income/expense direction, and leaves an undetermined row untinted', async () => {
+    const fixture = TestBed.createComponent(TransactionImport);
+    const component = fixture.componentInstance as unknown as TestableComponent;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.rowBackgroundClass({ ...baseRow, type: 'income' })).toBe('bg-positive/10');
+    expect(component.rowBackgroundClass({ ...baseRow, type: 'expense' })).toBe('bg-negative/10');
+    expect(component.rowBackgroundClass({ ...baseRow, type: undefined })).toBe('');
   });
 });
