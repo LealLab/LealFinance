@@ -1,6 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
@@ -174,5 +175,39 @@ describe('Accounts', () => {
     expect(request?.params?.['name']).toBeTruthy();
 
     TestBed.inject(ConfirmService).respond(false);
+  });
+});
+
+describe('Accounts quick-create route param', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        TranslocoTestingModule.forRoot({
+          langs: { 'pt-BR': ptBR },
+          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
+        })
+      ],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([{ path: 'accounts', component: Accounts }]),
+        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: AccountRepository, useClass: MockAccountRepository },
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
+      ]
+    }).compileComponents();
+  });
+
+  it('opens the create-account modal when navigated with ?new=1, e.g. from the command palette', async () => {
+    const harness = await RouterTestingHarness.create();
+    await harness.navigateByUrl('/accounts?new=1', Accounts);
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+
+    const dialog = harness.routeNativeElement!.querySelector('dialog') as HTMLDialogElement;
+    expect(dialog.open).toBe(true);
+    expect(TestBed.inject(Router).url).toBe('/accounts');
   });
 });
