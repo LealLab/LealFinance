@@ -6,7 +6,7 @@ existing architecture, and include validation evidence with every pull request.
 ## Prerequisites
 
 - Python 3.13 and [uv](https://docs.astral.sh/uv/)
-- Node 24 and pnpm 11.13.0
+- Node 24 and pnpm 11.22.0
 - Docker and Docker Compose
 - [Task](https://taskfile.dev/) for the repository shortcuts
 

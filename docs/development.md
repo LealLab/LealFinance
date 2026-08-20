@@ -4,7 +4,7 @@
 
 - [uv](https://docs.astral.sh/uv/) with Python 3.13 (the backend requires
   `>=3.13,<3.14`; do not use Python 3.14)
-- [pnpm](https://pnpm.io/) 11.13.0 + Node 24
+- [pnpm](https://pnpm.io/) 11.22.0 + Node 24
 - Docker + Docker Compose (for Postgres/Redis locally, or the full stack)
 
 All commands below assume a task runner (`Taskfile.yml` - install from <https://taskfile.dev>, or run the underlying `uv`/`pnpm`/`docker compose` commands directly, shown in parentheses).
@@ -65,6 +65,34 @@ docker compose down -v                 # stop + wipe data (fresh start)
 | Frontend build | `task frontend:build` |
 | Check for missing/orphaned i18n keys | `task i18n:validate` |
 | Dependency security audit | `task security:audit` |
+
+## Browser smoke test
+
+The frontend includes a Playwright smoke test that covers registration or
+login, account and category creation, and adding a transaction. Start the
+backend and frontend with the native workflow above, or start the full Docker
+Compose stack, then install Chromium once and run it from `frontend`:
+
+```bash
+cd frontend
+pnpm install
+pnpm exec playwright install chromium
+pnpm run e2e
+```
+
+The script defaults to `http://127.0.0.1:4200` and uses that same host's
+`/api/v1` path. Override the URLs when testing another instance:
+
+```bash
+E2E_BASE_URL=http://127.0.0.1:8081 pnpm run e2e
+E2E_API_URL=http://127.0.0.1:8000/api/v1 pnpm run e2e
+```
+
+`E2E_EMAIL` and `E2E_PASSWORD` select the credentials for an instance that
+already has a user. On an empty instance the script creates the first admin
+with a generated email and its built-in smoke-test password. The test leaves
+the created data behind, so run it only against a disposable development or
+test instance, never a shared or production database.
 
 ## Running backend tests
 

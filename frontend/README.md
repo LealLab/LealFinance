@@ -15,4 +15,6 @@ pnpm run build
 ```
 
 The production container builds the app with Node 24 and serves it through
-nginx. There is no configured `ng e2e` command in this project.
+nginx. The browser smoke test runs with `pnpm run e2e`; see the [canonical
+development guide](../docs/development.md#browser-smoke-test) for its
+prerequisites, URL overrides, and disposable-instance warning.
