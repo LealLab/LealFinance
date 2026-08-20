@@ -123,17 +123,38 @@
                   (change)="toggleAllReviewed($any($event.target).checked)"
                 />
               </th>
-              <th class="p-3 text-start">{{ t('transactions.form.fields.date') }}</th>
+              <th class="p-3 text-start">
+                <button type="button" class="inline-flex items-center gap-1" (click)="toggleSort('date')">
+                  {{ t('transactions.form.fields.date') }}
+                  @if (sortColumn() === 'date') {
+                    <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+                  }
+                </button>
+              </th>
               <th class="p-3 text-start">{{ t('transactions.form.fields.description') }}</th>
-              <th class="p-3 text-start">{{ t('transactions.filters.type') }}</th>
+              <th class="p-3 text-start">
+                <button type="button" class="inline-flex items-center gap-1" (click)="toggleSort('type')">
+                  {{ t('transactions.filters.type') }}
+                  @if (sortColumn() === 'type') {
+                    <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+                  }
+                </button>
+              </th>
               <th class="p-3 text-start">{{ t('transactions.form.fields.category') }}</th>
-              <th class="p-3 text-start">{{ t('transactions.form.fields.amount') }}</th>
+              <th class="p-3 text-start">
+                <button type="button" class="inline-flex items-center gap-1" (click)="toggleSort('amount')">
+                  {{ t('transactions.form.fields.amount') }}
+                  @if (sortColumn() === 'amount') {
+                    <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+                  }
+                </button>
+              </th>
               <th class="p-3 text-start">{{ t('transactions.form.fields.notes') }}</th>
               <th class="p-3"></th>
             </tr>
           </thead>
           <tbody>
-            @for (row of rows(); track row.index) {
+            @for (row of sortedRows(); track row.index) {
               <tr
                 class="border-b border-border last:border-0"
                 [class]="rowBackgroundClass(row)"

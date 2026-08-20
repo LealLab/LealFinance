@@ -34,3 +34,16 @@ export function isImportable(row: CsvImportRow): boolean {
 export function reviewedCount(rows: readonly CsvImportRow[]): number {
   return rows.filter(isImportable).length;
 }
+
+export type ImportSortColumn = 'date' | 'type' | 'amount';
+
+/** Ascending comparator for the grid's sortable columns - display ordering
+ * only (never written anywhere), so a plain numeric compare for `amount`
+ * is fine even though money elsewhere in the app always goes through
+ * shared/money/money.ts's bigint arithmetic. A missing/unparseable value
+ * sorts first rather than throwing, since a row mid-edit can have one. */
+export function compareRows(a: CsvImportRow, b: CsvImportRow, column: ImportSortColumn): number {
+  if (column === 'date') return (a.date ?? '').localeCompare(b.date ?? '');
+  if (column === 'type') return (a.type ?? '').localeCompare(b.type ?? '');
+  return (Number(a.amount) || 0) - (Number(b.amount) || 0);
+}

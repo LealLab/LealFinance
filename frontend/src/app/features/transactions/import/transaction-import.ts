@@ -15,7 +15,15 @@ import { Card } from '../../../shared/ui/card/card';
 import { Icon } from '../../../shared/ui/icon/icon';
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
 import { groupAccountsByInstitution } from '../../accounts/institution-grouping';
-import { CsvImportRow, isImportable, isReviewable, reviewedCount, toImportRows } from './csv-import-row';
+import {
+  compareRows,
+  CsvImportRow,
+  ImportSortColumn,
+  isImportable,
+  isReviewable,
+  reviewedCount,
+  toImportRows
+} from './csv-import-row';
 
 type TargetField = 'date' | 'description' | 'amount' | 'category' | 'notes';
 const TARGET_FIELDS: readonly TargetField[] = ['date', 'description', 'amount', 'category', 'notes'];
@@ -92,6 +100,15 @@ export class TransactionImport {
   protected readonly loading = signal(false);
   protected readonly previewErrorKey = signal<string | undefined>(undefined);
 
+  protected readonly sortColumn = signal<ImportSortColumn | null>(null);
+  protected readonly sortDirection = signal<'asc' | 'desc'>('asc');
+  protected readonly sortedRows = computed<CsvImportRow[]>(() => {
+    const column = this.sortColumn();
+    if (!column) return this.rows();
+    const direction = this.sortDirection() === 'asc' ? 1 : -1;
+    return [...this.rows()].sort((a, b) => direction * compareRows(a, b, column));
+  });
+
   protected readonly askBeforeImport = signal(true);
   protected readonly importing = signal(false);
 
@@ -114,12 +131,23 @@ export class TransactionImport {
     );
   }
 
-  /** Light income/expense tint so a row's direction reads at a glance,
-   * matching the positive/negative tokens badges already use elsewhere. */
+  /** Income/expense tint so a row's direction reads at a glance, matching
+   * the positive/negative color tokens badges already use elsewhere - a
+   * stronger fill than a badge's, since a badge is a small bold pill and a
+   * full-width row needs more weight to register at a glance. */
   protected rowBackgroundClass(row: CsvImportRow): string {
-    if (row.type === 'income') return 'bg-positive/10';
-    if (row.type === 'expense') return 'bg-negative/10';
+    if (row.type === 'income') return 'bg-positive/20';
+    if (row.type === 'expense') return 'bg-negative/20';
     return '';
+  }
+
+  protected toggleSort(column: ImportSortColumn): void {
+    if (this.sortColumn() === column) {
+      this.sortDirection.update((direction) => (direction === 'asc' ? 'desc' : 'asc'));
+    } else {
+      this.sortColumn.set(column);
+      this.sortDirection.set('asc');
+    }
   }
 
   protected async onFileSelected(event: Event): Promise<void> {

@@ -1,5 +1,5 @@
 import { ImportRow } from '../../../data/transaction.repository';
-import { isImportable, isReviewable, reviewedCount, toImportRows } from './csv-import-row';
+import { compareRows, isImportable, isReviewable, reviewedCount, toImportRows } from './csv-import-row';
 
 const cleanRow: ImportRow = {
   index: 0,
@@ -71,5 +71,35 @@ describe('reviewedCount', () => {
       (row, i) => (i === 0 ? { ...row, reviewed: true } : row)
     );
     expect(reviewedCount(rows)).toBe(1);
+  });
+});
+
+describe('compareRows', () => {
+  const [earlier, later] = toImportRows([
+    { ...cleanRow, date: '2026-01-01', amount: '5.00' },
+    { ...cleanRow, index: 1, date: '2026-01-15', amount: '50.00' }
+  ]);
+
+  it('orders by date ascending', () => {
+    expect(compareRows(earlier, later, 'date')).toBeLessThan(0);
+    expect(compareRows(later, earlier, 'date')).toBeGreaterThan(0);
+    expect(compareRows(earlier, earlier, 'date')).toBe(0);
+  });
+
+  it('orders by amount ascending, numerically not lexically', () => {
+    expect(compareRows(earlier, later, 'amount')).toBeLessThan(0);
+    expect(compareRows(later, earlier, 'amount')).toBeGreaterThan(0);
+  });
+
+  it('orders by type alphabetically (expense before income)', () => {
+    const [expenseRow] = toImportRows([{ ...cleanRow, type: 'expense' }]);
+    const [incomeRow] = toImportRows([{ ...cleanRow, type: 'income' }]);
+    expect(compareRows(expenseRow, incomeRow, 'type')).toBeLessThan(0);
+  });
+
+  it('treats a missing date/amount as sorting first, without throwing', () => {
+    const [blank] = toImportRows([{ ...cleanRow, date: undefined, amount: undefined }]);
+    expect(compareRows(blank, later, 'date')).toBeLessThan(0);
+    expect(compareRows(blank, later, 'amount')).toBeLessThan(0);
   });
 });

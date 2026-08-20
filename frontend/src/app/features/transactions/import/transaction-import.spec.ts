@@ -64,11 +64,13 @@ function fileSelectEvent(content: string, name = 'statement.csv'): Event {
 interface TestableComponent {
   fieldMapping: () => Record<string, string>;
   rows: () => CsvImportRow[];
+  sortedRows: () => CsvImportRow[];
   canConfirm: () => boolean;
   askBeforeImport: { set(value: boolean): void };
   onFileSelected(event: Event): Promise<void>;
   onAccountChange(id: string): Promise<void>;
   toggleReviewed(row: CsvImportRow): void;
+  toggleSort(column: 'date' | 'type' | 'amount'): void;
   confirmImport(): Promise<void>;
   rowBackgroundClass(row: CsvImportRow): string;
 }
@@ -232,8 +234,35 @@ describe('TransactionImport', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(component.rowBackgroundClass({ ...baseRow, type: 'income' })).toBe('bg-positive/10');
-    expect(component.rowBackgroundClass({ ...baseRow, type: 'expense' })).toBe('bg-negative/10');
+    expect(component.rowBackgroundClass({ ...baseRow, type: 'income' })).toBe('bg-positive/20');
+    expect(component.rowBackgroundClass({ ...baseRow, type: 'expense' })).toBe('bg-negative/20');
     expect(component.rowBackgroundClass({ ...baseRow, type: undefined })).toBe('');
+  });
+
+  it('sorts the grid by amount ascending, then descending, without reordering the underlying rows', async () => {
+    stubRepo.nextPreview = {
+      headers: ['date', 'amount', 'description'],
+      mapping: { date: 'date', description: 'description', amount: 'amount', category: null, notes: null },
+      rows: [
+        { ...baseRow, index: 0, date: '2026-01-15', amount: '50.00', type: 'expense' },
+        { ...baseRow, index: 1, date: '2026-01-16', amount: '5.00', type: 'expense' }
+      ]
+    };
+    const fixture = TestBed.createComponent(TransactionImport);
+    const component = fixture.componentInstance as unknown as TestableComponent;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await component.onFileSelected(
+      fileSelectEvent('date,amount,description\n2026-01-15,-50,Coffee\n2026-01-16,-5,Tea\n')
+    );
+    await component.onAccountChange('acc-checking');
+
+    component.toggleSort('amount');
+    expect(component.sortedRows().map((row) => row.amount)).toEqual(['5.00', '50.00']);
+    expect(component.rows().map((row) => row.amount)).toEqual(['50.00', '5.00']);
+
+    component.toggleSort('amount');
+    expect(component.sortedRows().map((row) => row.amount)).toEqual(['50.00', '5.00']);
   });
 });
