@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut."
+      "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
+      "validation": "Überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
     },
     "auth": {
       "invalid_credentials": "E-Mail-Adresse oder Passwort ist falsch.",

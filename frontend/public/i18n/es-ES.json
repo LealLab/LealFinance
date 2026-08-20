@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Algo ha salido mal. Inténtalo de nuevo."
+      "generic": "Algo ha salido mal. Inténtalo de nuevo.",
+      "validation": "Comprueba la información e inténtalo de nuevo."
     },
     "auth": {
       "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",

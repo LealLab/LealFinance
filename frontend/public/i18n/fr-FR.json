@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Une erreur s’est produite. Réessayez."
+      "generic": "Une erreur s’est produite. Réessayez.",
+      "validation": "Vérifiez les informations saisies et réessayez."
     },
     "auth": {
       "invalid_credentials": "L’adresse e-mail ou le mot de passe est incorrect.",

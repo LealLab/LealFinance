@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Qualcosa è andato storto. Riprova."
+      "generic": "Qualcosa è andato storto. Riprova.",
+      "validation": "Controlla i dati inseriti e riprova."
     },
     "auth": {
       "invalid_credentials": "Email o password non valide.",

@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "validation": "Girdiğiniz bilgileri kontrol edip tekrar deneyin."
     },
     "auth": {
       "invalid_credentials": "E-posta veya parola yanlış.",

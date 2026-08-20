@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+      "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "validation": "Sprawdź wprowadzone dane i spróbuj ponownie."
     },
     "auth": {
       "invalid_credentials": "Podany adres e-mail lub hasło są nieprawidłowe.",

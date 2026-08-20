@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "出错了。请重试。"
+      "generic": "出错了。请重试。",
+      "validation": "请检查填写的信息后重试。"
     },
     "auth": {
       "invalid_credentials": "邮箱或密码不正确。",

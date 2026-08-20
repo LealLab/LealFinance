@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "validation": "Check your information and try again."
     },
     "auth": {
       "invalid_credentials": "The email or password is incorrect.",
