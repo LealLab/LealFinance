@@ -7,6 +7,7 @@ import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
 import type { ManualRate } from '../../domain/models/manual-rate';
 import type { RecurringRule } from '../../domain/models/recurring';
+import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
 import type { Transaction, TransactionConversion } from '../../domain/models/transaction';
 import type {
   AccountBalanceWire,
@@ -27,6 +28,9 @@ import type {
   GoalWire,
   GoalWithAccountInputWire,
   GoalWithAccountPatchWire,
+  ImportOptionsWire,
+  ImportPreviewRequestWire,
+  ImportPreviewWire,
   InstitutionInputWire,
   InstitutionPatchWire,
   InstitutionWire,
@@ -237,6 +241,36 @@ export function mapTransactionPatch(input: Partial<Omit<Transaction, 'id'>>): Tr
     wire.conversion = input.conversion ? mapConversionInput(input.conversion) : null;
   return wire;
 }
+
+const mapImportOptions = (options: ImportOptions): ImportOptionsWire => ({
+  date_format: options.dateFormat,
+  decimal_separator: options.decimalSeparator,
+  invert_sign: options.invertSign,
+});
+export const mapImportPreviewRequest = (
+  request: ImportPreviewRequest,
+): ImportPreviewRequestWire => ({
+  content: request.content,
+  account_id: request.accountId,
+  mapping: request.mapping ?? null,
+  options: mapImportOptions(request.options),
+});
+export const mapImportPreview = (wire: ImportPreviewWire): ImportPreview => ({
+  headers: wire.headers,
+  mapping: wire.mapping,
+  rows: wire.rows.map((row) => ({
+    index: row.index,
+    date: row.date ?? undefined,
+    description: row.description,
+    type: row.type ?? undefined,
+    amount: row.amount ?? undefined,
+    categoryId: row.category_id ?? undefined,
+    categoryName: row.category_name ?? undefined,
+    notes: row.notes ?? undefined,
+    error: row.error ?? undefined,
+    duplicate: row.duplicate,
+  })),
+});
 
 const mapRecurringTemplate = (wire: RecurringTemplateWire): RecurringRule['template'] => ({
   type: wire.type,

@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nuevo movimiento",
       "edit": "Editar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "import": "Importar CSV"
     },
     "tabs": {
       "transactions": "Movimientos",
@@ -355,6 +356,52 @@
         "saveError": "No se ha podido guardar la regla recurrente. Inténtalo de nuevo.",
         "startDate": "Inicio",
         "endDate": "Fin (opcional)"
+      }
+    },
+    "import": {
+      "title": "Importar movimientos",
+      "description": "Sube un CSV exportado de tu banco, revisa cada fila y confirma las que quieras registrar.",
+      "fields": {
+        "file": "Archivo CSV",
+        "dateFormat": "Formato de fecha",
+        "decimalSeparator": "Separador decimal",
+        "invertSign": "Los valores positivos son gastos (invertir signo)",
+        "askBeforeImport": "Preguntarme antes de importar"
+      },
+      "dateFormat": {
+        "auto": "Detectar automáticamente",
+        "iso": "AAAA-MM-DD",
+        "dmy": "DD/MM/AAAA",
+        "mdy": "MM/DD/AAAA"
+      },
+      "decimalSeparator": {
+        "auto": "Detectar automáticamente",
+        "dot": "Punto (1234.56)",
+        "comma": "Coma (1234,56)"
+      },
+      "mapping": {
+        "title": "Asociar columnas",
+        "none": "No usada",
+        "missingRequired": "Asocia las columnas de fecha, descripción e importe antes de revisar las filas."
+      },
+      "loading": "Analizando el archivo...",
+      "remapConfirm": {
+        "title": "¿Descartar el progreso de la revisión?",
+        "message": "Cambiar el archivo, la cuenta o la asociación de columnas vuelve a analizar el archivo y borra las filas ya revisadas."
+      },
+      "grid": {
+        "reviewAll": "Marcar todas las filas como revisadas",
+        "exclude": "Excluir fila",
+        "duplicate": "Parece un duplicado",
+        "noCategory": "Sin categoría",
+        "reviewedCount": "{{reviewed}} de {{total}} filas revisadas"
+      },
+      "confirm": {
+        "title": "¿Importar movimientos?",
+        "message": "Esto registrará {{count}} filas revisadas en {{account}}. Esta acción no se puede deshacer."
+      },
+      "actions": {
+        "confirm": "Importar filas revisadas"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Aportar al objetivo" },
-      "withdraw": { "title": "Retirar del objetivo" },
-      "interest": { "title": "Añadir intereses" },
+      "deposit": {
+        "title": "Aportar al objetivo"
+      },
+      "withdraw": {
+        "title": "Retirar del objetivo"
+      },
+      "interest": {
+        "title": "Añadir intereses"
+      },
       "fields": {
         "amount": "Importe",
         "date": "Fecha",
@@ -699,7 +752,10 @@
   "admin": {
     "title": "Usuarios e invitaciones",
     "description": "Gestiona el acceso a esta instancia de LealFinance.",
-    "roles": { "member": "Miembro", "admin": "Administrador" },
+    "roles": {
+      "member": "Miembro",
+      "admin": "Administrador"
+    },
     "users": {
       "title": "Usuarios",
       "role": "Rol",
@@ -717,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Algo ha salido mal. Inténtalo de nuevo." },
+    "error": {
+      "generic": "Algo ha salido mal. Inténtalo de nuevo."
+    },
     "auth": {
       "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",
       "csrf_invalid": "Este formulario ha caducado. Actualiza la página e inténtalo de nuevo.",
@@ -732,6 +790,20 @@
       "already_accepted": "Esta invitación ya se ha aceptado.",
       "already_pending": "Ya hay una invitación pendiente para este correo electrónico."
     },
-    "user": { "email_taken": "Ya existe una cuenta con este correo electrónico." }
+    "user": {
+      "email_taken": "Ya existe una cuenta con este correo electrónico."
+    },
+    "import": {
+      "file_too_large": "Ese archivo es demasiado grande para importar (límite de 2 MB).",
+      "no_rows": "El archivo no tiene filas de datos.",
+      "too_many_rows": "El archivo tiene demasiadas filas para importar a la vez (límite de 2000).",
+      "column_required": "Asocia las columnas de fecha, descripción e importe antes de continuar.",
+      "row": {
+        "invalid_date": "No se pudo leer esta fecha.",
+        "invalid_amount": "No se pudo leer este importe.",
+        "zero_amount": "El importe no puede ser cero.",
+        "missing_description": "La descripción es obligatoria."
+      }
+    }
   }
 }

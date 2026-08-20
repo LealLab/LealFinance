@@ -258,7 +258,8 @@
     "actions": {
       "new": "新建交易",
       "edit": "编辑",
-      "delete": "删除"
+      "delete": "删除",
+      "import": "导入 CSV"
     },
     "tabs": {
       "transactions": "交易",
@@ -355,6 +356,52 @@
         "saveError": "无法保存周期性规则。请重试。",
         "startDate": "开始日期",
         "endDate": "结束日期（可选）"
+      }
+    },
+    "import": {
+      "title": "导入交易",
+      "description": "上传从银行导出的 CSV 文件，检查每一行，并确认要记录的行。",
+      "fields": {
+        "file": "CSV 文件",
+        "dateFormat": "日期格式",
+        "decimalSeparator": "小数点分隔符",
+        "invertSign": "正数金额视为支出（反转符号）",
+        "askBeforeImport": "导入前询问我"
+      },
+      "dateFormat": {
+        "auto": "自动检测",
+        "iso": "YYYY-MM-DD",
+        "dmy": "DD/MM/YYYY",
+        "mdy": "MM/DD/YYYY"
+      },
+      "decimalSeparator": {
+        "auto": "自动检测",
+        "dot": "点号（1234.56）",
+        "comma": "逗号（1234,56）"
+      },
+      "mapping": {
+        "title": "匹配列",
+        "none": "未使用",
+        "missingRequired": "在检查行之前，请匹配日期、描述和金额列。"
+      },
+      "loading": "正在解析文件...",
+      "remapConfirm": {
+        "title": "放弃检查进度？",
+        "message": "更改文件、账户或列匹配会重新解析文件，并清除已检查的行。"
+      },
+      "grid": {
+        "reviewAll": "将所有行标记为已检查",
+        "exclude": "排除此行",
+        "duplicate": "可能是重复项",
+        "noCategory": "无分类",
+        "reviewedCount": "已检查 {{reviewed}}/{{total}} 行"
+      },
+      "confirm": {
+        "title": "导入交易？",
+        "message": "此操作会将 {{count}} 行已检查的记录过账到{{account}}。此操作无法撤销。"
+      },
+      "actions": {
+        "confirm": "导入已检查的行"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "存入目标" },
-      "withdraw": { "title": "从目标提取" },
-      "interest": { "title": "添加利息" },
+      "deposit": {
+        "title": "存入目标"
+      },
+      "withdraw": {
+        "title": "从目标提取"
+      },
+      "interest": {
+        "title": "添加利息"
+      },
       "fields": {
         "amount": "金额",
         "date": "日期",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "用户与邀请",
     "description": "管理此 LealFinance 实例的访问权限。",
-    "roles": { "member": "成员", "admin": "管理员" },
-    "users": { "title": "用户", "role": "角色", "active": "活跃", "empty": "未找到用户。" },
+    "roles": {
+      "member": "成员",
+      "admin": "管理员"
+    },
+    "users": {
+      "title": "用户",
+      "role": "角色",
+      "active": "活跃",
+      "empty": "未找到用户。"
+    },
     "invitations": {
       "title": "邀请",
       "createTitle": "创建邀请",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "出错了。请重试。" },
+    "error": {
+      "generic": "出错了。请重试。"
+    },
     "auth": {
       "invalid_credentials": "邮箱或密码不正确。",
       "csrf_invalid": "表单已过期。请刷新页面后重试。",
@@ -727,6 +790,20 @@
       "already_accepted": "此邀请已被接受。",
       "already_pending": "此邮箱已有待处理的邀请。"
     },
-    "user": { "email_taken": "已有账户使用此邮箱。" }
+    "user": {
+      "email_taken": "已有账户使用此邮箱。"
+    },
+    "import": {
+      "file_too_large": "该文件过大，无法导入（限制 2MB）。",
+      "no_rows": "文件中没有数据行。",
+      "too_many_rows": "文件行数过多，无法一次性导入（限制 2000 行）。",
+      "column_required": "请在继续之前匹配日期、描述和金额列。",
+      "row": {
+        "invalid_date": "无法读取此日期。",
+        "invalid_amount": "无法读取此金额。",
+        "zero_amount": "金额不能为零。",
+        "missing_description": "描述为必填项。"
+      }
+    }
   }
 }

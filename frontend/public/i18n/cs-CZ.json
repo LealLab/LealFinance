@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nová transakce",
       "edit": "Upravit",
-      "delete": "Odstranit"
+      "delete": "Odstranit",
+      "import": "Importovat CSV"
     },
     "tabs": {
       "transactions": "Transakce",
@@ -355,6 +356,52 @@
         "saveError": "Pravidlo opakování se nepodařilo uložit. Zkuste to znovu.",
         "startDate": "Začátek",
         "endDate": "Konec (volitelné)"
+      }
+    },
+    "import": {
+      "title": "Import transakcí",
+      "description": "Nahrajte export CSV z vaší banky, zkontrolujte každý řádek a potvrďte ty, které chcete zaúčtovat.",
+      "fields": {
+        "file": "Soubor CSV",
+        "dateFormat": "Formát data",
+        "decimalSeparator": "Oddělovač desetinných míst",
+        "invertSign": "Kladné částky jsou výdaje (obrátit znaménko)",
+        "askBeforeImport": "Zeptat se před importem"
+      },
+      "dateFormat": {
+        "auto": "Rozpoznat automaticky",
+        "iso": "RRRR-MM-DD",
+        "dmy": "DD/MM/RRRR",
+        "mdy": "MM/DD/RRRR"
+      },
+      "decimalSeparator": {
+        "auto": "Rozpoznat automaticky",
+        "dot": "Tečka (1234.56)",
+        "comma": "Čárka (1234,56)"
+      },
+      "mapping": {
+        "title": "Přiřadit sloupce",
+        "none": "Nepoužito",
+        "missingRequired": "Před kontrolou řádků přiřaďte sloupce data, popisu a částky."
+      },
+      "loading": "Analyzuji soubor...",
+      "remapConfirm": {
+        "title": "Zahodit postup kontroly?",
+        "message": "Změna souboru, účtu nebo přiřazení sloupců znovu analyzuje soubor a vymaže již zkontrolované řádky."
+      },
+      "grid": {
+        "reviewAll": "Označit všechny řádky jako zkontrolované",
+        "exclude": "Vyloučit řádek",
+        "duplicate": "Vypadá jako duplicita",
+        "noCategory": "Bez kategorie",
+        "reviewedCount": "Zkontrolováno {{reviewed}} z {{total}} řádků"
+      },
+      "confirm": {
+        "title": "Importovat transakce?",
+        "message": "Tímto se zaúčtuje {{count}} zkontrolovaných řádků na účet {{account}}. Tuto akci nelze vrátit zpět."
+      },
+      "actions": {
+        "confirm": "Importovat zkontrolované řádky"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Přidat peníze k cíli" },
-      "withdraw": { "title": "Vybrat peníze z cíle" },
-      "interest": { "title": "Přidat úrok" },
+      "deposit": {
+        "title": "Přidat peníze k cíli"
+      },
+      "withdraw": {
+        "title": "Vybrat peníze z cíle"
+      },
+      "interest": {
+        "title": "Přidat úrok"
+      },
       "fields": {
         "amount": "Částka",
         "date": "Datum",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Uživatelé a pozvánky",
     "description": "Spravujte přístup k této instanci LealFinance.",
-    "roles": { "member": "Člen", "admin": "Správce" },
-    "users": { "title": "Uživatelé", "role": "Uživatelská role", "active": "Aktivní", "empty": "Nebyli nalezeni žádní uživatelé." },
+    "roles": {
+      "member": "Člen",
+      "admin": "Správce"
+    },
+    "users": {
+      "title": "Uživatelé",
+      "role": "Uživatelská role",
+      "active": "Aktivní",
+      "empty": "Nebyli nalezeni žádní uživatelé."
+    },
     "invitations": {
       "title": "Pozvánky",
       "createTitle": "Vytvořit pozvánku",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Něco se pokazilo. Zkuste to prosím znovu." },
+    "error": {
+      "generic": "Něco se pokazilo. Zkuste to prosím znovu."
+    },
     "auth": {
       "invalid_credentials": "E-mail nebo heslo nejsou správné.",
       "csrf_invalid": "Platnost tohoto formuláře vypršela. Obnovte stránku a zkuste to znovu.",
@@ -727,6 +790,20 @@
       "already_accepted": "Tato pozvánka již byla přijata.",
       "already_pending": "Pro tento e-mail již existuje nevyřízená pozvánka."
     },
-    "user": { "email_taken": "Tento e-mail již používá jiný účet." }
+    "user": {
+      "email_taken": "Tento e-mail již používá jiný účet."
+    },
+    "import": {
+      "file_too_large": "Tento soubor je pro import příliš velký (limit 2 MB).",
+      "no_rows": "Soubor neobsahuje žádné datové řádky.",
+      "too_many_rows": "Soubor obsahuje příliš mnoho řádků na jeden import (limit 2000).",
+      "column_required": "Před pokračováním přiřaďte sloupce data, popisu a částky.",
+      "row": {
+        "invalid_date": "Toto datum se nepodařilo přečíst.",
+        "invalid_amount": "Tuto částku se nepodařilo přečíst.",
+        "zero_amount": "Částka nemůže být nulová.",
+        "missing_description": "Popis je povinný."
+      }
+    }
   }
 }

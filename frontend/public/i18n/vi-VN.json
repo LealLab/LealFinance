@@ -258,7 +258,8 @@
     "actions": {
       "new": "Giao dịch mới",
       "edit": "Chỉnh sửa",
-      "delete": "Xóa"
+      "delete": "Xóa",
+      "import": "Nhập CSV"
     },
     "tabs": {
       "transactions": "Giao dịch",
@@ -355,6 +356,52 @@
         "saveError": "Không thể lưu quy tắc định kỳ. Vui lòng thử lại.",
         "startDate": "Bắt đầu",
         "endDate": "Kết thúc (tùy chọn)"
+      }
+    },
+    "import": {
+      "title": "Nhập giao dịch",
+      "description": "Tải lên tệp CSV xuất từ ngân hàng của bạn, xem lại từng dòng và xác nhận những dòng bạn muốn ghi sổ.",
+      "fields": {
+        "file": "Tệp CSV",
+        "dateFormat": "Định dạng ngày",
+        "decimalSeparator": "Dấu phân cách thập phân",
+        "invertSign": "Số dương là khoản chi (đảo dấu)",
+        "askBeforeImport": "Hỏi tôi trước khi nhập"
+      },
+      "dateFormat": {
+        "auto": "Tự động phát hiện",
+        "iso": "NNNN-TT-NN",
+        "dmy": "NN/TT/NNNN",
+        "mdy": "TT/NN/NNNN"
+      },
+      "decimalSeparator": {
+        "auto": "Tự động phát hiện",
+        "dot": "Dấu chấm (1234.56)",
+        "comma": "Dấu phẩy (1234,56)"
+      },
+      "mapping": {
+        "title": "Khớp cột",
+        "none": "Không sử dụng",
+        "missingRequired": "Khớp các cột ngày, mô tả và số tiền trước khi xem lại các dòng."
+      },
+      "loading": "Đang phân tích tệp...",
+      "remapConfirm": {
+        "title": "Hủy bỏ tiến trình xem lại?",
+        "message": "Thay đổi tệp, tài khoản hoặc khớp cột sẽ phân tích lại tệp và xóa các dòng đã xem lại."
+      },
+      "grid": {
+        "reviewAll": "Đánh dấu tất cả các dòng là đã xem lại",
+        "exclude": "Loại trừ dòng",
+        "duplicate": "Có vẻ trùng lặp",
+        "noCategory": "Không có danh mục",
+        "reviewedCount": "Đã xem lại {{reviewed}}/{{total}} dòng"
+      },
+      "confirm": {
+        "title": "Nhập giao dịch?",
+        "message": "Thao tác này sẽ ghi sổ {{count}} dòng đã xem lại vào {{account}}. Không thể hoàn tác thao tác này."
+      },
+      "actions": {
+        "confirm": "Nhập các dòng đã xem lại"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Thêm tiền vào mục tiêu" },
-      "withdraw": { "title": "Rút tiền khỏi mục tiêu" },
-      "interest": { "title": "Thêm tiền lãi" },
+      "deposit": {
+        "title": "Thêm tiền vào mục tiêu"
+      },
+      "withdraw": {
+        "title": "Rút tiền khỏi mục tiêu"
+      },
+      "interest": {
+        "title": "Thêm tiền lãi"
+      },
       "fields": {
         "amount": "Số tiền",
         "date": "Ngày",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Người dùng và lời mời",
     "description": "Quản lý quyền truy cập vào hệ thống LealFinance này.",
-    "roles": { "member": "Thành viên", "admin": "Quản trị viên" },
-    "users": { "title": "Người dùng", "role": "Vai trò", "active": "Đang hoạt động", "empty": "Không tìm thấy người dùng nào." },
+    "roles": {
+      "member": "Thành viên",
+      "admin": "Quản trị viên"
+    },
+    "users": {
+      "title": "Người dùng",
+      "role": "Vai trò",
+      "active": "Đang hoạt động",
+      "empty": "Không tìm thấy người dùng nào."
+    },
     "invitations": {
       "title": "Lời mời",
       "createTitle": "Tạo lời mời",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Đã xảy ra lỗi. Vui lòng thử lại." },
+    "error": {
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+    },
     "auth": {
       "invalid_credentials": "Email hoặc mật khẩu không chính xác.",
       "csrf_invalid": "Biểu mẫu đã hết hạn. Hãy tải lại trang và thử lại.",
@@ -727,6 +790,20 @@
       "already_accepted": "Lời mời này đã được chấp nhận.",
       "already_pending": "Đã có lời mời đang chờ xử lý cho email này."
     },
-    "user": { "email_taken": "Đã có tài khoản sử dụng email này." }
+    "user": {
+      "email_taken": "Đã có tài khoản sử dụng email này."
+    },
+    "import": {
+      "file_too_large": "Tệp này quá lớn để nhập (giới hạn 2 MB).",
+      "no_rows": "Tệp không có dòng dữ liệu nào.",
+      "too_many_rows": "Tệp có quá nhiều dòng để nhập cùng lúc (giới hạn 2.000).",
+      "column_required": "Khớp các cột ngày, mô tả và số tiền trước khi tiếp tục.",
+      "row": {
+        "invalid_date": "Không thể đọc ngày này.",
+        "invalid_amount": "Không thể đọc số tiền này.",
+        "zero_amount": "Số tiền không được bằng 0.",
+        "missing_description": "Cần có mô tả."
+      }
+    }
   }
 }

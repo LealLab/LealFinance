@@ -15,7 +15,15 @@ from app.schemas.transaction import (
     TransactionType,
     TransactionUpdate,
 )
+from app.schemas.transaction_import import (
+    ImportCommitRead,
+    ImportCommitRequest,
+    ImportPreviewRead,
+    ImportPreviewRequest,
+)
+from app.services import csv_import as csv_import_service
 from app.services import transactions as transactions_service
+from app.services.csv_import import ImportPreview
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
@@ -54,6 +62,28 @@ async def create_transaction(
     payload: TransactionCreate, user: CurrentUser, db: DbSession
 ) -> Transaction:
     return await transactions_service.create_transaction(db, user.id, payload)
+
+
+@router.post("/import/preview", response_model=ImportPreviewRead)
+async def preview_import(
+    payload: ImportPreviewRequest, user: CurrentUser, db: DbSession
+) -> ImportPreview:
+    return await csv_import_service.preview_import(
+        db,
+        user.id,
+        content=payload.content,
+        account_id=payload.account_id,
+        mapping=payload.mapping,
+        options=payload.options,
+    )
+
+
+@router.post("/import", response_model=ImportCommitRead, status_code=status.HTTP_201_CREATED)
+async def commit_import(
+    payload: ImportCommitRequest, user: CurrentUser, db: DbSession
+) -> ImportCommitRead:
+    created = await transactions_service.import_transactions(db, user.id, payload.items)
+    return ImportCommitRead(created=created)
 
 
 @router.get("/{transaction_id}", response_model=TransactionRead)

@@ -258,7 +258,8 @@
     "actions": {
       "new": "新增交易",
       "edit": "編輯",
-      "delete": "刪除"
+      "delete": "刪除",
+      "import": "匯入 CSV"
     },
     "tabs": {
       "transactions": "交易",
@@ -355,6 +356,52 @@
         "saveError": "無法儲存週期性規則，請再試一次。",
         "startDate": "開始日期",
         "endDate": "結束日期（選填）"
+      }
+    },
+    "import": {
+      "title": "匯入交易",
+      "description": "上傳從銀行匯出的 CSV 檔案，檢查每一列，並確認要記錄的列。",
+      "fields": {
+        "file": "CSV 檔案",
+        "dateFormat": "日期格式",
+        "decimalSeparator": "小數點分隔符號",
+        "invertSign": "正數金額視為支出（反轉符號）",
+        "askBeforeImport": "匯入前詢問我"
+      },
+      "dateFormat": {
+        "auto": "自動偵測",
+        "iso": "YYYY-MM-DD",
+        "dmy": "DD/MM/YYYY",
+        "mdy": "MM/DD/YYYY"
+      },
+      "decimalSeparator": {
+        "auto": "自動偵測",
+        "dot": "點號（1234.56）",
+        "comma": "逗號（1234,56）"
+      },
+      "mapping": {
+        "title": "對應欄位",
+        "none": "未使用",
+        "missingRequired": "在檢查列之前，請對應日期、說明和金額欄位。"
+      },
+      "loading": "正在解析檔案...",
+      "remapConfirm": {
+        "title": "放棄檢查進度？",
+        "message": "變更檔案、帳戶或欄位對應會重新解析檔案，並清除已檢查的列。"
+      },
+      "grid": {
+        "reviewAll": "將所有列標記為已檢查",
+        "exclude": "排除此列",
+        "duplicate": "看起來像重複項目",
+        "noCategory": "無分類",
+        "reviewedCount": "已檢查 {{reviewed}}/{{total}} 列"
+      },
+      "confirm": {
+        "title": "匯入交易？",
+        "message": "此操作會將 {{count}} 列已檢查的記錄過帳到{{account}}。此操作無法復原。"
+      },
+      "actions": {
+        "confirm": "匯入已檢查的列"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "存入目標" },
-      "withdraw": { "title": "從目標提領" },
-      "interest": { "title": "新增利息" },
+      "deposit": {
+        "title": "存入目標"
+      },
+      "withdraw": {
+        "title": "從目標提領"
+      },
+      "interest": {
+        "title": "新增利息"
+      },
       "fields": {
         "amount": "金額",
         "date": "日期",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "使用者與邀請",
     "description": "管理此 LealFinance 執行個體的存取權。",
-    "roles": { "member": "成員", "admin": "管理員" },
-    "users": { "title": "使用者", "role": "角色", "active": "啟用中", "empty": "找不到使用者。" },
+    "roles": {
+      "member": "成員",
+      "admin": "管理員"
+    },
+    "users": {
+      "title": "使用者",
+      "role": "角色",
+      "active": "啟用中",
+      "empty": "找不到使用者。"
+    },
     "invitations": {
       "title": "邀請",
       "createTitle": "建立邀請",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "發生錯誤，請再試一次。" },
+    "error": {
+      "generic": "發生錯誤，請再試一次。"
+    },
     "auth": {
       "invalid_credentials": "電子郵件或密碼不正確。",
       "csrf_invalid": "此表單已過期。請重新整理頁面後再試一次。",
@@ -727,6 +790,20 @@
       "already_accepted": "此邀請已接受。",
       "already_pending": "此電子郵件已有待處理的邀請。"
     },
-    "user": { "email_taken": "已有帳戶使用此電子郵件。" }
+    "user": {
+      "email_taken": "已有帳戶使用此電子郵件。"
+    },
+    "import": {
+      "file_too_large": "此檔案過大，無法匯入（上限 2MB）。",
+      "no_rows": "檔案中沒有資料列。",
+      "too_many_rows": "檔案列數過多，無法一次匯入（上限 2000 列）。",
+      "column_required": "請在繼續之前對應日期、說明和金額欄位。",
+      "row": {
+        "invalid_date": "無法讀取此日期。",
+        "invalid_amount": "無法讀取此金額。",
+        "zero_amount": "金額不能為零。",
+        "missing_description": "說明為必填項目。"
+      }
+    }
   }
 }

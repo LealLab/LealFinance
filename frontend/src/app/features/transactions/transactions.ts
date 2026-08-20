@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
@@ -47,6 +48,7 @@ interface DateGroup {
   selector: 'app-transactions',
   imports: [
     TranslocoDirective,
+    RouterLink,
     MoneyPipe,
     Badge,
     Button,

@@ -258,7 +258,8 @@
     "actions": {
       "new": "Tranzacție nouă",
       "edit": "Editează",
-      "delete": "Șterge"
+      "delete": "Șterge",
+      "import": "Importă CSV"
     },
     "tabs": {
       "transactions": "Tranzacții",
@@ -355,6 +356,52 @@
         "saveError": "Regula recurentă nu a putut fi salvată. Încearcă din nou.",
         "startDate": "Început",
         "endDate": "Sfârșit (opțional)"
+      }
+    },
+    "import": {
+      "title": "Importă tranzacții",
+      "description": "Încarcă un CSV exportat de la banca ta, verifică fiecare rând și confirmă-le pe cele de înregistrat.",
+      "fields": {
+        "file": "Fișier CSV",
+        "dateFormat": "Format dată",
+        "decimalSeparator": "Separator zecimal",
+        "invertSign": "Sumele pozitive sunt cheltuieli (inversează semnul)",
+        "askBeforeImport": "Întreabă-mă înainte de import"
+      },
+      "dateFormat": {
+        "auto": "Detectare automată",
+        "iso": "AAAA-LL-ZZ",
+        "dmy": "ZZ/LL/AAAA",
+        "mdy": "LL/ZZ/AAAA"
+      },
+      "decimalSeparator": {
+        "auto": "Detectare automată",
+        "dot": "Punct (1234.56)",
+        "comma": "Virgulă (1234,56)"
+      },
+      "mapping": {
+        "title": "Asociază coloanele",
+        "none": "Neutilizată",
+        "missingRequired": "Asociază coloanele dată, descriere și sumă înainte de a verifica rândurile."
+      },
+      "loading": "Se analizează fișierul...",
+      "remapConfirm": {
+        "title": "Renunți la progresul verificării?",
+        "message": "Schimbarea fișierului, a contului sau a asocierii coloanelor reanalizează fișierul și șterge rândurile deja verificate."
+      },
+      "grid": {
+        "reviewAll": "Marchează toate rândurile ca verificate",
+        "exclude": "Exclude rândul",
+        "duplicate": "Pare a fi un duplicat",
+        "noCategory": "Fără categorie",
+        "reviewedCount": "{{reviewed}} din {{total}} rânduri verificate"
+      },
+      "confirm": {
+        "title": "Imporți tranzacțiile?",
+        "message": "Aceasta va înregistra {{count}} rânduri verificate în {{account}}. Această acțiune nu poate fi anulată."
+      },
+      "actions": {
+        "confirm": "Importă rândurile verificate"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Adaugă bani la obiectiv" },
-      "withdraw": { "title": "Retrage bani din obiectiv" },
-      "interest": { "title": "Adaugă dobândă" },
+      "deposit": {
+        "title": "Adaugă bani la obiectiv"
+      },
+      "withdraw": {
+        "title": "Retrage bani din obiectiv"
+      },
+      "interest": {
+        "title": "Adaugă dobândă"
+      },
       "fields": {
         "amount": "Sumă",
         "date": "Dată",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Utilizatori și invitații",
     "description": "Gestionează accesul la această instanță LealFinance.",
-    "roles": { "member": "Membru", "admin": "Administrator" },
-    "users": { "title": "Utilizatori", "role": "Rol", "active": "Activ", "empty": "Nu s-a găsit niciun utilizator." },
+    "roles": {
+      "member": "Membru",
+      "admin": "Administrator"
+    },
+    "users": {
+      "title": "Utilizatori",
+      "role": "Rol",
+      "active": "Activ",
+      "empty": "Nu s-a găsit niciun utilizator."
+    },
     "invitations": {
       "title": "Invitații",
       "createTitle": "Creează o invitație",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Ceva nu a funcționat. Încearcă din nou." },
+    "error": {
+      "generic": "Ceva nu a funcționat. Încearcă din nou."
+    },
     "auth": {
       "invalid_credentials": "Adresa de e-mail sau parola este incorectă.",
       "csrf_invalid": "Acest formular a expirat. Reîncarcă pagina și încearcă din nou.",
@@ -727,6 +790,20 @@
       "already_accepted": "Această invitație a fost deja acceptată.",
       "already_pending": "Există deja o invitație în așteptare pentru această adresă de e-mail."
     },
-    "user": { "email_taken": "Există deja un cont care folosește această adresă de e-mail." }
+    "user": {
+      "email_taken": "Există deja un cont care folosește această adresă de e-mail."
+    },
+    "import": {
+      "file_too_large": "Acest fișier este prea mare pentru a fi importat (limită 2 MB).",
+      "no_rows": "Fișierul nu conține rânduri de date.",
+      "too_many_rows": "Fișierul conține prea multe rânduri pentru a fi importate deodată (limită 2000).",
+      "column_required": "Asociază coloanele dată, descriere și sumă înainte de a continua.",
+      "row": {
+        "invalid_date": "Această dată nu a putut fi citită.",
+        "invalid_amount": "Această sumă nu a putut fi citită.",
+        "zero_amount": "Suma nu poate fi zero.",
+        "missing_description": "Descrierea este obligatorie."
+      }
+    }
   }
 }

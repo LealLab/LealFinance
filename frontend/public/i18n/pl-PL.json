@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nowa transakcja",
       "edit": "Edytuj",
-      "delete": "Usuń"
+      "delete": "Usuń",
+      "import": "Importuj CSV"
     },
     "tabs": {
       "transactions": "Transakcje",
@@ -355,6 +356,52 @@
         "saveError": "Nie udało się zapisać reguły cyklicznej. Spróbuj ponownie.",
         "startDate": "Początek",
         "endDate": "Koniec (opcjonalnie)"
+      }
+    },
+    "import": {
+      "title": "Importuj transakcje",
+      "description": "Prześlij plik CSV wyeksportowany z banku, sprawdź każdy wiersz i zatwierdź te, które chcesz zaksięgować.",
+      "fields": {
+        "file": "Plik CSV",
+        "dateFormat": "Format daty",
+        "decimalSeparator": "Separator dziesiętny",
+        "invertSign": "Wartości dodatnie to wydatki (odwróć znak)",
+        "askBeforeImport": "Pytaj mnie przed importem"
+      },
+      "dateFormat": {
+        "auto": "Wykryj automatycznie",
+        "iso": "RRRR-MM-DD",
+        "dmy": "DD/MM/RRRR",
+        "mdy": "MM/DD/RRRR"
+      },
+      "decimalSeparator": {
+        "auto": "Wykryj automatycznie",
+        "dot": "Kropka (1234.56)",
+        "comma": "Przecinek (1234,56)"
+      },
+      "mapping": {
+        "title": "Dopasuj kolumny",
+        "none": "Nieużywana",
+        "missingRequired": "Dopasuj kolumny daty, opisu i kwoty przed sprawdzeniem wierszy."
+      },
+      "loading": "Analizowanie pliku...",
+      "remapConfirm": {
+        "title": "Odrzucić postęp sprawdzania?",
+        "message": "Zmiana pliku, konta lub dopasowania kolumn ponownie analizuje plik i czyści już sprawdzone wiersze."
+      },
+      "grid": {
+        "reviewAll": "Oznacz wszystkie wiersze jako sprawdzone",
+        "exclude": "Wyklucz wiersz",
+        "duplicate": "Wygląda na duplikat",
+        "noCategory": "Brak kategorii",
+        "reviewedCount": "Sprawdzono {{reviewed}} z {{total}} wierszy"
+      },
+      "confirm": {
+        "title": "Zaimportować transakcje?",
+        "message": "Spowoduje to zaksięgowanie {{count}} sprawdzonych wierszy na koncie {{account}}. Tej czynności nie można cofnąć."
+      },
+      "actions": {
+        "confirm": "Importuj sprawdzone wiersze"
       }
     }
   },
@@ -745,6 +792,18 @@
     },
     "user": {
       "email_taken": "Ten adres e-mail jest już używany przez konto."
+    },
+    "import": {
+      "file_too_large": "Ten plik jest zbyt duży, aby go zaimportować (limit 2 MB).",
+      "no_rows": "Plik nie zawiera wierszy danych.",
+      "too_many_rows": "Plik zawiera zbyt wiele wierszy do zaimportowania naraz (limit 2000).",
+      "column_required": "Dopasuj kolumny daty, opisu i kwoty przed kontynuowaniem.",
+      "row": {
+        "invalid_date": "Nie udało się odczytać tej daty.",
+        "invalid_amount": "Nie udało się odczytać tej kwoty.",
+        "zero_amount": "Kwota nie może wynosić zero.",
+        "missing_description": "Opis jest wymagany."
+      }
     }
   }
 }

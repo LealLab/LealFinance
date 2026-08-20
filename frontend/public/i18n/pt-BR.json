@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nova transação",
       "edit": "Editar",
-      "delete": "Excluir"
+      "delete": "Excluir",
+      "import": "Importar CSV"
     },
     "tabs": {
       "transactions": "Transações",
@@ -355,6 +356,52 @@
         "saveError": "Não foi possível salvar a recorrência. Tente novamente.",
         "startDate": "Início",
         "endDate": "Término (opcional)"
+      }
+    },
+    "import": {
+      "title": "Importar transações",
+      "description": "Envie um CSV exportado do seu banco, revise cada linha e confirme as que deseja lançar.",
+      "fields": {
+        "file": "Arquivo CSV",
+        "dateFormat": "Formato da data",
+        "decimalSeparator": "Separador decimal",
+        "invertSign": "Valores positivos são despesas (inverter sinal)",
+        "askBeforeImport": "Perguntar antes de importar"
+      },
+      "dateFormat": {
+        "auto": "Detectar automaticamente",
+        "iso": "AAAA-MM-DD",
+        "dmy": "DD/MM/AAAA",
+        "mdy": "MM/DD/AAAA"
+      },
+      "decimalSeparator": {
+        "auto": "Detectar automaticamente",
+        "dot": "Ponto (1234.56)",
+        "comma": "Vírgula (1234,56)"
+      },
+      "mapping": {
+        "title": "Corresponder colunas",
+        "none": "Não usada",
+        "missingRequired": "Associe as colunas de data, descrição e valor antes de revisar as linhas."
+      },
+      "loading": "Analisando o arquivo...",
+      "remapConfirm": {
+        "title": "Descartar progresso da revisão?",
+        "message": "Alterar o arquivo, a conta ou o mapeamento de colunas reanalisa o arquivo e limpa as linhas já revisadas."
+      },
+      "grid": {
+        "reviewAll": "Marcar todas as linhas como revisadas",
+        "exclude": "Excluir linha",
+        "duplicate": "Parece uma duplicata",
+        "noCategory": "Sem categoria",
+        "reviewedCount": "{{reviewed}} de {{total}} linhas revisadas"
+      },
+      "confirm": {
+        "title": "Importar transações?",
+        "message": "Isso lança {{count}} linhas revisadas em {{account}}. Essa ação não pode ser desfeita."
+      },
+      "actions": {
+        "confirm": "Importar linhas revisadas"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Aportar na meta" },
-      "withdraw": { "title": "Resgatar da meta" },
-      "interest": { "title": "Adicionar rendimento" },
+      "deposit": {
+        "title": "Aportar na meta"
+      },
+      "withdraw": {
+        "title": "Resgatar da meta"
+      },
+      "interest": {
+        "title": "Adicionar rendimento"
+      },
       "fields": {
         "amount": "Valor",
         "date": "Data",
@@ -699,7 +752,10 @@
   "admin": {
     "title": "Usuários e convites",
     "description": "Gerencie o acesso a esta instância do LealFinance.",
-    "roles": { "member": "Membro", "admin": "Administrador" },
+    "roles": {
+      "member": "Membro",
+      "admin": "Administrador"
+    },
     "users": {
       "title": "Usuários",
       "role": "Função",
@@ -717,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Algo deu errado. Tente novamente." },
+    "error": {
+      "generic": "Algo deu errado. Tente novamente."
+    },
     "auth": {
       "invalid_credentials": "O e-mail ou a senha está incorreto.",
       "csrf_invalid": "Este formulário expirou. Atualize a página e tente novamente.",
@@ -732,6 +790,20 @@
       "already_accepted": "Este convite já foi aceito.",
       "already_pending": "Já existe um convite pendente para este e-mail."
     },
-    "user": { "email_taken": "Já existe uma conta com este e-mail." }
+    "user": {
+      "email_taken": "Já existe uma conta com este e-mail."
+    },
+    "import": {
+      "file_too_large": "Esse arquivo é grande demais para importar (limite de 2 MB).",
+      "no_rows": "O arquivo não tem linhas de dados.",
+      "too_many_rows": "O arquivo tem linhas demais para importar de uma vez (limite de 2.000).",
+      "column_required": "Associe as colunas de data, descrição e valor antes de continuar.",
+      "row": {
+        "invalid_date": "Não foi possível ler essa data.",
+        "invalid_amount": "Não foi possível ler esse valor.",
+        "zero_amount": "O valor não pode ser zero.",
+        "missing_description": "A descrição é obrigatória."
+      }
+    }
   }
 }

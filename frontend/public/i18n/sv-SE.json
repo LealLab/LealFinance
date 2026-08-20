@@ -258,7 +258,8 @@
     "actions": {
       "new": "Ny transaktion",
       "edit": "Redigera",
-      "delete": "Ta bort"
+      "delete": "Ta bort",
+      "import": "Importera CSV"
     },
     "tabs": {
       "transactions": "Transaktioner",
@@ -355,6 +356,52 @@
         "saveError": "Det gick inte att spara den återkommande regeln. Försök igen.",
         "startDate": "Startdatum",
         "endDate": "Slutdatum (valfritt)"
+      }
+    },
+    "import": {
+      "title": "Importera transaktioner",
+      "description": "Ladda upp en CSV-export från din bank, granska varje rad och bekräfta de du vill bokföra.",
+      "fields": {
+        "file": "CSV-fil",
+        "dateFormat": "Datumformat",
+        "decimalSeparator": "Decimaltecken",
+        "invertSign": "Positiva belopp är utgifter (invertera tecken)",
+        "askBeforeImport": "Fråga mig innan import"
+      },
+      "dateFormat": {
+        "auto": "Identifiera automatiskt",
+        "iso": "ÅÅÅÅ-MM-DD",
+        "dmy": "DD/MM/ÅÅÅÅ",
+        "mdy": "MM/DD/ÅÅÅÅ"
+      },
+      "decimalSeparator": {
+        "auto": "Identifiera automatiskt",
+        "dot": "Punkt (1234.56)",
+        "comma": "Kommatecken (1234,56)"
+      },
+      "mapping": {
+        "title": "Matcha kolumner",
+        "none": "Används inte",
+        "missingRequired": "Koppla kolumnerna datum, beskrivning och belopp innan du granskar raderna."
+      },
+      "loading": "Analyserar filen...",
+      "remapConfirm": {
+        "title": "Kasta bort granskningens framsteg?",
+        "message": "Att ändra fil, konto eller kolumnkoppling analyserar filen igen och rensar redan granskade rader."
+      },
+      "grid": {
+        "reviewAll": "Markera alla rader som granskade",
+        "exclude": "Uteslut rad",
+        "duplicate": "Ser ut som en dublett",
+        "noCategory": "Ingen kategori",
+        "reviewedCount": "{{reviewed}} av {{total}} rader granskade"
+      },
+      "confirm": {
+        "title": "Importera transaktioner?",
+        "message": "Detta bokför {{count}} granskade rader till {{account}}. Detta kan inte ångras."
+      },
+      "actions": {
+        "confirm": "Importera granskade rader"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Lägg till pengar i målet" },
-      "withdraw": { "title": "Ta ut pengar från målet" },
-      "interest": { "title": "Lägg till ränta" },
+      "deposit": {
+        "title": "Lägg till pengar i målet"
+      },
+      "withdraw": {
+        "title": "Ta ut pengar från målet"
+      },
+      "interest": {
+        "title": "Lägg till ränta"
+      },
       "fields": {
         "amount": "Belopp",
         "date": "Datum",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Användare och inbjudningar",
     "description": "Hantera åtkomsten till den här LealFinance-instansen.",
-    "roles": { "member": "Medlem", "admin": "Administratör" },
-    "users": { "title": "Användare", "role": "Roll", "active": "Aktiv", "empty": "Inga användare hittades." },
+    "roles": {
+      "member": "Medlem",
+      "admin": "Administratör"
+    },
+    "users": {
+      "title": "Användare",
+      "role": "Roll",
+      "active": "Aktiv",
+      "empty": "Inga användare hittades."
+    },
     "invitations": {
       "title": "Inbjudningar",
       "createTitle": "Skapa inbjudan",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Något gick fel. Försök igen." },
+    "error": {
+      "generic": "Något gick fel. Försök igen."
+    },
     "auth": {
       "invalid_credentials": "E-postadressen eller lösenordet är felaktigt.",
       "csrf_invalid": "Formuläret har gått ut. Uppdatera sidan och försök igen.",
@@ -727,6 +790,20 @@
       "already_accepted": "Inbjudan har redan accepterats.",
       "already_pending": "Det finns redan en väntande inbjudan för den här e-postadressen."
     },
-    "user": { "email_taken": "Det finns redan ett konto med den här e-postadressen." }
+    "user": {
+      "email_taken": "Det finns redan ett konto med den här e-postadressen."
+    },
+    "import": {
+      "file_too_large": "Den här filen är för stor för att importeras (gräns 2 MB).",
+      "no_rows": "Filen innehåller inga dataraderrader.",
+      "too_many_rows": "Filen innehåller för många rader för att importeras på en gång (gräns 2000).",
+      "column_required": "Koppla kolumnerna datum, beskrivning och belopp innan du fortsätter.",
+      "row": {
+        "invalid_date": "Det gick inte att läsa det här datumet.",
+        "invalid_amount": "Det gick inte att läsa det här beloppet.",
+        "zero_amount": "Beloppet kan inte vara noll.",
+        "missing_description": "Beskrivning krävs."
+      }
+    }
   }
 }

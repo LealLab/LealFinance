@@ -1,0 +1,244 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('transactions.import.title')" [description]="t('transactions.import.description')" />
+
+  <app-card class="mb-6">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <label class="form-label" for="import-file">{{ t('transactions.import.fields.file') }}</label>
+        <input
+          id="import-file"
+          type="file"
+          accept=".csv,text/csv"
+          class="form-input"
+          (change)="onFileSelected($event)"
+        />
+        @if (fileName()) {
+          <p class="mt-1 text-xs text-content-muted">{{ fileName() }}</p>
+        }
+      </div>
+      <div>
+        <label class="form-label" for="import-account">{{ t('transactions.filters.account') }}</label>
+        <select
+          id="import-account"
+          class="form-input"
+          [value]="accountId()"
+          (change)="onAccountChange($any($event.target).value)"
+        >
+          <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+          @for (account of accountsResource.value(); track account.id) {
+            <option [value]="account.id">{{ account.name }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="import-date-format">{{ t('transactions.import.fields.dateFormat') }}</label>
+        <select
+          id="import-date-format"
+          class="form-input"
+          [value]="dateFormat()"
+          (change)="dateFormat.set($any($event.target).value); onOptionsChanged()"
+        >
+          <option value="auto">{{ t('transactions.import.dateFormat.auto') }}</option>
+          <option value="iso">{{ t('transactions.import.dateFormat.iso') }}</option>
+          <option value="dmy">{{ t('transactions.import.dateFormat.dmy') }}</option>
+          <option value="mdy">{{ t('transactions.import.dateFormat.mdy') }}</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="import-decimal-separator">
+          {{ t('transactions.import.fields.decimalSeparator') }}
+        </label>
+        <select
+          id="import-decimal-separator"
+          class="form-input"
+          [value]="decimalSeparator()"
+          (change)="decimalSeparator.set($any($event.target).value); onOptionsChanged()"
+        >
+          <option value="auto">{{ t('transactions.import.decimalSeparator.auto') }}</option>
+          <option value=".">{{ t('transactions.import.decimalSeparator.dot') }}</option>
+          <option value=",">{{ t('transactions.import.decimalSeparator.comma') }}</option>
+        </select>
+      </div>
+    </div>
+    <label class="mt-4 flex items-center gap-2 text-sm text-content-primary">
+      <input
+        type="checkbox"
+        [checked]="invertSign()"
+        (change)="invertSign.set($any($event.target).checked); onOptionsChanged()"
+      />
+      {{ t('transactions.import.fields.invertSign') }}
+    </label>
+  </app-card>
+
+  @if (hasFile() && accountId()) {
+    <app-card class="mb-6">
+      <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('transactions.import.mapping.title') }}</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        @for (field of targetFields; track field) {
+          <div>
+            <label class="form-label" [for]="'import-map-' + field">
+              {{ t('transactions.form.fields.' + field) }}
+            </label>
+            <select
+              [id]="'import-map-' + field"
+              class="form-input"
+              [value]="fieldMapping()[field]"
+              (change)="onFieldMappingChanged(field, $any($event.target).value)"
+            >
+              <option value="">{{ t('transactions.import.mapping.none') }}</option>
+              @for (header of headers(); track header) {
+                <option [value]="header">{{ header }}</option>
+              }
+            </select>
+          </div>
+        }
+      </div>
+      @if (missingRequiredColumn()) {
+        <p class="mt-3 text-sm text-negative">{{ t('transactions.import.mapping.missingRequired') }}</p>
+      }
+    </app-card>
+  }
+
+  @if (loading()) {
+    <p class="text-sm text-content-muted">{{ t('transactions.import.loading') }}</p>
+  }
+  @if (previewErrorKey()) {
+    <p class="text-sm text-negative">{{ t(previewErrorKey()!) }}</p>
+  }
+
+  @if (rows().length > 0) {
+    <app-card class="mb-6" [padded]="false">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-border text-start text-xs font-medium text-content-muted">
+              <th class="p-3">
+                <input
+                  type="checkbox"
+                  [attr.aria-label]="t('transactions.import.grid.reviewAll')"
+                  (change)="toggleAllReviewed($any($event.target).checked)"
+                />
+              </th>
+              <th class="p-3 text-start">{{ t('transactions.form.fields.date') }}</th>
+              <th class="p-3 text-start">{{ t('transactions.form.fields.description') }}</th>
+              <th class="p-3 text-start">{{ t('transactions.filters.type') }}</th>
+              <th class="p-3 text-start">{{ t('transactions.form.fields.category') }}</th>
+              <th class="p-3 text-start">{{ t('transactions.form.fields.amount') }}</th>
+              <th class="p-3 text-start">{{ t('transactions.form.fields.notes') }}</th>
+              <th class="p-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.index) {
+              <tr class="border-b border-border last:border-0" [class.opacity-50]="row.excluded">
+                <td class="p-3 align-top">
+                  <input
+                    type="checkbox"
+                    [checked]="row.reviewed"
+                    [disabled]="!row.reviewed && !isReviewable(row)"
+                    (change)="toggleReviewed(row)"
+                  />
+                </td>
+                <td class="p-3 align-top">
+                  <input
+                    type="date"
+                    class="form-input"
+                    [value]="row.date ?? ''"
+                    (change)="setRowDate(row, $any($event.target).value)"
+                  />
+                </td>
+                <td class="p-3 align-top">
+                  <input
+                    type="text"
+                    class="form-input"
+                    [value]="row.description"
+                    (change)="setRowDescription(row, $any($event.target).value)"
+                  />
+                </td>
+                <td class="p-3 align-top">
+                  <select
+                    class="form-input"
+                    [value]="row.type ?? ''"
+                    (change)="setRowType(row, $any($event.target).value)"
+                  >
+                    @for (type of rowTypes; track type) {
+                      <option [value]="type">{{ t('transactions.type.' + type) }}</option>
+                    }
+                  </select>
+                </td>
+                <td class="p-3 align-top">
+                  <select
+                    class="form-input"
+                    [value]="row.categoryId ?? ''"
+                    (change)="setRowCategory(row, $any($event.target).value)"
+                  >
+                    <option value="">{{ t('transactions.import.grid.noCategory') }}</option>
+                    @for (category of categoriesForType(row.type); track category.id) {
+                      <option [value]="category.id">{{ category.name }}</option>
+                    }
+                  </select>
+                </td>
+                <td class="p-3 align-top">
+                  <input
+                    type="text"
+                    class="form-input font-mono tabular-nums"
+                    [value]="row.amount ?? ''"
+                    (change)="setRowAmount(row, $any($event.target).value)"
+                  />
+                </td>
+                <td class="p-3 align-top">
+                  <input
+                    type="text"
+                    class="form-input"
+                    [value]="row.notes ?? ''"
+                    (change)="setRowNotes(row, $any($event.target).value)"
+                  />
+                </td>
+                <td class="p-3 align-top">
+                  <button
+                    type="button"
+                    class="text-content-muted hover:text-negative"
+                    [attr.aria-label]="t('transactions.import.grid.exclude')"
+                    (click)="toggleExcluded(row)"
+                  >
+                    <app-icon [name]="row.excluded ? 'refresh' : 'trash'" [size]="16" />
+                  </button>
+                  @if (row.error) {
+                    <p class="mt-1 text-xs text-negative">{{ t('errors.' + row.error) }}</p>
+                  } @else if (row.duplicate) {
+                    <p class="mt-1 text-xs text-warning">{{ t('transactions.import.grid.duplicate') }}</p>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <p class="text-sm text-content-muted">
+        {{ t('transactions.import.grid.reviewedCount', { reviewed: reviewedRowCount(), total: rows().length }) }}
+      </p>
+      <div class="flex items-center gap-4">
+        <label class="flex items-center gap-2 text-sm text-content-primary">
+          <input
+            type="checkbox"
+            [checked]="askBeforeImport()"
+            (change)="askBeforeImport.set($any($event.target).checked)"
+          />
+          {{ t('transactions.import.fields.askBeforeImport') }}
+        </label>
+        <button
+          appButton
+          variant="primary"
+          type="button"
+          [disabled]="!canConfirm()"
+          (click)="confirmImport()"
+        >
+          {{ t('transactions.import.actions.confirm') }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

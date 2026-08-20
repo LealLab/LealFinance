@@ -198,6 +198,61 @@ transaction touching the account, computed on the client
 | `transaction.conversion_mismatch` | 422 |
 | `transaction.conversion_fee_exceeds_amount` | 422 |
 
+### Transaction import
+
+`POST /transactions/import/preview` and `POST /transactions/import`
+(`app/services/csv_import.py`) turn a bank-statement CSV into candidate
+transactions for review, then commit the ones the caller confirms. There is
+no multipart upload - the frontend reads the file client-side (`File.text()`)
+and posts its text as a JSON string field, so both endpoints are ordinary
+JSON requests.
+
+**Preview** (`ImportPreviewRequest` → `ImportPreviewRead`) never writes
+anything. It takes the raw CSV `content`, a target `account_id`, an optional
+`mapping` (target field → CSV header; omitted or `{}` asks the server to
+guess from the headers), and `options` (`date_format`: `auto`/`iso`/`dmy`/
+`mdy`; `decimal_separator`: `auto`/`.`/`,`; `invert_sign`). It returns every
+detected `headers`, the `mapping` actually used (the guess, or the caller's
+mapping echoed back), and one `rows` entry per CSV data row:
+
+- `type`/`amount` are derived from the amount column's sign (negative →
+  `expense`, positive → `income`, `invert_sign` flips this) - import only
+  ever produces income/expense rows, never transfers or interest.
+- `category_id` is set only when a `category` column is mapped and its text
+  case-insensitively matches one of the caller's own non-archived categories
+  whose `kind` matches the row's derived type; otherwise `null` and the
+  frontend must ask the user to pick one before the row can be reviewed.
+- `error` is one of the codes below when a row can't be parsed - such a row
+  is returned (not dropped) so the frontend can show it, but the frontend
+  gates its own "reviewed" checkbox on `error` being absent.
+- `duplicate` is `true` when an existing transaction on the same account
+  already matches `(date, amount, description)` case-insensitively - a
+  single query against the CSV's date range, not one query per row.
+
+Limits, rejected as `error.validation` (`ValidationAppError`, not per-row):
+content over 2 MiB, over 2000 data rows, zero data rows, or the `date`/
+`description`/`amount` target fields left unmapped after guessing.
+
+**Commit** (`ImportCommitRequest{items}` → `{created}`) reuses
+`TransactionCreate` verbatim for `items` - the frontend sends exactly the
+rows it marked reviewed, with any edits already applied, through the same
+per-row shape as a normal `POST /transactions`
+(`app/services/transactions.py::build_transaction`). All-or-nothing: every
+item is validated and staged in one session, then committed together: if
+any item fails, the whole batch is rolled back rather than left partially
+posted (the caller already saw a preview, so a failure here is exceptional).
+
+| Code | Status |
+| --- | --- |
+| `import.file_too_large` | 422 |
+| `import.no_rows` | 422 |
+| `import.too_many_rows` | 422 |
+| `import.column_required` | 422 |
+| `import.row.invalid_date` | (row-level, not raised) |
+| `import.row.invalid_amount` | (row-level, not raised) |
+| `import.row.zero_amount` | (row-level, not raised) |
+| `import.row.missing_description` | (row-level, not raised) |
+
 ## Recurring rules
 
 `template` mirrors a transaction (minus `id`/`date`/`recurring_rule_id`) and

@@ -258,7 +258,8 @@
     "actions": {
       "new": "Ny transaksjon",
       "edit": "Rediger",
-      "delete": "Slett"
+      "delete": "Slett",
+      "import": "Importer CSV"
     },
     "tabs": {
       "transactions": "Transaksjoner",
@@ -355,6 +356,52 @@
         "saveError": "Gjentakelsesregelen kunne ikke lagres. Prøv igjen.",
         "startDate": "Start",
         "endDate": "Slutt (valgfritt)"
+      }
+    },
+    "import": {
+      "title": "Importer transaksjoner",
+      "description": "Last opp en CSV-eksport fra banken din, gjennomgå hver rad, og bekreft dem du vil bokføre.",
+      "fields": {
+        "file": "CSV-fil",
+        "dateFormat": "Datoformat",
+        "decimalSeparator": "Desimaltegn",
+        "invertSign": "Positive beløp er utgifter (snu fortegn)",
+        "askBeforeImport": "Spør meg før import"
+      },
+      "dateFormat": {
+        "auto": "Oppdag automatisk",
+        "iso": "ÅÅÅÅ-MM-DD",
+        "dmy": "DD/MM/ÅÅÅÅ",
+        "mdy": "MM/DD/ÅÅÅÅ"
+      },
+      "decimalSeparator": {
+        "auto": "Oppdag automatisk",
+        "dot": "Punktum (1234.56)",
+        "comma": "Komma (1234,56)"
+      },
+      "mapping": {
+        "title": "Match kolonner",
+        "none": "Ikke brukt",
+        "missingRequired": "Koble kolonnene dato, beskrivelse og beløp før du gjennomgår radene."
+      },
+      "loading": "Analyserer filen...",
+      "remapConfirm": {
+        "title": "Forkaste fremgangen i gjennomgangen?",
+        "message": "Å endre fil, konto eller kolonnekobling analyserer filen på nytt og fjerner rader som allerede er gjennomgått."
+      },
+      "grid": {
+        "reviewAll": "Merk alle rader som gjennomgått",
+        "exclude": "Ekskluder rad",
+        "duplicate": "Ser ut som en duplikat",
+        "noCategory": "Ingen kategori",
+        "reviewedCount": "{{reviewed}} av {{total}} rader gjennomgått"
+      },
+      "confirm": {
+        "title": "Importere transaksjoner?",
+        "message": "Dette bokfører {{count}} gjennomgåtte rader på {{account}}. Dette kan ikke angres."
+      },
+      "actions": {
+        "confirm": "Importer gjennomgåtte rader"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Legg til penger på målet" },
-      "withdraw": { "title": "Ta ut penger fra målet" },
-      "interest": { "title": "Legg til renter" },
+      "deposit": {
+        "title": "Legg til penger på målet"
+      },
+      "withdraw": {
+        "title": "Ta ut penger fra målet"
+      },
+      "interest": {
+        "title": "Legg til renter"
+      },
       "fields": {
         "amount": "Beløp",
         "date": "Dato",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Brukere og invitasjoner",
     "description": "Administrer tilgangen til denne LealFinance-instansen.",
-    "roles": { "member": "Medlem", "admin": "Administrator" },
-    "users": { "title": "Brukere", "role": "Rolle", "active": "Aktiv", "empty": "Ingen brukere funnet." },
+    "roles": {
+      "member": "Medlem",
+      "admin": "Administrator"
+    },
+    "users": {
+      "title": "Brukere",
+      "role": "Rolle",
+      "active": "Aktiv",
+      "empty": "Ingen brukere funnet."
+    },
     "invitations": {
       "title": "Invitasjoner",
       "createTitle": "Opprett invitasjon",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Noe gikk galt. Prøv igjen." },
+    "error": {
+      "generic": "Noe gikk galt. Prøv igjen."
+    },
     "auth": {
       "invalid_credentials": "E-postadressen eller passordet er feil.",
       "csrf_invalid": "Dette skjemaet er utløpt. Oppdater siden og prøv igjen.",
@@ -727,6 +790,20 @@
       "already_accepted": "Denne invitasjonen er allerede godtatt.",
       "already_pending": "Det finnes allerede en ventende invitasjon for denne e-postadressen."
     },
-    "user": { "email_taken": "En konto bruker allerede denne e-postadressen." }
+    "user": {
+      "email_taken": "En konto bruker allerede denne e-postadressen."
+    },
+    "import": {
+      "file_too_large": "Denne filen er for stor til å importeres (grense på 2 MB).",
+      "no_rows": "Filen inneholder ingen dataradrader.",
+      "too_many_rows": "Filen inneholder for mange rader til å importeres på én gang (grense på 2000).",
+      "column_required": "Koble kolonnene dato, beskrivelse og beløp før du fortsetter.",
+      "row": {
+        "invalid_date": "Kunne ikke lese denne datoen.",
+        "invalid_amount": "Kunne ikke lese dette beløpet.",
+        "zero_amount": "Beløpet kan ikke være null.",
+        "missing_description": "Beskrivelse er påkrevd."
+      }
+    }
   }
 }

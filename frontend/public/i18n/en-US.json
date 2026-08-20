@@ -258,7 +258,8 @@
     "actions": {
       "new": "New transaction",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "import": "Import CSV"
     },
     "tabs": {
       "transactions": "Transactions",
@@ -355,6 +356,52 @@
         "saveError": "Could not save the recurring rule. Try again.",
         "startDate": "Start",
         "endDate": "End (optional)"
+      }
+    },
+    "import": {
+      "title": "Import transactions",
+      "description": "Upload a CSV export from your bank, review each row, and post the ones you confirm.",
+      "fields": {
+        "file": "CSV file",
+        "dateFormat": "Date format",
+        "decimalSeparator": "Decimal separator",
+        "invertSign": "Amounts are positive for expenses (invert sign)",
+        "askBeforeImport": "Ask me before importing"
+      },
+      "dateFormat": {
+        "auto": "Auto-detect",
+        "iso": "YYYY-MM-DD",
+        "dmy": "DD/MM/YYYY",
+        "mdy": "MM/DD/YYYY"
+      },
+      "decimalSeparator": {
+        "auto": "Auto-detect",
+        "dot": "Dot (1234.56)",
+        "comma": "Comma (1234,56)"
+      },
+      "mapping": {
+        "title": "Match columns",
+        "none": "Not used",
+        "missingRequired": "Map the date, description, and amount columns before reviewing rows."
+      },
+      "loading": "Parsing the file...",
+      "remapConfirm": {
+        "title": "Discard review progress?",
+        "message": "Changing the file, account, or column mapping re-parses the file and clears which rows you've already reviewed."
+      },
+      "grid": {
+        "reviewAll": "Mark all rows reviewed",
+        "exclude": "Exclude row",
+        "duplicate": "Looks like a duplicate",
+        "noCategory": "No category",
+        "reviewedCount": "{{reviewed}} of {{total}} rows reviewed"
+      },
+      "confirm": {
+        "title": "Import transactions?",
+        "message": "This posts {{count}} reviewed rows to {{account}}. This cannot be undone."
+      },
+      "actions": {
+        "confirm": "Import reviewed rows"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Add money to goal" },
-      "withdraw": { "title": "Withdraw from goal" },
-      "interest": { "title": "Add interest" },
+      "deposit": {
+        "title": "Add money to goal"
+      },
+      "withdraw": {
+        "title": "Withdraw from goal"
+      },
+      "interest": {
+        "title": "Add interest"
+      },
       "fields": {
         "amount": "Amount",
         "date": "Date",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Users & invitations",
     "description": "Manage access to this LealFinance instance.",
-    "roles": { "member": "Member", "admin": "Administrator" },
-    "users": { "title": "Users", "role": "Role", "active": "Active", "empty": "No users found." },
+    "roles": {
+      "member": "Member",
+      "admin": "Administrator"
+    },
+    "users": {
+      "title": "Users",
+      "role": "Role",
+      "active": "Active",
+      "empty": "No users found."
+    },
     "invitations": {
       "title": "Invitations",
       "createTitle": "Create invitation",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Something went wrong. Please try again." },
+    "error": {
+      "generic": "Something went wrong. Please try again."
+    },
     "auth": {
       "invalid_credentials": "The email or password is incorrect.",
       "csrf_invalid": "This form expired. Refresh the page and try again.",
@@ -727,6 +790,20 @@
       "already_accepted": "This invitation was already accepted.",
       "already_pending": "An invitation is already pending for this email."
     },
-    "user": { "email_taken": "An account already uses this email." }
+    "user": {
+      "email_taken": "An account already uses this email."
+    },
+    "import": {
+      "file_too_large": "That file is too large to import (2 MB limit).",
+      "no_rows": "The file has no data rows.",
+      "too_many_rows": "The file has too many rows to import at once (2,000 limit).",
+      "column_required": "Map the date, description, and amount columns before continuing.",
+      "row": {
+        "invalid_date": "Couldn't read this date.",
+        "invalid_amount": "Couldn't read this amount.",
+        "zero_amount": "Amount can't be zero.",
+        "missing_description": "Description is required."
+      }
+    }
   }
 }

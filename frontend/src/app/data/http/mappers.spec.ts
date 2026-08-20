@@ -3,6 +3,8 @@ import {
   mapAccountBalance,
   mapAccountPatch,
   mapExchangeRate,
+  mapImportPreview,
+  mapImportPreviewRequest,
   mapRecurringRule,
   mapTransactionPatch,
 } from './mappers';
@@ -111,6 +113,85 @@ describe('HTTP wire mappers', () => {
       accountId: 'a',
       currency: 'BRL',
       balance: '300.0000',
+    });
+  });
+
+  it('maps an import preview request to snake_case, defaulting an absent mapping to null', () => {
+    expect(
+      mapImportPreviewRequest({
+        content: 'date,amount\n2026-01-01,-5\n',
+        accountId: 'a',
+        options: { dateFormat: 'dmy', decimalSeparator: ',', invertSign: true },
+      }),
+    ).toEqual({
+      content: 'date,amount\n2026-01-01,-5\n',
+      account_id: 'a',
+      mapping: null,
+      options: { date_format: 'dmy', decimal_separator: ',', invert_sign: true },
+    });
+  });
+
+  it('maps an import preview response, turning nulls into undefined per row', () => {
+    expect(
+      mapImportPreview({
+        headers: ['Data', 'Descrição', 'Valor'],
+        mapping: { date: 'Data', description: null, amount: 'Valor', category: null, notes: null },
+        rows: [
+          {
+            index: 0,
+            date: '2026-01-15',
+            description: 'Coffee',
+            type: 'expense',
+            amount: '5.00',
+            category_id: 'c1',
+            category_name: 'Groceries',
+            notes: null,
+            error: null,
+            duplicate: false,
+          },
+          {
+            index: 1,
+            date: null,
+            description: '',
+            type: null,
+            amount: null,
+            category_id: null,
+            category_name: null,
+            notes: null,
+            error: 'import.row.invalid_date',
+            duplicate: false,
+          },
+        ],
+      }),
+    ).toEqual({
+      headers: ['Data', 'Descrição', 'Valor'],
+      mapping: { date: 'Data', description: null, amount: 'Valor', category: null, notes: null },
+      rows: [
+        {
+          index: 0,
+          date: '2026-01-15',
+          description: 'Coffee',
+          type: 'expense',
+          amount: '5.00',
+          categoryId: 'c1',
+          categoryName: 'Groceries',
+          notes: undefined,
+          error: undefined,
+          duplicate: false,
+        },
+        {
+          index: 1,
+          date: undefined,
+          description: '',
+          type: undefined,
+          amount: undefined,
+          categoryId: undefined,
+          categoryName: undefined,
+          notes: undefined,
+          error: 'import.row.invalid_date',
+          duplicate: false,
+        },
+      ],
     });
   });
 });

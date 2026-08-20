@@ -138,3 +138,12 @@ posting - see the "Recurring rules" section of
 
 The AI Agents feature (`AGENTS_ENABLED` + the `agents` Compose profile) is
 still an unimplemented placeholder.
+
+`/transactions/import` (`features/transactions/import/`) lets a user turn a
+bank-statement CSV into transactions: pick a file and account, map columns,
+review/edit every parsed row in a grid, then commit only the rows marked
+reviewed. All parsing (delimiter/BOM handling, date/amount formats, category
+name matching, duplicate detection) happens server-side - see the
+[Transaction import](backend-api.md#transaction-import) section of
+`backend-api.md` - the frontend only holds the CSV text and the grid's edit
+state.

@@ -95,6 +95,42 @@ export interface TransactionWire {
 export type TransactionInputWire = Omit<TransactionWire, 'id'>;
 export type TransactionPatchWire = NullablePatch<TransactionInputWire>;
 
+export interface ImportOptionsWire {
+  date_format: 'auto' | 'iso' | 'dmy' | 'mdy';
+  decimal_separator: 'auto' | '.' | ',';
+  invert_sign: boolean;
+}
+
+export interface ImportPreviewRequestWire {
+  content: string;
+  account_id: string;
+  mapping: Record<string, string> | null;
+  options: ImportOptionsWire;
+}
+
+export interface ImportRowWire {
+  index: number;
+  date: string | null;
+  description: string;
+  type: 'income' | 'expense' | null;
+  amount: string | null;
+  category_id: string | null;
+  category_name: string | null;
+  notes: string | null;
+  error: string | null;
+  duplicate: boolean;
+}
+
+export interface ImportPreviewWire {
+  headers: string[];
+  mapping: Record<string, string | null>;
+  rows: ImportRowWire[];
+}
+
+export interface ImportCommitWire {
+  created: number;
+}
+
 export interface AccountBalanceWire {
   account_id: string;
   currency: string;

@@ -36,6 +36,13 @@ export const routes: Routes = [
           import('./features/transactions/transactions').then((m) => m.Transactions),
       },
       {
+        path: 'transactions/import',
+        loadComponent: () =>
+          import('./features/transactions/import/transaction-import').then(
+            (m) => m.TransactionImport,
+          ),
+      },
+      {
         path: 'categories',
         loadComponent: () => import('./features/categories/categories').then((m) => m.Categories),
       },

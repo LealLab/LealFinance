@@ -3,6 +3,10 @@
   <!-- t(transactions.type.income) t(transactions.type.expense) t(transactions.type.transfer) -->
   <app-page-header [title]="t('transactions.title')" [description]="t('transactions.description')">
     @if (tab() === 'transactions') {
+      <button appButton variant="secondary" type="button" routerLink="/transactions/import">
+        <app-icon name="arrowUpRight" [size]="16" />
+        {{ t('transactions.actions.import') }}
+      </button>
       <button appButton variant="primary" type="button" (click)="openCreateTx()">
         <app-icon name="plus" [size]="16" />
         {{ t('transactions.actions.new') }}

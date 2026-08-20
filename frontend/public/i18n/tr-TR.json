@@ -258,7 +258,8 @@
     "actions": {
       "new": "Yeni işlem",
       "edit": "Düzenle",
-      "delete": "Sil"
+      "delete": "Sil",
+      "import": "CSV İçe Aktar"
     },
     "tabs": {
       "transactions": "İşlemler",
@@ -355,6 +356,52 @@
         "saveError": "Tekrarlama kuralı kaydedilemedi. Tekrar deneyin.",
         "startDate": "Başlangıç",
         "endDate": "Bitiş (isteğe bağlı)"
+      }
+    },
+    "import": {
+      "title": "İşlemleri içe aktar",
+      "description": "Bankandan aldığın CSV dışa aktarımını yükle, her satırı incele ve onayladıklarını kaydet.",
+      "fields": {
+        "file": "CSV dosyası",
+        "dateFormat": "Tarih biçimi",
+        "decimalSeparator": "Ondalık ayırıcı",
+        "invertSign": "Pozitif tutarlar giderdir (işareti ters çevir)",
+        "askBeforeImport": "İçe aktarmadan önce bana sor"
+      },
+      "dateFormat": {
+        "auto": "Otomatik algıla",
+        "iso": "YYYY-AA-GG",
+        "dmy": "GG/AA/YYYY",
+        "mdy": "AA/GG/YYYY"
+      },
+      "decimalSeparator": {
+        "auto": "Otomatik algıla",
+        "dot": "Nokta (1234.56)",
+        "comma": "Virgül (1234,56)"
+      },
+      "mapping": {
+        "title": "Sütunları eşleştir",
+        "none": "Kullanılmıyor",
+        "missingRequired": "Satırları incelemeden önce tarih, açıklama ve tutar sütunlarını eşleştir."
+      },
+      "loading": "Dosya analiz ediliyor...",
+      "remapConfirm": {
+        "title": "İnceleme ilerlemesi silinsin mi?",
+        "message": "Dosyayı, hesabı veya sütun eşleştirmesini değiştirmek dosyayı yeniden analiz eder ve zaten incelenmiş satırları temizler."
+      },
+      "grid": {
+        "reviewAll": "Tüm satırları incelendi olarak işaretle",
+        "exclude": "Satırı hariç tut",
+        "duplicate": "Yinelenen gibi görünüyor",
+        "noCategory": "Kategori yok",
+        "reviewedCount": "{{total}} satırdan {{reviewed}} incelendi"
+      },
+      "confirm": {
+        "title": "İşlemler içe aktarılsın mı?",
+        "message": "Bu işlem {{count}} incelenen satırı {{account}} hesabına kaydeder. Bu işlem geri alınamaz."
+      },
+      "actions": {
+        "confirm": "İncelenen satırları içe aktar"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Hedefe para ekle" },
-      "withdraw": { "title": "Hedeften para çek" },
-      "interest": { "title": "Faiz ekle" },
+      "deposit": {
+        "title": "Hedefe para ekle"
+      },
+      "withdraw": {
+        "title": "Hedeften para çek"
+      },
+      "interest": {
+        "title": "Faiz ekle"
+      },
       "fields": {
         "amount": "Tutar",
         "date": "Tarih",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Kullanıcılar ve davetler",
     "description": "Bu LealFinance örneğine erişimi yönetin.",
-    "roles": { "member": "Üye", "admin": "Yönetici" },
-    "users": { "title": "Kullanıcılar", "role": "Rol", "active": "Etkin", "empty": "Kullanıcı bulunamadı." },
+    "roles": {
+      "member": "Üye",
+      "admin": "Yönetici"
+    },
+    "users": {
+      "title": "Kullanıcılar",
+      "role": "Rol",
+      "active": "Etkin",
+      "empty": "Kullanıcı bulunamadı."
+    },
     "invitations": {
       "title": "Davetler",
       "createTitle": "Davet oluştur",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin." },
+    "error": {
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+    },
     "auth": {
       "invalid_credentials": "E-posta veya parola yanlış.",
       "csrf_invalid": "Bu formun süresi doldu. Sayfayı yenileyip tekrar deneyin.",
@@ -727,6 +790,20 @@
       "already_accepted": "Bu davet zaten kabul edildi.",
       "already_pending": "Bu e-posta için zaten bekleyen bir davet var."
     },
-    "user": { "email_taken": "Bu e-posta zaten bir hesapta kullanılıyor." }
+    "user": {
+      "email_taken": "Bu e-posta zaten bir hesapta kullanılıyor."
+    },
+    "import": {
+      "file_too_large": "Bu dosya içe aktarılamayacak kadar büyük (2 MB sınırı).",
+      "no_rows": "Dosyada veri satırı yok.",
+      "too_many_rows": "Dosyada bir seferde içe aktarılamayacak kadar çok satır var (2000 sınırı).",
+      "column_required": "Devam etmeden önce tarih, açıklama ve tutar sütunlarını eşleştir.",
+      "row": {
+        "invalid_date": "Bu tarih okunamadı.",
+        "invalid_amount": "Bu tutar okunamadı.",
+        "zero_amount": "Tutar sıfır olamaz.",
+        "missing_description": "Açıklama zorunludur."
+      }
+    }
   }
 }
