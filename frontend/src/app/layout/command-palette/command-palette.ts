@@ -306,14 +306,8 @@ export class CommandPalette {
     ];
   }
 
-  // TODO: Accounts/Transactions/Categories/Budgets need to read `new=1`
-  // from their route query params (withComponentInputBinding is already
-  // enabled in app.config.ts) and auto-open their create-form modal when
-  // present. Those four feature components are being edited concurrently
-  // in other worktrees as part of this same UI-improvements plan, so that
-  // wiring intentionally isn't done here - this only navigates with the
-  // query param already attached, ready for whoever merges the branches
-  // together to finish.
+  // Navigates with `?new=1` attached; the target feature component reads it
+  // via core/open-on-new-param.ts and opens its create-form modal.
   private navigateToCreate(path: string): void {
     this.router.navigate([path], { queryParams: { new: 1 } });
   }

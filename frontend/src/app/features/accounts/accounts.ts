@@ -6,6 +6,7 @@ import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
+import { openOnNewParam } from '../../core/open-on-new-param';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -115,6 +116,10 @@ export class Accounts {
   });
 
   private readonly converter = computed<CurrencyConverter>(() => converterFromRates(this.ratesResource.value() ?? []));
+
+  constructor() {
+    openOnNewParam(() => this.openCreate());
+  }
 
   protected readonly balanceByAccountId = computed(
     () => new Map((this.balancesResource.value() ?? []).map((b) => [b.accountId, b]))

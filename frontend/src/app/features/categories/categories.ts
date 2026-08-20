@@ -10,6 +10,7 @@ import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
+import { openOnNewParam } from '../../core/open-on-new-param';
 import { categoryUsage, isCategoryDeletable } from '../../domain/calc/category-usage';
 import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { effectiveAmount } from '../../domain/calc/conversion';
@@ -107,6 +108,10 @@ export class Categories {
   protected readonly formOpen = signal(false);
   protected readonly editingCategory = signal<Category | undefined>(undefined);
   protected readonly presetParent = signal<Category | undefined>(undefined);
+
+  constructor() {
+    openOnNewParam(() => this.openCreate());
+  }
 
   private readonly spendByCategory = computed<Map<string, Money>>(() => {
     const currentMonth = monthKey(new Date().toISOString());

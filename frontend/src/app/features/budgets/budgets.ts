@@ -5,6 +5,7 @@ import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
+import { openOnNewParam } from '../../core/open-on-new-param';
 import { PreferenceService } from '../../core/preference.service';
 import { ThemeService } from '../../core/theme.service';
 import { BudgetRepository } from '../../data/budget.repository';
@@ -143,6 +144,10 @@ export class Budgets {
   private readonly percentageDraft = signal<Record<string, string>>({});
   protected readonly incomeDraft = signal('');
   protected readonly plannerError = signal<string | null>(null);
+
+  constructor() {
+    openOnNewParam(() => this.openCreate());
+  }
 
   private readonly categoriesById = computed(
     () => new Map(this.categoriesResource.value()?.map((c) => [c.id, c]) ?? []),

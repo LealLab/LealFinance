@@ -4,6 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
+import { openOnNewParam } from '../../core/open-on-new-param';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -108,6 +109,7 @@ export class Transactions {
       this.filters();
       untracked(() => this.resetAndLoad());
     });
+    openOnNewParam(() => this.openCreateTx());
   }
 
   private loadSubscription?: Subscription;
