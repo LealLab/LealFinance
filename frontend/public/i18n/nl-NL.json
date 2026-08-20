@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+      "generic": "Er is iets misgegaan. Probeer het opnieuw.",
+      "validation": "Controleer de gegevens en probeer het opnieuw."
     },
     "auth": {
       "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",

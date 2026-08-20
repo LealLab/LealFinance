@@ -14,7 +14,7 @@ import {
 
 /**
  * Dynamic backend error translations used by auth and administration UI.
- * t(errors.error.generic, errors.auth.invalid_credentials, errors.auth.csrf_invalid, errors.auth.last_admin, errors.auth.account_inactive, errors.auth.admin_required, errors.invitation.not_found, errors.invitation.expired, errors.invitation.revoked, errors.invitation.already_accepted, errors.invitation.already_pending, errors.user.email_taken)
+ * t(errors.error.generic, errors.error.validation, errors.auth.invalid_credentials, errors.auth.csrf_invalid, errors.auth.last_admin, errors.auth.account_inactive, errors.auth.admin_required, errors.invitation.not_found, errors.invitation.expired, errors.invitation.revoked, errors.invitation.already_accepted, errors.invitation.already_pending, errors.user.email_taken)
  */
 
 interface UserWire {

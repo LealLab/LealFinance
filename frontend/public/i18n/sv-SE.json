@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Något gick fel. Försök igen."
+      "generic": "Något gick fel. Försök igen.",
+      "validation": "Kontrollera uppgifterna och försök igen."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller lösenordet är felaktigt.",

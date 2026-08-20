@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Algo deu errado. Tente novamente."
+      "generic": "Algo deu errado. Tente novamente.",
+      "validation": "Verifique as informações e tente novamente."
     },
     "auth": {
       "invalid_credentials": "O e-mail ou a senha está incorreto.",

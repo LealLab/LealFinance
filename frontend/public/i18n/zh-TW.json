@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "發生錯誤，請再試一次。"
+      "generic": "發生錯誤，請再試一次。",
+      "validation": "請檢查填寫的資訊後再試一次。"
     },
     "auth": {
       "invalid_credentials": "電子郵件或密碼不正確。",

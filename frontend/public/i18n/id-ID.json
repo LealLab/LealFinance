@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Terjadi kesalahan. Silakan coba lagi."
+      "generic": "Terjadi kesalahan. Silakan coba lagi.",
+      "validation": "Periksa informasi yang Anda masukkan dan coba lagi."
     },
     "auth": {
       "invalid_credentials": "Email atau kata sandi salah.",

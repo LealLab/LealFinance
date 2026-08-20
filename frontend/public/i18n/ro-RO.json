@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Ceva nu a funcționat. Încearcă din nou."
+      "generic": "Ceva nu a funcționat. Încearcă din nou.",
+      "validation": "Verifică informațiile introduse și încearcă din nou."
     },
     "auth": {
       "invalid_credentials": "Adresa de e-mail sau parola este incorectă.",

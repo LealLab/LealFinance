@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Jokin meni pieleen. Yritä uudelleen."
+      "generic": "Jokin meni pieleen. Yritä uudelleen.",
+      "validation": "Tarkista antamasi tiedot ja yritä uudelleen."
     },
     "auth": {
       "invalid_credentials": "Sähköpostiosoite tai salasana on väärä.",

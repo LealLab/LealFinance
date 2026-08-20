@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+      "validation": "Vui lòng kiểm tra thông tin đã nhập và thử lại."
     },
     "auth": {
       "invalid_credentials": "Email hoặc mật khẩu không chính xác.",

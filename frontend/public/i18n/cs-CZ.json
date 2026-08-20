@@ -774,7 +774,8 @@
   },
   "errors": {
     "error": {
-      "generic": "Něco se pokazilo. Zkuste to prosím znovu."
+      "generic": "Něco se pokazilo. Zkuste to prosím znovu.",
+      "validation": "Zkontrolujte zadané údaje a zkuste to znovu."
     },
     "auth": {
       "invalid_credentials": "E-mail nebo heslo nejsou správné.",

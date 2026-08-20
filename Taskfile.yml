@@ -61,6 +61,12 @@ tasks:
     cmds:
       - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
 
+  backend:seed:
+    desc: Generate local demo data (interactive; run `backend:migrate` first)
+    dir: backend
+    cmds:
+      - uv run python -m scripts.seed
+
   frontend:install:
     desc: Install frontend dependencies
     dir: frontend
