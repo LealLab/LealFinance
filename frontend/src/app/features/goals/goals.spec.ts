@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { GoalRepository } from '../../data/goal.repository';
@@ -14,6 +15,7 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { Money, multiply } from '../../shared/money/money';
 import { Goals } from './goals';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -52,18 +54,31 @@ describe('Goals', () => {
     expect(fixture.nativeElement.textContent).toContain('Aporte sugerido');
   });
 
-  it('shows the display-currency equivalent for a goal in a different currency', async () => {
-    // The seeded "Viagem para Portugal" goal is BRL, while the default
-    // display currency is USD - a real (non-fallback) quote exists for
-    // BRL_USD in the mock exchange-rate table, so this exercises the
-    // converted-amount path end-to-end.
+  it('converts a goal to the display currency via the resolved exchange rate', async () => {
+    // The seeded "Viagem para Portugal" goal is BRL; pin the display
+    // currency to USD explicitly rather than relying on the ambient
+    // default, so this doesn't depend on what ran before it. A real
+    // (non-fallback) BRL_USD quote exists in the mock exchange-rate
+    // table (see mock-exchange-rate.repository.ts's KNOWN_RATES), so this
+    // exercises the converted-amount path end-to-end.
+    TestBed.inject(DisplayCurrencyService).setCurrency('USD');
     const fixture = TestBed.createComponent(Goals);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('R$');
-    expect(text).toMatch(/\(US\$\s*[\d.,]+\)/);
+    const component = fixture.componentInstance as unknown as {
+      rows(): {
+        goal: { currency: string };
+        progress: { current: Money; target: Money };
+        convertedCurrent: Money | null;
+        convertedTarget: Money | null;
+      }[];
+    };
+    const row = component.rows().find((r) => r.goal.currency === 'BRL');
+    expect(row).toBeDefined(); // no BRL-denominated goal in seeded fixtures
+
+    expect(row!.convertedCurrent).toEqual(multiply(row!.progress.current, '0.1923', 'USD'));
+    expect(row!.convertedTarget).toEqual(multiply(row!.progress.target, '0.1923', 'USD'));
   });
 });
