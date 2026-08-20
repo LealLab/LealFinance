@@ -258,7 +258,8 @@
     "actions": {
       "new": "거래 추가",
       "edit": "수정",
-      "delete": "삭제"
+      "delete": "삭제",
+      "import": "CSV 가져오기"
     },
     "tabs": {
       "transactions": "거래내역",
@@ -355,6 +356,52 @@
         "saveError": "반복 규칙을 저장하지 못했습니다. 다시 시도하세요.",
         "startDate": "시작일",
         "endDate": "종료일(선택 사항)"
+      }
+    },
+    "import": {
+      "title": "거래 가져오기",
+      "description": "은행에서 내보낸 CSV 파일을 업로드하고 각 행을 검토한 후 확정할 행을 확인하세요.",
+      "fields": {
+        "file": "CSV 파일",
+        "dateFormat": "날짜 형식",
+        "decimalSeparator": "소수점 구분 기호",
+        "invertSign": "양수 금액을 지출로 처리 (부호 반전)",
+        "askBeforeImport": "가져오기 전에 확인 요청"
+      },
+      "dateFormat": {
+        "auto": "자동 감지",
+        "iso": "YYYY-MM-DD",
+        "dmy": "DD/MM/YYYY",
+        "mdy": "MM/DD/YYYY"
+      },
+      "decimalSeparator": {
+        "auto": "자동 감지",
+        "dot": "마침표 (1234.56)",
+        "comma": "쉼표 (1234,56)"
+      },
+      "mapping": {
+        "title": "열 매칭",
+        "none": "사용 안 함",
+        "missingRequired": "행을 검토하기 전에 날짜, 설명, 금액 열을 매칭하세요."
+      },
+      "loading": "파일을 분석하는 중...",
+      "remapConfirm": {
+        "title": "검토 진행 상황을 취소하시겠습니까?",
+        "message": "파일, 계좌 또는 열 매칭을 변경하면 파일을 다시 분석하고 이미 검토한 행이 지워집니다."
+      },
+      "grid": {
+        "reviewAll": "모든 행을 검토됨으로 표시",
+        "exclude": "행 제외",
+        "duplicate": "중복된 것 같습니다",
+        "noCategory": "카테고리 없음",
+        "reviewedCount": "{{total}}행 중 {{reviewed}}행 검토됨"
+      },
+      "confirm": {
+        "title": "거래를 가져올까요?",
+        "message": "검토된 {{count}}개 행이 {{account}}에 기록됩니다. 이 작업은 되돌릴 수 없습니다."
+      },
+      "actions": {
+        "confirm": "검토된 행 가져오기"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "목표에 금액 추가" },
-      "withdraw": { "title": "목표에서 금액 인출" },
-      "interest": { "title": "이자 추가" },
+      "deposit": {
+        "title": "목표에 금액 추가"
+      },
+      "withdraw": {
+        "title": "목표에서 금액 인출"
+      },
+      "interest": {
+        "title": "이자 추가"
+      },
       "fields": {
         "amount": "금액",
         "date": "날짜",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "사용자 및 초대",
     "description": "이 LealFinance 인스턴스의 접근 권한을 관리하세요.",
-    "roles": { "member": "멤버", "admin": "관리자" },
-    "users": { "title": "사용자", "role": "역할", "active": "활성", "empty": "사용자를 찾을 수 없습니다." },
+    "roles": {
+      "member": "멤버",
+      "admin": "관리자"
+    },
+    "users": {
+      "title": "사용자",
+      "role": "역할",
+      "active": "활성",
+      "empty": "사용자를 찾을 수 없습니다."
+    },
     "invitations": {
       "title": "초대",
       "createTitle": "초대 만들기",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "문제가 발생했습니다. 다시 시도하세요." },
+    "error": {
+      "generic": "문제가 발생했습니다. 다시 시도하세요."
+    },
     "auth": {
       "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
       "csrf_invalid": "이 양식은 만료되었습니다. 페이지를 새로 고친 후 다시 시도하세요.",
@@ -727,6 +790,20 @@
       "already_accepted": "이 초대장은 이미 수락되었습니다.",
       "already_pending": "이 이메일에는 이미 처리 대기 중인 초대장이 있습니다."
     },
-    "user": { "email_taken": "이 이메일을 사용하는 계정이 이미 있습니다." }
+    "user": {
+      "email_taken": "이 이메일을 사용하는 계정이 이미 있습니다."
+    },
+    "import": {
+      "file_too_large": "이 파일은 가져오기에 너무 큽니다 (2MB 제한).",
+      "no_rows": "파일에 데이터 행이 없습니다.",
+      "too_many_rows": "한 번에 가져오기에는 행이 너무 많습니다 (2,000행 제한).",
+      "column_required": "계속하기 전에 날짜, 설명, 금액 열을 매칭하세요.",
+      "row": {
+        "invalid_date": "이 날짜를 읽을 수 없습니다.",
+        "invalid_amount": "이 금액을 읽을 수 없습니다.",
+        "zero_amount": "금액은 0이 될 수 없습니다.",
+        "missing_description": "설명은 필수입니다."
+      }
+    }
   }
 }

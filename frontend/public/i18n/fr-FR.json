@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nouvelle opération",
       "edit": "Modifier",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "import": "Importer un CSV"
     },
     "tabs": {
       "transactions": "Opérations",
@@ -355,6 +356,52 @@
         "saveError": "Impossible d’enregistrer la règle de récurrence. Réessayez.",
         "startDate": "Début",
         "endDate": "Fin (facultatif)"
+      }
+    },
+    "import": {
+      "title": "Importer des opérations",
+      "description": "Importez un CSV exporté de votre banque, vérifiez chaque ligne et validez celles que vous confirmez.",
+      "fields": {
+        "file": "Fichier CSV",
+        "dateFormat": "Format de date",
+        "decimalSeparator": "Séparateur décimal",
+        "invertSign": "Les montants positifs sont des dépenses (inverser le signe)",
+        "askBeforeImport": "Me demander avant d'importer"
+      },
+      "dateFormat": {
+        "auto": "Détection automatique",
+        "iso": "AAAA-MM-JJ",
+        "dmy": "JJ/MM/AAAA",
+        "mdy": "MM/JJ/AAAA"
+      },
+      "decimalSeparator": {
+        "auto": "Détection automatique",
+        "dot": "Point (1234.56)",
+        "comma": "Virgule (1234,56)"
+      },
+      "mapping": {
+        "title": "Associer les colonnes",
+        "none": "Non utilisée",
+        "missingRequired": "Associez les colonnes date, description et montant avant de vérifier les lignes."
+      },
+      "loading": "Analyse du fichier...",
+      "remapConfirm": {
+        "title": "Abandonner la progression de la vérification ?",
+        "message": "Changer le fichier, le compte ou l'association des colonnes relance l'analyse du fichier et efface les lignes déjà vérifiées."
+      },
+      "grid": {
+        "reviewAll": "Marquer toutes les lignes comme vérifiées",
+        "exclude": "Exclure la ligne",
+        "duplicate": "Semble être un doublon",
+        "noCategory": "Aucune catégorie",
+        "reviewedCount": "{{reviewed}} sur {{total}} lignes vérifiées"
+      },
+      "confirm": {
+        "title": "Importer les opérations ?",
+        "message": "Cela enregistrera {{count}} lignes vérifiées dans {{account}}. Cette action est irréversible."
+      },
+      "actions": {
+        "confirm": "Importer les lignes vérifiées"
       }
     }
   },
@@ -745,6 +792,18 @@
     },
     "user": {
       "email_taken": "Un compte utilise déjà cette adresse e-mail."
+    },
+    "import": {
+      "file_too_large": "Ce fichier est trop volumineux pour être importé (limite de 2 Mo).",
+      "no_rows": "Le fichier ne contient aucune ligne de données.",
+      "too_many_rows": "Le fichier contient trop de lignes pour être importé en une fois (limite de 2000).",
+      "column_required": "Associez les colonnes date, description et montant avant de continuer.",
+      "row": {
+        "invalid_date": "Impossible de lire cette date.",
+        "invalid_amount": "Impossible de lire ce montant.",
+        "zero_amount": "Le montant ne peut pas être zéro.",
+        "missing_description": "La description est obligatoire."
+      }
     }
   }
 }

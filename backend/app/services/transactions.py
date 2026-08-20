@@ -174,9 +174,12 @@ async def get_transaction(db: AsyncSession, user_id: UUID, transaction_id: UUID)
     return await ownership.get_owned(db, Transaction, transaction_id, user_id)
 
 
-async def create_transaction(
+async def build_transaction(
     db: AsyncSession, user_id: UUID, data: TransactionCreate
 ) -> Transaction:
+    """Validates and constructs a Transaction, adding it to the session -
+    but does not commit. Shared by create_transaction (one row, commits
+    immediately) and import_transactions (many rows, one commit)."""
     await get_active_currency(db, data.currency)
     account, to_account = await validate_transaction_shape(
         db,
@@ -212,11 +215,36 @@ async def create_transaction(
         recurring_rule_id=data.recurring_rule_id,
     )
     _apply_conversion(transaction, conversion)
-
     db.add(transaction)
+    return transaction
+
+
+async def create_transaction(
+    db: AsyncSession, user_id: UUID, data: TransactionCreate
+) -> Transaction:
+    transaction = await build_transaction(db, user_id, data)
     await db.commit()
     await db.refresh(transaction)
     return transaction
+
+
+async def import_transactions(
+    db: AsyncSession, user_id: UUID, items: list[TransactionCreate]
+) -> int:
+    """Bulk create for CSV import (app/services/csv_import.py handles
+    parsing/preview - this only writes). One commit for the whole batch: if
+    any item fails validation, the explicit rollback discards every row
+    already staged by build_transaction() in this call, so nothing is
+    persisted - the frontend already showed the user a preview, so a
+    partial import here would be worse than a retry."""
+    try:
+        for item in items:
+            await build_transaction(db, user_id, item)
+    except Exception:
+        await db.rollback()
+        raise
+    await db.commit()
+    return len(items)
 
 
 async def update_transaction(

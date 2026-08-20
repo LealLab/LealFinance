@@ -1,6 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TransactionFilters, TransactionRepository } from '../transaction.repository';
+import {
+  ImportPreview,
+  TransactionFilters,
+  TransactionRepository,
+} from '../transaction.repository';
 import { Transaction } from '../../domain/models/transaction';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
@@ -66,5 +70,17 @@ export class MockTransactionRepository extends TransactionRepository {
 
   delete(id: string): Observable<void> {
     return mockResult(() => this.store.deleteTransaction(id), this.latencyMs);
+  }
+
+  // Parsing a real CSV is server-side work with no mock equivalent - this
+  // repository is a test double, not a second parser implementation.
+  importPreview(): Observable<ImportPreview> {
+    return mockResult(() => ({ headers: [], mapping: {}, rows: [] }), this.latencyMs);
+  }
+  importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number> {
+    return mockResult(() => {
+      for (const item of items) this.store.createTransaction(item);
+      return items.length;
+    }, this.latencyMs);
   }
 }

@@ -118,6 +118,27 @@ describe('CommandPalette', () => {
     expect(navigate).toHaveBeenCalledWith(['/settings'], { fragment });
   });
 
+  it('finds the "Import transactions" quick action and navigates to the import route', () => {
+    const fixture = TestBed.createComponent(CommandPalette);
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    TestBed.inject(CommandPaletteService).show();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = 'importar';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
+      (button as HTMLButtonElement).textContent?.includes('Importar transações')
+    ) as HTMLButtonElement;
+    expect(result).toBeTruthy();
+
+    result.click();
+    expect(navigate).toHaveBeenCalledWith(['/transactions/import']);
+  });
+
   it('ArrowDown/Enter runs the highlighted item and closes the palette', () => {
     const fixture = TestBed.createComponent(CommandPalette);
     const paletteService = TestBed.inject(CommandPaletteService);

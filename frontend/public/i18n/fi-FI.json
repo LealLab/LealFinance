@@ -258,7 +258,8 @@
     "actions": {
       "new": "Uusi tapahtuma",
       "edit": "Muokkaa",
-      "delete": "Poista"
+      "delete": "Poista",
+      "import": "Tuo CSV"
     },
     "tabs": {
       "transactions": "Tapahtumat",
@@ -355,6 +356,52 @@
         "saveError": "Toistumissäännön tallentaminen epäonnistui. Yritä uudelleen.",
         "startDate": "Alkaa",
         "endDate": "Päättyy (valinnainen)"
+      }
+    },
+    "import": {
+      "title": "Tuo tapahtumia",
+      "description": "Lataa pankkisi CSV-vienti, tarkista jokainen rivi ja vahvista ne, jotka haluat kirjata.",
+      "fields": {
+        "file": "CSV-tiedosto",
+        "dateFormat": "Päivämäärämuoto",
+        "decimalSeparator": "Desimaalierotin",
+        "invertSign": "Positiiviset summat ovat menoja (käännä etumerkki)",
+        "askBeforeImport": "Kysy minulta ennen tuontia"
+      },
+      "dateFormat": {
+        "auto": "Tunnista automaattisesti",
+        "iso": "VVVV-KK-PP",
+        "dmy": "PP/KK/VVVV",
+        "mdy": "KK/PP/VVVV"
+      },
+      "decimalSeparator": {
+        "auto": "Tunnista automaattisesti",
+        "dot": "Piste (1234.56)",
+        "comma": "Pilkku (1234,56)"
+      },
+      "mapping": {
+        "title": "Yhdistä sarakkeet",
+        "none": "Ei käytössä",
+        "missingRequired": "Yhdistä päivämäärä-, kuvaus- ja summasarakkeet ennen rivien tarkistamista."
+      },
+      "loading": "Analysoidaan tiedostoa...",
+      "remapConfirm": {
+        "title": "Hylätäänkö tarkistuksen eteneminen?",
+        "message": "Tiedoston, tilin tai sarakeyhdistämisen muuttaminen analysoi tiedoston uudelleen ja tyhjentää jo tarkistetut rivit."
+      },
+      "grid": {
+        "reviewAll": "Merkitse kaikki rivit tarkistetuiksi",
+        "exclude": "Jätä rivi pois",
+        "duplicate": "Vaikuttaa kaksoiskappaleelta",
+        "noCategory": "Ei luokkaa",
+        "reviewedCount": "{{reviewed}}/{{total}} riviä tarkistettu"
+      },
+      "confirm": {
+        "title": "Tuodaanko tapahtumat?",
+        "message": "Tämä kirjaa {{count}} tarkistettua riviä tilille {{account}}. Tätä ei voi perua."
+      },
+      "actions": {
+        "confirm": "Tuo tarkistetut rivit"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Lisää rahaa tavoitteeseen" },
-      "withdraw": { "title": "Nosta rahaa tavoitteesta" },
-      "interest": { "title": "Lisää korko" },
+      "deposit": {
+        "title": "Lisää rahaa tavoitteeseen"
+      },
+      "withdraw": {
+        "title": "Nosta rahaa tavoitteesta"
+      },
+      "interest": {
+        "title": "Lisää korko"
+      },
       "fields": {
         "amount": "Summa",
         "date": "Päivämäärä",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Käyttäjät ja kutsut",
     "description": "Hallitse tämän LealFinance-asennuksen käyttöoikeuksia.",
-    "roles": { "member": "Jäsen", "admin": "Järjestelmänvalvoja" },
-    "users": { "title": "Käyttäjät", "role": "Rooli", "active": "Aktiivinen", "empty": "Käyttäjiä ei löytynyt." },
+    "roles": {
+      "member": "Jäsen",
+      "admin": "Järjestelmänvalvoja"
+    },
+    "users": {
+      "title": "Käyttäjät",
+      "role": "Rooli",
+      "active": "Aktiivinen",
+      "empty": "Käyttäjiä ei löytynyt."
+    },
     "invitations": {
       "title": "Kutsut",
       "createTitle": "Luo kutsu",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Jokin meni pieleen. Yritä uudelleen." },
+    "error": {
+      "generic": "Jokin meni pieleen. Yritä uudelleen."
+    },
     "auth": {
       "invalid_credentials": "Sähköpostiosoite tai salasana on väärä.",
       "csrf_invalid": "Tämä lomake on vanhentunut. Päivitä sivu ja yritä uudelleen.",
@@ -727,6 +790,20 @@
       "already_accepted": "Tämä kutsu on jo hyväksytty.",
       "already_pending": "Tälle sähköpostiosoitteelle on jo voimassa oleva kutsu."
     },
-    "user": { "email_taken": "Tämä sähköpostiosoite on jo toisen tilin käytössä." }
+    "user": {
+      "email_taken": "Tämä sähköpostiosoite on jo toisen tilin käytössä."
+    },
+    "import": {
+      "file_too_large": "Tämä tiedosto on liian suuri tuotavaksi (raja 2 Mt).",
+      "no_rows": "Tiedostossa ei ole datarivejä.",
+      "too_many_rows": "Tiedostossa on liikaa rivejä tuotavaksi kerralla (raja 2000).",
+      "column_required": "Yhdistä päivämäärä-, kuvaus- ja summasarakkeet ennen jatkamista.",
+      "row": {
+        "invalid_date": "Tätä päivämäärää ei voitu lukea.",
+        "invalid_amount": "Tätä summaa ei voitu lukea.",
+        "zero_amount": "Summa ei voi olla nolla.",
+        "missing_description": "Kuvaus vaaditaan."
+      }
+    }
   }
 }

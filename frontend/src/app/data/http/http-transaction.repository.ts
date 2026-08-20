@@ -2,10 +2,21 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { ApiClient, ApiQueryParams } from '../../core/api-client';
 import { Transaction } from '../../domain/models/transaction';
-import { TransactionFilters, TransactionRepository } from '../transaction.repository';
-import { mapTransaction, mapTransactionCreate, mapTransactionPatch } from './mappers';
+import {
+  ImportPreview,
+  ImportPreviewRequest,
+  TransactionFilters,
+  TransactionRepository,
+} from '../transaction.repository';
+import {
+  mapImportPreview,
+  mapImportPreviewRequest,
+  mapTransaction,
+  mapTransactionCreate,
+  mapTransactionPatch,
+} from './mappers';
 import { notFoundOrThrow } from './repository-errors';
-import { TransactionWire } from './wire-dtos';
+import { ImportCommitWire, ImportPreviewWire, TransactionWire } from './wire-dtos';
 
 @Injectable({ providedIn: 'root' })
 export class HttpTransactionRepository extends TransactionRepository {
@@ -44,5 +55,15 @@ export class HttpTransactionRepository extends TransactionRepository {
   }
   delete(id: string): Observable<void> {
     return this.api.delete(`/transactions/${id}`);
+  }
+  importPreview(request: ImportPreviewRequest): Observable<ImportPreview> {
+    return this.api
+      .post<ImportPreviewWire>('/transactions/import/preview', mapImportPreviewRequest(request))
+      .pipe(map(mapImportPreview));
+  }
+  importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number> {
+    return this.api
+      .post<ImportCommitWire>('/transactions/import', { items: items.map(mapTransactionCreate) })
+      .pipe(map((wire) => wire.created));
   }
 }

@@ -21,7 +21,7 @@ import { formatIsoDate } from '../../domain/calc/dates';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
-import { TransactionRepository } from '../../data/transaction.repository';
+import { ImportPreview, TransactionRepository } from '../../data/transaction.repository';
 import { Transactions } from './transactions';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -166,6 +166,12 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
     }
     override delete(): Observable<void> {
       return of(undefined);
+    }
+    override importPreview(): Observable<ImportPreview> {
+      return of({ headers: [], mapping: {}, rows: [] });
+    }
+    override importCommit(): Observable<number> {
+      return of(0);
     }
   }
 

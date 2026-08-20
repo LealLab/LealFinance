@@ -258,7 +258,8 @@
     "actions": {
       "new": "新しい取引",
       "edit": "編集",
-      "delete": "削除"
+      "delete": "削除",
+      "import": "CSVをインポート"
     },
     "tabs": {
       "transactions": "取引",
@@ -355,6 +356,52 @@
         "saveError": "定期ルールを保存できませんでした。もう一度お試しください。",
         "startDate": "開始日",
         "endDate": "終了日（任意）"
+      }
+    },
+    "import": {
+      "title": "取引のインポート",
+      "description": "銀行からエクスポートしたCSVをアップロードし、各行を確認して、記帳する行を確定してください。",
+      "fields": {
+        "file": "CSVファイル",
+        "dateFormat": "日付形式",
+        "decimalSeparator": "小数点区切り",
+        "invertSign": "正の金額を支出として扱う（符号を反転）",
+        "askBeforeImport": "インポート前に確認する"
+      },
+      "dateFormat": {
+        "auto": "自動検出",
+        "iso": "YYYY-MM-DD",
+        "dmy": "DD/MM/YYYY",
+        "mdy": "MM/DD/YYYY"
+      },
+      "decimalSeparator": {
+        "auto": "自動検出",
+        "dot": "ピリオド（1234.56）",
+        "comma": "カンマ（1234,56）"
+      },
+      "mapping": {
+        "title": "列を対応付け",
+        "none": "使用しない",
+        "missingRequired": "行を確認する前に、日付・説明・金額の列を対応付けてください。"
+      },
+      "loading": "ファイルを解析しています...",
+      "remapConfirm": {
+        "title": "確認済みの内容を破棄しますか？",
+        "message": "ファイル、口座、または列の対応付けを変更すると、ファイルが再解析され、確認済みの行がクリアされます。"
+      },
+      "grid": {
+        "reviewAll": "すべての行を確認済みにする",
+        "exclude": "この行を除外",
+        "duplicate": "重複している可能性があります",
+        "noCategory": "カテゴリなし",
+        "reviewedCount": "{{total}}件中{{reviewed}}件確認済み"
+      },
+      "confirm": {
+        "title": "取引をインポートしますか？",
+        "message": "確認済みの{{count}}件を{{account}}に記帳します。この操作は元に戻せません。"
+      },
+      "actions": {
+        "confirm": "確認済みの行をインポート"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "目標に入金" },
-      "withdraw": { "title": "目標から出金" },
-      "interest": { "title": "利息を追加" },
+      "deposit": {
+        "title": "目標に入金"
+      },
+      "withdraw": {
+        "title": "目標から出金"
+      },
+      "interest": {
+        "title": "利息を追加"
+      },
       "fields": {
         "amount": "金額",
         "date": "日付",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "ユーザーと招待",
     "description": "このLealFinanceインスタンスへのアクセスを管理します。",
-    "roles": { "member": "メンバー", "admin": "管理者" },
-    "users": { "title": "ユーザー", "role": "役割", "active": "有効", "empty": "ユーザーが見つかりません。" },
+    "roles": {
+      "member": "メンバー",
+      "admin": "管理者"
+    },
+    "users": {
+      "title": "ユーザー",
+      "role": "役割",
+      "active": "有効",
+      "empty": "ユーザーが見つかりません。"
+    },
     "invitations": {
       "title": "招待",
       "createTitle": "招待を作成",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "問題が発生しました。もう一度お試しください。" },
+    "error": {
+      "generic": "問題が発生しました。もう一度お試しください。"
+    },
     "auth": {
       "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
       "csrf_invalid": "このフォームの有効期限が切れました。ページを更新してもう一度お試しください。",
@@ -727,6 +790,20 @@
       "already_accepted": "招待はすでに承認されています。",
       "already_pending": "このメールアドレスには保留中の招待がすでにあります。"
     },
-    "user": { "email_taken": "このメールアドレスはすでに別のアカウントで使用されています。" }
+    "user": {
+      "email_taken": "このメールアドレスはすでに別のアカウントで使用されています。"
+    },
+    "import": {
+      "file_too_large": "このファイルはインポートするには大きすぎます（上限2MB）。",
+      "no_rows": "ファイルにデータ行がありません。",
+      "too_many_rows": "一度にインポートするには行数が多すぎます（上限2,000行）。",
+      "column_required": "続行する前に、日付・説明・金額の列を対応付けてください。",
+      "row": {
+        "invalid_date": "この日付を読み取れませんでした。",
+        "invalid_amount": "この金額を読み取れませんでした。",
+        "zero_amount": "金額を0にすることはできません。",
+        "missing_description": "説明は必須です。"
+      }
+    }
   }
 }

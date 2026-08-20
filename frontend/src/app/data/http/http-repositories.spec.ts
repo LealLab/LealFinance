@@ -126,4 +126,72 @@ describe('HTTP repositories', () => {
       as_of: '2026-08-10',
     });
   });
+
+  it('posts CSV content and mapping to the import preview endpoint', () => {
+    let preview: unknown;
+    TestBed.inject(HttpTransactionRepository)
+      .importPreview({
+        content: 'date,amount\n2026-01-01,-5\n',
+        accountId: 'a',
+        mapping: { date: 'date', amount: 'amount' },
+        options: { dateFormat: 'auto', decimalSeparator: 'auto', invertSign: false },
+      })
+      .subscribe((result) => (preview = result));
+    const req = http.expectOne('/api/v1/transactions/import/preview');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      content: 'date,amount\n2026-01-01,-5\n',
+      account_id: 'a',
+      mapping: { date: 'date', amount: 'amount' },
+      options: { date_format: 'auto', decimal_separator: 'auto', invert_sign: false },
+    });
+    req.flush({
+      headers: ['date', 'amount'],
+      mapping: { date: 'date', description: null, amount: 'amount', category: null, notes: null },
+      rows: [],
+    });
+    expect(preview).toEqual({
+      headers: ['date', 'amount'],
+      mapping: { date: 'date', description: null, amount: 'amount', category: null, notes: null },
+      rows: [],
+    });
+  });
+
+  it('posts reviewed rows to the import commit endpoint and returns the created count', () => {
+    let created: number | undefined;
+    TestBed.inject(HttpTransactionRepository)
+      .importCommit([
+        {
+          type: 'expense',
+          date: '2026-01-15',
+          amount: '5.00',
+          currency: 'BRL',
+          accountId: 'a',
+          categoryId: 'c',
+          description: 'Coffee',
+        },
+      ])
+      .subscribe((result) => (created = result));
+    const req = http.expectOne('/api/v1/transactions/import');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      items: [
+        {
+          type: 'expense',
+          date: '2026-01-15',
+          amount: '5.00',
+          currency: 'BRL',
+          account_id: 'a',
+          to_account_id: null,
+          category_id: 'c',
+          description: 'Coffee',
+          notes: null,
+          recurring_rule_id: null,
+          conversion: null,
+        },
+      ],
+    });
+    req.flush({ created: 1 });
+    expect(created).toBe(1);
+  });
 });

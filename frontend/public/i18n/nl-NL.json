@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nieuwe transactie",
       "edit": "Bewerken",
-      "delete": "Verwijderen"
+      "delete": "Verwijderen",
+      "import": "CSV importeren"
     },
     "tabs": {
       "transactions": "Transacties",
@@ -355,6 +356,52 @@
         "saveError": "De terugkerende regel kon niet worden opgeslagen. Probeer het opnieuw.",
         "startDate": "Startdatum",
         "endDate": "Einddatum (optioneel)"
+      }
+    },
+    "import": {
+      "title": "Transacties importeren",
+      "description": "Upload een CSV-export van je bank, controleer elke regel en bevestig welke je wilt boeken.",
+      "fields": {
+        "file": "CSV-bestand",
+        "dateFormat": "Datumnotatie",
+        "decimalSeparator": "Decimaalteken",
+        "invertSign": "Positieve bedragen zijn uitgaven (teken omkeren)",
+        "askBeforeImport": "Vraag het me voordat er wordt geïmporteerd"
+      },
+      "dateFormat": {
+        "auto": "Automatisch herkennen",
+        "iso": "JJJJ-MM-DD",
+        "dmy": "DD-MM-JJJJ",
+        "mdy": "MM/DD/JJJJ"
+      },
+      "decimalSeparator": {
+        "auto": "Automatisch herkennen",
+        "dot": "Punt (1234.56)",
+        "comma": "Komma (1234,56)"
+      },
+      "mapping": {
+        "title": "Kolommen koppelen",
+        "none": "Niet gebruikt",
+        "missingRequired": "Koppel de kolommen datum, omschrijving en bedrag voordat je regels controleert."
+      },
+      "loading": "Bestand wordt geanalyseerd...",
+      "remapConfirm": {
+        "title": "Voortgang van controle verwijderen?",
+        "message": "Het wijzigen van bestand, rekening of kolomkoppeling analyseert het bestand opnieuw en wist de al gecontroleerde regels."
+      },
+      "grid": {
+        "reviewAll": "Alle regels als gecontroleerd markeren",
+        "exclude": "Regel uitsluiten",
+        "duplicate": "Lijkt op een duplicaat",
+        "noCategory": "Geen categorie",
+        "reviewedCount": "{{reviewed}} van {{total}} regels gecontroleerd"
+      },
+      "confirm": {
+        "title": "Transacties importeren?",
+        "message": "Hiermee worden {{count}} gecontroleerde regels naar {{account}} geboekt. Dit kan niet ongedaan worden gemaakt."
+      },
+      "actions": {
+        "confirm": "Gecontroleerde regels importeren"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Geld aan doel toevoegen" },
-      "withdraw": { "title": "Geld uit doel opnemen" },
-      "interest": { "title": "Rendement toevoegen" },
+      "deposit": {
+        "title": "Geld aan doel toevoegen"
+      },
+      "withdraw": {
+        "title": "Geld uit doel opnemen"
+      },
+      "interest": {
+        "title": "Rendement toevoegen"
+      },
       "fields": {
         "amount": "Bedrag",
         "date": "Datum",
@@ -699,7 +752,10 @@
   "admin": {
     "title": "Gebruikers en uitnodigingen",
     "description": "Beheer de toegang tot deze LealFinance-instantie.",
-    "roles": { "member": "Lid", "admin": "Beheerder" },
+    "roles": {
+      "member": "Lid",
+      "admin": "Beheerder"
+    },
     "users": {
       "title": "Gebruikers",
       "role": "Rol",
@@ -717,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Er is iets misgegaan. Probeer het opnieuw." },
+    "error": {
+      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+    },
     "auth": {
       "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",
       "csrf_invalid": "Dit formulier is verlopen. Vernieuw de pagina en probeer het opnieuw.",
@@ -732,6 +790,20 @@
       "already_accepted": "Deze uitnodiging is al geaccepteerd.",
       "already_pending": "Er is al een uitnodiging in behandeling voor dit e-mailadres."
     },
-    "user": { "email_taken": "Er bestaat al een account met dit e-mailadres." }
+    "user": {
+      "email_taken": "Er bestaat al een account met dit e-mailadres."
+    },
+    "import": {
+      "file_too_large": "Dit bestand is te groot om te importeren (limiet 2 MB).",
+      "no_rows": "Het bestand bevat geen gegevensregels.",
+      "too_many_rows": "Het bestand bevat te veel regels om in één keer te importeren (limiet 2000).",
+      "column_required": "Koppel de kolommen datum, omschrijving en bedrag voordat je verdergaat.",
+      "row": {
+        "invalid_date": "Deze datum kon niet worden gelezen.",
+        "invalid_amount": "Dit bedrag kon niet worden gelezen.",
+        "zero_amount": "Het bedrag mag niet nul zijn.",
+        "missing_description": "Omschrijving is verplicht."
+      }
+    }
   }
 }

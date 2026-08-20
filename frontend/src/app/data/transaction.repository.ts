@@ -17,6 +17,51 @@ export interface TransactionFilters {
   offset?: number;
 }
 
+/** CSV import parsing knobs - see backend/app/schemas/transaction_import.py.
+ * `auto` date format tries ISO then dd/mm/yyyy; `auto` decimal separator
+ * infers from whichever of `.`/`,` appears last in the value. */
+export interface ImportOptions {
+  dateFormat: 'auto' | 'iso' | 'dmy' | 'mdy';
+  decimalSeparator: 'auto' | '.' | ',';
+  invertSign: boolean;
+}
+
+export interface ImportPreviewRequest {
+  /** Raw CSV text, read client-side via File.text() - no multipart upload. */
+  content: string;
+  accountId: string;
+  /** Target field -> CSV header. Omitted asks the server to guess from headers. */
+  mapping?: Record<string, string>;
+  options: ImportOptions;
+}
+
+/** One parsed CSV row, before it becomes a real transaction. `error` is a
+ * translation-key error code (see errors.import.* keys); a row with an
+ * error can't be reviewed until the user fixes it in the grid. */
+export interface ImportRow {
+  index: number;
+  date?: string;
+  description: string;
+  type?: 'income' | 'expense';
+  amount?: string;
+  categoryId?: string;
+  categoryName?: string;
+  notes?: string;
+  error?: string;
+  duplicate: boolean;
+}
+
+export interface ImportPreview {
+  /** Every column header the server detected in the file - the source list
+   * for the mapping selects, so the frontend never re-parses the CSV
+   * itself (delimiter sniffing/BOM handling stay server-side only). */
+  headers: readonly string[];
+  /** Target field -> CSV header actually used (the server's guess, or the
+   * caller-supplied mapping echoed back). */
+  mapping: Record<string, string | null>;
+  rows: ImportRow[];
+}
+
 /** See account.repository.ts for the DI-token pattern this follows. */
 export abstract class TransactionRepository {
   abstract list(filters?: TransactionFilters): Observable<Transaction[]>;
@@ -24,4 +69,9 @@ export abstract class TransactionRepository {
   abstract create(input: Omit<Transaction, 'id'>): Observable<Transaction>;
   abstract update(id: string, changes: Partial<Omit<Transaction, 'id'>>): Observable<Transaction>;
   abstract delete(id: string): Observable<void>;
+  abstract importPreview(request: ImportPreviewRequest): Observable<ImportPreview>;
+  /** Imports every given row as a real transaction in one request; resolves
+   * to the number created. All-or-nothing server-side - see
+   * app/services/transactions.py::import_transactions. */
+  abstract importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number>;
 }

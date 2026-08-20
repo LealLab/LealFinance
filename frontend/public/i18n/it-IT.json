@@ -258,7 +258,8 @@
     "actions": {
       "new": "Nuova transazione",
       "edit": "Modifica",
-      "delete": "Elimina"
+      "delete": "Elimina",
+      "import": "Importa CSV"
     },
     "tabs": {
       "transactions": "Transazioni",
@@ -355,6 +356,52 @@
         "saveError": "Impossibile salvare la regola di ricorrenza. Riprova.",
         "startDate": "Inizio",
         "endDate": "Fine (facoltativa)"
+      }
+    },
+    "import": {
+      "title": "Importa transazioni",
+      "description": "Carica un CSV esportato dalla tua banca, controlla ogni riga e conferma quelle da registrare.",
+      "fields": {
+        "file": "File CSV",
+        "dateFormat": "Formato data",
+        "decimalSeparator": "Separatore decimale",
+        "invertSign": "Gli importi positivi sono spese (inverti segno)",
+        "askBeforeImport": "Chiedimi conferma prima di importare"
+      },
+      "dateFormat": {
+        "auto": "Rilevamento automatico",
+        "iso": "AAAA-MM-GG",
+        "dmy": "GG/MM/AAAA",
+        "mdy": "MM/GG/AAAA"
+      },
+      "decimalSeparator": {
+        "auto": "Rilevamento automatico",
+        "dot": "Punto (1234.56)",
+        "comma": "Virgola (1234,56)"
+      },
+      "mapping": {
+        "title": "Associa colonne",
+        "none": "Non usata",
+        "missingRequired": "Associa le colonne data, descrizione e importo prima di controllare le righe."
+      },
+      "loading": "Analisi del file in corso...",
+      "remapConfirm": {
+        "title": "Annullare il progresso della revisione?",
+        "message": "Cambiare file, conto o associazione delle colonne ripete l'analisi del file e cancella le righe già controllate."
+      },
+      "grid": {
+        "reviewAll": "Contrassegna tutte le righe come controllate",
+        "exclude": "Escludi riga",
+        "duplicate": "Sembra un duplicato",
+        "noCategory": "Nessuna categoria",
+        "reviewedCount": "{{reviewed}} di {{total}} righe controllate"
+      },
+      "confirm": {
+        "title": "Importare le transazioni?",
+        "message": "Verranno registrate {{count}} righe controllate su {{account}}. Questa azione non può essere annullata."
+      },
+      "actions": {
+        "confirm": "Importa righe controllate"
       }
     }
   },
@@ -745,6 +792,18 @@
     },
     "user": {
       "email_taken": "Esiste già un account associato a questo indirizzo email."
+    },
+    "import": {
+      "file_too_large": "Questo file è troppo grande per essere importato (limite 2 MB).",
+      "no_rows": "Il file non contiene righe di dati.",
+      "too_many_rows": "Il file contiene troppe righe da importare in una volta (limite 2000).",
+      "column_required": "Associa le colonne data, descrizione e importo prima di continuare.",
+      "row": {
+        "invalid_date": "Impossibile leggere questa data.",
+        "invalid_amount": "Impossibile leggere questo importo.",
+        "zero_amount": "L'importo non può essere zero.",
+        "missing_description": "La descrizione è obbligatoria."
+      }
     }
   }
 }

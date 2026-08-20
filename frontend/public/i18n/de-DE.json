@@ -258,7 +258,8 @@
     "actions": {
       "new": "Neue Transaktion",
       "edit": "Bearbeiten",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "import": "CSV importieren"
     },
     "tabs": {
       "transactions": "Transaktionen",
@@ -355,6 +356,52 @@
         "saveError": "Die Wiederholungsregel konnte nicht gespeichert werden. Versuchen Sie es erneut.",
         "startDate": "Beginn",
         "endDate": "Ende (optional)"
+      }
+    },
+    "import": {
+      "title": "Transaktionen importieren",
+      "description": "Laden Sie einen CSV-Export Ihrer Bank hoch, prüfen Sie jede Zeile und buchen Sie die bestätigten.",
+      "fields": {
+        "file": "CSV-Datei",
+        "dateFormat": "Datumsformat",
+        "decimalSeparator": "Dezimaltrennzeichen",
+        "invertSign": "Positive Beträge sind Ausgaben (Vorzeichen umkehren)",
+        "askBeforeImport": "Vor dem Import nachfragen"
+      },
+      "dateFormat": {
+        "auto": "Automatisch erkennen",
+        "iso": "JJJJ-MM-TT",
+        "dmy": "TT.MM.JJJJ",
+        "mdy": "MM/TT/JJJJ"
+      },
+      "decimalSeparator": {
+        "auto": "Automatisch erkennen",
+        "dot": "Punkt (1234.56)",
+        "comma": "Komma (1234,56)"
+      },
+      "mapping": {
+        "title": "Spalten zuordnen",
+        "none": "Nicht verwendet",
+        "missingRequired": "Ordnen Sie die Spalten Datum, Beschreibung und Betrag zu, bevor Sie Zeilen prüfen."
+      },
+      "loading": "Datei wird analysiert...",
+      "remapConfirm": {
+        "title": "Prüffortschritt verwerfen?",
+        "message": "Das Ändern von Datei, Konto oder Spaltenzuordnung analysiert die Datei neu und löscht bereits geprüfte Zeilen."
+      },
+      "grid": {
+        "reviewAll": "Alle Zeilen als geprüft markieren",
+        "exclude": "Zeile ausschließen",
+        "duplicate": "Sieht wie ein Duplikat aus",
+        "noCategory": "Keine Kategorie",
+        "reviewedCount": "{{reviewed}} von {{total}} Zeilen geprüft"
+      },
+      "confirm": {
+        "title": "Transaktionen importieren?",
+        "message": "Dadurch werden {{count}} geprüfte Zeilen auf {{account}} gebucht. Dies kann nicht rückgängig gemacht werden."
+      },
+      "actions": {
+        "confirm": "Geprüfte Zeilen importieren"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Geld in das Sparziel einzahlen" },
-      "withdraw": { "title": "Geld aus dem Sparziel entnehmen" },
-      "interest": { "title": "Zinsen hinzufügen" },
+      "deposit": {
+        "title": "Geld in das Sparziel einzahlen"
+      },
+      "withdraw": {
+        "title": "Geld aus dem Sparziel entnehmen"
+      },
+      "interest": {
+        "title": "Zinsen hinzufügen"
+      },
       "fields": {
         "amount": "Betrag",
         "date": "Datum",
@@ -699,7 +752,10 @@
   "admin": {
     "title": "Benutzer und Einladungen",
     "description": "Verwalten Sie den Zugriff auf diese LealFinance-Instanz.",
-    "roles": { "member": "Mitglied", "admin": "Administrator" },
+    "roles": {
+      "member": "Mitglied",
+      "admin": "Administrator"
+    },
     "users": {
       "title": "Benutzer",
       "role": "Rolle",
@@ -717,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut." },
+    "error": {
+      "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut."
+    },
     "auth": {
       "invalid_credentials": "E-Mail-Adresse oder Passwort ist falsch.",
       "csrf_invalid": "Dieses Formular ist abgelaufen. Aktualisieren Sie die Seite und versuchen Sie es erneut.",
@@ -732,6 +790,20 @@
       "already_accepted": "Diese Einladung wurde bereits angenommen.",
       "already_pending": "Für diese E-Mail-Adresse liegt bereits eine ausstehende Einladung vor."
     },
-    "user": { "email_taken": "Für diese E-Mail-Adresse existiert bereits ein Konto." }
+    "user": {
+      "email_taken": "Für diese E-Mail-Adresse existiert bereits ein Konto."
+    },
+    "import": {
+      "file_too_large": "Diese Datei ist zu groß zum Importieren (Limit 2 MB).",
+      "no_rows": "Die Datei enthält keine Datenzeilen.",
+      "too_many_rows": "Die Datei enthält zu viele Zeilen für einen einzelnen Import (Limit 2000).",
+      "column_required": "Ordnen Sie die Spalten Datum, Beschreibung und Betrag zu, bevor Sie fortfahren.",
+      "row": {
+        "invalid_date": "Dieses Datum konnte nicht gelesen werden.",
+        "invalid_amount": "Dieser Betrag konnte nicht gelesen werden.",
+        "zero_amount": "Der Betrag darf nicht null sein.",
+        "missing_description": "Die Beschreibung ist erforderlich."
+      }
+    }
   }
 }

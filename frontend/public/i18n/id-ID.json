@@ -258,7 +258,8 @@
     "actions": {
       "new": "Transaksi baru",
       "edit": "Edit",
-      "delete": "Hapus"
+      "delete": "Hapus",
+      "import": "Impor CSV"
     },
     "tabs": {
       "transactions": "Transaksi",
@@ -355,6 +356,52 @@
         "saveError": "Aturan berulang tidak dapat disimpan. Coba lagi.",
         "startDate": "Mulai",
         "endDate": "Berakhir (opsional)"
+      }
+    },
+    "import": {
+      "title": "Impor transaksi",
+      "description": "Unggah ekspor CSV dari bank Anda, tinjau setiap baris, dan konfirmasi baris yang ingin Anda catat.",
+      "fields": {
+        "file": "Berkas CSV",
+        "dateFormat": "Format tanggal",
+        "decimalSeparator": "Pemisah desimal",
+        "invertSign": "Jumlah positif adalah pengeluaran (balik tanda)",
+        "askBeforeImport": "Tanya saya sebelum mengimpor"
+      },
+      "dateFormat": {
+        "auto": "Deteksi otomatis",
+        "iso": "TTTT-BB-HH",
+        "dmy": "HH/BB/TTTT",
+        "mdy": "BB/HH/TTTT"
+      },
+      "decimalSeparator": {
+        "auto": "Deteksi otomatis",
+        "dot": "Titik (1234.56)",
+        "comma": "Koma (1234,56)"
+      },
+      "mapping": {
+        "title": "Cocokkan kolom",
+        "none": "Tidak digunakan",
+        "missingRequired": "Cocokkan kolom tanggal, deskripsi, dan jumlah sebelum meninjau baris."
+      },
+      "loading": "Menganalisis berkas...",
+      "remapConfirm": {
+        "title": "Buang progres peninjauan?",
+        "message": "Mengubah berkas, akun, atau pencocokan kolom akan menganalisis ulang berkas dan menghapus baris yang sudah ditinjau."
+      },
+      "grid": {
+        "reviewAll": "Tandai semua baris sebagai ditinjau",
+        "exclude": "Kecualikan baris",
+        "duplicate": "Sepertinya duplikat",
+        "noCategory": "Tanpa kategori",
+        "reviewedCount": "{{reviewed}} dari {{total}} baris ditinjau"
+      },
+      "confirm": {
+        "title": "Impor transaksi?",
+        "message": "Ini akan mencatat {{count}} baris yang ditinjau ke {{account}}. Tindakan ini tidak dapat dibatalkan."
+      },
+      "actions": {
+        "confirm": "Impor baris yang ditinjau"
       }
     }
   },
@@ -546,9 +593,15 @@
       }
     },
     "entries": {
-      "deposit": { "title": "Tambah dana ke target" },
-      "withdraw": { "title": "Tarik dana dari target" },
-      "interest": { "title": "Tambah bunga" },
+      "deposit": {
+        "title": "Tambah dana ke target"
+      },
+      "withdraw": {
+        "title": "Tarik dana dari target"
+      },
+      "interest": {
+        "title": "Tambah bunga"
+      },
       "fields": {
         "amount": "Jumlah",
         "date": "Tanggal",
@@ -699,8 +752,16 @@
   "admin": {
     "title": "Pengguna dan undangan",
     "description": "Kelola akses ke instans LealFinance ini.",
-    "roles": { "member": "Anggota", "admin": "Administrator" },
-    "users": { "title": "Pengguna", "role": "Peran", "active": "Aktif", "empty": "Pengguna tidak ditemukan." },
+    "roles": {
+      "member": "Anggota",
+      "admin": "Administrator"
+    },
+    "users": {
+      "title": "Pengguna",
+      "role": "Peran",
+      "active": "Aktif",
+      "empty": "Pengguna tidak ditemukan."
+    },
     "invitations": {
       "title": "Undangan",
       "createTitle": "Buat undangan",
@@ -712,7 +773,9 @@
     }
   },
   "errors": {
-    "error": { "generic": "Terjadi kesalahan. Silakan coba lagi." },
+    "error": {
+      "generic": "Terjadi kesalahan. Silakan coba lagi."
+    },
     "auth": {
       "invalid_credentials": "Email atau kata sandi salah.",
       "csrf_invalid": "Formulir ini sudah kedaluwarsa. Segarkan halaman lalu coba lagi.",
@@ -727,6 +790,20 @@
       "already_accepted": "Undangan ini sudah diterima.",
       "already_pending": "Undangan untuk email ini sudah menunggu."
     },
-    "user": { "email_taken": "Sudah ada akun yang menggunakan email ini." }
+    "user": {
+      "email_taken": "Sudah ada akun yang menggunakan email ini."
+    },
+    "import": {
+      "file_too_large": "Berkas ini terlalu besar untuk diimpor (batas 2 MB).",
+      "no_rows": "Berkas tidak memiliki baris data.",
+      "too_many_rows": "Berkas memiliki terlalu banyak baris untuk diimpor sekaligus (batas 2000).",
+      "column_required": "Cocokkan kolom tanggal, deskripsi, dan jumlah sebelum melanjutkan.",
+      "row": {
+        "invalid_date": "Tanggal ini tidak dapat dibaca.",
+        "invalid_amount": "Jumlah ini tidak dapat dibaca.",
+        "zero_amount": "Jumlah tidak boleh nol.",
+        "missing_description": "Deskripsi wajib diisi."
+      }
+    }
   }
 }

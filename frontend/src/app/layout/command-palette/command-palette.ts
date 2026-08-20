@@ -280,6 +280,15 @@ export class CommandPalette {
         run: () => this.navigateToCreate('/budgets')
       },
       {
+        id: 'quick-import-transactions',
+        // Reuses the import page's own title key (already a literal `t(...)`
+        // call in transaction-import.html) rather than adding a new
+        // commandPalette.actions.* key across all 28 locale catalogs.
+        labelKey: 'transactions.import.title',
+        icon: 'arrowUpRight',
+        run: () => this.router.navigate(['/transactions/import'])
+      },
+      {
         id: 'quick-configure-language',
         labelKey: 'layout.commandPalette.actions.configureLanguage',
         icon: 'globe',
