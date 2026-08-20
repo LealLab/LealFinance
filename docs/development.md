@@ -59,6 +59,7 @@ docker compose down -v                 # stop + wipe data (fresh start)
 | Backend type check | `task backend:typecheck` |
 | Backend tests | `task backend:test` |
 | New migration | `task backend:migration -- "add accounts table"` |
+| Seed local demo data | `task backend:seed` |
 | Frontend lint | `task frontend:lint` |
 | Frontend tests | `task frontend:test` |
 | Frontend build | `task frontend:build` |
@@ -100,6 +101,27 @@ for everyone else; the response includes the raw invitation token exactly
 once, for out-of-band delivery (there's no email provider in v1). See
 [`docs/backend-api.md`](backend-api.md) for the full auth flow, endpoint
 list, and error codes.
+
+## Seeding local demo data
+
+`task backend:seed` (run after `task backend:migrate`, since every currency
+column is a real FK) builds one plausible dev user - institutions, accounts,
+categories, a year of transactions, budgets, a recurring rule history, and a
+goal - so you have something to look at without hand-creating it through the
+UI. It's interactive by default, prompting for each value (date range,
+transaction volume, currencies, RNG seed) with a sensible default shown, so
+pressing Enter through every prompt is enough. Pass `-y` to accept every
+default without prompting:
+
+```bash
+task backend:seed                              # (or: uv run python -m scripts.seed)
+uv run python -m scripts.seed -y                # non-interactive, all defaults
+```
+
+Re-running it wipes and rebuilds the same email's data (FK CASCADE removes
+everything that user owns), and is deterministic for a given RNG seed - the
+same answers always produce the same database. The script prints the login
+email/password when it finishes.
 
 ## Migrations
 
