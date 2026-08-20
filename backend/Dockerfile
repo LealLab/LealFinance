@@ -24,6 +24,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # --- Runtime -------------------------------------------------------------------
 FROM python:3.13-slim AS runtime
 
+# Debian security patches not yet baked into the base image, and the
+# system pip (unused - the app runs from the uv-managed venv below, and
+# its vendored deps are what a vuln scanner flags).
+RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && python -m pip uninstall --yes pip
+
 RUN groupadd --system app && useradd --system --gid app --home-dir /app app
 
 WORKDIR /app
