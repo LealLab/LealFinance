@@ -54,6 +54,10 @@ services:
       SESSION_TTL_DAYS: ${SESSION_TTL_DAYS:-30}
       INVITATION_TTL_DAYS: ${INVITATION_TTL_DAYS:-7}
       AGENTS_ENABLED: ${AGENTS_ENABLED:-false}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
+      AGENTS_DEFAULT_PROVIDER: ${AGENTS_DEFAULT_PROVIDER:-}
       OPENEXCHANGERATES_APP_ID: ${OPENEXCHANGERATES_APP_ID:-}
       RUN_MIGRATIONS: "true"
     depends_on:
@@ -134,16 +138,25 @@ services:
       api:
         condition: service_healthy
 
-  # AI Agents - optional, off by default (see README.md). Not implemented
-  # yet: this is a placeholder that makes the profile gate itself testable
-  # (`COMPOSE_PROFILES=agents docker compose config` should include it)
-  # without pretending a real service exists. Replace `command`/`image`
-  # once the agents runtime lands.
-  agents:
-    image: busybox:latest
+  # Local AI provider - optional, off by default (see docs/ai-agents.md).
+  # The agents *feature* runs in-process in `api`, gated by AGENTS_ENABLED;
+  # this profile only provides a place to run models locally instead of a
+  # paid API key or subscription. Point OLLAMA_BASE_URL at
+  # http://ollama:11434 (the in-container hostname) to use it.
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
     profiles: ["agents"]
-    command: ["echo", "AI Agents scaffold placeholder - not yet implemented. See README.md."]
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      start_period: 20s
+      retries: 5
 
 volumes:
   db_data:
   redis_data:
+  ollama_data:

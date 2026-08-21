@@ -28,7 +28,8 @@
         "analysis": "Analýza",
         "setup": "Nastavení",
         "admin": "Správa"
-      }
+      },
+      "providers": "Poskytovatelé AI"
     },
     "sidebar": {
       "openMenu": "Otevřít nabídku",
@@ -720,7 +721,8 @@
       "title": "AI agenti",
       "description": "AI asistenti pracující s vašimi finančními daty, s podporou více poskytovatelů a nástrojů přes MCP. Ve výchozím nastavení jsou vypnuti – lze je nastavit v Docker Compose (AGENTS_ENABLED).",
       "disabled": "Vypnuto",
-      "enabled": "Zapnuto"
+      "enabled": "Zapnuto",
+      "manage": "Spravovat"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Kopírovat registrační odkaz",
       "revoke": "Odvolat",
       "empty": "Nebyly nalezeny žádné pozvánky."
+    }
+  },
+  "providers": {
+    "title": "Poskytovatelé AI",
+    "description": "Připojte poskytovatele AI pomocí API klíče, propojeného předplatného nebo lokálního serveru Ollama.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Propojeno ({{label}})",
+      "configuredEnv": "Z prostředí ({{model}})",
+      "notConfigured": "Nenakonfigurováno"
+    },
+    "actions": {
+      "link": "Propojit",
+      "relink": "Znovu propojit",
+      "unlink": "Zrušit propojení",
+      "test": "Otestovat připojení"
+    },
+    "testOk": "Připojeno",
+    "testFailed": "Připojení se nezdařilo",
+    "unlink": {
+      "title": "Zrušit propojení poskytovatele",
+      "message": "Odstranit vaše propojené přihlašovací údaje pro tohoto poskytovatele? Místo nich se použije klíč nastavený administrátorem pro celou instanci, pokud existuje."
+    },
+    "unlinkError": "Propojení tohoto poskytovatele se nepodařilo zrušit. Zkuste to znovu.",
+    "tryIt": {
+      "title": "Vyzkoušet",
+      "description": "Odešlete jednu zprávu nakonfigurovanému poskytovateli, abyste ověřili, že odpovídá.",
+      "autoProvider": "Použít prvního nakonfigurovaného poskytovatele",
+      "placeholder": "Zeptejte se na něco…",
+      "send": "Odeslat"
+    },
+    "chatError": "Nepodařilo se získat odpověď. Zkontrolujte, zda je poskytovatel správně nakonfigurován.",
+    "form": {
+      "apiKeyTitle": "Propojit pomocí API klíče",
+      "oauthTitle": "Propojit předplatné",
+      "ollamaTitle": "Připojit se k Ollama",
+      "modeApiKey": "API klíč",
+      "modeOAuth": "Předplatné",
+      "fields": {
+        "apiKey": "API klíč",
+        "baseUrl": "URL serveru",
+        "model": "Model (volitelné)"
+      },
+      "saveError": "Tohoto poskytovatele se nepodařilo uložit. Zkontrolujte hodnotu a zkuste to znovu.",
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      },
+      "oauth": {
+        "startHint": "Budete přesměrováni k přihlášení a schválení přístupu na nové kartě. Poté se sem vraťte a vložte kód.",
+        "startAction": "Pokračovat na nové kartě",
+        "pasteHint": "Po schválení přístupu zkopírujte zobrazený kód (nebo celou přesměrovací URL, i když se tato stránka nenačte) a vložte jej níže.",
+        "reopenAction": "Znovu otevřít přihlašovací stránku",
+        "fields": {
+          "code": "Kód"
+        },
+        "completeAction": "Propojit",
+        "startError": "Přihlášení se nepodařilo spustit. Zkuste to znovu.",
+        "completeError": "Tento kód nefungoval. Zkontrolujte jej a zkuste to znovu."
+      }
     }
   },
   "errors": {

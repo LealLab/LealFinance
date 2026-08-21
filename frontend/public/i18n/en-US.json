@@ -28,7 +28,8 @@
         "analysis": "Analysis",
         "setup": "Setup",
         "admin": "Administration"
-      }
+      },
+      "providers": "AI providers"
     },
     "sidebar": {
       "openMenu": "Open menu",
@@ -720,7 +721,8 @@
       "title": "AI agents",
       "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default - configurable in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disabled",
-      "enabled": "Enabled"
+      "enabled": "Enabled",
+      "manage": "Manage"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Copy registration link",
       "revoke": "Revoke",
       "empty": "No invitations found."
+    }
+  },
+  "providers": {
+    "title": "AI providers",
+    "description": "Connect an AI provider with an API key, a linked subscription, or a local Ollama server.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Linked ({{label}})",
+      "configuredEnv": "From environment ({{model}})",
+      "notConfigured": "Not configured"
+    },
+    "actions": {
+      "link": "Link",
+      "relink": "Relink",
+      "unlink": "Unlink",
+      "test": "Test connection"
+    },
+    "testOk": "Connected",
+    "testFailed": "Connection failed",
+    "unlink": {
+      "title": "Unlink provider",
+      "message": "Remove your linked credential for this provider? An administrator's instance-wide key, if any, will be used instead."
+    },
+    "unlinkError": "Couldn't unlink this provider. Try again.",
+    "tryIt": {
+      "title": "Try it",
+      "description": "Send one message to a configured provider to confirm it answers.",
+      "autoProvider": "Use first configured provider",
+      "placeholder": "Ask something…",
+      "send": "Send"
+    },
+    "chatError": "Couldn't get a reply. Check that the provider is configured correctly.",
+    "form": {
+      "apiKeyTitle": "Link with an API key",
+      "oauthTitle": "Link a subscription",
+      "ollamaTitle": "Connect to Ollama",
+      "modeApiKey": "API key",
+      "modeOAuth": "Subscription",
+      "fields": {
+        "apiKey": "API key",
+        "baseUrl": "Server URL",
+        "model": "Model (optional)"
+      },
+      "saveError": "Couldn't save this provider. Check the value and try again.",
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      },
+      "oauth": {
+        "startHint": "You'll be sent to sign in and approve access in a new tab. Come back here afterward to paste the code.",
+        "startAction": "Continue in a new tab",
+        "pasteHint": "After approving access, copy the code shown (or the full redirect URL, even if that page fails to load) and paste it below.",
+        "reopenAction": "Reopen the sign-in page",
+        "fields": {
+          "code": "Code"
+        },
+        "completeAction": "Link",
+        "startError": "Couldn't start the sign-in flow. Try again.",
+        "completeError": "That code didn't work. Check it and try again."
+      }
     }
   },
   "errors": {

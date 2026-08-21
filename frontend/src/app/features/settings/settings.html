@@ -97,15 +97,25 @@
           </h2>
           <p class="max-w-md text-sm text-content-muted">{{ t('settings.agents.description') }}</p>
         </div>
-        <span
-          class="shrink-0 rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted"
-        >
-          {{
-            metadata.settings()?.agentsEnabled
-              ? t('settings.agents.enabled')
-              : t('settings.agents.disabled')
-          }}
-        </span>
+        <div class="flex shrink-0 items-center gap-2">
+          <span
+            class="rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted"
+          >
+            {{
+              metadata.settings()?.agentsEnabled
+                ? t('settings.agents.enabled')
+                : t('settings.agents.disabled')
+            }}
+          </span>
+          @if (metadata.settings()?.agentsEnabled) {
+            <a
+              routerLink="/providers"
+              class="rounded-full bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/20"
+            >
+              {{ t('settings.agents.manage') }}
+            </a>
+          }
+        </div>
       </div>
     </app-card>
   </div>

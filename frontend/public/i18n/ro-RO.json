@@ -28,7 +28,8 @@
         "analysis": "Analiză",
         "setup": "Configurare",
         "admin": "Administrare"
-      }
+      },
+      "providers": "Furnizori AI"
     },
     "sidebar": {
       "openMenu": "Deschide meniul",
@@ -720,7 +721,8 @@
       "title": "Agenți AI",
       "description": "Asistenți AI pentru datele tale financiare, cu mai mulți furnizori și instrumente prin MCP. Sunt dezactivați implicit și pot fi configurați în Docker Compose (AGENTS_ENABLED).",
       "disabled": "Dezactivați",
-      "enabled": "Activați"
+      "enabled": "Activați",
+      "manage": "Gestionare"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Copiază linkul de înregistrare",
       "revoke": "Revocă",
       "empty": "Nu s-a găsit nicio invitație."
+    }
+  },
+  "providers": {
+    "title": "Furnizori AI",
+    "description": "Conectează un furnizor AI cu o cheie API, un abonament asociat sau un server Ollama local.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Conectat ({{label}})",
+      "configuredEnv": "Din mediu ({{model}})",
+      "notConfigured": "Neconfigurat"
+    },
+    "actions": {
+      "link": "Conectează",
+      "relink": "Reconectează",
+      "unlink": "Deconectează",
+      "test": "Testează conexiunea"
+    },
+    "testOk": "Conectat",
+    "testFailed": "Conexiune eșuată",
+    "unlink": {
+      "title": "Deconectare furnizor",
+      "message": "Elimini datele de acces asociate acestui furnizor? În loc de acestea se va folosi o cheie la nivel de instanță setată de un administrator, dacă există."
+    },
+    "unlinkError": "Nu s-a putut deconecta acest furnizor. Încearcă din nou.",
+    "tryIt": {
+      "title": "Încearcă",
+      "description": "Trimite un mesaj către un furnizor configurat pentru a confirma că răspunde.",
+      "autoProvider": "Folosește primul furnizor configurat",
+      "placeholder": "Întreabă ceva…",
+      "send": "Trimite"
+    },
+    "chatError": "Nu s-a putut obține un răspuns. Verifică dacă furnizorul este configurat corect.",
+    "form": {
+      "apiKeyTitle": "Conectează cu o cheie API",
+      "oauthTitle": "Conectează un abonament",
+      "ollamaTitle": "Conectează-te la Ollama",
+      "modeApiKey": "Cheie API",
+      "modeOAuth": "Abonament",
+      "fields": {
+        "apiKey": "Cheie API",
+        "baseUrl": "URL server",
+        "model": "Model (opțional)"
+      },
+      "saveError": "Acest furnizor nu a putut fi salvat. Verifică valoarea și încearcă din nou.",
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      },
+      "oauth": {
+        "startHint": "Vei fi trimis să te autentifici și să aprobi accesul într-o filă nouă. Revino aici după aceea pentru a lipi codul.",
+        "startAction": "Continuă într-o filă nouă",
+        "pasteHint": "După aprobarea accesului, copiază codul afișat (sau URL-ul complet de redirecționare, chiar dacă acea pagină nu se încarcă) și lipește-l mai jos.",
+        "reopenAction": "Redeschide pagina de autentificare",
+        "fields": {
+          "code": "Cod"
+        },
+        "completeAction": "Conectează",
+        "startError": "Autentificarea nu a putut fi pornită. Încearcă din nou.",
+        "completeError": "Acest cod nu a funcționat. Verifică-l și încearcă din nou."
+      }
     }
   },
   "errors": {

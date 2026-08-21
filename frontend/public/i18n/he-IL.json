@@ -28,7 +28,8 @@
         "analysis": "ניתוח",
         "setup": "הגדרה",
         "admin": "ניהול"
-      }
+      },
+      "providers": "ספקי בינה מלאכותית"
     },
     "sidebar": {
       "openMenu": "פתיחת תפריט",
@@ -720,7 +721,8 @@
       "title": "סוכני AI",
       "description": "עוזרי AI מעל הנתונים הפיננסיים שלכם, עם כמה ספקים וכלים דרך MCP. מושבתים כברירת מחדל – ניתנים להגדרה ב־Docker Compose (AGENTS_ENABLED).",
       "disabled": "מושבתים",
-      "enabled": "מופעלים"
+      "enabled": "מופעלים",
+      "manage": "ניהול"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "העתקת קישור הרשמה",
       "revoke": "ביטול",
       "empty": "לא נמצאו הזמנות."
+    }
+  },
+  "providers": {
+    "title": "ספקי בינה מלאכותית",
+    "description": "חבר ספק בינה מלאכותית עם מפתח API, מנוי מקושר או שרת Ollama מקומי.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "מקושר ({{label}})",
+      "configuredEnv": "מהגדרות הסביבה ({{model}})",
+      "notConfigured": "לא מוגדר"
+    },
+    "actions": {
+      "link": "קשר",
+      "relink": "קשר מחדש",
+      "unlink": "בטל קישור",
+      "test": "בדוק חיבור"
+    },
+    "testOk": "מחובר",
+    "testFailed": "החיבור נכשל",
+    "unlink": {
+      "title": "ביטול קישור לספק",
+      "message": "להסיר את פרטי הגישה המקושרים לספק זה? במקום זאת ייעשה שימוש במפתח כלל-מופעי שהוגדר על ידי מנהל, אם קיים."
+    },
+    "unlinkError": "לא ניתן היה לבטל את הקישור לספק זה. נסה שוב.",
+    "tryIt": {
+      "title": "נסה",
+      "description": "שלח הודעה אחת לספק מוגדר כדי לאשר שהוא מגיב.",
+      "autoProvider": "השתמש בספק המוגדר הראשון",
+      "placeholder": "שאל משהו…",
+      "send": "שלח"
+    },
+    "chatError": "לא ניתן היה לקבל תשובה. בדוק שהספק מוגדר כראוי.",
+    "form": {
+      "apiKeyTitle": "קישור עם מפתח API",
+      "oauthTitle": "קישור מנוי",
+      "ollamaTitle": "התחברות ל-Ollama",
+      "modeApiKey": "מפתח API",
+      "modeOAuth": "מנוי",
+      "fields": {
+        "apiKey": "מפתח API",
+        "baseUrl": "כתובת שרת",
+        "model": "מודל (אופציונלי)"
+      },
+      "saveError": "לא ניתן היה לשמור ספק זה. בדוק את הערך ונסה שוב.",
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמור"
+      },
+      "oauth": {
+        "startHint": "תועבר להתחברות ולאישור הגישה בכרטיסייה חדשה. חזור לכאן אחר כך כדי להדביק את הקוד.",
+        "startAction": "המשך בכרטיסייה חדשה",
+        "pasteHint": "לאחר אישור הגישה, העתק את הקוד המוצג (או את כתובת ההפניה המלאה, גם אם הדף לא נטען) והדבק אותו למטה.",
+        "reopenAction": "פתח מחדש את דף ההתחברות",
+        "fields": {
+          "code": "קוד"
+        },
+        "completeAction": "קשר",
+        "startError": "לא ניתן היה להתחיל את ההתחברות. נסה שוב.",
+        "completeError": "הקוד הזה לא עבד. בדוק אותו ונסה שוב."
+      }
     }
   },
   "errors": {

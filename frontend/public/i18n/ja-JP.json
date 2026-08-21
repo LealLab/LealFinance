@@ -28,7 +28,8 @@
         "analysis": "分析",
         "setup": "初期設定",
         "admin": "管理"
-      }
+      },
+      "providers": "AI プロバイダー"
     },
     "sidebar": {
       "openMenu": "メニューを開く",
@@ -720,7 +721,8 @@
       "title": "AIエージェント",
       "description": "複数のプロバイダーとMCPのツールを使って財務データを扱うAIアシスタントです。デフォルトでは無効で、Docker Compose（AGENTS_ENABLED）で設定できます。",
       "disabled": "無効",
-      "enabled": "有効"
+      "enabled": "有効",
+      "manage": "管理"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "登録リンクをコピー",
       "revoke": "取り消す",
       "empty": "招待が見つかりません。"
+    }
+  },
+  "providers": {
+    "title": "AI プロバイダー",
+    "description": "APIキー、連携済みのサブスクリプション、またはローカルの Ollama サーバーで AI プロバイダーを接続します。",
+    "names": {
+      "anthropic": "Anthropic（Claude）",
+      "openai": "OpenAI（Codex）",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "連携済み（{{label}}）",
+      "configuredEnv": "環境変数から（{{model}}）",
+      "notConfigured": "未設定"
+    },
+    "actions": {
+      "link": "連携",
+      "relink": "再連携",
+      "unlink": "連携解除",
+      "test": "接続テスト"
+    },
+    "testOk": "接続済み",
+    "testFailed": "接続に失敗しました",
+    "unlink": {
+      "title": "プロバイダーの連携を解除",
+      "message": "このプロバイダーとの連携済み認証情報を削除しますか？管理者が設定したインスタンス共通のキーがあれば、代わりに使用されます。"
+    },
+    "unlinkError": "このプロバイダーの連携を解除できませんでした。もう一度お試しください。",
+    "tryIt": {
+      "title": "試してみる",
+      "description": "設定済みのプロバイダーにメッセージを送信し、応答することを確認します。",
+      "autoProvider": "最初に設定されたプロバイダーを使用",
+      "placeholder": "何か聞いてみる…",
+      "send": "送信"
+    },
+    "chatError": "応答を取得できませんでした。プロバイダーが正しく設定されているか確認してください。",
+    "form": {
+      "apiKeyTitle": "APIキーで連携",
+      "oauthTitle": "サブスクリプションを連携",
+      "ollamaTitle": "Ollama に接続",
+      "modeApiKey": "APIキー",
+      "modeOAuth": "サブスクリプション",
+      "fields": {
+        "apiKey": "APIキー",
+        "baseUrl": "サーバーURL",
+        "model": "モデル（任意）"
+      },
+      "saveError": "このプロバイダーを保存できませんでした。値を確認してもう一度お試しください。",
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      },
+      "oauth": {
+        "startHint": "新しいタブでサインインしてアクセスを承認します。完了したらここに戻ってコードを貼り付けてください。",
+        "startAction": "新しいタブで続行",
+        "pasteHint": "アクセスを承認したら、表示されたコード（またはそのページが読み込めなくても完全なリダイレクトURL）をコピーして下に貼り付けてください。",
+        "reopenAction": "サインインページを再度開く",
+        "fields": {
+          "code": "コード"
+        },
+        "completeAction": "連携",
+        "startError": "サインインを開始できませんでした。もう一度お試しください。",
+        "completeError": "そのコードは無効でした。確認してもう一度お試しください。"
+      }
     }
   },
   "errors": {

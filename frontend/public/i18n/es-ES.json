@@ -28,7 +28,8 @@
         "analysis": "Análisis",
         "setup": "Configuración",
         "admin": "Administración"
-      }
+      },
+      "providers": "Proveedores de IA"
     },
     "sidebar": {
       "openMenu": "Abrir menú",
@@ -720,7 +721,8 @@
       "title": "Agentes de IA",
       "description": "Asistentes de IA para tus datos financieros, con varios proveedores y herramientas a través de MCP. Desactivados de forma predeterminada; se pueden configurar en Docker Compose (AGENTS_ENABLED).",
       "disabled": "Desactivados",
-      "enabled": "Activados"
+      "enabled": "Activados",
+      "manage": "Gestionar"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Copiar enlace de registro",
       "revoke": "Revocar",
       "empty": "No se han encontrado invitaciones."
+    }
+  },
+  "providers": {
+    "title": "Proveedores de IA",
+    "description": "Conecta un proveedor de IA con una clave de API, una suscripción vinculada o un servidor Ollama local.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Vinculado ({{label}})",
+      "configuredEnv": "Desde el entorno ({{model}})",
+      "notConfigured": "Sin configurar"
+    },
+    "actions": {
+      "link": "Vincular",
+      "relink": "Revincular",
+      "unlink": "Desvincular",
+      "test": "Probar conexión"
+    },
+    "testOk": "Conectado",
+    "testFailed": "Fallo de conexión",
+    "unlink": {
+      "title": "Desvincular proveedor",
+      "message": "¿Quitar tu credencial vinculada a este proveedor? Se usará en su lugar la clave de la instancia definida por un administrador, si existe."
+    },
+    "unlinkError": "No se pudo desvincular este proveedor. Inténtalo de nuevo.",
+    "tryIt": {
+      "title": "Probar",
+      "description": "Envía un mensaje a un proveedor configurado para confirmar que responde.",
+      "autoProvider": "Usar el primer proveedor configurado",
+      "placeholder": "Pregunta algo…",
+      "send": "Enviar"
+    },
+    "chatError": "No se pudo obtener una respuesta. Comprueba que el proveedor esté bien configurado.",
+    "form": {
+      "apiKeyTitle": "Vincular con una clave de API",
+      "oauthTitle": "Vincular una suscripción",
+      "ollamaTitle": "Conectar con Ollama",
+      "modeApiKey": "Clave de API",
+      "modeOAuth": "Suscripción",
+      "fields": {
+        "apiKey": "Clave de API",
+        "baseUrl": "URL del servidor",
+        "model": "Modelo (opcional)"
+      },
+      "saveError": "No se pudo guardar este proveedor. Comprueba el valor e inténtalo de nuevo.",
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      },
+      "oauth": {
+        "startHint": "Se te enviará a iniciar sesión y aprobar el acceso en una nueva pestaña. Vuelve aquí después para pegar el código.",
+        "startAction": "Continuar en una nueva pestaña",
+        "pasteHint": "Tras aprobar el acceso, copia el código mostrado (o la URL de redirección completa, aunque esa página falle al cargar) y pégalo abajo.",
+        "reopenAction": "Reabrir la página de inicio de sesión",
+        "fields": {
+          "code": "Código"
+        },
+        "completeAction": "Vincular",
+        "startError": "No se pudo iniciar el proceso de acceso. Inténtalo de nuevo.",
+        "completeError": "Ese código no funcionó. Compruébalo e inténtalo de nuevo."
+      }
     }
   },
   "errors": {

@@ -1,4 +1,10 @@
 import type { AccountType } from '../../domain/models/account';
+import type {
+  AgentAuthMode,
+  AgentChatRole,
+  AgentCredentialSource,
+  AgentProviderId,
+} from '../../domain/models/agent-provider';
 import type { CategoryKind } from '../../domain/models/category';
 import type { RecurringFrequency } from '../../domain/models/recurring';
 import type { ConversionSource, TransactionType } from '../../domain/models/transaction';
@@ -196,4 +202,54 @@ export type GoalWithAccountPatchWire = NullablePatch<Omit<GoalWithAccountInputWi
 export interface GoalWithAccountWire {
   goal: GoalWire;
   account: AccountWire;
+}
+
+export interface AgentProviderStatusWire {
+  provider: AgentProviderId;
+  configured: boolean;
+  source: AgentCredentialSource;
+  auth_mode: AgentAuthMode | null;
+  auth_modes: string[];
+  account_label: string | null;
+  model: string;
+  models: string[];
+}
+
+export interface AgentProviderLinkWire {
+  api_key?: string;
+  base_url?: string;
+  model?: string;
+}
+
+export interface AgentOAuthStartWire {
+  authorize_url: string;
+  verifier: string;
+  state: string;
+}
+
+export interface AgentOAuthCompleteWire {
+  verifier: string;
+  state: string;
+  code: string;
+}
+
+export interface AgentProviderTestWire {
+  ok: boolean;
+  error_code: string | null;
+}
+
+export interface AgentChatMessageWire {
+  role: AgentChatRole;
+  content: string;
+}
+
+export interface AgentChatRequestWire {
+  provider?: AgentProviderId;
+  messages: AgentChatMessageWire[];
+}
+
+export interface AgentChatReplyWire {
+  provider: AgentProviderId;
+  model: string;
+  reply: string;
 }

@@ -17,6 +17,10 @@ dependencies = [
     "httpx>=0.28.1",
     "argon2-cffi>=25.1.0",
     "email-validator>=2.3.0",
+    # Runtime dep: app/core/crypto.py encrypts stored AI-provider credentials
+    # (app/models/agent_credential.py) - the only secret in this codebase
+    # that must be read back rather than one-way hashed.
+    "cryptography>=46.0.3",
 ]
 
 [dependency-groups]

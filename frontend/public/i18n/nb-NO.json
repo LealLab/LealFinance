@@ -28,7 +28,8 @@
         "analysis": "Analyse",
         "setup": "Oppsett",
         "admin": "Administrasjon"
-      }
+      },
+      "providers": "AI-leverandører"
     },
     "sidebar": {
       "openMenu": "Åpne meny",
@@ -720,7 +721,8 @@
       "title": "AI-agenter",
       "description": "AI-assistenter for økonomidataene dine, med flere leverandører og verktøy via MCP. Deaktivert som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Deaktivert",
-      "enabled": "Aktivert"
+      "enabled": "Aktivert",
+      "manage": "Administrer"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Kopier registreringslenke",
       "revoke": "Tilbakekall",
       "empty": "Ingen invitasjoner funnet."
+    }
+  },
+  "providers": {
+    "title": "AI-leverandører",
+    "description": "Koble til en AI-leverandør med en API-nøkkel, et tilknyttet abonnement eller en lokal Ollama-server.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Tilknyttet ({{label}})",
+      "configuredEnv": "Fra miljøet ({{model}})",
+      "notConfigured": "Ikke konfigurert"
+    },
+    "actions": {
+      "link": "Koble til",
+      "relink": "Koble til på nytt",
+      "unlink": "Fjern tilkobling",
+      "test": "Test tilkobling"
+    },
+    "testOk": "Tilkoblet",
+    "testFailed": "Tilkobling mislyktes",
+    "unlink": {
+      "title": "Fjern tilkobling til leverandør",
+      "message": "Fjerne dine tilknyttede opplysninger for denne leverandøren? En instansomfattende nøkkel satt av en administrator brukes i stedet, hvis den finnes."
+    },
+    "unlinkError": "Kunne ikke fjerne tilkoblingen til denne leverandøren. Prøv igjen.",
+    "tryIt": {
+      "title": "Prøv det",
+      "description": "Send én melding til en konfigurert leverandør for å bekrefte at den svarer.",
+      "autoProvider": "Bruk den første konfigurerte leverandøren",
+      "placeholder": "Spør om noe…",
+      "send": "Send"
+    },
+    "chatError": "Fikk ikke noe svar. Sjekk at leverandøren er riktig konfigurert.",
+    "form": {
+      "apiKeyTitle": "Koble til med en API-nøkkel",
+      "oauthTitle": "Koble til et abonnement",
+      "ollamaTitle": "Koble til Ollama",
+      "modeApiKey": "API-nøkkel",
+      "modeOAuth": "Abonnement",
+      "fields": {
+        "apiKey": "API-nøkkel",
+        "baseUrl": "Server-URL",
+        "model": "Modell (valgfritt)"
+      },
+      "saveError": "Kunne ikke lagre denne leverandøren. Sjekk verdien og prøv igjen.",
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Lagre"
+      },
+      "oauth": {
+        "startHint": "Du blir sendt videre for å logge inn og godkjenne tilgang i en ny fane. Kom tilbake hit etterpå for å lime inn koden.",
+        "startAction": "Fortsett i ny fane",
+        "pasteHint": "Etter at du har godkjent tilgangen, kopier den viste koden (eller hele omdirigerings-URLen, selv om siden ikke laster) og lim den inn under.",
+        "reopenAction": "Åpne påloggingssiden igjen",
+        "fields": {
+          "code": "Kode"
+        },
+        "completeAction": "Koble til",
+        "startError": "Kunne ikke starte pålogging. Prøv igjen.",
+        "completeError": "Den koden fungerte ikke. Sjekk den og prøv igjen."
+      }
     }
   },
   "errors": {

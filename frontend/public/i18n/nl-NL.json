@@ -28,7 +28,8 @@
         "analysis": "Analyse",
         "setup": "Instellen",
         "admin": "Beheer"
-      }
+      },
+      "providers": "AI-providers"
     },
     "sidebar": {
       "openMenu": "Menu openen",
@@ -720,7 +721,8 @@
       "title": "AI-agents",
       "description": "AI-agents voor je financiële gegevens, met meerdere aanbieders en tools via MCP. Standaard uitgeschakeld – instelbaar in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Uitgeschakeld",
-      "enabled": "Ingeschakeld"
+      "enabled": "Ingeschakeld",
+      "manage": "Beheren"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Registratielink kopiëren",
       "revoke": "Intrekken",
       "empty": "Geen uitnodigingen gevonden."
+    }
+  },
+  "providers": {
+    "title": "AI-providers",
+    "description": "Verbind een AI-provider met een API-sleutel, een gekoppeld abonnement of een lokale Ollama-server.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Gekoppeld ({{label}})",
+      "configuredEnv": "Vanuit de omgeving ({{model}})",
+      "notConfigured": "Niet geconfigureerd"
+    },
+    "actions": {
+      "link": "Koppelen",
+      "relink": "Opnieuw koppelen",
+      "unlink": "Ontkoppelen",
+      "test": "Verbinding testen"
+    },
+    "testOk": "Verbonden",
+    "testFailed": "Verbinding mislukt",
+    "unlink": {
+      "title": "Provider ontkoppelen",
+      "message": "Je gekoppelde gegevens voor deze provider verwijderen? Een instantiebrede sleutel van een beheerder wordt dan in plaats daarvan gebruikt, indien aanwezig."
+    },
+    "unlinkError": "Kon deze provider niet ontkoppelen. Probeer het opnieuw.",
+    "tryIt": {
+      "title": "Proberen",
+      "description": "Stuur een bericht naar een geconfigureerde provider om te bevestigen dat deze antwoordt.",
+      "autoProvider": "Eerste geconfigureerde provider gebruiken",
+      "placeholder": "Vraag iets…",
+      "send": "Verstuur"
+    },
+    "chatError": "Geen antwoord ontvangen. Controleer of de provider juist is geconfigureerd.",
+    "form": {
+      "apiKeyTitle": "Koppelen met een API-sleutel",
+      "oauthTitle": "Abonnement koppelen",
+      "ollamaTitle": "Verbinden met Ollama",
+      "modeApiKey": "API-sleutel",
+      "modeOAuth": "Abonnement",
+      "fields": {
+        "apiKey": "API-sleutel",
+        "baseUrl": "Server-URL",
+        "model": "Model (optioneel)"
+      },
+      "saveError": "Kon deze provider niet opslaan. Controleer de waarde en probeer het opnieuw.",
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      },
+      "oauth": {
+        "startHint": "Je wordt in een nieuw tabblad doorgestuurd om in te loggen en toegang goed te keuren. Kom hierna terug om de code te plakken.",
+        "startAction": "Doorgaan in nieuw tabblad",
+        "pasteHint": "Kopieer na goedkeuring de getoonde code (of de volledige omleidings-URL, ook als die pagina niet laadt) en plak deze hieronder.",
+        "reopenAction": "Inlogpagina opnieuw openen",
+        "fields": {
+          "code": "Code"
+        },
+        "completeAction": "Koppelen",
+        "startError": "Kon het inloggen niet starten. Probeer het opnieuw.",
+        "completeError": "Die code werkte niet. Controleer deze en probeer het opnieuw."
+      }
     }
   },
   "errors": {

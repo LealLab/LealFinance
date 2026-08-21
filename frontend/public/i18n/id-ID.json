@@ -28,7 +28,8 @@
         "analysis": "Analisis",
         "setup": "Penyiapan",
         "admin": "Administrasi"
-      }
+      },
+      "providers": "Penyedia AI"
     },
     "sidebar": {
       "openMenu": "Buka menu",
@@ -720,7 +721,8 @@
       "title": "Agen AI",
       "description": "Asisten AI untuk data keuangan Anda, dengan berbagai penyedia dan alat melalui MCP. Dinonaktifkan secara default — dapat dikonfigurasi di Docker Compose (AGENTS_ENABLED).",
       "disabled": "Dinonaktifkan",
-      "enabled": "Diaktifkan"
+      "enabled": "Diaktifkan",
+      "manage": "Kelola"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Salin tautan pendaftaran",
       "revoke": "Cabut",
       "empty": "Undangan tidak ditemukan."
+    }
+  },
+  "providers": {
+    "title": "Penyedia AI",
+    "description": "Hubungkan penyedia AI dengan kunci API, langganan tertaut, atau server Ollama lokal.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Tertaut ({{label}})",
+      "configuredEnv": "Dari environment ({{model}})",
+      "notConfigured": "Belum dikonfigurasi"
+    },
+    "actions": {
+      "link": "Tautkan",
+      "relink": "Tautkan ulang",
+      "unlink": "Putuskan tautan",
+      "test": "Uji koneksi"
+    },
+    "testOk": "Terhubung",
+    "testFailed": "Koneksi gagal",
+    "unlink": {
+      "title": "Putuskan tautan penyedia",
+      "message": "Hapus kredensial yang tertaut untuk penyedia ini? Kunci instans yang diatur administrator (jika ada) akan digunakan sebagai gantinya."
+    },
+    "unlinkError": "Tidak dapat memutuskan tautan penyedia ini. Coba lagi.",
+    "tryIt": {
+      "title": "Coba",
+      "description": "Kirim satu pesan ke penyedia yang telah dikonfigurasi untuk memastikan ia merespons.",
+      "autoProvider": "Gunakan penyedia pertama yang dikonfigurasi",
+      "placeholder": "Tanyakan sesuatu…",
+      "send": "Kirim"
+    },
+    "chatError": "Tidak bisa mendapatkan balasan. Periksa apakah penyedia dikonfigurasi dengan benar.",
+    "form": {
+      "apiKeyTitle": "Tautkan dengan kunci API",
+      "oauthTitle": "Tautkan langganan",
+      "ollamaTitle": "Sambungkan ke Ollama",
+      "modeApiKey": "Kunci API",
+      "modeOAuth": "Langganan",
+      "fields": {
+        "apiKey": "Kunci API",
+        "baseUrl": "URL server",
+        "model": "Model (opsional)"
+      },
+      "saveError": "Tidak dapat menyimpan penyedia ini. Periksa nilainya dan coba lagi.",
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      },
+      "oauth": {
+        "startHint": "Anda akan diarahkan untuk masuk dan menyetujui akses di tab baru. Kembali ke sini setelahnya untuk menempelkan kode.",
+        "startAction": "Lanjutkan di tab baru",
+        "pasteHint": "Setelah menyetujui akses, salin kode yang ditampilkan (atau URL pengalihan lengkap, meski halaman itu gagal dimuat) lalu tempel di bawah.",
+        "reopenAction": "Buka kembali halaman masuk",
+        "fields": {
+          "code": "Kode"
+        },
+        "completeAction": "Tautkan",
+        "startError": "Tidak dapat memulai proses masuk. Coba lagi.",
+        "completeError": "Kode itu tidak berfungsi. Periksa dan coba lagi."
+      }
     }
   },
   "errors": {

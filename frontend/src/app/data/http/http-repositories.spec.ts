@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HttpAccountRepository } from './http-account.repository';
+import { HttpAgentProviderRepository } from './http-agent-provider.repository';
 import { HttpExchangeRateRepository } from './http-exchange-rate.repository';
 import { HttpGoalRepository } from './http-goal.repository';
 import { HttpManualRateRepository } from './http-manual-rate.repository';
@@ -193,5 +194,112 @@ describe('HTTP repositories', () => {
     });
     req.flush({ created: 1 });
     expect(created).toBe(1);
+  });
+
+  it('lists and maps agent provider status', () => {
+    let statuses: unknown;
+    TestBed.inject(HttpAgentProviderRepository)
+      .list()
+      .subscribe((result) => (statuses = result));
+    const req = http.expectOne('/api/v1/agents/providers');
+    expect(req.request.method).toBe('GET');
+    req.flush([
+      {
+        provider: 'anthropic',
+        configured: true,
+        source: 'env',
+        auth_mode: 'api_key',
+        auth_modes: ['api_key', 'oauth'],
+        account_label: null,
+        model: 'claude-sonnet-5',
+        models: ['claude-opus-5', 'claude-sonnet-5'],
+      },
+    ]);
+    expect(statuses).toEqual([
+      {
+        provider: 'anthropic',
+        configured: true,
+        source: 'env',
+        authMode: 'api_key',
+        authModes: ['api_key', 'oauth'],
+        accountLabel: undefined,
+        model: 'claude-sonnet-5',
+        models: ['claude-opus-5', 'claude-sonnet-5'],
+      },
+    ]);
+  });
+
+  it('links a provider with an api key, omitting unset fields', () => {
+    TestBed.inject(HttpAgentProviderRepository)
+      .link('anthropic', { apiKey: 'sk-x' })
+      .subscribe();
+    const req = http.expectOne('/api/v1/agents/providers/anthropic');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ api_key: 'sk-x' });
+    req.flush({
+      provider: 'anthropic',
+      configured: true,
+      source: 'user',
+      auth_mode: 'api_key',
+      auth_modes: ['api_key', 'oauth'],
+      account_label: null,
+      model: 'claude-sonnet-5',
+      models: [],
+    });
+  });
+
+  it('unlinks a provider', () => {
+    TestBed.inject(HttpAgentProviderRepository).unlink('openai').subscribe();
+    const req = http.expectOne('/api/v1/agents/providers/openai');
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
+
+  it('starts and completes OAuth linking', () => {
+    let start: unknown;
+    TestBed.inject(HttpAgentProviderRepository)
+      .startOAuth('anthropic')
+      .subscribe((result) => (start = result));
+    const startReq = http.expectOne('/api/v1/agents/providers/anthropic/oauth/start');
+    expect(startReq.request.method).toBe('POST');
+    startReq.flush({ authorize_url: 'https://claude.ai/oauth/authorize?x=1', verifier: 'v', state: 's' });
+    expect(start).toEqual({ authorizeUrl: 'https://claude.ai/oauth/authorize?x=1', verifier: 'v', state: 's' });
+
+    TestBed.inject(HttpAgentProviderRepository)
+      .completeOAuth('anthropic', { verifier: 'v', state: 's', code: 'c#s' })
+      .subscribe();
+    const completeReq = http.expectOne('/api/v1/agents/providers/anthropic/oauth/complete');
+    expect(completeReq.request.method).toBe('POST');
+    expect(completeReq.request.body).toEqual({ verifier: 'v', state: 's', code: 'c#s' });
+    completeReq.flush({
+      provider: 'anthropic',
+      configured: true,
+      source: 'user',
+      auth_mode: 'oauth',
+      auth_modes: ['api_key', 'oauth'],
+      account_label: 'Claude subscription',
+      model: 'claude-sonnet-5',
+      models: [],
+    });
+  });
+
+  it('tests a provider connection', () => {
+    let result: unknown;
+    TestBed.inject(HttpAgentProviderRepository)
+      .test('ollama')
+      .subscribe((r) => (result = r));
+    const req = http.expectOne('/api/v1/agents/providers/ollama/test');
+    expect(req.request.method).toBe('POST');
+    req.flush({ ok: false, error_code: 'agents.provider_unavailable' });
+    expect(result).toEqual({ ok: false, errorCode: 'agents.provider_unavailable' });
+  });
+
+  it('sends a chat message, including provider only when set', () => {
+    TestBed.inject(HttpAgentProviderRepository)
+      .chat([{ role: 'user', content: 'hi' }])
+      .subscribe();
+    const req = http.expectOne('/api/v1/agents/chat');
+    expect(req.request.body).toEqual({ messages: [{ role: 'user', content: 'hi' }] });
+    req.flush({ provider: 'anthropic', model: 'claude-sonnet-5', reply: 'hello' });
   });
 });

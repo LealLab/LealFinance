@@ -28,7 +28,8 @@
         "analysis": "Analyse",
         "setup": "Opsætning",
         "admin": "Administration"
-      }
+      },
+      "providers": "AI-udbydere"
     },
     "sidebar": {
       "openMenu": "Åbn menu",
@@ -720,7 +721,8 @@
       "title": "AI-agenter",
       "description": "AI-assistenter til dine finansielle data med flere udbydere og værktøjer via MCP. De er deaktiveret som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Deaktiveret",
-      "enabled": "Aktiveret"
+      "enabled": "Aktiveret",
+      "manage": "Administrer"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Kopiér registreringslink",
       "revoke": "Tilbagekald",
       "empty": "Ingen invitationer fundet."
+    }
+  },
+  "providers": {
+    "title": "AI-udbydere",
+    "description": "Forbind en AI-udbyder med en API-nøgle, et tilknyttet abonnement eller en lokal Ollama-server.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Tilknyttet ({{label}})",
+      "configuredEnv": "Fra miljøet ({{model}})",
+      "notConfigured": "Ikke konfigureret"
+    },
+    "actions": {
+      "link": "Tilknyt",
+      "relink": "Tilknyt igen",
+      "unlink": "Fjern tilknytning",
+      "test": "Test forbindelse"
+    },
+    "testOk": "Forbundet",
+    "testFailed": "Forbindelse mislykkedes",
+    "unlink": {
+      "title": "Fjern tilknytning til udbyder",
+      "message": "Fjern dine tilknyttede oplysninger for denne udbyder? En instansbred nøgle, som en administrator har angivet, bruges i stedet, hvis der findes en."
+    },
+    "unlinkError": "Kunne ikke fjerne tilknytningen til denne udbyder. Prøv igen.",
+    "tryIt": {
+      "title": "Prøv det",
+      "description": "Send én besked til en konfigureret udbyder for at bekræfte, at den svarer.",
+      "autoProvider": "Brug den første konfigurerede udbyder",
+      "placeholder": "Spørg om noget…",
+      "send": "Send"
+    },
+    "chatError": "Kunne ikke få et svar. Tjek at udbyderen er konfigureret korrekt.",
+    "form": {
+      "apiKeyTitle": "Tilknyt med en API-nøgle",
+      "oauthTitle": "Tilknyt et abonnement",
+      "ollamaTitle": "Opret forbindelse til Ollama",
+      "modeApiKey": "API-nøgle",
+      "modeOAuth": "Abonnement",
+      "fields": {
+        "apiKey": "API-nøgle",
+        "baseUrl": "Server-URL",
+        "model": "Model (valgfri)"
+      },
+      "saveError": "Kunne ikke gemme denne udbyder. Tjek værdien, og prøv igen.",
+      "actions": {
+        "cancel": "Annuller",
+        "save": "Gem"
+      },
+      "oauth": {
+        "startHint": "Du bliver sendt videre for at logge ind og godkende adgang i en ny fane. Kom tilbage hertil bagefter for at indsætte koden.",
+        "startAction": "Fortsæt i ny fane",
+        "pasteHint": "Efter du har godkendt adgangen, skal du kopiere den viste kode (eller hele omdirigerings-URL'en, selv hvis siden ikke indlæses) og indsætte den nedenfor.",
+        "reopenAction": "Åbn login-siden igen",
+        "fields": {
+          "code": "Kode"
+        },
+        "completeAction": "Tilknyt",
+        "startError": "Kunne ikke starte login. Prøv igen.",
+        "completeError": "Den kode virkede ikke. Tjek den, og prøv igen."
+      }
     }
   },
   "errors": {

@@ -28,7 +28,8 @@
         "analysis": "Analyse",
         "setup": "Configuration",
         "admin": "Administration"
-      }
+      },
+      "providers": "Fournisseurs d'IA"
     },
     "sidebar": {
       "openMenu": "Ouvrir le menu",
@@ -720,7 +721,8 @@
       "title": "Agents IA",
       "description": "Assistants IA pour vos données financières, avec plusieurs fournisseurs et outils via MCP. Désactivé par défaut — configurable dans Docker Compose (AGENTS_ENABLED).",
       "disabled": "Désactivé",
-      "enabled": "Activé"
+      "enabled": "Activé",
+      "manage": "Gérer"
     }
   },
   "auth": {
@@ -770,6 +772,70 @@
       "copyLink": "Copier le lien d’inscription",
       "revoke": "Révoquer",
       "empty": "Aucune invitation trouvée."
+    }
+  },
+  "providers": {
+    "title": "Fournisseurs d'IA",
+    "description": "Connectez un fournisseur d'IA avec une clé API, un abonnement lié ou un serveur Ollama local.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "status": {
+      "configuredUser": "Lié ({{label}})",
+      "configuredEnv": "Défini dans l'environnement ({{model}})",
+      "notConfigured": "Non configuré"
+    },
+    "actions": {
+      "link": "Lier",
+      "relink": "Relier",
+      "unlink": "Délier",
+      "test": "Tester la connexion"
+    },
+    "testOk": "Connecté",
+    "testFailed": "Échec de la connexion",
+    "unlink": {
+      "title": "Délier le fournisseur",
+      "message": "Supprimer votre identifiant lié à ce fournisseur ? La clé de l'instance définie par un administrateur, le cas échéant, sera utilisée à la place."
+    },
+    "unlinkError": "Impossible de délier ce fournisseur. Réessayez.",
+    "tryIt": {
+      "title": "Essayer",
+      "description": "Envoyez un message à un fournisseur configuré pour confirmer qu’il répond.",
+      "autoProvider": "Utiliser le premier fournisseur configuré",
+      "placeholder": "Posez une question…",
+      "send": "Envoyer"
+    },
+    "chatError": "Impossible d'obtenir une réponse. Vérifiez que le fournisseur est bien configuré.",
+    "form": {
+      "apiKeyTitle": "Lier avec une clé API",
+      "oauthTitle": "Lier un abonnement",
+      "ollamaTitle": "Se connecter à Ollama",
+      "modeApiKey": "Clé API",
+      "modeOAuth": "Abonnement",
+      "fields": {
+        "apiKey": "Clé API",
+        "baseUrl": "URL du serveur",
+        "model": "Modèle (facultatif)"
+      },
+      "saveError": "Impossible d'enregistrer ce fournisseur. Vérifiez la valeur et réessayez.",
+      "actions": {
+        "cancel": "Annuler",
+        "save": "Enregistrer"
+      },
+      "oauth": {
+        "startHint": "Vous serez redirigé pour vous connecter et approuver l’accès dans un nouvel onglet. Revenez ici ensuite pour coller le code.",
+        "startAction": "Continuer dans un nouvel onglet",
+        "pasteHint": "Après avoir approuvé l'accès, copiez le code affiché (ou l'URL complète de redirection, même si cette page échoue) et collez-le ci-dessous.",
+        "reopenAction": "Rouvrir la page de connexion",
+        "fields": {
+          "code": "Code"
+        },
+        "completeAction": "Lier",
+        "startError": "Impossible de démarrer la connexion. Réessayez.",
+        "completeError": "Ce code n'a pas fonctionné. Vérifiez-le et réessayez."
+      }
     }
   },
   "errors": {
