@@ -176,7 +176,7 @@ def _split_code(pasted: str) -> tuple[str, str | None]:
     pasted = pasted.strip()
     if pasted.startswith(("http://", "https://")):
         query = parse_qs(urlsplit(pasted).query)
-        return query.get("code", [""])[0], (query.get("state") or [None])[0]
+        return query.get("code", [""])[0], (query.get("state") or [""])[0] or None
     auth_code, _, embedded_state = pasted.partition("#")
     return auth_code, embedded_state or None
 
