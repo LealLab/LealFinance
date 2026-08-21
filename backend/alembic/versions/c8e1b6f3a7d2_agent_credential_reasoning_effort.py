@@ -33,7 +33,5 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_constraint(
-        "ck_agent_credentials_reasoning_effort", "agent_credentials", type_="check"
-    )
+    op.drop_constraint("ck_agent_credentials_reasoning_effort", "agent_credentials", type_="check")
     op.drop_column("agent_credentials", "reasoning_effort")
