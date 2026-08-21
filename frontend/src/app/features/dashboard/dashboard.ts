@@ -22,7 +22,7 @@ import { budgetProgress } from '../../domain/calc/budgets';
 import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
-import { compare, isNegative, isZero, money, ratio, toNumber, zero } from '../../shared/money/money';
+import { compare, isNegative, isZero, money, Money, ratio, toNumber, zero } from '../../shared/money/money';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -238,6 +238,19 @@ export class Dashboard {
       .slice(0, RECENT_TRANSACTIONS_LIMIT)
       .map((tx) => ({ tx, account: accounts.get(tx.accountId) }));
   });
+
+  protected amountClass(value: Money): string {
+    if (isZero(value)) return 'text-content-primary';
+    return isNegative(value) ? 'text-negative' : 'text-positive';
+  }
+
+  protected transactionClass(tx: { type: string; amount: string; currency: string }): string {
+    if (isZero(money(tx.amount, tx.currency))) return 'text-content-primary';
+    if (tx.type === 'transfer') return 'text-accent';
+    if (tx.type === 'income') return 'text-positive';
+    if (tx.type === 'expense') return 'text-negative';
+    return 'text-content-primary';
+  }
 
   protected readonly budgetPreview = computed(() => {
     const budgets = (this.budgetsResource.value() ?? []).filter((b) => b.month === this.currentMonth);

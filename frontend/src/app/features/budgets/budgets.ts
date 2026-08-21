@@ -31,7 +31,7 @@ import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-pla
 import { Category } from '../../domain/models/category';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Transaction } from '../../domain/models/transaction';
-import { subtract, sum } from '../../shared/money/money';
+import { isNegative, isZero, Money, subtract, sum } from '../../shared/money/money';
 import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
@@ -43,7 +43,7 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
-import { StatTile } from '../../shared/ui/stat-tile/stat-tile';
+import { StatTile, StatTone } from '../../shared/ui/stat-tile/stat-tile';
 import { BudgetFormModal } from './budget-form-modal';
 
 /** t(budgets.planner.errors.total, budgets.planner.errors.income, budgets.planner.errors.save) */
@@ -284,6 +284,11 @@ export class Budgets {
     const spent = sum(rows.map((r) => r.spent), this.displayCurrency());
     return { budgeted, spent, remaining: subtract(budgeted, spent) };
   });
+
+  protected valueTone(value: Money, expense = false): StatTone {
+    if (isZero(value)) return 'default';
+    return expense || isNegative(value) ? 'negative' : 'positive';
+  }
 
   protected readonly availableCategoriesForNewBudget = computed<Category[]>(() => {
     const categories = this.categoriesResource.value() ?? [];

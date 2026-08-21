@@ -14,6 +14,7 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { money } from '../../shared/money/money';
 import { Accounts } from './accounts';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -48,6 +49,15 @@ describe('Accounts', () => {
 
     expect(fixture.componentInstance).toBeTruthy();
     expect(fixture.nativeElement.textContent).toContain('Contas');
+  });
+
+  it('colors balances by sign and leaves zero balances neutral', () => {
+    const fixture = TestBed.createComponent(Accounts);
+    const component = fixture.componentInstance;
+
+    expect(component['amountClass'](money('-1', 'BRL'))).toBe('text-negative');
+    expect(component['amountClass'](money('1', 'BRL'))).toBe('text-positive');
+    expect(component['amountClass'](money('0', 'BRL'))).toBe('text-content-primary');
   });
 
   it('creates a new account end-to-end through the modal and shows it in the list', async () => {

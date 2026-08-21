@@ -14,7 +14,7 @@ import { convertedOrNull, converterFromRates, CurrencyConverter } from '../../do
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Institution } from '../../domain/models/institution';
-import { money, Money, sum } from '../../shared/money/money';
+import { isNegative, isZero, money, Money, sum } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
@@ -157,6 +157,11 @@ export class Accounts {
   protected readonly isEmpty = computed(
     () => !this.accountsResource.isLoading() && this.groups().length === 0
   );
+
+  protected amountClass(value: Money): string {
+    if (isZero(value)) return 'text-content-primary';
+    return isNegative(value) ? 'text-negative' : 'text-positive';
+  }
 
   protected openCreate(): void {
     this.editingAccount.set(undefined);

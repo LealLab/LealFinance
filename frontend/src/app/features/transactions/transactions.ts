@@ -16,6 +16,7 @@ import { projectOccurrences } from '../../domain/calc/recurrence';
 import { Category } from '../../domain/models/category';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
+import { isZero, money } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
@@ -289,10 +290,25 @@ export class Transactions {
     return projectOccurrences(rule, from, to)[0]?.date;
   }
 
-  protected rowTone(tx: Pick<Transaction, 'type'>): 'positive' | 'negative' | 'neutral' {
+  protected rowTone(
+    tx: Pick<Transaction, 'type' | 'amount' | 'currency'>,
+  ): 'positive' | 'negative' | 'accent' | 'neutral' {
+    if (isZero(money(tx.amount, tx.currency))) return 'neutral';
+    if (tx.type === 'transfer') return 'accent';
     if (tx.type === 'income') return 'positive';
     if (tx.type === 'expense') return 'negative';
     return 'neutral';
+  }
+
+  protected rowToneClass(tx: Pick<Transaction, 'type' | 'amount' | 'currency'>): string {
+    const tone = this.rowTone(tx);
+    return tone === 'positive'
+      ? 'text-positive'
+      : tone === 'negative'
+        ? 'text-negative'
+        : tone === 'accent'
+          ? 'text-accent'
+          : 'text-content-primary';
   }
 
   protected rowSign(tx: Pick<Transaction, 'type'>): string {
