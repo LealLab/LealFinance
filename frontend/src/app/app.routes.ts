@@ -67,15 +67,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
       },
       {
-        path: 'providers',
-        canActivate: [agentsGuard],
-        loadComponent: () =>
-          import('./features/providers/providers').then((m) => m.Providers),
-      },
-      {
         path: 'admin/users',
         canActivate: [adminGuard],
         loadComponent: () => import('./features/admin/users-admin').then((m) => m.UsersAdmin),
+      },
+      {
+        path: 'admin/providers',
+        canActivate: [adminGuard, agentsGuard],
+        loadComponent: () => import('./features/providers/providers').then((m) => m.Providers),
       },
     ],
   },

@@ -5,6 +5,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
+import { SessionService } from '../../core/session.service';
 import { Theme, ThemeService } from '../../core/theme.service';
 import { Card } from '../../shared/ui/card/card';
 import { Icon } from '../../shared/ui/icon/icon';
@@ -23,6 +24,7 @@ export class Settings {
   private readonly route = inject(ActivatedRoute);
   protected readonly preferences = inject(PreferenceService);
   protected readonly metadata = inject(MetadataService);
+  protected readonly session = inject(SessionService);
 
   protected readonly currencyOptions = this.metadata.currencies;
   protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];

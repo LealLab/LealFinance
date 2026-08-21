@@ -1,10 +1,11 @@
 # AI agents
 
 Optional, off by default, gated by `AGENTS_ENABLED` (`.env`) plus the
-public `GET /meta/settings` flag the frontend uses to hide the nav item
-and redirect the route. When disabled, every `/api/v1/agents/*` route
-404s as `agents.disabled` and no provider code path runs - see
-`app/api/v1/agents.py`.
+public `GET /meta/settings` flag the frontend uses to hide the admin nav
+item and redirect the route. Provider management and `/api/v1/agents/*`
+are admin-only; members receive `auth.admin_required`. When disabled,
+every `/api/v1/agents/*` route 404s as `agents.disabled` and no provider
+code path runs - see `app/api/v1/agents.py`.
 
 This covers the provider layer: linking credentials and one non-streaming
 "try it" chat call to prove a provider answers. Agent tools over your
@@ -29,8 +30,8 @@ OLLAMA_BASE_URL=http://ollama:11434   # the in-container hostname, not localhost
 
 ## Providers
 
-Three providers, configurable per-instance (`.env`) or per-user (the
-Providers page, Settings → AI agents → Manage providers):
+Three providers, configurable per-instance (`.env`) or by an administrator
+with the Providers page at Administration → AI providers:
 
 | Provider | Auth modes | Notes |
 | --- | --- | --- |

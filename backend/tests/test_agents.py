@@ -23,11 +23,17 @@ from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import BadGatewayError, ValidationAppError
 from app.models.agent_credential import AgentCredential
+from app.models.user import ROLE_ADMIN, ROLE_MEMBER
 from tests.factories import login_as, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
-    user, password = await make_user(db_session, email=email)
+async def _authed(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    email: str,
+    role: str = ROLE_ADMIN,
+) -> None:
+    user, password = await make_user(db_session, email=email, role=role)
     await login_as(client, email=user.email, password=password)
 
 
@@ -53,6 +59,19 @@ async def test_agents_routes_require_authentication(
     _enable_agents(monkeypatch)
     response = await client.get("/api/v1/agents/providers")
     assert response.status_code == 401
+
+
+async def test_agents_routes_require_admin(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "member-agents@example.com", role=ROLE_MEMBER)
+
+    response = await client.get("/api/v1/agents/providers")
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "auth.admin_required"
 
 
 # --- Status / credential precedence -------------------------------------
