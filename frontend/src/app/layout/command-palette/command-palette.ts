@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { BalanceVisibilityService } from '../../core/balance-visibility.service';
 import { CommandPaletteService } from '../../core/command-palette.service';
+import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
+import { SessionService } from '../../core/session.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
@@ -52,9 +54,9 @@ interface PaletteGroup {
  * resolve back to a literal - same "dynamic markings" situation as
  * layout/sidebar.ts (whose layout.nav.* keys are reused
  * as-is here for the "Go to" group, via NAV_SECTIONS, and so don't need
- * re-marking).
+ * re-marking). Admin-only items reuse the same keys as layout/sidebar.ts.
  *
- * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances)
+ * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
  */
 @Component({
   selector: 'app-command-palette',
@@ -66,6 +68,8 @@ export class CommandPalette {
   protected readonly paletteService = inject(CommandPaletteService);
   private readonly router = inject(Router);
   private readonly transloco = inject(TranslocoService);
+  private readonly session = inject(SessionService);
+  private readonly metadata = inject(MetadataService);
   private readonly theme = inject(ThemeService);
   private readonly balanceVisibility = inject(BalanceVisibilityService);
   private readonly preferences = inject(PreferenceService);
@@ -326,7 +330,23 @@ export class CommandPalette {
   }
 
   private goToItems(): PaletteItem[] {
-    return NAV_SECTIONS.flatMap((section) =>
+    const sections =
+      this.session.user()?.role === 'admin'
+        ? [
+            ...NAV_SECTIONS,
+            {
+              labelKey: 'layout.nav.sections.admin',
+              items: [
+                { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
+                ...(this.metadata.settings()?.agentsEnabled
+                  ? [{ path: '/admin/providers', labelKey: 'layout.nav.providers', icon: 'zap' as IconName }]
+                  : []),
+              ],
+            },
+          ]
+        : NAV_SECTIONS;
+
+    return sections.flatMap((section) =>
       section.items.map((item) => ({
         id: `goto-${item.path}`,
         labelKey: item.labelKey,

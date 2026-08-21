@@ -23,11 +23,17 @@ from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import BadGatewayError, ValidationAppError
 from app.models.agent_credential import AgentCredential
+from app.models.user import ROLE_ADMIN, ROLE_MEMBER
 from tests.factories import login_as, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
-    user, password = await make_user(db_session, email=email)
+async def _authed(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    email: str,
+    role: str = ROLE_ADMIN,
+) -> None:
+    user, password = await make_user(db_session, email=email, role=role)
     await login_as(client, email=user.email, password=password)
 
 
@@ -53,6 +59,19 @@ async def test_agents_routes_require_authentication(
     _enable_agents(monkeypatch)
     response = await client.get("/api/v1/agents/providers")
     assert response.status_code == 401
+
+
+async def test_agents_routes_require_admin(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "member-agents@example.com", role=ROLE_MEMBER)
+
+    response = await client.get("/api/v1/agents/providers")
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "auth.admin_required"
 
 
 # --- Status / credential precedence -------------------------------------
@@ -120,7 +139,9 @@ async def test_link_model_only_update_preserves_oauth_tokens(
     key or wipe the refresh token/account id - that was the bug that made
     picking a model impossible after a subscription link."""
     _enable_agents(monkeypatch)
-    user, password = await make_user(db_session, email="model-only-oauth@example.com")
+    user, password = await make_user(
+        db_session, email="model-only-oauth@example.com", role=ROLE_ADMIN
+    )
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -189,7 +210,9 @@ async def test_link_effort_only_update_preserves_oauth_tokens(
     the reasoning effort alone must not demand an API key or wipe the
     refresh token/account id either."""
     _enable_agents(monkeypatch)
-    user, password = await make_user(db_session, email="effort-only-oauth@example.com")
+    user, password = await make_user(
+        db_session, email="effort-only-oauth@example.com", role=ROLE_ADMIN
+    )
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -570,7 +593,7 @@ async def test_expired_oauth_refresh_success_updates_row(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch)
-    user, password = await make_user(db_session, email="refresh-ok@example.com")
+    user, password = await make_user(db_session, email="refresh-ok@example.com", role=ROLE_ADMIN)
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -606,7 +629,7 @@ async def test_expired_oauth_refresh_failure_clears_row_and_falls_back(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch, anthropic_api_key="sk-env-after-failed-refresh")
-    user, password = await make_user(db_session, email="refresh-fail@example.com")
+    user, password = await make_user(db_session, email="refresh-fail@example.com", role=ROLE_ADMIN)
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(

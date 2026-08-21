@@ -132,14 +132,14 @@ list, and error codes.
 
 ## Seeding local demo data
 
-`task backend:seed` (run after `task backend:migrate`, since every currency
-column is a real FK) builds one plausible dev user - institutions, accounts,
-categories, a year of transactions, budgets, a recurring rule history, and a
-goal - so you have something to look at without hand-creating it through the
-UI. It's interactive by default, prompting for each value (date range,
-transaction volume, currencies, RNG seed) with a sensible default shown, so
-pressing Enter through every prompt is enough. Pass `-y` to accept every
-default without prompting:
+`task backend:seed` applies pending migrations first, then builds one plausible
+dev user - institutions, accounts, categories, a year of transactions,
+budgets, a recurring rule history, and a goal - so you have something to look
+at without hand-creating it through the UI. It's interactive by default,
+prompting for each value (date range, transaction volume, currencies, RNG seed)
+with a sensible default shown, so pressing Enter through every prompt is
+enough. Pass `-y` to the direct script command to accept every default without
+prompting:
 
 ```bash
 task backend:seed                              # (or: uv run python -m scripts.seed)

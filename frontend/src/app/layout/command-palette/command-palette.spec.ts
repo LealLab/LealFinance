@@ -1,9 +1,13 @@
+import { signal, WritableSignal } from '@angular/core';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { ThemeService } from '../../core/theme.service';
 import { CommandPaletteService } from '../../core/command-palette.service';
+import { User } from '../../core/identity.models';
+import { MetadataService } from '../../core/metadata.service';
+import { SessionService } from '../../core/session.service';
+import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
@@ -17,7 +21,12 @@ import { CommandPalette } from './command-palette';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
 describe('CommandPalette', () => {
+  let sessionUser: WritableSignal<User | undefined>;
+  let settings: WritableSignal<{ agentsEnabled: boolean } | undefined>;
+
   beforeEach(async () => {
+    sessionUser = signal<User | undefined>(undefined);
+    settings = signal<{ agentsEnabled: boolean } | undefined>(undefined);
     await TestBed.configureTestingModule({
       imports: [
         CommandPalette,
@@ -33,9 +42,37 @@ describe('CommandPalette', () => {
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
-        { provide: TransactionRepository, useClass: MockTransactionRepository }
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
+        { provide: MetadataService, useValue: { settings } },
+        { provide: SessionService, useValue: { user: sessionUser.asReadonly() } }
       ]
     }).compileComponents();
+  });
+
+  it('finds AI providers for an enabled admin', () => {
+    sessionUser.set({
+      id: 'admin-id',
+      email: 'admin@example.com',
+      displayName: 'Admin',
+      role: 'admin',
+      isActive: true,
+      createdAt: ''
+    });
+    settings.set({ agentsEnabled: true });
+
+    const fixture = TestBed.createComponent(CommandPalette);
+    TestBed.inject(CommandPaletteService).show();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = 'provedores';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const labels = Array.from(fixture.nativeElement.querySelectorAll('button')).map((button) =>
+      (button as HTMLButtonElement).textContent?.trim()
+    );
+    expect(labels.some((label) => label?.includes('Provedores de IA'))).toBe(true);
   });
 
   it('stays closed until CommandPaletteService.show() is called', () => {

@@ -83,27 +83,22 @@ export class Sidebar {
   readonly navigated = output<void>();
 
   protected readonly navSections = computed(() => {
-    const sections = this.metadata.settings()?.agentsEnabled
-      ? NAV_SECTIONS.map((section) =>
-          section.labelKey === 'layout.nav.sections.setup'
-            ? {
-                ...section,
-                items: [
-                  ...section.items,
-                  { path: '/providers', labelKey: 'layout.nav.providers', icon: 'zap' as IconName },
-                ],
-              }
-            : section,
-        )
-      : NAV_SECTIONS;
-
-    if (this.session.user()?.role !== 'admin') return sections;
+    if (this.session.user()?.role !== 'admin') return NAV_SECTIONS;
     return [
-      ...sections,
+      ...NAV_SECTIONS,
       {
         labelKey: 'layout.nav.sections.admin',
         items: [
           { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
+          ...(this.metadata.settings()?.agentsEnabled
+            ? [
+                {
+                  path: '/admin/providers',
+                  labelKey: 'layout.nav.providers',
+                  icon: 'zap' as IconName,
+                },
+              ]
+            : []),
         ],
       },
     ];

@@ -107,9 +107,9 @@
                 : t('settings.agents.disabled')
             }}
           </span>
-          @if (metadata.settings()?.agentsEnabled) {
+          @if (metadata.settings()?.agentsEnabled && session.user()?.role === 'admin') {
             <a
-              routerLink="/providers"
+              routerLink="/admin/providers"
               class="rounded-full bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/20"
             >
               {{ t('settings.agents.manage') }}
