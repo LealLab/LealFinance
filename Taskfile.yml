@@ -1,6 +1,7 @@
 # Cross-platform task runner. Install: https://taskfile.dev
 # Usage: task <name>   (e.g. `task backend:test`, `task up`)
 version: "3"
+dotenv: [".env"]
 
 tasks:
   up:
@@ -27,6 +28,11 @@ tasks:
   backend:dev:
     desc: Run the API locally with reload
     dir: backend
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
+      REDIS_HOST: localhost
+      REDIS_PORT: '{{.REDIS_HOST_PORT | default "6379"}}'
     cmds:
       - uv run python -m app.dev
 
@@ -46,24 +52,38 @@ tasks:
   backend:test:
     desc: Run backend tests
     dir: backend
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
+      REDIS_HOST: localhost
+      REDIS_PORT: '{{.REDIS_HOST_PORT | default "6379"}}'
     cmds:
       - uv run pytest -q
 
   backend:migrate:
     desc: Apply database migrations
     dir: backend
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
     cmds:
       - uv run alembic upgrade head
 
   backend:migration:
     desc: 'Generate a new migration: task backend:migration -- "message"'
     dir: backend
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
     cmds:
       - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
 
   backend:seed:
     desc: Generate local demo data (interactive; run `backend:migrate` first)
     dir: backend
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
     cmds:
       - uv run python -m scripts.seed
 
