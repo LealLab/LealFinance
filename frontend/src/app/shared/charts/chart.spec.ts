@@ -31,10 +31,8 @@ class NoopResizeObserver {
   template: '<app-chart kind="bar" [labels]="labels()" [datasets]="datasets()" />'
 })
 class Host {
-  readonly labels = signal(['Jan']);
-  readonly datasets = signal<ChartDataset[]>([
-    { label: 'Income', data: [10], color: '#3e7d4c' }
-  ]);
+  readonly labels = signal<string[]>([]);
+  readonly datasets = signal<ChartDataset[]>([]);
 }
 
 describe('Chart', () => {
@@ -51,7 +49,7 @@ describe('Chart', () => {
     vi.unstubAllGlobals();
   });
 
-  it('updates the Chart.js instance when async inputs change', async () => {
+  it('updates the Chart.js instance when async data follows an empty first render', async () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -59,7 +57,16 @@ describe('Chart', () => {
 
     const canvas = fixture.nativeElement.querySelector('canvas') as HTMLCanvasElement;
     const chart = ChartJs.getChart(canvas);
-    expect(chart?.data.datasets[0].data).toEqual([10]);
+    expect(chart?.data.datasets).toHaveLength(0);
+
+    fixture.componentInstance.labels.set(['Jan']);
+    fixture.componentInstance.datasets.set([
+      { label: 'Income', data: [10], color: '#3e7d4c' }
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(ChartJs.getChart(canvas)?.data.datasets[0].data).toEqual([10]);
 
     fixture.componentInstance.datasets.set([
       { label: 'Income', data: [25], color: '#3e7d4c' }
