@@ -8,7 +8,7 @@ import { Modal } from '../../shared/ui/modal/modal';
 
 type LinkMode = 'api_key' | 'oauth';
 
-/** t(providers.form.apiKeyTitle, providers.form.oauthTitle, providers.form.ollamaTitle, providers.form.saveError, providers.form.oauth.startError, providers.form.oauth.completeError) */
+/** t(providers.form.apiKeyTitle, providers.form.oauthTitle, providers.form.ollamaTitle, providers.form.saveError, providers.form.oauth.startError, providers.form.oauth.completeError, providers.form.oauth.pasteHint, providers.form.oauth.pasteHintOpenai) */
 
 /**
  * Handles both link modes a provider can support: a plain api_key form
@@ -37,6 +37,12 @@ export class ProviderLinkModal {
   protected readonly oauthStep = signal<'start' | 'paste'>('start');
   protected readonly saving = signal(false);
   protected readonly errorKey = signal<string | undefined>(undefined);
+
+  protected readonly pasteHintKey = computed(() =>
+    this.provider().provider === 'openai'
+      ? 'providers.form.oauth.pasteHintOpenai'
+      : 'providers.form.oauth.pasteHint',
+  );
 
   protected readonly titleKey = computed(() =>
     this.isOllama()

@@ -834,9 +834,15 @@
         },
         "completeAction": "Koppelen",
         "startError": "Kon het inloggen niet starten. Probeer het opnieuw.",
-        "completeError": "Die code werkte niet. Controleer deze en probeer het opnieuw."
+        "completeError": "Die code werkte niet. Controleer deze en probeer het opnieuw.",
+        "pasteHintOpenai": "Na het goedkeuren van de toegang toont het tabblad een foutmelding \"kan niet bereikt worden\" — dat is normaal. Kopieer het volledige adres uit de adresbalk van de browser en plak het hieronder."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (aanbevolen)"
+    },
+    "modelError": "Kon het model niet wijzigen. Probeer het opnieuw."
   },
   "errors": {
     "error": {

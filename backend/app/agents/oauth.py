@@ -23,6 +23,10 @@ port for OpenAI) - a third-party redirect isn't accepted regardless.
     redirects to a dead localhost URL containing (OpenAI) an
     authorization code.
  3. `complete(provider, verifier=..., state=..., code=...)` exchanges it.
+    `code` is whatever the user pasted back - a bare code, Anthropic's
+    `code#state` display string, or the full URL from the address bar
+    (needed for OpenAI's dead redirect, but accepted for either vendor) -
+    `_split_code` below normalizes all three.
 """
 
 import base64
@@ -31,6 +35,7 @@ import json
 import secrets
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
+from urllib.parse import parse_qs, urlsplit
 
 import httpx
 
@@ -162,23 +167,43 @@ def _tokens_from_response(provider: str, body: dict[str, object]) -> OAuthTokens
     )
 
 
+def _split_code(pasted: str) -> tuple[str, str | None]:
+    """Accepts whatever the user pasted: a bare code, the `code#state`
+    string Anthropic's console displays, or the full redirect URL the
+    browser lands on (OpenAI's dead localhost callback, or Anthropic's
+    console callback pasted by mistake). Returns (code, state-or-None) -
+    state is None only when nothing in the pasted text carried one."""
+    pasted = pasted.strip()
+    if pasted.startswith(("http://", "https://")):
+        query = parse_qs(urlsplit(pasted).query)
+        return query.get("code", [""])[0], (query.get("state") or [None])[0]
+    auth_code, _, embedded_state = pasted.partition("#")
+    return auth_code, embedded_state or None
+
+
 async def complete(provider: str, *, verifier: str, state: str, code: str) -> OAuthTokens:
-    """`code` is whatever the user pasted back. For Anthropic the vendor
-    page displays `<code>#<state>` as one string - split it here and check
-    the embedded state against what the frontend echoed from `start`, our
-    only anti-CSRF check given the stateless (no server-side pending-flow
-    record) design. OpenAI's dead-redirect URL carries `state` as a query
-    param that the frontend parses out before calling this - by the time
-    it reaches here `code` is already bare, and there's no embedded signal
-    left to re-check state against, so it's accepted as authoritative."""
+    """`code` is whatever the user pasted back - `_split_code` normalizes a
+    bare code, `code#state`, or a full URL for either vendor. The embedded
+    state, when present, is checked against what the frontend echoed from
+    `start` - our only anti-CSRF check given the stateless (no server-side
+    pending-flow record) design. Anthropic's console always displays a
+    state, so it's required for that provider; OpenAI's dead-redirect URL
+    carries one too when the user pastes the full address bar, but a bare
+    code (no state to check) is still accepted since that's the flow the
+    docs recommend as the fallback."""
     if provider not in OAUTH_PROVIDERS:
         raise ValidationAppError(code="agents.oauth_unsupported")
 
+    auth_code, embedded_state = _split_code(code)
+    if not auth_code:
+        raise ValidationAppError(code="agents.oauth_failed")
+    if provider == PROVIDER_ANTHROPIC and embedded_state is None:
+        raise ValidationAppError(code="agents.oauth_state_mismatch")
+    if embedded_state is not None and embedded_state != state:
+        raise ValidationAppError(code="agents.oauth_state_mismatch")
+
     async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
         if provider == PROVIDER_ANTHROPIC:
-            auth_code, _, embedded_state = code.partition("#")
-            if not embedded_state or embedded_state != state:
-                raise ValidationAppError(code="agents.oauth_state_mismatch")
             response = await client.post(
                 ANTHROPIC_TOKEN_URL,
                 json={
@@ -195,7 +220,7 @@ async def complete(provider: str, *, verifier: str, state: str, code: str) -> OA
                 OPENAI_TOKEN_URL,
                 json={
                     "grant_type": "authorization_code",
-                    "code": code,
+                    "code": auth_code,
                     "client_id": OPENAI_CLIENT_ID,
                     "redirect_uri": OPENAI_REDIRECT_URI,
                     "code_verifier": verifier,

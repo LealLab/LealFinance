@@ -834,9 +834,15 @@
         },
         "completeAction": "Linkitä",
         "startError": "Kirjautumista ei voitu aloittaa. Yritä uudelleen.",
-        "completeError": "Koodi ei toiminut. Tarkista se ja yritä uudelleen."
+        "completeError": "Koodi ei toiminut. Tarkista se ja yritä uudelleen.",
+        "pasteHintOpenai": "Kun käyttöoikeus on hyväksytty, välilehdellä näkyy virhe \"sivustoa ei voi tavoittaa\" — tämä on odotettua. Kopioi koko osoite selaimen osoiterivistä ja liitä se alle."
       }
-    }
+    },
+    "model": {
+      "label": "Malli",
+      "recommendedOption": "{{model}} (suositeltu)"
+    },
+    "modelError": "Mallia ei voitu vaihtaa. Yritä uudelleen."
   },
   "errors": {
     "error": {

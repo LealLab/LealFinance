@@ -834,9 +834,15 @@
         },
         "completeAction": "Propojit",
         "startError": "Přihlášení se nepodařilo spustit. Zkuste to znovu.",
-        "completeError": "Tento kód nefungoval. Zkontrolujte jej a zkuste to znovu."
+        "completeError": "Tento kód nefungoval. Zkontrolujte jej a zkuste to znovu.",
+        "pasteHintOpenai": "Po schválení přístupu se na kartě zobrazí chyba „stránku nelze zobrazit“ — to je očekávané. Zkopírujte celou adresu z adresního řádku prohlížeče a vložte ji níže."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (doporučeno)"
+    },
+    "modelError": "Model se nepodařilo změnit. Zkuste to znovu."
   },
   "errors": {
     "error": {

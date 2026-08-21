@@ -395,6 +395,7 @@ export const mapAgentProviderStatus = (wire: AgentProviderStatusWire): AgentProv
   authModes: wire.auth_modes,
   accountLabel: wire.account_label ?? undefined,
   model: wire.model,
+  defaultModel: wire.default_model,
   models: wire.models,
 });
 export const mapAgentProviderLink = (input: AgentProviderLink): AgentProviderLinkWire => ({

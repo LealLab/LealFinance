@@ -17,6 +17,7 @@ class ProviderStatusRead(BaseModel):
     auth_modes: list[str]
     account_label: str | None
     model: str
+    default_model: str
     models: list[str]
 
 

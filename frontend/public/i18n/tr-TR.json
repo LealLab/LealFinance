@@ -834,9 +834,15 @@
         },
         "completeAction": "Bağla",
         "startError": "Oturum açma başlatılamadı. Tekrar deneyin.",
-        "completeError": "Bu kod çalışmadı. Kontrol edip tekrar deneyin."
+        "completeError": "Bu kod çalışmadı. Kontrol edip tekrar deneyin.",
+        "pasteHintOpenai": "Erişimi onayladıktan sonra sekmede \"siteye ulaşılamıyor\" hatası görünecek — bu normaldir. Tarayıcının adres çubuğundaki tam adresi kopyalayıp aşağıya yapıştırın."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (önerilen)"
+    },
+    "modelError": "Model değiştirilemedi. Tekrar deneyin."
   },
   "errors": {
     "error": {

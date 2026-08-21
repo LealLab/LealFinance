@@ -834,9 +834,15 @@
         },
         "completeAction": "Link",
         "startError": "Couldn't start the sign-in flow. Try again.",
-        "completeError": "That code didn't work. Check it and try again."
+        "completeError": "That code didn't work. Check it and try again.",
+        "pasteHintOpenai": "After approving access, the tab will show a “can't be reached” error — that's expected. Copy the full address from the browser's address bar and paste it below."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (recommended)"
+    },
+    "modelError": "Couldn't change the model. Try again."
   },
   "errors": {
     "error": {

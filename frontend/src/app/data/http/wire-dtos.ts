@@ -212,6 +212,7 @@ export interface AgentProviderStatusWire {
   auth_modes: string[];
   account_label: string | null;
   model: string;
+  default_model: string;
   models: string[];
 }
 

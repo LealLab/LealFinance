@@ -834,9 +834,15 @@
         },
         "completeAction": "Lier",
         "startError": "Impossible de démarrer la connexion. Réessayez.",
-        "completeError": "Ce code n'a pas fonctionné. Vérifiez-le et réessayez."
+        "completeError": "Ce code n'a pas fonctionné. Vérifiez-le et réessayez.",
+        "pasteHintOpenai": "Après avoir approuvé l'accès, l'onglet affichera une erreur « page inaccessible » — c'est normal. Copiez l'adresse complète depuis la barre d'adresse du navigateur et collez-la ci-dessous."
       }
-    }
+    },
+    "model": {
+      "label": "Modèle",
+      "recommendedOption": "{{model}} (recommandé)"
+    },
+    "modelError": "Impossible de changer le modèle. Réessayez."
   },
   "errors": {
     "error": {

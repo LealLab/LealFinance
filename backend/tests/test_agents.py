@@ -21,7 +21,7 @@ from app.agents.credentials import ResolvedCredential
 from app.agents.oauth import OAuthTokens
 from app.core import crypto
 from app.core.config import get_settings
-from app.core.errors import BadGatewayError
+from app.core.errors import BadGatewayError, ValidationAppError
 from app.models.agent_credential import AgentCredential
 from tests.factories import login_as, make_user
 
@@ -93,6 +93,74 @@ async def test_link_user_row_overrides_env(
     after = await client.get("/api/v1/agents/providers")
     anthropic = next(row for row in after.json() if row["provider"] == "anthropic")
     assert anthropic["source"] == "env"
+
+
+async def test_link_model_only_update_preserves_api_key_auth(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "model-only-api-key@example.com")
+
+    linked = await client.put("/api/v1/agents/providers/anthropic", json={"api_key": "sk-user-key"})
+    assert linked.status_code == 200, linked.text
+
+    changed = await client.put(
+        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5"}
+    )
+    assert changed.status_code == 200, changed.text
+    assert changed.json()["auth_mode"] == "api_key"
+    assert changed.json()["model"] == "claude-opus-5"
+    assert "sk-user-key" not in changed.text
+
+
+async def test_link_model_only_update_preserves_oauth_tokens(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A model change on an OAuth-linked provider must not demand an API
+    key or wipe the refresh token/account id - that was the bug that made
+    picking a model impossible after a subscription link."""
+    _enable_agents(monkeypatch)
+    user, password = await make_user(db_session, email="model-only-oauth@example.com")
+    await login_as(client, email=user.email, password=password)
+
+    row = AgentCredential(
+        user_id=user.id,
+        provider="anthropic",
+        auth_mode="oauth",
+        secret_ciphertext=crypto.encrypt_secret("access-token"),
+        refresh_ciphertext=crypto.encrypt_secret("refresh-token"),
+        account_id="acct_123",
+        account_label="Claude subscription",
+        expires_at=datetime.now(UTC) + timedelta(hours=1),
+    )
+    db_session.add(row)
+    await db_session.commit()
+
+    response = await client.put(
+        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5"}
+    )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["auth_mode"] == "oauth"
+    assert body["account_label"] == "Claude subscription"
+    assert body["model"] == "claude-opus-5"
+
+    await db_session.refresh(row)
+    assert row.refresh_ciphertext is not None
+    assert row.account_id == "acct_123"
+
+
+async def test_link_model_only_update_without_existing_row_requires_api_key(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "model-only-no-row@example.com")
+
+    response = await client.put(
+        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5"}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "agents.api_key_required"
 
 
 async def test_link_ollama_requires_base_url(
@@ -237,6 +305,95 @@ async def test_oauth_complete_success_links_and_hides_secret(
     assert body["account_label"] == "Claude subscription"
     assert "oauth-access-token" not in response.text
     assert "oauth-refresh-token" not in response.text
+
+
+def test_split_code_bare_code() -> None:
+    assert oauth._split_code("authcode") == ("authcode", None)
+
+
+def test_split_code_hash_state() -> None:
+    assert oauth._split_code("authcode#the-state") == ("authcode", "the-state")
+
+
+def test_split_code_full_url_extracts_code_and_state() -> None:
+    """The pasted string for OpenAI's dead-redirect page - previously sent
+    verbatim as `code` to the token endpoint, which is exactly why linking
+    OpenAI failed after a successful login."""
+    pasted = "http://localhost:1455/auth/callback?code=ac_abc123&state=the-state"
+    assert oauth._split_code(pasted) == ("ac_abc123", "the-state")
+
+
+def test_split_code_full_url_without_state() -> None:
+    pasted = "http://localhost:1455/auth/callback?code=ac_abc123"
+    assert oauth._split_code(pasted) == ("ac_abc123", None)
+
+
+async def test_oauth_complete_openai_full_localhost_url_extracts_bare_code(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Pasting the whole dead-redirect URL (as docs/ai-agents.md and the
+    pasteHintOpenai copy instruct) must reach OpenAI's token endpoint with
+    a bare code, not the full URL string."""
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        return httpx.Response(
+            200,
+            json={
+                "access_token": "chatgpt-access-token",
+                "refresh_token": "chatgpt-refresh-token",
+                "expires_in": 3600,
+            },
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    pasted = "http://localhost:1455/auth/callback?code=ac_abc123&state=the-state"
+    tokens = await oauth.complete("openai", verifier="v", state="the-state", code=pasted)
+    assert tokens.access_token == "chatgpt-access-token"
+
+    import json as _json
+
+    sent_body = _json.loads(captured["request"].content)
+    assert sent_body["code"] == "ac_abc123"
+
+
+async def test_oauth_complete_openai_full_url_state_mismatch(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        raise AssertionError("token endpoint must not be called on a state mismatch")
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    pasted = "http://localhost:1455/auth/callback?code=ac_abc123&state=other-state"
+    with pytest.raises(ValidationAppError) as excinfo:
+        await oauth.complete("openai", verifier="v", state="the-state", code=pasted)
+    assert excinfo.value.code == "agents.oauth_state_mismatch"
+
+
+async def test_oauth_complete_openai_bare_code_still_accepted(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The documented fallback (copy just the code, no state to check)
+    still has to work - not every browser exposes a copyable address bar
+    the same way."""
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        return httpx.Response(
+            200, json={"access_token": "chatgpt-access-token", "expires_in": 3600}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    tokens = await oauth.complete("openai", verifier="v", state="the-state", code="ac_abc123")
+    assert tokens.access_token == "chatgpt-access-token"
+    import json as _json
+
+    assert _json.loads(captured["request"].content)["code"] == "ac_abc123"
 
 
 # --- Chat -------------------------------------------------------------

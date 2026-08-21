@@ -60,6 +60,13 @@ export class MockAgentProviderRepository extends AgentProviderRepository {
 
   link(provider: AgentProviderId, input: AgentProviderLink): Observable<AgentProviderStatus> {
     return mockResult(() => {
+      const existing = this.linked.get(provider);
+      if (existing && input.apiKey === undefined && input.baseUrl === undefined) {
+        // Model-only update: keeps auth_mode/accountLabel, matching the
+        // backend's link_api_key model-only branch.
+        this.linked.set(provider, { ...existing, model: input.model ?? this.defaultModel(provider) });
+        return this.statusFor(provider);
+      }
       if (provider === 'ollama') {
         if (!input.baseUrl) throw new ApiError(422, 'agents.base_url_required', {});
         this.linked.set(provider, { authMode: 'none', model: input.model ?? this.defaultModel(provider) });
@@ -143,6 +150,7 @@ export class MockAgentProviderRepository extends AgentProviderRepository {
       authModes: spec.authModes,
       accountLabel: row?.accountLabel,
       model: row?.model ?? spec.defaultModel,
+      defaultModel: spec.defaultModel,
       models: spec.models,
     };
   }

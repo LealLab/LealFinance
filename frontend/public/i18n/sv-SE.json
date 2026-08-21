@@ -834,9 +834,15 @@
         },
         "completeAction": "Länka",
         "startError": "Kunde inte starta inloggningen. Försök igen.",
-        "completeError": "Den koden fungerade inte. Kontrollera den och försök igen."
+        "completeError": "Den koden fungerade inte. Kontrollera den och försök igen.",
+        "pasteHintOpenai": "När du har godkänt åtkomsten visar fliken felet \"webbplatsen kan inte nås\" — det är förväntat. Kopiera hela adressen från webbläsarens adressfält och klistra in den nedan."
       }
-    }
+    },
+    "model": {
+      "label": "Modell",
+      "recommendedOption": "{{model}} (rekommenderas)"
+    },
+    "modelError": "Det gick inte att ändra modellen. Försök igen."
   },
   "errors": {
     "error": {

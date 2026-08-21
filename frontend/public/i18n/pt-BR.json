@@ -834,9 +834,15 @@
         },
         "completeAction": "Vincular",
         "startError": "Não foi possível iniciar o login. Tente novamente.",
-        "completeError": "Esse código não funcionou. Verifique e tente novamente."
+        "completeError": "Esse código não funcionou. Verifique e tente novamente.",
+        "pasteHintOpenai": "Depois de aprovar o acesso, a aba mostrará um erro de \"não é possível acessar\" — isso é esperado. Copie o endereço completo da barra de endereços do navegador e cole-o abaixo."
       }
-    }
+    },
+    "model": {
+      "label": "Modelo",
+      "recommendedOption": "{{model}} (recomendado)"
+    },
+    "modelError": "Não foi possível alterar o modelo. Tente novamente."
   },
   "errors": {
     "error": {

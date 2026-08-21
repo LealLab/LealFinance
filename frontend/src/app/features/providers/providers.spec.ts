@@ -108,6 +108,7 @@ describe('Providers', () => {
       source: 'none',
       authModes: ['api_key', 'oauth'],
       model: 'gpt-5.1',
+      defaultModel: 'gpt-5.1',
       models: [],
     };
     fixture.componentInstance['openLink'](provider);
@@ -136,6 +137,56 @@ describe('Providers', () => {
 
     expect(fixture.componentInstance['testResult']()).toEqual({ provider: 'anthropic', ok: true });
     expect(fixture.nativeElement.textContent).toContain('Conectado');
+  });
+
+  it('shows no model picker for an unconfigured provider', async () => {
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#provider-model-anthropic')).toBeNull();
+  });
+
+  it('shows a model select for a user-linked provider, marking the recommended option', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('anthropic', { apiKey: 'sk-test' }).subscribe(() => resolve()),
+    );
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('#provider-model-anthropic');
+    expect(select).not.toBeNull();
+    const recommended = [...select.options].find((o) => o.value === 'claude-sonnet-5');
+    expect(recommended?.textContent).toContain('recomendado');
+  });
+
+  it('changing the model select links the new model and keeps the provider configured', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('anthropic', { apiKey: 'sk-test' }).subscribe(() => resolve()),
+    );
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('#provider-model-anthropic');
+    select.value = 'claude-opus-5';
+    select.dispatchEvent(new Event('change'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const updated = fixture.componentInstance['providersResource']
+      .value()
+      ?.find((row) => row.provider === 'anthropic');
+    expect(updated?.model).toBe('claude-opus-5');
+    expect(updated?.configured).toBe(true);
   });
 
   it('unlinks a provider after confirmation and reloads the list', async () => {

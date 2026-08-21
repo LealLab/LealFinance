@@ -212,6 +212,7 @@ describe('HTTP repositories', () => {
         auth_modes: ['api_key', 'oauth'],
         account_label: null,
         model: 'claude-sonnet-5',
+        default_model: 'claude-sonnet-5',
         models: ['claude-opus-5', 'claude-sonnet-5'],
       },
     ]);
@@ -224,6 +225,7 @@ describe('HTTP repositories', () => {
         authModes: ['api_key', 'oauth'],
         accountLabel: undefined,
         model: 'claude-sonnet-5',
+        defaultModel: 'claude-sonnet-5',
         models: ['claude-opus-5', 'claude-sonnet-5'],
       },
     ]);
@@ -244,6 +246,27 @@ describe('HTTP repositories', () => {
       auth_modes: ['api_key', 'oauth'],
       account_label: null,
       model: 'claude-sonnet-5',
+      default_model: 'claude-sonnet-5',
+      models: [],
+    });
+  });
+
+  it('links a provider with only a model, for changing the model on an already-linked provider', () => {
+    TestBed.inject(HttpAgentProviderRepository)
+      .link('anthropic', { model: 'claude-opus-5' })
+      .subscribe();
+    const req = http.expectOne('/api/v1/agents/providers/anthropic');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ model: 'claude-opus-5' });
+    req.flush({
+      provider: 'anthropic',
+      configured: true,
+      source: 'user',
+      auth_mode: 'oauth',
+      auth_modes: ['api_key', 'oauth'],
+      account_label: 'Claude subscription',
+      model: 'claude-opus-5',
+      default_model: 'claude-sonnet-5',
       models: [],
     });
   });
@@ -279,6 +302,7 @@ describe('HTTP repositories', () => {
       auth_modes: ['api_key', 'oauth'],
       account_label: 'Claude subscription',
       model: 'claude-sonnet-5',
+      default_model: 'claude-sonnet-5',
       models: [],
     });
   });

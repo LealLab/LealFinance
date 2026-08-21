@@ -834,9 +834,15 @@
         },
         "completeAction": "Conectează",
         "startError": "Autentificarea nu a putut fi pornită. Încearcă din nou.",
-        "completeError": "Acest cod nu a funcționat. Verifică-l și încearcă din nou."
+        "completeError": "Acest cod nu a funcționat. Verifică-l și încearcă din nou.",
+        "pasteHintOpenai": "După aprobarea accesului, fila va afișa o eroare „site inaccesibil” — este normal. Copiază adresa completă din bara de adrese a browserului și lipește-o mai jos."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (recomandat)"
+    },
+    "modelError": "Modelul nu a putut fi schimbat. Încearcă din nou."
   },
   "errors": {
     "error": {

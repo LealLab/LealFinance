@@ -834,9 +834,15 @@
         },
         "completeAction": "关联",
         "startError": "无法开始登录流程，请重试。",
-        "completeError": "该代码无效，请检查后重试。"
+        "completeError": "该代码无效，请检查后重试。",
+        "pasteHintOpenai": "批准访问后，该标签页会显示“无法访问此网站”的错误 —— 这是正常现象。请从浏览器地址栏复制完整地址并粘贴到下方。"
       }
-    }
+    },
+    "model": {
+      "label": "模型",
+      "recommendedOption": "{{model}}（推荐）"
+    },
+    "modelError": "无法更改模型，请重试。"
   },
   "errors": {
     "error": {

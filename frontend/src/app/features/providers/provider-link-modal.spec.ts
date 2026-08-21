@@ -14,6 +14,17 @@ const ANTHROPIC_STATUS: AgentProviderStatus = {
   source: 'none',
   authModes: ['api_key', 'oauth'],
   model: 'claude-sonnet-5',
+  defaultModel: 'claude-sonnet-5',
+  models: [],
+};
+
+const OPENAI_STATUS: AgentProviderStatus = {
+  provider: 'openai',
+  configured: false,
+  source: 'none',
+  authModes: ['api_key', 'oauth'],
+  model: 'gpt-5.1',
+  defaultModel: 'gpt-5.1',
   models: [],
 };
 
@@ -23,6 +34,7 @@ const OLLAMA_STATUS: AgentProviderStatus = {
   source: 'none',
   authModes: ['none'],
   model: 'llama3.1',
+  defaultModel: 'llama3.1',
   models: [],
 };
 
@@ -125,5 +137,25 @@ describe('ProviderLinkModal', () => {
 
     expect(emitted).toMatchObject({ provider: 'anthropic', configured: true, authMode: 'oauth' });
     expect(fixture.componentInstance.open()).toBe(false);
+  });
+
+  it('shows OpenAI-specific paste guidance since its redirect page always fails to load', async () => {
+    const fixture = TestBed.createComponent(ProviderLinkModal);
+    fixture.componentRef.setInput('open', true);
+    fixture.componentRef.setInput('provider', OPENAI_STATUS);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance['pasteHintKey']()).toBe('providers.form.oauth.pasteHintOpenai');
+  });
+
+  it('uses the plain paste guidance for Anthropic', async () => {
+    const fixture = TestBed.createComponent(ProviderLinkModal);
+    fixture.componentRef.setInput('open', true);
+    fixture.componentRef.setInput('provider', ANTHROPIC_STATUS);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance['pasteHintKey']()).toBe('providers.form.oauth.pasteHint');
   });
 });

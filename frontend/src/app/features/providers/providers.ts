@@ -11,7 +11,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProviderLinkModal } from './provider-link-modal';
 
 /**
- * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.unlinkError, providers.testOk, providers.testFailed, providers.chatError)
+ * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.unlinkError, providers.testOk, providers.testFailed, providers.chatError, providers.model.label, providers.model.recommendedOption, providers.modelError)
  *
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals but aren't calls to the `t` marker function, so
@@ -64,6 +64,23 @@ export class Providers {
     this.repository.unlink(provider.provider).subscribe({
       next: () => this.providersResource.reload(),
       error: () => this.actionErrorKey.set('providers.unlinkError'),
+    });
+  }
+
+  /** Keeps a stored model that isn't in the catalog (an older or custom
+   * value) selectable instead of silently switching to the first option. */
+  protected modelOptions(p: AgentProviderStatus): string[] {
+    return p.models.includes(p.model) ? p.models : [p.model, ...p.models];
+  }
+
+  protected setModel(provider: AgentProviderStatus, model: string): void {
+    // ponytail: catalog + current value only. Typing a brand-new model id
+    // on an OAuth-linked provider still needs the API-key modal's
+    // free-text field; add a "custom…" option if unlisted models become
+    // common.
+    this.repository.link(provider.provider, { model }).subscribe({
+      next: () => this.providersResource.reload(),
+      error: () => this.actionErrorKey.set('providers.modelError'),
     });
   }
 

@@ -834,9 +834,15 @@
         },
         "completeAction": "Tautkan",
         "startError": "Tidak dapat memulai proses masuk. Coba lagi.",
-        "completeError": "Kode itu tidak berfungsi. Periksa dan coba lagi."
+        "completeError": "Kode itu tidak berfungsi. Periksa dan coba lagi.",
+        "pasteHintOpenai": "Setelah menyetujui akses, tab akan menampilkan error \"situs tidak dapat dijangkau\" — ini memang wajar. Salin alamat lengkap dari bilah alamat browser lalu tempelkan di bawah."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (direkomendasikan)"
+    },
+    "modelError": "Model tidak dapat diubah. Coba lagi."
   },
   "errors": {
     "error": {

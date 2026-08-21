@@ -834,9 +834,15 @@
         },
         "completeAction": "Tilknyt",
         "startError": "Kunne ikke starte login. Prøv igen.",
-        "completeError": "Den kode virkede ikke. Tjek den, og prøv igen."
+        "completeError": "Den kode virkede ikke. Tjek den, og prøv igen.",
+        "pasteHintOpenai": "Når adgangen er godkendt, viser fanen fejlen \"siden kan ikke nås\" — det er forventet. Kopiér hele adressen fra browserens adresselinje, og indsæt den nedenfor."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (anbefalet)"
+    },
+    "modelError": "Modellen kunne ikke ændres. Prøv igen."
   },
   "errors": {
     "error": {

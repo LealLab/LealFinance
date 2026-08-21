@@ -834,9 +834,15 @@
         },
         "completeAction": "Verknüpfen",
         "startError": "Die Anmeldung konnte nicht gestartet werden. Versuche es erneut.",
-        "completeError": "Dieser Code hat nicht funktioniert. Prüfe ihn und versuche es erneut."
+        "completeError": "Dieser Code hat nicht funktioniert. Prüfe ihn und versuche es erneut.",
+        "pasteHintOpenai": "Nach der Zugriffsfreigabe zeigt der Tab einen Fehler „Seite nicht erreichbar“ an – das ist normal. Kopieren Sie die vollständige Adresse aus der Adressleiste des Browsers und fügen Sie sie unten ein."
       }
-    }
+    },
+    "model": {
+      "label": "Modell",
+      "recommendedOption": "{{model}} (empfohlen)"
+    },
+    "modelError": "Das Modell konnte nicht geändert werden. Bitte erneut versuchen."
   },
   "errors": {
     "error": {

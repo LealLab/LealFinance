@@ -32,6 +32,36 @@
           </app-badge>
         </div>
 
+        @if (provider.configured && provider.source === 'user') {
+          <div class="mt-3">
+            <label class="form-label" [for]="'provider-model-' + provider.provider">{{
+              t('providers.model.label')
+            }}</label>
+            @if (provider.models.length) {
+              <select
+                [id]="'provider-model-' + provider.provider"
+                class="form-input max-w-xs"
+                [value]="provider.model"
+                (change)="setModel(provider, $any($event.target).value)"
+              >
+                @for (m of modelOptions(provider); track m) {
+                  <option [value]="m">
+                    {{ m === provider.defaultModel ? t('providers.model.recommendedOption', { model: m }) : m }}
+                  </option>
+                }
+              </select>
+            } @else {
+              <input
+                [id]="'provider-model-' + provider.provider"
+                type="text"
+                class="form-input max-w-xs"
+                [value]="provider.model"
+                (change)="setModel(provider, $any($event.target).value)"
+              />
+            }
+          </div>
+        }
+
         <div class="mt-4 flex flex-wrap items-center gap-2">
           <button appButton type="button" variant="secondary" size="sm" (click)="openLink(provider)">
             {{ t(provider.configured ? 'providers.actions.relink' : 'providers.actions.link') }}

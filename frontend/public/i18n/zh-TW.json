@@ -834,9 +834,15 @@
         },
         "completeAction": "連結",
         "startError": "無法開始登入流程，請再試一次。",
-        "completeError": "該代碼無效，請檢查後再試一次。"
+        "completeError": "該代碼無效，請檢查後再試一次。",
+        "pasteHintOpenai": "核准存取後，該分頁會顯示「無法連上這個網站」的錯誤 —— 這是正常現象。請從瀏覽器網址列複製完整網址並貼到下方。"
       }
-    }
+    },
+    "model": {
+      "label": "模型",
+      "recommendedOption": "{{model}}（建議）"
+    },
+    "modelError": "無法變更模型，請再試一次。"
   },
   "errors": {
     "error": {

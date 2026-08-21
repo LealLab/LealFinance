@@ -47,6 +47,7 @@ async def _status(db: AsyncSession, user_id: UUID, provider: str) -> ProviderSta
         auth_modes=list(spec.auth_modes),
         account_label=resolved.account_label if resolved else None,
         model=resolved.model if resolved else spec.default_model,
+        default_model=spec.default_model,
         models=list(spec.models),
     )
 
@@ -61,6 +62,16 @@ async def link_api_key(
     _require_known_provider(provider)
 
     row = await credentials.get_user_row(db, user_id, provider)
+
+    # Changing the model isn't re-linking: an existing row keeps its
+    # auth_mode, tokens, and account id. Without this, picking a model on
+    # an OAuth-linked provider would demand an API key and destroy the
+    # subscription link.
+    if row is not None and data.api_key is None and data.base_url is None:
+        row.model = data.model
+        await db.commit()
+        return await _status(db, user_id, provider)
+
     if provider == PROVIDER_OLLAMA:
         if not data.base_url:
             raise ValidationAppError(code="agents.base_url_required")

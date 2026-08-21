@@ -834,9 +834,15 @@
         },
         "completeAction": "Collega",
         "startError": "Impossibile avviare l'accesso. Riprova.",
-        "completeError": "Questo codice non ha funzionato. Controllalo e riprova."
+        "completeError": "Questo codice non ha funzionato. Controllalo e riprova.",
+        "pasteHintOpenai": "Dopo aver approvato l'accesso, la scheda mostrerà un errore \"impossibile raggiungere la pagina\": è normale. Copia l'indirizzo completo dalla barra degli indirizzi del browser e incollalo qui sotto."
       }
-    }
+    },
+    "model": {
+      "label": "Modello",
+      "recommendedOption": "{{model}} (consigliato)"
+    },
+    "modelError": "Impossibile cambiare il modello. Riprova."
   },
   "errors": {
     "error": {

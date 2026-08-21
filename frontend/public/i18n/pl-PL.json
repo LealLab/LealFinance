@@ -834,9 +834,15 @@
         },
         "completeAction": "Połącz",
         "startError": "Nie udało się rozpocząć logowania. Spróbuj ponownie.",
-        "completeError": "Ten kod nie zadziałał. Sprawdź go i spróbuj ponownie."
+        "completeError": "Ten kod nie zadziałał. Sprawdź go i spróbuj ponownie.",
+        "pasteHintOpenai": "Po zatwierdzeniu dostępu karta pokaże błąd „nie można uzyskać dostępu” — tak ma być. Skopiuj pełny adres z paska adresu przeglądarki i wklej go poniżej."
       }
-    }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (zalecany)"
+    },
+    "modelError": "Nie udało się zmienić modelu. Spróbuj ponownie."
   },
   "errors": {
     "error": {

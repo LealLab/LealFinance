@@ -834,9 +834,15 @@
         },
         "completeAction": "Liên kết",
         "startError": "Không thể bắt đầu đăng nhập. Hãy thử lại.",
-        "completeError": "Mã đó không hoạt động. Kiểm tra và thử lại."
+        "completeError": "Mã đó không hoạt động. Kiểm tra và thử lại.",
+        "pasteHintOpenai": "Sau khi cho phép truy cập, tab sẽ hiển thị lỗi \"không thể truy cập trang này\" — đây là điều bình thường. Hãy sao chép toàn bộ địa chỉ từ thanh địa chỉ trình duyệt và dán vào bên dưới."
       }
-    }
+    },
+    "model": {
+      "label": "Mô hình",
+      "recommendedOption": "{{model}} (đề xuất)"
+    },
+    "modelError": "Không thể thay đổi mô hình. Vui lòng thử lại."
   },
   "errors": {
     "error": {

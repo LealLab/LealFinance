@@ -834,9 +834,15 @@
         },
         "completeAction": "Vincular",
         "startError": "No se pudo iniciar el proceso de acceso. Inténtalo de nuevo.",
-        "completeError": "Ese código no funcionó. Compruébalo e inténtalo de nuevo."
+        "completeError": "Ese código no funcionó. Compruébalo e inténtalo de nuevo.",
+        "pasteHintOpenai": "Después de aprobar el acceso, la pestaña mostrará un error de \"no se puede acceder\"; es normal. Copia la dirección completa de la barra de direcciones del navegador y pégala abajo."
       }
-    }
+    },
+    "model": {
+      "label": "Modelo",
+      "recommendedOption": "{{model}} (recomendado)"
+    },
+    "modelError": "No se pudo cambiar el modelo. Inténtalo de nuevo."
   },
   "errors": {
     "error": {

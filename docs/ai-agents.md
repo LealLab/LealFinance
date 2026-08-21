@@ -91,9 +91,13 @@ even self-hosted on a fresh VPS. Instead:
 
 There's no server-side session for this two-minute handshake - the PKCE
 verifier and state from step 1 round-trip through your browser, not a
-database row. For Anthropic, the state embedded in the pasted code is
-checked against what step 1 issued; a mismatch means the paste is stale
-or wrong and the link is rejected (`agents.oauth_state_mismatch`).
+database row. Anthropic always embeds a state (in the `#state` suffix or
+the console callback URL) and it's required; OpenAI's pasted URL embeds
+one too when you copy the full address bar, but a bare code is still
+accepted since that's the documented fallback. Whenever a state is
+present it's checked against what step 1 issued; a mismatch means the
+paste is stale or wrong and the link is rejected
+(`agents.oauth_state_mismatch`).
 
 ## Encryption at rest
 

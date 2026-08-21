@@ -12,6 +12,7 @@ export interface AgentProviderStatus {
   authModes: string[];
   accountLabel?: string;
   model: string;
+  defaultModel: string;
   models: string[];
 }
 

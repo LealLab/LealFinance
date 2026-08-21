@@ -834,9 +834,15 @@
         },
         "completeAction": "Koble til",
         "startError": "Kunne ikke starte pålogging. Prøv igjen.",
-        "completeError": "Den koden fungerte ikke. Sjekk den og prøv igjen."
+        "completeError": "Den koden fungerte ikke. Sjekk den og prøv igjen.",
+        "pasteHintOpenai": "Etter at tilgangen er godkjent, viser fanen feilen \"nettstedet kan ikke nås\" — det er forventet. Kopier hele adressen fra nettleserens adressefelt, og lim den inn nedenfor."
       }
-    }
+    },
+    "model": {
+      "label": "Modell",
+      "recommendedOption": "{{model}} (anbefalt)"
+    },
+    "modelError": "Kunne ikke endre modellen. Prøv igjen."
   },
   "errors": {
     "error": {
