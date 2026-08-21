@@ -33,53 +33,69 @@
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.incomeExpense') }}</h2>
-        <div class="h-64">
-          <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
-        </div>
+        @if (ratesReady()) {
+          <div class="h-64">
+            <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
+          </div>
+        } @else {
+          <app-skeleton height="16rem" />
+        }
       </app-card>
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.netFlow') }}</h2>
-        <div class="h-64">
-          <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
-        </div>
+        @if (ratesReady()) {
+          <div class="h-64">
+            <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
+          </div>
+        } @else {
+          <app-skeleton height="16rem" />
+        }
       </app-card>
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.byCategory') }}</h2>
-        <div class="mx-auto aspect-square w-full max-w-56">
-          <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
-        </div>
-        <table class="mt-4 w-full text-sm">
-          <tbody>
-            @for (row of categoryTable(); track row.categoryId) {
-              <tr class="border-t border-border">
-                <td class="py-2 pe-2">
-                  <span class="inline-flex items-center gap-2">
-                    <span class="size-2.5 rounded-full" [style.background-color]="row.color"></span>
-                    {{ row.name }}
-                  </span>
-                </td>
-                <td class="py-2 pe-2 text-end font-mono tabular-nums">
-                  {{ row.total.amount | money: row.total.currency }}
-                </td>
-                <td class="py-2 text-end text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+        @if (ratesReady()) {
+          <div class="mx-auto aspect-square w-full max-w-56">
+            <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
+          </div>
+          <table class="mt-4 w-full text-sm">
+            <tbody>
+              @for (row of categoryTable(); track row.categoryId) {
+                <tr class="border-t border-border">
+                  <td class="py-2 pe-2">
+                    <span class="inline-flex items-center gap-2">
+                      <span class="size-2.5 rounded-full" [style.background-color]="row.color"></span>
+                      {{ row.name }}
+                    </span>
+                  </td>
+                  <td class="py-2 pe-2 text-end font-mono tabular-nums">
+                    {{ row.total.amount | money: row.total.currency }}
+                  </td>
+                  <td class="py-2 text-end text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <app-skeleton height="14rem" />
+        }
       </app-card>
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.balanceTrend') }}</h2>
-        <div class="h-64">
-          <app-chart
-            kind="line"
-            [labels]="balanceTrendChart().labels"
-            [datasets]="balanceTrendChart().datasets"
-            [formatValue]="formatMoney"
-          />
-        </div>
+        @if (ratesReady()) {
+          <div class="h-64">
+            <app-chart
+              kind="line"
+              [labels]="balanceTrendChart().labels"
+              [datasets]="balanceTrendChart().datasets"
+              [formatValue]="formatMoney"
+            />
+          </div>
+        } @else {
+          <app-skeleton height="16rem" />
+        }
       </app-card>
     </div>
   }

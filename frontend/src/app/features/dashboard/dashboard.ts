@@ -3,34 +3,28 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
-import { forkJoin, of } from 'rxjs';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
-import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import {
-  categoryBreakdown,
-  converterFromRates,
-  CurrencyConverter,
-  netWorth,
-  totalsFor
-} from '../../domain/calc/aggregations';
+import { categoryBreakdown, netWorth as netWorthOf, totalsFor } from '../../domain/calc/aggregations';
 import { budgetProgress } from '../../domain/calc/budgets';
+import { effectiveAmount } from '../../domain/calc/conversion';
 import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { compare, isNegative, isZero, money, Money, ratio, toNumber, zero } from '../../shared/money/money';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
+import { displayConverter, pairsConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
+import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { StatTile } from '../../shared/ui/stat-tile/stat-tile';
 
 const CASH_FLOW_MONTHS = 6;
@@ -46,6 +40,7 @@ const BUDGET_PREVIEW_LIMIT = 4;
     EmptyState,
     PageHeader,
     ProgressBar,
+    Skeleton,
     StatTile,
     Chart,
     ExchangeRateWarning
@@ -59,8 +54,6 @@ export class Dashboard {
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly budgetRepository = inject(BudgetRepository);
-  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
-  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   private readonly theme = inject(ThemeService);
   private readonly transloco = inject(TranslocoService);
   private readonly localeService = inject(TranslocoLocaleService);
@@ -89,33 +82,27 @@ export class Dashboard {
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
 
+  protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly displayCurrency = this.displayCurrencyService.currency;
 
-  private readonly foreignCurrencies = computed(() => {
+  // Every account currency in play, not just non-archived ones - an
+  // archived account's past transactions are still inside the 6-month
+  // window totalsFor/categoryBreakdown aggregate below, so its currency
+  // needs a rate fetched too, or those aggregations hit the same
+  // currency-mismatch crash an archived-only foreign account used to cause.
+  private readonly accountCurrencies = computed(() => {
     const display = this.displayCurrency();
     const accounts = this.accountsResource.value() ?? [];
-    return Array.from(
-      new Set(accounts.filter((a) => !a.archived && a.currency !== display).map((a) => a.currency))
-    );
+    return Array.from(new Set(accounts.filter((a) => a.currency !== display).map((a) => a.currency)));
   });
 
-  protected readonly exchangeRatesResource = rxResource({
-    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
-    stream: ({ params }) => {
-      if (params.currencies.length === 0) return of([] as ExchangeRate[]);
-      return forkJoin(
-        params.currencies.map((currency) => this.exchangeRateRepository.getRate(currency, params.display))
-      );
-    }
-  });
-
-  protected readonly hasFallbackRate = computed(() =>
-    (this.exchangeRatesResource.value() ?? []).some((rate) => rate.isFallback)
-  );
-
-  private readonly converter = computed<CurrencyConverter>(() =>
-    converterFromRates(this.exchangeRatesResource.value() ?? [])
-  );
+  private readonly rates = displayConverter(() => this.accountCurrencies());
+  protected readonly hasFallbackRate = this.rates.hasFallbackRate;
+  private readonly converter = this.rates.converter;
+  // Gates every money card in the template - see display-converter.ts:
+  // converter() is null until a rate for every account currency has
+  // arrived, which is never instantaneous on first load.
+  protected readonly ratesReady = computed(() => this.converter() !== null);
 
   private readonly currentMonth = monthKey(new Date().toISOString());
 
@@ -125,18 +112,23 @@ export class Dashboard {
     )
   );
 
-  protected readonly netWorth = computed(() =>
-    netWorth(
+  protected readonly netWorth = computed(() => {
+    const convert = this.converter();
+    if (!convert) return zero(this.displayCurrency());
+    return netWorthOf(
       this.accountsResource.value() ?? [],
       this.balancesResource.value() ?? [],
       this.displayCurrency(),
-      this.converter()
-    )
-  );
+      convert
+    );
+  });
 
-  protected readonly monthTotals = computed(() =>
-    totalsFor(this.currentMonthTransactions(), this.displayCurrency(), this.converter())
-  );
+  protected readonly monthTotals = computed(() => {
+    const convert = this.converter();
+    const currency = this.displayCurrency();
+    if (!convert) return { income: zero(currency), expense: zero(currency), net: zero(currency) };
+    return totalsFor(this.currentMonthTransactions(), currency, convert);
+  });
 
   protected readonly savingsRate = computed(() => {
     const totals = this.monthTotals();
@@ -147,6 +139,8 @@ export class Dashboard {
   protected readonly cashFlowChart = computed(() => {
     this.theme.current();
     this.lang();
+    const convert = this.converter();
+    if (!convert) return { labels: [], datasets: [] as ChartDataset[] };
     const transactions = this.transactionsResource.value() ?? [];
     const today = new Date();
     const start = addMonthsClamped(
@@ -167,7 +161,7 @@ export class Dashboard {
       const key = monthKey(formatIsoDate(monthStart));
       labels.push(monthFormatter.format(monthStart).replace('.', ''));
       const inMonth = transactions.filter((tx) => monthKey(tx.date) === key);
-      const totals = totalsFor(inMonth, this.displayCurrency(), this.converter());
+      const totals = totalsFor(inMonth, this.displayCurrency(), convert);
       income.push(toNumber(totals.income));
       expense.push(toNumber(totals.expense));
     }
@@ -182,12 +176,14 @@ export class Dashboard {
   protected readonly categoryChart = computed(() => {
     this.theme.current();
     this.lang();
+    const convert = this.converter();
     const categories = this.categoriesResource.value() ?? [];
+    if (!convert) return { labels: [], datasets: [] as ChartDataset[] };
     const breakdown = categoryBreakdown(
       this.currentMonthTransactions(),
       categories,
       this.displayCurrency(),
-      this.converter()
+      convert
     );
     const stableIds = categories.filter((c) => c.kind === 'expense' && !c.parentId).map((c) => c.id);
     const colorMap = categoryColorMap(stableIds, this.theme.current());
@@ -252,7 +248,32 @@ export class Dashboard {
     return 'text-content-primary';
   }
 
+  // budgetProgress converts into each budget's own currency, not
+  // displayCurrency - a budgeted category can catch a transaction in any
+  // currency any account uses, not just the budget's, so this needs its
+  // own rate fetch (transaction currency -> budget currency pairs), same
+  // shape as budgets.ts's conversionPairs. Reusing `converter` above (which
+  // only ever fetches rates targeting displayCurrency) would silently
+  // passthrough-unconvert a mismatched pair and crash the same way the
+  // dashboard used to on load - see pairsConverter's doc comment.
+  private readonly budgetConversionPairs = computed<(readonly [string, string])[]>(() => {
+    const targets = new Set(
+      (this.budgetsResource.value() ?? [])
+        .filter((b) => b.month === this.currentMonth)
+        .map((b) => b.currency)
+    );
+    const sources = new Set(this.currentMonthTransactions().map((tx) => effectiveAmount(tx).currency));
+    return [...sources].flatMap((source) =>
+      [...targets].filter((target) => target !== source).map((target) => [source, target] as const)
+    );
+  });
+
+  private readonly budgetConverter = pairsConverter(() => this.budgetConversionPairs()).converter;
+  protected readonly budgetRatesReady = computed(() => this.budgetConverter() !== null);
+
   protected readonly budgetPreview = computed(() => {
+    const convert = this.budgetConverter();
+    if (!convert) return [];
     const budgets = (this.budgetsResource.value() ?? []).filter((b) => b.month === this.currentMonth);
     const categories = this.categoriesResource.value() ?? [];
     const transactions = this.transactionsResource.value() ?? [];
@@ -260,7 +281,7 @@ export class Dashboard {
 
     return budgets
       .map((budget) => ({
-        ...budgetProgress(budget, transactions, categories, this.converter()),
+        ...budgetProgress(budget, transactions, categories, convert),
         categoryName: byId.get(budget.categoryId)?.name ?? budget.categoryId
       }))
       .sort((a, b) => b.ratio - a.ratio)

@@ -18,32 +18,46 @@
       </div>
     }
 
-    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
-      <app-stat-tile
-        [label]="t('dashboard.stats.income')"
-        [value]="monthTotals().income.amount | money: monthTotals().income.currency"
-        tone="positive"
-      />
-      <app-stat-tile
-        [label]="t('dashboard.stats.expense')"
-        [value]="monthTotals().expense.amount | money: monthTotals().expense.currency"
-        tone="negative"
-      />
-      <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
-    </div>
+    @if (ratesReady()) {
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
+        <app-stat-tile
+          [label]="t('dashboard.stats.income')"
+          [value]="monthTotals().income.amount | money: monthTotals().income.currency"
+          tone="positive"
+        />
+        <app-stat-tile
+          [label]="t('dashboard.stats.expense')"
+          [value]="monthTotals().expense.amount | money: monthTotals().expense.currency"
+          tone="negative"
+        />
+        <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
+      </div>
+    } @else {
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true">
+        @for (i of [0, 1, 2, 3]; track i) {
+          <app-skeleton height="4.25rem" />
+        }
+      </div>
+    }
 
     <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.cashFlow.title') }}</h2>
-        <div class="h-64">
-          <app-chart kind="bar" [labels]="cashFlowChart().labels" [datasets]="cashFlowChart().datasets" [formatValue]="formatMoney" />
-        </div>
+        @if (ratesReady()) {
+          <div class="h-64">
+            <app-chart kind="bar" [labels]="cashFlowChart().labels" [datasets]="cashFlowChart().datasets" [formatValue]="formatMoney" />
+          </div>
+        } @else {
+          <app-skeleton height="16rem" />
+        }
       </app-card>
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.categoryChart.title') }}</h2>
-        @if (hasCategorySpend()) {
+        @if (!ratesReady()) {
+          <app-skeleton height="16rem" />
+        } @else if (hasCategorySpend()) {
           <div class="h-64">
             <app-chart
               kind="doughnut"
@@ -108,7 +122,13 @@
         <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
           {{ t('dashboard.budgets.title') }}
         </h2>
-        @if (budgetPreview().length === 0) {
+        @if (!budgetRatesReady()) {
+          <div class="flex flex-col gap-3 p-4" aria-busy="true">
+            @for (i of [0, 1, 2]; track i) {
+              <app-skeleton height="2.5rem" />
+            }
+          </div>
+        } @else if (budgetPreview().length === 0) {
           <p class="p-4 text-sm text-content-muted">{{ t('dashboard.budgets.empty') }}</p>
         } @else {
           <ul class="flex flex-col gap-3 p-4">

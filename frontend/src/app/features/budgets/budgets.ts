@@ -11,7 +11,6 @@ import { ThemeService } from '../../core/theme.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
 import { CategoryRepository } from '../../data/category.repository';
-import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import {
   allocationBudgets,
@@ -29,10 +28,11 @@ import { monthKey } from '../../domain/calc/dates';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Transaction } from '../../domain/models/transaction';
 import { isNegative, isZero, Money, subtract, sum } from '../../shared/money/money';
-import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
+import { CurrencyConverter } from '../../domain/calc/aggregations';
+import { pairsConverter } from '../../shared/money/display-converter';
+import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -75,6 +75,7 @@ interface BudgetRow extends BudgetProgress {
     PageHeader,
     ProgressBar,
     StatTile,
+    Skeleton,
     BudgetFormModal,
     Chart,
   ],
@@ -86,7 +87,6 @@ export class Budgets {
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly budgetPlanRepository = inject(BudgetPlanRepository);
   private readonly categoryRepository = inject(CategoryRepository);
-  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly confirmService = inject(ConfirmService);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
@@ -129,16 +129,13 @@ export class Budgets {
         .map((target) => [source, target] as [string, string]),
     );
   });
-  private readonly exchangeRatesResource = rxResource({
-    params: () => this.conversionPairs(),
-    stream: ({ params }) =>
-      params.length === 0
-        ? of([] as ExchangeRate[])
-        : forkJoin(params.map(([base, quote]) => this.exchangeRateRepository.getRate(base, quote))),
-  });
-  private readonly converter = computed<CurrencyConverter>(() =>
-    converterFromRates(this.exchangeRatesResource.value() ?? []),
-  );
+  // null until a rate covers every (source, target) pair conversionPairs
+  // names - see pairsConverter's doc comment for why this gate exists:
+  // budgetProgress/unbudgetedSpend feed the converted amount into sum(),
+  // which throws on a currency mismatch, unlike convertedOrNull's tolerant
+  // passthrough. Template gates the rows/totals on this too.
+  private readonly converter = pairsConverter(() => this.conversionPairs()).converter;
+  protected readonly ratesReady = computed(() => this.converter() !== null);
 
   protected readonly selectedMonth = signal(monthKey(new Date().toISOString()));
   private readonly percentageDraft = signal<Record<string, string>>({});
@@ -154,17 +151,20 @@ export class Budgets {
   );
 
   private displayBudgetProgress(
+    convert: CurrencyConverter,
     budget: Budget,
     transactions: Transaction[],
     categories: Category[],
   ): BudgetProgress {
-    const progress = budgetProgress(budget, transactions, categories, this.converter());
-    const budgeted = this.converter()(progress.budgeted, this.displayCurrency());
-    const spent = this.converter()(progress.spent, this.displayCurrency());
+    const progress = budgetProgress(budget, transactions, categories, convert);
+    const budgeted = convert(progress.budgeted, this.displayCurrency());
+    const spent = convert(progress.spent, this.displayCurrency());
     return { ...progress, budgeted, spent, remaining: subtract(budgeted, spent) };
   }
 
   protected readonly fixedBudgetRows = computed<BudgetRow[]>(() => {
+    const convert = this.converter();
+    if (!convert) return [];
     const budgets = this.budgetsResource.value() ?? [];
     const categories = this.categoriesResource.value() ?? [];
     const transactions = this.transactionsResource.value() ?? [];
@@ -174,7 +174,7 @@ export class Budgets {
     return budgets
       .filter((budget) => budget.month === month)
       .map((budget) => ({
-        ...this.displayBudgetProgress(budget, transactions, categories),
+        ...this.displayBudgetProgress(convert, budget, transactions, categories),
         budget,
         category: byId.get(budget.categoryId),
         isPercentage: false,
@@ -211,6 +211,8 @@ export class Budgets {
   );
 
   protected readonly percentageBudgetRows = computed<BudgetRow[]>(() => {
+    const convert = this.converter();
+    if (!convert) return [];
     const categories = this.categoriesResource.value() ?? [];
     const allocations: BudgetAllocation[] = this.allocationRows()
       .filter((row) => !row.fixed && Number(row.percentage) > 0)
@@ -228,7 +230,7 @@ export class Budgets {
     );
     const transactions = this.transactionsResource.value() ?? [];
     return budgets.map((entry) => ({
-      ...this.displayBudgetProgress(entry.budget, transactions, categories),
+      ...this.displayBudgetProgress(convert, entry.budget, transactions, categories),
       budget: entry.budget,
       category: categories.find((category) => category.id === entry.categoryId),
       isPercentage: true,
@@ -263,6 +265,8 @@ export class Budgets {
   protected readonly unbudgetedRows = computed<
     (UnbudgetedSpend & { category: Category | undefined })[]
   >(() => {
+    const convert = this.converter();
+    if (!convert) return [];
     const transactions = this.transactionsResource.value() ?? [];
     const categories = this.categoriesResource.value() ?? [];
     const budgets = this.budgetRows().map((row) => row.budget);
@@ -274,7 +278,7 @@ export class Budgets {
       budgets,
       this.selectedMonth(),
       this.displayCurrency(),
-      this.converter(),
+      convert,
     ).map((entry) => ({ ...entry, category: byId.get(entry.categoryId) }));
   });
 
@@ -311,6 +315,7 @@ export class Budgets {
   protected readonly isEmpty = computed(
     () =>
       !this.budgetsResource.isLoading() &&
+      this.ratesReady() &&
       this.budgetRows().length === 0 &&
       this.unbudgetedRows().length === 0,
   );

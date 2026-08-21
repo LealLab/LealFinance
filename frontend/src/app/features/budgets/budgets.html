@@ -124,7 +124,13 @@
     </div>
   </app-card>
 
-  @if (!isEmpty()) {
+  @if (!ratesReady()) {
+    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3" aria-busy="true">
+      @for (i of [0, 1, 2]; track i) {
+        <app-skeleton height="4.25rem" />
+      }
+    </div>
+  } @else if (!isEmpty()) {
     <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
       <app-stat-tile
         [label]="t('budgets.totals.budgeted')"
