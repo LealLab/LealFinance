@@ -47,7 +47,7 @@
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.byCategory') }}</h2>
-        <div class="h-64">
+        <div class="mx-auto aspect-square w-full max-w-56">
           <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
         </div>
         <table class="mt-4 w-full text-sm">

@@ -94,13 +94,20 @@ export class Chart {
     // and let Chart.js re-render with them.
     effect(() => {
       this.theme.current();
-      if (!this.instance) return;
+      this.kind();
+      this.labels();
+      this.datasets();
+      this.formatValue();
+      if (!this.instance?.ctx) return;
       this.instance.data = this.buildData();
       this.instance.options = this.buildOptions();
       this.instance.update();
     });
 
-    this.destroyRef.onDestroy(() => this.instance?.destroy());
+    this.destroyRef.onDestroy(() => {
+      this.instance?.destroy();
+      this.instance = undefined;
+    });
   }
 
   private themeColors() {

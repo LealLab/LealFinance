@@ -53,6 +53,24 @@ describe('Reports', () => {
     expect(fixture.nativeElement.querySelectorAll('canvas').length).toBeGreaterThan(0);
   });
 
+  it('builds populated datasets for every report chart after loading', async () => {
+    const fixture = TestBed.createComponent(Reports);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance;
+    const incomeExpense = component['incomeExpenseChart']();
+    const netFlow = component['netFlowChart']();
+    const balanceTrend = component['balanceTrendChart']();
+
+    expect(incomeExpense.labels).toHaveLength(6);
+    expect(incomeExpense.datasets.every((dataset) => dataset.data.some((value) => value > 0))).toBe(true);
+    expect(netFlow.datasets[0].data.some((value) => value !== 0)).toBe(true);
+    expect(balanceTrend.datasets.length).toBeGreaterThan(0);
+    expect(balanceTrend.datasets.every((dataset) => dataset.data.some((value) => value !== 0))).toBe(true);
+  });
+
   it('switches to a custom period and shows the date inputs', async () => {
     const fixture = TestBed.createComponent(Reports);
     fixture.detectChanges();
