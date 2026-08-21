@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Experimentální",
     "status": {
       "configuredUser": "Propojeno ({{label}})",
       "configuredEnv": "Z prostředí ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Model",
       "recommendedOption": "{{model}} (doporučeno)"
     },
-    "modelError": "Model se nepodařilo změnit. Zkuste to znovu."
+    "modelError": "Model se nepodařilo změnit. Zkuste to znovu.",
+    "effort": {
+      "label": "Úroveň uvažování"
+    }
   },
   "errors": {
     "error": {

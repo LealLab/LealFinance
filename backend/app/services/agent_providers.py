@@ -48,7 +48,9 @@ async def _status(db: AsyncSession, user_id: UUID, provider: str) -> ProviderSta
         account_label=resolved.account_label if resolved else None,
         model=resolved.model if resolved else spec.default_model,
         default_model=spec.default_model,
-        models=list(spec.models),
+        models=[m.id for m in spec.models],
+        reasoning_effort=resolved.reasoning_effort if resolved else None,
+        reasoning_efforts=list(spec.reasoning_efforts),
     )
 
 
@@ -63,12 +65,18 @@ async def link_api_key(
 
     row = await credentials.get_user_row(db, user_id, provider)
 
-    # Changing the model isn't re-linking: an existing row keeps its
-    # auth_mode, tokens, and account id. Without this, picking a model on
-    # an OAuth-linked provider would demand an API key and destroy the
-    # subscription link.
+    # Changing the model or reasoning effort isn't re-linking: an existing
+    # row keeps its auth_mode, tokens, and account id. Without this,
+    # picking a model on an OAuth-linked provider would demand an API key
+    # and destroy the subscription link.
     if row is not None and data.api_key is None and data.base_url is None:
-        row.model = data.model
+        if data.model is not None and data.model != row.model:
+            row.model = data.model
+            # A model switch resets to that model's own default effort,
+            # unless this same request also names one explicitly.
+            row.reasoning_effort = data.reasoning_effort
+        elif data.reasoning_effort is not None:
+            row.reasoning_effort = data.reasoning_effort
         await db.commit()
         return await _status(db, user_id, provider)
 
@@ -96,6 +104,7 @@ async def link_api_key(
     row.secret_ciphertext = secret_ciphertext
     row.base_url = data.base_url
     row.model = data.model
+    row.reasoning_effort = data.reasoning_effort
     await db.commit()
     return await _status(db, user_id, provider)
 

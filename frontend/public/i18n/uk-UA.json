@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Експериментально",
     "status": {
       "configuredUser": "Прив’язано ({{label}})",
       "configuredEnv": "З середовища ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Модель",
       "recommendedOption": "{{model}} (рекомендовано)"
     },
-    "modelError": "Не вдалося змінити модель. Спробуйте ще раз."
+    "modelError": "Не вдалося змінити модель. Спробуйте ще раз.",
+    "effort": {
+      "label": "Рівень міркування"
+    }
   },
   "errors": {
     "error": {

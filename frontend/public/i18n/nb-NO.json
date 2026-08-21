@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Eksperimentell",
     "status": {
       "configuredUser": "Tilknyttet ({{label}})",
       "configuredEnv": "Fra miljøet ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Modell",
       "recommendedOption": "{{model}} (anbefalt)"
     },
-    "modelError": "Kunne ikke endre modellen. Prøv igjen."
+    "modelError": "Kunne ikke endre modellen. Prøv igjen.",
+    "effort": {
+      "label": "Resonneringsinnsats"
+    }
   },
   "errors": {
     "error": {

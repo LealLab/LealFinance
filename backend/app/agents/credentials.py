@@ -23,6 +23,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents import oauth
 from app.agents.providers import PROVIDERS
+from app.agents.providers import default_effort as _default_effort
 from app.core.config import get_settings
 from app.core.crypto import decrypt_secret, encrypt_secret
 from app.models.agent_credential import (
@@ -48,6 +49,10 @@ class ResolvedCredential:
     account_id: str | None
     account_label: str | None
     source: Literal["user", "env"]
+    # None means the model's own default (app.agents.providers.default_effort)
+    # applies - kept last/defaulted so existing keyword-arg construction
+    # sites (tests included) that predate this field don't all need updating.
+    reasoning_effort: str | None = None
 
 
 async def get_user_row(db: AsyncSession, user_id: UUID, provider: str) -> AgentCredential | None:
@@ -116,6 +121,7 @@ def _env_fallback(provider: str) -> ResolvedCredential | None:
             secret=None,
             base_url=settings.ollama_base_url,
             model=spec.default_model,
+            reasoning_effort=_default_effort(provider, spec.default_model),
             account_id=None,
             account_label=None,
             source="env",
@@ -127,6 +133,7 @@ def _env_fallback(provider: str) -> ResolvedCredential | None:
         secret=secret,
         base_url=None,
         model=spec.default_model,
+        reasoning_effort=_default_effort(provider, spec.default_model),
         account_id=None,
         account_label=None,
         source="env",
@@ -143,12 +150,14 @@ async def resolve(db: AsyncSession, user_id: UUID, provider: str) -> ResolvedCre
         if row.auth_mode == AUTH_MODE_OAUTH:
             secret = await _refreshed(db, row)
             if secret is not None:
+                model = row.model or spec.default_model
                 return ResolvedCredential(
                     provider=provider,
                     auth_mode=row.auth_mode,
                     secret=secret,
                     base_url=row.base_url,
-                    model=row.model or spec.default_model,
+                    model=model,
+                    reasoning_effort=row.reasoning_effort or _default_effort(provider, model),
                     account_id=row.account_id,
                     account_label=row.account_label,
                     source="user",
@@ -161,12 +170,14 @@ async def resolve(db: AsyncSession, user_id: UUID, provider: str) -> ResolvedCre
             # left in place rather than deleted here, since this is a read
             # path; the user will see "not configured" and can re-link.
             if secret is not None or provider == PROVIDER_OLLAMA:
+                model = row.model or spec.default_model
                 return ResolvedCredential(
                     provider=provider,
                     auth_mode=row.auth_mode,
                     secret=secret,
                     base_url=row.base_url,
-                    model=row.model or spec.default_model,
+                    model=model,
+                    reasoning_effort=row.reasoning_effort or _default_effort(provider, model),
                     account_id=row.account_id,
                     account_label=row.account_label,
                     source="user",

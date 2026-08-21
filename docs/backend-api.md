@@ -153,7 +153,7 @@ Registration is invite-only, except the very first user on an instance.
 | PATCH | `/goals/{id}/with-account` | user | Updates a goal and its linked account in one response. |
 | POST | `/goals/{id}/archive` | user | |
 | GET | `/agents/providers` | user | Every route under `/agents` 404s `agents.disabled` unless `AGENTS_ENABLED=true`. See "AI agents" below. |
-| PUT | `/agents/providers/{provider}` | user | Body `{api_key?, base_url?, model?}`. Links an api-key or Ollama credential. |
+| PUT | `/agents/providers/{provider}` | user | Body `{api_key?, base_url?, model?, reasoning_effort?}`. Links an api-key or Ollama credential; also used model/effort-only, without an `api_key`/`base_url`, to change an already-linked provider's model or reasoning effort. |
 | DELETE | `/agents/providers/{provider}` | user | 204. Unlinks; the `.env` credential (if any) resumes. |
 | POST | `/agents/providers/{provider}/oauth/start` | user | → `{authorize_url, verifier, state}`. |
 | POST | `/agents/providers/{provider}/oauth/complete` | user | Body `{verifier, state, code}`. |

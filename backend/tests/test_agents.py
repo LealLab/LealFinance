@@ -163,6 +163,94 @@ async def test_link_model_only_update_without_existing_row_requires_api_key(
     assert response.json()["error"]["code"] == "agents.api_key_required"
 
 
+async def test_list_providers_exposes_openai_catalog_and_reasoning_efforts(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "catalog@example.com")
+
+    response = await client.get("/api/v1/agents/providers")
+    assert response.status_code == 200
+    by_provider = {row["provider"]: row for row in response.json()}
+
+    openai = by_provider["openai"]
+    assert openai["default_model"] == "gpt-5.6-luna"
+    assert openai["models"] == ["gpt-5.6-luna", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.5"]
+    assert openai["reasoning_efforts"] == ["low", "medium", "high", "xhigh"]
+
+    ollama = by_provider["ollama"]
+    assert ollama["reasoning_efforts"] == []
+
+
+async def test_link_effort_only_update_preserves_oauth_tokens(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Mirrors test_link_model_only_update_preserves_oauth_tokens - setting
+    the reasoning effort alone must not demand an API key or wipe the
+    refresh token/account id either."""
+    _enable_agents(monkeypatch)
+    user, password = await make_user(db_session, email="effort-only-oauth@example.com")
+    await login_as(client, email=user.email, password=password)
+
+    row = AgentCredential(
+        user_id=user.id,
+        provider="openai",
+        auth_mode="oauth",
+        secret_ciphertext=crypto.encrypt_secret("access-token"),
+        refresh_ciphertext=crypto.encrypt_secret("refresh-token"),
+        model="gpt-5.6-luna",
+        account_id="acct_123",
+        account_label="ChatGPT subscription",
+        expires_at=datetime.now(UTC) + timedelta(hours=1),
+    )
+    db_session.add(row)
+    await db_session.commit()
+
+    response = await client.put("/api/v1/agents/providers/openai", json={"reasoning_effort": "low"})
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["auth_mode"] == "oauth"
+    assert body["model"] == "gpt-5.6-luna"
+    assert body["reasoning_effort"] == "low"
+
+    await db_session.refresh(row)
+    assert row.refresh_ciphertext is not None
+    assert row.account_id == "acct_123"
+
+
+async def test_link_model_change_resets_reasoning_effort_to_new_default(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "model-switch-effort@example.com")
+
+    linked = await client.put(
+        "/api/v1/agents/providers/openai",
+        json={"api_key": "sk-user-key", "model": "gpt-5.6-luna", "reasoning_effort": "xhigh"},
+    )
+    assert linked.status_code == 200, linked.text
+    assert linked.json()["reasoning_effort"] == "xhigh"
+
+    switched = await client.put("/api/v1/agents/providers/openai", json={"model": "gpt-5.6-sol"})
+    assert switched.status_code == 200, switched.text
+    assert switched.json()["model"] == "gpt-5.6-sol"
+    # sol's own default (medium), not luna's leftover xhigh.
+    assert switched.json()["reasoning_effort"] == "medium"
+
+
+async def test_link_rejects_out_of_range_reasoning_effort(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "bad-effort@example.com")
+
+    response = await client.put(
+        "/api/v1/agents/providers/openai",
+        json={"api_key": "sk-user-key", "reasoning_effort": "extreme"},
+    )
+    assert response.status_code == 422
+
+
 async def test_link_ollama_requires_base_url(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -726,7 +814,11 @@ async def test_send_chat_openai_oauth_mode_streams_sse(monkeypatch: pytest.Monke
 
     def handler(request: httpx.Request) -> httpx.Response:
         captured["request"] = request
-        body = b'data: {"delta":"Hel"}\n\ndata: {"delta":"lo"}\n\ndata: [DONE]\n\n'
+        body = (
+            b'data: {"type":"response.output_text.delta","delta":"Hel"}\n\n'
+            b'data: {"type":"response.output_text.delta","delta":"lo"}\n\n'
+            b"data: [DONE]\n\n"
+        )
         return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
 
     monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
@@ -736,7 +828,7 @@ async def test_send_chat_openai_oauth_mode_streams_sse(monkeypatch: pytest.Monke
         auth_mode="oauth",
         secret="codex-token",
         base_url=None,
-        model="gpt-5.1-codex",
+        model="gpt-5.6-luna",
         account_id="acct_1",
         account_label="ChatGPT subscription",
         source="user",
@@ -765,3 +857,167 @@ async def test_send_chat_wraps_http_errors_as_bad_gateway(monkeypatch: pytest.Mo
     with pytest.raises(BadGatewayError) as exc_info:
         await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
     assert exc_info.value.code == "agents.provider_unavailable"
+
+
+async def test_send_chat_openai_oauth_sends_codex_request_shape(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Codex subscription endpoint (backend-api.../codex/responses)
+    rejects requests missing these fields - this is what PR #19 shipped
+    without, which is why every chat after linking a ChatGPT subscription
+    came back as agents.provider_unavailable."""
+    import json as _json
+
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        body = b'data: {"type":"response.output_text.delta","delta":"Hel"}\n\n'
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    credential = ResolvedCredential(
+        provider="openai",
+        auth_mode="oauth",
+        secret="codex-token",
+        base_url=None,
+        model="gpt-5.6-luna",
+        account_id="acct_1",
+        account_label="ChatGPT subscription",
+        source="user",
+        reasoning_effort="high",
+    )
+    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
+    assert reply == "Hel"
+
+    request = captured["request"]
+    assert request.headers["originator"] == "codex_cli_rs"
+    body = _json.loads(request.content)
+    assert body["store"] is False
+    assert body["reasoning"] == {"effort": "high", "summary": "auto"}
+    assert body["input"] == [
+        {
+            "type": "message",
+            "role": "user",
+            "content": [{"type": "input_text", "text": "hi"}],
+        }
+    ]
+
+
+async def test_send_chat_openai_oauth_ignores_non_output_text_events(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Only response.output_text.delta events are the answer - a reasoning
+    summary delta (or any other event carrying a top-level "delta" string)
+    must not leak into the reply."""
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b'data: {"type":"response.reasoning_summary_text.delta","delta":"thinking..."}\n\n'
+            b'data: {"type":"response.output_text.delta","delta":"answer"}\n\n'
+            b"data: [DONE]\n\n"
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    credential = ResolvedCredential(
+        provider="openai",
+        auth_mode="oauth",
+        secret="codex-token",
+        base_url=None,
+        model="gpt-5.6-luna",
+        account_id=None,
+        account_label=None,
+        source="user",
+    )
+    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
+    assert reply == "answer"
+
+
+async def test_send_chat_openai_oauth_malformed_sse_line_is_bad_gateway_not_500(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A json.loads failure on a malformed SSE data line is a ValueError,
+    which used to escape send_chat's except clause entirely and surface as
+    an unhandled 500 instead of agents.provider_unavailable."""
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = b"data: {not valid json\n\n"
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    credential = ResolvedCredential(
+        provider="openai",
+        auth_mode="oauth",
+        secret="codex-token",
+        base_url=None,
+        model="gpt-5.6-luna",
+        account_id=None,
+        account_label=None,
+        source="user",
+    )
+    with pytest.raises(BadGatewayError) as exc_info:
+        await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
+    assert exc_info.value.code == "agents.provider_unavailable"
+
+
+async def test_send_chat_anthropic_reasoning_effort_sets_thinking_budget(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import json as _json
+
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        return httpx.Response(200, json={"content": [{"type": "text", "text": "hi"}]})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    credential = ResolvedCredential(
+        provider="anthropic",
+        auth_mode="api_key",
+        secret="sk-x",
+        base_url=None,
+        model="claude-sonnet-5",
+        account_id=None,
+        account_label=None,
+        source="user",
+        reasoning_effort="medium",
+    )
+    await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
+    body = _json.loads(captured["request"].content)
+    assert body["thinking"] == {"type": "enabled", "budget_tokens": 4096}
+    assert body["max_tokens"] > 4096
+
+
+async def test_send_chat_anthropic_without_effort_omits_thinking(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import json as _json
+
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        return httpx.Response(200, json={"content": [{"type": "text", "text": "hi"}]})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+
+    credential = ResolvedCredential(
+        provider="anthropic",
+        auth_mode="api_key",
+        secret="sk-x",
+        base_url=None,
+        model="claude-sonnet-5",
+        account_id=None,
+        account_label=None,
+        source="env",
+    )
+    await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
+    body = _json.loads(captured["request"].content)
+    assert "thinking" not in body
+    assert body["max_tokens"] == 1024

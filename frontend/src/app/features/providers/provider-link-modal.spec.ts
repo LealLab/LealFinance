@@ -16,6 +16,7 @@ const ANTHROPIC_STATUS: AgentProviderStatus = {
   model: 'claude-sonnet-5',
   defaultModel: 'claude-sonnet-5',
   models: [],
+  reasoningEfforts: [],
 };
 
 const OPENAI_STATUS: AgentProviderStatus = {
@@ -23,9 +24,10 @@ const OPENAI_STATUS: AgentProviderStatus = {
   configured: false,
   source: 'none',
   authModes: ['api_key', 'oauth'],
-  model: 'gpt-5.1',
-  defaultModel: 'gpt-5.1',
+  model: 'gpt-5.6-luna',
+  defaultModel: 'gpt-5.6-luna',
   models: [],
+  reasoningEfforts: [],
 };
 
 const OLLAMA_STATUS: AgentProviderStatus = {
@@ -36,6 +38,7 @@ const OLLAMA_STATUS: AgentProviderStatus = {
   model: 'llama3.1',
   defaultModel: 'llama3.1',
   models: [],
+  reasoningEfforts: [],
 };
 
 describe('ProviderLinkModal', () => {

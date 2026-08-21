@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Eksperimental",
     "status": {
       "configuredUser": "Tertaut ({{label}})",
       "configuredEnv": "Dari environment ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Model",
       "recommendedOption": "{{model}} (direkomendasikan)"
     },
-    "modelError": "Model tidak dapat diubah. Coba lagi."
+    "modelError": "Model tidak dapat diubah. Coba lagi.",
+    "effort": {
+      "label": "Tingkat penalaran"
+    }
   },
   "errors": {
     "error": {

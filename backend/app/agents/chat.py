@@ -13,6 +13,7 @@ fails.
 
 import json
 import logging
+import uuid
 
 import httpx
 
@@ -30,6 +31,11 @@ _TIMEOUT = httpx.Timeout(60.0)
 # has no such restriction.
 _ANTHROPIC_OAUTH_SYSTEM_PREFIX = "You are Claude Code, Anthropic's official CLI for Claude."
 
+# Anthropic requires max_tokens to exceed the thinking budget; this is the
+# room left for the actual answer on top of it.
+_ANTHROPIC_ANSWER_HEADROOM = 4096
+_ANTHROPIC_THINKING_BUDGETS = {"low": 1024, "medium": 4096, "high": 8192, "xhigh": 16384}
+
 ChatMessage = dict[str, str]  # {"role": "user" | "assistant", "content": "..."}
 
 
@@ -40,18 +46,32 @@ async def send_chat(credential: ResolvedCredential, messages: list[ChatMessage])
         if credential.provider == PROVIDER_OPENAI:
             return await _send_openai_responses(credential, messages)
         return await _send_openai_compatible(credential, messages)
-    except (httpx.HTTPError, KeyError, IndexError) as exc:
+    except httpx.HTTPStatusError as exc:
+        body = exc.response.text[:500]
+        logger.warning(
+            "Chat call to provider %s failed: %s %s",
+            credential.provider,
+            exc.response.status_code,
+            body,
+        )
+        raise BadGatewayError(code="agents.provider_unavailable") from exc
+    except (httpx.HTTPError, KeyError, IndexError, ValueError) as exc:
         logger.warning("Chat call to provider %s failed", credential.provider, exc_info=True)
         raise BadGatewayError(code="agents.provider_unavailable") from exc
 
 
 async def _send_anthropic(credential: ResolvedCredential, messages: list[ChatMessage]) -> str:
     headers = {"anthropic-version": "2023-06-01", "content-type": "application/json"}
+    max_tokens = 1024
     body: dict[str, object] = {
         "model": credential.model,
-        "max_tokens": 1024,
         "messages": messages,
     }
+    budget = _ANTHROPIC_THINKING_BUDGETS.get(credential.reasoning_effort or "")
+    if budget is not None:
+        body["thinking"] = {"type": "enabled", "budget_tokens": budget}
+        max_tokens = budget + _ANTHROPIC_ANSWER_HEADROOM
+    body["max_tokens"] = max_tokens
     if credential.auth_mode == "oauth":
         headers["authorization"] = f"Bearer {credential.secret}"
         headers["anthropic-beta"] = "oauth-2025-04-20"
@@ -82,14 +102,40 @@ async def _send_openai_responses(
         "authorization": f"Bearer {credential.secret}",
         "content-type": "application/json",
         "accept": "text/event-stream",
+        # The Codex CLI's own headers - the backend-api endpoint (unlike
+        # the public platform API) checks for "official CLI" traffic the
+        # same way Anthropic's OAuth endpoint does (see the system-prompt
+        # prefix above). Without these the call 4xxs immediately.
+        "openai-beta": "responses=experimental",
+        "originator": "codex_cli_rs",
+        "session_id": str(uuid.uuid4()),
     }
     if credential.account_id:
         headers["chatgpt-account-id"] = credential.account_id
-    body = {
+    body: dict[str, object] = {
         "model": credential.model,
-        "input": [{"role": m["role"], "content": m["content"]} for m in messages],
+        "instructions": "You are Codex, a helpful coding and finance assistant.",
+        "input": [
+            {
+                "type": "message",
+                "role": m["role"],
+                "content": [
+                    {
+                        "type": "output_text" if m["role"] == "assistant" else "input_text",
+                        "text": m["content"],
+                    }
+                ],
+            }
+            for m in messages
+        ],
         "stream": True,
+        "store": False,
+        "tools": [],
+        "tool_choice": "auto",
+        "parallel_tool_calls": False,
     }
+    if credential.reasoning_effort:
+        body["reasoning"] = {"effort": credential.reasoning_effort, "summary": "auto"}
 
     text_parts: list[str] = []
     async with (
@@ -98,6 +144,8 @@ async def _send_openai_responses(
             "POST", "https://chatgpt.com/backend-api/codex/responses", headers=headers, json=body
         ) as response,
     ):
+        if response.is_error:
+            await response.aread()
         response.raise_for_status()
         async for line in response.aiter_lines():
             if not line.startswith("data:"):
@@ -106,6 +154,8 @@ async def _send_openai_responses(
             if not data or data == "[DONE]":
                 continue
             event = json.loads(data)
+            if event.get("type") != "response.output_text.delta":
+                continue
             delta = event.get("delta")
             if isinstance(delta, str):
                 text_parts.append(delta)
@@ -125,10 +175,14 @@ async def _send_openai_compatible(
         url = "https://api.openai.com/v1/chat/completions"
         headers = {"authorization": f"Bearer {credential.secret}"}
 
+    body: dict[str, object] = {"model": credential.model, "messages": messages}
+    # Ollama's catalog carries no reasoning_efforts, so this is always None
+    # there - only ever set for OpenAI api_key mode.
+    if credential.reasoning_effort:
+        body["reasoning_effort"] = credential.reasoning_effort
+
     async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
-        response = await client.post(
-            url, headers=headers, json={"model": credential.model, "messages": messages}
-        )
+        response = await client.post(url, headers=headers, json=body)
         response.raise_for_status()
         payload = response.json()
         content = payload["choices"][0]["message"]["content"]

@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Kokeellinen",
     "status": {
       "configuredUser": "Linkitetty ({{label}})",
       "configuredEnv": "Ympäristöstä ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Malli",
       "recommendedOption": "{{model}} (suositeltu)"
     },
-    "modelError": "Mallia ei voitu vaihtaa. Yritä uudelleen."
+    "modelError": "Mallia ei voitu vaihtaa. Yritä uudelleen.",
+    "effort": {
+      "label": "Päättelyn taso"
+    }
   },
   "errors": {
     "error": {

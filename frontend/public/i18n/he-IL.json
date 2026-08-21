@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "ניסיוני",
     "status": {
       "configuredUser": "מקושר ({{label}})",
       "configuredEnv": "מהגדרות הסביבה ({{model}})",
@@ -842,7 +843,10 @@
       "label": "מודל",
       "recommendedOption": "{{model}} (מומלץ)"
     },
-    "modelError": "לא ניתן היה לשנות את המודל. נסה שוב."
+    "modelError": "לא ניתן היה לשנות את המודל. נסה שוב.",
+    "effort": {
+      "label": "רמת חשיבה"
+    }
   },
   "errors": {
     "error": {

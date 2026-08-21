@@ -397,11 +397,14 @@ export const mapAgentProviderStatus = (wire: AgentProviderStatusWire): AgentProv
   model: wire.model,
   defaultModel: wire.default_model,
   models: wire.models,
+  reasoningEffort: wire.reasoning_effort ?? undefined,
+  reasoningEfforts: wire.reasoning_efforts,
 });
 export const mapAgentProviderLink = (input: AgentProviderLink): AgentProviderLinkWire => ({
   ...(input.apiKey !== undefined ? { api_key: input.apiKey } : {}),
   ...(input.baseUrl !== undefined ? { base_url: input.baseUrl } : {}),
   ...(input.model !== undefined ? { model: input.model } : {}),
+  ...(input.reasoningEffort !== undefined ? { reasoning_effort: input.reasoningEffort } : {}),
 });
 export const mapAgentOAuthStart = (wire: AgentOAuthStartWire): AgentOAuthStart => ({
   authorizeUrl: wire.authorize_url,

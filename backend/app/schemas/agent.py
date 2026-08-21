@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
 ChatRole = Literal["user", "assistant"]
+ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
 
 
 class ProviderStatusRead(BaseModel):
@@ -19,6 +20,8 @@ class ProviderStatusRead(BaseModel):
     model: str
     default_model: str
     models: list[str]
+    reasoning_effort: ReasoningEffort | None
+    reasoning_efforts: list[str]
 
 
 class ProviderLinkUpdate(BaseModel):
@@ -28,6 +31,7 @@ class ProviderLinkUpdate(BaseModel):
     api_key: str | None = Field(default=None, min_length=1)
     base_url: str | None = Field(default=None, min_length=1, max_length=255)
     model: str | None = Field(default=None, min_length=1, max_length=128)
+    reasoning_effort: ReasoningEffort | None = None
 
 
 class OAuthStartRead(BaseModel):

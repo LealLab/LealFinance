@@ -50,6 +50,25 @@ No LLM SDKs are used. Each provider is one JSON request/response over
 `httpx`; api-key mode for Ollama/OpenAI/Anthropic is a plain REST call,
 subscription mode uses the same endpoints the official CLIs use (below).
 
+## Models and reasoning effort
+
+The per-provider model catalog (`app/agents/providers.py`) is UI
+suggestions only - `AgentCredential.model` accepts any string, so a new
+model release never needs a code change to become usable, only to be
+suggested. OpenAI's catalog is `gpt-5.6-luna` (recommended default),
+`gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.5`.
+
+Anthropic and OpenAI also offer a **reasoning effort** picker
+(`low`/`medium`/`high`/`xhigh`) on the Providers page, next to the model
+select. Each model has its own default effort (e.g. `gpt-5.6-luna`
+defaults to `high`, the rest to `medium`); picking a different model
+resets the stored effort back to that model's default unless you also set
+one explicitly in the same change. Ollama has no such concept and doesn't
+show the picker. For Anthropic, effort maps to an extended-thinking
+token budget (`app/agents/chat.py`); leaving it unset sends no `thinking`
+block at all, matching pre-existing behavior for models that don't
+support it.
+
 ## Subscription linking is unsanctioned
 
 Linking a Claude Pro/Max or ChatGPT Plus/Pro subscription (rather than an

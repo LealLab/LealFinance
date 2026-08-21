@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "प्रायोगिक",
     "status": {
       "configuredUser": "जुड़ा हुआ ({{label}})",
       "configuredEnv": "एनवायरनमेंट से ({{model}})",
@@ -842,7 +843,10 @@
       "label": "मॉडल",
       "recommendedOption": "{{model}} (अनुशंसित)"
     },
-    "modelError": "मॉडल बदला नहीं जा सका। पुन: प्रयास करें।"
+    "modelError": "मॉडल बदला नहीं जा सका। पुन: प्रयास करें।",
+    "effort": {
+      "label": "रीज़निंग प्रयास"
+    }
   },
   "errors": {
     "error": {

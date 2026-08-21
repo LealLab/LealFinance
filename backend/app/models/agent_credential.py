@@ -23,10 +23,19 @@ AUTH_MODE_OAUTH = "oauth"
 AUTH_MODE_NONE = "none"
 AUTH_MODES = (AUTH_MODE_API_KEY, AUTH_MODE_OAUTH, AUTH_MODE_NONE)
 
+# Kept in sync with app.agents.providers.REASONING_EFFORTS by hand - that
+# module can't be imported here without a circular import (it imports the
+# PROVIDER_* constants from this file).
+REASONING_EFFORTS = ("low", "medium", "high", "xhigh")
+
 
 def _in_check(column: str, values: tuple[str, ...]) -> str:
     quoted = ", ".join(f"'{value}'" for value in values)
     return f"{column} IN ({quoted})"
+
+
+def _in_check_or_null(column: str, values: tuple[str, ...]) -> str:
+    return f"{column} IS NULL OR {_in_check(column, values)}"
 
 
 class AgentCredential(UserOwnedModel):
@@ -36,6 +45,10 @@ class AgentCredential(UserOwnedModel):
         UniqueConstraint("user_id", "provider", name="uq_agent_credentials_user_id_provider"),
         CheckConstraint(_in_check("provider", PROVIDERS), name="ck_agent_credentials_provider"),
         CheckConstraint(_in_check("auth_mode", AUTH_MODES), name="ck_agent_credentials_auth_mode"),
+        CheckConstraint(
+            _in_check_or_null("reasoning_effort", REASONING_EFFORTS),
+            name="ck_agent_credentials_reasoning_effort",
+        ),
     )
 
     provider: Mapped[str] = mapped_column(String(32), nullable=False)
@@ -51,3 +64,5 @@ class AgentCredential(UserOwnedModel):
     account_label: Mapped[str | None] = mapped_column(String(255))
     base_url: Mapped[str | None] = mapped_column(String(255))
     model: Mapped[str | None] = mapped_column(String(128))
+    # NULL = use the linked model's default (app.agents.providers.default_effort).
+    reasoning_effort: Mapped[str | None] = mapped_column(String(16))

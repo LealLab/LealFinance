@@ -3,7 +3,12 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ConfirmService } from '../../core/confirm.service';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
-import { AgentChatMessage, AgentProviderId, AgentProviderStatus } from '../../domain/models/agent-provider';
+import {
+  AgentChatMessage,
+  AgentProviderId,
+  AgentProviderStatus,
+  AgentReasoningEffort,
+} from '../../domain/models/agent-provider';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
@@ -11,7 +16,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProviderLinkModal } from './provider-link-modal';
 
 /**
- * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.unlinkError, providers.testOk, providers.testFailed, providers.chatError, providers.model.label, providers.model.recommendedOption, providers.modelError)
+ * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.chatError, providers.model.label, providers.model.recommendedOption, providers.modelError, providers.effort.label)
  *
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals but aren't calls to the `t` marker function, so
@@ -79,6 +84,13 @@ export class Providers {
     // free-text field; add a "custom…" option if unlisted models become
     // common.
     this.repository.link(provider.provider, { model }).subscribe({
+      next: () => this.providersResource.reload(),
+      error: () => this.actionErrorKey.set('providers.modelError'),
+    });
+  }
+
+  protected setEffort(provider: AgentProviderStatus, reasoningEffort: AgentReasoningEffort): void {
+    this.repository.link(provider.provider, { reasoningEffort }).subscribe({
       next: () => this.providersResource.reload(),
       error: () => this.actionErrorKey.set('providers.modelError'),
     });

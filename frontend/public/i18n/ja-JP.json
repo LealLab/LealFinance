@@ -782,6 +782,7 @@
       "openai": "OpenAI（Codex）",
       "ollama": "Ollama"
     },
+    "experimental": "実験的",
     "status": {
       "configuredUser": "連携済み（{{label}}）",
       "configuredEnv": "環境変数から（{{model}}）",
@@ -842,7 +843,10 @@
       "label": "モデル",
       "recommendedOption": "{{model}}（推奨）"
     },
-    "modelError": "モデルを変更できませんでした。もう一度お試しください。"
+    "modelError": "モデルを変更できませんでした。もう一度お試しください。",
+    "effort": {
+      "label": "推論の強度"
+    }
   },
   "errors": {
     "error": {

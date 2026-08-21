@@ -782,6 +782,7 @@
       "openai": "OpenAI(Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "실험적",
     "status": {
       "configuredUser": "연결됨({{label}})",
       "configuredEnv": "환경 변수에서({{model}})",
@@ -842,7 +843,10 @@
       "label": "모델",
       "recommendedOption": "{{model}}(권장)"
     },
-    "modelError": "모델을 변경할 수 없습니다. 다시 시도하세요."
+    "modelError": "모델을 변경할 수 없습니다. 다시 시도하세요.",
+    "effort": {
+      "label": "추론 노력"
+    }
   },
   "errors": {
     "error": {

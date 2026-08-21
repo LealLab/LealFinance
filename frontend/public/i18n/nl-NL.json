@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Experimenteel",
     "status": {
       "configuredUser": "Gekoppeld ({{label}})",
       "configuredEnv": "Vanuit de omgeving ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Model",
       "recommendedOption": "{{model}} (aanbevolen)"
     },
-    "modelError": "Kon het model niet wijzigen. Probeer het opnieuw."
+    "modelError": "Kon het model niet wijzigen. Probeer het opnieuw.",
+    "effort": {
+      "label": "Redeneerinspanning"
+    }
   },
   "errors": {
     "error": {

@@ -782,6 +782,7 @@
       "openai": "OpenAI（Codex）",
       "ollama": "Ollama"
     },
+    "experimental": "实验性",
     "status": {
       "configuredUser": "已关联（{{label}}）",
       "configuredEnv": "来自环境变量（{{model}}）",
@@ -842,7 +843,10 @@
       "label": "模型",
       "recommendedOption": "{{model}}（推荐）"
     },
-    "modelError": "无法更改模型，请重试。"
+    "modelError": "无法更改模型，请重试。",
+    "effort": {
+      "label": "推理强度"
+    }
   },
   "errors": {
     "error": {

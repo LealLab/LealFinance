@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Thử nghiệm",
     "status": {
       "configuredUser": "Đã liên kết ({{label}})",
       "configuredEnv": "Từ biến môi trường ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Mô hình",
       "recommendedOption": "{{model}} (đề xuất)"
     },
-    "modelError": "Không thể thay đổi mô hình. Vui lòng thử lại."
+    "modelError": "Không thể thay đổi mô hình. Vui lòng thử lại.",
+    "effort": {
+      "label": "Mức độ suy luận"
+    }
   },
   "errors": {
     "error": {

@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Πειραματικό",
     "status": {
       "configuredUser": "Συνδέθηκε ({{label}})",
       "configuredEnv": "Από το περιβάλλον ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Μοντέλο",
       "recommendedOption": "{{model}} (προτεινόμενο)"
     },
-    "modelError": "Δεν ήταν δυνατή η αλλαγή του μοντέλου. Δοκιμάστε ξανά."
+    "modelError": "Δεν ήταν δυνατή η αλλαγή του μοντέλου. Δοκιμάστε ξανά.",
+    "effort": {
+      "label": "Επίπεδο συλλογισμού"
+    }
   },
   "errors": {
     "error": {

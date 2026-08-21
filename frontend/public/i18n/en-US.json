@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Experimental",
     "status": {
       "configuredUser": "Linked ({{label}})",
       "configuredEnv": "From environment ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Model",
       "recommendedOption": "{{model}} (recommended)"
     },
-    "modelError": "Couldn't change the model. Try again."
+    "modelError": "Couldn't change the model. Try again.",
+    "effort": {
+      "label": "Reasoning effort"
+    }
   },
   "errors": {
     "error": {

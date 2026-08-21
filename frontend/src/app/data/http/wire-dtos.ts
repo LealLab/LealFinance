@@ -4,6 +4,7 @@ import type {
   AgentChatRole,
   AgentCredentialSource,
   AgentProviderId,
+  AgentReasoningEffort,
 } from '../../domain/models/agent-provider';
 import type { CategoryKind } from '../../domain/models/category';
 import type { RecurringFrequency } from '../../domain/models/recurring';
@@ -214,12 +215,15 @@ export interface AgentProviderStatusWire {
   model: string;
   default_model: string;
   models: string[];
+  reasoning_effort: AgentReasoningEffort | null;
+  reasoning_efforts: string[];
 }
 
 export interface AgentProviderLinkWire {
   api_key?: string;
   base_url?: string;
   model?: string;
+  reasoning_effort?: AgentReasoningEffort;
 }
 
 export interface AgentOAuthStartWire {

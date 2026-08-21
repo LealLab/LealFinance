@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Deneysel",
     "status": {
       "configuredUser": "Bağlandı ({{label}})",
       "configuredEnv": "Ortamdan ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Model",
       "recommendedOption": "{{model}} (önerilen)"
     },
-    "modelError": "Model değiştirilemedi. Tekrar deneyin."
+    "modelError": "Model değiştirilemedi. Tekrar deneyin.",
+    "effort": {
+      "label": "Akıl yürütme çabası"
+    }
   },
   "errors": {
     "error": {

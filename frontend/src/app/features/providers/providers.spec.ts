@@ -43,6 +43,21 @@ describe('Providers', () => {
     expect(text).toContain('Não configurado');
   });
 
+  it('marks only Ollama as experimental', async () => {
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const cards = fixture.nativeElement.querySelectorAll('app-card');
+    const cardText = (provider: string) =>
+      [...cards].find((card: HTMLElement) => card.textContent?.includes(provider))?.textContent ?? '';
+
+    expect(cardText('Ollama')).toContain('Experimental');
+    expect(cardText('Anthropic')).not.toContain('Experimental');
+    expect(cardText('OpenAI')).not.toContain('Experimental');
+  });
+
   it('links a provider with an api key and reflects it as configured', async () => {
     const fixture = TestBed.createComponent(Providers);
     fixture.detectChanges();
@@ -107,9 +122,10 @@ describe('Providers', () => {
       configured: false,
       source: 'none',
       authModes: ['api_key', 'oauth'],
-      model: 'gpt-5.1',
-      defaultModel: 'gpt-5.1',
+      model: 'gpt-5.6-luna',
+      defaultModel: 'gpt-5.6-luna',
       models: [],
+      reasoningEfforts: [],
     };
     fixture.componentInstance['openLink'](provider);
 
@@ -187,6 +203,59 @@ describe('Providers', () => {
       ?.find((row) => row.provider === 'anthropic');
     expect(updated?.model).toBe('claude-opus-5');
     expect(updated?.configured).toBe(true);
+  });
+
+  it('shows a reasoning effort select for a user-linked OpenAI provider', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('openai', { apiKey: 'sk-test' }).subscribe(() => resolve()),
+    );
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('#provider-effort-openai');
+    expect(select).not.toBeNull();
+    expect(select.value).toBe('high');
+  });
+
+  it('hides the reasoning effort select for Ollama', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('ollama', { baseUrl: 'http://ollama:11434' }).subscribe(() => resolve()),
+    );
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#provider-effort-ollama')).toBeNull();
+  });
+
+  it('changing the effort select links the new value', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('openai', { apiKey: 'sk-test' }).subscribe(() => resolve()),
+    );
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('#provider-effort-openai');
+    select.value = 'low';
+    select.dispatchEvent(new Event('change'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const updated = fixture.componentInstance['providersResource']
+      .value()
+      ?.find((row) => row.provider === 'openai');
+    expect(updated?.reasoningEffort).toBe('low');
   });
 
   it('unlinks a provider after confirmation and reloads the list', async () => {

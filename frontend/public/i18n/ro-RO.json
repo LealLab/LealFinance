@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "Experimental",
     "status": {
       "configuredUser": "Conectat ({{label}})",
       "configuredEnv": "Din mediu ({{model}})",
@@ -842,7 +843,10 @@
       "label": "Model",
       "recommendedOption": "{{model}} (recomandat)"
     },
-    "modelError": "Modelul nu a putut fi schimbat. Încearcă din nou."
+    "modelError": "Modelul nu a putut fi schimbat. Încearcă din nou.",
+    "effort": {
+      "label": "Efort de raționament"
+    }
   },
   "errors": {
     "error": {

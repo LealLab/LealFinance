@@ -782,6 +782,7 @@
       "openai": "OpenAI (Codex)",
       "ollama": "Ollama"
     },
+    "experimental": "تجريبي",
     "status": {
       "configuredUser": "مرتبط ({{label}})",
       "configuredEnv": "من بيئة التشغيل ({{model}})",
@@ -842,7 +843,10 @@
       "label": "النموذج",
       "recommendedOption": "{{model}} (موصى به)"
     },
-    "modelError": "تعذّر تغيير النموذج. حاول مرة أخرى."
+    "modelError": "تعذّر تغيير النموذج. حاول مرة أخرى.",
+    "effort": {
+      "label": "مستوى الاستدلال"
+    }
   },
   "errors": {
     "error": {

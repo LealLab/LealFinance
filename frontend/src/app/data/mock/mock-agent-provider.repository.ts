@@ -9,35 +9,60 @@ import {
   AgentProviderLink,
   AgentProviderStatus,
   AgentProviderTestResult,
+  AgentReasoningEffort,
 } from '../../domain/models/agent-provider';
 import { ApiError } from '../../core/api-error';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 
+const REASONING_EFFORTS: AgentReasoningEffort[] = ['low', 'medium', 'high', 'xhigh'];
+
+interface ModelSpec {
+  id: string;
+  defaultEffort?: AgentReasoningEffort;
+}
+
 interface ProviderSpec {
   authModes: string[];
   defaultModel: string;
-  models: string[];
+  models: ModelSpec[];
+  reasoningEfforts: AgentReasoningEffort[];
 }
 
 const PROVIDER_SPECS: Record<AgentProviderId, ProviderSpec> = {
   anthropic: {
     authModes: ['api_key', 'oauth'],
     defaultModel: 'claude-sonnet-5',
-    models: ['claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5-20251001'],
+    models: [
+      { id: 'claude-opus-5' },
+      { id: 'claude-sonnet-5' },
+      { id: 'claude-haiku-4-5-20251001' },
+    ],
+    reasoningEfforts: REASONING_EFFORTS,
   },
   openai: {
     authModes: ['api_key', 'oauth'],
-    defaultModel: 'gpt-5.1',
-    models: ['gpt-5.1', 'gpt-5.1-codex'],
+    defaultModel: 'gpt-5.6-luna',
+    models: [
+      { id: 'gpt-5.6-luna', defaultEffort: 'high' },
+      { id: 'gpt-5.6-sol', defaultEffort: 'medium' },
+      { id: 'gpt-5.6-terra', defaultEffort: 'medium' },
+      { id: 'gpt-5.5', defaultEffort: 'medium' },
+    ],
+    reasoningEfforts: REASONING_EFFORTS,
   },
-  ollama: { authModes: ['none'], defaultModel: 'llama3.1', models: [] },
+  ollama: { authModes: ['none'], defaultModel: 'llama3.1', models: [], reasoningEfforts: [] },
 };
+
+function defaultEffort(provider: AgentProviderId, model: string): AgentReasoningEffort | undefined {
+  return PROVIDER_SPECS[provider].models.find((m) => m.id === model)?.defaultEffort;
+}
 
 interface LinkedRow {
   authMode: string;
   accountLabel?: string;
   model: string;
+  reasoningEffort?: AgentReasoningEffort;
 }
 
 /** Not wired into the running app - a test double for unit tests only, see
@@ -62,19 +87,29 @@ export class MockAgentProviderRepository extends AgentProviderRepository {
     return mockResult(() => {
       const existing = this.linked.get(provider);
       if (existing && input.apiKey === undefined && input.baseUrl === undefined) {
-        // Model-only update: keeps auth_mode/accountLabel, matching the
-        // backend's link_api_key model-only branch.
-        this.linked.set(provider, { ...existing, model: input.model ?? this.defaultModel(provider) });
+        // Model/effort-only update: keeps auth_mode/accountLabel, matching
+        // the backend's link_api_key model-only branch. Switching model
+        // resets effort to that model's own default unless this same call
+        // also names one explicitly.
+        const model = input.model ?? existing.model;
+        const reasoningEffort =
+          input.model !== undefined && input.model !== existing.model
+            ? (input.reasoningEffort ?? defaultEffort(provider, model))
+            : (input.reasoningEffort ?? existing.reasoningEffort);
+        this.linked.set(provider, { ...existing, model, reasoningEffort });
         return this.statusFor(provider);
       }
       if (provider === 'ollama') {
         if (!input.baseUrl) throw new ApiError(422, 'agents.base_url_required', {});
-        this.linked.set(provider, { authMode: 'none', model: input.model ?? this.defaultModel(provider) });
+        const model = input.model ?? this.defaultModel(provider);
+        this.linked.set(provider, { authMode: 'none', model });
       } else {
         if (!input.apiKey) throw new ApiError(422, 'agents.api_key_required', {});
+        const model = input.model ?? this.defaultModel(provider);
         this.linked.set(provider, {
           authMode: 'api_key',
-          model: input.model ?? this.defaultModel(provider),
+          model,
+          reasoningEffort: input.reasoningEffort ?? defaultEffort(provider, model),
         });
       }
       return this.statusFor(provider);
@@ -103,10 +138,12 @@ export class MockAgentProviderRepository extends AgentProviderRepository {
 
   completeOAuth(provider: AgentProviderId): Observable<AgentProviderStatus> {
     return mockResult(() => {
+      const model = this.defaultModel(provider);
       this.linked.set(provider, {
         authMode: 'oauth',
         accountLabel: 'Mock subscription',
-        model: this.defaultModel(provider),
+        model,
+        reasoningEffort: defaultEffort(provider, model),
       });
       return this.statusFor(provider);
     }, this.latencyMs);
@@ -151,7 +188,9 @@ export class MockAgentProviderRepository extends AgentProviderRepository {
       accountLabel: row?.accountLabel,
       model: row?.model ?? spec.defaultModel,
       defaultModel: spec.defaultModel,
-      models: spec.models,
+      models: spec.models.map((m) => m.id),
+      reasoningEffort: row?.reasoningEffort,
+      reasoningEfforts: spec.reasoningEfforts,
     };
   }
 }

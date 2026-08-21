@@ -6,8 +6,11 @@
       <app-card>
         <div class="flex items-start justify-between gap-4">
           <div>
-            <h2 class="mb-1 text-sm font-semibold text-content-primary">
+            <h2 class="mb-1 flex items-center gap-2 text-sm font-semibold text-content-primary">
               {{ t('providers.names.' + provider.provider) }}
+              @if (provider.provider === 'ollama') {
+                <app-badge tone="warning">{{ t('providers.experimental') }}</app-badge>
+              }
             </h2>
             <p class="text-xs text-content-muted">
               @if (provider.configured && provider.source === 'user') {
@@ -45,7 +48,7 @@
                 (change)="setModel(provider, $any($event.target).value)"
               >
                 @for (m of modelOptions(provider); track m) {
-                  <option [value]="m">
+                  <option [value]="m" [selected]="m === provider.model">
                     {{ m === provider.defaultModel ? t('providers.model.recommendedOption', { model: m }) : m }}
                   </option>
                 }
@@ -60,6 +63,24 @@
               />
             }
           </div>
+
+          @if (provider.reasoningEfforts.length) {
+            <div class="mt-3">
+              <label class="form-label" [for]="'provider-effort-' + provider.provider">{{
+                t('providers.effort.label')
+              }}</label>
+              <select
+                [id]="'provider-effort-' + provider.provider"
+                class="form-input max-w-xs"
+                [value]="provider.reasoningEffort ?? ''"
+                (change)="setEffort(provider, $any($event.target).value)"
+              >
+                @for (e of provider.reasoningEfforts; track e) {
+                  <option [value]="e" [selected]="e === provider.reasoningEffort">{{ e }}</option>
+                }
+              </select>
+            </div>
+          }
         }
 
         <div class="mt-4 flex flex-wrap items-center gap-2">

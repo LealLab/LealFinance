@@ -214,6 +214,8 @@ describe('HTTP repositories', () => {
         model: 'claude-sonnet-5',
         default_model: 'claude-sonnet-5',
         models: ['claude-opus-5', 'claude-sonnet-5'],
+        reasoning_effort: null,
+        reasoning_efforts: ['low', 'medium', 'high', 'xhigh'],
       },
     ]);
     expect(statuses).toEqual([
@@ -227,6 +229,8 @@ describe('HTTP repositories', () => {
         model: 'claude-sonnet-5',
         defaultModel: 'claude-sonnet-5',
         models: ['claude-opus-5', 'claude-sonnet-5'],
+        reasoningEffort: undefined,
+        reasoningEfforts: ['low', 'medium', 'high', 'xhigh'],
       },
     ]);
   });
@@ -248,6 +252,8 @@ describe('HTTP repositories', () => {
       model: 'claude-sonnet-5',
       default_model: 'claude-sonnet-5',
       models: [],
+      reasoning_effort: null,
+      reasoning_efforts: [],
     });
   });
 
@@ -268,6 +274,30 @@ describe('HTTP repositories', () => {
       model: 'claude-opus-5',
       default_model: 'claude-sonnet-5',
       models: [],
+      reasoning_effort: null,
+      reasoning_efforts: [],
+    });
+  });
+
+  it('links a provider with only a reasoning effort, without disturbing the model', () => {
+    TestBed.inject(HttpAgentProviderRepository)
+      .link('openai', { reasoningEffort: 'low' })
+      .subscribe();
+    const req = http.expectOne('/api/v1/agents/providers/openai');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ reasoning_effort: 'low' });
+    req.flush({
+      provider: 'openai',
+      configured: true,
+      source: 'user',
+      auth_mode: 'oauth',
+      auth_modes: ['api_key', 'oauth'],
+      account_label: 'ChatGPT subscription',
+      model: 'gpt-5.6-luna',
+      default_model: 'gpt-5.6-luna',
+      models: [],
+      reasoning_effort: 'low',
+      reasoning_efforts: ['low', 'medium', 'high', 'xhigh'],
     });
   });
 
