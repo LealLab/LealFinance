@@ -762,7 +762,14 @@
       "title": "Kullanıcılar",
       "role": "Rol",
       "active": "Etkin",
-      "empty": "Kullanıcı bulunamadı."
+      "empty": "Kullanıcı bulunamadı.",
+      "roleChange": {
+        "title": "Rol değiştirilsin mi?",
+        "promote": "{{name}} kullanıcısına yönetici erişimi verilsin mi? Bu kişi kullanıcıları, davetiyeleri ve sağlayıcıları yönetebilecek.",
+        "demote": "{{name}} kullanıcısının yönetici erişimi kaldırılsın mı? Bu kişi artık kullanıcıları, davetiyeleri veya sağlayıcıları yönetemeyecek."
+      },
+      "lockedLastAdmin": "En az bir etkin yönetici gereklidir.",
+      "lockedPeerAdmin": "Yöneticiler başka bir yöneticinin rolünü veya durumunu değiştiremez."
     },
     "invitations": {
       "title": "Davetler",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Bu formun süresi doldu. Sayfayı yenileyip tekrar deneyin.",
       "last_admin": "En az bir etkin yönetici gereklidir.",
       "account_inactive": "Bu hesap etkin değil.",
-      "admin_required": "Yönetici erişimi gereklidir."
+      "admin_required": "Yönetici erişimi gereklidir.",
+      "peer_admin": "Yöneticiler başka bir yöneticinin rolünü veya durumunu değiştiremez."
     },
     "invitation": {
       "not_found": "Davet geçersiz.",

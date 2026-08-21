@@ -762,7 +762,14 @@
       "title": "Người dùng",
       "role": "Vai trò",
       "active": "Đang hoạt động",
-      "empty": "Không tìm thấy người dùng nào."
+      "empty": "Không tìm thấy người dùng nào.",
+      "roleChange": {
+        "title": "Thay đổi vai trò?",
+        "promote": "Cấp quyền quản trị viên cho {{name}}? Người này sẽ có thể quản lý người dùng, lời mời và nhà cung cấp.",
+        "demote": "Thu hồi quyền quản trị viên của {{name}}? Người này sẽ không còn quản lý được người dùng, lời mời hoặc nhà cung cấp."
+      },
+      "lockedLastAdmin": "Phải có ít nhất một quản trị viên đang hoạt động.",
+      "lockedPeerAdmin": "Quản trị viên không thể thay đổi vai trò hoặc trạng thái của quản trị viên khác."
     },
     "invitations": {
       "title": "Lời mời",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Biểu mẫu đã hết hạn. Hãy tải lại trang và thử lại.",
       "last_admin": "Phải có ít nhất một quản trị viên đang hoạt động.",
       "account_inactive": "Tài khoản này không hoạt động.",
-      "admin_required": "Cần có quyền quản trị viên."
+      "admin_required": "Cần có quyền quản trị viên.",
+      "peer_admin": "Quản trị viên không thể thay đổi vai trò hoặc trạng thái của quản trị viên khác."
     },
     "invitation": {
       "not_found": "Lời mời không hợp lệ.",

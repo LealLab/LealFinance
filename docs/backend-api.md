@@ -87,6 +87,7 @@ Registration is invite-only, except the very first user on an instance.
 | `auth.csrf_invalid` | 403 | State-changing request with a missing/mismatched `X-XSRF-TOKEN`. |
 | `auth.forbidden` | 403 | Generic authorization failure. |
 | `auth.admin_required` | 403 | Non-admin called an admin-only route. |
+| `auth.peer_admin` | 403 | An administrator tried to change another administrator's role or active state. |
 | `auth.last_admin` | 409 | Attempt to demote or deactivate the only remaining admin. |
 | `auth.invalid_role` | 422 | Role isn't `admin` or `member`. |
 | `auth.invalid_theme` | 422 | Theme preference isn't `light` or `dark`. |

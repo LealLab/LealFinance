@@ -762,7 +762,14 @@
       "title": "Uživatelé",
       "role": "Uživatelská role",
       "active": "Aktivní",
-      "empty": "Nebyli nalezeni žádní uživatelé."
+      "empty": "Nebyli nalezeni žádní uživatelé.",
+      "roleChange": {
+        "title": "Změnit roli?",
+        "promote": "Udělit uživateli {{name}} přístup administrátora? Bude moci spravovat uživatele, pozvánky a poskytovatele.",
+        "demote": "Odebrat uživateli {{name}} přístup administrátora? Nebude již moci spravovat uživatele, pozvánky ani poskytovatele."
+      },
+      "lockedLastAdmin": "Je vyžadován alespoň jeden aktivní správce.",
+      "lockedPeerAdmin": "Administrátoři nemohou měnit roli ani stav jiného administrátora."
     },
     "invitations": {
       "title": "Pozvánky",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Platnost tohoto formuláře vypršela. Obnovte stránku a zkuste to znovu.",
       "last_admin": "Je vyžadován alespoň jeden aktivní správce.",
       "account_inactive": "Tento účet je neaktivní.",
-      "admin_required": "Je vyžadován přístup správce."
+      "admin_required": "Je vyžadován přístup správce.",
+      "peer_admin": "Administrátoři nemohou měnit roli ani stav jiného administrátora."
     },
     "invitation": {
       "not_found": "Pozvánka není platná.",

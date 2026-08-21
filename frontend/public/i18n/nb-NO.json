@@ -762,7 +762,14 @@
       "title": "Brukere",
       "role": "Rolle",
       "active": "Aktiv",
-      "empty": "Ingen brukere funnet."
+      "empty": "Ingen brukere funnet.",
+      "roleChange": {
+        "title": "Endre rolle?",
+        "promote": "Gi {{name}} administratortilgang? Personen vil kunne administrere brukere, invitasjoner og leverandører.",
+        "demote": "Fjerne {{name}} sin administratortilgang? Personen vil ikke lenger kunne administrere brukere, invitasjoner eller leverandører."
+      },
+      "lockedLastAdmin": "Minst én aktiv administrator kreves.",
+      "lockedPeerAdmin": "Administratorer kan ikke endre rollen eller statusen til en annen administrator."
     },
     "invitations": {
       "title": "Invitasjoner",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Dette skjemaet er utløpt. Oppdater siden og prøv igjen.",
       "last_admin": "Minst én aktiv administrator kreves.",
       "account_inactive": "Denne kontoen er inaktiv.",
-      "admin_required": "Du må ha administratortilgang."
+      "admin_required": "Du må ha administratortilgang.",
+      "peer_admin": "Administratorer kan ikke endre rollen eller statusen til en annen administrator."
     },
     "invitation": {
       "not_found": "Invitasjonen er ugyldig.",

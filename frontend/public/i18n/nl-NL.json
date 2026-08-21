@@ -762,7 +762,14 @@
       "title": "Gebruikers",
       "role": "Rol",
       "active": "Actief",
-      "empty": "Geen gebruikers gevonden."
+      "empty": "Geen gebruikers gevonden.",
+      "roleChange": {
+        "title": "Rol wijzigen?",
+        "promote": "Beheerderstoegang verlenen aan {{name}}? Deze persoon kan dan gebruikers, uitnodigingen en providers beheren.",
+        "demote": "Beheerderstoegang van {{name}} intrekken? Deze persoon kan dan geen gebruikers, uitnodigingen of providers meer beheren."
+      },
+      "lockedLastAdmin": "Er moet ten minste één actieve beheerder zijn.",
+      "lockedPeerAdmin": "Beheerders kunnen de rol of status van een andere beheerder niet wijzigen."
     },
     "invitations": {
       "title": "Uitnodigingen",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Dit formulier is verlopen. Vernieuw de pagina en probeer het opnieuw.",
       "last_admin": "Er moet ten minste één actieve beheerder zijn.",
       "account_inactive": "Dit account is inactief.",
-      "admin_required": "Beheerdersrechten zijn vereist."
+      "admin_required": "Beheerdersrechten zijn vereist.",
+      "peer_admin": "Beheerders kunnen de rol of status van een andere beheerder niet wijzigen."
     },
     "invitation": {
       "not_found": "De uitnodiging is ongeldig.",

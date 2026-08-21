@@ -215,6 +215,68 @@ async def test_cannot_demote_the_last_admin(client: AsyncClient, db_session: Asy
     assert response.json()["error"]["code"] == "auth.last_admin"
 
 
+async def test_admin_cannot_demote_a_peer_admin(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    admin, admin_password = await make_user(
+        db_session, email="admin-a@example.com", role=ROLE_ADMIN
+    )
+    peer, _peer_password = await make_user(db_session, email="admin-b@example.com", role=ROLE_ADMIN)
+    await login_as(client, email=admin.email, password=admin_password)
+
+    response = await client.patch(f"/api/v1/auth/users/{peer.id}", json={"role": "member"})
+
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "auth.peer_admin"
+
+
+async def test_admin_cannot_deactivate_a_peer_admin(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    admin, admin_password = await make_user(
+        db_session, email="admin-c@example.com", role=ROLE_ADMIN
+    )
+    peer, _peer_password = await make_user(db_session, email="admin-d@example.com", role=ROLE_ADMIN)
+    await login_as(client, email=admin.email, password=admin_password)
+
+    response = await client.patch(f"/api/v1/auth/users/{peer.id}", json={"is_active": False})
+
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "auth.peer_admin"
+
+
+async def test_admin_can_rename_a_peer_admin(client: AsyncClient, db_session: AsyncSession) -> None:
+    admin, admin_password = await make_user(
+        db_session, email="admin-e@example.com", role=ROLE_ADMIN
+    )
+    peer, _peer_password = await make_user(db_session, email="admin-f@example.com", role=ROLE_ADMIN)
+    await login_as(client, email=admin.email, password=admin_password)
+
+    response = await client.patch(
+        f"/api/v1/auth/users/{peer.id}", json={"display_name": "Renamed Peer"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["display_name"] == "Renamed Peer"
+
+
+async def test_resending_a_peer_admins_unchanged_role_is_allowed(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    admin, admin_password = await make_user(
+        db_session, email="admin-g@example.com", role=ROLE_ADMIN
+    )
+    peer, _peer_password = await make_user(db_session, email="admin-h@example.com", role=ROLE_ADMIN)
+    await login_as(client, email=admin.email, password=admin_password)
+
+    response = await client.patch(
+        f"/api/v1/auth/users/{peer.id}",
+        json={"display_name": peer.display_name, "role": "admin", "is_active": True},
+    )
+
+    assert response.status_code == 200
+
+
 async def test_concurrent_admin_demotions_leave_one_active_admin(_engine: AsyncEngine) -> None:
     session_factory = async_sessionmaker(_engine, expire_on_commit=False)
     admin_ids: list[UUID] = []
@@ -233,8 +295,12 @@ async def test_concurrent_admin_demotions_leave_one_active_admin(_engine: AsyncE
 
         async def demote(target_id: UUID) -> User:
             async with session_factory() as session:
+                # Self-demotion: the actor is the same admin being demoted.
+                actor = await session.get(User, target_id)
+                assert actor is not None
                 return await auth_service.update_user(
                     session,
+                    actor=actor,
                     target_id=target_id,
                     role="member",
                     is_active=None,

@@ -762,7 +762,14 @@
       "title": "Utilizatori",
       "role": "Rol",
       "active": "Activ",
-      "empty": "Nu s-a găsit niciun utilizator."
+      "empty": "Nu s-a găsit niciun utilizator.",
+      "roleChange": {
+        "title": "Schimbați rolul?",
+        "promote": "Acordați acces de administrator lui {{name}}? Va putea gestiona utilizatori, invitații și furnizori.",
+        "demote": "Eliminați accesul de administrator al lui {{name}}? Nu va mai putea gestiona utilizatori, invitații sau furnizori."
+      },
+      "lockedLastAdmin": "Este necesar cel puțin un administrator activ.",
+      "lockedPeerAdmin": "Administratorii nu pot schimba rolul sau starea unui alt administrator."
     },
     "invitations": {
       "title": "Invitații",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Acest formular a expirat. Reîncarcă pagina și încearcă din nou.",
       "last_admin": "Este necesar cel puțin un administrator activ.",
       "account_inactive": "Acest cont este inactiv.",
-      "admin_required": "Este necesar accesul de administrator."
+      "admin_required": "Este necesar accesul de administrator.",
+      "peer_admin": "Administratorii nu pot schimba rolul sau starea unui alt administrator."
     },
     "invitation": {
       "not_found": "Invitația nu este validă.",

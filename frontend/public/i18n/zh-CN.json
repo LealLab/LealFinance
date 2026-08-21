@@ -762,7 +762,14 @@
       "title": "用户",
       "role": "角色",
       "active": "活跃",
-      "empty": "未找到用户。"
+      "empty": "未找到用户。",
+      "roleChange": {
+        "title": "更改角色？",
+        "promote": "授予 {{name}} 管理员权限？该用户将能够管理用户、邀请和提供商。",
+        "demote": "移除 {{name}} 的管理员权限？该用户将无法再管理用户、邀请或提供商。"
+      },
+      "lockedLastAdmin": "至少需要一名活跃的管理员。",
+      "lockedPeerAdmin": "管理员不能更改其他管理员的角色或状态。"
     },
     "invitations": {
       "title": "邀请",
@@ -858,7 +865,8 @@
       "csrf_invalid": "表单已过期。请刷新页面后重试。",
       "last_admin": "至少需要一名活跃的管理员。",
       "account_inactive": "此账户未启用。",
-      "admin_required": "需要管理员权限。"
+      "admin_required": "需要管理员权限。",
+      "peer_admin": "管理员不能更改其他管理员的角色或状态。"
     },
     "invitation": {
       "not_found": "邀请无效。",

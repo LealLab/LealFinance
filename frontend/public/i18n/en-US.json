@@ -762,7 +762,14 @@
       "title": "Users",
       "role": "Role",
       "active": "Active",
-      "empty": "No users found."
+      "empty": "No users found.",
+      "roleChange": {
+        "title": "Change role?",
+        "promote": "Grant administrator access to {{name}}? They will be able to manage users, invitations, and providers.",
+        "demote": "Remove administrator access from {{name}}? They will no longer be able to manage users, invitations, or providers."
+      },
+      "lockedLastAdmin": "At least one active administrator is required.",
+      "lockedPeerAdmin": "Administrators cannot change another administrator's role or status."
     },
     "invitations": {
       "title": "Invitations",
@@ -858,7 +865,8 @@
       "csrf_invalid": "This form expired. Refresh the page and try again.",
       "last_admin": "At least one active administrator is required.",
       "account_inactive": "This account is inactive.",
-      "admin_required": "Administrator access is required."
+      "admin_required": "Administrator access is required.",
+      "peer_admin": "Administrators cannot change another administrator's role or status."
     },
     "invitation": {
       "not_found": "The invitation is invalid.",

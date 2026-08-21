@@ -762,7 +762,14 @@
       "title": "使用者",
       "role": "角色",
       "active": "啟用中",
-      "empty": "找不到使用者。"
+      "empty": "找不到使用者。",
+      "roleChange": {
+        "title": "變更角色？",
+        "promote": "授予 {{name}} 管理員權限？該使用者將能夠管理使用者、邀請和提供者。",
+        "demote": "移除 {{name}} 的管理員權限？該使用者將無法再管理使用者、邀請或提供者。"
+      },
+      "lockedLastAdmin": "至少需要一位啟用中的管理員。",
+      "lockedPeerAdmin": "管理員無法更改其他管理員的角色或狀態。"
     },
     "invitations": {
       "title": "邀請",
@@ -858,7 +865,8 @@
       "csrf_invalid": "此表單已過期。請重新整理頁面後再試一次。",
       "last_admin": "至少需要一位啟用中的管理員。",
       "account_inactive": "此帳戶目前未啟用。",
-      "admin_required": "需要管理員存取權。"
+      "admin_required": "需要管理員存取權。",
+      "peer_admin": "管理員無法更改其他管理員的角色或狀態。"
     },
     "invitation": {
       "not_found": "邀請無效。",

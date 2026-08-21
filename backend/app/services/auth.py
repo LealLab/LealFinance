@@ -18,7 +18,13 @@ from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
-from app.core.errors import ConflictError, NotFoundError, UnauthorizedError, ValidationAppError
+from app.core.errors import (
+    ConflictError,
+    ForbiddenError,
+    NotFoundError,
+    UnauthorizedError,
+    ValidationAppError,
+)
 from app.core.security import (
     generate_token,
     hash_password,
@@ -262,6 +268,7 @@ async def list_users(db: AsyncSession) -> list[User]:
 async def update_user(
     db: AsyncSession,
     *,
+    actor: User,
     target_id: UUID,
     role: str | None,
     is_active: bool | None,
@@ -276,6 +283,15 @@ async def update_user(
     user = await db.scalar(select(User).where(User.id == target_id).with_for_update())
     if user is None:
         raise NotFoundError(code="user.not_found")
+
+    # An admin may change their own privileges (subject to the last-admin
+    # rule below) or a member's, but never another admin's - only the
+    # affected fields are gated, so renaming a peer admin is still allowed.
+    changes_privilege = (role is not None and role != user.role) or (
+        is_active is not None and is_active != user.is_active
+    )
+    if user.id != actor.id and user.role == ROLE_ADMIN and changes_privilege:
+        raise ForbiddenError(code="auth.peer_admin")
 
     demoting = role is not None and role != ROLE_ADMIN and user.role == ROLE_ADMIN
     deactivating = is_active is False and user.is_active

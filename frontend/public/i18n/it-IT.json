@@ -762,7 +762,14 @@
       "title": "Utenti",
       "role": "Ruolo",
       "active": "Attivo",
-      "empty": "Nessun utente trovato."
+      "empty": "Nessun utente trovato.",
+      "roleChange": {
+        "title": "Modificare il ruolo?",
+        "promote": "Concedere l'accesso amministratore a {{name}}? Potrà gestire utenti, inviti e provider.",
+        "demote": "Rimuovere l'accesso amministratore a {{name}}? Non potrà più gestire utenti, inviti o provider."
+      },
+      "lockedLastAdmin": "È necessario almeno un amministratore attivo.",
+      "lockedPeerAdmin": "Gli amministratori non possono modificare il ruolo o lo stato di un altro amministratore."
     },
     "invitations": {
       "title": "Inviti",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Questo modulo è scaduto. Ricarica la pagina e riprova.",
       "last_admin": "È necessario almeno un amministratore attivo.",
       "account_inactive": "Questo account è inattivo.",
-      "admin_required": "Sono necessari i privilegi di amministratore."
+      "admin_required": "Sono necessari i privilegi di amministratore.",
+      "peer_admin": "Gli amministratori non possono modificare il ruolo o lo stato di un altro amministratore."
     },
     "invitation": {
       "not_found": "L'invito non è valido.",
