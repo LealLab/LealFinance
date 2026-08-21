@@ -1,22 +1,16 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { forkJoin, of } from 'rxjs';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
-import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { GoalRepository } from '../../data/goal.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import {
-  convertedOrNull,
-  converterFromRates,
-  CurrencyConverter,
-} from '../../domain/calc/aggregations';
+import { convertedOrNull } from '../../domain/calc/aggregations';
 import { GoalProgress, goalProgress } from '../../domain/calc/goals';
 import { Account } from '../../domain/models/account';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Goal } from '../../domain/models/goal';
 import { Money } from '../../shared/money/money';
+import { displayConverter } from '../../shared/money/display-converter';
 import { Transaction } from '../../domain/models/transaction';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
@@ -62,7 +56,6 @@ export class Goals {
   private readonly goalRepository = inject(GoalRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
-  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   protected readonly goalsResource = rxResource({ stream: () => this.goalRepository.list() });
@@ -91,21 +84,7 @@ export class Goals {
     return Array.from(new Set(currencies.filter((currency) => currency !== display)));
   });
 
-  protected readonly ratesResource = rxResource({
-    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
-    stream: ({ params }) =>
-      params.currencies.length === 0
-        ? of([] as ExchangeRate[])
-        : forkJoin(
-            params.currencies.map((currency) =>
-              this.exchangeRateRepository.getRate(currency, params.display),
-            ),
-          ),
-  });
-
-  private readonly converter = computed<CurrencyConverter>(() =>
-    converterFromRates(this.ratesResource.value() ?? []),
-  );
+  private readonly converter = displayConverter(() => this.foreignCurrencies()).converter;
 
   protected readonly rows = computed<GoalRow[]>(() => {
     const accounts = this.accountsById();
@@ -122,8 +101,8 @@ export class Goals {
           goal,
           account,
           progress,
-          convertedCurrent: convertedOrNull(progress.current, display, convert),
-          convertedTarget: convertedOrNull(progress.target, display, convert),
+          convertedCurrent: convert ? convertedOrNull(progress.current, display, convert) : null,
+          convertedTarget: convert ? convertedOrNull(progress.target, display, convert) : null,
         };
       })
       .filter((row): row is GoalRow => Boolean(row));

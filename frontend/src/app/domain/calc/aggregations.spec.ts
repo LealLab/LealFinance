@@ -10,6 +10,7 @@ import {
   CurrencyConverter,
   groupByMonth,
   netWorth,
+  ratesCover,
   totalsFor
 } from './aggregations';
 
@@ -246,6 +247,42 @@ describe('converterFromRates', () => {
   it('returns the amount unconverted when no rate covers its currency', () => {
     const convert = converterFromRates([rate({ baseCode: 'GBP' })]);
     expect(convert(money('100', 'USD'), 'BRL')).toEqual(money('100', 'USD'));
+  });
+});
+
+describe('ratesCover', () => {
+  function rate(overrides: Partial<ExchangeRate> = {}): ExchangeRate {
+    return {
+      baseCode: 'USD',
+      quoteCode: 'BRL',
+      rate: '5.2',
+      isFallback: false,
+      source: 'quote',
+      asOf: '2026-08-14',
+      ...overrides,
+    };
+  }
+
+  it('is true when no foreign currency is in play', () => {
+    expect(ratesCover([], [], 'BRL')).toBe(true);
+  });
+
+  it('is true for a currency equal to the target, even with no rates fetched', () => {
+    expect(ratesCover([], ['BRL'], 'BRL')).toBe(true);
+  });
+
+  it('is true when every foreign currency has a matching rate', () => {
+    expect(ratesCover([rate({ baseCode: 'USD' }), rate({ baseCode: 'EUR' })], ['USD', 'EUR'], 'BRL')).toBe(
+      true
+    );
+  });
+
+  it('is false when a foreign currency has no rate yet - the loading-resource race', () => {
+    expect(ratesCover([], ['USD'], 'BRL')).toBe(false);
+  });
+
+  it('is false when only some foreign currencies are covered', () => {
+    expect(ratesCover([rate({ baseCode: 'USD' })], ['USD', 'EUR'], 'BRL')).toBe(false);
   });
 });
 

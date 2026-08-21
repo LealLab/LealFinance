@@ -2,19 +2,17 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { openOnNewParam } from '../../core/open-on-new-param';
 import { AccountRepository } from '../../data/account.repository';
-import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
-import { convertedOrNull, converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
+import { convertedOrNull } from '../../domain/calc/aggregations';
 import { Account } from '../../domain/models/account';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Institution } from '../../domain/models/institution';
 import { isNegative, isZero, money, Money, sum } from '../../shared/money/money';
+import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
@@ -74,7 +72,6 @@ export class Accounts {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly accountRepository = inject(AccountRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
-  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly router = inject(Router);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
@@ -107,15 +104,7 @@ export class Accounts {
     return Array.from(new Set(currencies.filter((currency) => currency !== display)));
   });
 
-  protected readonly ratesResource = rxResource({
-    params: () => ({ currencies: this.foreignCurrencies(), display: this.displayCurrency() }),
-    stream: ({ params }) =>
-      params.currencies.length === 0
-        ? of([] as ExchangeRate[])
-        : forkJoin(params.currencies.map((currency) => this.exchangeRateRepository.getRate(currency, params.display)))
-  });
-
-  private readonly converter = computed<CurrencyConverter>(() => converterFromRates(this.ratesResource.value() ?? []));
+  private readonly converter = displayConverter(() => this.foreignCurrencies()).converter;
 
   constructor() {
     openOnNewParam(() => this.openCreate());
@@ -142,14 +131,18 @@ export class Accounts {
       const rows: AccountRow[] = group.accounts.map((account) => {
         const row = balanceByAccountId.get(account.id);
         const balance = row ? money(row.balance, row.currency) : money('0', account.currency);
-        return { account, balance, convertedBalance: convertedOrNull(balance, display, convert) };
+        return {
+          account,
+          balance,
+          convertedBalance: convert ? convertedOrNull(balance, display, convert) : null
+        };
       });
       const subtotal = trySum(rows.filter((row) => !row.account.archived).map((row) => row.balance));
       return {
         institution: group.institution,
         rows,
         subtotal,
-        convertedSubtotal: subtotal ? convertedOrNull(subtotal, display, convert) : null
+        convertedSubtotal: subtotal && convert ? convertedOrNull(subtotal, display, convert) : null
       };
     });
   });

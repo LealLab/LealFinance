@@ -2,10 +2,14 @@
   <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')" />
 
   <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-    <app-stat-tile
-      [label]="t('exchange.stats.feesPaid')"
-      [value]="totalFees().amount | money: totalFees().currency"
-    />
+    @if (feeRatesReady()) {
+      <app-stat-tile
+        [label]="t('exchange.stats.feesPaid')"
+        [value]="totalFees().amount | money: totalFees().currency"
+      />
+    } @else {
+      <app-skeleton height="4.25rem" />
+    }
     <app-stat-tile
       [label]="t('exchange.stats.needsAttention')"
       [value]="needsAttentionRows().length + ''"

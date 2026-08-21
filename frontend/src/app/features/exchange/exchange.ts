@@ -12,17 +12,19 @@ import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { ManualRateRepository } from '../../data/manual-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { converterFromRates, CurrencyConverter } from '../../domain/calc/aggregations';
 import { totalConversionFees, transactionsNeedingAttention } from '../../domain/calc/exchange';
+import { displayConverter } from '../../shared/money/display-converter';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { ManualRate } from '../../domain/models/manual-rate';
 import { Transaction } from '../../domain/models/transaction';
+import { zero } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { StatTile } from '../../shared/ui/stat-tile/stat-tile';
 import { TransactionFormModal } from '../transactions/transaction-form-modal';
 import { ManualRateFormModal } from './manual-rate-form-modal';
@@ -44,6 +46,7 @@ import { ManualRateFormModal } from './manual-rate-form-modal';
     EmptyState,
     Icon,
     PageHeader,
+    Skeleton,
     StatTile,
     TransactionFormModal,
     ManualRateFormModal
@@ -130,23 +133,15 @@ export class Exchange {
     return Array.from(new Set(currencies));
   });
 
-  protected readonly feeRatesResource = rxResource({
-    params: () => ({ currencies: this.foreignFeeCurrencies(), display: this.displayCurrency() }),
-    stream: ({ params }) =>
-      params.currencies.length === 0
-        ? of([] as ExchangeRate[])
-        : forkJoin(
-            params.currencies.map((currency) => this.exchangeRateRepository.getRate(currency, params.display))
-          )
+  private readonly feeRates = displayConverter(() => this.foreignFeeCurrencies());
+  private readonly feeConverter = this.feeRates.converter;
+  protected readonly feeRatesReady = computed(() => this.feeConverter() !== null);
+
+  protected readonly totalFees = computed(() => {
+    const convert = this.feeConverter();
+    if (!convert) return zero(this.displayCurrency());
+    return totalConversionFees(this.transactionsResource.value() ?? [], this.displayCurrency(), convert);
   });
-
-  private readonly feeConverter = computed<CurrencyConverter>(() =>
-    converterFromRates(this.feeRatesResource.value() ?? [])
-  );
-
-  protected readonly totalFees = computed(() =>
-    totalConversionFees(this.transactionsResource.value() ?? [], this.displayCurrency(), this.feeConverter())
-  );
 
   protected readonly manualRates = computed(() =>
     (this.manualRatesResource.value() ?? []).slice().sort((a, b) => b.asOf.localeCompare(a.asOf))
@@ -208,7 +203,7 @@ export class Exchange {
   protected onRateSaved(): void {
     this.manualRatesResource.reload();
     this.accountRatesResource.reload();
-    this.feeRatesResource.reload();
+    this.feeRates.reload();
   }
 
   protected async deleteRate(rate: ManualRate): Promise<void> {

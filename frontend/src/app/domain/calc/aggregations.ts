@@ -163,6 +163,41 @@ export function converterFromRates(rates: readonly ExchangeRate[]): CurrencyConv
 }
 
 /**
+ * True when every `[source, target]` pair either names the same currency
+ * twice (nothing to convert) or has a matching `base:quote` entry in
+ * `rates` - the gate every aggregation caller (totalsFor,
+ * categoryBreakdown, netWorth, budgetProgress) must check before
+ * converting, because unlike `convertedOrNull` they feed the result into
+ * `sum`/`add`/`compare`, which throw on a currency mismatch rather than
+ * tolerating `converterFromRates`'s documented unconverted-passthrough. A
+ * caller that builds its converter from a still-loading rates resource and
+ * skips this check will crash the instant it aggregates a foreign-currency
+ * amount - see dashboard.ts's `converter`/`ratesReady` pair for the
+ * simple (single target currency) case, and budgets.ts's `conversionPairs`
+ * for the multi-target one (budgetProgress converts into each budget's own
+ * currency, not one shared display currency).
+ */
+export function pairsCovered(
+  rates: readonly ExchangeRate[],
+  pairs: readonly (readonly [string, string])[]
+): boolean {
+  const covered = new Set(rates.map((rate) => `${rate.baseCode}:${rate.quoteCode}`));
+  return pairs.every(([source, target]) => source === target || covered.has(`${source}:${target}`));
+}
+
+/** `ratesCover(rates, currencies, target)` is `pairsCovered` for the common single-target-currency case. */
+export function ratesCover(
+  rates: readonly ExchangeRate[],
+  currencies: readonly string[],
+  targetCurrency: string
+): boolean {
+  return pairsCovered(
+    rates,
+    currencies.map((currency) => [currency, targetCurrency] as const)
+  );
+}
+
+/**
  * Converts `amount` into `targetCurrency`, or `null` if it's already in
  * that currency *or* nothing was available to convert it (the converter
  * passed the original amount through unchanged - see `converterFromRates`

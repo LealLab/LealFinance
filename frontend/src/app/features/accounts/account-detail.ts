@@ -2,18 +2,18 @@ import { Component, computed, effect, inject, input, signal, untracked } from '@
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { AccountRepository } from '../../data/account.repository';
-import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { convertedOrNull, converterFromRates } from '../../domain/calc/aggregations';
+import { convertedOrNull } from '../../domain/calc/aggregations';
 import { creditCardSummary } from '../../domain/calc/balances';
 import { Transaction } from '../../domain/models/transaction';
 import { money, ratio } from '../../shared/money/money';
+import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
@@ -60,7 +60,6 @@ export class AccountDetail {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
-  private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
@@ -154,22 +153,20 @@ export class AccountDetail {
 
   protected readonly displayCurrency = this.displayCurrencyService.currency;
 
-  protected readonly ratesResource = rxResource({
-    params: () => {
-      const currency = this.account()?.currency;
-      const display = this.displayCurrency();
-      return { currency: currency && currency !== display ? currency : undefined, display };
-    },
-    stream: ({ params }) =>
-      params.currency ? this.exchangeRateRepository.getRate(params.currency, params.display) : of(undefined)
+  private readonly accountCurrency = computed(() => {
+    const currency = this.account()?.currency;
+    const display = this.displayCurrency();
+    return currency && currency !== display ? [currency] : [];
   });
 
-  /** The balance converted to the display currency - null when it's already in that currency, or no rate could convert it. */
+  private readonly converter = displayConverter(() => this.accountCurrency()).converter;
+
+  /** The balance converted to the display currency - null when it's already in that currency, or no rate has arrived (yet) to convert it. */
   protected readonly convertedBalance = computed(() => {
     const balance = this.balance();
-    const rate = this.ratesResource.value();
-    if (!balance || !rate) return null;
-    return convertedOrNull(balance, this.displayCurrency(), converterFromRates([rate]));
+    const convert = this.converter();
+    if (!balance || !convert) return null;
+    return convertedOrNull(balance, this.displayCurrency(), convert);
   });
 
   protected readonly creditCard = computed(() => {

@@ -70,9 +70,13 @@
                       }
                     </div>
                     <div class="flex items-center gap-3">
-                      <span class="font-mono text-sm font-semibold tabular-nums">
-                        {{ row.spend.amount | money: row.spend.currency }}
-                      </span>
+                      @if (ratesReady()) {
+                        <span class="font-mono text-sm font-semibold tabular-nums">
+                          {{ row.spend.amount | money: row.spend.currency }}
+                        </span>
+                      } @else {
+                        <app-skeleton height="1rem" class="w-16" />
+                      }
                       <button
                         appButton
                         variant="ghost"
@@ -149,9 +153,13 @@
                             }
                           </div>
                           <div class="flex items-center gap-3">
-                            <span class="font-mono text-xs font-medium tabular-nums text-content-muted">
-                              {{ child.spend.amount | money: child.spend.currency }}
-                            </span>
+                            @if (ratesReady()) {
+                              <span class="font-mono text-xs font-medium tabular-nums text-content-muted">
+                                {{ child.spend.amount | money: child.spend.currency }}
+                              </span>
+                            } @else {
+                              <app-skeleton height="0.875rem" class="w-14" />
+                            }
                             <button
                               appButton
                               variant="ghost"
