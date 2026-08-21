@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { adminGuard, authGuard } from './core/auth.guards';
+import { adminGuard, agentsGuard, authGuard } from './core/auth.guards';
 import { Shell } from './layout/shell';
 
 export const routes: Routes = [
@@ -65,6 +65,12 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
+      },
+      {
+        path: 'providers',
+        canActivate: [agentsGuard],
+        loadComponent: () =>
+          import('./features/providers/providers').then((m) => m.Providers),
       },
       {
         path: 'admin/users',

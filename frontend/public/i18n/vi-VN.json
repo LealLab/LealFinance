@@ -28,7 +28,8 @@
         "analysis": "Phân tích",
         "setup": "Thiết lập",
         "admin": "Quản trị"
-      }
+      },
+      "providers": "Nhà cung cấp AI"
     },
     "sidebar": {
       "openMenu": "Mở menu",
@@ -720,7 +721,8 @@
       "title": "Tác nhân AI",
       "description": "Trợ lý AI trên dữ liệu tài chính của bạn, với nhiều nhà cung cấp và công cụ thông qua MCP. Tắt theo mặc định - có thể cấu hình trong Docker Compose (AGENTS_ENABLED).",
       "disabled": "Đã tắt",
-      "enabled": "Đã bật"
+      "enabled": "Đã bật",
+      "manage": "Quản lý"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "Sao chép liên kết đăng ký",
       "revoke": "Thu hồi",
       "empty": "Không tìm thấy lời mời nào."
+    }
+  },
+  "providers": {
+    "title": "Nhà cung cấp AI",
+    "description": "Kết nối một nhà cung cấp AI bằng khóa API, gói đăng ký đã liên kết, hoặc máy chủ Ollama cục bộ.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "experimental": "Thử nghiệm",
+    "status": {
+      "configuredUser": "Đã liên kết ({{label}})",
+      "configuredEnv": "Từ biến môi trường ({{model}})",
+      "notConfigured": "Chưa cấu hình"
+    },
+    "actions": {
+      "link": "Liên kết",
+      "relink": "Liên kết lại",
+      "unlink": "Hủy liên kết",
+      "test": "Kiểm tra kết nối"
+    },
+    "testOk": "Đã kết nối",
+    "testFailed": "Kết nối thất bại",
+    "unlink": {
+      "title": "Hủy liên kết nhà cung cấp",
+      "message": "Xóa thông tin xác thực đã liên kết cho nhà cung cấp này? Khóa toàn thể hiện do quản trị viên thiết lập (nếu có) sẽ được dùng thay thế."
+    },
+    "unlinkError": "Không thể hủy liên kết nhà cung cấp này. Hãy thử lại.",
+    "tryIt": {
+      "title": "Dùng thử",
+      "description": "Gửi một tin nhắn đến nhà cung cấp đã cấu hình để xác nhận nó phản hồi.",
+      "autoProvider": "Dùng nhà cung cấp đã cấu hình đầu tiên",
+      "placeholder": "Hỏi điều gì đó…",
+      "send": "Gửi"
+    },
+    "chatError": "Không nhận được phản hồi. Kiểm tra xem nhà cung cấp đã được cấu hình đúng chưa.",
+    "form": {
+      "apiKeyTitle": "Liên kết bằng khóa API",
+      "oauthTitle": "Liên kết gói đăng ký",
+      "ollamaTitle": "Kết nối với Ollama",
+      "modeApiKey": "Khóa API",
+      "modeOAuth": "Gói đăng ký",
+      "fields": {
+        "apiKey": "Khóa API",
+        "baseUrl": "URL máy chủ",
+        "model": "Mô hình (không bắt buộc)"
+      },
+      "saveError": "Không thể lưu nhà cung cấp này. Kiểm tra giá trị và thử lại.",
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      },
+      "oauth": {
+        "startHint": "Bạn sẽ được chuyển đến đăng nhập và phê duyệt quyền truy cập trong một tab mới. Quay lại đây sau đó để dán mã.",
+        "startAction": "Tiếp tục trong tab mới",
+        "pasteHint": "Sau khi phê duyệt quyền truy cập, sao chép mã hiển thị (hoặc URL chuyển hướng đầy đủ, ngay cả khi trang đó không tải được) rồi dán vào bên dưới.",
+        "reopenAction": "Mở lại trang đăng nhập",
+        "fields": {
+          "code": "Mã"
+        },
+        "completeAction": "Liên kết",
+        "startError": "Không thể bắt đầu đăng nhập. Hãy thử lại.",
+        "completeError": "Mã đó không hoạt động. Kiểm tra và thử lại.",
+        "pasteHintOpenai": "Sau khi cho phép truy cập, tab sẽ hiển thị lỗi \"không thể truy cập trang này\" — đây là điều bình thường. Hãy sao chép toàn bộ địa chỉ từ thanh địa chỉ trình duyệt và dán vào bên dưới."
+      }
+    },
+    "model": {
+      "label": "Mô hình",
+      "recommendedOption": "{{model}} (đề xuất)"
+    },
+    "modelError": "Không thể thay đổi mô hình. Vui lòng thử lại.",
+    "effort": {
+      "label": "Mức độ suy luận"
     }
   },
   "errors": {

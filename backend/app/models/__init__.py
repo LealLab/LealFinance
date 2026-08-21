@@ -6,6 +6,7 @@ Every new model module must be imported here, or Alembic autogenerate and
 """
 
 from app.models.account import Account
+from app.models.agent_credential import AgentCredential
 from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
 from app.models.category import Category
 from app.models.currency import Currency, ExchangeRate
@@ -18,6 +19,7 @@ from app.models.user import Invitation, Session, User
 
 __all__ = [
     "Account",
+    "AgentCredential",
     "Budget",
     "BudgetAllocation",
     "Category",

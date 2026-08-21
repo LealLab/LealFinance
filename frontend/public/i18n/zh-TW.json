@@ -28,7 +28,8 @@
         "analysis": "分析",
         "setup": "設定",
         "admin": "管理"
-      }
+      },
+      "providers": "AI 提供者"
     },
     "sidebar": {
       "openMenu": "開啟選單",
@@ -720,7 +721,8 @@
       "title": "AI 代理程式",
       "description": "透過 MCP 使用多個提供者與工具，操作你的財務資料的 AI 助手。預設停用，可在 Docker Compose（AGENTS_ENABLED）中設定。",
       "disabled": "已停用",
-      "enabled": "已啟用"
+      "enabled": "已啟用",
+      "manage": "管理"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "複製註冊連結",
       "revoke": "撤銷",
       "empty": "找不到邀請。"
+    }
+  },
+  "providers": {
+    "title": "AI 提供者",
+    "description": "透過 API 金鑰、已連結的訂閱或本機 Ollama 伺服器連接 AI 提供者。",
+    "names": {
+      "anthropic": "Anthropic（Claude）",
+      "openai": "OpenAI（Codex）",
+      "ollama": "Ollama"
+    },
+    "experimental": "實驗性",
+    "status": {
+      "configuredUser": "已連結（{{label}}）",
+      "configuredEnv": "來自環境變數（{{model}}）",
+      "notConfigured": "尚未設定"
+    },
+    "actions": {
+      "link": "連結",
+      "relink": "重新連結",
+      "unlink": "取消連結",
+      "test": "測試連線"
+    },
+    "testOk": "已連線",
+    "testFailed": "連線失敗",
+    "unlink": {
+      "title": "取消連結提供者",
+      "message": "要移除此提供者的已連結憑證嗎？如果管理員設定了執行個體層級的金鑰，將改用該金鑰。"
+    },
+    "unlinkError": "無法取消連結此提供者，請再試一次。",
+    "tryIt": {
+      "title": "試試看",
+      "description": "向已設定的提供者傳送一則訊息，以確認其能夠回應。",
+      "autoProvider": "使用第一個已設定的提供者",
+      "placeholder": "問點什麼…",
+      "send": "傳送"
+    },
+    "chatError": "無法取得回覆，請檢查該提供者是否設定正確。",
+    "form": {
+      "apiKeyTitle": "使用 API 金鑰連結",
+      "oauthTitle": "連結訂閱",
+      "ollamaTitle": "連接到 Ollama",
+      "modeApiKey": "API 金鑰",
+      "modeOAuth": "訂閱",
+      "fields": {
+        "apiKey": "API 金鑰",
+        "baseUrl": "伺服器 URL",
+        "model": "模型（選填）"
+      },
+      "saveError": "無法儲存此提供者，請檢查內容後再試一次。",
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      },
+      "oauth": {
+        "startHint": "系統會在新分頁中讓你登入並核准存取。完成後請回到這裡貼上代碼。",
+        "startAction": "在新分頁中繼續",
+        "pasteHint": "核准存取後，複製顯示的代碼（或完整的重新導向 URL，即使該頁面載入失敗）並貼到下方。",
+        "reopenAction": "重新開啟登入頁面",
+        "fields": {
+          "code": "代碼"
+        },
+        "completeAction": "連結",
+        "startError": "無法開始登入流程，請再試一次。",
+        "completeError": "該代碼無效，請檢查後再試一次。",
+        "pasteHintOpenai": "核准存取後，該分頁會顯示「無法連上這個網站」的錯誤 —— 這是正常現象。請從瀏覽器網址列複製完整網址並貼到下方。"
+      }
+    },
+    "model": {
+      "label": "模型",
+      "recommendedOption": "{{model}}（建議）"
+    },
+    "modelError": "無法變更模型，請再試一次。",
+    "effort": {
+      "label": "推理強度"
     }
   },
   "errors": {

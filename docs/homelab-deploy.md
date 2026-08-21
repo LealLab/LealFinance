@@ -115,8 +115,12 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 The `api` container runs `alembic upgrade head` on startup before serving traffic (see [`architecture.md`](architecture.md#migrations)), so schema migrations apply automatically, no manual migration step needed on upgrade, either way.
 
-## AI Agents (Planned, not implemented yet)
+## AI agents
 
-The `agents` service is gated behind the `agents` Compose profile and is off by
-default. The current profile contains only a placeholder service; enabling it
-does not provide an AI runtime yet.
+Optional, off by default (`AGENTS_ENABLED=false`). Runs in-process in
+`api`, not a separate service - no extra image to pull. The `agents`
+Compose profile only starts a local Ollama container, if you want to run
+models on your own hardware instead of an API key or subscription. See
+[`ai-agents.md`](ai-agents.md) for provider setup, including the caveat
+that subscription (Claude Pro/Max, ChatGPT Plus/Pro) linking is
+unsanctioned and can break without notice.

@@ -24,6 +24,8 @@
 - HTTP-backed frontend repositories with snake_case-to-camelCase mapping; the
   in-memory repositories remain available as test doubles.
 - Exact decimal money storage and JSON-string serialization for monetary values.
+- Optional AI provider integration (API keys, Claude/Codex subscription linking,
+  or local Ollama) - off by default, see [`docs/ai-agents.md`](docs/ai-agents.md).
 
 ## Quick Start
 
@@ -66,6 +68,7 @@
 - [`docs/backend-api.md`](docs/backend-api.md) - endpoints, ownership, error codes, bootstrap
 - [`docs/development.md`](docs/development.md) - local dev workflow
 - [`docs/homelab-deploy.md`](docs/homelab-deploy.md) - self-hosting notes, backups
+- [`docs/ai-agents.md`](docs/ai-agents.md) - AI provider setup (API keys, subscriptions, Ollama)
 - [`docs/i18n.md`](docs/i18n.md) - translation workflow
 - [`docs/money-and-currency.md`](docs/money-and-currency.md) - monetary data rules
 

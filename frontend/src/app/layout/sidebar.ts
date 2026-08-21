@@ -2,6 +2,7 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Icon, IconName } from '../shared/ui/icon/icon';
+import { MetadataService } from '../core/metadata.service';
 import { SessionService } from '../core/session.service';
 
 export interface NavItem {
@@ -28,7 +29,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -69,6 +70,7 @@ export const NAV_SECTIONS: NavSection[] = [
 })
 export class Sidebar {
   private readonly session = inject(SessionService);
+  private readonly metadata = inject(MetadataService);
   /**
    * 'rail' (default): the persistent desktop sidebar. Its labels follow the
    * `expanded` input so Shell can keep responsive defaults while supporting a
@@ -81,9 +83,23 @@ export class Sidebar {
   readonly navigated = output<void>();
 
   protected readonly navSections = computed(() => {
-    if (this.session.user()?.role !== 'admin') return NAV_SECTIONS;
+    const sections = this.metadata.settings()?.agentsEnabled
+      ? NAV_SECTIONS.map((section) =>
+          section.labelKey === 'layout.nav.sections.setup'
+            ? {
+                ...section,
+                items: [
+                  ...section.items,
+                  { path: '/providers', labelKey: 'layout.nav.providers', icon: 'zap' as IconName },
+                ],
+              }
+            : section,
+        )
+      : NAV_SECTIONS;
+
+    if (this.session.user()?.role !== 'admin') return sections;
     return [
-      ...NAV_SECTIONS,
+      ...sections,
       {
         labelKey: 'layout.nav.sections.admin',
         items: [

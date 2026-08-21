@@ -51,6 +51,17 @@ class ConflictError(AppError):
     code = "error.conflict"
 
 
+class BadGatewayError(AppError):
+    """An upstream integration failed - e.g. an AI provider request
+    (app/agents/chat.py). Distinct from exchange_rates.py's pattern of
+    always degrading to a fallback value: a chat reply has no safe
+    fallback to substitute, so the failure has to surface, just not as an
+    unhandled 500."""
+
+    status_code = status.HTTP_502_BAD_GATEWAY
+    code = "error.bad_gateway"
+
+
 async def app_error_handler(_request: Request, exc: Exception) -> JSONResponse:
     # FastAPI's add_exception_handler is keyed by the exact exception class at
     # registration time, so this handler only ever receives an AppError at

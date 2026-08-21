@@ -48,6 +48,13 @@ class Settings(BaseSettings):
 
     # --- AI Agents (optional, off by default) ---
     agents_enabled: bool = False
+    # Instance-wide provider credentials - a per-user row in
+    # agent_credentials (app/models/agent_credential.py) always takes
+    # precedence over these; see app/agents/credentials.py.
+    anthropic_api_key: str | None = None
+    openai_api_key: str | None = None
+    ollama_base_url: str | None = None
+    agents_default_provider: str | None = None
 
     # --- Currency conversion (optional) ---
     # Free key from https://openexchangerates.org/signup/free. Without one,

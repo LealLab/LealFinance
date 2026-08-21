@@ -28,7 +28,8 @@
         "analysis": "Analisi",
         "setup": "Configurazione",
         "admin": "Amministrazione"
-      }
+      },
+      "providers": "Provider IA"
     },
     "sidebar": {
       "openMenu": "Apri il menu",
@@ -720,7 +721,8 @@
       "title": "Agenti IA",
       "description": "Assistenti IA sui tuoi dati finanziari, con più provider e strumenti tramite MCP. Disattivati per impostazione predefinita; configurabili in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disattivati",
-      "enabled": "Attivati"
+      "enabled": "Attivati",
+      "manage": "Gestisci"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "Copia il link di registrazione",
       "revoke": "Revoca",
       "empty": "Nessun invito trovato."
+    }
+  },
+  "providers": {
+    "title": "Provider IA",
+    "description": "Collega un provider IA con una chiave API, un abbonamento collegato o un server Ollama locale.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "experimental": "Sperimentale",
+    "status": {
+      "configuredUser": "Collegato ({{label}})",
+      "configuredEnv": "Dall'ambiente ({{model}})",
+      "notConfigured": "Non configurato"
+    },
+    "actions": {
+      "link": "Collega",
+      "relink": "Ricollega",
+      "unlink": "Scollega",
+      "test": "Verifica connessione"
+    },
+    "testOk": "Connesso",
+    "testFailed": "Connessione non riuscita",
+    "unlink": {
+      "title": "Scollega provider",
+      "message": "Rimuovere la credenziale collegata a questo provider? Verrà usata al suo posto la chiave dell'istanza impostata da un amministratore, se presente."
+    },
+    "unlinkError": "Impossibile scollegare questo provider. Riprova.",
+    "tryIt": {
+      "title": "Prova",
+      "description": "Invia un messaggio a un provider configurato per verificare che risponda.",
+      "autoProvider": "Usa il primo provider configurato",
+      "placeholder": "Chiedi qualcosa…",
+      "send": "Invia"
+    },
+    "chatError": "Impossibile ottenere una risposta. Verifica che il provider sia configurato correttamente.",
+    "form": {
+      "apiKeyTitle": "Collega con una chiave API",
+      "oauthTitle": "Collega un abbonamento",
+      "ollamaTitle": "Connetti a Ollama",
+      "modeApiKey": "Chiave API",
+      "modeOAuth": "Abbonamento",
+      "fields": {
+        "apiKey": "Chiave API",
+        "baseUrl": "URL del server",
+        "model": "Modello (opzionale)"
+      },
+      "saveError": "Impossibile salvare questo provider. Controlla il valore e riprova.",
+      "actions": {
+        "cancel": "Annulla",
+        "save": "Salva"
+      },
+      "oauth": {
+        "startHint": "Verrai reindirizzato per accedere e approvare l’accesso in una nuova scheda. Torna qui dopo per incollare il codice.",
+        "startAction": "Continua in una nuova scheda",
+        "pasteHint": "Dopo aver approvato l'accesso, copia il codice mostrato (o l'URL di reindirizzamento completo, anche se la pagina non si carica) e incollalo qui sotto.",
+        "reopenAction": "Riapri la pagina di accesso",
+        "fields": {
+          "code": "Codice"
+        },
+        "completeAction": "Collega",
+        "startError": "Impossibile avviare l'accesso. Riprova.",
+        "completeError": "Questo codice non ha funzionato. Controllalo e riprova.",
+        "pasteHintOpenai": "Dopo aver approvato l'accesso, la scheda mostrerà un errore \"impossibile raggiungere la pagina\": è normale. Copia l'indirizzo completo dalla barra degli indirizzi del browser e incollalo qui sotto."
+      }
+    },
+    "model": {
+      "label": "Modello",
+      "recommendedOption": "{{model}} (consigliato)"
+    },
+    "modelError": "Impossibile cambiare il modello. Riprova.",
+    "effort": {
+      "label": "Livello di ragionamento"
     }
   },
   "errors": {

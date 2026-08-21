@@ -28,7 +28,8 @@
         "analysis": "Auswertungen",
         "setup": "Einrichtung",
         "admin": "Administration"
-      }
+      },
+      "providers": "KI-Anbieter"
     },
     "sidebar": {
       "openMenu": "Menü öffnen",
@@ -720,7 +721,8 @@
       "title": "KI-Agenten",
       "description": "KI-Agenten für Ihre Finanzdaten mit mehreren Anbietern und Tools über MCP. Standardmäßig deaktiviert – in Docker Compose konfigurierbar (AGENTS_ENABLED).",
       "disabled": "Deaktiviert",
-      "enabled": "Aktiviert"
+      "enabled": "Aktiviert",
+      "manage": "Verwalten"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "Registrierungslink kopieren",
       "revoke": "Widerrufen",
       "empty": "Keine Einladungen gefunden."
+    }
+  },
+  "providers": {
+    "title": "KI-Anbieter",
+    "description": "Verbinde einen KI-Anbieter mit einem API-Schlüssel, einem verknüpften Abonnement oder einem lokalen Ollama-Server.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "experimental": "Experimentell",
+    "status": {
+      "configuredUser": "Verknüpft ({{label}})",
+      "configuredEnv": "Aus der Umgebung ({{model}})",
+      "notConfigured": "Nicht konfiguriert"
+    },
+    "actions": {
+      "link": "Verknüpfen",
+      "relink": "Neu verknüpfen",
+      "unlink": "Trennen",
+      "test": "Verbindung testen"
+    },
+    "testOk": "Verbunden",
+    "testFailed": "Verbindung fehlgeschlagen",
+    "unlink": {
+      "title": "Anbieter trennen",
+      "message": "Deine verknüpfte Zugangsdaten für diesen Anbieter entfernen? Ein von einem Administrator hinterlegter instanzweiter Schlüssel wird dann stattdessen verwendet, falls vorhanden."
+    },
+    "unlinkError": "Der Anbieter konnte nicht getrennt werden. Versuche es erneut.",
+    "tryIt": {
+      "title": "Ausprobieren",
+      "description": "Sende eine Nachricht an einen konfigurierten Anbieter, um zu bestätigen, dass er antwortet.",
+      "autoProvider": "Ersten konfigurierten Anbieter verwenden",
+      "placeholder": "Frag etwas…",
+      "send": "Senden"
+    },
+    "chatError": "Keine Antwort erhalten. Prüfe, ob der Anbieter richtig konfiguriert ist.",
+    "form": {
+      "apiKeyTitle": "Mit API-Schlüssel verknüpfen",
+      "oauthTitle": "Abonnement verknüpfen",
+      "ollamaTitle": "Mit Ollama verbinden",
+      "modeApiKey": "API-Schlüssel",
+      "modeOAuth": "Abonnement",
+      "fields": {
+        "apiKey": "API-Schlüssel",
+        "baseUrl": "Server-URL",
+        "model": "Modell (optional)"
+      },
+      "saveError": "Dieser Anbieter konnte nicht gespeichert werden. Prüfe den Wert und versuche es erneut.",
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      },
+      "oauth": {
+        "startHint": "Du wirst in einem neuen Tab zur Anmeldung und Freigabe weitergeleitet. Komm danach hierher zurück, um den Code einzufügen.",
+        "startAction": "In neuem Tab fortfahren",
+        "pasteHint": "Kopiere nach der Freigabe den angezeigten Code (oder die vollständige Weiterleitungs-URL, auch wenn diese Seite nicht lädt) und füge ihn unten ein.",
+        "reopenAction": "Anmeldeseite erneut öffnen",
+        "fields": {
+          "code": "Code"
+        },
+        "completeAction": "Verknüpfen",
+        "startError": "Die Anmeldung konnte nicht gestartet werden. Versuche es erneut.",
+        "completeError": "Dieser Code hat nicht funktioniert. Prüfe ihn und versuche es erneut.",
+        "pasteHintOpenai": "Nach der Zugriffsfreigabe zeigt der Tab einen Fehler „Seite nicht erreichbar“ an – das ist normal. Kopieren Sie die vollständige Adresse aus der Adressleiste des Browsers und fügen Sie sie unten ein."
+      }
+    },
+    "model": {
+      "label": "Modell",
+      "recommendedOption": "{{model}} (empfohlen)"
+    },
+    "modelError": "Das Modell konnte nicht geändert werden. Bitte erneut versuchen.",
+    "effort": {
+      "label": "Denkaufwand"
     }
   },
   "errors": {

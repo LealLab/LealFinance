@@ -1,0 +1,147 @@
+<div *transloco="let t">
+  <app-modal [(open)]="open" [titleText]="t(titleKey())">
+    @if (supportsOAuth() && !isOllama()) {
+      <div class="mb-4 grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+        <button
+          type="button"
+          class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+          [class]="
+            mode() === 'api_key'
+              ? 'bg-surface-raised text-content-primary shadow-sm'
+              : 'text-content-muted hover:text-content-primary'
+          "
+          (click)="setMode('api_key')"
+        >
+          {{ t('providers.form.modeApiKey') }}
+        </button>
+        <button
+          type="button"
+          class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+          [class]="
+            mode() === 'oauth'
+              ? 'bg-surface-raised text-content-primary shadow-sm'
+              : 'text-content-muted hover:text-content-primary'
+          "
+          (click)="setMode('oauth')"
+        >
+          {{ t('providers.form.modeOAuth') }}
+        </button>
+      </div>
+    }
+
+    @if (mode() === 'api_key' || isOllama()) {
+      <form [formGroup]="apiKeyForm" class="flex flex-col gap-4" (ngSubmit)="submitApiKey()">
+        @if (isOllama()) {
+          <div>
+            <label class="form-label" for="provider-base-url">{{
+              t('providers.form.fields.baseUrl')
+            }}</label>
+            <input
+              id="provider-base-url"
+              type="text"
+              class="form-input"
+              placeholder="http://ollama:11434"
+              formControlName="baseUrl"
+            />
+          </div>
+        } @else {
+          <div>
+            <label class="form-label" for="provider-api-key">{{
+              t('providers.form.fields.apiKey')
+            }}</label>
+            <input
+              id="provider-api-key"
+              type="password"
+              class="form-input"
+              autocomplete="off"
+              formControlName="apiKey"
+            />
+          </div>
+        }
+
+        <div>
+          <label class="form-label" for="provider-model">{{
+            t('providers.form.fields.model')
+          }}</label>
+          <input
+            id="provider-model"
+            type="text"
+            class="form-input"
+            [placeholder]="provider().model"
+            formControlName="model"
+          />
+        </div>
+
+        @if (errorKey(); as key) {
+          <p class="form-error" role="alert">{{ t(key) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('providers.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('providers.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    } @else {
+      <div class="flex flex-col gap-4">
+        @if (oauthStep() === 'start') {
+          <p class="text-sm text-content-muted">{{ t('providers.form.oauth.startHint') }}</p>
+          <div class="flex justify-end gap-2">
+            <button appButton type="button" variant="secondary" (click)="open.set(false)">
+              {{ t('providers.form.actions.cancel') }}
+            </button>
+            <button appButton type="button" variant="primary" [disabled]="saving()" (click)="startOAuth()">
+              {{ t('providers.form.oauth.startAction') }}
+            </button>
+          </div>
+        } @else {
+          <p class="text-sm text-content-muted">{{ t(pasteHintKey()) }}</p>
+          <button
+            appButton
+            type="button"
+            variant="secondary"
+            size="sm"
+            class="self-start"
+            (click)="reopenAuthorizeUrl()"
+          >
+            {{ t('providers.form.oauth.reopenAction') }}
+          </button>
+          <div>
+            <label class="form-label" for="provider-oauth-code">{{
+              t('providers.form.oauth.fields.code')
+            }}</label>
+            <textarea
+              id="provider-oauth-code"
+              class="form-input font-mono text-xs"
+              rows="3"
+              [value]="oauthCode()"
+              (input)="oauthCode.set($any($event.target).value)"
+            ></textarea>
+          </div>
+
+          @if (errorKey(); as key) {
+            <p class="form-error" role="alert">{{ t(key) }}</p>
+          }
+
+          <div class="flex justify-end gap-2">
+            <button appButton type="button" variant="secondary" (click)="open.set(false)">
+              {{ t('providers.form.actions.cancel') }}
+            </button>
+            <button
+              appButton
+              type="button"
+              variant="primary"
+              [disabled]="saving() || !oauthCode().trim()"
+              (click)="completeOAuth()"
+            >
+              {{ t('providers.form.oauth.completeAction') }}
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </app-modal>
+</div>

@@ -34,9 +34,25 @@ templateUrl/styleUrl siblings, commit/PR rules) still apply on top of this.
 
 ## AI Agents
 
-- Entire feature lives behind `AGENTS_ENABLED` + the `agents` Docker Compose
-  profile. It must cost nothing when off - don't add code paths that touch
-  the agents service unconditionally.
+- Runs in-process in `api` (`app/agents/`), gated by `AGENTS_ENABLED` -
+  not a separate service. Every `/api/v1/agents/*` route 404s
+  `agents.disabled` when off. The `agents` Compose profile only starts an
+  optional local Ollama container. See `docs/ai-agents.md`.
+- Three providers: Anthropic, OpenAI, Ollama. Credential precedence is a
+  user's own linked row (`agent_credentials`, `app/agents/credentials.py`)
+  over the instance-wide `.env` key over nothing - never raise on a
+  missing/broken credential, resolve to `None`/fall through instead,
+  matching `exchange_rates.py`'s degrade-don't-raise style.
+- Subscription linking (Claude Pro/Max, ChatGPT Plus/Pro via
+  `app/agents/oauth.py`) reuses the official CLIs' OAuth clients - it is
+  unsanctioned, can break without notice, and must never be the reason a
+  request 500s; a broken link falls back to the `.env` credential.
+- No LLM SDKs (`anthropic`/`openai` packages) - provider calls are plain
+  `httpx` JSON requests in `app/agents/chat.py`.
+- Provider secrets are the only reversible-encrypted values in this
+  codebase (`app/core/crypto.py`, Fernet keyed off `API_SECRET_KEY`) -
+  everything else is one-way hashed. Never serialize a secret in an API
+  response, encrypted or not.
 
 ## Currency conversion
 

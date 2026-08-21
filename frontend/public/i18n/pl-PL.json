@@ -28,7 +28,8 @@
         "analysis": "Analiza",
         "setup": "Konfiguracja",
         "admin": "Administracja"
-      }
+      },
+      "providers": "Dostawcy AI"
     },
     "sidebar": {
       "openMenu": "Otwórz menu",
@@ -720,7 +721,8 @@
       "title": "Agenci AI",
       "description": "Asystenci AI pracujący na danych finansowych, z wieloma dostawcami i narzędziami przez MCP. Domyślnie wyłączeni — można ich skonfigurować w Docker Compose (AGENTS_ENABLED).",
       "disabled": "Wyłączeni",
-      "enabled": "Włączeni"
+      "enabled": "Włączeni",
+      "manage": "Zarządzaj"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "Kopiuj link rejestracyjny",
       "revoke": "Cofnij",
       "empty": "Nie znaleziono zaproszeń."
+    }
+  },
+  "providers": {
+    "title": "Dostawcy AI",
+    "description": "Połącz dostawcę AI za pomocą klucza API, powiązanej subskrypcji lub lokalnego serwera Ollama.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "experimental": "Eksperymentalne",
+    "status": {
+      "configuredUser": "Połączono ({{label}})",
+      "configuredEnv": "Ze środowiska ({{model}})",
+      "notConfigured": "Nieskonfigurowany"
+    },
+    "actions": {
+      "link": "Połącz",
+      "relink": "Połącz ponownie",
+      "unlink": "Odłącz",
+      "test": "Testuj połączenie"
+    },
+    "testOk": "Połączono",
+    "testFailed": "Połączenie nieudane",
+    "unlink": {
+      "title": "Odłącz dostawcę",
+      "message": "Usunąć powiązane dane uwierzytelniające dla tego dostawcy? Zamiast tego zostanie użyty klucz instancji ustawiony przez administratora, jeśli istnieje."
+    },
+    "unlinkError": "Nie udało się odłączyć tego dostawcy. Spróbuj ponownie.",
+    "tryIt": {
+      "title": "Wypróbuj",
+      "description": "Wyślij jedną wiadomość do skonfigurowanego dostawcy, aby sprawdzić, czy odpowiada.",
+      "autoProvider": "Użyj pierwszego skonfigurowanego dostawcy",
+      "placeholder": "Zapytaj o coś…",
+      "send": "Wyślij"
+    },
+    "chatError": "Nie udało się uzyskać odpowiedzi. Sprawdź, czy dostawca jest poprawnie skonfigurowany.",
+    "form": {
+      "apiKeyTitle": "Połącz za pomocą klucza API",
+      "oauthTitle": "Połącz subskrypcję",
+      "ollamaTitle": "Połącz z Ollama",
+      "modeApiKey": "Klucz API",
+      "modeOAuth": "Subskrypcja",
+      "fields": {
+        "apiKey": "Klucz API",
+        "baseUrl": "Adres URL serwera",
+        "model": "Model (opcjonalnie)"
+      },
+      "saveError": "Nie udało się zapisać tego dostawcy. Sprawdź wartość i spróbuj ponownie.",
+      "actions": {
+        "cancel": "Anuluj",
+        "save": "Zapisz"
+      },
+      "oauth": {
+        "startHint": "Zostaniesz przekierowany, aby zalogować się i zatwierdzić dostęp w nowej karcie. Wróć tutaj potem, aby wkleić kod.",
+        "startAction": "Kontynuuj w nowej karcie",
+        "pasteHint": "Po zatwierdzeniu dostępu skopiuj wyświetlony kod (lub pełny adres URL przekierowania, nawet jeśli ta strona się nie załaduje) i wklej go poniżej.",
+        "reopenAction": "Otwórz ponownie stronę logowania",
+        "fields": {
+          "code": "Kod"
+        },
+        "completeAction": "Połącz",
+        "startError": "Nie udało się rozpocząć logowania. Spróbuj ponownie.",
+        "completeError": "Ten kod nie zadziałał. Sprawdź go i spróbuj ponownie.",
+        "pasteHintOpenai": "Po zatwierdzeniu dostępu karta pokaże błąd „nie można uzyskać dostępu” — tak ma być. Skopiuj pełny adres z paska adresu przeglądarki i wklej go poniżej."
+      }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (zalecany)"
+    },
+    "modelError": "Nie udało się zmienić modelu. Spróbuj ponownie.",
+    "effort": {
+      "label": "Poziom wnioskowania"
     }
   },
   "errors": {

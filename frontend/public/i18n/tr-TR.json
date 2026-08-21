@@ -28,7 +28,8 @@
         "analysis": "Analiz",
         "setup": "Kurulum",
         "admin": "Yönetim"
-      }
+      },
+      "providers": "AI sağlayıcıları"
     },
     "sidebar": {
       "openMenu": "Menüyü aç",
@@ -720,7 +721,8 @@
       "title": "Yapay zekâ aracıları",
       "description": "MCP üzerinden birden çok sağlayıcı ve araçla finansal verileriniz üzerinde çalışan yapay zekâ asistanları. Varsayılan olarak devre dışıdır; Docker Compose (AGENTS_ENABLED) üzerinden yapılandırılabilir.",
       "disabled": "Devre dışı",
-      "enabled": "Etkin"
+      "enabled": "Etkin",
+      "manage": "Yönet"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "Kayıt bağlantısını kopyala",
       "revoke": "İptal et",
       "empty": "Davet bulunamadı."
+    }
+  },
+  "providers": {
+    "title": "AI sağlayıcıları",
+    "description": "Bir API anahtarı, bağlı bir abonelik veya yerel bir Ollama sunucusuyla bir AI sağlayıcısı bağlayın.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "experimental": "Deneysel",
+    "status": {
+      "configuredUser": "Bağlandı ({{label}})",
+      "configuredEnv": "Ortamdan ({{model}})",
+      "notConfigured": "Yapılandırılmadı"
+    },
+    "actions": {
+      "link": "Bağla",
+      "relink": "Yeniden bağla",
+      "unlink": "Bağlantıyı kaldır",
+      "test": "Bağlantıyı test et"
+    },
+    "testOk": "Bağlandı",
+    "testFailed": "Bağlantı başarısız",
+    "unlink": {
+      "title": "Sağlayıcı bağlantısını kaldır",
+      "message": "Bu sağlayıcı için bağlı kimlik bilgilerinizi kaldırılsın mı? Varsa, bir yöneticinin ayarladığı örnek geneli anahtar bunun yerine kullanılır."
+    },
+    "unlinkError": "Bu sağlayıcının bağlantısı kaldırılamadı. Tekrar deneyin.",
+    "tryIt": {
+      "title": "Dene",
+      "description": "Yanıt verdiğini doğrulamak için yapılandırılmış bir sağlayıcıya bir mesaj gönderin.",
+      "autoProvider": "İlk yapılandırılmış sağlayıcıyı kullan",
+      "placeholder": "Bir şey sor…",
+      "send": "Gönder"
+    },
+    "chatError": "Yanıt alınamadı. Sağlayıcının doğru yapılandırıldığından emin olun.",
+    "form": {
+      "apiKeyTitle": "API anahtarıyla bağla",
+      "oauthTitle": "Abonelik bağla",
+      "ollamaTitle": "Ollama'ya bağlan",
+      "modeApiKey": "API anahtarı",
+      "modeOAuth": "Abonelik",
+      "fields": {
+        "apiKey": "API anahtarı",
+        "baseUrl": "Sunucu URL’si",
+        "model": "Model (isteğe bağlı)"
+      },
+      "saveError": "Bu sağlayıcı kaydedilemedi. Değeri kontrol edip tekrar deneyin.",
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      },
+      "oauth": {
+        "startHint": "Yeni bir sekmede oturum açıp erişimi onaylamanız için yönlendirileceksiniz. Kodu yapıştırmak için sonra buraya dönün.",
+        "startAction": "Yeni sekmede devam et",
+        "pasteHint": "Erişimi onayladıktan sonra, gösterilen kodu (veya sayfa yüklenmese bile tam yönlendirme URL’sini) kopyalayıp aşağıya yapıştırın.",
+        "reopenAction": "Oturum açma sayfasını yeniden aç",
+        "fields": {
+          "code": "Kod"
+        },
+        "completeAction": "Bağla",
+        "startError": "Oturum açma başlatılamadı. Tekrar deneyin.",
+        "completeError": "Bu kod çalışmadı. Kontrol edip tekrar deneyin.",
+        "pasteHintOpenai": "Erişimi onayladıktan sonra sekmede \"siteye ulaşılamıyor\" hatası görünecek — bu normaldir. Tarayıcının adres çubuğundaki tam adresi kopyalayıp aşağıya yapıştırın."
+      }
+    },
+    "model": {
+      "label": "Model",
+      "recommendedOption": "{{model}} (önerilen)"
+    },
+    "modelError": "Model değiştirilemedi. Tekrar deneyin.",
+    "effort": {
+      "label": "Akıl yürütme çabası"
     }
   },
   "errors": {

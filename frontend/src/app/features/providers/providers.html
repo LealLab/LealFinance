@@ -1,0 +1,183 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('providers.title')" [description]="t('providers.description')" />
+
+  <div class="flex max-w-2xl flex-col gap-4">
+    @for (provider of providersResource.value(); track provider.provider) {
+      <app-card>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="mb-1 flex items-center gap-2 text-sm font-semibold text-content-primary">
+              {{ t('providers.names.' + provider.provider) }}
+              @if (provider.provider === 'ollama') {
+                <app-badge tone="warning">{{ t('providers.experimental') }}</app-badge>
+              }
+            </h2>
+            <p class="text-xs text-content-muted">
+              @if (provider.configured && provider.source === 'user') {
+                {{
+                  provider.accountLabel
+                    ? t('providers.status.configuredUser', { label: provider.accountLabel })
+                    : t('providers.status.configuredUser', { label: provider.model })
+                }}
+              } @else if (provider.configured && provider.source === 'env') {
+                {{ t('providers.status.configuredEnv', { model: provider.model }) }}
+              } @else {
+                {{ t('providers.status.notConfigured') }}
+              }
+            </p>
+          </div>
+          <app-badge [tone]="provider.configured ? 'positive' : 'neutral'">
+            {{
+              provider.configured
+                ? t('settings.agents.enabled')
+                : t('settings.agents.disabled')
+            }}
+          </app-badge>
+        </div>
+
+        @if (provider.configured && provider.source === 'user') {
+          <div class="mt-3">
+            <label class="form-label" [for]="'provider-model-' + provider.provider">{{
+              t('providers.model.label')
+            }}</label>
+            @if (provider.models.length) {
+              <select
+                [id]="'provider-model-' + provider.provider"
+                class="form-input max-w-xs"
+                [value]="provider.model"
+                (change)="setModel(provider, $any($event.target).value)"
+              >
+                @for (m of modelOptions(provider); track m) {
+                  <option [value]="m" [selected]="m === provider.model">
+                    {{ m === provider.defaultModel ? t('providers.model.recommendedOption', { model: m }) : m }}
+                  </option>
+                }
+              </select>
+            } @else {
+              <input
+                [id]="'provider-model-' + provider.provider"
+                type="text"
+                class="form-input max-w-xs"
+                [value]="provider.model"
+                (change)="setModel(provider, $any($event.target).value)"
+              />
+            }
+          </div>
+
+          @if (provider.reasoningEfforts.length) {
+            <div class="mt-3">
+              <label class="form-label" [for]="'provider-effort-' + provider.provider">{{
+                t('providers.effort.label')
+              }}</label>
+              <select
+                [id]="'provider-effort-' + provider.provider"
+                class="form-input max-w-xs"
+                [value]="provider.reasoningEffort ?? ''"
+                (change)="setEffort(provider, $any($event.target).value)"
+              >
+                @for (e of provider.reasoningEfforts; track e) {
+                  <option [value]="e" [selected]="e === provider.reasoningEffort">{{ e }}</option>
+                }
+              </select>
+            </div>
+          }
+        }
+
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <button appButton type="button" variant="secondary" size="sm" (click)="openLink(provider)">
+            {{ t(provider.configured ? 'providers.actions.relink' : 'providers.actions.link') }}
+          </button>
+          @if (provider.configured && provider.source === 'user') {
+            <button appButton type="button" variant="secondary" size="sm" (click)="unlink(provider)">
+              {{ t('providers.actions.unlink') }}
+            </button>
+          }
+          @if (provider.configured) {
+            <button
+              appButton
+              type="button"
+              variant="ghost"
+              size="sm"
+              (click)="testConnection(provider)"
+            >
+              {{ t('providers.actions.test') }}
+            </button>
+            @if (testResult(); as result) {
+              @if (result.provider === provider.provider) {
+                <span class="text-xs" [class]="result.ok ? 'text-positive' : 'text-negative'">
+                  {{ t(result.ok ? 'providers.testOk' : 'providers.testFailed') }}
+                </span>
+              }
+            }
+          }
+        </div>
+      </app-card>
+    }
+
+    @if (actionErrorKey(); as key) {
+      <p
+        class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+        role="alert"
+      >
+        {{ t(key) }}
+      </p>
+    }
+
+    <app-card>
+      <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('providers.tryIt.title') }}</h2>
+      <p class="mb-3 text-sm text-content-muted">{{ t('providers.tryIt.description') }}</p>
+
+      <div class="flex flex-col gap-3">
+        <select
+          class="form-input max-w-xs"
+          [value]="chatProvider() ?? ''"
+          (change)="chatProvider.set($any($event.target).value || undefined)"
+        >
+          <option value="">{{ t('providers.tryIt.autoProvider') }}</option>
+          @for (provider of providersResource.value(); track provider.provider) {
+            @if (provider.configured) {
+              <option [value]="provider.provider">{{ t('providers.names.' + provider.provider) }}</option>
+            }
+          }
+        </select>
+
+        <textarea
+          class="form-input"
+          rows="3"
+          [placeholder]="t('providers.tryIt.placeholder')"
+          [value]="chatInput()"
+          (input)="chatInput.set($any($event.target).value)"
+        ></textarea>
+
+        @if (chatErrorKey(); as key) {
+          <p class="form-error" role="alert">{{ t(key) }}</p>
+        }
+
+        @if (chatReply(); as reply) {
+          <p class="rounded-md border border-border bg-surface-sunken p-3 text-sm text-content-primary">
+            {{ reply }}
+          </p>
+        }
+
+        <button
+          appButton
+          type="button"
+          variant="primary"
+          class="self-end"
+          [disabled]="chatSending() || !chatInput().trim()"
+          (click)="sendChat()"
+        >
+          {{ t('providers.tryIt.send') }}
+        </button>
+      </div>
+    </app-card>
+  </div>
+
+  @if (linkModalProvider(); as provider) {
+    <app-provider-link-modal
+      [(open)]="linkModalOpen"
+      [provider]="provider"
+      (linked)="onLinked()"
+    />
+  }
+</div>

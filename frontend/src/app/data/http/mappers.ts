@@ -1,4 +1,12 @@
 import type { Account, AccountBalance } from '../../domain/models/account';
+import type {
+  AgentChatMessage,
+  AgentChatReply,
+  AgentOAuthStart,
+  AgentProviderLink,
+  AgentProviderStatus,
+  AgentProviderTestResult,
+} from '../../domain/models/agent-provider';
 import type { Budget } from '../../domain/models/budget';
 import type { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import type { Category } from '../../domain/models/category';
@@ -14,6 +22,12 @@ import type {
   AccountInputWire,
   AccountPatchWire,
   AccountWire,
+  AgentChatMessageWire,
+  AgentChatReplyWire,
+  AgentOAuthStartWire,
+  AgentProviderLinkWire,
+  AgentProviderStatusWire,
+  AgentProviderTestWire,
   BudgetAllocationInputWire,
   BudgetAllocationWire,
   BudgetInputWire,
@@ -372,3 +386,39 @@ export function mapGoalPatch(
   if (has(input, 'interval')) wire.interval = nullable(input.interval);
   return wire;
 }
+
+export const mapAgentProviderStatus = (wire: AgentProviderStatusWire): AgentProviderStatus => ({
+  provider: wire.provider,
+  configured: wire.configured,
+  source: wire.source,
+  authMode: wire.auth_mode ?? undefined,
+  authModes: wire.auth_modes,
+  accountLabel: wire.account_label ?? undefined,
+  model: wire.model,
+  defaultModel: wire.default_model,
+  models: wire.models,
+  reasoningEffort: wire.reasoning_effort ?? undefined,
+  reasoningEfforts: wire.reasoning_efforts,
+});
+export const mapAgentProviderLink = (input: AgentProviderLink): AgentProviderLinkWire => ({
+  ...(input.apiKey !== undefined ? { api_key: input.apiKey } : {}),
+  ...(input.baseUrl !== undefined ? { base_url: input.baseUrl } : {}),
+  ...(input.model !== undefined ? { model: input.model } : {}),
+  ...(input.reasoningEffort !== undefined ? { reasoning_effort: input.reasoningEffort } : {}),
+});
+export const mapAgentOAuthStart = (wire: AgentOAuthStartWire): AgentOAuthStart => ({
+  authorizeUrl: wire.authorize_url,
+  verifier: wire.verifier,
+  state: wire.state,
+});
+export const mapAgentProviderTest = (wire: AgentProviderTestWire): AgentProviderTestResult => ({
+  ok: wire.ok,
+  errorCode: wire.error_code ?? undefined,
+});
+export const mapAgentChatMessages = (messages: AgentChatMessage[]): AgentChatMessageWire[] =>
+  messages.map((message) => ({ role: message.role, content: message.content }));
+export const mapAgentChatReply = (wire: AgentChatReplyWire): AgentChatReply => ({
+  provider: wire.provider,
+  model: wire.model,
+  reply: wire.reply,
+});

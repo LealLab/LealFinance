@@ -1,6 +1,6 @@
 import { Component, ElementRef, effect, inject, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MetadataService } from '../../core/metadata.service';
@@ -12,7 +12,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 
 @Component({
   selector: 'app-settings',
-  imports: [TranslocoDirective, Card, Icon, PageHeader],
+  imports: [TranslocoDirective, Card, Icon, PageHeader, RouterLink],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
 })

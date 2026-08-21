@@ -28,7 +28,8 @@
         "analysis": "Analyysit",
         "setup": "Määritykset",
         "admin": "Hallinta"
-      }
+      },
+      "providers": "Tekoälypalveluntarjoajat"
     },
     "sidebar": {
       "openMenu": "Avaa valikko",
@@ -720,7 +721,8 @@
       "title": "Tekoälyagentit",
       "description": "Taloustietojasi käsittelevät tekoälyavustajat, jotka tukevat useita palveluntarjoajia ja MCP-työkaluja. Oletuksena pois käytöstä – määritettävissä Docker Composessa (AGENTS_ENABLED).",
       "disabled": "Pois käytöstä",
-      "enabled": "Käytössä"
+      "enabled": "Käytössä",
+      "manage": "Hallinnoi"
     }
   },
   "auth": {
@@ -770,6 +772,80 @@
       "copyLink": "Kopioi rekisteröitymislinkki",
       "revoke": "Peruuta kutsu",
       "empty": "Kutsuja ei löytynyt."
+    }
+  },
+  "providers": {
+    "title": "Tekoälypalveluntarjoajat",
+    "description": "Yhdistä tekoälypalveluntarjoaja API-avaimella, linkitetyllä tilauksella tai paikallisella Ollama-palvelimella.",
+    "names": {
+      "anthropic": "Anthropic (Claude)",
+      "openai": "OpenAI (Codex)",
+      "ollama": "Ollama"
+    },
+    "experimental": "Kokeellinen",
+    "status": {
+      "configuredUser": "Linkitetty ({{label}})",
+      "configuredEnv": "Ympäristöstä ({{model}})",
+      "notConfigured": "Ei määritetty"
+    },
+    "actions": {
+      "link": "Linkitä",
+      "relink": "Linkitä uudelleen",
+      "unlink": "Poista linkitys",
+      "test": "Testaa yhteys"
+    },
+    "testOk": "Yhdistetty",
+    "testFailed": "Yhteys epäonnistui",
+    "unlink": {
+      "title": "Poista palveluntarjoajan linkitys",
+      "message": "Poistetaanko tähän palveluntarjoajaan linkitetyt tunnukset? Sen sijaan käytetään ylläpitäjän asettamaa instanssikohtaista avainta, jos sellainen on."
+    },
+    "unlinkError": "Palveluntarjoajan linkitystä ei voitu poistaa. Yritä uudelleen.",
+    "tryIt": {
+      "title": "Kokeile",
+      "description": "Lähetä yksi viesti määritetylle palveluntarjoajalle varmistaaksesi, että se vastaa.",
+      "autoProvider": "Käytä ensimmäistä määritettyä palveluntarjoajaa",
+      "placeholder": "Kysy jotain…",
+      "send": "Lähetä"
+    },
+    "chatError": "Vastausta ei saatu. Tarkista, että palveluntarjoaja on määritetty oikein.",
+    "form": {
+      "apiKeyTitle": "Linkitä API-avaimella",
+      "oauthTitle": "Linkitä tilaus",
+      "ollamaTitle": "Yhdistä Ollamaan",
+      "modeApiKey": "API-avain",
+      "modeOAuth": "Tilaus",
+      "fields": {
+        "apiKey": "API-avain",
+        "baseUrl": "Palvelimen URL",
+        "model": "Malli (valinnainen)"
+      },
+      "saveError": "Palveluntarjoajaa ei voitu tallentaa. Tarkista arvo ja yritä uudelleen.",
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      },
+      "oauth": {
+        "startHint": "Sinut ohjataan kirjautumaan sisään ja hyväksymään käyttöoikeus uudessa välilehdessä. Palaa tänne jälkikäteen liittääksesi koodin.",
+        "startAction": "Jatka uudessa välilehdessä",
+        "pasteHint": "Kun olet hyväksynyt käyttöoikeuden, kopioi näytetty koodi (tai koko uudelleenohjaus-URL, vaikka sivu ei latautuisi) ja liitä se alle.",
+        "reopenAction": "Avaa kirjautumissivu uudelleen",
+        "fields": {
+          "code": "Koodi"
+        },
+        "completeAction": "Linkitä",
+        "startError": "Kirjautumista ei voitu aloittaa. Yritä uudelleen.",
+        "completeError": "Koodi ei toiminut. Tarkista se ja yritä uudelleen.",
+        "pasteHintOpenai": "Kun käyttöoikeus on hyväksytty, välilehdellä näkyy virhe \"sivustoa ei voi tavoittaa\" — tämä on odotettua. Kopioi koko osoite selaimen osoiterivistä ja liitä se alle."
+      }
+    },
+    "model": {
+      "label": "Malli",
+      "recommendedOption": "{{model}} (suositeltu)"
+    },
+    "modelError": "Mallia ei voitu vaihtaa. Yritä uudelleen.",
+    "effort": {
+      "label": "Päättelyn taso"
     }
   },
   "errors": {

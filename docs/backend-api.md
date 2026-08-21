@@ -152,6 +152,13 @@ Registration is invite-only, except the very first user on an instance.
 | PATCH | `/goals/{id}` | user | |
 | PATCH | `/goals/{id}/with-account` | user | Updates a goal and its linked account in one response. |
 | POST | `/goals/{id}/archive` | user | |
+| GET | `/agents/providers` | user | Every route under `/agents` 404s `agents.disabled` unless `AGENTS_ENABLED=true`. See "AI agents" below. |
+| PUT | `/agents/providers/{provider}` | user | Body `{api_key?, base_url?, model?, reasoning_effort?}`. Links an api-key or Ollama credential; also used model/effort-only, without an `api_key`/`base_url`, to change an already-linked provider's model or reasoning effort. |
+| DELETE | `/agents/providers/{provider}` | user | 204. Unlinks; the `.env` credential (if any) resumes. |
+| POST | `/agents/providers/{provider}/oauth/start` | user | → `{authorize_url, verifier, state}`. |
+| POST | `/agents/providers/{provider}/oauth/complete` | user | Body `{verifier, state, code}`. |
+| POST | `/agents/providers/{provider}/test` | user | → `{ok, error_code?}`. |
+| POST | `/agents/chat` | user | Body `{provider?, messages}`. Non-streaming. |
 
 ## Transactions
 
@@ -377,3 +384,22 @@ never a `Date` pinned to the 1st.
 | --- | --- |
 | `currency.not_found` | 404 |
 | `currency.inactive` | 422 |
+
+## AI agents
+
+See [`ai-agents.md`](ai-agents.md) for provider setup, credential
+precedence, and the OAuth linking flow. `provider` is one of `anthropic`,
+`openai`, `ollama`.
+
+| Code | Status |
+| --- | --- |
+| `agents.disabled` | 404 |
+| `agents.provider_unknown` | 404 |
+| `agent_credential.not_found` | 404 |
+| `agents.not_configured` | 422 |
+| `agents.api_key_required` | 422 |
+| `agents.base_url_required` | 422 |
+| `agents.oauth_unsupported` | 422 |
+| `agents.oauth_state_mismatch` | 422 |
+| `agents.oauth_failed` | 422 |
+| `agents.provider_unavailable` | 502 |

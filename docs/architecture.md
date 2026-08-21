@@ -10,7 +10,7 @@
 | `worker` | Celery worker for background tasks: daily recurring-rule posting (`app/services/recurring_posting.py`) is live; the scheduled exchange-rate refresh (`app/workers/tasks/rates.py`) is still disabled. |
 | `beat` | Celery beat - schedules periodic tasks for `worker` to pick up. |
 | `web` | nginx serving the built Angular SPA and proxying `/api/` to `api`. |
-| `agents` | Optional, behind the `agents` Compose profile. Not yet implemented; see README.md. |
+| `ollama` | Optional, behind the `agents` Compose profile - a local model runner for the AI agents feature. The feature itself runs in-process in `api`; see [`ai-agents.md`](ai-agents.md). |
 
 `api`, `worker`, and `beat` all build from the same backend image
 (`backend/Dockerfile`) with different `command`s. They share one codebase, so
@@ -45,7 +45,9 @@ on a fresh install.
 backend/app/
 ├── main.py                 # FastAPI app factory
 ├── dev.py                  # local dev-server entrypoint (task backend:dev) - see "Windows dev server" below
-├── core/                   # config, db engines (async + sync), logging, errors, security, cookies
+├── core/                   # config, db engines (async + sync), logging, errors, security, cookies, crypto
+├── agents/                 # AI provider integration - credential resolution, OAuth, chat calls;
+│                            # see docs/ai-agents.md. Gated by AGENTS_ENABLED, not a separate service.
 ├── api/
 │   ├── deps.py              # DbSession, CurrentUser, AdminUser, CurrentSession
 │   └── v1/                  # one router module per resource - see docs/backend-api.md
@@ -136,8 +138,9 @@ occurrences client-side for display, but that projection is separate from
 posting - see the "Recurring rules" section of
 [`backend-api.md`](backend-api.md#recurring-rules).
 
-The AI Agents feature (`AGENTS_ENABLED` + the `agents` Compose profile) is
-still an unimplemented placeholder.
+The AI agents feature (`AGENTS_ENABLED`, gated end-to-end) covers provider
+linking and a smoke-test chat call; agent tools over financial data are
+not built yet. See [`ai-agents.md`](ai-agents.md).
 
 `/transactions/import` (`features/transactions/import/`) lets a user turn a
 bank-statement CSV into transactions: pick a file and account, map columns,

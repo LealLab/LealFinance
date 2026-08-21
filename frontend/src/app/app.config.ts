@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { httpErrorInterceptor } from './core/http-error.interceptor';
 import { provideAppTransloco } from './core/transloco.providers';
 import { AccountRepository } from './data/account.repository';
+import { AgentProviderRepository } from './data/agent-provider.repository';
 import { BudgetRepository } from './data/budget.repository';
 import { BudgetPlanRepository } from './data/budget-plan.repository';
 import { CategoryRepository } from './data/category.repository';
@@ -18,6 +19,7 @@ import { InstitutionRepository } from './data/institution.repository';
 import { GoalRepository } from './data/goal.repository';
 import { ManualRateRepository } from './data/manual-rate.repository';
 import { HttpAccountRepository } from './data/http/http-account.repository';
+import { HttpAgentProviderRepository } from './data/http/http-agent-provider.repository';
 import { HttpBudgetPlanRepository } from './data/http/http-budget-plan.repository';
 import { HttpBudgetRepository } from './data/http/http-budget.repository';
 import { HttpCategoryRepository } from './data/http/http-category.repository';
@@ -41,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([httpErrorInterceptor])),
     provideAppTransloco(),
     { provide: AccountRepository, useClass: HttpAccountRepository },
+    { provide: AgentProviderRepository, useClass: HttpAgentProviderRepository },
     { provide: TransactionRepository, useClass: HttpTransactionRepository },
     { provide: CategoryRepository, useClass: HttpCategoryRepository },
     { provide: BudgetRepository, useClass: HttpBudgetRepository },
