@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -67,6 +68,7 @@ describe('AccountDetail', () => {
   });
 
   it('shows the display-currency equivalent next to a foreign-currency account balance', async () => {
+    TestBed.inject(DisplayCurrencyService).setCurrency('USD');
     const repository = TestBed.inject(AccountRepository);
     const account = await new Promise<Account>((resolve) => {
       repository.list().subscribe((accounts) => resolve(accounts.find((a) => a.currency === 'EUR')!));

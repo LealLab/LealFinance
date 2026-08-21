@@ -139,7 +139,9 @@ async def test_link_model_only_update_preserves_oauth_tokens(
     key or wipe the refresh token/account id - that was the bug that made
     picking a model impossible after a subscription link."""
     _enable_agents(monkeypatch)
-    user, password = await make_user(db_session, email="model-only-oauth@example.com")
+    user, password = await make_user(
+        db_session, email="model-only-oauth@example.com", role=ROLE_ADMIN
+    )
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -208,7 +210,9 @@ async def test_link_effort_only_update_preserves_oauth_tokens(
     the reasoning effort alone must not demand an API key or wipe the
     refresh token/account id either."""
     _enable_agents(monkeypatch)
-    user, password = await make_user(db_session, email="effort-only-oauth@example.com")
+    user, password = await make_user(
+        db_session, email="effort-only-oauth@example.com", role=ROLE_ADMIN
+    )
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -589,7 +593,9 @@ async def test_expired_oauth_refresh_success_updates_row(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch)
-    user, password = await make_user(db_session, email="refresh-ok@example.com")
+    user, password = await make_user(
+        db_session, email="refresh-ok@example.com", role=ROLE_ADMIN
+    )
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -625,7 +631,9 @@ async def test_expired_oauth_refresh_failure_clears_row_and_falls_back(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch, anthropic_api_key="sk-env-after-failed-refresh")
-    user, password = await make_user(db_session, email="refresh-fail@example.com")
+    user, password = await make_user(
+        db_session, email="refresh-fail@example.com", role=ROLE_ADMIN
+    )
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
