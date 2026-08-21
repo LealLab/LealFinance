@@ -23,19 +23,28 @@
               </label>
               <label>
                 <span class="form-label">{{ t('admin.users.role') }}</span>
-                <select class="form-input" [(ngModel)]="user.role">
+                <select
+                  class="form-input"
+                  [(ngModel)]="user.role"
+                  [disabled]="privilegeLocked(user)"
+                >
                   <option value="member">{{ t('admin.roles.member') }}</option>
                   <option value="admin">{{ t('admin.roles.admin') }}</option>
                 </select>
               </label>
               <label class="flex items-center gap-2 pb-2 text-sm">
-                <input type="checkbox" [(ngModel)]="user.isActive" />
+                <input type="checkbox" [(ngModel)]="user.isActive" [disabled]="privilegeLocked(user)" />
                 {{ t('admin.users.active') }}
               </label>
               <button appButton variant="secondary" type="button" (click)="saveUser(user)">
                 {{ t('common.actions.save') }}
               </button>
             </div>
+            @if (privilegeLocked(user)) {
+              <p class="mt-2 text-xs text-content-muted">
+                {{ t(isLastAdmin(user) ? 'admin.users.lockedLastAdmin' : 'admin.users.lockedPeerAdmin') }}
+              </p>
+            }
           </div>
         } @empty {
           <p class="text-sm text-content-muted">{{ t('admin.users.empty') }}</p>

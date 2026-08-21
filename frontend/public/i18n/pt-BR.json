@@ -762,7 +762,14 @@
       "title": "Usuários",
       "role": "Função",
       "active": "Ativo",
-      "empty": "Nenhum usuário encontrado."
+      "empty": "Nenhum usuário encontrado.",
+      "roleChange": {
+        "title": "Alterar função?",
+        "promote": "Conceder acesso de administrador a {{name}}? A pessoa poderá gerenciar usuários, convites e provedores.",
+        "demote": "Remover o acesso de administrador de {{name}}? A pessoa não poderá mais gerenciar usuários, convites ou provedores."
+      },
+      "lockedLastAdmin": "É necessário manter ao menos um administrador ativo.",
+      "lockedPeerAdmin": "Administradores não podem alterar a função ou o status de outro administrador."
     },
     "invitations": {
       "title": "Convites",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Este formulário expirou. Atualize a página e tente novamente.",
       "last_admin": "É necessário manter ao menos um administrador ativo.",
       "account_inactive": "Esta conta está inativa.",
-      "admin_required": "É necessário acesso de administrador."
+      "admin_required": "É necessário acesso de administrador.",
+      "peer_admin": "Administradores não podem alterar a função ou o status de outro administrador."
     },
     "invitation": {
       "not_found": "O convite é inválido.",

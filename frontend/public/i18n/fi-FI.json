@@ -762,7 +762,14 @@
       "title": "Käyttäjät",
       "role": "Rooli",
       "active": "Aktiivinen",
-      "empty": "Käyttäjiä ei löytynyt."
+      "empty": "Käyttäjiä ei löytynyt.",
+      "roleChange": {
+        "title": "Vaihdetaanko rooli?",
+        "promote": "Annetaanko käyttäjälle {{name}} järjestelmänvalvojan oikeudet? Hän voi hallita käyttäjiä, kutsuja ja palveluntarjoajia.",
+        "demote": "Poistetaanko käyttäjän {{name}} järjestelmänvalvojan oikeudet? Hän ei voi enää hallita käyttäjiä, kutsuja tai palveluntarjoajia."
+      },
+      "lockedLastAdmin": "Vähintään yhden järjestelmänvalvojan on oltava aktiivinen.",
+      "lockedPeerAdmin": "Järjestelmänvalvojat eivät voi muuttaa toisen järjestelmänvalvojan roolia tai tilaa."
     },
     "invitations": {
       "title": "Kutsut",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Tämä lomake on vanhentunut. Päivitä sivu ja yritä uudelleen.",
       "last_admin": "Vähintään yhden järjestelmänvalvojan on oltava aktiivinen.",
       "account_inactive": "Tämä tili ei ole aktiivinen.",
-      "admin_required": "Toiminto edellyttää järjestelmänvalvojan oikeuksia."
+      "admin_required": "Toiminto edellyttää järjestelmänvalvojan oikeuksia.",
+      "peer_admin": "Järjestelmänvalvojat eivät voi muuttaa toisen järjestelmänvalvojan roolia tai tilaa."
     },
     "invitation": {
       "not_found": "Kutsu ei ole kelvollinen.",

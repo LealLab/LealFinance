@@ -109,9 +109,10 @@ async def list_users(_admin: AdminUser, db: DbSession) -> list[User]:
 
 
 @router.patch("/users/{user_id}", response_model=UserRead)
-async def update_user(user_id: UUID, payload: UserUpdate, _admin: AdminUser, db: DbSession) -> User:
+async def update_user(user_id: UUID, payload: UserUpdate, admin: AdminUser, db: DbSession) -> User:
     return await auth_service.update_user(
         db,
+        actor=admin,
         target_id=user_id,
         role=payload.role,
         is_active=payload.is_active,

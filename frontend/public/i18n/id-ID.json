@@ -762,7 +762,14 @@
       "title": "Pengguna",
       "role": "Peran",
       "active": "Aktif",
-      "empty": "Pengguna tidak ditemukan."
+      "empty": "Pengguna tidak ditemukan.",
+      "roleChange": {
+        "title": "Ubah peran?",
+        "promote": "Berikan akses admin kepada {{name}}? Mereka akan dapat mengelola pengguna, undangan, dan penyedia.",
+        "demote": "Hapus akses admin dari {{name}}? Mereka tidak akan lagi dapat mengelola pengguna, undangan, atau penyedia."
+      },
+      "lockedLastAdmin": "Setidaknya diperlukan satu administrator aktif.",
+      "lockedPeerAdmin": "Admin tidak dapat mengubah peran atau status admin lain."
     },
     "invitations": {
       "title": "Undangan",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Formulir ini sudah kedaluwarsa. Segarkan halaman lalu coba lagi.",
       "last_admin": "Setidaknya diperlukan satu administrator aktif.",
       "account_inactive": "Akun ini tidak aktif.",
-      "admin_required": "Diperlukan akses administrator."
+      "admin_required": "Diperlukan akses administrator.",
+      "peer_admin": "Admin tidak dapat mengubah peran atau status admin lain."
     },
     "invitation": {
       "not_found": "Undangan ini tidak valid.",

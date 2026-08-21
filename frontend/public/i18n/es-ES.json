@@ -762,7 +762,14 @@
       "title": "Usuarios",
       "role": "Rol",
       "active": "Activo",
-      "empty": "No se han encontrado usuarios."
+      "empty": "No se han encontrado usuarios.",
+      "roleChange": {
+        "title": "¿Cambiar rol?",
+        "promote": "¿Conceder acceso de administrador a {{name}}? Podrá gestionar usuarios, invitaciones y proveedores.",
+        "demote": "¿Quitar el acceso de administrador a {{name}}? Ya no podrá gestionar usuarios, invitaciones ni proveedores."
+      },
+      "lockedLastAdmin": "Debe haber al menos un administrador activo.",
+      "lockedPeerAdmin": "Los administradores no pueden cambiar el rol o el estado de otro administrador."
     },
     "invitations": {
       "title": "Invitaciones",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Este formulario ha caducado. Actualiza la página e inténtalo de nuevo.",
       "last_admin": "Debe haber al menos un administrador activo.",
       "account_inactive": "Esta cuenta está inactiva.",
-      "admin_required": "Se requiere acceso de administrador."
+      "admin_required": "Se requiere acceso de administrador.",
+      "peer_admin": "Los administradores no pueden cambiar el rol o el estado de otro administrador."
     },
     "invitation": {
       "not_found": "La invitación no es válida.",

@@ -762,7 +762,14 @@
       "title": "Utilisateurs",
       "role": "Rôle",
       "active": "Actif",
-      "empty": "Aucun utilisateur trouvé."
+      "empty": "Aucun utilisateur trouvé.",
+      "roleChange": {
+        "title": "Modifier le rôle ?",
+        "promote": "Accorder l'accès administrateur à {{name}} ? Cette personne pourra gérer les utilisateurs, les invitations et les fournisseurs.",
+        "demote": "Retirer l'accès administrateur à {{name}} ? Cette personne ne pourra plus gérer les utilisateurs, les invitations ni les fournisseurs."
+      },
+      "lockedLastAdmin": "Au moins un administrateur actif est requis.",
+      "lockedPeerAdmin": "Les administrateurs ne peuvent pas modifier le rôle ou le statut d'un autre administrateur."
     },
     "invitations": {
       "title": "Invitations",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Ce formulaire a expiré. Actualisez la page et réessayez.",
       "last_admin": "Au moins un administrateur actif est requis.",
       "account_inactive": "Ce compte est inactif.",
-      "admin_required": "Un accès administrateur est requis."
+      "admin_required": "Un accès administrateur est requis.",
+      "peer_admin": "Les administrateurs ne peuvent pas modifier le rôle ou le statut d'un autre administrateur."
     },
     "invitation": {
       "not_found": "L’invitation est invalide.",

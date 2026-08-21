@@ -762,7 +762,14 @@
       "title": "Benutzer",
       "role": "Rolle",
       "active": "Aktiv",
-      "empty": "Keine Benutzer gefunden."
+      "empty": "Keine Benutzer gefunden.",
+      "roleChange": {
+        "title": "Rolle ändern?",
+        "promote": "{{name}} Administratorzugriff gewähren? Diese Person kann dann Benutzer, Einladungen und Anbieter verwalten.",
+        "demote": "Administratorzugriff von {{name}} entfernen? Diese Person kann dann keine Benutzer, Einladungen oder Anbieter mehr verwalten."
+      },
+      "lockedLastAdmin": "Mindestens ein aktiver Administrator ist erforderlich.",
+      "lockedPeerAdmin": "Administratoren können die Rolle oder den Status eines anderen Administrators nicht ändern."
     },
     "invitations": {
       "title": "Einladungen",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Dieses Formular ist abgelaufen. Aktualisieren Sie die Seite und versuchen Sie es erneut.",
       "last_admin": "Mindestens ein aktiver Administrator ist erforderlich.",
       "account_inactive": "Dieses Konto ist inaktiv.",
-      "admin_required": "Administratorzugriff ist erforderlich."
+      "admin_required": "Administratorzugriff ist erforderlich.",
+      "peer_admin": "Administratoren können die Rolle oder den Status eines anderen Administrators nicht ändern."
     },
     "invitation": {
       "not_found": "Die Einladung ist ungültig.",

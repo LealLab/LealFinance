@@ -762,7 +762,14 @@
       "title": "Użytkownicy",
       "role": "Rola",
       "active": "Aktywny",
-      "empty": "Nie znaleziono użytkowników."
+      "empty": "Nie znaleziono użytkowników.",
+      "roleChange": {
+        "title": "Zmienić rolę?",
+        "promote": "Nadać {{name}} uprawnienia administratora? Będzie mógł zarządzać użytkownikami, zaproszeniami i dostawcami.",
+        "demote": "Odebrać {{name}} uprawnienia administratora? Nie będzie już mógł zarządzać użytkownikami, zaproszeniami ani dostawcami."
+      },
+      "lockedLastAdmin": "Wymagany jest co najmniej jeden aktywny administrator.",
+      "lockedPeerAdmin": "Administratorzy nie mogą zmieniać roli ani statusu innego administratora."
     },
     "invitations": {
       "title": "Zaproszenia",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Formularz wygasł. Odśwież stronę i spróbuj ponownie.",
       "last_admin": "Wymagany jest co najmniej jeden aktywny administrator.",
       "account_inactive": "To konto jest nieaktywne.",
-      "admin_required": "Wymagany jest dostęp administratora."
+      "admin_required": "Wymagany jest dostęp administratora.",
+      "peer_admin": "Administratorzy nie mogą zmieniać roli ani statusu innego administratora."
     },
     "invitation": {
       "not_found": "Zaproszenie jest nieprawidłowe.",

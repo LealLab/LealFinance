@@ -762,7 +762,14 @@
       "title": "Användare",
       "role": "Roll",
       "active": "Aktiv",
-      "empty": "Inga användare hittades."
+      "empty": "Inga användare hittades.",
+      "roleChange": {
+        "title": "Ändra roll?",
+        "promote": "Ge {{name}} administratörsbehörighet? Personen kommer att kunna hantera användare, inbjudningar och leverantörer.",
+        "demote": "Ta bort {{name}}s administratörsbehörighet? Personen kommer inte längre att kunna hantera användare, inbjudningar eller leverantörer."
+      },
+      "lockedLastAdmin": "Minst en aktiv administratör krävs.",
+      "lockedPeerAdmin": "Administratörer kan inte ändra en annan administratörs roll eller status."
     },
     "invitations": {
       "title": "Inbjudningar",
@@ -858,7 +865,8 @@
       "csrf_invalid": "Formuläret har gått ut. Uppdatera sidan och försök igen.",
       "last_admin": "Minst en aktiv administratör krävs.",
       "account_inactive": "Det här kontot är inaktivt.",
-      "admin_required": "Administratörsbehörighet krävs."
+      "admin_required": "Administratörsbehörighet krävs.",
+      "peer_admin": "Administratörer kan inte ändra en annan administratörs roll eller status."
     },
     "invitation": {
       "not_found": "Inbjudan är ogiltig.",
