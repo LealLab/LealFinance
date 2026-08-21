@@ -79,8 +79,10 @@ tasks:
       - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
 
   backend:seed:
-    desc: Generate local demo data (interactive; run `backend:migrate` first)
+    desc: Apply migrations and generate local demo data
     dir: backend
+    deps:
+      - backend:migrate
     env:
       POSTGRES_HOST: localhost
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'

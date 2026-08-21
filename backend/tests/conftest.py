@@ -22,6 +22,7 @@ from collections.abc import AsyncGenerator
 
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
 from app.core.config import get_settings
@@ -49,6 +50,7 @@ async def _engine() -> AsyncGenerator[AsyncEngine]:
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
+        await conn.execute(text("DROP TABLE IF EXISTS alembic_version"))
     await engine.dispose()
 
 
