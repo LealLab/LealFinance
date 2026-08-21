@@ -593,9 +593,7 @@ async def test_expired_oauth_refresh_success_updates_row(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch)
-    user, password = await make_user(
-        db_session, email="refresh-ok@example.com", role=ROLE_ADMIN
-    )
+    user, password = await make_user(db_session, email="refresh-ok@example.com", role=ROLE_ADMIN)
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
@@ -631,9 +629,7 @@ async def test_expired_oauth_refresh_failure_clears_row_and_falls_back(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch, anthropic_api_key="sk-env-after-failed-refresh")
-    user, password = await make_user(
-        db_session, email="refresh-fail@example.com", role=ROLE_ADMIN
-    )
+    user, password = await make_user(db_session, email="refresh-fail@example.com", role=ROLE_ADMIN)
     await login_as(client, email=user.email, password=password)
 
     row = AgentCredential(
