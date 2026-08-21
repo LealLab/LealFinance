@@ -1,8 +1,7 @@
 import {
-  afterNextRender,
+  afterRenderEffect,
   Component,
   DestroyRef,
-  effect,
   ElementRef,
   inject,
   input,
@@ -82,25 +81,34 @@ export class Chart {
   private instance: ChartJs | undefined;
 
   constructor() {
-    afterNextRender(() => {
-      this.instance = new ChartJs(this.canvas().nativeElement, {
-        type: this.kind(),
-        data: this.buildData(),
-        options: this.buildOptions()
-      });
+    // Chart.js reads and writes canvas layout, so synchronize it after
+    // Angular has rendered the view and its containing layout.
+    afterRenderEffect({
+      mixedReadWrite: () => {
+        this.theme.current();
+        this.kind();
+        this.labels();
+        this.datasets();
+        this.formatValue();
+        if (!this.instance) {
+          this.instance = new ChartJs(this.canvas().nativeElement, {
+            type: this.kind(),
+            data: this.buildData(),
+            options: this.buildOptions()
+          });
+          return;
+        }
+        if (!this.instance.ctx) return;
+        this.instance.data = this.buildData();
+        this.instance.options = this.buildOptions();
+        this.instance.update();
+      }
     });
 
-    // Re-theme on toggle: rebuild the color-dependent parts of the config
-    // and let Chart.js re-render with them.
-    effect(() => {
-      this.theme.current();
-      if (!this.instance) return;
-      this.instance.data = this.buildData();
-      this.instance.options = this.buildOptions();
-      this.instance.update();
+    this.destroyRef.onDestroy(() => {
+      this.instance?.destroy();
+      this.instance = undefined;
     });
-
-    this.destroyRef.onDestroy(() => this.instance?.destroy());
   }
 
   private themeColors() {
