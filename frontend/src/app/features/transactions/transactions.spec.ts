@@ -61,6 +61,18 @@ describe('Transactions', () => {
     expect(fixture.nativeElement.textContent).toContain('Transações');
   });
 
+  it('uses blue for transfers and the neutral color for zero amounts', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    const component = fixture.componentInstance;
+
+    expect(component['rowToneClass']({ type: 'transfer', amount: '10', currency: 'BRL' })).toBe(
+      'text-accent',
+    );
+    expect(component['rowToneClass']({ type: 'expense', amount: '0', currency: 'BRL' })).toBe(
+      'text-content-primary',
+    );
+  });
+
   it('renders the recurring rules tab without error', async () => {
     const fixture = TestBed.createComponent(Transactions);
     fixture.detectChanges();

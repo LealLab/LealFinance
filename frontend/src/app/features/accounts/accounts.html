@@ -49,10 +49,13 @@
               }
             </div>
             @if (group.subtotal) {
-              <span class="font-mono text-sm font-semibold tabular-nums">
+              <span
+                class="font-mono text-sm font-semibold tabular-nums"
+                [class]="amountClass(group.subtotal)"
+              >
                 {{ group.subtotal.amount | money: group.subtotal.currency }}
                 @if (group.convertedSubtotal; as converted) {
-                  <span class="font-normal text-content-muted"
+                  <span class="font-normal" [class]="amountClass(converted)"
                     >({{ converted.amount | money: converted.currency }})</span
                   >
                 }
@@ -85,10 +88,13 @@
                 </div>
 
                 <div class="flex items-center gap-3">
-                  <span class="font-mono text-sm font-semibold tabular-nums">
+                  <span
+                    class="font-mono text-sm font-semibold tabular-nums"
+                    [class]="amountClass(row.balance)"
+                  >
                     {{ row.balance.amount | money: row.balance.currency }}
                     @if (row.convertedBalance; as converted) {
-                      <span class="font-normal text-content-muted"
+                      <span class="font-normal" [class]="amountClass(converted)"
                         >({{ converted.amount | money: converted.currency }})</span
                       >
                     }

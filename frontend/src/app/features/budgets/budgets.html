@@ -129,15 +129,17 @@
       <app-stat-tile
         [label]="t('budgets.totals.budgeted')"
         [value]="totals().budgeted.amount | money: totals().budgeted.currency"
+        [tone]="valueTone(totals().budgeted)"
       />
       <app-stat-tile
         [label]="t('budgets.totals.spent')"
         [value]="totals().spent.amount | money: totals().spent.currency"
+        [tone]="valueTone(totals().spent, true)"
       />
       <app-stat-tile
         [label]="t('budgets.totals.remaining')"
         [value]="totals().remaining.amount | money: totals().remaining.currency"
-        [tone]="totals().remaining.amount.startsWith('-') ? 'negative' : 'positive'"
+        [tone]="valueTone(totals().remaining)"
       />
     </div>
   }

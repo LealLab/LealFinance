@@ -15,6 +15,7 @@ import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.r
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { money } from '../../shared/money/money';
 import { Budgets } from './budgets';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -58,6 +59,16 @@ describe('Budgets', () => {
     expect(text).toContain('Estourado');
     expect(text).toContain('Gastos sem orçamento definido');
     expect(text).toContain('44.44%');
+  });
+
+  it('colors budget totals by semantic direction and leaves zero neutral', () => {
+    const fixture = TestBed.createComponent(Budgets);
+    const component = fixture.componentInstance;
+
+    expect(component['valueTone'](money('1', 'BRL'))).toBe('positive');
+    expect(component['valueTone'](money('1', 'BRL'), true)).toBe('negative');
+    expect(component['valueTone'](money('-1', 'BRL'))).toBe('negative');
+    expect(component['valueTone'](money('0', 'BRL'))).toBe('default');
   });
 
   it('sets a budget for an unbudgeted category end-to-end', async () => {

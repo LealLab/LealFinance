@@ -14,6 +14,7 @@ import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.r
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { money } from '../../shared/money/money';
 import { Dashboard } from './dashboard';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -64,6 +65,18 @@ describe('Dashboard', () => {
     // this warning on a real screen.
     expect(text).toContain('Taxa de câmbio indisponível');
     expect(text).toContain('Conta Corrente');
+  });
+
+  it('colors balances by sign and transfers blue', () => {
+    const fixture = TestBed.createComponent(Dashboard);
+    const component = fixture.componentInstance;
+
+    expect(component['amountClass'](money('-1', 'BRL'))).toBe('text-negative');
+    expect(component['amountClass'](money('1', 'BRL'))).toBe('text-positive');
+    expect(component['amountClass'](money('0', 'BRL'))).toBe('text-content-primary');
+    expect(component['transactionClass']({ type: 'transfer', amount: '10', currency: 'BRL' })).toBe(
+      'text-accent',
+    );
   });
 
   it('navigates to /exchange when the fallback-rate warning action is clicked', async () => {

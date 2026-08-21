@@ -186,13 +186,7 @@
                   <div class="flex shrink-0 items-center gap-3">
                     <span
                       class="font-mono text-sm font-semibold tabular-nums"
-                      [class]="
-                        rowTone(tx) === 'positive'
-                          ? 'text-positive'
-                          : rowTone(tx) === 'negative'
-                            ? 'text-negative'
-                            : 'text-content-primary'
-                      "
+                      [class]="rowToneClass(tx)"
                     >
                       {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
                     </span>
@@ -244,7 +238,10 @@
                     {{ occurrence.date }} · {{ accountsById().get(occurrence.accountId)?.name }}
                   </span>
                 </div>
-                <span class="font-mono text-sm font-semibold tabular-nums text-content-muted">
+                <span
+                  class="font-mono text-sm font-semibold tabular-nums opacity-70"
+                  [class]="rowToneClass(occurrence)"
+                >
                   {{ rowSign(occurrence) }}{{ occurrence.amount | money: occurrence.currency }}
                 </span>
               </li>
@@ -295,7 +292,7 @@
               <div class="flex items-center gap-3">
                 <span
                   class="font-mono text-sm font-semibold tabular-nums"
-                  [class]="rule.template.type === 'income' ? 'text-positive' : 'text-negative'"
+                  [class]="rowToneClass(rule.template)"
                 >
                   {{ rule.template.type === 'income' ? '+' : '−' }}{{ rule.template.amount | money: rule.template.currency }}
                 </span>

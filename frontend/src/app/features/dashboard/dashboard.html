@@ -67,7 +67,10 @@
           @for (row of accountRows(); track row.account.id) {
             <li class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0">
               <span class="text-sm text-content-primary">{{ row.account.name }}</span>
-              <span class="font-mono text-sm font-medium tabular-nums">
+              <span
+                class="font-mono text-sm font-medium tabular-nums"
+                [class]="amountClass(row.balance)"
+              >
                 {{ row.balance.amount | money: row.balance.currency }}
               </span>
             </li>
@@ -91,13 +94,7 @@
                 </div>
                 <span
                   class="font-mono text-sm font-medium tabular-nums"
-                  [class]="
-                    row.tx.type === 'income'
-                      ? 'text-positive'
-                      : row.tx.type === 'expense'
-                        ? 'text-negative'
-                        : 'text-content-primary'
-                  "
+                  [class]="transactionClass(row.tx)"
                 >
                   {{ row.tx.amount | money: row.tx.currency }}
                 </span>
