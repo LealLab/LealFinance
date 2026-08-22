@@ -1,126 +1,136 @@
-# Homelab Deployment
+# Homelab deployment
 
-LealFinance is designed to run as a single Docker Compose stack on a homelab
-box, with no cloud dependencies or external services required.
+LealFinance runs as one Docker Compose project. The core stack does not need
+cloud services: PostgreSQL stores application data, Redis handles background
+work, and the web container serves the UI and proxies API requests.
 
-## Basic deploy
+## Requirements
+
+- A machine that can run Docker with the Compose plugin.
+- A free host port for the web UI. The example configuration uses `8081`.
+- Persistent storage for the PostgreSQL volume.
+
+The commands below work from any checkout directory. Do not copy a host path
+or container hostname into another machine's `.env` file.
+
+## First deployment
 
 ```bash
-git clone https://github.com/LealLab/LealFinance.git && cd LealFinance
+git clone https://github.com/LealLab/LealFinance.git
+cd LealFinance
 cp .env.example .env
-# Edit .env: at minimum change POSTGRES_PASSWORD and API_SECRET_KEY.
+```
+
+Edit `.env` and replace `POSTGRES_PASSWORD` and `API_SECRET_KEY`. Then use the
+base Compose file explicitly:
+
+```bash
 docker compose -f docker-compose.yml up -d --build
+docker compose -f docker-compose.yml ps
 ```
 
-The web UI is served on `http://<host>:${WEB_PORT}`. The copied
-`.env.example` sets `WEB_PORT=8081`; Compose falls back to `8080` only when the
-variable is unset.
+Open `http://localhost:8081` from the same machine, or
+`http://<host-ip>:8081` from another device on the LAN. If you change
+`WEB_PORT`, use that port in the URL.
 
-Use the explicit base file for homelab operation. Plain `docker compose up`
-automatically merges `docker-compose.override.yml`, which is a development
-override that enables API reload and publishes Postgres/Redis ports on the
-host.
+The first account created on an empty instance becomes the administrator.
+After that, an administrator must invite other users.
 
-## Deploy from published images
+The explicit base file is important: plain `docker compose up` also loads
+`docker-compose.override.yml`, which is intended for development and publishes
+PostgreSQL and Redis ports on the host.
 
-By default `docker compose build` compiles the images locally from source.
-Alternatively, pull pre-built images from GHCR - published manually via the
-repo's [Release workflow](../.github/workflows/release.yml)
-(`workflow_dispatch`, run from the Actions tab with a tag such as `1.2.3`).
+## Local machine settings
 
-The repository is **private**, so pulling requires authentication even for
-read access. Create a [personal access token](https://github.com/settings/tokens)
-with `read:packages` scope, then on the deploy host:
+Only the `web` service is published by the homelab stack. The API, PostgreSQL,
+and Redis services use the internal Compose network:
 
-```bash
-echo "$GHCR_TOKEN" | docker login ghcr.io -u <your-github-username> --password-stdin
-```
+| Use | Address |
+| --- | --- |
+| Browser on the host | `http://localhost:${WEB_PORT}` |
+| Browser on another device | `http://<host-ip>:${WEB_PORT}` |
+| API from another Compose service | `http://api:8000` |
+| PostgreSQL from another Compose service | `postgres:5432` |
+| Redis from another Compose service | `redis:6379` |
 
-Then layer `docker-compose.prod.yml` on top of the base file, which swaps
-`build:` for `image:` on every built service:
+If the web port is already used, change `WEB_PORT` in `.env`. Database host
+ports are only needed for native development; change `POSTGRES_HOST_PORT` or
+`REDIS_HOST_PORT` when using the development override.
 
-```bash
-cp .env.example .env
-# Edit .env: set TAG to the release you want (defaults to "latest").
-docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-```
-
-`docker-compose.yml`'s own `build:` keys are left in place, so nothing
-about the base file needs to change to support this - `pull` only touches
-what has an `image:`, and `up` only builds what doesn't.
-
-## Running multiple Compose projects on one host
-
-If you run more than one LealFinance checkout, or another Compose project that happens to reuse service names like `db`/`api`, set an explicit project name to keep them fully isolated:
+To keep multiple checkouts isolated, give each one a different Compose project
+name:
 
 ```bash
 docker compose -f docker-compose.yml -p lealfinance-prod up -d
-# or: export COMPOSE_PROJECT_NAME=lealfinance-prod
 ```
 
-Without this, two projects sharing a name can end up sharing a network and, worse,
-a service defined under the same name in both files can be adopted or replaced
-by whichever Compose command runs last. If you're ever unsure what a
-`docker compose down -v` in a given directory would actually remove, run
-`docker compose -f docker-compose.yml config` first; the resolved project,
-volume, and network names are shown up front.
+## Status and logs
 
-## Ports
+```bash
+docker compose -f docker-compose.yml ps
+docker compose -f docker-compose.yml logs -f api
+docker compose -f docker-compose.yml down
+```
 
-If `${WEB_PORT}` collides with something else already running, change it in
-`.env`. When using the development override, also change
-`${POSTGRES_HOST_PORT}` or `${REDIS_HOST_PORT}` as needed. The base homelab
-stack does not publish those database ports.
-
-## Reverse proxy / TLS
-
-`web` serves plain HTTP on its published port. For anything beyond local network access, put a reverse proxy (Caddy, Traefik, nginx-proxy-manager, whatever you already run) in front of it for TLS.
-LealFinance doesn't bundle one, to stay agnostic about what homelab users already have.
+Do not use `down -v` unless you intend to remove the database volume.
 
 ## Backups
 
-All state lives in two named volumes: the Postgres data directory and the Redis
-data directory (`docker compose -f docker-compose.yml config` shows their
-resolved names, see above).
-Only Postgres needs backing up; Redis here is only a Celery broker/result cache, not a source of truth.
+PostgreSQL is the source of truth. Redis is a task broker and result cache, so
+it does not need a database backup.
 
 ```bash
 # Backup
-docker compose -f docker-compose.yml exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > backup.sql
+docker compose -f docker-compose.yml exec -T postgres \
+  sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > backup.sql
 
-# Restore (into a fresh, empty database)
-docker compose -f docker-compose.yml exec -T postgres sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"' < backup.sql
+# Restore into a fresh, empty database
+docker compose -f docker-compose.yml exec -T postgres \
+  sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"' < backup.sql
 ```
 
-Automate this with cron + the above, or your homelab's existing backup tooling pointed at the named volume directly.
+Store `backup.sql` using the same backup system as the rest of the homelab.
+Test restores before relying on them.
 
-## Updating
+## Updates
 
-Building from source:
+When building from source:
 
 ```bash
 git pull
-docker compose -f docker-compose.yml build
-docker compose -f docker-compose.yml up -d
+docker compose -f docker-compose.yml up -d --build
 ```
 
-From published images (see above):
+The API container applies pending Alembic migrations on startup. Do not delete
+the PostgreSQL volume during an update.
+
+Published images can be used when a release is available:
 
 ```bash
-# Edit .env: bump TAG to the new release.
+# Add TAG=<release> to .env first.
 docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
-The `api` container runs `alembic upgrade head` on startup before serving traffic (see [`architecture.md`](architecture.md#migrations)), so schema migrations apply automatically, no manual migration step needed on upgrade, either way.
+The published-image workflow requires access to the project's container
+registry. If it requires authentication, log in with a token that can read
+packages before running `pull`:
 
-## AI agents
+```bash
+echo "$GHCR_TOKEN" | docker login ghcr.io -u <github-username> --password-stdin
+```
 
-Optional, off by default (`AGENTS_ENABLED=false`). Runs in-process in
-`api`, not a separate service - no extra image to pull. The `agents`
-Compose profile only starts a local Ollama container, if you want to run
-models on your own hardware instead of an API key or subscription. See
-[`ai-agents.md`](ai-agents.md) for provider setup, including the caveat
-that subscription (Claude Pro/Max, ChatGPT Plus/Pro) linking is
-unsanctioned and can break without notice.
+See the [release workflow](../.github/workflows/release.yml) for the image
+source.
+
+## Reverse proxy and TLS
+
+The bundled `web` service provides HTTP only. For access beyond a trusted
+local network, put an existing Caddy, Traefik, or nginx proxy in front of the
+published web port and terminate TLS there.
+
+## Optional AI providers
+
+AI agents are disabled by default. They run in the API container; the
+`agents` Compose profile only starts the optional Ollama container. See
+[`ai-agents.md`](ai-agents.md) for provider settings and security caveats.

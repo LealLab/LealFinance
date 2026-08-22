@@ -11,71 +11,59 @@
 </p>
 
 <p align="center">
-  A self-hosted personal finance platform built with homelabs in mind.
-  It includes a Docker Compose stack, an English-first UI with Portuguese
-  support, and multi-currency money handling.
+  A self-hosted personal finance platform for homelabs and local development.
 </p>
 
-## What it includes
+## Features
 
-- A FastAPI backend backed by PostgreSQL, Redis, Celery, and Alembic.
-- An Angular frontend served by nginx in the containerized stack.
-- Invite-only registration with a one-time first-admin bootstrap command.
-- HTTP-backed frontend repositories with snake_case-to-camelCase mapping; the
-  in-memory repositories remain available as test doubles.
-- Exact decimal money storage and JSON-string serialization for monetary values.
-- Optional AI provider integration (API keys, Claude/Codex subscription linking,
-  or local Ollama) - off by default, see [`docs/ai-agents.md`](docs/ai-agents.md).
+- Docker Compose deployment.
+- Invite-only accounts with a first-admin bootstrap.
+- Multi-currency support.
+- AI providers and local Ollama support.
 
-## Quick Start
+## Run it locally
 
-1. Install [Docker](https://www.docker.com).
+Install [Docker](https://www.docker.com/) with the Compose plugin, then:
 
-2. Clone the repository
+```bash
+git clone https://github.com/LealLab/LealFinance.git
+cd LealFinance
+cp .env.example .env
+```
 
-    ```bash
-    git clone https://github.com/LealLab/LealFinance.git && cd LealFinance
-    ```
+Edit `.env` and replace at least `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
+Then start the homelab-style stack:
 
-3. Copy the .env.example to .env
+```bash
+docker compose -f docker-compose.yml up -d --build
+docker compose -f docker-compose.yml ps
+```
 
-    ```bash
-    cp .env.example .env
-    ```
+Open `http://localhost:8081` (or the value of `WEB_PORT`). The first account
+created on an empty instance becomes the administrator.
 
-    > Make sure to change `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
-
-4. Build and start the homelab stack
-
-    ```bash
-    docker compose -f docker-compose.yml up -d --build
-    docker compose -f docker-compose.yml ps
-    ```
-
-    > Wait until api, web, postgres, and redis are healthy.
-
-5. Open <http://localhost:8081> and register. The first account created
-   becomes the administrator; the copied `.env.example` sets `WEB_PORT=8081`,
-   use the value in `.env` if you changed it.
-
-> `docker compose up` automatically merges `docker-compose.override.yml`, which
-> is intended for development and exposes Postgres/Redis on the host. Use the
-> explicit base file above for a homelab deployment.
+The explicit `-f docker-compose.yml` keeps the development override from
+publishing database ports. For native development, see
+[`docs/development.md`](docs/development.md).
 
 ## Documentation
 
-- [`docs/architecture.md`](docs/architecture.md) - services, data flow, project layout
-- [`docs/backend-api.md`](docs/backend-api.md) - endpoints, ownership, error codes, bootstrap
-- [`docs/development.md`](docs/development.md) - local dev workflow
-- [`docs/homelab-deploy.md`](docs/homelab-deploy.md) - self-hosting notes, backups
-- [`docs/ai-agents.md`](docs/ai-agents.md) - AI provider setup (API keys, subscriptions, Ollama)
+- [`docs/homelab-deploy.md`](docs/homelab-deploy.md) - deploy, update, back up, and expose the app safely
+- [`docs/development.md`](docs/development.md) - local development and validation
+- [`docs/architecture.md`](docs/architecture.md) - services and project layout
+- [`docs/backend-api.md`](docs/backend-api.md) - API endpoints and contracts
+- [`docs/ai-agents.md`](docs/ai-agents.md) - optional AI provider setup
 - [`docs/i18n.md`](docs/i18n.md) - translation workflow
-- [`docs/money-and-currency.md`](docs/money-and-currency.md) - monetary data rules
+- [`docs/money-and-currency.md`](docs/money-and-currency.md) - money and exchange-rate rules
 
 ## Project policies
 
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) - development checks and contribution flow
-- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) - community expectations
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) - contribution workflow and checks
 - [`SECURITY.md`](SECURITY.md) - vulnerability reporting
 - [`SUPPORT.md`](SUPPORT.md) - questions, bugs, and feature requests
-- [`LICENSE`](LICENSE) - GNU Affero General Public License, version 3 only
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) - community expectations
+
+## LICENSE
+
+GNU Affero General Public License, version 3.
+See [`LICENSE`](LICENSE) for more details

@@ -4,7 +4,7 @@
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 #
-# See docs/homelab-deploy.md#deploy-from-published-images. Images are only
+# See docs/homelab-deploy.md#updates. Images are only
 # published via the manual "Release" workflow (.github/workflows/release.yml)
 # - there is no image for a commit that hasn't been released.
 
