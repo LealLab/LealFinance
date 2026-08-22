@@ -1,5 +1,6 @@
 Alembic migrations for the LealFinance backend live in this directory.
 
-Run migration commands from the repository root with the Taskfile commands
-documented in [`docs/development.md`](../../docs/development.md), especially
-`task backend:migrate` and `task backend:migration -- "message"`.
+Run migration commands from the repository root. See
+[`docs/development.md`](../../docs/development.md#migrations) for the workflow,
+including `task backend:migrate` and
+`task backend:migration -- "message"`.

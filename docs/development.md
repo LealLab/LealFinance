@@ -1,77 +1,106 @@
 # Development
 
-## Prerequisites
+LealFinance has a Docker Compose stack and native development commands. Use
+Docker for PostgreSQL and Redis, then run the API and frontend on the host for
+the fastest edit-and-reload cycle.
 
-- [uv](https://docs.astral.sh/uv/) with Python 3.13 (the backend requires
-  `>=3.13,<3.14`; do not use Python 3.14)
-- [pnpm](https://pnpm.io/) 11.22.0 + Node 24
-- Docker + Docker Compose (for Postgres/Redis locally, or the full stack)
+## Requirements
 
-All commands below assume a task runner (`Taskfile.yml` - install from <https://taskfile.dev>, or run the underlying `uv`/`pnpm`/`docker compose` commands directly, shown in parentheses).
+- Python 3.13 and [uv](https://docs.astral.sh/uv/)
+- Node 24 and pnpm 11.22.0
+- Docker with the Compose plugin
+- [Task](https://taskfile.dev/) for the repository shortcuts
 
-## Fastest path: infra in Docker, app on the host
-
-This is the primary dev workflow - fastest iteration loop, since the backend/frontend run natively rather than through a container build.
-
-```bash
-cp .env.example .env
-docker compose up -d postgres redis   # (or: task up, then stop api/worker/beat/web)
-
-task backend:sync                     # uv sync
-task backend:migrate                  # uv run alembic upgrade head
-task backend:dev                      # uv run python -m app.dev
-
-task frontend:install                 # pnpm install
-task frontend:dev                     # pnpm start (ng serve)
-```
-
-The frontend dev server does not proxy API requests by default. Point it at the
-API directly, or use the full Docker stack below if you want the nginx-proxied
-setup exactly as it runs in production.
-
-## Full stack via Docker Compose
+Run commands from the repository root. Copy the example environment file once:
 
 ```bash
 cp .env.example .env
-docker compose up -d --build           # (or: task up)
 ```
 
-`docker-compose.override.yml` is applied automatically (no flag needed) and adds
-hot-reload for the API (`--reload`, source bind-mounted) plus exposes
-`postgres`/`redis` on the host. The web UI is at `http://localhost:${WEB_PORT}`;
-the copied `.env.example` uses `8081`, while Compose falls back to `8080` when
-`WEB_PORT` is unset.
+The values `POSTGRES_HOST_PORT` and `REDIS_HOST_PORT` control host access to
+the development containers. Taskfile backend commands use those ports
+automatically; no URL overrides are needed for the normal workflow.
 
-If port 8080 or 5432 is already taken on your machine (e.g. by another Compose project), override `WEB_PORT` / `POSTGRES_HOST_PORT` / `REDIS_HOST_PORT` in `.env` - see the comments there.
+## Native development
+
+Start the infrastructure:
 
 ```bash
-docker compose ps                      # all services should show (healthy)
-docker compose logs -f api             # (or: task logs)
-docker compose down                    # stop
-docker compose down -v                 # stop + wipe data (fresh start)
+docker compose up -d postgres redis
 ```
+
+In one terminal, install and start the backend:
+
+```bash
+task backend:sync
+task backend:migrate
+task backend:dev
+```
+
+The API listens on `http://127.0.0.1:8000`.
+
+In another terminal, install and start the frontend:
+
+```bash
+task frontend:install
+task frontend:dev
+```
+
+The frontend listens on `http://localhost:4200` and proxies `/api` to the
+local API. The proxy target is `frontend/proxy.conf.json`; change it only when
+the API runs somewhere else.
+
+For raw `uv` commands outside the Taskfile, use host addresses rather than
+Compose service names:
+
+```dotenv
+DATABASE_URL=postgresql+psycopg://lealfinance:change-me@localhost:55433/lealfinance
+REDIS_URL=redis://localhost:6379/0
+```
+
+Change the ports if they conflict with another service on the machine.
+
+## Full stack in Docker
+
+To run the same containerized shape used for integration checks:
+
+```bash
+docker compose up -d --build
+docker compose ps
+docker compose logs -f api
+```
+
+The development override is loaded automatically. It enables API reload and
+publishes PostgreSQL and Redis for host tools. The web UI is at
+`http://localhost:${WEB_PORT}`; the example file uses `8081`.
+
+Stop the stack with:
+
+```bash
+docker compose down
+```
+
+Use `docker compose down -v` only when you intentionally want a fresh database.
 
 ## Common tasks
 
 | What | Command |
 | --- | --- |
-| Backend lint + format check | `task backend:lint` |
+| Backend lint and format check | `task backend:lint` |
 | Backend type check | `task backend:typecheck` |
 | Backend tests | `task backend:test` |
 | New migration | `task backend:migration -- "add accounts table"` |
-| Seed local demo data | `task backend:seed` |
+| Seed demo data | `task backend:seed` |
 | Frontend lint | `task frontend:lint` |
 | Frontend tests | `task frontend:test` |
-| Frontend build | `task frontend:build` |
-| Check for missing/orphaned i18n keys | `task i18n:validate` |
+| Frontend production build | `task frontend:build` |
+| Translation validation | `task i18n:validate` |
 | Dependency security audit | `task security:audit` |
 
 ## Browser smoke test
 
-The frontend includes a Playwright smoke test that covers registration or
-login, account and category creation, and adding a transaction. Start the
-backend and frontend with the native workflow above, or start the full Docker
-Compose stack, then install Chromium once and run it from `frontend`:
+The Playwright smoke test covers registration or login, account and category
+creation, and adding a transaction. Run it against a disposable instance:
 
 ```bash
 cd frontend
@@ -80,80 +109,47 @@ pnpm exec playwright install chromium
 pnpm run e2e
 ```
 
-The script defaults to `http://127.0.0.1:4200` and uses that same host's
-`/api/v1` path. Override the URLs when testing another instance:
+By default it uses the native frontend at `http://127.0.0.1:4200` and its
+proxied API. For the full Docker stack, use the published web port instead:
 
 ```bash
 E2E_BASE_URL=http://127.0.0.1:8081 pnpm run e2e
-E2E_API_URL=http://127.0.0.1:8000/api/v1 pnpm run e2e
 ```
 
-`E2E_EMAIL` and `E2E_PASSWORD` select the credentials for an instance that
-already has a user. On an empty instance the script creates the first admin
-with a generated email and its built-in smoke-test password. The test leaves
-the created data behind, so run it only against a disposable development or
-test instance, never a shared or production database.
+Set `E2E_EMAIL` and `E2E_PASSWORD` when the instance already has a user. An
+empty instance gets a generated smoke-test admin. The test leaves data behind,
+so never run it against a shared or production database.
 
-## Running backend tests
+## Backend tests
 
-Tests need a real Postgres reachable (no SQLite fallback - see
-`backend/tests/conftest.py`, which builds the schema once per test session
-directly from the ORM metadata, then isolates each test in a transaction that's
-rolled back at teardown). `docker compose up -d postgres redis` is enough.
+Backend tests require real PostgreSQL and Redis. They build the test schema
+from the ORM metadata and roll back test data after each test; there is no
+SQLite fallback. The test command also enforces the 80% coverage threshold.
 
-`.env`'s `POSTGRES_HOST=postgres`/`REDIS_HOST=redis` values resolve inside the
-Compose network. Anything run natively on the host (`task backend:migrate`,
-`backend:test`, `backend:dev`) must use host endpoints instead. After
-starting `postgres` and `redis`, set these values in `.env` (or in the shell
-environment), adjusting ports if you changed the host mappings:
+Do not run `task backend:migrate` and `task backend:test` against the same
+database without a reset between them. Migrations leave committed seed data,
+while the test fixture creates its own schema.
 
-```dotenv
-DATABASE_URL=postgresql+psycopg://lealfinance:change-me@localhost:55433/lealfinance
-REDIS_URL=redis://localhost:6379/0
-```
+## First admin and demo data
 
-Don't run `task backend:migrate` and `task backend:test` back-to-back against the same database without a reset in between: migrations leave committed data behind (the seeded currencies, any account you registered), while `backend:test` builds and seeds its own schema from ORM metadata on top of whatever's already there - the two collide (e.g. a duplicate-key error re-inserting BRL). `backend:test`'s teardown always leaves the database empty afterward, so tests will pass again immediately if you just rerun them; if you want to poke around manually with `backend:migrate`/`backend:dev`, do that *after* your last test run, not interleaved with it.
+On an empty database, register through the frontend without an invitation. The
+first account becomes the administrator. Later users must be invited by an
+administrator; invitations are delivered manually because there is no email
+provider in v1. See [`backend-api.md`](backend-api.md) for the full flow.
 
-`task backend:test` also enforces a minimum coverage of 80% (`--cov-fail-under=80` in `pyproject.toml`) and writes `coverage.json`, read by CI to update the coverage badge. `[tool.coverage.run]` sets `concurrency = ["greenlet"]` - without it, coverage.py's tracer loses line tracking after every `await db.execute(...)`/`await db.commit()` (SQLAlchemy's async engine suspends through a greenlet), undercounting real coverage by ~20 points.
-
-## Bootstrapping the first admin
-
-Registration is invite-only, with one exception: while the instance has no
-users at all, `POST /api/v1/auth/register` accepts a request with no
-invitation token and creates that user as the administrator. In practice,
-just open the frontend and register - the first account created becomes the
-admin.
-
-Once an admin exists, they issue invitations (`POST /api/v1/auth/invitations`)
-for everyone else; the response includes the raw invitation token exactly
-once, for out-of-band delivery (there's no email provider in v1). See
-[`docs/backend-api.md`](backend-api.md) for the full auth flow, endpoint
-list, and error codes.
-
-## Seeding local demo data
-
-`task backend:seed` applies pending migrations first, then builds one plausible
-dev user - institutions, accounts, categories, a year of transactions,
-budgets, a recurring rule history, and a goal - so you have something to look
-at without hand-creating it through the UI. It's interactive by default,
-prompting for each value (date range, transaction volume, currencies, RNG seed)
-with a sensible default shown, so pressing Enter through every prompt is
-enough. Pass `-y` to the direct script command to accept every default without
-prompting:
+To create local demo data:
 
 ```bash
-task backend:seed                              # (or: uv run python -m scripts.seed)
-uv run python -m scripts.seed -y                # non-interactive, all defaults
+task backend:seed
 ```
 
-Re-running it wipes and rebuilds the same email's data (FK CASCADE removes
-everything that user owns), and is deterministic for a given RNG seed - the
-same answers always produce the same database. The script prints the login
-email/password when it finishes.
+The task applies migrations and prompts for sensible defaults. The underlying
+script also supports `uv run python -m scripts.seed -y` for non-interactive
+setup. It recreates the demo user's data when run again.
 
 ## Migrations
 
-Every migration should round-trip cleanly:
+Migration changes must round-trip cleanly:
 
 ```bash
 uv run alembic upgrade head
@@ -161,8 +157,11 @@ uv run alembic downgrade base
 uv run alembic upgrade head
 ```
 
-CI enforces this on every push (see [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
+CI runs this check. The API container applies pending migrations automatically
+at startup; native development uses `task backend:migrate`.
 
-## Money and i18n
+## Money and translations
 
-Before touching anything that handles currency or adds user-facing text, read [`money-and-currency.md`](money-and-currency.md) and [`i18n.md`](i18n.md), both describe rules that are easy to violate by accident (hardcoded decimal places, hardcoded English strings, amounts serialized as JSON numbers) and hard to unwind later.
+Read [`money-and-currency.md`](money-and-currency.md) before changing money or
+exchange-rate behavior. Read [`i18n.md`](i18n.md) before adding user-facing
+text. Both documents describe rules enforced by tests and CI.

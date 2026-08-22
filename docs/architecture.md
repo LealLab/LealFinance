@@ -2,151 +2,90 @@
 
 ## Services
 
-| Service | What it does |
+| Service | Responsibility |
 | --- | --- |
-| `postgres` | Primary datastore. |
-| `redis` | Celery broker + result backend. |
-| `api` | FastAPI app. Runs Alembic migrations on startup (see below). |
-| `worker` | Celery worker for background tasks: daily recurring-rule posting (`app/services/recurring_posting.py`) is live; the scheduled exchange-rate refresh (`app/workers/tasks/rates.py`) is still disabled. |
-| `beat` | Celery beat - schedules periodic tasks for `worker` to pick up. |
-| `web` | nginx serving the built Angular SPA and proxying `/api/` to `api`. |
-| `ollama` | Optional, behind the `agents` Compose profile - a local model runner for the AI agents feature. The feature itself runs in-process in `api`; see [`ai-agents.md`](ai-agents.md). |
+| `postgres` | Primary data store. |
+| `redis` | Celery broker and result backend. |
+| `api` | FastAPI application and database migrations. |
+| `worker` | Background jobs, including recurring-rule posting. |
+| `beat` | Schedules periodic jobs for `worker`. |
+| `web` | Serves the Angular app and proxies `/api/` to `api`. |
+| `ollama` | Optional local model runner behind the `agents` profile. |
 
-`api`, `worker`, and `beat` all build from the same backend image
-(`backend/Dockerfile`) with different `command`s. They share one codebase, so
-there's no drift between what the API validates and what a background task
-assumes.
+`api`, `worker`, and `beat` use the same backend image with different commands.
+The AI feature runs inside `api`; `ollama` is only the optional local provider.
 
 ## Request flow
 
-```txt
-Browser → web (nginx, :8080) ─┬─> static files (Angular SPA)
-                               └─> /api/* → api (FastAPI, :8000) → postgres / redis
+```text
+Browser -> web (:8080) -> static Angular files
+                      -> /api/* -> api (:8000) -> postgres / redis
 ```
 
-When the base file is used for a homelab deployment
-(`docker compose -f docker-compose.yml`), only `web`'s port is published to the
-host; `api`, `postgres`, and `redis` are reachable only on the internal Compose
-network. Plain `docker compose` also loads `docker-compose.override.yml`, which
-is development-oriented and exposes `postgres`/`redis` on the host for local
-`psql`/`redis-cli` access.
+The homelab Compose file publishes only `web`. The development override also
+publishes PostgreSQL and Redis so native tools can reach them through the host
+ports in `.env`.
 
 ## Migrations
 
-Only `api` runs `alembic upgrade head` on startup (`RUN_MIGRATIONS=true`, set
-only on that service - see `backend/docker-entrypoint.sh`). `worker` and `beat`
-wait on `api`'s healthcheck (`depends_on: condition: service_healthy`) rather
-than each running migrations themselves, which would race against each other
-on a fresh install.
+Only `api` runs `alembic upgrade head` on startup. `worker` and `beat` wait for
+the API health check instead of racing to run migrations themselves. Native
+development uses `task backend:migrate`; see
+[`development.md`](development.md#migrations).
 
 ## Backend layout
 
 ```text
 backend/app/
-├── main.py                 # FastAPI app factory
-├── dev.py                  # local dev-server entrypoint (task backend:dev) - see "Windows dev server" below
-├── core/                   # config, db engines (async + sync), logging, errors, security, cookies, crypto
-├── agents/                 # AI provider integration - credential resolution, OAuth, chat calls;
-│                            # see docs/ai-agents.md. Gated by AGENTS_ENABLED, not a separate service.
-├── api/
-│   ├── deps.py              # DbSession, CurrentUser, AdminUser, CurrentSession
-│   └── v1/                  # one router module per resource - see docs/backend-api.md
-├── models/                 # SQLAlchemy models; types.py holds MoneyAmount/CurrencyCode/
-│                            # ExchangeRateValue/PercentageValue; base.py's UserOwnedModel is
-│                            # what every user-owned table subclasses
-├── schemas/                # Pydantic DTOs (snake_case wire format, Decimals as strings)
-├── services/                # business logic - one module per domain, plus ownership.py
-│                            # (the single query-scoping helper every domain service uses)
-└── workers/                 # Celery app + tasks
+├── main.py                 # FastAPI app
+├── dev.py                  # native dev entrypoint
+├── core/                   # config, database, errors, security, crypto
+├── api/                    # dependencies and HTTP routers
+├── agents/                 # optional AI provider integration
+├── models/                 # SQLAlchemy models and reusable money types
+├── schemas/                # Pydantic request/response models
+├── services/               # domain logic and ownership scoping
+└── workers/                # Celery app and tasks
 ```
 
-`app/core/db.py` (async engine, used by FastAPI) and `app/core/db_sync.py`
-(sync engine, the seam `app/workers/tasks/rates.py` is meant to use once
-it's implemented) are separate on purpose - Celery's worker model isn't
-async-native, and sharing FastAPI's pooled async engine across the two
-would be fragile. `app/workers/tasks/recurring.py` takes a third option:
-it opens its own short-lived async engine per run (`NullPool`, torn down
-after) so `post_all_due_occurrences` can reuse the same async services
-`transactions.py` and `conversion.py` use, rather than duplicating them
-as sync code.
+`app/core/db.py` provides the async FastAPI engine. Workers use their own
+connection strategy so the worker process does not share the API's async pool.
 
-### Windows dev server
-
-`task backend:dev` runs `app/dev.py`, not the `uvicorn` CLI directly. On native
-Windows, `uvicorn app.main:app` creates its event loop (Proactor, the asyncio
-default) *before* importing the ASGI app string, so a Windows-selector-loop
-patch inside `app/main.py` itself would run too late for psycopg's async
-driver. `app/dev.py` sets the loop policy first, then calls `uvicorn.run()`
-in-process, so the ordering is correct. This only matters for the native
-host-run dev server; Docker/production run plain Linux containers, where
-there's no Proactor/Selector distinction at all.
+On native Windows, use `task backend:dev`. Its entrypoint sets the required
+asyncio policy before starting Uvicorn. Docker runs the standard Linux
+container command.
 
 ## Identity and ownership
 
-Every table except `currencies`, `exchange_rates` (the provider rate cache),
-and the identity tables themselves (`users`, `sessions`, `invitations`)
-belongs to exactly one user. `app/models/base.py`'s `UserOwnedModel` declares
-the `user_id` foreign key once, for every subclass, rather than repeating it
-per model; `app/services/ownership.py` is the one place a `user_id` filter is
-applied to a query (`get_owned`/`list_owned`/`get_many_owned`), and every
-domain service goes through it. A cross-user id resolves to `404`, never
-`403` - a `403` would confirm the id exists at all, which is an enumeration
-oracle across other users' data.
+User-owned records carry one `user_id`. The shared `UserOwnedModel` and
+`app/services/ownership.py` keep ownership filters consistent across services.
+An id belonging to another user returns the same resource-specific `404` as an
+unknown id, avoiding a cross-user enumeration signal.
 
-Registration is invite-only (see `docs/backend-api.md` for the full flow),
-except the very first user on an instance: while the `users` table is empty,
-registering with no invitation token creates that user as the administrator.
-Only an existing admin can invite anyone after that. Sessions are opaque HttpOnly
-cookies (not JWTs); a per-session double-submit CSRF token is folded into the
-same `CurrentUser` dependency that resolves the session, so no route can
-forget to check it.
+Registration is invite-only after the first user. The first registration on an
+empty database creates the administrator; admins then create one-time
+invitations. Sessions use opaque cookies and a CSRF token, not JWTs.
 
 ## Frontend layout
 
 ```text
 frontend/src/app/
-├── core/                     # HTTP client, auth/session, preferences, Transloco setup
-├── data/                     # repository contracts plus HTTP and in-memory adapters
-├── domain/                   # models and pure money, balance, budget, and report calculations
-├── features/                 # route-level feature modules
-│   ├── auth/ admin/ settings/
-│   ├── dashboard/ accounts/ transactions/
-│   └── categories/ budgets/ goals/ reports/ exchange/
-├── layout/                   # app shell - nav + language switcher
-└── shared/                   # reusable pipes, charts, forms, and UI components
+├── core/         # HTTP client, auth, preferences, and Transloco
+├── data/         # repository contracts and adapters
+├── domain/       # models and pure calculations
+├── features/     # route-level features
+├── layout/       # navigation and language switching
+└── shared/       # reusable UI, forms, pipes, and charts
 ```
 
-Angular 22, zoneless, standalone components, signals.
-See [`i18n.md`](i18n.md) for the Transloco setup and [`money-and-currency.md`](money-and-currency.md) for `MoneyPipe`.
+The application uses HTTP-backed repositories. In-memory repositories remain
+available as test doubles. The frontend maps camelCase domain models to the
+backend's snake_case wire format.
 
-## Frontend integration status
+Recurring rules are posted by the daily Celery task as real transactions. The
+frontend's recurrence calculation only projects upcoming occurrences for
+display; it is not the posting mechanism.
 
-The application uses HTTP-backed repositories in
-`frontend/src/app/app.config.ts`. The HTTP layer maps the frontend's camelCase
-domain models to the backend's snake_case wire format. In-memory mock
-repositories remain available as test doubles and are not the providers used by
-the application configuration.
-
-The backend domain schema and API are documented in
-[`backend-api.md`](backend-api.md).
-
-Recurring rules post for real: a daily Celery beat task
-(`app/services/recurring_posting.py`) turns each rule's due occurrences
-into Transactions, which do affect balances, budgets, and reports like any
-other transaction. `domain/calc/recurrence.ts` still computes *upcoming*
-occurrences client-side for display, but that projection is separate from
-posting - see the "Recurring rules" section of
-[`backend-api.md`](backend-api.md#recurring-rules).
-
-The AI agents feature (`AGENTS_ENABLED`, gated end-to-end) covers provider
-linking and a smoke-test chat call; agent tools over financial data are
-not built yet. See [`ai-agents.md`](ai-agents.md).
-
-`/transactions/import` (`features/transactions/import/`) lets a user turn a
-bank-statement CSV into transactions: pick a file and account, map columns,
-review/edit every parsed row in a grid, then commit only the rows marked
-reviewed. All parsing (delimiter/BOM handling, date/amount formats, category
-name matching, duplicate detection) happens server-side - see the
-[Transaction import](backend-api.md#transaction-import) section of
-`backend-api.md` - the frontend only holds the CSV text and the grid's edit
-state.
+See [`backend-api.md`](backend-api.md), [`money-and-currency.md`](money-and-currency.md),
+[`i18n.md`](i18n.md), and [`ai-agents.md`](ai-agents.md) for the detailed
+contracts behind each area.

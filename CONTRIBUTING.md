@@ -7,15 +7,15 @@ existing architecture, and include validation evidence with every pull request.
 
 - Python 3.13 and [uv](https://docs.astral.sh/uv/)
 - Node 24 and pnpm 11.22.0
-- Docker and Docker Compose
-- [Task](https://taskfile.dev/) for the repository shortcuts
+- Docker with the Compose plugin
+- [Task](https://taskfile.dev/) for repository shortcuts
 
-See [`docs/development.md`](docs/development.md) for the complete local setup,
-including the Postgres and Redis configuration required by backend tests.
+Follow [`docs/development.md`](docs/development.md) for local setup and the
+database requirements used by backend tests.
 
-## Development checks
+## Checks
 
-Run the checks relevant to your change before opening a pull request:
+Run the checks relevant to your change:
 
 | Area | Command |
 | --- | --- |
@@ -28,9 +28,9 @@ Run the checks relevant to your change before opening a pull request:
 | Translation keys | `task i18n:validate` |
 | Dependency security audit | `task security:audit` |
 
-If you change migrations, run the upgrade/downgrade round trip described in
-[`docs/development.md`](docs/development.md). If you add user-facing text,
-update both supported translation files and run the translation-key check.
+Migration changes must pass the round-trip in
+[`docs/development.md`](docs/development.md#migrations). User-facing text must
+use Transloco and pass `task i18n:validate`.
 
 ## Pull requests
 
@@ -38,8 +38,8 @@ update both supported translation files and run the translation-key check.
 2. Make the smallest change that fully addresses the issue.
 3. Update documentation when commands, behavior, or public interfaces change.
 4. Run the relevant checks and record them in the pull request description.
-5. Include screenshots for user-interface changes when they clarify the result.
+5. Include screenshots for user-interface changes when useful.
 
-Do not include credentials, tokens, private data, or environment-specific
-secrets in commits, issues, or pull requests. Do not report security
-vulnerabilities through public issues; follow [`SECURITY.md`](SECURITY.md).
+Never include credentials, tokens, private data, or environment-specific
+secrets in commits, issues, or pull requests. Report vulnerabilities through
+[`SECURITY.md`](SECURITY.md), not public issues.

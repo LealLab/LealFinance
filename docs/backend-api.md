@@ -1,9 +1,9 @@
 # Backend API
 
-Endpoints, ownership rules, error codes, and the bootstrap procedure for the
-FastAPI backend. See [`architecture.md`](architecture.md) for service
-topology and [`money-and-currency.md`](money-and-currency.md) for the
-monetary/conversion rules referenced below.
+This is the canonical reference for endpoints, ownership rules, error codes,
+and first-admin bootstrap. See [`architecture.md`](architecture.md) for
+service topology and [`money-and-currency.md`](money-and-currency.md) for
+money and conversion rules.
 
 ## Conventions
 
