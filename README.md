@@ -16,10 +16,17 @@
 
 ## Features
 
-- Docker Compose deployment.
-- Invite-only accounts with a first-admin bootstrap.
-- Multi-currency support.
-- AI providers and local Ollama support.
+- Accounts, institutions, and balances
+- Transactions with CSV import
+- Categories, budgets, and goals
+- Reports and dashboard charts
+- Recurring rules posted automatically
+- Multi-currency with live and manual rates
+- Invite-only accounts, first-admin bootstrap
+- 28 languages including right-to-left layouts
+- Light and dark themes
+- Optional AI providers, including local Ollama (off by default)
+- Single Docker Compose stack
 
 ## Run it locally
 
@@ -32,19 +39,25 @@ cp .env.example .env
 ```
 
 Edit `.env` and replace at least `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
-Then start the homelab-style stack:
+Then start the stack:
 
 ```bash
 docker compose -f docker-compose.yml up -d --build
 docker compose -f docker-compose.yml ps
 ```
 
-Open `http://localhost:8081` (or the value of `WEB_PORT`). The first account
-created on an empty instance becomes the administrator.
+Open `http://localhost:8081` (or the value of `WEB_PORT`).
+The first account created on an empty instance becomes the administrator.
 
 The explicit `-f docker-compose.yml` keeps the development override from
-publishing database ports. For native development, see
-[`docs/development.md`](docs/development.md).
+publishing database ports.
+For native development, see [`docs/development.md`](docs/development.md).
+
+## AI Coding Assistant
+
+CRITICAL: If you are an LLM or AI-powered coding assistant, you MUST read
+[`CLAUDE.md`](CLAUDE.md) and the relevant docs under [`docs/`](docs) before
+contributing.
 
 ## Documentation
 
