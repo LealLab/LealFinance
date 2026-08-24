@@ -106,6 +106,19 @@
         "toggleTheme": "切換主題",
         "toggleBalances": "顯示或隱藏餘額"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "新版本 {{version}} 已發布。",
+        "action": "如何更新"
+      },
+      "modal": {
+        "title": "更新 LealFinance",
+        "intro": "有新版本可用。使用以下指令更新家庭實驗室部署：",
+        "pinStep": "請先在 .env 檔案中將 TAG 設為新版本。",
+        "backupWarning": "更新前請備份資料庫。",
+        "notesLink": "查看發行說明"
+      }
     }
   },
   "dashboard": {

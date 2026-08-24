@@ -106,6 +106,19 @@
         "toggleTheme": "Alternar tema",
         "toggleBalances": "Ocultar ou mostrar saldos"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Uma nova versão, {{version}}, está disponível.",
+        "action": "Como atualizar"
+      },
+      "modal": {
+        "title": "Atualizar o LealFinance",
+        "intro": "Uma versão mais recente está disponível. Atualize uma instalação homelab com:",
+        "pinStep": "Defina TAG para a nova versão no seu arquivo .env primeiro.",
+        "backupWarning": "Faça backup do seu banco de dados antes de atualizar.",
+        "notesLink": "Ver notas da versão"
+      }
     }
   },
   "dashboard": {

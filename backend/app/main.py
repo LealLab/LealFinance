@@ -39,7 +39,7 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
 def create_app() -> FastAPI:
     app = FastAPI(
         title="LealFinance API",
-        version="0.1.0",
+        version=settings.app_version,
         lifespan=lifespan,
     )
 

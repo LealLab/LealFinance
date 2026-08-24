@@ -41,8 +41,10 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
     # this, celery beat can't create its schedule file in the cwd.
     && chown app:app /app
 
+ARG APP_VERSION=dev
 ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    APP_VERSION=${APP_VERSION}
 
 USER app
 

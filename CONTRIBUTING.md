@@ -43,3 +43,21 @@ use Transloco and pass `task i18n:validate`.
 Never include credentials, tokens, private data, or environment-specific
 secrets in commits, issues, or pull requests. Report vulnerabilities through
 [`SECURITY.md`](SECURITY.md), not public issues.
+
+## Releases
+
+Cut a release from a green `main`. There is no dedicated release branch.
+
+Tag and push:
+
+```bash
+git tag -a v1.2.3 -m "v1.2.3"
+git push origin v1.2.3
+```
+
+Follow semver.
+
+The tag push triggers [`.github/workflows/release.yml`](.github/workflows/release.yml),
+which builds and publishes both GHCR images (`lealfinance-api`,
+`lealfinance-web`) tagged with the version and `latest`, and creates the
+matching GitHub Release with auto-generated notes. One push does both.

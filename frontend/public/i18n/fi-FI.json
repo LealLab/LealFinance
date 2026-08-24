@@ -106,6 +106,19 @@
         "toggleTheme": "Vaihda teemaa",
         "toggleBalances": "Näytä tai piilota saldot"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Uusi versio, {{version}}, on saatavilla.",
+        "action": "Kuinka päivittää"
+      },
+      "modal": {
+        "title": "Päivitä LealFinance",
+        "intro": "Uudempi versio on saatavilla. Päivitä homelab-käyttöönotto komennoilla:",
+        "pinStep": "Aseta ensin TAG uuteen versioon .env-tiedostossasi.",
+        "backupWarning": "Varmuuskopioi tietokantasi ennen päivitystä.",
+        "notesLink": "Näytä julkaisutiedot"
+      }
     }
   },
   "dashboard": {

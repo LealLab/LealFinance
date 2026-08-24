@@ -1,0 +1,5 @@
+// Utility classes in update-banner.html cover all styling; this file only
+// exists to satisfy the sibling styleUrl convention (see sidebar.scss).
+:host {
+  display: block;
+}

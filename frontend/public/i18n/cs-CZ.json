@@ -106,6 +106,19 @@
         "toggleTheme": "Přepnout motiv",
         "toggleBalances": "Zobrazit nebo skrýt zůstatky"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Je k dispozici nová verze {{version}}.",
+        "action": "Jak aktualizovat"
+      },
+      "modal": {
+        "title": "Aktualizovat LealFinance",
+        "intro": "Je k dispozici novější verze. Aktualizujte nasazení homelab pomocí:",
+        "pinStep": "Nejprve nastavte TAG na novou verzi v souboru .env.",
+        "backupWarning": "Před aktualizací zálohujte svou databázi.",
+        "notesLink": "Zobrazit poznámky k verzi"
+      }
     }
   },
   "dashboard": {

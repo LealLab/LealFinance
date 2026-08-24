@@ -106,6 +106,19 @@
         "toggleTheme": "تبديل المظهر",
         "toggleBalances": "إظهار الأرصدة أو إخفاؤها"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "تتوفر نسخة جديدة، {{version}}.",
+        "action": "كيفية التحديث"
+      },
+      "modal": {
+        "title": "تحديث LealFinance",
+        "intro": "تتوفر نسخة أحدث. قم بالتحديث من نشر homelab باستخدام:",
+        "pinStep": "اضبط TAG أولاً على النسخة الجديدة في ملف .env الخاص بك.",
+        "backupWarning": "قم بنسخ قاعدة البيانات احتياطيًا قبل التحديث.",
+        "notesLink": "عرض ملاحظات الإصدار"
+      }
     }
   },
   "dashboard": {

@@ -106,6 +106,19 @@
         "toggleTheme": "Schimbă tema",
         "toggleBalances": "Afișează sau ascunde soldurile"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "O nouă versiune, {{version}}, este disponibilă.",
+        "action": "Cum să actualizezi"
+      },
+      "modal": {
+        "title": "Actualizează LealFinance",
+        "intro": "Este disponibilă o versiune mai nouă. Actualizează o implementare homelab cu:",
+        "pinStep": "Setează mai întâi TAG la noua versiune în fișierul .env.",
+        "backupWarning": "Fă o copie de rezervă a bazei de date înainte de actualizare.",
+        "notesLink": "Vezi notele de lansare"
+      }
     }
   },
   "dashboard": {

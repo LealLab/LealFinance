@@ -106,6 +106,19 @@
         "toggleTheme": "Đổi giao diện",
         "toggleBalances": "Hiện hoặc ẩn số dư"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Phiên bản mới, {{version}}, đã có sẵn.",
+        "action": "Cách cập nhật"
+      },
+      "modal": {
+        "title": "Cập nhật LealFinance",
+        "intro": "Đã có phiên bản mới hơn. Cập nhật triển khai homelab bằng:",
+        "pinStep": "Trước tiên, hãy đặt TAG thành phiên bản mới trong tệp .env của bạn.",
+        "backupWarning": "Sao lưu cơ sở dữ liệu của bạn trước khi cập nhật.",
+        "notesLink": "Xem ghi chú phát hành"
+      }
     }
   },
   "dashboard": {

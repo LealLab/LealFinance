@@ -106,6 +106,19 @@
         "toggleTheme": "テーマを切り替え",
         "toggleBalances": "残高を表示／非表示"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "新しいバージョン {{version}} が利用可能です。",
+        "action": "更新方法"
+      },
+      "modal": {
+        "title": "LealFinance を更新",
+        "intro": "新しいバージョンが利用可能です。ホームラボのデプロイを次のコマンドで更新してください：",
+        "pinStep": "まず .env ファイルの TAG を新しいバージョンに設定してください。",
+        "backupWarning": "更新前にデータベースをバックアップしてください。",
+        "notesLink": "リリースノートを見る"
+      }
     }
   },
   "dashboard": {

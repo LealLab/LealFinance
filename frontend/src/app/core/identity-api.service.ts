@@ -8,6 +8,7 @@ import {
   Invitation,
   Preferences,
   PublicSettings,
+  UpdateStatus,
   User,
   UserRole,
 } from './identity.models';
@@ -57,6 +58,13 @@ interface PublicSettingsWire {
   default_currency: string;
   default_locale: string;
   agents_enabled: boolean;
+}
+
+interface UpdateStatusWire {
+  current_version: string;
+  latest_version: string | null;
+  update_available: boolean;
+  release_url: string | null;
 }
 
 const mapUser = (value: UserWire): User => ({
@@ -196,6 +204,17 @@ export class IdentityApiService {
         defaultCurrency: row.default_currency,
         defaultLocale: row.default_locale,
         agentsEnabled: row.agents_enabled,
+      })),
+    );
+  }
+
+  updateStatus(): Observable<UpdateStatus> {
+    return this.api.get<UpdateStatusWire>('/meta/update-status').pipe(
+      map((row) => ({
+        currentVersion: row.current_version,
+        latestVersion: row.latest_version ?? undefined,
+        updateAvailable: row.update_available,
+        releaseUrl: row.release_url ?? undefined,
       })),
     );
   }

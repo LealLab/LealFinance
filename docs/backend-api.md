@@ -108,6 +108,7 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/meta/currencies` | public | Active currencies only. |
 | GET | `/meta/settings` | public | `default_currency`, `default_locale`, and boolean `agents_enabled`. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |
+| GET | `/meta/update-status` | admin | Current/latest version and whether an update is available; see "Updates" below. |
 | POST | `/auth/invitations` | admin | Body `{email, role}`. Returns the raw token once. |
 | GET | `/auth/invitations` | admin | Never includes the token. |
 | DELETE | `/auth/invitations/{id}` | admin | Revoke. |
@@ -364,6 +365,15 @@ quote_code, as_of)`; `{pair}` is two 3-letter codes joined by `_`
 | `manual_rate.not_found` | 404 |
 | `manual_rate.same_currency` | 422 |
 | `manual_rate.invalid_pair` | 422 |
+
+## Updates
+
+`GET /meta/update-status` compares the running instance's version against the
+latest published release on GitHub. The response is `{current_version,
+latest_version, update_available, release_url}`; `latest_version` and
+`release_url` are `null` when there is no newer release, the check is
+disabled (`UPDATE_CHECK_ENABLED=false`), or the GitHub API call failed. The
+endpoint never surfaces a provider outage to the caller.
 
 ## Budgets and budget planning
 

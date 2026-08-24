@@ -106,6 +106,19 @@
         "toggleTheme": "테마 전환",
         "toggleBalances": "잔액 표시 또는 숨기기"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "새 버전 {{version}}을(를) 사용할 수 있습니다.",
+        "action": "업데이트 방법"
+      },
+      "modal": {
+        "title": "LealFinance 업데이트",
+        "intro": "최신 버전을 사용할 수 있습니다. 다음 명령으로 홈랩 배포를 업데이트하세요:",
+        "pinStep": "먼저 .env 파일에서 TAG를 새 버전으로 설정하세요.",
+        "backupWarning": "업데이트하기 전에 데이터베이스를 백업하세요.",
+        "notesLink": "릴리스 노트 보기"
+      }
     }
   },
   "dashboard": {

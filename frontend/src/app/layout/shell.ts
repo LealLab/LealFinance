@@ -24,6 +24,7 @@ import { Logo } from '../shared/ui/logo/logo';
 import { ThemeToggle } from '../shared/ui/theme-toggle/theme-toggle';
 import { CommandPalette } from './command-palette/command-palette';
 import { Sidebar } from './sidebar';
+import { UpdateBanner } from './update-banner/update-banner';
 
 /**
  * App shell: a persistent sidebar on `md+` screens (icon rail from `md` to
@@ -49,6 +50,7 @@ import { Sidebar } from './sidebar';
     CommandPalette,
     LanguageSelect,
     ThemeToggle,
+    UpdateBanner,
   ],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',

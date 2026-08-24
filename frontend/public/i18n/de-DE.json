@@ -106,6 +106,19 @@
         "toggleTheme": "Design wechseln",
         "toggleBalances": "Kontostände ein- oder ausblenden"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Eine neue Version, {{version}}, ist verfügbar.",
+        "action": "So aktualisieren Sie"
+      },
+      "modal": {
+        "title": "LealFinance aktualisieren",
+        "intro": "Eine neuere Version ist verfügbar. Aktualisieren Sie ein Homelab-Deployment mit:",
+        "pinStep": "Setzen Sie TAG zuerst in Ihrer .env-Datei auf die neue Version.",
+        "backupWarning": "Sichern Sie Ihre Datenbank, bevor Sie aktualisieren.",
+        "notesLink": "Versionshinweise anzeigen"
+      }
     }
   },
   "dashboard": {

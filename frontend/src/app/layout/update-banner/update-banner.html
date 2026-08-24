@@ -1,0 +1,44 @@
+<ng-container *transloco="let t">
+  @if (visible()) {
+    <div
+      class="mb-4 flex items-center justify-between gap-3 rounded-md border border-accent/40 bg-accent/10 p-3 text-sm text-content-primary"
+      role="status"
+    >
+      {{ t('layout.update.banner.message', { version: latestVersion() }) }}
+      <div class="flex shrink-0 items-center gap-3">
+        <button appButton variant="secondary" size="sm" type="button" (click)="openModal()">
+          {{ t('layout.update.banner.action') }}
+        </button>
+        <button type="button" class="font-medium" (click)="dismiss()">
+          {{ t('common.actions.close') }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <app-modal [(open)]="modalOpen" [titleText]="t('layout.update.modal.title')">
+    <p class="text-sm">{{ t('layout.update.modal.intro') }}</p>
+    <p class="mt-2 text-sm text-content-muted">{{ t('layout.update.modal.pinStep') }}</p>
+    <pre
+      class="mt-2 overflow-x-auto rounded-md border border-border bg-surface-sunken p-3 font-mono text-xs"
+    ><code>docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d</code></pre>
+    <p class="mt-3 text-sm text-negative">
+      <a
+        href="https://github.com/LealLab/LealFinance/blob/main/docs/homelab-deploy.md#backups"
+        target="_blank"
+        rel="noopener"
+        class="underline"
+      >
+        {{ t('layout.update.modal.backupWarning') }}
+      </a>
+    </p>
+    @if (releaseUrl(); as url) {
+      <p class="mt-3 text-sm">
+        <a [href]="url" target="_blank" rel="noopener" class="text-accent underline">
+          {{ t('layout.update.modal.notesLink') }}
+        </a>
+      </p>
+    }
+  </app-modal>
+</ng-container>

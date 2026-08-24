@@ -106,6 +106,19 @@
         "toggleTheme": "Temayı değiştir",
         "toggleBalances": "Bakiyeleri göster veya gizle"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Yeni bir sürüm, {{version}}, kullanılabilir.",
+        "action": "Nasıl güncellenir"
+      },
+      "modal": {
+        "title": "LealFinance'i güncelle",
+        "intro": "Daha yeni bir sürüm mevcut. Homelab dağıtımını şununla güncelleyin:",
+        "pinStep": "Önce .env dosyanızda TAG'i yeni sürüme ayarlayın.",
+        "backupWarning": "Güncellemeden önce veritabanınızı yedekleyin.",
+        "notesLink": "Sürüm notlarını görüntüle"
+      }
     }
   },
   "dashboard": {
