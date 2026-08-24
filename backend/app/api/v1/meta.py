@@ -5,11 +5,13 @@ from datetime import date
 from fastapi import APIRouter
 from sqlalchemy import select
 
-from app.api.deps import CurrentUser, DbSession
+from app.api.deps import AdminUser, CurrentUser, DbSession
 from app.core.config import get_settings
 from app.models.currency import Currency
 from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead, PublicSettingsRead
+from app.schemas.update import UpdateStatusRead
 from app.services.exchange_rates import get_exchange_rate
+from app.services.updates import get_update_status
 
 router = APIRouter(prefix="/meta", tags=["meta"])
 settings = get_settings()
@@ -47,3 +49,10 @@ async def get_exchange_rate_quote(
         source=result.source,
         as_of=result.as_of,
     )
+
+
+@router.get("/update-status", response_model=UpdateStatusRead)
+async def get_update_status_endpoint(_admin: AdminUser) -> UpdateStatusRead:
+    """Admin-only check for a newer release - see app/services/updates.py
+    for the GitHub lookup/cache/fallback this wraps."""
+    return await get_update_status()

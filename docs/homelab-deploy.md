@@ -94,20 +94,21 @@ Test restores before relying on them.
 
 ## Updates
 
-When building from source:
+Release tags are `v`-prefixed (`v1.2.3`, ...). Pinning an explicit tag in
+`.env` is preferred over `TAG=latest` for a homelab that wants predictable,
+deliberate updates.
+
+Administrators see an in-app banner when a newer release than the running
+instance is available, with a link to the exact update commands below - there
+is no need to watch the repository for new tags. The check can be disabled
+entirely, including for air-gapped or otherwise offline deployments that
+don't want any outbound network calls, by setting `UPDATE_CHECK_ENABLED=false`
+in `.env`.
+
+Published images, once a release is available:
 
 ```bash
-git pull
-docker compose -f docker-compose.yml up -d --build
-```
-
-The API container applies pending Alembic migrations on startup. Do not delete
-the PostgreSQL volume during an update.
-
-Published images can be used when a release is available:
-
-```bash
-# Add TAG=<release> to .env first.
+# Set TAG=<release>, e.g. TAG=v1.2.3, in .env first.
 docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
@@ -122,6 +123,16 @@ echo "$GHCR_TOKEN" | docker login ghcr.io -u <github-username> --password-stdin
 
 See the [release workflow](../.github/workflows/release.yml) for the image
 source.
+
+When building from source instead:
+
+```bash
+git pull
+docker compose -f docker-compose.yml up -d --build
+```
+
+The API container applies pending Alembic migrations on startup. Do not delete
+the PostgreSQL volume during an update.
 
 ## Reverse proxy and TLS
 

@@ -61,6 +61,14 @@ class Settings(BaseSettings):
     # cross-currency rates fall back to 1:1 - see app/services/exchange_rates.py.
     openexchangerates_app_id: str | None = None
 
+    # --- Update check (optional) ---
+    # Baked into the image by the release workflow; "dev" for source builds,
+    # which never report an available update.
+    app_version: str = "dev"
+    # Anonymous GET to this project's public GitHub releases API. No instance
+    # data leaves the machine; set false for air-gapped installs.
+    update_check_enabled: bool = True
+
     @model_validator(mode="after")
     def reject_production_placeholders(self) -> Self:
         if self.environment != "production":

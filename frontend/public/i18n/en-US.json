@@ -106,6 +106,19 @@
         "toggleTheme": "Toggle theme",
         "toggleBalances": "Show or hide balances"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "A new version, {{version}}, is available.",
+        "action": "How to update"
+      },
+      "modal": {
+        "title": "Update LealFinance",
+        "intro": "A newer version is available. Update from a homelab deployment with:",
+        "pinStep": "Set TAG to the new version in your .env file first.",
+        "backupWarning": "Back up your database before updating.",
+        "notesLink": "View release notes"
+      }
     }
   },
   "dashboard": {

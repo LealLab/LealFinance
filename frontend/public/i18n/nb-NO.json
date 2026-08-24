@@ -106,6 +106,19 @@
         "toggleTheme": "Bytt tema",
         "toggleBalances": "Vis eller skjul saldoer"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "En ny versjon, {{version}}, er tilgjengelig.",
+        "action": "Slik oppdaterer du"
+      },
+      "modal": {
+        "title": "Oppdater LealFinance",
+        "intro": "En nyere versjon er tilgjengelig. Oppdater en homelab-installasjon med:",
+        "pinStep": "Sett først TAG til den nye versjonen i .env-filen din.",
+        "backupWarning": "Ta sikkerhetskopi av databasen din før du oppdaterer.",
+        "notesLink": "Se utgivelsesnotater"
+      }
     }
   },
   "dashboard": {

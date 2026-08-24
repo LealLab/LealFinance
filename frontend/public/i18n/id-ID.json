@@ -106,6 +106,19 @@
         "toggleTheme": "Ganti tema",
         "toggleBalances": "Tampilkan atau sembunyikan saldo"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Versi baru, {{version}}, tersedia.",
+        "action": "Cara memperbarui"
+      },
+      "modal": {
+        "title": "Perbarui LealFinance",
+        "intro": "Versi yang lebih baru tersedia. Perbarui deployment homelab dengan:",
+        "pinStep": "Atur TAG ke versi baru di file .env Anda terlebih dahulu.",
+        "backupWarning": "Cadangkan basis data Anda sebelum memperbarui.",
+        "notesLink": "Lihat catatan rilis"
+      }
     }
   },
   "dashboard": {

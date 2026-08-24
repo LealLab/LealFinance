@@ -28,7 +28,37 @@
 - Optional AI providers, including local Ollama (off by default)
 - Single Docker Compose stack
 
-## Run it locally
+## Install on a homelab
+
+Install [Docker](https://www.docker.com/) with the Compose plugin, then:
+
+```bash
+git clone https://github.com/LealLab/LealFinance.git
+cd LealFinance
+cp .env.example .env
+```
+
+Edit `.env` and set `POSTGRES_PASSWORD`, `API_SECRET_KEY`, and `TAG` to a
+released version (e.g. `TAG=v1.2.3`). Then pull and start the published
+images:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+Open `http://localhost:8081` (or the value of `WEB_PORT`). The first account
+created on an empty instance becomes the administrator; after that, an
+administrator invites everyone else.
+
+Administrators see an in-app banner when a newer release is published, with
+a link to the exact update commands - see
+[`docs/homelab-deploy.md#updates`](docs/homelab-deploy.md#updates).
+
+See [`docs/homelab-deploy.md`](docs/homelab-deploy.md) for full requirements,
+backups, and exposing the app safely.
+
+## Develop from source
 
 Install [Docker](https://www.docker.com/) with the Compose plugin, then:
 
@@ -47,7 +77,6 @@ docker compose -f docker-compose.yml ps
 ```
 
 Open `http://localhost:8081` (or the value of `WEB_PORT`).
-The first account created on an empty instance becomes the administrator.
 
 The explicit `-f docker-compose.yml` keeps the development override from
 publishing database ports.

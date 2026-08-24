@@ -45,3 +45,10 @@ export interface PublicSettings {
   defaultLocale: string;
   agentsEnabled: boolean;
 }
+
+export interface UpdateStatus {
+  currentVersion: string;
+  latestVersion?: string;
+  updateAvailable: boolean;
+  releaseUrl?: string;
+}

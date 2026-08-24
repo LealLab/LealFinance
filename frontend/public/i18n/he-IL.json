@@ -106,6 +106,19 @@
         "toggleTheme": "החלפת ערכת נושא",
         "toggleBalances": "הצגה או הסתרה של יתרות"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "גרסה חדשה, {{version}}, זמינה.",
+        "action": "כיצד לעדכן"
+      },
+      "modal": {
+        "title": "עדכון LealFinance",
+        "intro": "גרסה חדשה יותר זמינה. עדכן פריסת homelab באמצעות:",
+        "pinStep": "הגדר תחילה את TAG לגרסה החדשה בקובץ ה-.env שלך.",
+        "backupWarning": "גבה את מסד הנתונים שלך לפני העדכון.",
+        "notesLink": "צפה בהערות הגרסה"
+      }
     }
   },
   "dashboard": {

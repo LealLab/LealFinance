@@ -106,6 +106,19 @@
         "toggleTheme": "Thema wisselen",
         "toggleBalances": "Saldi tonen of verbergen"
       }
+    },
+    "update": {
+      "banner": {
+        "message": "Er is een nieuwe versie, {{version}}, beschikbaar.",
+        "action": "Hoe te updaten"
+      },
+      "modal": {
+        "title": "LealFinance bijwerken",
+        "intro": "Er is een nieuwere versie beschikbaar. Werk een homelab-implementatie bij met:",
+        "pinStep": "Stel TAG eerst in op de nieuwe versie in je .env-bestand.",
+        "backupWarning": "Maak een back-up van je database voordat je bijwerkt.",
+        "notesLink": "Releasenotities bekijken"
+      }
     }
   },
   "dashboard": {

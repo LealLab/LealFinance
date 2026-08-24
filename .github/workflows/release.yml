@@ -1,14 +1,12 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: Image tag to publish (e.g. 1.2.3)
-        required: true
+  push:
+    tags:
+      - 'v*.*.*'
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -31,8 +29,9 @@ jobs:
         with:
           context: ./backend
           push: true
+          build-args: APP_VERSION=${{ github.ref_name }}
           tags: |
-            ghcr.io/leallab/lealfinance-api:${{ inputs.tag }}
+            ghcr.io/leallab/lealfinance-api:${{ github.ref_name }}
             ghcr.io/leallab/lealfinance-api:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -44,7 +43,12 @@ jobs:
           file: frontend/Dockerfile
           push: true
           tags: |
-            ghcr.io/leallab/lealfinance-web:${{ inputs.tag }}
+            ghcr.io/leallab/lealfinance-web:${{ github.ref_name }}
             ghcr.io/leallab/lealfinance-web:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes
