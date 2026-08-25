@@ -33,7 +33,8 @@
 
 ## Install on a homelab
 
-Install [Docker](https://www.docker.com/) with the Compose plugin, then:
+Install [Docker](https://www.docker.com/) with the Compose plugin and
+[Task](https://taskfile.dev/), then:
 
 ```bash
 git clone https://github.com/LealLab/LealFinance.git
@@ -42,13 +43,20 @@ cp .env.example .env
 ```
 
 Edit `.env` and set `POSTGRES_PASSWORD`, `API_SECRET_KEY`, and `TAG` to a
-released version (e.g. `TAG=v1.2.3`). Then pull and start the published
-images:
+released version (e.g. `TAG=v1.2.3`). Then pull and start the published images:
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+task install
 ```
+
+To stop and remove the application while preserving its data:
+
+```bash
+task uninstall
+```
+
+To also delete the persistent data volumes, run `task uninstall:purge` and
+confirm the prompt.
 
 Open `http://localhost:8081` (or the value of `WEB_PORT`). The first account
 created on an empty instance becomes the administrator; after that, an
