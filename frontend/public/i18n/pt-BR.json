@@ -11,6 +11,46 @@
       "saving": "Salvando…"
     }
   },
+  "icons": {
+    "title": "Escolha um ícone",
+    "search": "Buscar ícones",
+    "empty": "Nenhum ícone corresponde à busca",
+    "names": {
+      "home": "Casa",
+      "wallet": "Carteira",
+      "swap": "Transferência",
+      "tag": "Etiqueta",
+      "target": "Alvo",
+      "chart": "Gráfico",
+      "settings": "Configurações",
+      "sun": "Sol",
+      "moon": "Lua",
+      "globe": "Globo",
+      "menu": "Menu",
+      "close": "Fechar",
+      "plus": "Mais",
+      "trash": "Lixeira",
+      "pencil": "Lápis",
+      "chevronDown": "Seta para Baixo",
+      "chevronRight": "Seta para Direita",
+      "check": "Confirmar",
+      "alertTriangle": "Alerta",
+      "repeat": "Repetir",
+      "archive": "Arquivo",
+      "arrowUpRight": "Seta Diagonal Cima",
+      "arrowDownLeft": "Seta Diagonal Baixo",
+      "refresh": "Atualizar",
+      "search": "Busca",
+      "eye": "Olho",
+      "eyeOff": "Olho Fechado",
+      "command": "Comando",
+      "cornerDownLeft": "Retorno",
+      "zap": "Raio",
+      "grip": "Alça",
+      "bank": "Banco",
+      "piggy": "Cofrinho"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Painel",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Excluir instituição",
       "message": "Esta ação não pode ser desfeita. Deseja excluir esta instituição?"
-    },
-    "icon": {
-      "bank": "Banco",
-      "wallet": "Carteira",
-      "chart": "Investimentos",
-      "globe": "Internacional",
-      "archive": "Outro"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Cancelar",
         "save": "Salvar"
       }
-    },
-    "icon": {
-      "tag": "Etiqueta",
-      "home": "Casa",
-      "archive": "Arquivo",
-      "swap": "Transporte",
-      "wallet": "Carteira",
-      "chart": "Gráfico",
-      "sun": "Energia",
-      "alertTriangle": "Alerta",
-      "pencil": "Educação",
-      "target": "Meta",
-      "repeat": "Recorrente",
-      "globe": "Global"
     }
   },
   "budgets": {

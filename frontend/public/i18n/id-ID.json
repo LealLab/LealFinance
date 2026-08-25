@@ -11,6 +11,46 @@
       "saving": "Menyimpan…"
     }
   },
+  "icons": {
+    "title": "Pilih ikon",
+    "search": "Cari ikon",
+    "empty": "Tidak ada ikon yang cocok",
+    "names": {
+      "home": "Beranda",
+      "wallet": "Dompet",
+      "swap": "Transfer",
+      "tag": "Label",
+      "target": "Target",
+      "chart": "Grafik",
+      "settings": "Pengaturan",
+      "sun": "Matahari",
+      "moon": "Bulan",
+      "globe": "Dunia",
+      "menu": "Menu",
+      "close": "Tutup",
+      "plus": "Tambah",
+      "trash": "Sampah",
+      "pencil": "Pensil",
+      "chevronDown": "Panah Bawah",
+      "chevronRight": "Panah Kanan",
+      "check": "Centang",
+      "alertTriangle": "Peringatan",
+      "repeat": "Ulangi",
+      "archive": "Arsip",
+      "arrowUpRight": "Panah Diagonal Atas",
+      "arrowDownLeft": "Panah Diagonal Bawah",
+      "refresh": "Segarkan",
+      "search": "Cari",
+      "eye": "Mata",
+      "eyeOff": "Mata Tertutup",
+      "command": "Perintah",
+      "cornerDownLeft": "Enter",
+      "zap": "Petir",
+      "grip": "Pegangan",
+      "bank": "Bank",
+      "piggy": "Celengan"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Dasbor",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Hapus lembaga keuangan",
       "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus lembaga keuangan ini?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Dompet",
-      "chart": "Investasi",
-      "globe": "Internasional",
-      "archive": "Lainnya"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Batal",
         "save": "Simpan"
       }
-    },
-    "icon": {
-      "tag": "Label",
-      "home": "Rumah",
-      "archive": "Arsip",
-      "swap": "Transportasi",
-      "wallet": "Dompet",
-      "chart": "Grafik",
-      "sun": "Energi",
-      "alertTriangle": "Peringatan",
-      "pencil": "Pendidikan",
-      "target": "Target",
-      "repeat": "Berulang",
-      "globe": "Global"
     }
   },
   "budgets": {

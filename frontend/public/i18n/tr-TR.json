@@ -11,6 +11,46 @@
       "saving": "Kaydediliyor…"
     }
   },
+  "icons": {
+    "title": "Bir simge seçin",
+    "search": "Simge ara",
+    "empty": "Aramanızla eşleşen simge yok",
+    "names": {
+      "home": "Ana Sayfa",
+      "wallet": "Cüzdan",
+      "swap": "Transfer",
+      "tag": "Etiket",
+      "target": "Hedef",
+      "chart": "Grafik",
+      "settings": "Ayarlar",
+      "sun": "Güneş",
+      "moon": "Ay",
+      "globe": "Küre",
+      "menu": "Menü",
+      "close": "Kapat",
+      "plus": "Artı",
+      "trash": "Çöp Kutusu",
+      "pencil": "Kalem",
+      "chevronDown": "Aşağı Ok",
+      "chevronRight": "Sağa Ok",
+      "check": "Onay",
+      "alertTriangle": "Uyarı",
+      "repeat": "Tekrarla",
+      "archive": "Arşiv",
+      "arrowUpRight": "Çapraz Ok Yukarı",
+      "arrowDownLeft": "Çapraz Ok Aşağı",
+      "refresh": "Yenile",
+      "search": "Ara",
+      "eye": "Göz",
+      "eyeOff": "Göz Kapalı",
+      "command": "Komut",
+      "cornerDownLeft": "Enter",
+      "zap": "Şimşek",
+      "grip": "Tutamaç",
+      "bank": "Banka",
+      "piggy": "Kumbara"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Genel bakış",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Finans kuruluşu silinsin mi?",
       "message": "Bu işlem geri alınamaz. Bu finans kuruluşunu silmek istiyor musunuz?"
-    },
-    "icon": {
-      "bank": "Banka",
-      "wallet": "Cüzdan",
-      "chart": "Yatırımlar",
-      "globe": "Uluslararası",
-      "archive": "Diğer"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "İptal",
         "save": "Kaydet"
       }
-    },
-    "icon": {
-      "tag": "Etiket",
-      "home": "Ev",
-      "archive": "Arşiv",
-      "swap": "Ulaşım",
-      "wallet": "Cüzdan",
-      "chart": "Grafik",
-      "sun": "Enerji",
-      "alertTriangle": "Uyarı",
-      "pencil": "Eğitim",
-      "target": "Hedef",
-      "repeat": "Tekrarlayan",
-      "globe": "Genel"
     }
   },
   "budgets": {

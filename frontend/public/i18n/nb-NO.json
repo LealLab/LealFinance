@@ -11,6 +11,46 @@
       "saving": "Lagrer…"
     }
   },
+  "icons": {
+    "title": "Velg et ikon",
+    "search": "Søk etter ikoner",
+    "empty": "Ingen ikoner samsvarer med søket",
+    "names": {
+      "home": "Hjem",
+      "wallet": "Lommebok",
+      "swap": "Overføring",
+      "tag": "Merke",
+      "target": "Mål",
+      "chart": "Diagram",
+      "settings": "Innstillinger",
+      "sun": "Sol",
+      "moon": "Måne",
+      "globe": "Globus",
+      "menu": "Meny",
+      "close": "Lukk",
+      "plus": "Pluss",
+      "trash": "Papirkurv",
+      "pencil": "Blyant",
+      "chevronDown": "Pil Ned",
+      "chevronRight": "Pil Høyre",
+      "check": "Hake",
+      "alertTriangle": "Advarsel",
+      "repeat": "Gjenta",
+      "archive": "Arkiv",
+      "arrowUpRight": "Diagonal Pil Opp",
+      "arrowDownLeft": "Diagonal Pil Ned",
+      "refresh": "Oppdater",
+      "search": "Søk",
+      "eye": "Øye",
+      "eyeOff": "Øye Lukket",
+      "command": "Kommando",
+      "cornerDownLeft": "Enter",
+      "zap": "Lyn",
+      "grip": "Håndtak",
+      "bank": "Bank",
+      "piggy": "Sparegris"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Oversikt",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Slett institusjon",
       "message": "Denne handlingen kan ikke angres. Vil du slette denne institusjonen?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Lommebok",
-      "chart": "Investeringer",
-      "globe": "Internasjonalt",
-      "archive": "Annet"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Avbryt",
         "save": "Lagre"
       }
-    },
-    "icon": {
-      "tag": "Tagg",
-      "home": "Hjem",
-      "archive": "Arkiv",
-      "swap": "Transport",
-      "wallet": "Lommebok",
-      "chart": "Diagram",
-      "sun": "Energi",
-      "alertTriangle": "Advarsel",
-      "pencil": "Utdanning",
-      "target": "Mål",
-      "repeat": "Gjentakende",
-      "globe": "Globalt"
     }
   },
   "budgets": {

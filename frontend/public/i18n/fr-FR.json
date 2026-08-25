@@ -11,6 +11,46 @@
       "saving": "Enregistrement…"
     }
   },
+  "icons": {
+    "title": "Choisissez une icône",
+    "search": "Rechercher des icônes",
+    "empty": "Aucune icône ne correspond à votre recherche",
+    "names": {
+      "home": "Accueil",
+      "wallet": "Portefeuille",
+      "swap": "Virement",
+      "tag": "Étiquette",
+      "target": "Cible",
+      "chart": "Graphique",
+      "settings": "Paramètres",
+      "sun": "Soleil",
+      "moon": "Lune",
+      "globe": "Globe",
+      "menu": "Menu",
+      "close": "Fermer",
+      "plus": "Plus",
+      "trash": "Corbeille",
+      "pencil": "Crayon",
+      "chevronDown": "Flèche Bas",
+      "chevronRight": "Flèche Droite",
+      "check": "Coche",
+      "alertTriangle": "Alerte",
+      "repeat": "Répéter",
+      "archive": "Archive",
+      "arrowUpRight": "Flèche Diagonale Haut",
+      "arrowDownLeft": "Flèche Diagonale Bas",
+      "refresh": "Actualiser",
+      "search": "Rechercher",
+      "eye": "Œil",
+      "eyeOff": "Œil Fermé",
+      "command": "Commande",
+      "cornerDownLeft": "Retour",
+      "zap": "Éclair",
+      "grip": "Poignée",
+      "bank": "Banque",
+      "piggy": "Tirelire"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Tableau de bord",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Supprimer l’établissement",
       "message": "Cette action est irréversible. Voulez-vous supprimer cet établissement ?"
-    },
-    "icon": {
-      "bank": "Banque",
-      "wallet": "Portefeuille",
-      "chart": "Investissements",
-      "globe": "International",
-      "archive": "Autre"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Annuler",
         "save": "Enregistrer"
       }
-    },
-    "icon": {
-      "tag": "Étiquette",
-      "home": "Maison",
-      "archive": "Autre",
-      "swap": "Transport",
-      "wallet": "Portefeuille",
-      "chart": "Graphique",
-      "sun": "Énergie",
-      "alertTriangle": "Alerte",
-      "pencil": "Éducation",
-      "target": "Objectif",
-      "repeat": "Récurrent",
-      "globe": "International"
     }
   },
   "budgets": {

@@ -11,6 +11,46 @@
       "saving": "Se salvează…"
     }
   },
+  "icons": {
+    "title": "Alege o pictogramă",
+    "search": "Caută pictograme",
+    "empty": "Nicio pictogramă nu corespunde căutării",
+    "names": {
+      "home": "Acasă",
+      "wallet": "Portofel",
+      "swap": "Transfer",
+      "tag": "Etichetă",
+      "target": "Țintă",
+      "chart": "Grafic",
+      "settings": "Setări",
+      "sun": "Soare",
+      "moon": "Lună",
+      "globe": "Glob",
+      "menu": "Meniu",
+      "close": "Închide",
+      "plus": "Plus",
+      "trash": "Coș de Gunoi",
+      "pencil": "Creion",
+      "chevronDown": "Săgeată Jos",
+      "chevronRight": "Săgeată Dreapta",
+      "check": "Bifă",
+      "alertTriangle": "Avertisment",
+      "repeat": "Repetă",
+      "archive": "Arhivă",
+      "arrowUpRight": "Săgeată Diagonală Sus",
+      "arrowDownLeft": "Săgeată Diagonală Jos",
+      "refresh": "Reîmprospătează",
+      "search": "Caută",
+      "eye": "Ochi",
+      "eyeOff": "Ochi Închis",
+      "command": "Comandă",
+      "cornerDownLeft": "Enter",
+      "zap": "Fulger",
+      "grip": "Mâner",
+      "bank": "Bancă",
+      "piggy": "Pușculiță"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Panou de control",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Șterge instituția",
       "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această instituție?"
-    },
-    "icon": {
-      "bank": "Bancă",
-      "wallet": "Portofel",
-      "chart": "Investiții",
-      "globe": "Internațional",
-      "archive": "Altele"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Anulează",
         "save": "Salvează"
       }
-    },
-    "icon": {
-      "tag": "Etichetă",
-      "home": "Locuință",
-      "archive": "Arhivă",
-      "swap": "Transport",
-      "wallet": "Portofel",
-      "chart": "Grafic",
-      "sun": "Energie",
-      "alertTriangle": "Avertizare",
-      "pencil": "Educație",
-      "target": "Obiectiv",
-      "repeat": "Recurent",
-      "globe": "Global"
     }
   },
   "budgets": {

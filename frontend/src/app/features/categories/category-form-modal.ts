@@ -5,10 +5,12 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { CategoryRepository } from '../../data/category.repository';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { Button } from '../../shared/ui/button/button';
+import { Icon } from '../../shared/ui/icon/icon';
+import { IconPicker } from '../../shared/ui/icon-picker/icon-picker';
 import { Modal } from '../../shared/ui/modal/modal';
-import { CATEGORY_ICON_OPTIONS } from './category-icon-options';
 
 const DEFAULT_COLOR = '#1F5C6B';
+const DEFAULT_ICON = 'tag';
 
 /**
  * Create/edit form for a Category. `parentOptions` is restricted to
@@ -18,7 +20,7 @@ const DEFAULT_COLOR = '#1F5C6B';
  */
 @Component({
   selector: 'app-category-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, IconPicker],
   templateUrl: './category-form-modal.html',
   styleUrl: './category-form-modal.scss'
 })
@@ -39,20 +41,24 @@ export class CategoryFormModal {
   readonly presetParent = input<Category | undefined>(undefined);
   readonly saved = output<Category>();
 
-  protected readonly iconOptions = CATEGORY_ICON_OPTIONS;
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
+  protected readonly iconPickerOpen = signal(false);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     kind: ['expense' as CategoryKind, Validators.required],
     parentId: [''],
     color: [DEFAULT_COLOR, Validators.required],
-    icon: [CATEGORY_ICON_OPTIONS[0], Validators.required]
+    icon: [DEFAULT_ICON as Category['icon'], Validators.required]
   });
 
   private readonly selectedKind = toSignal(this.form.controls.kind.valueChanges, {
     initialValue: this.form.controls.kind.value
+  });
+
+  protected readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
+    initialValue: this.form.controls.icon.value
   });
 
   /** True while creating a sub-category via the preset-parent shortcut - the kind picker is locked to the parent's kind. */
@@ -86,7 +92,7 @@ export class CategoryFormModal {
         kind: category?.kind ?? preset?.kind ?? 'expense',
         parentId: category?.parentId ?? preset?.id ?? '',
         color: category?.color ?? DEFAULT_COLOR,
-        icon: category?.icon ?? CATEGORY_ICON_OPTIONS[0]
+        icon: category?.icon ?? DEFAULT_ICON
       });
       this.saveErrorKey.set(null);
     });
