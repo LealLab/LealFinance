@@ -7,6 +7,7 @@ work, and the web container serves the UI and proxies API requests.
 ## Requirements
 
 - A machine that can run Docker with the Compose plugin.
+- [Task](https://taskfile.dev/) if using the repository shortcuts below.
 - A free host port for the web UI. The example configuration uses `8081`.
 - Persistent storage for the PostgreSQL volume.
 
@@ -35,6 +36,25 @@ Open `http://localhost:8081` from the same machine, or
 
 The first account created on an empty instance becomes the administrator.
 After that, an administrator must invite other users.
+
+## Task shortcuts
+
+From a checkout with a configured `.env`, `task install` pulls and starts the
+published production images using the `TAG` value. To stop and remove the
+containers while preserving data, run:
+
+```bash
+task uninstall
+```
+
+To also delete the persistent PostgreSQL, Redis, and Ollama volumes, run:
+
+```bash
+task uninstall:purge
+```
+
+Task asks for confirmation before the purge. Do not use `--yes` unless the
+volume deletion is intentional.
 
 The explicit base file is important: plain `docker compose up` also loads
 `docker-compose.override.yml`, which is intended for development and publishes

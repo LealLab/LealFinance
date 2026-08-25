@@ -4,6 +4,23 @@ version: "3"
 dotenv: [".env"]
 
 tasks:
+  install:
+    desc: Install and start the published production stack
+    cmds:
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+  uninstall:
+    desc: Stop and remove the production stack, preserving data
+    cmds:
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+
+  uninstall:purge:
+    desc: Remove the production stack and persistent data
+    prompt: This permanently deletes the application data volumes. Continue?
+    cmds:
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml down --volumes
+
   up:
     desc: Start the full stack (build + detached)
     cmds:
