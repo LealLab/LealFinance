@@ -12,6 +12,9 @@
 
 <p align="center">
   A self-hosted personal finance platform for homelabs and local development.
+
+![LealFinance](./docs/images/LealFinance.png)
+
 </p>
 
 ## Features
