@@ -11,6 +11,46 @@
       "saving": "Đang lưu…"
     }
   },
+  "icons": {
+    "title": "Chọn biểu tượng",
+    "search": "Tìm biểu tượng",
+    "empty": "Không có biểu tượng phù hợp",
+    "names": {
+      "home": "Trang chủ",
+      "wallet": "Ví",
+      "swap": "Chuyển khoản",
+      "tag": "Thẻ",
+      "target": "Mục tiêu",
+      "chart": "Biểu đồ",
+      "settings": "Cài đặt",
+      "sun": "Mặt trời",
+      "moon": "Mặt trăng",
+      "globe": "Địa cầu",
+      "menu": "Menu",
+      "close": "Đóng",
+      "plus": "Cộng",
+      "trash": "Thùng rác",
+      "pencil": "Bút chì",
+      "chevronDown": "Mũi Tên Xuống",
+      "chevronRight": "Mũi Tên Phải",
+      "check": "Dấu Tích",
+      "alertTriangle": "Cảnh Báo",
+      "repeat": "Lặp Lại",
+      "archive": "Lưu Trữ",
+      "arrowUpRight": "Mũi Tên Chéo Lên",
+      "arrowDownLeft": "Mũi Tên Chéo Xuống",
+      "refresh": "Làm Mới",
+      "search": "Tìm Kiếm",
+      "eye": "Mắt",
+      "eyeOff": "Mắt Nhắm",
+      "command": "Lệnh",
+      "cornerDownLeft": "Enter",
+      "zap": "Tia Chớp",
+      "grip": "Tay Cầm",
+      "bank": "Ngân Hàng",
+      "piggy": "Heo Đất"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Bảng điều khiển",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Xóa tổ chức tài chính",
       "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa tổ chức tài chính này không?"
-    },
-    "icon": {
-      "bank": "Ngân hàng",
-      "wallet": "Ví",
-      "chart": "Đầu tư",
-      "globe": "Quốc tế",
-      "archive": "Khác"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Hủy",
         "save": "Lưu"
       }
-    },
-    "icon": {
-      "tag": "Thẻ",
-      "home": "Nhà",
-      "archive": "Lưu trữ",
-      "swap": "Di chuyển",
-      "wallet": "Ví",
-      "chart": "Biểu đồ",
-      "sun": "Năng lượng",
-      "alertTriangle": "Cảnh báo",
-      "pencil": "Giáo dục",
-      "target": "Mục tiêu",
-      "repeat": "Định kỳ",
-      "globe": "Toàn cầu"
     }
   },
   "budgets": {

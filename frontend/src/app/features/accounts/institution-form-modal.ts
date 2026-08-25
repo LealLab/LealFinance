@@ -1,15 +1,17 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ConfirmService } from '../../core/confirm.service';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { Institution } from '../../domain/models/institution';
 import { Button } from '../../shared/ui/button/button';
+import { Icon } from '../../shared/ui/icon/icon';
+import { IconPicker } from '../../shared/ui/icon-picker/icon-picker';
 import { Modal } from '../../shared/ui/modal/modal';
-import { INSTITUTION_ICON_OPTIONS } from './institution-icon-options';
 
 const DEFAULT_COLOR = '#1F5C6B';
-const DEFAULT_ICON = INSTITUTION_ICON_OPTIONS[0];
+const DEFAULT_ICON = 'bank';
 
 /**
  * Create/edit form for an Institution - the grouping layer above Accounts
@@ -25,7 +27,7 @@ const DEFAULT_ICON = INSTITUTION_ICON_OPTIONS[0];
  */
 @Component({
   selector: 'app-institution-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, IconPicker],
   templateUrl: './institution-form-modal.html',
   styleUrl: './institution-form-modal.scss'
 })
@@ -41,16 +43,20 @@ export class InstitutionFormModal {
   readonly saved = output<Institution>();
   readonly deleted = output<void>();
 
-  protected readonly iconOptions = INSTITUTION_ICON_OPTIONS;
   protected readonly saving = signal(false);
   protected readonly deleting = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
   protected readonly deleteErrorKey = signal<string | null>(null);
+  protected readonly iconPickerOpen = signal(false);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     icon: [DEFAULT_ICON as Institution['icon'], Validators.required],
     color: [DEFAULT_COLOR]
+  });
+
+  protected readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
+    initialValue: this.form.controls.icon.value
   });
 
   /**

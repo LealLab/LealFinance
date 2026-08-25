@@ -11,6 +11,46 @@
       "saving": "جارٍ الحفظ…"
     }
   },
+  "icons": {
+    "title": "اختر أيقونة",
+    "search": "ابحث عن أيقونات",
+    "empty": "لا توجد أيقونات مطابقة لبحثك",
+    "names": {
+      "home": "الرئيسية",
+      "wallet": "المحفظة",
+      "swap": "تحويل",
+      "tag": "وسم",
+      "target": "هدف",
+      "chart": "رسم بياني",
+      "settings": "الإعدادات",
+      "sun": "شمس",
+      "moon": "قمر",
+      "globe": "كرة أرضية",
+      "menu": "القائمة",
+      "close": "إغلاق",
+      "plus": "زائد",
+      "trash": "سلة المهملات",
+      "pencil": "قلم",
+      "chevronDown": "سهم لأسفل",
+      "chevronRight": "سهم لليمين",
+      "check": "صح",
+      "alertTriangle": "تنبيه",
+      "repeat": "تكرار",
+      "archive": "أرشيف",
+      "arrowUpRight": "سهم قطري لأعلى",
+      "arrowDownLeft": "سهم قطري لأسفل",
+      "refresh": "تحديث",
+      "search": "بحث",
+      "eye": "عين",
+      "eyeOff": "عين مغلقة",
+      "command": "أمر",
+      "cornerDownLeft": "إدخال",
+      "zap": "برق",
+      "grip": "مقبض",
+      "bank": "بنك",
+      "piggy": "حصالة"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "لوحة المعلومات",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "حذف الجهة المالية",
       "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف هذه الجهة المالية؟"
-    },
-    "icon": {
-      "bank": "بنك",
-      "wallet": "محفظة",
-      "chart": "استثمارات",
-      "globe": "دولي",
-      "archive": "أخرى"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "إلغاء",
         "save": "حفظ"
       }
-    },
-    "icon": {
-      "tag": "وسم",
-      "home": "المنزل",
-      "archive": "أرشيف",
-      "swap": "النقل",
-      "wallet": "محفظة",
-      "chart": "مخطط",
-      "sun": "الطاقة",
-      "alertTriangle": "تنبيه",
-      "pencil": "التعليم",
-      "target": "هدف",
-      "repeat": "متكرر",
-      "globe": "عالمي"
     }
   },
   "budgets": {

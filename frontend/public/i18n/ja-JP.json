@@ -11,6 +11,46 @@
       "saving": "保存中…"
     }
   },
+  "icons": {
+    "title": "アイコンを選択",
+    "search": "アイコンを検索",
+    "empty": "一致するアイコンがありません",
+    "names": {
+      "home": "ホーム",
+      "wallet": "ウォレット",
+      "swap": "振替",
+      "tag": "タグ",
+      "target": "目標",
+      "chart": "チャート",
+      "settings": "設定",
+      "sun": "太陽",
+      "moon": "月",
+      "globe": "地球",
+      "menu": "メニュー",
+      "close": "閉じる",
+      "plus": "プラス",
+      "trash": "ゴミ箱",
+      "pencil": "鉛筆",
+      "chevronDown": "下矢印",
+      "chevronRight": "右矢印",
+      "check": "チェック",
+      "alertTriangle": "警告",
+      "repeat": "繰り返し",
+      "archive": "アーカイブ",
+      "arrowUpRight": "右上矢印",
+      "arrowDownLeft": "左下矢印",
+      "refresh": "更新",
+      "search": "検索",
+      "eye": "目",
+      "eyeOff": "目を閉じる",
+      "command": "コマンド",
+      "cornerDownLeft": "エンター",
+      "zap": "雷",
+      "grip": "グリップ",
+      "bank": "銀行",
+      "piggy": "貯金箱"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "ダッシュボード",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "金融機関を削除",
       "message": "この操作は取り消せません。この金融機関を削除しますか？"
-    },
-    "icon": {
-      "bank": "銀行",
-      "wallet": "ウォレット",
-      "chart": "投資",
-      "globe": "国際",
-      "archive": "その他"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "キャンセル",
         "save": "保存"
       }
-    },
-    "icon": {
-      "tag": "タグ",
-      "home": "住居",
-      "archive": "アーカイブ",
-      "swap": "交通",
-      "wallet": "ウォレット",
-      "chart": "グラフ",
-      "sun": "エネルギー",
-      "alertTriangle": "警告",
-      "pencil": "教育",
-      "target": "目標",
-      "repeat": "定期",
-      "globe": "グローバル"
     }
   },
   "budgets": {

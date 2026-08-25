@@ -11,6 +11,46 @@
       "saving": "שומר…"
     }
   },
+  "icons": {
+    "title": "בחר סמל",
+    "search": "חיפוש סמלים",
+    "empty": "לא נמצאו סמלים תואמים",
+    "names": {
+      "home": "בית",
+      "wallet": "ארנק",
+      "swap": "העברה",
+      "tag": "תווית",
+      "target": "יעד",
+      "chart": "תרשים",
+      "settings": "הגדרות",
+      "sun": "שמש",
+      "moon": "ירח",
+      "globe": "כדור הארץ",
+      "menu": "תפריט",
+      "close": "סגירה",
+      "plus": "פלוס",
+      "trash": "פח",
+      "pencil": "עיפרון",
+      "chevronDown": "חץ למטה",
+      "chevronRight": "חץ ימינה",
+      "check": "וי",
+      "alertTriangle": "התראה",
+      "repeat": "חזרה",
+      "archive": "ארכיון",
+      "arrowUpRight": "חץ אלכסוני למעלה",
+      "arrowDownLeft": "חץ אלכסוני למטה",
+      "refresh": "רענון",
+      "search": "חיפוש",
+      "eye": "עין",
+      "eyeOff": "עין סגורה",
+      "command": "פקודה",
+      "cornerDownLeft": "אנטר",
+      "zap": "ברק",
+      "grip": "ידית",
+      "bank": "בנק",
+      "piggy": "קופת חיסכון"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "לוח בקרה",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "מחיקת מוסד",
       "message": "לא ניתן לבטל פעולה זו. למחוק את המוסד?"
-    },
-    "icon": {
-      "bank": "בנק",
-      "wallet": "ארנק",
-      "chart": "השקעות",
-      "globe": "בינלאומי",
-      "archive": "אחר"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "ביטול",
         "save": "שמירה"
       }
-    },
-    "icon": {
-      "tag": "תגית",
-      "home": "בית",
-      "archive": "ארכיון",
-      "swap": "תחבורה",
-      "wallet": "ארנק",
-      "chart": "תרשים",
-      "sun": "אנרגיה",
-      "alertTriangle": "התראה",
-      "pencil": "חינוך",
-      "target": "יעד",
-      "repeat": "מחזורי",
-      "globe": "גלובלי"
     }
   },
   "budgets": {

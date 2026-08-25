@@ -1,13 +1,12 @@
 <div *transloco="let t">
-  <!-- categories.icon.* and transactions.type.* below are looked up
-       dynamically (string concatenation), which transloco-keys-manager's
-       template extractor can't resolve - these marker-only comments are
-       its "dynamic markings" mechanism (see account-form-modal.html for
-       the related @if…as note, used below for the same reason on
-       titleKey/saveErrorKey). -->
-  <!-- t(categories.icon.tag) t(categories.icon.home) t(categories.icon.archive) t(categories.icon.swap) -->
-  <!-- t(categories.icon.wallet) t(categories.icon.chart) t(categories.icon.sun) t(categories.icon.alertTriangle) -->
-  <!-- t(categories.icon.pencil) t(categories.icon.target) t(categories.icon.repeat) t(categories.icon.globe) -->
+  <!-- transactions.type.* below is looked up dynamically (string
+       concatenation), which transloco-keys-manager's template extractor
+       can't resolve - this marker-only comment is its "dynamic markings"
+       mechanism (see account-form-modal.html for the related @if…as note,
+       used below for the same reason on titleKey/saveErrorKey). The
+       icons.names.* lookup used by app-icon-picker below carries its own
+       marker comment in icon-picker.html. -->
+  <!-- t(transactions.type.expense) t(transactions.type.income) -->
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
@@ -51,11 +50,20 @@
           </div>
           <div>
             <label class="form-label" for="category-icon">{{ t('categories.form.fields.icon') }}</label>
-            <select id="category-icon" class="form-input" formControlName="icon">
-              @for (icon of iconOptions; track icon) {
-                <option [value]="icon">{{ t('categories.icon.' + icon) }}</option>
-              }
-            </select>
+            <button
+              id="category-icon"
+              type="button"
+              class="form-input flex items-center gap-2"
+              (click)="iconPickerOpen.set(true)"
+            >
+              <app-icon [name]="selectedIcon()" />
+              <span>{{ t('icons.names.' + selectedIcon()) }}</span>
+            </button>
+            <app-icon-picker
+              [(open)]="iconPickerOpen"
+              [selected]="selectedIcon()"
+              (picked)="form.controls.icon.setValue($event)"
+            />
           </div>
         </div>
 

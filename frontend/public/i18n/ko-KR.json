@@ -11,6 +11,46 @@
       "saving": "저장 중…"
     }
   },
+  "icons": {
+    "title": "아이콘 선택",
+    "search": "아이콘 검색",
+    "empty": "검색과 일치하는 아이콘이 없습니다",
+    "names": {
+      "home": "홈",
+      "wallet": "지갑",
+      "swap": "이체",
+      "tag": "태그",
+      "target": "목표",
+      "chart": "차트",
+      "settings": "설정",
+      "sun": "태양",
+      "moon": "달",
+      "globe": "지구본",
+      "menu": "메뉴",
+      "close": "닫기",
+      "plus": "플러스",
+      "trash": "휴지통",
+      "pencil": "연필",
+      "chevronDown": "아래 화살표",
+      "chevronRight": "오른쪽 화살표",
+      "check": "체크",
+      "alertTriangle": "경고",
+      "repeat": "반복",
+      "archive": "보관함",
+      "arrowUpRight": "오른쪽 위 화살표",
+      "arrowDownLeft": "왼쪽 아래 화살표",
+      "refresh": "새로고침",
+      "search": "검색",
+      "eye": "눈",
+      "eyeOff": "눈 감김",
+      "command": "명령",
+      "cornerDownLeft": "엔터",
+      "zap": "번개",
+      "grip": "손잡이",
+      "bank": "은행",
+      "piggy": "저금통"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "대시보드",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "금융기관 삭제",
       "message": "이 작업은 되돌릴 수 없습니다. 이 금융기관을 삭제하시겠어요?"
-    },
-    "icon": {
-      "bank": "은행",
-      "wallet": "지갑",
-      "chart": "투자",
-      "globe": "해외",
-      "archive": "기타"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "취소",
         "save": "저장"
       }
-    },
-    "icon": {
-      "tag": "태그",
-      "home": "주거",
-      "archive": "보관",
-      "swap": "교통",
-      "wallet": "지갑",
-      "chart": "차트",
-      "sun": "에너지",
-      "alertTriangle": "주의",
-      "pencil": "교육",
-      "target": "목표",
-      "repeat": "반복",
-      "globe": "국제"
     }
   },
   "budgets": {

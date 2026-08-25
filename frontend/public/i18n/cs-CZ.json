@@ -11,6 +11,46 @@
       "saving": "Ukládání…"
     }
   },
+  "icons": {
+    "title": "Vyberte ikonu",
+    "search": "Hledat ikony",
+    "empty": "Žádné ikony neodpovídají hledání",
+    "names": {
+      "home": "Domů",
+      "wallet": "Peněženka",
+      "swap": "Převod",
+      "tag": "Štítek",
+      "target": "Cíl",
+      "chart": "Graf",
+      "settings": "Nastavení",
+      "sun": "Slunce",
+      "moon": "Měsíc",
+      "globe": "Zeměkoule",
+      "menu": "Nabídka",
+      "close": "Zavřít",
+      "plus": "Plus",
+      "trash": "Koš",
+      "pencil": "Tužka",
+      "chevronDown": "Šipka Dolů",
+      "chevronRight": "Šipka Doprava",
+      "check": "Zaškrtnutí",
+      "alertTriangle": "Upozornění",
+      "repeat": "Opakovat",
+      "archive": "Archiv",
+      "arrowUpRight": "Diagonální Šipka Nahoru",
+      "arrowDownLeft": "Diagonální Šipka Dolů",
+      "refresh": "Obnovit",
+      "search": "Hledat",
+      "eye": "Oko",
+      "eyeOff": "Oko Zavřené",
+      "command": "Příkaz",
+      "cornerDownLeft": "Enter",
+      "zap": "Blesk",
+      "grip": "Úchyt",
+      "bank": "Banka",
+      "piggy": "Prasátko"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Přehled",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Odstranit instituci",
       "message": "Tuto akci nelze vrátit zpět. Chcete tuto instituci odstranit?"
-    },
-    "icon": {
-      "bank": "Banka",
-      "wallet": "Peněženka",
-      "chart": "Investice",
-      "globe": "Mezinárodní",
-      "archive": "Ostatní"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Zrušit",
         "save": "Uložit"
       }
-    },
-    "icon": {
-      "tag": "Štítek",
-      "home": "Domov",
-      "archive": "Archiv",
-      "swap": "Doprava",
-      "wallet": "Peněženka",
-      "chart": "Graf",
-      "sun": "Energie",
-      "alertTriangle": "Upozornění",
-      "pencil": "Vzdělávání",
-      "target": "Cíl",
-      "repeat": "Opakování",
-      "globe": "Globální"
     }
   },
   "budgets": {

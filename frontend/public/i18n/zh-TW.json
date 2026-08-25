@@ -11,6 +11,46 @@
       "saving": "儲存中…"
     }
   },
+  "icons": {
+    "title": "選擇圖示",
+    "search": "搜尋圖示",
+    "empty": "沒有符合的圖示",
+    "names": {
+      "home": "首頁",
+      "wallet": "錢包",
+      "swap": "轉帳",
+      "tag": "標籤",
+      "target": "目標",
+      "chart": "圖表",
+      "settings": "設定",
+      "sun": "太陽",
+      "moon": "月亮",
+      "globe": "地球",
+      "menu": "選單",
+      "close": "關閉",
+      "plus": "加號",
+      "trash": "垃圾桶",
+      "pencil": "鉛筆",
+      "chevronDown": "向下箭頭",
+      "chevronRight": "向右箭頭",
+      "check": "勾選",
+      "alertTriangle": "警告",
+      "repeat": "重複",
+      "archive": "封存",
+      "arrowUpRight": "右上箭頭",
+      "arrowDownLeft": "左下箭頭",
+      "refresh": "重新整理",
+      "search": "搜尋",
+      "eye": "眼睛",
+      "eyeOff": "閉眼",
+      "command": "指令",
+      "cornerDownLeft": "換行",
+      "zap": "閃電",
+      "grip": "把手",
+      "bank": "銀行",
+      "piggy": "存錢筒"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "儀表板",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "刪除金融機構",
       "message": "此操作無法復原。要刪除此金融機構嗎？"
-    },
-    "icon": {
-      "bank": "銀行",
-      "wallet": "錢包",
-      "chart": "投資",
-      "globe": "國際",
-      "archive": "其他"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "取消",
         "save": "儲存"
       }
-    },
-    "icon": {
-      "tag": "標籤",
-      "home": "居家",
-      "archive": "封存",
-      "swap": "交通",
-      "wallet": "錢包",
-      "chart": "圖表",
-      "sun": "能源",
-      "alertTriangle": "警示",
-      "pencil": "教育",
-      "target": "目標",
-      "repeat": "週期性",
-      "globe": "全球"
     }
   },
   "budgets": {

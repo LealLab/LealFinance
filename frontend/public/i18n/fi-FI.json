@@ -11,6 +11,46 @@
       "saving": "Tallennetaan…"
     }
   },
+  "icons": {
+    "title": "Valitse kuvake",
+    "search": "Hae kuvakkeita",
+    "empty": "Ei hakua vastaavia kuvakkeita",
+    "names": {
+      "home": "Koti",
+      "wallet": "Lompakko",
+      "swap": "Siirto",
+      "tag": "Tunniste",
+      "target": "Tavoite",
+      "chart": "Kaavio",
+      "settings": "Asetukset",
+      "sun": "Aurinko",
+      "moon": "Kuu",
+      "globe": "Maapallo",
+      "menu": "Valikko",
+      "close": "Sulje",
+      "plus": "Plus",
+      "trash": "Roskakori",
+      "pencil": "Kynä",
+      "chevronDown": "Nuoli Alas",
+      "chevronRight": "Nuoli Oikealle",
+      "check": "Valintamerkki",
+      "alertTriangle": "Varoitus",
+      "repeat": "Toista",
+      "archive": "Arkisto",
+      "arrowUpRight": "Vinonuoli Ylös",
+      "arrowDownLeft": "Vinonuoli Alas",
+      "refresh": "Päivitä",
+      "search": "Haku",
+      "eye": "Silmä",
+      "eyeOff": "Silmä Kiinni",
+      "command": "Komento",
+      "cornerDownLeft": "Enter",
+      "zap": "Salama",
+      "grip": "Kahva",
+      "bank": "Pankki",
+      "piggy": "Säästöpossu"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Yhteenveto",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Poista rahoituslaitos",
       "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän rahoituslaitoksen?"
-    },
-    "icon": {
-      "bank": "Pankki",
-      "wallet": "Lompakko",
-      "chart": "Sijoitukset",
-      "globe": "Kansainvälinen",
-      "archive": "Muu"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Peruuta",
         "save": "Tallenna"
       }
-    },
-    "icon": {
-      "tag": "Tunniste",
-      "home": "Koti",
-      "archive": "Arkisto",
-      "swap": "Liikenne",
-      "wallet": "Lompakko",
-      "chart": "Kaavio",
-      "sun": "Energia",
-      "alertTriangle": "Varoitus",
-      "pencil": "Koulutus",
-      "target": "Tavoite",
-      "repeat": "Toistuva",
-      "globe": "Maailmanlaajuinen"
     }
   },
   "budgets": {

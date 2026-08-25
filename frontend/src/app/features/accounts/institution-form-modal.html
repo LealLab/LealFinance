@@ -1,10 +1,9 @@
 <div *transloco="let t">
-  <!-- institutions.icon.* below is looked up dynamically (string
-       concatenation), which transloco-keys-manager's template extractor
-       can't resolve - see category-form-modal.html for the same "dynamic
-       markings" mechanism. -->
-  <!-- t(institutions.icon.bank) t(institutions.icon.wallet) t(institutions.icon.chart) -->
-  <!-- t(institutions.icon.globe) t(institutions.icon.archive) -->
+  <!-- The icons.names.* lookup used by app-icon-picker below is looked up
+       dynamically (string concatenation), which transloco-keys-manager's
+       template extractor can't resolve - it carries its own marker comment
+       in icon-picker.html (see category-form-modal.html for the same
+       "dynamic markings" mechanism). -->
   <!-- @if…as (not a plain call) avoids a translation-argument pattern the
        extractor mis-parses - see account-form-modal.html for the full
        explanation. -->
@@ -26,11 +25,20 @@
           </div>
           <div>
             <label class="form-label" for="institution-icon">{{ t('institutions.form.fields.icon') }}</label>
-            <select id="institution-icon" class="form-input" formControlName="icon">
-              @for (icon of iconOptions; track icon) {
-                <option [value]="icon">{{ t('institutions.icon.' + icon) }}</option>
-              }
-            </select>
+            <button
+              id="institution-icon"
+              type="button"
+              class="form-input flex items-center gap-2"
+              (click)="iconPickerOpen.set(true)"
+            >
+              <app-icon [name]="selectedIcon()" />
+              <span>{{ t('icons.names.' + selectedIcon()) }}</span>
+            </button>
+            <app-icon-picker
+              [(open)]="iconPickerOpen"
+              [selected]="selectedIcon()"
+              (picked)="form.controls.icon.setValue($event)"
+            />
           </div>
         </div>
 

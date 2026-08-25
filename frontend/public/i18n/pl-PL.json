@@ -11,6 +11,46 @@
       "saving": "Zapisywanie…"
     }
   },
+  "icons": {
+    "title": "Wybierz ikonę",
+    "search": "Szukaj ikon",
+    "empty": "Brak ikon pasujących do wyszukiwania",
+    "names": {
+      "home": "Dom",
+      "wallet": "Portfel",
+      "swap": "Przelew",
+      "tag": "Etykieta",
+      "target": "Cel",
+      "chart": "Wykres",
+      "settings": "Ustawienia",
+      "sun": "Słońce",
+      "moon": "Księżyc",
+      "globe": "Globus",
+      "menu": "Menu",
+      "close": "Zamknij",
+      "plus": "Plus",
+      "trash": "Kosz",
+      "pencil": "Ołówek",
+      "chevronDown": "Strzałka w Dół",
+      "chevronRight": "Strzałka w Prawo",
+      "check": "Ptaszek",
+      "alertTriangle": "Ostrzeżenie",
+      "repeat": "Powtórz",
+      "archive": "Archiwum",
+      "arrowUpRight": "Strzałka Ukośna w Górę",
+      "arrowDownLeft": "Strzałka Ukośna w Dół",
+      "refresh": "Odśwież",
+      "search": "Szukaj",
+      "eye": "Oko",
+      "eyeOff": "Oko Zamknięte",
+      "command": "Komenda",
+      "cornerDownLeft": "Enter",
+      "zap": "Błyskawica",
+      "grip": "Uchwyt",
+      "bank": "Bank",
+      "piggy": "Skarbonka"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Panel",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Usuń instytucję",
       "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć tę instytucję?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Portfel",
-      "chart": "Inwestycje",
-      "globe": "Międzynarodowe",
-      "archive": "Inne"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Anuluj",
         "save": "Zapisz"
       }
-    },
-    "icon": {
-      "tag": "Tag",
-      "home": "Dom",
-      "archive": "Archiwum",
-      "swap": "Transport",
-      "wallet": "Portfel",
-      "chart": "Wykres",
-      "sun": "Energia",
-      "alertTriangle": "Ostrzeżenie",
-      "pencil": "Edukacja",
-      "target": "Cel",
-      "repeat": "Cykliczne",
-      "globe": "Globalne"
     }
   },
   "budgets": {

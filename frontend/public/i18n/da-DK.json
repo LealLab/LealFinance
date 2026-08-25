@@ -11,6 +11,46 @@
       "saving": "Gemmer…"
     }
   },
+  "icons": {
+    "title": "Vælg et ikon",
+    "search": "Søg ikoner",
+    "empty": "Ingen ikoner matcher din søgning",
+    "names": {
+      "home": "Hjem",
+      "wallet": "Tegnebog",
+      "swap": "Overførsel",
+      "tag": "Mærke",
+      "target": "Mål",
+      "chart": "Diagram",
+      "settings": "Indstillinger",
+      "sun": "Sol",
+      "moon": "Måne",
+      "globe": "Klode",
+      "menu": "Menu",
+      "close": "Luk",
+      "plus": "Plus",
+      "trash": "Papirkurv",
+      "pencil": "Blyant",
+      "chevronDown": "Pil Ned",
+      "chevronRight": "Pil Højre",
+      "check": "Flueben",
+      "alertTriangle": "Advarsel",
+      "repeat": "Gentag",
+      "archive": "Arkiv",
+      "arrowUpRight": "Diagonal Pil Op",
+      "arrowDownLeft": "Diagonal Pil Ned",
+      "refresh": "Opdater",
+      "search": "Søg",
+      "eye": "Øje",
+      "eyeOff": "Øje Lukket",
+      "command": "Kommando",
+      "cornerDownLeft": "Enter",
+      "zap": "Lyn",
+      "grip": "Håndtag",
+      "bank": "Bank",
+      "piggy": "Sparegris"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Oversigt",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Slet institution",
       "message": "Denne handling kan ikke fortrydes. Vil du slette denne institution?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Tegnebog",
-      "chart": "Investeringer",
-      "globe": "International",
-      "archive": "Andet"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Annuller",
         "save": "Gem"
       }
-    },
-    "icon": {
-      "tag": "Mærkat",
-      "home": "Hjem",
-      "archive": "Arkiv",
-      "swap": "Transport",
-      "wallet": "Tegnebog",
-      "chart": "Diagram",
-      "sun": "Energi",
-      "alertTriangle": "Advarsel",
-      "pencil": "Uddannelse",
-      "target": "Mål",
-      "repeat": "Gentagelse",
-      "globe": "Global"
     }
   },
   "budgets": {

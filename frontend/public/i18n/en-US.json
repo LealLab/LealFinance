@@ -11,6 +11,46 @@
       "saving": "Saving…"
     }
   },
+  "icons": {
+    "title": "Choose an icon",
+    "search": "Search icons",
+    "empty": "No icons match your search",
+    "names": {
+      "home": "Home",
+      "wallet": "Wallet",
+      "swap": "Swap",
+      "tag": "Tag",
+      "target": "Target",
+      "chart": "Chart",
+      "settings": "Settings",
+      "sun": "Sun",
+      "moon": "Moon",
+      "globe": "Globe",
+      "menu": "Menu",
+      "close": "Close",
+      "plus": "Plus",
+      "trash": "Trash",
+      "pencil": "Pencil",
+      "chevronDown": "Chevron Down",
+      "chevronRight": "Chevron Right",
+      "check": "Check",
+      "alertTriangle": "Alert Triangle",
+      "repeat": "Repeat",
+      "archive": "Archive",
+      "arrowUpRight": "Arrow Up Right",
+      "arrowDownLeft": "Arrow Down Left",
+      "refresh": "Refresh",
+      "search": "Search",
+      "eye": "Eye",
+      "eyeOff": "Eye Off",
+      "command": "Command",
+      "cornerDownLeft": "Corner Down Left",
+      "zap": "Lightning",
+      "grip": "Grip",
+      "bank": "Bank",
+      "piggy": "Piggy Bank"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Dashboard",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Delete institution",
       "message": "This action cannot be undone. Do you want to delete this institution?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Wallet",
-      "chart": "Investments",
-      "globe": "International",
-      "archive": "Other"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Cancel",
         "save": "Save"
       }
-    },
-    "icon": {
-      "tag": "Tag",
-      "home": "Home",
-      "archive": "Archive",
-      "swap": "Transport",
-      "wallet": "Wallet",
-      "chart": "Chart",
-      "sun": "Energy",
-      "alertTriangle": "Alert",
-      "pencil": "Education",
-      "target": "Goal",
-      "repeat": "Recurring",
-      "globe": "Global"
     }
   },
   "budgets": {

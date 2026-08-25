@@ -11,6 +11,46 @@
       "saving": "Salvataggio…"
     }
   },
+  "icons": {
+    "title": "Scegli un’icona",
+    "search": "Cerca icone",
+    "empty": "Nessuna icona corrisponde alla ricerca",
+    "names": {
+      "home": "Casa",
+      "wallet": "Portafoglio",
+      "swap": "Trasferimento",
+      "tag": "Etichetta",
+      "target": "Obiettivo",
+      "chart": "Grafico",
+      "settings": "Impostazioni",
+      "sun": "Sole",
+      "moon": "Luna",
+      "globe": "Globo",
+      "menu": "Menu",
+      "close": "Chiudi",
+      "plus": "Più",
+      "trash": "Cestino",
+      "pencil": "Matita",
+      "chevronDown": "Freccia Giù",
+      "chevronRight": "Freccia Destra",
+      "check": "Spunta",
+      "alertTriangle": "Avviso",
+      "repeat": "Ripeti",
+      "archive": "Archivio",
+      "arrowUpRight": "Freccia Diagonale Su",
+      "arrowDownLeft": "Freccia Diagonale Giù",
+      "refresh": "Aggiorna",
+      "search": "Cerca",
+      "eye": "Occhio",
+      "eyeOff": "Occhio Chiuso",
+      "command": "Comando",
+      "cornerDownLeft": "Invio",
+      "zap": "Fulmine",
+      "grip": "Maniglia",
+      "bank": "Banca",
+      "piggy": "Salvadanaio"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Panoramica",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Elimina istituto",
       "message": "Questa azione non può essere annullata. Vuoi eliminare questo istituto?"
-    },
-    "icon": {
-      "bank": "Banca",
-      "wallet": "Portafoglio",
-      "chart": "Investimenti",
-      "globe": "Internazionale",
-      "archive": "Altro"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Annulla",
         "save": "Salva"
       }
-    },
-    "icon": {
-      "tag": "Etichetta",
-      "home": "Casa",
-      "archive": "Archivio",
-      "swap": "Trasporti",
-      "wallet": "Portafoglio",
-      "chart": "Grafico",
-      "sun": "Energia",
-      "alertTriangle": "Avviso",
-      "pencil": "Istruzione",
-      "target": "Obiettivo",
-      "repeat": "Ricorrenza",
-      "globe": "Globale"
     }
   },
   "budgets": {

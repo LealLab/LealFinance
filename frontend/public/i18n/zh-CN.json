@@ -11,6 +11,46 @@
       "saving": "保存中…"
     }
   },
+  "icons": {
+    "title": "选择图标",
+    "search": "搜索图标",
+    "empty": "没有匹配的图标",
+    "names": {
+      "home": "首页",
+      "wallet": "钱包",
+      "swap": "转账",
+      "tag": "标签",
+      "target": "目标",
+      "chart": "图表",
+      "settings": "设置",
+      "sun": "太阳",
+      "moon": "月亮",
+      "globe": "地球",
+      "menu": "菜单",
+      "close": "关闭",
+      "plus": "加号",
+      "trash": "垃圾桶",
+      "pencil": "铅笔",
+      "chevronDown": "向下箭头",
+      "chevronRight": "向右箭头",
+      "check": "勾选",
+      "alertTriangle": "警告",
+      "repeat": "重复",
+      "archive": "归档",
+      "arrowUpRight": "右上箭头",
+      "arrowDownLeft": "左下箭头",
+      "refresh": "刷新",
+      "search": "搜索",
+      "eye": "眼睛",
+      "eyeOff": "闭眼",
+      "command": "命令",
+      "cornerDownLeft": "回车",
+      "zap": "闪电",
+      "grip": "手柄",
+      "bank": "银行",
+      "piggy": "存钱罐"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "仪表盘",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "删除机构",
       "message": "此操作无法撤销。要删除此机构吗？"
-    },
-    "icon": {
-      "bank": "银行",
-      "wallet": "钱包",
-      "chart": "投资",
-      "globe": "国际",
-      "archive": "其他"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "取消",
         "save": "保存"
       }
-    },
-    "icon": {
-      "tag": "标签",
-      "home": "住房",
-      "archive": "归档",
-      "swap": "交通",
-      "wallet": "钱包",
-      "chart": "图表",
-      "sun": "能源",
-      "alertTriangle": "警告",
-      "pencil": "教育",
-      "target": "目标",
-      "repeat": "周期性",
-      "globe": "全球"
     }
   },
   "budgets": {

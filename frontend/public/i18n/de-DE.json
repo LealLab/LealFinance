@@ -11,6 +11,46 @@
       "saving": "Wird gespeichert…"
     }
   },
+  "icons": {
+    "title": "Symbol wählen",
+    "search": "Symbole suchen",
+    "empty": "Keine Symbole gefunden",
+    "names": {
+      "home": "Startseite",
+      "wallet": "Geldbörse",
+      "swap": "Umbuchung",
+      "tag": "Etikett",
+      "target": "Ziel",
+      "chart": "Diagramm",
+      "settings": "Einstellungen",
+      "sun": "Sonne",
+      "moon": "Mond",
+      "globe": "Globus",
+      "menu": "Menü",
+      "close": "Schließen",
+      "plus": "Plus",
+      "trash": "Papierkorb",
+      "pencil": "Stift",
+      "chevronDown": "Pfeil Runter",
+      "chevronRight": "Pfeil Rechts",
+      "check": "Häkchen",
+      "alertTriangle": "Warnung",
+      "repeat": "Wiederholen",
+      "archive": "Archiv",
+      "arrowUpRight": "Pfeil Diagonal Oben",
+      "arrowDownLeft": "Pfeil Diagonal Unten",
+      "refresh": "Aktualisieren",
+      "search": "Suchen",
+      "eye": "Auge",
+      "eyeOff": "Auge Geschlossen",
+      "command": "Befehl",
+      "cornerDownLeft": "Eingabe",
+      "zap": "Blitz",
+      "grip": "Griff",
+      "bank": "Bank",
+      "piggy": "Sparschwein"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Übersicht",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Institut löschen",
       "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie dieses Institut löschen?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Geldbörse",
-      "chart": "Anlagen",
-      "globe": "International",
-      "archive": "Sonstiges"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Abbrechen",
         "save": "Speichern"
       }
-    },
-    "icon": {
-      "tag": "Schlagwort",
-      "home": "Wohnen",
-      "archive": "Archiv",
-      "swap": "Verkehr",
-      "wallet": "Geldbörse",
-      "chart": "Diagramm",
-      "sun": "Energie",
-      "alertTriangle": "Warnung",
-      "pencil": "Bildung",
-      "target": "Ziel",
-      "repeat": "Wiederkehrend",
-      "globe": "Global"
     }
   },
   "budgets": {

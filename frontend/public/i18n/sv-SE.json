@@ -11,6 +11,46 @@
       "saving": "Sparar…"
     }
   },
+  "icons": {
+    "title": "Välj en ikon",
+    "search": "Sök ikoner",
+    "empty": "Inga ikoner matchar din sökning",
+    "names": {
+      "home": "Hem",
+      "wallet": "Plånbok",
+      "swap": "Överföring",
+      "tag": "Tagg",
+      "target": "Mål",
+      "chart": "Diagram",
+      "settings": "Inställningar",
+      "sun": "Sol",
+      "moon": "Måne",
+      "globe": "Jordglob",
+      "menu": "Meny",
+      "close": "Stäng",
+      "plus": "Plus",
+      "trash": "Papperskorg",
+      "pencil": "Penna",
+      "chevronDown": "Pil Ner",
+      "chevronRight": "Pil Höger",
+      "check": "Bock",
+      "alertTriangle": "Varning",
+      "repeat": "Upprepa",
+      "archive": "Arkiv",
+      "arrowUpRight": "Diagonal Pil Upp",
+      "arrowDownLeft": "Diagonal Pil Ner",
+      "refresh": "Uppdatera",
+      "search": "Sök",
+      "eye": "Öga",
+      "eyeOff": "Öga Stängt",
+      "command": "Kommando",
+      "cornerDownLeft": "Enter",
+      "zap": "Blixt",
+      "grip": "Handtag",
+      "bank": "Bank",
+      "piggy": "Spargris"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Översikt",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Ta bort finansiellt institut",
       "message": "Åtgärden kan inte ångras. Vill du ta bort det finansiella institutet?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Plånbok",
-      "chart": "Investeringar",
-      "globe": "Internationellt",
-      "archive": "Övrigt"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Avbryt",
         "save": "Spara"
       }
-    },
-    "icon": {
-      "tag": "Tagg",
-      "home": "Hem",
-      "archive": "Arkiv",
-      "swap": "Transport",
-      "wallet": "Plånbok",
-      "chart": "Diagram",
-      "sun": "Energi",
-      "alertTriangle": "Varning",
-      "pencil": "Utbildning",
-      "target": "Mål",
-      "repeat": "Återkommande",
-      "globe": "Globalt"
     }
   },
   "budgets": {

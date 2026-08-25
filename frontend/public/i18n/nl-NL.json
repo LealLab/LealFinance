@@ -11,6 +11,46 @@
       "saving": "Opslaan…"
     }
   },
+  "icons": {
+    "title": "Kies een pictogram",
+    "search": "Pictogrammen zoeken",
+    "empty": "Geen pictogrammen gevonden",
+    "names": {
+      "home": "Huis",
+      "wallet": "Portemonnee",
+      "swap": "Overboeking",
+      "tag": "Label",
+      "target": "Doel",
+      "chart": "Grafiek",
+      "settings": "Instellingen",
+      "sun": "Zon",
+      "moon": "Maan",
+      "globe": "Wereldbol",
+      "menu": "Menu",
+      "close": "Sluiten",
+      "plus": "Plus",
+      "trash": "Prullenbak",
+      "pencil": "Potlood",
+      "chevronDown": "Pijl Omlaag",
+      "chevronRight": "Pijl Rechts",
+      "check": "Vinkje",
+      "alertTriangle": "Waarschuwing",
+      "repeat": "Herhalen",
+      "archive": "Archief",
+      "arrowUpRight": "Pijl Diagonaal Omhoog",
+      "arrowDownLeft": "Pijl Diagonaal Omlaag",
+      "refresh": "Vernieuwen",
+      "search": "Zoeken",
+      "eye": "Oog",
+      "eyeOff": "Oog Gesloten",
+      "command": "Command",
+      "cornerDownLeft": "Enter",
+      "zap": "Bliksem",
+      "grip": "Handvat",
+      "bank": "Bank",
+      "piggy": "Spaarpot"
+    }
+  },
   "layout": {
     "nav": {
       "dashboard": "Overzicht",
@@ -257,13 +297,6 @@
     "delete": {
       "title": "Instelling verwijderen",
       "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze instelling verwijderen?"
-    },
-    "icon": {
-      "bank": "Bank",
-      "wallet": "Portemonnee",
-      "chart": "Beleggingen",
-      "globe": "Internationaal",
-      "archive": "Overig"
     }
   },
   "transactions": {
@@ -464,20 +497,6 @@
         "cancel": "Annuleren",
         "save": "Opslaan"
       }
-    },
-    "icon": {
-      "tag": "Label",
-      "home": "Wonen",
-      "archive": "Archief",
-      "swap": "Vervoer",
-      "wallet": "Portemonnee",
-      "chart": "Grafiek",
-      "sun": "Energie",
-      "alertTriangle": "Waarschuwing",
-      "pencil": "Onderwijs",
-      "target": "Doel",
-      "repeat": "Terugkerend",
-      "globe": "Wereldwijd"
     }
   },
   "budgets": {

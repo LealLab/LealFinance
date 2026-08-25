@@ -38,6 +38,9 @@ const ICON_FILES = {
 
 export type IconName = keyof typeof ICON_FILES;
 
+/** Every icon the app ships, for pickers that let the user browse the full set. */
+export const ICON_NAMES = Object.keys(ICON_FILES) as IconName[];
+
 /**
  * Renders the app's standalone SVG assets as CSS masks. The mask inherits
  * `currentColor`, so existing text-color utilities and dynamic institution
