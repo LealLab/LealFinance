@@ -1,0 +1,147 @@
+<div *transloco="let t">
+  <!-- t(investments.type.buy, investments.type.sell, investments.type.dividend, investments.type.fee) t(investments.assetClass.stock, investments.assetClass.etf, investments.assetClass.fund, investments.assetClass.crypto, investments.assetClass.bond, investments.assetClass.other) -->
+  <button type="button" class="mb-4 inline-flex items-center gap-1 text-sm text-content-muted hover:text-content-primary" (click)="goBack()">
+    <app-icon name="chevronRight" [size]="14" class="rotate-180" />{{ t('investments.detail.back') }}
+  </button>
+
+  @if (wallet(); as wallet) {
+    <app-page-header [title]="wallet.name" [description]="wallet.currency">
+      <button appButton variant="primary" type="button" (click)="openCreateTransaction()">
+        <app-icon name="plus" [size]="16" />{{ t('investments.actions.newTransaction') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="openCreateAsset()">
+        <app-icon name="coins" [size]="16" />{{ t('investments.actions.newAsset') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="openEditWallet()">
+        <app-icon name="pencil" [size]="16" />{{ t('investments.actions.editWallet') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="toggleArchived()">
+        <app-icon name="archive" [size]="16" />{{ wallet.archived ? t('investments.actions.unarchiveWallet') : t('investments.actions.archiveWallet') }}
+      </button>
+    </app-page-header>
+
+    @if (wallet.archived) {
+      <div class="mb-6"><app-badge tone="neutral">{{ t('investments.archived') }}</app-badge></div>
+    }
+
+    <div class="flex flex-col gap-6">
+      <app-card [padded]="false">
+        <div class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+          {{ t('investments.detail.positions') }}
+        </div>
+        @if (positions().length === 0) {
+          <div class="p-4">
+            <app-empty-state
+              icon="pieChart"
+              [title]="t('investments.detail.positionsEmpty.title')"
+              [description]="t('investments.detail.positionsEmpty.description')"
+            />
+          </div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[760px] text-left text-sm">
+              <thead class="border-b border-border text-xs text-content-muted">
+                <tr>
+                  <th class="px-4 py-3 font-medium">{{ t('investments.columns.asset') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.quantity') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.averageCost') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.price') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.marketValue') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.unrealizedGain') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.allocation') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (position of positions(); track position.asset.id) {
+                  <tr class="border-b border-border last:border-b-0">
+                    <td class="px-4 py-3">
+                      <div class="font-medium text-content-primary">{{ position.asset.symbol }}</div>
+                      <div class="text-xs text-content-muted">{{ position.asset.name }} · {{ t('investments.assetClass.' + position.asset.assetClass) }}</div>
+                    </td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ position.quantity }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">
+                      @if (position.price) {
+                        {{ position.price | money: position.asset.currency }}
+                        @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
+                      } @else {
+                        <span class="text-content-muted">—</span>
+                        @if (position.priceIsStale) {
+                          <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge>
+                        }
+                      }
+                    </td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">
+                      <div>{{ position.marketValue ? (position.marketValue | money: wallet.currency) : '—' }}</div>
+                      <app-exchange-rate-warning [isFallback]="position.marketValueIsFallback" />
+                    </td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </app-card>
+
+      <app-card [padded]="false">
+        <div class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+          {{ t('investments.detail.ledger') }}
+        </div>
+        @if (rows().length === 0) {
+          <div class="p-4">
+            <app-empty-state
+              icon="swap"
+              [title]="t('investments.detail.ledgerEmpty.title')"
+              [description]="t('investments.detail.ledgerEmpty.description')"
+            />
+          </div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[760px] text-left text-sm">
+              <thead class="border-b border-border text-xs text-content-muted">
+                <tr>
+                  <th class="px-4 py-3 font-medium">{{ t('investments.columns.type') }}</th>
+                  <th class="px-4 py-3 font-medium">{{ t('investments.columns.date') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.quantity') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.price') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.amount') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.fee') }}</th>
+                  <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.actions') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (transaction of rows(); track transaction.id) {
+                  <tr class="border-b border-border last:border-b-0">
+                    <td class="px-4 py-3"><app-badge tone="accent">{{ typeLabel(transaction.type) }}</app-badge></td>
+                    <td class="px-4 py-3 text-content-muted">{{ transaction.date }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.quantity ?? '—' }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency) : '—' }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.amount | money: transaction.currency }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.fee | money: transaction.currency }}</td>
+                    <td class="px-4 py-3">
+                      <div class="flex justify-end gap-1">
+                        <button appButton variant="ghost" size="sm" type="button" (click)="openEditTransaction(transaction)" [attr.aria-label]="t('investments.actions.editTransaction')"><app-icon name="pencil" [size]="16" /></button>
+                        <button appButton variant="ghost" size="sm" type="button" (click)="deleteTransaction(transaction)" [attr.aria-label]="t('investments.actions.deleteTransaction')"><app-icon name="trash" [size]="16" /></button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (!exhausted()) {
+            <div appInfiniteScroll (visible)="loadMore()" class="h-1"></div>
+          }
+        }
+      </app-card>
+    </div>
+
+    <app-investment-wallet-form-modal [(open)]="walletFormOpen" [wallet]="wallet" (saved)="onWalletSaved()" />
+    <app-investment-transaction-form-modal [(open)]="transactionFormOpen" [walletId]="id()" [transaction]="editingTransaction()" [assets]="assetsResource.value() ?? []" (saved)="onTransactionSaved()" />
+    <app-investment-asset-form-modal [(open)]="assetFormOpen" (saved)="onAssetSaved()" />
+  } @else {
+    <app-empty-state icon="wallet" [title]="t('investments.detail.notFound')" />
+  }
+</div>

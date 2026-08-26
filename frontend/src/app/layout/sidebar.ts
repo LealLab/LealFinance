@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Icon, IconName } from '../shared/ui/icon/icon';
 import { MetadataService } from '../core/metadata.service';
+import { PreferenceService } from '../core/preference.service';
 import { SessionService } from '../core/session.service';
 
 export interface NavItem {
@@ -29,7 +30,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -56,6 +57,37 @@ export const NAV_SECTIONS: NavSection[] = [
   },
 ];
 
+export function navSectionsFor(
+  role: string | undefined,
+  agentsEnabled: boolean | undefined,
+  investmentsEnabled: boolean | undefined,
+): NavSection[] {
+  const sections = NAV_SECTIONS.map((section) =>
+    section.labelKey === 'layout.nav.sections.accounts' && investmentsEnabled
+      ? {
+          ...section,
+          items: [
+            ...section.items,
+            { path: '/investments', labelKey: 'layout.nav.investments', icon: 'chart' as IconName },
+          ],
+        }
+      : section,
+  );
+  if (role !== 'admin') return sections;
+  return [
+    ...sections,
+    {
+      labelKey: 'layout.nav.sections.admin',
+      items: [
+        { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
+        ...(agentsEnabled
+          ? [{ path: '/admin/providers', labelKey: 'layout.nav.providers', icon: 'zap' as IconName }]
+          : []),
+      ],
+    },
+  ];
+}
+
 /**
  * Section nav, shared by the desktop rail and the mobile drawer (Shell
  * decides which chrome wraps it). Icon-only vs. icon+label is handled
@@ -71,6 +103,7 @@ export const NAV_SECTIONS: NavSection[] = [
 export class Sidebar {
   private readonly session = inject(SessionService);
   private readonly metadata = inject(MetadataService);
+  private readonly preferences = inject(PreferenceService);
   /**
    * 'rail' (default): the persistent desktop sidebar. Its labels follow the
    * `expanded` input so Shell can keep responsive defaults while supporting a
@@ -82,27 +115,13 @@ export class Sidebar {
   readonly expanded = input(true);
   readonly navigated = output<void>();
 
-  protected readonly navSections = computed(() => {
-    if (this.session.user()?.role !== 'admin') return NAV_SECTIONS;
-    return [
-      ...NAV_SECTIONS,
-      {
-        labelKey: 'layout.nav.sections.admin',
-        items: [
-          { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
-          ...(this.metadata.settings()?.agentsEnabled
-            ? [
-                {
-                  path: '/admin/providers',
-                  labelKey: 'layout.nav.providers',
-                  icon: 'zap' as IconName,
-                },
-              ]
-            : []),
-        ],
-      },
-    ];
-  });
+  protected readonly navSections = computed(() =>
+    navSectionsFor(
+      this.session.user()?.role,
+      this.metadata.settings()?.agentsEnabled,
+      this.preferences.preferences()?.investmentsEnabled,
+    ),
+  );
   protected readonly labelClass = computed(() =>
     this.variant() === 'rail' && !this.expanded() ? 'hidden' : '',
   );

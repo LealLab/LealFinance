@@ -164,6 +164,7 @@
       "reports": "דוחות",
       "exchange": "המרת מטבע",
       "settings": "הגדרות",
+      "investments": "השקעות",
       "adminUsers": "משתמשים והזמנות",
       "sections": {
         "accounts": "חשבונות",
@@ -746,6 +747,159 @@
       "saveError": "לא ניתן לרשום את הפעילות. נסו שוב."
     }
   },
+  "investments": {
+    "actions": {
+      "newWallet": "תיק השקעות חדש",
+      "editWallet": "עריכת תיק השקעות",
+      "archiveWallet": "העברת תיק השקעות לארכיון",
+      "unarchiveWallet": "הוצאת תיק השקעות מהארכיון",
+      "view": "הצגה",
+      "newTransaction": "רישום תנועה",
+      "editTransaction": "עריכת תנועה",
+      "deleteTransaction": "מחיקת תנועה",
+      "newAsset": "נכס חדש"
+    },
+    "wallet": "תיק השקעות",
+    "archived": "בארכיון",
+    "summary": {
+      "bookValue": "ערך בספרים",
+      "marketValue": "שווי שוק",
+      "unrealizedGain": "רווח לא ממומש"
+    },
+    "empty": {
+      "title": "אין עדיין תיקי השקעות",
+      "description": "יצירת תיק השקעות כדי להתחיל לעקוב אחר ההשקעות שלכם."
+    },
+    "detail": {
+      "back": "חזרה להשקעות",
+      "notFound": "תיק ההשקעות לא נמצא",
+      "positions": "פוזיציות",
+      "positionsEmpty": {
+        "title": "אין עדיין פוזיציות",
+        "description": "רשמו תנועת קנייה כדי לראות כאן פוזיציות."
+      },
+      "ledger": "יומן תנועות",
+      "ledgerEmpty": {
+        "title": "אין עדיין תנועות",
+        "description": "רשמו קנייה, מכירה, דיבידנד או עמלה כדי להתחיל את היומן."
+      },
+      "stale": "המחיר אינו זמין"
+    },
+    "columns": {
+      "asset": "נכס",
+      "quantity": "כמות",
+      "averageCost": "עלות ממוצעת",
+      "price": "מחיר",
+      "marketValue": "שווי שוק",
+      "unrealizedGain": "רווח לא ממומש",
+      "allocation": "הקצאה",
+      "type": "סוג",
+      "date": "תאריך",
+      "amount": "סכום",
+      "fee": "עמלה",
+      "actions": "פעולות"
+    },
+    "type": {
+      "buy": "קנייה",
+      "sell": "מכירה",
+      "dividend": "דיבידנד",
+      "fee": "עמלה"
+    },
+    "assetClass": {
+      "stock": "מניה",
+      "etf": "ETF",
+      "fund": "קרן",
+      "crypto": "מטבע קריפטוגרפי",
+      "bond": "איגרת חוב",
+      "other": "אחר"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "ידני"
+    },
+    "form": {
+      "newTitle": "תיק השקעות חדש",
+      "editTitle": "עריכת תיק השקעות",
+      "saveError": "לא ניתן לשמור את תיק ההשקעות. נסו שוב.",
+      "fields": {
+        "name": "שם",
+        "currency": "מטבע",
+        "cashAccount": "חשבון מזומן",
+        "noCashAccount": "אין חשבון מזומן",
+        "institution": "מוסד",
+        "noInstitution": "אין מוסד"
+      },
+      "errors": {
+        "required": "שדה זה הוא חובה."
+      },
+      "actions": {
+        "cancel": "ביטול",
+        "save": "שמירה"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "רישום תנועת השקעה",
+        "editTitle": "עריכת תנועת השקעה",
+        "saveError": "לא ניתן לשמור את תנועת ההשקעה. נסו שוב.",
+        "fields": {
+          "asset": "נכס",
+          "selectAsset": "בחירת נכס",
+          "date": "תאריך",
+          "quantity": "כמות",
+          "price": "מחיר",
+          "amount": "סכום",
+          "derivedAmount": "מחושב לפי כמות × מחיר",
+          "fee": "עמלה",
+          "currency": "מטבע",
+          "notes": "הערות"
+        },
+        "errors": {
+          "invalid": "השלימו את שדות החובה בערכים תקינים."
+        },
+        "actions": {
+          "cancel": "ביטול",
+          "save": "שמירה"
+        }
+      },
+      "delete": {
+        "title": "מחיקת תנועה?",
+        "message": "למחוק את תנועת ההשקעה מתאריך {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "נכס השקעה חדש",
+        "editTitle": "עריכת נכס השקעה",
+        "saveError": "לא ניתן לשמור את נכס ההשקעה. נסו שוב.",
+        "fields": {
+          "symbol": "סימול",
+          "name": "שם",
+          "assetClass": "סוג נכס",
+          "currency": "מטבע",
+          "quoteProvider": "ספק ציטוטים",
+          "manualPrice": "מחיר ידני",
+          "manualPriceHint": "בשימוש עד שיהיו זמינים מחירים בזמן אמת."
+        },
+        "actions": {
+          "cancel": "ביטול",
+          "save": "שמירה"
+        }
+      }
+    },
+    "archive": {
+      "title": "להעביר את תיק ההשקעות לארכיון?",
+      "message": "להעביר את {{name}} לארכיון? ההיסטוריה שלו תישאר זמינה."
+    },
+    "archiveError": "לא ניתן לעדכן את מצב הארכיון של תיק ההשקעות. נסו שוב.",
+    "title": "השקעות",
+    "description": "עקבו אחר המניות, הקרנות והמטבעות הקריפטוגרפיים שבבעלותכם.",
+    "placeholder": {
+      "title": "בקרוב",
+      "description": "תיקים, פוזיציות ושערים בדרך."
+    }
+  },
   "reports": {
     "title": "דוחות",
     "description": "נתחו הכנסות, הוצאות ויתרות לאורך זמן.",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "מטבע תצוגה",
       "description": "משמש להמרה ולהוספת ערכים בין חשבונות במטבעות שונים, כגון ההון נטו בלוח הבקרה."
+    },
+    "investments": {
+      "title": "השקעות",
+      "description": "עקבו אחר מניות, קרנות ומטבעות קריפטוגרפיים לצד חשבונות המזומן שלכם.",
+      "enable": "הפעל השקעות",
+      "marketData": {
+        "title": "מחירי שוק בזמן אמת",
+        "description": "מפתחות API אופציונליים מאפשרים לאפליקציה לקבל מחירי נכסים עדכניים. המפתח שלך ישמש לפני מפתח הגיבוי של המופע.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "מוגדר",
+        "notConfigured": "לא מוגדר",
+        "placeholder": "מפתח API",
+        "save": "שמירת המפתח",
+        "clear": "ניקוי המפתח",
+        "saveError": "לא ניתן לשמור את המפתח. נסו שוב."
+      }
     },
     "agents": {
       "title": "סוכני AI",

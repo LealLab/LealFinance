@@ -164,6 +164,7 @@
       "reports": "報表",
       "exchange": "匯兌",
       "settings": "設定",
+      "investments": "投資",
       "adminUsers": "使用者與邀請",
       "sections": {
         "accounts": "帳戶",
@@ -746,6 +747,159 @@
       "saveError": "無法記錄活動，請再試一次。"
     }
   },
+  "investments": {
+    "actions": {
+      "newWallet": "新投資組合",
+      "editWallet": "編輯投資組合",
+      "archiveWallet": "封存投資組合",
+      "unarchiveWallet": "取消封存投資組合",
+      "view": "檢視",
+      "newTransaction": "記錄交易",
+      "editTransaction": "編輯交易",
+      "deleteTransaction": "刪除交易",
+      "newAsset": "新增資產"
+    },
+    "wallet": "投資組合",
+    "archived": "已封存",
+    "summary": {
+      "bookValue": "帳面價值",
+      "marketValue": "市值",
+      "unrealizedGain": "未實現收益"
+    },
+    "empty": {
+      "title": "尚無投資組合",
+      "description": "建立投資組合以開始追蹤您的投資。"
+    },
+    "detail": {
+      "back": "返回投資",
+      "notFound": "找不到投資組合",
+      "positions": "持倉",
+      "positionsEmpty": {
+        "title": "尚無持倉",
+        "description": "記錄買入交易即可在此查看持倉。"
+      },
+      "ledger": "交易帳",
+      "ledgerEmpty": {
+        "title": "尚無交易",
+        "description": "記錄買入、賣出、股息或費用以開始記帳。"
+      },
+      "stale": "價格無法取得"
+    },
+    "columns": {
+      "asset": "資產",
+      "quantity": "數量",
+      "averageCost": "平均成本",
+      "price": "價格",
+      "marketValue": "市值",
+      "unrealizedGain": "未實現收益",
+      "allocation": "配置",
+      "type": "類型",
+      "date": "日期",
+      "amount": "金額",
+      "fee": "費用",
+      "actions": "操作"
+    },
+    "type": {
+      "buy": "買入",
+      "sell": "賣出",
+      "dividend": "股息",
+      "fee": "費用"
+    },
+    "assetClass": {
+      "stock": "股票",
+      "etf": "ETF",
+      "fund": "基金",
+      "crypto": "加密貨幣",
+      "bond": "債券",
+      "other": "其他"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "手動"
+    },
+    "form": {
+      "newTitle": "新增投資組合",
+      "editTitle": "編輯投資組合",
+      "saveError": "無法儲存投資組合，請再試一次。",
+      "fields": {
+        "name": "名稱",
+        "currency": "貨幣",
+        "cashAccount": "現金帳戶",
+        "noCashAccount": "沒有現金帳戶",
+        "institution": "機構",
+        "noInstitution": "沒有機構"
+      },
+      "errors": {
+        "required": "此欄位為必填。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "儲存"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "記錄投資交易",
+        "editTitle": "編輯投資交易",
+        "saveError": "無法儲存投資交易，請再試一次。",
+        "fields": {
+          "asset": "資產",
+          "selectAsset": "選取資產",
+          "date": "日期",
+          "quantity": "數量",
+          "price": "價格",
+          "amount": "金額",
+          "derivedAmount": "根據數量 × 價格計算",
+          "fee": "費用",
+          "currency": "貨幣",
+          "notes": "備註"
+        },
+        "errors": {
+          "invalid": "請使用有效值填寫必填欄位。"
+        },
+        "actions": {
+          "cancel": "取消",
+          "save": "儲存"
+        }
+      },
+      "delete": {
+        "title": "刪除交易？",
+        "message": "刪除日期為 {{date}} 的投資交易？"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "新增投資資產",
+        "editTitle": "編輯投資資產",
+        "saveError": "無法儲存投資資產，請再試一次。",
+        "fields": {
+          "symbol": "代號",
+          "name": "名稱",
+          "assetClass": "資產類別",
+          "currency": "貨幣",
+          "quoteProvider": "報價提供者",
+          "manualPrice": "手動價格",
+          "manualPriceHint": "在即時報價可用前使用。"
+        },
+        "actions": {
+          "cancel": "取消",
+          "save": "儲存"
+        }
+      }
+    },
+    "archive": {
+      "title": "封存投資組合？",
+      "message": "封存 {{name}}？其歷史記錄仍可使用。"
+    },
+    "archiveError": "無法更新投資組合的封存狀態，請再試一次。",
+    "title": "投資",
+    "description": "追蹤您持有的股票、基金和加密貨幣。",
+    "placeholder": {
+      "title": "即將推出",
+      "description": "投資組合、持倉與報價功能即將推出。"
+    }
+  },
   "reports": {
     "title": "報表",
     "description": "分析一段時間內的收入、支出與餘額。",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "顯示貨幣",
       "description": "用於在不同貨幣的帳戶間換算與加總，例如儀表板上的淨資產。"
+    },
+    "investments": {
+      "title": "投資",
+      "description": "在現金帳戶之外，追蹤您的股票、基金和加密貨幣。",
+      "enable": "啟用投資",
+      "marketData": {
+        "title": "即時市場價格",
+        "description": "選用的 API 金鑰可讓應用程式取得資產目前價格。系統會優先使用你的金鑰，再使用執行個體的備用金鑰。",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "已設定",
+        "notConfigured": "未設定",
+        "placeholder": "API 金鑰",
+        "save": "儲存金鑰",
+        "clear": "清除金鑰",
+        "saveError": "無法儲存此金鑰，請再試一次。"
+      }
     },
     "agents": {
       "title": "AI 代理程式",

@@ -164,6 +164,7 @@
       "reports": "Raporty",
       "exchange": "Wymiana walut",
       "settings": "Ustawienia",
+      "investments": "Inwestycje",
       "adminUsers": "Użytkownicy i zaproszenia",
       "sections": {
         "accounts": "Konta",
@@ -746,6 +747,159 @@
       "saveError": "Nie udało się zarejestrować operacji. Spróbuj ponownie."
     }
   },
+  "investments": {
+    "actions": {
+      "newWallet": "Nowy portfel inwestycyjny",
+      "editWallet": "Edytuj portfel inwestycyjny",
+      "archiveWallet": "Zarchiwizuj portfel inwestycyjny",
+      "unarchiveWallet": "Przywróć portfel inwestycyjny z archiwum",
+      "view": "Wyświetl",
+      "newTransaction": "Zarejestruj transakcję",
+      "editTransaction": "Edytuj transakcję",
+      "deleteTransaction": "Usuń transakcję",
+      "newAsset": "Nowy składnik aktywów"
+    },
+    "wallet": "Portfel inwestycyjny",
+    "archived": "Zarchiwizowany",
+    "summary": {
+      "bookValue": "Wartość księgowa",
+      "marketValue": "Wartość rynkowa",
+      "unrealizedGain": "Niezrealizowany zysk"
+    },
+    "empty": {
+      "title": "Nie ma jeszcze portfeli inwestycyjnych",
+      "description": "Utwórz portfel, aby zacząć śledzić swoje inwestycje."
+    },
+    "detail": {
+      "back": "Wróć do inwestycji",
+      "notFound": "Nie znaleziono portfela inwestycyjnego",
+      "positions": "Pozycje",
+      "positionsEmpty": {
+        "title": "Nie ma jeszcze pozycji",
+        "description": "Zarejestruj transakcję kupna, aby zobaczyć tutaj pozycje."
+      },
+      "ledger": "Rejestr transakcji",
+      "ledgerEmpty": {
+        "title": "Nie ma jeszcze transakcji",
+        "description": "Zarejestruj kupno, sprzedaż, dywidendę lub opłatę, aby rozpocząć rejestr."
+      },
+      "stale": "Cena niedostępna"
+    },
+    "columns": {
+      "asset": "Aktywo",
+      "quantity": "Ilość",
+      "averageCost": "Średni koszt",
+      "price": "Cena",
+      "marketValue": "Wartość rynkowa",
+      "unrealizedGain": "Niezrealizowany zysk",
+      "allocation": "Alokacja",
+      "type": "Typ",
+      "date": "Data",
+      "amount": "Kwota",
+      "fee": "Opłata",
+      "actions": "Działania"
+    },
+    "type": {
+      "buy": "Kupno",
+      "sell": "Sprzedaż",
+      "dividend": "Dywidenda",
+      "fee": "Opłata"
+    },
+    "assetClass": {
+      "stock": "Akcja",
+      "etf": "ETF",
+      "fund": "Fundusz",
+      "crypto": "Kryptowaluta",
+      "bond": "Obligacja",
+      "other": "Inne"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Ręcznie"
+    },
+    "form": {
+      "newTitle": "Nowy portfel inwestycyjny",
+      "editTitle": "Edytuj portfel inwestycyjny",
+      "saveError": "Nie udało się zapisać portfela inwestycyjnego. Spróbuj ponownie.",
+      "fields": {
+        "name": "Nazwa",
+        "currency": "Waluta",
+        "cashAccount": "Konto gotówkowe",
+        "noCashAccount": "Brak konta gotówkowego",
+        "institution": "Instytucja",
+        "noInstitution": "Brak instytucji"
+      },
+      "errors": {
+        "required": "To pole jest wymagane."
+      },
+      "actions": {
+        "cancel": "Anuluj",
+        "save": "Zapisz"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Zarejestruj transakcję inwestycyjną",
+        "editTitle": "Edytuj transakcję inwestycyjną",
+        "saveError": "Nie udało się zapisać transakcji inwestycyjnej. Spróbuj ponownie.",
+        "fields": {
+          "asset": "Aktywo",
+          "selectAsset": "Wybierz aktywo",
+          "date": "Data",
+          "quantity": "Ilość",
+          "price": "Cena",
+          "amount": "Kwota",
+          "derivedAmount": "Obliczono na podstawie ilości × ceny",
+          "fee": "Opłata",
+          "currency": "Waluta",
+          "notes": "Notatki"
+        },
+        "errors": {
+          "invalid": "Uzupełnij wymagane pola prawidłowymi wartościami."
+        },
+        "actions": {
+          "cancel": "Anuluj",
+          "save": "Zapisz"
+        }
+      },
+      "delete": {
+        "title": "Usunąć transakcję?",
+        "message": "Usunąć transakcję inwestycyjną z dnia {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nowy składnik aktywów inwestycyjnych",
+        "editTitle": "Edytuj składnik aktywów inwestycyjnych",
+        "saveError": "Nie udało się zapisać składnika aktywów inwestycyjnych. Spróbuj ponownie.",
+        "fields": {
+          "symbol": "Symbol",
+          "name": "Nazwa",
+          "assetClass": "Klasa aktywów",
+          "currency": "Waluta",
+          "quoteProvider": "Dostawca notowań",
+          "manualPrice": "Cena ręczna",
+          "manualPriceHint": "Używana do czasu udostępnienia notowań na żywo."
+        },
+        "actions": {
+          "cancel": "Anuluj",
+          "save": "Zapisz"
+        }
+      }
+    },
+    "archive": {
+      "title": "Zarchiwizować portfel inwestycyjny?",
+      "message": "Zarchiwizować {{name}}? Jego historia pozostanie dostępna."
+    },
+    "archiveError": "Nie udało się zaktualizować stanu archiwizacji portfela inwestycyjnego. Spróbuj ponownie.",
+    "title": "Inwestycje",
+    "description": "Śledź posiadane akcje, fundusze i kryptowaluty.",
+    "placeholder": {
+      "title": "Już wkrótce",
+      "description": "Portfele, pozycje i notowania są w drodze."
+    }
+  },
   "reports": {
     "title": "Raporty",
     "description": "Analizuj przychody, wydatki i salda w czasie.",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "Waluta wyświetlania",
       "description": "Służy do przeliczania i sumowania wartości między kontami w różnych walutach, na przykład majątku netto na panelu."
+    },
+    "investments": {
+      "title": "Inwestycje",
+      "description": "Śledź akcje, fundusze i kryptowaluty obok swoich rachunków gotówkowych.",
+      "enable": "Włącz inwestycje",
+      "marketData": {
+        "title": "Bieżące ceny rynkowe",
+        "description": "Opcjonalne klucze API pozwalają aplikacji pobierać aktualne ceny aktywów. Twój klucz ma pierwszeństwo przed kluczem zapasowym instancji.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Skonfigurowano",
+        "notConfigured": "Nie skonfigurowano",
+        "placeholder": "Klucz API",
+        "save": "Zapisz klucz",
+        "clear": "Wyczyść klucz",
+        "saveError": "Nie udało się zapisać klucza. Spróbuj ponownie."
+      }
     },
     "agents": {
       "title": "Agenci AI",

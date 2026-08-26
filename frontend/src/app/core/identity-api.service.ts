@@ -33,6 +33,7 @@ interface PreferencesWire {
   base_currency: string;
   display_currency: string;
   balances_hidden: boolean;
+  investments_enabled: boolean;
 }
 
 interface InvitationWire {
@@ -82,6 +83,7 @@ const mapPreferences = (value: PreferencesWire): Preferences => ({
   baseCurrency: value.base_currency,
   displayCurrency: value.display_currency,
   balancesHidden: value.balances_hidden,
+  investmentsEnabled: value.investments_enabled,
 });
 
 const mapInvitation = (value: InvitationWire): Invitation => ({
@@ -151,6 +153,9 @@ export class IdentityApiService {
     }
     if (Object.hasOwn(changes, 'balancesHidden')) {
       body.balances_hidden = changes.balancesHidden;
+    }
+    if (Object.hasOwn(changes, 'investmentsEnabled')) {
+      body.investments_enabled = changes.investmentsEnabled;
     }
     return this.api.patch<PreferencesWire>('/auth/preferences', body).pipe(map(mapPreferences));
   }

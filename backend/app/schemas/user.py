@@ -38,13 +38,17 @@ class PreferencesRead(BaseModel):
     theme: str
     base_currency: str
     display_currency: str
+    investments_enabled: bool
     balances_hidden: bool
 
 
 class PreferencesUpdate(PatchModel):
-    non_nullable_fields = frozenset({"locale", "theme", "display_currency", "balances_hidden"})
+    non_nullable_fields = frozenset(
+        {"locale", "theme", "display_currency", "investments_enabled", "balances_hidden"}
+    )
 
     locale: str | None = Field(default=None, min_length=2, max_length=10)
     theme: str | None = None
     display_currency: CurrencyCodeInput | None = None
+    investments_enabled: bool | None = None
     balances_hidden: bool | None = None

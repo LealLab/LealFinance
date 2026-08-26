@@ -16,6 +16,7 @@ export interface Preferences {
   baseCurrency: string;
   displayCurrency: string;
   balancesHidden: boolean;
+  investmentsEnabled: boolean;
 }
 
 export interface Invitation {

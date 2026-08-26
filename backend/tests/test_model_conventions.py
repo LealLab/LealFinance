@@ -10,7 +10,7 @@ from app import models  # noqa: F401 - populates Base.registry.mappers
 from app.models.base import Base, UserOwnedModel
 
 # The only tables that are intentionally NOT scoped to a single user.
-_GLOBAL_MODELS = {"Currency", "ExchangeRate", "User", "Session", "Invitation"}
+_GLOBAL_MODELS = {"Currency", "ExchangeRate", "AssetQuote", "User", "Session", "Invitation"}
 
 
 def test_every_domain_model_is_user_owned_or_explicitly_global() -> None:

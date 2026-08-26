@@ -1,5 +1,5 @@
 <div *transloco="let t">
-  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) -->
+  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) t(settings.investments.marketData.title, settings.investments.marketData.description, settings.investments.marketData.twelveData, settings.investments.marketData.brapi, settings.investments.marketData.configured, settings.investments.marketData.notConfigured, settings.investments.marketData.placeholder, settings.investments.marketData.save, settings.investments.marketData.clear, settings.investments.marketData.saveError) -->
   <app-page-header [title]="t('settings.title')" [description]="t('settings.description')" />
 
   <div class="flex max-w-2xl flex-col gap-6">
@@ -81,6 +81,92 @@
           </option>
         }
       </select>
+    </app-card>
+
+    <app-card>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.investments.title') }}</h2>
+          <p class="max-w-md text-sm text-content-muted">{{ t('settings.investments.description') }}</p>
+        </div>
+        <label class="flex shrink-0 items-center gap-2 text-sm text-content-muted">
+          <input
+            type="checkbox"
+            [checked]="preferences.preferences()?.investmentsEnabled ?? false"
+            (change)="setInvestmentsEnabled($any($event.target).checked)"
+          />
+          {{ t('settings.investments.enable') }}
+        </label>
+      </div>
+
+      <div class="mt-5 border-t border-border pt-4">
+        <h3 class="mb-1 text-sm font-semibold text-content-primary">
+          {{ t('settings.investments.marketData.title') }}
+        </h3>
+        <p class="mb-4 text-sm text-content-muted">
+          {{ t('settings.investments.marketData.description') }}
+        </p>
+        <div class="flex flex-col gap-4">
+          @for (provider of marketDataProviders; track provider.id) {
+            <div>
+              <div class="mb-1 flex items-center justify-between gap-3">
+                <label class="form-label" [for]="'market-data-' + provider.id">
+                  {{ t('settings.investments.marketData.' + provider.labelKey) }}
+                </label>
+                <span
+                  class="rounded-full px-2.5 py-1 text-xs font-medium"
+                  [class]="
+                    marketDataStatus(provider.id)?.configured
+                      ? 'bg-positive/10 text-positive'
+                      : 'bg-surface-sunken text-content-muted'
+                  "
+                >
+                  {{
+                    marketDataStatus(provider.id)?.configured
+                      ? t('settings.investments.marketData.configured')
+                      : t('settings.investments.marketData.notConfigured')
+                  }}
+                </span>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  [id]="'market-data-' + provider.id"
+                  type="password"
+                  class="form-input min-w-0 flex-1"
+                  [placeholder]="t('settings.investments.marketData.placeholder')"
+                  [value]="marketDataKeys[provider.id]()"
+                  (input)="setMarketDataKey(provider.id, $any($event.target).value)"
+                />
+                <button
+                  appButton
+                  type="button"
+                  variant="primary"
+                  [disabled]="!marketDataKeys[provider.id]().trim() || marketDataSaving() !== null"
+                  (click)="saveMarketDataKey(provider.id)"
+                >
+                  {{ t('settings.investments.marketData.save') }}
+                </button>
+                @if (marketDataStatus(provider.id)?.source === 'user') {
+                  <button
+                    appButton
+                    type="button"
+                    variant="secondary"
+                    [disabled]="marketDataSaving() !== null"
+                    (click)="clearMarketDataKey(provider.id)"
+                  >
+                    {{ t('settings.investments.marketData.clear') }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+        @if (marketDataSaveError()) {
+          <p class="mt-3 text-sm text-negative" role="alert">
+            {{ t('settings.investments.marketData.saveError') }}
+          </p>
+        }
+      </div>
     </app-card>
 
     @if (preferences.errorCode(); as code) {

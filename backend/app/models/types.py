@@ -22,6 +22,12 @@ CurrencyCode = Annotated[str, mapped_column(String(3))]
 # can have many significant digits) but bound the integer part more tightly.
 ExchangeRateValue = Annotated[Decimal, mapped_column(Numeric(19, 10))]
 
+# Fractional crypto units need room for more decimal places than money.
+UnitQuantity = Annotated[Decimal, mapped_column(Numeric(28, 10))]
+
+# Asset prices use the same precision as exchange-rate values.
+AssetPrice = Annotated[Decimal, mapped_column(Numeric(19, 10))]
+
 # Budget allocation percentages: 0-100, with sub-percent precision. 3
 # integer digits is all that's meaningful for a percentage.
 PercentageValue = Annotated[Decimal, mapped_column(Numeric(7, 4))]

@@ -1,8 +1,9 @@
 """Interactive local dev-data generator.
 
-Builds one plausible user - institutions, accounts (incl. a credit card,
-a goal, and a second-currency investment account), categories,
-transactions, budgets, a recurring rule history, and a goal - so a
+Builds one plausible user - institutions, accounts (incl. a credit card
+and a goal), categories, transactions, budgets, a recurring rule
+history, and an investment wallet (two manual-priced assets, a
+buy/sell/dividend/fee history, cash-settled against checking) - so a
 developer has something to look at without hand-creating it through the
 UI. Every value is prompted with a sensible default; pressing Enter at
 every prompt gives a usable database.
@@ -49,13 +50,21 @@ from app.models.account import (  # noqa: E402
     ACCOUNT_TYPE_CASH,
     ACCOUNT_TYPE_CHECKING,
     ACCOUNT_TYPE_CREDIT_CARD,
-    ACCOUNT_TYPE_INVESTMENT,
     ACCOUNT_TYPE_SAVINGS,
     Account,
 )
 from app.models.budget import BudgetAllocation  # noqa: E402
 from app.models.category import CATEGORY_KIND_EXPENSE, CATEGORY_KIND_INCOME, Category  # noqa: E402
 from app.models.institution import Institution  # noqa: E402
+from app.models.investment import (  # noqa: E402
+    ASSET_CLASS_ETF,
+    ASSET_CLASS_STOCK,
+    INVESTMENT_TRANSACTION_TYPE_BUY,
+    INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
+    INVESTMENT_TRANSACTION_TYPE_FEE,
+    INVESTMENT_TRANSACTION_TYPE_SELL,
+    QUOTE_PROVIDER_MANUAL,
+)
 from app.models.recurring import (  # noqa: E402
     RECURRING_FREQUENCY_MONTHLY,
     RECURRING_FREQUENCY_YEARLY,
@@ -74,8 +83,14 @@ from app.schemas.budget_plan import BudgetAllocationUpsert, ExpectedIncomeUpsert
 from app.schemas.category import CategoryCreate  # noqa: E402
 from app.schemas.goal import GoalWithAccountCreate  # noqa: E402
 from app.schemas.institution import InstitutionCreate  # noqa: E402
+from app.schemas.investment import (  # noqa: E402
+    InvestmentAssetCreate,
+    InvestmentTransactionCreate,
+    InvestmentWalletCreate,
+)
 from app.schemas.recurring import RecurringRuleCreate, RecurringTemplateInput  # noqa: E402
 from app.schemas.transaction import ConversionInput, TransactionCreate  # noqa: E402
+from app.services import investments as investments_service  # noqa: E402
 from app.services.accounts import account_balances, create_account  # noqa: E402
 from app.services.budget_plan import upsert_allocation, upsert_expected_income  # noqa: E402
 from app.services.budgets import upsert_budget  # noqa: E402
@@ -376,14 +391,13 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             institution_id=institutions[0].id,
         ),
     )
-    investment_account = await create_account(
+    investment_wallet, investment_account = await investments_service.create_wallet(
         db,
         user.id,
-        AccountCreate(
+        InvestmentWalletCreate(
             name="Investments",
-            type=ACCOUNT_TYPE_INVESTMENT,
             currency=cfg.secondary_currency,
-            opening_balance=random_amount(rng, Decimal(500), Decimal(5000)),
+            cash_account_id=primary_checking.id,
             institution_id=institutions[-1].id,
         ),
     )
@@ -441,6 +455,116 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
         calendar.monthrange(range_end_month.year, range_end_month.month)[1],
     )
     catch_up_today = min(today, range_end)
+
+    # Investment domain: two manual-priced assets and a small buy/sell/
+    # dividend/fee history in the wallet created above. The wallet's cash
+    # account is the primary checking account, so buys and sells also
+    # exercise cash settlement (including the cross-currency conversion
+    # path, since the wallet's currency is cfg.secondary_currency while
+    # checking is cfg.base_currency) - see app/services/investments.py.
+    # quote_provider is manual for both assets so seeding never makes a
+    # live network call.
+    def investment_date(months_after_start: int, day: int) -> date:
+        base = add_months_clamped(range_start, months_after_start)
+        day = min(day, calendar.monthrange(base.year, base.month)[1])
+        return min(date(base.year, base.month, day), catch_up_today)
+
+    stock_asset = await investments_service.create_asset(
+        db,
+        user.id,
+        InvestmentAssetCreate(
+            symbol="ACME",
+            name="Acme Industries",
+            asset_class=ASSET_CLASS_STOCK,
+            currency=cfg.secondary_currency,
+            quote_provider=QUOTE_PROVIDER_MANUAL,
+            manual_price=Decimal("45.00"),
+        ),
+    )
+    etf_asset = await investments_service.create_asset(
+        db,
+        user.id,
+        InvestmentAssetCreate(
+            symbol="GLOBE",
+            name="Global Equity ETF",
+            asset_class=ASSET_CLASS_ETF,
+            currency=cfg.secondary_currency,
+            quote_provider=QUOTE_PROVIDER_MANUAL,
+            manual_price=Decimal("118.00"),
+        ),
+    )
+    await investments_service.create_investment_transaction(
+        db,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=investment_wallet.id,
+            asset_id=stock_asset.id,
+            type=INVESTMENT_TRANSACTION_TYPE_BUY,
+            date=investment_date(0, 5),
+            quantity=Decimal("8"),
+            price=Decimal("40.00"),
+            amount=Decimal("320.00"),
+            fee=Decimal("2.50"),
+            currency=cfg.secondary_currency,
+        ),
+    )
+    tx_count += 1  # settled as a cash transfer against primary_checking
+    await investments_service.create_investment_transaction(
+        db,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=investment_wallet.id,
+            asset_id=etf_asset.id,
+            type=INVESTMENT_TRANSACTION_TYPE_BUY,
+            date=investment_date(2, 12),
+            quantity=Decimal("4"),
+            price=Decimal("115.00"),
+            amount=Decimal("460.00"),
+            fee=Decimal("3.00"),
+            currency=cfg.secondary_currency,
+        ),
+    )
+    tx_count += 1
+    await investments_service.create_investment_transaction(
+        db,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=investment_wallet.id,
+            asset_id=stock_asset.id,
+            type=INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
+            date=investment_date(3, 20),
+            amount=Decimal("12.50"),
+            currency=cfg.secondary_currency,
+        ),
+    )
+    await investments_service.create_investment_transaction(
+        db,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=investment_wallet.id,
+            asset_id=stock_asset.id,
+            type=INVESTMENT_TRANSACTION_TYPE_SELL,
+            date=investment_date(4, 10),
+            quantity=Decimal("3"),
+            price=Decimal("48.00"),
+            amount=Decimal("144.00"),
+            fee=Decimal("1.50"),
+            currency=cfg.secondary_currency,
+        ),
+    )
+    tx_count += 1
+    await investments_service.create_investment_transaction(
+        db,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=investment_wallet.id,
+            asset_id=None,
+            type=INVESTMENT_TRANSACTION_TYPE_FEE,
+            date=investment_date(5, 1),
+            amount=Decimal("5.00"),
+            currency=cfg.secondary_currency,
+        ),
+    )
 
     salary_amount = random_amount(rng, Decimal(4000), Decimal(6000))
     rent_amount = random_amount(rng, Decimal(900), Decimal(1800))

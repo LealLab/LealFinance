@@ -161,6 +161,77 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/providers/{provider}/oauth/complete` | admin | Body `{verifier, state, code}`. |
 | POST | `/agents/providers/{provider}/test` | admin | → `{ok, error_code?}`. |
 | POST | `/agents/chat` | admin | Body `{provider?, messages}`. Non-streaming. |
+| GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
+| GET/PATCH | `/investments/wallets/{id}` | user | |
+| POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |
+| GET/POST | `/investments/assets` | user | User-owned asset registry. |
+| GET/PATCH | `/investments/assets/{id}` | user | |
+| POST | `/investments/assets/{id}/archive` | user | Body `{archived}`. |
+| GET/POST | `/investments/transactions` | user | Investment ledger entries; buy/sell cash legs are optional. |
+| GET/PATCH/DELETE | `/investments/transactions/{id}` | user | |
+| GET | `/investments/wallets/{id}/positions` | user | Average-cost positions with manual, cached, or live prices. |
+| GET | `/investments/summary` | user | Summary across wallets in the first wallet's currency. |
+| GET | `/market-data/credentials` | user | Provider status only; never returns API keys. |
+| PUT/DELETE | `/market-data/credentials/{provider}` | user | Link or remove a Twelve Data or brapi API key. |
+
+## Investments
+
+Wallets own an investment account and may point at a separate cash account for
+buy/sell settlement. Assets are user-owned symbols with a currency and either
+a manual price or a live quote provider. Transactions are the source of truth:
+positions fold buys, sells, dividends, and fees using average cost, so `amount`
+for a buy or sell is always derived from `quantity * price` on the server rather
+than trusted from the request. Transaction currency must match the wallet's
+currency because the position fold does no currency conversion. Updating or
+deleting a transaction re-folds the affected ledgers before commit and rejects
+changes that would make a later sell impossible; user-owned ids return the
+resource-specific 404 whether missing or owned by someone else.
+
+For wallets with a linked cash account, the optional cash leg is settled as
+follows:
+
+| Investment event | Transfer direction | Transfer amount |
+| --- | --- | --- |
+| Buy | Cash account → investment account | `quantity * price + fee` |
+| Sell | Investment account → cash account | `quantity * price - fee` |
+
+Positions resolve each price independently in this order: manual price (or an
+asset configured for manual quotes), today's cached quote, one batched live
+provider request per provider in use, the newest cached quote marked stale,
+then no price. A provider outage or missing credential therefore leaves the
+position readable; market value and unrealized gain are null when no price is
+available. Cross-currency market values use the normal exchange-rate service
+and retain its fallback warning flag.
+
+| Code | Status |
+| --- | --- |
+| `investment_wallet.not_found` | 404 |
+| `investment_wallet.currency_in_use` | 422 |
+| `investment_asset.not_found` | 404 |
+| `investment_asset.symbol_already_exists` | 409 |
+| `investment_transaction.not_found` | 404 |
+| `investment_transaction.quantity_price_required` | 422 |
+| `investment_transaction.quantity_price_not_allowed` | 422 |
+| `investment_transaction.asset_required` | 422 |
+| `investment_transaction.currency_must_match_wallet` | 422 |
+| `investment_transaction.insufficient_quantity` | 422 |
+| `investment_transaction.settlement_amount_not_positive` | 422 |
+| `investment_transaction.ledger_invalid` | 422 |
+
+## Market data
+
+Market-data credentials are user-owned, encrypted API-key rows in their own
+table, separate from administrator AI-provider credentials. Status responses
+only say whether a provider is configured and where it came from. Resolution
+uses a user's decrypted row first, then the instance `.env` fallback
+(`TWELVE_DATA_API_KEY` for Twelve Data or `BRAPI_TOKEN` for brapi), then no
+credential. Linking and unlinking are available to every authenticated user;
+unknown providers are rejected.
+
+| Code | Status |
+| --- | --- |
+| `market_data_credential.not_found` | 404 |
+| `market_data_credential.provider_unknown` | 422 |
 
 ## Transactions
 

@@ -74,6 +74,7 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=False,
         default="BRL",
     )
+    investments_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     balances_hidden: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
 

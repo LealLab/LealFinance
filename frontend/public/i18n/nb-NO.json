@@ -164,6 +164,7 @@
       "reports": "Rapporter",
       "exchange": "Valutaveksling",
       "settings": "Innstillinger",
+      "investments": "Investeringer",
       "adminUsers": "Brukere og invitasjoner",
       "sections": {
         "accounts": "Kontoer",
@@ -746,6 +747,159 @@
       "saveError": "Kunne ikke registrere aktiviteten. Prøv igjen."
     }
   },
+  "investments": {
+    "actions": {
+      "newWallet": "Ny investeringsportefølje",
+      "editWallet": "Rediger investeringsporteføljen",
+      "archiveWallet": "Arkiver investeringsporteføljen",
+      "unarchiveWallet": "Gjenopprett investeringsporteføljen fra arkivet",
+      "view": "Vis",
+      "newTransaction": "Registrer transaksjon",
+      "editTransaction": "Rediger transaksjon",
+      "deleteTransaction": "Slett transaksjon",
+      "newAsset": "Nytt investeringsaktivum"
+    },
+    "wallet": "Investeringsportefølje",
+    "archived": "Arkivert",
+    "summary": {
+      "bookValue": "Bokført verdi",
+      "marketValue": "Markedsverdi",
+      "unrealizedGain": "Urealisert gevinst"
+    },
+    "empty": {
+      "title": "Ingen investeringsporteføljer ennå",
+      "description": "Opprett en portefølje for å begynne å følge investeringene dine."
+    },
+    "detail": {
+      "back": "Tilbake til investeringer",
+      "notFound": "Finner ikke investeringsporteføljen",
+      "positions": "Beholdninger",
+      "positionsEmpty": {
+        "title": "Ingen beholdninger ennå",
+        "description": "Registrer en kjøpstransaksjon for å se beholdninger her."
+      },
+      "ledger": "Transaksjonsoversikt",
+      "ledgerEmpty": {
+        "title": "Ingen transaksjoner ennå",
+        "description": "Registrer et kjøp, salg, utbytte eller gebyr for å starte oversikten."
+      },
+      "stale": "Pris utilgjengelig"
+    },
+    "columns": {
+      "asset": "Aktivum",
+      "quantity": "Antall",
+      "averageCost": "Gjennomsnittlig kostnad",
+      "price": "Pris",
+      "marketValue": "Markedsverdi",
+      "unrealizedGain": "Urealisert gevinst",
+      "allocation": "Fordeling",
+      "type": "Type",
+      "date": "Dato",
+      "amount": "Beløp",
+      "fee": "Gebyr",
+      "actions": "Handlinger"
+    },
+    "type": {
+      "buy": "Kjøp",
+      "sell": "Salg",
+      "dividend": "Utbytte",
+      "fee": "Gebyr"
+    },
+    "assetClass": {
+      "stock": "Aksje",
+      "etf": "ETF",
+      "fund": "Fond",
+      "crypto": "Kryptovaluta",
+      "bond": "Obligasjon",
+      "other": "Annet"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuell"
+    },
+    "form": {
+      "newTitle": "Ny investeringsportefølje",
+      "editTitle": "Rediger investeringsporteføljen",
+      "saveError": "Kunne ikke lagre investeringsporteføljen. Prøv igjen.",
+      "fields": {
+        "name": "Navn",
+        "currency": "Valuta",
+        "cashAccount": "Kontantkonto",
+        "noCashAccount": "Ingen kontantkonto",
+        "institution": "Institusjon",
+        "noInstitution": "Ingen institusjon"
+      },
+      "errors": {
+        "required": "Dette feltet er obligatorisk."
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Lagre"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Registrer investeringstransaksjon",
+        "editTitle": "Rediger investeringstransaksjon",
+        "saveError": "Kunne ikke lagre investeringstransaksjonen. Prøv igjen.",
+        "fields": {
+          "asset": "Aktivum",
+          "selectAsset": "Velg et aktivum",
+          "date": "Dato",
+          "quantity": "Antall",
+          "price": "Pris",
+          "amount": "Beløp",
+          "derivedAmount": "Beregnet fra antall × pris",
+          "fee": "Gebyr",
+          "currency": "Valuta",
+          "notes": "Notater"
+        },
+        "errors": {
+          "invalid": "Fyll ut de obligatoriske feltene med gyldige verdier."
+        },
+        "actions": {
+          "cancel": "Avbryt",
+          "save": "Lagre"
+        }
+      },
+      "delete": {
+        "title": "Slett transaksjon?",
+        "message": "Slett investeringstransaksjonen datert {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nytt investeringsaktivum",
+        "editTitle": "Rediger investeringsaktivum",
+        "saveError": "Kunne ikke lagre investeringsaktivumet. Prøv igjen.",
+        "fields": {
+          "symbol": "Symbol",
+          "name": "Navn",
+          "assetClass": "Aktivaklasse",
+          "currency": "Valuta",
+          "quoteProvider": "Kursleverandør",
+          "manualPrice": "Manuell pris",
+          "manualPriceHint": "Brukes til kurser i sanntid er tilgjengelige."
+        },
+        "actions": {
+          "cancel": "Avbryt",
+          "save": "Lagre"
+        }
+      }
+    },
+    "archive": {
+      "title": "Arkiver investeringsporteføljen?",
+      "message": "Arkiver {{name}}? Historikken vil fortsatt være tilgjengelig."
+    },
+    "archiveError": "Kunne ikke oppdatere arkivstatusen for investeringsporteføljen. Prøv igjen.",
+    "title": "Investeringer",
+    "description": "Følg aksjene, fondene og kryptovalutaene du eier.",
+    "placeholder": {
+      "title": "Kommer snart",
+      "description": "Porteføljer, posisjoner og kurser er på vei."
+    }
+  },
   "reports": {
     "title": "Rapporter",
     "description": "Analyser inntekter, utgifter og saldoer over tid.",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "Visningsvaluta",
       "description": "Brukes til å omregne og summere beløp på tvers av kontoer med ulike valutaer, for eksempel nettoformuen på oversikten."
+    },
+    "investments": {
+      "title": "Investeringer",
+      "description": "Følg aksjer, fond og kryptovaluta sammen med kontantkontoene dine.",
+      "enable": "Aktiver investeringer",
+      "marketData": {
+        "title": "Direkte markedspriser",
+        "description": "Med valgfrie API-nøkler kan appen hente gjeldende aktivapriser. Din egen nøkkel brukes før instansens reserve.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Konfigurert",
+        "notConfigured": "Ikke konfigurert",
+        "placeholder": "API-nøkkel",
+        "save": "Lagre nøkkel",
+        "clear": "Fjern nøkkel",
+        "saveError": "Kunne ikke lagre nøkkelen. Prøv igjen."
+      }
     },
     "agents": {
       "title": "AI-agenter",

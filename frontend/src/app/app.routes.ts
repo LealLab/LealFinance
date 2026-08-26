@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { adminGuard, agentsGuard, authGuard } from './core/auth.guards';
+import { adminGuard, agentsGuard, authGuard, investmentsGuard } from './core/auth.guards';
 import { Shell } from './layout/shell';
 
 export const routes: Routes = [
@@ -53,6 +53,18 @@ export const routes: Routes = [
       {
         path: 'goals',
         loadComponent: () => import('./features/goals/goals').then((m) => m.Goals),
+      },
+      {
+        path: 'investments',
+        canActivate: [investmentsGuard],
+        loadComponent: () =>
+          import('./features/investments/investments').then((m) => m.Investments),
+      },
+      {
+        path: 'investments/:id',
+        canActivate: [investmentsGuard],
+        loadComponent: () =>
+          import('./features/investments/investment-detail').then((m) => m.InvestmentDetail),
       },
       {
         path: 'reports',

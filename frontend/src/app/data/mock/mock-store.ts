@@ -5,7 +5,16 @@ import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-pla
 import { Category, CategoryKind } from '../../domain/models/category';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
+import {
+  InvestmentAsset,
+  InvestmentTransaction,
+  InvestmentWallet,
+} from '../../domain/models/investment';
 import { ManualRate } from '../../domain/models/manual-rate';
+import {
+  MarketDataCredentialStatus,
+  MarketDataProvider,
+} from '../../domain/models/market-data-credential';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { createFixtures } from './fixtures';
@@ -18,6 +27,8 @@ function newId(): string {
 function notFound(entity: string, id: string): never {
   throw new Error(`${entity} "${id}" not found`);
 }
+
+const MARKET_DATA_PROVIDERS: MarketDataProvider[] = ['twelve_data', 'brapi'];
 
 /**
  * The single in-memory source of truth behind every Mock*Repository - see
@@ -37,22 +48,30 @@ export class MockStore {
   private readonly categoriesSignal = signal<Category[]>([]);
   private readonly budgetsSignal = signal<Budget[]>([]);
   private readonly goalsSignal = signal<Goal[]>([]);
+  private readonly investmentWalletsSignal = signal<InvestmentWallet[]>([]);
+  private readonly investmentAssetsSignal = signal<InvestmentAsset[]>([]);
+  private readonly investmentTransactionsSignal = signal<InvestmentTransaction[]>([]);
   private readonly allocationsSignal = signal<BudgetAllocation[]>([]);
   private readonly expectedIncomeSignal = signal<ExpectedIncome[]>([]);
   private readonly recurringRulesSignal = signal<RecurringRule[]>([]);
   private readonly institutionsSignal = signal<Institution[]>([]);
   private readonly manualRatesSignal = signal<ManualRate[]>([]);
+  private readonly marketDataLinkedProvidersSignal = signal<MarketDataProvider[]>([]);
 
   readonly accounts = this.accountsSignal.asReadonly();
   readonly transactions = this.transactionsSignal.asReadonly();
   readonly categories = this.categoriesSignal.asReadonly();
   readonly budgets = this.budgetsSignal.asReadonly();
   readonly goals = this.goalsSignal.asReadonly();
+  readonly investmentWallets = this.investmentWalletsSignal.asReadonly();
+  readonly investmentAssets = this.investmentAssetsSignal.asReadonly();
+  readonly investmentTransactions = this.investmentTransactionsSignal.asReadonly();
   readonly allocations = this.allocationsSignal.asReadonly();
   readonly expectedIncome = this.expectedIncomeSignal.asReadonly();
   readonly recurringRules = this.recurringRulesSignal.asReadonly();
   readonly institutions = this.institutionsSignal.asReadonly();
   readonly manualRates = this.manualRatesSignal.asReadonly();
+  readonly marketDataLinkedProviders = this.marketDataLinkedProvidersSignal.asReadonly();
 
   constructor() {
     this.reset();
@@ -65,11 +84,15 @@ export class MockStore {
     this.categoriesSignal.set(fixtures.categories);
     this.budgetsSignal.set(fixtures.budgets);
     this.goalsSignal.set(fixtures.goals);
+    this.investmentWalletsSignal.set(fixtures.investmentWallets);
+    this.investmentAssetsSignal.set(fixtures.investmentAssets);
+    this.investmentTransactionsSignal.set(fixtures.investmentTransactions);
     this.allocationsSignal.set(fixtures.allocations);
     this.expectedIncomeSignal.set(fixtures.expectedIncome);
     this.recurringRulesSignal.set(fixtures.recurringRules);
     this.institutionsSignal.set(fixtures.institutions);
     this.manualRatesSignal.set(fixtures.manualRates);
+    this.marketDataLinkedProvidersSignal.set([]);
   }
 
   // --- Accounts ---------------------------------------------------------
@@ -211,6 +234,62 @@ export class MockStore {
     return findEntity(this.goalsSignal(), id)!;
   }
 
+  // --- Investment wallets, assets, and transactions --------------------
+
+  createInvestmentWallet(input: Omit<InvestmentWallet, 'id'>): InvestmentWallet {
+    const wallet: InvestmentWallet = { ...input, id: newId() };
+    this.investmentWalletsSignal.update((list) => [...list, wallet]);
+    return wallet;
+  }
+
+  updateInvestmentWallet(
+    id: string,
+    changes: Partial<Omit<InvestmentWallet, 'id'>>,
+  ): InvestmentWallet {
+    if (!findEntity(this.investmentWalletsSignal(), id)) notFound('Investment wallet', id);
+    this.investmentWalletsSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.investmentWalletsSignal(), id)!;
+  }
+
+  createInvestmentAsset(input: Omit<InvestmentAsset, 'id'>): InvestmentAsset {
+    const asset: InvestmentAsset = { ...input, id: newId() };
+    this.investmentAssetsSignal.update((list) => [...list, asset]);
+    return asset;
+  }
+
+  updateInvestmentAsset(
+    id: string,
+    changes: Partial<Omit<InvestmentAsset, 'id'>>,
+  ): InvestmentAsset {
+    if (!findEntity(this.investmentAssetsSignal(), id)) notFound('Investment asset', id);
+    this.investmentAssetsSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.investmentAssetsSignal(), id)!;
+  }
+
+  createInvestmentTransaction(
+    input: Omit<InvestmentTransaction, 'id'>,
+  ): InvestmentTransaction {
+    const transaction: InvestmentTransaction = { ...input, id: newId() };
+    this.investmentTransactionsSignal.update((list) => [...list, transaction]);
+    return transaction;
+  }
+
+  updateInvestmentTransaction(
+    id: string,
+    changes: Partial<Omit<InvestmentTransaction, 'id'>>,
+  ): InvestmentTransaction {
+    if (!findEntity(this.investmentTransactionsSignal(), id)) notFound('Investment transaction', id);
+    this.investmentTransactionsSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.investmentTransactionsSignal(), id)!;
+  }
+
+  deleteInvestmentTransaction(id: string): void {
+    if (!findEntity(this.investmentTransactionsSignal(), id)) {
+      notFound('Investment transaction', id);
+    }
+    this.investmentTransactionsSignal.update((list) => removeEntity(list, id));
+  }
+
   // --- Percentage budget planner -----------------------------------------
 
   upsertAllocation(input: Omit<BudgetAllocation, 'id'>): BudgetAllocation {
@@ -284,5 +363,30 @@ export class MockStore {
   deleteManualRate(id: string): void {
     if (!findEntity(this.manualRatesSignal(), id)) notFound('Manual rate', id);
     this.manualRatesSignal.update((list) => removeEntity(list, id));
+  }
+
+  marketDataCredentialStatuses(): MarketDataCredentialStatus[] {
+    const linked = new Set(this.marketDataLinkedProvidersSignal());
+    return MARKET_DATA_PROVIDERS.map((provider) => ({
+      provider,
+      configured: linked.has(provider),
+      source: linked.has(provider) ? 'user' : 'none',
+    }));
+  }
+
+  linkMarketDataProvider(provider: MarketDataProvider): MarketDataCredentialStatus {
+    this.marketDataLinkedProvidersSignal.update((providers) =>
+      providers.includes(provider) ? providers : [...providers, provider],
+    );
+    return { provider, configured: true, source: 'user' };
+  }
+
+  unlinkMarketDataProvider(provider: MarketDataProvider): void {
+    if (!this.marketDataLinkedProvidersSignal().includes(provider)) {
+      notFound('Market-data credential', provider);
+    }
+    this.marketDataLinkedProvidersSignal.update((providers) =>
+      providers.filter((current) => current !== provider),
+    );
   }
 }

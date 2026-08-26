@@ -164,6 +164,7 @@
       "reports": "Rapporten",
       "exchange": "Wisselkoersen",
       "settings": "Instellingen",
+      "investments": "Beleggingen",
       "adminUsers": "Gebruikers en uitnodigingen",
       "sections": {
         "accounts": "Rekeningen",
@@ -746,6 +747,159 @@
       "saveError": "De activiteit kon niet worden geregistreerd. Probeer het opnieuw."
     }
   },
+  "investments": {
+    "actions": {
+      "newWallet": "Nieuwe beleggingsportefeuille",
+      "editWallet": "Beleggingsportefeuille bewerken",
+      "archiveWallet": "Beleggingsportefeuille archiveren",
+      "unarchiveWallet": "Beleggingsportefeuille uit het archief halen",
+      "view": "Bekijken",
+      "newTransaction": "Transactie registreren",
+      "editTransaction": "Transactie bewerken",
+      "deleteTransaction": "Transactie verwijderen",
+      "newAsset": "Nieuw beleggingsactivum"
+    },
+    "wallet": "Beleggingsportefeuille",
+    "archived": "Gearchiveerd",
+    "summary": {
+      "bookValue": "Boekwaarde",
+      "marketValue": "Marktwaarde",
+      "unrealizedGain": "Ongerealiseerde winst"
+    },
+    "empty": {
+      "title": "Nog geen beleggingsportefeuilles",
+      "description": "Maak een portefeuille aan om je beleggingen te volgen."
+    },
+    "detail": {
+      "back": "Terug naar beleggingen",
+      "notFound": "Beleggingsportefeuille niet gevonden",
+      "positions": "Posities",
+      "positionsEmpty": {
+        "title": "Nog geen posities",
+        "description": "Registreer een aankooptransactie om hier posities te zien."
+      },
+      "ledger": "Transactieregister",
+      "ledgerEmpty": {
+        "title": "Nog geen transacties",
+        "description": "Registreer een aankoop, verkoop, dividend of kosten om het register te starten."
+      },
+      "stale": "Prijs niet beschikbaar"
+    },
+    "columns": {
+      "asset": "Actief",
+      "quantity": "Hoeveelheid",
+      "averageCost": "Gemiddelde kostprijs",
+      "price": "Prijs",
+      "marketValue": "Marktwaarde",
+      "unrealizedGain": "Ongerealiseerde winst",
+      "allocation": "Allocatie",
+      "type": "Type",
+      "date": "Datum",
+      "amount": "Bedrag",
+      "fee": "Kosten",
+      "actions": "Acties"
+    },
+    "type": {
+      "buy": "Kopen",
+      "sell": "Verkopen",
+      "dividend": "Dividend",
+      "fee": "Kosten"
+    },
+    "assetClass": {
+      "stock": "Aandeel",
+      "etf": "ETF",
+      "fund": "Fonds",
+      "crypto": "Crypto",
+      "bond": "Obligatie",
+      "other": "Overig"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Handmatig"
+    },
+    "form": {
+      "newTitle": "Nieuwe beleggingsportefeuille",
+      "editTitle": "Beleggingsportefeuille bewerken",
+      "saveError": "De beleggingsportefeuille kon niet worden opgeslagen. Probeer het opnieuw.",
+      "fields": {
+        "name": "Naam",
+        "currency": "Valuta",
+        "cashAccount": "Kasrekening",
+        "noCashAccount": "Geen kasrekening",
+        "institution": "Instelling",
+        "noInstitution": "Geen instelling"
+      },
+      "errors": {
+        "required": "Dit veld is verplicht."
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "save": "Opslaan"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Beleggingstransactie registreren",
+        "editTitle": "Beleggingstransactie bewerken",
+        "saveError": "De beleggingstransactie kon niet worden opgeslagen. Probeer het opnieuw.",
+        "fields": {
+          "asset": "Activum",
+          "selectAsset": "Selecteer een activum",
+          "date": "Datum",
+          "quantity": "Hoeveelheid",
+          "price": "Prijs",
+          "amount": "Bedrag",
+          "derivedAmount": "Berekend op basis van hoeveelheid × prijs",
+          "fee": "Kosten",
+          "currency": "Valuta",
+          "notes": "Notities"
+        },
+        "errors": {
+          "invalid": "Vul de verplichte velden in met geldige waarden."
+        },
+        "actions": {
+          "cancel": "Annuleren",
+          "save": "Opslaan"
+        }
+      },
+      "delete": {
+        "title": "Transactie verwijderen?",
+        "message": "Beleggingstransactie van {{date}} verwijderen?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nieuw beleggingsactivum",
+        "editTitle": "Beleggingsactivum bewerken",
+        "saveError": "Het beleggingsactivum kon niet worden opgeslagen. Probeer het opnieuw.",
+        "fields": {
+          "symbol": "Symbool",
+          "name": "Naam",
+          "assetClass": "Activaklasse",
+          "currency": "Valuta",
+          "quoteProvider": "Koersaanbieder",
+          "manualPrice": "Handmatige prijs",
+          "manualPriceHint": "Wordt gebruikt totdat live koersen beschikbaar zijn."
+        },
+        "actions": {
+          "cancel": "Annuleren",
+          "save": "Opslaan"
+        }
+      }
+    },
+    "archive": {
+      "title": "Beleggingsportefeuille archiveren?",
+      "message": "{{name}} archiveren? De geschiedenis blijft beschikbaar."
+    },
+    "archiveError": "De archiefstatus van de beleggingsportefeuille kon niet worden bijgewerkt. Probeer het opnieuw.",
+    "title": "Beleggingen",
+    "description": "Volg de aandelen, fondsen en crypto die je bezit.",
+    "placeholder": {
+      "title": "Binnenkort beschikbaar",
+      "description": "Portefeuilles, posities en koersen komen eraan."
+    }
+  },
   "reports": {
     "title": "Rapporten",
     "description": "Analyseer inkomsten, uitgaven en saldi in de loop van de tijd.",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "Weergavevaluta",
       "description": "Wordt gebruikt om waarden tussen rekeningen met verschillende valuta om te rekenen en op te tellen, zoals het nettovermogen op het overzicht."
+    },
+    "investments": {
+      "title": "Beleggingen",
+      "description": "Volg aandelen, fondsen en crypto naast je geldrekeningen.",
+      "enable": "Beleggingen inschakelen",
+      "marketData": {
+        "title": "Live marktprijzen",
+        "description": "Met optionele API-sleutels kan de app actuele activaprijzen ophalen. Je eigen sleutel wordt gebruikt vóór de fallback van de instantie.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Geconfigureerd",
+        "notConfigured": "Niet geconfigureerd",
+        "placeholder": "API-sleutel",
+        "save": "Sleutel opslaan",
+        "clear": "Sleutel wissen",
+        "saveError": "Deze sleutel kon niet worden opgeslagen. Probeer het opnieuw."
+      }
     },
     "agents": {
       "title": "AI-agents",

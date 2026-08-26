@@ -9,6 +9,15 @@ import type {
 import type { CategoryKind } from '../../domain/models/category';
 import type { RecurringFrequency } from '../../domain/models/recurring';
 import type { ConversionSource, TransactionType } from '../../domain/models/transaction';
+import type {
+  InvestmentAssetClass,
+  InvestmentQuoteProvider,
+  InvestmentTransactionType,
+} from '../../domain/models/investment';
+import type {
+  MarketDataCredentialSource,
+  MarketDataProvider,
+} from '../../domain/models/market-data-credential';
 import type { IconName } from '../../shared/ui/icon/icon';
 
 type NullablePatch<T> = { [K in keyof T]?: T[K] | null };
@@ -203,6 +212,81 @@ export type GoalWithAccountPatchWire = NullablePatch<Omit<GoalWithAccountInputWi
 export interface GoalWithAccountWire {
   goal: GoalWire;
   account: AccountWire;
+}
+
+export interface InvestmentWalletWire {
+  id: string;
+  account_id: string;
+  name: string;
+  currency: string;
+  cash_account_id: string | null;
+  institution_id: string | null;
+  archived: boolean;
+}
+export type InvestmentWalletInputWire = Omit<InvestmentWalletWire, 'id' | 'account_id'>;
+export type InvestmentWalletPatchWire = NullablePatch<
+  Omit<InvestmentWalletInputWire, 'archived'>
+>;
+
+export interface InvestmentAssetWire {
+  id: string;
+  symbol: string;
+  name: string;
+  asset_class: InvestmentAssetClass;
+  currency: string;
+  quote_provider: InvestmentQuoteProvider;
+  manual_price: string | null;
+  archived: boolean;
+}
+export type InvestmentAssetInputWire = Omit<InvestmentAssetWire, 'id'>;
+export type InvestmentAssetPatchWire = NullablePatch<InvestmentAssetInputWire>;
+
+export interface InvestmentTransactionWire {
+  id: string;
+  wallet_id: string;
+  asset_id: string | null;
+  type: InvestmentTransactionType;
+  date: string;
+  quantity: string | null;
+  price: string | null;
+  amount: string;
+  fee: string;
+  currency: string;
+  transaction_id: string | null;
+  notes: string | null;
+}
+export type InvestmentTransactionInputWire = Omit<InvestmentTransactionWire, 'id' | 'transaction_id'>;
+export type InvestmentTransactionPatchWire = NullablePatch<
+  Omit<InvestmentTransactionInputWire, 'wallet_id'>
+>;
+
+export interface InvestmentPositionWire {
+  asset: InvestmentAssetWire;
+  quantity: string;
+  average_cost: string;
+  book_value: string;
+  price: string | null;
+  price_as_of: string | null;
+  price_is_stale: boolean;
+  market_value: string | null;
+  unrealized_gain: string | null;
+  realized_gain: string;
+  dividend_income: string;
+  fees_paid: string;
+  market_value_is_fallback: boolean;
+}
+
+export interface InvestmentSummaryWire {
+  total_book_value: string;
+  total_market_value: string | null;
+  total_unrealized_gain: string | null;
+  wallet_count: number;
+}
+
+export interface MarketDataCredentialStatusWire {
+  provider: MarketDataProvider;
+  configured: boolean;
+  source: MarketDataCredentialSource;
 }
 
 export interface AgentProviderStatusWire {

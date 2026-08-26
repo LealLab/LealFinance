@@ -164,6 +164,7 @@
       "reports": "Báo cáo",
       "exchange": "Tỷ giá",
       "settings": "Cài đặt",
+      "investments": "Đầu tư",
       "adminUsers": "Người dùng và lời mời",
       "sections": {
         "accounts": "Tài khoản",
@@ -746,6 +747,159 @@
       "saveError": "Không thể ghi nhận hoạt động. Vui lòng thử lại."
     }
   },
+  "investments": {
+    "actions": {
+      "newWallet": "Danh mục đầu tư mới",
+      "editWallet": "Chỉnh sửa danh mục đầu tư",
+      "archiveWallet": "Lưu trữ danh mục đầu tư",
+      "unarchiveWallet": "Bỏ lưu trữ danh mục đầu tư",
+      "view": "Xem",
+      "newTransaction": "Ghi nhận giao dịch",
+      "editTransaction": "Chỉnh sửa giao dịch",
+      "deleteTransaction": "Xóa giao dịch",
+      "newAsset": "Tài sản mới"
+    },
+    "wallet": "Danh mục đầu tư",
+    "archived": "Đã lưu trữ",
+    "summary": {
+      "bookValue": "Giá trị sổ sách",
+      "marketValue": "Giá trị thị trường",
+      "unrealizedGain": "Lãi chưa thực hiện"
+    },
+    "empty": {
+      "title": "Chưa có danh mục đầu tư",
+      "description": "Tạo danh mục để bắt đầu theo dõi các khoản đầu tư."
+    },
+    "detail": {
+      "back": "Quay lại đầu tư",
+      "notFound": "Không tìm thấy danh mục đầu tư",
+      "positions": "Vị thế",
+      "positionsEmpty": {
+        "title": "Chưa có vị thế",
+        "description": "Ghi nhận giao dịch mua để xem các vị thế tại đây."
+      },
+      "ledger": "Sổ giao dịch",
+      "ledgerEmpty": {
+        "title": "Chưa có giao dịch",
+        "description": "Ghi nhận giao dịch mua, bán, cổ tức hoặc phí để bắt đầu sổ giao dịch."
+      },
+      "stale": "Không có giá"
+    },
+    "columns": {
+      "asset": "Tài sản",
+      "quantity": "Số lượng",
+      "averageCost": "Giá vốn trung bình",
+      "price": "Giá",
+      "marketValue": "Giá trị thị trường",
+      "unrealizedGain": "Lãi chưa thực hiện",
+      "allocation": "Phân bổ",
+      "type": "Loại",
+      "date": "Ngày",
+      "amount": "Số tiền",
+      "fee": "Phí",
+      "actions": "Thao tác"
+    },
+    "type": {
+      "buy": "Mua",
+      "sell": "Bán",
+      "dividend": "Cổ tức",
+      "fee": "Phí"
+    },
+    "assetClass": {
+      "stock": "Cổ phiếu",
+      "etf": "ETF",
+      "fund": "Quỹ",
+      "crypto": "Tiền mã hóa",
+      "bond": "Trái phiếu",
+      "other": "Khác"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Thủ công"
+    },
+    "form": {
+      "newTitle": "Danh mục đầu tư mới",
+      "editTitle": "Chỉnh sửa danh mục đầu tư",
+      "saveError": "Không thể lưu danh mục đầu tư. Vui lòng thử lại.",
+      "fields": {
+        "name": "Tên",
+        "currency": "Tiền tệ",
+        "cashAccount": "Tài khoản tiền mặt",
+        "noCashAccount": "Không có tài khoản tiền mặt",
+        "institution": "Tổ chức",
+        "noInstitution": "Không có tổ chức"
+      },
+      "errors": {
+        "required": "Trường này là bắt buộc."
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "save": "Lưu"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Ghi nhận giao dịch đầu tư",
+        "editTitle": "Chỉnh sửa giao dịch đầu tư",
+        "saveError": "Không thể lưu giao dịch đầu tư. Vui lòng thử lại.",
+        "fields": {
+          "asset": "Tài sản",
+          "selectAsset": "Chọn một tài sản",
+          "date": "Ngày",
+          "quantity": "Số lượng",
+          "price": "Giá",
+          "amount": "Số tiền",
+          "derivedAmount": "Được tính từ số lượng × giá",
+          "fee": "Phí",
+          "currency": "Tiền tệ",
+          "notes": "Ghi chú"
+        },
+        "errors": {
+          "invalid": "Hãy điền các trường bắt buộc bằng giá trị hợp lệ."
+        },
+        "actions": {
+          "cancel": "Hủy",
+          "save": "Lưu"
+        }
+      },
+      "delete": {
+        "title": "Xóa giao dịch?",
+        "message": "Xóa giao dịch đầu tư ngày {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Tài sản đầu tư mới",
+        "editTitle": "Chỉnh sửa tài sản đầu tư",
+        "saveError": "Không thể lưu tài sản đầu tư. Vui lòng thử lại.",
+        "fields": {
+          "symbol": "Mã",
+          "name": "Tên",
+          "assetClass": "Loại tài sản",
+          "currency": "Tiền tệ",
+          "quoteProvider": "Nhà cung cấp báo giá",
+          "manualPrice": "Giá thủ công",
+          "manualPriceHint": "Được sử dụng cho đến khi có báo giá trực tiếp."
+        },
+        "actions": {
+          "cancel": "Hủy",
+          "save": "Lưu"
+        }
+      }
+    },
+    "archive": {
+      "title": "Lưu trữ danh mục đầu tư?",
+      "message": "Lưu trữ {{name}}? Lịch sử của danh mục vẫn sẽ được giữ."
+    },
+    "archiveError": "Không thể cập nhật trạng thái lưu trữ danh mục đầu tư. Vui lòng thử lại.",
+    "title": "Đầu tư",
+    "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa bạn đang nắm giữ.",
+    "placeholder": {
+      "title": "Sắp ra mắt",
+      "description": "Danh mục, vị thế và báo giá đang được phát triển."
+    }
+  },
   "reports": {
     "title": "Báo cáo",
     "description": "Phân tích thu nhập, chi tiêu và số dư theo thời gian.",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "Tiền tệ hiển thị",
       "description": "Dùng để quy đổi và cộng các giá trị giữa những tài khoản có loại tiền tệ khác nhau, chẳng hạn như giá trị tài sản ròng trên bảng điều khiển."
+    },
+    "investments": {
+      "title": "Đầu tư",
+      "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa cùng với các tài khoản tiền mặt.",
+      "enable": "Bật đầu tư",
+      "marketData": {
+        "title": "Giá thị trường trực tiếp",
+        "description": "Các khóa API tùy chọn cho phép ứng dụng lấy giá tài sản hiện tại. Khóa của bạn được dùng trước khóa dự phòng của phiên bản.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Đã cấu hình",
+        "notConfigured": "Chưa cấu hình",
+        "placeholder": "Khóa API",
+        "save": "Lưu khóa",
+        "clear": "Xóa khóa",
+        "saveError": "Không thể lưu khóa này. Hãy thử lại."
+      }
     },
     "agents": {
       "title": "Tác nhân AI",

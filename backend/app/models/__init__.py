@@ -12,6 +12,13 @@ from app.models.category import Category
 from app.models.currency import Currency, ExchangeRate
 from app.models.goal import Goal
 from app.models.institution import Institution
+from app.models.investment import (
+    AssetQuote,
+    InvestmentAsset,
+    InvestmentTransaction,
+    InvestmentWallet,
+    MarketDataCredential,
+)
 from app.models.manual_rate import ManualRate
 from app.models.recurring import RecurringRule
 from app.models.transaction import Transaction
@@ -20,6 +27,7 @@ from app.models.user import Invitation, Session, User
 __all__ = [
     "Account",
     "AgentCredential",
+    "AssetQuote",
     "Budget",
     "BudgetAllocation",
     "Category",
@@ -28,6 +36,10 @@ __all__ = [
     "ExpectedIncome",
     "Goal",
     "Institution",
+    "InvestmentAsset",
+    "InvestmentTransaction",
+    "InvestmentWallet",
+    "MarketDataCredential",
     "Invitation",
     "ManualRate",
     "RecurringRule",

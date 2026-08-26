@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { MetadataService } from './metadata.service';
+import { PreferenceService } from './preference.service';
 import { SessionService } from './session.service';
 
 export const authGuard: CanActivateFn = (_route, state) => {
@@ -41,6 +42,22 @@ export const agentsGuard: CanActivateFn = () => {
     .pipe(
       map((ready) =>
         ready && metadata.settings()?.agentsEnabled ? true : router.createUrlTree(['/']),
+      ),
+    );
+};
+
+/** Guards the Investments feature - only reachable once the user has
+ * opted in via Settings. Unlike agentsGuard (an instance-wide flag from
+ * metadata), this reads a per-user preference. */
+export const investmentsGuard: CanActivateFn = () => {
+  const session = inject(SessionService);
+  const preferences = inject(PreferenceService);
+  const router = inject(Router);
+  return session
+    .ensureLoaded()
+    .pipe(
+      map((ready) =>
+        ready && preferences.preferences()?.investmentsEnabled ? true : router.createUrlTree(['/']),
       ),
     );
 };

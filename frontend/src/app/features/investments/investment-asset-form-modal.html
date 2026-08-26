@@ -1,0 +1,62 @@
+<div *transloco="let t">
+  <!-- t(investments.assetClass.stock, investments.assetClass.etf, investments.assetClass.fund, investments.assetClass.crypto, investments.assetClass.bond, investments.assetClass.other) t(investments.quoteProvider.twelve_data, investments.quoteProvider.brapi, investments.quoteProvider.manual) -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="investment-asset-symbol">{{ t('investments.assets.form.fields.symbol') }}</label>
+            <input id="investment-asset-symbol" type="text" class="form-input" formControlName="symbol" />
+          </div>
+          <div>
+            <label class="form-label" for="investment-asset-name">{{ t('investments.assets.form.fields.name') }}</label>
+            <input id="investment-asset-name" type="text" class="form-input" formControlName="name" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="investment-asset-class">{{ t('investments.assets.form.fields.assetClass') }}</label>
+            <select id="investment-asset-class" class="form-input" formControlName="assetClass">
+              @for (assetClass of assetClasses; track assetClass) {
+                <option [value]="assetClass">{{ t('investments.assetClass.' + assetClass) }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="investment-asset-currency">{{ t('investments.assets.form.fields.currency') }}</label>
+            <select id="investment-asset-currency" class="form-input" formControlName="currency">
+              @for (currency of currencyOptions(); track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label" for="investment-asset-provider">{{ t('investments.assets.form.fields.quoteProvider') }}</label>
+          <select id="investment-asset-provider" class="form-input" formControlName="quoteProvider">
+            @for (provider of quoteProviders; track provider) {
+              <option [value]="provider">{{ t('investments.quoteProvider.' + provider) }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label" for="investment-asset-manual-price">{{ t('investments.assets.form.fields.manualPrice') }}</label>
+          <input id="investment-asset-manual-price" type="text" inputmode="decimal" class="form-input font-mono" formControlName="manualPrice" />
+          <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.manualPriceHint') }}</p>
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">{{ t('investments.assets.form.actions.cancel') }}</button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">{{ t('investments.assets.form.actions.save') }}</button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

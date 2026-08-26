@@ -19,6 +19,7 @@ const SERVER_PREFERENCES: Preferences = {
   baseCurrency: 'USD',
   displayCurrency: 'USD',
   balancesHidden: false,
+  investmentsEnabled: false,
 };
 
 describe('PreferenceService', () => {

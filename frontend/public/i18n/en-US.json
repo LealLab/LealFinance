@@ -164,6 +164,7 @@
       "reports": "Reports",
       "exchange": "Exchange",
       "settings": "Settings",
+      "investments": "Investments",
       "adminUsers": "Users & invitations",
       "sections": {
         "accounts": "Accounts",
@@ -746,6 +747,159 @@
       "saveError": "Could not record the activity. Try again."
     }
   },
+  "investments": {
+    "title": "Investments",
+    "description": "Track the shares, funds, and crypto you hold.",
+    "placeholder": {
+      "title": "Coming soon",
+      "description": "Wallets, positions, and quotes are on the way."
+    },
+    "actions": {
+      "newWallet": "New wallet",
+      "editWallet": "Edit wallet",
+      "archiveWallet": "Archive wallet",
+      "unarchiveWallet": "Unarchive wallet",
+      "view": "View",
+      "newTransaction": "Record transaction",
+      "editTransaction": "Edit transaction",
+      "deleteTransaction": "Delete transaction",
+      "newAsset": "New asset"
+    },
+    "wallet": "Wallet",
+    "archived": "Archived",
+    "summary": {
+      "bookValue": "Book value",
+      "marketValue": "Market value",
+      "unrealizedGain": "Unrealized gain"
+    },
+    "empty": {
+      "title": "No investment wallets yet",
+      "description": "Create a wallet to start tracking your investments."
+    },
+    "detail": {
+      "back": "Back to investments",
+      "notFound": "Investment wallet not found",
+      "positions": "Positions",
+      "positionsEmpty": {
+        "title": "No positions yet",
+        "description": "Record a buy transaction to see positions here."
+      },
+      "ledger": "Transaction ledger",
+      "ledgerEmpty": {
+        "title": "No transactions yet",
+        "description": "Record a buy, sell, dividend, or fee to start the ledger."
+      },
+      "stale": "Price unavailable"
+    },
+    "columns": {
+      "asset": "Asset",
+      "quantity": "Quantity",
+      "averageCost": "Average cost",
+      "price": "Price",
+      "marketValue": "Market value",
+      "unrealizedGain": "Unrealized gain",
+      "allocation": "Allocation",
+      "type": "Type",
+      "date": "Date",
+      "amount": "Amount",
+      "fee": "Fee",
+      "actions": "Actions"
+    },
+    "type": {
+      "buy": "Buy",
+      "sell": "Sell",
+      "dividend": "Dividend",
+      "fee": "Fee"
+    },
+    "assetClass": {
+      "stock": "Stock",
+      "etf": "ETF",
+      "fund": "Fund",
+      "crypto": "Crypto",
+      "bond": "Bond",
+      "other": "Other"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manual"
+    },
+    "form": {
+      "newTitle": "New investment wallet",
+      "editTitle": "Edit investment wallet",
+      "saveError": "Could not save the investment wallet. Try again.",
+      "fields": {
+        "name": "Name",
+        "currency": "Currency",
+        "cashAccount": "Cash account",
+        "noCashAccount": "No cash account",
+        "institution": "Institution",
+        "noInstitution": "No institution"
+      },
+      "errors": {
+        "required": "This field is required."
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Record investment transaction",
+        "editTitle": "Edit investment transaction",
+        "saveError": "Could not save the investment transaction. Try again.",
+        "fields": {
+          "asset": "Asset",
+          "selectAsset": "Select an asset",
+          "date": "Date",
+          "quantity": "Quantity",
+          "price": "Price",
+          "amount": "Amount",
+          "derivedAmount": "Calculated from quantity × price",
+          "fee": "Fee",
+          "currency": "Currency",
+          "notes": "Notes"
+        },
+        "errors": {
+          "invalid": "Complete the required fields with valid values."
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "save": "Save"
+        }
+      },
+      "delete": {
+        "title": "Delete transaction?",
+        "message": "Delete the investment transaction dated {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "New investment asset",
+        "editTitle": "Edit investment asset",
+        "saveError": "Could not save the investment asset. Try again.",
+        "fields": {
+          "symbol": "Symbol",
+          "name": "Name",
+          "assetClass": "Asset class",
+          "currency": "Currency",
+          "quoteProvider": "Quote provider",
+          "manualPrice": "Manual price",
+          "manualPriceHint": "Used until live quotes are available."
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "save": "Save"
+        }
+      }
+    },
+    "archive": {
+      "title": "Archive investment wallet?",
+      "message": "Archive {{name}}? Its history will remain available."
+    },
+    "archiveError": "Could not update the investment wallet archive state. Try again."
+  },
   "reports": {
     "title": "Reports",
     "description": "Analyze income, expenses, and balances over time.",
@@ -850,6 +1004,23 @@
     "currency": {
       "title": "Display currency",
       "description": "Used to convert and add values across accounts with different currencies, such as net worth on the dashboard."
+    },
+    "investments": {
+      "title": "Investments",
+      "description": "Track shares, funds, and crypto alongside your cash accounts.",
+      "enable": "Enable investments",
+      "marketData": {
+        "title": "Live market quotes",
+        "description": "Optional API keys let the app fetch current asset prices. Your key is used before the instance fallback.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configured",
+        "notConfigured": "Not configured",
+        "placeholder": "API key",
+        "save": "Save key",
+        "clear": "Clear key",
+        "saveError": "Could not save this key. Try again."
+      }
     },
     "agents": {
       "title": "AI agents",
