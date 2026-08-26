@@ -49,6 +49,21 @@
           }
         </select>
       </label>
+      <label>
+        <span class="form-label">{{ t('settings.appearance.language') }}</span>
+        <select
+          class="form-input"
+          formControlName="locale"
+          (change)="setLocale($any($event.target).value)"
+        >
+          @for (lang of availableLangs; track lang) {
+            <option
+              [value]="lang"
+              [textContent]="t('layout.languageSwitcher.options.' + lang)"
+            ></option>
+          }
+        </select>
+      </label>
       @if (errorCode(); as code) {
         <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }

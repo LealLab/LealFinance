@@ -52,6 +52,7 @@ export class SessionService {
     password: string;
     displayName: string;
     baseCurrency: string;
+    locale: string;
   }): Observable<User> {
     return this.api.register(input).pipe(
       tap((user) => this.userState.set(user)),

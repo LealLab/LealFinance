@@ -112,6 +112,7 @@ export class IdentityApiService {
     password: string;
     displayName: string;
     baseCurrency: string;
+    locale: string;
   }): Observable<User> {
     return this.api
       .post<UserWire>('/auth/register', {
@@ -120,6 +121,7 @@ export class IdentityApiService {
         password: input.password,
         display_name: input.displayName,
         base_currency: input.baseCurrency,
+        locale: input.locale,
       })
       .pipe(map(mapUser));
   }
