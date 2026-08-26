@@ -1,9 +1,11 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { ICON_NAMES, IconName } from '../icon/icon';
+import { ICON_GROUPS, IconName } from '../icon/icon';
 import { IconPicker } from './icon-picker';
 import ptBR from '../../../../../public/i18n/pt-BR.json';
+
+const PICKABLE_ICON_COUNT = Object.values(ICON_GROUPS).flat().length;
 
 @Component({
   selector: 'app-icon-picker-host',
@@ -34,12 +36,23 @@ describe('IconPicker', () => {
     });
   });
 
-  it('renders every icon in the set', () => {
+  it('renders every pickable icon, grouped into sections', () => {
     const fixture = TestBed.createComponent(IconPickerHost);
     fixture.detectChanges();
 
     const buttons = fixture.nativeElement.querySelectorAll('dialog button[aria-pressed]');
-    expect(buttons.length).toBe(ICON_NAMES.length);
+    expect(buttons.length).toBe(PICKABLE_ICON_COUNT);
+
+    const headings = fixture.nativeElement.querySelectorAll('dialog h3');
+    expect(headings.length).toBe(Object.keys(ICON_GROUPS).length);
+  });
+
+  it('excludes UI-chrome icons that are not part of any group', () => {
+    const fixture = TestBed.createComponent(IconPickerHost);
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('dialog button[aria-label="Seta para Baixo"]');
+    expect(button).toBeNull();
   });
 
   it('narrows the grid when searching and restores it when the query clears', () => {
@@ -59,7 +72,7 @@ describe('IconPicker', () => {
     fixture.detectChanges();
 
     buttons = fixture.nativeElement.querySelectorAll('dialog button[aria-pressed]');
-    expect(buttons.length).toBe(ICON_NAMES.length);
+    expect(buttons.length).toBe(PICKABLE_ICON_COUNT);
   });
 
   it('emits the picked icon and closes when a grid button is clicked', () => {

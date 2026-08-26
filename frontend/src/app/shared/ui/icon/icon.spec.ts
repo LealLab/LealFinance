@@ -1,6 +1,21 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Icon } from './icon';
+import { ICON_GROUPS, ICON_NAMES, Icon, IconName } from './icon';
+
+describe('ICON_GROUPS', () => {
+  it('only references real icon names, each in at most one group', () => {
+    const validNames = new Set<IconName>(ICON_NAMES);
+    const seen = new Set<IconName>();
+
+    for (const names of Object.values(ICON_GROUPS)) {
+      for (const name of names) {
+        expect(validNames.has(name)).toBe(true);
+        expect(seen.has(name)).toBe(false);
+        seen.add(name);
+      }
+    }
+  });
+});
 
 describe('Icon', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { Icon, ICON_NAMES, IconName } from '../icon/icon';
+import { Icon, ICON_GROUPS, IconGroup, IconName } from '../icon/icon';
 import { Modal } from '../modal/modal';
 
 function normalize(value: string): string {
@@ -10,10 +10,17 @@ function normalize(value: string): string {
     .toLowerCase();
 }
 
+interface IconSection {
+  readonly group: IconGroup;
+  readonly names: readonly IconName[];
+}
+
+const GROUPS = Object.entries(ICON_GROUPS) as [IconGroup, readonly IconName[]][];
+
 /**
- * Modal grid over the full `ICON_NAMES` set, filterable by a search box, for
- * any form field that currently stores an `IconName` (category icon,
- * institution icon, ...). Reuses `Modal` rather than being one itself, so it
+ * Modal grid over `ICON_GROUPS`, grouped into sections and filterable by a
+ * search box, for any form field that currently stores an `IconName`
+ * (category icon, institution icon, ...). Reuses `Modal` rather than being one itself, so it
  * stacks correctly when opened from a form that's already inside one - the
  * native `<dialog>` top layer and Escape-closes-topmost behavior handle the
  * nesting without extra code.
@@ -35,13 +42,22 @@ export class IconPicker {
 
   protected readonly query = signal('');
 
-  protected readonly filtered = computed(() => {
+  protected readonly filtered = computed<IconSection[]>(() => {
     const needle = normalize(this.query());
-    if (!needle) return ICON_NAMES;
-    return ICON_NAMES.filter((name) => {
-      const label = this.transloco.translate(`icons.names.${name}`);
-      return normalize(name).includes(needle) || normalize(label).includes(needle);
-    });
+    if (!needle) return GROUPS.map(([group, names]) => ({ group, names }));
+
+    return GROUPS.map(([group, names]) => {
+      const groupLabel = this.transloco.translate(`icons.groups.${group}`);
+      if (normalize(groupLabel).includes(needle)) return { group, names };
+
+      return {
+        group,
+        names: names.filter((name) => {
+          const label = this.transloco.translate(`icons.names.${name}`);
+          return normalize(name).includes(needle) || normalize(label).includes(needle);
+        })
+      };
+    }).filter((section) => section.names.length > 0);
   });
 
   protected pick(name: IconName): void {
