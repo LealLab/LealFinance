@@ -164,6 +164,7 @@
       "reports": "Relatórios",
       "exchange": "Câmbio",
       "settings": "Configurações",
+      "investments": "Investimentos",
       "adminUsers": "Usuários e convites",
       "sections": {
         "accounts": "Contas",
@@ -746,6 +747,14 @@
       "saveError": "Não foi possível registrar a movimentação. Tente novamente."
     }
   },
+  "investments": {
+    "title": "Investimentos",
+    "description": "Acompanhe as ações, os fundos e as criptomoedas que você possui.",
+    "placeholder": {
+      "title": "Em breve",
+      "description": "Carteiras, posições e cotações estão a caminho."
+    }
+  },
   "reports": {
     "title": "Relatórios",
     "description": "Analise receitas, despesas e saldos ao longo do tempo.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Moeda de exibição",
       "description": "Usada para converter e somar valores entre contas de moedas diferentes, como no patrimônio líquido do painel."
+    },
+    "investments": {
+      "title": "Investimentos",
+      "description": "Acompanhe ações, fundos e criptomoedas junto das suas contas em dinheiro.",
+      "enable": "Ativar investimentos"
     },
     "agents": {
       "title": "Agentes de IA",

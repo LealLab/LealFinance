@@ -164,6 +164,7 @@
       "reports": "Rapporten",
       "exchange": "Wisselkoersen",
       "settings": "Instellingen",
+      "investments": "Beleggingen",
       "adminUsers": "Gebruikers en uitnodigingen",
       "sections": {
         "accounts": "Rekeningen",
@@ -746,6 +747,14 @@
       "saveError": "De activiteit kon niet worden geregistreerd. Probeer het opnieuw."
     }
   },
+  "investments": {
+    "title": "Beleggingen",
+    "description": "Volg de aandelen, fondsen en crypto die je bezit.",
+    "placeholder": {
+      "title": "Binnenkort beschikbaar",
+      "description": "Wallets, posities en koersen komen eraan."
+    }
+  },
   "reports": {
     "title": "Rapporten",
     "description": "Analyseer inkomsten, uitgaven en saldi in de loop van de tijd.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Weergavevaluta",
       "description": "Wordt gebruikt om waarden tussen rekeningen met verschillende valuta om te rekenen en op te tellen, zoals het nettovermogen op het overzicht."
+    },
+    "investments": {
+      "title": "Beleggingen",
+      "description": "Volg aandelen, fondsen en crypto naast je geldrekeningen.",
+      "enable": "Beleggingen inschakelen"
     },
     "agents": {
       "title": "AI-agents",

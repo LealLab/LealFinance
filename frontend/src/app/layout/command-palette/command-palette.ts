@@ -13,7 +13,7 @@ import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Icon, IconName } from '../../shared/ui/icon/icon';
-import { NAV_SECTIONS } from '../sidebar';
+import { navSectionsFor } from '../sidebar';
 import { fuzzyScore } from './fuzzy';
 
 const RECENT_TRANSACTIONS_LIMIT = 20;
@@ -330,21 +330,11 @@ export class CommandPalette {
   }
 
   private goToItems(): PaletteItem[] {
-    const sections =
-      this.session.user()?.role === 'admin'
-        ? [
-            ...NAV_SECTIONS,
-            {
-              labelKey: 'layout.nav.sections.admin',
-              items: [
-                { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
-                ...(this.metadata.settings()?.agentsEnabled
-                  ? [{ path: '/admin/providers', labelKey: 'layout.nav.providers', icon: 'zap' as IconName }]
-                  : []),
-              ],
-            },
-          ]
-        : NAV_SECTIONS;
+    const sections = navSectionsFor(
+      this.session.user()?.role,
+      this.metadata.settings()?.agentsEnabled,
+      this.preferences.preferences()?.investmentsEnabled,
+    );
 
     return sections.flatMap((section) =>
       section.items.map((item) => ({

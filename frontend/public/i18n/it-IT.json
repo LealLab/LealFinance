@@ -164,6 +164,7 @@
       "reports": "Report",
       "exchange": "Cambio",
       "settings": "Impostazioni",
+      "investments": "Investimenti",
       "adminUsers": "Utenti e inviti",
       "sections": {
         "accounts": "Conti",
@@ -746,6 +747,14 @@
       "saveError": "Impossibile registrare il movimento. Riprova."
     }
   },
+  "investments": {
+    "title": "Investimenti",
+    "description": "Tieni traccia delle azioni, dei fondi e delle criptovalute che possiedi.",
+    "placeholder": {
+      "title": "In arrivo",
+      "description": "Portafogli, posizioni e quotazioni sono in arrivo."
+    }
+  },
   "reports": {
     "title": "Report",
     "description": "Analizza entrate, uscite e saldi nel tempo.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Valuta di visualizzazione",
       "description": "Utilizzata per convertire e sommare i valori tra conti con valute diverse, ad esempio il patrimonio netto nella panoramica."
+    },
+    "investments": {
+      "title": "Investimenti",
+      "description": "Tieni traccia di azioni, fondi e criptovalute insieme ai tuoi conti di liquidità.",
+      "enable": "Attiva gli investimenti"
     },
     "agents": {
       "title": "Agenti IA",

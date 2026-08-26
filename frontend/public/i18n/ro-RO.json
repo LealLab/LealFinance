@@ -164,6 +164,7 @@
       "reports": "Rapoarte",
       "exchange": "Schimb valutar",
       "settings": "Setări",
+      "investments": "Investiții",
       "adminUsers": "Utilizatori și invitații",
       "sections": {
         "accounts": "Conturi",
@@ -746,6 +747,14 @@
       "saveError": "Activitatea nu a putut fi înregistrată. Încearcă din nou."
     }
   },
+  "investments": {
+    "title": "Investiții",
+    "description": "Urmărește acțiunile, fondurile și criptomonedele pe care le deții.",
+    "placeholder": {
+      "title": "În curând",
+      "description": "Portofelele, pozițiile și cotațiile sunt pe drum."
+    }
+  },
   "reports": {
     "title": "Rapoarte",
     "description": "Analizează în timp veniturile, cheltuielile și soldurile.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Monedă de afișare",
       "description": "Este folosită pentru conversia și însumarea valorilor din conturi cu monede diferite, de exemplu pentru averea netă din panoul de control."
+    },
+    "investments": {
+      "title": "Investiții",
+      "description": "Urmărește acțiuni, fonduri și criptomonede alături de conturile tale de numerar.",
+      "enable": "Activează investițiile"
     },
     "agents": {
       "title": "Agenți AI",

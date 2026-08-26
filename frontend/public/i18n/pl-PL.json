@@ -164,6 +164,7 @@
       "reports": "Raporty",
       "exchange": "Wymiana walut",
       "settings": "Ustawienia",
+      "investments": "Inwestycje",
       "adminUsers": "Użytkownicy i zaproszenia",
       "sections": {
         "accounts": "Konta",
@@ -746,6 +747,14 @@
       "saveError": "Nie udało się zarejestrować operacji. Spróbuj ponownie."
     }
   },
+  "investments": {
+    "title": "Inwestycje",
+    "description": "Śledź posiadane akcje, fundusze i kryptowaluty.",
+    "placeholder": {
+      "title": "Już wkrótce",
+      "description": "Portfele, pozycje i notowania są w drodze."
+    }
+  },
   "reports": {
     "title": "Raporty",
     "description": "Analizuj przychody, wydatki i salda w czasie.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Waluta wyświetlania",
       "description": "Służy do przeliczania i sumowania wartości między kontami w różnych walutach, na przykład majątku netto na panelu."
+    },
+    "investments": {
+      "title": "Inwestycje",
+      "description": "Śledź akcje, fundusze i kryptowaluty obok swoich rachunków gotówkowych.",
+      "enable": "Włącz inwestycje"
     },
     "agents": {
       "title": "Agenci AI",

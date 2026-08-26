@@ -164,6 +164,7 @@
       "reports": "Laporan",
       "exchange": "Penukaran",
       "settings": "Pengaturan",
+      "investments": "Investasi",
       "adminUsers": "Pengguna dan undangan",
       "sections": {
         "accounts": "Akun",
@@ -746,6 +747,14 @@
       "saveError": "Aktivitas tidak dapat dicatat. Coba lagi."
     }
   },
+  "investments": {
+    "title": "Investasi",
+    "description": "Lacak saham, reksa dana, dan kripto yang Anda miliki.",
+    "placeholder": {
+      "title": "Segera hadir",
+      "description": "Dompet, posisi, dan kuotasi akan segera tersedia."
+    }
+  },
   "reports": {
     "title": "Laporan",
     "description": "Analisis pendapatan, pengeluaran, dan saldo dari waktu ke waktu.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Mata uang tampilan",
       "description": "Digunakan untuk mengonversi dan menjumlahkan nilai di akun dengan mata uang berbeda, seperti kekayaan bersih di dasbor."
+    },
+    "investments": {
+      "title": "Investasi",
+      "description": "Lacak saham, reksa dana, dan kripto bersama rekening kas Anda.",
+      "enable": "Aktifkan investasi"
     },
     "agents": {
       "title": "Agen AI",

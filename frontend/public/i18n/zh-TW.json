@@ -164,6 +164,7 @@
       "reports": "報表",
       "exchange": "匯兌",
       "settings": "設定",
+      "investments": "投資",
       "adminUsers": "使用者與邀請",
       "sections": {
         "accounts": "帳戶",
@@ -746,6 +747,14 @@
       "saveError": "無法記錄活動，請再試一次。"
     }
   },
+  "investments": {
+    "title": "投資",
+    "description": "追蹤您持有的股票、基金和加密貨幣。",
+    "placeholder": {
+      "title": "即將推出",
+      "description": "錢包、持倉與報價功能即將推出。"
+    }
+  },
   "reports": {
     "title": "報表",
     "description": "分析一段時間內的收入、支出與餘額。",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "顯示貨幣",
       "description": "用於在不同貨幣的帳戶間換算與加總，例如儀表板上的淨資產。"
+    },
+    "investments": {
+      "title": "投資",
+      "description": "在現金帳戶之外，追蹤您的股票、基金和加密貨幣。",
+      "enable": "啟用投資"
     },
     "agents": {
       "title": "AI 代理程式",

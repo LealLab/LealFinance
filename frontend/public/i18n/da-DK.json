@@ -164,6 +164,7 @@
       "reports": "Rapporter",
       "exchange": "Valutakurser",
       "settings": "Indstillinger",
+      "investments": "Investeringer",
       "adminUsers": "Brugere og invitationer",
       "sections": {
         "accounts": "Konti",
@@ -746,6 +747,14 @@
       "saveError": "Aktiviteten kunne ikke registreres. Prøv igen."
     }
   },
+  "investments": {
+    "title": "Investeringer",
+    "description": "Følg de aktier, fonde og kryptovalutaer, du ejer.",
+    "placeholder": {
+      "title": "Kommer snart",
+      "description": "Punge, positioner og kurser er på vej."
+    }
+  },
   "reports": {
     "title": "Rapporter",
     "description": "Analysér indtægter, udgifter og saldi over tid.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Visningsvaluta",
       "description": "Bruges til at omregne og tilføje værdier på tværs af konti med forskellige valutaer, f.eks. nettoformuen på oversigten."
+    },
+    "investments": {
+      "title": "Investeringer",
+      "description": "Følg aktier, fonde og kryptovalutaer sammen med dine kontantkonti.",
+      "enable": "Aktivér investeringer"
     },
     "agents": {
       "title": "AI-agenter",

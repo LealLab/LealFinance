@@ -164,6 +164,7 @@
       "reports": "Raportit",
       "exchange": "Valuuttakurssit",
       "settings": "Asetukset",
+      "investments": "Sijoitukset",
       "adminUsers": "Käyttäjät ja kutsut",
       "sections": {
         "accounts": "Tilit",
@@ -746,6 +747,14 @@
       "saveError": "Tapahtuman kirjaaminen epäonnistui. Yritä uudelleen."
     }
   },
+  "investments": {
+    "title": "Sijoitukset",
+    "description": "Seuraa omistamiasi osakkeita, rahastoja ja kryptovaluuttoja.",
+    "placeholder": {
+      "title": "Tulossa pian",
+      "description": "Lompakot, positiot ja kurssit ovat tulossa."
+    }
+  },
   "reports": {
     "title": "Raportit",
     "description": "Analysoi tulojen, menojen ja saldojen kehitystä.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Näyttövaluutta",
       "description": "Sen avulla muunnetaan ja lasketaan yhteen eri valuutoissa olevien tilien arvoja, kuten yhteenvedon nettovarallisuus."
+    },
+    "investments": {
+      "title": "Sijoitukset",
+      "description": "Seuraa osakkeita, rahastoja ja kryptovaluuttoja käteistiliesi rinnalla.",
+      "enable": "Ota sijoitukset käyttöön"
     },
     "agents": {
       "title": "Tekoälyagentit",

@@ -164,6 +164,7 @@
       "reports": "报表",
       "exchange": "汇率",
       "settings": "设置",
+      "investments": "投资",
       "adminUsers": "用户与邀请",
       "sections": {
         "accounts": "账户",
@@ -746,6 +747,14 @@
       "saveError": "无法记录活动。请重试。"
     }
   },
+  "investments": {
+    "title": "投资",
+    "description": "您持有的股票、基金和加密货币一目了然。",
+    "placeholder": {
+      "title": "即将推出",
+      "description": "钱包、持仓和报价功能即将上线。"
+    }
+  },
   "reports": {
     "title": "报表",
     "description": "分析一段时间内的收入、支出和余额。",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "显示货币",
       "description": "用于在不同货币的账户之间换算并汇总金额，例如仪表盘上的净资产。"
+    },
+    "investments": {
+      "title": "投资",
+      "description": "在现金账户之外，追踪您的股票、基金和加密货币。",
+      "enable": "启用投资"
     },
     "agents": {
       "title": "AI 代理",

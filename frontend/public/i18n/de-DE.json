@@ -164,6 +164,7 @@
       "reports": "Auswertungen",
       "exchange": "Wechselkurse",
       "settings": "Einstellungen",
+      "investments": "Investitionen",
       "adminUsers": "Benutzer und Einladungen",
       "sections": {
         "accounts": "Konten",
@@ -746,6 +747,14 @@
       "saveError": "Die Aktivität konnte nicht erfasst werden. Versuchen Sie es erneut."
     }
   },
+  "investments": {
+    "title": "Investitionen",
+    "description": "Verfolge die Aktien, Fonds und Kryptowährungen, die du besitzt.",
+    "placeholder": {
+      "title": "Demnächst verfügbar",
+      "description": "Wallets, Positionen und Kurse kommen bald."
+    }
+  },
   "reports": {
     "title": "Auswertungen",
     "description": "Analysieren Sie Einnahmen, Ausgaben und Kontostände im Zeitverlauf.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Anzeigewährung",
       "description": "Wird verwendet, um Beträge zwischen Konten mit unterschiedlichen Währungen umzurechnen und zu addieren, z. B. beim Nettovermögen in der Übersicht."
+    },
+    "investments": {
+      "title": "Investitionen",
+      "description": "Verfolge Aktien, Fonds und Kryptowährungen neben deinen Geldkonten.",
+      "enable": "Investitionen aktivieren"
     },
     "agents": {
       "title": "KI-Agenten",

@@ -333,16 +333,27 @@ async def test_preferences_round_trip(client: AsyncClient, db_session: AsyncSess
     assert get_response.status_code == 200
     assert get_response.json()["base_currency"] == "USD"
     assert get_response.json()["display_currency"] == "BRL"
+    assert get_response.json()["investments_enabled"] is False
 
     update_response = await client.patch(
         "/api/v1/auth/preferences",
-        json={"theme": "dark", "display_currency": "BRL", "balances_hidden": True},
+        json={
+            "theme": "dark",
+            "display_currency": "BRL",
+            "investments_enabled": True,
+            "balances_hidden": True,
+        },
     )
     assert update_response.status_code == 200
     body = update_response.json()
     assert body["theme"] == "dark"
     assert body["balances_hidden"] is True
+    assert body["investments_enabled"] is True
     assert body["base_currency"] == "USD"
+
+    unchanged_response = await client.patch("/api/v1/auth/preferences", json={})
+    assert unchanged_response.status_code == 200
+    assert unchanged_response.json()["investments_enabled"] is True
 
 
 async def test_two_users_have_independent_sessions(

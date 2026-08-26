@@ -70,6 +70,10 @@ export class PreferenceService {
     this.update({ balancesHidden });
   }
 
+  setInvestmentsEnabled(investmentsEnabled: boolean): void {
+    this.update({ investmentsEnabled });
+  }
+
   private update(changes: Partial<Preferences>): void {
     const previous = this.state();
     if (!previous) {

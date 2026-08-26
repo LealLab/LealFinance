@@ -164,6 +164,7 @@
       "reports": "Informes",
       "exchange": "Cambio de divisas",
       "settings": "Ajustes",
+      "investments": "Inversiones",
       "adminUsers": "Usuarios e invitaciones",
       "sections": {
         "accounts": "Cuentas",
@@ -746,6 +747,14 @@
       "saveError": "No se ha podido registrar la actividad. Inténtalo de nuevo."
     }
   },
+  "investments": {
+    "title": "Inversiones",
+    "description": "Controla las acciones, fondos y criptomonedas que tienes.",
+    "placeholder": {
+      "title": "Próximamente",
+      "description": "Las carteras, posiciones y cotizaciones están en camino."
+    }
+  },
   "reports": {
     "title": "Informes",
     "description": "Analiza ingresos, gastos y saldos a lo largo del tiempo.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Moneda de visualización",
       "description": "Se utiliza para convertir y sumar valores entre cuentas con monedas distintas, como el patrimonio neto del panel."
+    },
+    "investments": {
+      "title": "Inversiones",
+      "description": "Controla acciones, fondos y criptomonedas junto con tus cuentas de efectivo.",
+      "enable": "Activar inversiones"
     },
     "agents": {
       "title": "Agentes de IA",

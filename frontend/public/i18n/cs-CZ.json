@@ -164,6 +164,7 @@
       "reports": "Přehledy",
       "exchange": "Směna měn",
       "settings": "Nastavení",
+      "investments": "Investice",
       "adminUsers": "Uživatelé a pozvánky",
       "sections": {
         "accounts": "Účty",
@@ -746,6 +747,14 @@
       "saveError": "Aktivitu se nepodařilo zaznamenat. Zkuste to znovu."
     }
   },
+  "investments": {
+    "title": "Investice",
+    "description": "Sledujte akcie, fondy a kryptoměny, které vlastníte.",
+    "placeholder": {
+      "title": "Již brzy",
+      "description": "Peněženky, pozice a kurzy jsou na cestě."
+    }
+  },
   "reports": {
     "title": "Přehledy",
     "description": "Analyzujte vývoj příjmů, výdajů a zůstatků v čase.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Měna zobrazení",
       "description": "Používá se k převodu a sčítání hodnot na účtech v různých měnách, například čistého jmění v přehledu."
+    },
+    "investments": {
+      "title": "Investice",
+      "description": "Sledujte akcie, fondy a kryptoměny spolu s hotovostními účty.",
+      "enable": "Povolit investice"
     },
     "agents": {
       "title": "AI agenti",

@@ -164,6 +164,7 @@
       "reports": "Raporlar",
       "exchange": "Döviz",
       "settings": "Ayarlar",
+      "investments": "Yatırımlar",
       "adminUsers": "Kullanıcılar ve davetler",
       "sections": {
         "accounts": "Hesaplar",
@@ -746,6 +747,14 @@
       "saveError": "Etkinlik kaydedilemedi. Tekrar deneyin."
     }
   },
+  "investments": {
+    "title": "Yatırımlar",
+    "description": "Sahip olduğunuz hisse senetlerini, fonları ve kripto varlıkları takip edin.",
+    "placeholder": {
+      "title": "Çok yakında",
+      "description": "Cüzdanlar, pozisyonlar ve fiyatlar yolda."
+    }
+  },
   "reports": {
     "title": "Raporlar",
     "description": "Gelirleri, giderleri ve bakiyeleri zaman içinde analiz edin.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Görüntüleme para birimi",
       "description": "Gösterge panelindeki net varlık gibi farklı para birimlerindeki hesaplar arasında değerleri dönüştürmek ve eklemek için kullanılır."
+    },
+    "investments": {
+      "title": "Yatırımlar",
+      "description": "Hisse senetlerini, fonları ve kripto varlıkları nakit hesaplarınızla birlikte takip edin.",
+      "enable": "Yatırımları etkinleştir"
     },
     "agents": {
       "title": "Yapay zekâ aracıları",

@@ -137,5 +137,6 @@ async def update_preferences(payload: PreferencesUpdate, user: CurrentUser, db: 
         locale=payload.locale,
         theme=payload.theme,
         display_currency=payload.display_currency,
+        investments_enabled=payload.investments_enabled,
         balances_hidden=payload.balances_hidden,
     )

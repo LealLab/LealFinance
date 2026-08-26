@@ -64,4 +64,8 @@ export class Settings {
   protected setDisplayCurrency(currency: string): void {
     this.preferences.setDisplayCurrency(currency);
   }
+
+  protected setInvestmentsEnabled(value: boolean): void {
+    this.preferences.setInvestmentsEnabled(value);
+  }
 }

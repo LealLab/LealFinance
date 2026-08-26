@@ -164,6 +164,7 @@
       "reports": "レポート",
       "exchange": "為替",
       "settings": "設定",
+      "investments": "投資",
       "adminUsers": "ユーザーと招待",
       "sections": {
         "accounts": "口座",
@@ -746,6 +747,14 @@
       "saveError": "記録できませんでした。もう一度お試しください。"
     }
   },
+  "investments": {
+    "title": "投資",
+    "description": "保有している株式、ファンド、暗号資産を追跡します。",
+    "placeholder": {
+      "title": "近日公開",
+      "description": "ウォレット、ポジション、相場情報を準備中です。"
+    }
+  },
   "reports": {
     "title": "レポート",
     "description": "収入、支出、残高を時系列で分析します。",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "表示通貨",
       "description": "異なる通貨の口座間で金額を換算・集計する際に使用します。ダッシュボードの純資産などに反映されます。"
+    },
+    "investments": {
+      "title": "投資",
+      "description": "現金口座とあわせて、株式、ファンド、暗号資産を追跡します。",
+      "enable": "投資を有効にする"
     },
     "agents": {
       "title": "AIエージェント",

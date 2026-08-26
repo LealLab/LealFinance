@@ -164,6 +164,7 @@
       "reports": "보고서",
       "exchange": "환율",
       "settings": "설정",
+      "investments": "투자",
       "adminUsers": "사용자 및 초대",
       "sections": {
         "accounts": "계좌",
@@ -746,6 +747,14 @@
       "saveError": "활동을 기록하지 못했습니다. 다시 시도하세요."
     }
   },
+  "investments": {
+    "title": "투자",
+    "description": "보유한 주식, 펀드, 암호화폐를 추적하세요.",
+    "placeholder": {
+      "title": "곧 출시됩니다",
+      "description": "지갑, 포지션, 시세 기능을 준비하고 있습니다."
+    }
+  },
   "reports": {
     "title": "보고서",
     "description": "시간에 따른 수입, 지출 및 잔액을 분석하세요.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "표시 통화",
       "description": "대시보드의 순자산처럼 통화가 다른 계좌의 금액을 환산하고 합산할 때 사용합니다."
+    },
+    "investments": {
+      "title": "투자",
+      "description": "현금 계좌와 함께 주식, 펀드, 암호화폐를 추적하세요.",
+      "enable": "투자 활성화"
     },
     "agents": {
       "title": "AI 에이전트",

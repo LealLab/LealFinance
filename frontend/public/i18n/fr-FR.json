@@ -164,6 +164,7 @@
       "reports": "Rapports",
       "exchange": "Change",
       "settings": "Paramètres",
+      "investments": "Investissements",
       "adminUsers": "Utilisateurs et invitations",
       "sections": {
         "accounts": "Comptes",
@@ -746,6 +747,14 @@
       "saveError": "Impossible d’enregistrer l’opération. Réessayez."
     }
   },
+  "investments": {
+    "title": "Investissements",
+    "description": "Suivez les actions, fonds et cryptomonnaies que vous détenez.",
+    "placeholder": {
+      "title": "Bientôt disponible",
+      "description": "Les portefeuilles, positions et cotations arrivent bientôt."
+    }
+  },
   "reports": {
     "title": "Rapports",
     "description": "Analysez vos revenus, vos dépenses et vos soldes au fil du temps.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Devise d’affichage",
       "description": "Utilisée pour convertir et additionner les montants de comptes dans différentes devises, comme pour le patrimoine net du tableau de bord."
+    },
+    "investments": {
+      "title": "Investissements",
+      "description": "Suivez les actions, fonds et cryptomonnaies avec vos comptes de trésorerie.",
+      "enable": "Activer les investissements"
     },
     "agents": {
       "title": "Agents IA",

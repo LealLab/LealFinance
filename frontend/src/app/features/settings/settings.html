@@ -83,6 +83,23 @@
       </select>
     </app-card>
 
+    <app-card>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.investments.title') }}</h2>
+          <p class="max-w-md text-sm text-content-muted">{{ t('settings.investments.description') }}</p>
+        </div>
+        <label class="flex shrink-0 items-center gap-2 text-sm text-content-muted">
+          <input
+            type="checkbox"
+            [checked]="preferences.preferences()?.investmentsEnabled ?? false"
+            (change)="setInvestmentsEnabled($any($event.target).checked)"
+          />
+          {{ t('settings.investments.enable') }}
+        </label>
+      </div>
+    </app-card>
+
     @if (preferences.errorCode(); as code) {
       <p
         class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"

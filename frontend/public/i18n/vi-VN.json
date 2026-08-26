@@ -164,6 +164,7 @@
       "reports": "Báo cáo",
       "exchange": "Tỷ giá",
       "settings": "Cài đặt",
+      "investments": "Đầu tư",
       "adminUsers": "Người dùng và lời mời",
       "sections": {
         "accounts": "Tài khoản",
@@ -746,6 +747,14 @@
       "saveError": "Không thể ghi nhận hoạt động. Vui lòng thử lại."
     }
   },
+  "investments": {
+    "title": "Đầu tư",
+    "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa bạn đang nắm giữ.",
+    "placeholder": {
+      "title": "Sắp ra mắt",
+      "description": "Ví, vị thế và báo giá đang được phát triển."
+    }
+  },
   "reports": {
     "title": "Báo cáo",
     "description": "Phân tích thu nhập, chi tiêu và số dư theo thời gian.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Tiền tệ hiển thị",
       "description": "Dùng để quy đổi và cộng các giá trị giữa những tài khoản có loại tiền tệ khác nhau, chẳng hạn như giá trị tài sản ròng trên bảng điều khiển."
+    },
+    "investments": {
+      "title": "Đầu tư",
+      "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa cùng với các tài khoản tiền mặt.",
+      "enable": "Bật đầu tư"
     },
     "agents": {
       "title": "Tác nhân AI",

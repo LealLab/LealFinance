@@ -164,6 +164,7 @@
       "reports": "Reports",
       "exchange": "Exchange",
       "settings": "Settings",
+      "investments": "Investments",
       "adminUsers": "Users & invitations",
       "sections": {
         "accounts": "Accounts",
@@ -746,6 +747,14 @@
       "saveError": "Could not record the activity. Try again."
     }
   },
+  "investments": {
+    "title": "Investments",
+    "description": "Track the shares, funds, and crypto you hold.",
+    "placeholder": {
+      "title": "Coming soon",
+      "description": "Wallets, positions, and quotes are on the way."
+    }
+  },
   "reports": {
     "title": "Reports",
     "description": "Analyze income, expenses, and balances over time.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Display currency",
       "description": "Used to convert and add values across accounts with different currencies, such as net worth on the dashboard."
+    },
+    "investments": {
+      "title": "Investments",
+      "description": "Track shares, funds, and crypto alongside your cash accounts.",
+      "enable": "Enable investments"
     },
     "agents": {
       "title": "AI agents",

@@ -164,6 +164,7 @@
       "reports": "Rapporter",
       "exchange": "Valutaveksling",
       "settings": "Innstillinger",
+      "investments": "Investeringer",
       "adminUsers": "Brukere og invitasjoner",
       "sections": {
         "accounts": "Kontoer",
@@ -746,6 +747,14 @@
       "saveError": "Kunne ikke registrere aktiviteten. Prøv igjen."
     }
   },
+  "investments": {
+    "title": "Investeringer",
+    "description": "Følg aksjene, fondene og kryptovalutaene du eier.",
+    "placeholder": {
+      "title": "Kommer snart",
+      "description": "Lommebøker, posisjoner og kurser er på vei."
+    }
+  },
   "reports": {
     "title": "Rapporter",
     "description": "Analyser inntekter, utgifter og saldoer over tid.",
@@ -850,6 +859,11 @@
     "currency": {
       "title": "Visningsvaluta",
       "description": "Brukes til å omregne og summere beløp på tvers av kontoer med ulike valutaer, for eksempel nettoformuen på oversikten."
+    },
+    "investments": {
+      "title": "Investeringer",
+      "description": "Følg aksjer, fond og kryptovaluta sammen med kontantkontoene dine.",
+      "enable": "Aktiver investeringer"
     },
     "agents": {
       "title": "AI-agenter",

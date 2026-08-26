@@ -327,6 +327,7 @@ async def update_preferences(
     locale: str | None,
     theme: str | None,
     display_currency: str | None,
+    investments_enabled: bool | None,
     balances_hidden: bool | None,
 ) -> User:
     if theme is not None and theme not in THEMES:
@@ -343,6 +344,8 @@ async def update_preferences(
         user.locale = locale
     if theme is not None:
         user.theme = theme
+    if investments_enabled is not None:
+        user.investments_enabled = investments_enabled
     if balances_hidden is not None:
         user.balances_hidden = balances_hidden
 
