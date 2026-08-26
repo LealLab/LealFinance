@@ -5,6 +5,11 @@ import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-pla
 import { Category } from '../../domain/models/category';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
+import {
+  InvestmentAsset,
+  InvestmentTransaction,
+  InvestmentWallet,
+} from '../../domain/models/investment';
 import { ManualRate } from '../../domain/models/manual-rate';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
@@ -17,6 +22,9 @@ export interface Fixtures {
   recurringRules: RecurringRule[];
   institutions: Institution[];
   goals: Goal[];
+  investmentWallets: InvestmentWallet[];
+  investmentAssets: InvestmentAsset[];
+  investmentTransactions: InvestmentTransaction[];
   allocations: BudgetAllocation[];
   expectedIncome: ExpectedIncome[];
   /**
@@ -61,6 +69,13 @@ const CATEGORY_IDS = {
   leisure: 'cat-leisure',
   education: 'cat-education',
   otherExpense: 'cat-other-expense'
+} as const;
+
+const INVESTMENT_IDS = {
+  wallet: 'investment-wallet-europe',
+  stock: 'investment-asset-acme',
+  etf: 'investment-asset-world',
+  crypto: 'investment-asset-bitcoin'
 } as const;
 
 function buildAccounts(): Account[] {
@@ -655,6 +670,142 @@ function buildGoals(): Goal[] {
   ];
 }
 
+function buildInvestmentWallets(): InvestmentWallet[] {
+  return [
+    {
+      id: INVESTMENT_IDS.wallet,
+      accountId: ACCOUNT_IDS.investment,
+      name: 'Carteira Europa',
+      currency: 'EUR',
+      cashAccountId: ACCOUNT_IDS.checking,
+      institutionId: INSTITUTION_IDS.xpEurope,
+      archived: false
+    }
+  ];
+}
+
+function buildInvestmentAssets(): InvestmentAsset[] {
+  return [
+    {
+      id: INVESTMENT_IDS.stock,
+      symbol: 'ACME',
+      name: 'Acme Industries',
+      assetClass: 'stock',
+      currency: 'EUR',
+      quoteProvider: 'manual',
+      manualPrice: '24.50',
+      archived: false
+    },
+    {
+      id: INVESTMENT_IDS.etf,
+      symbol: 'WORLD',
+      name: 'World Equity ETF',
+      assetClass: 'etf',
+      currency: 'EUR',
+      quoteProvider: 'manual',
+      manualPrice: '112.80',
+      archived: false
+    },
+    {
+      id: INVESTMENT_IDS.crypto,
+      symbol: 'BTC',
+      name: 'Bitcoin',
+      assetClass: 'crypto',
+      currency: 'EUR',
+      quoteProvider: 'manual',
+      manualPrice: '58000',
+      archived: false
+    }
+  ];
+}
+
+function buildInvestmentTransactions(): InvestmentTransaction[] {
+  return [
+    {
+      id: 'investment-tx-acme-buy-1',
+      walletId: INVESTMENT_IDS.wallet,
+      assetId: INVESTMENT_IDS.stock,
+      type: 'buy',
+      date: '2026-07-01',
+      quantity: '10',
+      price: '20.00',
+      amount: '200.00',
+      fee: '1.50',
+      currency: 'EUR',
+      notes: 'Initial position'
+    },
+    {
+      id: 'investment-tx-acme-buy-2',
+      walletId: INVESTMENT_IDS.wallet,
+      assetId: INVESTMENT_IDS.stock,
+      type: 'buy',
+      date: '2026-07-15',
+      quantity: '5',
+      price: '22.00',
+      amount: '110.00',
+      fee: '1.00',
+      currency: 'EUR'
+    },
+    {
+      id: 'investment-tx-acme-sell',
+      walletId: INVESTMENT_IDS.wallet,
+      assetId: INVESTMENT_IDS.stock,
+      type: 'sell',
+      date: '2026-08-01',
+      quantity: '3',
+      price: '25.00',
+      amount: '75.00',
+      fee: '0.50',
+      currency: 'EUR'
+    },
+    {
+      id: 'investment-tx-world-buy',
+      walletId: INVESTMENT_IDS.wallet,
+      assetId: INVESTMENT_IDS.etf,
+      type: 'buy',
+      date: '2026-07-05',
+      quantity: '4',
+      price: '105.00',
+      amount: '420.00',
+      fee: '2.00',
+      currency: 'EUR'
+    },
+    {
+      id: 'investment-tx-btc-buy',
+      walletId: INVESTMENT_IDS.wallet,
+      assetId: INVESTMENT_IDS.crypto,
+      type: 'buy',
+      date: '2026-07-20',
+      quantity: '0.01',
+      price: '55000',
+      amount: '550.00',
+      fee: '2.00',
+      currency: 'EUR'
+    },
+    {
+      id: 'investment-tx-world-dividend',
+      walletId: INVESTMENT_IDS.wallet,
+      assetId: INVESTMENT_IDS.etf,
+      type: 'dividend',
+      date: '2026-08-10',
+      amount: '8.40',
+      fee: '0',
+      currency: 'EUR',
+      notes: 'Quarterly distribution'
+    },
+    {
+      id: 'investment-tx-wallet-fee',
+      walletId: INVESTMENT_IDS.wallet,
+      type: 'fee',
+      date: '2026-08-12',
+      amount: '3.00',
+      fee: '0',
+      currency: 'EUR',
+      notes: 'Custody fee'
+    }
+  ];
+}
+
 function buildAllocations(): BudgetAllocation[] {
   return [
     { id: 'allocation-other', categoryId: CATEGORY_IDS.otherExpense, percentage: '20' }
@@ -680,6 +831,9 @@ export function createFixtures(): Fixtures {
     budgets: buildBudgets(currentMonthKey),
     institutions: buildInstitutions(),
     goals: buildGoals(),
+    investmentWallets: buildInvestmentWallets(),
+    investmentAssets: buildInvestmentAssets(),
+    investmentTransactions: buildInvestmentTransactions(),
     allocations: buildAllocations(),
     expectedIncome: buildExpectedIncome(currentMonthKey),
     manualRates: []

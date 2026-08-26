@@ -748,6 +748,151 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Nouveau portefeuille d’investissement",
+      "editWallet": "Modifier le portefeuille d’investissement",
+      "archiveWallet": "Archiver le portefeuille d’investissement",
+      "unarchiveWallet": "Désarchiver le portefeuille d’investissement",
+      "view": "Voir",
+      "newTransaction": "Enregistrer une opération",
+      "editTransaction": "Modifier l’opération",
+      "deleteTransaction": "Supprimer l’opération",
+      "newAsset": "Nouvel actif"
+    },
+    "wallet": "Portefeuille d’investissement",
+    "archived": "Archivé",
+    "summary": {
+      "bookValue": "Valeur comptable",
+      "marketValue": "Valeur de marché",
+      "unrealizedGain": "Plus-value latente"
+    },
+    "empty": {
+      "title": "Aucun portefeuille d’investissement pour le moment",
+      "description": "Créez un portefeuille pour commencer à suivre vos investissements."
+    },
+    "detail": {
+      "back": "Retour aux investissements",
+      "notFound": "Portefeuille d’investissement introuvable",
+      "positions": "Positions",
+      "positionsEmpty": {
+        "title": "Aucune position pour le moment",
+        "description": "Enregistrez un achat pour voir les positions ici."
+      },
+      "ledger": "Journal des opérations",
+      "ledgerEmpty": {
+        "title": "Aucune opération pour le moment",
+        "description": "Enregistrez un achat, une vente, un dividende ou des frais pour commencer le journal."
+      },
+      "stale": "Prix indisponible"
+    },
+    "columns": {
+      "asset": "Actif",
+      "quantity": "Quantité",
+      "averageCost": "Coût moyen",
+      "price": "Prix",
+      "marketValue": "Valeur de marché",
+      "unrealizedGain": "Plus-value latente",
+      "allocation": "Répartition",
+      "type": "Type",
+      "date": "Date",
+      "amount": "Montant",
+      "fee": "Frais",
+      "actions": "Actions"
+    },
+    "type": {
+      "buy": "Achat",
+      "sell": "Vente",
+      "dividend": "Dividende",
+      "fee": "Frais"
+    },
+    "assetClass": {
+      "stock": "Action",
+      "etf": "ETF",
+      "fund": "Fonds",
+      "crypto": "Crypto",
+      "bond": "Obligation",
+      "other": "Autre"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuel"
+    },
+    "form": {
+      "newTitle": "Nouveau portefeuille d’investissement",
+      "editTitle": "Modifier le portefeuille d’investissement",
+      "saveError": "Impossible d’enregistrer le portefeuille d’investissement. Réessayez.",
+      "fields": {
+        "name": "Nom",
+        "currency": "Devise",
+        "cashAccount": "Compte espèces",
+        "noCashAccount": "Aucun compte espèces",
+        "institution": "Établissement",
+        "noInstitution": "Aucun établissement"
+      },
+      "errors": {
+        "required": "Ce champ est obligatoire."
+      },
+      "actions": {
+        "cancel": "Annuler",
+        "save": "Enregistrer"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Enregistrer une opération d’investissement",
+        "editTitle": "Modifier l’opération d’investissement",
+        "saveError": "Impossible d’enregistrer l’opération d’investissement. Réessayez.",
+        "fields": {
+          "asset": "Actif",
+          "selectAsset": "Sélectionnez un actif",
+          "date": "Date",
+          "quantity": "Quantité",
+          "price": "Prix",
+          "amount": "Montant",
+          "derivedAmount": "Calculé à partir de la quantité × du prix",
+          "fee": "Frais",
+          "currency": "Devise",
+          "notes": "Notes"
+        },
+        "errors": {
+          "invalid": "Renseignez les champs obligatoires avec des valeurs valides."
+        },
+        "actions": {
+          "cancel": "Annuler",
+          "save": "Enregistrer"
+        }
+      },
+      "delete": {
+        "title": "Supprimer l’opération ?",
+        "message": "Supprimer l’opération d’investissement du {{date}} ?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nouvel actif d’investissement",
+        "editTitle": "Modifier l’actif d’investissement",
+        "saveError": "Impossible d’enregistrer l’actif d’investissement. Réessayez.",
+        "fields": {
+          "symbol": "Symbole",
+          "name": "Nom",
+          "assetClass": "Classe d’actif",
+          "currency": "Devise",
+          "quoteProvider": "Fournisseur de cours",
+          "manualPrice": "Prix manuel",
+          "manualPriceHint": "Utilisé jusqu’à ce que les cours en direct soient disponibles."
+        },
+        "actions": {
+          "cancel": "Annuler",
+          "save": "Enregistrer"
+        }
+      }
+    },
+    "archive": {
+      "title": "Archiver le portefeuille d’investissement ?",
+      "message": "Archiver {{name}} ? Son historique restera disponible."
+    },
+    "archiveError": "Impossible de mettre à jour l’état d’archivage du portefeuille d’investissement. Réessayez.",
     "title": "Investissements",
     "description": "Suivez les actions, fonds et cryptomonnaies que vous détenez.",
     "placeholder": {

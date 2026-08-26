@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "新しい投資ポートフォリオ",
+      "editWallet": "投資ポートフォリオを編集",
+      "archiveWallet": "投資ポートフォリオをアーカイブ",
+      "unarchiveWallet": "投資ポートフォリオのアーカイブを解除",
+      "view": "表示",
+      "newTransaction": "取引を記録",
+      "editTransaction": "取引を編集",
+      "deleteTransaction": "取引を削除",
+      "newAsset": "新しい資産"
+    },
+    "wallet": "投資ポートフォリオ",
+    "archived": "アーカイブ済み",
+    "summary": {
+      "bookValue": "簿価",
+      "marketValue": "時価",
+      "unrealizedGain": "未実現利益"
+    },
+    "empty": {
+      "title": "投資ポートフォリオはまだありません",
+      "description": "ポートフォリオを作成して投資の追跡を始めましょう。"
+    },
+    "detail": {
+      "back": "投資に戻る",
+      "notFound": "投資ポートフォリオが見つかりません",
+      "positions": "ポジション",
+      "positionsEmpty": {
+        "title": "ポジションはまだありません",
+        "description": "ポジションを表示するには買い取引を記録してください。"
+      },
+      "ledger": "取引台帳",
+      "ledgerEmpty": {
+        "title": "取引はまだありません",
+        "description": "台帳を開始するには、買い、売り、配当、または手数料を記録してください。"
+      },
+      "stale": "価格を取得できません"
+    },
+    "columns": {
+      "asset": "資産",
+      "quantity": "数量",
+      "averageCost": "平均取得単価",
+      "price": "価格",
+      "marketValue": "時価",
+      "unrealizedGain": "未実現利益",
+      "allocation": "配分",
+      "type": "種類",
+      "date": "日付",
+      "amount": "金額",
+      "fee": "手数料",
+      "actions": "アクション"
+    },
+    "type": {
+      "buy": "購入",
+      "sell": "売却",
+      "dividend": "配当",
+      "fee": "手数料"
+    },
+    "assetClass": {
+      "stock": "株式",
+      "etf": "ETF",
+      "fund": "ファンド",
+      "crypto": "暗号資産",
+      "bond": "債券",
+      "other": "その他"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "手動"
+    },
+    "form": {
+      "newTitle": "新しい投資ポートフォリオ",
+      "editTitle": "投資ポートフォリオを編集",
+      "saveError": "投資ポートフォリオを保存できませんでした。もう一度お試しください。",
+      "fields": {
+        "name": "名前",
+        "currency": "通貨",
+        "cashAccount": "現金口座",
+        "noCashAccount": "現金口座なし",
+        "institution": "金融機関",
+        "noInstitution": "金融機関なし"
+      },
+      "errors": {
+        "required": "この項目は必須です。"
+      },
+      "actions": {
+        "cancel": "キャンセル",
+        "save": "保存"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "投資取引を記録",
+        "editTitle": "投資取引を編集",
+        "saveError": "投資取引を保存できませんでした。もう一度お試しください。",
+        "fields": {
+          "asset": "資産",
+          "selectAsset": "資産を選択",
+          "date": "日付",
+          "quantity": "数量",
+          "price": "価格",
+          "amount": "金額",
+          "derivedAmount": "数量 × 価格から計算",
+          "fee": "手数料",
+          "currency": "通貨",
+          "notes": "メモ"
+        },
+        "errors": {
+          "invalid": "必須項目に有効な値を入力してください。"
+        },
+        "actions": {
+          "cancel": "キャンセル",
+          "save": "保存"
+        }
+      },
+      "delete": {
+        "title": "取引を削除しますか？",
+        "message": "{{date}}付の投資取引を削除しますか？"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "新しい投資資産",
+        "editTitle": "投資資産を編集",
+        "saveError": "投資資産を保存できませんでした。もう一度お試しください。",
+        "fields": {
+          "symbol": "銘柄コード",
+          "name": "名前",
+          "assetClass": "資産クラス",
+          "currency": "通貨",
+          "quoteProvider": "株価提供元",
+          "manualPrice": "手動価格",
+          "manualPriceHint": "リアルタイム価格が利用可能になるまで使用されます。"
+        },
+        "actions": {
+          "cancel": "キャンセル",
+          "save": "保存"
+        }
+      }
+    },
+    "archive": {
+      "title": "投資ポートフォリオをアーカイブしますか？",
+      "message": "{{name}}をアーカイブしますか？履歴は引き続き利用できます。"
+    },
+    "archiveError": "投資ポートフォリオのアーカイブ状態を更新できませんでした。もう一度お試しください。",
     "title": "投資",
     "description": "保有している株式、ファンド、暗号資産を追跡します。",
     "placeholder": {
       "title": "近日公開",
-      "description": "ウォレット、ポジション、相場情報を準備中です。"
+      "description": "ポートフォリオ、ポジション、相場情報を準備中です。"
     }
   },
   "reports": {

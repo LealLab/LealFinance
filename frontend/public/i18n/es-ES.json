@@ -748,6 +748,151 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Nueva cartera de inversión",
+      "editWallet": "Editar cartera de inversión",
+      "archiveWallet": "Archivar cartera de inversión",
+      "unarchiveWallet": "Desarchivar cartera de inversión",
+      "view": "Ver",
+      "newTransaction": "Registrar movimiento",
+      "editTransaction": "Editar movimiento",
+      "deleteTransaction": "Eliminar movimiento",
+      "newAsset": "Nuevo activo"
+    },
+    "wallet": "Cartera de inversión",
+    "archived": "Archivada",
+    "summary": {
+      "bookValue": "Valor contable",
+      "marketValue": "Valor de mercado",
+      "unrealizedGain": "Ganancia no realizada"
+    },
+    "empty": {
+      "title": "Aún no hay carteras de inversión",
+      "description": "Crea una cartera para empezar a seguir tus inversiones."
+    },
+    "detail": {
+      "back": "Volver a inversiones",
+      "notFound": "No se ha encontrado la cartera de inversión",
+      "positions": "Posiciones",
+      "positionsEmpty": {
+        "title": "Aún no hay posiciones",
+        "description": "Registra un movimiento de compra para ver las posiciones aquí."
+      },
+      "ledger": "Libro de movimientos",
+      "ledgerEmpty": {
+        "title": "Aún no hay movimientos",
+        "description": "Registra una compra, venta, dividendo o comisión para empezar el libro."
+      },
+      "stale": "Precio no disponible"
+    },
+    "columns": {
+      "asset": "Activo",
+      "quantity": "Cantidad",
+      "averageCost": "Coste medio",
+      "price": "Precio",
+      "marketValue": "Valor de mercado",
+      "unrealizedGain": "Ganancia no realizada",
+      "allocation": "Distribución",
+      "type": "Tipo",
+      "date": "Fecha",
+      "amount": "Importe",
+      "fee": "Comisión",
+      "actions": "Acciones"
+    },
+    "type": {
+      "buy": "Compra",
+      "sell": "Venta",
+      "dividend": "Dividendo",
+      "fee": "Comisión"
+    },
+    "assetClass": {
+      "stock": "Acción",
+      "etf": "ETF",
+      "fund": "Fondo",
+      "crypto": "Cripto",
+      "bond": "Bono",
+      "other": "Otro"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manual"
+    },
+    "form": {
+      "newTitle": "Nueva cartera de inversión",
+      "editTitle": "Editar cartera de inversión",
+      "saveError": "No se ha podido guardar la cartera de inversión. Inténtalo de nuevo.",
+      "fields": {
+        "name": "Nombre",
+        "currency": "Moneda",
+        "cashAccount": "Cuenta de efectivo",
+        "noCashAccount": "Sin cuenta de efectivo",
+        "institution": "Entidad",
+        "noInstitution": "Sin entidad"
+      },
+      "errors": {
+        "required": "Este campo es obligatorio."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Registrar movimiento de inversión",
+        "editTitle": "Editar movimiento de inversión",
+        "saveError": "No se ha podido guardar el movimiento de inversión. Inténtalo de nuevo.",
+        "fields": {
+          "asset": "Activo",
+          "selectAsset": "Selecciona un activo",
+          "date": "Fecha",
+          "quantity": "Cantidad",
+          "price": "Precio",
+          "amount": "Importe",
+          "derivedAmount": "Calculado a partir de la cantidad × el precio",
+          "fee": "Comisión",
+          "currency": "Moneda",
+          "notes": "Notas"
+        },
+        "errors": {
+          "invalid": "Completa los campos obligatorios con valores válidos."
+        },
+        "actions": {
+          "cancel": "Cancelar",
+          "save": "Guardar"
+        }
+      },
+      "delete": {
+        "title": "¿Eliminar movimiento?",
+        "message": "¿Eliminar el movimiento de inversión del {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nuevo activo de inversión",
+        "editTitle": "Editar activo de inversión",
+        "saveError": "No se ha podido guardar el activo de inversión. Inténtalo de nuevo.",
+        "fields": {
+          "symbol": "Símbolo",
+          "name": "Nombre",
+          "assetClass": "Clase de activo",
+          "currency": "Moneda",
+          "quoteProvider": "Proveedor de cotizaciones",
+          "manualPrice": "Precio manual",
+          "manualPriceHint": "Se usa hasta que haya cotizaciones en tiempo real."
+        },
+        "actions": {
+          "cancel": "Cancelar",
+          "save": "Guardar"
+        }
+      }
+    },
+    "archive": {
+      "title": "¿Archivar la cartera de inversión?",
+      "message": "¿Archivar {{name}}? Su historial seguirá disponible."
+    },
+    "archiveError": "No se ha podido actualizar el estado de archivo de la cartera de inversión. Inténtalo de nuevo.",
     "title": "Inversiones",
     "description": "Controla las acciones, fondos y criptomonedas que tienes.",
     "placeholder": {

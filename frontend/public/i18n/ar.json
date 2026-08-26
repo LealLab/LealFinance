@@ -748,6 +748,151 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "محفظة جديدة",
+      "editWallet": "تعديل المحفظة",
+      "archiveWallet": "أرشفة المحفظة",
+      "unarchiveWallet": "إلغاء أرشفة المحفظة",
+      "view": "عرض",
+      "newTransaction": "تسجيل معاملة",
+      "editTransaction": "تعديل المعاملة",
+      "deleteTransaction": "حذف المعاملة",
+      "newAsset": "أصل جديد"
+    },
+    "wallet": "محفظة",
+    "archived": "مؤرشف",
+    "summary": {
+      "bookValue": "القيمة الدفترية",
+      "marketValue": "القيمة السوقية",
+      "unrealizedGain": "المكسب غير المحقق"
+    },
+    "empty": {
+      "title": "لا توجد محافظ استثمارية بعد",
+      "description": "أنشئ محفظة لبدء تتبّع استثماراتك."
+    },
+    "detail": {
+      "back": "العودة إلى الاستثمارات",
+      "notFound": "لم يتم العثور على محفظة استثمارية",
+      "positions": "المراكز",
+      "positionsEmpty": {
+        "title": "لا توجد مراكز بعد",
+        "description": "سجّل معاملة شراء لرؤية المراكز هنا."
+      },
+      "ledger": "سجل المعاملات",
+      "ledgerEmpty": {
+        "title": "لا توجد معاملات بعد",
+        "description": "سجّل معاملة شراء أو بيع أو توزيعات أرباح أو رسوم لبدء السجل."
+      },
+      "stale": "السعر غير متاح"
+    },
+    "columns": {
+      "asset": "الأصل",
+      "quantity": "الكمية",
+      "averageCost": "متوسط التكلفة",
+      "price": "السعر",
+      "marketValue": "القيمة السوقية",
+      "unrealizedGain": "المكسب غير المحقق",
+      "allocation": "التوزيع",
+      "type": "النوع",
+      "date": "التاريخ",
+      "amount": "المبلغ",
+      "fee": "الرسوم",
+      "actions": "الإجراءات"
+    },
+    "type": {
+      "buy": "شراء",
+      "sell": "بيع",
+      "dividend": "توزيعات أرباح",
+      "fee": "رسوم"
+    },
+    "assetClass": {
+      "stock": "سهم",
+      "etf": "ETF",
+      "fund": "صندوق",
+      "crypto": "عملة مشفرة",
+      "bond": "سند",
+      "other": "أخرى"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "يدوي"
+    },
+    "form": {
+      "newTitle": "محفظة استثمارية جديدة",
+      "editTitle": "تعديل المحفظة الاستثمارية",
+      "saveError": "تعذّر حفظ محفظة الاستثمار. حاول مرة أخرى.",
+      "fields": {
+        "name": "الاسم",
+        "currency": "العملة",
+        "cashAccount": "الحساب النقدي",
+        "noCashAccount": "لا يوجد حساب نقدي",
+        "institution": "المؤسسة",
+        "noInstitution": "لا توجد مؤسسة"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب."
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "تسجيل معاملة استثمارية",
+        "editTitle": "تعديل معاملة استثمارية",
+        "saveError": "تعذّر حفظ معاملة الاستثمار. حاول مرة أخرى.",
+        "fields": {
+          "asset": "الأصل",
+          "selectAsset": "اختر أصلًا",
+          "date": "التاريخ",
+          "quantity": "الكمية",
+          "price": "السعر",
+          "amount": "المبلغ",
+          "derivedAmount": "تم الحساب من الكمية × السعر",
+          "fee": "الرسوم",
+          "currency": "العملة",
+          "notes": "ملاحظات"
+        },
+        "errors": {
+          "invalid": "أكمل الحقول المطلوبة بقيم صالحة."
+        },
+        "actions": {
+          "cancel": "إلغاء",
+          "save": "حفظ"
+        }
+      },
+      "delete": {
+        "title": "حذف المعاملة؟",
+        "message": "حذف معاملة الاستثمار بتاريخ {{date}}؟"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "أصل استثماري جديد",
+        "editTitle": "تعديل الأصل الاستثماري",
+        "saveError": "تعذّر حفظ الأصل الاستثماري. حاول مرة أخرى.",
+        "fields": {
+          "symbol": "الرمز",
+          "name": "الاسم",
+          "assetClass": "فئة الأصل",
+          "currency": "العملة",
+          "quoteProvider": "مزود الأسعار",
+          "manualPrice": "السعر اليدوي",
+          "manualPriceHint": "يُستخدم إلى أن تتوفر الأسعار المباشرة."
+        },
+        "actions": {
+          "cancel": "إلغاء",
+          "save": "حفظ"
+        }
+      }
+    },
+    "archive": {
+      "title": "هل تريد أرشفة محفظة الاستثمار؟",
+      "message": "أرشفة {{name}}؟ سيظل سجلها متاحًا."
+    },
+    "archiveError": "تعذّر تحديث حالة أرشفة محفظة الاستثمار. حاول مرة أخرى.",
     "title": "الاستثمارات",
     "description": "تتبّع الأسهم والصناديق والعملات المشفرة التي تملكها.",
     "placeholder": {

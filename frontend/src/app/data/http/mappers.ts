@@ -13,9 +13,28 @@ import type { Category } from '../../domain/models/category';
 import type { ExchangeRate } from '../../domain/models/exchange-rate';
 import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
+import type {
+  InvestmentAsset,
+  InvestmentPosition,
+  InvestmentSummary,
+  InvestmentTransaction,
+  InvestmentWallet,
+} from '../../domain/models/investment';
 import type { ManualRate } from '../../domain/models/manual-rate';
 import type { RecurringRule } from '../../domain/models/recurring';
 import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
+import type {
+  InvestmentWalletCreate,
+  InvestmentWalletUpdate,
+} from '../investment-wallet.repository';
+import type {
+  InvestmentAssetCreate,
+  InvestmentAssetUpdate,
+} from '../investment-asset.repository';
+import type {
+  InvestmentTransactionCreate,
+  InvestmentTransactionUpdate,
+} from '../investment-transaction.repository';
 import type { Transaction, TransactionConversion } from '../../domain/models/transaction';
 import type {
   AccountBalanceWire,
@@ -42,6 +61,17 @@ import type {
   GoalWire,
   GoalWithAccountInputWire,
   GoalWithAccountPatchWire,
+  InvestmentAssetInputWire,
+  InvestmentAssetPatchWire,
+  InvestmentAssetWire,
+  InvestmentPositionWire,
+  InvestmentSummaryWire,
+  InvestmentTransactionInputWire,
+  InvestmentTransactionPatchWire,
+  InvestmentTransactionWire,
+  InvestmentWalletInputWire,
+  InvestmentWalletPatchWire,
+  InvestmentWalletWire,
   ImportOptionsWire,
   ImportPreviewRequestWire,
   ImportPreviewWire,
@@ -386,6 +416,137 @@ export function mapGoalPatch(
   if (has(input, 'interval')) wire.interval = nullable(input.interval);
   return wire;
 }
+
+export const mapInvestmentWallet = (wire: InvestmentWalletWire): InvestmentWallet => ({
+  id: wire.id,
+  accountId: wire.account_id,
+  name: wire.name,
+  currency: wire.currency,
+  cashAccountId: wire.cash_account_id ?? undefined,
+  institutionId: wire.institution_id ?? undefined,
+  archived: wire.archived,
+});
+export const mapInvestmentWalletCreate = (
+  input: InvestmentWalletCreate,
+): InvestmentWalletInputWire => ({
+  name: input.name,
+  currency: input.currency,
+  cash_account_id: nullable(input.cashAccountId),
+  institution_id: nullable(input.institutionId),
+  archived: input.archived ?? false,
+});
+export function mapInvestmentWalletPatch(
+  input: InvestmentWalletUpdate,
+): InvestmentWalletPatchWire {
+  const wire: InvestmentWalletPatchWire = {};
+  if (has(input, 'name')) wire.name = nullable(input.name);
+  if (has(input, 'currency')) wire.currency = nullable(input.currency);
+  if (has(input, 'cashAccountId')) wire.cash_account_id = nullable(input.cashAccountId);
+  if (has(input, 'institutionId')) wire.institution_id = nullable(input.institutionId);
+  return wire;
+}
+
+export const mapInvestmentAsset = (wire: InvestmentAssetWire): InvestmentAsset => ({
+  id: wire.id,
+  symbol: wire.symbol,
+  name: wire.name,
+  assetClass: wire.asset_class,
+  currency: wire.currency,
+  quoteProvider: wire.quote_provider,
+  manualPrice: wire.manual_price ?? undefined,
+  archived: wire.archived,
+});
+export const mapInvestmentAssetCreate = (
+  input: InvestmentAssetCreate,
+): InvestmentAssetInputWire => ({
+  symbol: input.symbol,
+  name: input.name,
+  asset_class: input.assetClass,
+  currency: input.currency,
+  quote_provider: input.quoteProvider,
+  manual_price: nullable(input.manualPrice),
+  archived: input.archived ?? false,
+});
+export function mapInvestmentAssetPatch(
+  input: InvestmentAssetUpdate,
+): InvestmentAssetPatchWire {
+  const wire: InvestmentAssetPatchWire = {};
+  if (has(input, 'symbol')) wire.symbol = nullable(input.symbol);
+  if (has(input, 'name')) wire.name = nullable(input.name);
+  if (has(input, 'assetClass')) wire.asset_class = nullable(input.assetClass);
+  if (has(input, 'currency')) wire.currency = nullable(input.currency);
+  if (has(input, 'quoteProvider')) wire.quote_provider = nullable(input.quoteProvider);
+  if (has(input, 'manualPrice')) wire.manual_price = nullable(input.manualPrice);
+  return wire;
+}
+
+export const mapInvestmentTransaction = (
+  wire: InvestmentTransactionWire,
+): InvestmentTransaction => ({
+  id: wire.id,
+  walletId: wire.wallet_id,
+  assetId: wire.asset_id ?? undefined,
+  type: wire.type,
+  date: wire.date,
+  quantity: wire.quantity ?? undefined,
+  price: wire.price ?? undefined,
+  amount: wire.amount,
+  fee: wire.fee,
+  currency: wire.currency,
+  transactionId: wire.transaction_id ?? undefined,
+  notes: wire.notes ?? undefined,
+});
+export const mapInvestmentTransactionCreate = (
+  input: InvestmentTransactionCreate,
+): InvestmentTransactionInputWire => ({
+  wallet_id: input.walletId,
+  asset_id: nullable(input.assetId),
+  type: input.type,
+  date: input.date,
+  quantity: nullable(input.quantity),
+  price: nullable(input.price),
+  amount: input.amount,
+  fee: input.fee,
+  currency: input.currency,
+  notes: nullable(input.notes),
+});
+export function mapInvestmentTransactionPatch(
+  input: InvestmentTransactionUpdate,
+): InvestmentTransactionPatchWire {
+  const wire: InvestmentTransactionPatchWire = {};
+  if (has(input, 'assetId')) wire.asset_id = nullable(input.assetId);
+  if (has(input, 'type')) wire.type = nullable(input.type);
+  if (has(input, 'date')) wire.date = nullable(input.date);
+  if (has(input, 'quantity')) wire.quantity = nullable(input.quantity);
+  if (has(input, 'price')) wire.price = nullable(input.price);
+  if (has(input, 'amount')) wire.amount = nullable(input.amount);
+  if (has(input, 'fee')) wire.fee = nullable(input.fee);
+  if (has(input, 'currency')) wire.currency = nullable(input.currency);
+  if (has(input, 'notes')) wire.notes = nullable(input.notes);
+  return wire;
+}
+
+export const mapInvestmentPosition = (wire: InvestmentPositionWire): InvestmentPosition => ({
+  asset: mapInvestmentAsset(wire.asset),
+  quantity: wire.quantity,
+  averageCost: wire.average_cost,
+  bookValue: wire.book_value,
+  price: wire.price ?? undefined,
+  priceAsOf: wire.price_as_of ?? undefined,
+  priceIsStale: wire.price_is_stale,
+  marketValue: wire.market_value ?? undefined,
+  unrealizedGain: wire.unrealized_gain ?? undefined,
+  realizedGain: wire.realized_gain,
+  dividendIncome: wire.dividend_income,
+  feesPaid: wire.fees_paid,
+  marketValueIsFallback: wire.market_value_is_fallback,
+});
+export const mapInvestmentSummary = (wire: InvestmentSummaryWire): InvestmentSummary => ({
+  totalBookValue: wire.total_book_value,
+  totalMarketValue: wire.total_market_value ?? undefined,
+  totalUnrealizedGain: wire.total_unrealized_gain ?? undefined,
+  walletCount: wire.wallet_count,
+});
 
 export const mapAgentProviderStatus = (wire: AgentProviderStatusWire): AgentProviderStatus => ({
   provider: wire.provider,

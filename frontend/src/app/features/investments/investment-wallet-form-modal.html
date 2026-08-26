@@ -1,0 +1,62 @@
+<div *transloco="let t">
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div>
+          <label class="form-label" for="investment-wallet-name">{{ t('investments.form.fields.name') }}</label>
+          <input id="investment-wallet-name" type="text" class="form-input" formControlName="name" />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p class="form-error">{{ t('investments.form.errors.required') }}</p>
+          }
+        </div>
+
+        <div>
+          <label class="form-label" for="investment-wallet-currency">{{ t('investments.form.fields.currency') }}</label>
+          <select
+            id="investment-wallet-currency"
+            class="form-input"
+            formControlName="currency"
+            [attr.disabled]="isEditing() ? '' : null"
+          >
+            @for (currency of currencyOptions(); track currency) {
+              <option [value]="currency">{{ currency }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label" for="investment-wallet-cash-account">{{ t('investments.form.fields.cashAccount') }}</label>
+          <select id="investment-wallet-cash-account" class="form-input" formControlName="cashAccountId">
+            <option value="">{{ t('investments.form.fields.noCashAccount') }}</option>
+            @for (account of cashAccounts(); track account.id) {
+              <option [value]="account.id">{{ account.name }} · {{ account.currency }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label" for="investment-wallet-institution">{{ t('investments.form.fields.institution') }}</label>
+          <select id="investment-wallet-institution" class="form-input" formControlName="institutionId">
+            <option value="">{{ t('investments.form.fields.noInstitution') }}</option>
+            @for (institution of institutionsResource.value(); track institution.id) {
+              <option [value]="institution.id">{{ institution.name }}</option>
+            }
+          </select>
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('investments.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('investments.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

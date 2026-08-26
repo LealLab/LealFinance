@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "새 투자 포트폴리오",
+      "editWallet": "투자 포트폴리오 수정",
+      "archiveWallet": "투자 포트폴리오 보관",
+      "unarchiveWallet": "투자 포트폴리오 보관 해제",
+      "view": "보기",
+      "newTransaction": "거래 기록",
+      "editTransaction": "거래 수정",
+      "deleteTransaction": "거래 삭제",
+      "newAsset": "새 자산"
+    },
+    "wallet": "투자 포트폴리오",
+    "archived": "보관됨",
+    "summary": {
+      "bookValue": "장부가",
+      "marketValue": "시장가",
+      "unrealizedGain": "미실현 수익"
+    },
+    "empty": {
+      "title": "아직 투자 포트폴리오가 없습니다",
+      "description": "포트폴리오를 만들어 투자를 추적해 보세요."
+    },
+    "detail": {
+      "back": "투자로 돌아가기",
+      "notFound": "투자 포트폴리오를 찾을 수 없습니다",
+      "positions": "포지션",
+      "positionsEmpty": {
+        "title": "아직 포지션이 없습니다",
+        "description": "포지션을 보려면 매수 거래를 기록하세요."
+      },
+      "ledger": "거래 원장",
+      "ledgerEmpty": {
+        "title": "아직 거래가 없습니다",
+        "description": "원장을 시작하려면 매수, 매도, 배당 또는 수수료를 기록하세요."
+      },
+      "stale": "가격을 사용할 수 없습니다"
+    },
+    "columns": {
+      "asset": "자산",
+      "quantity": "수량",
+      "averageCost": "평균 매입가",
+      "price": "가격",
+      "marketValue": "시장가",
+      "unrealizedGain": "미실현 수익",
+      "allocation": "배분",
+      "type": "유형",
+      "date": "날짜",
+      "amount": "금액",
+      "fee": "수수료",
+      "actions": "작업"
+    },
+    "type": {
+      "buy": "매수",
+      "sell": "매도",
+      "dividend": "배당",
+      "fee": "수수료"
+    },
+    "assetClass": {
+      "stock": "주식",
+      "etf": "ETF",
+      "fund": "펀드",
+      "crypto": "암호화폐",
+      "bond": "채권",
+      "other": "기타"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "수동"
+    },
+    "form": {
+      "newTitle": "새 투자 포트폴리오",
+      "editTitle": "투자 포트폴리오 수정",
+      "saveError": "투자 포트폴리오를 저장할 수 없습니다. 다시 시도하세요.",
+      "fields": {
+        "name": "이름",
+        "currency": "통화",
+        "cashAccount": "현금 계좌",
+        "noCashAccount": "현금 계좌 없음",
+        "institution": "기관",
+        "noInstitution": "기관 없음"
+      },
+      "errors": {
+        "required": "이 필드는 필수입니다."
+      },
+      "actions": {
+        "cancel": "취소",
+        "save": "저장"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "투자 거래 기록",
+        "editTitle": "투자 거래 수정",
+        "saveError": "투자 거래를 저장할 수 없습니다. 다시 시도하세요.",
+        "fields": {
+          "asset": "자산",
+          "selectAsset": "자산 선택",
+          "date": "날짜",
+          "quantity": "수량",
+          "price": "가격",
+          "amount": "금액",
+          "derivedAmount": "수량 × 가격으로 계산됨",
+          "fee": "수수료",
+          "currency": "통화",
+          "notes": "메모"
+        },
+        "errors": {
+          "invalid": "필수 항목을 올바른 값으로 입력하세요."
+        },
+        "actions": {
+          "cancel": "취소",
+          "save": "저장"
+        }
+      },
+      "delete": {
+        "title": "거래를 삭제할까요?",
+        "message": "{{date}} 날짜의 투자 거래를 삭제할까요?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "새 투자 자산",
+        "editTitle": "투자 자산 수정",
+        "saveError": "투자 자산을 저장할 수 없습니다. 다시 시도하세요.",
+        "fields": {
+          "symbol": "심볼",
+          "name": "이름",
+          "assetClass": "자산 분류",
+          "currency": "통화",
+          "quoteProvider": "시세 제공업체",
+          "manualPrice": "수동 가격",
+          "manualPriceHint": "실시간 시세를 사용할 수 있을 때까지 사용됩니다."
+        },
+        "actions": {
+          "cancel": "취소",
+          "save": "저장"
+        }
+      }
+    },
+    "archive": {
+      "title": "투자 포트폴리오를 보관할까요?",
+      "message": "{{name}}을(를) 보관할까요? 기록은 계속 사용할 수 있습니다."
+    },
+    "archiveError": "투자 포트폴리오 보관 상태를 업데이트할 수 없습니다. 다시 시도하세요.",
     "title": "투자",
     "description": "보유한 주식, 펀드, 암호화폐를 추적하세요.",
     "placeholder": {
       "title": "곧 출시됩니다",
-      "description": "지갑, 포지션, 시세 기능을 준비하고 있습니다."
+      "description": "포트폴리오, 포지션, 시세 기능을 준비하고 있습니다."
     }
   },
   "reports": {

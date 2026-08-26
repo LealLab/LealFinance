@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Yeni yatırım portföyü",
+      "editWallet": "Yatırım portföyünü düzenle",
+      "archiveWallet": "Yatırım portföyünü arşivle",
+      "unarchiveWallet": "Yatırım portföyünü arşivden çıkar",
+      "view": "Görüntüle",
+      "newTransaction": "İşlem kaydet",
+      "editTransaction": "İşlemi düzenle",
+      "deleteTransaction": "İşlemi sil",
+      "newAsset": "Yeni varlık"
+    },
+    "wallet": "Yatırım portföyü",
+    "archived": "Arşivlendi",
+    "summary": {
+      "bookValue": "Defter değeri",
+      "marketValue": "Piyasa değeri",
+      "unrealizedGain": "Gerçekleşmemiş kazanç"
+    },
+    "empty": {
+      "title": "Henüz yatırım portföyü yok",
+      "description": "Yatırımlarınızı izlemeye başlamak için bir portföy oluşturun."
+    },
+    "detail": {
+      "back": "Yatırımlara dön",
+      "notFound": "Yatırım portföyü bulunamadı",
+      "positions": "Pozisyonlar",
+      "positionsEmpty": {
+        "title": "Henüz pozisyon yok",
+        "description": "Pozisyonları burada görmek için bir alış işlemi kaydedin."
+      },
+      "ledger": "İşlem defteri",
+      "ledgerEmpty": {
+        "title": "Henüz işlem yok",
+        "description": "Defteri başlatmak için alış, satış, temettü veya ücret kaydedin."
+      },
+      "stale": "Fiyat mevcut değil"
+    },
+    "columns": {
+      "asset": "Varlık",
+      "quantity": "Miktar",
+      "averageCost": "Ortalama maliyet",
+      "price": "Fiyat",
+      "marketValue": "Piyasa değeri",
+      "unrealizedGain": "Gerçekleşmemiş kazanç",
+      "allocation": "Dağılım",
+      "type": "Tür",
+      "date": "Tarih",
+      "amount": "Tutar",
+      "fee": "Ücret",
+      "actions": "İşlemler"
+    },
+    "type": {
+      "buy": "Alış",
+      "sell": "Satış",
+      "dividend": "Temettü",
+      "fee": "Ücret"
+    },
+    "assetClass": {
+      "stock": "Hisse senedi",
+      "etf": "ETF",
+      "fund": "Fon",
+      "crypto": "Kripto",
+      "bond": "Tahvil",
+      "other": "Diğer"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuel"
+    },
+    "form": {
+      "newTitle": "Yeni yatırım portföyü",
+      "editTitle": "Yatırım portföyünü düzenle",
+      "saveError": "Yatırım portföyü kaydedilemedi. Tekrar deneyin.",
+      "fields": {
+        "name": "Ad",
+        "currency": "Para birimi",
+        "cashAccount": "Nakit hesabı",
+        "noCashAccount": "Nakit hesabı yok",
+        "institution": "Kurum",
+        "noInstitution": "Kurum yok"
+      },
+      "errors": {
+        "required": "Bu alan zorunludur."
+      },
+      "actions": {
+        "cancel": "İptal",
+        "save": "Kaydet"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Yatırım işlemi kaydet",
+        "editTitle": "Yatırım işlemini düzenle",
+        "saveError": "Yatırım işlemi kaydedilemedi. Tekrar deneyin.",
+        "fields": {
+          "asset": "Varlık",
+          "selectAsset": "Varlık seçin",
+          "date": "Tarih",
+          "quantity": "Miktar",
+          "price": "Fiyat",
+          "amount": "Tutar",
+          "derivedAmount": "Miktar × fiyattan hesaplandı",
+          "fee": "Ücret",
+          "currency": "Para birimi",
+          "notes": "Notlar"
+        },
+        "errors": {
+          "invalid": "Zorunlu alanları geçerli değerlerle doldurun."
+        },
+        "actions": {
+          "cancel": "İptal",
+          "save": "Kaydet"
+        }
+      },
+      "delete": {
+        "title": "İşlem silinsin mi?",
+        "message": "{{date}} tarihli yatırım işlemi silinsin mi?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Yeni yatırım varlığı",
+        "editTitle": "Yatırım varlığını düzenle",
+        "saveError": "Yatırım varlığı kaydedilemedi. Tekrar deneyin.",
+        "fields": {
+          "symbol": "Sembol",
+          "name": "Ad",
+          "assetClass": "Varlık sınıfı",
+          "currency": "Para birimi",
+          "quoteProvider": "Fiyat sağlayıcısı",
+          "manualPrice": "Manuel fiyat",
+          "manualPriceHint": "Canlı fiyatlar kullanılabilir olana kadar kullanılır."
+        },
+        "actions": {
+          "cancel": "İptal",
+          "save": "Kaydet"
+        }
+      }
+    },
+    "archive": {
+      "title": "Yatırım portföyü arşivlensin mi?",
+      "message": "{{name}} arşivlensin mi? Geçmişi kullanılabilir olmaya devam eder."
+    },
+    "archiveError": "Yatırım portföyünün arşiv durumu güncellenemedi. Tekrar deneyin.",
     "title": "Yatırımlar",
     "description": "Sahip olduğunuz hisse senetlerini, fonları ve kripto varlıkları takip edin.",
     "placeholder": {
       "title": "Çok yakında",
-      "description": "Cüzdanlar, pozisyonlar ve fiyatlar yolda."
+      "description": "Portföyler, pozisyonlar ve fiyatlar yolda."
     }
   },
   "reports": {

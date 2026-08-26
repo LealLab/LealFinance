@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Uusi sijoitussalkku",
+      "editWallet": "Muokkaa sijoitussalkkua",
+      "archiveWallet": "Arkistoi sijoitussalkku",
+      "unarchiveWallet": "Poista sijoitussalkku arkistosta",
+      "view": "Näytä",
+      "newTransaction": "Kirjaa tapahtuma",
+      "editTransaction": "Muokkaa tapahtumaa",
+      "deleteTransaction": "Poista tapahtuma",
+      "newAsset": "Uusi omaisuuserä"
+    },
+    "wallet": "Sijoitussalkku",
+    "archived": "Arkistoitu",
+    "summary": {
+      "bookValue": "Hankinta-arvo",
+      "marketValue": "Markkina-arvo",
+      "unrealizedGain": "Realisoitumaton voitto"
+    },
+    "empty": {
+      "title": "Sijoitussalkkuja ei ole vielä",
+      "description": "Luo salkku aloittaaksesi sijoitustesi seuraamisen."
+    },
+    "detail": {
+      "back": "Takaisin sijoituksiin",
+      "notFound": "Sijoitussalkkua ei löytynyt",
+      "positions": "Omistukset",
+      "positionsEmpty": {
+        "title": "Omistuksia ei ole vielä",
+        "description": "Kirjaa ostotapahtuma nähdäksesi omistukset täällä."
+      },
+      "ledger": "Tapahtumakirjanpito",
+      "ledgerEmpty": {
+        "title": "Tapahtumia ei ole vielä",
+        "description": "Kirjaa osto, myynti, osinko tai kulu aloittaaksesi tapahtumakirjanpidon."
+      },
+      "stale": "Hinta ei ole saatavilla"
+    },
+    "columns": {
+      "asset": "Omaisuuserä",
+      "quantity": "Määrä",
+      "averageCost": "Keskimääräinen hankintahinta",
+      "price": "Hinta",
+      "marketValue": "Markkina-arvo",
+      "unrealizedGain": "Realisoitumaton voitto",
+      "allocation": "Allokaatio",
+      "type": "Tyyppi",
+      "date": "Päivämäärä",
+      "amount": "Summa",
+      "fee": "Kulu",
+      "actions": "Toiminnot"
+    },
+    "type": {
+      "buy": "Osto",
+      "sell": "Myynti",
+      "dividend": "Osinko",
+      "fee": "Kulu"
+    },
+    "assetClass": {
+      "stock": "Osake",
+      "etf": "ETF",
+      "fund": "Rahasto",
+      "crypto": "Kryptovaluutta",
+      "bond": "Joukkovelkakirja",
+      "other": "Muu"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuaalinen"
+    },
+    "form": {
+      "newTitle": "Uusi sijoitussalkku",
+      "editTitle": "Muokkaa sijoitussalkkua",
+      "saveError": "Sijoitussalkun tallennus epäonnistui. Yritä uudelleen.",
+      "fields": {
+        "name": "Nimi",
+        "currency": "Valuutta",
+        "cashAccount": "Käteistili",
+        "noCashAccount": "Ei käteistiliä",
+        "institution": "Laitos",
+        "noInstitution": "Ei laitosta"
+      },
+      "errors": {
+        "required": "Tämä kenttä on pakollinen."
+      },
+      "actions": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Kirjaa sijoitustapahtuma",
+        "editTitle": "Muokkaa sijoitustapahtumaa",
+        "saveError": "Sijoitustapahtuman tallennus epäonnistui. Yritä uudelleen.",
+        "fields": {
+          "asset": "Omaisuuserä",
+          "selectAsset": "Valitse omaisuuserä",
+          "date": "Päivämäärä",
+          "quantity": "Määrä",
+          "price": "Hinta",
+          "amount": "Summa",
+          "derivedAmount": "Laskettu määrän × hinnan perusteella",
+          "fee": "Kulu",
+          "currency": "Valuutta",
+          "notes": "Muistiinpanot"
+        },
+        "errors": {
+          "invalid": "Täytä pakolliset kentät kelvollisilla arvoilla."
+        },
+        "actions": {
+          "cancel": "Peruuta",
+          "save": "Tallenna"
+        }
+      },
+      "delete": {
+        "title": "Poistetaanko tapahtuma?",
+        "message": "Poistetaanko sijoitustapahtuma päivältä {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Uusi sijoitusomaisuuserä",
+        "editTitle": "Muokkaa sijoitusomaisuuserää",
+        "saveError": "Sijoitusomaisuuserän tallennus epäonnistui. Yritä uudelleen.",
+        "fields": {
+          "symbol": "Tunnus",
+          "name": "Nimi",
+          "assetClass": "Omaisuusluokka",
+          "currency": "Valuutta",
+          "quoteProvider": "Hintatietojen tarjoaja",
+          "manualPrice": "Manuaalinen hinta",
+          "manualPriceHint": "Käytetään, kunnes reaaliaikaiset hinnat ovat saatavilla."
+        },
+        "actions": {
+          "cancel": "Peruuta",
+          "save": "Tallenna"
+        }
+      }
+    },
+    "archive": {
+      "title": "Arkistoidaanko sijoitussalkku?",
+      "message": "Arkistoidaanko {{name}}? Sen historia säilyy saatavilla."
+    },
+    "archiveError": "Sijoitussalkun arkistotilan päivitys epäonnistui. Yritä uudelleen.",
     "title": "Sijoitukset",
     "description": "Seuraa omistamiasi osakkeita, rahastoja ja kryptovaluuttoja.",
     "placeholder": {
       "title": "Tulossa pian",
-      "description": "Lompakot, positiot ja kurssit ovat tulossa."
+      "description": "Salkut, omistukset ja kurssit ovat tulossa."
     }
   },
   "reports": {

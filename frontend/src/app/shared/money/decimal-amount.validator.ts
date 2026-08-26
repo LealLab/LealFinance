@@ -6,8 +6,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
  * empty value is left to `Validators.required` to catch; this validator
  * only judges the *shape* of whatever is actually typed.
  */
-export function decimalAmountValidator(): ValidatorFn {
-  const pattern = /^-?\d+(\.\d{1,4})?$/;
+export function decimalAmountValidator(maxDecimals = 4): ValidatorFn {
+  const pattern = new RegExp(`^-?\\d+(\\.\\d{1,${maxDecimals}})?$`);
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
     if (value === null || value === undefined || value === '') return null;

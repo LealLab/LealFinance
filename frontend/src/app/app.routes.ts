@@ -61,6 +61,12 @@ export const routes: Routes = [
           import('./features/investments/investments').then((m) => m.Investments),
       },
       {
+        path: 'investments/:id',
+        canActivate: [investmentsGuard],
+        loadComponent: () =>
+          import('./features/investments/investment-detail').then((m) => m.InvestmentDetail),
+      },
+      {
         path: 'reports',
         loadComponent: () => import('./features/reports/reports').then((m) => m.Reports),
       },

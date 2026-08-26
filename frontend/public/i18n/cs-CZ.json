@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Nové investiční portfolio",
+      "editWallet": "Upravit investiční portfolio",
+      "archiveWallet": "Archivovat investiční portfolio",
+      "unarchiveWallet": "Zrušit archivaci investičního portfolia",
+      "view": "Zobrazit",
+      "newTransaction": "Zaznamenat transakci",
+      "editTransaction": "Upravit transakci",
+      "deleteTransaction": "Odstranit transakci",
+      "newAsset": "Nové aktivum"
+    },
+    "wallet": "Investiční portfolio",
+    "archived": "Archivováno",
+    "summary": {
+      "bookValue": "Účetní hodnota",
+      "marketValue": "Tržní hodnota",
+      "unrealizedGain": "Nerealizovaný zisk"
+    },
+    "empty": {
+      "title": "Zatím žádná investiční portfolia",
+      "description": "Vytvořte portfolio, abyste mohli začít sledovat své investice."
+    },
+    "detail": {
+      "back": "Zpět na investice",
+      "notFound": "Investiční portfolio nebylo nalezeno",
+      "positions": "Pozice",
+      "positionsEmpty": {
+        "title": "Zatím žádné pozice",
+        "description": "Zaznamenejte nákupní transakci, abyste zde viděli pozice."
+      },
+      "ledger": "Kniha transakcí",
+      "ledgerEmpty": {
+        "title": "Zatím žádné transakce",
+        "description": "Zaznamenejte nákup, prodej, dividendu nebo poplatek, abyste začali vést knihu."
+      },
+      "stale": "Cena není k dispozici"
+    },
+    "columns": {
+      "asset": "Aktivum",
+      "quantity": "Množství",
+      "averageCost": "Průměrná nákladová cena",
+      "price": "Cena",
+      "marketValue": "Tržní hodnota",
+      "unrealizedGain": "Nerealizovaný zisk",
+      "allocation": "Alokace",
+      "type": "Typ",
+      "date": "Datum",
+      "amount": "Částka",
+      "fee": "Poplatek",
+      "actions": "Akce"
+    },
+    "type": {
+      "buy": "Nákup",
+      "sell": "Prodej",
+      "dividend": "Dividenda",
+      "fee": "Poplatek"
+    },
+    "assetClass": {
+      "stock": "Akcie",
+      "etf": "ETF",
+      "fund": "Fond",
+      "crypto": "Kryptoměna",
+      "bond": "Dluhopis",
+      "other": "Jiné"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Ručně"
+    },
+    "form": {
+      "newTitle": "Nové investiční portfolio",
+      "editTitle": "Upravit investiční portfolio",
+      "saveError": "Investiční portfolio se nepodařilo uložit. Zkuste to znovu.",
+      "fields": {
+        "name": "Název",
+        "currency": "Měna",
+        "cashAccount": "Hotovostní účet",
+        "noCashAccount": "Žádný hotovostní účet",
+        "institution": "Instituce",
+        "noInstitution": "Žádná instituce"
+      },
+      "errors": {
+        "required": "Toto pole je povinné."
+      },
+      "actions": {
+        "cancel": "Zrušit",
+        "save": "Uložit"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Zaznamenat investiční transakci",
+        "editTitle": "Upravit investiční transakci",
+        "saveError": "Investiční transakci se nepodařilo uložit. Zkuste to znovu.",
+        "fields": {
+          "asset": "Aktivum",
+          "selectAsset": "Vyberte aktivum",
+          "date": "Datum",
+          "quantity": "Množství",
+          "price": "Cena",
+          "amount": "Částka",
+          "derivedAmount": "Vypočteno z množství × ceny",
+          "fee": "Poplatek",
+          "currency": "Měna",
+          "notes": "Poznámky"
+        },
+        "errors": {
+          "invalid": "Vyplňte povinná pole platnými hodnotami."
+        },
+        "actions": {
+          "cancel": "Zrušit",
+          "save": "Uložit"
+        }
+      },
+      "delete": {
+        "title": "Odstranit transakci?",
+        "message": "Odstranit investiční transakci z data {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nové investiční aktivum",
+        "editTitle": "Upravit investiční aktivum",
+        "saveError": "Investiční aktivum se nepodařilo uložit. Zkuste to znovu.",
+        "fields": {
+          "symbol": "Symbol",
+          "name": "Název",
+          "assetClass": "Třída aktiva",
+          "currency": "Měna",
+          "quoteProvider": "Poskytovatel kotací",
+          "manualPrice": "Ruční cena",
+          "manualPriceHint": "Použije se, dokud nebudou k dispozici aktuální kotace."
+        },
+        "actions": {
+          "cancel": "Zrušit",
+          "save": "Uložit"
+        }
+      }
+    },
+    "archive": {
+      "title": "Archivovat investiční portfolio?",
+      "message": "Archivovat {{name}}? Jeho historie zůstane dostupná."
+    },
+    "archiveError": "Stav archivu investičního portfolia se nepodařilo aktualizovat. Zkuste to znovu.",
     "title": "Investice",
     "description": "Sledujte akcie, fondy a kryptoměny, které vlastníte.",
     "placeholder": {
       "title": "Již brzy",
-      "description": "Peněženky, pozice a kurzy jsou na cestě."
+      "description": "Portfolia, pozice a kurzy jsou na cestě."
     }
   },
   "reports": {

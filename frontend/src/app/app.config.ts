@@ -17,6 +17,9 @@ import { CategoryRepository } from './data/category.repository';
 import { ExchangeRateRepository } from './data/exchange-rate.repository';
 import { InstitutionRepository } from './data/institution.repository';
 import { GoalRepository } from './data/goal.repository';
+import { InvestmentAssetRepository } from './data/investment-asset.repository';
+import { InvestmentTransactionRepository } from './data/investment-transaction.repository';
+import { InvestmentWalletRepository } from './data/investment-wallet.repository';
 import { ManualRateRepository } from './data/manual-rate.repository';
 import { HttpAccountRepository } from './data/http/http-account.repository';
 import { HttpAgentProviderRepository } from './data/http/http-agent-provider.repository';
@@ -26,6 +29,9 @@ import { HttpCategoryRepository } from './data/http/http-category.repository';
 import { HttpExchangeRateRepository } from './data/http/http-exchange-rate.repository';
 import { HttpGoalRepository } from './data/http/http-goal.repository';
 import { HttpInstitutionRepository } from './data/http/http-institution.repository';
+import { HttpInvestmentAssetRepository } from './data/http/http-investment-asset.repository';
+import { HttpInvestmentTransactionRepository } from './data/http/http-investment-transaction.repository';
+import { HttpInvestmentWalletRepository } from './data/http/http-investment-wallet.repository';
 import { HttpManualRateRepository } from './data/http/http-manual-rate.repository';
 import { HttpRecurringRuleRepository } from './data/http/http-recurring-rule.repository';
 import { HttpTransactionRepository } from './data/http/http-transaction.repository';
@@ -53,5 +59,8 @@ export const appConfig: ApplicationConfig = {
     { provide: ExchangeRateRepository, useClass: HttpExchangeRateRepository },
     { provide: InstitutionRepository, useClass: HttpInstitutionRepository },
     { provide: ManualRateRepository, useClass: HttpManualRateRepository },
+    { provide: InvestmentWalletRepository, useClass: HttpInvestmentWalletRepository },
+    { provide: InvestmentAssetRepository, useClass: HttpInvestmentAssetRepository },
+    { provide: InvestmentTransactionRepository, useClass: HttpInvestmentTransactionRepository },
   ],
 };

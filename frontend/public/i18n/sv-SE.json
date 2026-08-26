@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Ny investeringsportfölj",
+      "editWallet": "Redigera investeringsportföljen",
+      "archiveWallet": "Arkivera investeringsportföljen",
+      "unarchiveWallet": "Ta bort investeringsportföljen från arkivet",
+      "view": "Visa",
+      "newTransaction": "Registrera transaktion",
+      "editTransaction": "Redigera transaktion",
+      "deleteTransaction": "Ta bort transaktion",
+      "newAsset": "Ny investeringstillgång"
+    },
+    "wallet": "Investeringsportfölj",
+    "archived": "Arkiverad",
+    "summary": {
+      "bookValue": "Bokfört värde",
+      "marketValue": "Marknadsvärde",
+      "unrealizedGain": "Orealiserad vinst"
+    },
+    "empty": {
+      "title": "Inga investeringsportföljer ännu",
+      "description": "Skapa en portfölj för att börja följa dina investeringar."
+    },
+    "detail": {
+      "back": "Tillbaka till investeringar",
+      "notFound": "Investeringsportföljen hittades inte",
+      "positions": "Innehav",
+      "positionsEmpty": {
+        "title": "Inga innehav ännu",
+        "description": "Registrera en köptransaktion för att se innehav här."
+      },
+      "ledger": "Transaktionsbok",
+      "ledgerEmpty": {
+        "title": "Inga transaktioner ännu",
+        "description": "Registrera ett köp, en försäljning, en utdelning eller en avgift för att börja i boken."
+      },
+      "stale": "Pris ej tillgängligt"
+    },
+    "columns": {
+      "asset": "Tillgång",
+      "quantity": "Antal",
+      "averageCost": "Genomsnittlig kostnad",
+      "price": "Pris",
+      "marketValue": "Marknadsvärde",
+      "unrealizedGain": "Orealiserad vinst",
+      "allocation": "Fördelning",
+      "type": "Typ",
+      "date": "Datum",
+      "amount": "Belopp",
+      "fee": "Avgift",
+      "actions": "Åtgärder"
+    },
+    "type": {
+      "buy": "Köp",
+      "sell": "Försäljning",
+      "dividend": "Utdelning",
+      "fee": "Avgift"
+    },
+    "assetClass": {
+      "stock": "Aktie",
+      "etf": "ETF",
+      "fund": "Fond",
+      "crypto": "Kryptovaluta",
+      "bond": "Obligation",
+      "other": "Annat"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuell"
+    },
+    "form": {
+      "newTitle": "Ny investeringsportfölj",
+      "editTitle": "Redigera investeringsportföljen",
+      "saveError": "Det gick inte att spara investeringsportföljen. Försök igen.",
+      "fields": {
+        "name": "Namn",
+        "currency": "Valuta",
+        "cashAccount": "Likvidkonto",
+        "noCashAccount": "Inget likvidkonto",
+        "institution": "Institution",
+        "noInstitution": "Ingen institution"
+      },
+      "errors": {
+        "required": "Fältet är obligatoriskt."
+      },
+      "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Registrera investeringstransaktion",
+        "editTitle": "Redigera investeringstransaktion",
+        "saveError": "Det gick inte att spara investeringstransaktionen. Försök igen.",
+        "fields": {
+          "asset": "Tillgång",
+          "selectAsset": "Välj en tillgång",
+          "date": "Datum",
+          "quantity": "Antal",
+          "price": "Pris",
+          "amount": "Belopp",
+          "derivedAmount": "Beräknat från antal × pris",
+          "fee": "Avgift",
+          "currency": "Valuta",
+          "notes": "Anteckningar"
+        },
+        "errors": {
+          "invalid": "Fyll i de obligatoriska fälten med giltiga värden."
+        },
+        "actions": {
+          "cancel": "Avbryt",
+          "save": "Spara"
+        }
+      },
+      "delete": {
+        "title": "Ta bort transaktion?",
+        "message": "Ta bort investeringstransaktionen daterad {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Ny investeringstillgång",
+        "editTitle": "Redigera investeringstillgång",
+        "saveError": "Det gick inte att spara investeringstillgången. Försök igen.",
+        "fields": {
+          "symbol": "Symbol",
+          "name": "Namn",
+          "assetClass": "Tillgångsslag",
+          "currency": "Valuta",
+          "quoteProvider": "Kursleverantör",
+          "manualPrice": "Manuellt pris",
+          "manualPriceHint": "Används tills realtidskurser är tillgängliga."
+        },
+        "actions": {
+          "cancel": "Avbryt",
+          "save": "Spara"
+        }
+      }
+    },
+    "archive": {
+      "title": "Arkivera investeringsportföljen?",
+      "message": "Arkivera {{name}}? Historiken är fortfarande tillgänglig."
+    },
+    "archiveError": "Det gick inte att uppdatera investeringsportföljens arkivstatus. Försök igen.",
     "title": "Investeringar",
     "description": "Följ de aktier, fonder och kryptovalutor du äger.",
     "placeholder": {
       "title": "Kommer snart",
-      "description": "Plånböcker, innehav och kurser är på väg."
+      "description": "Portföljer, innehav och kurser är på väg."
     }
   },
   "reports": {

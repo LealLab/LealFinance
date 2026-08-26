@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Portofolio investasi baru",
+      "editWallet": "Edit portofolio investasi",
+      "archiveWallet": "Arsipkan portofolio investasi",
+      "unarchiveWallet": "Batalkan arsip portofolio investasi",
+      "view": "Lihat",
+      "newTransaction": "Catat transaksi",
+      "editTransaction": "Edit transaksi",
+      "deleteTransaction": "Hapus transaksi",
+      "newAsset": "Aset investasi baru"
+    },
+    "wallet": "Portofolio investasi",
+    "archived": "Diarsipkan",
+    "summary": {
+      "bookValue": "Nilai buku",
+      "marketValue": "Nilai pasar",
+      "unrealizedGain": "Keuntungan belum terealisasi"
+    },
+    "empty": {
+      "title": "Belum ada portofolio investasi",
+      "description": "Buat portofolio untuk mulai melacak investasi Anda."
+    },
+    "detail": {
+      "back": "Kembali ke investasi",
+      "notFound": "Portofolio investasi tidak ditemukan",
+      "positions": "Posisi",
+      "positionsEmpty": {
+        "title": "Belum ada posisi",
+        "description": "Catat transaksi pembelian untuk melihat posisi di sini."
+      },
+      "ledger": "Buku transaksi",
+      "ledgerEmpty": {
+        "title": "Belum ada transaksi",
+        "description": "Catat pembelian, penjualan, dividen, atau biaya untuk memulai buku transaksi."
+      },
+      "stale": "Harga tidak tersedia"
+    },
+    "columns": {
+      "asset": "Aset",
+      "quantity": "Kuantitas",
+      "averageCost": "Biaya rata-rata",
+      "price": "Harga",
+      "marketValue": "Nilai pasar",
+      "unrealizedGain": "Keuntungan belum terealisasi",
+      "allocation": "Alokasi",
+      "type": "Jenis",
+      "date": "Tanggal",
+      "amount": "Jumlah",
+      "fee": "Biaya",
+      "actions": "Tindakan"
+    },
+    "type": {
+      "buy": "Beli",
+      "sell": "Jual",
+      "dividend": "Dividen",
+      "fee": "Biaya"
+    },
+    "assetClass": {
+      "stock": "Saham",
+      "etf": "ETF",
+      "fund": "Reksa dana",
+      "crypto": "Kripto",
+      "bond": "Obligasi",
+      "other": "Lainnya"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manual"
+    },
+    "form": {
+      "newTitle": "Portofolio investasi baru",
+      "editTitle": "Edit portofolio investasi",
+      "saveError": "Portofolio investasi tidak dapat disimpan. Coba lagi.",
+      "fields": {
+        "name": "Nama",
+        "currency": "Mata uang",
+        "cashAccount": "Akun kas",
+        "noCashAccount": "Tidak ada akun kas",
+        "institution": "Institusi",
+        "noInstitution": "Tidak ada institusi"
+      },
+      "errors": {
+        "required": "Kolom ini wajib diisi."
+      },
+      "actions": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Catat transaksi investasi",
+        "editTitle": "Edit transaksi investasi",
+        "saveError": "Transaksi investasi tidak dapat disimpan. Coba lagi.",
+        "fields": {
+          "asset": "Aset",
+          "selectAsset": "Pilih aset",
+          "date": "Tanggal",
+          "quantity": "Kuantitas",
+          "price": "Harga",
+          "amount": "Jumlah",
+          "derivedAmount": "Dihitung dari kuantitas × harga",
+          "fee": "Biaya",
+          "currency": "Mata uang",
+          "notes": "Catatan"
+        },
+        "errors": {
+          "invalid": "Lengkapi kolom wajib dengan nilai yang valid."
+        },
+        "actions": {
+          "cancel": "Batal",
+          "save": "Simpan"
+        }
+      },
+      "delete": {
+        "title": "Hapus transaksi?",
+        "message": "Hapus transaksi investasi bertanggal {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Aset investasi baru",
+        "editTitle": "Edit aset investasi",
+        "saveError": "Aset investasi tidak dapat disimpan. Coba lagi.",
+        "fields": {
+          "symbol": "Simbol",
+          "name": "Nama",
+          "assetClass": "Kelas aset",
+          "currency": "Mata uang",
+          "quoteProvider": "Penyedia kuotasi",
+          "manualPrice": "Harga manual",
+          "manualPriceHint": "Digunakan sampai harga langsung tersedia."
+        },
+        "actions": {
+          "cancel": "Batal",
+          "save": "Simpan"
+        }
+      }
+    },
+    "archive": {
+      "title": "Arsipkan portofolio investasi?",
+      "message": "Arsipkan {{name}}? Riwayatnya akan tetap tersedia."
+    },
+    "archiveError": "Status arsip portofolio investasi tidak dapat diperbarui. Coba lagi.",
     "title": "Investasi",
     "description": "Lacak saham, reksa dana, dan kripto yang Anda miliki.",
     "placeholder": {
       "title": "Segera hadir",
-      "description": "Dompet, posisi, dan kuotasi akan segera tersedia."
+      "description": "Portofolio, posisi, dan kuotasi akan segera tersedia."
     }
   },
   "reports": {

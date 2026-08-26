@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Neues Investmentdepot",
+      "editWallet": "Investmentdepot bearbeiten",
+      "archiveWallet": "Investmentdepot archivieren",
+      "unarchiveWallet": "Investmentdepot aus dem Archiv holen",
+      "view": "Anzeigen",
+      "newTransaction": "Transaktion erfassen",
+      "editTransaction": "Transaktion bearbeiten",
+      "deleteTransaction": "Transaktion löschen",
+      "newAsset": "Neue Anlage"
+    },
+    "wallet": "Investmentdepot",
+    "archived": "Archiviert",
+    "summary": {
+      "bookValue": "Buchwert",
+      "marketValue": "Marktwert",
+      "unrealizedGain": "Nicht realisierter Gewinn"
+    },
+    "empty": {
+      "title": "Noch keine Investmentdepots",
+      "description": "Erstellen Sie ein Depot, um Ihre Investments zu verfolgen."
+    },
+    "detail": {
+      "back": "Zurück zu den Investments",
+      "notFound": "Investmentdepot nicht gefunden",
+      "positions": "Positionen",
+      "positionsEmpty": {
+        "title": "Noch keine Positionen",
+        "description": "Erfassen Sie eine Kauftransaktion, um hier Positionen zu sehen."
+      },
+      "ledger": "Transaktionsbuch",
+      "ledgerEmpty": {
+        "title": "Noch keine Transaktionen",
+        "description": "Erfassen Sie einen Kauf, Verkauf, eine Dividende oder Gebühr, um das Transaktionsbuch zu starten."
+      },
+      "stale": "Preis nicht verfügbar"
+    },
+    "columns": {
+      "asset": "Anlage",
+      "quantity": "Menge",
+      "averageCost": "Durchschnittlicher Einstandspreis",
+      "price": "Preis",
+      "marketValue": "Marktwert",
+      "unrealizedGain": "Nicht realisierter Gewinn",
+      "allocation": "Aufteilung",
+      "type": "Typ",
+      "date": "Datum",
+      "amount": "Betrag",
+      "fee": "Gebühr",
+      "actions": "Aktionen"
+    },
+    "type": {
+      "buy": "Kauf",
+      "sell": "Verkauf",
+      "dividend": "Dividende",
+      "fee": "Gebühr"
+    },
+    "assetClass": {
+      "stock": "Aktie",
+      "etf": "ETF",
+      "fund": "Fonds",
+      "crypto": "Kryptowährung",
+      "bond": "Anleihe",
+      "other": "Sonstiges"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuell"
+    },
+    "form": {
+      "newTitle": "Neues Investmentdepot",
+      "editTitle": "Investmentdepot bearbeiten",
+      "saveError": "Das Investmentdepot konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "fields": {
+        "name": "Name",
+        "currency": "Währung",
+        "cashAccount": "Verrechnungskonto",
+        "noCashAccount": "Kein Verrechnungskonto",
+        "institution": "Institut",
+        "noInstitution": "Kein Institut"
+      },
+      "errors": {
+        "required": "Dieses Feld ist erforderlich."
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Investmenttransaktion erfassen",
+        "editTitle": "Investmenttransaktion bearbeiten",
+        "saveError": "Die Investmenttransaktion konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+        "fields": {
+          "asset": "Anlage",
+          "selectAsset": "Anlage auswählen",
+          "date": "Datum",
+          "quantity": "Menge",
+          "price": "Preis",
+          "amount": "Betrag",
+          "derivedAmount": "Aus Menge × Preis berechnet",
+          "fee": "Gebühr",
+          "currency": "Währung",
+          "notes": "Notizen"
+        },
+        "errors": {
+          "invalid": "Füllen Sie die Pflichtfelder mit gültigen Werten aus."
+        },
+        "actions": {
+          "cancel": "Abbrechen",
+          "save": "Speichern"
+        }
+      },
+      "delete": {
+        "title": "Transaktion löschen?",
+        "message": "Investmenttransaktion vom {{date}} löschen?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Neue Investmentanlage",
+        "editTitle": "Investmentanlage bearbeiten",
+        "saveError": "Die Investmentanlage konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+        "fields": {
+          "symbol": "Symbol",
+          "name": "Name",
+          "assetClass": "Anlageklasse",
+          "currency": "Währung",
+          "quoteProvider": "Kursanbieter",
+          "manualPrice": "Manueller Preis",
+          "manualPriceHint": "Wird verwendet, bis Live-Kurse verfügbar sind."
+        },
+        "actions": {
+          "cancel": "Abbrechen",
+          "save": "Speichern"
+        }
+      }
+    },
+    "archive": {
+      "title": "Investmentdepot archivieren?",
+      "message": "{{name}} archivieren? Der Verlauf bleibt verfügbar."
+    },
+    "archiveError": "Der Archivstatus des Investmentdepots konnte nicht aktualisiert werden. Versuchen Sie es erneut.",
     "title": "Investitionen",
     "description": "Verfolge die Aktien, Fonds und Kryptowährungen, die du besitzt.",
     "placeholder": {
       "title": "Demnächst verfügbar",
-      "description": "Wallets, Positionen und Kurse kommen bald."
+      "description": "Depots, Positionen und Kurse kommen bald."
     }
   },
   "reports": {

@@ -748,6 +748,151 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Nuovo portafoglio di investimenti",
+      "editWallet": "Modifica il portafoglio di investimenti",
+      "archiveWallet": "Archivia il portafoglio di investimenti",
+      "unarchiveWallet": "Rimuovi il portafoglio dall’archivio",
+      "view": "Visualizza",
+      "newTransaction": "Registra transazione",
+      "editTransaction": "Modifica transazione",
+      "deleteTransaction": "Elimina transazione",
+      "newAsset": "Nuovo asset"
+    },
+    "wallet": "Portafoglio di investimenti",
+    "archived": "Archiviato",
+    "summary": {
+      "bookValue": "Valore contabile",
+      "marketValue": "Valore di mercato",
+      "unrealizedGain": "Guadagno non realizzato"
+    },
+    "empty": {
+      "title": "Nessun portafoglio di investimenti",
+      "description": "Crea un portafoglio per iniziare a seguire i tuoi investimenti."
+    },
+    "detail": {
+      "back": "Torna agli investimenti",
+      "notFound": "Portafoglio di investimenti non trovato",
+      "positions": "Posizioni",
+      "positionsEmpty": {
+        "title": "Nessuna posizione",
+        "description": "Registra una transazione di acquisto per visualizzare qui le posizioni."
+      },
+      "ledger": "Registro delle transazioni",
+      "ledgerEmpty": {
+        "title": "Nessuna transazione",
+        "description": "Registra un acquisto, una vendita, un dividendo o una commissione per iniziare il registro."
+      },
+      "stale": "Prezzo non disponibile"
+    },
+    "columns": {
+      "asset": "Asset",
+      "quantity": "Quantità",
+      "averageCost": "Costo medio",
+      "price": "Prezzo",
+      "marketValue": "Valore di mercato",
+      "unrealizedGain": "Guadagno non realizzato",
+      "allocation": "Allocazione",
+      "type": "Tipo",
+      "date": "Data",
+      "amount": "Importo",
+      "fee": "Commissione",
+      "actions": "Azioni"
+    },
+    "type": {
+      "buy": "Acquisto",
+      "sell": "Vendita",
+      "dividend": "Dividendo",
+      "fee": "Commissione"
+    },
+    "assetClass": {
+      "stock": "Azione",
+      "etf": "ETF",
+      "fund": "Fondo",
+      "crypto": "Criptovaluta",
+      "bond": "Obbligazione",
+      "other": "Altro"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manuale"
+    },
+    "form": {
+      "newTitle": "Nuovo portafoglio di investimenti",
+      "editTitle": "Modifica il portafoglio di investimenti",
+      "saveError": "Impossibile salvare il portafoglio di investimenti. Riprova.",
+      "fields": {
+        "name": "Nome",
+        "currency": "Valuta",
+        "cashAccount": "Conto di liquidità",
+        "noCashAccount": "Nessun conto di liquidità",
+        "institution": "Istituto",
+        "noInstitution": "Nessun istituto"
+      },
+      "errors": {
+        "required": "Questo campo è obbligatorio."
+      },
+      "actions": {
+        "cancel": "Annulla",
+        "save": "Salva"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Registra la transazione di investimento",
+        "editTitle": "Modifica la transazione di investimento",
+        "saveError": "Impossibile salvare la transazione di investimento. Riprova.",
+        "fields": {
+          "asset": "Asset",
+          "selectAsset": "Seleziona un asset",
+          "date": "Data",
+          "quantity": "Quantità",
+          "price": "Prezzo",
+          "amount": "Importo",
+          "derivedAmount": "Calcolato dalla quantità × prezzo",
+          "fee": "Commissione",
+          "currency": "Valuta",
+          "notes": "Note"
+        },
+        "errors": {
+          "invalid": "Completa i campi obbligatori con valori validi."
+        },
+        "actions": {
+          "cancel": "Annulla",
+          "save": "Salva"
+        }
+      },
+      "delete": {
+        "title": "Eliminare la transazione?",
+        "message": "Eliminare la transazione di investimento del {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Nuovo asset di investimento",
+        "editTitle": "Modifica asset di investimento",
+        "saveError": "Impossibile salvare l’asset di investimento. Riprova.",
+        "fields": {
+          "symbol": "Simbolo",
+          "name": "Nome",
+          "assetClass": "Classe di asset",
+          "currency": "Valuta",
+          "quoteProvider": "Fornitore delle quotazioni",
+          "manualPrice": "Prezzo manuale",
+          "manualPriceHint": "Usato finché le quotazioni in tempo reale non saranno disponibili."
+        },
+        "actions": {
+          "cancel": "Annulla",
+          "save": "Salva"
+        }
+      }
+    },
+    "archive": {
+      "title": "Archiviare il portafoglio di investimenti?",
+      "message": "Archiviare {{name}}? La sua cronologia resterà disponibile."
+    },
+    "archiveError": "Impossibile aggiornare lo stato di archiviazione del portafoglio di investimenti. Riprova.",
     "title": "Investimenti",
     "description": "Tieni traccia delle azioni, dei fondi e delle criptovalute che possiedi.",
     "placeholder": {

@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "Portofoliu de investiții nou",
+      "editWallet": "Editează portofoliul de investiții",
+      "archiveWallet": "Arhivează portofoliul de investiții",
+      "unarchiveWallet": "Scoate portofoliul de investiții din arhivă",
+      "view": "Vizualizează",
+      "newTransaction": "Înregistrează tranzacția",
+      "editTransaction": "Editează tranzacția",
+      "deleteTransaction": "Șterge tranzacția",
+      "newAsset": "Activ nou"
+    },
+    "wallet": "Portofoliu de investiții",
+    "archived": "Arhivat",
+    "summary": {
+      "bookValue": "Valoare contabilă",
+      "marketValue": "Valoare de piață",
+      "unrealizedGain": "Câștig nerealizat"
+    },
+    "empty": {
+      "title": "Nu există încă portofolii de investiții",
+      "description": "Creează un portofoliu pentru a începe să urmărești investițiile."
+    },
+    "detail": {
+      "back": "Înapoi la investiții",
+      "notFound": "Portofoliul de investiții nu a fost găsit",
+      "positions": "Poziții",
+      "positionsEmpty": {
+        "title": "Nu există încă poziții",
+        "description": "Înregistrează o tranzacție de cumpărare pentru a vedea pozițiile aici."
+      },
+      "ledger": "Registrul tranzacțiilor",
+      "ledgerEmpty": {
+        "title": "Nu există încă tranzacții",
+        "description": "Înregistrează o cumpărare, o vânzare, un dividend sau un comision pentru a începe registrul."
+      },
+      "stale": "Preț indisponibil"
+    },
+    "columns": {
+      "asset": "Activ",
+      "quantity": "Cantitate",
+      "averageCost": "Cost mediu",
+      "price": "Preț",
+      "marketValue": "Valoare de piață",
+      "unrealizedGain": "Câștig nerealizat",
+      "allocation": "Alocare",
+      "type": "Tip",
+      "date": "Dată",
+      "amount": "Sumă",
+      "fee": "Comision",
+      "actions": "Acțiuni"
+    },
+    "type": {
+      "buy": "Cumpărare",
+      "sell": "Vânzare",
+      "dividend": "Dividend",
+      "fee": "Comision"
+    },
+    "assetClass": {
+      "stock": "Acțiune",
+      "etf": "ETF",
+      "fund": "Fond",
+      "crypto": "Criptomonedă",
+      "bond": "Obligațiune",
+      "other": "Altele"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "Manual"
+    },
+    "form": {
+      "newTitle": "Portofoliu de investiții nou",
+      "editTitle": "Editează portofoliul de investiții",
+      "saveError": "Portofoliul de investiții nu a putut fi salvat. Încearcă din nou.",
+      "fields": {
+        "name": "Nume",
+        "currency": "Monedă",
+        "cashAccount": "Cont de numerar",
+        "noCashAccount": "Fără cont de numerar",
+        "institution": "Instituție",
+        "noInstitution": "Fără instituție"
+      },
+      "errors": {
+        "required": "Acest câmp este obligatoriu."
+      },
+      "actions": {
+        "cancel": "Anulează",
+        "save": "Salvează"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "Înregistrează tranzacția de investiții",
+        "editTitle": "Editează tranzacția de investiții",
+        "saveError": "Tranzacția de investiții nu a putut fi salvată. Încearcă din nou.",
+        "fields": {
+          "asset": "Activ",
+          "selectAsset": "Selectează un activ",
+          "date": "Dată",
+          "quantity": "Cantitate",
+          "price": "Preț",
+          "amount": "Sumă",
+          "derivedAmount": "Calculată pe baza cantității × prețului",
+          "fee": "Comision",
+          "currency": "Monedă",
+          "notes": "Note"
+        },
+        "errors": {
+          "invalid": "Completează câmpurile obligatorii cu valori valide."
+        },
+        "actions": {
+          "cancel": "Anulează",
+          "save": "Salvează"
+        }
+      },
+      "delete": {
+        "title": "Ștergi tranzacția?",
+        "message": "Ștergi tranzacția de investiții din {{date}}?"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "Activ de investiții nou",
+        "editTitle": "Editează activul de investiții",
+        "saveError": "Activul de investiții nu a putut fi salvat. Încearcă din nou.",
+        "fields": {
+          "symbol": "Simbol",
+          "name": "Nume",
+          "assetClass": "Clasă de active",
+          "currency": "Monedă",
+          "quoteProvider": "Furnizor de cotații",
+          "manualPrice": "Preț manual",
+          "manualPriceHint": "Folosit până când sunt disponibile cotațiile live."
+        },
+        "actions": {
+          "cancel": "Anulează",
+          "save": "Salvează"
+        }
+      }
+    },
+    "archive": {
+      "title": "Arhivezi portofoliul de investiții?",
+      "message": "Arhivezi {{name}}? Istoricul va rămâne disponibil."
+    },
+    "archiveError": "Starea arhivei portofoliului de investiții nu a putut fi actualizată. Încearcă din nou.",
     "title": "Investiții",
     "description": "Urmărește acțiunile, fondurile și criptomonedele pe care le deții.",
     "placeholder": {
       "title": "În curând",
-      "description": "Portofelele, pozițiile și cotațiile sunt pe drum."
+      "description": "Portofoliile, pozițiile și cotațiile sunt pe drum."
     }
   },
   "reports": {

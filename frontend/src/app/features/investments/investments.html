@@ -1,8 +1,78 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('investments.title')" [description]="t('investments.description')" />
-  <app-empty-state
-    icon="chart"
-    [title]="t('investments.placeholder.title')"
-    [description]="t('investments.placeholder.description')"
-  />
+  <app-page-header [title]="t('investments.title')" [description]="t('investments.description')">
+    <button appButton variant="primary" type="button" (click)="openCreate()">
+      <app-icon name="plus" [size]="16" />{{ t('investments.actions.newWallet') }}
+    </button>
+  </app-page-header>
+
+  @if (actionErrorKey(); as key) {
+    <p class="mb-4 text-sm text-negative" role="alert">{{ t(key) }}</p>
+  }
+
+  @if (summaryResource.value(); as summary) {
+    <div class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <app-stat-tile
+        [label]="t('investments.summary.bookValue')"
+        [value]="summary.totalBookValue | money: summaryCurrency()"
+      />
+      <app-stat-tile
+        [label]="t('investments.summary.marketValue')"
+        [value]="summary.totalMarketValue ? (summary.totalMarketValue | money: summaryCurrency()) : '—'"
+      />
+      <app-stat-tile
+        [label]="t('investments.summary.unrealizedGain')"
+        [value]="summary.totalUnrealizedGain ? (summary.totalUnrealizedGain | money: summaryCurrency()) : '—'"
+        tone="positive"
+      />
+    </div>
+  }
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="chart"
+      [title]="t('investments.empty.title')"
+      [description]="t('investments.empty.description')"
+    >
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        {{ t('investments.actions.newWallet') }}
+      </button>
+    </app-empty-state>
+  } @else {
+    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+      @for (wallet of walletsResource.value() ?? []; track wallet.id) {
+        <app-card>
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex min-w-0 items-start gap-3">
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                <app-icon name="chart" [size]="20" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="truncate text-base font-semibold text-content-primary">{{ wallet.name }}</h2>
+                <p class="mt-0.5 text-xs text-content-muted">{{ wallet.currency }}</p>
+              </div>
+            </div>
+            <div class="flex shrink-0 items-center gap-1">
+              @if (wallet.archived) {
+                <app-badge tone="neutral">{{ t('investments.archived') }}</app-badge>
+              }
+              <button appButton variant="ghost" size="sm" type="button" (click)="openEdit(wallet)" [attr.aria-label]="t('investments.actions.editWallet')">
+                <app-icon name="pencil" [size]="16" />
+              </button>
+              <button appButton variant="ghost" size="sm" type="button" (click)="archive(wallet)" [attr.aria-label]="wallet.archived ? t('investments.actions.unarchiveWallet') : t('investments.actions.archiveWallet')">
+                <app-icon name="archive" [size]="16" />
+              </button>
+            </div>
+          </div>
+          <div class="mt-5 flex items-center justify-between border-t border-border pt-4">
+            <span class="text-sm text-content-muted">{{ t('investments.wallet') }}</span>
+            <a [routerLink]="['/investments', wallet.id]" class="text-sm font-medium text-accent hover:underline">
+              {{ t('investments.actions.view') }}
+            </a>
+          </div>
+        </app-card>
+      }
+    </div>
+  }
+
+  <app-investment-wallet-form-modal [(open)]="formOpen" [wallet]="editingWallet()" (saved)="onSaved()" />
 </div>

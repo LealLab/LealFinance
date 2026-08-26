@@ -748,11 +748,156 @@
     }
   },
   "investments": {
+    "actions": {
+      "newWallet": "新投资组合",
+      "editWallet": "编辑投资组合",
+      "archiveWallet": "归档投资组合",
+      "unarchiveWallet": "取消归档投资组合",
+      "view": "查看",
+      "newTransaction": "记录交易",
+      "editTransaction": "编辑交易",
+      "deleteTransaction": "删除交易",
+      "newAsset": "新资产"
+    },
+    "wallet": "投资组合",
+    "archived": "已归档",
+    "summary": {
+      "bookValue": "账面价值",
+      "marketValue": "市场价值",
+      "unrealizedGain": "未实现收益"
+    },
+    "empty": {
+      "title": "暂无投资组合",
+      "description": "创建投资组合以开始跟踪您的投资。"
+    },
+    "detail": {
+      "back": "返回投资",
+      "notFound": "未找到投资组合",
+      "positions": "持仓",
+      "positionsEmpty": {
+        "title": "暂无持仓",
+        "description": "记录一笔买入交易即可在此查看持仓。"
+      },
+      "ledger": "交易流水",
+      "ledgerEmpty": {
+        "title": "暂无交易",
+        "description": "记录买入、卖出、股息或费用以开始记账。"
+      },
+      "stale": "价格不可用"
+    },
+    "columns": {
+      "asset": "资产",
+      "quantity": "数量",
+      "averageCost": "平均成本",
+      "price": "价格",
+      "marketValue": "市场价值",
+      "unrealizedGain": "未实现收益",
+      "allocation": "配置",
+      "type": "类型",
+      "date": "日期",
+      "amount": "金额",
+      "fee": "费用",
+      "actions": "操作"
+    },
+    "type": {
+      "buy": "买入",
+      "sell": "卖出",
+      "dividend": "股息",
+      "fee": "费用"
+    },
+    "assetClass": {
+      "stock": "股票",
+      "etf": "ETF",
+      "fund": "基金",
+      "crypto": "加密货币",
+      "bond": "债券",
+      "other": "其他"
+    },
+    "quoteProvider": {
+      "twelve_data": "Twelve Data",
+      "brapi": "Brapi",
+      "manual": "手动"
+    },
+    "form": {
+      "newTitle": "新投资组合",
+      "editTitle": "编辑投资组合",
+      "saveError": "无法保存投资组合，请重试。",
+      "fields": {
+        "name": "名称",
+        "currency": "货币",
+        "cashAccount": "现金账户",
+        "noCashAccount": "无现金账户",
+        "institution": "机构",
+        "noInstitution": "无机构"
+      },
+      "errors": {
+        "required": "此字段为必填项。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "save": "保存"
+      }
+    },
+    "transactions": {
+      "form": {
+        "newTitle": "记录投资交易",
+        "editTitle": "编辑投资交易",
+        "saveError": "无法保存投资交易，请重试。",
+        "fields": {
+          "asset": "资产",
+          "selectAsset": "选择资产",
+          "date": "日期",
+          "quantity": "数量",
+          "price": "价格",
+          "amount": "金额",
+          "derivedAmount": "根据数量 × 价格计算",
+          "fee": "费用",
+          "currency": "货币",
+          "notes": "备注"
+        },
+        "errors": {
+          "invalid": "请使用有效值填写必填字段。"
+        },
+        "actions": {
+          "cancel": "取消",
+          "save": "保存"
+        }
+      },
+      "delete": {
+        "title": "删除交易？",
+        "message": "删除日期为 {{date}} 的投资交易？"
+      }
+    },
+    "assets": {
+      "form": {
+        "newTitle": "新投资资产",
+        "editTitle": "编辑投资资产",
+        "saveError": "无法保存投资资产，请重试。",
+        "fields": {
+          "symbol": "代码",
+          "name": "名称",
+          "assetClass": "资产类别",
+          "currency": "货币",
+          "quoteProvider": "行情提供商",
+          "manualPrice": "手动价格",
+          "manualPriceHint": "在实时行情可用前使用。"
+        },
+        "actions": {
+          "cancel": "取消",
+          "save": "保存"
+        }
+      }
+    },
+    "archive": {
+      "title": "归档投资组合？",
+      "message": "归档 {{name}}？其历史记录仍会保留。"
+    },
+    "archiveError": "无法更新投资组合的归档状态，请重试。",
     "title": "投资",
     "description": "您持有的股票、基金和加密货币一目了然。",
     "placeholder": {
       "title": "即将推出",
-      "description": "钱包、持仓和报价功能即将上线。"
+      "description": "投资组合、持仓和报价功能即将上线。"
     }
   },
   "reports": {

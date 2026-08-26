@@ -1,0 +1,90 @@
+<div *transloco="let t">
+  <!-- t(investments.type.buy, investments.type.sell, investments.type.dividend, investments.type.fee) -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div class="grid grid-cols-4 gap-1 rounded-md bg-surface-sunken p-1">
+          @for (type of transactionTypes; track type) {
+            <button
+              type="button"
+              class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              [class]="form.controls.type.value === type ? 'bg-surface-raised text-content-primary shadow-sm' : 'text-content-muted hover:text-content-primary'"
+              (click)="form.controls.type.setValue(type)"
+            >
+              {{ t('investments.type.' + type) }}
+            </button>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="investment-tx-date">{{ t('investments.transactions.form.fields.date') }}</label>
+            <input id="investment-tx-date" type="date" class="form-input" formControlName="date" />
+          </div>
+          <div>
+            <label class="form-label" for="investment-tx-currency">{{ t('investments.transactions.form.fields.currency') }}</label>
+            <input id="investment-tx-currency" type="text" class="form-input" formControlName="currency" [disabled]="true" />
+          </div>
+        </div>
+
+        @if (needsAsset()) {
+          <div>
+            <label class="form-label" for="investment-tx-asset">{{ t('investments.transactions.form.fields.asset') }}</label>
+            <select id="investment-tx-asset" class="form-input" formControlName="assetId">
+              <option value="" disabled>{{ t('investments.transactions.form.fields.selectAsset') }}</option>
+              @for (asset of assets(); track asset.id) {
+                <option [value]="asset.id">{{ asset.symbol }} · {{ asset.name }}</option>
+              }
+            </select>
+          </div>
+        }
+
+        @if (isTrade()) {
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label" for="investment-tx-quantity">{{ t('investments.transactions.form.fields.quantity') }}</label>
+              <input id="investment-tx-quantity" type="text" inputmode="decimal" class="form-input font-mono" formControlName="quantity" />
+            </div>
+            <div>
+              <label class="form-label" for="investment-tx-price">{{ t('investments.transactions.form.fields.price') }}</label>
+              <input id="investment-tx-price" type="text" inputmode="decimal" class="form-input font-mono" formControlName="price" />
+            </div>
+          </div>
+          <div class="rounded-md border border-border bg-surface-sunken p-3">
+            <p class="text-xs text-content-muted">{{ t('investments.transactions.form.fields.amount') }}</p>
+            @if (quantityTimesPrice(); as preview) {
+              <p class="mt-1 font-mono text-lg font-semibold tabular-nums">{{ preview.amount | money: preview.currency }}</p>
+            } @else {
+              <p class="mt-1 text-content-muted">—</p>
+            }
+            <p class="mt-1 text-xs text-content-muted">{{ t('investments.transactions.form.fields.derivedAmount') }}</p>
+          </div>
+        } @else {
+          <div>
+            <label class="form-label" for="investment-tx-amount">{{ t('investments.transactions.form.fields.amount') }}</label>
+            <input id="investment-tx-amount" type="text" inputmode="decimal" class="form-input font-mono" formControlName="amount" />
+          </div>
+        }
+
+        <div>
+          <label class="form-label" for="investment-tx-fee">{{ t('investments.transactions.form.fields.fee') }}</label>
+          <input id="investment-tx-fee" type="text" inputmode="decimal" class="form-input font-mono" formControlName="fee" />
+        </div>
+
+        <div>
+          <label class="form-label" for="investment-tx-notes">{{ t('investments.transactions.form.fields.notes') }}</label>
+          <textarea id="investment-tx-notes" rows="2" class="form-input" formControlName="notes"></textarea>
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">{{ t('investments.transactions.form.actions.cancel') }}</button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">{{ t('investments.transactions.form.actions.save') }}</button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>
