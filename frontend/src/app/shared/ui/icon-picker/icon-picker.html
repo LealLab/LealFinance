@@ -47,7 +47,7 @@
         (input)="query.set($any($event.target).value)"
       />
       @if (filtered().length) {
-        <div class="flex max-h-96 flex-col gap-4 overflow-y-auto">
+        <div class="icon-sections flex max-h-96 flex-col gap-4 overflow-y-auto">
           @for (section of filtered(); track section.group) {
             <div class="flex flex-col gap-2">
               <h3 class="text-xs font-semibold uppercase text-content-muted">
