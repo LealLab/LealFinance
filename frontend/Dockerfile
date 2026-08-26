@@ -23,7 +23,10 @@ RUN pnpm run build
 # --- Runtime: nginx serving the static build -----------------------------------
 FROM nginx:1.31-alpine AS runtime
 
-RUN addgroup -S app && adduser -S app -G app \
+# The base image tag floats, so pull in current Alpine security patches
+# (e.g. openssl) at build time rather than whatever shipped with the tag.
+RUN apk update && apk upgrade --no-cache \
+    && addgroup -S app && adduser -S app -G app \
     && rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html

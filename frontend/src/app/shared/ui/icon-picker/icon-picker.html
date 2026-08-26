@@ -11,7 +11,32 @@
   <!-- t(icons.names.archive) t(icons.names.arrowUpRight) t(icons.names.arrowDownLeft) t(icons.names.refresh) -->
   <!-- t(icons.names.search) t(icons.names.eye) t(icons.names.eyeOff) t(icons.names.command) -->
   <!-- t(icons.names.cornerDownLeft) t(icons.names.zap) t(icons.names.grip) t(icons.names.bank) -->
-  <!-- t(icons.names.piggy) -->
+  <!-- t(icons.names.piggy) t(icons.names.apple) t(icons.names.baby) t(icons.names.banknote) -->
+  <!-- t(icons.names.basket) t(icons.names.bed) t(icons.names.beer) t(icons.names.bell) -->
+  <!-- t(icons.names.bike) t(icons.names.bitcoin) t(icons.names.book) t(icons.names.bookmark) -->
+  <!-- t(icons.names.briefcase) t(icons.names.building) t(icons.names.bus) t(icons.names.cake) -->
+  <!-- t(icons.names.calculator) t(icons.names.calendar) t(icons.names.camera) t(icons.names.car) -->
+  <!-- t(icons.names.cart) t(icons.names.clock) t(icons.names.cloud) t(icons.names.coffee) -->
+  <!-- t(icons.names.coins) t(icons.names.creditCard) t(icons.names.droplet) t(icons.names.dumbbell) -->
+  <!-- t(icons.names.film) t(icons.names.firstAid) t(icons.names.flag) t(icons.names.flame) -->
+  <!-- t(icons.names.folder) t(icons.names.fuel) t(icons.names.gamepad) t(icons.names.gem) -->
+  <!-- t(icons.names.gift) t(icons.names.glasses) t(icons.names.graduationCap) t(icons.names.hammer) -->
+  <!-- t(icons.names.handCoins) t(icons.names.headphones) t(icons.names.heart) t(icons.names.invoice) -->
+  <!-- t(icons.names.key) t(icons.names.laptop) t(icons.names.leaf) t(icons.names.lightbulb) -->
+  <!-- t(icons.names.lock) t(icons.names.luggage) t(icons.names.mail) t(icons.names.mapPin) -->
+  <!-- t(icons.names.music) t(icons.names.package) t(icons.names.palette) t(icons.names.parking) -->
+  <!-- t(icons.names.paw) t(icons.names.percent) t(icons.names.phone) t(icons.names.pieChart) -->
+  <!-- t(icons.names.pill) t(icons.names.pizza) t(icons.names.plane) t(icons.names.plug) -->
+  <!-- t(icons.names.receipt) t(icons.names.safe) t(icons.names.scale) t(icons.names.scissors) -->
+  <!-- t(icons.names.shield) t(icons.names.shirt) t(icons.names.shoppingBag) t(icons.names.smartphone) -->
+  <!-- t(icons.names.sneaker) t(icons.names.sofa) t(icons.names.sparkles) t(icons.names.star) -->
+  <!-- t(icons.names.stethoscope) t(icons.names.ticket) t(icons.names.tools) t(icons.names.tooth) -->
+  <!-- t(icons.names.train) t(icons.names.trendingDown) t(icons.names.trendingUp) t(icons.names.truck) -->
+  <!-- t(icons.names.tv) t(icons.names.umbrella) t(icons.names.user) t(icons.names.users) -->
+  <!-- t(icons.names.utensils) t(icons.names.wifi) t(icons.names.wine) -->
+  <!-- t(icons.groups.money) t(icons.groups.food) t(icons.groups.transport) t(icons.groups.home) -->
+  <!-- t(icons.groups.shopping) t(icons.groups.health) t(icons.groups.entertainment) t(icons.groups.work) -->
+  <!-- t(icons.groups.people) t(icons.groups.general) -->
   <app-modal [(open)]="open" [titleText]="t('icons.title')">
     <div class="flex flex-col gap-3">
       <input
@@ -22,24 +47,33 @@
         (input)="query.set($any($event.target).value)"
       />
       @if (filtered().length) {
-        <div class="grid grid-cols-4 gap-2 sm:grid-cols-6">
-          @for (name of filtered(); track name) {
-            <button
-              type="button"
-              class="flex flex-col items-center gap-1 rounded-md border p-2 text-content-muted transition-colors hover:bg-surface-sunken"
-              [class]="
-                name === selected()
-                  ? 'border-accent bg-accent/10 text-accent'
-                  : 'border-transparent'
-              "
-              [attr.aria-label]="t('icons.names.' + name)"
-              [attr.aria-pressed]="name === selected()"
-              [title]="t('icons.names.' + name)"
-              (click)="pick(name)"
-            >
-              <app-icon [name]="name" [size]="24" />
-              <span class="w-full truncate text-center text-xs">{{ t('icons.names.' + name) }}</span>
-            </button>
+        <div class="icon-sections flex max-h-96 flex-col gap-4 overflow-y-auto">
+          @for (section of filtered(); track section.group) {
+            <div class="flex flex-col gap-2">
+              <h3 class="text-xs font-semibold uppercase text-content-muted">
+                {{ t('icons.groups.' + section.group) }}
+              </h3>
+              <div class="grid grid-cols-4 gap-2 sm:grid-cols-6">
+                @for (name of section.names; track name) {
+                  <button
+                    type="button"
+                    class="flex flex-col items-center gap-1 rounded-md border p-2 text-content-muted transition-colors hover:bg-surface-sunken"
+                    [class]="
+                      name === selected()
+                        ? 'border-accent bg-accent/10 text-accent'
+                        : 'border-transparent'
+                    "
+                    [attr.aria-label]="t('icons.names.' + name)"
+                    [attr.aria-pressed]="name === selected()"
+                    [title]="t('icons.names.' + name)"
+                    (click)="pick(name)"
+                  >
+                    <app-icon [name]="name" [size]="24" />
+                    <span class="w-full truncate text-center text-xs">{{ t('icons.names.' + name) }}</span>
+                  </button>
+                }
+              </div>
+            </div>
           }
         </div>
       } @else {
