@@ -11,6 +11,11 @@ from app.schemas.account import AccountUpdate
 from app.schemas.category import CategoryUpdate
 from app.schemas.common import CurrencyCodeInput
 from app.schemas.institution import InstitutionUpdate
+from app.schemas.investment import (
+    InvestmentAssetUpdate,
+    InvestmentTransactionUpdate,
+    InvestmentWalletUpdate,
+)
 from app.schemas.recurring import RecurringRuleUpdate
 from app.schemas.transaction import TransactionUpdate
 from app.schemas.user import PreferencesUpdate, UserUpdate
@@ -24,6 +29,9 @@ PATCH_MODELS: tuple[type[BaseModel], ...] = (
     RecurringRuleUpdate,
     UserUpdate,
     PreferencesUpdate,
+    InvestmentWalletUpdate,
+    InvestmentAssetUpdate,
+    InvestmentTransactionUpdate,
 )
 
 
@@ -67,6 +75,17 @@ def test_patch_models_treat_omission_as_unchanged(schema: type[BaseModel]) -> No
         (PreferencesUpdate, "theme"),
         (PreferencesUpdate, "display_currency"),
         (PreferencesUpdate, "balances_hidden"),
+        (InvestmentWalletUpdate, "name"),
+        (InvestmentWalletUpdate, "currency"),
+        (InvestmentAssetUpdate, "symbol"),
+        (InvestmentAssetUpdate, "name"),
+        (InvestmentAssetUpdate, "asset_class"),
+        (InvestmentAssetUpdate, "currency"),
+        (InvestmentAssetUpdate, "quote_provider"),
+        (InvestmentTransactionUpdate, "type"),
+        (InvestmentTransactionUpdate, "date"),
+        (InvestmentTransactionUpdate, "amount"),
+        (InvestmentTransactionUpdate, "currency"),
     ),
 )
 def test_patch_models_reject_explicit_null_for_required_fields(
@@ -91,6 +110,14 @@ def test_patch_models_reject_explicit_null_for_required_fields(
         (TransactionUpdate, "recurring_rule_id"),
         (TransactionUpdate, "conversion"),
         (RecurringRuleUpdate, "end_date"),
+        (InvestmentWalletUpdate, "cash_account_id"),
+        (InvestmentWalletUpdate, "institution_id"),
+        (InvestmentAssetUpdate, "manual_price"),
+        (InvestmentTransactionUpdate, "wallet_id"),
+        (InvestmentTransactionUpdate, "asset_id"),
+        (InvestmentTransactionUpdate, "quantity"),
+        (InvestmentTransactionUpdate, "price"),
+        (InvestmentTransactionUpdate, "notes"),
     ),
 )
 def test_patch_models_keep_nullable_fields_clearable(schema: type[BaseModel], field: str) -> None:
