@@ -11,6 +11,7 @@ import {
   InvestmentWalletRepository,
 } from '../../data/investment-wallet.repository';
 import { InvestmentWallet } from '../../domain/models/investment';
+import { groupAccountsByInstitution } from '../accounts/institution-grouping';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
 
@@ -46,6 +47,9 @@ export class InvestmentWalletFormModal {
     (this.accountsResource.value() ?? []).filter(
       (account) => account.type !== 'investment' && !account.archived,
     ),
+  );
+  protected readonly cashAccountGroups = computed(() =>
+    groupAccountsByInstitution(this.cashAccounts(), this.institutionsResource.value() ?? []),
   );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);

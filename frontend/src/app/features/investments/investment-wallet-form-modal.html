@@ -28,8 +28,12 @@
           <label class="form-label" for="investment-wallet-cash-account">{{ t('investments.form.fields.cashAccount') }}</label>
           <select id="investment-wallet-cash-account" class="form-input" formControlName="cashAccountId">
             <option value="">{{ t('investments.form.fields.noCashAccount') }}</option>
-            @for (account of cashAccounts(); track account.id) {
-              <option [value]="account.id">{{ account.name }} · {{ account.currency }}</option>
+            @for (group of cashAccountGroups(); track group.institution?.id ?? '__none__') {
+              <optgroup [label]="group.institution ? group.institution.name : t('accounts.noInstitution')">
+                @for (account of group.accounts; track account.id) {
+                  <option [value]="account.id">{{ account.name }} · {{ account.currency }}</option>
+                }
+              </optgroup>
             }
           </select>
         </div>
