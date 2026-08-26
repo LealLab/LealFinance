@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investiții",
       "description": "Urmărește acțiuni, fonduri și criptomonede alături de conturile tale de numerar.",
-      "enable": "Activează investițiile"
+      "enable": "Activează investițiile",
+      "marketData": {
+        "title": "Prețuri de piață în timp real",
+        "description": "Cheile API opționale permit aplicației să preia prețurile curente ale activelor. Cheia ta este folosită înaintea celei de rezervă a instanței.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configurat",
+        "notConfigured": "Neconfigurat",
+        "placeholder": "Cheie API",
+        "save": "Salvează cheia",
+        "clear": "Șterge cheia",
+        "saveError": "Cheia nu a putut fi salvată. Încearcă din nou."
+      }
     },
     "agents": {
       "title": "Agenți AI",

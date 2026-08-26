@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investments",
       "description": "Track shares, funds, and crypto alongside your cash accounts.",
-      "enable": "Enable investments"
+      "enable": "Enable investments",
+      "marketData": {
+        "title": "Live market quotes",
+        "description": "Optional API keys let the app fetch current asset prices. Your key is used before the instance fallback.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configured",
+        "notConfigured": "Not configured",
+        "placeholder": "API key",
+        "save": "Save key",
+        "clear": "Clear key",
+        "saveError": "Could not save this key. Try again."
+      }
     },
     "agents": {
       "title": "AI agents",

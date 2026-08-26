@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Beleggingen",
       "description": "Volg aandelen, fondsen en crypto naast je geldrekeningen.",
-      "enable": "Beleggingen inschakelen"
+      "enable": "Beleggingen inschakelen",
+      "marketData": {
+        "title": "Live marktprijzen",
+        "description": "Met optionele API-sleutels kan de app actuele activaprijzen ophalen. Je eigen sleutel wordt gebruikt vóór de fallback van de instantie.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Geconfigureerd",
+        "notConfigured": "Niet geconfigureerd",
+        "placeholder": "API-sleutel",
+        "save": "Sleutel opslaan",
+        "clear": "Sleutel wissen",
+        "saveError": "Deze sleutel kon niet worden opgeslagen. Probeer het opnieuw."
+      }
     },
     "agents": {
       "title": "AI-agents",

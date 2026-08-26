@@ -21,6 +21,7 @@ import type {
   InvestmentWallet,
 } from '../../domain/models/investment';
 import type { ManualRate } from '../../domain/models/manual-rate';
+import type { MarketDataCredentialStatus } from '../../domain/models/market-data-credential';
 import type { RecurringRule } from '../../domain/models/recurring';
 import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
 import type {
@@ -79,6 +80,7 @@ import type {
   InstitutionPatchWire,
   InstitutionWire,
   ManualRateWire,
+  MarketDataCredentialStatusWire,
   RecurringRuleInputWire,
   RecurringRulePatchWire,
   RecurringRuleWire,
@@ -546,6 +548,14 @@ export const mapInvestmentSummary = (wire: InvestmentSummaryWire): InvestmentSum
   totalMarketValue: wire.total_market_value ?? undefined,
   totalUnrealizedGain: wire.total_unrealized_gain ?? undefined,
   walletCount: wire.wallet_count,
+});
+
+export const mapMarketDataCredentialStatus = (
+  wire: MarketDataCredentialStatusWire,
+): MarketDataCredentialStatus => ({
+  provider: wire.provider,
+  configured: wire.configured,
+  source: wire.source,
 });
 
 export const mapAgentProviderStatus = (wire: AgentProviderStatusWire): AgentProviderStatus => ({

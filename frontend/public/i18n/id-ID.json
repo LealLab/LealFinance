@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investasi",
       "description": "Lacak saham, reksa dana, dan kripto bersama rekening kas Anda.",
-      "enable": "Aktifkan investasi"
+      "enable": "Aktifkan investasi",
+      "marketData": {
+        "title": "Harga pasar langsung",
+        "description": "Kunci API opsional memungkinkan aplikasi mengambil harga aset terkini. Kunci Anda digunakan sebelum kunci cadangan instance.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Dikonfigurasi",
+        "notConfigured": "Belum dikonfigurasi",
+        "placeholder": "Kunci API",
+        "save": "Simpan kunci",
+        "clear": "Hapus kunci",
+        "saveError": "Kunci tidak dapat disimpan. Coba lagi."
+      }
     },
     "agents": {
       "title": "Agen AI",

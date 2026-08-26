@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investimentos",
       "description": "Acompanhe ações, fundos e criptomoedas junto das suas contas em dinheiro.",
-      "enable": "Ativar investimentos"
+      "enable": "Ativar investimentos",
+      "marketData": {
+        "title": "Cotações de mercado ao vivo",
+        "description": "Chaves de API opcionais permitem que o app busque os preços atuais dos ativos. Sua chave é usada antes da alternativa da instância.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configurado",
+        "notConfigured": "Não configurado",
+        "placeholder": "Chave de API",
+        "save": "Salvar chave",
+        "clear": "Limpar chave",
+        "saveError": "Não foi possível salvar esta chave. Tente novamente."
+      }
     },
     "agents": {
       "title": "Agentes de IA",

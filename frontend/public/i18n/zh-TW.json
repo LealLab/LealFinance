@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "投資",
       "description": "在現金帳戶之外，追蹤您的股票、基金和加密貨幣。",
-      "enable": "啟用投資"
+      "enable": "啟用投資",
+      "marketData": {
+        "title": "即時市場價格",
+        "description": "選用的 API 金鑰可讓應用程式取得資產目前價格。系統會優先使用你的金鑰，再使用執行個體的備用金鑰。",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "已設定",
+        "notConfigured": "未設定",
+        "placeholder": "API 金鑰",
+        "save": "儲存金鑰",
+        "clear": "清除金鑰",
+        "saveError": "無法儲存此金鑰，請再試一次。"
+      }
     },
     "agents": {
       "title": "AI 代理程式",

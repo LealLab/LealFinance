@@ -12,6 +12,18 @@ from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal
 InvestmentAssetClass = Literal["stock", "etf", "fund", "crypto", "bond", "other"]
 InvestmentQuoteProvider = Literal["twelve_data", "brapi", "manual"]
 InvestmentTransactionType = Literal["buy", "sell", "dividend", "fee"]
+MarketDataProvider = Literal["twelve_data", "brapi"]
+CredentialSource = Literal["user", "env", "none"]
+
+
+class MarketDataCredentialStatusRead(BaseModel):
+    provider: MarketDataProvider
+    configured: bool
+    source: CredentialSource
+
+
+class MarketDataCredentialUpdate(BaseModel):
+    api_key: str = Field(min_length=1)
 
 
 class InvestmentWalletRead(BaseModel):

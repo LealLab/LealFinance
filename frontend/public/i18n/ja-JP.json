@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "投資",
       "description": "現金口座とあわせて、株式、ファンド、暗号資産を追跡します。",
-      "enable": "投資を有効にする"
+      "enable": "投資を有効にする",
+      "marketData": {
+        "title": "ライブ市場価格",
+        "description": "任意の API キーを設定すると、アプリで資産の現在価格を取得できます。インスタンスのフォールバックより先に、自分のキーが使用されます。",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "設定済み",
+        "notConfigured": "未設定",
+        "placeholder": "API キー",
+        "save": "キーを保存",
+        "clear": "キーを消去",
+        "saveError": "キーを保存できませんでした。もう一度お試しください。"
+      }
     },
     "agents": {
       "title": "AIエージェント",

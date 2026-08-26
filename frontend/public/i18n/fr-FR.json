@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investissements",
       "description": "Suivez les actions, fonds et cryptomonnaies avec vos comptes de trésorerie.",
-      "enable": "Activer les investissements"
+      "enable": "Activer les investissements",
+      "marketData": {
+        "title": "Cours de marché en direct",
+        "description": "Des clés API facultatives permettent de récupérer les cours actuels des actifs. Votre clé est utilisée avant celle de secours de l’instance.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configuré",
+        "notConfigured": "Non configuré",
+        "placeholder": "Clé API",
+        "save": "Enregistrer la clé",
+        "clear": "Effacer la clé",
+        "saveError": "Impossible d’enregistrer cette clé. Réessayez."
+      }
     },
     "agents": {
       "title": "Agents IA",

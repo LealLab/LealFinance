@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Yatırımlar",
       "description": "Hisse senetlerini, fonları ve kripto varlıkları nakit hesaplarınızla birlikte takip edin.",
-      "enable": "Yatırımları etkinleştir"
+      "enable": "Yatırımları etkinleştir",
+      "marketData": {
+        "title": "Canlı piyasa fiyatları",
+        "description": "İsteğe bağlı API anahtarları, uygulamanın güncel varlık fiyatlarını almasını sağlar. Önce kendi anahtarınız, ardından örnek yedek anahtarı kullanılır.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Yapılandırıldı",
+        "notConfigured": "Yapılandırılmadı",
+        "placeholder": "API anahtarı",
+        "save": "Anahtarı kaydet",
+        "clear": "Anahtarı temizle",
+        "saveError": "Bu anahtar kaydedilemedi. Tekrar deneyin."
+      }
     },
     "agents": {
       "title": "Yapay zekâ aracıları",

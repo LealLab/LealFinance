@@ -206,3 +206,21 @@ class AssetQuote(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     price: Mapped[AssetPrice] = mapped_column(nullable=False)
     as_of: Mapped[date_type] = mapped_column(Date, nullable=False)
     source: Mapped[str] = mapped_column(String(50), nullable=False)
+
+
+MARKET_DATA_PROVIDERS = (QUOTE_PROVIDER_TWELVE_DATA, QUOTE_PROVIDER_BRAPI)
+
+
+class MarketDataCredential(UserOwnedModel):
+    __tablename__ = "market_data_credentials"
+    __error_prefix__ = "market_data_credential"
+    __table_args__ = (
+        UniqueConstraint("user_id", "provider", name="uq_market_data_credentials_user_id_provider"),
+        CheckConstraint(
+            _in_check("provider", MARKET_DATA_PROVIDERS),
+            name="ck_market_data_credentials_provider",
+        ),
+    )
+
+    provider: Mapped[str] = mapped_column(String(20), nullable=False)
+    secret_ciphertext: Mapped[str] = mapped_column(Text, nullable=False)

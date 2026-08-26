@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investeringar",
       "description": "Följ aktier, fonder och kryptovalutor tillsammans med dina konton för likvida medel.",
-      "enable": "Aktivera investeringar"
+      "enable": "Aktivera investeringar",
+      "marketData": {
+        "title": "Aktuella marknadspriser",
+        "description": "Med valfria API-nycklar kan appen hämta aktuella tillgångspriser. Din egen nyckel används före instansens reservnyckel.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Konfigurerad",
+        "notConfigured": "Inte konfigurerad",
+        "placeholder": "API-nyckel",
+        "save": "Spara nyckel",
+        "clear": "Rensa nyckel",
+        "saveError": "Det gick inte att spara nyckeln. Försök igen."
+      }
     },
     "agents": {
       "title": "AI-agenter",

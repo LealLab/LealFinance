@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Inwestycje",
       "description": "Śledź akcje, fundusze i kryptowaluty obok swoich rachunków gotówkowych.",
-      "enable": "Włącz inwestycje"
+      "enable": "Włącz inwestycje",
+      "marketData": {
+        "title": "Bieżące ceny rynkowe",
+        "description": "Opcjonalne klucze API pozwalają aplikacji pobierać aktualne ceny aktywów. Twój klucz ma pierwszeństwo przed kluczem zapasowym instancji.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Skonfigurowano",
+        "notConfigured": "Nie skonfigurowano",
+        "placeholder": "Klucz API",
+        "save": "Zapisz klucz",
+        "clear": "Wyczyść klucz",
+        "saveError": "Nie udało się zapisać klucza. Spróbuj ponownie."
+      }
     },
     "agents": {
       "title": "Agenci AI",

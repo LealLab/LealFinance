@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Inversiones",
       "description": "Controla acciones, fondos y criptomonedas junto con tus cuentas de efectivo.",
-      "enable": "Activar inversiones"
+      "enable": "Activar inversiones",
+      "marketData": {
+        "title": "Cotizaciones de mercado en vivo",
+        "description": "Las claves de API opcionales permiten obtener precios actuales de los activos. Tu clave se usa antes que la alternativa de la instancia.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configurado",
+        "notConfigured": "No configurado",
+        "placeholder": "Clave de API",
+        "save": "Guardar clave",
+        "clear": "Borrar clave",
+        "saveError": "No se pudo guardar la clave. Inténtalo de nuevo."
+      }
     },
     "agents": {
       "title": "Agentes de IA",

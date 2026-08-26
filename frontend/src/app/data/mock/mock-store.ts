@@ -11,6 +11,10 @@ import {
   InvestmentWallet,
 } from '../../domain/models/investment';
 import { ManualRate } from '../../domain/models/manual-rate';
+import {
+  MarketDataCredentialStatus,
+  MarketDataProvider,
+} from '../../domain/models/market-data-credential';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { createFixtures } from './fixtures';
@@ -23,6 +27,8 @@ function newId(): string {
 function notFound(entity: string, id: string): never {
   throw new Error(`${entity} "${id}" not found`);
 }
+
+const MARKET_DATA_PROVIDERS: MarketDataProvider[] = ['twelve_data', 'brapi'];
 
 /**
  * The single in-memory source of truth behind every Mock*Repository - see
@@ -50,6 +56,7 @@ export class MockStore {
   private readonly recurringRulesSignal = signal<RecurringRule[]>([]);
   private readonly institutionsSignal = signal<Institution[]>([]);
   private readonly manualRatesSignal = signal<ManualRate[]>([]);
+  private readonly marketDataLinkedProvidersSignal = signal<MarketDataProvider[]>([]);
 
   readonly accounts = this.accountsSignal.asReadonly();
   readonly transactions = this.transactionsSignal.asReadonly();
@@ -64,6 +71,7 @@ export class MockStore {
   readonly recurringRules = this.recurringRulesSignal.asReadonly();
   readonly institutions = this.institutionsSignal.asReadonly();
   readonly manualRates = this.manualRatesSignal.asReadonly();
+  readonly marketDataLinkedProviders = this.marketDataLinkedProvidersSignal.asReadonly();
 
   constructor() {
     this.reset();
@@ -84,6 +92,7 @@ export class MockStore {
     this.recurringRulesSignal.set(fixtures.recurringRules);
     this.institutionsSignal.set(fixtures.institutions);
     this.manualRatesSignal.set(fixtures.manualRates);
+    this.marketDataLinkedProvidersSignal.set([]);
   }
 
   // --- Accounts ---------------------------------------------------------
@@ -354,5 +363,30 @@ export class MockStore {
   deleteManualRate(id: string): void {
     if (!findEntity(this.manualRatesSignal(), id)) notFound('Manual rate', id);
     this.manualRatesSignal.update((list) => removeEntity(list, id));
+  }
+
+  marketDataCredentialStatuses(): MarketDataCredentialStatus[] {
+    const linked = new Set(this.marketDataLinkedProvidersSignal());
+    return MARKET_DATA_PROVIDERS.map((provider) => ({
+      provider,
+      configured: linked.has(provider),
+      source: linked.has(provider) ? 'user' : 'none',
+    }));
+  }
+
+  linkMarketDataProvider(provider: MarketDataProvider): MarketDataCredentialStatus {
+    this.marketDataLinkedProvidersSignal.update((providers) =>
+      providers.includes(provider) ? providers : [...providers, provider],
+    );
+    return { provider, configured: true, source: 'user' };
+  }
+
+  unlinkMarketDataProvider(provider: MarketDataProvider): void {
+    if (!this.marketDataLinkedProvidersSignal().includes(provider)) {
+      notFound('Market-data credential', provider);
+    }
+    this.marketDataLinkedProvidersSignal.update((providers) =>
+      providers.filter((current) => current !== provider),
+    );
   }
 }

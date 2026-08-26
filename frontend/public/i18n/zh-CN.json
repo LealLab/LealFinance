@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "投资",
       "description": "在现金账户之外，追踪您的股票、基金和加密货币。",
-      "enable": "启用投资"
+      "enable": "启用投资",
+      "marketData": {
+        "title": "实时市场价格",
+        "description": "可选的 API 密钥让应用获取资产的当前价格。应用会优先使用你的密钥，然后使用实例级备用密钥。",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "已配置",
+        "notConfigured": "未配置",
+        "placeholder": "API 密钥",
+        "save": "保存密钥",
+        "clear": "清除密钥",
+        "saveError": "无法保存此密钥，请重试。"
+      }
     },
     "agents": {
       "title": "AI 代理",

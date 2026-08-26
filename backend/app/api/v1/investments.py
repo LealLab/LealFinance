@@ -22,7 +22,7 @@ from app.schemas.investment import (
     InvestmentWalletRead,
     InvestmentWalletUpdate,
 )
-from app.services import investment_positions
+from app.services import asset_quotes, investment_positions
 from app.services import investments as investments_service
 from app.services.currencies import get_active_currency
 from app.services.exchange_rates import get_exchange_rate
@@ -35,8 +35,9 @@ async def _position_read(
     user_id: UUID,
     wallet: InvestmentWallet,
     position: investment_positions.Position,
+    price_result: asset_quotes.PriceResult,
 ) -> InvestmentPositionRead:
-    price = position.asset.manual_price
+    price = price_result.price
     market_value: Decimal | None = None
     unrealized_gain: Decimal | None = None
     market_value_is_fallback = False
@@ -60,8 +61,8 @@ async def _position_read(
         average_cost=position.average_cost,
         book_value=position.book_value,
         price=price,
-        price_as_of=None,
-        price_is_stale=price is None,
+        price_as_of=price_result.as_of,
+        price_is_stale=price_result.is_stale,
         market_value=market_value,
         unrealized_gain=unrealized_gain,
         realized_gain=position.realized_gain,
@@ -85,14 +86,22 @@ async def get_summary(user: CurrentUser, db: DbSession) -> InvestmentSummaryRead
     # ponytail: totals use the first wallet's currency; add per-currency
     # conversion when cross-currency aggregation becomes necessary.
     total_currency = wallets[0].currency
+    positions_by_wallet: dict[UUID, list[investment_positions.Position]] = {}
+    all_positions: list[investment_positions.Position] = []
+    for wallet in wallets:
+        wallet_positions = await investment_positions.get_wallet_positions(db, user.id, wallet.id)
+        positions_by_wallet[wallet.id] = wallet_positions
+        all_positions.extend(wallet_positions)
+    price_map = await _price_map(db, user.id, all_positions)
+
     total_book_value = Decimal("0")
     market_values: list[Decimal | None] = []
     unrealized_gains: list[Decimal | None] = []
     for wallet in wallets:
         if wallet.currency != total_currency:
             continue
-        for position in await investment_positions.get_wallet_positions(db, user.id, wallet.id):
-            read = await _position_read(db, user.id, wallet, position)
+        for position in positions_by_wallet[wallet.id]:
+            read = await _position_read(db, user.id, wallet, position, price_map[position.asset.id])
             total_book_value += position.book_value
             market_values.append(read.market_value)
             unrealized_gains.append(read.unrealized_gain)
@@ -110,6 +119,16 @@ async def get_summary(user: CurrentUser, db: DbSession) -> InvestmentSummaryRead
             else sum((value for value in unrealized_gains if value is not None), Decimal("0"))
         ),
         wallet_count=len(wallets),
+    )
+
+
+async def _price_map(
+    db: DbSession,
+    user_id: UUID,
+    positions: list[investment_positions.Position],
+) -> dict[UUID, asset_quotes.PriceResult]:
+    return await asset_quotes.get_asset_prices(
+        db, user_id, [position.asset for position in positions]
     )
 
 
@@ -154,7 +173,11 @@ async def list_positions(
 ) -> list[InvestmentPositionRead]:
     wallet = await investments_service.get_wallet(db, user.id, wallet_id)
     positions = await investment_positions.get_wallet_positions(db, user.id, wallet.id)
-    return [await _position_read(db, user.id, wallet, position) for position in positions]
+    price_map = await _price_map(db, user.id, positions)
+    return [
+        await _position_read(db, user.id, wallet, position, price_map[position.asset.id])
+        for position in positions
+    ]
 
 
 @router.get("/wallets/{wallet_id}/transactions", response_model=list[InvestmentTransactionRead])

@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Đầu tư",
       "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa cùng với các tài khoản tiền mặt.",
-      "enable": "Bật đầu tư"
+      "enable": "Bật đầu tư",
+      "marketData": {
+        "title": "Giá thị trường trực tiếp",
+        "description": "Các khóa API tùy chọn cho phép ứng dụng lấy giá tài sản hiện tại. Khóa của bạn được dùng trước khóa dự phòng của phiên bản.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Đã cấu hình",
+        "notConfigured": "Chưa cấu hình",
+        "placeholder": "Khóa API",
+        "save": "Lưu khóa",
+        "clear": "Xóa khóa",
+        "saveError": "Không thể lưu khóa này. Hãy thử lại."
+      }
     },
     "agents": {
       "title": "Tác nhân AI",

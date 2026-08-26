@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "투자",
       "description": "현금 계좌와 함께 주식, 펀드, 암호화폐를 추적하세요.",
-      "enable": "투자 활성화"
+      "enable": "투자 활성화",
+      "marketData": {
+        "title": "실시간 시장 가격",
+        "description": "선택적 API 키를 사용하면 앱에서 현재 자산 가격을 가져올 수 있습니다. 인스턴스 대체 키보다 먼저 사용자의 키가 사용됩니다.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "설정됨",
+        "notConfigured": "설정되지 않음",
+        "placeholder": "API 키",
+        "save": "키 저장",
+        "clear": "키 지우기",
+        "saveError": "키를 저장하지 못했습니다. 다시 시도하세요."
+      }
     },
     "agents": {
       "title": "AI 에이전트",

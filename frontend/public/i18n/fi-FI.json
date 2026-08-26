@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Sijoitukset",
       "description": "Seuraa osakkeita, rahastoja ja kryptovaluuttoja käteistiliesi rinnalla.",
-      "enable": "Ota sijoitukset käyttöön"
+      "enable": "Ota sijoitukset käyttöön",
+      "marketData": {
+        "title": "Reaaliaikaiset markkinahinnat",
+        "description": "Valinnaisten API-avainten avulla sovellus voi hakea omaisuuserien nykyiset hinnat. Oma avaimesi on etusijalla instanssin varavaihtoehtoon nähden.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Määritetty",
+        "notConfigured": "Ei määritetty",
+        "placeholder": "API-avain",
+        "save": "Tallenna avain",
+        "clear": "Tyhjennä avain",
+        "saveError": "Avaimen tallennus epäonnistui. Yritä uudelleen."
+      }
     },
     "agents": {
       "title": "Tekoälyagentit",

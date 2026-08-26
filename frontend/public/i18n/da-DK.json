@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investeringer",
       "description": "Følg aktier, fonde og kryptovalutaer sammen med dine kontantkonti.",
-      "enable": "Aktivér investeringer"
+      "enable": "Aktivér investeringer",
+      "marketData": {
+        "title": "Live markedspriser",
+        "description": "Med valgfrie API-nøgler kan appen hente aktuelle aktivpriser. Din egen nøgle bruges før instansens reservekonfiguration.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Konfigureret",
+        "notConfigured": "Ikke konfigureret",
+        "placeholder": "API-nøgle",
+        "save": "Gem nøgle",
+        "clear": "Ryd nøgle",
+        "saveError": "Nøglen kunne ikke gemmes. Prøv igen."
+      }
     },
     "agents": {
       "title": "AI-agenter",

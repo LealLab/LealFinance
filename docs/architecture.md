@@ -87,5 +87,5 @@ frontend's recurrence calculation only projects upcoming occurrences for
 display; it is not the posting mechanism.
 
 See [`backend-api.md`](backend-api.md), [`money-and-currency.md`](money-and-currency.md),
-[`i18n.md`](i18n.md), and [`ai-agents.md`](ai-agents.md) for the detailed
+   [`i18n.md`](i18n.md), [`ai-agents.md`](ai-agents.md), and [`investments.md`](investments.md) for the detailed
 contracts behind each area.

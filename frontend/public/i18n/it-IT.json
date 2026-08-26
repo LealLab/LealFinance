@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investimenti",
       "description": "Tieni traccia di azioni, fondi e criptovalute insieme ai tuoi conti di liquidità.",
-      "enable": "Attiva gli investimenti"
+      "enable": "Attiva gli investimenti",
+      "marketData": {
+        "title": "Quotazioni di mercato in tempo reale",
+        "description": "Le chiavi API opzionali consentono all'app di recuperare i prezzi correnti degli asset. La tua chiave viene usata prima del fallback dell'istanza.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Configurato",
+        "notConfigured": "Non configurato",
+        "placeholder": "Chiave API",
+        "save": "Salva chiave",
+        "clear": "Cancella chiave",
+        "saveError": "Impossibile salvare la chiave. Riprova."
+      }
     },
     "agents": {
       "title": "Agenti IA",

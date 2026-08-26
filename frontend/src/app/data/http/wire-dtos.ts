@@ -14,6 +14,10 @@ import type {
   InvestmentQuoteProvider,
   InvestmentTransactionType,
 } from '../../domain/models/investment';
+import type {
+  MarketDataCredentialSource,
+  MarketDataProvider,
+} from '../../domain/models/market-data-credential';
 import type { IconName } from '../../shared/ui/icon/icon';
 
 type NullablePatch<T> = { [K in keyof T]?: T[K] | null };
@@ -277,6 +281,12 @@ export interface InvestmentSummaryWire {
   total_market_value: string | null;
   total_unrealized_gain: string | null;
   wallet_count: number;
+}
+
+export interface MarketDataCredentialStatusWire {
+  provider: MarketDataProvider;
+  configured: boolean;
+  source: MarketDataCredentialSource;
 }
 
 export interface AgentProviderStatusWire {

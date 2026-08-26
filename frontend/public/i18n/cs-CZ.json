@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investice",
       "description": "Sledujte akcie, fondy a kryptoměny spolu s hotovostními účty.",
-      "enable": "Povolit investice"
+      "enable": "Povolit investice",
+      "marketData": {
+        "title": "Živé tržní ceny",
+        "description": "Volitelné klíče API umožní aplikaci načítat aktuální ceny aktiv. Váš klíč má přednost před záložním klíčem instance.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Nastaveno",
+        "notConfigured": "Nenastaveno",
+        "placeholder": "API klíč",
+        "save": "Uložit klíč",
+        "clear": "Vymazat klíč",
+        "saveError": "Klíč se nepodařilo uložit. Zkuste to znovu."
+      }
     },
     "agents": {
       "title": "AI agenti",

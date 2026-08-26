@@ -71,7 +71,10 @@
                         }
                       }
                     </td>
-                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ position.marketValue ? (position.marketValue | money: wallet.currency) : '—' }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">
+                      <div>{{ position.marketValue ? (position.marketValue | money: wallet.currency) : '—' }}</div>
+                      <app-exchange-rate-warning [isFallback]="position.marketValueIsFallback" />
+                    </td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</td>
                   </tr>

@@ -13,6 +13,7 @@ import {
   InvestmentPosition,
   InvestmentTransaction,
 } from '../../domain/models/investment';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { isNegative, money, ratio, sum, Money } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
@@ -43,6 +44,7 @@ const PAGE_SIZE = 30;
     Button,
     Card,
     EmptyState,
+    ExchangeRateWarning,
     Icon,
     InfiniteScroll,
     PageHeader,

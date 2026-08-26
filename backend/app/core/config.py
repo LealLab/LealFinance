@@ -60,6 +60,9 @@ class Settings(BaseSettings):
     # Free key from https://openexchangerates.org/signup/free. Without one,
     # cross-currency rates fall back to 1:1 - see app/services/exchange_rates.py.
     openexchangerates_app_id: str | None = None
+    # Optional live quote-provider keys; per-user credentials take precedence.
+    twelve_data_api_key: str | None = None
+    brapi_token: str | None = None
 
     # --- Update check (optional) ---
     # Baked into the image by the release workflow; "dev" for source builds,

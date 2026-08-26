@@ -1008,7 +1008,19 @@
     "investments": {
       "title": "Investitionen",
       "description": "Verfolge Aktien, Fonds und Kryptowährungen neben deinen Geldkonten.",
-      "enable": "Investitionen aktivieren"
+      "enable": "Investitionen aktivieren",
+      "marketData": {
+        "title": "Live-Marktpreise",
+        "description": "Mit optionalen API-Schlüsseln kann die App aktuelle Kurse abrufen. Ihr eigener Schlüssel wird vor dem Fallback der Instanz verwendet.",
+        "twelveData": "Twelve Data",
+        "brapi": "brapi",
+        "configured": "Konfiguriert",
+        "notConfigured": "Nicht konfiguriert",
+        "placeholder": "API-Schlüssel",
+        "save": "Schlüssel speichern",
+        "clear": "Schlüssel löschen",
+        "saveError": "Der Schlüssel konnte nicht gespeichert werden. Versuchen Sie es erneut."
+      }
     },
     "agents": {
       "title": "KI-Agenten",

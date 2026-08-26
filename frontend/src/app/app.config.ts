@@ -21,6 +21,7 @@ import { InvestmentAssetRepository } from './data/investment-asset.repository';
 import { InvestmentTransactionRepository } from './data/investment-transaction.repository';
 import { InvestmentWalletRepository } from './data/investment-wallet.repository';
 import { ManualRateRepository } from './data/manual-rate.repository';
+import { MarketDataCredentialRepository } from './data/market-data-credential.repository';
 import { HttpAccountRepository } from './data/http/http-account.repository';
 import { HttpAgentProviderRepository } from './data/http/http-agent-provider.repository';
 import { HttpBudgetPlanRepository } from './data/http/http-budget-plan.repository';
@@ -33,6 +34,7 @@ import { HttpInvestmentAssetRepository } from './data/http/http-investment-asset
 import { HttpInvestmentTransactionRepository } from './data/http/http-investment-transaction.repository';
 import { HttpInvestmentWalletRepository } from './data/http/http-investment-wallet.repository';
 import { HttpManualRateRepository } from './data/http/http-manual-rate.repository';
+import { HttpMarketDataCredentialRepository } from './data/http/http-market-data-credential.repository';
 import { HttpRecurringRuleRepository } from './data/http/http-recurring-rule.repository';
 import { HttpTransactionRepository } from './data/http/http-transaction.repository';
 import { RecurringRuleRepository } from './data/recurring-rule.repository';
@@ -62,5 +64,6 @@ export const appConfig: ApplicationConfig = {
     { provide: InvestmentWalletRepository, useClass: HttpInvestmentWalletRepository },
     { provide: InvestmentAssetRepository, useClass: HttpInvestmentAssetRepository },
     { provide: InvestmentTransactionRepository, useClass: HttpInvestmentTransactionRepository },
+    { provide: MarketDataCredentialRepository, useClass: HttpMarketDataCredentialRepository },
   ],
 };
