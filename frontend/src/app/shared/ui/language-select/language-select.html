@@ -26,11 +26,14 @@
             : 'w-full min-w-0 rounded-md border border-border bg-surface-raised px-2 py-1 text-sm text-content-muted'
         "
         [attr.aria-label]="t('layout.languageSwitcher.label')"
-        [value]="activeLang()"
         (change)="setLang($any($event.target).value)"
       >
         @for (lang of availableLangs; track lang) {
-          <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
+          <option
+            [value]="lang"
+            [selected]="lang === activeLang()"
+            [textContent]="t('layout.languageSwitcher.options.' + lang)"
+          ></option>
         }
       </select>
     </div>

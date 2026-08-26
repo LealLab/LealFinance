@@ -19,6 +19,7 @@ class RegisterRequest(BaseModel):
     password: str = Field(min_length=12)
     display_name: str = Field(min_length=1, max_length=100)
     base_currency: CurrencyCodeInput = "USD"
+    locale: str = Field(default="en-US", min_length=2, max_length=10)
 
 
 class SetupStatus(BaseModel):

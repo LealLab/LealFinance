@@ -1,16 +1,17 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
 import { of, throwError } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Register } from './register';
+import enUS from '../../../../public/i18n/en-US.json';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
 const CURRENCIES = [
   { code: 'USD', name: 'US Dollar', symbol: '$', decimalDigits: 2, isActive: true },
-  { code: 'BRL', name: 'Real', symbol: 'R$', decimalDigits: 2, isActive: true }
+  { code: 'BRL', name: 'Real', symbol: 'R$', decimalDigits: 2, isActive: true },
 ];
 
 describe('Register', () => {
@@ -21,22 +22,22 @@ describe('Register', () => {
     session = { register: vi.fn().mockReturnValue(of({ id: 'u1' })) };
     identityApi = {
       currencies: vi.fn().mockReturnValue(of(CURRENCIES)),
-      setupStatus: vi.fn().mockReturnValue(of(false))
+      setupStatus: vi.fn().mockReturnValue(of(false)),
     };
     await TestBed.configureTestingModule({
       imports: [
         Register,
         TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+          langs: { 'en-US': enUS, 'pt-BR': ptBR },
+          translocoConfig: { availableLangs: ['en-US', 'pt-BR'], defaultLang: 'en-US' },
+        }),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: SessionService, useValue: session },
-        { provide: IdentityApiService, useValue: identityApi }
-      ]
+        { provide: IdentityApiService, useValue: identityApi },
+      ],
     }).compileComponents();
   });
 
@@ -62,9 +63,33 @@ describe('Register', () => {
     fixture.detectChanges();
 
     const options = Array.from(
-      fixture.nativeElement.querySelectorAll('select[formcontrolname="baseCurrency"] option')
+      fixture.nativeElement.querySelectorAll('select[formcontrolname="baseCurrency"] option'),
     ) as HTMLOptionElement[];
     expect(options.map((o) => o.value)).toEqual(['USD', 'BRL']);
+  });
+
+  it('defaults the base language to the active language', () => {
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+
+    expect(
+      (fixture.nativeElement.querySelector('select[formcontrolname="locale"]') as HTMLSelectElement)
+        .value,
+    ).toBe('en-US');
+  });
+
+  it('switches the page language when the base language changes', () => {
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+
+    const select = fixture.nativeElement.querySelector(
+      'select[formcontrolname="locale"]',
+    ) as HTMLSelectElement;
+    select.value = 'pt-BR';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    expect(TestBed.inject(TranslocoService).getActiveLang()).toBe('pt-BR');
   });
 
   it('registers and navigates home on success', async () => {
@@ -78,7 +103,8 @@ describe('Register', () => {
       email: 'ada@example.com',
       token: 'invite-token',
       password: 'a-very-long-password',
-      baseCurrency: 'USD'
+      baseCurrency: 'USD',
+      locale: 'pt-BR',
     });
     await fixture.componentInstance['submit']();
 
@@ -87,7 +113,8 @@ describe('Register', () => {
       email: 'ada@example.com',
       token: 'invite-token',
       password: 'a-very-long-password',
-      baseCurrency: 'USD'
+      baseCurrency: 'USD',
+      locale: 'pt-BR',
     });
     expect(navigateSpy).toHaveBeenCalledWith('/');
   });
@@ -102,7 +129,8 @@ describe('Register', () => {
       email: 'ada@example.com',
       token: 'invite-token',
       password: 'a-very-long-password',
-      baseCurrency: 'USD'
+      baseCurrency: 'USD',
+      locale: 'pt-BR',
     });
     await fixture.componentInstance['submit']();
     fixture.detectChanges();

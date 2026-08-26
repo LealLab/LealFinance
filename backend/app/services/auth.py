@@ -212,6 +212,7 @@ async def register(
     password: str,
     display_name: str,
     base_currency: str = "USD",
+    locale: str = "en-US",
 ) -> IssuedSession:
     invitation: Invitation | None = None
     if token:
@@ -242,6 +243,7 @@ async def register(
         password_hash=hash_password(password),
         display_name=display_name.strip(),
         role=role,
+        locale=locale,
         base_currency=currency.code,
         display_currency=currency.code,
     )

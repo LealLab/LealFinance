@@ -48,11 +48,14 @@
           #languageSelect
           id="settings-language"
           class="form-input max-w-xs"
-          [value]="activeLang()"
           (change)="setLang($any($event.target).value)"
         >
           @for (lang of availableLangs; track lang) {
-            <option [value]="lang">{{ t('layout.languageSwitcher.options.' + lang) }}</option>
+            <option
+              [value]="lang"
+              [selected]="lang === activeLang()"
+              [textContent]="t('layout.languageSwitcher.options.' + lang)"
+            ></option>
           }
         </select>
       </div>

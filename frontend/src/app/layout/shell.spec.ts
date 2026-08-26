@@ -74,6 +74,18 @@ describe('Shell', () => {
     expect(TestBed.inject(TranslocoService).getActiveLang()).toBe('pt-BR');
   });
 
+  it('keeps a persisted language selected when options are rendered', () => {
+    const transloco = TestBed.inject(TranslocoService);
+    transloco.setActiveLang('pt-BR');
+
+    const fixture = TestBed.createComponent(Shell);
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement.querySelector('select') as HTMLSelectElement).value).toBe(
+      'pt-BR',
+    );
+  });
+
   it('follows the desktop breakpoint and toggles the sidebar for the session', () => {
     mockMatchMedia(true);
 

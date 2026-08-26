@@ -108,6 +108,7 @@ async def test_register_with_valid_invitation_succeeds_and_logs_in(
             "password": "a-perfectly-fine-password",
             "display_name": "New User",
             "base_currency": "EUR",
+            "locale": "pt-BR",
         },
     )
     assert register_response.status_code == 201
@@ -117,6 +118,7 @@ async def test_register_with_valid_invitation_succeeds_and_logs_in(
     preferences_response = await other_client.get("/api/v1/auth/preferences")
     assert preferences_response.json()["base_currency"] == "EUR"
     assert preferences_response.json()["display_currency"] == "EUR"
+    assert preferences_response.json()["locale"] == "pt-BR"
 
     # register_with_invitation logs the new user in immediately.
     me_response = await other_client.get("/api/v1/auth/me")
