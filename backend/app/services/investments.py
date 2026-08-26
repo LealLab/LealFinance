@@ -475,8 +475,23 @@ async def update_investment_transaction(
             ):
                 posted = await _settle_cash_leg(db, user_id, wallet, cash_account, effective)
                 transaction.transaction_id = posted.id
+        original_wallet_id = transaction.wallet_id
+        original_asset_id = transaction.asset_id
         for field, value in changes.items():
             setattr(transaction, field, value)
+        await db.flush()
+        # Editing (or moving) this row can leave a *different*, later row -
+        # e.g. a sell that already depends on this one's quantity -
+        # unfoldable; check both where it used to live and where it lives
+        # now, since either ledger could now be broken.
+        for wallet_id, asset_id in {
+            (original_wallet_id, original_asset_id),
+            (transaction.wallet_id, transaction.asset_id),
+        }:
+            if asset_id is not None:
+                await investment_positions.assert_ledger_still_folds(
+                    db, user_id, wallet_id, asset_id
+                )
         await db.commit()
     except Exception:
         await db.rollback()
@@ -489,6 +504,7 @@ async def delete_investment_transaction(
     db: AsyncSession, user_id: UUID, transaction_id: UUID
 ) -> None:
     transaction = await get_investment_transaction(db, user_id, transaction_id)
+    wallet_id, asset_id = transaction.wallet_id, transaction.asset_id
     try:
         if transaction.transaction_id is not None:
             ledger_transaction = await ownership.get_owned(
@@ -496,6 +512,9 @@ async def delete_investment_transaction(
             )
             await db.delete(ledger_transaction)
         await db.delete(transaction)
+        await db.flush()
+        if asset_id is not None:
+            await investment_positions.assert_ledger_still_folds(db, user_id, wallet_id, asset_id)
         await db.commit()
     except Exception:
         await db.rollback()

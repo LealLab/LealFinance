@@ -132,7 +132,11 @@ export class InvestmentTransactionFormModal {
       this.form.controls.type.valid &&
       this.form.controls.date.valid &&
       this.form.controls.fee.valid &&
-      this.form.controls.currency.valid &&
+      // currency is a disabled control (always programmatically set to the
+      // wallet's own currency, never user-edited) - a disabled FormControl's
+      // `valid` is always false regardless of its validators, so it's
+      // checked here via the raw value instead of `.valid`.
+      Boolean(raw.currency) &&
       (!this.needsAsset() || Boolean(raw.assetId)) &&
       (!trade || (Boolean(raw.quantity) && Boolean(raw.price) && this.form.controls.quantity.valid && this.form.controls.price.valid)) &&
       (!amountEntry || (Boolean(raw.amount) && this.form.controls.amount.valid));

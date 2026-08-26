@@ -288,6 +288,54 @@ async def test_delete_investment_transaction_deletes_cash_ledger_row(
     assert await db_session.get(Transaction, ledger_id) is None
 
 
+async def test_deleting_a_buy_a_later_sell_depends_on_is_rejected(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """A sell already depends on this buy's quantity - deleting it would
+    leave the ledger unfoldable (a sell with nothing bought), so it must be
+    rejected rather than silently corrupting the position."""
+    await _authed(client, db_session, "investment-delete-guard@example.com")
+    wallet = await _create_wallet(client)
+    asset = await _create_asset(client)
+    buy = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "quantity": "10",
+            "price": "10",
+            "amount": "100",
+            "currency": "BRL",
+        },
+    )
+    assert buy.status_code == 201
+    sell = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "sell",
+            "date": "2026-01-02",
+            "quantity": "3",
+            "price": "12",
+            "amount": "36",
+            "currency": "BRL",
+        },
+    )
+    assert sell.status_code == 201
+
+    response = await client.delete(f"/api/v1/investments/transactions/{buy.json()['id']}")
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "investment_transaction.ledger_invalid"
+
+    # Rejected - the buy must still be there, and positions must still compute.
+    positions = await client.get(f"/api/v1/investments/wallets/{wallet['id']}/positions")
+    assert positions.status_code == 200
+    assert positions.json()[0]["quantity"] == "7.0000000000"
+
+
 async def test_fee_without_asset_is_allowed_but_dividend_requires_asset(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

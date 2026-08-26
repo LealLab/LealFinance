@@ -6,6 +6,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.errors import ValidationAppError
 from app.models.investment import InvestmentAsset, InvestmentTransaction, InvestmentWallet
 from app.services import ownership
 
@@ -112,3 +113,25 @@ async def get_position(
         exclude_transaction_id=exclude_transaction_id,
     )
     return _fold(asset, rows)
+
+
+async def assert_ledger_still_folds(
+    db: AsyncSession, user_id: UUID, wallet_id: UUID, asset_id: UUID
+) -> None:
+    """Re-folds one asset's ledger and rejects the pending change if it no
+    longer folds - e.g. deleting or shrinking a buy that a later sell
+    already depends on. Call after flushing a tentative delete/update but
+    before committing it, so the change can still be rolled back.
+
+    Only the oversell case at *creation* time is validated by
+    `investments.py::_validate_transaction` (against the row being created,
+    excluding itself) - editing or deleting a *different*, earlier row can
+    just as easily leave a later sell unfoldable, which only a full re-fold
+    catches.
+    """
+    asset = await ownership.get_owned(db, InvestmentAsset, asset_id, user_id)
+    rows = await _rows_for_wallet(db, user_id, wallet_id, asset_id=asset_id)
+    try:
+        _fold(asset, rows)
+    except ValueError:
+        raise ValidationAppError(code="investment_transaction.ledger_invalid") from None
