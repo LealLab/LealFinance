@@ -3,6 +3,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
+import { Institution } from '../../domain/models/institution';
 import { addDays, parseIsoDate } from '../../domain/calc/dates';
 import { Transaction } from '../../domain/models/transaction';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -28,6 +29,7 @@ export class TransactionCalendar {
   readonly selectedDay = input<string | null>(null);
   readonly displayCurrency = input.required<string>();
   readonly accountsById = input.required<ReadonlyMap<string, Account>>();
+  readonly institutionsById = input<ReadonlyMap<string, Institution>>(new Map());
   readonly categoriesById = input.required<ReadonlyMap<string, Category>>();
   readonly weekStart = input(1);
 
@@ -96,6 +98,20 @@ export class TransactionCalendar {
 
   protected accountName(id: string | undefined): string {
     return id ? (this.accountsById().get(id)?.name ?? '') : '';
+  }
+
+  protected institutionName(id: string | undefined): string {
+    const institutionId = id ? this.accountsById().get(id)?.institutionId : undefined;
+    return institutionId ? (this.institutionsById().get(institutionId)?.name ?? '') : '';
+  }
+
+  /** account · institution · category - dropping the parts that are empty
+   * (a cash account, an interest row with no category) so the separators
+   * never dangle. */
+  protected subtitle(tx: Transaction): string {
+    return [this.accountName(tx.accountId), this.institutionName(tx.accountId), this.categoryName(tx)]
+      .filter(Boolean)
+      .join(' · ');
   }
 
   protected categoryName(tx: Transaction): string {

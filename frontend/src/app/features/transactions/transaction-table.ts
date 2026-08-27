@@ -1,14 +1,15 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
+import { Institution } from '../../domain/models/institution';
 import { Transaction } from '../../domain/models/transaction';
 import { SortOrder, TransactionSort } from '../../data/transaction.repository';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Icon } from '../../shared/ui/icon/icon';
-import { TransactionColumn } from './transaction-columns';
+import { MIN_COLUMN_WIDTH, TransactionColumn } from './transaction-columns';
 import { rowSign, rowToneClass } from './transaction-tone';
 
 /** A page number, or an elision marker between runs of them. */
@@ -28,8 +29,10 @@ type PageToken = number | '…';
 export class TransactionTable {
   readonly rows = input.required<readonly Transaction[]>();
   readonly accountsById = input.required<ReadonlyMap<string, Account>>();
+  readonly institutionsById = input<ReadonlyMap<string, Institution>>(new Map());
   readonly categoriesById = input.required<ReadonlyMap<string, Category>>();
-  readonly columns = input.required<ReadonlySet<TransactionColumn>>();
+  readonly columns = input.required<readonly TransactionColumn[]>();
+  readonly widths = input.required<(column: TransactionColumn) => number>();
   readonly selectedIds = input.required<ReadonlySet<string>>();
   readonly sort = input.required<TransactionSort>();
   readonly order = input.required<SortOrder>();
@@ -47,9 +50,15 @@ export class TransactionTable {
   readonly pageSizeChange = output<number>();
   readonly edit = output<Transaction>();
   readonly remove = output<Transaction>();
+  readonly columnMove = output<{ column: TransactionColumn; toIndex: number }>();
+  readonly columnResize = output<{ column: TransactionColumn; width: number }>();
 
   protected readonly rowToneClass = rowToneClass;
   protected readonly rowSign = rowSign;
+  protected readonly draggingColumn = signal<TransactionColumn | null>(null);
+  private readonly liveWidth = signal<{ column: TransactionColumn; width: number } | null>(null);
+  private resizeStartX = 0;
+  private resizeStartWidth = 0;
 
   protected readonly allSelected = computed(
     () => this.rows().length > 0 && this.rows().every((r) => this.selectedIds().has(r.id)),
@@ -95,6 +104,62 @@ export class TransactionTable {
 
   protected accountName(id: string | undefined): string {
     return id ? (this.accountsById().get(id)?.name ?? '') : '';
+  }
+
+  /** The institution an account belongs to - '' for a cash account or an
+   * unknown id. Shown under the account name so same-named accounts at
+   * different banks are tellable apart. */
+  protected institutionName(accountId: string | undefined): string {
+    const institutionId = accountId
+      ? this.accountsById().get(accountId)?.institutionId
+      : undefined;
+    return institutionId ? (this.institutionsById().get(institutionId)?.name ?? '') : '';
+  }
+
+  protected widthOf(column: TransactionColumn): number {
+    const live = this.liveWidth();
+    return live?.column === column ? live.width : this.widths()(column);
+  }
+
+  protected onDragStart(column: TransactionColumn, event: DragEvent): void {
+    this.draggingColumn.set(column);
+    event.dataTransfer?.setData('text/plain', column);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  protected onDragEnd(): void {
+    this.draggingColumn.set(null);
+  }
+
+  protected onDrop(column: TransactionColumn, event: DragEvent): void {
+    event.preventDefault();
+    const dragged = this.draggingColumn();
+    if (dragged) this.columnMove.emit({ column: dragged, toIndex: this.columns().indexOf(column) });
+    this.draggingColumn.set(null);
+  }
+
+  protected onResizeStart(column: TransactionColumn, event: PointerEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.resizeStartX = event.clientX;
+    this.resizeStartWidth = this.widths()(column);
+    this.liveWidth.set({ column, width: this.resizeStartWidth });
+    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+  }
+
+  protected onResizeMove(column: TransactionColumn, event: PointerEvent): void {
+    if (this.liveWidth()?.column !== column) return;
+    this.liveWidth.set({
+      column,
+      width: Math.max(MIN_COLUMN_WIDTH, Math.round(this.resizeStartWidth + event.clientX - this.resizeStartX)),
+    });
+  }
+
+  protected onResizeEnd(column: TransactionColumn, event: PointerEvent): void {
+    if (this.liveWidth()?.column !== column) return;
+    this.columnResize.emit({ column, width: this.widthOf(column) });
+    this.liveWidth.set(null);
+    (event.currentTarget as HTMLElement).releasePointerCapture?.(event.pointerId);
   }
 
   protected onToggleAll(event: Event): void {

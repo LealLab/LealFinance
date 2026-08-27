@@ -418,7 +418,7 @@ export class Transactions {
   // --- CSV ------------------------------------------------------------
 
   protected exportCsv(): void {
-    const columns = this.allColumns.filter((c) => this.prefs.isVisible(c));
+    const columns = this.prefs.columns();
     const headers = columns.map((c) => this.transloco.translate('transactions.columns.' + c));
     const body = this.rows().map((tx) => columns.map((c) => this.csvCell(tx, c)));
     const name =

@@ -145,6 +145,7 @@
         [selectedDay]="selectedDay()"
         [displayCurrency]="displayCurrency()"
         [accountsById]="accountsById()"
+        [institutionsById]="institutionsById()"
         [categoriesById]="categoriesById()"
         [weekStart]="weekStart()"
         (daySelected)="selectDay($event)"
@@ -164,8 +165,10 @@
       <app-transaction-table
         [rows]="rows()"
         [accountsById]="accountsById()"
+        [institutionsById]="institutionsById()"
         [categoriesById]="categoriesById()"
         [columns]="prefs.columns()"
+        [widths]="prefs.widthOf"
         [selectedIds]="selectedIds()"
         [sort]="sort()"
         [order]="order()"
@@ -182,6 +185,8 @@
         (pageSizeChange)="setPageSize($event)"
         (edit)="openEditTx($event)"
         (remove)="deleteTx($event)"
+        (columnMove)="prefs.moveColumn($event.column, $event.toIndex)"
+        (columnResize)="prefs.setWidth($event.column, $event.width)"
       />
     }
 

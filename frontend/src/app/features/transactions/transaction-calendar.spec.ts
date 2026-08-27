@@ -4,6 +4,7 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
+import { Institution } from '../../domain/models/institution';
 import { money } from '../../shared/money/money';
 import { buildMonthGrid, CalendarDay } from './calendar-month';
 import { TransactionCalendar } from './transaction-calendar';
@@ -20,6 +21,7 @@ const passthrough = (amount: ReturnType<typeof money>, target: string) => money(
       [selectedDay]="selectedDay()"
       displayCurrency="BRL"
       [accountsById]="accountsById"
+      [institutionsById]="institutionsById"
       [categoriesById]="categoriesById"
       (daySelected)="picked = $event"
     />
@@ -50,7 +52,10 @@ class CalendarHost {
   );
   readonly selectedDay = signal<string | null>(null);
   readonly accountsById = new Map<string, Account>([
-    ['acc-1', { id: 'acc-1', name: 'Checking', type: 'checking', currency: 'BRL', openingBalance: '0', archived: false }],
+    ['acc-1', { id: 'acc-1', name: 'Checking', type: 'checking', currency: 'BRL', openingBalance: '0', archived: false, institutionId: 'inst-1' }],
+  ]);
+  readonly institutionsById = new Map<string, Institution>([
+    ['inst-1', { id: 'inst-1', name: 'Nubank', icon: 'bank', archived: false, position: 0 }],
   ]);
   readonly categoriesById = new Map<string, Category>([
     ['cat-1', { id: 'cat-1', name: 'Comida', kind: 'expense', groupId: 'g', color: '#000', icon: 'cart', position: 0 }],
@@ -96,6 +101,7 @@ describe('TransactionCalendar', () => {
     fixture.detectChanges();
     expect(el.textContent).toContain('Padaria');
     expect(el.textContent).toContain('Checking');
+    expect(el.textContent).toContain('Nubank');
   });
 
   it('draws a sparkline polyline once there are running balances', () => {
