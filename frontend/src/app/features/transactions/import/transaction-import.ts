@@ -6,10 +6,12 @@ import { ApiError } from '../../../core/api-error';
 import { ConfirmService } from '../../../core/confirm.service';
 import { MutationErrorService } from '../../../core/mutation-error.service';
 import { AccountRepository } from '../../../data/account.repository';
+import { CategoryGroupRepository } from '../../../data/category-group.repository';
 import { CategoryRepository } from '../../../data/category.repository';
 import { InstitutionRepository } from '../../../data/institution.repository';
 import { ImportOptions, TransactionRepository } from '../../../data/transaction.repository';
 import { Transaction, TransactionType } from '../../../domain/models/transaction';
+import { groupCategoriesByGroup } from '../category-grouping';
 import { Button } from '../../../shared/ui/button/button';
 import { Card } from '../../../shared/ui/card/card';
 import { Icon } from '../../../shared/ui/icon/icon';
@@ -65,6 +67,7 @@ const ROW_TYPES: readonly RowType[] = ['expense', 'income'];
 export class TransactionImport {
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly accountRepository = inject(AccountRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
@@ -75,6 +78,9 @@ export class TransactionImport {
   protected readonly rowTypes = ROW_TYPES;
 
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
+  protected readonly categoryGroupsResource = rxResource({
+    stream: () => this.categoryGroupRepository.list()
+  });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutionRepository.list()
@@ -127,7 +133,14 @@ export class TransactionImport {
 
   protected categoriesForType(type: RowType | undefined) {
     return (this.categoriesResource.value() ?? []).filter(
-      (category) => !category.archived && category.kind === type
+      (category) => category.kind === type
+    );
+  }
+
+  protected categoryGroupsForType(type: RowType | undefined) {
+    return groupCategoriesByGroup(
+      this.categoriesForType(type),
+      this.categoryGroupsResource.value() ?? []
     );
   }
 

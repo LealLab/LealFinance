@@ -202,10 +202,12 @@
                     (change)="setRowCategory(row, $any($event.target).value)"
                   >
                     <option value="">{{ t('transactions.import.grid.noCategory') }}</option>
-                    @for (category of categoriesForType(row.type); track category.id) {
-                      <option [value]="category.id">
-                        {{ category.parentId ? '- ' : '' }}{{ category.name }}
-                      </option>
+                    @for (group of categoryGroupsForType(row.type); track group.group.id) {
+                      <optgroup [label]="group.group.name">
+                        @for (category of group.categories; track category.id) {
+                          <option [value]="category.id">{{ category.name }}</option>
+                        }
+                      </optgroup>
                     }
                   </select>
                 </td>

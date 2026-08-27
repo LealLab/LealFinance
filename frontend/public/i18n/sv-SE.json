@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategorier",
     "description": "Organisera inkomster och utgifter efter kategori.",
-    "showArchived": "Visa arkiverade kategorier",
-    "archivedBadge": "Arkiverad",
     "actions": {
-      "new": "Ny kategori",
+      "addGroup": "Lägg till grupp",
+      "addCategory": "Lägg till kategori",
+      "addCategoryToGroup": "Lägg till kategori i den här gruppen",
       "edit": "Redigera",
-      "archive": "Arkivera",
-      "unarchive": "Återställ",
       "delete": "Ta bort",
-      "addChild": "Ny underkategori",
       "collapse": "Fäll ihop",
       "expand": "Expandera",
       "dragHandle": "Ändra ordning"
     },
     "empty": {
       "title": "Inga kategorier ännu",
-      "description": "Skapa kategorier för att organisera dina transaktioner."
+      "description": "Skapa grupper och kategorier för att organisera dina transaktioner."
     },
     "sections": {
       "income": "Inkomstkategorier",
@@ -583,16 +580,22 @@
       "title": "Ta bort kategori?",
       "message": "Åtgärden kan inte ångras. Vill du ta bort kategorin \"{{name}}\"?",
       "blockedTitle": "Kan inte ta bort",
-      "blockedMessage": "Kategorin används fortfarande (transaktioner: {{transactions}}, budgetar: {{budgets}}, underkategorier: {{children}}). Arkivera kategorin i stället för att ta bort den."
+      "blockedMessage": "Kategorin används fortfarande av {{transactions}} transaktioner. Ta bort transaktionerna innan du tar bort kategorin."
+    },
+    "deleteGroup": {
+      "title": "Ta bort grupp?",
+      "message": "Åtgärden kan inte ångras. Vill du ta bort gruppen \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Ny kategori",
       "editTitle": "Redigera kategori",
-      "saveError": "Det gick inte att spara kategorin. Försök igen.",
+      "newGroupTitle": "Ny grupp",
+      "editGroupTitle": "Redigera grupp",
+      "saveError": "Det gick inte att spara gruppen eller kategorin. Försök igen.",
       "fields": {
         "name": "Namn",
-        "parent": "Överordnad kategori",
-        "noParent": "Ingen (kategori på toppnivå)",
+        "group": "Grupp",
+        "selectGroup": "Välj en grupp",
         "color": "Färg",
         "icon": "Ikon"
       },
@@ -656,8 +659,8 @@
       "saveError": "Det gick inte att spara budgeten. Försök igen.",
       "fields": {
         "month": "Månad",
-        "category": "Kategori",
-        "selectCategory": "Välj en kategori",
+        "group": "Grupp",
+        "selectGroup": "Välj en grupp",
         "amount": "Belopp",
         "currency": "Valuta"
       },

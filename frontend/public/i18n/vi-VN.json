@@ -558,22 +558,19 @@
   "categories": {
     "title": "Danh mục",
     "description": "Sắp xếp thu nhập và chi tiêu theo danh mục.",
-    "showArchived": "Hiển thị danh mục đã lưu trữ",
-    "archivedBadge": "Đã lưu trữ",
     "actions": {
-      "new": "Danh mục mới",
+      "addGroup": "Thêm nhóm",
+      "addCategory": "Thêm danh mục",
+      "addCategoryToGroup": "Thêm danh mục vào nhóm này",
       "edit": "Chỉnh sửa",
-      "archive": "Lưu trữ",
-      "unarchive": "Bỏ lưu trữ",
       "delete": "Xóa",
-      "addChild": "Danh mục con mới",
       "collapse": "Thu gọn",
       "expand": "Mở rộng",
       "dragHandle": "Sắp xếp lại"
     },
     "empty": {
       "title": "Chưa có danh mục nào",
-      "description": "Tạo danh mục để sắp xếp các giao dịch của bạn."
+      "description": "Tạo nhóm và danh mục để sắp xếp các giao dịch của bạn."
     },
     "sections": {
       "income": "Danh mục thu nhập",
@@ -583,16 +580,22 @@
       "title": "Xóa danh mục?",
       "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa danh mục \"{{name}}\" không?",
       "blockedTitle": "Không thể xóa",
-      "blockedMessage": "Danh mục này vẫn đang được sử dụng: {{transactions}} giao dịch, {{budgets}} ngân sách và {{children}} danh mục con đang sử dụng danh mục này. Hãy lưu trữ danh mục thay vì xóa."
+      "blockedMessage": "Danh mục này vẫn đang được sử dụng bởi {{transactions}} giao dịch. Hãy xóa các giao dịch đó trước khi xóa danh mục."
+    },
+    "deleteGroup": {
+      "title": "Xóa nhóm?",
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa nhóm \"{{name}}\" không?"
     },
     "form": {
       "newTitle": "Danh mục mới",
       "editTitle": "Chỉnh sửa danh mục",
-      "saveError": "Không thể lưu danh mục. Vui lòng thử lại.",
+      "newGroupTitle": "Nhóm mới",
+      "editGroupTitle": "Chỉnh sửa nhóm",
+      "saveError": "Không thể lưu nhóm hoặc danh mục. Vui lòng thử lại.",
       "fields": {
         "name": "Tên",
-        "parent": "Danh mục cha",
-        "noParent": "Không có (danh mục cấp cao nhất)",
+        "group": "Nhóm",
+        "selectGroup": "Chọn một nhóm",
         "color": "Màu sắc",
         "icon": "Biểu tượng"
       },
@@ -656,8 +659,8 @@
       "saveError": "Không thể lưu ngân sách. Vui lòng thử lại.",
       "fields": {
         "month": "Tháng",
-        "category": "Danh mục",
-        "selectCategory": "Chọn một danh mục",
+        "group": "Nhóm",
+        "selectGroup": "Chọn một nhóm",
         "amount": "Số tiền",
         "currency": "Tiền tệ"
       },

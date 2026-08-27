@@ -4,7 +4,7 @@ import { Category } from '../models/category';
 import { money, multiply, Money, ratio, sum } from '../../shared/money/money';
 
 export interface AllocationBudget {
-  categoryId: string;
+  groupId: string;
   percentage: string;
   budget: Budget;
 }
@@ -39,21 +39,21 @@ export function allocationBudgets(
   month: string,
 ): AllocationBudget[] {
   const fixedIds = new Set(
-    fixedBudgets.filter((budget) => budget.month === month).map((budget) => budget.categoryId),
+    fixedBudgets.filter((budget) => budget.month === month).map((budget) => budget.groupId),
   );
   return allocations
     .filter(
-      (allocation) => !fixedIds.has(allocation.categoryId) && Number(allocation.percentage) > 0,
+      (allocation) => !fixedIds.has(allocation.groupId) && Number(allocation.percentage) > 0,
     )
     .map((allocation) => {
       const amount = allocationAmount(income, allocation.percentage);
       if (!amount) return undefined;
       return {
-        categoryId: allocation.categoryId,
+        groupId: allocation.groupId,
         percentage: allocation.percentage,
         budget: {
-          id: `allocation-${allocation.categoryId}`,
-          categoryId: allocation.categoryId,
+          id: `allocation-${allocation.groupId}`,
+          groupId: allocation.groupId,
           month,
           amount: amount.amount,
           currency: amount.currency,

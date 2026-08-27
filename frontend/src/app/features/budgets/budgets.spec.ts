@@ -6,11 +6,13 @@ import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockBudgetPlanRepository } from '../../data/mock/mock-budget-plan.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
@@ -37,6 +39,7 @@ describe('Budgets', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: BudgetPlanRepository, useClass: MockBudgetPlanRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -110,11 +113,11 @@ describe('Budgets', () => {
     fixture.detectChanges();
 
     const component = fixture.componentInstance as unknown as {
-      setAllocation(categoryId: string, value: string): void;
+      setAllocation(groupId: string, value: string): void;
       savePlanner(): void;
     };
-    component.setAllocation('cat-health', '81');
-    component.setAllocation('cat-education', '20');
+    component.setAllocation('group-health', '81');
+    component.setAllocation('group-education', '20');
     fixture.detectChanges();
 
     const total = fixture.nativeElement.querySelector('h2') as HTMLElement;

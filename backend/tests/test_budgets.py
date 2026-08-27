@@ -11,9 +11,9 @@ async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> 
     await login_as(client, email=user.email, password=password)
 
 
-async def _create_category(client: AsyncClient, name: str = "Groceries") -> str:
+async def _create_category_group(client: AsyncClient, name: str = "Expenses") -> str:
     response = await client.post(
-        "/api/v1/categories",
+        "/api/v1/category-groups",
         json={"name": name, "kind": "expense", "color": "#112233", "icon": "tag"},
     )
     assert response.status_code == 201
@@ -22,12 +22,12 @@ async def _create_category(client: AsyncClient, name: str = "Groceries") -> str:
 
 async def test_upsert_budget_creates(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "alice@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
 
     response = await client.put(
         "/api/v1/budgets",
         json={
-            "category_id": category_id,
+            "group_id": group_id,
             "month": "2026-01",
             "amount": "500.00",
             "currency": "BRL",
@@ -43,9 +43,9 @@ async def test_upsert_budget_updates_existing_instead_of_duplicating(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "bob@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
     payload = {
-        "category_id": category_id,
+        "group_id": group_id,
         "month": "2026-02",
         "amount": "100.00",
         "currency": "BRL",
@@ -62,12 +62,12 @@ async def test_upsert_budget_updates_existing_instead_of_duplicating(
     matching = [
         row
         for row in list_response.json()
-        if row["category_id"] == category_id and row["month"] == "2026-02"
+        if row["group_id"] == group_id and row["month"] == "2026-02"
     ]
     assert len(matching) == 1
 
 
-async def test_upsert_budget_unknown_category_is_not_found(
+async def test_upsert_budget_unknown_group_is_not_found(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "carol@example.com")
@@ -75,26 +75,26 @@ async def test_upsert_budget_unknown_category_is_not_found(
     response = await client.put(
         "/api/v1/budgets",
         json={
-            "category_id": "00000000-0000-0000-0000-000000000000",
+            "group_id": "00000000-0000-0000-0000-000000000000",
             "month": "2026-01",
             "amount": "100.00",
             "currency": "BRL",
         },
     )
     assert response.status_code == 404
-    assert response.json()["error"]["code"] == "category.not_found"
+    assert response.json()["error"]["code"] == "category_group.not_found"
 
 
 async def test_upsert_budget_unknown_currency_is_not_found(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "dave@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
 
     response = await client.put(
         "/api/v1/budgets",
         json={
-            "category_id": category_id,
+            "group_id": group_id,
             "month": "2026-01",
             "amount": "100.00",
             "currency": "XYZ",
@@ -108,12 +108,12 @@ async def test_upsert_budget_rejects_malformed_month(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "erin@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
 
     response = await client.put(
         "/api/v1/budgets",
         json={
-            "category_id": category_id,
+            "group_id": group_id,
             "month": "2026-13",
             "amount": "100.00",
             "currency": "BRL",
@@ -125,11 +125,11 @@ async def test_upsert_budget_rejects_malformed_month(
 
 async def test_delete_budget(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "frank@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
     create_response = await client.put(
         "/api/v1/budgets",
         json={
-            "category_id": category_id,
+            "group_id": group_id,
             "month": "2026-01",
             "amount": "100.00",
             "currency": "BRL",
@@ -149,11 +149,11 @@ async def test_budget_ownership_isolation(
 ) -> None:
     await _authed(client, db_session, "grace@example.com")
     await _authed(other_client, db_session, "heidi@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
     create_response = await client.put(
         "/api/v1/budgets",
         json={
-            "category_id": category_id,
+            "group_id": group_id,
             "month": "2026-01",
             "amount": "100.00",
             "currency": "BRL",

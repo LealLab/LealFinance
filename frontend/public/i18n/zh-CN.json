@@ -558,22 +558,19 @@
   "categories": {
     "title": "分类",
     "description": "按分类整理收入和支出。",
-    "showArchived": "显示已归档分类",
-    "archivedBadge": "已归档",
     "actions": {
-      "new": "新建分类",
+      "addGroup": "添加分组",
+      "addCategory": "添加分类",
+      "addCategoryToGroup": "向此分组添加分类",
       "edit": "编辑",
-      "archive": "归档",
-      "unarchive": "取消归档",
       "delete": "删除",
-      "addChild": "新建子分类",
       "collapse": "收起",
       "expand": "展开",
       "dragHandle": "调整顺序"
     },
     "empty": {
       "title": "暂无分类",
-      "description": "创建分类来整理交易。"
+      "description": "创建分组和分类来整理交易。"
     },
     "sections": {
       "income": "收入分类",
@@ -583,16 +580,22 @@
       "title": "确认删除分类？",
       "message": "此操作无法撤销。要删除分类“{{name}}”吗？",
       "blockedTitle": "无法删除",
-      "blockedMessage": "此分类仍在使用：{{transactions}} 笔交易、{{budgets}} 个预算和 {{children}} 个子分类正在使用它。请改为归档，而不是删除。"
+      "blockedMessage": "此分类仍被 {{transactions}} 笔交易使用。请先删除这些交易，再删除分类。"
+    },
+    "deleteGroup": {
+      "title": "确认删除分组？",
+      "message": "此操作无法撤销。要删除分组“{{name}}”吗？"
     },
     "form": {
       "newTitle": "新建分类",
       "editTitle": "编辑分类",
-      "saveError": "无法保存分类。请重试。",
+      "newGroupTitle": "新建分组",
+      "editGroupTitle": "编辑分组",
+      "saveError": "无法保存分组或分类。请重试。",
       "fields": {
         "name": "名称",
-        "parent": "上级分类",
-        "noParent": "无（顶级分类）",
+        "group": "分组",
+        "selectGroup": "选择分组",
         "color": "颜色",
         "icon": "图标"
       },
@@ -656,8 +659,8 @@
       "saveError": "无法保存预算。请重试。",
       "fields": {
         "month": "月份",
-        "category": "分类",
-        "selectCategory": "选择分类",
+        "group": "分组",
+        "selectGroup": "选择分组",
         "amount": "金额",
         "currency": "货币"
       },

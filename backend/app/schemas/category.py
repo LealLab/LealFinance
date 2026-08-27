@@ -16,38 +16,34 @@ class CategoryRead(BaseModel):
     id: UUID
     name: str
     kind: CategoryKind
-    parent_id: UUID | None
+    group_id: UUID
     color: str
     icon: IconName
-    archived: bool
     position: int
 
 
 class CategoryCreate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
     kind: CategoryKind
-    parent_id: UUID | None = None
+    group_id: UUID
     color: str = Field(min_length=1, max_length=9)
     icon: IconName
-    archived: bool = False
-    # position is server-assigned (see app/services/categories.py) - not
-    # part of the create payload, matching the frontend's
-    # Omit<Category, 'id' | 'position'>.
+    # position is server-assigned (see app/services/categories.py) - not part
+    # of the create payload, matching the frontend's Omit<Category, 'id' | 'position'>.
 
 
 class CategoryUpdate(PatchModel):
-    non_nullable_fields = frozenset({"name", "kind", "color", "icon", "archived", "position"})
+    non_nullable_fields = frozenset({"name", "kind", "group_id", "color", "icon", "position"})
 
     name: str | None = Field(default=None, min_length=1, max_length=100)
     kind: CategoryKind | None = None
-    parent_id: UUID | None = None
+    group_id: UUID | None = None
     color: str | None = Field(default=None, min_length=1, max_length=9)
     icon: IconName | None = None
-    archived: bool | None = None
     position: int | None = None
 
 
 class CategoryReorderRequest(BaseModel):
     kind: CategoryKind
-    parent_id: UUID | None = None
+    group_id: UUID
     ordered_ids: list[UUID]

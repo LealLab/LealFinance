@@ -3,6 +3,7 @@ import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
 import {
@@ -16,6 +17,7 @@ import { Transaction } from '../../domain/models/transaction';
 
 export interface Fixtures {
   accounts: Account[];
+  categoryGroups: CategoryGroup[];
   categories: Category[];
   transactions: Transaction[];
   budgets: Budget[];
@@ -55,20 +57,30 @@ const CATEGORY_IDS = {
   salary: 'cat-salary',
   freelance: 'cat-freelance',
   otherIncome: 'cat-other-income',
-  housing: 'cat-housing',
   rent: 'cat-rent',
   condo: 'cat-condo',
   utilities: 'cat-utilities',
-  food: 'cat-food',
   groceries: 'cat-groceries',
   restaurants: 'cat-restaurants',
-  transport: 'cat-transport',
   fuel: 'cat-fuel',
   rideshare: 'cat-rideshare',
   health: 'cat-health',
   leisure: 'cat-leisure',
   education: 'cat-education',
   otherExpense: 'cat-other-expense'
+} as const;
+
+const CATEGORY_GROUP_IDS = {
+  salary: 'group-salary',
+  freelance: 'group-freelance',
+  otherIncome: 'group-other-income',
+  housing: 'group-housing',
+  food: 'group-food',
+  transport: 'group-transport',
+  health: 'group-health',
+  leisure: 'group-leisure',
+  education: 'group-education',
+  otherExpense: 'group-other-expense'
 } as const;
 
 const INVESTMENT_IDS = {
@@ -178,134 +190,117 @@ function buildInstitutions(): Institution[] {
   ];
 }
 
+function buildCategoryGroups(): CategoryGroup[] {
+  const g = CATEGORY_GROUP_IDS;
+  return [
+    { id: g.salary, name: 'Salário', kind: 'income', color: '#3E7D4C', icon: 'wallet', position: 0 },
+    { id: g.freelance, name: 'Freelance', kind: 'income', color: '#3E7D4C', icon: 'chart', position: 1 },
+    { id: g.otherIncome, name: 'Outras Receitas', kind: 'income', color: '#3E7D4C', icon: 'archive', position: 2 },
+    { id: g.housing, name: 'Moradia', kind: 'expense', color: '#6D5DD3', icon: 'home', position: 0 },
+    { id: g.food, name: 'Alimentação', kind: 'expense', color: '#DD8A3C', icon: 'archive', position: 1 },
+    { id: g.transport, name: 'Transporte', kind: 'expense', color: '#3C9DDD', icon: 'swap', position: 2 },
+    { id: g.health, name: 'Saúde', kind: 'expense', color: '#DD5C6B', icon: 'alertTriangle', position: 3 },
+    { id: g.leisure, name: 'Lazer', kind: 'expense', color: '#4DAE8B', icon: 'sun', position: 4 },
+    { id: g.education, name: 'Educação', kind: 'expense', color: '#A16FE0', icon: 'pencil', position: 5 },
+    { id: g.otherExpense, name: 'Outras Despesas', kind: 'expense', color: '#8A8A82', icon: 'tag', position: 6 }
+  ];
+}
+
 function buildCategories(): Category[] {
   const c = CATEGORY_IDS;
+  const g = CATEGORY_GROUP_IDS;
   return [
     {
       id: c.salary,
       name: 'Salário',
       kind: 'income',
+      groupId: g.salary,
       color: '#3E7D4C',
       icon: 'wallet',
-      archived: false,
       position: 0
     },
     {
       id: c.freelance,
       name: 'Freelance',
       kind: 'income',
+      groupId: g.freelance,
       color: '#3E7D4C',
       icon: 'chart',
-      archived: false,
-      position: 1
+      position: 0
     },
     {
       id: c.otherIncome,
       name: 'Outras Receitas',
       kind: 'income',
+      groupId: g.otherIncome,
       color: '#3E7D4C',
       icon: 'archive',
-      archived: false,
-      position: 2
-    },
-
-    {
-      id: c.housing,
-      name: 'Moradia',
-      kind: 'expense',
-      color: '#6D5DD3',
-      icon: 'home',
-      archived: false,
       position: 0
     },
+
     {
       id: c.rent,
       name: 'Aluguel',
       kind: 'expense',
-      parentId: c.housing,
+      groupId: g.housing,
       color: '#6D5DD3',
       icon: 'home',
-      archived: false,
       position: 0
     },
     {
       id: c.condo,
       name: 'Condomínio',
       kind: 'expense',
-      parentId: c.housing,
+      groupId: g.housing,
       color: '#6D5DD3',
       icon: 'home',
-      archived: false,
       position: 1
     },
     {
       id: c.utilities,
       name: 'Energia',
       kind: 'expense',
-      parentId: c.housing,
+      groupId: g.housing,
       color: '#6D5DD3',
       icon: 'sun',
-      archived: false,
       position: 2
     },
 
     {
-      id: c.food,
-      name: 'Alimentação',
-      kind: 'expense',
-      color: '#DD8A3C',
-      icon: 'archive',
-      archived: false,
-      position: 1
-    },
-    {
       id: c.groceries,
       name: 'Supermercado',
       kind: 'expense',
-      parentId: c.food,
+      groupId: g.food,
       color: '#DD8A3C',
       icon: 'archive',
-      archived: false,
       position: 0
     },
     {
       id: c.restaurants,
       name: 'Restaurantes',
       kind: 'expense',
-      parentId: c.food,
+      groupId: g.food,
       color: '#DD8A3C',
       icon: 'tag',
-      archived: false,
       position: 1
     },
 
     {
-      id: c.transport,
-      name: 'Transporte',
-      kind: 'expense',
-      color: '#3C9DDD',
-      icon: 'swap',
-      archived: false,
-      position: 2
-    },
-    {
       id: c.fuel,
       name: 'Combustível',
       kind: 'expense',
-      parentId: c.transport,
+      groupId: g.transport,
       color: '#3C9DDD',
       icon: 'swap',
-      archived: false,
       position: 0
     },
     {
       id: c.rideshare,
       name: 'Uber/Táxi',
       kind: 'expense',
-      parentId: c.transport,
+      groupId: g.transport,
       color: '#3C9DDD',
       icon: 'swap',
-      archived: false,
       position: 1
     },
 
@@ -313,37 +308,37 @@ function buildCategories(): Category[] {
       id: c.health,
       name: 'Saúde',
       kind: 'expense',
+      groupId: g.health,
       color: '#DD5C6B',
       icon: 'alertTriangle',
-      archived: false,
-      position: 3
+      position: 0
     },
     {
       id: c.leisure,
       name: 'Lazer',
       kind: 'expense',
+      groupId: g.leisure,
       color: '#4DAE8B',
       icon: 'sun',
-      archived: false,
-      position: 4
+      position: 0
     },
     {
       id: c.education,
       name: 'Educação',
       kind: 'expense',
+      groupId: g.education,
       color: '#A16FE0',
       icon: 'pencil',
-      archived: false,
-      position: 5
+      position: 0
     },
     {
       id: c.otherExpense,
       name: 'Outras Despesas',
       kind: 'expense',
+      groupId: g.otherExpense,
       color: '#8A8A82',
       icon: 'tag',
-      archived: false,
-      position: 6
+      position: 0
     }
   ];
 }
@@ -638,18 +633,18 @@ function buildTransactionsAndRules(): { transactions: Transaction[]; recurringRu
  * `guaranteedFloor` above).
  */
 function buildBudgets(currentMonthKey: string): Budget[] {
-  const c = CATEGORY_IDS;
+  const g = CATEGORY_GROUP_IDS;
   return [
-    { id: 'budget-housing', categoryId: c.housing, month: currentMonthKey, amount: '3200.00', currency: 'BRL' },
-    { id: 'budget-food', categoryId: c.food, month: currentMonthKey, amount: '500.00', currency: 'BRL' },
+    { id: 'budget-housing', groupId: g.housing, month: currentMonthKey, amount: '3200.00', currency: 'BRL' },
+    { id: 'budget-food', groupId: g.food, month: currentMonthKey, amount: '500.00', currency: 'BRL' },
     {
       id: 'budget-transport',
-      categoryId: c.transport,
+      groupId: g.transport,
       month: currentMonthKey,
       amount: '450.00',
       currency: 'BRL'
     },
-    { id: 'budget-leisure', categoryId: c.leisure, month: currentMonthKey, amount: '200.00', currency: 'BRL' }
+    { id: 'budget-leisure', groupId: g.leisure, month: currentMonthKey, amount: '200.00', currency: 'BRL' }
   ];
 }
 
@@ -808,7 +803,7 @@ function buildInvestmentTransactions(): InvestmentTransaction[] {
 
 function buildAllocations(): BudgetAllocation[] {
   return [
-    { id: 'allocation-other', categoryId: CATEGORY_IDS.otherExpense, percentage: '20' }
+    { id: 'allocation-other', groupId: CATEGORY_GROUP_IDS.otherExpense, percentage: '20' }
   ];
 }
 
@@ -825,6 +820,7 @@ export function createFixtures(): Fixtures {
 
   return {
     accounts: buildAccounts(),
+    categoryGroups: buildCategoryGroups(),
     categories: buildCategories(),
     transactions,
     recurringRules,

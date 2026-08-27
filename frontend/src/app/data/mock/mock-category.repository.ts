@@ -23,15 +23,11 @@ export class MockCategoryRepository extends CategoryRepository {
     return mockResult(() => this.store.updateCategory(id, changes), this.latencyMs);
   }
 
-  setArchived(id: string, archived: boolean): Observable<Category> {
-    return mockResult(() => this.store.updateCategory(id, { archived }), this.latencyMs);
-  }
-
   delete(id: string): Observable<void> {
     return mockResult(() => this.store.deleteCategory(id), this.latencyMs);
   }
 
-  reorder(kind: CategoryKind, parentId: string | undefined, orderedIds: string[]): Observable<void> {
-    return mockResult(() => this.store.reorderCategories(kind, parentId, orderedIds), this.latencyMs);
+  reorder(kind: CategoryKind, groupId: string, orderedIds: string[]): Observable<void> {
+    return mockResult(() => this.store.reorderCategories(kind, groupId, orderedIds), this.latencyMs);
   }
 }

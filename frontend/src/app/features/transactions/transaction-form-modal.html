@@ -125,10 +125,12 @@
             <label class="form-label" for="tx-category">{{ t('transactions.form.fields.category') }}</label>
             <select id="tx-category" class="form-input" formControlName="categoryId">
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
-              @for (category of categoryOptions(); track category.id) {
-                <option [value]="category.id">
-                  {{ category.parentId ? '- ' : '' }}{{ category.name }}
-                </option>
+              @for (group of categoryGroupsOptions(); track group.group.id) {
+                <optgroup [label]="group.group.name">
+                  @for (category of group.categories; track category.id) {
+                    <option [value]="category.id">{{ category.name }}</option>
+                  }
+                </optgroup>
               }
             </select>
           </div>

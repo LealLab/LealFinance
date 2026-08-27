@@ -67,16 +67,16 @@
         </div>
 
         <div class="flex max-h-80 flex-col gap-4 overflow-y-auto pe-2">
-          @for (row of allocationRows(); track row.category.id) {
+          @for (row of allocationRows(); track row.group.id) {
             <div>
               <div class="mb-1 flex items-center justify-between gap-3">
                 <div class="flex min-w-0 items-center gap-2">
                   <span
                     class="size-2 shrink-0 rounded-full"
-                    [style.background-color]="row.category.color"
+                    [style.background-color]="row.group.color"
                   ></span>
                   <span class="truncate text-sm font-semibold text-content-primary">{{
-                    row.category.name
+                    row.group.name
                   }}</span>
                   @if (row.fixed) {
                     <app-badge tone="neutral">{{ t('budgets.planner.fixed') }}</app-badge>
@@ -95,7 +95,7 @@
                   class="budget-slider flex-1"
                   [value]="row.percentage"
                   [disabled]="row.fixed"
-                  (input)="setAllocation(row.category.id, $any($event.target).value)"
+                  (input)="setAllocation(row.group.id, $any($event.target).value)"
                 />
                 <input
                   type="number"
@@ -105,7 +105,7 @@
                   class="form-input w-20 shrink-0 text-end font-mono"
                   [value]="row.percentage"
                   [disabled]="row.fixed"
-                  (input)="setAllocation(row.category.id, $any($event.target).value)"
+                  (input)="setAllocation(row.group.id, $any($event.target).value)"
                 />
               </div>
             </div>
@@ -172,16 +172,16 @@
               <li class="flex flex-col gap-2 border-b border-border px-4 py-4 last:border-b-0">
                 <div class="flex items-center justify-between gap-4">
                   <div class="flex items-center gap-2">
-                    @if (row.category; as category) {
+                    @if (row.group; as group) {
                       <span
                         class="flex size-7 items-center justify-center rounded-full"
-                        [style.background-color]="category.color + '1A'"
-                        [style.color]="category.color"
+                        [style.background-color]="group.color + '1A'"
+                        [style.color]="group.color"
                       >
-                        <app-icon [name]="category.icon" [size]="14" />
+                        <app-icon [name]="group.icon" [size]="14" />
                       </span>
                       <span class="text-sm font-medium text-content-primary">{{
-                        category.name
+                        group.name
                       }}</span>
                     }
                     @if (row.state === 'over') {
@@ -236,21 +236,21 @@
           </h2>
           <app-card [padded]="false">
             <ul>
-              @for (row of unbudgetedRows(); track row.categoryId) {
+              @for (row of unbudgetedRows(); track row.groupId) {
                 <li
                   class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0"
                 >
                   <div class="flex items-center gap-2">
-                    @if (row.category; as category) {
+                    @if (row.group; as group) {
                       <span
                         class="flex size-7 items-center justify-center rounded-full"
-                        [style.background-color]="category.color + '1A'"
-                        [style.color]="category.color"
+                        [style.background-color]="group.color + '1A'"
+                        [style.color]="group.color"
                       >
-                        <app-icon [name]="category.icon" [size]="14" />
+                        <app-icon [name]="group.icon" [size]="14" />
                       </span>
                       <span class="text-sm font-medium text-content-primary">{{
-                        category.name
+                        group.name
                       }}</span>
                     }
                   </div>
@@ -263,7 +263,7 @@
                       variant="secondary"
                       size="sm"
                       type="button"
-                      (click)="openCreateFor(row.categoryId)"
+                      (click)="openCreateFor(row.groupId)"
                     >
                       {{ t('budgets.unbudgeted.setBudget') }}
                     </button>
@@ -280,10 +280,10 @@
   <app-budget-form-modal
     [(open)]="formOpen"
     [budget]="editingBudget()"
-    [prefillCategoryId]="prefillCategoryId()"
+    [prefillGroupId]="prefillGroupId()"
     [month]="selectedMonth()"
-    [availableCategories]="availableCategoriesForNewBudget()"
-    [allCategories]="categoriesResource.value() ?? []"
+    [availableGroups]="availableGroupsForNewBudget()"
+    [allGroups]="categoryGroupsResource.value() ?? []"
     (saved)="onSaved()"
   />
 </div>

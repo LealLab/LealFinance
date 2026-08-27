@@ -558,22 +558,19 @@
   "categories": {
     "title": "الفئات",
     "description": "نظّم الدخل والمصروفات حسب الفئة.",
-    "showArchived": "إظهار الفئات المؤرشفة",
-    "archivedBadge": "مؤرشفة",
     "actions": {
-      "new": "فئة جديدة",
+      "addGroup": "إضافة مجموعة",
+      "addCategory": "إضافة فئة",
+      "addCategoryToGroup": "إضافة فئة إلى هذه المجموعة",
       "edit": "تعديل",
-      "archive": "أرشفة",
-      "unarchive": "إلغاء الأرشفة",
       "delete": "حذف",
-      "addChild": "فئة فرعية جديدة",
       "collapse": "طيّ",
       "expand": "توسيع",
       "dragHandle": "إعادة الترتيب"
     },
     "empty": {
       "title": "لا توجد فئات بعد",
-      "description": "أنشئ فئات لتنظيم معاملاتك."
+      "description": "أنشئ مجموعات وفئات لتنظيم معاملاتك."
     },
     "sections": {
       "income": "فئات الدخل",
@@ -583,16 +580,22 @@
       "title": "حذف الفئة؟",
       "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف الفئة «{{name}}»؟",
       "blockedTitle": "يتعذّر الحذف",
-      "blockedMessage": "لا تزال هذه الفئة قيد الاستخدام (المعاملات: {{transactions}}، الميزانيات: {{budgets}}، الفئات الفرعية: {{children}}). أرشفها بدلاً من حذفها."
+      "blockedMessage": "لا تزال هذه الفئة مستخدمة في {{transactions}} معاملة. احذف هذه المعاملات قبل حذف الفئة."
+    },
+    "deleteGroup": {
+      "title": "حذف المجموعة؟",
+      "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف المجموعة «{{name}}»؟"
     },
     "form": {
       "newTitle": "فئة جديدة",
       "editTitle": "تعديل الفئة",
-      "saveError": "تعذّر حفظ الفئة. حاول مرة أخرى.",
+      "newGroupTitle": "مجموعة جديدة",
+      "editGroupTitle": "تعديل المجموعة",
+      "saveError": "تعذّر حفظ المجموعة أو الفئة. حاول مرة أخرى.",
       "fields": {
         "name": "الاسم",
-        "parent": "الفئة الأصلية",
-        "noParent": "لا يوجد (فئة رئيسية)",
+        "group": "المجموعة",
+        "selectGroup": "اختر مجموعة",
         "color": "اللون",
         "icon": "الأيقونة"
       },
@@ -656,8 +659,8 @@
       "saveError": "تعذّر حفظ الميزانية. حاول مرة أخرى.",
       "fields": {
         "month": "الشهر",
-        "category": "الفئة",
-        "selectCategory": "اختر فئة",
+        "group": "المجموعة",
+        "selectGroup": "اختر مجموعة",
         "amount": "المبلغ",
         "currency": "العملة"
       },

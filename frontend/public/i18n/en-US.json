@@ -558,22 +558,19 @@
   "categories": {
     "title": "Categories",
     "description": "Organize income and expenses by category.",
-    "showArchived": "Show archived categories",
-    "archivedBadge": "Archived",
     "actions": {
-      "new": "New category",
+      "addGroup": "Add group",
+      "addCategory": "Add category",
+      "addCategoryToGroup": "Add category to this group",
       "edit": "Edit",
-      "archive": "Archive",
-      "unarchive": "Unarchive",
       "delete": "Delete",
-      "addChild": "New subcategory",
       "collapse": "Collapse",
       "expand": "Expand",
       "dragHandle": "Reorder"
     },
     "empty": {
       "title": "No categories yet",
-      "description": "Create categories to organize your transactions."
+      "description": "Create groups and categories to organize your transactions."
     },
     "sections": {
       "income": "Income categories",
@@ -583,16 +580,22 @@
       "title": "Delete category?",
       "message": "This action cannot be undone. Do you want to delete the category \"{{name}}\"?",
       "blockedTitle": "Cannot delete",
-      "blockedMessage": "This category is still in use: {{transactions}} transactions, {{budgets}} budgets, and {{children}} subcategories use it. Archive the category instead of deleting it."
+      "blockedMessage": "This category is still in use by {{transactions}} transactions. Delete those transactions before deleting the category."
+    },
+    "deleteGroup": {
+      "title": "Delete group?",
+      "message": "This action cannot be undone. Do you want to delete the group \"{{name}}\"?"
     },
     "form": {
       "newTitle": "New category",
       "editTitle": "Edit category",
-      "saveError": "Could not save the category. Try again.",
+      "newGroupTitle": "New group",
+      "editGroupTitle": "Edit group",
+      "saveError": "Could not save the group or category. Try again.",
       "fields": {
         "name": "Name",
-        "parent": "Parent category",
-        "noParent": "None (top-level category)",
+        "group": "Group",
+        "selectGroup": "Select a group",
         "color": "Color",
         "icon": "Icon"
       },
@@ -656,8 +659,8 @@
       "saveError": "Could not save the budget. Try again.",
       "fields": {
         "month": "Month",
-        "category": "Category",
-        "selectCategory": "Select a category",
+        "group": "Group",
+        "selectGroup": "Select a group",
         "amount": "Amount",
         "currency": "Currency"
       },

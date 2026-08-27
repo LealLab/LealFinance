@@ -132,7 +132,7 @@
           <p class="p-4 text-sm text-content-muted">{{ t('dashboard.budgets.empty') }}</p>
         } @else {
           <ul class="flex flex-col gap-3 p-4">
-            @for (row of budgetPreview(); track row.categoryId) {
+            @for (row of budgetPreview(); track row.groupId) {
               <li class="flex flex-col gap-1">
                 <div class="flex items-center justify-between text-sm">
                   <span class="text-content-primary">{{ row.categoryName }}</span>

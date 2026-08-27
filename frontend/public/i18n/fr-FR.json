@@ -558,22 +558,19 @@
   "categories": {
     "title": "Catégories",
     "description": "Organisez vos revenus et vos dépenses par catégorie.",
-    "showArchived": "Afficher les catégories archivées",
-    "archivedBadge": "Archivée",
     "actions": {
-      "new": "Nouvelle catégorie",
+      "addGroup": "Ajouter un groupe",
+      "addCategory": "Ajouter une catégorie",
+      "addCategoryToGroup": "Ajouter une catégorie à ce groupe",
       "edit": "Modifier",
-      "archive": "Archiver",
-      "unarchive": "Restaurer",
       "delete": "Supprimer",
-      "addChild": "Nouvelle sous-catégorie",
       "collapse": "Réduire",
       "expand": "Développer",
       "dragHandle": "Réordonner"
     },
     "empty": {
       "title": "Aucune catégorie pour le moment",
-      "description": "Créez des catégories pour organiser vos opérations."
+      "description": "Créez des groupes et des catégories pour organiser vos opérations."
     },
     "sections": {
       "income": "Catégories de revenus",
@@ -583,16 +580,22 @@
       "title": "Supprimer la catégorie ?",
       "message": "Cette action est irréversible. Voulez-vous supprimer la catégorie « {{name}} » ?",
       "blockedTitle": "Suppression impossible",
-      "blockedMessage": "Cette catégorie est toujours utilisée par {{transactions}} opération(s), {{budgets}} budget(s) et {{children}} sous-catégorie(s). Archivez-la plutôt que de la supprimer."
+      "blockedMessage": "Cette catégorie est toujours utilisée par {{transactions}} opération(s). Supprimez ces opérations avant de supprimer la catégorie."
+    },
+    "deleteGroup": {
+      "title": "Supprimer le groupe ?",
+      "message": "Cette action est irréversible. Voulez-vous supprimer le groupe « {{name}} » ?"
     },
     "form": {
       "newTitle": "Nouvelle catégorie",
       "editTitle": "Modifier la catégorie",
-      "saveError": "Impossible d’enregistrer la catégorie. Réessayez.",
+      "newGroupTitle": "Nouveau groupe",
+      "editGroupTitle": "Modifier le groupe",
+      "saveError": "Impossible d’enregistrer le groupe ou la catégorie. Réessayez.",
       "fields": {
         "name": "Nom",
-        "parent": "Catégorie parente",
-        "noParent": "Aucune (catégorie de premier niveau)",
+        "group": "Groupe",
+        "selectGroup": "Sélectionner un groupe",
         "color": "Couleur",
         "icon": "Icône"
       },
@@ -656,8 +659,8 @@
       "saveError": "Impossible d’enregistrer le budget. Réessayez.",
       "fields": {
         "month": "Mois",
-        "category": "Catégorie",
-        "selectCategory": "Sélectionner une catégorie",
+        "group": "Groupe",
+        "selectGroup": "Sélectionner un groupe",
         "amount": "Montant",
         "currency": "Devise"
       },

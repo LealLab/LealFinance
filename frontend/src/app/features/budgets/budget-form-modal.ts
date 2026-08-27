@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { BudgetRepository } from '../../data/budget.repository';
 import { Budget } from '../../domain/models/budget';
-import { Category } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
@@ -11,7 +11,7 @@ import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
 
 /**
- * Create/edit for a Budget (a category's spending limit for one month).
+ * Create/edit for a Budget (a group's spending limit for one month).
  * The month is always the one currently selected on the budgets screen -
  * never an editable field here - so "new budget" always means "for the
  * month I'm looking at," and editing only ever touches the amount.
@@ -30,12 +30,12 @@ export class BudgetFormModal {
 
   readonly open = model.required<boolean>();
   readonly budget = input<Budget | undefined>(undefined);
-  readonly prefillCategoryId = input<string | undefined>(undefined);
+  readonly prefillGroupId = input<string | undefined>(undefined);
   readonly month = input.required<string>();
-  /** Top-level expense categories not yet budgeted for `month` - the create-mode picker. */
-  readonly availableCategories = input.required<Category[]>();
-  /** Every category, for resolving the (read-only, non-editable) category name in edit mode. */
-  readonly allCategories = input.required<Category[]>();
+  /** Expense groups not yet budgeted for `month` - the create-mode picker. */
+  readonly availableGroups = input.required<CategoryGroup[]>();
+  /** Every group, for resolving the (read-only, non-editable) group name in edit mode. */
+  readonly allGroups = input.required<CategoryGroup[]>();
   readonly saved = output<Budget>();
 
   protected readonly currencyOptions = computed(() =>
@@ -48,16 +48,16 @@ export class BudgetFormModal {
   protected readonly saveErrorKey = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
-    categoryId: ['', Validators.required],
+    groupId: ['', Validators.required],
     amount: ['', [Validators.required, decimalAmountValidator()]],
     currency: [this.baseCurrency(), Validators.required],
   });
 
   protected readonly isEditing = computed(() => this.budget() !== undefined);
-  protected readonly editingCategoryName = computed(() => {
+  protected readonly editingGroupName = computed(() => {
     const budget = this.budget();
     if (!budget) return '';
-    return this.allCategories().find((c) => c.id === budget.categoryId)?.name ?? '';
+    return this.allGroups().find((group) => group.id === budget.groupId)?.name ?? '';
   });
 
   /**
@@ -72,7 +72,7 @@ export class BudgetFormModal {
       if (!this.open()) return;
       const budget = this.budget();
       this.form.reset({
-        categoryId: budget?.categoryId ?? this.prefillCategoryId() ?? '',
+        groupId: budget?.groupId ?? this.prefillGroupId() ?? '',
         amount: budget?.amount ?? '',
         currency: budget?.currency ?? this.baseCurrency(),
       });
@@ -88,7 +88,7 @@ export class BudgetFormModal {
 
     const raw = this.form.getRawValue();
     const payload: Omit<Budget, 'id'> = {
-      categoryId: raw.categoryId,
+      groupId: raw.groupId,
       month: this.month(),
       amount: raw.amount,
       currency: raw.currency,

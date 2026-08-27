@@ -9,6 +9,7 @@ from app.models.account import Account
 from app.models.agent_credential import AgentCredential
 from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
 from app.models.category import Category
+from app.models.category_group import CategoryGroup
 from app.models.currency import Currency, ExchangeRate
 from app.models.goal import Goal
 from app.models.institution import Institution
@@ -31,6 +32,7 @@ __all__ = [
     "Budget",
     "BudgetAllocation",
     "Category",
+    "CategoryGroup",
     "Currency",
     "ExchangeRate",
     "ExpectedIncome",

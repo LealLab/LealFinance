@@ -13,6 +13,7 @@ import { AccountRepository } from './data/account.repository';
 import { AgentProviderRepository } from './data/agent-provider.repository';
 import { BudgetRepository } from './data/budget.repository';
 import { BudgetPlanRepository } from './data/budget-plan.repository';
+import { CategoryGroupRepository } from './data/category-group.repository';
 import { CategoryRepository } from './data/category.repository';
 import { ExchangeRateRepository } from './data/exchange-rate.repository';
 import { InstitutionRepository } from './data/institution.repository';
@@ -26,6 +27,7 @@ import { HttpAccountRepository } from './data/http/http-account.repository';
 import { HttpAgentProviderRepository } from './data/http/http-agent-provider.repository';
 import { HttpBudgetPlanRepository } from './data/http/http-budget-plan.repository';
 import { HttpBudgetRepository } from './data/http/http-budget.repository';
+import { HttpCategoryGroupRepository } from './data/http/http-category-group.repository';
 import { HttpCategoryRepository } from './data/http/http-category.repository';
 import { HttpExchangeRateRepository } from './data/http/http-exchange-rate.repository';
 import { HttpGoalRepository } from './data/http/http-goal.repository';
@@ -53,6 +55,7 @@ export const appConfig: ApplicationConfig = {
     { provide: AccountRepository, useClass: HttpAccountRepository },
     { provide: AgentProviderRepository, useClass: HttpAgentProviderRepository },
     { provide: TransactionRepository, useClass: HttpTransactionRepository },
+    { provide: CategoryGroupRepository, useClass: HttpCategoryGroupRepository },
     { provide: CategoryRepository, useClass: HttpCategoryRepository },
     { provide: BudgetRepository, useClass: HttpBudgetRepository },
     { provide: BudgetPlanRepository, useClass: HttpBudgetPlanRepository },

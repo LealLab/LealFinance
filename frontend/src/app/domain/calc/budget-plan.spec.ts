@@ -14,18 +14,18 @@ const categories: Category[] = [
     id: 'food',
     name: 'Alimentação',
     kind: 'expense',
+    groupId: 'food',
     color: '#000',
     icon: 'tag',
-    archived: false,
     position: 0,
   },
   {
     id: 'health',
     name: 'Saúde',
     kind: 'expense',
+    groupId: 'health',
     color: '#000',
     icon: 'tag',
-    archived: false,
     position: 1,
   },
 ];
@@ -37,8 +37,8 @@ describe('budget plan calculations', () => {
 
   it('sums reusable allocations', () => {
     const allocations: BudgetAllocation[] = [
-      { id: 'food', categoryId: 'food', percentage: '30' },
-      { id: 'health', categoryId: 'health', percentage: '12.5' },
+      { id: 'food', groupId: 'food', percentage: '30' },
+      { id: 'health', groupId: 'health', percentage: '12.5' },
     ];
     expect(allocationTotal(allocations)).toBe(42.5);
   });
@@ -46,7 +46,7 @@ describe('budget plan calculations', () => {
   it('calculates a fixed budget percentage from expected income', () => {
     const fixed: Budget = {
       id: 'fixed',
-      categoryId: 'food',
+      groupId: 'food',
       month: '2026-08',
       amount: '500',
       currency: 'BRL',
@@ -56,14 +56,14 @@ describe('budget plan calculations', () => {
 
   it('does not create a percentage budget where a fixed budget exists', () => {
     const fixed: Budget[] = [
-      { id: 'fixed', categoryId: 'food', month: '2026-08', amount: '500', currency: 'BRL' },
+      { id: 'fixed', groupId: 'food', month: '2026-08', amount: '500', currency: 'BRL' },
     ];
     const allocations: BudgetAllocation[] = [
-      { id: 'food', categoryId: 'food', percentage: '30' },
-      { id: 'health', categoryId: 'health', percentage: '10' },
+      { id: 'food', groupId: 'food', percentage: '30' },
+      { id: 'health', groupId: 'health', percentage: '10' },
     ];
     const result = allocationBudgets(categories, allocations, fixed, income, '2026-08');
-    expect(result.map((entry) => entry.categoryId)).toEqual(['health']);
+    expect(result.map((entry) => entry.groupId)).toEqual(['health']);
     expect(result[0].budget.amount).toBe('720.0000');
   });
 });

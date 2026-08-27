@@ -8,6 +8,8 @@ import { Account, AccountBalance } from '../../domain/models/account';
 import { AccountRepository } from '../../data/account.repository';
 import { Budget } from '../../domain/models/budget';
 import { BudgetRepository } from '../../data/budget.repository';
+import { CategoryGroup } from '../../domain/models/category-group';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -15,6 +17,7 @@ import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
@@ -43,6 +46,7 @@ describe('Dashboard', () => {
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
@@ -163,6 +167,7 @@ describe('Dashboard - exchange rates still loading on first render', () => {
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: ExchangeRateRepository, useValue: delayedRates },
         { provide: ErrorHandler, useValue: errorHandler }
@@ -291,7 +296,7 @@ class StubTransactionRepository extends TransactionRepository {
 class StubCategoryRepository extends CategoryRepository {
   list(): Observable<Category[]> {
     return of([
-      { id: 'cat-groceries', name: 'Groceries', kind: 'expense' as CategoryKind, color: '#000', icon: 'tag', archived: false, position: 0 }
+      { id: 'cat-groceries', name: 'Groceries', kind: 'expense' as CategoryKind, groupId: 'group-groceries', color: '#000', icon: 'tag', position: 0 }
     ]);
   }
   create(): Observable<Category> {
@@ -300,7 +305,24 @@ class StubCategoryRepository extends CategoryRepository {
   update(): Observable<Category> {
     throw new Error('not used by this spec');
   }
-  setArchived(): Observable<Category> {
+  delete(): Observable<void> {
+    throw new Error('not used by this spec');
+  }
+  reorder(): Observable<void> {
+    throw new Error('not used by this spec');
+  }
+}
+
+class StubCategoryGroupRepository extends CategoryGroupRepository {
+  list(): Observable<CategoryGroup[]> {
+    return of([
+      { id: 'group-groceries', name: 'Groceries', kind: 'expense', color: '#000', icon: 'tag', position: 0 }
+    ]);
+  }
+  create(): Observable<CategoryGroup> {
+    throw new Error('not used by this spec');
+  }
+  update(): Observable<CategoryGroup> {
     throw new Error('not used by this spec');
   }
   delete(): Observable<void> {
@@ -314,7 +336,7 @@ class StubCategoryRepository extends CategoryRepository {
 class StubBudgetRepository extends BudgetRepository {
   list(): Observable<Budget[]> {
     return of([
-      { id: 'budget-1', categoryId: 'cat-groceries', month: monthKey(new Date().toISOString()), amount: '200', currency: 'USD' }
+      { id: 'budget-1', groupId: 'group-groceries', month: monthKey(new Date().toISOString()), amount: '200', currency: 'USD' }
     ]);
   }
   upsert(): Observable<Budget> {
@@ -359,6 +381,7 @@ describe('Dashboard - a budget in one currency catching a transaction in another
         { provide: AccountRepository, useClass: StubAccountRepository },
         { provide: TransactionRepository, useClass: StubTransactionRepository },
         { provide: CategoryRepository, useClass: StubCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: StubCategoryGroupRepository },
         { provide: BudgetRepository, useClass: StubBudgetRepository },
         { provide: ExchangeRateRepository, useClass: StubExchangeRateRepository },
         { provide: ErrorHandler, useValue: errorHandler }

@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategorier",
     "description": "Organiser inntekter og utgifter etter kategori.",
-    "showArchived": "Vis arkiverte kategorier",
-    "archivedBadge": "Arkivert",
     "actions": {
-      "new": "Ny kategori",
+      "addGroup": "Legg til gruppe",
+      "addCategory": "Legg til kategori",
+      "addCategoryToGroup": "Legg til kategori i denne gruppen",
       "edit": "Rediger",
-      "archive": "Arkiver",
-      "unarchive": "Gjenopprett",
       "delete": "Slett",
-      "addChild": "Ny underkategori",
       "collapse": "Slå sammen",
       "expand": "Utvid",
       "dragHandle": "Endre rekkefølge"
     },
     "empty": {
       "title": "Ingen kategorier ennå",
-      "description": "Opprett kategorier for å organisere transaksjonene dine."
+      "description": "Opprett grupper og kategorier for å organisere transaksjonene dine."
     },
     "sections": {
       "income": "Inntektskategorier",
@@ -583,16 +580,22 @@
       "title": "Slett kategori?",
       "message": "Denne handlingen kan ikke angres. Vil du slette kategorien «{{name}}»?",
       "blockedTitle": "Kan ikke slette",
-      "blockedMessage": "Denne kategorien er fortsatt i bruk (transaksjoner: {{transactions}}, budsjetter: {{budgets}}, underkategorier: {{children}}). Arkiver kategorien i stedet for å slette den."
+      "blockedMessage": "Denne kategorien brukes fortsatt av {{transactions}} transaksjoner. Slett disse transaksjonene før du sletter kategorien."
+    },
+    "deleteGroup": {
+      "title": "Slett gruppe?",
+      "message": "Denne handlingen kan ikke angres. Vil du slette gruppen «{{name}}»?"
     },
     "form": {
       "newTitle": "Ny kategori",
       "editTitle": "Rediger kategori",
-      "saveError": "Kategorien kunne ikke lagres. Prøv igjen.",
+      "newGroupTitle": "Ny gruppe",
+      "editGroupTitle": "Rediger gruppe",
+      "saveError": "Gruppen eller kategorien kunne ikke lagres. Prøv igjen.",
       "fields": {
         "name": "Navn",
-        "parent": "Overordnet kategori",
-        "noParent": "Ingen (kategori på øverste nivå)",
+        "group": "Gruppe",
+        "selectGroup": "Velg en gruppe",
         "color": "Farge",
         "icon": "Ikon"
       },
@@ -656,8 +659,8 @@
       "saveError": "Budsjettet kunne ikke lagres. Prøv igjen.",
       "fields": {
         "month": "Måned",
-        "category": "Kategori",
-        "selectCategory": "Velg en kategori",
+        "group": "Gruppe",
+        "selectGroup": "Velg en gruppe",
         "amount": "Beløp",
         "currency": "Valuta"
       },

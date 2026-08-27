@@ -1,12 +1,12 @@
 <div *transloco="let t">
   <app-page-header [title]="t('categories.title')" [description]="t('categories.description')">
-    <label class="flex items-center gap-2 text-sm text-content-muted">
-      <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
-      {{ t('categories.showArchived') }}
-    </label>
-    <button appButton variant="primary" type="button" (click)="openCreate()">
+    <button appButton variant="secondary" type="button" (click)="openCreateGroup()">
+      <app-icon name="folder" [size]="16" />
+      {{ t('categories.actions.addGroup') }}
+    </button>
+    <button appButton variant="primary" type="button" (click)="openCreateCategory()">
       <app-icon name="plus" [size]="16" />
-      {{ t('categories.actions.new') }}
+      {{ t('categories.actions.addCategory') }}
     </button>
   </app-page-header>
 
@@ -16,8 +16,8 @@
       [title]="t('categories.empty.title')"
       [description]="t('categories.empty.description')"
     >
-      <button appButton variant="primary" type="button" (click)="openCreate()">
-        {{ t('categories.actions.new') }}
+      <button appButton variant="primary" type="button" (click)="openCreateCategory()">
+        {{ t('categories.actions.addCategory') }}
       </button>
     </app-empty-state>
   } @else {
@@ -30,13 +30,13 @@
             </h2>
             <ul
               cdkDropList
-              [id]="'categories-parents-' + section.kind"
-              (cdkDropListDropped)="onParentDrop(section.kind, $event)"
+              [id]="'category-groups-' + section.kind"
+              (cdkDropListDropped)="onGroupDrop(section.kind, $event)"
             >
-              @for (row of section.rows; track row.category.id) {
-                <li cdkDrag class="border-b border-border last:border-b-0">
+              @for (row of section.rows; track row.group.id) {
+                <li cdkDrag class="group/row border-b border-border last:border-b-0">
                   <div class="flex items-center justify-between gap-4 px-4 py-3">
-                    <div class="flex items-center gap-1">
+                    <div class="flex min-w-0 items-center gap-1">
                       <button
                         cdkDragHandle
                         type="button"
@@ -47,43 +47,42 @@
                       </button>
                       <button
                         type="button"
-                        class="flex size-6 items-center justify-center text-content-muted hover:text-content-primary"
-                        [attr.aria-expanded]="!isCollapsed(row.category)"
-                        [attr.aria-label]="isCollapsed(row.category) ? t('categories.actions.expand') : t('categories.actions.collapse')"
-                        [disabled]="row.children.length === 0"
-                        (click)="toggleCollapsed(row.category)"
+                        class="flex size-6 cursor-pointer items-center justify-center text-content-muted hover:text-content-primary disabled:cursor-not-allowed"
+                        [attr.aria-expanded]="!isCollapsed(row.group)"
+                        [attr.aria-label]="isCollapsed(row.group) ? t('categories.actions.expand') : t('categories.actions.collapse')"
+                        [disabled]="row.categoryCount === 0"
+                        (click)="toggleCollapsed(row.group)"
                       >
-                        @if (row.children.length > 0) {
-                          <app-icon [name]="isCollapsed(row.category) ? 'chevronRight' : 'chevronDown'" [size]="14" />
+                        @if (row.categoryCount > 0) {
+                          <app-icon [name]="isCollapsed(row.group) ? 'chevronRight' : 'chevronDown'" [size]="14" />
                         }
                       </button>
                       <span
-                        class="flex size-7 items-center justify-center rounded-full"
-                        [style.background-color]="row.category.color + '1A'"
-                        [style.color]="row.category.color"
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full"
+                        [style.background-color]="row.group.color + '1A'"
+                        [style.color]="row.group.color"
                       >
-                        <app-icon [name]="row.category.icon" [size]="14" />
+                        <app-icon [name]="row.group.icon" [size]="14" />
                       </span>
-                      <span class="text-sm font-medium text-content-primary">{{ row.category.name }}</span>
-                      @if (row.category.archived) {
-                        <app-badge tone="neutral">{{ t('categories.archivedBadge') }}</app-badge>
-                      }
-                    </div>
-                    <div class="flex items-center gap-3">
+                      <span class="truncate text-sm font-medium text-content-primary">{{ row.group.name }}</span>
+                      <span class="shrink-0 text-sm text-content-muted">({{ row.categoryCount }})</span>
                       @if (ratesReady()) {
-                        <span class="font-mono text-sm font-semibold tabular-nums">
+                        <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">
                           {{ row.spend.amount | money: row.spend.currency }}
                         </span>
                       } @else {
-                        <app-skeleton height="1rem" class="w-16" />
+                        <app-skeleton height="1rem" class="w-16 shrink-0" />
                       }
+                    </div>
+                    <div class="flex shrink-0 items-center gap-1">
                       <button
                         appButton
                         variant="ghost"
                         size="sm"
                         type="button"
-                        (click)="openCreateChild(row.category)"
-                        [attr.aria-label]="t('categories.actions.addChild')"
+                        class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                        (click)="openCreateCategoryIn(row.group)"
+                        [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
                       >
                         <app-icon name="plus" [size]="16" />
                       </button>
@@ -92,46 +91,38 @@
                         variant="ghost"
                         size="sm"
                         type="button"
-                        (click)="openEdit(row.category)"
+                        class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                        (click)="openEditGroup(row.group)"
                         [attr.aria-label]="t('categories.actions.edit')"
                       >
                         <app-icon name="pencil" [size]="16" />
                       </button>
-                      <button
-                        appButton
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        (click)="toggleArchived(row.category)"
-                        [attr.aria-label]="
-                          row.category.archived ? t('categories.actions.unarchive') : t('categories.actions.archive')
-                        "
-                      >
-                        <app-icon name="archive" [size]="16" />
-                      </button>
-                      <button
-                        appButton
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        (click)="deleteCategory(row.category)"
-                        [attr.aria-label]="t('categories.actions.delete')"
-                      >
-                        <app-icon name="trash" [size]="16" />
-                      </button>
+                      @if (row.categoryCount === 0) {
+                        <button
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                          (click)="deleteGroup(row.group)"
+                          [attr.aria-label]="t('categories.actions.delete')"
+                        >
+                          <app-icon name="trash" [size]="16" />
+                        </button>
+                      }
                     </div>
                   </div>
 
-                  @if (row.children.length > 0 && !isCollapsed(row.category)) {
+                  @if (row.categoryCount > 0 && !isCollapsed(row.group)) {
                     <ul
                       cdkDropList
-                      [id]="'categories-children-' + row.category.id"
+                      [id]="'category-list-' + row.group.id"
                       class="border-t border-border bg-surface-sunken"
-                      (cdkDropListDropped)="onChildDrop(section.kind, row.category.id, $event)"
+                      (cdkDropListDropped)="onCategoryDrop(section.kind, row.group.id, $event)"
                     >
-                      @for (child of row.children; track child.category.id) {
-                        <li cdkDrag class="flex items-center justify-between gap-4 py-2 pe-4 ps-6">
-                          <div class="flex items-center gap-2">
+                      @for (categoryRow of row.categories; track categoryRow.category.id) {
+                        <li cdkDrag class="group/row flex items-center justify-between gap-4 py-2 pe-4 ps-6">
+                          <div class="flex min-w-0 items-center gap-2">
                             <button
                               cdkDragHandle
                               type="button"
@@ -141,31 +132,29 @@
                               <app-icon name="grip" [size]="12" />
                             </button>
                             <span
-                              class="flex size-6 items-center justify-center rounded-full"
-                              [style.background-color]="child.category.color + '1A'"
-                              [style.color]="child.category.color"
+                              class="flex size-6 shrink-0 items-center justify-center rounded-full"
+                              [style.background-color]="categoryRow.category.color + '1A'"
+                              [style.color]="categoryRow.category.color"
                             >
-                              <app-icon [name]="child.category.icon" [size]="12" />
+                              <app-icon [name]="categoryRow.category.icon" [size]="12" />
                             </span>
-                            <span class="text-sm text-content-primary">{{ child.category.name }}</span>
-                            @if (child.category.archived) {
-                              <app-badge tone="neutral">{{ t('categories.archivedBadge') }}</app-badge>
-                            }
-                          </div>
-                          <div class="flex items-center gap-3">
+                            <span class="truncate text-sm text-content-primary">{{ categoryRow.category.name }}</span>
                             @if (ratesReady()) {
-                              <span class="font-mono text-xs font-medium tabular-nums text-content-muted">
-                                {{ child.spend.amount | money: child.spend.currency }}
+                              <span class="shrink-0 font-mono text-xs font-medium tabular-nums text-content-muted">
+                                {{ categoryRow.spend.amount | money: categoryRow.spend.currency }}
                               </span>
                             } @else {
-                              <app-skeleton height="0.875rem" class="w-14" />
+                              <app-skeleton height="0.875rem" class="w-14 shrink-0" />
                             }
+                          </div>
+                          <div class="flex shrink-0 items-center gap-1">
                             <button
                               appButton
                               variant="ghost"
                               size="sm"
                               type="button"
-                              (click)="openEdit(child.category)"
+                              class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                              (click)="openEditCategory(categoryRow.category)"
                               [attr.aria-label]="t('categories.actions.edit')"
                             >
                               <app-icon name="pencil" [size]="14" />
@@ -175,21 +164,8 @@
                               variant="ghost"
                               size="sm"
                               type="button"
-                              (click)="toggleArchived(child.category)"
-                              [attr.aria-label]="
-                                child.category.archived
-                                  ? t('categories.actions.unarchive')
-                                  : t('categories.actions.archive')
-                              "
-                            >
-                              <app-icon name="archive" [size]="14" />
-                            </button>
-                            <button
-                              appButton
-                              variant="ghost"
-                              size="sm"
-                              type="button"
-                              (click)="deleteCategory(child.category)"
+                              class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                              (click)="deleteCategory(categoryRow.category)"
                               [attr.aria-label]="t('categories.actions.delete')"
                             >
                               <app-icon name="trash" [size]="14" />
@@ -210,9 +186,11 @@
 
   <app-category-form-modal
     [(open)]="formOpen"
+    [mode]="formMode()"
     [category]="editingCategory()"
-    [allCategories]="categoriesResource.value() ?? []"
-    [presetParent]="presetParent()"
+    [group]="editingGroup()"
+    [presetGroup]="presetGroup()"
+    [allGroups]="categoryGroupsResource.value() ?? []"
     (saved)="onSaved()"
   />
 </div>

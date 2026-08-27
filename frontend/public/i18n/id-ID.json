@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategori",
     "description": "Atur pendapatan dan pengeluaran berdasarkan kategori.",
-    "showArchived": "Tampilkan kategori yang diarsipkan",
-    "archivedBadge": "Diarsipkan",
     "actions": {
-      "new": "Kategori baru",
+      "addGroup": "Tambah grup",
+      "addCategory": "Tambah kategori",
+      "addCategoryToGroup": "Tambahkan kategori ke grup ini",
       "edit": "Edit",
-      "archive": "Arsipkan",
-      "unarchive": "Pulihkan dari arsip",
       "delete": "Hapus",
-      "addChild": "Subkategori baru",
       "collapse": "Ciutkan",
       "expand": "Perluas",
       "dragHandle": "Urutkan ulang"
     },
     "empty": {
       "title": "Belum ada kategori",
-      "description": "Buat kategori untuk mengatur transaksi Anda."
+      "description": "Buat grup dan kategori untuk mengatur transaksi Anda."
     },
     "sections": {
       "income": "Kategori pendapatan",
@@ -583,16 +580,22 @@
       "title": "Hapus kategori?",
       "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus kategori \"{{name}}\"?",
       "blockedTitle": "Tidak dapat menghapus",
-      "blockedMessage": "Kategori ini masih digunakan: {{transactions}} transaksi, {{budgets}} anggaran, dan {{children}} subkategori menggunakannya. Arsipkan kategori ini, bukan menghapusnya."
+      "blockedMessage": "Kategori ini masih digunakan oleh {{transactions}} transaksi. Hapus transaksi tersebut sebelum menghapus kategori."
+    },
+    "deleteGroup": {
+      "title": "Hapus grup?",
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus grup \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Kategori baru",
       "editTitle": "Edit kategori",
-      "saveError": "Kategori tidak dapat disimpan. Coba lagi.",
+      "newGroupTitle": "Grup baru",
+      "editGroupTitle": "Edit grup",
+      "saveError": "Grup atau kategori tidak dapat disimpan. Coba lagi.",
       "fields": {
         "name": "Nama",
-        "parent": "Kategori induk",
-        "noParent": "Tidak ada (kategori tingkat atas)",
+        "group": "Grup",
+        "selectGroup": "Pilih grup",
         "color": "Warna",
         "icon": "Ikon"
       },
@@ -656,8 +659,8 @@
       "saveError": "Anggaran tidak dapat disimpan. Coba lagi.",
       "fields": {
         "month": "Bulan",
-        "category": "Kategori",
-        "selectCategory": "Pilih kategori",
+        "group": "Grup",
+        "selectGroup": "Pilih grup",
         "amount": "Jumlah",
         "currency": "Mata uang"
       },

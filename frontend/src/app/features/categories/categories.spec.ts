@@ -3,25 +3,36 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
-import { BudgetRepository } from '../../data/budget.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
-import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
+import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { ConfirmService } from '../../core/confirm.service';
 import { Categories } from './categories';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import enUS from '../../../../public/i18n/en-US.json';
 
-function findRowDeleteButton(el: HTMLElement, name: string): HTMLButtonElement {
-  const nameSpan = Array.from(el.querySelectorAll('span')).find((s) => s.textContent?.trim() === name);
-  const row = nameSpan!.closest('li') as HTMLLIElement;
-  const ownRow = row.querySelector(':scope > div') as HTMLElement;
-  return ownRow.querySelector('button[aria-label="Excluir"]') as HTMLButtonElement;
+function findGroupRow(el: HTMLElement, name: string): HTMLLIElement | null {
+  const span = Array.from(el.querySelectorAll('#category-groups-expense > li span, #category-groups-income > li span')).find(
+    (item) => item.textContent?.trim() === name
+  );
+  return (span?.closest('li') as HTMLLIElement | null) ?? null;
+}
+
+function findCategoryRow(el: HTMLElement, name: string): HTMLLIElement | null {
+  const span = Array.from(el.querySelectorAll('ul[id^="category-list-"] li span')).find(
+    (item) => item.textContent?.trim() === name
+  );
+  return (span?.closest('li') as HTMLLIElement | null) ?? null;
+}
+
+function findDeleteButton(row: HTMLLIElement): HTMLButtonElement | null {
+  return row.querySelector(':scope > div button[aria-label="Delete"]');
 }
 
 describe('Categories', () => {
@@ -31,32 +42,35 @@ describe('Categories', () => {
       imports: [
         Categories,
         TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
+          langs: { 'en-US': enUS },
+          translocoConfig: { availableLangs: ['en-US'], defaultLang: 'en-US' }
         })
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTranslocoLocale({ defaultLocale: 'en-US', defaultCurrency: 'USD' }),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
   });
 
-  it('renders the seeded categories, grouped by income/expense, without error', async () => {
+  it('renders groups and categories by income/expense, without error', async () => {
     const fixture = TestBed.createComponent(Categories);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
     expect(fixture.componentInstance).toBeTruthy();
-    expect(fixture.nativeElement.textContent).toContain('Categorias de despesa');
+    expect(fixture.nativeElement.textContent).toContain('Expense categories');
     expect(fixture.nativeElement.textContent).toContain('Moradia');
+    expect(fixture.componentInstance['expenseRows']().find((row) => row.group.name === 'Moradia')).toEqual(
+      expect.objectContaining({ categoryCount: 3 })
+    );
   });
 
   it('creates a new category end-to-end through the modal', async () => {
@@ -67,7 +81,7 @@ describe('Categories', () => {
 
     const el = fixture.nativeElement as HTMLElement;
     const newButton = Array.from(el.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Nova categoria')
+      b.textContent?.includes('Add category')
     );
     newButton!.click();
     fixture.detectChanges();
@@ -76,8 +90,11 @@ describe('Categories', () => {
     expect(dialog.open).toBe(true);
 
     const nameInput = dialog.querySelector('#category-name') as HTMLInputElement;
-    nameInput.value = 'Categoria de Teste E2E';
+    nameInput.value = 'Test category';
     nameInput.dispatchEvent(new Event('input'));
+    const groupSelect = dialog.querySelector('#category-group') as HTMLSelectElement;
+    groupSelect.value = groupSelect.options[1].value;
+    groupSelect.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
     const form = dialog.querySelector('form') as HTMLFormElement;
@@ -87,10 +104,51 @@ describe('Categories', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(false);
-    expect(el.textContent).toContain('Categoria de Teste E2E');
+    expect(el.textContent).toContain('Test category');
   });
 
-  it('blocks deleting a category that still has child categories, and does not delete it', async () => {
+  it('creates and deletes an empty group, while hiding delete for groups with categories', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    expect(findDeleteButton(findGroupRow(el, 'Moradia')!)).toBeNull();
+
+    const addGroupButton = Array.from(el.querySelectorAll('button')).find((button) =>
+      button.textContent?.includes('Add group')
+    )!;
+    addGroupButton.click();
+    fixture.detectChanges();
+    const dialog = el.querySelector('dialog') as HTMLDialogElement;
+    expect(dialog.querySelector('#category-group')).toBeNull();
+    const nameInput = dialog.querySelector('#category-name') as HTMLInputElement;
+    nameInput.value = 'Empty group';
+    nameInput.dispatchEvent(new Event('input'));
+    const form = dialog.querySelector('form') as HTMLFormElement;
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const row = findGroupRow(el, 'Empty group')!;
+    const deleteButton = findDeleteButton(row);
+    expect(deleteButton).toBeTruthy();
+    deleteButton!.click();
+    fixture.detectChanges();
+
+    const confirmService = TestBed.inject(ConfirmService);
+    expect(confirmService.request()?.titleKey).toBe('categories.deleteGroup.title');
+    expect(confirmService.request()?.messageKey).toBe('categories.deleteGroup.message');
+    confirmService.respond(true);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(findGroupRow(el, 'Empty group')).toBeNull();
+  });
+
+  it('blocks deleting a category that still has transactions, and does not delete it', async () => {
     const fixture = TestBed.createComponent(Categories);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -98,30 +156,22 @@ describe('Categories', () => {
 
     const el = fixture.nativeElement as HTMLElement;
     const confirmService = TestBed.inject(ConfirmService);
-
-    // "Moradia" (housing) has three child categories in the fixtures
-    // (Aluguel/Condomínio/Energia) - deleting it must be blocked.
-    findRowDeleteButton(el, 'Moradia').click();
+    findDeleteButton(findCategoryRow(el, 'Aluguel')!)!.click();
     fixture.detectChanges();
     await fixture.whenStable();
 
-    // The confirm dialog itself is mounted once in the app shell (not
-    // inside Categories), so assert against the pending ConfirmService
-    // request rather than rendered dialog text.
     const request = confirmService.request();
     expect(request?.titleKey).toBe('categories.delete.blockedTitle');
     expect(request?.messageKey).toBe('categories.delete.blockedMessage');
-    expect(request?.params).toEqual(expect.objectContaining({ children: 3 }));
+    expect(request?.params).toEqual(expect.objectContaining({ transactions: expect.any(Number) }));
 
     confirmService.respond(true);
     await fixture.whenStable();
     fixture.detectChanges();
-
-    // Still there - the blocked path must never call delete().
-    expect(el.textContent).toContain('Moradia');
+    expect(findCategoryRow(el, 'Aluguel')).toBeTruthy();
   });
 
-  it('deletes a category with no references after the user confirms', async () => {
+  it('deletes a category with no transaction references after the user confirms', async () => {
     const fixture = TestBed.createComponent(Categories);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -129,25 +179,21 @@ describe('Categories', () => {
 
     const el = fixture.nativeElement as HTMLElement;
     const confirmService = TestBed.inject(ConfirmService);
-
-    // "Outras Despesas" has no transactions, budgets, or children in the fixtures.
-    findRowDeleteButton(el, 'Outras Despesas').click();
+    findDeleteButton(findCategoryRow(el, 'Outras Despesas')!)!.click();
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const request = confirmService.request();
-    expect(request?.titleKey).toBe('categories.delete.title');
-
+    expect(confirmService.request()?.titleKey).toBe('categories.delete.title');
     confirmService.respond(true);
     await fixture.whenStable();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(el.textContent).not.toContain('Outras Despesas');
+    expect(findCategoryRow(el, 'Outras Despesas')).toBeNull();
   });
 
-  it('collapsing a parent hides its children and persists the choice to localStorage', async () => {
+  it('collapsing a group hides its categories and persists the choice to localStorage', async () => {
     const fixture = TestBed.createComponent(Categories);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -156,41 +202,34 @@ describe('Categories', () => {
     const el = fixture.nativeElement as HTMLElement;
     expect(el.textContent).toContain('Aluguel');
 
-    const nameSpan = Array.from(el.querySelectorAll('span')).find((s) => s.textContent?.trim() === 'Moradia');
-    const row = nameSpan!.closest('li') as HTMLLIElement;
+    const row = findGroupRow(el, 'Moradia')!;
     const collapseButton = row.querySelector('button[aria-expanded]') as HTMLButtonElement;
     collapseButton.click();
     fixture.detectChanges();
 
     expect(el.textContent).not.toContain('Aluguel');
+    expect(JSON.parse(localStorage.getItem('lealfinance.categories.collapsed') ?? '[]')).toHaveLength(1);
 
-    const stored = JSON.parse(localStorage.getItem('lealfinance.categories.collapsed') ?? '[]');
-    expect(stored).toHaveLength(1);
-
-    // Toggling again restores the children and clears the persisted id.
     collapseButton.click();
     fixture.detectChanges();
     expect(el.textContent).toContain('Aluguel');
     expect(JSON.parse(localStorage.getItem('lealfinance.categories.collapsed') ?? '[]')).toHaveLength(0);
   });
 
-  it('reorders top-level categories and reflects the new order after reload', async () => {
+  it('reorders groups and reflects the new order after reload', async () => {
     const fixture = TestBed.createComponent(Categories);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    const namesBefore = Array.from(el.querySelectorAll('#categories-parents-expense > li')).map(
-      (li) => li.querySelector('span.font-medium')?.textContent?.trim()
+    const namesBefore = Array.from(el.querySelectorAll('#category-groups-expense > li span.text-sm.font-medium')).map(
+      (span) => span.textContent?.trim()
     );
     expect(namesBefore[0]).toBe('Moradia');
-    expect(namesBefore[1]).toBe('Alimentação');
+    expect(namesBefore[1]).toContain('Alimenta');
 
-    // Drive the reorder the same way the spec recommends for CDK drops in
-    // jsdom: call the drop handler directly with a minimal event shape
-    // rather than simulating a real pointer drag.
-    (fixture.componentInstance as unknown as { onParentDrop: (kind: 'expense', event: unknown) => void }).onParentDrop(
+    (fixture.componentInstance as unknown as { onGroupDrop: (kind: 'expense', event: unknown) => void }).onGroupDrop(
       'expense',
       { previousIndex: 0, currentIndex: 1 }
     );
@@ -198,11 +237,25 @@ describe('Categories', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const namesAfter = Array.from(el.querySelectorAll('#categories-parents-expense > li')).map(
-      (li) => li.querySelector('span.font-medium')?.textContent?.trim()
+    const namesAfter = Array.from(el.querySelectorAll('#category-groups-expense > li span.text-sm.font-medium')).map(
+      (span) => span.textContent?.trim()
     );
-    expect(namesAfter[0]).toBe('Alimentação');
+    expect(namesAfter[0]).toContain('Alimenta');
     expect(namesAfter[1]).toBe('Moradia');
+  });
+
+  it('reveals row actions on hover/focus and keeps them in the DOM', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const row = findGroupRow(fixture.nativeElement as HTMLElement, 'Moradia')!;
+    const editButton = row.querySelector('button[aria-label="Edit"]') as HTMLButtonElement;
+    expect(editButton.classList).toContain('opacity-0');
+    expect(editButton.classList).toContain('group-hover/row:opacity-100');
+    expect(editButton.classList).toContain('group-focus-within/row:opacity-100');
+    expect(editButton.classList).toContain('focus-visible:opacity-100');
   });
 
   it('converts category spend when the display currency changes', async () => {

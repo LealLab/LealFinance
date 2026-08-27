@@ -11,6 +11,7 @@ describe('MockStore', () => {
   it('seeds every entity list on construction', () => {
     expect(store.accounts().length).toBeGreaterThan(0);
     expect(store.transactions().length).toBeGreaterThan(0);
+    expect(store.categoryGroups().length).toBeGreaterThan(0);
     expect(store.categories().length).toBeGreaterThan(0);
     expect(store.budgets().length).toBeGreaterThan(0);
     expect(store.recurringRules().length).toBeGreaterThan(0);
@@ -75,13 +76,68 @@ describe('MockStore', () => {
   });
 
   describe('categories', () => {
-    it('archiving a referenced category keeps it (and its id) intact rather than removing it', () => {
-      const category = store.createCategory({
-        name: 'Categoria Teste',
+    it('creates, updates, and deletes an unused category group', () => {
+      const created = store.createCategoryGroup({
+        name: 'Grupo Teste',
         kind: 'expense',
         color: '#000000',
         icon: 'tag',
-        archived: false
+      });
+      expect(store.categoryGroups()).toContainEqual(created);
+
+      const updated = store.updateCategoryGroup(created.id, { name: 'Grupo Renomeado' });
+      expect(updated.name).toBe('Grupo Renomeado');
+
+      store.deleteCategoryGroup(created.id);
+      expect(store.categoryGroups().find((group) => group.id === created.id)).toBeUndefined();
+    });
+
+    it('refuses to delete a category group referenced by a category', () => {
+      const group = store.createCategoryGroup({
+        name: 'Grupo em Uso',
+        kind: 'expense',
+        color: '#000000',
+        icon: 'tag',
+      });
+      store.createCategory({
+        name: 'Categoria Teste',
+        kind: 'expense',
+        groupId: group.id,
+        color: '#000000',
+        icon: 'tag',
+      });
+
+      expect(() => store.deleteCategoryGroup(group.id)).toThrow();
+      expect(store.categoryGroups().find((item) => item.id === group.id)).toBeDefined();
+    });
+
+    it('throws when deleting a category group that does not exist', () => {
+      expect(() => store.deleteCategoryGroup('missing-id')).toThrow();
+    });
+
+    it('reorders category groups within a kind', () => {
+      const a = store.createCategoryGroup({ name: 'A', kind: 'income', color: '#000', icon: 'tag' });
+      const b = store.createCategoryGroup({ name: 'B', kind: 'income', color: '#000', icon: 'tag' });
+
+      store.reorderCategoryGroups('income', [b.id, a.id]);
+
+      expect(store.categoryGroups().find((group) => group.id === b.id)?.position).toBe(0);
+      expect(store.categoryGroups().find((group) => group.id === a.id)?.position).toBe(1);
+    });
+
+    it('creates a category in a group and keeps its transaction reference', () => {
+      const group = store.createCategoryGroup({
+        name: 'Grupo Teste',
+        kind: 'expense',
+        color: '#000000',
+        icon: 'tag',
+      });
+      const category = store.createCategory({
+        name: 'Categoria Teste',
+        kind: 'expense',
+        groupId: group.id,
+        color: '#000000',
+        icon: 'tag'
       });
       const transaction = store.createTransaction({
         type: 'expense',
@@ -92,66 +148,56 @@ describe('MockStore', () => {
         categoryId: category.id,
         description: 'Compra'
       });
-
-      const archived = store.updateCategory(category.id, { archived: true });
-
-      expect(archived.archived).toBe(true);
-      expect(archived.id).toBe(category.id);
-      expect(store.categories().find((c) => c.id === category.id)).toBeDefined();
+      expect(category.groupId).toBe(group.id);
       expect(store.transactions().find((t) => t.id === transaction.id)?.categoryId).toBe(category.id);
     });
 
-    it('assigns position 0 to the first category in a new kind/parentId group, and increments after that', () => {
-      // The fixtures already seed several top-level categories for both
-      // kinds, so use a fresh parentId (a brand-new group with no
+    it('assigns position 0 to the first category in a new kind/groupId group, and increments after that', () => {
+      // The fixtures already seed several groups for both kinds, so use a fresh group
+      // with no
       // pre-existing siblings) to observe position starting at 0.
-      const parent = store.createCategory({
+      const group = store.createCategoryGroup({
         name: 'Grupo Novo',
         kind: 'expense',
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
       const first = store.createCategory({
         name: 'Primeira',
         kind: 'expense',
-        parentId: parent.id,
+        groupId: group.id,
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
       const second = store.createCategory({
         name: 'Segunda',
         kind: 'expense',
-        parentId: parent.id,
+        groupId: group.id,
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
 
       expect(first.position).toBe(0);
       expect(second.position).toBe(first.position + 1);
     });
 
-    it('scopes position assignment to the same kind/parentId group, not the whole list', () => {
-      const parent = store.createCategory({
+    it('scopes position assignment to the same kind/groupId group, not the whole list', () => {
+      const group = store.createCategoryGroup({
         name: 'Pai',
         kind: 'expense',
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
       const child = store.createCategory({
         name: 'Filho',
         kind: 'expense',
-        parentId: parent.id,
+        groupId: group.id,
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
 
-      // The child starts its own sibling group at position 0 even though
-      // many top-level categories with higher positions already exist.
+      // The category starts its own sibling group at position 0 even though
+      // many categories with higher positions already exist.
       expect(child.position).toBe(0);
     });
 
@@ -159,9 +205,9 @@ describe('MockStore', () => {
       const category = store.createCategory({
         name: 'Descartável',
         kind: 'expense',
+        groupId: 'group-other-expense',
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
 
       store.deleteCategory(category.id);
@@ -174,44 +220,44 @@ describe('MockStore', () => {
     });
 
     it('reorders only the categories passed, leaving other categories untouched', () => {
-      const a = store.createCategory({ name: 'A', kind: 'expense', color: '#000', icon: 'tag', archived: false });
-      const b = store.createCategory({ name: 'B', kind: 'expense', color: '#000', icon: 'tag', archived: false });
-      const c = store.createCategory({ name: 'C', kind: 'expense', color: '#000', icon: 'tag', archived: false });
-      const untouchedPosition = store.categories().find((cat) => cat.name === 'Moradia')?.position;
+      const a = store.createCategory({ name: 'A', kind: 'expense', groupId: 'group-food', color: '#000', icon: 'tag' });
+      const b = store.createCategory({ name: 'B', kind: 'expense', groupId: 'group-food', color: '#000', icon: 'tag' });
+      const c = store.createCategory({ name: 'C', kind: 'expense', groupId: 'group-food', color: '#000', icon: 'tag' });
+      const untouchedPosition = store.categories().find((cat) => cat.id === 'cat-rent')?.position;
 
-      store.reorderCategories('expense', undefined, [c.id, a.id, b.id]);
+      store.reorderCategories('expense', 'group-food', [c.id, a.id, b.id]);
 
       const byId = new Map(store.categories().map((cat) => [cat.id, cat]));
       expect(byId.get(c.id)?.position).toBe(0);
       expect(byId.get(a.id)?.position).toBe(1);
       expect(byId.get(b.id)?.position).toBe(2);
-      expect(store.categories().find((cat) => cat.name === 'Moradia')?.position).toBe(untouchedPosition);
+      expect(store.categories().find((cat) => cat.id === 'cat-rent')?.position).toBe(untouchedPosition);
     });
 
-    it('ignores ids in the reorder list that do not belong to the given kind/parentId group', () => {
-      const a = store.createCategory({ name: 'A2', kind: 'expense', color: '#000', icon: 'tag', archived: false });
+    it('ignores ids in the reorder list that do not belong to the given kind/groupId group', () => {
+      const a = store.createCategory({ name: 'A2', kind: 'expense', groupId: 'group-food', color: '#000', icon: 'tag' });
       const incomeOnly = store.createCategory({
         name: 'Renda Extra',
         kind: 'income',
+        groupId: 'group-salary',
         color: '#000',
-        icon: 'tag',
-        archived: false
+        icon: 'tag'
       });
       const positionBefore = incomeOnly.position;
 
-      store.reorderCategories('expense', undefined, [incomeOnly.id, a.id]);
+      store.reorderCategories('expense', 'group-food', [incomeOnly.id, a.id]);
 
       // The income category's position must be untouched by an 'expense' reorder call,
-      // since it doesn't belong to that kind/parentId sibling group.
+      // since it doesn't belong to that kind/groupId sibling group.
       expect(store.categories().find((cat) => cat.id === incomeOnly.id)?.position).toBe(positionBefore);
       expect(store.categories().find((cat) => cat.id === a.id)?.position).toBe(0);
     });
   });
 
   describe('budgets', () => {
-    it('upsert creates a new budget for a category/month pair that has none yet', () => {
+    it('upsert creates a new budget for a group/month pair that has none yet', () => {
       const created = store.upsertBudget({
-        categoryId: 'cat-x',
+        groupId: 'group-x',
         month: '2026-05',
         amount: '100',
         currency: 'BRL'
@@ -220,22 +266,22 @@ describe('MockStore', () => {
       expect(store.budgets()).toContainEqual(created);
     });
 
-    it('upsert updates the existing row for the same category/month instead of duplicating it', () => {
+    it('upsert updates the existing row for the same group/month instead of duplicating it', () => {
       const first = store.upsertBudget({
-        categoryId: 'cat-y',
+        groupId: 'group-y',
         month: '2026-05',
         amount: '100',
         currency: 'BRL'
       });
       const second = store.upsertBudget({
-        categoryId: 'cat-y',
+        groupId: 'group-y',
         month: '2026-05',
         amount: '250',
         currency: 'BRL'
       });
 
       expect(second.id).toBe(first.id);
-      expect(store.budgets().filter((b) => b.categoryId === 'cat-y' && b.month === '2026-05')).toHaveLength(
+      expect(store.budgets().filter((b) => b.groupId === 'group-y' && b.month === '2026-05')).toHaveLength(
         1
       );
       expect(store.budgets().find((b) => b.id === first.id)?.amount).toBe('250');

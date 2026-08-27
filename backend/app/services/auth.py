@@ -34,6 +34,7 @@ from app.core.security import (
 )
 from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, ROLES, THEMES, Invitation, Session, User
+from app.services import default_categories
 from app.services.currencies import get_active_currency
 
 _SESSION_TOUCH_INTERVAL = timedelta(minutes=5)
@@ -251,6 +252,7 @@ async def register(
     if invitation is not None:
         invitation.accepted_at = datetime.now(UTC)
     await db.flush()  # assigns user.id, needed by _mint_session below
+    await default_categories.seed_default_categories(db, user.id, locale)
 
     # User creation, invitation acceptance, and session creation are one
     # transaction - a half-accepted invitation is not a reachable state.

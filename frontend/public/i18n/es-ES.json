@@ -558,22 +558,19 @@
   "categories": {
     "title": "Categorías",
     "description": "Organiza ingresos y gastos por categoría.",
-    "showArchived": "Mostrar categorías archivadas",
-    "archivedBadge": "Archivada",
     "actions": {
-      "new": "Nueva categoría",
+      "addGroup": "Añadir grupo",
+      "addCategory": "Añadir categoría",
+      "addCategoryToGroup": "Añadir categoría a este grupo",
       "edit": "Editar",
-      "archive": "Archivar",
-      "unarchive": "Desarchivar",
       "delete": "Eliminar",
-      "addChild": "Nueva subcategoría",
       "collapse": "Contraer",
       "expand": "Expandir",
       "dragHandle": "Reordenar"
     },
     "empty": {
       "title": "Aún no hay categorías",
-      "description": "Crea categorías para organizar tus movimientos."
+      "description": "Crea grupos y categorías para organizar tus movimientos."
     },
     "sections": {
       "income": "Categorías de ingresos",
@@ -583,16 +580,22 @@
       "title": "¿Eliminar la categoría?",
       "message": "Esta acción no se puede deshacer. ¿Quieres eliminar la categoría «{{name}}»?",
       "blockedTitle": "No se puede eliminar",
-      "blockedMessage": "Esta categoría sigue en uso (movimientos: {{transactions}}; presupuestos: {{budgets}}; subcategorías: {{children}}). Archívala en lugar de eliminarla."
+      "blockedMessage": "Esta categoría sigue en uso por {{transactions}} movimientos. Elimina esos movimientos antes de eliminar la categoría."
+    },
+    "deleteGroup": {
+      "title": "¿Eliminar el grupo?",
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar el grupo «{{name}}»?"
     },
     "form": {
       "newTitle": "Nueva categoría",
       "editTitle": "Editar categoría",
-      "saveError": "No se ha podido guardar la categoría. Inténtalo de nuevo.",
+      "newGroupTitle": "Nuevo grupo",
+      "editGroupTitle": "Editar grupo",
+      "saveError": "No se ha podido guardar el grupo o la categoría. Inténtalo de nuevo.",
       "fields": {
         "name": "Nombre",
-        "parent": "Categoría superior",
-        "noParent": "Ninguna (categoría principal)",
+        "group": "Grupo",
+        "selectGroup": "Selecciona un grupo",
         "color": "Color",
         "icon": "Icono"
       },
@@ -656,8 +659,8 @@
       "saveError": "No se ha podido guardar el presupuesto. Inténtalo de nuevo.",
       "fields": {
         "month": "Mes",
-        "category": "Categoría",
-        "selectCategory": "Selecciona una categoría",
+        "group": "Grupo",
+        "selectGroup": "Selecciona un grupo",
         "amount": "Importe",
         "currency": "Moneda"
       },

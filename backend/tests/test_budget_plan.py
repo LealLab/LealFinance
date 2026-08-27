@@ -11,10 +11,12 @@ async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> 
     await login_as(client, email=user.email, password=password)
 
 
-async def _create_category(client: AsyncClient, name: str = "Groceries") -> str:
+async def _create_category_group(
+    client: AsyncClient, name: str = "Expenses", kind: str = "expense"
+) -> str:
     response = await client.post(
-        "/api/v1/categories",
-        json={"name": name, "kind": "expense", "color": "#112233", "icon": "tag"},
+        "/api/v1/category-groups",
+        json={"name": name, "kind": kind, "color": "#112233", "icon": "tag"},
     )
     assert response.status_code == 201
     return response.json()["id"]
@@ -24,22 +26,22 @@ async def test_upsert_allocation_creates_and_updates(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "alice@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
 
     first = await client.put(
-        "/api/v1/budget-allocations", json={"category_id": category_id, "percentage": "25.00"}
+        "/api/v1/budget-allocations", json={"group_id": group_id, "percentage": "25.00"}
     )
     assert first.status_code == 200
     assert first.json()["percentage"] == "25.0000"
 
     second = await client.put(
-        "/api/v1/budget-allocations", json={"category_id": category_id, "percentage": "40.00"}
+        "/api/v1/budget-allocations", json={"group_id": group_id, "percentage": "40.00"}
     )
     assert second.json()["id"] == first.json()["id"]
     assert second.json()["percentage"] == "40.0000"
 
     list_response = await client.get("/api/v1/budget-allocations")
-    matching = [row for row in list_response.json() if row["category_id"] == category_id]
+    matching = [row for row in list_response.json() if row["group_id"] == group_id]
     assert len(matching) == 1
 
 
@@ -47,20 +49,33 @@ async def test_upsert_allocation_percentage_out_of_range_is_rejected(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "bob@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
 
     response = await client.put(
-        "/api/v1/budget-allocations", json={"category_id": category_id, "percentage": "150.00"}
+        "/api/v1/budget-allocations", json={"group_id": group_id, "percentage": "150.00"}
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "error.validation"
 
 
+async def test_upsert_allocation_requires_an_expense_group(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "income-allocation@example.com")
+    group_id = await _create_category_group(client, kind="income")
+
+    response = await client.put(
+        "/api/v1/budget-allocations", json={"group_id": group_id, "percentage": "10.00"}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "budget_allocation.group_must_be_expense"
+
+
 async def test_delete_allocation(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "carol@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
     create_response = await client.put(
-        "/api/v1/budget-allocations", json={"category_id": category_id, "percentage": "10.00"}
+        "/api/v1/budget-allocations", json={"group_id": group_id, "percentage": "10.00"}
     )
     allocation_id = create_response.json()["id"]
 
@@ -73,9 +88,9 @@ async def test_allocation_ownership_isolation(
 ) -> None:
     await _authed(client, db_session, "dave@example.com")
     await _authed(other_client, db_session, "erin@example.com")
-    category_id = await _create_category(client)
+    group_id = await _create_category_group(client)
     create_response = await client.put(
-        "/api/v1/budget-allocations", json={"category_id": category_id, "percentage": "10.00"}
+        "/api/v1/budget-allocations", json={"group_id": group_id, "percentage": "10.00"}
     )
     allocation_id = create_response.json()["id"]
 

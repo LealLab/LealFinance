@@ -1,11 +1,8 @@
 <div *transloco="let t">
-  <!-- transactions.type.* below is looked up dynamically (string
-       concatenation), which transloco-keys-manager's template extractor
-       can't resolve - this marker-only comment is its "dynamic markings"
-       mechanism (see account-form-modal.html for the related @if…as note,
-       used below for the same reason on titleKey/saveErrorKey). The
-       icons.names.* lookup used by app-icon-picker below carries its own
-       marker comment in icon-picker.html. -->
+  <!-- Dynamic translation keys used by titleKey/saveErrorKey need markers
+       because the template extractor cannot resolve those signal values. -->
+  <!-- t(categories.form.editTitle) t(categories.form.newTitle) t(categories.form.editGroupTitle) t(categories.form.newGroupTitle) t(categories.form.saveError) -->
+  <!-- transactions.type.* below is looked up dynamically. -->
   <!-- t(transactions.type.expense) t(transactions.type.income) -->
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
@@ -14,7 +11,7 @@
           @for (kind of ['expense', 'income']; track kind) {
             <button
               type="button"
-              class="rounded px-2 py-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+              class="cursor-pointer rounded px-2 py-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60"
               [class]="
                 form.controls.kind.value === kind
                   ? 'bg-surface-raised text-content-primary shadow-sm'
@@ -33,38 +30,30 @@
           <input id="category-name" type="text" class="form-input" formControlName="name" />
         </div>
 
+        @if (mode() === 'category') {
+          <div>
+            <label class="form-label" for="category-group">{{ t('categories.form.fields.group') }}</label>
+            <select id="category-group" class="form-input" formControlName="groupId" required>
+              <option value="" disabled>{{ t('categories.form.fields.selectGroup') }}</option>
+              @for (option of groupOptions(); track option.id) {
+                <option [value]="option.id">{{ option.name }}</option>
+              }
+            </select>
+          </div>
+        }
+
         <div>
-          <label class="form-label" for="category-parent">{{ t('categories.form.fields.parent') }}</label>
-          <select id="category-parent" class="form-input" formControlName="parentId">
-            <option value="">{{ t('categories.form.fields.noParent') }}</option>
-            @for (option of parentOptions(); track option.id) {
-              <option [value]="option.id">{{ option.name }}</option>
-            }
-          </select>
+          <label class="form-label" for="category-color">{{ t('categories.form.fields.color') }}</label>
+          <input id="category-color" type="color" class="form-input h-10 p-1" formControlName="color" />
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="form-label" for="category-color">{{ t('categories.form.fields.color') }}</label>
-            <input id="category-color" type="color" class="form-input h-10 p-1" formControlName="color" />
-          </div>
-          <div>
-            <label class="form-label" for="category-icon">{{ t('categories.form.fields.icon') }}</label>
-            <button
-              id="category-icon"
-              type="button"
-              class="form-input flex items-center gap-2"
-              (click)="iconPickerOpen.set(true)"
-            >
-              <app-icon [name]="selectedIcon()" />
-              <span>{{ t('icons.names.' + selectedIcon()) }}</span>
-            </button>
-            <app-icon-picker
-              [(open)]="iconPickerOpen"
-              [selected]="selectedIcon()"
-              (picked)="form.controls.icon.setValue($event)"
-            />
-          </div>
+        <div>
+          <label class="form-label" for="category-icon">{{ t('categories.form.fields.icon') }}</label>
+          <app-icon-picker
+            [inline]="true"
+            [selected]="selectedIcon()"
+            (picked)="form.controls.icon.setValue($event)"
+          />
         </div>
 
         @if (saveErrorKey(); as errorKey) {

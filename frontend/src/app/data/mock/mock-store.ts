@@ -3,6 +3,7 @@ import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category, CategoryKind } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
 import {
@@ -45,6 +46,7 @@ const MARKET_DATA_PROVIDERS: MarketDataProvider[] = ['twelve_data', 'brapi'];
 export class MockStore {
   private readonly accountsSignal = signal<Account[]>([]);
   private readonly transactionsSignal = signal<Transaction[]>([]);
+  private readonly categoryGroupsSignal = signal<CategoryGroup[]>([]);
   private readonly categoriesSignal = signal<Category[]>([]);
   private readonly budgetsSignal = signal<Budget[]>([]);
   private readonly goalsSignal = signal<Goal[]>([]);
@@ -60,6 +62,7 @@ export class MockStore {
 
   readonly accounts = this.accountsSignal.asReadonly();
   readonly transactions = this.transactionsSignal.asReadonly();
+  readonly categoryGroups = this.categoryGroupsSignal.asReadonly();
   readonly categories = this.categoriesSignal.asReadonly();
   readonly budgets = this.budgetsSignal.asReadonly();
   readonly goals = this.goalsSignal.asReadonly();
@@ -81,6 +84,7 @@ export class MockStore {
     const fixtures = createFixtures();
     this.accountsSignal.set(fixtures.accounts);
     this.transactionsSignal.set(fixtures.transactions);
+    this.categoryGroupsSignal.set(fixtures.categoryGroups);
     this.categoriesSignal.set(fixtures.categories);
     this.budgetsSignal.set(fixtures.budgets);
     this.goalsSignal.set(fixtures.goals);
@@ -160,11 +164,51 @@ export class MockStore {
     this.transactionsSignal.update((list) => removeEntity(list, id));
   }
 
+  // --- Category Groups ----------------------------------------------------
+
+  createCategoryGroup(input: Omit<CategoryGroup, 'id' | 'position'>): CategoryGroup {
+    const siblingPositions = this.categoryGroupsSignal()
+      .filter((group) => group.kind === input.kind)
+      .map((group) => group.position);
+    const position = siblingPositions.length > 0 ? Math.max(...siblingPositions) + 1 : 0;
+    const group: CategoryGroup = { ...input, id: newId(), position };
+    this.categoryGroupsSignal.update((list) => [...list, group]);
+    return group;
+  }
+
+  updateCategoryGroup(id: string, changes: Partial<Omit<CategoryGroup, 'id'>>): CategoryGroup {
+    if (!findEntity(this.categoryGroupsSignal(), id)) notFound('Category group', id);
+    this.categoryGroupsSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.categoryGroupsSignal(), id)!;
+  }
+
+  deleteCategoryGroup(id: string): void {
+    if (!findEntity(this.categoryGroupsSignal(), id)) notFound('Category group', id);
+    const inUse =
+      this.categoriesSignal().some((category) => category.groupId === id) ||
+      this.budgetsSignal().some((budget) => budget.groupId === id) ||
+      this.allocationsSignal().some((allocation) => allocation.groupId === id);
+    if (inUse) {
+      throw new Error(`Category group "${id}" is still referenced`);
+    }
+    this.categoryGroupsSignal.update((list) => removeEntity(list, id));
+  }
+
+  reorderCategoryGroups(kind: CategoryKind, orderedIds: string[]): void {
+    const siblingIds = new Set(
+      this.categoryGroupsSignal()
+        .filter((group) => group.kind === kind)
+        .map((group) => group.id),
+    );
+    const validOrderedIds = orderedIds.filter((id) => siblingIds.has(id));
+    this.categoryGroupsSignal.update((list) => reorderEntities(list, validOrderedIds));
+  }
+
   // --- Categories ---------------------------------------------------------
 
   createCategory(input: Omit<Category, 'id' | 'position'>): Category {
     const siblingPositions = this.categoriesSignal()
-      .filter((c) => c.kind === input.kind && c.parentId === input.parentId)
+      .filter((c) => c.kind === input.kind && c.groupId === input.groupId)
       .map((c) => c.position);
     const position = siblingPositions.length > 0 ? Math.max(...siblingPositions) + 1 : 0;
     const category: Category = { ...input, id: newId(), position };
@@ -185,15 +229,15 @@ export class MockStore {
 
   /**
    * Reassigns sequential positions (0, 1, 2, ...) to exactly the categories
-   * in `orderedIds`, scoped to the given `kind`/`parentId` sibling group -
+   * in `orderedIds`, scoped to the given `kind`/`groupId` sibling group -
    * other categories, including siblings not present in `orderedIds`, are
    * left untouched. Ids that don't actually belong to that sibling group are
    * ignored, so a caller can't accidentally reorder across groups.
    */
-  reorderCategories(kind: CategoryKind, parentId: string | undefined, orderedIds: string[]): void {
+  reorderCategories(kind: CategoryKind, groupId: string, orderedIds: string[]): void {
     const siblingIds = new Set(
       this.categoriesSignal()
-        .filter((c) => c.kind === kind && c.parentId === parentId)
+        .filter((c) => c.kind === kind && c.groupId === groupId)
         .map((c) => c.id)
     );
     const validOrderedIds = orderedIds.filter((id) => siblingIds.has(id));
@@ -204,7 +248,7 @@ export class MockStore {
 
   upsertBudget(input: Omit<Budget, 'id'>): Budget {
     const existing = this.budgetsSignal().find(
-      (budget) => budget.categoryId === input.categoryId && budget.month === input.month
+      (budget) => budget.groupId === input.groupId && budget.month === input.month
     );
     if (existing) {
       this.budgetsSignal.update((list) => updateEntity(list, existing.id, input));
@@ -293,7 +337,7 @@ export class MockStore {
   // --- Percentage budget planner -----------------------------------------
 
   upsertAllocation(input: Omit<BudgetAllocation, 'id'>): BudgetAllocation {
-    const existing = this.allocationsSignal().find((allocation) => allocation.categoryId === input.categoryId);
+    const existing = this.allocationsSignal().find((allocation) => allocation.groupId === input.groupId);
     if (existing) {
       this.allocationsSignal.update((list) => updateEntity(list, existing.id, input));
       return findEntity(this.allocationsSignal(), existing.id)!;

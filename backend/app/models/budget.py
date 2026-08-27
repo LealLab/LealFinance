@@ -24,14 +24,14 @@ class Budget(UserOwnedModel):
     __tablename__ = "budgets"
     __error_prefix__ = "budget"
     __table_args__ = (
-        UniqueConstraint("user_id", "category_id", "month", name="uq_budgets_user_category_month"),
+        UniqueConstraint("user_id", "group_id", "month", name="uq_budgets_user_group_month"),
         CheckConstraint(_MONTH_CHECK, name="ck_budgets_month_format"),
         CheckConstraint("amount >= 0", name="ck_budgets_amount_non_negative"),
     )
 
-    category_id: Mapped[uuid.UUID] = mapped_column(
+    group_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
-        ForeignKey("categories.id", ondelete="RESTRICT", name="fk_budgets_category_id"),
+        ForeignKey("category_groups.id", ondelete="RESTRICT", name="fk_budgets_group_id"),
         nullable=False,
     )
     month: Mapped[str] = mapped_column(String(7), nullable=False)
@@ -43,21 +43,25 @@ class Budget(UserOwnedModel):
 
 
 class BudgetAllocation(UserOwnedModel):
-    """A reusable percentage allocation for a top-level expense category -
+    """A reusable percentage allocation for an expense group -
     the base for auto-generated budgets (see app/services/budget_plan.py)."""
 
     __tablename__ = "budget_allocations"
     __error_prefix__ = "budget_allocation"
     __table_args__ = (
-        UniqueConstraint("user_id", "category_id", name="uq_budget_allocations_user_category"),
+        UniqueConstraint("user_id", "group_id", name="uq_budget_allocations_user_group"),
         CheckConstraint(
             "percentage >= 0 AND percentage <= 100", name="ck_budget_allocations_percentage_range"
         ),
     )
 
-    category_id: Mapped[uuid.UUID] = mapped_column(
+    group_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
-        ForeignKey("categories.id", ondelete="RESTRICT", name="fk_budget_allocations_category_id"),
+        ForeignKey(
+            "category_groups.id",
+            ondelete="RESTRICT",
+            name="fk_budget_allocations_group_id",
+        ),
         nullable=False,
     )
     percentage: Mapped[PercentageValue] = mapped_column(nullable=False)
