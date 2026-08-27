@@ -1,3 +1,5 @@
+import { Budget } from '../models/budget';
+import { BudgetAllocation } from '../models/budget-plan';
 import { Category } from '../models/category';
 import { Transaction } from '../models/transaction';
 import {
@@ -58,24 +60,45 @@ describe('isCategoryDeletable', () => {
   });
 });
 
+function budget(overrides: Partial<Budget> = {}): Budget {
+  return { id: 'budget', groupId: 'group', month: '2026-01', amount: '0', currency: 'BRL', ...overrides };
+}
+
+function allocation(overrides: Partial<BudgetAllocation> = {}): BudgetAllocation {
+  return { id: 'alloc', groupId: 'group', percentage: '0', ...overrides };
+}
+
 describe('categoryGroupUsage', () => {
-  it('counts categories in a group', () => {
+  it('counts categories, budgets, and allocations belonging to the group', () => {
     expect(
-      categoryGroupUsage('group', [
-        category(),
-        category({ id: 'other', groupId: 'other-group' }),
-        category({ id: 'second', groupId: 'group' }),
-      ]),
-    ).toEqual({ categories: 2 });
+      categoryGroupUsage(
+        'group',
+        [category(), category({ id: 'other', groupId: 'other-group' }), category({ id: 'second', groupId: 'group' })],
+        [budget(), budget({ id: 'other', groupId: 'other-group' })],
+        [allocation()],
+      ),
+    ).toEqual({ categories: 2, budgets: 1, allocations: 1 });
+  });
+
+  it('is all zero when nothing references the group', () => {
+    expect(categoryGroupUsage('group', [], [], [])).toEqual({ categories: 0, budgets: 0, allocations: 0 });
   });
 });
 
 describe('isCategoryGroupDeletable', () => {
-  it('is true when no category belongs to the group', () => {
-    expect(isCategoryGroupDeletable({ categories: 0 })).toBe(true);
+  it('is true when nothing references the group', () => {
+    expect(isCategoryGroupDeletable({ categories: 0, budgets: 0, allocations: 0 })).toBe(true);
   });
 
   it('is false when a category belongs to the group', () => {
-    expect(isCategoryGroupDeletable({ categories: 1 })).toBe(false);
+    expect(isCategoryGroupDeletable({ categories: 1, budgets: 0, allocations: 0 })).toBe(false);
+  });
+
+  it('is false when a budget still targets the group', () => {
+    expect(isCategoryGroupDeletable({ categories: 0, budgets: 1, allocations: 0 })).toBe(false);
+  });
+
+  it('is false when an allocation still targets the group', () => {
+    expect(isCategoryGroupDeletable({ categories: 0, budgets: 0, allocations: 1 })).toBe(false);
   });
 });

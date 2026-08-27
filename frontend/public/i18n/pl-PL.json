@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Usunąć grupę?",
-      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć grupę „{{name}}”?"
+      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć grupę „{{name}}”?",
+      "blockedTitle": "Nie można usunąć",
+      "blockedMessage": "Ta grupa nadal ma ustawiony budżet lub alokację. Usuń je, zanim usuniesz grupę."
     },
     "form": {
       "newTitle": "Nowa kategoria",

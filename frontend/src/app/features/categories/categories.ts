@@ -6,6 +6,8 @@ import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { openOnNewParam } from '../../core/open-on-new-param';
+import { BudgetPlanRepository } from '../../data/budget-plan.repository';
+import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
@@ -48,7 +50,7 @@ interface GroupRow {
  * string literals, but the call itself isn't to the `t` marker function,
  * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as transactions.ts / budgets.ts:
- * t(categories.delete.title, categories.delete.message, categories.delete.blockedTitle, categories.delete.blockedMessage, categories.deleteGroup.title, categories.deleteGroup.message)
+ * t(categories.delete.title, categories.delete.message, categories.delete.blockedTitle, categories.delete.blockedMessage, categories.deleteGroup.title, categories.deleteGroup.message, categories.deleteGroup.blockedTitle, categories.deleteGroup.blockedMessage)
  */
 @Component({
   selector: 'app-categories',
@@ -74,6 +76,8 @@ export class Categories {
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly budgetRepository = inject(BudgetRepository);
+  private readonly budgetPlanRepository = inject(BudgetPlanRepository);
   private readonly confirmService = inject(ConfirmService);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly collapseService = inject(CategoryCollapseService);
@@ -84,6 +88,10 @@ export class Categories {
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
+  });
+  private readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
+  private readonly allocationsResource = rxResource({
+    stream: () => this.budgetPlanRepository.listAllocations()
   });
   protected readonly displayCurrency = this.displayCurrencyService.currency;
 
@@ -238,8 +246,18 @@ export class Categories {
 
   protected async deleteGroup(group: CategoryGroup): Promise<void> {
     const categories = this.categoriesResource.value() ?? [];
-    const usage = categoryGroupUsage(group.id, categories);
-    if (!isCategoryGroupDeletable(usage)) return;
+    const budgets = this.budgetsResource.value() ?? [];
+    const allocations = this.allocationsResource.value() ?? [];
+    const usage = categoryGroupUsage(group.id, categories, budgets, allocations);
+
+    if (!isCategoryGroupDeletable(usage)) {
+      await this.confirmService.confirm(
+        'categories.deleteGroup.blockedTitle',
+        'categories.deleteGroup.blockedMessage',
+        'default'
+      );
+      return;
+    }
 
     const confirmed = await this.confirmService.confirm(
       'categories.deleteGroup.title',

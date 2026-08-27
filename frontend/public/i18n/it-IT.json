@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Eliminare il gruppo?",
-      "message": "Questa azione non può essere annullata. Vuoi eliminare il gruppo \"{{name}}\"?"
+      "message": "Questa azione non può essere annullata. Vuoi eliminare il gruppo \"{{name}}\"?",
+      "blockedTitle": "Impossibile eliminare",
+      "blockedMessage": "Questo gruppo ha ancora un budget o un'allocazione impostati. Rimuovili prima di eliminare il gruppo."
     },
     "form": {
       "newTitle": "Nuova categoria",

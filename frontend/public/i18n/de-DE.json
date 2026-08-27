@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Gruppe löschen?",
-      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie die Gruppe „{{name}}“ löschen?"
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie die Gruppe „{{name}}“ löschen?",
+      "blockedTitle": "Löschen nicht möglich",
+      "blockedMessage": "Für diese Gruppe ist noch ein Budget oder eine Zuweisung festgelegt. Entfernen Sie diese, bevor Sie die Gruppe löschen."
     },
     "form": {
       "newTitle": "Neue Kategorie",

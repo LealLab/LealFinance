@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Grup silinsin mi?",
-      "message": "Bu işlem geri alınamaz. \"{{name}}\" grubunu silmek istiyor musunuz?"
+      "message": "Bu işlem geri alınamaz. \"{{name}}\" grubunu silmek istiyor musunuz?",
+      "blockedTitle": "Silinemiyor",
+      "blockedMessage": "Bu grup için hâlâ bir bütçe veya dağılım tanımlı. Grubu silmeden önce bunları kaldırın."
     },
     "form": {
       "newTitle": "Yeni kategori",

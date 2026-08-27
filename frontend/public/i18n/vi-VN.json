@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Xóa nhóm?",
-      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa nhóm \"{{name}}\" không?"
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa nhóm \"{{name}}\" không?",
+      "blockedTitle": "Không thể xóa",
+      "blockedMessage": "Nhóm này vẫn còn ngân sách hoặc phân bổ được thiết lập. Hãy xóa chúng trước khi xóa nhóm."
     },
     "form": {
       "newTitle": "Danh mục mới",

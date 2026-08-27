@@ -5,9 +5,13 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
+import { BudgetPlanRepository } from '../../data/budget-plan.repository';
+import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
+import { MockBudgetPlanRepository } from '../../data/mock/mock-budget-plan.repository';
+import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
@@ -54,7 +58,9 @@ describe('Categories', () => {
         { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: BudgetPlanRepository, useClass: MockBudgetPlanRepository }
       ]
     }).compileComponents();
   });
@@ -191,6 +197,43 @@ describe('Categories', () => {
     fixture.detectChanges();
 
     expect(findCategoryRow(el, 'Outras Despesas')).toBeNull();
+  });
+
+  it('blocks deleting a group that still has a budget allocation after its last category is removed', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const confirmService = TestBed.inject(ConfirmService);
+
+    findDeleteButton(findCategoryRow(el, 'Outras Despesas')!)!.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(confirmService.request()?.titleKey).toBe('categories.delete.title');
+    confirmService.respond(true);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(findCategoryRow(el, 'Outras Despesas')).toBeNull();
+
+    const groupRow = findGroupRow(el, 'Outras Despesas')!;
+    const deleteButton = findDeleteButton(groupRow);
+    expect(deleteButton).toBeTruthy();
+    deleteButton!.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const request = confirmService.request();
+    expect(request?.titleKey).toBe('categories.deleteGroup.blockedTitle');
+    expect(request?.messageKey).toBe('categories.deleteGroup.blockedMessage');
+
+    confirmService.respond(true);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(findGroupRow(el, 'Outras Despesas')).toBeTruthy();
   });
 
   it('collapsing a group hides its categories and persists the choice to localStorage', async () => {

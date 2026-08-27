@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Delete group?",
-      "message": "This action cannot be undone. Do you want to delete the group \"{{name}}\"?"
+      "message": "This action cannot be undone. Do you want to delete the group \"{{name}}\"?",
+      "blockedTitle": "Cannot delete",
+      "blockedMessage": "This group still has a budget or allocation set. Remove them before deleting the group."
     },
     "form": {
       "newTitle": "New category",

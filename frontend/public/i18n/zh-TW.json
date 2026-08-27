@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "要刪除群組嗎？",
-      "message": "此操作無法復原。要刪除群組「{{name}}」嗎？"
+      "message": "此操作無法復原。要刪除群組「{{name}}」嗎？",
+      "blockedTitle": "無法刪除",
+      "blockedMessage": "此群組仍設有預算或分配比例。請先移除它們，再刪除群組。"
     },
     "form": {
       "newTitle": "新增分類",

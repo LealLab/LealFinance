@@ -584,7 +584,9 @@
     },
     "deleteGroup": {
       "title": "Excluir grupo?",
-      "message": "Esta ação não pode ser desfeita. Deseja excluir o grupo \"{{name}}\"?"
+      "message": "Esta ação não pode ser desfeita. Deseja excluir o grupo \"{{name}}\"?",
+      "blockedTitle": "Não é possível excluir",
+      "blockedMessage": "Este grupo ainda tem um orçamento ou uma alocação definidos. Remova-os antes de excluir o grupo."
     },
     "form": {
       "newTitle": "Nova categoria",
