@@ -55,38 +55,34 @@
         </button>
       </div>
 
-      <app-dropdown panelClass="w-56">
-        <button dropdownTrigger appButton variant="secondary" size="sm" type="button">
-          <app-icon name="grip" [size]="16" />
-          {{ t('transactions.actions.columns') }}
-        </button>
-        <p class="px-2 py-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
-          {{ t('transactions.columns.title') }}
-        </p>
-        @for (column of allColumns; track column) {
-          <label class="flex items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-surface-sunken">
-            <input
-              type="checkbox"
-              class="form-checkbox"
-              [checked]="prefs.isVisible(column)"
-              (change)="prefs.toggleColumn(column)"
-            />
-            {{ t('transactions.columns.' + column) }}
-          </label>
-        }
-      </app-dropdown>
-
       @if (mode() === 'list') {
-        <button appButton variant="secondary" size="sm" type="button" (click)="exportCsv()">
+        <app-dropdown panelClass="w-56">
+          <button dropdownTrigger appButton variant="secondary" type="button">
+            <app-icon name="grip" [size]="16" />
+            {{ t('transactions.actions.columns') }}
+          </button>
+          <p class="px-2 py-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
+            {{ t('transactions.columns.title') }}
+          </p>
+          @for (column of allColumns; track column) {
+            <label class="flex items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-surface-sunken">
+              <input
+                type="checkbox"
+                class="form-checkbox"
+                [checked]="prefs.isVisible(column)"
+                (change)="prefs.toggleColumn(column)"
+              />
+              {{ t('transactions.columns.' + column) }}
+            </label>
+          }
+        </app-dropdown>
+
+        <button appButton variant="secondary" type="button" (click)="exportCsv()">
           <app-icon name="arrowDownLeft" [size]="16" />
           {{ t('transactions.actions.exportCsv') }}
         </button>
       }
 
-      <button appButton variant="secondary" size="sm" type="button" (click)="openCreateTransfer()">
-        <app-icon name="swap" [size]="16" />
-        {{ t('transactions.actions.transfer') }}
-      </button>
       <button appButton variant="secondary" type="button" routerLink="/transactions/import">
         <app-icon name="arrowUpRight" [size]="16" />
         {{ t('transactions.actions.import') }}
@@ -295,21 +291,22 @@
     }
   }
 
-  <app-transaction-bulk-bar
-    [selected]="selectedRows()"
-    [categories]="categoriesResource.value() ?? []"
-    [categoryGroups]="categoryGroupsResource.value() ?? []"
-    [displayCurrency]="displayCurrency()"
-    [signedTotal]="selectedTotal()"
-    (assignCategory)="bulkCategorize($event)"
-    (deleteSelected)="bulkDelete()"
-    (clear)="clearSelection()"
-  />
+  @if (tab() === 'transactions' && mode() === 'list') {
+    <app-transaction-bulk-bar
+      [selected]="selectedRows()"
+      [categories]="categoriesResource.value() ?? []"
+      [categoryGroups]="categoryGroupsResource.value() ?? []"
+      [displayCurrency]="displayCurrency()"
+      [signedTotal]="selectedTotal()"
+      (assignCategory)="bulkCategorize($event)"
+      (deleteSelected)="bulkDelete()"
+      (clear)="clearSelection()"
+    />
+  }
 
   <app-transaction-form-modal
     [(open)]="txFormOpen"
     [transaction]="editingTx()"
-    [initialType]="newTxType()"
     [accounts]="accountsResource.value() ?? []"
     [categories]="categoriesResource.value() ?? []"
     [categoryGroups]="categoryGroupsResource.value() ?? []"

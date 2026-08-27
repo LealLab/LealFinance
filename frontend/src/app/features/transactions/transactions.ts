@@ -19,7 +19,8 @@ import {
   TransactionRepository,
   TransactionSort,
 } from '../../data/transaction.repository';
-import { CurrencyConverter } from '../../domain/calc/aggregations';
+import { identityConverter } from '../../domain/calc/aggregations';
+import { effectiveAmount } from '../../domain/calc/conversion';
 import { addDays, addMonthsClamped, formatIsoDate, monthKey, parseIsoDate } from '../../domain/calc/dates';
 import { projectOccurrences } from '../../domain/calc/recurrence';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
@@ -123,7 +124,6 @@ export class Transactions {
 
   protected readonly txFormOpen = signal(false);
   protected readonly editingTx = signal<Transaction | undefined>(undefined);
-  protected readonly newTxType = signal<TransactionType>('expense');
   protected readonly ruleFormOpen = signal(false);
   protected readonly editingRule = signal<RecurringRule | undefined>(undefined);
 
@@ -262,8 +262,18 @@ export class Transactions {
     ...new Set((this.openingBalancesResource.value() ?? []).map((b) => b.currency)),
   ]);
 
+  // A cross-currency transaction's running-balance delta is taken in its
+  // *effective* currency (the account it posted to), not tx.currency, so the
+  // converter has to cover that pair too - otherwise converterFromRates
+  // passes the amount through unconverted and add()/subtract() throw on the
+  // mismatch. See reports.ts for the same effectiveAmount().currency set.
   private readonly monthConverter = displayConverter(() => [
-    ...new Set((this.monthTxResource.value() ?? []).map((tx) => tx.currency)),
+    ...new Set(
+      (this.monthTxResource.value() ?? []).flatMap((tx) => [
+        tx.currency,
+        effectiveAmount(tx).currency,
+      ]),
+    ),
   ]);
 
   protected readonly calendarDays = computed(() => {
@@ -272,8 +282,11 @@ export class Transactions {
     const target = this.displayCurrency();
     const balances = this.openingBalancesResource.value();
 
+    // Running balances need both converters. Until every rate has arrived,
+    // render the grid without balances rather than feeding an unconverted
+    // passthrough into add()/subtract() (see display-converter.ts).
     const opening =
-      balances && openingConvert
+      balances && openingConvert && convert
         ? balances.reduce(
             (acc, b) => add(acc, openingConvert(money(b.balance, b.currency), target)),
             zero(target),
@@ -281,15 +294,36 @@ export class Transactions {
         : null;
 
     const weekStart = this.weekStart();
-    return buildMonthGrid(
+    const grid = buildMonthGrid(
       this.calendarMonth(),
       this.monthTxResource.value() ?? [],
       this.projectedRows().filter((p) => p.date.slice(0, 7) === this.calendarMonth()),
       opening,
-      (convert ?? ((amount: ReturnType<typeof money>) => amount)) as CurrencyConverter,
+      // Only reached when opening is null, so convert is never actually
+      // invoked here; identityConverter throws loudly if that ever changes.
+      convert ?? identityConverter,
       weekStart,
       formatIsoDate(new Date()),
     );
+
+    // Filters narrow the activity dots and the day drill-down, but never the
+    // running balance - that stays anchored to the true portfolio.
+    const filters = { ...this.filters(), search: this.debouncedSearch() };
+    const accountsById = this.accountsById();
+    const categoriesById = this.categoriesById();
+    return grid.map((day) => {
+      const shown = day.transactions.filter((tx) =>
+        matchesFilters(tx, filters, accountsById, categoriesById),
+      );
+      if (shown.length === day.transactions.length) return day;
+      return {
+        ...day,
+        transactions: shown,
+        hasIncome: shown.some((tx) => tx.type === 'income' || tx.type === 'interest'),
+        hasExpense: shown.some((tx) => tx.type === 'expense'),
+        hasTransfer: shown.some((tx) => tx.type === 'transfer'),
+      };
+    });
   });
 
   protected readonly weekStart = computed(() => {
@@ -417,13 +451,6 @@ export class Transactions {
 
   protected openCreateTx(): void {
     this.editingTx.set(undefined);
-    this.newTxType.set('expense');
-    this.txFormOpen.set(true);
-  }
-
-  protected openCreateTransfer(): void {
-    this.editingTx.set(undefined);
-    this.newTxType.set('transfer');
     this.txFormOpen.set(true);
   }
 

@@ -51,6 +51,17 @@ export class TransactionCalendar {
     this.days().find((day) => day.date === this.selectedDay()),
   );
 
+  protected readonly selectedDayLabel = computed(() => {
+    const day = this.selected();
+    return day
+      ? this.locale.localizeDate(day.date, undefined, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : '';
+  });
+
   protected readonly dayNet = computed(() => {
     const day = this.selected();
     if (!day) return null;

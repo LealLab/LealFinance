@@ -188,6 +188,100 @@ describe('Transactions', () => {
   });
 });
 
+describe('Transactions - calendar with a cross-currency month', () => {
+  const today = formatIsoDate(new Date());
+
+  // A BRL-denominated expense that posted to a USD account: its running-
+  // balance delta is taken in USD (conversion.currency), so the month
+  // converter must cover USD->BRL or add()/subtract() throw a currency
+  // mismatch and the whole calendar fails to render.
+  const crossCurrencyTx: Transaction = {
+    id: 'tx-xc',
+    type: 'expense',
+    date: today,
+    amount: '100.0000',
+    currency: 'BRL',
+    accountId: 'acc-1',
+    categoryId: 'cat-1',
+    description: 'Compra internacional',
+    conversion: { amount: '19.2300', currency: 'USD', rate: '0.1923', source: 'manual' },
+  };
+
+  class StubTransactionRepository extends TransactionRepository {
+    override list(): Observable<Transaction[]> {
+      return of([crossCurrencyTx]);
+    }
+    override listPage(): Observable<Page<Transaction>> {
+      return of({ items: [crossCurrencyTx], total: 1 });
+    }
+    override get(): Observable<Transaction | undefined> {
+      return of(undefined);
+    }
+    override create(): Observable<Transaction> {
+      return of(crossCurrencyTx);
+    }
+    override update(): Observable<Transaction> {
+      return of(crossCurrencyTx);
+    }
+    override delete(): Observable<void> {
+      return of(undefined);
+    }
+    override bulkDelete(): Observable<void> {
+      return of(undefined);
+    }
+    override bulkCategorize(): Observable<void> {
+      return of(undefined);
+    }
+    override importPreview(): Observable<ImportPreview> {
+      return of({ headers: [], mapping: {}, rows: [] });
+    }
+    override importCommit(): Observable<number> {
+      return of(0);
+    }
+  }
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        Transactions,
+        TranslocoTestingModule.forRoot({
+          langs: { 'pt-BR': ptBR },
+          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
+        })
+      ],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: AccountRepository, useClass: MockAccountRepository },
+        { provide: TransactionRepository, useClass: StubTransactionRepository },
+        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
+      ]
+    }).compileComponents();
+  });
+
+  it('builds the month grid without a currency mismatch', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.componentInstance['setMode']('calendar');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const days = fixture.componentInstance['calendarDays']();
+    expect(days.length).toBe(42);
+    expect(days.some((d) => d.date === today && d.transactions.length === 1)).toBe(true);
+  });
+});
+
 describe('Transactions - already-posted occurrences are not projected as ghosts', () => {
   const today = formatIsoDate(new Date());
 

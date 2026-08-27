@@ -41,9 +41,10 @@
       @for (day of days(); track day.date) {
         <button
           type="button"
-          class="flex min-h-16 flex-col items-start gap-1 bg-surface-raised p-2 text-left"
+          class="flex min-h-16 flex-col items-start gap-1 bg-surface-raised p-2 text-left disabled:cursor-default"
           [class.opacity-50]="!day.inMonth"
           [class]="day.date === selectedDay() ? 'outline outline-2 outline-accent' : ''"
+          [disabled]="!day.inMonth"
           (click)="daySelected.emit(day.date)"
         >
           <span
@@ -74,7 +75,7 @@
         {{ t('transactions.calendar.selectedDay') }}
       </p>
       <div class="mb-3 flex items-baseline justify-between gap-2">
-        <h2 class="text-sm font-semibold text-content-primary">{{ day.date }}</h2>
+        <h2 class="text-sm font-semibold text-content-primary">{{ selectedDayLabel() }}</h2>
         @if (dayNet() !== null) {
           <span
             class="font-mono text-sm font-semibold tabular-nums"
@@ -114,7 +115,7 @@
         </ul>
       }
     } @else {
-      <p class="text-sm text-content-muted">{{ t('transactions.calendar.selectedDay') }}</p>
+      <p class="text-sm text-content-muted">{{ t('transactions.calendar.selectDayHint') }}</p>
     }
   </div>
 </div>
