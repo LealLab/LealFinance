@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Supprimer le groupe ?",
-      "message": "Cette action est irréversible. Voulez-vous supprimer le groupe « {{name}} » ?",
-      "blockedTitle": "Suppression impossible",
-      "blockedMessage": "Ce groupe a encore un budget ou une allocation définis. Supprimez-les avant de supprimer le groupe."
+      "message": "Cette action est irréversible. Voulez-vous supprimer le groupe « {{name}} » ?"
     },
     "form": {
       "newTitle": "Nouvelle catégorie",

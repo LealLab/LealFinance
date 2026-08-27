@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Ștergi grupul?",
-      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi grupul „{{name}}”?",
-      "blockedTitle": "Nu se poate șterge",
-      "blockedMessage": "Acest grup are încă un buget sau o alocare setate. Elimină-le înainte de a șterge grupul."
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi grupul „{{name}}”?"
     },
     "form": {
       "newTitle": "Categorie nouă",

@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Poistetaanko ryhmä?",
-      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa ryhmän \"{{name}}\"?",
-      "blockedTitle": "Poistaminen ei onnistu",
-      "blockedMessage": "Tällä ryhmällä on yhä budjetti tai jako asetettuna. Poista ne ennen ryhmän poistamista."
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa ryhmän \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Uusi luokka",

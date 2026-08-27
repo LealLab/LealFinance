@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "确认删除分组？",
-      "message": "此操作无法撤销。要删除分组“{{name}}”吗？",
-      "blockedTitle": "无法删除",
-      "blockedMessage": "此分组仍设置了预算或分配比例。请先移除它们，再删除分组。"
+      "message": "此操作无法撤销。要删除分组“{{name}}”吗？"
     },
     "form": {
       "newTitle": "新建分类",

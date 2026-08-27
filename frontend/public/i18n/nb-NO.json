@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Slett gruppe?",
-      "message": "Denne handlingen kan ikke angres. Vil du slette gruppen «{{name}}»?",
-      "blockedTitle": "Kan ikke slette",
-      "blockedMessage": "Denne gruppen har fortsatt et budsjett eller en fordeling angitt. Fjern dem før du sletter gruppen."
+      "message": "Denne handlingen kan ikke angres. Vil du slette gruppen «{{name}}»?"
     },
     "form": {
       "newTitle": "Ny kategori",

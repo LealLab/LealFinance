@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Hapus grup?",
-      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus grup \"{{name}}\"?",
-      "blockedTitle": "Tidak dapat menghapus",
-      "blockedMessage": "Grup ini masih memiliki anggaran atau alokasi yang ditetapkan. Hapus terlebih dahulu sebelum menghapus grup."
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus grup \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Kategori baru",

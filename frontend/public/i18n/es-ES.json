@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "¿Eliminar el grupo?",
-      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar el grupo «{{name}}»?",
-      "blockedTitle": "No se puede eliminar",
-      "blockedMessage": "Este grupo todavía tiene un presupuesto o una asignación definidos. Elimínalos antes de eliminar el grupo."
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar el grupo «{{name}}»?"
     },
     "form": {
       "newTitle": "Nueva categoría",

@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Ta bort grupp?",
-      "message": "Åtgärden kan inte ångras. Vill du ta bort gruppen \"{{name}}\"?",
-      "blockedTitle": "Kan inte ta bort",
-      "blockedMessage": "Den här gruppen har fortfarande en budget eller fördelning inställd. Ta bort dem innan du tar bort gruppen."
+      "message": "Åtgärden kan inte ångras. Vill du ta bort gruppen \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Ny kategori",

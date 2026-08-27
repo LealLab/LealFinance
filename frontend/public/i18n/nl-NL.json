@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Groep verwijderen?",
-      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je de groep \"{{name}}\" verwijderen?",
-      "blockedTitle": "Kan niet worden verwijderd",
-      "blockedMessage": "Voor deze groep is nog een budget of toewijzing ingesteld. Verwijder deze voordat je de groep verwijdert."
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je de groep \"{{name}}\" verwijderen?"
     },
     "form": {
       "newTitle": "Nieuwe categorie",

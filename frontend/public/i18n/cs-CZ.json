@@ -584,9 +584,7 @@
     },
     "deleteGroup": {
       "title": "Odstranit skupinu?",
-      "message": "Tuto akci nelze vrátit zpět. Chcete odstranit skupinu „{{name}}“?",
-      "blockedTitle": "Nelze odstranit",
-      "blockedMessage": "Tato skupina má stále nastavený rozpočet nebo alokaci. Před odstraněním skupiny je odstraňte."
+      "message": "Tuto akci nelze vrátit zpět. Chcete odstranit skupinu „{{name}}“?"
     },
     "form": {
       "newTitle": "Nová kategorie",
