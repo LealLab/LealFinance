@@ -259,9 +259,7 @@ async def preview_import(
 
     categories = await ownership.list_owned(db, Category, user_id)
     category_index = {
-        (category.kind, category.name.strip().casefold()): category.id
-        for category in categories
-        if not category.archived
+        (category.kind, category.name.strip().casefold()): category.id for category in categories
     }
 
     valid_dates = [row.date for row in parsed if row.date is not None]

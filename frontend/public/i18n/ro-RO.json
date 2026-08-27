@@ -558,22 +558,19 @@
   "categories": {
     "title": "Categorii",
     "description": "Organizează veniturile și cheltuielile pe categorii.",
-    "showArchived": "Afișează categoriile arhivate",
-    "archivedBadge": "Arhivată",
     "actions": {
-      "new": "Categorie nouă",
+      "addGroup": "Adaugă un grup",
+      "addCategory": "Adaugă o categorie",
+      "addCategoryToGroup": "Adaugă o categorie la acest grup",
       "edit": "Editează",
-      "archive": "Arhivează",
-      "unarchive": "Restaurează din arhivă",
       "delete": "Șterge",
-      "addChild": "Subcategorie nouă",
       "collapse": "Restrânge",
       "expand": "Extinde",
       "dragHandle": "Reordonează"
     },
     "empty": {
       "title": "Nu există încă nicio categorie",
-      "description": "Creează categorii pentru a-ți organiza tranzacțiile."
+      "description": "Creează grupuri și categorii pentru a-ți organiza tranzacțiile."
     },
     "sections": {
       "income": "Categorii de venituri",
@@ -583,16 +580,22 @@
       "title": "Ștergi categoria?",
       "message": "Această acțiune nu poate fi anulată. Vrei să ștergi categoria „{{name}}”?",
       "blockedTitle": "Categoria nu poate fi ștearsă",
-      "blockedMessage": "Această categorie este încă utilizată: {{transactions}} tranzacții, {{budgets}} bugete și {{children}} subcategorii o folosesc. Arhivează categoria în loc să o ștergi."
+      "blockedMessage": "Această categorie este încă utilizată de {{transactions}} tranzacții. Șterge acele tranzacții înainte de a șterge categoria."
+    },
+    "deleteGroup": {
+      "title": "Ștergi grupul?",
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi grupul „{{name}}”?"
     },
     "form": {
       "newTitle": "Categorie nouă",
       "editTitle": "Editează categoria",
-      "saveError": "Categoria nu a putut fi salvată. Încearcă din nou.",
+      "newGroupTitle": "Grup nou",
+      "editGroupTitle": "Editează grupul",
+      "saveError": "Grupul sau categoria nu au putut fi salvate. Încearcă din nou.",
       "fields": {
         "name": "Nume",
-        "parent": "Categorie părinte",
-        "noParent": "Niciuna (categorie principală)",
+        "group": "Grup",
+        "selectGroup": "Selectează un grup",
         "color": "Culoare",
         "icon": "Pictogramă"
       },
@@ -656,8 +659,8 @@
       "saveError": "Bugetul nu a putut fi salvat. Încearcă din nou.",
       "fields": {
         "month": "Lună",
-        "category": "Categorie",
-        "selectCategory": "Selectează o categorie",
+        "group": "Grup",
+        "selectGroup": "Selectează un grup",
         "amount": "Sumă",
         "currency": "Monedă"
       },

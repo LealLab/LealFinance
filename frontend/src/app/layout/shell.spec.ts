@@ -4,9 +4,11 @@ import { provideRouter } from '@angular/router';
 import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
 import { AccountRepository } from '../data/account.repository';
 import { BudgetRepository } from '../data/budget.repository';
+import { CategoryGroupRepository } from '../data/category-group.repository';
 import { CategoryRepository } from '../data/category.repository';
 import { MockAccountRepository } from '../data/mock/mock-account.repository';
 import { MockBudgetRepository } from '../data/mock/mock-budget.repository';
+import { MockCategoryGroupRepository } from '../data/mock/mock-category-group.repository';
 import { MockCategoryRepository } from '../data/mock/mock-category.repository';
 import { MOCK_LATENCY_MS } from '../data/mock/mock-latency';
 import { MockTransactionRepository } from '../data/mock/mock-transaction.repository';
@@ -41,6 +43,7 @@ describe('Shell', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
       ],

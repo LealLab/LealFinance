@@ -558,22 +558,19 @@
   "categories": {
     "title": "カテゴリ",
     "description": "収入と支出をカテゴリ別に整理します。",
-    "showArchived": "アーカイブ済みのカテゴリを表示",
-    "archivedBadge": "アーカイブ済み",
     "actions": {
-      "new": "新しいカテゴリ",
+      "addGroup": "グループを追加",
+      "addCategory": "カテゴリを追加",
+      "addCategoryToGroup": "このグループにカテゴリを追加",
       "edit": "編集",
-      "archive": "アーカイブ",
-      "unarchive": "アーカイブ解除",
       "delete": "削除",
-      "addChild": "新しいサブカテゴリ",
       "collapse": "折りたたむ",
       "expand": "展開",
       "dragHandle": "並べ替え"
     },
     "empty": {
       "title": "カテゴリはまだありません",
-      "description": "カテゴリを作成して、取引を整理しましょう。"
+      "description": "グループとカテゴリを作成して、取引を整理しましょう。"
     },
     "sections": {
       "income": "収入カテゴリ",
@@ -583,16 +580,22 @@
       "title": "カテゴリを削除しますか？",
       "message": "この操作は取り消せません。カテゴリ「{{name}}」を削除しますか？",
       "blockedTitle": "削除できません",
-      "blockedMessage": "このカテゴリは使用中です（取引：{{transactions}}件、予算：{{budgets}}件、サブカテゴリ：{{children}}件）。削除せず、アーカイブしてください。"
+      "blockedMessage": "このカテゴリは{{transactions}}件の取引で使用中です。カテゴリを削除する前に、これらの取引を削除してください。"
+    },
+    "deleteGroup": {
+      "title": "グループを削除しますか？",
+      "message": "この操作は取り消せません。グループ「{{name}}」を削除しますか？"
     },
     "form": {
       "newTitle": "新しいカテゴリ",
       "editTitle": "カテゴリを編集",
-      "saveError": "カテゴリを保存できませんでした。もう一度お試しください。",
+      "newGroupTitle": "新しいグループ",
+      "editGroupTitle": "グループを編集",
+      "saveError": "グループまたはカテゴリを保存できませんでした。もう一度お試しください。",
       "fields": {
         "name": "名前",
-        "parent": "親カテゴリ",
-        "noParent": "なし（最上位カテゴリ）",
+        "group": "グループ",
+        "selectGroup": "グループを選択",
         "color": "色",
         "icon": "アイコン"
       },
@@ -656,8 +659,8 @@
       "saveError": "予算を保存できませんでした。もう一度お試しください。",
       "fields": {
         "month": "月",
-        "category": "カテゴリ",
-        "selectCategory": "カテゴリを選択",
+        "group": "グループ",
+        "selectGroup": "グループを選択",
         "amount": "金額",
         "currency": "通貨"
       },

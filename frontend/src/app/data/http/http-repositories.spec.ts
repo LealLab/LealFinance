@@ -3,6 +3,10 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { HttpAccountRepository } from './http-account.repository';
 import { HttpAgentProviderRepository } from './http-agent-provider.repository';
+import { HttpBudgetPlanRepository } from './http-budget-plan.repository';
+import { HttpBudgetRepository } from './http-budget.repository';
+import { HttpCategoryGroupRepository } from './http-category-group.repository';
+import { HttpCategoryRepository } from './http-category.repository';
 import { HttpExchangeRateRepository } from './http-exchange-rate.repository';
 import { HttpGoalRepository } from './http-goal.repository';
 import { HttpManualRateRepository } from './http-manual-rate.repository';
@@ -18,6 +22,97 @@ describe('HTTP repositories', () => {
     http = TestBed.inject(HttpTestingController);
   });
   afterEach(() => http.verify());
+
+  it('uses category-group CRUD and reorder endpoints', () => {
+    let groups: unknown;
+    TestBed.inject(HttpCategoryGroupRepository).list().subscribe((result) => (groups = result));
+    const listReq = http.expectOne('/api/v1/category-groups');
+    expect(listReq.request.method).toBe('GET');
+    listReq.flush([]);
+    expect(groups).toEqual([]);
+
+    TestBed.inject(HttpCategoryGroupRepository)
+      .create({ name: 'Housing', kind: 'expense', color: '#000000', icon: 'home' })
+      .subscribe();
+    const createReq = http.expectOne('/api/v1/category-groups');
+    expect(createReq.request.method).toBe('POST');
+    expect(createReq.request.body).toEqual({
+      name: 'Housing',
+      kind: 'expense',
+      color: '#000000',
+      icon: 'home',
+    });
+    createReq.flush({
+      id: 'g',
+      name: 'Housing',
+      kind: 'expense',
+      color: '#000000',
+      icon: 'home',
+      position: 0,
+    });
+
+    TestBed.inject(HttpCategoryGroupRepository).update('g', { name: 'Home' }).subscribe();
+    const updateReq = http.expectOne('/api/v1/category-groups/g');
+    expect(updateReq.request.method).toBe('PATCH');
+    expect(updateReq.request.body).toEqual({ name: 'Home' });
+    updateReq.flush({ id: 'g', name: 'Home', kind: 'expense', color: '#000000', icon: 'home', position: 0 });
+
+    TestBed.inject(HttpCategoryGroupRepository).reorder('expense', ['g']).subscribe();
+    const reorderReq = http.expectOne('/api/v1/category-groups/reorder');
+    expect(reorderReq.request.method).toBe('POST');
+    expect(reorderReq.request.body).toEqual({ kind: 'expense', ordered_ids: ['g'] });
+    reorderReq.flush(null);
+
+    TestBed.inject(HttpCategoryGroupRepository).delete('g').subscribe();
+    const deleteReq = http.expectOne('/api/v1/category-groups/g');
+    expect(deleteReq.request.method).toBe('DELETE');
+    deleteReq.flush(null);
+  });
+
+  it('uses group_id for category and budget endpoints', () => {
+    TestBed.inject(HttpCategoryRepository)
+      .create({ name: 'Rent', kind: 'expense', groupId: 'g', color: '#000000', icon: 'home' })
+      .subscribe();
+    const categoryCreate = http.expectOne('/api/v1/categories');
+    expect(categoryCreate.request.method).toBe('POST');
+    expect(categoryCreate.request.body).toEqual({
+      name: 'Rent',
+      kind: 'expense',
+      group_id: 'g',
+      color: '#000000',
+      icon: 'home',
+    });
+    categoryCreate.flush({
+      id: 'c',
+      name: 'Rent',
+      kind: 'expense',
+      group_id: 'g',
+      color: '#000000',
+      icon: 'home',
+      position: 0,
+    });
+
+    TestBed.inject(HttpCategoryRepository).reorder('expense', 'g', ['c']).subscribe();
+    const categoryReorder = http.expectOne('/api/v1/categories/reorder');
+    expect(categoryReorder.request.body).toEqual({ kind: 'expense', group_id: 'g', ordered_ids: ['c'] });
+    categoryReorder.flush(null);
+
+    TestBed.inject(HttpBudgetRepository)
+      .upsert({ groupId: 'g', month: '2026-08', amount: '100', currency: 'BRL' })
+      .subscribe();
+    const budgetReq = http.expectOne('/api/v1/budgets');
+    expect(budgetReq.request.method).toBe('PUT');
+    expect(budgetReq.request.body).toEqual({ group_id: 'g', month: '2026-08', amount: '100', currency: 'BRL' });
+    budgetReq.flush({ id: 'b', group_id: 'g', month: '2026-08', amount: '100', currency: 'BRL' });
+
+    TestBed.inject(HttpBudgetPlanRepository)
+      .upsertAllocation({ groupId: 'g', percentage: '20' })
+      .subscribe();
+    const allocationReq = http.expectOne('/api/v1/budget-allocations');
+    expect(allocationReq.request.method).toBe('PUT');
+    expect(allocationReq.request.body).toEqual({ group_id: 'g', percentage: '20' });
+    allocationReq.flush({ id: 'a', group_id: 'g', percentage: '20' });
+  });
 
   it('sends transaction filters with backend parameter names', () => {
     TestBed.inject(HttpTransactionRepository)

@@ -49,14 +49,24 @@ export interface InstitutionWire {
 export type InstitutionInputWire = Omit<InstitutionWire, 'id'>;
 export type InstitutionPatchWire = NullablePatch<InstitutionInputWire>;
 
+export interface CategoryGroupWire {
+  id: string;
+  name: string;
+  kind: CategoryKind;
+  color: string;
+  icon: IconName;
+  position: number;
+}
+export type CategoryGroupInputWire = Omit<CategoryGroupWire, 'id' | 'position'>;
+export type CategoryGroupPatchWire = NullablePatch<Omit<CategoryGroupWire, 'id'>>;
+
 export interface CategoryWire {
   id: string;
   name: string;
   kind: CategoryKind;
-  parent_id: string | null;
+  group_id: string;
   color: string;
   icon: IconName;
-  archived: boolean;
   position: number;
 }
 export type CategoryInputWire = Omit<CategoryWire, 'id' | 'position'>;
@@ -64,7 +74,7 @@ export type CategoryPatchWire = NullablePatch<Omit<CategoryWire, 'id'>>;
 
 export interface BudgetWire {
   id: string;
-  category_id: string;
+  group_id: string;
   month: string;
   amount: string;
   currency: string;
@@ -73,7 +83,7 @@ export type BudgetInputWire = Omit<BudgetWire, 'id'>;
 
 export interface BudgetAllocationWire {
   id: string;
-  category_id: string;
+  group_id: string;
   percentage: string;
 }
 export type BudgetAllocationInputWire = Omit<BudgetAllocationWire, 'id'>;

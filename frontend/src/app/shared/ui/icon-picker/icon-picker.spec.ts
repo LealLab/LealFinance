@@ -22,6 +22,20 @@ class IconPickerHost {
   }
 }
 
+@Component({
+  selector: 'app-inline-icon-picker-host',
+  imports: [IconPicker],
+  template: `<app-icon-picker [inline]="true" [selected]="selected()" (picked)="onPicked($event)" />`
+})
+class InlineIconPickerHost {
+  readonly selected = signal<IconName>('tag');
+  readonly lastPicked = signal<IconName | undefined>(undefined);
+
+  onPicked(name: IconName): void {
+    this.lastPicked.set(name);
+  }
+}
+
 describe('IconPicker', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -90,5 +104,19 @@ describe('IconPicker', () => {
 
     expect(fixture.componentInstance.lastPicked()).toBe('wallet');
     expect(fixture.componentInstance.open()).toBe(false);
+  });
+
+  it('renders inline without a dialog and still emits picked icons', () => {
+    const fixture = TestBed.createComponent(InlineIconPickerHost);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('dialog')).toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('button[aria-pressed]').length).toBe(PICKABLE_ICON_COUNT);
+
+    const button = fixture.nativeElement.querySelector('button[aria-label="Carteira"]') as HTMLButtonElement;
+    button.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.lastPicked()).toBe('wallet');
   });
 });

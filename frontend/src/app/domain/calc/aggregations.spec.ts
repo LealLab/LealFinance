@@ -4,6 +4,7 @@ import { Category } from '../models/category';
 import { ExchangeRate } from '../models/exchange-rate';
 import { Transaction } from '../models/transaction';
 import {
+  categoryGroupId,
   categoryBreakdown,
   convertedOrNull,
   converterFromRates,
@@ -82,33 +83,32 @@ describe('categoryBreakdown', () => {
       id: 'transport',
       name: 'Transporte',
       kind: 'expense',
+      groupId: 'group-transport',
       color: '#000',
       icon: 'tag',
-      archived: false,
       position: 0
     },
     {
       id: 'uber',
       name: 'Uber',
       kind: 'expense',
-      parentId: 'transport',
+      groupId: 'group-transport',
       color: '#000',
       icon: 'tag',
-      archived: false,
       position: 0
     },
     {
       id: 'food',
       name: 'Alimentação',
       kind: 'expense',
+      groupId: 'group-food',
       color: '#000',
       icon: 'tag',
-      archived: false,
       position: 1
     }
   ];
 
-  it('rolls up child-category spend into the parent', () => {
+  it('rolls up category spend into its group', () => {
     const transactions = [
       tx({ id: '1', categoryId: 'transport', amount: '100' }),
       tx({ id: '2', categoryId: 'uber', amount: '50' }),
@@ -117,8 +117,8 @@ describe('categoryBreakdown', () => {
 
     const breakdown = categoryBreakdown(transactions, categories, 'BRL');
 
-    const transport = breakdown.find((entry) => entry.categoryId === 'transport');
-    const food = breakdown.find((entry) => entry.categoryId === 'food');
+    const transport = breakdown.find((entry) => entry.groupId === 'group-transport');
+    const food = breakdown.find((entry) => entry.groupId === 'group-food');
     expect(transport?.total).toEqual(money('150', 'BRL'));
     expect(food?.total).toEqual(money('80', 'BRL'));
   });
@@ -131,7 +131,7 @@ describe('categoryBreakdown', () => {
 
     const breakdown = categoryBreakdown(transactions, categories, 'BRL');
 
-    expect(breakdown.map((entry) => entry.categoryId)).toEqual(['transport', 'food']);
+    expect(breakdown.map((entry) => entry.groupId)).toEqual(['group-transport', 'group-food']);
   });
 
   it('excludes income and transfers, and transactions without a category', () => {
@@ -144,7 +144,7 @@ describe('categoryBreakdown', () => {
 
     const breakdown = categoryBreakdown(transactions, categories, 'BRL');
 
-    expect(breakdown).toEqual([{ categoryId: 'food', total: money('10', 'BRL') }]);
+    expect(breakdown).toEqual([{ groupId: 'group-food', total: money('10', 'BRL') }]);
   });
 
   it('uses the recorded conversion amount for a foreign-currency expense', () => {
@@ -159,8 +159,23 @@ describe('categoryBreakdown', () => {
     ];
 
     expect(categoryBreakdown(transactions, categories, 'BRL')).toEqual([
-      { categoryId: 'food', total: money('260', 'BRL') }
+      { groupId: 'group-food', total: money('260', 'BRL') }
     ]);
+  });
+});
+
+describe('categoryGroupId', () => {
+  it('returns the category group id and falls back for unknown categories', () => {
+    expect(categoryGroupId('uber', [{
+      id: 'uber',
+      name: 'Uber',
+      kind: 'expense',
+      groupId: 'group-transport',
+      color: '#000',
+      icon: 'tag',
+      position: 0,
+    }])).toBe('group-transport');
+    expect(categoryGroupId('missing', [])).toBe('missing');
   });
 });
 

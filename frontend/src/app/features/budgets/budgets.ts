@@ -10,6 +10,7 @@ import { PreferenceService } from '../../core/preference.service';
 import { ThemeService } from '../../core/theme.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import {
@@ -28,6 +29,7 @@ import { monthKey } from '../../domain/calc/dates';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { Transaction } from '../../domain/models/transaction';
 import { isNegative, isZero, Money, subtract, sum } from '../../shared/money/money';
 import { CurrencyConverter } from '../../domain/calc/aggregations';
@@ -50,7 +52,7 @@ import { BudgetFormModal } from './budget-form-modal';
 
 interface BudgetRow extends BudgetProgress {
   budget: Budget;
-  category: Category | undefined;
+  group: CategoryGroup | undefined;
   isPercentage: boolean;
   percentage?: string;
 }
@@ -86,6 +88,7 @@ export class Budgets {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly budgetPlanRepository = inject(BudgetPlanRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly confirmService = inject(ConfirmService);
@@ -107,6 +110,9 @@ export class Budgets {
   });
   protected readonly categoriesResource = rxResource({
     stream: () => this.categoryRepository.list(),
+  });
+  protected readonly categoryGroupsResource = rxResource({
+    stream: () => this.categoryGroupRepository.list(),
   });
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list(),
@@ -146,8 +152,8 @@ export class Budgets {
     openOnNewParam(() => this.openCreate());
   }
 
-  private readonly categoriesById = computed(
-    () => new Map(this.categoriesResource.value()?.map((c) => [c.id, c]) ?? []),
+  private readonly categoryGroupsById = computed(
+    () => new Map(this.categoryGroupsResource.value()?.map((group) => [group.id, group]) ?? []),
   );
 
   private displayBudgetProgress(
@@ -169,36 +175,36 @@ export class Budgets {
     const categories = this.categoriesResource.value() ?? [];
     const transactions = this.transactionsResource.value() ?? [];
     const month = this.selectedMonth();
-    const byId = this.categoriesById();
+    const byId = this.categoryGroupsById();
 
     return budgets
       .filter((budget) => budget.month === month)
       .map((budget) => ({
         ...this.displayBudgetProgress(convert, budget, transactions, categories),
         budget,
-        category: byId.get(budget.categoryId),
+        group: byId.get(budget.groupId),
         isPercentage: false,
       }))
-      .sort((a, b) => (a.category?.name ?? '').localeCompare(b.category?.name ?? ''));
+      .sort((a, b) => (a.group?.name ?? '').localeCompare(b.group?.name ?? ''));
   });
 
   protected readonly allocationRows = computed(() => {
-    const categories = (this.categoriesResource.value() ?? []).filter(
-      (category) => category.kind === 'expense' && !category.parentId && !category.archived,
-    );
-    const fixedIds = new Set(this.fixedBudgetRows().map((row) => row.budget.categoryId));
-    return categories.map((category) => ({
-      category,
-      fixed: fixedIds.has(category.id),
-      percentage: this.allocationValue(category.id),
+    const groups = (this.categoryGroupsResource.value() ?? [])
+      .filter((group) => group.kind === 'expense')
+      .sort((a, b) => a.position - b.position);
+    const fixedIds = new Set(this.fixedBudgetRows().map((row) => row.budget.groupId));
+    return groups.map((group) => ({
+      group,
+      fixed: fixedIds.has(group.id),
+      percentage: this.allocationValue(group.id),
     }));
   });
 
   protected readonly totalPercentage = computed(() =>
     allocationTotal(
       this.allocationRows().map((row) => ({
-        id: row.category.id,
-        categoryId: row.category.id,
+        id: row.group.id,
+        groupId: row.group.id,
         percentage: row.percentage,
       })),
     ),
@@ -214,11 +220,12 @@ export class Budgets {
     const convert = this.converter();
     if (!convert) return [];
     const categories = this.categoriesResource.value() ?? [];
+    const groups = this.categoryGroupsResource.value() ?? [];
     const allocations: BudgetAllocation[] = this.allocationRows()
       .filter((row) => !row.fixed && Number(row.percentage) > 0)
       .map((row) => ({
-        id: row.category.id,
-        categoryId: row.category.id,
+        id: row.group.id,
+        groupId: row.group.id,
         percentage: row.percentage,
       }));
     const budgets = allocationBudgets(
@@ -232,7 +239,7 @@ export class Budgets {
     return budgets.map((entry) => ({
       ...this.displayBudgetProgress(convert, entry.budget, transactions, categories),
       budget: entry.budget,
-      category: categories.find((category) => category.id === entry.categoryId),
+      group: groups.find((group) => group.id === entry.groupId),
       isPercentage: true,
       percentage: entry.percentage,
     }));
@@ -247,30 +254,30 @@ export class Budgets {
     this.theme.current();
     const rows = this.allocationRows().filter((row) => Number(row.percentage) > 0);
     const colorMap = categoryColorMap(
-      rows.map((row) => row.category.id),
+      rows.map((row) => row.group.id),
       this.theme.current(),
     );
     return {
-      labels: rows.map((row) => row.category.name),
+      labels: rows.map((row) => row.group.name),
       datasets: [
         {
           label: this.transloco.translate('budgets.planner.chartLabel'),
           data: rows.map((row) => Number(row.percentage)),
-          colors: rows.map((row) => colorMap.get(row.category.id) ?? resolveCssColor('--accent')),
+          colors: rows.map((row) => colorMap.get(row.group.id) ?? resolveCssColor('--accent')),
         },
       ],
     };
   });
 
   protected readonly unbudgetedRows = computed<
-    (UnbudgetedSpend & { category: Category | undefined })[]
+    (UnbudgetedSpend & { group: CategoryGroup | undefined })[]
   >(() => {
     const convert = this.converter();
     if (!convert) return [];
     const transactions = this.transactionsResource.value() ?? [];
     const categories = this.categoriesResource.value() ?? [];
     const budgets = this.budgetRows().map((row) => row.budget);
-    const byId = this.categoriesById();
+    const byId = this.categoryGroupsById();
 
     return unbudgetedSpend(
       transactions,
@@ -279,7 +286,7 @@ export class Budgets {
       this.selectedMonth(),
       this.displayCurrency(),
       convert,
-    ).map((entry) => ({ ...entry, category: byId.get(entry.categoryId) }));
+    ).map((entry) => ({ ...entry, group: byId.get(entry.groupId) }));
   });
 
   protected readonly totals = computed(() => {
@@ -294,21 +301,19 @@ export class Budgets {
     return expense || isNegative(value) ? 'negative' : 'positive';
   }
 
-  protected readonly availableCategoriesForNewBudget = computed<Category[]>(() => {
-    const categories = this.categoriesResource.value() ?? [];
-    const budgetedIds = new Set(this.budgetRows().map((row) => row.budget.categoryId));
+  protected readonly availableGroupsForNewBudget = computed<CategoryGroup[]>(() => {
+    const groups = this.categoryGroupsResource.value() ?? [];
+    const budgetedIds = new Set(this.budgetRows().map((row) => row.budget.groupId));
     const allocatedIds = new Set(
       this.allocationRows()
         .filter((row) => Number(row.percentage) > 0)
-        .map((row) => row.category.id),
+        .map((row) => row.group.id),
     );
-    return categories.filter(
-      (c) =>
-        c.kind === 'expense' &&
-        !c.parentId &&
-        !c.archived &&
-        !budgetedIds.has(c.id) &&
-        !allocatedIds.has(c.id),
+    return groups.filter(
+      (group) =>
+        group.kind === 'expense' &&
+        !budgetedIds.has(group.id) &&
+        !allocatedIds.has(group.id),
     );
   });
 
@@ -322,7 +327,7 @@ export class Budgets {
 
   protected readonly formOpen = signal(false);
   protected readonly editingBudget = signal<Budget | undefined>(undefined);
-  protected readonly prefillCategoryId = signal<string | undefined>(undefined);
+  protected readonly prefillGroupId = signal<string | undefined>(undefined);
 
   protected onMonthChange(value: string): void {
     if (value) {
@@ -334,19 +339,19 @@ export class Budgets {
 
   protected openCreate(): void {
     this.editingBudget.set(undefined);
-    this.prefillCategoryId.set(undefined);
+    this.prefillGroupId.set(undefined);
     this.formOpen.set(true);
   }
 
-  protected openCreateFor(categoryId: string): void {
+  protected openCreateFor(groupId: string): void {
     this.editingBudget.set(undefined);
-    this.prefillCategoryId.set(categoryId);
+    this.prefillGroupId.set(groupId);
     this.formOpen.set(true);
   }
 
   protected openEdit(budget: Budget): void {
     this.editingBudget.set(budget);
-    this.prefillCategoryId.set(undefined);
+    this.prefillGroupId.set(undefined);
     this.formOpen.set(true);
   }
 
@@ -354,30 +359,30 @@ export class Budgets {
     this.budgetsResource.reload();
   }
 
-  protected allocationValue(categoryId: string): string {
+  protected allocationValue(groupId: string): string {
     const fixedBudget = this.budgetsResource
       .value()
-      ?.find((budget) => budget.categoryId === categoryId && budget.month === this.selectedMonth());
+      ?.find((budget) => budget.groupId === groupId && budget.month === this.selectedMonth());
     if (fixedBudget) {
       const percentage = budgetPercentage(fixedBudget, this.expectedIncome());
       return percentage.toFixed(2).replace(/\.00$/, '');
     }
 
-    const draft = this.percentageDraft()[categoryId];
+    const draft = this.percentageDraft()[groupId];
     if (draft !== undefined) return draft;
     return (
-      this.allocationsResource.value()?.find((allocation) => allocation.categoryId === categoryId)
+      this.allocationsResource.value()?.find((allocation) => allocation.groupId === groupId)
         ?.percentage ?? '0'
     );
   }
 
-  protected setAllocation(categoryId: string, value: string): void {
-    if (this.allocationRows().find((row) => row.category.id === categoryId)?.fixed) return;
+  protected setAllocation(groupId: string, value: string): void {
+    if (this.allocationRows().find((row) => row.group.id === groupId)?.fixed) return;
 
     const normalized = Math.max(0, Math.min(100, Number(value) || 0));
     this.percentageDraft.update((draft) => ({
       ...draft,
-      [categoryId]: normalized.toFixed(2).replace(/\.00$/, ''),
+      [groupId]: normalized.toFixed(2).replace(/\.00$/, ''),
     }));
     this.plannerError.set(null);
   }
@@ -397,27 +402,27 @@ export class Budgets {
       return;
     }
     const currentAllocations = this.allocationsResource.value() ?? [];
-    const fixedCategoryIds = new Set(
+    const fixedGroupIds = new Set(
       this.allocationRows()
         .filter((row) => row.fixed)
-        .map((row) => row.category.id),
+        .map((row) => row.group.id),
     );
     const requests = [
       ...currentAllocations
-        .filter((allocation) => fixedCategoryIds.has(allocation.categoryId))
+        .filter((allocation) => fixedGroupIds.has(allocation.groupId))
         .map((allocation) => this.budgetPlanRepository.deleteAllocation(allocation.id)),
       ...this.allocationRows()
         .filter((row) => !row.fixed)
         .map((row) => {
           const percentage = row.percentage;
           const existing = currentAllocations.find(
-            (allocation) => allocation.categoryId === row.category.id,
+            (allocation) => allocation.groupId === row.group.id,
           );
           if (Number(percentage) <= 0 && existing)
             return this.budgetPlanRepository.deleteAllocation(existing.id);
           if (Number(percentage) <= 0) return of(undefined);
           return this.budgetPlanRepository.upsertAllocation({
-            categoryId: row.category.id,
+            groupId: row.group.id,
             percentage,
           });
         }),

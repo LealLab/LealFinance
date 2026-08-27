@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategoriler",
     "description": "Gelir ve giderlerinizi kategorilere göre düzenleyin.",
-    "showArchived": "Arşivlenmiş kategorileri göster",
-    "archivedBadge": "Arşivlendi",
     "actions": {
-      "new": "Yeni kategori",
+      "addGroup": "Grup ekle",
+      "addCategory": "Kategori ekle",
+      "addCategoryToGroup": "Bu gruba kategori ekle",
       "edit": "Düzenle",
-      "archive": "Arşivle",
-      "unarchive": "Arşivden çıkar",
       "delete": "Sil",
-      "addChild": "Yeni alt kategori",
       "collapse": "Daralt",
       "expand": "Genişlet",
       "dragHandle": "Sıralamayı değiştir"
     },
     "empty": {
       "title": "Henüz kategori yok",
-      "description": "İşlemlerinizi düzenlemek için kategoriler oluşturun."
+      "description": "İşlemlerinizi düzenlemek için gruplar ve kategoriler oluşturun."
     },
     "sections": {
       "income": "Gelir kategorileri",
@@ -583,16 +580,22 @@
       "title": "Kategori silinsin mi?",
       "message": "Bu işlem geri alınamaz. \"{{name}}\" kategorisini silmek istiyor musunuz?",
       "blockedTitle": "Silinemiyor",
-      "blockedMessage": "Bu kategori hâlâ kullanılıyor: {{transactions}} işlem, {{budgets}} bütçe ve {{children}} alt kategori bu kategoriyi kullanıyor. Kategoriyi silmek yerine arşivleyin."
+      "blockedMessage": "Bu kategori hâlâ {{transactions}} işlem tarafından kullanılıyor. Kategoriyi silmeden önce bu işlemleri silin."
+    },
+    "deleteGroup": {
+      "title": "Grup silinsin mi?",
+      "message": "Bu işlem geri alınamaz. \"{{name}}\" grubunu silmek istiyor musunuz?"
     },
     "form": {
       "newTitle": "Yeni kategori",
       "editTitle": "Kategoriyi düzenle",
-      "saveError": "Kategori kaydedilemedi. Tekrar deneyin.",
+      "newGroupTitle": "Yeni grup",
+      "editGroupTitle": "Grubu düzenle",
+      "saveError": "Grup veya kategori kaydedilemedi. Tekrar deneyin.",
       "fields": {
         "name": "Ad",
-        "parent": "Üst kategori",
-        "noParent": "Yok (üst düzey kategori)",
+        "group": "Grup",
+        "selectGroup": "Grup seçin",
         "color": "Renk",
         "icon": "Simge"
       },
@@ -656,8 +659,8 @@
       "saveError": "Bütçe kaydedilemedi. Tekrar deneyin.",
       "fields": {
         "month": "Ay",
-        "category": "Kategori",
-        "selectCategory": "Kategori seçin",
+        "group": "Grup",
+        "selectGroup": "Grup seçin",
         "amount": "Tutar",
         "currency": "Para birimi"
       },

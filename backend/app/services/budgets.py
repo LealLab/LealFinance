@@ -1,4 +1,4 @@
-"""Budget CRUD. Upsert is keyed on (user, category, month), matching the
+"""Budget CRUD. Upsert is keyed on (user, group, month), matching the
 frontend's BudgetRepository.upsert."""
 
 from uuid import UUID
@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.budget import Budget
-from app.models.category import Category
+from app.models.category_group import CategoryGroup
 from app.schemas.budget import BudgetUpsert
 from app.services import ownership
 from app.services.currencies import get_active_currency
@@ -18,19 +18,19 @@ async def list_budgets(db: AsyncSession, user_id: UUID) -> list[Budget]:
 
 
 async def upsert_budget(db: AsyncSession, user_id: UUID, data: BudgetUpsert) -> Budget:
-    await ownership.get_owned(db, Category, data.category_id, user_id)
+    await ownership.get_owned(db, CategoryGroup, data.group_id, user_id)
     await get_active_currency(db, data.currency)
 
     result = await db.execute(
         select(Budget).where(
             Budget.user_id == user_id,
-            Budget.category_id == data.category_id,
+            Budget.group_id == data.group_id,
             Budget.month == data.month,
         )
     )
     budget = result.scalars().first()
     if budget is None:
-        budget = Budget(user_id=user_id, category_id=data.category_id, month=data.month)
+        budget = Budget(user_id=user_id, group_id=data.group_id, month=data.month)
         db.add(budget)
 
     budget.amount = data.amount

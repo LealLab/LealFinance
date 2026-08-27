@@ -1,4 +1,4 @@
-"""Budget allocation and expected-income DTOs - the inputs
+"""Budget group allocation and expected-income DTOs - the inputs
 domain/calc/budget-plan.ts derives auto-generated budgets from."""
 
 from decimal import Decimal
@@ -15,7 +15,7 @@ class BudgetAllocationRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    category_id: UUID
+    group_id: UUID
     percentage: Decimal
 
     @field_serializer("percentage")
@@ -24,7 +24,7 @@ class BudgetAllocationRead(BaseModel):
 
 
 class BudgetAllocationUpsert(BaseModel):
-    category_id: UUID
+    group_id: UUID
     percentage: Decimal = Field(ge=0, le=100)
 
 

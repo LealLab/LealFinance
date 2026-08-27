@@ -558,22 +558,19 @@
   "categories": {
     "title": "Categorie",
     "description": "Organizza entrate e uscite per categoria.",
-    "showArchived": "Mostra le categorie archiviate",
-    "archivedBadge": "Archiviata",
     "actions": {
-      "new": "Nuova categoria",
+      "addGroup": "Aggiungi gruppo",
+      "addCategory": "Aggiungi categoria",
+      "addCategoryToGroup": "Aggiungi una categoria a questo gruppo",
       "edit": "Modifica",
-      "archive": "Archivia",
-      "unarchive": "Ripristina",
       "delete": "Elimina",
-      "addChild": "Nuova sottocategoria",
       "collapse": "Comprimi",
       "expand": "Espandi",
       "dragHandle": "Riordina"
     },
     "empty": {
       "title": "Nessuna categoria",
-      "description": "Crea categorie per organizzare le transazioni."
+      "description": "Crea gruppi e categorie per organizzare le transazioni."
     },
     "sections": {
       "income": "Categorie di entrata",
@@ -583,16 +580,22 @@
       "title": "Eliminare la categoria?",
       "message": "Questa azione non può essere annullata. Vuoi eliminare la categoria \"{{name}}\"?",
       "blockedTitle": "Impossibile eliminare",
-      "blockedMessage": "Questa categoria è ancora utilizzata: {{transactions}} transazioni, {{budgets}} budget e {{children}} sottocategorie la utilizzano. Archivia la categoria invece di eliminarla."
+      "blockedMessage": "Questa categoria è ancora utilizzata da {{transactions}} transazioni. Elimina queste transazioni prima di eliminare la categoria."
+    },
+    "deleteGroup": {
+      "title": "Eliminare il gruppo?",
+      "message": "Questa azione non può essere annullata. Vuoi eliminare il gruppo \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Nuova categoria",
       "editTitle": "Modifica categoria",
-      "saveError": "Impossibile salvare la categoria. Riprova.",
+      "newGroupTitle": "Nuovo gruppo",
+      "editGroupTitle": "Modifica gruppo",
+      "saveError": "Impossibile salvare il gruppo o la categoria. Riprova.",
       "fields": {
         "name": "Nome",
-        "parent": "Categoria principale",
-        "noParent": "Nessuna (categoria di primo livello)",
+        "group": "Gruppo",
+        "selectGroup": "Seleziona un gruppo",
         "color": "Colore",
         "icon": "Icona"
       },
@@ -656,8 +659,8 @@
       "saveError": "Impossibile salvare il budget. Riprova.",
       "fields": {
         "month": "Mese",
-        "category": "Categoria",
-        "selectCategory": "Seleziona una categoria",
+        "group": "Gruppo",
+        "selectGroup": "Seleziona un gruppo",
         "amount": "Importo",
         "currency": "Valuta"
       },

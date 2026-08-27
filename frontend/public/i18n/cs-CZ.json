@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategorie",
     "description": "Uspořádejte příjmy a výdaje podle kategorií.",
-    "showArchived": "Zobrazit archivované kategorie",
-    "archivedBadge": "Archivováno",
     "actions": {
-      "new": "Nová kategorie",
+      "addGroup": "Přidat skupinu",
+      "addCategory": "Přidat kategorii",
+      "addCategoryToGroup": "Přidat kategorii do této skupiny",
       "edit": "Upravit",
-      "archive": "Archivovat",
-      "unarchive": "Obnovit z archivu",
       "delete": "Odstranit",
-      "addChild": "Nová podkategorie",
       "collapse": "Sbalit",
       "expand": "Rozbalit",
       "dragHandle": "Změnit pořadí"
     },
     "empty": {
       "title": "Zatím nemáte žádné kategorie",
-      "description": "Vytvořte kategorie a uspořádejte si transakce."
+      "description": "Vytvořte skupiny a kategorie a uspořádejte si transakce."
     },
     "sections": {
       "income": "Kategorie příjmů",
@@ -583,16 +580,22 @@
       "title": "Odstranit kategorii?",
       "message": "Tuto akci nelze vrátit zpět. Chcete odstranit kategorii „{{name}}“?",
       "blockedTitle": "Nelze odstranit",
-      "blockedMessage": "Tato kategorie se stále používá: využívá ji {{transactions}} transakcí, {{budgets}} rozpočtů a {{children}} podkategorií. Místo odstranění kategorii archivujte."
+      "blockedMessage": "Tato kategorie se stále používá v {{transactions}} transakcích. Před odstraněním kategorie tyto transakce odstraňte."
+    },
+    "deleteGroup": {
+      "title": "Odstranit skupinu?",
+      "message": "Tuto akci nelze vrátit zpět. Chcete odstranit skupinu „{{name}}“?"
     },
     "form": {
       "newTitle": "Nová kategorie",
       "editTitle": "Upravit kategorii",
-      "saveError": "Kategorii se nepodařilo uložit. Zkuste to znovu.",
+      "newGroupTitle": "Nová skupina",
+      "editGroupTitle": "Upravit skupinu",
+      "saveError": "Skupinu ani kategorii se nepodařilo uložit. Zkuste to znovu.",
       "fields": {
         "name": "Název",
-        "parent": "Nadřazená kategorie",
-        "noParent": "Žádná (kategorie nejvyšší úrovně)",
+        "group": "Skupina",
+        "selectGroup": "Vyberte skupinu",
         "color": "Barva",
         "icon": "Ikona"
       },
@@ -656,8 +659,8 @@
       "saveError": "Rozpočet se nepodařilo uložit. Zkuste to znovu.",
       "fields": {
         "month": "Měsíc",
-        "category": "Kategorie",
-        "selectCategory": "Vyberte kategorii",
+        "group": "Skupina",
+        "selectGroup": "Vyberte skupinu",
         "amount": "Částka",
         "currency": "Měna"
       },

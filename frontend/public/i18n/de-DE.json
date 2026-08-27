@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategorien",
     "description": "Organisieren Sie Einnahmen und Ausgaben nach Kategorien.",
-    "showArchived": "Archivierte Kategorien anzeigen",
-    "archivedBadge": "Archiviert",
     "actions": {
-      "new": "Neue Kategorie",
+      "addGroup": "Gruppe hinzufügen",
+      "addCategory": "Kategorie hinzufügen",
+      "addCategoryToGroup": "Kategorie zu dieser Gruppe hinzufügen",
       "edit": "Bearbeiten",
-      "archive": "Archivieren",
-      "unarchive": "Archivierung aufheben",
       "delete": "Löschen",
-      "addChild": "Neue Unterkategorie",
       "collapse": "Einklappen",
       "expand": "Ausklappen",
       "dragHandle": "Reihenfolge ändern"
     },
     "empty": {
       "title": "Noch keine Kategorien",
-      "description": "Erstellen Sie Kategorien, um Ihre Transaktionen zu organisieren."
+      "description": "Erstellen Sie Gruppen und Kategorien, um Ihre Transaktionen zu organisieren."
     },
     "sections": {
       "income": "Einnahmekategorien",
@@ -583,16 +580,22 @@
       "title": "Kategorie löschen?",
       "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie die Kategorie „{{name}}“ löschen?",
       "blockedTitle": "Löschen nicht möglich",
-      "blockedMessage": "Diese Kategorie wird noch verwendet (Transaktionen: {{transactions}}, Budgets: {{budgets}}, Unterkategorien: {{children}}). Archivieren Sie die Kategorie, statt sie zu löschen."
+      "blockedMessage": "Diese Kategorie wird noch von {{transactions}} Transaktionen verwendet. Löschen Sie diese Transaktionen, bevor Sie die Kategorie löschen."
+    },
+    "deleteGroup": {
+      "title": "Gruppe löschen?",
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie die Gruppe „{{name}}“ löschen?"
     },
     "form": {
       "newTitle": "Neue Kategorie",
       "editTitle": "Kategorie bearbeiten",
-      "saveError": "Die Kategorie konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "newGroupTitle": "Neue Gruppe",
+      "editGroupTitle": "Gruppe bearbeiten",
+      "saveError": "Die Gruppe oder Kategorie konnte nicht gespeichert werden. Versuchen Sie es erneut.",
       "fields": {
         "name": "Name",
-        "parent": "Übergeordnete Kategorie",
-        "noParent": "Keine (Oberkategorie)",
+        "group": "Gruppe",
+        "selectGroup": "Gruppe auswählen",
         "color": "Farbe",
         "icon": "Symbol"
       },
@@ -656,8 +659,8 @@
       "saveError": "Das Budget konnte nicht gespeichert werden. Versuchen Sie es erneut.",
       "fields": {
         "month": "Monat",
-        "category": "Kategorie",
-        "selectCategory": "Kategorie auswählen",
+        "group": "Gruppe",
+        "selectGroup": "Gruppe auswählen",
         "amount": "Betrag",
         "currency": "Währung"
       },

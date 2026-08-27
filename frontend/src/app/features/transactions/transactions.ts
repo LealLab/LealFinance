@@ -7,13 +7,13 @@ import { ConfirmService } from '../../core/confirm.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { openOnNewParam } from '../../core/open-on-new-param';
 import { AccountRepository } from '../../data/account.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { addDays, formatIsoDate } from '../../domain/calc/dates';
 import { projectOccurrences } from '../../domain/calc/recurrence';
-import { Category } from '../../domain/models/category';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
 import { isZero, money } from '../../shared/money/money';
@@ -68,6 +68,7 @@ export class Transactions {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly accountRepository = inject(AccountRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly recurringRuleRepository = inject(RecurringRuleRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
@@ -77,6 +78,9 @@ export class Transactions {
 
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
+  protected readonly categoryGroupsResource = rxResource({
+    stream: () => this.categoryGroupRepository.list()
+  });
   protected readonly recurringRulesResource = rxResource({
     stream: () => this.recurringRuleRepository.list()
   });
@@ -217,13 +221,7 @@ export class Transactions {
     this.filters.set(EMPTY_FILTERS);
   }
 
-  protected topLevelCategories = computed(() =>
-    (this.categoriesResource.value() ?? []).filter((c) => !c.archived)
-  );
-
-  protected categoryLabel(category: Category): string {
-    return category.parentId ? `- ${category.name}` : category.name;
-  }
+  protected readonly categoryOptions = computed(() => this.categoriesResource.value() ?? []);
 
   protected openCreateTx(): void {
     this.editingTx.set(undefined);

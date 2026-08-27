@@ -1,4 +1,5 @@
 import { Component, computed, inject, input, model, output, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Icon, ICON_GROUPS, IconGroup, IconName } from '../icon/icon';
 import { Modal } from '../modal/modal';
@@ -29,14 +30,15 @@ const GROUPS = Object.entries(ICON_GROUPS) as [IconGroup, readonly IconName[]][]
  */
 @Component({
   selector: 'app-icon-picker',
-  imports: [Icon, Modal, TranslocoDirective],
+  imports: [Icon, Modal, NgTemplateOutlet, TranslocoDirective],
   templateUrl: './icon-picker.html',
   styleUrl: './icon-picker.scss'
 })
 export class IconPicker {
   private readonly transloco = inject(TranslocoService);
 
-  readonly open = model.required<boolean>();
+  readonly open = model(false);
+  readonly inline = input(false);
   readonly selected = input.required<IconName>();
   readonly picked = output<IconName>();
 
@@ -62,6 +64,6 @@ export class IconPicker {
 
   protected pick(name: IconName): void {
     this.picked.emit(name);
-    this.open.set(false);
+    if (!this.inline()) this.open.set(false);
   }
 }

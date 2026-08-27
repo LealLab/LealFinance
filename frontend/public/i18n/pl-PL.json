@@ -558,22 +558,19 @@
   "categories": {
     "title": "Kategorie",
     "description": "Organizuj przychody i wydatki według kategorii.",
-    "showArchived": "Pokaż zarchiwizowane kategorie",
-    "archivedBadge": "Zarchiwizowana",
     "actions": {
-      "new": "Nowa kategoria",
+      "addGroup": "Dodaj grupę",
+      "addCategory": "Dodaj kategorię",
+      "addCategoryToGroup": "Dodaj kategorię do tej grupy",
       "edit": "Edytuj",
-      "archive": "Archiwizuj",
-      "unarchive": "Przywróć z archiwum",
       "delete": "Usuń",
-      "addChild": "Nowa podkategoria",
       "collapse": "Zwiń",
       "expand": "Rozwiń",
       "dragHandle": "Zmień kolejność"
     },
     "empty": {
       "title": "Nie masz jeszcze żadnych kategorii",
-      "description": "Utwórz kategorie, aby uporządkować transakcje."
+      "description": "Utwórz grupy i kategorie, aby uporządkować transakcje."
     },
     "sections": {
       "income": "Kategorie przychodów",
@@ -583,16 +580,22 @@
       "title": "Usunąć kategorię?",
       "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć kategorię „{{name}}”?",
       "blockedTitle": "Nie można usunąć",
-      "blockedMessage": "Ta kategoria jest nadal używana (transakcje: {{transactions}}, budżety: {{budgets}}, podkategorie: {{children}}). Zamiast usuwać kategorię, zarchiwizuj ją."
+      "blockedMessage": "Ta kategoria jest nadal używana przez {{transactions}} transakcji. Usuń te transakcje, zanim usuniesz kategorię."
+    },
+    "deleteGroup": {
+      "title": "Usunąć grupę?",
+      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć grupę „{{name}}”?"
     },
     "form": {
       "newTitle": "Nowa kategoria",
       "editTitle": "Edytuj kategorię",
-      "saveError": "Nie udało się zapisać kategorii. Spróbuj ponownie.",
+      "newGroupTitle": "Nowa grupa",
+      "editGroupTitle": "Edytuj grupę",
+      "saveError": "Nie udało się zapisać grupy ani kategorii. Spróbuj ponownie.",
       "fields": {
         "name": "Nazwa",
-        "parent": "Kategoria nadrzędna",
-        "noParent": "Brak (kategoria główna)",
+        "group": "Grupa",
+        "selectGroup": "Wybierz grupę",
         "color": "Kolor",
         "icon": "Ikona"
       },
@@ -656,8 +659,8 @@
       "saveError": "Nie udało się zapisać budżetu. Spróbuj ponownie.",
       "fields": {
         "month": "Miesiąc",
-        "category": "Kategoria",
-        "selectCategory": "Wybierz kategorię",
+        "group": "Grupa",
+        "selectGroup": "Wybierz grupę",
         "amount": "Kwota",
         "currency": "Waluta"
       },

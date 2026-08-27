@@ -558,22 +558,19 @@
   "categories": {
     "title": "Categorieën",
     "description": "Organiseer inkomsten en uitgaven per categorie.",
-    "showArchived": "Gearchiveerde categorieën tonen",
-    "archivedBadge": "Gearchiveerd",
     "actions": {
-      "new": "Nieuwe categorie",
+      "addGroup": "Groep toevoegen",
+      "addCategory": "Categorie toevoegen",
+      "addCategoryToGroup": "Categorie aan deze groep toevoegen",
       "edit": "Bewerken",
-      "archive": "Archiveren",
-      "unarchive": "Uit archief halen",
       "delete": "Verwijderen",
-      "addChild": "Nieuwe subcategorie",
       "collapse": "Inklappen",
       "expand": "Uitklappen",
       "dragHandle": "Volgorde wijzigen"
     },
     "empty": {
       "title": "Nog geen categorieën",
-      "description": "Maak categorieën aan om je transacties te ordenen."
+      "description": "Maak groepen en categorieën aan om je transacties te ordenen."
     },
     "sections": {
       "income": "Inkomstencategorieën",
@@ -583,16 +580,22 @@
       "title": "Categorie verwijderen?",
       "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je categorie \"{{name}}\" verwijderen?",
       "blockedTitle": "Kan niet worden verwijderd",
-      "blockedMessage": "Deze categorie is nog in gebruik: transacties ({{transactions}}), budgetten ({{budgets}}) en subcategorieën ({{children}}). Archiveer de categorie in plaats van deze te verwijderen."
+      "blockedMessage": "Deze categorie wordt nog gebruikt door {{transactions}} transacties. Verwijder die transacties voordat je de categorie verwijdert."
+    },
+    "deleteGroup": {
+      "title": "Groep verwijderen?",
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je de groep \"{{name}}\" verwijderen?"
     },
     "form": {
       "newTitle": "Nieuwe categorie",
       "editTitle": "Categorie bewerken",
-      "saveError": "De categorie kon niet worden opgeslagen. Probeer het opnieuw.",
+      "newGroupTitle": "Nieuwe groep",
+      "editGroupTitle": "Groep bewerken",
+      "saveError": "De groep of categorie kon niet worden opgeslagen. Probeer het opnieuw.",
       "fields": {
         "name": "Naam",
-        "parent": "Hoofdcategorie",
-        "noParent": "Geen (hoofdcategorie)",
+        "group": "Groep",
+        "selectGroup": "Groep selecteren",
         "color": "Kleur",
         "icon": "Pictogram"
       },
@@ -656,8 +659,8 @@
       "saveError": "Het budget kon niet worden opgeslagen. Probeer het opnieuw.",
       "fields": {
         "month": "Maand",
-        "category": "Categorie",
-        "selectCategory": "Categorie selecteren",
+        "group": "Groep",
+        "selectGroup": "Groep selecteren",
         "amount": "Bedrag",
         "currency": "Valuta"
       },

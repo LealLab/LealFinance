@@ -1,4 +1,4 @@
-"""Budget DTOs."""
+"""Budget DTOs keyed on category groups."""
 
 from decimal import Decimal
 from uuid import UUID
@@ -14,7 +14,7 @@ class BudgetRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    category_id: UUID
+    group_id: UUID
     month: str
     amount: Decimal
     currency: str
@@ -25,7 +25,7 @@ class BudgetRead(BaseModel):
 
 
 class BudgetUpsert(BaseModel):
-    category_id: UUID
+    group_id: UUID
     month: str = Field(pattern=_MONTH_PATTERN)
     amount: Decimal = Field(ge=0)
     currency: CurrencyCodeInput

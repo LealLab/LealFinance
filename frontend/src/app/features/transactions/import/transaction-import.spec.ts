@@ -5,10 +5,12 @@ import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Observable, of } from 'rxjs';
 import { AccountRepository } from '../../../data/account.repository';
+import { CategoryGroupRepository } from '../../../data/category-group.repository';
 import { CategoryRepository } from '../../../data/category.repository';
 import { InstitutionRepository } from '../../../data/institution.repository';
 import { MockAccountRepository } from '../../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../../data/mock/mock-category.repository';
+import { MockCategoryGroupRepository } from '../../../data/mock/mock-category-group.repository';
 import { MockInstitutionRepository } from '../../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../../data/mock/mock-latency';
 import {
@@ -105,6 +107,7 @@ describe('TransactionImport', () => {
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
         { provide: TransactionRepository, useValue: stubRepo }
       ]

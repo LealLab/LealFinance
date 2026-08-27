@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.account import AccountUpdate
 from app.schemas.category import CategoryUpdate
+from app.schemas.category_group import CategoryGroupUpdate
 from app.schemas.common import CurrencyCodeInput
 from app.schemas.institution import InstitutionUpdate
 from app.schemas.investment import (
@@ -24,6 +25,7 @@ from tests.factories import login_as, make_user
 PATCH_MODELS: tuple[type[BaseModel], ...] = (
     AccountUpdate,
     CategoryUpdate,
+    CategoryGroupUpdate,
     InstitutionUpdate,
     TransactionUpdate,
     RecurringRuleUpdate,
@@ -50,10 +52,15 @@ def test_patch_models_treat_omission_as_unchanged(schema: type[BaseModel]) -> No
         (AccountUpdate, "archived"),
         (CategoryUpdate, "name"),
         (CategoryUpdate, "kind"),
+        (CategoryUpdate, "group_id"),
         (CategoryUpdate, "color"),
         (CategoryUpdate, "icon"),
-        (CategoryUpdate, "archived"),
         (CategoryUpdate, "position"),
+        (CategoryGroupUpdate, "name"),
+        (CategoryGroupUpdate, "kind"),
+        (CategoryGroupUpdate, "color"),
+        (CategoryGroupUpdate, "icon"),
+        (CategoryGroupUpdate, "position"),
         (InstitutionUpdate, "name"),
         (InstitutionUpdate, "icon"),
         (InstitutionUpdate, "archived"),
@@ -102,7 +109,6 @@ def test_patch_models_reject_explicit_null_for_required_fields(
         (AccountUpdate, "credit_limit"),
         (AccountUpdate, "closing_day"),
         (AccountUpdate, "due_day"),
-        (CategoryUpdate, "parent_id"),
         (InstitutionUpdate, "color"),
         (TransactionUpdate, "to_account_id"),
         (TransactionUpdate, "category_id"),

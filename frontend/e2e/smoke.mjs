@@ -58,12 +58,21 @@ try {
   await requireOk(account, 'creating smoke account');
   const accountId = (await account.json()).id;
 
-  const category = await mutate('/categories', {
+  const categoryGroup = await mutate('/category-groups', {
     name: `Browser Smoke ${suffix}`,
     kind: 'expense',
     color: '#1F5C6B',
     icon: 'wallet',
-    archived: false,
+  });
+  await requireOk(categoryGroup, 'creating smoke category group');
+  const categoryGroupId = (await categoryGroup.json()).id;
+
+  const category = await mutate('/categories', {
+    name: `Browser Smoke ${suffix}`,
+    kind: 'expense',
+    group_id: categoryGroupId,
+    color: '#1F5C6B',
+    icon: 'wallet',
   });
   await requireOk(category, 'creating smoke category');
   const categoryId = (await category.json()).id;

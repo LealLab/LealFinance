@@ -7,11 +7,13 @@ import { Observable, of } from 'rxjs';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
@@ -43,6 +45,7 @@ describe('Transactions', () => {
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
@@ -219,6 +222,7 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: StubTransactionRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: StubRecurringRuleRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },

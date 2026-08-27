@@ -9,6 +9,7 @@ from app.api.v1 import (
     budget_plan,
     budgets,
     categories,
+    category_groups,
     goals,
     health,
     institutions,
@@ -27,6 +28,7 @@ api_v1_router.include_router(auth.router)
 api_v1_router.include_router(agents.router)
 api_v1_router.include_router(institutions.router)
 api_v1_router.include_router(accounts.router)
+api_v1_router.include_router(category_groups.router)
 api_v1_router.include_router(categories.router)
 api_v1_router.include_router(budgets.router)
 api_v1_router.include_router(budget_plan.allocations_router)

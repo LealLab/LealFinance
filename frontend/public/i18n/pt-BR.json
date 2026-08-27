@@ -558,22 +558,19 @@
   "categories": {
     "title": "Categorias",
     "description": "Organize receitas e despesas por categoria.",
-    "showArchived": "Mostrar categorias arquivadas",
-    "archivedBadge": "Arquivada",
     "actions": {
-      "new": "Nova categoria",
+      "addGroup": "Adicionar grupo",
+      "addCategory": "Adicionar categoria",
+      "addCategoryToGroup": "Adicionar categoria a este grupo",
       "edit": "Editar",
-      "archive": "Arquivar",
-      "unarchive": "Reativar",
       "delete": "Excluir",
-      "addChild": "Nova subcategoria",
       "collapse": "Recolher",
       "expand": "Expandir",
       "dragHandle": "Reordenar"
     },
     "empty": {
       "title": "Nenhuma categoria cadastrada",
-      "description": "Crie categorias para organizar suas transações."
+      "description": "Crie grupos e categorias para organizar suas transações."
     },
     "sections": {
       "income": "Categorias de receita",
@@ -583,16 +580,22 @@
       "title": "Excluir categoria?",
       "message": "Esta ação não pode ser desfeita. Deseja excluir a categoria \"{{name}}\"?",
       "blockedTitle": "Não é possível excluir",
-      "blockedMessage": "Esta categoria ainda está em uso: {{transactions}} transações, {{budgets}} orçamentos e {{children}} subcategorias a utilizam. Arquive a categoria em vez de excluí-la."
+      "blockedMessage": "Esta categoria ainda está sendo usada por {{transactions}} transações. Exclua essas transações antes de excluir a categoria."
+    },
+    "deleteGroup": {
+      "title": "Excluir grupo?",
+      "message": "Esta ação não pode ser desfeita. Deseja excluir o grupo \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Nova categoria",
       "editTitle": "Editar categoria",
-      "saveError": "Não foi possível salvar a categoria. Tente novamente.",
+      "newGroupTitle": "Novo grupo",
+      "editGroupTitle": "Editar grupo",
+      "saveError": "Não foi possível salvar o grupo ou a categoria. Tente novamente.",
       "fields": {
         "name": "Nome",
-        "parent": "Categoria principal",
-        "noParent": "Nenhuma (categoria principal)",
+        "group": "Grupo",
+        "selectGroup": "Selecione um grupo",
         "color": "Cor",
         "icon": "Ícone"
       },
@@ -656,8 +659,8 @@
       "saveError": "Não foi possível salvar o orçamento. Tente novamente.",
       "fields": {
         "month": "Mês",
-        "category": "Categoria",
-        "selectCategory": "Selecione uma categoria",
+        "group": "Grupo",
+        "selectGroup": "Selecione um grupo",
         "amount": "Valor",
         "currency": "Moeda"
       },

@@ -86,8 +86,8 @@
             (change)="setFilter('categoryId', $any($event.target).value)"
           >
             <option value="">{{ t('transactions.filters.all') }}</option>
-            @for (category of topLevelCategories(); track category.id) {
-              <option [value]="category.id">{{ categoryLabel(category) }}</option>
+            @for (category of categoryOptions(); track category.id) {
+              <option [value]="category.id">{{ category.name }}</option>
             }
           </select>
         </div>
@@ -329,6 +329,7 @@
     [transaction]="editingTx()"
     [accounts]="accountsResource.value() ?? []"
     [categories]="categoriesResource.value() ?? []"
+    [categoryGroups]="categoryGroupsResource.value() ?? []"
     [institutions]="institutionsResource.value() ?? []"
     (saved)="onTxSaved()"
   />
@@ -337,6 +338,7 @@
     [rule]="editingRule()"
     [accounts]="accountsResource.value() ?? []"
     [categories]="categoriesResource.value() ?? []"
+    [categoryGroups]="categoryGroupsResource.value() ?? []"
     [institutions]="institutionsResource.value() ?? []"
     (saved)="onRuleSaved()"
   />

@@ -10,6 +10,7 @@ import { SessionService } from '../../core/session.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Icon, IconName } from '../../shared/ui/icon/icon';
@@ -75,6 +76,7 @@ export class CommandPalette {
   private readonly preferences = inject(PreferenceService);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly transactionRepository = inject(TransactionRepository);
 
@@ -97,6 +99,10 @@ export class CommandPalette {
   private readonly categoriesResource = rxResource({
     params: () => (this.paletteService.isOpen() ? {} : undefined),
     stream: () => this.categoryRepository.list()
+  });
+  private readonly categoryGroupsResource = rxResource({
+    params: () => (this.paletteService.isOpen() ? {} : undefined),
+    stream: () => this.categoryGroupRepository.list()
   });
   private readonly budgetsResource = rxResource({
     params: () => (this.paletteService.isOpen() ? {} : undefined),
@@ -368,10 +374,12 @@ export class CommandPalette {
   }
 
   private budgetItems(): PaletteItem[] {
-    const categoriesById = new Map((this.categoriesResource.value() ?? []).map((category) => [category.id, category]));
+    const categoryGroupsById = new Map(
+      (this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group])
+    );
     return (this.budgetsResource.value() ?? []).map((budget) => ({
       id: `budget-${budget.id}`,
-      label: categoriesById.get(budget.categoryId)?.name ?? budget.categoryId,
+      label: categoryGroupsById.get(budget.groupId)?.name ?? budget.groupId,
       sublabel: budget.month,
       icon: 'target' as const,
       run: () => this.router.navigate(['/budgets'])

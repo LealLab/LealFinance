@@ -59,27 +59,23 @@ export function totalsFor(
 }
 
 /**
- * The top-level category a category belongs to - itself if it has no
- * parent, its parent if it does (categories nest one level deep - see the
- * Category model). Shared by `categoryBreakdown` here and by
- * domain/calc/budgets.ts, which rolls child-category spend up into a
- * parent's budget the same way.
+ * The group a category belongs to, falling back to the category id when the
+ * category is unknown. Shared by `categoryBreakdown` here and by
+ * domain/calc/budgets.ts, which rolls category spend up into a group's budget.
  */
-export function topLevelCategoryId(categoryId: string, categories: readonly Category[]): string {
+export function categoryGroupId(categoryId: string, categories: readonly Category[]): string {
   const category = categories.find((c) => c.id === categoryId);
-  return category?.parentId ?? categoryId;
+  return category?.groupId ?? categoryId;
 }
 
 export interface CategoryTotal {
-  categoryId: string;
+  groupId: string;
   total: Money;
 }
 
 /**
- * Expense total per top-level category, largest first. Child categories'
- * spend rolls up into their parent, so a "Transporte" parent's total
- * includes whatever was spent directly on "Transporte" plus its
- * "Uber"/"Combustível" children.
+ * Expense total per category group, largest first. Every category's spend
+ * rolls up to its group.
  */
 export function categoryBreakdown(
   transactions: readonly Transaction[],
@@ -90,12 +86,12 @@ export function categoryBreakdown(
   const totals = new Map<string, Money>();
   for (const tx of transactions) {
     if (tx.type !== 'expense' || !tx.categoryId) continue;
-    const topLevelId = topLevelCategoryId(tx.categoryId, categories);
+    const groupId = categoryGroupId(tx.categoryId, categories);
     const converted = convert(effectiveAmount(tx), targetCurrency);
-    totals.set(topLevelId, add(totals.get(topLevelId) ?? zero(targetCurrency), converted));
+    totals.set(groupId, add(totals.get(groupId) ?? zero(targetCurrency), converted));
   }
 
-  return Array.from(totals, ([categoryId, total]) => ({ categoryId, total })).sort((a, b) =>
+  return Array.from(totals, ([groupId, total]) => ({ groupId, total })).sort((a, b) =>
     compare(b.total, a.total)
   );
 }

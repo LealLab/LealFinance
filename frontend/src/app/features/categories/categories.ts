@@ -2,21 +2,26 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { DisplayCurrencyService } from '../../core/display-currency.service';
-import { BudgetRepository } from '../../data/budget.repository';
-import { CategoryRepository } from '../../data/category.repository';
-import { TransactionRepository } from '../../data/transaction.repository';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { openOnNewParam } from '../../core/open-on-new-param';
-import { categoryUsage, isCategoryDeletable } from '../../domain/calc/category-usage';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
+import { CategoryRepository } from '../../data/category.repository';
+import { TransactionRepository } from '../../data/transaction.repository';
+import {
+  categoryGroupUsage,
+  categoryUsage,
+  isCategoryDeletable,
+  isCategoryGroupDeletable
+} from '../../domain/calc/category-usage';
 import { effectiveAmount } from '../../domain/calc/conversion';
 import { monthKey } from '../../domain/calc/dates';
 import { Category, CategoryKind } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { add, Money, zero } from '../../shared/money/money';
 import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
-import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
@@ -29,7 +34,13 @@ import { CategoryFormModal } from './category-form-modal';
 interface CategoryRow {
   category: Category;
   spend: Money;
-  children: CategoryRow[];
+}
+
+interface GroupRow {
+  group: CategoryGroup;
+  spend: Money;
+  categoryCount: number;
+  categories: CategoryRow[];
 }
 
 /**
@@ -37,14 +48,13 @@ interface CategoryRow {
  * string literals, but the call itself isn't to the `t` marker function,
  * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as transactions.ts / budgets.ts:
- * t(categories.delete.title, categories.delete.message, categories.delete.blockedTitle, categories.delete.blockedMessage)
+ * t(categories.delete.title, categories.delete.message, categories.delete.blockedTitle, categories.delete.blockedMessage, categories.deleteGroup.title, categories.deleteGroup.message)
  */
 @Component({
   selector: 'app-categories',
   imports: [
     TranslocoDirective,
     MoneyPipe,
-    Badge,
     Button,
     Card,
     EmptyState,
@@ -61,18 +71,20 @@ interface CategoryRow {
 })
 export class Categories {
   private readonly mutationErrors = inject(MutationErrorService);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly transactionRepository = inject(TransactionRepository);
-  private readonly budgetRepository = inject(BudgetRepository);
   private readonly confirmService = inject(ConfirmService);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly collapseService = inject(CategoryCollapseService);
 
+  protected readonly categoryGroupsResource = rxResource({
+    stream: () => this.categoryGroupRepository.list()
+  });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
   });
-  protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
   protected readonly displayCurrency = this.displayCurrencyService.currency;
 
   private readonly foreignCurrencies = computed(() => {
@@ -90,13 +102,14 @@ export class Categories {
   private readonly converter = this.rates.converter;
   protected readonly ratesReady = computed(() => this.converter() !== null);
 
-  protected readonly showArchived = signal(false);
   protected readonly formOpen = signal(false);
+  protected readonly formMode = signal<'category' | 'group'>('category');
   protected readonly editingCategory = signal<Category | undefined>(undefined);
-  protected readonly presetParent = signal<Category | undefined>(undefined);
+  protected readonly editingGroup = signal<CategoryGroup | undefined>(undefined);
+  protected readonly presetGroup = signal<CategoryGroup | undefined>(undefined);
 
   constructor() {
-    openOnNewParam(() => this.openCreate());
+    openOnNewParam(() => this.openCreateCategory());
   }
 
   private readonly spendByCategory = computed<Map<string, Money>>(() => {
@@ -118,29 +131,32 @@ export class Categories {
     return totals;
   });
 
-  private buildRows(kind: CategoryKind): CategoryRow[] {
+  private buildRows(kind: CategoryKind): GroupRow[] {
+    const groups = (this.categoryGroupsResource.value() ?? [])
+      .filter((group) => group.kind === kind)
+      .sort((a, b) => a.position - b.position);
     const categories = this.categoriesResource.value() ?? [];
     const spend = this.spendByCategory();
-    const showArchived = this.showArchived();
 
-    const parents = categories
-      .filter((c) => c.kind === kind && !c.parentId && (showArchived || !c.archived))
-      .sort((a, b) => a.position - b.position);
-
-    return parents.map((parent) => {
-      const children = categories
-        .filter((c) => c.parentId === parent.id && (showArchived || !c.archived))
+    return groups.map((group) => {
+      const categoryRows = categories
+        .filter((category) => category.groupId === group.id)
         .sort((a, b) => a.position - b.position)
-        .map((child) => ({
-          category: child,
-          spend: spend.get(child.id) ?? zero(this.displayCurrency()),
-          children: []
+        .map((category) => ({
+          category,
+          spend: spend.get(category.id) ?? zero(this.displayCurrency())
         }));
+      const groupSpend = categoryRows.reduce(
+        (total, row) => add(total, row.spend),
+        zero(this.displayCurrency())
+      );
 
-      const ownSpend = spend.get(parent.id) ?? zero(this.displayCurrency());
-      const rolledUp = children.reduce((total, row) => add(total, row.spend), ownSpend);
-
-      return { category: parent, spend: rolledUp, children };
+      return {
+        group,
+        spend: groupSpend,
+        categoryCount: categoryRows.length,
+        categories: categoryRows
+      };
     });
   }
 
@@ -161,53 +177,87 @@ export class Categories {
 
   protected readonly isEmpty = computed(
     () =>
+      !this.categoryGroupsResource.isLoading() &&
       !this.categoriesResource.isLoading() &&
       this.incomeRows().length === 0 &&
       this.expenseRows().length === 0
   );
 
-  protected openCreate(): void {
+  protected openCreateGroup(): void {
+    this.formMode.set('group');
+    this.editingGroup.set(undefined);
     this.editingCategory.set(undefined);
-    this.presetParent.set(undefined);
+    this.presetGroup.set(undefined);
     this.formOpen.set(true);
   }
 
-  protected openCreateChild(parent: Category): void {
+  protected openEditGroup(group: CategoryGroup): void {
+    this.formMode.set('group');
+    this.editingGroup.set(group);
     this.editingCategory.set(undefined);
-    this.presetParent.set(parent);
+    this.presetGroup.set(undefined);
     this.formOpen.set(true);
   }
 
-  protected openEdit(category: Category): void {
+  protected openCreateCategory(): void {
+    this.formMode.set('category');
+    this.editingCategory.set(undefined);
+    this.editingGroup.set(undefined);
+    this.presetGroup.set(undefined);
+    this.formOpen.set(true);
+  }
+
+  protected openCreateCategoryIn(group: CategoryGroup): void {
+    this.formMode.set('category');
+    this.editingCategory.set(undefined);
+    this.editingGroup.set(undefined);
+    this.presetGroup.set(group);
+    this.formOpen.set(true);
+  }
+
+  protected openEditCategory(category: Category): void {
+    this.formMode.set('category');
     this.editingCategory.set(category);
-    this.presetParent.set(undefined);
+    this.editingGroup.set(undefined);
+    this.presetGroup.set(undefined);
     this.formOpen.set(true);
   }
 
-  protected toggleArchived(category: Category): void {
-    this.categoryRepository.setArchived(category.id, !category.archived).subscribe({
-      next: () => this.categoriesResource.reload(),
-      error: () => this.mutationErrors.show(),
-    });
+  protected toggleCollapsed(group: CategoryGroup): void {
+    this.collapseService.toggle(group.id);
   }
 
-  protected toggleCollapsed(category: Category): void {
-    this.collapseService.toggle(category.id);
-  }
-
-  protected isCollapsed(category: Category): boolean {
-    return this.collapseService.isCollapsed(category.id);
+  protected isCollapsed(group: CategoryGroup): boolean {
+    return this.collapseService.isCollapsed(group.id);
   }
 
   protected onSaved(): void {
+    this.categoryGroupsResource.reload();
     this.categoriesResource.reload();
   }
 
-  protected async deleteCategory(category: Category): Promise<void> {
+  protected async deleteGroup(group: CategoryGroup): Promise<void> {
     const categories = this.categoriesResource.value() ?? [];
+    const usage = categoryGroupUsage(group.id, categories);
+    if (!isCategoryGroupDeletable(usage)) return;
+
+    const confirmed = await this.confirmService.confirm(
+      'categories.deleteGroup.title',
+      'categories.deleteGroup.message',
+      'danger',
+      { name: group.name }
+    );
+    if (!confirmed) return;
+
+    this.categoryGroupRepository.delete(group.id).subscribe({
+      next: () => this.categoryGroupsResource.reload(),
+      error: () => this.mutationErrors.show()
+    });
+  }
+
+  protected async deleteCategory(category: Category): Promise<void> {
     const transactions = this.transactionsResource.value() ?? [];
-    const budgets = this.budgetsResource.value() ?? [];
-    const usage = categoryUsage(category.id, categories, transactions, budgets);
+    const usage = categoryUsage(category.id, transactions);
 
     if (isCategoryDeletable(usage)) {
       const confirmed = await this.confirmService.confirm(
@@ -219,43 +269,40 @@ export class Categories {
       if (!confirmed) return;
       this.categoryRepository.delete(category.id).subscribe({
         next: () => this.categoriesResource.reload(),
-        error: () => this.mutationErrors.show(),
+        error: () => this.mutationErrors.show()
       });
       return;
     }
 
-    await this.confirmService.confirm('categories.delete.blockedTitle', 'categories.delete.blockedMessage', 'default', {
-      transactions: usage.transactions,
-      budgets: usage.budgets,
-      children: usage.children
+    await this.confirmService.confirm(
+      'categories.delete.blockedTitle',
+      'categories.delete.blockedMessage',
+      'default',
+      { transactions: usage.transactions }
+    );
+  }
+
+  protected onGroupDrop(kind: CategoryKind, event: CdkDragDrop<GroupRow[]>): void {
+    if (event.previousIndex === event.currentIndex) return;
+    const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
+    const orderedIds = rows.map((row) => row.group.id);
+    moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
+    this.categoryGroupRepository.reorder(kind, orderedIds).subscribe({
+      next: () => this.categoryGroupsResource.reload(),
+      error: () => this.mutationErrors.show()
     });
   }
 
-  protected onParentDrop(kind: CategoryKind, event: CdkDragDrop<Category[]>): void {
+  protected onCategoryDrop(kind: CategoryKind, groupId: string, event: CdkDragDrop<CategoryRow[]>): void {
     if (event.previousIndex === event.currentIndex) return;
     const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
-    const orderedIds = rows.map((row) => row.category.id);
+    const group = rows.find((row) => row.group.id === groupId);
+    if (!group) return;
+    const orderedIds = group.categories.map((row) => row.category.id);
     moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
-    this.categoryRepository
-      .reorder(kind, undefined, orderedIds)
-      .subscribe({
-        next: () => this.categoriesResource.reload(),
-        error: () => this.mutationErrors.show(),
-      });
-  }
-
-  protected onChildDrop(kind: CategoryKind, parentId: string, event: CdkDragDrop<Category[]>): void {
-    if (event.previousIndex === event.currentIndex) return;
-    const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
-    const parent = rows.find((row) => row.category.id === parentId);
-    if (!parent) return;
-    const orderedIds = parent.children.map((row) => row.category.id);
-    moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
-    this.categoryRepository
-      .reorder(kind, parentId, orderedIds)
-      .subscribe({
-        next: () => this.categoriesResource.reload(),
-        error: () => this.mutationErrors.show(),
-      });
+    this.categoryRepository.reorder(kind, groupId, orderedIds).subscribe({
+      next: () => this.categoriesResource.reload(),
+      error: () => this.mutationErrors.show()
+    });
   }
 }

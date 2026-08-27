@@ -558,22 +558,19 @@
   "categories": {
     "title": "分類",
     "description": "依分類整理收入與支出。",
-    "showArchived": "顯示已封存分類",
-    "archivedBadge": "已封存",
     "actions": {
-      "new": "新增分類",
+      "addGroup": "新增群組",
+      "addCategory": "新增分類",
+      "addCategoryToGroup": "將分類新增至此群組",
       "edit": "編輯",
-      "archive": "封存",
-      "unarchive": "取消封存",
       "delete": "刪除",
-      "addChild": "新增子分類",
       "collapse": "收合",
       "expand": "展開",
       "dragHandle": "重新排序"
     },
     "empty": {
       "title": "尚無分類",
-      "description": "建立分類來整理交易。"
+      "description": "建立群組和分類來整理交易。"
     },
     "sections": {
       "income": "收入分類",
@@ -583,16 +580,22 @@
       "title": "要刪除分類嗎？",
       "message": "此操作無法復原。要刪除分類「{{name}}」嗎？",
       "blockedTitle": "無法刪除",
-      "blockedMessage": "此分類仍在使用中（交易：{{transactions}}；預算：{{budgets}}；子分類：{{children}}）。請改為封存分類。"
+      "blockedMessage": "此分類仍被 {{transactions}} 筆交易使用。請先刪除這些交易，再刪除分類。"
+    },
+    "deleteGroup": {
+      "title": "要刪除群組嗎？",
+      "message": "此操作無法復原。要刪除群組「{{name}}」嗎？"
     },
     "form": {
       "newTitle": "新增分類",
       "editTitle": "編輯分類",
-      "saveError": "無法儲存分類，請再試一次。",
+      "newGroupTitle": "新增群組",
+      "editGroupTitle": "編輯群組",
+      "saveError": "無法儲存群組或分類，請再試一次。",
       "fields": {
         "name": "名稱",
-        "parent": "上層分類",
-        "noParent": "無（最上層分類）",
+        "group": "群組",
+        "selectGroup": "選取群組",
         "color": "顏色",
         "icon": "圖示"
       },
@@ -656,8 +659,8 @@
       "saveError": "無法儲存預算，請再試一次。",
       "fields": {
         "month": "月份",
-        "category": "分類",
-        "selectCategory": "選取分類",
+        "group": "群組",
+        "selectGroup": "選取群組",
         "amount": "金額",
         "currency": "貨幣"
       },

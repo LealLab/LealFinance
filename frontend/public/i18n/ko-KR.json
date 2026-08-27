@@ -558,22 +558,19 @@
   "categories": {
     "title": "카테고리",
     "description": "카테고리별로 수입과 지출을 정리하세요.",
-    "showArchived": "보관된 카테고리 표시",
-    "archivedBadge": "보관됨",
     "actions": {
-      "new": "카테고리 추가",
+      "addGroup": "그룹 추가",
+      "addCategory": "카테고리 추가",
+      "addCategoryToGroup": "이 그룹에 카테고리 추가",
       "edit": "수정",
-      "archive": "보관",
-      "unarchive": "보관 해제",
       "delete": "삭제",
-      "addChild": "하위 카테고리 추가",
       "collapse": "접기",
       "expand": "펼치기",
       "dragHandle": "순서 변경"
     },
     "empty": {
       "title": "아직 카테고리가 없습니다",
-      "description": "카테고리를 만들어 거래를 정리하세요."
+      "description": "그룹과 카테고리를 만들어 거래를 정리하세요."
     },
     "sections": {
       "income": "수입 카테고리",
@@ -583,16 +580,22 @@
       "title": "카테고리를 삭제할까요?",
       "message": "이 작업은 되돌릴 수 없습니다. ‘{{name}}’ 카테고리를 삭제하시겠어요?",
       "blockedTitle": "삭제할 수 없습니다",
-      "blockedMessage": "이 카테고리는 아직 사용 중입니다. 거래 {{transactions}}건, 예산 {{budgets}}개, 하위 카테고리 {{children}}개에서 사용 중입니다. 삭제 대신 보관 처리하세요."
+      "blockedMessage": "이 카테고리는 아직 거래 {{transactions}}건에서 사용 중입니다. 카테고리를 삭제하기 전에 해당 거래를 삭제하세요."
+    },
+    "deleteGroup": {
+      "title": "그룹을 삭제할까요?",
+      "message": "이 작업은 되돌릴 수 없습니다. ‘{{name}}’ 그룹을 삭제하시겠어요?"
     },
     "form": {
       "newTitle": "카테고리 추가",
       "editTitle": "카테고리 수정",
-      "saveError": "카테고리를 저장하지 못했습니다. 다시 시도하세요.",
+      "newGroupTitle": "그룹 추가",
+      "editGroupTitle": "그룹 수정",
+      "saveError": "그룹 또는 카테고리를 저장하지 못했습니다. 다시 시도하세요.",
       "fields": {
         "name": "이름",
-        "parent": "상위 카테고리",
-        "noParent": "없음(최상위 카테고리)",
+        "group": "그룹",
+        "selectGroup": "그룹 선택",
         "color": "색상",
         "icon": "아이콘"
       },
@@ -656,8 +659,8 @@
       "saveError": "예산을 저장하지 못했습니다. 다시 시도하세요.",
       "fields": {
         "month": "월",
-        "category": "카테고리",
-        "selectCategory": "카테고리 선택",
+        "group": "그룹",
+        "selectGroup": "그룹 선택",
         "amount": "금액",
         "currency": "통화"
       },

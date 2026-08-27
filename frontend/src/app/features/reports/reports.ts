@@ -5,6 +5,7 @@ import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { accountBalance } from '../../domain/calc/balances';
@@ -26,7 +27,7 @@ import { MonthBucket, ReportPeriod, resolveMonthBuckets } from './report-period'
 const PERIOD_OPTIONS: readonly ReportPeriod[] = ['month', '3m', '6m', '12m', 'custom'];
 
 interface CategoryTableRow {
-  categoryId: string;
+  groupId: string;
   name: string;
   color: string;
   total: Money;
@@ -41,6 +42,7 @@ interface CategoryTableRow {
 })
 export class Reports {
   private readonly accountRepository = inject(AccountRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly theme = inject(ThemeService);
@@ -63,6 +65,9 @@ export class Reports {
 
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
+  protected readonly categoryGroupsResource = rxResource({
+    stream: () => this.categoryGroupRepository.list()
+  });
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
   });
@@ -151,10 +156,11 @@ export class Reports {
     return { labels: buckets.map((b) => b.label), datasets };
   });
 
-  private readonly stableExpenseCategoryIds = computed(() =>
-    (this.categoriesResource.value() ?? [])
-      .filter((c) => c.kind === 'expense' && !c.parentId)
-      .map((c) => c.id)
+  private readonly stableExpenseGroupIds = computed(() =>
+    (this.categoryGroupsResource.value() ?? [])
+      .filter((group) => group.kind === 'expense')
+      .sort((a, b) => a.position - b.position)
+      .map((group) => group.id)
   );
 
   protected readonly categoryTable = computed<CategoryTableRow[]>(() => {
@@ -168,15 +174,15 @@ export class Reports {
       this.displayCurrency(),
       convert
     );
-    const colorMap = categoryColorMap(this.stableExpenseCategoryIds(), this.theme.current());
-    const byId = new Map(categories.map((c) => [c.id, c]));
+    const colorMap = categoryColorMap(this.stableExpenseGroupIds(), this.theme.current());
+    const byId = new Map((this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group]));
     const grandTotal = breakdown.reduce((total, entry) => total + toNumber(entry.total), 0);
 
     return breakdown
       .map((entry) => ({
-        categoryId: entry.categoryId,
-        name: byId.get(entry.categoryId)?.name ?? entry.categoryId,
-        color: colorMap.get(entry.categoryId) ?? resolveCssColor('--content-subtle'),
+        groupId: entry.groupId,
+        name: byId.get(entry.groupId)?.name ?? entry.groupId,
+        color: colorMap.get(entry.groupId) ?? resolveCssColor('--content-subtle'),
         total: entry.total,
         percent: grandTotal > 0 ? (toNumber(entry.total) / grandTotal) * 100 : 0
       }))

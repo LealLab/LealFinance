@@ -55,6 +55,7 @@ from app.models.account import (  # noqa: E402
 )
 from app.models.budget import BudgetAllocation  # noqa: E402
 from app.models.category import CATEGORY_KIND_EXPENSE, CATEGORY_KIND_INCOME, Category  # noqa: E402
+from app.models.category_group import CategoryGroup  # noqa: E402
 from app.models.institution import Institution  # noqa: E402
 from app.models.investment import (  # noqa: E402
     ASSET_CLASS_ETF,
@@ -81,6 +82,7 @@ from app.schemas.account import AccountCreate  # noqa: E402
 from app.schemas.budget import BudgetUpsert  # noqa: E402
 from app.schemas.budget_plan import BudgetAllocationUpsert, ExpectedIncomeUpsert  # noqa: E402
 from app.schemas.category import CategoryCreate  # noqa: E402
+from app.schemas.category_group import CategoryGroupCreate  # noqa: E402
 from app.schemas.goal import GoalWithAccountCreate  # noqa: E402
 from app.schemas.institution import InstitutionCreate  # noqa: E402
 from app.schemas.investment import (  # noqa: E402
@@ -90,6 +92,7 @@ from app.schemas.investment import (  # noqa: E402
 )
 from app.schemas.recurring import RecurringRuleCreate, RecurringTemplateInput  # noqa: E402
 from app.schemas.transaction import ConversionInput, TransactionCreate  # noqa: E402
+from app.services import category_groups as category_groups_service  # noqa: E402
 from app.services import investments as investments_service  # noqa: E402
 from app.services.accounts import account_balances, create_account  # noqa: E402
 from app.services.budget_plan import upsert_allocation, upsert_expected_income  # noqa: E402
@@ -222,24 +225,89 @@ SPENDING_ACCOUNTS: tuple[tuple[str, str], ...] = (
 class CategorySpec:
     name: str
     icon: str
+
+
+@dataclass(frozen=True)
+class GroupSpec:
+    name: str
+    icon: str
     color: str
-    children: tuple[str, ...] = ()
+    kind: str
+    categories: tuple[CategorySpec, ...]
 
 
-INCOME_CATEGORIES: tuple[CategorySpec, ...] = (
-    CategorySpec("Salary", "wallet", "#16A34A"),
-    CategorySpec("Investments", "chart", "#0891B2"),
-    CategorySpec("Other Income", "tag", "#65A30D"),
+INCOME_GROUPS: tuple[GroupSpec, ...] = (
+    GroupSpec(
+        "Salary", "wallet", "#16A34A", CATEGORY_KIND_INCOME, (CategorySpec("Salary", "wallet"),)
+    ),
+    GroupSpec(
+        "Investments",
+        "chart",
+        "#0891B2",
+        CATEGORY_KIND_INCOME,
+        (CategorySpec("Investments", "chart"),),
+    ),
+    GroupSpec(
+        "Other Income",
+        "tag",
+        "#65A30D",
+        CATEGORY_KIND_INCOME,
+        (CategorySpec("Other Income", "tag"),),
+    ),
 )
-EXPENSE_CATEGORIES: tuple[CategorySpec, ...] = (
-    CategorySpec("Housing", "home", "#DC2626", ("Rent", "Utilities")),
-    CategorySpec("Groceries", "tag", "#EA580C"),
-    CategorySpec("Transport", "swap", "#2563EB", ("Fuel", "Public Transit")),
-    CategorySpec("Dining", "tag", "#D97706", ("Restaurants", "Coffee")),
-    CategorySpec("Entertainment", "target", "#7C3AED"),
-    CategorySpec("Travel", "globe", "#0D9488"),
-    CategorySpec("Health", "alertTriangle", "#DB2777"),
-    CategorySpec("Subscriptions", "repeat", "#4B5563"),
+EXPENSE_GROUPS: tuple[GroupSpec, ...] = (
+    GroupSpec(
+        "Housing",
+        "home",
+        "#DC2626",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Rent", "key"), CategorySpec("Utilities", "plug")),
+    ),
+    GroupSpec(
+        "Groceries",
+        "tag",
+        "#EA580C",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Groceries", "cart"),),
+    ),
+    GroupSpec(
+        "Transport",
+        "swap",
+        "#2563EB",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Fuel", "fuel"), CategorySpec("Public Transit", "bus")),
+    ),
+    GroupSpec(
+        "Dining",
+        "tag",
+        "#D97706",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Restaurants", "utensils"), CategorySpec("Coffee", "coffee")),
+    ),
+    GroupSpec(
+        "Entertainment",
+        "target",
+        "#7C3AED",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Entertainment", "target"),),
+    ),
+    GroupSpec(
+        "Travel", "globe", "#0D9488", CATEGORY_KIND_EXPENSE, (CategorySpec("Travel", "globe"),)
+    ),
+    GroupSpec(
+        "Health",
+        "alertTriangle",
+        "#DB2777",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Health", "heart"),),
+    ),
+    GroupSpec(
+        "Subscriptions",
+        "repeat",
+        "#4B5563",
+        CATEGORY_KIND_EXPENSE,
+        (CategorySpec("Subscriptions", "repeat"),),
+    ),
 )
 
 
@@ -252,11 +320,10 @@ class MerchantSpec:
     weekend_skew: bool = False
 
 
-# Keyed by leaf category name (a child if the parent has children, else the
-# parent itself) - most leaves in EXPENSE_CATEGORIES have an entry here.
+# Keyed by leaf category name - most leaves in EXPENSE_GROUPS have an entry here.
 # "Rent" and "Subscriptions" are deliberately absent: they're posted by a
-# RecurringRule instead (see recurring_monthly_by_category below, which
-# folds their monthly-equivalent spend into the budget for those categories).
+# RecurringRule instead (see recurring_monthly_by_group below, which
+# folds their monthly-equivalent spend into the budget for those groups).
 MERCHANTS: dict[str, MerchantSpec] = {
     "Utilities": MerchantSpec(
         ("Power Co", "Water Utility", "Home Internet"), Decimal(40), Decimal(180), 8
@@ -402,30 +469,33 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
         ),
     )
 
+    groups_by_name: dict[str, CategoryGroup] = {}
     categories_by_name: dict[str, Category] = {}
-    for kind, specs in (
-        (CATEGORY_KIND_INCOME, INCOME_CATEGORIES),
-        (CATEGORY_KIND_EXPENSE, EXPENSE_CATEGORIES),
-    ):
-        for spec in specs:
-            parent = await create_category(
+    for group_spec in (*INCOME_GROUPS, *EXPENSE_GROUPS):
+        group = await category_groups_service.create_group(
+            db,
+            user.id,
+            CategoryGroupCreate(
+                name=group_spec.name,
+                kind=group_spec.kind,
+                color=group_spec.color,
+                icon=group_spec.icon,
+            ),
+        )
+        groups_by_name[group_spec.name] = group
+        for category_spec in group_spec.categories:
+            category = await create_category(
                 db,
                 user.id,
-                CategoryCreate(name=spec.name, kind=kind, color=spec.color, icon=spec.icon),
+                CategoryCreate(
+                    name=category_spec.name,
+                    kind=group_spec.kind,
+                    group_id=group.id,
+                    color=group_spec.color,
+                    icon=category_spec.icon,
+                ),
             )
-            categories_by_name[spec.name] = parent
-            for child_name in spec.children:
-                categories_by_name[child_name] = await create_category(
-                    db,
-                    user.id,
-                    CategoryCreate(
-                        name=child_name,
-                        kind=kind,
-                        parent_id=parent.id,
-                        color=spec.color,
-                        icon=spec.icon,
-                    ),
-                )
+            categories_by_name[category_spec.name] = category
 
     goal_target = random_amount(rng, Decimal(2000), Decimal(10000))
     _goal, goal_account = await create_goal_with_account(
@@ -638,47 +708,45 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
     # Rent and the two Subscriptions recurring transactions post real
     # monthly spend that MERCHANTS-derived budgets below can't see (neither
     # has a MERCHANTS entry - see the comment above MERCHANTS) - fold their
-    # monthly-equivalent amount into the matching top-level category's
-    # budget so it isn't guaranteed to run over every month.
-    recurring_monthly_by_category: dict[str, Decimal] = {
+    # monthly-equivalent amount into the matching expense group's budget so
+    # it isn't guaranteed to run over every month.
+    recurring_monthly_by_group: dict[str, Decimal] = {
         "Housing": rent_amount,
         "Subscriptions": subscription_amount + annual_fee_amount / Decimal(12),
     }
 
     total_weight = sum(spec.weight for spec in MERCHANTS.values())
-    budget_amount_by_category: dict[str, Decimal] = {}
-    allocation_pct_by_category: dict[str, Decimal] = {}
-    for spec in EXPENSE_CATEGORIES:
-        leaves = [leaf for leaf in (spec.children or (spec.name,)) if leaf in MERCHANTS]
+    budget_amount_by_group: dict[str, Decimal] = {}
+    allocation_pct_by_group: dict[str, Decimal] = {}
+    for spec in EXPENSE_GROUPS:
+        leaves = [category.name for category in spec.categories if category.name in MERCHANTS]
         weight = sum(MERCHANTS[leaf].weight for leaf in leaves)
         if leaves:
             avg = sum((MERCHANTS[leaf].low + MERCHANTS[leaf].high) for leaf in leaves) / (
-                2 * len(leaves)
+                Decimal(2 * len(leaves))
             )
             expected_tx = Decimal(cfg.tx_per_month) * Decimal(weight) / Decimal(total_weight)
             merchant_component = expected_tx * avg
         else:
             merchant_component = Decimal(0)
-        recurring_component = recurring_monthly_by_category.get(spec.name, Decimal(0))
-        budget_amount_by_category[spec.name] = (
+        recurring_component = recurring_monthly_by_group.get(spec.name, Decimal(0))
+        budget_amount_by_group[spec.name] = (
             (merchant_component + recurring_component) * Decimal("1.15")
         ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        allocation_pct_by_category[spec.name] = (
+        allocation_pct_by_group[spec.name] = (
             (Decimal(weight) / Decimal(total_weight) * Decimal(90)).quantize(
                 Decimal("0.01"), rounding=ROUND_HALF_UP
             )
             if weight > 0
             else Decimal(0)
         )
-    for spec in EXPENSE_CATEGORIES:
-        pct = allocation_pct_by_category[spec.name]
+    for spec in EXPENSE_GROUPS:
+        pct = allocation_pct_by_group[spec.name]
         if pct > 0:
             await upsert_allocation(
                 db,
                 user.id,
-                BudgetAllocationUpsert(
-                    category_id=categories_by_name[spec.name].id, percentage=pct
-                ),
+                BudgetAllocationUpsert(group_id=groups_by_name[spec.name].id, percentage=pct),
             )
 
     for month in month_range(cfg.start_month, cfg.end_month):
@@ -693,10 +761,10 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
 
         for _ in range(cfg.tx_per_month):
             leaf_name = pick_merchant_name(rng)
-            spec = MERCHANTS[leaf_name]
-            merchant = rng.choice(spec.names)
-            amount = random_amount(rng, spec.low, spec.high)
-            use_weekend = spec.weekend_skew and rng.random() < 0.7
+            merchant_spec = MERCHANTS[leaf_name]
+            merchant = rng.choice(merchant_spec.names)
+            amount = random_amount(rng, merchant_spec.low, merchant_spec.high)
+            use_weekend = merchant_spec.weekend_skew and rng.random() < 0.7
             tx_date = rng.choice(weekend_days if use_weekend else all_days)
 
             roll = rng.random()
@@ -790,14 +858,14 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
                 secondary_rate,
             )
 
-        for spec in EXPENSE_CATEGORIES:
+        for spec in EXPENSE_GROUPS:
             await upsert_budget(
                 db,
                 user.id,
                 BudgetUpsert(
-                    category_id=categories_by_name[spec.name].id,
+                    group_id=groups_by_name[spec.name].id,
                     month=month,
-                    amount=budget_amount_by_category[spec.name],
+                    amount=budget_amount_by_group[spec.name],
                     currency=cfg.base_currency,
                 ),
             )

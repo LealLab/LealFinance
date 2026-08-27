@@ -4,7 +4,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type ButtonSize = 'sm' | 'md';
 
 const BASE =
-  'inline-flex items-center justify-center gap-1.5 rounded font-medium ' +
+  'inline-flex cursor-pointer items-center justify-center gap-1.5 rounded font-medium ' +
   'transition-colors disabled:cursor-not-allowed disabled:opacity-50';
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {

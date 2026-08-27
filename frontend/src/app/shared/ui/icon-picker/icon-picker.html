@@ -37,7 +37,7 @@
   <!-- t(icons.groups.money) t(icons.groups.food) t(icons.groups.transport) t(icons.groups.home) -->
   <!-- t(icons.groups.shopping) t(icons.groups.health) t(icons.groups.entertainment) t(icons.groups.work) -->
   <!-- t(icons.groups.people) t(icons.groups.general) -->
-  <app-modal [(open)]="open" [titleText]="t('icons.title')">
+  <ng-template #grid>
     <div class="flex flex-col gap-3">
       <input
         type="search"
@@ -57,7 +57,7 @@
                 @for (name of section.names; track name) {
                   <button
                     type="button"
-                    class="flex flex-col items-center gap-1 rounded-md border p-2 text-content-muted transition-colors hover:bg-surface-sunken"
+                    class="flex cursor-pointer flex-col items-center gap-1 rounded-md border p-2 text-content-muted transition-colors hover:bg-surface-sunken"
                     [class]="
                       name === selected()
                         ? 'border-accent bg-accent/10 text-accent'
@@ -80,5 +80,13 @@
         <p class="py-6 text-center text-sm text-content-muted">{{ t('icons.empty') }}</p>
       }
     </div>
-  </app-modal>
+  </ng-template>
+
+  @if (inline()) {
+    <ng-container [ngTemplateOutlet]="grid" />
+  } @else {
+    <app-modal [(open)]="open" [titleText]="t('icons.title')">
+      <ng-container [ngTemplateOutlet]="grid" />
+    </app-modal>
+  }
 </div>

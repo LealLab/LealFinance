@@ -193,9 +193,20 @@ async def _create_account(client: AsyncClient, currency: str = "BRL") -> str:
 
 
 async def _create_category(client: AsyncClient, name: str, kind: str) -> str:
+    group_response = await client.post(
+        "/api/v1/category-groups",
+        json={"name": f"{name} Group", "kind": kind, "color": "#112233", "icon": "tag"},
+    )
+    assert group_response.status_code == 201
     response = await client.post(
         "/api/v1/categories",
-        json={"name": name, "kind": kind, "color": "#112233", "icon": "tag"},
+        json={
+            "name": name,
+            "kind": kind,
+            "group_id": group_response.json()["id"],
+            "color": "#112233",
+            "icon": "tag",
+        },
     )
     assert response.status_code == 201
     return response.json()["id"]

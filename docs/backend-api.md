@@ -128,14 +128,16 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/accounts/{id}/archive` | user | Body `{archived}`. |
 | GET/POST | `/categories` | user | `position` is server-assigned on create. |
 | PATCH | `/categories/{id}` | user | |
-| POST | `/categories/{id}/archive` | user | |
-| DELETE | `/categories/{id}` | user | Blocked while referenced by children, budgets, budget allocations, transactions, or recurring templates (409). |
-| POST | `/categories/reorder` | user | Body `{kind, parent_id, ordered_ids}`. 204. Ids outside the `(kind, parent_id)` sibling group are silently ignored, matching the frontend mock store. |
+| DELETE | `/categories/{id}` | user | Blocked while referenced by transactions or recurring templates (409). |
+| GET/POST | `/category-groups` | user | `position` is server-assigned on create, scoped to the group kind. |
+| PATCH/DELETE | `/category-groups/{id}` | user | Kind changes and deletes are blocked while categories, budgets, or allocations reference the group (409). |
+| POST | `/category-groups/reorder` | user | Body `{kind, ordered_ids}`. 204. Ids outside the kind are silently ignored, matching the frontend mock store. |
+| POST | `/categories/reorder` | user | Body `{kind, group_id, ordered_ids}`. 204. Ids outside the `(kind, group_id)` sibling group are silently ignored, matching the frontend mock store. |
 | GET | `/budgets` | user | |
-| PUT | `/budgets` | user | Upsert, keyed on `(category_id, month)`. |
+| PUT | `/budgets` | user | Upsert, keyed on `(group_id, month)`. |
 | DELETE | `/budgets/{id}` | user | |
 | GET | `/budget-allocations` | user | |
-| PUT | `/budget-allocations` | user | Upsert, keyed on `category_id`. |
+| PUT | `/budget-allocations` | user | Upsert, keyed on `group_id`. |
 | DELETE | `/budget-allocations/{id}` | user | |
 | GET | `/expected-income` | user | |
 | PUT | `/expected-income` | user | Upsert, keyed on `month`. No delete. |
@@ -299,7 +301,7 @@ mapping echoed back), and one `rows` entry per CSV data row:
   `expense`, positive → `income`, `invert_sign` flips this) - import only
   ever produces income/expense rows, never transfers or interest.
 - `category_id` is set only when a `category` column is mapped and its text
-  case-insensitively matches one of the caller's own non-archived categories
+case-insensitively matches one of the caller's own categories
   whose `kind` matches the row's derived type; otherwise `null` and the
   frontend must ask the user to pick one before the row can be reviewed.
 - `error` is one of the codes below when a row can't be parsed - such a row
@@ -368,27 +370,34 @@ one.
 | `recurring_rule.not_found` | 404 |
 | `recurring_rule.end_before_start` | 422 |
 
-## Categories
+## Category groups and categories
 
-One level of nesting: a category with a `parent_id` must point at a
-top-level category (itself with no parent), and a category that already has
-children can't be given a parent either. `position` is 0-based, scoped to
-the `(kind, parent_id)` sibling group, and server-assigned on create
-(`max(sibling positions) + 1`, or `0`).
+Category groups organize categories and are the references used by budgets and
+budget allocations. A group `kind` is `income` or `expense`; its position is
+0-based and scoped to `(user, kind)`. A group cannot change kind or be deleted
+while it is referenced by any category, budget, or allocation.
 
-Changing `kind` on a category that has children or is referenced by a
-budget, budget allocation, transaction, or recurring template is blocked
-(`category.kind_immutable`). The same complete reference check protects
-deletion (`category.in_use`). An allocated category also cannot be moved
-under another category because allocations are defined only at the top level.
+Every category requires a `group_id`, and its `kind` must match the group's
+kind. Category positions are 0-based, scoped to `(kind, group_id)`, and
+server-assigned on create (`max(sibling positions) + 1`, or `0`). Categories
+are not nested or archived. A category can move between groups of the same
+kind; changing its kind requires changing it to a matching group in the same
+request.
 
-| Code | Status |
-| --- | --- |
-| `category.not_found` | 404 |
-| `category.parent_not_top_level` | 422 |
-| `category.parent_kind_mismatch` | 422 |
-| `category.kind_immutable` | 409 |
-| `category.in_use` | 409 |
+Changing a category's kind is blocked while a transaction or recurring
+template references it (`category.kind_immutable`). The same two-reference
+check protects deletion (`category.in_use`); budgets and allocations reference
+the group instead.
+
+| Code | Status | Meaning |
+| --- | --- | --- |
+| `category_group.not_found` | 404 | Group is unknown or belongs to another user. |
+| `category_group.in_use` | 409 | Group has categories, budgets, or allocations. |
+| `category_group.kind_immutable` | 409 | Group kind cannot change while it is in use. |
+| `category.not_found` | 404 | Category is unknown or belongs to another user. |
+| `category.group_kind_mismatch` | 422 | Category kind does not match its group kind. |
+| `category.kind_immutable` | 409 | A transaction or recurring template references the category. |
+| `category.in_use` | 409 | A transaction or recurring template references the category. |
 
 ## Institutions and accounts
 
@@ -449,7 +458,7 @@ endpoint never surfaces a provider outage to the caller.
 ## Budgets and budget planning
 
 `budgets`, `budget_allocations`, and `expected_income` are all upsert-first
-(`PUT`), keyed on `(category_id, month)`, `category_id`, and `month`
+(`PUT`), keyed on `(group_id, month)`, `group_id`, and `month`
 respectively (each scoped to the caller). `month` is validated as
 `YYYY-MM` at both the Pydantic layer (regex) and the database (CHECK) -
 never a `Date` pinned to the 1st.
@@ -458,6 +467,7 @@ never a `Date` pinned to the 1st.
 | --- | --- |
 | `budget.not_found` | 404 |
 | `budget_allocation.not_found` | 404 |
+| `budget_allocation.group_must_be_expense` | 422 |
 | `expected_income.not_found` | 404 |
 
 ## Currency

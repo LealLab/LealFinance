@@ -1,5 +1,5 @@
-"""Budget allocations and expected income - the two inputs
-domain/calc/budget-plan.ts derives auto-generated budgets from, grouped
+"""Budget allocations for expense groups and expected income - the two
+inputs domain/calc/budget-plan.ts derives auto-generated budgets from, grouped
 here the way the frontend's single BudgetPlanRepository groups them.
 """
 
@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
 from app.models.budget import BudgetAllocation, ExpectedIncome
-from app.models.category import Category
+from app.models.category_group import CategoryGroup
 from app.schemas.budget_plan import BudgetAllocationUpsert, ExpectedIncomeUpsert
 from app.services import ownership
 from app.services.currencies import get_active_currency
@@ -25,19 +25,19 @@ async def list_allocations(db: AsyncSession, user_id: UUID) -> list[BudgetAlloca
 async def upsert_allocation(
     db: AsyncSession, user_id: UUID, data: BudgetAllocationUpsert
 ) -> BudgetAllocation:
-    category = await ownership.get_owned(db, Category, data.category_id, user_id)
-    if category.kind != "expense" or category.parent_id is not None:
-        raise ValidationAppError(code="budget_allocation.category_must_be_top_level_expense")
+    group = await ownership.get_owned(db, CategoryGroup, data.group_id, user_id)
+    if group.kind != "expense":
+        raise ValidationAppError(code="budget_allocation.group_must_be_expense")
 
     result = await db.execute(
         select(BudgetAllocation).where(
             BudgetAllocation.user_id == user_id,
-            BudgetAllocation.category_id == data.category_id,
+            BudgetAllocation.group_id == data.group_id,
         )
     )
     allocation = result.scalars().first()
     if allocation is None:
-        allocation = BudgetAllocation(user_id=user_id, category_id=data.category_id)
+        allocation = BudgetAllocation(user_id=user_id, group_id=data.group_id)
         db.add(allocation)
 
     allocation.percentage = data.percentage

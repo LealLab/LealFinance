@@ -1,7 +1,7 @@
-/** One reusable percentage allocation for a top-level expense category. */
+/** One reusable percentage allocation for an expense group. */
 export interface BudgetAllocation {
   id: string;
-  categoryId: string;
+  groupId: string;
   percentage: string;
 }
 

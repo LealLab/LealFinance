@@ -22,22 +22,13 @@ export class HttpCategoryRepository extends CategoryRepository {
       .patch<CategoryWire>(`/categories/${id}`, mapCategoryPatch(changes))
       .pipe(map(mapCategory));
   }
-  setArchived(id: string, archived: boolean): Observable<Category> {
-    return this.api
-      .post<CategoryWire>(`/categories/${id}/archive`, { archived })
-      .pipe(map(mapCategory));
-  }
   delete(id: string): Observable<void> {
     return this.api.delete(`/categories/${id}`);
   }
-  reorder(
-    kind: CategoryKind,
-    parentId: string | undefined,
-    orderedIds: string[],
-  ): Observable<void> {
+  reorder(kind: CategoryKind, groupId: string, orderedIds: string[]): Observable<void> {
     return this.api.post<void>('/categories/reorder', {
       kind,
-      parent_id: parentId ?? null,
+      group_id: groupId,
       ordered_ids: orderedIds,
     });
   }

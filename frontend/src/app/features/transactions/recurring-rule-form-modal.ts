@@ -6,9 +6,11 @@ import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { Institution } from '../../domain/models/institution';
 import { RecurringFrequency, RecurringRule } from '../../domain/models/recurring';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
+import { groupCategoriesByGroup } from './category-grouping';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -36,6 +38,7 @@ export class RecurringRuleFormModal {
   readonly rule = input<RecurringRule | undefined>(undefined);
   readonly accounts = input.required<Account[]>();
   readonly categories = input.required<Category[]>();
+  readonly categoryGroups = input<CategoryGroup[]>([]);
   readonly institutions = input<Institution[]>([]);
   readonly saved = output<void>();
 
@@ -59,7 +62,10 @@ export class RecurringRuleFormModal {
     initialValue: this.form.controls.type.value
   });
   protected readonly categoryOptions = computed(() =>
-    this.categories().filter((category) => !category.archived && category.kind === this.selectedType())
+    this.categories().filter((category) => category.kind === this.selectedType())
+  );
+  protected readonly categoryGroupsOptions = computed(() =>
+    groupCategoriesByGroup(this.categoryOptions(), this.categoryGroups())
   );
   /** <optgroup>-per-institution for the account select (display-only - no transfer support here). */
   protected readonly accountGroups = computed(() =>

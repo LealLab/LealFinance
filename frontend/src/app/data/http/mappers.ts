@@ -10,6 +10,7 @@ import type {
 import type { Budget } from '../../domain/models/budget';
 import type { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import type { Category } from '../../domain/models/category';
+import type { CategoryGroup } from '../../domain/models/category-group';
 import type { ExchangeRate } from '../../domain/models/exchange-rate';
 import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
@@ -52,6 +53,9 @@ import type {
   BudgetAllocationWire,
   BudgetInputWire,
   BudgetWire,
+  CategoryGroupInputWire,
+  CategoryGroupPatchWire,
+  CategoryGroupWire,
   CategoryInputWire,
   CategoryPatchWire,
   CategoryWire,
@@ -161,58 +165,83 @@ export function mapInstitutionPatch(input: Partial<Omit<Institution, 'id'>>): In
   return wire;
 }
 
+export const mapCategoryGroup = (wire: CategoryGroupWire): CategoryGroup => ({
+  id: wire.id,
+  name: wire.name,
+  kind: wire.kind,
+  color: wire.color,
+  icon: wire.icon,
+  position: wire.position,
+});
+export const mapCategoryGroupCreate = (
+  input: Omit<CategoryGroup, 'id' | 'position'>,
+): CategoryGroupInputWire => ({
+  name: input.name,
+  kind: input.kind,
+  color: input.color,
+  icon: input.icon,
+});
+export function mapCategoryGroupPatch(
+  input: Partial<Omit<CategoryGroup, 'id'>>,
+): CategoryGroupPatchWire {
+  const wire: CategoryGroupPatchWire = {};
+  if (has(input, 'name')) wire.name = nullable(input.name);
+  if (has(input, 'kind')) wire.kind = nullable(input.kind);
+  if (has(input, 'color')) wire.color = nullable(input.color);
+  if (has(input, 'icon')) wire.icon = nullable(input.icon);
+  if (has(input, 'position')) wire.position = nullable(input.position);
+  return wire;
+}
+
 export const mapCategory = (wire: CategoryWire): Category => ({
   id: wire.id,
   name: wire.name,
   kind: wire.kind,
-  parentId: wire.parent_id ?? undefined,
+  groupId: wire.group_id,
   color: wire.color,
   icon: wire.icon,
-  archived: wire.archived,
   position: wire.position,
 });
 export const mapCategoryCreate = (input: Omit<Category, 'id' | 'position'>): CategoryInputWire => ({
   name: input.name,
   kind: input.kind,
-  parent_id: nullable(input.parentId),
+  group_id: input.groupId,
   color: input.color,
   icon: input.icon,
-  archived: input.archived,
 });
 export function mapCategoryPatch(input: Partial<Omit<Category, 'id'>>): CategoryPatchWire {
   const wire: CategoryPatchWire = {};
   if (has(input, 'name')) wire.name = nullable(input.name);
   if (has(input, 'kind')) wire.kind = nullable(input.kind);
-  if (has(input, 'parentId')) wire.parent_id = nullable(input.parentId);
+  if (has(input, 'groupId')) wire.group_id = nullable(input.groupId);
   if (has(input, 'color')) wire.color = nullable(input.color);
   if (has(input, 'icon')) wire.icon = nullable(input.icon);
-  if (has(input, 'archived')) wire.archived = nullable(input.archived);
   if (has(input, 'position')) wire.position = nullable(input.position);
   return wire;
 }
 
 export const mapBudget = (wire: BudgetWire): Budget => ({
   id: wire.id,
-  categoryId: wire.category_id,
+  groupId: wire.group_id,
   month: wire.month,
   amount: wire.amount,
   currency: wire.currency,
 });
 export const mapBudgetInput = (input: Omit<Budget, 'id'>): BudgetInputWire => ({
-  category_id: input.categoryId,
+  group_id: input.groupId,
   month: input.month,
   amount: input.amount,
   currency: input.currency,
 });
 export const mapBudgetAllocation = (wire: BudgetAllocationWire): BudgetAllocation => ({
   id: wire.id,
-  categoryId: wire.category_id,
+  groupId: wire.group_id,
   percentage: wire.percentage,
 });
 export const mapBudgetAllocationInput = (
   input: Omit<BudgetAllocation, 'id'>,
 ): BudgetAllocationInputWire => ({
-  category_id: input.categoryId,
+  group_id: input.groupId,
   percentage: input.percentage,
 });
 export const mapExpectedIncome = (wire: ExpectedIncomeWire): ExpectedIncome => ({

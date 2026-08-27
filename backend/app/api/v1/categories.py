@@ -1,5 +1,4 @@
-"""Category CRUD, archive/unarchive, sibling reordering, and a
-referentially-guarded delete."""
+"""Category CRUD, sibling reordering, and a referentially-guarded delete."""
 
 from uuid import UUID
 
@@ -13,7 +12,6 @@ from app.schemas.category import (
     CategoryReorderRequest,
     CategoryUpdate,
 )
-from app.schemas.common import ArchiveRequest
 from app.services import categories as categories_service
 
 router = APIRouter(prefix="/categories", tags=["categories"])
@@ -29,6 +27,15 @@ async def create_category(payload: CategoryCreate, user: CurrentUser, db: DbSess
     return await categories_service.create_category(db, user.id, payload)
 
 
+@router.post("/reorder", status_code=status.HTTP_204_NO_CONTENT)
+async def reorder_categories(
+    payload: CategoryReorderRequest, user: CurrentUser, db: DbSession
+) -> None:
+    await categories_service.reorder_categories(
+        db, user.id, payload.kind, payload.group_id, payload.ordered_ids
+    )
+
+
 @router.patch("/{category_id}", response_model=CategoryRead)
 async def update_category(
     category_id: UUID, payload: CategoryUpdate, user: CurrentUser, db: DbSession
@@ -36,24 +43,6 @@ async def update_category(
     return await categories_service.update_category(db, user.id, category_id, payload)
 
 
-@router.post("/{category_id}/archive", response_model=CategoryRead)
-async def archive_category(
-    category_id: UUID, payload: ArchiveRequest, user: CurrentUser, db: DbSession
-) -> Category:
-    return await categories_service.set_category_archived(
-        db, user.id, category_id, payload.archived
-    )
-
-
 @router.delete("/{category_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_category(category_id: UUID, user: CurrentUser, db: DbSession) -> None:
     await categories_service.delete_category(db, user.id, category_id)
-
-
-@router.post("/reorder", status_code=status.HTTP_204_NO_CONTENT)
-async def reorder_categories(
-    payload: CategoryReorderRequest, user: CurrentUser, db: DbSession
-) -> None:
-    await categories_service.reorder_categories(
-        db, user.id, payload.kind, payload.parent_id, payload.ordered_ids
-    )

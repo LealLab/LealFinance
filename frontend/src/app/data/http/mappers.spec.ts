@@ -2,6 +2,16 @@ import {
   mapAccount,
   mapAccountBalance,
   mapAccountPatch,
+  mapBudget,
+  mapBudgetAllocation,
+  mapBudgetAllocationInput,
+  mapBudgetInput,
+  mapCategory,
+  mapCategoryCreate,
+  mapCategoryGroup,
+  mapCategoryGroupCreate,
+  mapCategoryGroupPatch,
+  mapCategoryPatch,
   mapExchangeRate,
   mapImportPreview,
   mapImportPreviewRequest,
@@ -10,6 +20,86 @@ import {
 } from './mappers';
 
 describe('HTTP wire mappers', () => {
+  it('maps category groups and categories between wire and domain shapes', () => {
+    expect(
+      mapCategoryGroup({
+        id: 'g',
+        name: 'Housing',
+        kind: 'expense',
+        color: '#000000',
+        icon: 'home',
+        position: 2,
+      }),
+    ).toEqual({
+      id: 'g',
+      name: 'Housing',
+      kind: 'expense',
+      color: '#000000',
+      icon: 'home',
+      position: 2,
+    });
+    expect(
+      mapCategoryGroupCreate({ name: 'Housing', kind: 'expense', color: '#000000', icon: 'home' }),
+    ).toEqual({ name: 'Housing', kind: 'expense', color: '#000000', icon: 'home' });
+    expect(mapCategoryGroupPatch({ name: 'Renamed', position: undefined })).toEqual({
+      name: 'Renamed',
+      position: null,
+    });
+    expect(
+      mapCategory({
+        id: 'c',
+        name: 'Rent',
+        kind: 'expense',
+        group_id: 'g',
+        color: '#000000',
+        icon: 'home',
+        position: 0,
+      }),
+    ).toEqual({
+      id: 'c',
+      name: 'Rent',
+      kind: 'expense',
+      groupId: 'g',
+      color: '#000000',
+      icon: 'home',
+      position: 0,
+    });
+    expect(
+      mapCategoryCreate({
+        name: 'Rent',
+        kind: 'expense',
+        groupId: 'g',
+        color: '#000000',
+        icon: 'home',
+      }),
+    ).toEqual({
+      name: 'Rent',
+      kind: 'expense',
+      group_id: 'g',
+      color: '#000000',
+      icon: 'home',
+    });
+    expect(mapCategoryPatch({ groupId: undefined })).toEqual({ group_id: null });
+  });
+
+  it('maps group-keyed budgets and allocations', () => {
+    expect(
+      mapBudget({ id: 'b', group_id: 'g', month: '2026-08', amount: '100.00', currency: 'BRL' }),
+    ).toEqual({ id: 'b', groupId: 'g', month: '2026-08', amount: '100.00', currency: 'BRL' });
+    expect(
+      mapBudgetInput({ groupId: 'g', month: '2026-08', amount: '100.00', currency: 'BRL' }),
+    ).toEqual({ group_id: 'g', month: '2026-08', amount: '100.00', currency: 'BRL' });
+    expect(mapBudgetAllocation({ id: 'a', group_id: 'g', percentage: '20' })).toEqual({
+      id: 'a',
+      groupId: 'g',
+      percentage: '20',
+    });
+    expect(mapBudgetAllocationInput({ groupId: 'g', percentage: '20' })).toEqual({
+      group_id: 'g',
+      percentage: '20',
+    });
+  });
+
   it('maps nullable fields to undefined without changing decimal strings', () => {
     expect(
       mapAccount({

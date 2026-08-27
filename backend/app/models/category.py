@@ -1,18 +1,15 @@
-"""Categories - one level of nesting only (a category with a `parent_id`
-points at a top-level category, never at another child). `position` is
-0-based, scoped to categories sharing the same `(user_id, kind, parent_id)`
-sibling group.
+"""Categories live inside a category group. `kind` is kept on each category
+as a denormalized copy of its group's kind because existing readers filter on
+it directly. `position` is 0-based, scoped to categories sharing the same
+`(user_id, kind, group_id)` group.
 
-The one-level-nesting rule, and "parent must belong to the same user and
-share the same kind" invariant, can't be expressed as a CHECK constraint (a
-CHECK can't read another row) - see app/services/categories.py for both.
-`ondelete="RESTRICT"` on the self-FK is still a DB backstop for "can't
-delete a category that has children," which the service also checks first.
+The service layer enforces that a category and its group belong to the same
+user and have the same kind; a CHECK constraint cannot read another row.
 """
 
 import uuid
 
-from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Integer, String
+from sqlalchemy import CheckConstraint, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -37,11 +34,12 @@ class Category(UserOwnedModel):
 
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     kind: Mapped[str] = mapped_column(String(20), nullable=False)
-    parent_id: Mapped[uuid.UUID | None] = mapped_column(
+    group_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
-        ForeignKey("categories.id", ondelete="RESTRICT", name="fk_categories_parent_id"),
+        ForeignKey("category_groups.id", ondelete="RESTRICT", name="fk_categories_group_id"),
+        nullable=False,
+        index=True,
     )
     color: Mapped[str] = mapped_column(String(9), nullable=False)
     icon: Mapped[str] = mapped_column(String(50), nullable=False)
-    archived: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

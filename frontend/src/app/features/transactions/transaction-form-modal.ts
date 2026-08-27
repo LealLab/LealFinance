@@ -9,10 +9,12 @@ import { TransactionRepository } from '../../data/transaction.repository';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { Institution } from '../../domain/models/institution';
 import { RecurringFrequency } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
+import { groupCategoriesByGroup } from './category-grouping';
 import { buildTransactionConversion, prefillConvertedAmount } from './conversion-form';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
@@ -70,6 +72,7 @@ export class TransactionFormModal {
   readonly transaction = input<Transaction | undefined>(undefined);
   readonly accounts = input.required<Account[]>();
   readonly categories = input.required<Category[]>();
+  readonly categoryGroups = input<CategoryGroup[]>([]);
   readonly institutions = input<Institution[]>([]);
   readonly saved = output<void>();
 
@@ -116,8 +119,12 @@ export class TransactionFormModal {
 
   protected readonly categoryOptions = computed(() => {
     const kind = this.isTransfer() ? undefined : this.selectedType() === 'income' ? 'income' : 'expense';
-    return this.categories().filter((category) => !category.archived && category.kind === kind);
+    return this.categories().filter((category) => category.kind === kind);
   });
+
+  protected readonly categoryGroupsOptions = computed(() =>
+    groupCategoriesByGroup(this.categoryOptions(), this.categoryGroups())
+  );
 
   /** <optgroup>-per-institution for the plain (non-transfer) account select. */
   protected readonly accountGroups = computed(() =>

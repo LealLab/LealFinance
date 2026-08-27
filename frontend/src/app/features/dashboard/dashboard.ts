@@ -7,6 +7,7 @@ import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { categoryBreakdown, netWorth as netWorthOf, totalsFor } from '../../domain/calc/aggregations';
@@ -53,6 +54,7 @@ export class Dashboard {
   private readonly accountRepository = inject(AccountRepository);
   private readonly transactionRepository = inject(TransactionRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly budgetRepository = inject(BudgetRepository);
   private readonly theme = inject(ThemeService);
   private readonly transloco = inject(TranslocoService);
@@ -80,6 +82,9 @@ export class Dashboard {
     stream: () => this.transactionRepository.list({ dateFrom: this.windowStartDate })
   });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
+  protected readonly categoryGroupsResource = rxResource({
+    stream: () => this.categoryGroupRepository.list()
+  });
   protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
 
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
@@ -185,20 +190,23 @@ export class Dashboard {
       this.displayCurrency(),
       convert
     );
-    const stableIds = categories.filter((c) => c.kind === 'expense' && !c.parentId).map((c) => c.id);
+    const stableIds = (this.categoryGroupsResource.value() ?? [])
+      .filter((group) => group.kind === 'expense')
+      .sort((a, b) => a.position - b.position)
+      .map((group) => group.id);
     const colorMap = categoryColorMap(stableIds, this.theme.current());
-    const byId = new Map(categories.map((c) => [c.id, c]));
+    const byId = new Map((this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group]));
     const sorted = [...breakdown].sort((a, b) => compare(b.total, a.total));
 
     const datasets: ChartDataset[] = [
       {
         label: this.transloco.translate('dashboard.categoryChart.label'),
         data: sorted.map((entry) => toNumber(entry.total)),
-        colors: sorted.map((entry) => colorMap.get(entry.categoryId) ?? resolveCssColor('--content-subtle'))
+        colors: sorted.map((entry) => colorMap.get(entry.groupId) ?? resolveCssColor('--content-subtle'))
       }
     ];
     return {
-      labels: sorted.map((entry) => byId.get(entry.categoryId)?.name ?? entry.categoryId),
+      labels: sorted.map((entry) => byId.get(entry.groupId)?.name ?? entry.groupId),
       datasets
     };
   });
@@ -249,7 +257,7 @@ export class Dashboard {
   }
 
   // budgetProgress converts into each budget's own currency, not
-  // displayCurrency - a budgeted category can catch a transaction in any
+  // displayCurrency - a budgeted group can catch a transaction in any
   // currency any account uses, not just the budget's, so this needs its
   // own rate fetch (transaction currency -> budget currency pairs), same
   // shape as budgets.ts's conversionPairs. Reusing `converter` above (which
@@ -277,12 +285,12 @@ export class Dashboard {
     const budgets = (this.budgetsResource.value() ?? []).filter((b) => b.month === this.currentMonth);
     const categories = this.categoriesResource.value() ?? [];
     const transactions = this.transactionsResource.value() ?? [];
-    const byId = new Map(categories.map((c) => [c.id, c]));
+    const byId = new Map((this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group]));
 
     return budgets
       .map((budget) => ({
         ...budgetProgress(budget, transactions, categories, convert),
-        categoryName: byId.get(budget.categoryId)?.name ?? budget.categoryId
+        categoryName: byId.get(budget.groupId)?.name ?? budget.groupId
       }))
       .sort((a, b) => b.ratio - a.ratio)
       .slice(0, BUDGET_PREVIEW_LIMIT);

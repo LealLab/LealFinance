@@ -558,22 +558,19 @@
   "categories": {
     "title": "Luokat",
     "description": "Järjestä tulot ja menot luokkiin.",
-    "showArchived": "Näytä arkistoidut luokat",
-    "archivedBadge": "Arkistoitu",
     "actions": {
-      "new": "Uusi luokka",
+      "addGroup": "Lisää ryhmä",
+      "addCategory": "Lisää luokka",
+      "addCategoryToGroup": "Lisää luokka tähän ryhmään",
       "edit": "Muokkaa",
-      "archive": "Arkistoi",
-      "unarchive": "Palauta arkistosta",
       "delete": "Poista",
-      "addChild": "Uusi alaluokka",
       "collapse": "Pienennä",
       "expand": "Laajenna",
       "dragHandle": "Muuta järjestystä"
     },
     "empty": {
       "title": "Ei vielä luokkia",
-      "description": "Luo luokkia tapahtumiesi järjestämistä varten."
+      "description": "Luo ryhmiä ja luokkia tapahtumiesi järjestämistä varten."
     },
     "sections": {
       "income": "Tuloluokat",
@@ -583,16 +580,22 @@
       "title": "Poistetaanko luokka?",
       "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa luokan \"{{name}}\"?",
       "blockedTitle": "Poistaminen ei onnistu",
-      "blockedMessage": "Tämä luokka on edelleen käytössä: sitä käyttää {{transactions}} tapahtumaa, {{budgets}} budjettia ja {{children}} alaluokkaa. Arkistoi luokka poistamisen sijaan."
+      "blockedMessage": "Tämä luokka on edelleen {{transactions}} tapahtuman käytössä. Poista kyseiset tapahtumat ennen luokan poistamista."
+    },
+    "deleteGroup": {
+      "title": "Poistetaanko ryhmä?",
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa ryhmän \"{{name}}\"?"
     },
     "form": {
       "newTitle": "Uusi luokka",
       "editTitle": "Muokkaa luokkaa",
-      "saveError": "Luokan tallentaminen epäonnistui. Yritä uudelleen.",
+      "newGroupTitle": "Uusi ryhmä",
+      "editGroupTitle": "Muokkaa ryhmää",
+      "saveError": "Ryhmän tai luokan tallentaminen epäonnistui. Yritä uudelleen.",
       "fields": {
         "name": "Nimi",
-        "parent": "Yläluokka",
-        "noParent": "Ei mitään (ylimmän tason luokka)",
+        "group": "Ryhmä",
+        "selectGroup": "Valitse ryhmä",
         "color": "Väri",
         "icon": "Kuvake"
       },
@@ -656,8 +659,8 @@
       "saveError": "Budjetin tallentaminen epäonnistui. Yritä uudelleen.",
       "fields": {
         "month": "Kuukausi",
-        "category": "Luokka",
-        "selectCategory": "Valitse luokka",
+        "group": "Ryhmä",
+        "selectGroup": "Valitse ryhmä",
         "amount": "Summa",
         "currency": "Valuutta"
       },
