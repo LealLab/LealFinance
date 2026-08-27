@@ -409,7 +409,10 @@
       "new": "Nowa transakcja",
       "edit": "Edytuj",
       "delete": "Usuń",
-      "import": "Importuj CSV"
+      "import": "Importuj CSV",
+      "transfer": "Transfer",
+      "columns": "Columns",
+      "exportCsv": "Export CSV"
     },
     "tabs": {
       "transactions": "Transakcje",
@@ -426,10 +429,20 @@
       "category": "Kategoria",
       "from": "Od",
       "to": "Do",
-      "search": "Szukaj",
       "institution": "Instytucja",
-      "all": "Wszystkie",
-      "clear": "Wyczyść filtry"
+      "clear": "Wyczyść filtry",
+      "title": "Filter by",
+      "searchPlaceholder": "Search transactions…",
+      "group": "Group",
+      "date": "Date",
+      "amount": "Amount",
+      "amountMin": "Minimum",
+      "amountMax": "Maximum",
+      "any": "Any",
+      "back": "Back",
+      "dateRange": "{{from}} — {{to}}",
+      "amountRange": "{{min}} — {{max}}",
+      "removeChip": "Remove {{filter}} filter"
     },
     "empty": {
       "title": "Nie znaleziono transakcji",
@@ -553,6 +566,57 @@
       "actions": {
         "confirm": "Importuj sprawdzone wiersze"
       }
+    },
+    "eyebrow": "Financial",
+    "view": {
+      "list": "List",
+      "calendar": "Calendar"
+    },
+    "columns": {
+      "title": "Columns",
+      "date": "Date",
+      "description": "Description",
+      "category": "Category",
+      "account": "Account",
+      "amount": "Amount"
+    },
+    "table": {
+      "selectAll": "Select all rows",
+      "selectRow": "Select {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} of {{total}}",
+      "pageSize": "Rows per page",
+      "previous": "Previous page",
+      "next": "Next page",
+      "goToPage": "Go to page {{page}}"
+    },
+    "bulk": {
+      "selected": "selected",
+      "assignCategory": "Select category…",
+      "mixedKinds": "Select transactions of a single kind to assign a category",
+      "delete": "Delete selected",
+      "clearSelection": "Clear selection",
+      "deleteConfirm": {
+        "title": "Delete transactions",
+        "message": "This cannot be undone. Delete {{count}} transactions?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "balanceTrend": "Balance trend",
+      "selectedDay": "Selected day",
+      "noTransactions": "No transactions on this day",
+      "legend": {
+        "income": "Income",
+        "expenses": "Expenses",
+        "transfer": "Transfer",
+        "projected": "Projected"
+      }
+    },
+    "export": {
+      "filename": "transactions"
     }
   },
   "categories": {

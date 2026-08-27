@@ -2,7 +2,7 @@
 
 from datetime import date as date_type
 from decimal import Decimal
-from typing import Literal
+from typing import Annotated, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
@@ -11,6 +11,10 @@ from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal
 
 TransactionType = Literal["income", "expense", "transfer", "interest"]
 ConversionSource = Literal["manual", "quote", "fallback"]
+
+# ponytail: matches the 200-row list page cap with headroom for select-all.
+# Raise (and reconsider the list limit cap) if a real bulk case needs more.
+MAX_BULK_IDS = 500
 
 
 class ConversionRead(BaseModel):
@@ -73,6 +77,18 @@ class TransactionCreate(BaseModel):
     notes: str | None = None
     recurring_rule_id: UUID | None = None
     conversion: ConversionInput | None = None
+
+
+class TransactionBulkDelete(BaseModel):
+    ids: Annotated[list[UUID], Field(min_length=1, max_length=MAX_BULK_IDS)]
+
+
+class TransactionBulkCategorize(TransactionBulkDelete):
+    category_id: UUID
+
+
+class BulkResultRead(BaseModel):
+    updated: int
 
 
 class TransactionUpdate(PatchModel):

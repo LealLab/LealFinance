@@ -16,9 +16,11 @@ export class MockAccountRepository extends AccountRepository {
     return mockResult(() => this.store.accounts(), this.latencyMs);
   }
 
-  balances(): Observable<AccountBalance[]> {
+  balances(asOf?: string): Observable<AccountBalance[]> {
     return mockResult(() => {
-      const transactions = this.store.transactions();
+      const transactions = asOf
+        ? this.store.transactions().filter((transaction) => transaction.date <= asOf)
+        : this.store.transactions();
       return this.store.accounts().map((account) => ({
         accountId: account.id,
         currency: account.currency,

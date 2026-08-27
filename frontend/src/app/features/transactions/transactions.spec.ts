@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Observable, of } from 'rxjs';
+import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryRepository } from '../../data/category.repository';
@@ -23,6 +24,7 @@ import { formatIsoDate } from '../../domain/calc/dates';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
+import { Page } from '../../core/api-client';
 import { ImportPreview, TransactionRepository } from '../../data/transaction.repository';
 import { Transactions } from './transactions';
 import ptBR from '../../../../public/i18n/pt-BR.json';
@@ -134,6 +136,56 @@ describe('Transactions', () => {
     expect(el.textContent).toContain('Transação de teste E2E');
     expect(el.textContent).toContain('42,50');
   });
+
+  it('toggling a sort column flips order and resets to page 1', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const component = fixture.componentInstance as unknown as {
+      setSort: (c: 'date' | 'description' | 'amount') => void;
+      setPage: (n: number) => void;
+      sort: () => string;
+      order: () => string;
+      page: () => number;
+    };
+
+    component.setPage(1);
+    component.setSort('amount');
+    expect(component.sort()).toBe('amount');
+    expect(component.order()).toBe('desc');
+
+    component.setSort('amount');
+    expect(component.order()).toBe('asc');
+    expect(component.page()).toBe(1);
+  });
+
+  it('select-all then bulk delete calls the repository with every visible id and clears the selection', async () => {
+    const bulkDelete = vi
+      .spyOn(MockTransactionRepository.prototype, 'bulkDelete')
+      .mockReturnValue(of(undefined));
+    vi.spyOn(ConfirmService.prototype, 'confirm').mockResolvedValue(true);
+
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      toggleAll: (checked: boolean) => void;
+      bulkDelete: () => Promise<void>;
+      rows: () => { id: string }[];
+      selectedIds: () => ReadonlySet<string>;
+    };
+    const expectedIds = component.rows().map((r) => r.id);
+    expect(expectedIds.length).toBeGreaterThan(0);
+
+    component.toggleAll(true);
+    expect([...component.selectedIds()].sort()).toEqual([...expectedIds].sort());
+
+    await component.bulkDelete();
+    expect(bulkDelete).toHaveBeenCalledWith(expectedIds);
+    expect(component.selectedIds().size).toBe(0);
+  });
 });
 
 describe('Transactions - already-posted occurrences are not projected as ghosts', () => {
@@ -170,6 +222,9 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
     override list(): Observable<Transaction[]> {
       return of([postedTransaction]);
     }
+    override listPage(): Observable<Page<Transaction>> {
+      return of({ items: [postedTransaction], total: 1 });
+    }
     override get(): Observable<Transaction | undefined> {
       return of(undefined);
     }
@@ -180,6 +235,12 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
       return of(postedTransaction);
     }
     override delete(): Observable<void> {
+      return of(undefined);
+    }
+    override bulkDelete(): Observable<void> {
+      return of(undefined);
+    }
+    override bulkCategorize(): Observable<void> {
       return of(undefined);
     }
     override importPreview(): Observable<ImportPreview> {

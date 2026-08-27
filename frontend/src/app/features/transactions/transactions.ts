@@ -1,9 +1,11 @@
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { Component, computed, inject, signal } from '@angular/core';
+import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { Subscription } from 'rxjs';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoLocaleService } from '@jsverse/transloco-locale';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { openOnNewParam } from '../../core/open-on-new-param';
 import { AccountRepository } from '../../data/account.repository';
@@ -11,39 +13,51 @@ import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
-import { TransactionRepository } from '../../data/transaction.repository';
-import { addDays, formatIsoDate } from '../../domain/calc/dates';
+import {
+  SortOrder,
+  TransactionFilters as RepoFilters,
+  TransactionRepository,
+  TransactionSort,
+} from '../../data/transaction.repository';
+import { CurrencyConverter } from '../../domain/calc/aggregations';
+import { addDays, addMonthsClamped, formatIsoDate, monthKey, parseIsoDate } from '../../domain/calc/dates';
 import { projectOccurrences } from '../../domain/calc/recurrence';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
-import { isZero, money } from '../../shared/money/money';
+import { add, money, subtract, toNumber, zero } from '../../shared/money/money';
+import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
-import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
-import { EMPTY_FILTERS, matchesFilters, TransactionFilters } from './transaction-filters';
-import { TransactionFormModal } from './transaction-form-modal';
+import { buildMonthGrid } from './calendar-month';
 import { RecurringRuleFormModal } from './recurring-rule-form-modal';
+import { ALL_COLUMNS, TransactionColumn } from './transaction-columns';
+import { downloadCsv, toCsv } from './transaction-csv';
+import { EMPTY_FILTERS, matchesFilters, toQuery, TransactionFilters } from './transaction-filters';
+import { TransactionBulkBar } from './transaction-bulk-bar';
+import { TransactionCalendar } from './transaction-calendar';
+import { TransactionFilterBar } from './transaction-filter-bar';
+import { TransactionFormModal } from './transaction-form-modal';
+import { TransactionTable } from './transaction-table';
+import { rowSign, rowToneClass } from './transaction-tone';
+import { TransactionViewPrefsService } from './transaction-view-prefs.service';
 
 const PROJECTION_HORIZON_DAYS = 60;
-const PAGE_SIZE = 30;
 const TRANSACTION_TYPES: readonly TransactionType[] = ['income', 'expense', 'transfer'];
-
-interface DateGroup {
-  date: string;
-  rows: Transaction[];
-}
+const SEARCH_DEBOUNCE_MS = 250;
 
 /**
  * The literal keys passed to `confirmService.confirm(...)` below are real
- * string literals, but the call itself isn't to the `t` marker function,
- * so transloco-keys-manager's extractor never sees them - same "dynamic
- * markings" situation as account-form-modal.ts / layout/sidebar.ts:
- * t(transactions.delete.title, transactions.delete.message, transactions.recurring.delete.title, transactions.recurring.delete.message)
+ * string literals, invisible to transloco-keys-manager's extractor -
+ * declare them so `task i18n:validate` sees them:
+ * t(transactions.delete.title, transactions.delete.message, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
+ * The CSV header and column-menu keys are built by concatenation:
+ * t(transactions.columns.date, transactions.columns.description, transactions.columns.category, transactions.columns.account, transactions.columns.amount, transactions.columns.title, transactions.export.filename, transactions.type.income, transactions.type.expense, transactions.type.transfer)
  */
 @Component({
   selector: 'app-transactions',
@@ -54,15 +68,19 @@ interface DateGroup {
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
-    InfiniteScroll,
     PageHeader,
+    TransactionFilterBar,
+    TransactionTable,
+    TransactionBulkBar,
+    TransactionCalendar,
     TransactionFormModal,
-    RecurringRuleFormModal
+    RecurringRuleFormModal,
   ],
   templateUrl: './transactions.html',
-  styleUrl: './transactions.scss'
+  styleUrl: './transactions.scss',
 })
 export class Transactions {
   private readonly mutationErrors = inject(MutationErrorService);
@@ -73,128 +91,106 @@ export class Transactions {
   private readonly recurringRuleRepository = inject(RecurringRuleRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly transloco = inject(TranslocoService);
+  private readonly locale = inject(TranslocoLocaleService);
+  private readonly displayCurrencyService = inject(DisplayCurrencyService);
+  protected readonly prefs = inject(TransactionViewPrefsService);
 
-  protected readonly transactionTypes = TRANSACTION_TYPES;
+  protected readonly displayCurrency = this.displayCurrencyService.currency;
+  protected readonly allColumns = ALL_COLUMNS;
 
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly categoryGroupsResource = rxResource({
-    stream: () => this.categoryGroupRepository.list()
+    stream: () => this.categoryGroupRepository.list(),
   });
   protected readonly recurringRulesResource = rxResource({
-    stream: () => this.recurringRuleRepository.list()
+    stream: () => this.recurringRuleRepository.list(),
   });
-  protected readonly institutionsResource = rxResource({ stream: () => this.institutionRepository.list() });
+  protected readonly institutionsResource = rxResource({
+    stream: () => this.institutionRepository.list(),
+  });
 
   protected readonly tab = signal<'transactions' | 'recurring'>('transactions');
+  protected readonly mode = signal<'list' | 'calendar'>('list');
   protected readonly filters = signal<TransactionFilters>(EMPTY_FILTERS);
+  protected readonly page = signal(1);
+  protected readonly sort = signal<TransactionSort>('date');
+  protected readonly order = signal<SortOrder>('desc');
+  protected readonly selectedIds = signal<ReadonlySet<string>>(new Set());
+  protected readonly calendarMonth = signal(monthKey(new Date().toISOString()));
+  protected readonly selectedDay = signal<string | null>(null);
 
-  // Real transaction rows, server-filtered and paginated - accumulated
-  // across loadMore() calls rather than an rxResource, since rxResource
-  // replaces its value on every params change and this needs to append.
-  protected readonly rows = signal<Transaction[]>([]);
-  private readonly offset = signal(0);
-  protected readonly exhausted = signal(false);
-  protected readonly loading = signal(false);
+  protected readonly txFormOpen = signal(false);
+  protected readonly editingTx = signal<Transaction | undefined>(undefined);
+  protected readonly newTxType = signal<TransactionType>('expense');
+  protected readonly ruleFormOpen = signal(false);
+  protected readonly editingRule = signal<RecurringRule | undefined>(undefined);
 
-  // Occurrences the backend has already posted as real transactions (see
-  // recurring_posting.py) - keyed by rule + date so a projection for that
-  // same occurrence isn't drawn as a ghost row alongside the real one.
-  // Fetched independently of the paginated rows() (unpaginated, from
-  // today onward) so the dedup set is exact rather than "whatever page
-  // happens to be loaded".
-  protected readonly postedOccurrencesResource = rxResource({
-    stream: () => this.transactionRepository.list({ dateFrom: formatIsoDate(new Date()) })
+  // Debounce lives here, not in the filter bar: the bar emits on every
+  // keystroke; only the settled value reaches the query.
+  private readonly searchInput = signal('');
+  private readonly debouncedSearch = toSignal(
+    toObservable(this.searchInput).pipe(debounceTime(SEARCH_DEBOUNCE_MS), distinctUntilChanged()),
+    { initialValue: '' },
+  );
+
+  private readonly query = computed<RepoFilters>(() => ({
+    ...toQuery(this.filters()),
+    search: this.debouncedSearch() || undefined,
+    types: this.filters().type ? [this.filters().type as TransactionType] : TRANSACTION_TYPES,
+    sort: this.sort(),
+    order: this.order(),
+    limit: this.prefs.pageSize(),
+    offset: (this.page() - 1) * this.prefs.pageSize(),
+  }));
+
+  protected readonly pageResource = rxResource({
+    params: () => this.query(),
+    stream: ({ params }) => this.transactionRepository.listPage(params),
   });
 
-  constructor() {
-    // untracked: resetAndLoad() -> loadMore() reads `loading`/`exhausted`
-    // synchronously - without untracked those become effect dependencies
-    // too, and loadMore()'s own signal writes (in its subscribe callback)
-    // would re-trigger this same effect, looping forever.
-    effect(() => {
-      this.filters();
-      untracked(() => this.resetAndLoad());
-    });
-    openOnNewParam(() => this.openCreateTx());
-  }
+  protected readonly rows = computed(() => this.pageResource.value()?.items ?? []);
+  protected readonly total = computed(() => this.pageResource.value()?.total ?? 0);
+  protected readonly pageCount = computed(() =>
+    Math.max(1, Math.ceil(this.total() / this.prefs.pageSize())),
+  );
+  protected readonly isEmpty = computed(
+    () => this.pageResource.hasValue() && this.rows().length === 0,
+  );
 
-  private loadSubscription?: Subscription;
-
-  // Cancels any request still in flight from a previous filter/page state -
-  // without this, a filter change (e.g. typing in the search box, which has
-  // no debounce) while a request is pending would see loadMore() below no-op
-  // (loading is still true from the stale request) and then have that stale
-  // request's response land in the just-cleared rows array once it resolves.
-  private resetAndLoad(): void {
-    this.loadSubscription?.unsubscribe();
-    this.loading.set(false);
-    this.rows.set([]);
-    this.offset.set(0);
-    this.exhausted.set(false);
-    this.loadMore();
-  }
-
-  protected loadMore(): void {
-    if (this.loading() || this.exhausted()) return;
-    this.loading.set(true);
-    const filters = this.filters();
-    this.loadSubscription = this.transactionRepository
-      .list({
-        accountId: filters.accountId || undefined,
-        categoryId: filters.categoryId || undefined,
-        institutionId: filters.institutionId || undefined,
-        types: filters.type ? [filters.type] : TRANSACTION_TYPES,
-        dateFrom: filters.from || undefined,
-        dateTo: filters.to || undefined,
-        search: filters.search || undefined,
-        limit: PAGE_SIZE,
-        offset: this.offset()
-      })
-      .subscribe({
-        next: (page) => {
-          this.rows.update((current) => [...current, ...page]);
-          this.offset.update((current) => current + page.length);
-          if (page.length < PAGE_SIZE) this.exhausted.set(true);
-          this.loading.set(false);
-        },
-        error: () => this.loading.set(false)
-      });
-  }
+  // Unpaginated set of already-posted recurring occurrences from today on,
+  // so a projection for an occurrence the backend already posted isn't
+  // drawn as a ghost row.
+  protected readonly postedOccurrencesResource = rxResource({
+    stream: () => this.transactionRepository.list({ dateFrom: formatIsoDate(new Date()) }),
+  });
 
   protected readonly accountsById = computed(
-    () => new Map(this.accountsResource.value()?.map((a) => [a.id, a]) ?? [])
+    () => new Map((this.accountsResource.value() ?? []).map((a) => [a.id, a])),
   );
   protected readonly categoriesById = computed(
-    () => new Map(this.categoriesResource.value()?.map((c) => [c.id, c]) ?? [])
+    () => new Map((this.categoriesResource.value() ?? []).map((c) => [c.id, c])),
   );
-
-  protected readonly filteredGroups = computed<DateGroup[]>(() => {
-    const groups: DateGroup[] = [];
-    for (const row of this.rows()) {
-      const lastGroup = groups.at(-1);
-      if (lastGroup?.date === row.date) {
-        lastGroup.rows.push(row);
-      } else {
-        groups.push({ date: row.date, rows: [row] });
-      }
-    }
-    return groups;
-  });
+  protected readonly groupsById = computed(
+    () => new Map((this.categoryGroupsResource.value() ?? []).map((g) => [g.id, g])),
+  );
+  protected readonly institutionsById = computed(
+    () => new Map((this.institutionsResource.value() ?? []).map((i) => [i.id, i])),
+  );
 
   private readonly postedOccurrences = computed<Set<string>>(
     () =>
       new Set(
         (this.postedOccurrencesResource.value() ?? [])
           .filter((tx) => tx.recurringRuleId)
-          .map((tx) => `${tx.recurringRuleId}|${tx.date}`)
-      )
+          .map((tx) => `${tx.recurringRuleId}|${tx.date}`),
+      ),
   );
 
   protected readonly projectedRows = computed<ProjectedTransaction[]>(() => {
     const rules = this.recurringRulesResource.value() ?? [];
     const filters = this.filters();
-    const accountsById = this.accountsById();
     const posted = this.postedOccurrences();
     const from = formatIsoDate(new Date());
     const to = formatIsoDate(addDays(new Date(), PROJECTION_HORIZON_DAYS));
@@ -202,29 +198,232 @@ export class Transactions {
     return rules
       .flatMap((rule) => projectOccurrences(rule, from, to))
       .filter((occurrence) => !posted.has(`${occurrence.recurringRuleId}|${occurrence.date}`))
-      .filter((occurrence) => matchesFilters(occurrence, filters, accountsById))
+      .filter((occurrence) =>
+        matchesFilters(occurrence, filters, this.accountsById(), this.categoriesById()),
+      )
       .sort((a, b) => a.date.localeCompare(b.date));
   });
 
-  protected readonly isEmpty = computed(() => this.exhausted() && this.rows().length === 0);
+  // --- Selection -----------------------------------------------------------
 
-  protected readonly txFormOpen = signal(false);
-  protected readonly editingTx = signal<Transaction | undefined>(undefined);
-  protected readonly ruleFormOpen = signal(false);
-  protected readonly editingRule = signal<RecurringRule | undefined>(undefined);
+  protected readonly selectedRows = computed(() =>
+    this.rows().filter((tx) => this.selectedIds().has(tx.id)),
+  );
 
-  protected setFilter<K extends keyof TransactionFilters>(key: K, value: TransactionFilters[K]): void {
-    this.filters.update((current) => ({ ...current, [key]: value }));
+  private readonly selectionConverter = displayConverter(() => [
+    ...new Set(this.selectedRows().map((tx) => tx.currency)),
+  ]);
+
+  protected readonly selectedTotal = computed<string | null>(() => {
+    const convert = this.selectionConverter.converter();
+    if (!convert) return null;
+    const target = this.displayCurrency();
+    const total = this.selectedRows().reduce((acc, tx) => {
+      if (tx.type === 'transfer') return acc;
+      const value = convert(money(tx.conversion?.amount ?? tx.amount, tx.currency), target);
+      return tx.type === 'expense' ? subtract(acc, value) : add(acc, value);
+    }, zero(target));
+    return total.amount;
+  });
+
+  // --- Calendar ----------------------------------------------------------
+
+  private readonly monthBounds = computed(() => {
+    const start = parseIsoDate(`${this.calendarMonth()}-01`);
+    const end = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0));
+    return {
+      start: formatIsoDate(start),
+      end: formatIsoDate(end),
+      openingAsOf: formatIsoDate(addDays(start, -1)),
+    };
+  });
+
+  protected readonly monthLabel = computed(() =>
+    this.locale.localizeDate(`${this.calendarMonth()}-01`, undefined, {
+      year: 'numeric',
+      month: 'long',
+    }),
+  );
+
+  protected readonly monthTxResource = rxResource({
+    params: () => this.monthBounds(),
+    // ponytail: unbounded - a calendar month has no limit. Add one only if
+    // a month ever holds more than a few thousand rows.
+    stream: ({ params }) =>
+      this.transactionRepository.list({ dateFrom: params.start, dateTo: params.end }),
+  });
+
+  protected readonly openingBalancesResource = rxResource({
+    params: () => this.monthBounds().openingAsOf,
+    stream: ({ params }) => this.accountRepository.balances(params),
+  });
+
+  private readonly openingConverter = displayConverter(() => [
+    ...new Set((this.openingBalancesResource.value() ?? []).map((b) => b.currency)),
+  ]);
+
+  private readonly monthConverter = displayConverter(() => [
+    ...new Set((this.monthTxResource.value() ?? []).map((tx) => tx.currency)),
+  ]);
+
+  protected readonly calendarDays = computed(() => {
+    const convert = this.monthConverter.converter();
+    const openingConvert = this.openingConverter.converter();
+    const target = this.displayCurrency();
+    const balances = this.openingBalancesResource.value();
+
+    const opening =
+      balances && openingConvert
+        ? balances.reduce(
+            (acc, b) => add(acc, openingConvert(money(b.balance, b.currency), target)),
+            zero(target),
+          )
+        : null;
+
+    const weekStart = this.weekStart();
+    return buildMonthGrid(
+      this.calendarMonth(),
+      this.monthTxResource.value() ?? [],
+      this.projectedRows().filter((p) => p.date.slice(0, 7) === this.calendarMonth()),
+      opening,
+      (convert ?? ((amount: ReturnType<typeof money>) => amount)) as CurrencyConverter,
+      weekStart,
+      formatIsoDate(new Date()),
+    );
+  });
+
+  protected readonly weekStart = computed(() => {
+    try {
+      const info = (new Intl.Locale(this.transloco.getActiveLang()) as unknown as {
+        weekInfo?: { firstDay?: number };
+        getWeekInfo?: () => { firstDay?: number };
+      });
+      const first = info.getWeekInfo?.().firstDay ?? info.weekInfo?.firstDay;
+      return first === 7 ? 0 : (first ?? 1);
+    } catch {
+      return 1;
+    }
+  });
+
+  constructor() {
+    openOnNewParam(() => this.openCreateTx());
+  }
+
+  // --- Filter / sort / page mutators ------------------------------------
+  // Every mutator resets the page and clears the selection in the same
+  // synchronous tick as the change that invalidates them, so `query`
+  // recomputes exactly once and only one request fires. Do NOT move these
+  // resets into an effect - that reintroduces a double request.
+
+  protected onFiltersChange(next: TransactionFilters): void {
+    this.filters.set(next);
+    this.page.set(1);
+    this.selectedIds.set(new Set());
+  }
+
+  protected onSearchChange(value: string): void {
+    this.searchInput.set(value);
+    this.page.set(1);
   }
 
   protected clearFilters(): void {
     this.filters.set(EMPTY_FILTERS);
+    this.searchInput.set('');
+    this.page.set(1);
+    this.selectedIds.set(new Set());
   }
 
-  protected readonly categoryOptions = computed(() => this.categoriesResource.value() ?? []);
+  protected setSort(column: TransactionSort): void {
+    this.order.update(() => (this.sort() === column && this.order() === 'desc' ? 'asc' : 'desc'));
+    this.sort.set(column);
+    this.page.set(1);
+  }
+
+  protected setPage(next: number): void {
+    this.page.set(Math.min(Math.max(1, next), this.pageCount()));
+    this.selectedIds.set(new Set());
+  }
+
+  protected setPageSize(size: number): void {
+    this.prefs.setPageSize(size);
+    this.page.set(1);
+  }
+
+  protected toggleRow(id: string): void {
+    this.selectedIds.update((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  protected toggleAll(checked: boolean): void {
+    this.selectedIds.set(checked ? new Set(this.rows().map((tx) => tx.id)) : new Set());
+  }
+
+  protected clearSelection(): void {
+    this.selectedIds.set(new Set());
+  }
+
+  protected selectDay(date: string): void {
+    this.selectedDay.set(date);
+  }
+
+  protected setMode(mode: 'list' | 'calendar'): void {
+    this.mode.set(mode);
+  }
+
+  protected stepMonth(delta: number): void {
+    this.calendarMonth.set(
+      monthKey(formatIsoDate(addMonthsClamped(parseIsoDate(`${this.calendarMonth()}-01`), delta))),
+    );
+    this.selectedDay.set(null);
+  }
+
+  // --- CSV ------------------------------------------------------------
+
+  protected exportCsv(): void {
+    const columns = this.allColumns.filter((c) => this.prefs.isVisible(c));
+    const headers = columns.map((c) => this.transloco.translate('transactions.columns.' + c));
+    const body = this.rows().map((tx) => columns.map((c) => this.csvCell(tx, c)));
+    const name =
+      this.transloco.translate('transactions.export.filename') +
+      '-' +
+      formatIsoDate(new Date()) +
+      '.csv';
+    downloadCsv(name, toCsv(headers, body));
+  }
+
+  private csvCell(tx: Transaction, column: TransactionColumn): string {
+    switch (column) {
+      case 'date':
+        return tx.date;
+      case 'description':
+        return tx.description;
+      case 'category': {
+        if (tx.type === 'transfer' || !tx.categoryId) return '';
+        return this.categoriesById().get(tx.categoryId)?.name ?? '';
+      }
+      case 'account':
+        return this.accountsById().get(tx.accountId)?.name ?? '';
+      case 'amount':
+        // Raw decimal string - never a float, never localised.
+        return `${rowSign(tx)}${tx.amount}`;
+    }
+  }
+
+  // --- Mutations ----------------------------------------------------
 
   protected openCreateTx(): void {
     this.editingTx.set(undefined);
+    this.newTxType.set('expense');
+    this.txFormOpen.set(true);
+  }
+
+  protected openCreateTransfer(): void {
+    this.editingTx.set(undefined);
+    this.newTxType.set('transfer');
     this.txFormOpen.set(true);
   }
 
@@ -234,7 +433,9 @@ export class Transactions {
   }
 
   protected onTxSaved(): void {
-    this.resetAndLoad();
+    this.pageResource.reload();
+    this.monthTxResource.reload();
+    this.openingBalancesResource.reload();
     this.postedOccurrencesResource.reload();
     this.recurringRulesResource.reload();
   }
@@ -243,13 +444,48 @@ export class Transactions {
     const confirmed = await this.confirmService.confirm(
       'transactions.delete.title',
       'transactions.delete.message',
-      'danger'
+      'danger',
     );
     if (!confirmed) return;
     this.transactionRepository.delete(tx.id).subscribe({
       next: () => {
-        this.resetAndLoad();
+        this.pageResource.reload();
+        this.monthTxResource.reload();
         this.postedOccurrencesResource.reload();
+      },
+      error: () => this.mutationErrors.show(),
+    });
+  }
+
+  protected async bulkDelete(): Promise<void> {
+    const ids = [...this.selectedIds()];
+    if (ids.length === 0) return;
+    const confirmed = await this.confirmService.confirm(
+      'transactions.bulk.deleteConfirm.title',
+      'transactions.bulk.deleteConfirm.message',
+      'danger',
+      { count: ids.length },
+    );
+    if (!confirmed) return;
+    this.transactionRepository.bulkDelete(ids).subscribe({
+      next: () => {
+        this.selectedIds.set(new Set());
+        this.pageResource.reload();
+        this.monthTxResource.reload();
+        this.postedOccurrencesResource.reload();
+      },
+      error: () => this.mutationErrors.show(),
+    });
+  }
+
+  protected bulkCategorize(categoryId: string): void {
+    const ids = [...this.selectedIds()];
+    if (ids.length === 0) return;
+    this.transactionRepository.bulkCategorize(ids, categoryId).subscribe({
+      next: () => {
+        this.selectedIds.set(new Set());
+        this.pageResource.reload();
+        this.monthTxResource.reload();
       },
       error: () => this.mutationErrors.show(),
     });
@@ -273,7 +509,7 @@ export class Transactions {
     const confirmed = await this.confirmService.confirm(
       'transactions.recurring.delete.title',
       'transactions.recurring.delete.message',
-      'danger'
+      'danger',
     );
     if (!confirmed) return;
     this.recurringRuleRepository.delete(rule.id).subscribe({
@@ -288,30 +524,11 @@ export class Transactions {
     return projectOccurrences(rule, from, to)[0]?.date;
   }
 
-  protected rowTone(
-    tx: Pick<Transaction, 'type' | 'amount' | 'currency'>,
-  ): 'positive' | 'negative' | 'accent' | 'neutral' {
-    if (isZero(money(tx.amount, tx.currency))) return 'neutral';
-    if (tx.type === 'transfer') return 'accent';
-    if (tx.type === 'income') return 'positive';
-    if (tx.type === 'expense') return 'negative';
-    return 'neutral';
+  protected ruleAmountPrefix(rule: RecurringRule): string {
+    return rule.template.type === 'income' ? '+' : '−';
   }
 
-  protected rowToneClass(tx: Pick<Transaction, 'type' | 'amount' | 'currency'>): string {
-    const tone = this.rowTone(tx);
-    return tone === 'positive'
-      ? 'text-positive'
-      : tone === 'negative'
-        ? 'text-negative'
-        : tone === 'accent'
-          ? 'text-accent'
-          : 'text-content-primary';
-  }
-
-  protected rowSign(tx: Pick<Transaction, 'type'>): string {
-    if (tx.type === 'income') return '+';
-    if (tx.type === 'expense') return '−';
-    return '';
-  }
+  protected readonly rowToneClass = rowToneClass;
+  protected readonly rowSign = rowSign;
+  protected readonly toNumber = toNumber;
 }

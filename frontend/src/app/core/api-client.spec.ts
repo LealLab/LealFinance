@@ -25,6 +25,22 @@ describe('ApiClient', () => {
     req.flush([]);
   });
 
+  it('getPage reads the X-Total-Count header', () => {
+    let page: { items: unknown[]; total: number } | undefined;
+    api.getPage('/items', { limit: 2 }).subscribe((result) => (page = result));
+    const req = http.expectOne((request) => request.url === '/api/v1/items');
+    req.flush([{ id: 'a' }, { id: 'b' }], { headers: { 'X-Total-Count': '17' } });
+    expect(page).toEqual({ items: [{ id: 'a' }, { id: 'b' }], total: 17 });
+  });
+
+  it('getPage falls back to the body length when the header is absent', () => {
+    let page: { items: unknown[]; total: number } | undefined;
+    api.getPage('/items').subscribe((result) => (page = result));
+    const req = http.expectOne((request) => request.url === '/api/v1/items');
+    req.flush([{ id: 'a' }, { id: 'b' }, { id: 'c' }]);
+    expect(page?.total).toBe(3);
+  });
+
   it('supports POST, PUT, PATCH, DELETE, and 204 responses', () => {
     for (const [verb, call, path] of [
       ['POST', () => api.post('/items', { name: 'one' }), '/api/v1/items'],

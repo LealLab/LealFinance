@@ -816,6 +816,292 @@ async def test_list_transactions_filters_by_search_and_institution(
     assert [row["account_id"] for row in by_institution.json()] == [linked_account]
 
 
+async def _create_group(client: AsyncClient, name: str, kind: str = "expense") -> str:
+    response = await client.post(
+        "/api/v1/category-groups",
+        json={"name": name, "kind": kind, "color": "#112233", "icon": "tag"},
+    )
+    assert response.status_code == 201, response.text
+    return response.json()["id"]
+
+
+async def _create_category_in_group(
+    client: AsyncClient, name: str, group_id: str, kind: str = "expense"
+) -> str:
+    response = await client.post(
+        "/api/v1/categories",
+        json={"name": name, "kind": kind, "group_id": group_id, "color": "#112233", "icon": "tag"},
+    )
+    assert response.status_code == 201, response.text
+    return response.json()["id"]
+
+
+async def _post_expense(
+    client: AsyncClient,
+    account_id: str,
+    category_id: str,
+    *,
+    date: str = "2026-01-05",
+    amount: str = "10.00",
+    description: str = "Row",
+) -> str:
+    response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": date,
+            "amount": amount,
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": category_id,
+            "description": description,
+        },
+    )
+    assert response.status_code == 201, response.text
+    return response.json()["id"]
+
+
+async def test_list_transactions_total_count_header_reflects_filters(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "tot@example.com")
+    account_id = await _create_account(client)
+    expense_category = await _create_category(client, name="Groceries", kind="expense")
+    income_category = await _create_category(client, name="Salary", kind="income")
+
+    for i in range(5):
+        await _post_expense(client, account_id, expense_category, description=f"Row {i}")
+    await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "income",
+            "date": "2026-01-06",
+            "amount": "500.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": income_category,
+            "description": "Paycheck",
+        },
+    )
+
+    paged = await client.get("/api/v1/transactions", params={"limit": 2, "offset": 0})
+    assert paged.status_code == 200
+    assert paged.headers["X-Total-Count"] == "6"
+    assert len(paged.json()) == 2
+
+    filtered = await client.get("/api/v1/transactions", params={"limit": 2, "type": "expense"})
+    assert filtered.headers["X-Total-Count"] == "5"
+
+
+async def test_list_transactions_sort_by_amount_ascending(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "sortamt@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    for amount in ("30.00", "10.00", "20.00"):
+        await _post_expense(client, account_id, category_id, amount=amount)
+
+    response = await client.get("/api/v1/transactions", params={"sort": "amount", "order": "asc"})
+    assert response.status_code == 200
+    assert [row["amount"] for row in response.json()] == ["10.0000", "20.0000", "30.0000"]
+
+
+async def test_list_transactions_sort_by_description_is_stable_across_pages(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "sortdesc@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    # Same description on every row, so the id tiebreaker carries the ordering.
+    created = [
+        await _post_expense(client, account_id, category_id, description="Same") for _ in range(5)
+    ]
+
+    seen: list[str] = []
+    for offset in (0, 2, 4):
+        page = await client.get(
+            "/api/v1/transactions",
+            params={"sort": "description", "order": "asc", "limit": 2, "offset": offset},
+        )
+        seen.extend(row["id"] for row in page.json())
+    assert len(seen) == len(set(seen)) == 5
+    assert set(seen) == set(created)
+
+
+async def test_list_transactions_rejects_unknown_sort(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "badsort@example.com")
+    response = await client.get("/api/v1/transactions", params={"sort": "bogus"})
+    assert response.status_code == 422
+
+
+async def test_list_transactions_filters_by_group(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "grp@example.com")
+    account_id = await _create_account(client)
+    group_a = await _create_group(client, "Group A")
+    group_b = await _create_group(client, "Group B")
+    cat_a1 = await _create_category_in_group(client, "A1", group_a)
+    cat_a2 = await _create_category_in_group(client, "A2", group_a)
+    cat_b1 = await _create_category_in_group(client, "B1", group_b)
+
+    await _post_expense(client, account_id, cat_a1, description="in A1")
+    await _post_expense(client, account_id, cat_a2, description="in A2")
+    await _post_expense(client, account_id, cat_b1, description="in B1")
+
+    response = await client.get("/api/v1/transactions", params={"group_id": group_a})
+    assert response.status_code == 200
+    assert {row["description"] for row in response.json()} == {"in A1", "in A2"}
+
+
+async def test_list_transactions_group_filter_rejects_foreign_group(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "grpowner@example.com")
+    await _authed(other_client, db_session, "grpother@example.com")
+    foreign_group = await _create_group(other_client, "Foreign")
+
+    response = await client.get("/api/v1/transactions", params={"group_id": foreign_group})
+    assert response.status_code == 404
+
+
+async def test_list_transactions_filters_by_amount_range(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "amtrange@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    for amount in ("5.00", "10.00", "20.00", "50.00"):
+        await _post_expense(client, account_id, category_id, amount=amount)
+
+    response = await client.get(
+        "/api/v1/transactions", params={"amount_min": "10", "amount_max": "20"}
+    )
+    assert response.status_code == 200
+    assert sorted(row["amount"] for row in response.json()) == ["10.0000", "20.0000"]
+
+
+async def test_bulk_delete_removes_every_id(client: AsyncClient, db_session: AsyncSession) -> None:
+    await _authed(client, db_session, "bulkdel@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    ids = [await _post_expense(client, account_id, category_id) for _ in range(3)]
+
+    response = await client.post("/api/v1/transactions/bulk-delete", json={"ids": ids})
+    assert response.status_code == 204
+
+    remaining = await client.get("/api/v1/transactions")
+    assert remaining.json() == []
+
+
+async def test_bulk_delete_rejects_foreign_id_and_deletes_nothing(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "bulkdelowner@example.com")
+    await _authed(other_client, db_session, "bulkdelother@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    mine = await _post_expense(client, account_id, category_id)
+
+    foreign_account = await _create_account(other_client)
+    foreign_category = await _create_category(other_client)
+    theirs = await _post_expense(other_client, foreign_account, foreign_category)
+
+    response = await client.post("/api/v1/transactions/bulk-delete", json={"ids": [mine, theirs]})
+    assert response.status_code == 404
+    assert len((await client.get("/api/v1/transactions")).json()) == 1
+
+
+async def test_bulk_delete_rejects_empty_ids(client: AsyncClient, db_session: AsyncSession) -> None:
+    await _authed(client, db_session, "bulkempty@example.com")
+    response = await client.post("/api/v1/transactions/bulk-delete", json={"ids": []})
+    assert response.status_code == 422
+
+
+async def test_bulk_categorize_assigns_category(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "bulkcat@example.com")
+    account_id = await _create_account(client)
+    old_category = await _create_category(client, name="Groceries", kind="expense")
+    new_category = await _create_category(client, name="Dining", kind="expense")
+    ids = [await _post_expense(client, account_id, old_category) for _ in range(2)]
+
+    response = await client.post(
+        "/api/v1/transactions/bulk-categorize",
+        json={"ids": ids, "category_id": new_category},
+    )
+    assert response.status_code == 200
+    assert response.json()["updated"] == 2
+    rows = (await client.get("/api/v1/transactions")).json()
+    assert {row["category_id"] for row in rows} == {new_category}
+
+
+async def test_bulk_categorize_rejects_transfer_and_changes_nothing(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "bulkcattransfer@example.com")
+    account_a = await _create_account(client, name="A")
+    account_b = await _create_account(client, name="B")
+    category_id = await _create_category(client, name="Groceries", kind="expense")
+    expense_id = await _post_expense(client, account_a, category_id)
+    transfer_response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "transfer",
+            "date": "2026-01-05",
+            "amount": "15.00",
+            "currency": "BRL",
+            "account_id": account_a,
+            "to_account_id": account_b,
+            "description": "Move money",
+        },
+    )
+    transfer_id = transfer_response.json()["id"]
+
+    response = await client.post(
+        "/api/v1/transactions/bulk-categorize",
+        json={"ids": [expense_id, transfer_id], "category_id": category_id},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.transfer_has_category"
+    expense_row = (await client.get(f"/api/v1/transactions/{expense_id}")).json()
+    assert expense_row["category_id"] == category_id
+
+
+async def test_bulk_categorize_rejects_kind_mismatch(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "bulkcatkind@example.com")
+    account_id = await _create_account(client)
+    expense_category = await _create_category(client, name="Groceries", kind="expense")
+    income_category = await _create_category(client, name="Salary", kind="income")
+    expense_id = await _post_expense(client, account_id, expense_category)
+
+    response = await client.post(
+        "/api/v1/transactions/bulk-categorize",
+        json={"ids": [expense_id], "category_id": income_category},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.category_kind_mismatch"
+
+
+async def test_bulk_routes_do_not_shadow_transaction_id(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "shadow@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    transaction_id = await _post_expense(client, account_id, category_id)
+
+    response = await client.get(f"/api/v1/transactions/{transaction_id}")
+    assert response.status_code == 200
+    assert response.json()["id"] == transaction_id
+
+
 async def test_list_transactions_filters_by_repeated_type(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

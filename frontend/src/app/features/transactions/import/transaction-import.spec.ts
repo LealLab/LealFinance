@@ -13,6 +13,7 @@ import { MockCategoryRepository } from '../../../data/mock/mock-category.reposit
 import { MockCategoryGroupRepository } from '../../../data/mock/mock-category-group.repository';
 import { MockInstitutionRepository } from '../../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../../data/mock/mock-latency';
+import { Page } from '../../../core/api-client';
 import {
   ImportPreview,
   ImportPreviewRequest,
@@ -31,6 +32,9 @@ class StubTransactionRepository extends TransactionRepository {
   override list(): Observable<Transaction[]> {
     return of([]);
   }
+  override listPage(): Observable<Page<Transaction>> {
+    return of({ items: [], total: 0 });
+  }
   override get(): Observable<Transaction | undefined> {
     return of(undefined);
   }
@@ -41,6 +45,12 @@ class StubTransactionRepository extends TransactionRepository {
     return of({} as Transaction);
   }
   override delete(): Observable<void> {
+    return of(undefined);
+  }
+  override bulkDelete(): Observable<void> {
+    return of(undefined);
+  }
+  override bulkCategorize(): Observable<void> {
     return of(undefined);
   }
   override importPreview(request: ImportPreviewRequest): Observable<ImportPreview> {

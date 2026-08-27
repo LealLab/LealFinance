@@ -7,6 +7,7 @@ so the two can never drift apart.
 """
 
 from dataclasses import dataclass
+from datetime import date as date_type
 from decimal import Decimal
 from uuid import UUID
 
@@ -53,7 +54,9 @@ class AccountBalance:
     balance: Decimal
 
 
-async def account_balances(db: AsyncSession, user_id: UUID) -> list[AccountBalance]:
+async def account_balances(
+    db: AsyncSession, user_id: UUID, *, as_of: date_type | None = None
+) -> list[AccountBalance]:
     """Every owned account's balance = opening_balance + every transaction
     that touches it, computed as SQL aggregates rather than by loading the
     whole ledger into Python. Ports the exact signed formula documented on
@@ -65,6 +68,10 @@ async def account_balances(db: AsyncSession, user_id: UUID) -> list[AccountBalan
     test_account_balances_use_converted_amount_for_cross_currency_transfer
     here and balances.spec.ts's "debits the source ... credits the
     destination" test).
+
+    `as_of` (inclusive) restricts the ledger to transactions on or before
+    that date - the transactions calendar anchors each month on the balance
+    the day before it starts.
     """
     accounts = list(await ownership.list_owned(db, Account, user_id))
     if not accounts:
@@ -90,6 +97,9 @@ async def account_balances(db: AsyncSession, user_id: UUID) -> list[AccountBalan
         Transaction.user_id == user_id,
         Transaction.type == TRANSACTION_TYPE_TRANSFER,
     )
+    if as_of is not None:
+        own_leg = own_leg.where(Transaction.date <= as_of)
+        incoming_leg = incoming_leg.where(Transaction.date <= as_of)
     legs = own_leg.union_all(incoming_leg).subquery()
     deltas_query = select(legs.c.account_id, func.sum(legs.c.delta).label("delta")).group_by(
         legs.c.account_id

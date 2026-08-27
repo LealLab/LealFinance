@@ -10,6 +10,8 @@ import { Component, input } from '@angular/core';
   styleUrl: './page-header.scss'
 })
 export class PageHeader {
+  /** Small uppercase label above the title (e.g. a section name). */
+  readonly eyebrow = input<string>();
   readonly title = input.required<string>();
   readonly description = input<string>();
 }

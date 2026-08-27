@@ -272,7 +272,9 @@ async def preview_import(
             date_from=min(valid_dates),
             date_to=max(valid_dates),
         )
-        existing_keys = {(tx.date, tx.amount, tx.description.strip().casefold()) for tx in existing}
+        existing_keys = {
+            (tx.date, tx.amount, tx.description.strip().casefold()) for tx in existing.rows
+        }
 
     results = [
         ImportRowResult(

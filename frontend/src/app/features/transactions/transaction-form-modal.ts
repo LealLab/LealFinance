@@ -70,6 +70,9 @@ export class TransactionFormModal {
 
   readonly open = model.required<boolean>();
   readonly transaction = input<Transaction | undefined>(undefined);
+  /** Type a *new* transaction opens on (ignored when editing). Lets the
+   * page offer a "Transfer" quick action without a second modal. */
+  readonly initialType = input<TransactionType>('expense');
   readonly accounts = input.required<Account[]>();
   readonly categories = input.required<Category[]>();
   readonly categoryGroups = input<CategoryGroup[]>([]);
@@ -253,7 +256,7 @@ export class TransactionFormModal {
       // opens).
       this.applyingReset = true;
       this.form.reset({
-        type: tx?.type ?? 'expense',
+        type: tx?.type ?? this.initialType(),
         date: tx?.date ?? formatIsoDate(new Date()),
         amount: tx?.amount ?? '',
         currency: tx?.currency ?? fromAccount?.currency ?? this.baseCurrency(),

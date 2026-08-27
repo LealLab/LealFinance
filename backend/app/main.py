@@ -49,6 +49,7 @@ def create_app() -> FastAPI:
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
         allow_headers=["Content-Type", "X-XSRF-TOKEN"],
+        expose_headers=["X-Total-Count"],
     )
 
     app.add_exception_handler(AppError, app_error_handler)

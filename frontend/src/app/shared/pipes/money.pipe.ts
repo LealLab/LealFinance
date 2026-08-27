@@ -28,6 +28,10 @@ const MASK = '••••';
  *
  * Usage: {{ '1234.50' | money: 'BRL' }} → "R$ 1.234,50"
  *
+ * Pass `'compact'` as the third argument for an abbreviated form
+ * ({{ '23150' | money: 'BRL' : 'compact' }} → "R$ 23 mil"), used by the
+ * transactions calendar where every day cell shows a running balance.
+ *
  * `pure: false`: this pipe also reads BalanceVisibilityService.hidden() to
  * mask the amount when the sidebar's eye toggle is off. A *pure* pipe only
  * re-invokes `transform` when its own bound arguments (`amount`,
@@ -44,13 +48,19 @@ export class MoneyPipe implements PipeTransform {
   private readonly localeService = inject(TranslocoLocaleService);
   private readonly balanceVisibility = inject(BalanceVisibilityService);
 
-  transform(amount: string, currencyCode: string): string {
+  transform(
+    amount: string,
+    currencyCode: string,
+    notation: 'standard' | 'compact' = 'standard'
+  ): string {
     if (this.balanceVisibility.hidden()) {
       return MASK;
     }
     return this.localeService.localizeNumber(amount, 'currency', undefined, {
       currency: currencyCode,
-      currencyDisplay: 'symbol'
+      currencyDisplay: 'symbol',
+      notation,
+      ...(notation === 'compact' ? { maximumFractionDigits: 1 } : {})
     });
   }
 }

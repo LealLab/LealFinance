@@ -282,7 +282,16 @@ class StubTransactionRepository extends TransactionRepository {
   update(): Observable<Transaction> {
     throw new Error('not used by this spec');
   }
+  listPage(): Observable<never> {
+    throw new Error('not used by this spec');
+  }
   delete(): Observable<void> {
+    throw new Error('not used by this spec');
+  }
+  bulkDelete(): Observable<never> {
+    throw new Error('not used by this spec');
+  }
+  bulkCategorize(): Observable<never> {
     throw new Error('not used by this spec');
   }
   importPreview(): Observable<never> {
