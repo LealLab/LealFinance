@@ -409,7 +409,9 @@
       "new": "Νέα συναλλαγή",
       "edit": "Επεξεργασία",
       "delete": "Διαγραφή",
-      "import": "Εισαγωγή CSV"
+      "import": "Εισαγωγή CSV",
+    "columns": "Στήλες",
+    "exportCsv": "Εξαγωγή CSV"
     },
     "tabs": {
       "transactions": "Συναλλαγές",
@@ -426,10 +428,20 @@
       "category": "Κατηγορία",
       "from": "Από",
       "to": "Έως",
-      "search": "Αναζήτηση",
       "institution": "Χρηματοπιστωτικό ίδρυμα",
-      "all": "Όλα",
-      "clear": "Εκκαθάριση φίλτρων"
+      "clear": "Εκκαθάριση φίλτρων",
+    "title": "Φιλτράρισμα κατά",
+    "searchPlaceholder": "Αναζήτηση συναλλαγών…",
+    "group": "Ομαδοποίηση",
+    "date": "Ημερομηνία",
+    "amount": "Ποσό",
+    "amountMin": "Ελάχιστο",
+    "amountMax": "Μέγιστο",
+    "any": "Οποιοδήποτε",
+    "back": "Πίσω",
+    "dateRange": "Από {{from}} έως {{to}}",
+    "amountRange": "Από {{min}} έως {{max}}",
+    "removeChip": "Αφαίρεση φίλτρου {{filter}}"
     },
     "empty": {
       "title": "Δεν βρέθηκαν συναλλαγές",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Εισαγωγή ελεγμένων γραμμών"
       }
+    },
+  "eyebrow": "Οικονομικά",
+  "view": {
+    "list": "Λίστα",
+    "calendar": "Ημερολόγιο"
+  },
+  "columns": {
+    "title": "Στήλες",
+    "date": "Ημερομηνία",
+    "description": "Περιγραφή",
+    "category": "Κατηγορία",
+    "account": "Λογαριασμός",
+    "amount": "Ποσό",
+    "reorder": "Σύρετε για αλλαγή σειράς",
+    "resize": "Σύρετε για αλλαγή μεγέθους"
+  },
+  "table": {
+    "selectAll": "Επιλογή όλων των γραμμών",
+    "selectRow": "Επιλογή {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} από {{total}}",
+    "pageSize": "Γραμμές ανά σελίδα",
+    "previous": "Προηγούμενη σελίδα",
+    "next": "Επόμενη σελίδα",
+    "goToPage": "Μετάβαση στη σελίδα {{page}}"
+  },
+  "bulk": {
+    "selected": "επιλεγμένες",
+    "assignCategory": "Επιλογή κατηγορίας…",
+    "mixedKinds": "Επιλέξτε συναλλαγές ενός μόνο τύπου για να αντιστοιχίσετε κατηγορία",
+    "delete": "Διαγραφή επιλεγμένων",
+    "clearSelection": "Εκκαθάριση επιλογής",
+    "deleteConfirm": {
+      "title": "Διαγραφή συναλλαγών",
+      "message": "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Διαγραφή {{count}} συναλλαγών;"
     }
+  },
+  "calendar": {
+    "previousMonth": "Προηγούμενος μήνας",
+    "nextMonth": "Επόμενος μήνας",
+    "balanceTrend": "Τάση υπολοίπου",
+    "selectedDay": "Επιλεγμένη ημέρα",
+    "selectDayHint": "Επιλέξτε μια ημέρα για να δείτε τη δραστηριότητά της",
+    "noTransactions": "Δεν υπάρχουν συναλλαγές αυτή την ημέρα",
+    "legend": {
+      "income": "Έσοδα",
+      "expenses": "Έξοδα",
+      "transfer": "Μεταφορά",
+      "projected": "Προβλεπόμενες"
+    }
+  },
+  "export": {
+    "filename": "synallages"
+  }
   },
   "categories": {
     "title": "Κατηγορίες",

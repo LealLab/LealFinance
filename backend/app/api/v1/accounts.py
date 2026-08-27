@@ -1,6 +1,7 @@
 """Account CRUD and archive/unarchive - no delete (accounts are archived,
 never removed, matching the frontend's AccountRepository)."""
 
+from datetime import date
 from uuid import UUID
 
 from fastapi import APIRouter, status
@@ -28,9 +29,9 @@ async def create_account(payload: AccountCreate, user: CurrentUser, db: DbSessio
 # "balances" as a UUID path param and this route never matches.
 @router.get("/balances", response_model=list[AccountBalanceRead])
 async def get_account_balances(
-    user: CurrentUser, db: DbSession
+    user: CurrentUser, db: DbSession, as_of: date | None = None
 ) -> list[accounts_service.AccountBalance]:
-    return await accounts_service.account_balances(db, user.id)
+    return await accounts_service.account_balances(db, user.id, as_of=as_of)
 
 
 @router.get("/{account_id}", response_model=AccountRead)

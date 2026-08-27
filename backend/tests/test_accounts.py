@@ -384,6 +384,13 @@ async def test_account_balances_reflect_income_expense_and_transfers(
     # 50 + 100
     assert balances[dest_id] == "150.0000"
 
+    # as_of (inclusive) restricts the ledger: only the income on 01-01 counts.
+    as_of = await client.get("/api/v1/accounts/balances", params={"as_of": "2026-01-01"})
+    assert as_of.status_code == 200
+    as_of_balances = {row["account_id"]: row["balance"] for row in as_of.json()}
+    assert as_of_balances[source_id] == "600.0000"
+    assert as_of_balances[dest_id] == "50.0000"
+
 
 async def test_account_balances_use_converted_amount_for_cross_currency_expense(
     client: AsyncClient, db_session: AsyncSession

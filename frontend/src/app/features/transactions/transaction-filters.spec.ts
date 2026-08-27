@@ -1,6 +1,15 @@
 import { Account } from '../../domain/models/account';
+import { Category } from '../../domain/models/category';
 import { Transaction } from '../../domain/models/transaction';
-import { EMPTY_FILTERS, matchesFilters, TransactionFilters } from './transaction-filters';
+import {
+  activeChips,
+  ChipContext,
+  clearChip,
+  EMPTY_FILTERS,
+  matchesFilters,
+  toQuery,
+  TransactionFilters
+} from './transaction-filters';
 
 function account(overrides: Partial<Account> = {}): Account {
   return {
@@ -90,5 +99,88 @@ describe('matchesFilters', () => {
       });
       expect(matchesFilters(transfer, filters, accountsById)).toBe(false);
     });
+  });
+
+  describe('groupId', () => {
+    const groceries: Category = {
+      id: 'cat-groceries',
+      name: 'Groceries',
+      kind: 'expense',
+      groupId: 'grp-essentials',
+      color: '#000',
+      icon: 'cart',
+      position: 0
+    };
+    const categoriesById = new Map<string, Category>([[groceries.id, groceries]]);
+    const filters: TransactionFilters = { ...EMPTY_FILTERS, groupId: 'grp-essentials' };
+
+    it("matches a transaction whose category is in the filtered group", () => {
+      const transaction = tx({ categoryId: groceries.id });
+      expect(matchesFilters(transaction, filters, accountsById, categoriesById)).toBe(true);
+    });
+
+    it("rejects a transaction whose category is in another group", () => {
+      const transaction = tx({ categoryId: 'cat-other' });
+      expect(matchesFilters(transaction, filters, accountsById, categoriesById)).toBe(false);
+    });
+  });
+
+  describe('amount range', () => {
+    it('respects inclusive min/max bounds', () => {
+      const filters: TransactionFilters = { ...EMPTY_FILTERS, amountMin: '10', amountMax: '20' };
+      expect(matchesFilters(tx({ amount: '10' }), filters, accountsById)).toBe(true);
+      expect(matchesFilters(tx({ amount: '20' }), filters, accountsById)).toBe(true);
+      expect(matchesFilters(tx({ amount: '9.99' }), filters, accountsById)).toBe(false);
+      expect(matchesFilters(tx({ amount: '20.01' }), filters, accountsById)).toBe(false);
+    });
+  });
+});
+
+describe('toQuery', () => {
+  it('maps set fields and drops empty ones', () => {
+    const filters: TransactionFilters = {
+      ...EMPTY_FILTERS,
+      accountId: 'acc-1',
+      groupId: 'grp-1',
+      from: '2026-01-01',
+      amountMin: '5'
+    };
+    expect(toQuery(filters)).toEqual({
+      accountId: 'acc-1',
+      categoryId: undefined,
+      groupId: 'grp-1',
+      institutionId: undefined,
+      dateFrom: '2026-01-01',
+      dateTo: undefined,
+      amountMin: '5',
+      amountMax: undefined
+    });
+  });
+});
+
+describe('activeChips / clearChip', () => {
+  const ctx: ChipContext = {
+    accountsById: new Map([[bancoLeal.id, bancoLeal]]),
+    categoriesById: new Map(),
+    groupsById: new Map(),
+    institutionsById: new Map(),
+    t: (key, params) => (params ? `${key} ${JSON.stringify(params)}` : key),
+    formatDate: (iso) => iso
+  };
+
+  it('emits one date chip covering both bounds and clears both', () => {
+    const filters: TransactionFilters = {
+      ...EMPTY_FILTERS,
+      accountId: bancoLeal.id,
+      from: '2026-01-01',
+      to: '2026-01-31'
+    };
+    const chips = activeChips(filters, ctx);
+    expect(chips.map((c) => c.key)).toEqual(['account', 'date']);
+
+    const cleared = clearChip(filters, 'date');
+    expect(cleared.from).toBe('');
+    expect(cleared.to).toBe('');
+    expect(cleared.accountId).toBe(bancoLeal.id);
   });
 });

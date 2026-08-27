@@ -13,9 +13,9 @@ export class HttpAccountRepository extends AccountRepository {
   list(): Observable<Account[]> {
     return this.api.get<AccountWire[]>('/accounts').pipe(map((items) => items.map(mapAccount)));
   }
-  balances(): Observable<AccountBalance[]> {
+  balances(asOf?: string): Observable<AccountBalance[]> {
     return this.api
-      .get<AccountBalanceWire[]>('/accounts/balances')
+      .get<AccountBalanceWire[]>('/accounts/balances', { as_of: asOf })
       .pipe(map((items) => items.map(mapAccountBalance)));
   }
   get(id: string): Observable<Account | undefined> {

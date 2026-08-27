@@ -10,8 +10,9 @@ import { Account, AccountBalance } from '../domain/models/account';
  */
 export abstract class AccountRepository {
   abstract list(): Observable<Account[]>;
-  /** Server-computed balance for every owned account - see AccountBalance. */
-  abstract balances(): Observable<AccountBalance[]>;
+  /** Server-computed balance for every owned account - see AccountBalance.
+   * `asOf` ('YYYY-MM-DD', inclusive) restricts the ledger to that date. */
+  abstract balances(asOf?: string): Observable<AccountBalance[]>;
   abstract get(id: string): Observable<Account | undefined>;
   abstract create(input: Omit<Account, 'id'>): Observable<Account>;
   abstract update(id: string, changes: Partial<Omit<Account, 'id'>>): Observable<Account>;

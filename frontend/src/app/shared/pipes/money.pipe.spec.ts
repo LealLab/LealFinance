@@ -50,6 +50,18 @@ describe('MoneyPipe', () => {
 
     expect(pipe.transform('1234.5', 'BRL')).toBe('••••');
   });
+
+  it('abbreviates large amounts in compact notation', () => {
+    const compact = pipe.transform('23150', 'BRL', 'compact');
+    expect(compact).toMatch(/mil/);
+    expect(compact).not.toContain('23.150');
+  });
+
+  it('still masks in compact notation once balances are hidden', () => {
+    TestBed.inject(BalanceVisibilityService).setHidden(true);
+
+    expect(pipe.transform('23150', 'BRL', 'compact')).toBe('••••');
+  });
 });
 
 @Component({

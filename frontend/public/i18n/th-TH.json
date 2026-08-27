@@ -409,7 +409,9 @@
       "new": "เพิ่มธุรกรรมใหม่",
       "edit": "แก้ไข",
       "delete": "ลบ",
-      "import": "นำเข้า CSV"
+      "import": "นำเข้า CSV",
+    "columns": "คอลัมน์",
+    "exportCsv": "ส่งออก CSV"
     },
     "tabs": {
       "transactions": "ธุรกรรม",
@@ -426,10 +428,20 @@
       "category": "หมวดหมู่",
       "from": "ตั้งแต่",
       "to": "ถึง",
-      "search": "ค้นหา",
       "institution": "สถาบันการเงิน",
-      "all": "ทั้งหมด",
-      "clear": "ล้างตัวกรอง"
+      "clear": "ล้างตัวกรอง",
+    "title": "กรองตาม",
+    "searchPlaceholder": "ค้นหาธุรกรรม…",
+    "group": "กลุ่ม",
+    "date": "วันที่",
+    "amount": "จำนวนเงิน",
+    "amountMin": "ต่ำสุด",
+    "amountMax": "สูงสุด",
+    "any": "ใดๆ",
+    "back": "ย้อนกลับ",
+    "dateRange": "ตั้งแต่ {{from}} ถึง {{to}}",
+    "amountRange": "ตั้งแต่ {{min}} ถึง {{max}}",
+    "removeChip": "ลบตัวกรอง {{filter}}"
     },
     "empty": {
       "title": "ไม่พบธุรกรรม",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "นำเข้าแถวที่ตรวจสอบแล้ว"
       }
+    },
+  "eyebrow": "การเงิน",
+  "view": {
+    "list": "รายการ",
+    "calendar": "ปฏิทิน"
+  },
+  "columns": {
+    "title": "คอลัมน์",
+    "date": "วันที่",
+    "description": "รายละเอียด",
+    "category": "หมวดหมู่",
+    "account": "บัญชี",
+    "amount": "จำนวนเงิน",
+    "reorder": "ลากเพื่อจัดลำดับใหม่",
+    "resize": "ลากเพื่อปรับขนาด"
+  },
+  "table": {
+    "selectAll": "เลือกแถวทั้งหมด",
+    "selectRow": "เลือก {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} จาก {{total}}",
+    "pageSize": "แถวต่อหน้า",
+    "previous": "หน้าก่อนหน้า",
+    "next": "หน้าถัดไป",
+    "goToPage": "ไปที่หน้า {{page}}"
+  },
+  "bulk": {
+    "selected": "เลือกแล้ว",
+    "assignCategory": "เลือกหมวดหมู่…",
+    "mixedKinds": "เลือกธุรกรรมประเภทเดียวกันเพื่อกำหนดหมวดหมู่",
+    "delete": "ลบรายการที่เลือก",
+    "clearSelection": "ล้างการเลือก",
+    "deleteConfirm": {
+      "title": "ลบธุรกรรม",
+      "message": "ไม่สามารถยกเลิกได้ ลบธุรกรรม {{count}} รายการหรือไม่"
     }
+  },
+  "calendar": {
+    "previousMonth": "เดือนก่อนหน้า",
+    "nextMonth": "เดือนถัดไป",
+    "balanceTrend": "แนวโน้มยอดคงเหลือ",
+    "selectedDay": "วันที่เลือก",
+    "selectDayHint": "เลือกวันเพื่อดูกิจกรรม",
+    "noTransactions": "ไม่มีธุรกรรมในวันนี้",
+    "legend": {
+      "income": "รายรับ",
+      "expenses": "รายจ่าย",
+      "transfer": "โอนเงิน",
+      "projected": "คาดการณ์"
+    }
+  },
+  "export": {
+    "filename": "thurakam"
+  }
   },
   "categories": {
     "title": "หมวดหมู่",

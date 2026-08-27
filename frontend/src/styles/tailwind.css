@@ -125,4 +125,8 @@
   .form-hint {
     @apply mt-1 text-xs text-content-muted;
   }
+
+  .form-checkbox {
+    @apply size-4 shrink-0 rounded border-border text-accent accent-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-accent;
+  }
 }

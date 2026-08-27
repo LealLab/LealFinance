@@ -409,7 +409,9 @@
       "new": "Giao dịch mới",
       "edit": "Chỉnh sửa",
       "delete": "Xóa",
-      "import": "Nhập CSV"
+      "import": "Nhập CSV",
+    "columns": "Cột",
+    "exportCsv": "Xuất CSV"
     },
     "tabs": {
       "transactions": "Giao dịch",
@@ -426,10 +428,20 @@
       "category": "Danh mục",
       "from": "Từ",
       "to": "Đến",
-      "search": "Tìm kiếm",
       "institution": "Tổ chức tài chính",
-      "all": "Tất cả",
-      "clear": "Xóa bộ lọc"
+      "clear": "Xóa bộ lọc",
+    "title": "Lọc theo",
+    "searchPlaceholder": "Tìm kiếm giao dịch…",
+    "group": "Nhóm",
+    "date": "Ngày",
+    "amount": "Số tiền",
+    "amountMin": "Tối thiểu",
+    "amountMax": "Tối đa",
+    "any": "Bất kỳ",
+    "back": "Quay lại",
+    "dateRange": "{{from}} đến {{to}}",
+    "amountRange": "{{min}} đến {{max}}",
+    "removeChip": "Xóa bộ lọc {{filter}}"
     },
     "empty": {
       "title": "Không tìm thấy giao dịch nào",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Nhập các dòng đã xem lại"
       }
+    },
+  "eyebrow": "Tài chính",
+  "view": {
+    "list": "Danh sách",
+    "calendar": "Lịch"
+  },
+  "columns": {
+    "title": "Cột",
+    "date": "Ngày",
+    "description": "Mô tả",
+    "category": "Danh mục",
+    "account": "Tài khoản",
+    "amount": "Số tiền",
+    "reorder": "Kéo để sắp xếp lại",
+    "resize": "Kéo để đổi kích thước"
+  },
+  "table": {
+    "selectAll": "Chọn tất cả các hàng",
+    "selectRow": "Chọn {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} trên tổng số {{total}}",
+    "pageSize": "Số hàng mỗi trang",
+    "previous": "Trang trước",
+    "next": "Trang sau",
+    "goToPage": "Đi đến trang {{page}}"
+  },
+  "bulk": {
+    "selected": "đã chọn",
+    "assignCategory": "Chọn danh mục…",
+    "mixedKinds": "Chọn các giao dịch cùng một loại để gán danh mục",
+    "delete": "Xóa mục đã chọn",
+    "clearSelection": "Xóa lựa chọn",
+    "deleteConfirm": {
+      "title": "Xóa giao dịch",
+      "message": "Không thể hoàn tác. Xóa {{count}} giao dịch?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Tháng trước",
+    "nextMonth": "Tháng sau",
+    "balanceTrend": "Xu hướng số dư",
+    "selectedDay": "Ngày đã chọn",
+    "selectDayHint": "Chọn một ngày để xem hoạt động",
+    "noTransactions": "Không có giao dịch vào ngày này",
+    "legend": {
+      "income": "Thu nhập",
+      "expenses": "Chi tiêu",
+      "transfer": "Chuyển tiền",
+      "projected": "Dự kiến"
+    }
+  },
+  "export": {
+    "filename": "giaodich"
+  }
   },
   "categories": {
     "title": "Danh mục",

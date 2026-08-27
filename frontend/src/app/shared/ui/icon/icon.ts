@@ -26,6 +26,7 @@ const ICON_FILES = {
   arrowDownLeft: 'arrow-down-left.svg',
   refresh: 'refresh.svg',
   search: 'search.svg',
+  funnel: 'funnel.svg',
   eye: 'eye.svg',
   eyeOff: 'eye-off.svg',
   command: 'command.svg',

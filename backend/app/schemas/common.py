@@ -63,6 +63,7 @@ IconName = Literal[
     "arrowDownLeft",
     "refresh",
     "search",
+    "funnel",
     "eye",
     "eyeOff",
     "command",

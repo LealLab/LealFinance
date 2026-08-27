@@ -1,0 +1,244 @@
+<div *transloco="let t" class="rounded-md border border-border bg-surface-raised">
+  <div class="overflow-x-auto">
+    <table class="w-full table-fixed text-sm">
+      <colgroup>
+        <col style="width: 2.5rem" />
+        @for (col of columns(); track col) {
+          <col [style.width.px]="widthOf(col)" />
+        }
+        <col style="width: 6rem" />
+      </colgroup>
+      <thead>
+        <tr class="border-b border-border text-left text-xs tracking-wide text-content-muted uppercase">
+          <th scope="col" class="w-10 px-4 py-3">
+            <input
+              type="checkbox"
+              class="form-checkbox"
+              [checked]="allSelected()"
+              [indeterminate]="someSelected() && !allSelected()"
+              [attr.aria-label]="t('transactions.table.selectAll')"
+              (change)="onToggleAll($event)"
+            />
+          </th>
+          @for (col of columns(); track col) {
+            <th
+              scope="col"
+              class="relative px-4 py-3"
+              [class.text-right]="col === 'amount'"
+              draggable="true"
+              [attr.aria-sort]="
+                col === 'date' || col === 'description' || col === 'amount'
+                  ? isSorted(col)
+                  : null
+              "
+              [attr.title]="t('transactions.columns.reorder')"
+              (dragstart)="onDragStart(col, $event)"
+              (dragover)="$event.preventDefault()"
+              (drop)="onDrop(col, $event)"
+              (dragend)="onDragEnd()"
+            >
+              @switch (col) {
+                @case ('date') {
+                  <button type="button" class="sort-header" (click)="sortChange.emit('date')">
+                    {{ t('transactions.columns.date') }}
+                    @if (sort() === 'date') {
+                      <app-icon [name]="order() === 'asc' ? 'chevronRight' : 'chevronDown'" [size]="14" />
+                    }
+                  </button>
+                }
+                @case ('description') {
+                  <button type="button" class="sort-header" (click)="sortChange.emit('description')">
+                    {{ t('transactions.columns.description') }}
+                    @if (sort() === 'description') {
+                      <app-icon [name]="order() === 'asc' ? 'chevronRight' : 'chevronDown'" [size]="14" />
+                    }
+                  </button>
+                }
+                @case ('category') {
+                  {{ t('transactions.columns.category') }}
+                }
+                @case ('account') {
+                  {{ t('transactions.columns.account') }}
+                }
+                @case ('amount') {
+                  <button type="button" class="sort-header ml-auto" (click)="sortChange.emit('amount')">
+                    {{ t('transactions.columns.amount') }}
+                    @if (sort() === 'amount') {
+                      <app-icon [name]="order() === 'asc' ? 'chevronRight' : 'chevronDown'" [size]="14" />
+                    }
+                  </button>
+                }
+              }
+              <span
+                class="column-resize-grip absolute inset-y-0 right-0 w-3 cursor-col-resize touch-none"
+                role="separator"
+                aria-orientation="vertical"
+                [attr.aria-label]="t('transactions.columns.resize')"
+                (pointerdown)="onResizeStart(col, $event)"
+                (pointermove)="onResizeMove(col, $event)"
+                (pointerup)="onResizeEnd(col, $event)"
+                (pointercancel)="onResizeEnd(col, $event)"
+              ></span>
+            </th>
+          }
+          <th scope="col" class="w-24 px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (tx of rows(); track tx.id) {
+          <tr class="border-b border-border last:border-b-0 hover:bg-surface-sunken/40">
+            <td class="px-4 py-3">
+              <input
+                type="checkbox"
+                class="form-checkbox"
+                [checked]="selectedIds().has(tx.id)"
+                [attr.aria-label]="t('transactions.table.selectRow', { description: tx.description })"
+                (change)="toggleRow.emit(tx.id)"
+              />
+            </td>
+            @for (col of columns(); track col) {
+              @switch (col) {
+                @case ('date') {
+                  <td class="px-4 py-3 whitespace-nowrap text-content-muted">{{ tx.date }}</td>
+                }
+                @case ('description') {
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full text-white"
+                        [style.background-color]="tx.type === 'transfer' ? null : category(tx)?.color"
+                        [class.bg-surface-sunken]="tx.type === 'transfer'"
+                      >
+                        <app-icon
+                          [name]="tx.type === 'transfer' ? 'swap' : (category(tx)?.icon ?? 'tag')"
+                          [size]="14"
+                        />
+                      </span>
+                      <span class="font-medium text-content-primary">{{ tx.description }}</span>
+                      @if (tx.recurringRuleId) {
+                        <app-badge tone="neutral">{{ t('transactions.projected.badge') }}</app-badge>
+                      }
+                    </div>
+                  </td>
+                }
+                @case ('category') {
+                  <td class="px-4 py-3 text-content-muted">
+                    {{ tx.type === 'transfer' ? '—' : (category(tx)?.name ?? '') }}
+                  </td>
+                }
+                @case ('account') {
+                  <td class="px-4 py-3 text-content-muted">
+                    <span class="block truncate">
+                      {{ accountName(tx.accountId) }}
+                      @if (tx.type === 'transfer') {
+                        → {{ accountName(tx.toAccountId) }}
+                      }
+                    </span>
+                    @if (institutionName(tx.accountId); as institution) {
+                      <span class="block truncate text-xs text-content-subtle">{{ institution }}</span>
+                    }
+                  </td>
+                }
+                @case ('amount') {
+                  <td
+                    class="px-4 py-3 text-right font-mono font-semibold tabular-nums"
+                    [class]="rowToneClass(tx)"
+                  >
+                    {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
+                  </td>
+                }
+              }
+            }
+            <td class="px-4 py-3">
+              <div class="flex justify-end gap-1">
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="edit.emit(tx)"
+                  [attr.aria-label]="t('transactions.actions.edit')"
+                >
+                  <app-icon name="pencil" [size]="16" />
+                </button>
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="remove.emit(tx)"
+                  [attr.aria-label]="t('transactions.actions.delete')"
+                >
+                  <app-icon name="trash" [size]="16" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3 text-sm text-content-muted">
+    <span>
+      {{ t('transactions.pagination.showing', { from: showingFrom(), to: showingTo(), total: total() }) }}
+    </span>
+
+    <div class="flex items-center gap-3">
+      <nav class="flex items-center gap-1" [attr.aria-label]="t('transactions.pagination.pageSize')">
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [disabled]="page() <= 1"
+          (click)="pageChange.emit(page() - 1)"
+          [attr.aria-label]="t('transactions.pagination.previous')"
+        >
+          <app-icon name="chevronRight" [size]="16" class="rotate-180" />
+        </button>
+        @for (token of pageNumbers(); track $index) {
+          @if (token === '…') {
+            <span class="px-1 text-content-subtle">…</span>
+          } @else {
+            <button
+              type="button"
+              class="min-w-8 rounded px-2 py-1 text-sm"
+              [class]="
+                token === page()
+                  ? 'bg-accent text-accent-content'
+                  : 'text-content-primary hover:bg-surface-sunken'
+              "
+              [attr.aria-current]="token === page() ? 'page' : null"
+              [attr.aria-label]="t('transactions.pagination.goToPage', { page: token })"
+              (click)="pageChange.emit($any(token))"
+            >
+              {{ token }}
+            </button>
+          }
+        }
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [disabled]="page() >= pageCount()"
+          (click)="pageChange.emit(page() + 1)"
+          [attr.aria-label]="t('transactions.pagination.next')"
+        >
+          <app-icon name="chevronRight" [size]="16" />
+        </button>
+      </nav>
+
+      <select
+        class="form-input mt-0 w-auto py-1"
+        [attr.aria-label]="t('transactions.pagination.pageSize')"
+        (change)="pageSizeChange.emit(+$any($event.target).value)"
+      >
+        @for (size of pageSizes(); track size) {
+          <option [value]="size" [selected]="size === pageSize()">{{ size }}</option>
+        }
+      </select>
+    </div>
+  </div>
+</div>

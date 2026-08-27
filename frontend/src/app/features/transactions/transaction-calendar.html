@@ -1,0 +1,119 @@
+<div *transloco="let t" class="grid gap-4 lg:grid-cols-[1fr_20rem]">
+  <div class="rounded-md border border-border bg-surface-raised p-4">
+    <div class="mb-3 flex flex-wrap items-center gap-4 text-xs text-content-muted">
+      <span class="flex items-center gap-1.5">
+        <span class="size-2 rounded-full bg-positive"></span>{{ t('transactions.calendar.legend.income') }}
+      </span>
+      <span class="flex items-center gap-1.5">
+        <span class="size-2 rounded-full bg-negative"></span>{{ t('transactions.calendar.legend.expenses') }}
+      </span>
+      <span class="flex items-center gap-1.5">
+        <span class="size-2 rounded-full bg-accent"></span>{{ t('transactions.calendar.legend.transfer') }}
+      </span>
+      <span class="flex items-center gap-1.5">
+        <span class="size-2 rounded-full border border-content-subtle"></span>{{ t('transactions.calendar.legend.projected') }}
+      </span>
+    </div>
+
+    @if (sparklinePoints()) {
+      <div class="mb-3">
+        <p class="mb-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
+          {{ t('transactions.calendar.balanceTrend') }}
+        </p>
+        <svg viewBox="0 0 100 24" preserveAspectRatio="none" class="h-6 w-full text-accent" aria-hidden="true">
+          <polyline
+            [attr.points]="sparklinePoints()"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            vector-effect="non-scaling-stroke"
+          />
+        </svg>
+      </div>
+    }
+
+    <div class="grid grid-cols-7 text-xs font-semibold text-content-subtle">
+      @for (label of weekdayLabels(); track $index) {
+        <div class="px-2 py-1">{{ label }}</div>
+      }
+    </div>
+    <div class="grid grid-cols-7 gap-px bg-border">
+      @for (day of days(); track day.date) {
+        <button
+          type="button"
+          class="flex min-h-16 flex-col items-start gap-1 bg-surface-raised p-2 text-left disabled:cursor-default"
+          [class.opacity-50]="!day.inMonth"
+          [class]="day.date === selectedDay() ? 'outline outline-2 outline-accent' : ''"
+          [disabled]="!day.inMonth"
+          (click)="daySelected.emit(day.date)"
+        >
+          <span
+            class="text-xs font-medium"
+            [class]="day.isToday ? 'flex size-5 items-center justify-center rounded-full bg-accent text-accent-content' : 'text-content-primary'"
+          >
+            {{ day.dayOfMonth }}
+          </span>
+          <span class="flex gap-0.5">
+            @if (day.hasIncome) { <span class="size-1.5 rounded-full bg-positive"></span> }
+            @if (day.hasExpense) { <span class="size-1.5 rounded-full bg-negative"></span> }
+            @if (day.hasTransfer) { <span class="size-1.5 rounded-full bg-accent"></span> }
+            @if (day.hasProjected) { <span class="size-1.5 rounded-full border border-content-subtle"></span> }
+          </span>
+          @if (day.balance !== null) {
+            <span class="mt-auto font-mono text-[0.7rem] text-content-muted">
+              {{ day.balance | money: displayCurrency() : 'compact' }}
+            </span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="rounded-md border border-border bg-surface-raised p-4">
+    @if (selected(); as day) {
+      <p class="text-xs font-semibold tracking-wide text-content-subtle uppercase">
+        {{ t('transactions.calendar.selectedDay') }}
+      </p>
+      <div class="mb-3 flex items-baseline justify-between gap-2">
+        <h2 class="text-sm font-semibold text-content-primary">{{ selectedDayLabel() }}</h2>
+        @if (dayNet() !== null) {
+          <span
+            class="font-mono text-sm font-semibold tabular-nums"
+            [class]="dayNet()! >= 0 ? 'text-positive' : 'text-negative'"
+          >
+            {{ dayNet()! >= 0 ? '+' : '−' }}{{ absNet() | money: displayCurrency() }}
+          </span>
+        }
+      </div>
+      @if (day.transactions.length === 0) {
+        <p class="text-sm text-content-muted">{{ t('transactions.calendar.noTransactions') }}</p>
+      } @else {
+        <ul class="flex flex-col gap-2">
+          @for (tx of day.transactions; track tx.id) {
+            <li class="flex items-center gap-2">
+              <span
+                class="flex size-7 shrink-0 items-center justify-center rounded-full text-white"
+                [style.background-color]="categoryColor(tx)"
+                [class.bg-surface-sunken]="!categoryColor(tx)"
+              >
+                <app-icon [name]="tx.type === 'transfer' ? 'swap' : 'tag'" [size]="14" />
+              </span>
+              <button type="button" class="min-w-0 flex-1 text-left" (click)="edit.emit(tx)">
+                <span class="block truncate text-sm font-medium text-content-primary">{{ tx.description }}</span>
+                <span class="block truncate text-xs text-content-subtle">{{ subtitle(tx) }}</span>
+              </button>
+              <span
+                class="font-mono text-sm font-semibold tabular-nums"
+                [class]="rowToneClass(tx)"
+              >
+                {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    } @else {
+      <p class="text-sm text-content-muted">{{ t('transactions.calendar.selectDayHint') }}</p>
+    }
+  </div>
+</div>

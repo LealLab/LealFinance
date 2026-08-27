@@ -409,7 +409,9 @@
       "new": "Ny transaktion",
       "edit": "Rediger",
       "delete": "Slet",
-      "import": "Importér CSV"
+      "import": "Importér CSV",
+    "columns": "Kolonner",
+    "exportCsv": "Eksportér CSV"
     },
     "tabs": {
       "transactions": "Transaktioner",
@@ -426,10 +428,20 @@
       "category": "Kategori",
       "from": "Fra",
       "to": "Til",
-      "search": "Søg",
       "institution": "Institution",
-      "all": "Alle",
-      "clear": "Ryd filtre"
+      "clear": "Ryd filtre",
+    "title": "Filtrér efter",
+    "searchPlaceholder": "Søg i transaktioner…",
+    "group": "Gruppér",
+    "date": "Dato",
+    "amount": "Beløb",
+    "amountMin": "Minimum",
+    "amountMax": "Maksimum",
+    "any": "Alle",
+    "back": "Tilbage",
+    "dateRange": "Fra {{from}} til {{to}}",
+    "amountRange": "Fra {{min}} til {{max}}",
+    "removeChip": "Fjern filteret {{filter}}"
     },
     "empty": {
       "title": "Ingen transaktioner fundet",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Importér gennemgåede linjer"
       }
+    },
+  "eyebrow": "Finans",
+  "view": {
+    "list": "Liste",
+    "calendar": "Kalender"
+  },
+  "columns": {
+    "title": "Kolonner",
+    "date": "Dato",
+    "description": "Beskrivelse",
+    "category": "Kategori",
+    "account": "Konto",
+    "amount": "Beløb",
+    "reorder": "Træk for at ændre rækkefølge",
+    "resize": "Træk for at ændre størrelse"
+  },
+  "table": {
+    "selectAll": "Vælg alle rækker",
+    "selectRow": "Vælg {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} af {{total}}",
+    "pageSize": "Rækker pr. side",
+    "previous": "Forrige side",
+    "next": "Næste side",
+    "goToPage": "Gå til side {{page}}"
+  },
+  "bulk": {
+    "selected": "valgte",
+    "assignCategory": "Vælg kategori…",
+    "mixedKinds": "Vælg transaktioner af samme type for at tildele en kategori",
+    "delete": "Slet valgte",
+    "clearSelection": "Ryd valg",
+    "deleteConfirm": {
+      "title": "Slet transaktioner",
+      "message": "Dette kan ikke fortrydes. Slet {{count}} transaktioner?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Forrige måned",
+    "nextMonth": "Næste måned",
+    "balanceTrend": "Saldoens udvikling",
+    "selectedDay": "Valgt dag",
+    "selectDayHint": "Vælg en dag for at se dens aktivitet",
+    "noTransactions": "Ingen transaktioner denne dag",
+    "legend": {
+      "income": "Indtægter",
+      "expenses": "Udgifter",
+      "transfer": "Overførsel",
+      "projected": "Forventet"
+    }
+  },
+  "export": {
+    "filename": "transaktioner"
+  }
   },
   "categories": {
     "title": "Kategorier",

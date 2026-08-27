@@ -409,7 +409,9 @@
       "new": "معاملة جديدة",
       "edit": "تعديل",
       "delete": "حذف",
-      "import": "استيراد CSV"
+      "import": "استيراد CSV",
+    "columns": "الأعمدة",
+    "exportCsv": "تصدير CSV"
     },
     "tabs": {
       "transactions": "المعاملات",
@@ -426,10 +428,20 @@
       "category": "الفئة",
       "from": "من",
       "to": "إلى",
-      "search": "بحث",
       "institution": "الجهة المالية",
-      "all": "الكل",
-      "clear": "مسح عوامل التصفية"
+      "clear": "مسح عوامل التصفية",
+    "title": "تصفية حسب",
+    "searchPlaceholder": "البحث في المعاملات…",
+    "group": "تجميع",
+    "date": "التاريخ",
+    "amount": "المبلغ",
+    "amountMin": "الحد الأدنى",
+    "amountMax": "الحد الأقصى",
+    "any": "أي",
+    "back": "رجوع",
+    "dateRange": "من {{from}} إلى {{to}}",
+    "amountRange": "من {{min}} إلى {{max}}",
+    "removeChip": "إزالة عامل التصفية {{filter}}"
     },
     "empty": {
       "title": "لم تُعثر على معاملات",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "استيراد الصفوف التي تمت مراجعتها"
       }
+    },
+  "eyebrow": "مالي",
+  "view": {
+    "list": "قائمة",
+    "calendar": "تقويم"
+  },
+  "columns": {
+    "title": "الأعمدة",
+    "date": "التاريخ",
+    "description": "الوصف",
+    "category": "الفئة",
+    "account": "الحساب",
+    "amount": "المبلغ",
+    "reorder": "اسحب لإعادة الترتيب",
+    "resize": "اسحب لتغيير الحجم"
+  },
+  "table": {
+    "selectAll": "تحديد كل الصفوف",
+    "selectRow": "تحديد {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} من {{total}}",
+    "pageSize": "صفوف لكل صفحة",
+    "previous": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "goToPage": "الانتقال إلى الصفحة {{page}}"
+  },
+  "bulk": {
+    "selected": "المحددة",
+    "assignCategory": "تحديد فئة…",
+    "mixedKinds": "حدد معاملات من نوع واحد لتعيين فئة",
+    "delete": "حذف المحددة",
+    "clearSelection": "مسح التحديد",
+    "deleteConfirm": {
+      "title": "حذف المعاملات",
+      "message": "لا يمكن التراجع عن ذلك. هل تريد حذف {{count}} معاملة؟"
     }
+  },
+  "calendar": {
+    "previousMonth": "الشهر السابق",
+    "nextMonth": "الشهر التالي",
+    "balanceTrend": "اتجاه الرصيد",
+    "selectedDay": "اليوم المحدد",
+    "selectDayHint": "حدد يومًا لعرض نشاطه",
+    "noTransactions": "لا توجد معاملات في هذا اليوم",
+    "legend": {
+      "income": "الدخل",
+      "expenses": "المصروفات",
+      "transfer": "تحويل",
+      "projected": "متوقع"
+    }
+  },
+  "export": {
+    "filename": "muamalat"
+  }
   },
   "categories": {
     "title": "الفئات",

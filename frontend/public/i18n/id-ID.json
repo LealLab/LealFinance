@@ -310,10 +310,10 @@
     "archivedBadge": "Diarsipkan",
     "noInstitution": "Tanpa lembaga keuangan",
     "mixedCurrencies": "Beberapa mata uang",
-    "actions": {
-      "new": "Akun baru",
-      "edit": "Edit",
-      "archive": "Arsipkan",
+  "actions": {
+    "new": "Akun baru",
+    "edit": "Edit",
+    "archive": "Arsipkan",
       "unarchive": "Pulihkan dari arsip"
     },
     "archive": {
@@ -405,11 +405,13 @@
   "transactions": {
     "title": "Transaksi",
     "description": "Pendapatan, pengeluaran, dan transfer.",
-    "actions": {
-      "new": "Transaksi baru",
-      "edit": "Edit",
-      "delete": "Hapus",
-      "import": "Impor CSV"
+  "actions": {
+    "new": "Transaksi baru",
+    "edit": "Sunting",
+    "delete": "Hapus",
+      "import": "Impor CSV",
+    "columns": "Kolom",
+    "exportCsv": "Ekspor CSV"
     },
     "tabs": {
       "transactions": "Transaksi",
@@ -426,10 +428,20 @@
       "category": "Kategori",
       "from": "Dari",
       "to": "Ke",
-      "search": "Cari",
       "institution": "Lembaga keuangan",
-      "all": "Semua",
-      "clear": "Hapus filter"
+    "clear": "Hapus filter",
+    "title": "Filter berdasarkan",
+    "searchPlaceholder": "Cari transaksi…",
+    "group": "Kelompokkan",
+    "date": "Tanggal",
+    "amount": "Jumlah",
+    "amountMin": "Minimum",
+    "amountMax": "Maksimum",
+    "any": "Apa pun",
+    "back": "Kembali",
+    "dateRange": "{{from}} sampai {{to}}",
+    "amountRange": "{{min}} sampai {{max}}",
+    "removeChip": "Hapus filter {{filter}}"
     },
     "empty": {
       "title": "Transaksi tidak ditemukan",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Impor baris yang ditinjau"
       }
+    },
+  "eyebrow": "Keuangan",
+  "view": {
+    "list": "Daftar",
+    "calendar": "Kalender"
+  },
+  "columns": {
+    "title": "Kolom",
+    "date": "Tanggal",
+    "description": "Deskripsi",
+    "category": "Kategori",
+    "account": "Akun",
+    "amount": "Jumlah",
+    "reorder": "Tarik untuk mengurutkan ulang",
+    "resize": "Tarik untuk mengubah ukuran"
+  },
+  "table": {
+    "selectAll": "Pilih semua baris",
+    "selectRow": "Pilih {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} dari {{total}}",
+    "pageSize": "Baris per halaman",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya",
+    "goToPage": "Buka halaman {{page}}"
+  },
+  "bulk": {
+    "selected": "dipilih",
+    "assignCategory": "Pilih kategori…",
+    "mixedKinds": "Pilih transaksi dengan satu jenis untuk menetapkan kategori",
+    "delete": "Hapus yang dipilih",
+    "clearSelection": "Hapus pilihan",
+    "deleteConfirm": {
+      "title": "Hapus transaksi",
+      "message": "Tindakan ini tidak dapat dibatalkan. Hapus {{count}} transaksi?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Bulan sebelumnya",
+    "nextMonth": "Bulan berikutnya",
+    "balanceTrend": "Tren saldo",
+    "selectedDay": "Hari yang dipilih",
+    "selectDayHint": "Pilih hari untuk melihat aktivitasnya",
+    "noTransactions": "Tidak ada transaksi pada hari ini",
+    "legend": {
+      "income": "Pendapatan",
+      "expenses": "Pengeluaran",
+      "transfer": "Transfer",
+      "projected": "Perkiraan"
+    }
+  },
+  "export": {
+    "filename": "transaksi"
+  }
   },
   "categories": {
     "title": "Kategori",

@@ -409,7 +409,9 @@
       "new": "תנועה חדשה",
       "edit": "עריכה",
       "delete": "מחיקה",
-      "import": "ייבוא CSV"
+      "import": "ייבוא CSV",
+    "columns": "עמודות",
+    "exportCsv": "ייצוא CSV"
     },
     "tabs": {
       "transactions": "תנועות",
@@ -426,10 +428,20 @@
       "category": "קטגוריה",
       "from": "מתאריך",
       "to": "עד",
-      "search": "חיפוש",
       "institution": "מוסד פיננסי",
-      "all": "הכול",
-      "clear": "ניקוי מסננים"
+      "clear": "ניקוי מסננים",
+    "title": "סינון לפי",
+    "searchPlaceholder": "חיפוש תנועות…",
+    "group": "קיבוץ",
+    "date": "תאריך",
+    "amount": "סכום",
+    "amountMin": "מינימום",
+    "amountMax": "מקסימום",
+    "any": "הכול",
+    "back": "חזרה",
+    "dateRange": "מ־{{from}} עד {{to}}",
+    "amountRange": "מ־{{min}} עד {{max}}",
+    "removeChip": "הסרת מסנן {{filter}}"
     },
     "empty": {
       "title": "לא נמצאו תנועות",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "ייבוא שורות שנבדקו"
       }
+    },
+  "eyebrow": "פיננסים",
+  "view": {
+    "list": "רשימה",
+    "calendar": "לוח שנה"
+  },
+  "columns": {
+    "title": "עמודות",
+    "date": "תאריך",
+    "description": "תיאור",
+    "category": "קטגוריה",
+    "account": "חשבון",
+    "amount": "סכום",
+    "reorder": "גרירה לשינוי הסדר",
+    "resize": "גרירה לשינוי הגודל"
+  },
+  "table": {
+    "selectAll": "בחירת כל השורות",
+    "selectRow": "בחירת {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} מתוך {{total}}",
+    "pageSize": "שורות בעמוד",
+    "previous": "העמוד הקודם",
+    "next": "העמוד הבא",
+    "goToPage": "מעבר לעמוד {{page}}"
+  },
+  "bulk": {
+    "selected": "נבחרו",
+    "assignCategory": "בחירת קטגוריה…",
+    "mixedKinds": "יש לבחור תנועות מסוג אחד כדי להקצות קטגוריה",
+    "delete": "מחיקת הנבחרות",
+    "clearSelection": "ניקוי הבחירה",
+    "deleteConfirm": {
+      "title": "מחיקת תנועות",
+      "message": "לא ניתן לבטל פעולה זו. למחוק {{count}} תנועות?"
     }
+  },
+  "calendar": {
+    "previousMonth": "החודש הקודם",
+    "nextMonth": "החודש הבא",
+    "balanceTrend": "מגמת היתרה",
+    "selectedDay": "היום שנבחר",
+    "selectDayHint": "בחירת יום להצגת הפעילות שלו",
+    "noTransactions": "אין תנועות ביום זה",
+    "legend": {
+      "income": "הכנסות",
+      "expenses": "הוצאות",
+      "transfer": "העברה",
+      "projected": "חזויה"
+    }
+  },
+  "export": {
+    "filename": "tnuot"
+  }
   },
   "categories": {
     "title": "קטגוריות",

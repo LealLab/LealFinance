@@ -409,7 +409,9 @@
       "new": "Uusi tapahtuma",
       "edit": "Muokkaa",
       "delete": "Poista",
-      "import": "Tuo CSV"
+      "import": "Tuo CSV",
+    "columns": "Sarakkeet",
+    "exportCsv": "Vie CSV"
     },
     "tabs": {
       "transactions": "Tapahtumat",
@@ -426,10 +428,20 @@
       "category": "Luokka",
       "from": "Alkaen",
       "to": "Asti",
-      "search": "Haku",
       "institution": "Rahoituslaitos",
-      "all": "Kaikki",
-      "clear": "Tyhjennä suodattimet"
+      "clear": "Tyhjennä suodattimet",
+    "title": "Suodata",
+    "searchPlaceholder": "Hae tapahtumia…",
+    "group": "Ryhmittele",
+    "date": "Päivämäärä",
+    "amount": "Summa",
+    "amountMin": "Vähintään",
+    "amountMax": "Enintään",
+    "any": "Mikä tahansa",
+    "back": "Takaisin",
+    "dateRange": "{{from}} – {{to}}",
+    "amountRange": "{{min}} – {{max}}",
+    "removeChip": "Poista {{filter}}-suodatin"
     },
     "empty": {
       "title": "Tapahtumia ei löytynyt",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Tuo tarkistetut rivit"
       }
+    },
+  "eyebrow": "Talous",
+  "view": {
+    "list": "Luettelo",
+    "calendar": "Kalenteri"
+  },
+  "columns": {
+    "title": "Sarakkeet",
+    "date": "Päivämäärä",
+    "description": "Kuvaus",
+    "category": "Luokka",
+    "account": "Tili",
+    "amount": "Summa",
+    "reorder": "Vedä järjestääksesi uudelleen",
+    "resize": "Vedä muuttaaksesi kokoa"
+  },
+  "table": {
+    "selectAll": "Valitse kaikki rivit",
+    "selectRow": "Valitse {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} / {{total}}",
+    "pageSize": "Rivejä sivulla",
+    "previous": "Edellinen sivu",
+    "next": "Seuraava sivu",
+    "goToPage": "Siirry sivulle {{page}}"
+  },
+  "bulk": {
+    "selected": "valittu",
+    "assignCategory": "Valitse luokka…",
+    "mixedKinds": "Valitse yhden tyyppisiä tapahtumia luokan määrittämiseksi",
+    "delete": "Poista valitut",
+    "clearSelection": "Tyhjennä valinta",
+    "deleteConfirm": {
+      "title": "Poista tapahtumat",
+      "message": "Tätä ei voi kumota. Poistetaanko {{count}} tapahtumaa?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Edellinen kuukausi",
+    "nextMonth": "Seuraava kuukausi",
+    "balanceTrend": "Saldon kehitys",
+    "selectedDay": "Valittu päivä",
+    "selectDayHint": "Valitse päivä nähdäksesi sen tapahtumat",
+    "noTransactions": "Tänä päivänä ei ole tapahtumia",
+    "legend": {
+      "income": "Tulot",
+      "expenses": "Menot",
+      "transfer": "Tilisiirto",
+      "projected": "Ennuste"
+    }
+  },
+  "export": {
+    "filename": "tapahtumat"
+  }
   },
   "categories": {
     "title": "Luokat",

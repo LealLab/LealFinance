@@ -1,9 +1,15 @@
 import { Observable } from 'rxjs';
+import { Page } from '../core/api-client';
 import { Transaction, TransactionType } from '../domain/models/transaction';
+
+export type TransactionSort = 'date' | 'description' | 'amount';
+export type SortOrder = 'asc' | 'desc';
 
 export interface TransactionFilters {
   accountId?: string;
   categoryId?: string;
+  /** Category group - resolved server-side to that group's categories. */
+  groupId?: string;
   institutionId?: string;
   /** Repeatable - omitted means "every type". */
   types?: readonly TransactionType[];
@@ -11,6 +17,11 @@ export interface TransactionFilters {
   dateTo?: string;
   /** Case-insensitive substring match on description only, not notes. */
   search?: string;
+  /** Inclusive bounds on the raw amount; decimal strings, never floats. */
+  amountMin?: string;
+  amountMax?: string;
+  sort?: TransactionSort;
+  order?: SortOrder;
   /** Page size. Omitted means "no paging - return everything". */
   limit?: number;
   /** Rows to skip; only meaningful alongside limit. */
@@ -65,10 +76,19 @@ export interface ImportPreview {
 /** See account.repository.ts for the DI-token pattern this follows. */
 export abstract class TransactionRepository {
   abstract list(filters?: TransactionFilters): Observable<Transaction[]>;
+  /** Same filters as list(), but returns the page plus the total match
+   * count for classical page-number pagination. */
+  abstract listPage(filters: TransactionFilters): Observable<Page<Transaction>>;
   abstract get(id: string): Observable<Transaction | undefined>;
   abstract create(input: Omit<Transaction, 'id'>): Observable<Transaction>;
   abstract update(id: string, changes: Partial<Omit<Transaction, 'id'>>): Observable<Transaction>;
   abstract delete(id: string): Observable<void>;
+  /** Atomic server-side delete of every listed transaction; one foreign or
+   * unknown id fails the whole batch. */
+  abstract bulkDelete(ids: readonly string[]): Observable<void>;
+  /** Atomic server-side re-category of every listed transaction; rejects
+   * transfer/interest rows and category-kind mismatches. */
+  abstract bulkCategorize(ids: readonly string[], categoryId: string): Observable<void>;
   abstract importPreview(request: ImportPreviewRequest): Observable<ImportPreview>;
   /** Imports every given row as a real transaction in one request; resolves
    * to the number created. All-or-nothing server-side - see

@@ -409,7 +409,9 @@
       "new": "Nowa transakcja",
       "edit": "Edytuj",
       "delete": "Usuń",
-      "import": "Importuj CSV"
+      "import": "Importuj CSV",
+    "columns": "Kolumny",
+    "exportCsv": "Eksportuj CSV"
     },
     "tabs": {
       "transactions": "Transakcje",
@@ -418,7 +420,7 @@
     "type": {
       "income": "Przychód",
       "expense": "Wydatek",
-      "transfer": "Transfer"
+    "transfer": "Przelew"
     },
     "filters": {
       "type": "Typ",
@@ -426,10 +428,20 @@
       "category": "Kategoria",
       "from": "Od",
       "to": "Do",
-      "search": "Szukaj",
       "institution": "Instytucja",
-      "all": "Wszystkie",
-      "clear": "Wyczyść filtry"
+      "clear": "Wyczyść filtry",
+    "title": "Filtruj według",
+    "searchPlaceholder": "Szukaj transakcji…",
+    "group": "Grupuj",
+    "date": "Data",
+    "amount": "Kwota",
+    "amountMin": "Minimum",
+    "amountMax": "Maksimum",
+    "any": "Dowolne",
+    "back": "Wstecz",
+    "dateRange": "Od {{from}} do {{to}}",
+    "amountRange": "Od {{min}} do {{max}}",
+    "removeChip": "Usuń filtr {{filter}}"
     },
     "empty": {
       "title": "Nie znaleziono transakcji",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Importuj sprawdzone wiersze"
       }
+    },
+  "eyebrow": "Finanse",
+  "view": {
+    "list": "Lista",
+    "calendar": "Kalendarz"
+  },
+  "columns": {
+    "title": "Kolumny",
+    "date": "Data",
+    "description": "Opis",
+    "category": "Kategoria",
+    "account": "Konto",
+    "amount": "Kwota",
+    "reorder": "Przeciągnij, aby zmienić kolejność",
+    "resize": "Przeciągnij, aby zmienić rozmiar"
+  },
+  "table": {
+    "selectAll": "Zaznacz wszystkie wiersze",
+    "selectRow": "Zaznacz {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} z {{total}}",
+    "pageSize": "Wierszy na stronę",
+    "previous": "Poprzednia strona",
+    "next": "Następna strona",
+    "goToPage": "Przejdź do strony {{page}}"
+  },
+  "bulk": {
+    "selected": "wybrano",
+    "assignCategory": "Wybierz kategorię…",
+    "mixedKinds": "Wybierz transakcje jednego rodzaju, aby przypisać kategorię",
+    "delete": "Usuń zaznaczone",
+    "clearSelection": "Wyczyść zaznaczenie",
+    "deleteConfirm": {
+      "title": "Usuń transakcje",
+      "message": "Tej operacji nie można cofnąć. Usunąć {{count}} transakcji?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Poprzedni miesiąc",
+    "nextMonth": "Następny miesiąc",
+    "balanceTrend": "Trend salda",
+    "selectedDay": "Wybrany dzień",
+    "selectDayHint": "Wybierz dzień, aby zobaczyć jego aktywność",
+    "noTransactions": "Brak transakcji w tym dniu",
+    "legend": {
+      "income": "Przychody",
+      "expenses": "Wydatki",
+      "transfer": "Przelew",
+      "projected": "Prognozowane"
+    }
+  },
+  "export": {
+    "filename": "transakcje"
+  }
   },
   "categories": {
     "title": "Kategorie",

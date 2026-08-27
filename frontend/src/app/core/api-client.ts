@@ -1,9 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export type ApiQueryValue = string | number | boolean | readonly (string | number | boolean)[];
 export type ApiQueryParams = Record<string, ApiQueryValue | null | undefined>;
+
+/** One page of a list endpoint plus its unpaginated match count. */
+export interface Page<T> {
+  readonly items: T[];
+  readonly total: number;
+}
 
 /**
  * Thin wrapper around HttpClient that prefixes every call with the API base
@@ -20,6 +26,23 @@ export class ApiClient {
     return this.http.get<T>(`${this.base}${path}`, {
       params: this.toHttpParams(params),
     });
+  }
+
+  /**
+   * GET for a paginated list endpoint: returns the body plus the
+   * `X-Total-Count` header the backend sets when a `limit` is supplied.
+   * Falls back to the payload length when the header is absent, so a mock
+   * or proxy that strips it still yields a coherent page.
+   */
+  getPage<T>(path: string, params?: ApiQueryParams): Observable<Page<T>> {
+    return this.http
+      .get<T[]>(`${this.base}${path}`, { params: this.toHttpParams(params), observe: 'response' })
+      .pipe(
+        map((response) => ({
+          items: response.body ?? [],
+          total: Number(response.headers.get('X-Total-Count') ?? response.body?.length ?? 0),
+        })),
+      );
   }
 
   post<T>(path: string, body?: unknown): Observable<T> {

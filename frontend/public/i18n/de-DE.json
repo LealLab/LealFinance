@@ -409,7 +409,9 @@
       "new": "Neue Transaktion",
       "edit": "Bearbeiten",
       "delete": "Löschen",
-      "import": "CSV importieren"
+      "import": "CSV importieren",
+    "columns": "Spalten",
+    "exportCsv": "CSV exportieren"
     },
     "tabs": {
       "transactions": "Transaktionen",
@@ -426,10 +428,20 @@
       "category": "Kategorie",
       "from": "Von",
       "to": "Bis",
-      "search": "Suchen",
       "institution": "Institut",
-      "all": "Alle",
-      "clear": "Filter löschen"
+      "clear": "Filter löschen",
+    "title": "Filtern nach",
+    "searchPlaceholder": "Transaktionen suchen…",
+    "group": "Gruppieren",
+    "date": "Datum",
+    "amount": "Betrag",
+    "amountMin": "Minimum",
+    "amountMax": "Maximum",
+    "any": "Beliebig",
+    "back": "Zurück",
+    "dateRange": "Von {{from}} bis {{to}}",
+    "amountRange": "Von {{min}} bis {{max}}",
+    "removeChip": "Filter {{filter}} entfernen"
     },
     "empty": {
       "title": "Keine Transaktionen gefunden",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Geprüfte Zeilen importieren"
       }
+    },
+  "eyebrow": "Finanzen",
+  "view": {
+    "list": "Liste",
+    "calendar": "Kalender"
+  },
+  "columns": {
+    "title": "Spalten",
+    "date": "Datum",
+    "description": "Beschreibung",
+    "category": "Kategorie",
+    "account": "Konto",
+    "amount": "Betrag",
+    "reorder": "Zum Neuanordnen ziehen",
+    "resize": "Zum Ändern der Größe ziehen"
+  },
+  "table": {
+    "selectAll": "Alle Zeilen auswählen",
+    "selectRow": "{{description}} auswählen"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} von {{total}}",
+    "pageSize": "Zeilen pro Seite",
+    "previous": "Vorherige Seite",
+    "next": "Nächste Seite",
+    "goToPage": "Zu Seite {{page}}"
+  },
+  "bulk": {
+    "selected": "ausgewählt",
+    "assignCategory": "Kategorie auswählen…",
+    "mixedKinds": "Wähle Transaktionen derselben Art aus, um eine Kategorie zuzuweisen",
+    "delete": "Ausgewählte löschen",
+    "clearSelection": "Auswahl aufheben",
+    "deleteConfirm": {
+      "title": "Transaktionen löschen",
+      "message": "Dies kann nicht rückgängig gemacht werden. {{count}} Transaktionen löschen?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Vorheriger Monat",
+    "nextMonth": "Nächster Monat",
+    "balanceTrend": "Kontostandverlauf",
+    "selectedDay": "Ausgewählter Tag",
+    "selectDayHint": "Wähle einen Tag aus, um seine Aktivitäten zu sehen",
+    "noTransactions": "Keine Transaktionen an diesem Tag",
+    "legend": {
+      "income": "Einnahmen",
+      "expenses": "Ausgaben",
+      "transfer": "Umbuchung",
+      "projected": "Voraussichtlich"
+    }
+  },
+  "export": {
+    "filename": "transaktionen"
+  }
   },
   "categories": {
     "title": "Kategorien",

@@ -409,7 +409,9 @@
       "new": "Nouvelle opération",
       "edit": "Modifier",
       "delete": "Supprimer",
-      "import": "Importer un CSV"
+      "import": "Importer un CSV",
+    "columns": "Colonnes",
+    "exportCsv": "Exporter en CSV"
     },
     "tabs": {
       "transactions": "Opérations",
@@ -426,10 +428,20 @@
       "category": "Catégorie",
       "from": "Du",
       "to": "Au",
-      "search": "Rechercher",
       "institution": "Établissement",
-      "all": "Tout",
-      "clear": "Effacer les filtres"
+      "clear": "Effacer les filtres",
+    "title": "Filtrer par",
+    "searchPlaceholder": "Rechercher des opérations…",
+    "group": "Grouper",
+    "date": "Date",
+    "amount": "Montant",
+    "amountMin": "Minimum",
+    "amountMax": "Maximum",
+    "any": "Toutes",
+    "back": "Retour",
+    "dateRange": "Du {{from}} au {{to}}",
+    "amountRange": "De {{min}} à {{max}}",
+    "removeChip": "Supprimer le filtre {{filter}}"
     },
     "empty": {
       "title": "Aucune opération trouvée",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Importer les lignes vérifiées"
       }
+    },
+  "eyebrow": "Finances",
+  "view": {
+    "list": "Liste",
+    "calendar": "Calendrier"
+  },
+  "columns": {
+    "title": "Colonnes",
+    "date": "Date",
+    "description": "Description",
+    "category": "Catégorie",
+    "account": "Compte",
+    "amount": "Montant",
+    "reorder": "Faire glisser pour réorganiser",
+    "resize": "Faire glisser pour redimensionner"
+  },
+  "table": {
+    "selectAll": "Sélectionner toutes les lignes",
+    "selectRow": "Sélectionner {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} sur {{total}}",
+    "pageSize": "Lignes par page",
+    "previous": "Page précédente",
+    "next": "Page suivante",
+    "goToPage": "Aller à la page {{page}}"
+  },
+  "bulk": {
+    "selected": "sélectionnées",
+    "assignCategory": "Sélectionner une catégorie…",
+    "mixedKinds": "Sélectionnez des opérations d’un seul type pour attribuer une catégorie",
+    "delete": "Supprimer la sélection",
+    "clearSelection": "Effacer la sélection",
+    "deleteConfirm": {
+      "title": "Supprimer les opérations",
+      "message": "Cette action est irréversible. Supprimer {{count}} opérations ?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "balanceTrend": "Évolution du solde",
+    "selectedDay": "Jour sélectionné",
+    "selectDayHint": "Sélectionnez un jour pour voir son activité",
+    "noTransactions": "Aucune opération ce jour",
+    "legend": {
+      "income": "Revenus",
+      "expenses": "Dépenses",
+      "transfer": "Virement",
+      "projected": "Prévisionnelle"
+    }
+  },
+  "export": {
+    "filename": "operations"
+  }
   },
   "categories": {
     "title": "Catégories",

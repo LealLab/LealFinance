@@ -1,0 +1,7 @@
+<ng-content select="[dropdownTrigger]" />
+
+@if (open()) {
+  <div role="menu" [class]="panelClasses()">
+    <ng-content />
+  </div>
+}

@@ -1,0 +1,18 @@
+.sort-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.sort-header:hover {
+  color: var(--content-primary);
+}
+
+.column-resize-grip:hover {
+  background: var(--border);
+}

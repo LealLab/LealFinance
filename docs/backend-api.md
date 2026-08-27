@@ -124,6 +124,7 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/institutions/{id}/archive` | user | Body `{archived}`. |
 | DELETE | `/institutions/{id}` | user | Blocked while any account references it (409). |
 | GET/POST | `/accounts` | user | No delete - archive only. |
+| GET | `/accounts/balances?as_of=` | user | Server-computed balance per owned account. `as_of` (inclusive ISO date) restricts the ledger to on/before that date. |
 | GET/PATCH | `/accounts/{id}` | user | |
 | POST | `/accounts/{id}/archive` | user | Body `{archived}`. |
 | GET/POST | `/categories` | user | `position` is server-assigned on create. |
@@ -141,8 +142,10 @@ Registration is invite-only, except the very first user on an instance.
 | DELETE | `/budget-allocations/{id}` | user | |
 | GET | `/expected-income` | user | |
 | PUT | `/expected-income` | user | Upsert, keyed on `month`. No delete. |
-| GET | `/transactions?account_id=&category_id=&type=&date_from=&date_to=` | user | All filters optional; `account_id` matches either leg of a transfer. |
+| GET | `/transactions?account_id=&category_id=&group_id=&institution_id=&type=&date_from=&date_to=&search=&amount_min=&amount_max=&sort=&order=&limit=&offset=` | user | All optional. `account_id`/`institution_id` match either leg of a transfer; `group_id` matches any category in that group; `amount_min`/`amount_max` compare the raw `NUMERIC` regardless of currency. `sort` ∈ `date`/`description`/`amount` (default `date`), `order` ∈ `asc`/`desc` (default `desc`). When `limit` is given the response carries an `X-Total-Count` header with the unpaginated match count. |
 | POST | `/transactions` | user | See "Transactions" below. |
+| POST | `/transactions/bulk-delete` | user | Body `{ids: [...]}` (1–500). Atomic: one foreign/unknown id → 404, nothing deleted. 204. |
+| POST | `/transactions/bulk-categorize` | user | Body `{ids: [...], category_id}`. Atomic: rejects a transfer/interest row or a category-kind mismatch (422), else assigns and returns `{updated}`. |
 | GET/PATCH | `/transactions/{id}` | user | |
 | DELETE | `/transactions/{id}` | user | |
 | GET/POST | `/recurring-rules` | user | See "Recurring rules" below. |

@@ -409,7 +409,9 @@
       "new": "Nová transakce",
       "edit": "Upravit",
       "delete": "Odstranit",
-      "import": "Importovat CSV"
+      "import": "Importovat CSV",
+    "columns": "Sloupce",
+    "exportCsv": "Exportovat CSV"
     },
     "tabs": {
       "transactions": "Transakce",
@@ -426,10 +428,20 @@
       "category": "Kategorie",
       "from": "Od",
       "to": "Do",
-      "search": "Hledat",
       "institution": "Instituce",
-      "all": "Vše",
-      "clear": "Vymazat filtry"
+      "clear": "Vymazat filtry",
+    "title": "Filtrovat podle",
+    "searchPlaceholder": "Hledat transakce…",
+    "group": "Seskupit",
+    "date": "Datum",
+    "amount": "Částka",
+    "amountMin": "Minimum",
+    "amountMax": "Maximum",
+    "any": "Libovolné",
+    "back": "Zpět",
+    "dateRange": "Od {{from}} do {{to}}",
+    "amountRange": "Od {{min}} do {{max}}",
+    "removeChip": "Odebrat filtr {{filter}}"
     },
     "empty": {
       "title": "Nebyly nalezeny žádné transakce",
@@ -553,7 +565,61 @@
       "actions": {
         "confirm": "Importovat zkontrolované řádky"
       }
+    },
+  "eyebrow": "Finance",
+  "view": {
+    "list": "Seznam",
+    "calendar": "Kalendář"
+  },
+  "columns": {
+    "title": "Sloupce",
+    "date": "Datum",
+    "description": "Popis",
+    "category": "Kategorie",
+    "account": "Účet",
+    "amount": "Částka",
+    "reorder": "Přetažením změníte pořadí",
+    "resize": "Přetažením změníte velikost"
+  },
+  "table": {
+    "selectAll": "Vybrat všechny řádky",
+    "selectRow": "Vybrat {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} z {{total}}",
+    "pageSize": "Řádků na stránku",
+    "previous": "Předchozí stránka",
+    "next": "Další stránka",
+    "goToPage": "Přejít na stránku {{page}}"
+  },
+  "bulk": {
+    "selected": "vybráno",
+    "assignCategory": "Vybrat kategorii…",
+    "mixedKinds": "Pro přiřazení kategorie vyberte transakce pouze jednoho typu",
+    "delete": "Odstranit vybrané",
+    "clearSelection": "Zrušit výběr",
+    "deleteConfirm": {
+      "title": "Odstranit transakce",
+      "message": "Tuto akci nelze vrátit zpět. Odstranit {{count}} transakcí?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Předchozí měsíc",
+    "nextMonth": "Následující měsíc",
+    "balanceTrend": "Vývoj zůstatku",
+    "selectedDay": "Vybraný den",
+    "selectDayHint": "Vyberte den a zobrazte jeho aktivitu",
+    "noTransactions": "Tento den nejsou žádné transakce",
+    "legend": {
+      "income": "Příjmy",
+      "expenses": "Výdaje",
+      "transfer": "Převod",
+      "projected": "Plánované"
+    }
+  },
+  "export": {
+    "filename": "transakce"
+  }
   },
   "categories": {
     "title": "Kategorie",
