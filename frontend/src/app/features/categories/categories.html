@@ -65,7 +65,6 @@
                         <app-icon [name]="row.group.icon" [size]="14" />
                       </span>
                       <span class="truncate text-sm font-medium text-content-primary">{{ row.group.name }}</span>
-                      <span class="shrink-0 text-sm text-content-muted">({{ row.categoryCount }})</span>
                       @if (ratesReady()) {
                         <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">
                           {{ row.spend.amount | money: row.spend.currency }}
@@ -74,42 +73,45 @@
                         <app-skeleton height="1rem" class="w-16 shrink-0" />
                       }
                     </div>
-                    <div class="flex shrink-0 items-center gap-1">
-                      <button
-                        appButton
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
-                        (click)="openCreateCategoryIn(row.group)"
-                        [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
-                      >
-                        <app-icon name="plus" [size]="16" />
-                      </button>
-                      <button
-                        appButton
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
-                        (click)="openEditGroup(row.group)"
-                        [attr.aria-label]="t('categories.actions.edit')"
-                      >
-                        <app-icon name="pencil" [size]="16" />
-                      </button>
-                      @if (row.categoryCount === 0) {
+                    <div class="flex shrink-0 items-center gap-3">
+                      <div class="flex shrink-0 items-center gap-1">
                         <button
                           appButton
                           variant="ghost"
                           size="sm"
                           type="button"
                           class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
-                          (click)="deleteGroup(row.group)"
-                          [attr.aria-label]="t('categories.actions.delete')"
+                          (click)="openCreateCategoryIn(row.group)"
+                          [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
                         >
-                          <app-icon name="trash" [size]="16" />
+                          <app-icon name="plus" [size]="16" />
                         </button>
-                      }
+                        <button
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                          (click)="openEditGroup(row.group)"
+                          [attr.aria-label]="t('categories.actions.edit')"
+                        >
+                          <app-icon name="pencil" [size]="16" />
+                        </button>
+                        @if (row.categoryCount === 0) {
+                          <button
+                            appButton
+                            variant="ghost"
+                            size="sm"
+                            type="button"
+                            class="opacity-0 transition-opacity hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                            (click)="deleteGroup(row.group)"
+                            [attr.aria-label]="t('categories.actions.delete')"
+                          >
+                            <app-icon name="trash" [size]="16" />
+                          </button>
+                        }
+                      </div>
+                      <span class="shrink-0 text-sm text-content-muted">({{ row.categoryCount }})</span>
                     </div>
                   </div>
 
@@ -138,14 +140,16 @@
                             >
                               <app-icon [name]="categoryRow.category.icon" [size]="12" />
                             </span>
-                            <span class="truncate text-sm text-content-primary">{{ categoryRow.category.name }}</span>
-                            @if (ratesReady()) {
-                              <span class="shrink-0 font-mono text-xs font-medium tabular-nums text-content-muted">
-                                {{ categoryRow.spend.amount | money: categoryRow.spend.currency }}
-                              </span>
-                            } @else {
-                              <app-skeleton height="0.875rem" class="w-14 shrink-0" />
-                            }
+                            <span class="flex min-w-0 items-baseline gap-2">
+                              <span class="truncate text-sm text-content-primary">{{ categoryRow.category.name }}</span>
+                              @if (ratesReady()) {
+                                <span class="shrink-0 font-mono text-xs font-medium tabular-nums text-content-muted">
+                                  {{ categoryRow.spend.amount | money: categoryRow.spend.currency }}
+                                </span>
+                              } @else {
+                                <app-skeleton height="0.875rem" class="w-14 shrink-0" />
+                              }
+                            </span>
                           </div>
                           <div class="flex shrink-0 items-center gap-1">
                             <button
@@ -153,7 +157,7 @@
                               variant="ghost"
                               size="sm"
                               type="button"
-                              class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                              class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
                               (click)="openEditCategory(categoryRow.category)"
                               [attr.aria-label]="t('categories.actions.edit')"
                             >
@@ -164,7 +168,7 @@
                               variant="ghost"
                               size="sm"
                               type="button"
-                              class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                              class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
                               (click)="deleteCategory(categoryRow.category)"
                               [attr.aria-label]="t('categories.actions.delete')"
                             >
