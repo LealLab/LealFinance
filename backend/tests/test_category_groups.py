@@ -143,28 +143,31 @@ async def test_delete_group_with_category_is_blocked(
     assert response.json()["error"]["code"] == "category_group.in_use"
 
 
-async def test_delete_group_referenced_by_budget_is_blocked(
+async def test_delete_group_cascades_its_budgets_across_every_month(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "ivan@example.com")
     group = await _create_category_group(client)
-    budget_response = await client.put(
-        "/api/v1/budgets",
-        json={
-            "group_id": group["id"],
-            "month": "2026-01",
-            "amount": "500.00",
-            "currency": "BRL",
-        },
-    )
-    assert budget_response.status_code == 200
+    for month in ["2025-11", "2025-12", "2026-01"]:
+        budget_response = await client.put(
+            "/api/v1/budgets",
+            json={
+                "group_id": group["id"],
+                "month": month,
+                "amount": "500.00",
+                "currency": "BRL",
+            },
+        )
+        assert budget_response.status_code == 200
 
     response = await client.delete(f"/api/v1/category-groups/{group['id']}")
-    assert response.status_code == 409
-    assert response.json()["error"]["code"] == "category_group.in_use"
+    assert response.status_code == 204
+
+    budgets_response = await client.get("/api/v1/budgets")
+    assert all(budget["group_id"] != group["id"] for budget in budgets_response.json())
 
 
-async def test_delete_group_referenced_by_allocation_is_blocked(
+async def test_delete_group_cascades_its_allocation(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     await _authed(client, db_session, "judy@example.com")
@@ -176,8 +179,10 @@ async def test_delete_group_referenced_by_allocation_is_blocked(
     assert allocation_response.status_code == 200
 
     response = await client.delete(f"/api/v1/category-groups/{group['id']}")
-    assert response.status_code == 409
-    assert response.json()["error"]["code"] == "category_group.in_use"
+    assert response.status_code == 204
+
+    allocations_response = await client.get("/api/v1/budget-allocations")
+    assert all(allocation["group_id"] != group["id"] for allocation in allocations_response.json())
 
 
 async def test_reorder_groups(client: AsyncClient, db_session: AsyncSession) -> None:

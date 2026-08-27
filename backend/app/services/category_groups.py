@@ -1,13 +1,15 @@
 """Category group CRUD, ordering, and referential-use guards.
 
-Groups contain categories, budgets, and budget allocations. A group cannot be
-deleted while any of those models still references it, and its kind cannot
-change while those references exist.
+Groups contain categories, budgets, and budget allocations. A group's kind
+cannot change while any of those models still reference it. Deleting a group
+still requires it to be empty of categories - those carry transaction
+history - but budgets and allocations are pure planning data scoped to the
+group, so deletion cascades to them instead of being blocked by them.
 """
 
 from uuid import UUID
 
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError
@@ -85,8 +87,14 @@ async def update_group(
 
 async def delete_group(db: AsyncSession, user_id: UUID, group_id: UUID) -> None:
     group = await ownership.get_owned(db, CategoryGroup, group_id, user_id)
-    if await _group_in_use(db, group_id):
+    if await _has_categories(db, group_id):
         raise ConflictError(code="category_group.in_use")
+    await db.execute(delete(Budget).where(Budget.group_id == group_id, Budget.user_id == user_id))
+    await db.execute(
+        delete(BudgetAllocation).where(
+            BudgetAllocation.group_id == group_id, BudgetAllocation.user_id == user_id
+        )
+    )
     await db.delete(group)
     await db.commit()
 
