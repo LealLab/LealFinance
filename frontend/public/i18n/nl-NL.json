@@ -410,9 +410,8 @@
       "edit": "Bewerken",
       "delete": "Verwijderen",
       "import": "CSV importeren",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Kolommen",
+    "exportCsv": "CSV exporteren"
     },
     "tabs": {
       "transactions": "Transacties",
@@ -431,18 +430,18 @@
       "to": "Tot en met",
       "institution": "Instelling",
       "clear": "Filters wissen",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filteren op",
+    "searchPlaceholder": "Transacties zoeken…",
+    "group": "Groeperen",
+    "date": "Datum",
+    "amount": "Bedrag",
+    "amountMin": "Minimum",
+    "amountMax": "Maximum",
+    "any": "Elke",
+    "back": "Terug",
+    "dateRange": "Van {{from}} t/m {{to}}",
+    "amountRange": "Van {{min}} t/m {{max}}",
+    "removeChip": "Filter {{filter}} verwijderen"
     },
     "empty": {
       "title": "Geen transacties gevonden",
@@ -567,57 +566,60 @@
         "confirm": "Gecontroleerde regels importeren"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Financiën",
+  "view": {
+    "list": "Lijst",
+    "calendar": "Kalender"
+  },
+  "columns": {
+    "title": "Kolommen",
+    "date": "Datum",
+    "description": "Omschrijving",
+    "category": "Categorie",
+    "account": "Rekening",
+    "amount": "Bedrag",
+    "reorder": "Slepen om te herschikken",
+    "resize": "Slepen om formaat te wijzigen"
+  },
+  "table": {
+    "selectAll": "Alle rijen selecteren",
+    "selectRow": "{{description}} selecteren"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} van {{total}}",
+    "pageSize": "Rijen per pagina",
+    "previous": "Vorige pagina",
+    "next": "Volgende pagina",
+    "goToPage": "Ga naar pagina {{page}}"
+  },
+  "bulk": {
+    "selected": "geselecteerd",
+    "assignCategory": "Categorie selecteren…",
+    "mixedKinds": "Selecteer transacties van één soort om een categorie toe te wijzen",
+    "delete": "Geselecteerde verwijderen",
+    "clearSelection": "Selectie wissen",
+    "deleteConfirm": {
+      "title": "Transacties verwijderen",
+      "message": "Dit kan niet ongedaan worden gemaakt. {{count}} transacties verwijderen?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Vorige maand",
+    "nextMonth": "Volgende maand",
+    "balanceTrend": "Saldoverloop",
+    "selectedDay": "Geselecteerde dag",
+    "selectDayHint": "Selecteer een dag om de activiteit te bekijken",
+    "noTransactions": "Geen transacties op deze dag",
+    "legend": {
+      "income": "Inkomsten",
+      "expenses": "Uitgaven",
+      "transfer": "Overboeking",
+      "projected": "Verwacht"
+    }
+  },
+  "export": {
+    "filename": "transacties"
+  }
   },
   "categories": {
     "title": "Categorieën",

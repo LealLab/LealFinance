@@ -410,9 +410,8 @@
       "edit": "編集",
       "delete": "削除",
       "import": "CSVをインポート",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "列",
+    "exportCsv": "CSVを書き出す"
     },
     "tabs": {
       "transactions": "取引",
@@ -431,18 +430,18 @@
       "to": "終了日",
       "institution": "金融機関",
       "clear": "フィルタをクリア",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "フィルター",
+    "searchPlaceholder": "取引を検索…",
+    "group": "グループ",
+    "date": "日付",
+    "amount": "金額",
+    "amountMin": "最小",
+    "amountMax": "最大",
+    "any": "すべて",
+    "back": "戻る",
+    "dateRange": "{{from}}〜{{to}}",
+    "amountRange": "{{min}}〜{{max}}",
+    "removeChip": "{{filter}}フィルターを削除"
     },
     "empty": {
       "title": "取引が見つかりません",
@@ -567,57 +566,60 @@
         "confirm": "確認済みの行をインポート"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "財務",
+  "view": {
+    "list": "リスト",
+    "calendar": "カレンダー"
+  },
+  "columns": {
+    "title": "列",
+    "date": "日付",
+    "description": "説明",
+    "category": "カテゴリ",
+    "account": "口座",
+    "amount": "金額",
+    "reorder": "ドラッグして並べ替え",
+    "resize": "ドラッグしてサイズ変更"
+  },
+  "table": {
+    "selectAll": "すべての行を選択",
+    "selectRow": "{{description}}を選択"
+  },
+  "pagination": {
+    "showing": "{{from}}～{{to}} / {{total}}",
+    "pageSize": "ページあたりの行数",
+    "previous": "前のページ",
+    "next": "次のページ",
+    "goToPage": "ページ{{page}}に移動"
+  },
+  "bulk": {
+    "selected": "選択済み",
+    "assignCategory": "カテゴリを選択…",
+    "mixedKinds": "カテゴリを割り当てるには同じ種類の取引を選択してください",
+    "delete": "選択項目を削除",
+    "clearSelection": "選択を解除",
+    "deleteConfirm": {
+      "title": "取引を削除",
+      "message": "この操作は元に戻せません。{{count}}件の取引を削除しますか？"
     }
+  },
+  "calendar": {
+    "previousMonth": "前月",
+    "nextMonth": "次月",
+    "balanceTrend": "残高の推移",
+    "selectedDay": "選択した日",
+    "selectDayHint": "日付を選択してアクティビティを表示",
+    "noTransactions": "この日の取引はありません",
+    "legend": {
+      "income": "収入",
+      "expenses": "支出",
+      "transfer": "振替",
+      "projected": "予定"
+    }
+  },
+  "export": {
+    "filename": "torihiki"
+  }
   },
   "categories": {
     "title": "カテゴリ",

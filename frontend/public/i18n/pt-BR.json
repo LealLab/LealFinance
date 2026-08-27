@@ -410,7 +410,6 @@
       "edit": "Editar",
       "delete": "Excluir",
       "import": "Importar CSV",
-      "transfer": "Transferência",
       "columns": "Colunas",
       "exportCsv": "Exportar CSV"
     },
@@ -440,8 +439,8 @@
       "amountMax": "Máximo",
       "any": "Qualquer",
       "back": "Voltar",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
+    "dateRange": "De {{from}} a {{to}}",
+    "amountRange": "De {{min}} a {{max}}",
       "removeChip": "Remover filtro {{filter}}"
     },
     "empty": {
@@ -578,7 +577,9 @@
       "description": "Descrição",
       "category": "Categoria",
       "account": "Conta",
-      "amount": "Valor"
+      "amount": "Valor",
+    "reorder": "Arraste para reordenar",
+    "resize": "Arraste para redimensionar"
     },
     "table": {
       "selectAll": "Selecionar todas as linhas",
@@ -607,6 +608,7 @@
       "nextMonth": "Próximo mês",
       "balanceTrend": "Tendência do saldo",
       "selectedDay": "Dia selecionado",
+      "selectDayHint": "Selecione um dia para ver sua atividade",
       "noTransactions": "Nenhuma transação neste dia",
       "legend": {
         "income": "Receitas",

@@ -410,9 +410,8 @@
       "edit": "संपादित करें",
       "delete": "हटाएँ",
       "import": "CSV आयात करें",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "कॉलम",
+    "exportCsv": "CSV निर्यात करें"
     },
     "tabs": {
       "transactions": "लेन-देन",
@@ -431,18 +430,18 @@
       "to": "तक",
       "institution": "वित्तीय संस्था",
       "clear": "फ़िल्टर हटाएँ",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "इसके अनुसार फ़िल्टर करें",
+    "searchPlaceholder": "लेन-देन खोजें…",
+    "group": "समूह",
+    "date": "तारीख",
+    "amount": "राशि",
+    "amountMin": "न्यूनतम",
+    "amountMax": "अधिकतम",
+    "any": "कोई भी",
+    "back": "वापस",
+    "dateRange": "{{from}} से {{to}} तक",
+    "amountRange": "{{min}} से {{max}} तक",
+    "removeChip": "फ़िल्टर {{filter}} हटाएँ"
     },
     "empty": {
       "title": "कोई लेन-देन नहीं मिला",
@@ -567,57 +566,60 @@
         "confirm": "समीक्षित पंक्तियाँ आयात करें"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "वित्त",
+  "view": {
+    "list": "सूची",
+    "calendar": "कैलेंडर"
+  },
+  "columns": {
+    "title": "कॉलम",
+    "date": "तारीख",
+    "description": "विवरण",
+    "category": "श्रेणी",
+    "account": "खाता",
+    "amount": "राशि",
+    "reorder": "पुनः क्रमित करने के लिए खींचें",
+    "resize": "आकार बदलने के लिए खींचें"
+  },
+  "table": {
+    "selectAll": "सभी पंक्तियाँ चुनें",
+    "selectRow": "{{description}} चुनें"
+  },
+  "pagination": {
+    "showing": "{{total}} में से {{from}}–{{to}}",
+    "pageSize": "प्रति पृष्ठ पंक्तियाँ",
+    "previous": "पिछला पृष्ठ",
+    "next": "अगला पृष्ठ",
+    "goToPage": "पृष्ठ {{page}} पर जाएँ"
+  },
+  "bulk": {
+    "selected": "चयनित",
+    "assignCategory": "श्रेणी चुनें…",
+    "mixedKinds": "श्रेणी निर्दिष्ट करने के लिए एक ही प्रकार के लेन-देन चुनें",
+    "delete": "चयनित हटाएँ",
+    "clearSelection": "चयन साफ़ करें",
+    "deleteConfirm": {
+      "title": "लेन-देन हटाएँ",
+      "message": "इसे पूर्ववत नहीं किया जा सकता। {{count}} लेन-देन हटाएँ?"
     }
+  },
+  "calendar": {
+    "previousMonth": "पिछला महीना",
+    "nextMonth": "अगला महीना",
+    "balanceTrend": "शेष राशि का रुझान",
+    "selectedDay": "चयनित दिन",
+    "selectDayHint": "गतिविधि देखने के लिए कोई दिन चुनें",
+    "noTransactions": "इस दिन कोई लेन-देन नहीं",
+    "legend": {
+      "income": "आय",
+      "expenses": "खर्च",
+      "transfer": "स्थानांतरण",
+      "projected": "अनुमानित"
+    }
+  },
+  "export": {
+    "filename": "lenden"
+  }
   },
   "categories": {
     "title": "श्रेणियाँ",

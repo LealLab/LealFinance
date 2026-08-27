@@ -410,9 +410,8 @@
       "edit": "수정",
       "delete": "삭제",
       "import": "CSV 가져오기",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "열",
+    "exportCsv": "CSV 내보내기"
     },
     "tabs": {
       "transactions": "거래내역",
@@ -431,18 +430,18 @@
       "to": "종료일",
       "institution": "금융기관",
       "clear": "필터 지우기",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "필터 기준",
+    "searchPlaceholder": "거래내역 검색…",
+    "group": "그룹",
+    "date": "날짜",
+    "amount": "금액",
+    "amountMin": "최소",
+    "amountMax": "최대",
+    "any": "모두",
+    "back": "뒤로",
+    "dateRange": "{{from}}부터 {{to}}까지",
+    "amountRange": "{{min}}부터 {{max}}까지",
+    "removeChip": "{{filter}} 필터 제거"
     },
     "empty": {
       "title": "거래를 찾을 수 없습니다",
@@ -567,57 +566,60 @@
         "confirm": "검토된 행 가져오기"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "재무",
+  "view": {
+    "list": "목록",
+    "calendar": "캘린더"
+  },
+  "columns": {
+    "title": "열",
+    "date": "날짜",
+    "description": "설명",
+    "category": "카테고리",
+    "account": "계좌",
+    "amount": "금액",
+    "reorder": "드래그하여 순서 변경",
+    "resize": "드래그하여 크기 조절"
+  },
+  "table": {
+    "selectAll": "모든 행 선택",
+    "selectRow": "{{description}} 선택"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} / 총 {{total}}",
+    "pageSize": "페이지당 행 수",
+    "previous": "이전 페이지",
+    "next": "다음 페이지",
+    "goToPage": "{{page}}페이지로 이동"
+  },
+  "bulk": {
+    "selected": "선택됨",
+    "assignCategory": "카테고리 선택…",
+    "mixedKinds": "카테고리를 지정하려면 같은 유형의 거래를 선택하세요",
+    "delete": "선택 항목 삭제",
+    "clearSelection": "선택 해제",
+    "deleteConfirm": {
+      "title": "거래내역 삭제",
+      "message": "취소할 수 없습니다. 거래내역 {{count}}개를 삭제하시겠습니까?"
     }
+  },
+  "calendar": {
+    "previousMonth": "이전 달",
+    "nextMonth": "다음 달",
+    "balanceTrend": "잔액 추이",
+    "selectedDay": "선택한 날짜",
+    "selectDayHint": "활동을 보려면 날짜를 선택하세요",
+    "noTransactions": "이 날짜에는 거래내역이 없습니다",
+    "legend": {
+      "income": "수입",
+      "expenses": "지출",
+      "transfer": "이체",
+      "projected": "예정"
+    }
+  },
+  "export": {
+    "filename": "georae"
+  }
   },
   "categories": {
     "title": "카테고리",

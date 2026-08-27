@@ -410,9 +410,8 @@
       "edit": "Modifica",
       "delete": "Elimina",
       "import": "Importa CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Colonne",
+    "exportCsv": "Esporta CSV"
     },
     "tabs": {
       "transactions": "Transazioni",
@@ -431,18 +430,18 @@
       "to": "A",
       "institution": "Istituto",
       "clear": "Azzera filtri",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filtra per",
+    "searchPlaceholder": "Cerca transazioni…",
+    "group": "Raggruppa",
+    "date": "Data",
+    "amount": "Importo",
+    "amountMin": "Minimo",
+    "amountMax": "Massimo",
+    "any": "Qualsiasi",
+    "back": "Indietro",
+    "dateRange": "Da {{from}} a {{to}}",
+    "amountRange": "Da {{min}} a {{max}}",
+    "removeChip": "Rimuovi filtro {{filter}}"
     },
     "empty": {
       "title": "Nessuna transazione trovata",
@@ -567,57 +566,60 @@
         "confirm": "Importa righe controllate"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Finanza",
+  "view": {
+    "list": "Elenco",
+    "calendar": "Calendario"
+  },
+  "columns": {
+    "title": "Colonne",
+    "date": "Data",
+    "description": "Descrizione",
+    "category": "Categoria",
+    "account": "Conto",
+    "amount": "Importo",
+    "reorder": "Trascina per riordinare",
+    "resize": "Trascina per ridimensionare"
+  },
+  "table": {
+    "selectAll": "Seleziona tutte le righe",
+    "selectRow": "Seleziona {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} di {{total}}",
+    "pageSize": "Righe per pagina",
+    "previous": "Pagina precedente",
+    "next": "Pagina successiva",
+    "goToPage": "Vai alla pagina {{page}}"
+  },
+  "bulk": {
+    "selected": "selezionate",
+    "assignCategory": "Seleziona categoria…",
+    "mixedKinds": "Seleziona transazioni di un solo tipo per assegnare una categoria",
+    "delete": "Elimina selezionate",
+    "clearSelection": "Cancella selezione",
+    "deleteConfirm": {
+      "title": "Elimina transazioni",
+      "message": "Questa operazione non può essere annullata. Eliminare {{count}} transazioni?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Mese precedente",
+    "nextMonth": "Mese successivo",
+    "balanceTrend": "Andamento del saldo",
+    "selectedDay": "Giorno selezionato",
+    "selectDayHint": "Seleziona un giorno per visualizzarne l’attività",
+    "noTransactions": "Nessuna transazione in questo giorno",
+    "legend": {
+      "income": "Entrate",
+      "expenses": "Uscite",
+      "transfer": "Trasferimento",
+      "projected": "Prevista"
+    }
+  },
+  "export": {
+    "filename": "transazioni"
+  }
   },
   "categories": {
     "title": "Categorie",

@@ -410,9 +410,8 @@
       "edit": "Edytuj",
       "delete": "Usuń",
       "import": "Importuj CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Kolumny",
+    "exportCsv": "Eksportuj CSV"
     },
     "tabs": {
       "transactions": "Transakcje",
@@ -421,7 +420,7 @@
     "type": {
       "income": "Przychód",
       "expense": "Wydatek",
-      "transfer": "Transfer"
+    "transfer": "Przelew"
     },
     "filters": {
       "type": "Typ",
@@ -431,18 +430,18 @@
       "to": "Do",
       "institution": "Instytucja",
       "clear": "Wyczyść filtry",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filtruj według",
+    "searchPlaceholder": "Szukaj transakcji…",
+    "group": "Grupuj",
+    "date": "Data",
+    "amount": "Kwota",
+    "amountMin": "Minimum",
+    "amountMax": "Maksimum",
+    "any": "Dowolne",
+    "back": "Wstecz",
+    "dateRange": "Od {{from}} do {{to}}",
+    "amountRange": "Od {{min}} do {{max}}",
+    "removeChip": "Usuń filtr {{filter}}"
     },
     "empty": {
       "title": "Nie znaleziono transakcji",
@@ -567,57 +566,60 @@
         "confirm": "Importuj sprawdzone wiersze"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Finanse",
+  "view": {
+    "list": "Lista",
+    "calendar": "Kalendarz"
+  },
+  "columns": {
+    "title": "Kolumny",
+    "date": "Data",
+    "description": "Opis",
+    "category": "Kategoria",
+    "account": "Konto",
+    "amount": "Kwota",
+    "reorder": "Przeciągnij, aby zmienić kolejność",
+    "resize": "Przeciągnij, aby zmienić rozmiar"
+  },
+  "table": {
+    "selectAll": "Zaznacz wszystkie wiersze",
+    "selectRow": "Zaznacz {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} z {{total}}",
+    "pageSize": "Wierszy na stronę",
+    "previous": "Poprzednia strona",
+    "next": "Następna strona",
+    "goToPage": "Przejdź do strony {{page}}"
+  },
+  "bulk": {
+    "selected": "wybrano",
+    "assignCategory": "Wybierz kategorię…",
+    "mixedKinds": "Wybierz transakcje jednego rodzaju, aby przypisać kategorię",
+    "delete": "Usuń zaznaczone",
+    "clearSelection": "Wyczyść zaznaczenie",
+    "deleteConfirm": {
+      "title": "Usuń transakcje",
+      "message": "Tej operacji nie można cofnąć. Usunąć {{count}} transakcji?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Poprzedni miesiąc",
+    "nextMonth": "Następny miesiąc",
+    "balanceTrend": "Trend salda",
+    "selectedDay": "Wybrany dzień",
+    "selectDayHint": "Wybierz dzień, aby zobaczyć jego aktywność",
+    "noTransactions": "Brak transakcji w tym dniu",
+    "legend": {
+      "income": "Przychody",
+      "expenses": "Wydatki",
+      "transfer": "Przelew",
+      "projected": "Prognozowane"
+    }
+  },
+  "export": {
+    "filename": "transakcje"
+  }
   },
   "categories": {
     "title": "Kategorie",

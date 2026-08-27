@@ -410,9 +410,8 @@
       "edit": "Düzenle",
       "delete": "Sil",
       "import": "CSV İçe Aktar",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Sütunlar",
+    "exportCsv": "CSV'yi dışa aktar"
     },
     "tabs": {
       "transactions": "İşlemler",
@@ -431,18 +430,18 @@
       "to": "Bitiş",
       "institution": "Finans kuruluşu",
       "clear": "Filtreleri temizle",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Şuna göre filtrele",
+    "searchPlaceholder": "İşlemlerde ara…",
+    "group": "Grupla",
+    "date": "Tarih",
+    "amount": "Tutar",
+    "amountMin": "Minimum",
+    "amountMax": "Maksimum",
+    "any": "Herhangi",
+    "back": "Geri",
+    "dateRange": "{{from}} ile {{to}} arası",
+    "amountRange": "{{min}} ile {{max}} arası",
+    "removeChip": "{{filter}} filtresini kaldır"
     },
     "empty": {
       "title": "İşlem bulunamadı",
@@ -567,57 +566,60 @@
         "confirm": "İncelenen satırları içe aktar"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Finans",
+  "view": {
+    "list": "Liste",
+    "calendar": "Takvim"
+  },
+  "columns": {
+    "title": "Sütunlar",
+    "date": "Tarih",
+    "description": "Açıklama",
+    "category": "Kategori",
+    "account": "Hesap",
+    "amount": "Tutar",
+    "reorder": "Yeniden sıralamak için sürükleyin",
+    "resize": "Boyutlandırmak için sürükleyin"
+  },
+  "table": {
+    "selectAll": "Tüm satırları seç",
+    "selectRow": "{{description}} seç"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} / {{total}}",
+    "pageSize": "Sayfa başına satır",
+    "previous": "Önceki sayfa",
+    "next": "Sonraki sayfa",
+    "goToPage": "{{page}}. sayfaya git"
+  },
+  "bulk": {
+    "selected": "seçildi",
+    "assignCategory": "Kategori seçin…",
+    "mixedKinds": "Kategori atamak için tek bir türdeki işlemleri seçin",
+    "delete": "Seçilenleri sil",
+    "clearSelection": "Seçimi temizle",
+    "deleteConfirm": {
+      "title": "İşlemleri sil",
+      "message": "Bu işlem geri alınamaz. {{count}} işlem silinsin mi?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Önceki ay",
+    "nextMonth": "Sonraki ay",
+    "balanceTrend": "Bakiye eğilimi",
+    "selectedDay": "Seçilen gün",
+    "selectDayHint": "Etkinliğini görmek için bir gün seçin",
+    "noTransactions": "Bu gün işlem yok",
+    "legend": {
+      "income": "Gelir",
+      "expenses": "Gider",
+      "transfer": "Transfer",
+      "projected": "Öngörülen"
+    }
+  },
+  "export": {
+    "filename": "islemler"
+  }
   },
   "categories": {
     "title": "Kategoriler",

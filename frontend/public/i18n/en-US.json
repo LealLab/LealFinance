@@ -410,7 +410,6 @@
       "edit": "Edit",
       "delete": "Delete",
       "import": "Import CSV",
-      "transfer": "Transfer",
       "columns": "Columns",
       "exportCsv": "Export CSV"
     },
@@ -578,7 +577,9 @@
       "description": "Description",
       "category": "Category",
       "account": "Account",
-      "amount": "Amount"
+      "amount": "Amount",
+      "reorder": "Drag to reorder",
+      "resize": "Drag to resize"
     },
     "table": {
       "selectAll": "Select all rows",
@@ -607,6 +608,7 @@
       "nextMonth": "Next month",
       "balanceTrend": "Balance trend",
       "selectedDay": "Selected day",
+      "selectDayHint": "Select a day to see its activity",
       "noTransactions": "No transactions on this day",
       "legend": {
         "income": "Income",

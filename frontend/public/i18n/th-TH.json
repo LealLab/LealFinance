@@ -410,9 +410,8 @@
       "edit": "แก้ไข",
       "delete": "ลบ",
       "import": "นำเข้า CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "คอลัมน์",
+    "exportCsv": "ส่งออก CSV"
     },
     "tabs": {
       "transactions": "ธุรกรรม",
@@ -431,18 +430,18 @@
       "to": "ถึง",
       "institution": "สถาบันการเงิน",
       "clear": "ล้างตัวกรอง",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "กรองตาม",
+    "searchPlaceholder": "ค้นหาธุรกรรม…",
+    "group": "กลุ่ม",
+    "date": "วันที่",
+    "amount": "จำนวนเงิน",
+    "amountMin": "ต่ำสุด",
+    "amountMax": "สูงสุด",
+    "any": "ใดๆ",
+    "back": "ย้อนกลับ",
+    "dateRange": "ตั้งแต่ {{from}} ถึง {{to}}",
+    "amountRange": "ตั้งแต่ {{min}} ถึง {{max}}",
+    "removeChip": "ลบตัวกรอง {{filter}}"
     },
     "empty": {
       "title": "ไม่พบธุรกรรม",
@@ -567,57 +566,60 @@
         "confirm": "นำเข้าแถวที่ตรวจสอบแล้ว"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "การเงิน",
+  "view": {
+    "list": "รายการ",
+    "calendar": "ปฏิทิน"
+  },
+  "columns": {
+    "title": "คอลัมน์",
+    "date": "วันที่",
+    "description": "รายละเอียด",
+    "category": "หมวดหมู่",
+    "account": "บัญชี",
+    "amount": "จำนวนเงิน",
+    "reorder": "ลากเพื่อจัดลำดับใหม่",
+    "resize": "ลากเพื่อปรับขนาด"
+  },
+  "table": {
+    "selectAll": "เลือกแถวทั้งหมด",
+    "selectRow": "เลือก {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} จาก {{total}}",
+    "pageSize": "แถวต่อหน้า",
+    "previous": "หน้าก่อนหน้า",
+    "next": "หน้าถัดไป",
+    "goToPage": "ไปที่หน้า {{page}}"
+  },
+  "bulk": {
+    "selected": "เลือกแล้ว",
+    "assignCategory": "เลือกหมวดหมู่…",
+    "mixedKinds": "เลือกธุรกรรมประเภทเดียวกันเพื่อกำหนดหมวดหมู่",
+    "delete": "ลบรายการที่เลือก",
+    "clearSelection": "ล้างการเลือก",
+    "deleteConfirm": {
+      "title": "ลบธุรกรรม",
+      "message": "ไม่สามารถยกเลิกได้ ลบธุรกรรม {{count}} รายการหรือไม่"
     }
+  },
+  "calendar": {
+    "previousMonth": "เดือนก่อนหน้า",
+    "nextMonth": "เดือนถัดไป",
+    "balanceTrend": "แนวโน้มยอดคงเหลือ",
+    "selectedDay": "วันที่เลือก",
+    "selectDayHint": "เลือกวันเพื่อดูกิจกรรม",
+    "noTransactions": "ไม่มีธุรกรรมในวันนี้",
+    "legend": {
+      "income": "รายรับ",
+      "expenses": "รายจ่าย",
+      "transfer": "โอนเงิน",
+      "projected": "คาดการณ์"
+    }
+  },
+  "export": {
+    "filename": "thurakam"
+  }
   },
   "categories": {
     "title": "หมวดหมู่",

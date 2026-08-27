@@ -410,9 +410,8 @@
       "edit": "Редагувати",
       "delete": "Видалити",
       "import": "Імпорт CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Стовпці",
+    "exportCsv": "Експорт CSV"
     },
     "tabs": {
       "transactions": "Транзакції",
@@ -431,18 +430,18 @@
       "to": "До",
       "institution": "Фінансова установа",
       "clear": "Очистити фільтри",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Фільтрувати за",
+    "searchPlaceholder": "Пошук транзакцій…",
+    "group": "Групувати",
+    "date": "Дата",
+    "amount": "Сума",
+    "amountMin": "Мінімум",
+    "amountMax": "Максимум",
+    "any": "Будь-які",
+    "back": "Назад",
+    "dateRange": "від {{from}} до {{to}}",
+    "amountRange": "від {{min}} до {{max}}",
+    "removeChip": "Видалити фільтр {{filter}}"
     },
     "empty": {
       "title": "Транзакцій не знайдено",
@@ -567,57 +566,60 @@
         "confirm": "Імпортувати перевірені рядки"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Фінанси",
+  "view": {
+    "list": "Список",
+    "calendar": "Календар"
+  },
+  "columns": {
+    "title": "Стовпці",
+    "date": "Дата",
+    "description": "Опис",
+    "category": "Категорія",
+    "account": "Рахунок",
+    "amount": "Сума",
+    "reorder": "Перетягніть, щоб змінити порядок",
+    "resize": "Перетягніть, щоб змінити розмір"
+  },
+  "table": {
+    "selectAll": "Вибрати всі рядки",
+    "selectRow": "Вибрати {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} з {{total}}",
+    "pageSize": "Рядків на сторінці",
+    "previous": "Попередня сторінка",
+    "next": "Наступна сторінка",
+    "goToPage": "Перейти на сторінку {{page}}"
+  },
+  "bulk": {
+    "selected": "вибрано",
+    "assignCategory": "Виберіть категорію…",
+    "mixedKinds": "Виберіть транзакції лише одного типу, щоб призначити категорію",
+    "delete": "Видалити вибрані",
+    "clearSelection": "Скасувати вибір",
+    "deleteConfirm": {
+      "title": "Видалити транзакції",
+      "message": "Цю дію не можна скасувати. Видалити {{count}} транзакцій?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Попередній місяць",
+    "nextMonth": "Наступний місяць",
+    "balanceTrend": "Динаміка балансу",
+    "selectedDay": "Вибраний день",
+    "selectDayHint": "Виберіть день, щоб переглянути його активність",
+    "noTransactions": "У цей день немає транзакцій",
+    "legend": {
+      "income": "Доходи",
+      "expenses": "Витрати",
+      "transfer": "Переказ",
+      "projected": "Прогнозовані"
+    }
+  },
+  "export": {
+    "filename": "tranzaktsii"
+  }
   },
   "categories": {
     "title": "Категорії",

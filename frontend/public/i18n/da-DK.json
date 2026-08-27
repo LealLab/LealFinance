@@ -410,9 +410,8 @@
       "edit": "Rediger",
       "delete": "Slet",
       "import": "Importér CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Kolonner",
+    "exportCsv": "Eksportér CSV"
     },
     "tabs": {
       "transactions": "Transaktioner",
@@ -431,18 +430,18 @@
       "to": "Til",
       "institution": "Institution",
       "clear": "Ryd filtre",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filtrér efter",
+    "searchPlaceholder": "Søg i transaktioner…",
+    "group": "Gruppér",
+    "date": "Dato",
+    "amount": "Beløb",
+    "amountMin": "Minimum",
+    "amountMax": "Maksimum",
+    "any": "Alle",
+    "back": "Tilbage",
+    "dateRange": "Fra {{from}} til {{to}}",
+    "amountRange": "Fra {{min}} til {{max}}",
+    "removeChip": "Fjern filteret {{filter}}"
     },
     "empty": {
       "title": "Ingen transaktioner fundet",
@@ -567,57 +566,60 @@
         "confirm": "Importér gennemgåede linjer"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Finans",
+  "view": {
+    "list": "Liste",
+    "calendar": "Kalender"
+  },
+  "columns": {
+    "title": "Kolonner",
+    "date": "Dato",
+    "description": "Beskrivelse",
+    "category": "Kategori",
+    "account": "Konto",
+    "amount": "Beløb",
+    "reorder": "Træk for at ændre rækkefølge",
+    "resize": "Træk for at ændre størrelse"
+  },
+  "table": {
+    "selectAll": "Vælg alle rækker",
+    "selectRow": "Vælg {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} af {{total}}",
+    "pageSize": "Rækker pr. side",
+    "previous": "Forrige side",
+    "next": "Næste side",
+    "goToPage": "Gå til side {{page}}"
+  },
+  "bulk": {
+    "selected": "valgte",
+    "assignCategory": "Vælg kategori…",
+    "mixedKinds": "Vælg transaktioner af samme type for at tildele en kategori",
+    "delete": "Slet valgte",
+    "clearSelection": "Ryd valg",
+    "deleteConfirm": {
+      "title": "Slet transaktioner",
+      "message": "Dette kan ikke fortrydes. Slet {{count}} transaktioner?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Forrige måned",
+    "nextMonth": "Næste måned",
+    "balanceTrend": "Saldoens udvikling",
+    "selectedDay": "Valgt dag",
+    "selectDayHint": "Vælg en dag for at se dens aktivitet",
+    "noTransactions": "Ingen transaktioner denne dag",
+    "legend": {
+      "income": "Indtægter",
+      "expenses": "Udgifter",
+      "transfer": "Overførsel",
+      "projected": "Forventet"
+    }
+  },
+  "export": {
+    "filename": "transaktioner"
+  }
   },
   "categories": {
     "title": "Kategorier",

@@ -410,9 +410,8 @@
       "edit": "Editează",
       "delete": "Șterge",
       "import": "Importă CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Coloane",
+    "exportCsv": "Exportă CSV"
     },
     "tabs": {
       "transactions": "Tranzacții",
@@ -431,18 +430,18 @@
       "to": "Până la",
       "institution": "Instituție",
       "clear": "Șterge filtrele",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filtrează după",
+    "searchPlaceholder": "Caută tranzacții…",
+    "group": "Grupează",
+    "date": "Dată",
+    "amount": "Sumă",
+    "amountMin": "Minim",
+    "amountMax": "Maxim",
+    "any": "Oricare",
+    "back": "Înapoi",
+    "dateRange": "De la {{from}} până la {{to}}",
+    "amountRange": "De la {{min}} până la {{max}}",
+    "removeChip": "Elimină filtrul {{filter}}"
     },
     "empty": {
       "title": "Nu s-a găsit nicio tranzacție",
@@ -567,57 +566,60 @@
         "confirm": "Importă rândurile verificate"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Finanțe",
+  "view": {
+    "list": "Listă",
+    "calendar": "Calendar"
+  },
+  "columns": {
+    "title": "Coloane",
+    "date": "Dată",
+    "description": "Descriere",
+    "category": "Categorie",
+    "account": "Cont",
+    "amount": "Sumă",
+    "reorder": "Trage pentru a reordona",
+    "resize": "Trage pentru a redimensiona"
+  },
+  "table": {
+    "selectAll": "Selectează toate rândurile",
+    "selectRow": "Selectează {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} din {{total}}",
+    "pageSize": "Rânduri pe pagină",
+    "previous": "Pagina anterioară",
+    "next": "Pagina următoare",
+    "goToPage": "Mergi la pagina {{page}}"
+  },
+  "bulk": {
+    "selected": "selectate",
+    "assignCategory": "Selectează categoria…",
+    "mixedKinds": "Selectează tranzacții de un singur tip pentru a atribui o categorie",
+    "delete": "Șterge selecția",
+    "clearSelection": "Golește selecția",
+    "deleteConfirm": {
+      "title": "Șterge tranzacțiile",
+      "message": "Acest lucru nu poate fi anulat. Ștergi {{count}} tranzacții?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Luna anterioară",
+    "nextMonth": "Luna următoare",
+    "balanceTrend": "Evoluția soldului",
+    "selectedDay": "Ziua selectată",
+    "selectDayHint": "Selectează o zi pentru a vedea activitatea",
+    "noTransactions": "Nicio tranzacție în această zi",
+    "legend": {
+      "income": "Venituri",
+      "expenses": "Cheltuieli",
+      "transfer": "Transfer",
+      "projected": "Estimată"
+    }
+  },
+  "export": {
+    "filename": "tranzactii"
+  }
   },
   "categories": {
     "title": "Categorii",

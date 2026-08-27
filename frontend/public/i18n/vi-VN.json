@@ -410,9 +410,8 @@
       "edit": "Chỉnh sửa",
       "delete": "Xóa",
       "import": "Nhập CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Cột",
+    "exportCsv": "Xuất CSV"
     },
     "tabs": {
       "transactions": "Giao dịch",
@@ -431,18 +430,18 @@
       "to": "Đến",
       "institution": "Tổ chức tài chính",
       "clear": "Xóa bộ lọc",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Lọc theo",
+    "searchPlaceholder": "Tìm kiếm giao dịch…",
+    "group": "Nhóm",
+    "date": "Ngày",
+    "amount": "Số tiền",
+    "amountMin": "Tối thiểu",
+    "amountMax": "Tối đa",
+    "any": "Bất kỳ",
+    "back": "Quay lại",
+    "dateRange": "{{from}} đến {{to}}",
+    "amountRange": "{{min}} đến {{max}}",
+    "removeChip": "Xóa bộ lọc {{filter}}"
     },
     "empty": {
       "title": "Không tìm thấy giao dịch nào",
@@ -567,57 +566,60 @@
         "confirm": "Nhập các dòng đã xem lại"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Tài chính",
+  "view": {
+    "list": "Danh sách",
+    "calendar": "Lịch"
+  },
+  "columns": {
+    "title": "Cột",
+    "date": "Ngày",
+    "description": "Mô tả",
+    "category": "Danh mục",
+    "account": "Tài khoản",
+    "amount": "Số tiền",
+    "reorder": "Kéo để sắp xếp lại",
+    "resize": "Kéo để đổi kích thước"
+  },
+  "table": {
+    "selectAll": "Chọn tất cả các hàng",
+    "selectRow": "Chọn {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} trên tổng số {{total}}",
+    "pageSize": "Số hàng mỗi trang",
+    "previous": "Trang trước",
+    "next": "Trang sau",
+    "goToPage": "Đi đến trang {{page}}"
+  },
+  "bulk": {
+    "selected": "đã chọn",
+    "assignCategory": "Chọn danh mục…",
+    "mixedKinds": "Chọn các giao dịch cùng một loại để gán danh mục",
+    "delete": "Xóa mục đã chọn",
+    "clearSelection": "Xóa lựa chọn",
+    "deleteConfirm": {
+      "title": "Xóa giao dịch",
+      "message": "Không thể hoàn tác. Xóa {{count}} giao dịch?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Tháng trước",
+    "nextMonth": "Tháng sau",
+    "balanceTrend": "Xu hướng số dư",
+    "selectedDay": "Ngày đã chọn",
+    "selectDayHint": "Chọn một ngày để xem hoạt động",
+    "noTransactions": "Không có giao dịch vào ngày này",
+    "legend": {
+      "income": "Thu nhập",
+      "expenses": "Chi tiêu",
+      "transfer": "Chuyển tiền",
+      "projected": "Dự kiến"
+    }
+  },
+  "export": {
+    "filename": "giaodich"
+  }
   },
   "categories": {
     "title": "Danh mục",

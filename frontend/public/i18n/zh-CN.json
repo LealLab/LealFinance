@@ -410,9 +410,8 @@
       "edit": "编辑",
       "delete": "删除",
       "import": "导入 CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "列",
+    "exportCsv": "导出 CSV"
     },
     "tabs": {
       "transactions": "交易",
@@ -431,18 +430,18 @@
       "to": "结束日期",
       "institution": "机构",
       "clear": "清除筛选",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "筛选条件",
+    "searchPlaceholder": "搜索交易…",
+    "group": "分组",
+    "date": "日期",
+    "amount": "金额",
+    "amountMin": "最小值",
+    "amountMax": "最大值",
+    "any": "任意",
+    "back": "返回",
+    "dateRange": "{{from}} 至 {{to}}",
+    "amountRange": "{{min}} 至 {{max}}",
+    "removeChip": "移除 {{filter}} 筛选条件"
     },
     "empty": {
       "title": "未找到交易",
@@ -567,57 +566,60 @@
         "confirm": "导入已检查的行"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "财务",
+  "view": {
+    "list": "列表",
+    "calendar": "日历"
+  },
+  "columns": {
+    "title": "列",
+    "date": "日期",
+    "description": "描述",
+    "category": "分类",
+    "account": "账户",
+    "amount": "金额",
+    "reorder": "拖动以重新排序",
+    "resize": "拖动以调整大小"
+  },
+  "table": {
+    "selectAll": "选择所有行",
+    "selectRow": "选择 {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} / {{total}}",
+    "pageSize": "每页行数",
+    "previous": "上一页",
+    "next": "下一页",
+    "goToPage": "转到第 {{page}} 页"
+  },
+  "bulk": {
+    "selected": "已选择",
+    "assignCategory": "选择分类…",
+    "mixedKinds": "请选择同一种类的交易以分配分类",
+    "delete": "删除所选交易",
+    "clearSelection": "清除选择",
+    "deleteConfirm": {
+      "title": "删除交易",
+      "message": "此操作无法撤销。删除 {{count}} 笔交易？"
     }
+  },
+  "calendar": {
+    "previousMonth": "上个月",
+    "nextMonth": "下个月",
+    "balanceTrend": "余额趋势",
+    "selectedDay": "所选日期",
+    "selectDayHint": "选择日期以查看当天活动",
+    "noTransactions": "当天没有交易",
+    "legend": {
+      "income": "收入",
+      "expenses": "支出",
+      "transfer": "转账",
+      "projected": "预计"
+    }
+  },
+  "export": {
+    "filename": "jiaoyi"
+  }
   },
   "categories": {
     "title": "分类",

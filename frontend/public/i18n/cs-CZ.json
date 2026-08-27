@@ -410,9 +410,8 @@
       "edit": "Upravit",
       "delete": "Odstranit",
       "import": "Importovat CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Sloupce",
+    "exportCsv": "Exportovat CSV"
     },
     "tabs": {
       "transactions": "Transakce",
@@ -431,18 +430,18 @@
       "to": "Do",
       "institution": "Instituce",
       "clear": "Vymazat filtry",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filtrovat podle",
+    "searchPlaceholder": "Hledat transakce…",
+    "group": "Seskupit",
+    "date": "Datum",
+    "amount": "Částka",
+    "amountMin": "Minimum",
+    "amountMax": "Maximum",
+    "any": "Libovolné",
+    "back": "Zpět",
+    "dateRange": "Od {{from}} do {{to}}",
+    "amountRange": "Od {{min}} do {{max}}",
+    "removeChip": "Odebrat filtr {{filter}}"
     },
     "empty": {
       "title": "Nebyly nalezeny žádné transakce",
@@ -567,57 +566,60 @@
         "confirm": "Importovat zkontrolované řádky"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Finance",
+  "view": {
+    "list": "Seznam",
+    "calendar": "Kalendář"
+  },
+  "columns": {
+    "title": "Sloupce",
+    "date": "Datum",
+    "description": "Popis",
+    "category": "Kategorie",
+    "account": "Účet",
+    "amount": "Částka",
+    "reorder": "Přetažením změníte pořadí",
+    "resize": "Přetažením změníte velikost"
+  },
+  "table": {
+    "selectAll": "Vybrat všechny řádky",
+    "selectRow": "Vybrat {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} z {{total}}",
+    "pageSize": "Řádků na stránku",
+    "previous": "Předchozí stránka",
+    "next": "Další stránka",
+    "goToPage": "Přejít na stránku {{page}}"
+  },
+  "bulk": {
+    "selected": "vybráno",
+    "assignCategory": "Vybrat kategorii…",
+    "mixedKinds": "Pro přiřazení kategorie vyberte transakce pouze jednoho typu",
+    "delete": "Odstranit vybrané",
+    "clearSelection": "Zrušit výběr",
+    "deleteConfirm": {
+      "title": "Odstranit transakce",
+      "message": "Tuto akci nelze vrátit zpět. Odstranit {{count}} transakcí?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Předchozí měsíc",
+    "nextMonth": "Následující měsíc",
+    "balanceTrend": "Vývoj zůstatku",
+    "selectedDay": "Vybraný den",
+    "selectDayHint": "Vyberte den a zobrazte jeho aktivitu",
+    "noTransactions": "Tento den nejsou žádné transakce",
+    "legend": {
+      "income": "Příjmy",
+      "expenses": "Výdaje",
+      "transfer": "Převod",
+      "projected": "Plánované"
+    }
+  },
+  "export": {
+    "filename": "transakce"
+  }
   },
   "categories": {
     "title": "Kategorie",

@@ -410,9 +410,8 @@
       "edit": "تعديل",
       "delete": "حذف",
       "import": "استيراد CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "الأعمدة",
+    "exportCsv": "تصدير CSV"
     },
     "tabs": {
       "transactions": "المعاملات",
@@ -431,18 +430,18 @@
       "to": "إلى",
       "institution": "الجهة المالية",
       "clear": "مسح عوامل التصفية",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "تصفية حسب",
+    "searchPlaceholder": "البحث في المعاملات…",
+    "group": "تجميع",
+    "date": "التاريخ",
+    "amount": "المبلغ",
+    "amountMin": "الحد الأدنى",
+    "amountMax": "الحد الأقصى",
+    "any": "أي",
+    "back": "رجوع",
+    "dateRange": "من {{from}} إلى {{to}}",
+    "amountRange": "من {{min}} إلى {{max}}",
+    "removeChip": "إزالة عامل التصفية {{filter}}"
     },
     "empty": {
       "title": "لم تُعثر على معاملات",
@@ -567,57 +566,60 @@
         "confirm": "استيراد الصفوف التي تمت مراجعتها"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "مالي",
+  "view": {
+    "list": "قائمة",
+    "calendar": "تقويم"
+  },
+  "columns": {
+    "title": "الأعمدة",
+    "date": "التاريخ",
+    "description": "الوصف",
+    "category": "الفئة",
+    "account": "الحساب",
+    "amount": "المبلغ",
+    "reorder": "اسحب لإعادة الترتيب",
+    "resize": "اسحب لتغيير الحجم"
+  },
+  "table": {
+    "selectAll": "تحديد كل الصفوف",
+    "selectRow": "تحديد {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} من {{total}}",
+    "pageSize": "صفوف لكل صفحة",
+    "previous": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "goToPage": "الانتقال إلى الصفحة {{page}}"
+  },
+  "bulk": {
+    "selected": "المحددة",
+    "assignCategory": "تحديد فئة…",
+    "mixedKinds": "حدد معاملات من نوع واحد لتعيين فئة",
+    "delete": "حذف المحددة",
+    "clearSelection": "مسح التحديد",
+    "deleteConfirm": {
+      "title": "حذف المعاملات",
+      "message": "لا يمكن التراجع عن ذلك. هل تريد حذف {{count}} معاملة؟"
     }
+  },
+  "calendar": {
+    "previousMonth": "الشهر السابق",
+    "nextMonth": "الشهر التالي",
+    "balanceTrend": "اتجاه الرصيد",
+    "selectedDay": "اليوم المحدد",
+    "selectDayHint": "حدد يومًا لعرض نشاطه",
+    "noTransactions": "لا توجد معاملات في هذا اليوم",
+    "legend": {
+      "income": "الدخل",
+      "expenses": "المصروفات",
+      "transfer": "تحويل",
+      "projected": "متوقع"
+    }
+  },
+  "export": {
+    "filename": "muamalat"
+  }
   },
   "categories": {
     "title": "الفئات",

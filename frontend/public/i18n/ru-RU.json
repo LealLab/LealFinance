@@ -410,9 +410,8 @@
       "edit": "Изменить",
       "delete": "Удалить",
       "import": "Импорт CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Столбцы",
+    "exportCsv": "Экспорт CSV"
     },
     "tabs": {
       "transactions": "Операции",
@@ -431,18 +430,18 @@
       "to": "До",
       "institution": "Финансовая организация",
       "clear": "Сбросить фильтры",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Фильтр по",
+    "searchPlaceholder": "Поиск операций…",
+    "group": "Группировка",
+    "date": "Дата",
+    "amount": "Сумма",
+    "amountMin": "Минимум",
+    "amountMax": "Максимум",
+    "any": "Любые",
+    "back": "Назад",
+    "dateRange": "с {{from}} по {{to}}",
+    "amountRange": "от {{min}} до {{max}}",
+    "removeChip": "Удалить фильтр {{filter}}"
     },
     "empty": {
       "title": "Операции не найдены",
@@ -567,57 +566,60 @@
         "confirm": "Импортировать проверенные строки"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Финансы",
+  "view": {
+    "list": "Список",
+    "calendar": "Календарь"
+  },
+  "columns": {
+    "title": "Столбцы",
+    "date": "Дата",
+    "description": "Описание",
+    "category": "Категория",
+    "account": "Счёт",
+    "amount": "Сумма",
+    "reorder": "Перетащите, чтобы изменить порядок",
+    "resize": "Перетащите, чтобы изменить размер"
+  },
+  "table": {
+    "selectAll": "Выбрать все строки",
+    "selectRow": "Выбрать {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} из {{total}}",
+    "pageSize": "Строк на странице",
+    "previous": "Предыдущая страница",
+    "next": "Следующая страница",
+    "goToPage": "Перейти на страницу {{page}}"
+  },
+  "bulk": {
+    "selected": "выбрано",
+    "assignCategory": "Выберите категорию…",
+    "mixedKinds": "Выберите операции только одного типа, чтобы назначить категорию",
+    "delete": "Удалить выбранные",
+    "clearSelection": "Снять выделение",
+    "deleteConfirm": {
+      "title": "Удалить операции",
+      "message": "Это действие нельзя отменить. Удалить {{count}} операций?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Предыдущий месяц",
+    "nextMonth": "Следующий месяц",
+    "balanceTrend": "Динамика баланса",
+    "selectedDay": "Выбранный день",
+    "selectDayHint": "Выберите день, чтобы увидеть его активность",
+    "noTransactions": "В этот день нет операций",
+    "legend": {
+      "income": "Доходы",
+      "expenses": "Расходы",
+      "transfer": "Перевод",
+      "projected": "Прогноз"
+    }
+  },
+  "export": {
+    "filename": "operatsii"
+  }
   },
   "categories": {
     "title": "Категории",

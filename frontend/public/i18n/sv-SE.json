@@ -410,9 +410,8 @@
       "edit": "Redigera",
       "delete": "Ta bort",
       "import": "Importera CSV",
-      "transfer": "Transfer",
-      "columns": "Columns",
-      "exportCsv": "Export CSV"
+    "columns": "Kolumner",
+    "exportCsv": "Exportera CSV"
     },
     "tabs": {
       "transactions": "Transaktioner",
@@ -431,18 +430,18 @@
       "to": "Till",
       "institution": "Finansiellt institut",
       "clear": "Rensa filter",
-      "title": "Filter by",
-      "searchPlaceholder": "Search transactions…",
-      "group": "Group",
-      "date": "Date",
-      "amount": "Amount",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
-      "any": "Any",
-      "back": "Back",
-      "dateRange": "{{from}} — {{to}}",
-      "amountRange": "{{min}} — {{max}}",
-      "removeChip": "Remove {{filter}} filter"
+    "title": "Filtrera efter",
+    "searchPlaceholder": "Sök transaktioner…",
+    "group": "Gruppera",
+    "date": "Datum",
+    "amount": "Belopp",
+    "amountMin": "Minimum",
+    "amountMax": "Maximum",
+    "any": "Alla",
+    "back": "Tillbaka",
+    "dateRange": "Från {{from}} till {{to}}",
+    "amountRange": "Från {{min}} till {{max}}",
+    "removeChip": "Ta bort filtret {{filter}}"
     },
     "empty": {
       "title": "Inga transaktioner hittades",
@@ -567,57 +566,60 @@
         "confirm": "Importera granskade rader"
       }
     },
-    "eyebrow": "Financial",
-    "view": {
-      "list": "List",
-      "calendar": "Calendar"
-    },
-    "columns": {
-      "title": "Columns",
-      "date": "Date",
-      "description": "Description",
-      "category": "Category",
-      "account": "Account",
-      "amount": "Amount"
-    },
-    "table": {
-      "selectAll": "Select all rows",
-      "selectRow": "Select {{description}}"
-    },
-    "pagination": {
-      "showing": "{{from}}–{{to}} of {{total}}",
-      "pageSize": "Rows per page",
-      "previous": "Previous page",
-      "next": "Next page",
-      "goToPage": "Go to page {{page}}"
-    },
-    "bulk": {
-      "selected": "selected",
-      "assignCategory": "Select category…",
-      "mixedKinds": "Select transactions of a single kind to assign a category",
-      "delete": "Delete selected",
-      "clearSelection": "Clear selection",
-      "deleteConfirm": {
-        "title": "Delete transactions",
-        "message": "This cannot be undone. Delete {{count}} transactions?"
-      }
-    },
-    "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
-      "balanceTrend": "Balance trend",
-      "selectedDay": "Selected day",
-      "noTransactions": "No transactions on this day",
-      "legend": {
-        "income": "Income",
-        "expenses": "Expenses",
-        "transfer": "Transfer",
-        "projected": "Projected"
-      }
-    },
-    "export": {
-      "filename": "transactions"
+  "eyebrow": "Ekonomi",
+  "view": {
+    "list": "Lista",
+    "calendar": "Kalender"
+  },
+  "columns": {
+    "title": "Kolumner",
+    "date": "Datum",
+    "description": "Beskrivning",
+    "category": "Kategori",
+    "account": "Konto",
+    "amount": "Belopp",
+    "reorder": "Dra för att ändra ordning",
+    "resize": "Dra för att ändra storlek"
+  },
+  "table": {
+    "selectAll": "Markera alla rader",
+    "selectRow": "Markera {{description}}"
+  },
+  "pagination": {
+    "showing": "{{from}}–{{to}} av {{total}}",
+    "pageSize": "Rader per sida",
+    "previous": "Föregående sida",
+    "next": "Nästa sida",
+    "goToPage": "Gå till sida {{page}}"
+  },
+  "bulk": {
+    "selected": "markerade",
+    "assignCategory": "Välj kategori…",
+    "mixedKinds": "Välj transaktioner av samma typ för att tilldela en kategori",
+    "delete": "Ta bort markerade",
+    "clearSelection": "Rensa markering",
+    "deleteConfirm": {
+      "title": "Ta bort transaktioner",
+      "message": "Detta kan inte ångras. Ta bort {{count}} transaktioner?"
     }
+  },
+  "calendar": {
+    "previousMonth": "Föregående månad",
+    "nextMonth": "Nästa månad",
+    "balanceTrend": "Saldoutveckling",
+    "selectedDay": "Vald dag",
+    "selectDayHint": "Välj en dag för att se dess aktivitet",
+    "noTransactions": "Inga transaktioner denna dag",
+    "legend": {
+      "income": "Inkomster",
+      "expenses": "Utgifter",
+      "transfer": "Överföring",
+      "projected": "Prognostiserade"
+    }
+  },
+  "export": {
+    "filename": "transaktioner"
+  }
   },
   "categories": {
     "title": "Kategorier",
