@@ -1,9 +1,9 @@
 """Currency reference data and exchange rates.
 
-LealFinance starts BRL-only, but every monetary column is designed to carry
-a currency code from day one so multi-currency support is additive later.
-`exchange_rates` ships empty; app/workers/tasks/rates.py is the (currently
-disabled) task that would keep it populated.
+`exchange_rates` holds USD-anchored provider rates keyed by date. It is
+filled on demand by app/services/exchange_rates.py and kept warm by the
+scheduled refresh in app/workers/tasks/rates.py; it is empty until a
+provider key is configured.
 """
 
 from datetime import date
@@ -28,10 +28,9 @@ class Currency(Base, TimestampMixin):
 
 
 class ExchangeRate(Base, UUIDPrimaryKeyMixin, TimestampMixin):
-    """A point-in-time rate between two currencies.
-
-    Empty at scaffold time - populated later by a scheduled refresh task
-    once multi-currency support is actually built.
+    """A point-in-time rate between two currencies. In practice every row
+    is USD-anchored (`base_code = 'USD'`); other pairs are derived by
+    division at lookup time - see app/services/exchange_rates.py.
     """
 
     __tablename__ = "exchange_rates"

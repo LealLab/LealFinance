@@ -20,6 +20,7 @@ import { formatIsoDate } from '../../domain/calc/dates';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { MonthBucket, ReportPeriod, resolveMonthBuckets } from './report-period';
@@ -36,7 +37,16 @@ interface CategoryTableRow {
 
 @Component({
   selector: 'app-reports',
-  imports: [TranslocoDirective, MoneyPipe, Card, EmptyState, PageHeader, Chart, Skeleton],
+  imports: [
+    TranslocoDirective,
+    MoneyPipe,
+    Card,
+    EmptyState,
+    PageHeader,
+    ExchangeRateWarning,
+    Chart,
+    Skeleton,
+  ],
   templateUrl: './reports.html',
   styleUrl: './reports.scss'
 })
@@ -87,6 +97,7 @@ export class Reports {
 
   private readonly rates = displayConverter(() => this.foreignCurrencies());
   private readonly converter = this.rates.converter;
+  protected readonly hasFallbackRate = this.rates.hasFallbackRate;
   protected readonly ratesReady = computed(() => this.converter() !== null);
 
   protected readonly formatMoney = (value: number): string =>

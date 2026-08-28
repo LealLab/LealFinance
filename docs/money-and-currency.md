@@ -29,18 +29,31 @@ string-based frontend money helpers, not in a display formatter.
 ## Exchange-rate lookup
 
 The backend stores provider rates in `exchange_rates` and user overrides in
-`manual_rates`. `get_exchange_rate` resolves a pair in this order:
+`manual_rates`. `get_exchange_rate` resolves a pair for a given date in this
+order:
 
 1. Same currency: `1` without a lookup.
 2. The caller's newest manual rate effective on or before the requested date.
 3. The inverse of the caller's manual rate.
-4. A cached provider rate for today.
-5. A live Open Exchange Rates request when `OPENEXCHANGERATES_APP_ID` exists.
+4. A cached rate for that date - a directly stored pair, or a USD bridge
+   (`quote / base`) built from the USD-anchored rows the refresh writes.
+5. A live refresh of every USD-anchored rate for that date, then the bridge
+   lookup again, when `OPENEXCHANGERATES_APP_ID` exists.
 6. A flagged 1:1 fallback when no provider key exists or the provider fails.
 
-The provider cache is for today's rate. Manual rates are the only lookup step
-that supports an arbitrary historical date. Rates are cached only when both
-currency codes exist in the `currencies` table.
+The Open Exchange Rates free plan quotes only against USD, refreshes hourly,
+and caps usage at 1,000 requests/month, so the cache is USD-anchored: one
+request (`latest.json`, or `historical/{date}.json` for a past date - no
+`symbols`, which is paid-only there) stores one `USD -> X` row per known
+currency, and every pair is a local division. Celery beat calls the refresh
+every six hours; a cache miss also triggers one inline, so a newly added
+currency resolves immediately. Rows are written only for currency codes that
+exist in the `currencies` table.
+
+A nightly Celery task (`backfill_fallback_conversions`) re-resolves
+transactions whose conversion was recorded at the 1:1 fallback before a key
+existed, using the rate that applied on each transaction's own date. It is
+bounded per run so a long history cannot exhaust the monthly quota.
 
 `GET /api/v1/meta/exchange-rate` returns the rate as a string plus `source` and
 `is_fallback`. The endpoint is authenticated because manual rates belong to

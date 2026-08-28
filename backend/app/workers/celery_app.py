@@ -26,20 +26,23 @@ celery_app.conf.update(
     enable_utc=True,
 )
 
-# Registered but inert: exchange_rates ships empty until multi-currency
-# support is actually built (see docs/money-and-currency.md). Flip
-# `enabled` in the task itself once there's a real provider to call.
 celery_app.conf.beat_schedule = {
-    # Before the rates refresh so a rule's cross-currency occurrences post
-    # against the freshest cached rate that slot produces - not required
-    # for correctness (recurring_posting.py fetches live/cached rates
-    # itself), just avoids two provider calls a couple hours apart.
     "post-recurring-transactions-daily": {
         "task": "app.workers.tasks.recurring.post_recurring_transactions",
         "schedule": crontab(hour=1, minute=0),
     },
-    "refresh-exchange-rates-daily": {
+    # Every 6h keeps the cache within the provider's hourly update cadence
+    # while staying far under the free plan's 1,000 requests/month (one
+    # request per run covers every currency). A cache miss also refreshes
+    # inline, so this is just the steady-state warm-up.
+    "refresh-exchange-rates": {
         "task": "app.workers.tasks.rates.refresh_exchange_rates",
-        "schedule": crontab(hour=3, minute=0),
+        "schedule": crontab(minute=0, hour="*/6"),
+    },
+    # Nightly, after the recurring post: re-resolve conversions frozen at
+    # the 1:1 fallback from before a provider key existed. Bounded per run.
+    "backfill-fallback-conversions-daily": {
+        "task": "app.workers.tasks.rates.backfill_fallback_conversions",
+        "schedule": crontab(hour=2, minute=0),
     },
 }

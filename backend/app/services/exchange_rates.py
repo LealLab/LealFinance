@@ -6,16 +6,24 @@ Resolution precedence:
 2. The caller's manual rate effective on or before the requested date
    (newest such rate wins).
 3. The inverse of the caller's manual rate for the reversed pair.
-4. A cached provider rate for today.
-5. A live provider lookup, cached for reuse the rest of the day.
+4. A cached rate for the requested date - either a directly stored pair or
+   a USD bridge (`quote / base`) built from the USD-anchored rows the
+   refresh writes.
+5. A live refresh of every USD-anchored rate for that date, then the same
+   bridge lookup.
 6. A safe 1:1 fallback, flagged `is_fallback=True`.
 
-Fetches a live rate from Open Exchange Rates when OPENEXCHANGERATES_APP_ID
-is configured, caching successful lookups in `exchange_rates` for the day.
-Without a key - or if the provider call fails - this returns a 1:1
-fallback rate, flagged so callers can show a warning rather than silently
-using a wrong number. Provider failures never propagate as an error - a
-broken exchange-rate lookup should never be why a request fails.
+The Open Exchange Rates free plan only quotes against USD and caps usage at
+1,000 requests/month, so the cache is USD-anchored: one `refresh_rates`
+call fetches `latest.json` (or `historical/{date}.json` for a past date)
+and stores one `USD -> X` row per known currency. Any pair is then a local
+division. Celery beat calls `refresh_rates` every few hours; a cache miss
+also triggers one inline so a newly added currency works immediately.
+
+Without a key - or if the provider call fails - lookups return a 1:1
+fallback, flagged so callers can show a warning rather than silently using
+a wrong number. Provider failures never propagate as an error - a broken
+exchange-rate lookup should never be why a request fails.
 
 Manual rates (steps 2-3) are user-scoped and only consulted when a caller
 passes `user_id` - see app/services/manual_rates.py for the CRUD side.
@@ -28,7 +36,8 @@ from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
 
 import httpx
-from sqlalchemy import select
+from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -43,7 +52,9 @@ FALLBACK_SOURCE = "fallback_1to1"
 IDENTITY_SOURCE = "identity"
 MANUAL_SOURCE = "manual"
 
+_ANCHOR = "USD"  # the only base the free plan quotes against
 _OXR_LATEST_URL = "https://openexchangerates.org/api/latest.json"
+_OXR_HISTORICAL_URL = "https://openexchangerates.org/api/historical/{date}.json"
 _RATE_QUANTUM = Decimal("0.0000000001")  # matches ExchangeRateValue: NUMERIC(19, 10)
 
 
@@ -70,6 +81,10 @@ def to_conversion_source(result: RateResult) -> str:
     return "quote"
 
 
+def _fallback(as_of: date) -> RateResult:
+    return RateResult(rate=Decimal("1"), is_fallback=True, source=FALLBACK_SOURCE, as_of=as_of)
+
+
 async def get_exchange_rate(
     db: AsyncSession,
     base_code: str,
@@ -80,18 +95,17 @@ async def get_exchange_rate(
 ) -> RateResult:
     base_code = base_code.upper()
     quote_code = quote_code.upper()
-    today = date.today()
-    as_of = as_of or today
+    as_of = as_of or date.today()
 
     if base_code == quote_code:
-        return RateResult(rate=Decimal("1"), is_fallback=False, source=IDENTITY_SOURCE, as_of=today)
+        return RateResult(rate=Decimal("1"), is_fallback=False, source=IDENTITY_SOURCE, as_of=as_of)
 
     if user_id is not None:
         manual = await _get_manual_rate(db, user_id, base_code, quote_code, as_of)
         if manual is not None:
             return manual
 
-    cached = await _get_cached_rate(db, base_code, quote_code, today)
+    cached = await _get_cached_rate(db, base_code, quote_code, as_of)
     if cached is not None:
         return cached
 
@@ -102,23 +116,32 @@ async def get_exchange_rate(
             base_code,
             quote_code,
         )
-        return RateResult(rate=Decimal("1"), is_fallback=True, source=FALLBACK_SOURCE, as_of=today)
+        return _fallback(as_of)
 
     try:
-        rate = await _fetch_rate_from_provider(
-            settings.openexchangerates_app_id, base_code, quote_code
-        )
+        await refresh_rates(db, as_of)
     except Exception:
         logger.warning(
-            "Failed to fetch %s->%s from Open Exchange Rates; using 1:1 fallback",
+            "Failed to refresh rates for %s (needed %s->%s); using 1:1 fallback",
+            as_of,
             base_code,
             quote_code,
             exc_info=True,
         )
-        return RateResult(rate=Decimal("1"), is_fallback=True, source=FALLBACK_SOURCE, as_of=today)
+        return _fallback(as_of)
 
-    await _cache_rate(db, base_code, quote_code, rate, today)
-    return RateResult(rate=rate, is_fallback=False, source=OXR_SOURCE, as_of=today)
+    cached = await _get_cached_rate(db, base_code, quote_code, as_of)
+    if cached is not None:
+        return cached
+
+    logger.warning(
+        "Refresh for %s did not yield %s->%s (currency not quoted by provider?); "
+        "using 1:1 fallback",
+        as_of,
+        base_code,
+        quote_code,
+    )
+    return _fallback(as_of)
 
 
 async def _get_manual_rate(
@@ -163,69 +186,104 @@ async def _get_manual_rate(
 async def _get_cached_rate(
     db: AsyncSession, base_code: str, quote_code: str, as_of: date
 ) -> RateResult | None:
-    result = await db.execute(
+    """A directly stored pair wins (legacy rows, and lets a manual direct
+    write shortcut the bridge); otherwise divide two USD-anchored rows."""
+    direct = await db.execute(
         select(ExchangeRate).where(
             ExchangeRate.base_code == base_code,
             ExchangeRate.quote_code == quote_code,
             ExchangeRate.as_of == as_of,
         )
     )
-    row = result.scalars().first()
-    if row is None:
+    row = direct.scalars().first()
+    if row is not None:
+        return RateResult(
+            rate=row.rate,
+            is_fallback=row.source == FALLBACK_SOURCE,
+            source=row.source,
+            as_of=row.as_of,
+        )
+
+    anchor_base = await _anchor_rate(db, base_code, as_of)
+    anchor_quote = await _anchor_rate(db, quote_code, as_of)
+    if anchor_base is None or anchor_quote is None:
         return None
-    return RateResult(
-        rate=row.rate,
-        is_fallback=row.source == FALLBACK_SOURCE,
-        source=row.source,
-        as_of=row.as_of,
+
+    rate = (anchor_quote / anchor_base).quantize(_RATE_QUANTUM, rounding=ROUND_HALF_UP)
+    return RateResult(rate=rate, is_fallback=False, source=OXR_SOURCE, as_of=as_of)
+
+
+async def _anchor_rate(db: AsyncSession, code: str, as_of: date) -> Decimal | None:
+    """`USD -> code` for `as_of`. USD against itself is 1 with no row."""
+    if code == _ANCHOR:
+        return Decimal(1)
+    result = await db.execute(
+        select(ExchangeRate.rate).where(
+            ExchangeRate.base_code == _ANCHOR,
+            ExchangeRate.quote_code == code,
+            ExchangeRate.as_of == as_of,
+            ExchangeRate.source == OXR_SOURCE,
+        )
     )
+    return result.scalars().first()
 
 
-async def _fetch_rate_from_provider(app_id: str, base_code: str, quote_code: str) -> Decimal:
-    """Open Exchange Rates' free plan only allows `base=USD` (changing the
-    base currency requires a paid plan) - so cross rates are computed via a
-    USD bridge from a single request: rate(A->B) = rates[B] / rates[A],
-    where rates[X] is "how many X per 1 USD" (rates["USD"] is always 1).
+async def refresh_rates(db: AsyncSession, as_of: date | None = None) -> int:
+    """Fetch every USD-anchored rate for `as_of` and upsert it into the
+    cache. No-op without a provider key. Returns the row count touched.
+
+    Writes on `db` and commits it - same contract as the old `_cache_rate`,
+    which the test harness (tests/conftest.py) relies on. Callers that hold
+    an in-flight write of their own should be aware of that commit.
     """
-    symbols = {base_code, quote_code, "USD"}
-    async with httpx.AsyncClient(timeout=10) as client:
-        response = await client.get(
-            _OXR_LATEST_URL,
-            params={"app_id": app_id, "symbols": ",".join(sorted(symbols))},
-        )
-        response.raise_for_status()
-        payload = response.json()
+    as_of = as_of or date.today()
+    settings = get_settings()
+    if not settings.openexchangerates_app_id:
+        return 0
 
-    rates = payload["rates"]
-    rate_base = Decimal(str(rates[base_code]))
-    rate_quote = Decimal(str(rates[quote_code]))
-    return (rate_quote / rate_base).quantize(_RATE_QUANTUM, rounding=ROUND_HALF_UP)
+    usd_rates = await _fetch_usd_rates(settings.openexchangerates_app_id, as_of)
 
+    known = set((await db.execute(select(Currency.code))).scalars().all())
+    values = [
+        {
+            "base_code": _ANCHOR,
+            "quote_code": code,
+            "rate": rate,
+            "as_of": as_of,
+            "source": OXR_SOURCE,
+        }
+        for code, rate in usd_rates.items()
+        if code in known and code != _ANCHOR
+    ]
+    if not values:
+        return 0
 
-async def _cache_rate(
-    db: AsyncSession, base_code: str, quote_code: str, rate: Decimal, as_of: date
-) -> None:
-    """Only persists when both currencies already exist in `currencies`
-    (exchange_rates has a foreign key to it) - an unrecognized currency
-    still gets a live rate returned to the caller, it just isn't cached."""
-    known = await db.execute(
-        select(Currency.code).where(Currency.code.in_([base_code, quote_code]))
-    )
-    if len(known.scalars().all()) != 2:
-        return
-
-    db.add(
-        ExchangeRate(
-            base_code=base_code,
-            quote_code=quote_code,
-            rate=rate,
-            as_of=as_of,
-            source=OXR_SOURCE,
-        )
+    stmt = pg_insert(ExchangeRate).values(values)
+    stmt = stmt.on_conflict_do_update(
+        constraint="uq_exchange_rate",
+        set_={"rate": stmt.excluded.rate, "updated_at": func.now()},
     )
     try:
+        await db.execute(stmt)
         await db.commit()
     except IntegrityError:
-        # Another concurrent request cached the same pair first - fine,
-        # the rate we already computed is still correct to return.
+        # A concurrent refresh raced us; its rows are as good as ours.
         await db.rollback()
+    return len(values)
+
+
+async def _fetch_usd_rates(app_id: str, as_of: date) -> dict[str, Decimal]:
+    """One request. `latest.json` for today, `historical/{date}.json`
+    otherwise - both are USD-based on every plan. `symbols` is deliberately
+    omitted (it is paid-only on the historical endpoint, and one unfiltered
+    response covers every currency anyway)."""
+    url = (
+        _OXR_LATEST_URL
+        if as_of >= date.today()
+        else _OXR_HISTORICAL_URL.format(date=as_of.isoformat())
+    )
+    async with httpx.AsyncClient(timeout=10) as client:
+        response = await client.get(url, params={"app_id": app_id})
+        response.raise_for_status()
+        payload = response.json()
+    return {code: Decimal(str(value)) for code, value in payload["rates"].items()}

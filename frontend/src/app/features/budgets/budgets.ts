@@ -43,6 +43,7 @@ import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { StatTile, StatTone } from '../../shared/ui/stat-tile/stat-tile';
@@ -76,6 +77,7 @@ interface BudgetRow extends BudgetProgress {
     Icon,
     PageHeader,
     ProgressBar,
+    ExchangeRateWarning,
     StatTile,
     Skeleton,
     BudgetFormModal,
@@ -140,7 +142,9 @@ export class Budgets {
   // budgetProgress/unbudgetedSpend feed the converted amount into sum(),
   // which throws on a currency mismatch, unlike convertedOrNull's tolerant
   // passthrough. Template gates the rows/totals on this too.
-  private readonly converter = pairsConverter(() => this.conversionPairs()).converter;
+  private readonly rates = pairsConverter(() => this.conversionPairs());
+  private readonly converter = this.rates.converter;
+  protected readonly hasFallbackRate = this.rates.hasFallbackRate;
   protected readonly ratesReady = computed(() => this.converter() !== null);
 
   protected readonly selectedMonth = signal(monthKey(new Date().toISOString()));

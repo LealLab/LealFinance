@@ -18,6 +18,7 @@ import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { GoalEntryModal, GoalEntryMode } from './goal-entry-modal';
@@ -46,6 +47,7 @@ interface GoalRow {
     Icon,
     PageHeader,
     ProgressBar,
+    ExchangeRateWarning,
     GoalFormModal,
     GoalEntryModal,
   ],
@@ -84,7 +86,9 @@ export class Goals {
     return Array.from(new Set(currencies.filter((currency) => currency !== display)));
   });
 
-  private readonly converter = displayConverter(() => this.foreignCurrencies()).converter;
+  private readonly rates = displayConverter(() => this.foreignCurrencies());
+  private readonly converter = this.rates.converter;
+  protected readonly hasFallbackRate = this.rates.hasFallbackRate;
 
   protected readonly rows = computed<GoalRow[]>(() => {
     const accounts = this.accountsById();

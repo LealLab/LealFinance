@@ -88,6 +88,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       API_SECRET_KEY: ${API_SECRET_KEY:?API_SECRET_KEY must be set}
+      OPENEXCHANGERATES_APP_ID: ${OPENEXCHANGERATES_APP_ID:-}
     depends_on:
       api:
         condition: service_healthy
@@ -117,6 +118,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       API_SECRET_KEY: ${API_SECRET_KEY:?API_SECRET_KEY must be set}
+      OPENEXCHANGERATES_APP_ID: ${OPENEXCHANGERATES_APP_ID:-}
     depends_on:
       api:
         condition: service_healthy
