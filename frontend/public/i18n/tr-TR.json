@@ -159,6 +159,7 @@
       "accounts": "Hesaplar",
       "transactions": "İşlemler",
       "categories": "Kategoriler",
+      "rules": "Kurallar",
       "budgets": "Bütçeler",
       "goals": "Hedefler",
       "reports": "Raporlar",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "İptal",
         "save": "Kaydet"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Otomasyon",
+    "title": "Kurallar",
+    "description": "İçe aktarırken işlemleri otomatik olarak kategorilere ayırın.",
+    "card": {
+      "title": "Kategorilendirme kuralları"
+    },
+    "actions": {
+      "export": "Dışa aktar",
+      "import": "İçe aktar",
+      "packs": "Kural paketleri",
+      "reapply": "Yeniden uygula",
+      "add": "Ekle",
+      "delete": "Sil",
+      "edit": "Düzenle"
+    },
+    "sort": {
+      "label": "Şuna göre sırala",
+      "priority": "Öncelik",
+      "name": "Ad",
+      "category": "Kategori"
+    },
+    "empty": {
+      "title": "Henüz kategorilendirme kuralı yok",
+      "description": "İşlemleri içe aktarırken otomatik olarak kategorilere ayırmak için bir kural oluşturun."
+    },
+    "form": {
+      "newTitle": "Yeni kategorilendirme kuralı",
+      "editTitle": "Kategorilendirme kuralını düzenle",
+      "name": "Ad",
+      "priority": "Öncelik",
+      "active": "Etkin",
+      "category": "Kategori",
+      "match": "Eşleşme",
+      "matchAnd": "VE",
+      "matchOr": "VEYA",
+      "conditions": "Koşullar",
+      "conditionHint": "Bir veya daha fazla koşul kullanın.",
+      "value": "Değer",
+      "addCondition": "Koşul ekle",
+      "addGroup": "Grup ekle",
+      "remove": "Kaldır",
+      "saveError": "Kural kaydedilemedi. Tekrar deneyin.",
+      "badRegex": "Geçerli bir düzenli ifade girin.",
+      "needCondition": "En az bir koşul ekleyin.",
+      "blankValue": "Her koşul için bir değer gerekir."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Açıklama",
+        "notes": "Notlar",
+        "amount": "Tutar",
+        "type": "Tür"
+      },
+      "ops": {
+        "contains": "içerir",
+        "not_contains": "içermez",
+        "equals": "eşittir",
+        "not_equals": "eşit değildir",
+        "starts_with": "ile başlar",
+        "ends_with": "ile biter",
+        "regex": "regex ile eşleşir",
+        "gt": "büyüktür",
+        "gte": "en az",
+        "lt": "küçüktür",
+        "lte": "en fazla"
+      },
+      "join": {
+        "and": " VE ",
+        "or": " VEYA "
+      },
+      "typeValues": {
+        "income": "Gelir",
+        "expense": "Gider"
+      }
+    },
+    "delete": {
+      "title": "Kural silinsin mi?",
+      "message": "Bu işlem geri alınamaz. \"{{name}}\" kuralı silinsin mi?"
+    },
+    "reapply": {
+      "title": "Kurallar yeniden uygulansın mı?",
+      "message": "Kategorilendirme kuralları mevcut işlemlere uygulansın mı?",
+      "overwrite": "Mevcut kategorilerin üzerine yaz",
+      "done": "{{count}} işlem güncellendi."
+    },
+    "import": {
+      "title": "Kurallar içe aktarılsın mı?",
+      "message": "{{count}} kategorilendirme kuralı içe aktarılsın mı?",
+      "done": "{{imported}} kural içe aktarıldı; {{skipped}} kural atlandı.",
+      "invalid": "Bu dosya geçerli bir LealFinance kural dışa aktarma dosyası değil ({{count}} kural).",
+      "badgeTitle": "Eşleşen kural: {{name}}"
+    },
+    "packs": {
+      "title": "Kural paketleri",
+      "rulesCount": "{{count}} kural",
+      "install": "Yükle",
+      "installed": "Yüklendi",
+      "result": "{{installed}} kural yüklendi; {{skipped}} kural atlandı.",
+      "names": {
+        "BR": "Brezilya",
+        "US": "Amerika Birleşik Devletleri"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Tutar sıfır olamaz.",
         "missing_description": "Açıklama zorunludur."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Bu ada sahip bir kural zaten var.",
+      "not_found": "Bu kural bulunamadı.",
+      "no_conditions": "En az bir koşul ekleyin.",
+      "invalid_operator": "Bu operatör seçilen alan için geçerli değil.",
+      "blank_value": "Her koşul için bir değer gerekir.",
+      "invalid_regex": "Geçerli bir düzenli ifade girin.",
+      "invalid_amount": "Geçerli bir tutar girin.",
+      "invalid_type_value": "Geçerli bir işlem türü seçin."
+    },
+    "rule_pack": {
+      "not_found": "Bu kural paketi bulunamadı."
+    },
+    "rule_import": {
+      "invalid_format": "Bu dosya geçerli bir LealFinance kural dışa aktarma dosyası değil."
     }
   }
 }

@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
+import { CategorizationRule } from '../../domain/models/categorization-rule';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
@@ -56,6 +57,7 @@ export class MockStore {
   private readonly allocationsSignal = signal<BudgetAllocation[]>([]);
   private readonly expectedIncomeSignal = signal<ExpectedIncome[]>([]);
   private readonly recurringRulesSignal = signal<RecurringRule[]>([]);
+  private readonly categorizationRulesSignal = signal<CategorizationRule[]>([]);
   private readonly institutionsSignal = signal<Institution[]>([]);
   private readonly manualRatesSignal = signal<ManualRate[]>([]);
   private readonly marketDataLinkedProvidersSignal = signal<MarketDataProvider[]>([]);
@@ -72,6 +74,7 @@ export class MockStore {
   readonly allocations = this.allocationsSignal.asReadonly();
   readonly expectedIncome = this.expectedIncomeSignal.asReadonly();
   readonly recurringRules = this.recurringRulesSignal.asReadonly();
+  readonly categorizationRules = this.categorizationRulesSignal.asReadonly();
   readonly institutions = this.institutionsSignal.asReadonly();
   readonly manualRates = this.manualRatesSignal.asReadonly();
   readonly marketDataLinkedProviders = this.marketDataLinkedProvidersSignal.asReadonly();
@@ -94,6 +97,7 @@ export class MockStore {
     this.allocationsSignal.set(fixtures.allocations);
     this.expectedIncomeSignal.set(fixtures.expectedIncome);
     this.recurringRulesSignal.set(fixtures.recurringRules);
+    this.categorizationRulesSignal.set(fixtures.categorizationRules);
     this.institutionsSignal.set(fixtures.institutions);
     this.manualRatesSignal.set(fixtures.manualRates);
     this.marketDataLinkedProvidersSignal.set([]);
@@ -380,6 +384,28 @@ export class MockStore {
   deleteRecurringRule(id: string): void {
     if (!findEntity(this.recurringRulesSignal(), id)) notFound('RecurringRule', id);
     this.recurringRulesSignal.update((list) => removeEntity(list, id));
+  }
+
+  // --- Categorization rules --------------------------------------------
+
+  createCategorizationRule(input: Omit<CategorizationRule, 'id'>): CategorizationRule {
+    const rule: CategorizationRule = { ...input, id: newId() };
+    this.categorizationRulesSignal.update((list) => [...list, rule]);
+    return rule;
+  }
+
+  updateCategorizationRule(
+    id: string,
+    changes: Partial<Omit<CategorizationRule, 'id'>>,
+  ): CategorizationRule {
+    if (!findEntity(this.categorizationRulesSignal(), id)) notFound('CategorizationRule', id);
+    this.categorizationRulesSignal.update((list) => updateEntity(list, id, changes));
+    return findEntity(this.categorizationRulesSignal(), id)!;
+  }
+
+  deleteCategorizationRule(id: string): void {
+    if (!findEntity(this.categorizationRulesSignal(), id)) notFound('CategorizationRule', id);
+    this.categorizationRulesSignal.update((list) => removeEntity(list, id));
   }
 
   // --- Manual exchange rates ----------------------------------------------

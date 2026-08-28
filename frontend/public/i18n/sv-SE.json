@@ -159,6 +159,7 @@
       "accounts": "Konton",
       "transactions": "Transaktioner",
       "categories": "Kategorier",
+      "rules": "Regler",
       "budgets": "Budgetar",
       "goals": "Mål",
       "reports": "Rapporter",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Avbryt",
         "save": "Spara"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatisering",
+    "title": "Regler",
+    "description": "Kategorisera transaktioner automatiskt när du importerar dem.",
+    "card": {
+      "title": "Kategoriseringsregler"
+    },
+    "actions": {
+      "export": "Exportera",
+      "import": "Importera",
+      "packs": "Regelpaket",
+      "reapply": "Tillämpa igen",
+      "add": "Lägg till",
+      "delete": "Ta bort",
+      "edit": "Redigera"
+    },
+    "sort": {
+      "label": "Sortera efter",
+      "priority": "Prioritet",
+      "name": "Namn",
+      "category": "Kategori"
+    },
+    "empty": {
+      "title": "Inga kategoriseringsregler ännu",
+      "description": "Skapa en regel som kategoriserar transaktioner automatiskt när du importerar dem."
+    },
+    "form": {
+      "newTitle": "Ny kategoriseringsregel",
+      "editTitle": "Redigera kategoriseringsregel",
+      "name": "Namn",
+      "priority": "Prioritet",
+      "active": "Aktiv",
+      "category": "Kategori",
+      "match": "Matchning",
+      "matchAnd": "OCH",
+      "matchOr": "ELLER",
+      "conditions": "Villkor",
+      "conditionHint": "Använd ett eller flera villkor.",
+      "value": "Värde",
+      "addCondition": "Lägg till villkor",
+      "addGroup": "Lägg till grupp",
+      "remove": "Ta bort",
+      "saveError": "Det gick inte att spara regeln. Försök igen.",
+      "badRegex": "Ange ett giltigt reguljärt uttryck.",
+      "needCondition": "Lägg till minst ett villkor.",
+      "blankValue": "Varje villkor behöver ett värde."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Beskrivning",
+        "notes": "Anteckningar",
+        "amount": "Belopp",
+        "type": "Typ"
+      },
+      "ops": {
+        "contains": "innehåller",
+        "not_contains": "innehåller inte",
+        "equals": "är lika med",
+        "not_equals": "är inte lika med",
+        "starts_with": "börjar med",
+        "ends_with": "slutar med",
+        "regex": "matchar regex",
+        "gt": "är större än",
+        "gte": "är minst",
+        "lt": "är mindre än",
+        "lte": "är högst"
+      },
+      "join": {
+        "and": " OCH ",
+        "or": " ELLER "
+      },
+      "typeValues": {
+        "income": "Inkomst",
+        "expense": "Utgift"
+      }
+    },
+    "delete": {
+      "title": "Ta bort regel?",
+      "message": "Åtgärden kan inte ångras. Vill du ta bort regeln \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Tillämpa regler igen?",
+      "message": "Tillämpa kategoriseringsregler på befintliga transaktioner?",
+      "overwrite": "Skriv över befintliga kategorier",
+      "done": "{{count}} transaktioner uppdaterade."
+    },
+    "import": {
+      "title": "Importera regler?",
+      "message": "Importera {{count}} kategoriseringsregler?",
+      "done": "{{imported}} regler importerade; {{skipped}} hoppades över.",
+      "invalid": "Filen är inte en giltig export av LealFinance-regler ({{count}} regler).",
+      "badgeTitle": "Matchande regel: {{name}}"
+    },
+    "packs": {
+      "title": "Regelpaket",
+      "rulesCount": "{{count}} regler",
+      "install": "Installera",
+      "installed": "Installerat",
+      "result": "{{installed}} regler installerade; {{skipped}} hoppades över.",
+      "names": {
+        "BR": "Brasilien",
+        "US": "USA"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Beloppet kan inte vara noll.",
         "missing_description": "Beskrivning krävs."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "En regel med det här namnet finns redan.",
+      "not_found": "Regeln kunde inte hittas.",
+      "no_conditions": "Lägg till minst ett villkor.",
+      "invalid_operator": "Den här operatorn är inte giltig för det valda fältet.",
+      "blank_value": "Varje villkor behöver ett värde.",
+      "invalid_regex": "Ange ett giltigt reguljärt uttryck.",
+      "invalid_amount": "Ange ett giltigt belopp.",
+      "invalid_type_value": "Välj en giltig transaktionstyp."
+    },
+    "rule_pack": {
+      "not_found": "Regelpaketet kunde inte hittas."
+    },
+    "rule_import": {
+      "invalid_format": "Filen är inte en giltig export av LealFinance-regler."
     }
   }
 }

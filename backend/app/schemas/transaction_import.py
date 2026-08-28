@@ -47,6 +47,7 @@ class ImportRowRead(BaseModel):
     amount: Decimal | None
     category_id: UUID | None
     category_name: str | None
+    rule_name: str | None
     notes: str | None
     error: ImportRowError | None
     duplicate: bool

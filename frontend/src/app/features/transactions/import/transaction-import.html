@@ -198,18 +198,29 @@
                 <td class="p-3 align-top">
                   <select
                     class="form-input"
-                    [value]="row.categoryId ?? ''"
                     (change)="setRowCategory(row, $any($event.target).value)"
                   >
-                    <option value="">{{ t('transactions.import.grid.noCategory') }}</option>
+                    <option value="" [selected]="!row.categoryId">
+                      {{ t('transactions.import.grid.noCategory') }}
+                    </option>
                     @for (group of categoryGroupsForType(row.type); track group.group.id) {
                       <optgroup [label]="group.group.name">
                         @for (category of group.categories; track category.id) {
-                          <option [value]="category.id">{{ category.name }}</option>
+                          <option [value]="category.id" [selected]="category.id === row.categoryId">
+                            {{ category.name }}
+                          </option>
                         }
                       </optgroup>
                     }
                   </select>
+                  @if (row.ruleName) {
+                    <span
+                      class="mt-1 block text-xs text-accent"
+                      [title]="t('rules.import.badgeTitle', { name: row.ruleName })"
+                    >
+                      {{ t('rules.import.badgeTitle', { name: row.ruleName }) }}
+                    </span>
+                  }
                 </td>
                 <td class="p-3 align-top">
                   <input

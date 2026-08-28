@@ -159,6 +159,7 @@
       "accounts": "Tài khoản",
       "transactions": "Giao dịch",
       "categories": "Danh mục",
+      "rules": "Quy tắc",
       "budgets": "Ngân sách",
       "goals": "Mục tiêu",
       "reports": "Báo cáo",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Hủy",
         "save": "Lưu"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Tự động hóa",
+    "title": "Quy tắc",
+    "description": "Tự động phân loại giao dịch khi bạn nhập chúng.",
+    "card": {
+      "title": "Quy tắc phân loại"
+    },
+    "actions": {
+      "export": "Xuất",
+      "import": "Nhập",
+      "packs": "Gói quy tắc",
+      "reapply": "Áp dụng lại",
+      "add": "Thêm",
+      "delete": "Xóa",
+      "edit": "Chỉnh sửa"
+    },
+    "sort": {
+      "label": "Sắp xếp theo",
+      "priority": "Ưu tiên",
+      "name": "Tên",
+      "category": "Danh mục"
+    },
+    "empty": {
+      "title": "Chưa có quy tắc phân loại",
+      "description": "Tạo quy tắc để tự động phân loại giao dịch khi bạn nhập chúng."
+    },
+    "form": {
+      "newTitle": "Quy tắc phân loại mới",
+      "editTitle": "Chỉnh sửa quy tắc phân loại",
+      "name": "Tên",
+      "priority": "Ưu tiên",
+      "active": "Đang hoạt động",
+      "category": "Danh mục",
+      "match": "Khớp",
+      "matchAnd": "VÀ",
+      "matchOr": "HOẶC",
+      "conditions": "Điều kiện",
+      "conditionHint": "Sử dụng một hoặc nhiều điều kiện.",
+      "value": "Giá trị",
+      "addCondition": "Thêm điều kiện",
+      "addGroup": "Thêm nhóm",
+      "remove": "Xóa",
+      "saveError": "Không thể lưu quy tắc. Hãy thử lại.",
+      "badRegex": "Nhập biểu thức chính quy hợp lệ.",
+      "needCondition": "Thêm ít nhất một điều kiện.",
+      "blankValue": "Mỗi điều kiện cần có một giá trị."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Mô tả",
+        "notes": "Ghi chú",
+        "amount": "Số tiền",
+        "type": "Loại"
+      },
+      "ops": {
+        "contains": "chứa",
+        "not_contains": "không chứa",
+        "equals": "bằng",
+        "not_equals": "không bằng",
+        "starts_with": "bắt đầu bằng",
+        "ends_with": "kết thúc bằng",
+        "regex": "khớp với regex",
+        "gt": "lớn hơn",
+        "gte": "ít nhất",
+        "lt": "nhỏ hơn",
+        "lte": "không quá"
+      },
+      "join": {
+        "and": " VÀ ",
+        "or": " HOẶC "
+      },
+      "typeValues": {
+        "income": "Thu nhập",
+        "expense": "Chi tiêu"
+      }
+    },
+    "delete": {
+      "title": "Xóa quy tắc?",
+      "message": "Không thể hoàn tác thao tác này. Bạn có muốn xóa quy tắc \"{{name}}\" không?"
+    },
+    "reapply": {
+      "title": "Áp dụng lại quy tắc?",
+      "message": "Áp dụng quy tắc phân loại cho các giao dịch hiện có?",
+      "overwrite": "Ghi đè danh mục hiện có",
+      "done": "Đã cập nhật {{count}} giao dịch."
+    },
+    "import": {
+      "title": "Nhập quy tắc?",
+      "message": "Nhập {{count}} quy tắc phân loại?",
+      "done": "Đã nhập {{imported}} quy tắc; đã bỏ qua {{skipped}}.",
+      "invalid": "Tệp này không phải là bản xuất quy tắc LealFinance hợp lệ ({{count}} quy tắc).",
+      "badgeTitle": "Quy tắc khớp: {{name}}"
+    },
+    "packs": {
+      "title": "Gói quy tắc",
+      "rulesCount": "{{count}} quy tắc",
+      "install": "Cài đặt",
+      "installed": "Đã cài đặt",
+      "result": "Đã cài đặt {{installed}} quy tắc; đã bỏ qua {{skipped}}.",
+      "names": {
+        "BR": "Brazil",
+        "US": "Hoa Kỳ"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Số tiền không được bằng 0.",
         "missing_description": "Cần có mô tả."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Đã có quy tắc với tên này.",
+      "not_found": "Không tìm thấy quy tắc này.",
+      "no_conditions": "Thêm ít nhất một điều kiện.",
+      "invalid_operator": "Toán tử này không hợp lệ với trường đã chọn.",
+      "blank_value": "Mỗi điều kiện cần có một giá trị.",
+      "invalid_regex": "Nhập biểu thức chính quy hợp lệ.",
+      "invalid_amount": "Nhập số tiền hợp lệ.",
+      "invalid_type_value": "Chọn loại giao dịch hợp lệ."
+    },
+    "rule_pack": {
+      "not_found": "Không tìm thấy gói quy tắc này."
+    },
+    "rule_import": {
+      "invalid_format": "Tệp này không phải là bản xuất quy tắc LealFinance hợp lệ."
     }
   }
 }

@@ -159,6 +159,7 @@
       "accounts": "Tilit",
       "transactions": "Tapahtumat",
       "categories": "Luokat",
+      "rules": "Säännöt",
       "budgets": "Budjetit",
       "goals": "Tavoitteet",
       "reports": "Raportit",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Peruuta",
         "save": "Tallenna"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automaatio",
+    "title": "Säännöt",
+    "description": "Luokittele tapahtumat automaattisesti tuonnin yhteydessä.",
+    "card": {
+      "title": "Luokittelusäännöt"
+    },
+    "actions": {
+      "export": "Vie",
+      "import": "Tuo",
+      "packs": "Sääntöpaketit",
+      "reapply": "Käytä uudelleen",
+      "add": "Lisää",
+      "delete": "Poista",
+      "edit": "Muokkaa"
+    },
+    "sort": {
+      "label": "Järjestä",
+      "priority": "Prioriteetti",
+      "name": "Nimi",
+      "category": "Luokka"
+    },
+    "empty": {
+      "title": "Ei luokittelusääntöjä vielä",
+      "description": "Luo sääntö, joka luokittelee tapahtumat automaattisesti tuonnin yhteydessä."
+    },
+    "form": {
+      "newTitle": "Uusi luokittelusääntö",
+      "editTitle": "Muokkaa luokittelusääntöä",
+      "name": "Nimi",
+      "priority": "Prioriteetti",
+      "active": "Aktiivinen",
+      "category": "Luokka",
+      "match": "Vastaavuus",
+      "matchAnd": "JA",
+      "matchOr": "TAI",
+      "conditions": "Ehdot",
+      "conditionHint": "Käytä yhtä tai useampaa ehtoa.",
+      "value": "Arvo",
+      "addCondition": "Lisää ehto",
+      "addGroup": "Lisää ryhmä",
+      "remove": "Poista",
+      "saveError": "Säännön tallentaminen ei onnistunut. Yritä uudelleen.",
+      "badRegex": "Anna kelvollinen säännöllinen lauseke.",
+      "needCondition": "Lisää vähintään yksi ehto.",
+      "blankValue": "Jokainen ehto tarvitsee arvon."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Kuvaus",
+        "notes": "Muistiinpanot",
+        "amount": "Summa",
+        "type": "Tyyppi"
+      },
+      "ops": {
+        "contains": "sisältää",
+        "not_contains": "ei sisällä",
+        "equals": "on yhtä suuri kuin",
+        "not_equals": "ei ole yhtä suuri kuin",
+        "starts_with": "alkaa",
+        "ends_with": "päättyy",
+        "regex": "vastaa säännöllistä lauseketta",
+        "gt": "on suurempi kuin",
+        "gte": "on vähintään",
+        "lt": "on pienempi kuin",
+        "lte": "on enintään"
+      },
+      "join": {
+        "and": " JA ",
+        "or": " TAI "
+      },
+      "typeValues": {
+        "income": "Tulot",
+        "expense": "Menot"
+      }
+    },
+    "delete": {
+      "title": "Poistetaanko sääntö?",
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa säännön \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Käytetäänkö sääntöjä uudelleen?",
+      "message": "Käytetäänkö luokittelusääntöjä olemassa oleviin tapahtumiin?",
+      "overwrite": "Korvaa nykyiset luokat",
+      "done": "{{count}} tapahtumaa päivitetty."
+    },
+    "import": {
+      "title": "Tuodaanko säännöt?",
+      "message": "Tuodaanko {{count}} luokittelusääntöä?",
+      "done": "Tuotu {{imported}} sääntöä; ohitettu {{skipped}}.",
+      "invalid": "Tämä tiedosto ei ole kelvollinen LealFinance-sääntöjen vientitiedosto ({{count}} sääntöä).",
+      "badgeTitle": "Vastaava sääntö: {{name}}"
+    },
+    "packs": {
+      "title": "Sääntöpaketit",
+      "rulesCount": "{{count}} sääntöä",
+      "install": "Asenna",
+      "installed": "Asennettu",
+      "result": "Asennettu {{installed}} sääntöä; ohitettu {{skipped}}.",
+      "names": {
+        "BR": "Brasilia",
+        "US": "Yhdysvallat"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Summa ei voi olla nolla.",
         "missing_description": "Kuvaus vaaditaan."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Samanniminen sääntö on jo olemassa.",
+      "not_found": "Sääntöä ei löytynyt.",
+      "no_conditions": "Lisää vähintään yksi ehto.",
+      "invalid_operator": "Tämä operaattori ei kelpaa valitulle kentälle.",
+      "blank_value": "Jokainen ehto tarvitsee arvon.",
+      "invalid_regex": "Anna kelvollinen säännöllinen lauseke.",
+      "invalid_amount": "Anna kelvollinen summa.",
+      "invalid_type_value": "Valitse kelvollinen tapahtumatyyppi."
+    },
+    "rule_pack": {
+      "not_found": "Sääntöpakettia ei löytynyt."
+    },
+    "rule_import": {
+      "invalid_format": "Tämä tiedosto ei ole kelvollinen LealFinance-sääntöjen vientitiedosto."
     }
   }
 }

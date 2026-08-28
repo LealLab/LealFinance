@@ -159,6 +159,7 @@
       "accounts": "Accounts",
       "transactions": "Transactions",
       "categories": "Categories",
+      "rules": "Rules",
       "budgets": "Budgets",
       "goals": "Goals",
       "reports": "Reports",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Cancel",
         "save": "Save"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automation",
+    "title": "Rules",
+    "description": "Automatically categorize transactions as you import them.",
+    "card": {
+      "title": "Categorization Rules"
+    },
+    "actions": {
+      "export": "Export",
+      "import": "Import",
+      "packs": "Rule Packs",
+      "reapply": "Reapply",
+      "add": "Add",
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "sort": {
+      "label": "Sort by",
+      "priority": "Priority",
+      "name": "Name",
+      "category": "Category"
+    },
+    "empty": {
+      "title": "No categorization rules yet",
+      "description": "Create a rule to automatically categorize transactions as you import them."
+    },
+    "form": {
+      "newTitle": "New categorization rule",
+      "editTitle": "Edit categorization rule",
+      "name": "Name",
+      "priority": "Priority",
+      "active": "Active",
+      "category": "Category",
+      "match": "Match",
+      "matchAnd": "AND",
+      "matchOr": "OR",
+      "conditions": "Conditions",
+      "conditionHint": "Use one or more conditions.",
+      "value": "Value",
+      "addCondition": "Add condition",
+      "addGroup": "Add group",
+      "remove": "Remove",
+      "saveError": "Could not save the rule. Try again.",
+      "badRegex": "Enter a valid regular expression.",
+      "needCondition": "Add at least one condition.",
+      "blankValue": "Every condition needs a value."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Description",
+        "notes": "Notes",
+        "amount": "Amount",
+        "type": "Type"
+      },
+      "ops": {
+        "contains": "contains",
+        "not_contains": "does not contain",
+        "equals": "equals",
+        "not_equals": "does not equal",
+        "starts_with": "starts with",
+        "ends_with": "ends with",
+        "regex": "matches regex",
+        "gt": "is greater than",
+        "gte": "is at least",
+        "lt": "is less than",
+        "lte": "is at most"
+      },
+      "join": {
+        "and": " AND ",
+        "or": " OR "
+      },
+      "typeValues": {
+        "income": "Income",
+        "expense": "Expense"
+      }
+    },
+    "delete": {
+      "title": "Delete rule?",
+      "message": "This action cannot be undone. Do you want to delete the rule \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Reapply rules?",
+      "message": "Apply categorization rules to existing transactions?",
+      "overwrite": "Overwrite existing categories",
+      "done": "{{count}} transactions updated."
+    },
+    "import": {
+      "title": "Import rules?",
+      "message": "Import {{count}} categorization rules?",
+      "done": "Imported {{imported}} rules; skipped {{skipped}}.",
+      "invalid": "This file is not a valid LealFinance rules export ({{count}} rules).",
+      "badgeTitle": "Matched rule: {{name}}"
+    },
+    "packs": {
+      "title": "Rule Packs",
+      "rulesCount": "{{count}} rules",
+      "install": "Install",
+      "installed": "Installed",
+      "result": "Installed {{installed}} rules; skipped {{skipped}}.",
+      "names": {
+        "BR": "Brazil",
+        "US": "United States"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Amount can't be zero.",
         "missing_description": "Description is required."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "A rule with this name already exists.",
+      "not_found": "This rule could not be found.",
+      "no_conditions": "Add at least one condition.",
+      "invalid_operator": "This operator is not valid for the selected field.",
+      "blank_value": "Every condition needs a value.",
+      "invalid_regex": "Enter a valid regular expression.",
+      "invalid_amount": "Enter a valid amount.",
+      "invalid_type_value": "Select a valid transaction type."
+    },
+    "rule_pack": {
+      "not_found": "This rule pack could not be found."
+    },
+    "rule_import": {
+      "invalid_format": "This file is not a valid LealFinance rules export."
     }
   }
 }

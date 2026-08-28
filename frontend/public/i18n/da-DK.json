@@ -159,6 +159,7 @@
       "accounts": "Konti",
       "transactions": "Transaktioner",
       "categories": "Kategorier",
+      "rules": "Regler",
       "budgets": "Budgetter",
       "goals": "Mål",
       "reports": "Rapporter",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Annuller",
         "save": "Gem"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatisering",
+    "title": "Regler",
+    "description": "Kategoriser transaktioner automatisk, når du importerer dem.",
+    "card": {
+      "title": "Kategoriseringsregler"
+    },
+    "actions": {
+      "export": "Eksportér",
+      "import": "Importér",
+      "packs": "Regelpakker",
+      "reapply": "Anvend igen",
+      "add": "Tilføj",
+      "delete": "Slet",
+      "edit": "Rediger"
+    },
+    "sort": {
+      "label": "Sortér efter",
+      "priority": "Prioritet",
+      "name": "Navn",
+      "category": "Kategori"
+    },
+    "empty": {
+      "title": "Ingen kategoriseringsregler endnu",
+      "description": "Opret en regel for automatisk at kategorisere transaktioner, når du importerer dem."
+    },
+    "form": {
+      "newTitle": "Ny kategoriseringsregel",
+      "editTitle": "Rediger kategoriseringsregel",
+      "name": "Navn",
+      "priority": "Prioritet",
+      "active": "Aktiv",
+      "category": "Kategori",
+      "match": "Match",
+      "matchAnd": "OG",
+      "matchOr": "ELLER",
+      "conditions": "Betingelser",
+      "conditionHint": "Brug en eller flere betingelser.",
+      "value": "Værdi",
+      "addCondition": "Tilføj betingelse",
+      "addGroup": "Tilføj gruppe",
+      "remove": "Fjern",
+      "saveError": "Reglen kunne ikke gemmes. Prøv igen.",
+      "badRegex": "Indtast et gyldigt regulært udtryk.",
+      "needCondition": "Tilføj mindst én betingelse.",
+      "blankValue": "Alle betingelser skal have en værdi."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Beskrivelse",
+        "notes": "Noter",
+        "amount": "Beløb",
+        "type": "Type"
+      },
+      "ops": {
+        "contains": "indeholder",
+        "not_contains": "indeholder ikke",
+        "equals": "er lig med",
+        "not_equals": "er ikke lig med",
+        "starts_with": "starter med",
+        "ends_with": "slutter med",
+        "regex": "matcher regex",
+        "gt": "er større end",
+        "gte": "er mindst",
+        "lt": "er mindre end",
+        "lte": "er højst"
+      },
+      "join": {
+        "and": " OG ",
+        "or": " ELLER "
+      },
+      "typeValues": {
+        "income": "Indtægt",
+        "expense": "Udgift"
+      }
+    },
+    "delete": {
+      "title": "Slet regel?",
+      "message": "Denne handling kan ikke fortrydes. Vil du slette reglen \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Anvend regler igen?",
+      "message": "Anvend kategoriseringsregler på eksisterende transaktioner?",
+      "overwrite": "Overskriv eksisterende kategorier",
+      "done": "{{count}} transaktioner opdateret."
+    },
+    "import": {
+      "title": "Importér regler?",
+      "message": "Importér {{count}} kategoriseringsregler?",
+      "done": "Importerede {{imported}} regler; {{skipped}} sprunget over.",
+      "invalid": "Denne fil er ikke en gyldig LealFinance-eksport af regler ({{count}} regler).",
+      "badgeTitle": "Matchet regel: {{name}}"
+    },
+    "packs": {
+      "title": "Regelpakker",
+      "rulesCount": "{{count}} regler",
+      "install": "Installér",
+      "installed": "Installeret",
+      "result": "Installerede {{installed}} regler; {{skipped}} sprunget over.",
+      "names": {
+        "BR": "Brasilien",
+        "US": "USA"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Beløbet kan ikke være nul.",
         "missing_description": "Beskrivelse er påkrævet."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Der findes allerede en regel med dette navn.",
+      "not_found": "Reglen blev ikke fundet.",
+      "no_conditions": "Tilføj mindst én betingelse.",
+      "invalid_operator": "Denne operator er ikke gyldig for det valgte felt.",
+      "blank_value": "Alle betingelser skal have en værdi.",
+      "invalid_regex": "Indtast et gyldigt regulært udtryk.",
+      "invalid_amount": "Indtast et gyldigt beløb.",
+      "invalid_type_value": "Vælg en gyldig transaktionstype."
+    },
+    "rule_pack": {
+      "not_found": "Regelpakken blev ikke fundet."
+    },
+    "rule_import": {
+      "invalid_format": "Denne fil er ikke en gyldig LealFinance-eksport af regler."
     }
   }
 }

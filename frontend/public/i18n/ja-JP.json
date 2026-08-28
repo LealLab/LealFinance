@@ -159,6 +159,7 @@
       "accounts": "口座",
       "transactions": "取引",
       "categories": "カテゴリ",
+      "rules": "ルール",
       "budgets": "予算",
       "goals": "目標",
       "reports": "レポート",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "キャンセル",
         "save": "保存"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "自動化",
+    "title": "ルール",
+    "description": "インポート時に取引を自動で分類します。",
+    "card": {
+      "title": "分類ルール"
+    },
+    "actions": {
+      "export": "エクスポート",
+      "import": "インポート",
+      "packs": "ルールパック",
+      "reapply": "再適用",
+      "add": "追加",
+      "delete": "削除",
+      "edit": "編集"
+    },
+    "sort": {
+      "label": "並べ替え",
+      "priority": "優先度",
+      "name": "名前",
+      "category": "カテゴリ"
+    },
+    "empty": {
+      "title": "分類ルールはまだありません",
+      "description": "インポート時に取引を自動で分類するルールを作成します。"
+    },
+    "form": {
+      "newTitle": "新しい分類ルール",
+      "editTitle": "分類ルールを編集",
+      "name": "名前",
+      "priority": "優先度",
+      "active": "有効",
+      "category": "カテゴリ",
+      "match": "一致",
+      "matchAnd": "かつ",
+      "matchOr": "または",
+      "conditions": "条件",
+      "conditionHint": "1つ以上の条件を使用してください。",
+      "value": "値",
+      "addCondition": "条件を追加",
+      "addGroup": "グループを追加",
+      "remove": "削除",
+      "saveError": "ルールを保存できませんでした。もう一度お試しください。",
+      "badRegex": "有効な正規表現を入力してください。",
+      "needCondition": "条件を1つ以上追加してください。",
+      "blankValue": "すべての条件に値が必要です。"
+    },
+    "conditions": {
+      "fields": {
+        "description": "説明",
+        "notes": "メモ",
+        "amount": "金額",
+        "type": "種類"
+      },
+      "ops": {
+        "contains": "含む",
+        "not_contains": "含まない",
+        "equals": "等しい",
+        "not_equals": "等しくない",
+        "starts_with": "で始まる",
+        "ends_with": "で終わる",
+        "regex": "正規表現に一致",
+        "gt": "より大きい",
+        "gte": "以上",
+        "lt": "より小さい",
+        "lte": "以下"
+      },
+      "join": {
+        "and": " かつ ",
+        "or": " または "
+      },
+      "typeValues": {
+        "income": "収入",
+        "expense": "支出"
+      }
+    },
+    "delete": {
+      "title": "ルールを削除しますか？",
+      "message": "この操作は元に戻せません。ルール「{{name}}」を削除しますか？"
+    },
+    "reapply": {
+      "title": "ルールを再適用しますか？",
+      "message": "既存の取引に分類ルールを適用しますか？",
+      "overwrite": "既存のカテゴリを上書き",
+      "done": "{{count}}件の取引を更新しました。"
+    },
+    "import": {
+      "title": "ルールをインポートしますか？",
+      "message": "{{count}}件の分類ルールをインポートしますか？",
+      "done": "{{imported}}件のルールをインポートしました。{{skipped}}件をスキップしました。",
+      "invalid": "このファイルは有効なLealFinanceルールのエクスポートではありません（{{count}}件のルール）。",
+      "badgeTitle": "一致したルール：{{name}}"
+    },
+    "packs": {
+      "title": "ルールパック",
+      "rulesCount": "{{count}}件のルール",
+      "install": "インストール",
+      "installed": "インストール済み",
+      "result": "{{installed}}件のルールをインストールしました。{{skipped}}件をスキップしました。",
+      "names": {
+        "BR": "ブラジル",
+        "US": "アメリカ合衆国"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "金額を0にすることはできません。",
         "missing_description": "説明は必須です。"
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "この名前のルールはすでに存在します。",
+      "not_found": "このルールが見つかりません。",
+      "no_conditions": "条件を1つ以上追加してください。",
+      "invalid_operator": "選択したフィールドではこの演算子を使用できません。",
+      "blank_value": "すべての条件に値が必要です。",
+      "invalid_regex": "有効な正規表現を入力してください。",
+      "invalid_amount": "有効な金額を入力してください。",
+      "invalid_type_value": "有効な取引種別を選択してください。"
+    },
+    "rule_pack": {
+      "not_found": "このルールパックが見つかりません。"
+    },
+    "rule_import": {
+      "invalid_format": "このファイルは有効なLealFinanceルールのエクスポートではありません。"
     }
   }
 }

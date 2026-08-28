@@ -142,6 +142,7 @@ export interface ImportRowWire {
   amount: string | null;
   category_id: string | null;
   category_name: string | null;
+  rule_name: string | null;
   notes: string | null;
   error: string | null;
   duplicate: boolean;
@@ -187,6 +188,48 @@ export interface RecurringRuleWire {
 // last_posted_date is a server-managed posting cursor - never written by the client.
 export type RecurringRuleInputWire = Omit<RecurringRuleWire, 'id' | 'last_posted_date'>;
 export type RecurringRulePatchWire = NullablePatch<RecurringRuleInputWire>;
+
+export interface CategorizationRuleWire {
+  id: string;
+  name: string;
+  priority: number;
+  is_active: boolean;
+  match_op: 'and' | 'or';
+  conditions: unknown[];
+  category_id: string;
+}
+export type CategorizationRuleInputWire = Omit<CategorizationRuleWire, 'id'>;
+export type CategorizationRulePatchWire = NullablePatch<CategorizationRuleInputWire>;
+
+export interface RulePackWire {
+  code: string;
+  rule_count: number;
+  installed: boolean;
+}
+
+export interface RuleImportItemWire {
+  name: string;
+  match_op: 'and' | 'or';
+  priority: number;
+  is_active: boolean;
+  category: string;
+  conditions: unknown[];
+}
+
+export interface RuleImportRequestWire {
+  rules: RuleImportItemWire[];
+  replace: boolean;
+}
+
+export interface RuleImportResultWire {
+  imported: number;
+  skipped: number;
+}
+
+export interface RulePackInstallResultWire {
+  installed: number;
+  skipped: number;
+}
 
 export interface ManualRateWire {
   id: string;

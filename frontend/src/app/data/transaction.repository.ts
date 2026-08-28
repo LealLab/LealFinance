@@ -57,6 +57,7 @@ export interface ImportRow {
   amount?: string;
   categoryId?: string;
   categoryName?: string;
+  ruleName?: string;
   notes?: string;
   error?: string;
   duplicate: boolean;

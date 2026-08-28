@@ -28,6 +28,8 @@ from app.models.account import Account
 from app.models.category import Category
 from app.schemas.transaction_import import ImportOptions
 from app.services import ownership
+from app.services.categorization_rules import load_active_rules
+from app.services.rule_engine import RuleInput, first_match
 from app.services.transactions import list_transactions
 
 MAX_CONTENT_BYTES = 2 * 1024 * 1024
@@ -212,6 +214,7 @@ class ImportRowResult:
     amount: Decimal | None
     category_id: UUID | None
     category_name: str | None
+    rule_name: str | None
     notes: str | None
     error: str | None
     duplicate: bool
@@ -261,6 +264,7 @@ async def preview_import(
     category_index = {
         (category.kind, category.name.strip().casefold()): category.id for category in categories
     }
+    rules = await load_active_rules(db, user_id)
 
     valid_dates = [row.date for row in parsed if row.date is not None]
     existing_keys: set[tuple[date_type, Decimal, str]] = set()
@@ -276,28 +280,48 @@ async def preview_import(
             (tx.date, tx.amount, tx.description.strip().casefold()) for tx in existing.rows
         }
 
-    results = [
-        ImportRowResult(
-            index=row.index,
-            date=row.date,
-            description=row.description,
-            type=row.type,
-            amount=row.amount,
-            category_id=(
+    results: list[ImportRowResult] = []
+    for row in parsed:
+        matched = (
+            first_match(
+                rules,
+                RuleInput(
+                    description=row.description,
+                    notes=row.notes,
+                    amount=row.amount or Decimal(0),
+                    type=row.type,
+                ),
+            )
+            if row.error is None and row.type is not None
+            else None
+        )
+        category_id = (
+            matched.category_id
+            if matched
+            else (
                 category_index.get((row.type, row.category_name.casefold()))
                 if row.category_name and row.type is not None
                 else None
-            ),
-            category_name=row.category_name,
-            notes=row.notes,
-            error=row.error,
-            duplicate=(
-                row.error is None
-                and row.date is not None
-                and (row.date, row.amount, row.description.strip().casefold()) in existing_keys
-            ),
+            )
         )
-        for row in parsed
-    ]
+        results.append(
+            ImportRowResult(
+                index=row.index,
+                date=row.date,
+                description=row.description,
+                type=row.type,
+                amount=row.amount,
+                category_id=category_id,
+                category_name=row.category_name,
+                rule_name=matched.name if matched else None,
+                notes=row.notes,
+                error=row.error,
+                duplicate=(
+                    row.error is None
+                    and row.date is not None
+                    and (row.date, row.amount, row.description.strip().casefold()) in existing_keys
+                ),
+            )
+        )
 
     return ImportPreview(headers=headers, mapping=effective_mapping, rows=results)

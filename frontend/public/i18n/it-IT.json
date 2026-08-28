@@ -159,6 +159,7 @@
       "accounts": "Conti",
       "transactions": "Transazioni",
       "categories": "Categorie",
+      "rules": "Regole",
       "budgets": "Budget",
       "goals": "Obiettivi",
       "reports": "Report",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Annulla",
         "save": "Salva"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automazione",
+    "title": "Regole",
+    "description": "Categorizza automaticamente le transazioni quando vengono importate.",
+    "card": {
+      "title": "Regole di categorizzazione"
+    },
+    "actions": {
+      "export": "Esporta",
+      "import": "Importa",
+      "packs": "Pacchetti di regole",
+      "reapply": "Applica di nuovo",
+      "add": "Aggiungi",
+      "delete": "Elimina",
+      "edit": "Modifica"
+    },
+    "sort": {
+      "label": "Ordina per",
+      "priority": "Priorità",
+      "name": "Nome",
+      "category": "Categoria"
+    },
+    "empty": {
+      "title": "Nessuna regola di categorizzazione",
+      "description": "Crea una regola per categorizzare automaticamente le transazioni quando vengono importate."
+    },
+    "form": {
+      "newTitle": "Nuova regola di categorizzazione",
+      "editTitle": "Modifica regola di categorizzazione",
+      "name": "Nome",
+      "priority": "Priorità",
+      "active": "Attiva",
+      "category": "Categoria",
+      "match": "Corrispondenza",
+      "matchAnd": "E",
+      "matchOr": "O",
+      "conditions": "Condizioni",
+      "conditionHint": "Usa una o più condizioni.",
+      "value": "Valore",
+      "addCondition": "Aggiungi condizione",
+      "addGroup": "Aggiungi gruppo",
+      "remove": "Rimuovi",
+      "saveError": "Impossibile salvare la regola. Riprova.",
+      "badRegex": "Inserisci una espressione regolare valida.",
+      "needCondition": "Aggiungi almeno una condizione.",
+      "blankValue": "Ogni condizione richiede un valore."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Descrizione",
+        "notes": "Note",
+        "amount": "Importo",
+        "type": "Tipo"
+      },
+      "ops": {
+        "contains": "contiene",
+        "not_contains": "non contiene",
+        "equals": "è uguale a",
+        "not_equals": "non è uguale a",
+        "starts_with": "inizia con",
+        "ends_with": "termina con",
+        "regex": "corrisponde alla regex",
+        "gt": "è maggiore di",
+        "gte": "è almeno",
+        "lt": "è minore di",
+        "lte": "è al massimo"
+      },
+      "join": {
+        "and": " E ",
+        "or": " O "
+      },
+      "typeValues": {
+        "income": "Entrate",
+        "expense": "Uscite"
+      }
+    },
+    "delete": {
+      "title": "Eliminare la regola?",
+      "message": "Questa azione non può essere annullata. Vuoi eliminare la regola \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Applicare di nuovo le regole?",
+      "message": "Applicare le regole di categorizzazione alle transazioni esistenti?",
+      "overwrite": "Sovrascrivi le categorie esistenti",
+      "done": "{{count}} transazioni aggiornate."
+    },
+    "import": {
+      "title": "Importare le regole?",
+      "message": "Importare {{count}} regole di categorizzazione?",
+      "done": "{{imported}} regole importate; {{skipped}} ignorate.",
+      "invalid": "Il file non è un export valido delle regole di LealFinance ({{count}} regole).",
+      "badgeTitle": "Regola corrispondente: {{name}}"
+    },
+    "packs": {
+      "title": "Pacchetti di regole",
+      "rulesCount": "{{count}} regole",
+      "install": "Installa",
+      "installed": "Installato",
+      "result": "{{installed}} regole installate; {{skipped}} ignorate.",
+      "names": {
+        "BR": "Brasile",
+        "US": "Stati Uniti"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "L'importo non può essere zero.",
         "missing_description": "La descrizione è obbligatoria."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Esiste già una regola con questo nome.",
+      "not_found": "Questa regola non è stata trovata.",
+      "no_conditions": "Aggiungi almeno una condizione.",
+      "invalid_operator": "Questo operatore non è valido per il campo selezionato.",
+      "blank_value": "Ogni condizione richiede un valore.",
+      "invalid_regex": "Inserisci una espressione regolare valida.",
+      "invalid_amount": "Inserisci un importo valido.",
+      "invalid_type_value": "Seleziona un tipo di transazione valido."
+    },
+    "rule_pack": {
+      "not_found": "Questo pacchetto di regole non è stato trovato."
+    },
+    "rule_import": {
+      "invalid_format": "Il file non è un export valido delle regole di LealFinance."
     }
   }
 }
