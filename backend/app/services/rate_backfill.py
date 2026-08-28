@@ -5,9 +5,10 @@ available.
 A saved conversion is normally authoritative and never re-derived (see
 app/services/conversion.py) - a `fallback` source is the one exception: it
 is an explicit "we didn't have a rate", not a recorded decision. This walks
-those rows, asks `get_exchange_rate` for the rate that applied on each
-transaction's own date, and rewrites the conversion_* columns through the
-same validator a normal write uses.
+those rows, resolves the rate that applied on each transaction's own date
+(refreshing the cache for that date first, within a per-run budget), and
+rewrites the conversion_* columns through the same validator a normal write
+uses.
 
 Recurring-rule templates are deliberately not touched: each occurrence
 re-resolves a live rate when it posts (app/services/recurring_posting.py),
@@ -24,11 +25,11 @@ from app.core.errors import ValidationAppError
 from app.models._conversion import CONVERSION_SOURCE_FALLBACK
 from app.models.transaction import Transaction
 from app.services.conversion import ConversionInput, resolve_conversion
-from app.services.exchange_rates import get_exchange_rate, to_conversion_source
+from app.services.exchange_rates import get_exchange_rate, refresh_rates, to_conversion_source
 
 logger = logging.getLogger(__name__)
 
-# Safety valve: a row on a not-yet-cached date costs one provider request.
+# Safety valve: each distinct transaction date costs one provider request.
 # Bounds a single run's provider usage regardless of backlog size; the rest
 # heal on later runs, and dates cached by an earlier run are free.
 MAX_PROVIDER_DATES = 25
@@ -54,12 +55,16 @@ async def backfill_fallback_conversions(
         return 0
 
     healed = 0
-    dates_seen: set[date] = set()
+    dates_done: set[date] = set()
     for tx in rows:
-        if tx.date not in dates_seen:
-            if len(dates_seen) >= max_provider_dates:
+        if tx.date not in dates_done:
+            if len(dates_done) >= max_provider_dates:
                 continue  # over budget for this run - heal on the next one
-            dates_seen.add(tx.date)
+            dates_done.add(tx.date)
+            try:
+                await refresh_rates(db, tx.date)
+            except Exception:
+                logger.warning("Rate refresh for %s failed during backfill", tx.date, exc_info=True)
 
         assert tx.conversion_currency is not None  # source == fallback implies a full set
 

@@ -1,29 +1,28 @@
 """On-demand currency conversion rates.
 
-Resolution precedence:
+`get_exchange_rate` is a pure read. Resolution precedence:
 
 1. Same-currency identity rate.
 2. The caller's manual rate effective on or before the requested date
    (newest such rate wins).
 3. The inverse of the caller's manual rate for the reversed pair.
 4. A cached rate for the requested date - either a directly stored pair or
-   a USD bridge (`quote / base`) built from the USD-anchored rows the
-   refresh writes.
-5. A live refresh of every USD-anchored rate for that date, then the same
-   bridge lookup.
-6. A safe 1:1 fallback, flagged `is_fallback=True`.
+   a USD bridge (`quote / base`) built from the USD-anchored rows.
+5. A safe 1:1 fallback, flagged `is_fallback=True`.
 
 The Open Exchange Rates free plan only quotes against USD and caps usage at
 1,000 requests/month, so the cache is USD-anchored: one `refresh_rates`
 call fetches `latest.json` (or `historical/{date}.json` for a past date)
 and stores one `USD -> X` row per known currency. Any pair is then a local
-division. Celery beat calls `refresh_rates` every few hours; a cache miss
-also triggers one inline so a newly added currency works immediately.
+division. The cache is filled by the scheduled Celery task
+(app/workers/tasks/rates.py, every few hours) and by `warm_cache_for` when
+an account first uses a currency - never as a side effect of a lookup.
 
-Without a key - or if the provider call fails - lookups return a 1:1
-fallback, flagged so callers can show a warning rather than silently using
-a wrong number. Provider failures never propagate as an error - a broken
-exchange-rate lookup should never be why a request fails.
+Without a key, without a scheduled refresh yet, or if the provider call
+fails, lookups return a 1:1 fallback, flagged so callers can show a warning
+rather than silently using a wrong number. Provider failures never
+propagate as an error - a broken exchange-rate lookup should never be why a
+request fails.
 
 Manual rates (steps 2-3) are user-scoped and only consulted when a caller
 passes `user_id` - see app/services/manual_rates.py for the CRUD side.
@@ -38,7 +37,6 @@ from uuid import UUID
 import httpx
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
@@ -109,38 +107,10 @@ async def get_exchange_rate(
     if cached is not None:
         return cached
 
-    settings = get_settings()
-    if not settings.openexchangerates_app_id:
-        logger.info(
-            "No OPENEXCHANGERATES_APP_ID configured; using 1:1 fallback for %s->%s",
-            base_code,
-            quote_code,
-        )
-        return _fallback(as_of)
-
-    try:
-        await refresh_rates(db, as_of)
-    except Exception:
-        logger.warning(
-            "Failed to refresh rates for %s (needed %s->%s); using 1:1 fallback",
-            as_of,
-            base_code,
-            quote_code,
-            exc_info=True,
-        )
-        return _fallback(as_of)
-
-    cached = await _get_cached_rate(db, base_code, quote_code, as_of)
-    if cached is not None:
-        return cached
-
-    logger.warning(
-        "Refresh for %s did not yield %s->%s (currency not quoted by provider?); "
-        "using 1:1 fallback",
-        as_of,
-        base_code,
-        quote_code,
-    )
+    # No cached rate. This is a pure read - the cache is filled by the
+    # scheduled refresh (app/workers/tasks/rates.py) and by `warm_cache_for`
+    # when an account first uses a currency, never as a side effect here.
+    logger.info("No cached rate for %s->%s on %s; using 1:1 fallback", base_code, quote_code, as_of)
     return _fallback(as_of)
 
 
@@ -232,9 +202,10 @@ async def refresh_rates(db: AsyncSession, as_of: date | None = None) -> int:
     """Fetch every USD-anchored rate for `as_of` and upsert it into the
     cache. No-op without a provider key. Returns the row count touched.
 
-    Writes on `db` and commits it - same contract as the old `_cache_rate`,
-    which the test harness (tests/conftest.py) relies on. Callers that hold
-    an in-flight write of their own should be aware of that commit.
+    Flushes but does not commit - the caller owns the transaction (the
+    Celery task commits its own session; `warm_cache_for` rides the
+    request's commit). Concurrent refreshes are safe: the upsert targets
+    `uq_exchange_rate`, so a race updates rather than conflicts.
     """
     as_of = as_of or date.today()
     settings = get_settings()
@@ -263,13 +234,27 @@ async def refresh_rates(db: AsyncSession, as_of: date | None = None) -> int:
         constraint="uq_exchange_rate",
         set_={"rate": stmt.excluded.rate, "updated_at": func.now()},
     )
-    try:
-        await db.execute(stmt)
-        await db.commit()
-    except IntegrityError:
-        # A concurrent refresh raced us; its rows are as good as ours.
-        await db.rollback()
+    await db.execute(stmt)
+    await db.flush()
     return len(values)
+
+
+async def warm_cache_for(db: AsyncSession, currency: str, *, as_of: date | None = None) -> None:
+    """Best-effort: ensure today's cache covers `currency` so an account
+    that just started using it converts against a real rate instead of
+    sitting at the 1:1 fallback until the next scheduled refresh. Rides the
+    caller's transaction (call before its commit). Never raises.
+    """
+    currency = currency.upper()
+    as_of = as_of or date.today()
+    if currency == _ANCHOR or not get_settings().openexchangerates_app_id:
+        return
+    if await _anchor_rate(db, currency, as_of) is not None:
+        return
+    try:
+        await refresh_rates(db, as_of)
+    except Exception:
+        logger.warning("Exchange-rate cache warm-up failed for %s", currency, exc_info=True)
 
 
 async def _fetch_usd_rates(app_id: str, as_of: date) -> dict[str, Decimal]:

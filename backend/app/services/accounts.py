@@ -29,6 +29,7 @@ from app.models.transaction import (
 from app.schemas.account import AccountCreate, AccountUpdate
 from app.services import ownership
 from app.services.currencies import get_active_currency
+from app.services.exchange_rates import warm_cache_for
 
 
 def _check_credit_card_fields(
@@ -128,6 +129,7 @@ async def create_account(db: AsyncSession, user_id: UUID, data: AccountCreate) -
 
     account = Account(user_id=user_id, **data.model_dump())
     db.add(account)
+    await warm_cache_for(db, data.currency)
     await db.commit()
     await db.refresh(account)
     return account
@@ -192,6 +194,8 @@ async def update_account(
 
     for field, value in changes.items():
         setattr(account, field, value)
+    if "currency" in changes:
+        await warm_cache_for(db, changes["currency"])
     await db.commit()
     await db.refresh(account)
     return account

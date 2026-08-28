@@ -30,10 +30,15 @@ logger = logging.getLogger(__name__)
 
 
 async def _with_session[T](work: Callable[[AsyncSession], Awaitable[T]]) -> T:
+    """Run `work` against a short-lived session and commit it. A module-level
+    engine would bind pooled connections to a dead event loop between
+    asyncio.run calls (see app/workers/tasks/recurring.py)."""
     engine = create_async_engine(get_settings().sqlalchemy_database_uri, poolclass=NullPool)
     try:
         async with AsyncSession(engine, expire_on_commit=False) as db:
-            return await work(db)
+            result = await work(db)
+            await db.commit()
+            return result
     finally:
         await engine.dispose()
 

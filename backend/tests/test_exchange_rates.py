@@ -1,9 +1,10 @@
 """Tests for the on-demand currency conversion service.
 
-See app/services/exchange_rates.py - no network calls happen in these
-tests; `_fetch_usd_rates` is monkeypatched everywhere a live lookup would
-otherwise run, and the cache-hit / identity paths implicitly prove it is
-*not* called.
+See app/services/exchange_rates.py. `get_exchange_rate` is a pure read; the
+cache is filled by `refresh_rates`, which these tests drive directly with a
+monkeypatched `_fetch_usd_rates` (no network). The autouse
+`_no_exchange_rate_provider` fixture in conftest.py blanks the key, so a
+test that needs the provider sets it back explicitly.
 """
 
 from datetime import date, timedelta
@@ -23,6 +24,7 @@ _USD_RATES = {
     "BRL": Decimal("5.25"),
     "EUR": Decimal("0.92"),
 }
+_QUANTUM = Decimal("0.0000000001")
 
 
 async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
@@ -31,8 +33,8 @@ async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> 
 
 
 def _stub_fetch(monkeypatch: pytest.MonkeyPatch, rates: dict[str, Decimal]) -> list[date]:
-    """Replace the provider call with a canned table; returns a list that
-    records the `as_of` of every call so tests can assert the count."""
+    """Replace the provider call with a canned table; the returned list
+    records the `as_of` of every call so a test can assert the count."""
     calls: list[date] = []
 
     async def _fake(app_id: str, as_of: date) -> dict[str, Decimal]:
@@ -41,6 +43,10 @@ def _stub_fetch(monkeypatch: pytest.MonkeyPatch, rates: dict[str, Decimal]) -> l
 
     monkeypatch.setattr(rates_service, "_fetch_usd_rates", _fake)
     return calls
+
+
+def _with_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
 
 
 async def test_identity_pair_returns_one_without_touching_settings_or_db(
@@ -52,117 +58,121 @@ async def test_identity_pair_returns_one_without_touching_settings_or_db(
     assert result.source == rates_service.IDENTITY_SOURCE
 
 
-async def test_no_api_key_configured_falls_back_to_one_to_one(
-    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    # Falsy, not "is None": a .env with OPENEXCHANGERATES_APP_ID= (present,
-    # empty) is exactly as "not configured" as the key being absent.
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "")
-
+async def test_cold_cache_falls_back_to_one_to_one(db_session: AsyncSession) -> None:
+    """A lookup never fetches - an unpopulated cache means the flagged
+    fallback, whether or not a key is configured."""
     result = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
     assert result.rate == Decimal("1")
     assert result.is_fallback is True
     assert result.source == rates_service.FALLBACK_SOURCE
 
 
-async def test_provider_failure_falls_back_rather_than_raising(
+async def test_one_refresh_serves_every_pair_for_the_day(
     db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
+    """The USD-anchored cache: one provider call populates every currency,
+    and every pair after that is a local division with no further call."""
+    _with_key(monkeypatch)
+    calls = _stub_fetch(monkeypatch, _USD_RATES)
+
+    upserted = await rates_service.refresh_rates(db_session, date.today())
+    assert upserted == 2  # BRL and EUR; USD is the anchor, not stored
+    assert len(calls) == 1
+
+    direct = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
+    assert direct.rate == Decimal("5.25")
+    assert direct.is_fallback is False
+    assert direct.source == rates_service.OXR_SOURCE
+
+    # A pair never asked for, resolved from the same data (0.92 / 5.25).
+    cross = await rates_service.get_exchange_rate(db_session, "BRL", "EUR")
+    assert cross.is_fallback is False
+    assert cross.rate == (Decimal("0.92") / Decimal("5.25")).quantize(_QUANTUM)
+
+    # USD as the quote side bridges too (1 / 5.25).
+    inverse = await rates_service.get_exchange_rate(db_session, "BRL", "USD")
+    assert inverse.rate == (Decimal("1") / Decimal("5.25")).quantize(_QUANTUM)
+
+    assert len(calls) == 1  # nothing above hit the provider again
+
+
+async def test_refresh_is_idempotent(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _with_key(monkeypatch)
+    _stub_fetch(monkeypatch, _USD_RATES)
+
+    assert await rates_service.refresh_rates(db_session, date.today()) == 2
+    # Second run updates the same rows in place rather than erroring.
+    assert await rates_service.refresh_rates(db_session, date.today()) == 2
+
+
+async def test_refresh_without_key_is_a_noop(db_session: AsyncSession) -> None:
+    assert await rates_service.refresh_rates(db_session, date.today()) == 0
+
+
+async def test_past_date_uses_the_historical_endpoint_and_its_own_cache_key(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _with_key(monkeypatch)
+    calls = _stub_fetch(monkeypatch, _USD_RATES)
+    past = date.today() - timedelta(days=30)
+
+    await rates_service.refresh_rates(db_session, past)
+    result = await rates_service.get_exchange_rate(db_session, "USD", "BRL", as_of=past)
+    assert result.rate == Decimal("5.25")
+    assert result.as_of == past
+    assert calls == [past]
+
+    # Today's cache is a separate key - still cold.
+    today = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
+    assert today.is_fallback is True
+
+
+async def test_unknown_currency_is_left_uncached(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """XYZ isn't in the `currencies` table - exchange_rates has a foreign
+    key to it, so no USD-anchored row can be stored and the bridge cannot
+    resolve. A flagged 1:1 is the honest answer, never a silent number."""
+    _with_key(monkeypatch)
+    _stub_fetch(monkeypatch, {**_USD_RATES, "XYZ": Decimal("2")})
+
+    await rates_service.refresh_rates(db_session, date.today())
+    result = await rates_service.get_exchange_rate(db_session, "XYZ", "BRL")
+    assert result.is_fallback is True
+    assert result.source == rates_service.FALLBACK_SOURCE
+
+
+async def test_warm_cache_for_populates_a_currency_then_stays_quiet(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _with_key(monkeypatch)
+    calls = _stub_fetch(monkeypatch, _USD_RATES)
+
+    await rates_service.warm_cache_for(db_session, "BRL")
+    assert len(calls) == 1
+    resolved = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
+    assert resolved.is_fallback is False
+
+    # Already covered for today - no second call.
+    await rates_service.warm_cache_for(db_session, "BRL")
+    assert len(calls) == 1
+
+
+async def test_warm_cache_for_never_raises_on_provider_failure(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _with_key(monkeypatch)
 
     async def _boom(app_id: str, as_of: date) -> dict[str, Decimal]:
         raise RuntimeError("simulated network failure")
 
     monkeypatch.setattr(rates_service, "_fetch_usd_rates", _boom)
 
+    await rates_service.warm_cache_for(db_session, "BRL")  # must not raise
     result = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
-    assert result.rate == Decimal("1")
     assert result.is_fallback is True
-    assert result.source == rates_service.FALLBACK_SOURCE
-
-
-async def test_one_fetch_serves_every_pair_for_the_day(
-    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """The whole point of the USD-anchored cache: a single provider call
-    populates every currency, and any further pair is a local division."""
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    calls = _stub_fetch(monkeypatch, _USD_RATES)
-
-    first = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
-    assert first.rate == Decimal("5.25")
-    assert first.is_fallback is False
-    assert first.source == rates_service.OXR_SOURCE
-    assert len(calls) == 1
-
-    # A different pair, never asked for before - resolves from the same
-    # fetch with no new provider call, via the USD bridge (0.92 / 5.25).
-    cross = await rates_service.get_exchange_rate(db_session, "BRL", "EUR")
-    assert cross.is_fallback is False
-    assert cross.rate == (Decimal("0.92") / Decimal("5.25")).quantize(Decimal("0.0000000001"))
-    assert len(calls) == 1
-
-    # And the original pair is now a plain cache hit.
-    again = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
-    assert again.rate == Decimal("5.2500000000")
-    assert len(calls) == 1
-
-
-async def test_usd_as_quote_bridges_correctly(
-    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    _stub_fetch(monkeypatch, _USD_RATES)
-
-    result = await rates_service.get_exchange_rate(db_session, "BRL", "USD")
-    assert result.is_fallback is False
-    # 1 USD per 1 USD divided by 5.25 BRL per USD.
-    assert result.rate == (Decimal("1") / Decimal("5.25")).quantize(Decimal("0.0000000001"))
-
-
-async def test_past_date_uses_historical_endpoint_and_caches_under_that_date(
-    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    calls = _stub_fetch(monkeypatch, _USD_RATES)
-    past = date.today() - timedelta(days=30)
-
-    result = await rates_service.get_exchange_rate(db_session, "USD", "BRL", as_of=past)
-    assert result.rate == Decimal("5.25")
-    assert result.as_of == past
-    assert calls == [past]
-
-    # Today's cache is untouched - a lookup for today still needs its own fetch.
-    await rates_service.get_exchange_rate(db_session, "USD", "BRL")
-    assert calls == [past, date.today()]
-
-
-async def test_unrecognized_currency_pair_returns_flagged_fallback(
-    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """XYZ isn't in the `currencies` table - exchange_rates has a foreign
-    key to it, so no USD-anchored row can be stored and the bridge cannot
-    resolve. A flagged 1:1 is the honest answer, never a silent number."""
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    _stub_fetch(monkeypatch, {**_USD_RATES, "XYZ": Decimal("2")})
-
-    result = await rates_service.get_exchange_rate(db_session, "XYZ", "BRL")
-    assert result.is_fallback is True
-    assert result.source == rates_service.FALLBACK_SOURCE
-
-
-async def test_refresh_rates_upserts_one_row_per_known_currency(
-    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
-    _stub_fetch(monkeypatch, _USD_RATES)
-
-    count = await rates_service.refresh_rates(db_session, date.today())
-    # USD itself is not stored (identity); BRL and EUR are.
-    assert count == 2
-
-    # Idempotent - a second run updates in place rather than erroring.
-    assert await rates_service.refresh_rates(db_session, date.today()) == 2
 
 
 async def test_exchange_rate_endpoint_requires_authentication(client: AsyncClient) -> None:
@@ -173,9 +183,8 @@ async def test_exchange_rate_endpoint_requires_authentication(client: AsyncClien
 
 
 async def test_exchange_rate_endpoint_returns_fallback_with_warning_flag(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+    client: AsyncClient, db_session: AsyncSession
 ) -> None:
-    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "")
     await _authed(client, db_session, "exchange-rate-endpoint@example.com")
 
     response = await client.get(

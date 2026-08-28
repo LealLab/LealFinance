@@ -29,26 +29,31 @@ string-based frontend money helpers, not in a display formatter.
 ## Exchange-rate lookup
 
 The backend stores provider rates in `exchange_rates` and user overrides in
-`manual_rates`. `get_exchange_rate` resolves a pair for a given date in this
-order:
+`manual_rates`. `get_exchange_rate` is a pure read; it resolves a pair for a
+given date in this order:
 
 1. Same currency: `1` without a lookup.
 2. The caller's newest manual rate effective on or before the requested date.
 3. The inverse of the caller's manual rate.
 4. A cached rate for that date - a directly stored pair, or a USD bridge
    (`quote / base`) built from the USD-anchored rows the refresh writes.
-5. A live refresh of every USD-anchored rate for that date, then the bridge
-   lookup again, when `OPENEXCHANGERATES_APP_ID` exists.
-6. A flagged 1:1 fallback when no provider key exists or the provider fails.
+5. A flagged 1:1 fallback - no key, no scheduled refresh yet, or the
+   provider failed.
 
 The Open Exchange Rates free plan quotes only against USD, refreshes hourly,
 and caps usage at 1,000 requests/month, so the cache is USD-anchored: one
 request (`latest.json`, or `historical/{date}.json` for a past date - no
 `symbols`, which is paid-only there) stores one `USD -> X` row per known
-currency, and every pair is a local division. Celery beat calls the refresh
-every six hours; a cache miss also triggers one inline, so a newly added
-currency resolves immediately. Rows are written only for currency codes that
-exist in the `currencies` table.
+currency, and every pair is a local division. Rows are written only for
+currency codes that exist in the `currencies` table.
+
+The cache is filled by writes, never by a lookup:
+
+- A Celery beat task (`refresh_exchange_rates`) refreshes today's rates
+  every six hours.
+- `warm_cache_for` runs when an account is created or changed to a foreign
+  currency, so its balances convert against a real rate without waiting for
+  the next scheduled refresh.
 
 A nightly Celery task (`backfill_fallback_conversions`) re-resolves
 transactions whose conversion was recorded at the 1:1 fallback before a key
