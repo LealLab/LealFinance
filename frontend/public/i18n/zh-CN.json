@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "已支付的换算费用",
       "needsAttention": "需要处理的交易",
-      "currenciesNeedingRate": "没有汇率的货币"
+      "currenciesNeedingRate": "没有汇率的货币",
+      "automaticRates": "实时汇率"
     },
     "needsAttention": {
       "title": "需要处理",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "暂无货币需要设置汇率",
         "description": "所有账户货币都已有实际汇率。"
+      }
+    },
+    "automaticRates": {
+      "title": "自动汇率",
+      "description": "来自服务商的汇率，每隔几小时自动刷新。下方的手动汇率优先。",
+      "empty": {
+        "title": "暂无自动汇率",
+        "description": "设置服务商密钥且账户使用多种货币后，汇率将显示在此处。"
       }
     },
     "manualRates": {

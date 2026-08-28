@@ -18,8 +18,9 @@ becomes the dominant cost once the schema has more than a couple of tables.
 
 import asyncio
 import sys
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Iterator
 
+import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import text
@@ -37,6 +38,21 @@ if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 settings = get_settings()
+
+
+@pytest.fixture(autouse=True)
+def _no_exchange_rate_provider() -> Iterator[None]:
+    """Never let the real Open Exchange Rates key from a developer's .env
+    reach a test: a live provider call is slow, flaky, and - via
+    app/services/exchange_rates.py::refresh_rates - a real DB write. Tests
+    that exercise the provider set it back and monkeypatch `_fetch_usd_rates`.
+    """
+    original = settings.openexchangerates_app_id
+    settings.openexchangerates_app_id = None
+    try:
+        yield
+    finally:
+        settings.openexchangerates_app_id = original
 
 
 @pytest_asyncio.fixture(scope="session")

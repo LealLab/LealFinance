@@ -24,7 +24,7 @@ from sqlalchemy import Select, delete, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
-from app.models._conversion import ConversionValue
+from app.models._conversion import CONVERSION_SOURCE_FALLBACK, ConversionValue
 from app.models.account import Account
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
@@ -41,6 +41,7 @@ from app.schemas.transaction import TransactionCreate, TransactionUpdate
 from app.services import ownership
 from app.services.conversion import ConversionInput, resolve_conversion
 from app.services.currencies import get_active_currency
+from app.services.exchange_rates import get_exchange_rate, to_conversion_source
 
 
 async def validate_transaction_shape(
@@ -351,6 +352,7 @@ async def update_transaction(
     effective_category_id = changes.get("category_id", transaction.category_id)
     effective_currency = changes.get("currency", transaction.currency)
     effective_amount = changes.get("amount", transaction.amount)
+    effective_date = changes.get("date", transaction.date)
 
     account, to_account = await validate_transaction_shape(
         db,
@@ -367,11 +369,31 @@ async def update_transaction(
     )
     if conversion_provided or shape_changed:
         destination_currency = to_account.currency if to_account is not None else account.currency
-        conversion_input = (
-            to_conversion_input(data.conversion)
-            if conversion_provided
-            else _existing_conversion_input(transaction)
-        )
+        if conversion_provided:
+            conversion_input = to_conversion_input(data.conversion)
+        elif (
+            transaction.conversion_source == CONVERSION_SOURCE_FALLBACK
+            and effective_currency != destination_currency
+        ):
+            # The stored conversion is a "we had no rate" placeholder, not a
+            # recorded decision - re-resolve it as-of the transaction's date
+            # rather than replaying rate=1.
+            rate_result = await get_exchange_rate(
+                db,
+                effective_currency,
+                destination_currency,
+                user_id=user_id,
+                as_of=effective_date,
+            )
+            conversion_input = ConversionInput(
+                amount=None,
+                currency=destination_currency,
+                fee=transaction.conversion_fee,
+                rate=rate_result.rate,
+                source=to_conversion_source(rate_result),
+            )
+        else:
+            conversion_input = _existing_conversion_input(transaction)
         conversion = await resolve_conversion(
             db,
             origin_amount=effective_amount,

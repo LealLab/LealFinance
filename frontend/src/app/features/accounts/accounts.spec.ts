@@ -165,6 +165,18 @@ describe('Accounts', () => {
     expect(row.textContent).toMatch(/\(US\$\s*[\d.,]+\)/);
   });
 
+  it('warns when a foreign-currency balance can only be shown at the 1:1 fallback', async () => {
+    // The seeded EUR investment account has no EUR->display quote in the
+    // mock table, so its display equivalent is the flagged 1:1 fallback.
+    const fixture = TestBed.createComponent(Accounts);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Taxa de câmbio indisponível');
+  });
+
   it('gives account actions a visible row-hover contrast and confirms before archiving', async () => {
     const fixture = TestBed.createComponent(Accounts);
     fixture.detectChanges();

@@ -100,6 +100,28 @@ describe('Exchange', () => {
     expect((dialog.querySelector('#manual-rate-quote') as HTMLSelectElement).value).toBe('USD');
   });
 
+  it('lists the live provider rate converting a foreign account to the display currency', async () => {
+    // Default display currency is USD; the seeded BRL accounts resolve
+    // through the mock table's BRL_USD "quote" rate (not a fallback, not
+    // manual), so it belongs in the automatic-rates section.
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      automaticRates(): { baseCode: string; quoteCode: string; source: string }[];
+    };
+    const row = component.automaticRates().find((r) => r.baseCode === 'BRL');
+    expect(row).toBeDefined();
+    expect(row!.quoteCode).toBe('USD');
+    expect(row!.source).toBe('quote');
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Taxas automáticas');
+    expect(text).toContain('BRL → USD');
+  });
+
   it('stops flagging a currency once a manual rate covers it', async () => {
     const manualRateRepository = TestBed.inject(ManualRateRepository);
     await new Promise<void>((resolve) => {

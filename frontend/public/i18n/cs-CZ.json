@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Zaplacené poplatky za převod",
       "needsAttention": "Transakce vyžadující pozornost",
-      "currenciesNeedingRate": "Měny bez kurzu"
+      "currenciesNeedingRate": "Měny bez kurzu",
+      "automaticRates": "Živé kurzy"
     },
     "needsAttention": {
       "title": "Vyžaduje pozornost",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Žádná měna nepotřebuje kurz",
         "description": "Pro každou měnu účtu je již dostupný skutečný kurz."
+      }
+    },
+    "automaticRates": {
+      "title": "Automatické kurzy",
+      "description": "Kurzy od poskytovatele, automaticky obnovované každých několik hodin. Ruční kurzy níže mají přednost.",
+      "empty": {
+        "title": "Zatím žádné automatické kurzy",
+        "description": "Kurzy se zde zobrazí, jakmile je nastaven klíč poskytovatele a vaše účty používají více než jednu měnu."
       }
     },
     "manualRates": {

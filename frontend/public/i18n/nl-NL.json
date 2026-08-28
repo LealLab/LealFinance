@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Betaalde conversiekosten",
       "needsAttention": "Transacties die aandacht nodig hebben",
-      "currenciesNeedingRate": "Valuta zonder koers"
+      "currenciesNeedingRate": "Valuta zonder koers",
+      "automaticRates": "Live koersen"
     },
     "needsAttention": {
       "title": "Aandacht nodig",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Geen valuta waarvoor een koers nodig is",
         "description": "Voor elke rekeningvaluta is al een echte koers beschikbaar."
+      }
+    },
+    "automaticRates": {
+      "title": "Automatische koersen",
+      "description": "Koersen van de provider, elke paar uur automatisch ververst. Handmatige koersen hieronder hebben voorrang.",
+      "empty": {
+        "title": "Nog geen automatische koersen",
+        "description": "Koersen verschijnen hier zodra een providersleutel is ingesteld en je rekeningen meer dan één valuta gebruiken."
       }
     },
     "manualRates": {

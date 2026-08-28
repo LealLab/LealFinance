@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Conversion fees paid",
       "needsAttention": "Transactions needing attention",
-      "currenciesNeedingRate": "Currencies without a rate"
+      "currenciesNeedingRate": "Currencies without a rate",
+      "automaticRates": "Live rates"
     },
     "needsAttention": {
       "title": "Needs attention",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "No currency needs a rate",
         "description": "Every account currency already resolves to a real rate."
+      }
+    },
+    "automaticRates": {
+      "title": "Automatic rates",
+      "description": "Live rates from the provider, refreshed automatically every few hours. Manual rates below override these.",
+      "empty": {
+        "title": "No automatic rates yet",
+        "description": "Rates appear here once a provider key is set and your accounts use more than one currency."
       }
     },
     "manualRates": {

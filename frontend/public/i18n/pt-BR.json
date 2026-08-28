@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Taxas de conversão pagas",
       "needsAttention": "Transações que precisam de atenção",
-      "currenciesNeedingRate": "Moedas sem taxa definida"
+      "currenciesNeedingRate": "Moedas sem taxa definida",
+      "automaticRates": "Taxas ao vivo"
     },
     "needsAttention": {
       "title": "Precisa de atenção",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Nenhuma moeda precisa de uma taxa",
         "description": "Toda moeda de conta já resolve para uma taxa real."
+      }
+    },
+    "automaticRates": {
+      "title": "Taxas automáticas",
+      "description": "Taxas do provedor, atualizadas automaticamente a cada poucas horas. As taxas manuais abaixo têm prioridade.",
+      "empty": {
+        "title": "Ainda não há taxas automáticas",
+        "description": "As taxas aparecem aqui quando uma chave de provedor é configurada e suas contas usam mais de uma moeda."
       }
     },
     "manualRates": {

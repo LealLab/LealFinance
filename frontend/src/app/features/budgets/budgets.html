@@ -15,6 +15,12 @@
     </button>
   </app-page-header>
 
+  @if (hasFallbackRate()) {
+    <div class="mb-4">
+      <app-exchange-rate-warning [isFallback]="true" />
+    </div>
+  }
+
   <app-card class="mb-6">
     <div class="grid gap-6 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,1.5fr)]">
       <div

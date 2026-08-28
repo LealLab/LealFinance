@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "已支付的換算手續費",
       "needsAttention": "需要處理的交易",
-      "currenciesNeedingRate": "沒有匯率的貨幣"
+      "currenciesNeedingRate": "沒有匯率的貨幣",
+      "automaticRates": "即時匯率"
     },
     "needsAttention": {
       "title": "需要處理",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "沒有貨幣需要匯率",
         "description": "所有帳戶貨幣都已對應至實際匯率。"
+      }
+    },
+    "automaticRates": {
+      "title": "自動匯率",
+      "description": "來自服務商的匯率，每隔幾小時自動更新。下方的手動匯率優先。",
+      "empty": {
+        "title": "尚無自動匯率",
+        "description": "設定服務商金鑰且帳戶使用多種貨幣後，匯率將顯示於此。"
       }
     },
     "manualRates": {

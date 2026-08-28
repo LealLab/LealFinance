@@ -15,6 +15,12 @@
     </button>
   </app-page-header>
 
+  @if (hasFallbackRate()) {
+    <div class="mb-4">
+      <app-exchange-rate-warning [isFallback]="true" />
+    </div>
+  }
+
   @if (actionErrorKey(); as key) {
     <p class="mb-4 text-sm text-negative" role="alert">{{ t(key) }}</p>
   }

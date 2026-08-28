@@ -34,6 +34,7 @@ import { Card } from '../../shared/ui/card/card';
 import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { buildMonthGrid } from './calendar-month';
 import { RecurringRuleFormModal } from './recurring-rule-form-modal';
@@ -73,6 +74,7 @@ const SEARCH_DEBOUNCE_MS = 250;
     EmptyState,
     Icon,
     PageHeader,
+    ExchangeRateWarning,
     TransactionFilterBar,
     TransactionTable,
     TransactionBulkBar,
@@ -275,6 +277,15 @@ export class Transactions {
       ]),
     ),
   ]);
+
+  // Any of the three converters resolving a pair at the 1:1 fallback means
+  // the selection total and the calendar running balances are approximate.
+  protected readonly hasFallbackRate = computed(
+    () =>
+      this.selectionConverter.hasFallbackRate() ||
+      this.openingConverter.hasFallbackRate() ||
+      this.monthConverter.hasFallbackRate(),
+  );
 
   protected readonly calendarDays = computed(() => {
     const convert = this.monthConverter.converter();

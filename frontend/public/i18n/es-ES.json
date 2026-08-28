@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Comisiones de conversión pagadas",
       "needsAttention": "Movimientos que requieren atención",
-      "currenciesNeedingRate": "Monedas sin tipo de cambio"
+      "currenciesNeedingRate": "Monedas sin tipo de cambio",
+      "automaticRates": "Tasas en vivo"
     },
     "needsAttention": {
       "title": "Requieren atención",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Ninguna moneda necesita un tipo de cambio",
         "description": "Todas las monedas de cuenta ya tienen un tipo de cambio real."
+      }
+    },
+    "automaticRates": {
+      "title": "Tasas automáticas",
+      "description": "Tasas del proveedor, actualizadas automáticamente cada pocas horas. Las tasas manuales de abajo tienen prioridad.",
+      "empty": {
+        "title": "Aún no hay tasas automáticas",
+        "description": "Las tasas aparecen aquí cuando se configura una clave de proveedor y tus cuentas usan más de una moneda."
       }
     },
     "manualRates": {

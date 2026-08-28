@@ -54,6 +54,20 @@ describe('Goals', () => {
     expect(fixture.nativeElement.textContent).toContain('Aporte sugerido');
   });
 
+  it('warns when a goal can only be shown at the 1:1 fallback rate', async () => {
+    // Seeded goals are BRL; EUR has no BRL_EUR quote in the mock table
+    // (see mock-exchange-rate.repository.ts), so display-in-EUR falls
+    // through to the flagged 1:1 fallback.
+    TestBed.inject(DisplayCurrencyService).setCurrency('EUR');
+    const fixture = TestBed.createComponent(Goals);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Taxa de câmbio indisponível');
+  });
+
   it('converts a goal to the display currency via the resolved exchange rate', async () => {
     // The seeded "Viagem para Portugal" goal is BRL; pin the display
     // currency to USD explicitly rather than relying on the ambient

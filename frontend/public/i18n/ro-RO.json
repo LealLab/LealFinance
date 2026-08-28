@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Comisioane de conversie plătite",
       "needsAttention": "Tranzacții care necesită atenție",
-      "currenciesNeedingRate": "Monede fără curs"
+      "currenciesNeedingRate": "Monede fără curs",
+      "automaticRates": "Cursuri live"
     },
     "needsAttention": {
       "title": "Necesită atenție",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Nicio monedă nu necesită un curs",
         "description": "Fiecare monedă a conturilor are deja un curs real."
+      }
+    },
+    "automaticRates": {
+      "title": "Cursuri automate",
+      "description": "Cursuri de la furnizor, reîmprospătate automat la câteva ore. Cursurile manuale de mai jos au prioritate.",
+      "empty": {
+        "title": "Încă nu există cursuri automate",
+        "description": "Cursurile apar aici după ce este setată o cheie de furnizor și conturile tale folosesc mai mult de o monedă."
       }
     },
     "manualRates": {

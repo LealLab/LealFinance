@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Ödenen dönüşüm ücretleri",
       "needsAttention": "İncelenmesi gereken işlemler",
-      "currenciesNeedingRate": "Kuru olmayan para birimleri"
+      "currenciesNeedingRate": "Kuru olmayan para birimleri",
+      "automaticRates": "Canlı kurlar"
     },
     "needsAttention": {
       "title": "İncelenmesi gerekiyor",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Kur gerektiren para birimi yok",
         "description": "Her hesap para birimi zaten gerçek bir kura dönüştürülebiliyor."
+      }
+    },
+    "automaticRates": {
+      "title": "Otomatik kurlar",
+      "description": "Sağlayıcıdan gelen kurlar, birkaç saatte bir otomatik olarak yenilenir. Aşağıdaki manuel kurlar önceliklidir.",
+      "empty": {
+        "title": "Henüz otomatik kur yok",
+        "description": "Bir sağlayıcı anahtarı ayarlandığında ve hesaplarınız birden fazla para birimi kullandığında kurlar burada görünür."
       }
     },
     "manualRates": {

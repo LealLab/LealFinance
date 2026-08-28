@@ -26,6 +26,7 @@ import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { CategoryCollapseService } from './category-collapse.service';
@@ -60,6 +61,7 @@ interface GroupRow {
     EmptyState,
     Icon,
     PageHeader,
+    ExchangeRateWarning,
     CategoryFormModal,
     CdkDropList,
     CdkDrag,
@@ -100,6 +102,7 @@ export class Categories {
 
   private readonly rates = displayConverter(() => this.foreignCurrencies());
   private readonly converter = this.rates.converter;
+  protected readonly hasFallbackRate = this.rates.hasFallbackRate;
   protected readonly ratesReady = computed(() => this.converter() !== null);
 
   protected readonly formOpen = signal(false);

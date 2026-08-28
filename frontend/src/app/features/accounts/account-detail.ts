@@ -21,6 +21,7 @@ import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
+import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { AccountFormModal } from './account-form-modal';
@@ -50,6 +51,7 @@ const PAGE_SIZE = 30;
     InfiniteScroll,
     PageHeader,
     ProgressBar,
+    ExchangeRateWarning,
     AccountFormModal
   ],
   templateUrl: './account-detail.html',
@@ -159,7 +161,9 @@ export class AccountDetail {
     return currency && currency !== display ? [currency] : [];
   });
 
-  private readonly converter = displayConverter(() => this.accountCurrency()).converter;
+  private readonly rates = displayConverter(() => this.accountCurrency());
+  private readonly converter = this.rates.converter;
+  protected readonly hasFallbackRate = this.rates.hasFallbackRate;
 
   /** The balance converted to the display currency - null when it's already in that currency, or no rate has arrived (yet) to convert it. */
   protected readonly convertedBalance = computed(() => {

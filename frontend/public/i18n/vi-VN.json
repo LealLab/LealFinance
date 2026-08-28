@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Phí quy đổi đã trả",
       "needsAttention": "Giao dịch cần chú ý",
-      "currenciesNeedingRate": "Loại tiền tệ chưa có tỷ giá"
+      "currenciesNeedingRate": "Loại tiền tệ chưa có tỷ giá",
+      "automaticRates": "Tỷ giá trực tiếp"
     },
     "needsAttention": {
       "title": "Cần chú ý",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Không có loại tiền tệ nào cần tỷ giá",
         "description": "Mọi loại tiền tệ của tài khoản đều đã quy đổi được theo tỷ giá thực tế."
+      }
+    },
+    "automaticRates": {
+      "title": "Tỷ giá tự động",
+      "description": "Tỷ giá từ nhà cung cấp, tự động làm mới sau mỗi vài giờ. Tỷ giá thủ công bên dưới được ưu tiên.",
+      "empty": {
+        "title": "Chưa có tỷ giá tự động",
+        "description": "Tỷ giá xuất hiện ở đây khi đã đặt khóa nhà cung cấp và tài khoản của bạn dùng nhiều loại tiền tệ."
       }
     },
     "manualRates": {

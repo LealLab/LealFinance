@@ -10,6 +10,12 @@
     </button>
   </app-page-header>
 
+  @if (hasFallbackRate()) {
+    <div class="mb-4">
+      <app-exchange-rate-warning [isFallback]="true" />
+    </div>
+  }
+
   @if (isEmpty()) {
     <app-empty-state
       icon="tag"
