@@ -8,6 +8,7 @@ Every new model module must be imported here, or Alembic autogenerate and
 from app.models.account import Account
 from app.models.agent_credential import AgentCredential
 from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
+from app.models.categorization_rule import CategorizationRule
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
 from app.models.currency import Currency, ExchangeRate
@@ -33,6 +34,7 @@ __all__ = [
     "BudgetAllocation",
     "Category",
     "CategoryGroup",
+    "CategorizationRule",
     "Currency",
     "ExchangeRate",
     "ExpectedIncome",

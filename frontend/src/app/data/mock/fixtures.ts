@@ -2,6 +2,7 @@ import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dat
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
+import { CategorizationRule } from '../../domain/models/categorization-rule';
 import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
@@ -22,6 +23,7 @@ export interface Fixtures {
   transactions: Transaction[];
   budgets: Budget[];
   recurringRules: RecurringRule[];
+  categorizationRules: CategorizationRule[];
   institutions: Institution[];
   goals: Goal[];
   investmentWallets: InvestmentWallet[];
@@ -824,6 +826,7 @@ export function createFixtures(): Fixtures {
     categories: buildCategories(),
     transactions,
     recurringRules,
+    categorizationRules: [],
     budgets: buildBudgets(currentMonthKey),
     institutions: buildInstitutions(),
     goals: buildGoals(),

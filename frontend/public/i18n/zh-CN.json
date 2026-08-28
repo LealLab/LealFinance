@@ -159,6 +159,7 @@
       "accounts": "账户",
       "transactions": "交易",
       "categories": "分类",
+      "rules": "规则",
       "budgets": "预算",
       "goals": "目标",
       "reports": "报表",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "取消",
         "save": "保存"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "自动化",
+    "title": "规则",
+    "description": "导入交易时自动进行分类。",
+    "card": {
+      "title": "分类规则"
+    },
+    "actions": {
+      "export": "导出",
+      "import": "导入",
+      "packs": "规则包",
+      "reapply": "重新应用",
+      "add": "添加",
+      "delete": "删除",
+      "edit": "编辑"
+    },
+    "sort": {
+      "label": "排序方式",
+      "priority": "优先级",
+      "name": "名称",
+      "category": "分类"
+    },
+    "empty": {
+      "title": "暂无分类规则",
+      "description": "创建规则，以便在导入交易时自动分类。"
+    },
+    "form": {
+      "newTitle": "新建分类规则",
+      "editTitle": "编辑分类规则",
+      "name": "名称",
+      "priority": "优先级",
+      "active": "已启用",
+      "category": "分类",
+      "match": "匹配",
+      "matchAnd": "且",
+      "matchOr": "或",
+      "conditions": "条件",
+      "conditionHint": "使用一个或多个条件。",
+      "value": "值",
+      "addCondition": "添加条件",
+      "addGroup": "添加组",
+      "remove": "移除",
+      "saveError": "无法保存规则。请重试。",
+      "badRegex": "请输入有效的正则表达式。",
+      "needCondition": "至少添加一个条件。",
+      "blankValue": "每个条件都需要一个值。"
+    },
+    "conditions": {
+      "fields": {
+        "description": "描述",
+        "notes": "备注",
+        "amount": "金额",
+        "type": "类型"
+      },
+      "ops": {
+        "contains": "包含",
+        "not_contains": "不包含",
+        "equals": "等于",
+        "not_equals": "不等于",
+        "starts_with": "以…开头",
+        "ends_with": "以…结尾",
+        "regex": "匹配正则表达式",
+        "gt": "大于",
+        "gte": "大于等于",
+        "lt": "小于",
+        "lte": "小于等于"
+      },
+      "join": {
+        "and": " 且 ",
+        "or": " 或 "
+      },
+      "typeValues": {
+        "income": "收入",
+        "expense": "支出"
+      }
+    },
+    "delete": {
+      "title": "删除规则？",
+      "message": "此操作无法撤销。要删除规则“{{name}}”吗？"
+    },
+    "reapply": {
+      "title": "重新应用规则？",
+      "message": "要将分类规则应用到现有交易吗？",
+      "overwrite": "覆盖现有分类",
+      "done": "已更新 {{count}} 笔交易。"
+    },
+    "import": {
+      "title": "导入规则？",
+      "message": "要导入 {{count}} 条分类规则吗？",
+      "done": "已导入 {{imported}} 条规则；跳过 {{skipped}} 条。",
+      "invalid": "此文件不是有效的 LealFinance 规则导出文件（{{count}} 条规则）。",
+      "badgeTitle": "匹配的规则：{{name}}"
+    },
+    "packs": {
+      "title": "规则包",
+      "rulesCount": "{{count}} 条规则",
+      "install": "安装",
+      "installed": "已安装",
+      "result": "已安装 {{installed}} 条规则；跳过 {{skipped}} 条。",
+      "names": {
+        "BR": "巴西",
+        "US": "美国"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "金额不能为零。",
         "missing_description": "描述为必填项。"
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "已存在同名规则。",
+      "not_found": "找不到此规则。",
+      "no_conditions": "至少添加一个条件。",
+      "invalid_operator": "此运算符不适用于所选字段。",
+      "blank_value": "每个条件都需要一个值。",
+      "invalid_regex": "请输入有效的正则表达式。",
+      "invalid_amount": "请输入有效的金额。",
+      "invalid_type_value": "请选择有效的交易类型。"
+    },
+    "rule_pack": {
+      "not_found": "找不到此规则包。"
+    },
+    "rule_import": {
+      "invalid_format": "此文件不是有效的 LealFinance 规则导出文件。"
     }
   }
 }

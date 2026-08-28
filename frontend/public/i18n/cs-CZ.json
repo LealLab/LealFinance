@@ -159,6 +159,7 @@
       "accounts": "Účty",
       "transactions": "Transakce",
       "categories": "Kategorie",
+      "rules": "Pravidla",
       "budgets": "Rozpočty",
       "goals": "Cíle",
       "reports": "Přehledy",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Zrušit",
         "save": "Uložit"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatizace",
+    "title": "Pravidla",
+    "description": "Automaticky kategorizujte transakce při jejich importu.",
+    "card": {
+      "title": "Pravidla kategorizace"
+    },
+    "actions": {
+      "export": "Exportovat",
+      "import": "Importovat",
+      "packs": "Balíčky pravidel",
+      "reapply": "Použít znovu",
+      "add": "Přidat",
+      "delete": "Smazat",
+      "edit": "Upravit"
+    },
+    "sort": {
+      "label": "Řadit podle",
+      "priority": "Priorita",
+      "name": "Název",
+      "category": "Kategorie"
+    },
+    "empty": {
+      "title": "Zatím žádná pravidla kategorizace",
+      "description": "Vytvořte pravidlo pro automatickou kategorizaci transakcí při importu."
+    },
+    "form": {
+      "newTitle": "Nové pravidlo kategorizace",
+      "editTitle": "Upravit pravidlo kategorizace",
+      "name": "Název",
+      "priority": "Priorita",
+      "active": "Aktivní",
+      "category": "Kategorie",
+      "match": "Shoda",
+      "matchAnd": "A",
+      "matchOr": "NEBO",
+      "conditions": "Podmínky",
+      "conditionHint": "Použijte jednu nebo více podmínek.",
+      "value": "Hodnota",
+      "addCondition": "Přidat podmínku",
+      "addGroup": "Přidat skupinu",
+      "remove": "Odebrat",
+      "saveError": "Pravidlo se nepodařilo uložit. Zkuste to znovu.",
+      "badRegex": "Zadejte platný regulární výraz.",
+      "needCondition": "Přidejte alespoň jednu podmínku.",
+      "blankValue": "Každá podmínka potřebuje hodnotu."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Popis",
+        "notes": "Poznámky",
+        "amount": "Částka",
+        "type": "Typ"
+      },
+      "ops": {
+        "contains": "obsahuje",
+        "not_contains": "neobsahuje",
+        "equals": "rovná se",
+        "not_equals": "nerovná se",
+        "starts_with": "začíná na",
+        "ends_with": "končí na",
+        "regex": "odpovídá regulárnímu výrazu",
+        "gt": "je větší než",
+        "gte": "je alespoň",
+        "lt": "je menší než",
+        "lte": "je nejvýše"
+      },
+      "join": {
+        "and": " A ",
+        "or": " NEBO "
+      },
+      "typeValues": {
+        "income": "Příjem",
+        "expense": "Výdaj"
+      }
+    },
+    "delete": {
+      "title": "Smazat pravidlo?",
+      "message": "Tuto akci nelze vrátit zpět. Chcete pravidlo \"{{name}}\" smazat?"
+    },
+    "reapply": {
+      "title": "Použít pravidla znovu?",
+      "message": "Použít pravidla kategorizace na existující transakce?",
+      "overwrite": "Přepsat existující kategorie",
+      "done": "Aktualizováno transakcí: {{count}}."
+    },
+    "import": {
+      "title": "Importovat pravidla?",
+      "message": "Importovat {{count}} pravidel kategorizace?",
+      "done": "Importováno pravidel: {{imported}}; přeskočeno: {{skipped}}.",
+      "invalid": "Tento soubor není platným exportem pravidel LealFinance ({{count}} pravidel).",
+      "badgeTitle": "Shodné pravidlo: {{name}}"
+    },
+    "packs": {
+      "title": "Balíčky pravidel",
+      "rulesCount": "{{count}} pravidel",
+      "install": "Nainstalovat",
+      "installed": "Nainstalováno",
+      "result": "Nainstalováno pravidel: {{installed}}; přeskočeno: {{skipped}}.",
+      "names": {
+        "BR": "Brazílie",
+        "US": "Spojené státy"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Částka nemůže být nulová.",
         "missing_description": "Popis je povinný."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Pravidlo s tímto názvem již existuje.",
+      "not_found": "Toto pravidlo nebylo nalezeno.",
+      "no_conditions": "Přidejte alespoň jednu podmínku.",
+      "invalid_operator": "Tento operátor není pro vybrané pole platný.",
+      "blank_value": "Každá podmínka potřebuje hodnotu.",
+      "invalid_regex": "Zadejte platný regulární výraz.",
+      "invalid_amount": "Zadejte platnou částku.",
+      "invalid_type_value": "Vyberte platný typ transakce."
+    },
+    "rule_pack": {
+      "not_found": "Tento balíček pravidel nebyl nalezen."
+    },
+    "rule_import": {
+      "invalid_format": "Tento soubor není platným exportem pravidel LealFinance."
     }
   }
 }

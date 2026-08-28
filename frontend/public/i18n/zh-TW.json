@@ -159,6 +159,7 @@
       "accounts": "帳戶",
       "transactions": "交易",
       "categories": "分類",
+      "rules": "規則",
       "budgets": "預算",
       "goals": "目標",
       "reports": "報表",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "取消",
         "save": "儲存"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "自動化",
+    "title": "規則",
+    "description": "匯入交易時自動分類。",
+    "card": {
+      "title": "分類規則"
+    },
+    "actions": {
+      "export": "匯出",
+      "import": "匯入",
+      "packs": "規則套件",
+      "reapply": "重新套用",
+      "add": "新增",
+      "delete": "刪除",
+      "edit": "編輯"
+    },
+    "sort": {
+      "label": "排序依據",
+      "priority": "優先順序",
+      "name": "名稱",
+      "category": "分類"
+    },
+    "empty": {
+      "title": "尚無分類規則",
+      "description": "建立規則，在匯入交易時自動分類。"
+    },
+    "form": {
+      "newTitle": "新增分類規則",
+      "editTitle": "編輯分類規則",
+      "name": "名稱",
+      "priority": "優先順序",
+      "active": "啟用",
+      "category": "分類",
+      "match": "比對",
+      "matchAnd": "且",
+      "matchOr": "或",
+      "conditions": "條件",
+      "conditionHint": "使用一個或多個條件。",
+      "value": "值",
+      "addCondition": "新增條件",
+      "addGroup": "新增群組",
+      "remove": "移除",
+      "saveError": "無法儲存規則。請再試一次。",
+      "badRegex": "請輸入有效的正規表示式。",
+      "needCondition": "至少新增一個條件。",
+      "blankValue": "每個條件都需要值。"
+    },
+    "conditions": {
+      "fields": {
+        "description": "說明",
+        "notes": "備註",
+        "amount": "金額",
+        "type": "類型"
+      },
+      "ops": {
+        "contains": "包含",
+        "not_contains": "不包含",
+        "equals": "等於",
+        "not_equals": "不等於",
+        "starts_with": "開頭為",
+        "ends_with": "結尾為",
+        "regex": "符合正規表示式",
+        "gt": "大於",
+        "gte": "至少",
+        "lt": "小於",
+        "lte": "至多"
+      },
+      "join": {
+        "and": " 且 ",
+        "or": " 或 "
+      },
+      "typeValues": {
+        "income": "收入",
+        "expense": "支出"
+      }
+    },
+    "delete": {
+      "title": "刪除規則？",
+      "message": "此操作無法復原。要刪除規則「{{name}}」嗎？"
+    },
+    "reapply": {
+      "title": "重新套用規則？",
+      "message": "要將分類規則套用至現有交易嗎？",
+      "overwrite": "覆寫現有分類",
+      "done": "已更新 {{count}} 筆交易。"
+    },
+    "import": {
+      "title": "匯入規則？",
+      "message": "要匯入 {{count}} 條分類規則嗎？",
+      "done": "已匯入 {{imported}} 條規則；略過 {{skipped}} 條。",
+      "invalid": "此檔案不是有效的 LealFinance 規則匯出檔（{{count}} 條規則）。",
+      "badgeTitle": "符合的規則：{{name}}"
+    },
+    "packs": {
+      "title": "規則套件",
+      "rulesCount": "{{count}} 條規則",
+      "install": "安裝",
+      "installed": "已安裝",
+      "result": "已安裝 {{installed}} 條規則；略過 {{skipped}} 條。",
+      "names": {
+        "BR": "巴西",
+        "US": "美國"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "金額不能為零。",
         "missing_description": "說明為必填項目。"
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "已有同名規則。",
+      "not_found": "找不到此規則。",
+      "no_conditions": "至少新增一個條件。",
+      "invalid_operator": "此運算子不適用於所選欄位。",
+      "blank_value": "每個條件都需要值。",
+      "invalid_regex": "請輸入有效的正規表示式。",
+      "invalid_amount": "請輸入有效的金額。",
+      "invalid_type_value": "請選擇有效的交易類型。"
+    },
+    "rule_pack": {
+      "not_found": "找不到此規則套件。"
+    },
+    "rule_import": {
+      "invalid_format": "此檔案不是有效的 LealFinance 規則匯出檔。"
     }
   }
 }

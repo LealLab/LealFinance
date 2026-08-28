@@ -1,0 +1,139 @@
+<div *transloco="let t">
+  <app-page-header
+    [eyebrow]="t('rules.eyebrow')"
+    [title]="t('rules.title')"
+    [description]="t('rules.description')"
+  />
+
+  <app-card [padded]="false">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
+      <h2 class="text-sm font-semibold text-content-primary">{{ t('rules.card.title') }}</h2>
+      <div class="flex flex-wrap items-center gap-2">
+        <button appButton variant="secondary" type="button" [disabled]="rules().length === 0" (click)="exportRules()">
+          <app-icon name="arrowDownLeft" [size]="16" />
+          {{ t('rules.actions.export') }}
+        </button>
+        <button appButton variant="secondary" type="button" (click)="fileInput.click()">
+          <app-icon name="arrowUpRight" [size]="16" />
+          {{ t('rules.actions.import') }}
+        </button>
+        <input
+          #fileInput
+          type="file"
+          accept="application/json,.json"
+          hidden
+          (change)="onImportFile($event)"
+        />
+        <button appButton variant="secondary" type="button" (click)="packsOpen.set(true)">
+          <app-icon name="package" [size]="16" />
+          {{ t('rules.actions.packs') }}
+        </button>
+        <label class="flex items-center gap-1.5 px-1 text-xs text-content-muted">
+          <input type="checkbox" [checked]="overwrite()" (change)="overwrite.set($any($event.target).checked)" />
+          {{ t('rules.reapply.overwrite') }}
+        </label>
+        <button appButton variant="secondary" type="button" (click)="reapplyRules()">
+          <app-icon name="refresh" [size]="16" />
+          {{ t('rules.actions.reapply') }}
+        </button>
+        <button appButton variant="primary" type="button" (click)="openCreate()">
+          <app-icon name="plus" [size]="16" />
+          {{ t('rules.actions.add') }}
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 border-b border-border px-4 py-3">
+      <span class="text-xs text-content-muted">{{ t('rules.sort.label') }}</span>
+      @for (key of ['priority', 'name', 'category']; track key) {
+        <button
+          type="button"
+          class="rounded px-2.5 py-1 text-xs font-medium"
+          [class.bg-surface-sunken]="sortKey() === key"
+          [class.text-content-primary]="sortKey() === key"
+          [class.text-content-muted]="sortKey() !== key"
+          (click)="toggleSort($any(key))"
+        >
+          {{ t('rules.sort.' + key) }}
+          @if (sortKey() === key) {
+            <span aria-hidden="true">{{ asc() ? '↑' : '↓' }}</span>
+          }
+        </button>
+      }
+    </div>
+
+    @if (resultMessage(); as message) {
+      <p class="border-b border-border px-4 py-3 text-sm text-positive" role="status">{{ message }}</p>
+    }
+    @if (importError(); as error) {
+      <p class="border-b border-border px-4 py-3 text-sm text-negative" role="alert">{{ error }}</p>
+    }
+
+    @if (rulesResource.isLoading()) {
+      <div class="flex flex-col gap-3 px-4 py-4">
+        @for (row of [1, 2, 3]; track row) {
+          <app-skeleton height="4.5rem" />
+        }
+      </div>
+    } @else if (rules().length === 0) {
+      <app-empty-state
+        icon="funnel"
+        [title]="t('rules.empty.title')"
+        [description]="t('rules.empty.description')"
+      >
+        <button appButton variant="primary" type="button" (click)="openCreate()">
+          {{ t('rules.actions.add') }}
+        </button>
+      </app-empty-state>
+    } @else {
+      <div class="flex flex-col">
+        @for (rule of sortedRules(); track rule.id) {
+          <article
+            class="group/row flex cursor-pointer flex-wrap items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-sunken"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="t('rules.actions.edit') + ': ' + rule.name"
+            (click)="openEdit(rule)"
+            (keydown.enter)="openEdit(rule)"
+            (keydown.space)="$event.preventDefault(); openEdit(rule)"
+          >
+            <div class="min-w-40 flex-1">
+              <div class="flex items-center gap-2">
+                <strong class="text-sm text-content-primary">{{ rule.name }}</strong>
+                <app-badge>p:{{ rule.priority }}</app-badge>
+              </div>
+              <div class="mt-1 font-mono text-xs text-content-muted">{{ summary(rule) }}</div>
+            </div>
+            <span
+              class="rounded px-2 py-1 text-sm font-medium"
+              [style.color]="categoryColor(rule)"
+              [style.background-color]="categoryColor(rule) + '1A'"
+            >
+              → {{ categoryName(rule) }}
+            </span>
+            <button
+              appButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              class="hover:text-negative"
+              [attr.aria-label]="t('rules.actions.delete')"
+              (click)="$event.stopPropagation(); deleteRule(rule)"
+            >
+              <app-icon name="trash" [size]="16" />
+            </button>
+          </article>
+        }
+      </div>
+    }
+  </app-card>
+
+  <app-rule-form-modal
+    [(open)]="formOpen"
+    [rule]="editingRule()"
+    [categories]="categories()"
+    [groups]="groupsResource.value() ?? []"
+    (saved)="onSaved()"
+  />
+  <app-rule-packs-modal [(open)]="packsOpen" (installed)="onSaved()" />
+</div>

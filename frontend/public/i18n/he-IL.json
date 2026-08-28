@@ -159,6 +159,7 @@
       "accounts": "חשבונות",
       "transactions": "תנועות",
       "categories": "קטגוריות",
+      "rules": "כללים",
       "budgets": "תקציבים",
       "goals": "יעדים",
       "reports": "דוחות",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "ביטול",
         "save": "שמירה"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "אוטומציה",
+    "title": "כללים",
+    "description": "סווג עסקאות באופן אוטומטי בעת הייבוא שלהן.",
+    "card": {
+      "title": "כללי סיווג"
+    },
+    "actions": {
+      "export": "ייצוא",
+      "import": "ייבוא",
+      "packs": "חבילות כללים",
+      "reapply": "החל שוב",
+      "add": "הוספה",
+      "delete": "מחיקה",
+      "edit": "עריכה"
+    },
+    "sort": {
+      "label": "מיון לפי",
+      "priority": "עדיפות",
+      "name": "שם",
+      "category": "קטגוריה"
+    },
+    "empty": {
+      "title": "עדיין אין כללי סיווג",
+      "description": "צור כלל לסיווג אוטומטי של עסקאות בעת הייבוא שלהן."
+    },
+    "form": {
+      "newTitle": "כלל סיווג חדש",
+      "editTitle": "עריכת כלל סיווג",
+      "name": "שם",
+      "priority": "עדיפות",
+      "active": "פעיל",
+      "category": "קטגוריה",
+      "match": "התאמה",
+      "matchAnd": "וגם",
+      "matchOr": "או",
+      "conditions": "תנאים",
+      "conditionHint": "השתמש בתנאי אחד או יותר.",
+      "value": "ערך",
+      "addCondition": "הוספת תנאי",
+      "addGroup": "הוספת קבוצה",
+      "remove": "הסרה",
+      "saveError": "לא ניתן לשמור את הכלל. נסה שוב.",
+      "badRegex": "הזן ביטוי רגולרי תקין.",
+      "needCondition": "הוסף לפחות תנאי אחד.",
+      "blankValue": "כל תנאי חייב לכלול ערך."
+    },
+    "conditions": {
+      "fields": {
+        "description": "תיאור",
+        "notes": "הערות",
+        "amount": "סכום",
+        "type": "סוג"
+      },
+      "ops": {
+        "contains": "מכיל",
+        "not_contains": "אינו מכיל",
+        "equals": "שווה ל־",
+        "not_equals": "אינו שווה ל־",
+        "starts_with": "מתחיל ב־",
+        "ends_with": "מסתיים ב־",
+        "regex": "תואם לביטוי רגולרי",
+        "gt": "גדול מ־",
+        "gte": "לפחות",
+        "lt": "קטן מ־",
+        "lte": "לכל היותר"
+      },
+      "join": {
+        "and": " וגם ",
+        "or": " או "
+      },
+      "typeValues": {
+        "income": "הכנסה",
+        "expense": "הוצאה"
+      }
+    },
+    "delete": {
+      "title": "למחוק את הכלל?",
+      "message": "אי אפשר לבטל פעולה זו. האם למחוק את הכלל \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "להחיל את הכללים שוב?",
+      "message": "להחיל את כללי הסיווג על עסקאות קיימות?",
+      "overwrite": "החלפת קטגוריות קיימות",
+      "done": "{{count}} עסקאות עודכנו."
+    },
+    "import": {
+      "title": "לייבא כללים?",
+      "message": "לייבא {{count}} כללי סיווג?",
+      "done": "יובאו {{imported}} כללים; {{skipped}} דולגו.",
+      "invalid": "הקובץ אינו ייצוא חוקי של כללי LealFinance ({{count}} כללים).",
+      "badgeTitle": "כלל תואם: {{name}}"
+    },
+    "packs": {
+      "title": "חבילות כללים",
+      "rulesCount": "{{count}} כללים",
+      "install": "התקנה",
+      "installed": "מותקן",
+      "result": "הותקנו {{installed}} כללים; {{skipped}} דולגו.",
+      "names": {
+        "BR": "ברזיל",
+        "US": "ארצות הברית"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "הסכום לא יכול להיות אפס.",
         "missing_description": "נדרש תיאור."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "כבר קיים כלל בשם זה.",
+      "not_found": "לא ניתן למצוא את הכלל הזה.",
+      "no_conditions": "הוסף לפחות תנאי אחד.",
+      "invalid_operator": "האופרטור הזה אינו חוקי עבור השדה שנבחר.",
+      "blank_value": "כל תנאי חייב לכלול ערך.",
+      "invalid_regex": "הזן ביטוי רגולרי תקין.",
+      "invalid_amount": "הזן סכום תקין.",
+      "invalid_type_value": "בחר סוג עסקה תקין."
+    },
+    "rule_pack": {
+      "not_found": "לא ניתן למצוא את חבילת הכללים הזו."
+    },
+    "rule_import": {
+      "invalid_format": "הקובץ אינו ייצוא חוקי של כללי LealFinance."
     }
   }
 }

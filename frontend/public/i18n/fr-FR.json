@@ -159,6 +159,7 @@
       "accounts": "Comptes",
       "transactions": "Opérations",
       "categories": "Catégories",
+      "rules": "Règles",
       "budgets": "Budgets",
       "goals": "Objectifs",
       "reports": "Rapports",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Annuler",
         "save": "Enregistrer"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatisation",
+    "title": "Règles",
+    "description": "Catégorisez automatiquement les transactions lors de leur importation.",
+    "card": {
+      "title": "Règles de catégorisation"
+    },
+    "actions": {
+      "export": "Exporter",
+      "import": "Importer",
+      "packs": "Packs de règles",
+      "reapply": "Réappliquer",
+      "add": "Ajouter",
+      "delete": "Supprimer",
+      "edit": "Modifier"
+    },
+    "sort": {
+      "label": "Trier par",
+      "priority": "Priorité",
+      "name": "Nom",
+      "category": "Catégorie"
+    },
+    "empty": {
+      "title": "Aucune règle de catégorisation pour le moment",
+      "description": "Créez une règle pour catégoriser automatiquement les transactions lors de leur importation."
+    },
+    "form": {
+      "newTitle": "Nouvelle règle de catégorisation",
+      "editTitle": "Modifier la règle de catégorisation",
+      "name": "Nom",
+      "priority": "Priorité",
+      "active": "Active",
+      "category": "Catégorie",
+      "match": "Correspondance",
+      "matchAnd": "ET",
+      "matchOr": "OU",
+      "conditions": "Conditions",
+      "conditionHint": "Utilisez une ou plusieurs conditions.",
+      "value": "Valeur",
+      "addCondition": "Ajouter une condition",
+      "addGroup": "Ajouter un groupe",
+      "remove": "Supprimer",
+      "saveError": "Enregistrement impossible de la règle. Réessayez.",
+      "badRegex": "Saisissez une expression régulière valide.",
+      "needCondition": "Ajoutez au moins une condition.",
+      "blankValue": "Chaque condition doit avoir une valeur."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Description",
+        "notes": "Notes",
+        "amount": "Montant",
+        "type": "Type"
+      },
+      "ops": {
+        "contains": "contient",
+        "not_contains": "ne contient pas",
+        "equals": "est égal à",
+        "not_equals": "est différent de",
+        "starts_with": "commence par",
+        "ends_with": "se termine par",
+        "regex": "correspond à une expression régulière",
+        "gt": "est supérieur à",
+        "gte": "est au moins",
+        "lt": "est inférieur à",
+        "lte": "est au plus"
+      },
+      "join": {
+        "and": " ET ",
+        "or": " OU "
+      },
+      "typeValues": {
+        "income": "Revenus",
+        "expense": "Dépenses"
+      }
+    },
+    "delete": {
+      "title": "Supprimer la règle ?",
+      "message": "Cette action est irréversible. Voulez-vous supprimer la règle \"{{name}}\" ?"
+    },
+    "reapply": {
+      "title": "Réappliquer les règles ?",
+      "message": "Appliquer les règles de catégorisation aux transactions existantes ?",
+      "overwrite": "Remplacer les catégories existantes",
+      "done": "{{count}} transactions mises à jour."
+    },
+    "import": {
+      "title": "Importer les règles ?",
+      "message": "Importer {{count}} règles de catégorisation ?",
+      "done": "{{imported}} règles importées ; {{skipped}} ignorées.",
+      "invalid": "Ce fichier ne constitue pas un export valide de règles LealFinance ({{count}} règles).",
+      "badgeTitle": "Règle correspondante : {{name}}"
+    },
+    "packs": {
+      "title": "Packs de règles",
+      "rulesCount": "{{count}} règles",
+      "install": "Installer",
+      "installed": "Installé",
+      "result": "{{installed}} règles installées ; {{skipped}} ignorées.",
+      "names": {
+        "BR": "Brésil",
+        "US": "États-Unis"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Le montant ne peut pas être zéro.",
         "missing_description": "La description est obligatoire."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Une règle portant ce nom existe déjà.",
+      "not_found": "Cette règle est introuvable.",
+      "no_conditions": "Ajoutez au moins une condition.",
+      "invalid_operator": "Cet opérateur est invalide pour le champ sélectionné.",
+      "blank_value": "Chaque condition doit avoir une valeur.",
+      "invalid_regex": "Saisissez une expression régulière valide.",
+      "invalid_amount": "Saisissez un montant valide.",
+      "invalid_type_value": "Sélectionnez un type de transaction valide."
+    },
+    "rule_pack": {
+      "not_found": "Ce pack de règles est introuvable."
+    },
+    "rule_import": {
+      "invalid_format": "Ce fichier ne constitue pas un export valide de règles LealFinance."
     }
   }
 }

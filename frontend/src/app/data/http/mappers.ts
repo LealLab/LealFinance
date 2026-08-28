@@ -9,6 +9,12 @@ import type {
 } from '../../domain/models/agent-provider';
 import type { Budget } from '../../domain/models/budget';
 import type { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
+import type {
+  CategorizationRule,
+  RuleConditionEntry,
+  RuleExportItem,
+  RulePack,
+} from '../../domain/models/categorization-rule';
 import type { Category } from '../../domain/models/category';
 import type { CategoryGroup } from '../../domain/models/category-group';
 import type { ExchangeRate } from '../../domain/models/exchange-rate';
@@ -53,6 +59,9 @@ import type {
   BudgetAllocationWire,
   BudgetInputWire,
   BudgetWire,
+  CategorizationRuleInputWire,
+  CategorizationRulePatchWire,
+  CategorizationRuleWire,
   CategoryGroupInputWire,
   CategoryGroupPatchWire,
   CategoryGroupWire,
@@ -89,6 +98,8 @@ import type {
   RecurringRulePatchWire,
   RecurringRuleWire,
   RecurringTemplateWire,
+  RuleImportItemWire,
+  RulePackWire,
   TransactionInputWire,
   TransactionPatchWire,
   TransactionWire,
@@ -341,10 +352,60 @@ export const mapImportPreview = (wire: ImportPreviewWire): ImportPreview => ({
     amount: row.amount ?? undefined,
     categoryId: row.category_id ?? undefined,
     categoryName: row.category_name ?? undefined,
+    ruleName: row.rule_name ?? undefined,
     notes: row.notes ?? undefined,
     error: row.error ?? undefined,
     duplicate: row.duplicate,
   })),
+});
+
+export const mapCategorizationRule = (wire: CategorizationRuleWire): CategorizationRule => ({
+  id: wire.id,
+  name: wire.name,
+  priority: wire.priority,
+  isActive: wire.is_active,
+  matchOp: wire.match_op,
+  conditions: wire.conditions as RuleConditionEntry[],
+  categoryId: wire.category_id,
+});
+
+export const mapCategorizationRuleCreate = (
+  input: Omit<CategorizationRule, 'id'>,
+): CategorizationRuleInputWire => ({
+  name: input.name,
+  priority: input.priority,
+  is_active: input.isActive,
+  match_op: input.matchOp,
+  conditions: input.conditions,
+  category_id: input.categoryId,
+});
+
+export function mapCategorizationRulePatch(
+  input: Partial<Omit<CategorizationRule, 'id'>>,
+): CategorizationRulePatchWire {
+  const wire: CategorizationRulePatchWire = {};
+  if (has(input, 'name')) wire.name = nullable(input.name);
+  if (has(input, 'priority')) wire.priority = nullable(input.priority);
+  if (has(input, 'isActive')) wire.is_active = nullable(input.isActive);
+  if (has(input, 'matchOp')) wire.match_op = nullable(input.matchOp);
+  if (has(input, 'conditions')) wire.conditions = nullable(input.conditions);
+  if (has(input, 'categoryId')) wire.category_id = nullable(input.categoryId);
+  return wire;
+}
+
+export const mapRulePack = (wire: RulePackWire): RulePack => ({
+  code: wire.code,
+  ruleCount: wire.rule_count,
+  installed: wire.installed,
+});
+
+export const mapRuleImportItem = (input: RuleExportItem): RuleImportItemWire => ({
+  name: input.name,
+  match_op: input.matchOp,
+  priority: input.priority,
+  is_active: input.isActive,
+  category: input.category,
+  conditions: input.conditions,
 });
 
 const mapRecurringTemplate = (wire: RecurringTemplateWire): RecurringRule['template'] => ({

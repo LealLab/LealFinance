@@ -212,6 +212,25 @@ async def _create_category(client: AsyncClient, name: str, kind: str) -> str:
     return response.json()["id"]
 
 
+async def _create_rule(
+    client: AsyncClient,
+    name: str,
+    category_id: str,
+    conditions: list[dict[str, str]],
+    match_op: str = "and",
+) -> None:
+    response = await client.post(
+        "/api/v1/categorization-rules",
+        json={
+            "name": name,
+            "match_op": match_op,
+            "conditions": conditions,
+            "category_id": category_id,
+        },
+    )
+    assert response.status_code == 201, response.text
+
+
 CSV_CONTENT = (
     "date,description,amount,category\n"
     "2026-01-15,Coffee,-5.00,Groceries\n"
@@ -236,6 +255,92 @@ async def test_preview_matches_category_by_name(
     assert rows[0]["type"] == "expense"
     assert rows[0]["amount"] == "5.00"
     assert rows[1]["category_id"] is None  # "Salary" category doesn't exist yet
+    assert rows[0]["rule_name"] is None
+    assert rows[1]["rule_name"] is None
+
+
+async def test_preview_applies_rule_without_category_column(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "preview-rule@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client, "Public Transport", "expense")
+    await _create_rule(
+        client,
+        "Uber",
+        category_id,
+        [{"field": "description", "op": "contains", "value": "UBER"}],
+    )
+
+    response = await client.post(
+        "/api/v1/transactions/import/preview",
+        json={
+            "content": "date,description,amount\n2026-01-15,UBER TRIP,-12.50\n",
+            "account_id": account_id,
+        },
+    )
+    assert response.status_code == 200, response.text
+    row = response.json()["rows"][0]
+    assert row["category_id"] == category_id
+    assert row["rule_name"] == "Uber"
+
+
+async def test_preview_rule_beats_category_column(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "preview-rule-priority@example.com")
+    account_id = await _create_account(client)
+    transport_id = await _create_category(client, "Transport", "expense")
+    await _create_category(client, "Groceries", "expense")
+    await _create_rule(
+        client,
+        "Uber",
+        transport_id,
+        [{"field": "description", "op": "contains", "value": "UBER"}],
+    )
+
+    response = await client.post(
+        "/api/v1/transactions/import/preview",
+        json={
+            "content": "date,description,amount,category\n2026-01-15,UBER TRIP,-12.50,Groceries\n",
+            "account_id": account_id,
+        },
+    )
+    assert response.status_code == 200, response.text
+    row = response.json()["rows"][0]
+    assert row["category_id"] == transport_id
+    assert row["category_name"] == "Groceries"
+    assert row["rule_name"] == "Uber"
+
+
+async def test_income_rule_does_not_categorize_expense_row(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "preview-rule-kind@example.com")
+    account_id = await _create_account(client)
+    salary_id = await _create_category(client, "Salary", "income")
+    await _create_rule(
+        client,
+        "Payroll",
+        salary_id,
+        [
+            {"field": "description", "op": "contains", "value": "PAYROLL"},
+            {"field": "type", "op": "equals", "value": "income"},
+        ],
+    )
+
+    response = await client.post(
+        "/api/v1/transactions/import/preview",
+        json={
+            "content": "date,description,amount\n2026-01-15,PAYROLL FEE,-12.50\n",
+            "account_id": account_id,
+        },
+    )
+    assert response.status_code == 200, response.text
+    row = response.json()["rows"][0]
+    assert row["type"] == "expense"
+    assert row["category_id"] is None
+    assert row["rule_name"] is None
 
 
 async def test_preview_returns_detected_headers(

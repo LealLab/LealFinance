@@ -159,6 +159,7 @@
       "accounts": "Rekeningen",
       "transactions": "Transacties",
       "categories": "Categorieën",
+      "rules": "Regels",
       "budgets": "Budgetten",
       "goals": "Doelen",
       "reports": "Rapporten",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Annuleren",
         "save": "Opslaan"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatisering",
+    "title": "Regels",
+    "description": "Categoriseer transacties automatisch tijdens het importeren.",
+    "card": {
+      "title": "Categorisatieregels"
+    },
+    "actions": {
+      "export": "Exporteren",
+      "import": "Importeren",
+      "packs": "Regelpakketten",
+      "reapply": "Opnieuw toepassen",
+      "add": "Toevoegen",
+      "delete": "Verwijderen",
+      "edit": "Bewerken"
+    },
+    "sort": {
+      "label": "Sorteren op",
+      "priority": "Prioriteit",
+      "name": "Naam",
+      "category": "Categorie"
+    },
+    "empty": {
+      "title": "Nog geen categorisatieregels",
+      "description": "Maak een regel om transacties automatisch te categoriseren tijdens het importeren."
+    },
+    "form": {
+      "newTitle": "Nieuwe categorisatieregel",
+      "editTitle": "Categorisatieregel bewerken",
+      "name": "Naam",
+      "priority": "Prioriteit",
+      "active": "Actief",
+      "category": "Categorie",
+      "match": "Overeenkomst",
+      "matchAnd": "EN",
+      "matchOr": "OF",
+      "conditions": "Voorwaarden",
+      "conditionHint": "Gebruik een of meer voorwaarden.",
+      "value": "Waarde",
+      "addCondition": "Voorwaarde toevoegen",
+      "addGroup": "Groep toevoegen",
+      "remove": "Verwijderen",
+      "saveError": "De regel kon niet worden opgeslagen. Probeer het opnieuw.",
+      "badRegex": "Voer een geldige reguliere expressie in.",
+      "needCondition": "Voeg ten minste één voorwaarde toe.",
+      "blankValue": "Elke voorwaarde heeft een waarde nodig."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Beschrijving",
+        "notes": "Notities",
+        "amount": "Bedrag",
+        "type": "Type"
+      },
+      "ops": {
+        "contains": "bevat",
+        "not_contains": "bevat niet",
+        "equals": "is gelijk aan",
+        "not_equals": "is niet gelijk aan",
+        "starts_with": "begint met",
+        "ends_with": "eindigt met",
+        "regex": "komt overeen met regex",
+        "gt": "is groter dan",
+        "gte": "is ten minste",
+        "lt": "is kleiner dan",
+        "lte": "is ten hoogste"
+      },
+      "join": {
+        "and": " EN ",
+        "or": " OF "
+      },
+      "typeValues": {
+        "income": "Inkomsten",
+        "expense": "Uitgaven"
+      }
+    },
+    "delete": {
+      "title": "Regel verwijderen?",
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je de regel \"{{name}}\" verwijderen?"
+    },
+    "reapply": {
+      "title": "Regels opnieuw toepassen?",
+      "message": "Categorisatieregels toepassen op bestaande transacties?",
+      "overwrite": "Bestaande categorieën overschrijven",
+      "done": "{{count}} transacties bijgewerkt."
+    },
+    "import": {
+      "title": "Regels importeren?",
+      "message": "{{count}} categorisatieregels importeren?",
+      "done": "{{imported}} regels geïmporteerd; {{skipped}} overgeslagen.",
+      "invalid": "Dit bestand is geen geldige export van LealFinance-regels ({{count}} regels).",
+      "badgeTitle": "Overeenkomstige regel: {{name}}"
+    },
+    "packs": {
+      "title": "Regelpakketten",
+      "rulesCount": "{{count}} regels",
+      "install": "Installeren",
+      "installed": "Geïnstalleerd",
+      "result": "{{installed}} regels geïnstalleerd; {{skipped}} overgeslagen.",
+      "names": {
+        "BR": "Brazilië",
+        "US": "Verenigde Staten"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Het bedrag mag niet nul zijn.",
         "missing_description": "Omschrijving is verplicht."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Er bestaat al een regel met deze naam.",
+      "not_found": "Deze regel kon niet worden gevonden.",
+      "no_conditions": "Voeg ten minste één voorwaarde toe.",
+      "invalid_operator": "Deze operator is niet geldig voor het geselecteerde veld.",
+      "blank_value": "Elke voorwaarde heeft een waarde nodig.",
+      "invalid_regex": "Voer een geldige reguliere expressie in.",
+      "invalid_amount": "Voer een geldig bedrag in.",
+      "invalid_type_value": "Selecteer een geldig transactietype."
+    },
+    "rule_pack": {
+      "not_found": "Dit regelpakket kon niet worden gevonden."
+    },
+    "rule_import": {
+      "invalid_format": "Dit bestand is geen geldige export van LealFinance-regels."
     }
   }
 }

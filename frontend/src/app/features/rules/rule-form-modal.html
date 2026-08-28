@@ -1,0 +1,240 @@
+<div *transloco="let t">
+  <!-- t(rules.form.newTitle) t(rules.form.editTitle) t(rules.form.saveError) t(rules.form.badRegex) t(rules.form.needCondition) t(rules.form.blankValue) -->
+  <app-modal [(open)]="open" [titleText]="t(titleKey())">
+    <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+      <div>
+        <label class="form-label" for="rule-name">{{ t('rules.form.name') }}</label>
+        <input id="rule-name" type="text" class="form-input" formControlName="name" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="form-label" for="rule-priority">{{ t('rules.form.priority') }}</label>
+          <input id="rule-priority" type="number" min="0" class="form-input" formControlName="priority" />
+        </div>
+        <label class="flex items-end gap-2 pb-2 text-sm text-content-primary">
+          <input type="checkbox" formControlName="isActive" />
+          {{ t('rules.form.active') }}
+        </label>
+      </div>
+
+      <div>
+        <label class="form-label" for="rule-category">{{ t('rules.form.category') }}</label>
+        <select id="rule-category" class="form-input" formControlName="categoryId">
+          <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+          @for (group of groupedCategories(); track group.group.id) {
+            <optgroup [label]="group.group.name">
+              @for (category of group.categories; track category.id) {
+                <option [value]="category.id">{{ category.name }}</option>
+              }
+            </optgroup>
+          }
+        </select>
+      </div>
+
+      <div>
+        <span class="form-label">{{ t('rules.form.match') }}</span>
+        <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+          @for (op of matchOps; track op) {
+            <button
+              type="button"
+              class="cursor-pointer rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              [class.bg-surface-raised]="form.controls.matchOp.value === op"
+              [class.text-content-primary]="form.controls.matchOp.value === op"
+              [class.text-content-muted]="form.controls.matchOp.value !== op"
+              (click)="setMatchOp(op)"
+            >
+              {{ t('rules.form.match' + (op === 'and' ? 'And' : 'Or')) }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-content-primary">{{ t('rules.form.conditions') }}</h3>
+          <span class="text-xs text-content-muted">{{ t('rules.form.conditionHint') }}</span>
+        </div>
+
+        @for (entry of conditions(); track $index; let entryIndex = $index) {
+          @if (isConditionGroup(entry)) {
+            <div class="rounded-md border border-border p-3">
+              <div class="mb-3 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1">
+                  <span class="text-xs font-medium text-content-muted">{{ t('rules.form.match') }}</span>
+                  @for (op of matchOps; track op) {
+                    <button
+                      type="button"
+                      class="rounded px-2 py-1 text-xs font-medium"
+                      [class.bg-surface-sunken]="entry.op === op"
+                      [class.text-content-primary]="entry.op === op"
+                      [class.text-content-muted]="entry.op !== op"
+                      (click)="setGroupOp(entryIndex, op)"
+                    >
+                      {{ t('rules.form.match' + (op === 'and' ? 'And' : 'Or')) }}
+                    </button>
+                  }
+                </div>
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  [attr.aria-label]="t('rules.form.remove')"
+                  (click)="removeEntry(entryIndex)"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                @for (condition of entry.conditions; track $index; let conditionIndex = $index) {
+                  <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2">
+                    <label>
+                      <span class="form-label">{{ t('rules.conditions.fields.' + condition.field) }}</span>
+                      <select
+                        class="form-input"
+                        [value]="condition.field"
+                        (change)="setGroupField(entryIndex, conditionIndex, $any($event.target).value)"
+                      >
+                        @for (field of conditionFields; track field) {
+                          <option [value]="field">{{ t('rules.conditions.fields.' + field) }}</option>
+                        }
+                      </select>
+                    </label>
+                    <label>
+                      <span class="form-label">{{ t('rules.conditions.ops.' + condition.op) }}</span>
+                      <select
+                        class="form-input"
+                        [value]="condition.op"
+                        (change)="setGroupOpValue(entryIndex, conditionIndex, $any($event.target).value)"
+                      >
+                        @for (op of opsFor(condition.field); track op) {
+                          <option [value]="op">{{ t('rules.conditions.ops.' + op) }}</option>
+                        }
+                      </select>
+                    </label>
+                    <div>
+                      <span class="form-label">{{ t('rules.form.value') }}</span>
+                      @if (condition.field === 'type') {
+                        <select
+                          class="form-input"
+                          [value]="condition.value"
+                          (change)="setGroupValue(entryIndex, conditionIndex, $any($event.target).value)"
+                        >
+                          <option value="income">{{ t('rules.conditions.typeValues.income') }}</option>
+                          <option value="expense">{{ t('rules.conditions.typeValues.expense') }}</option>
+                        </select>
+                      } @else {
+                        <input
+                          type="text"
+                          class="form-input"
+                          [attr.inputmode]="condition.field === 'amount' ? 'decimal' : null"
+                          [value]="condition.value"
+                          (input)="setGroupValue(entryIndex, conditionIndex, $any($event.target).value)"
+                        />
+                      }
+                    </div>
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [attr.aria-label]="t('rules.form.remove')"
+                      (click)="removeGroupCondition(entryIndex, conditionIndex)"
+                    >
+                      ×
+                    </button>
+                  </div>
+                }
+              </div>
+              <button appButton variant="secondary" size="sm" type="button" class="mt-3" (click)="addConditionToGroup(entryIndex)">
+                {{ t('rules.form.addCondition') }}
+              </button>
+            </div>
+          } @else {
+            <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2">
+              <label>
+                <span class="form-label">{{ t('rules.conditions.fields.' + entry.field) }}</span>
+                <select
+                  class="form-input"
+                  [value]="entry.field"
+                  (change)="setEntryField(entryIndex, $any($event.target).value)"
+                >
+                  @for (field of conditionFields; track field) {
+                    <option [value]="field">{{ t('rules.conditions.fields.' + field) }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                <span class="form-label">{{ t('rules.conditions.ops.' + entry.op) }}</span>
+                <select
+                  class="form-input"
+                  [value]="entry.op"
+                  (change)="setEntryOp(entryIndex, $any($event.target).value)"
+                >
+                  @for (op of opsFor(entry.field); track op) {
+                    <option [value]="op">{{ t('rules.conditions.ops.' + op) }}</option>
+                  }
+                </select>
+              </label>
+              <div>
+                <span class="form-label">{{ t('rules.form.value') }}</span>
+                @if (entry.field === 'type') {
+                  <select
+                    class="form-input"
+                    [value]="entry.value"
+                    (change)="setEntryValue(entryIndex, $any($event.target).value)"
+                  >
+                    <option value="income">{{ t('rules.conditions.typeValues.income') }}</option>
+                    <option value="expense">{{ t('rules.conditions.typeValues.expense') }}</option>
+                  </select>
+                } @else {
+                  <input
+                    type="text"
+                    class="form-input"
+                    [attr.inputmode]="entry.field === 'amount' ? 'decimal' : null"
+                    [value]="entry.value"
+                    (input)="setEntryValue(entryIndex, $any($event.target).value)"
+                  />
+                }
+              </div>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                [attr.aria-label]="t('rules.form.remove')"
+                (click)="removeEntry(entryIndex)"
+              >
+                ×
+              </button>
+            </div>
+          }
+        }
+
+        <div class="flex flex-wrap gap-2">
+          <button appButton variant="secondary" size="sm" type="button" (click)="addCondition()">
+            {{ t('rules.form.addCondition') }}
+          </button>
+          <button appButton variant="secondary" size="sm" type="button" (click)="addGroup()">
+            {{ t('rules.form.addGroup') }}
+          </button>
+        </div>
+      </div>
+
+      @if (saveErrorKey(); as errorKey) {
+        <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+      }
+
+      <div class="mt-2 flex justify-end gap-2">
+        <button appButton type="button" variant="secondary" (click)="open.set(false)">
+          {{ t('common.actions.cancel') }}
+        </button>
+        <button appButton type="submit" variant="primary" [disabled]="saving()">
+          {{ saving() ? t('common.actions.saving') : t('common.actions.save') }}
+        </button>
+      </div>
+    </form>
+  </app-modal>
+</div>

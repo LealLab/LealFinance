@@ -1,0 +1,353 @@
+{
+  "version": 1,
+  "packs": [
+    {
+      "code": "BR",
+      "rules": [
+        {
+          "name": "Uber / 99",
+          "categoryKey": "publicTransport",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "starts_with", "value": "UBER"},
+            {"field": "description", "op": "starts_with", "value": "99 "},
+            {"field": "description", "op": "contains", "value": "99APP"}
+          ]
+        },
+        {
+          "name": "iFood / Rappi",
+          "categoryKey": "restaurants",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "IFOOD"},
+            {"field": "description", "op": "contains", "value": "RAPPI"}
+          ]
+        },
+        {
+          "name": "Streaming (Netflix, Spotify, Disney+)",
+          "categoryKey": "subscriptions",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "NETFLIX"},
+            {"field": "description", "op": "contains", "value": "SPOTIFY"},
+            {"field": "description", "op": "contains", "value": "DISNEY+"}
+          ]
+        },
+        {
+          "name": "Supermercado",
+          "categoryKey": "groceries",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "PÃO DE AÇÚCAR"},
+            {"field": "description", "op": "contains", "value": "CARREFOUR"},
+            {"field": "description", "op": "contains", "value": "ASSAI"},
+            {"field": "description", "op": "contains", "value": "EXTRA"},
+            {"field": "description", "op": "contains", "value": "ATACADAO"}
+          ]
+        },
+        {
+          "name": "Posto de combustível",
+          "categoryKey": "fuel",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "POSTO"},
+            {"field": "description", "op": "contains", "value": "IPIRANGA"},
+            {"field": "description", "op": "contains", "value": "SHELL"},
+            {"field": "description", "op": "contains", "value": "PETROBRAS"},
+            {"field": "description", "op": "contains", "value": "BR DISTRIBUIDORA"}
+          ]
+        },
+        {
+          "name": "Farmácia",
+          "categoryKey": "pharmacy",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "DROGA"},
+            {"field": "description", "op": "contains", "value": "DROGARIA"},
+            {"field": "description", "op": "contains", "value": "PACHECO"},
+            {"field": "description", "op": "contains", "value": "RAIA"},
+            {"field": "description", "op": "contains", "value": "PAGUE MENOS"},
+            {"field": "description", "op": "contains", "value": "ULTRAFARMA"}
+          ]
+        },
+        {
+          "name": "Conta de luz/água/gás",
+          "categoryKey": "utilities",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "ENEL"},
+            {"field": "description", "op": "contains", "value": "CEMIG"},
+            {"field": "description", "op": "contains", "value": "COPEL"},
+            {"field": "description", "op": "contains", "value": "LIGHT"},
+            {"field": "description", "op": "contains", "value": "SABESP"},
+            {"field": "description", "op": "contains", "value": "COMGAS"}
+          ]
+        },
+        {
+          "name": "Internet / telefonia",
+          "categoryKey": "internet",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "VIVO"},
+            {"field": "description", "op": "contains", "value": "CLARO"},
+            {"field": "description", "op": "contains", "value": "TIM"},
+            {"field": "description", "op": "contains", "value": "OI"},
+            {"field": "description", "op": "contains", "value": "NET"}
+          ]
+        },
+        {
+          "name": "Folha de pagamento",
+          "categoryKey": "salary",
+          "priority": 5,
+          "matchOp": "and",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "FOLHA PAGAMENTO"},
+            {"field": "type", "op": "equals", "value": "income"}
+          ]
+        },
+        {
+          "name": "Transferência PIX recebida",
+          "categoryKey": "otherIncome",
+          "priority": 5,
+          "matchOp": "and",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "PIX"},
+            {"field": "type", "op": "equals", "value": "income"}
+          ]
+        },
+        {
+          "name": "Academia",
+          "categoryKey": "fitness",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "SMARTFIT"},
+            {"field": "description", "op": "contains", "value": "BODYTECH"}
+          ]
+        },
+        {
+          "name": "Cinema / lazer",
+          "categoryKey": "entertainment",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "CINEMARK"},
+            {"field": "description", "op": "contains", "value": "INGRESSO.COM"},
+            {"field": "description", "op": "contains", "value": "UCI"}
+          ]
+        },
+        {
+          "name": "Uber Eats",
+          "categoryKey": "restaurants",
+          "priority": 9,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "UBER EATS"}
+          ]
+        },
+        {
+          "name": "Amazon / Mercado Livre",
+          "categoryKey": "shopping",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "AMAZON"},
+            {"field": "description", "op": "contains", "value": "MERCADOLIVRE"},
+            {"field": "description", "op": "contains", "value": "MERCADO LIVRE"},
+            {"field": "description", "op": "contains", "value": "MAGAZINE LUIZA"},
+            {"field": "description", "op": "contains", "value": "AMERICANAS"}
+          ]
+        }
+      ]
+    },
+    {
+      "code": "US",
+      "rules": [
+        {
+          "name": "Uber / Lyft",
+          "categoryKey": "publicTransport",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "UBER"},
+            {"field": "description", "op": "contains", "value": "LYFT"}
+          ]
+        },
+        {
+          "name": "DoorDash / Grubhub / Uber Eats",
+          "categoryKey": "restaurants",
+          "priority": 9,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "DOORDASH"},
+            {"field": "description", "op": "contains", "value": "GRUBHUB"},
+            {"field": "description", "op": "contains", "value": "UBER EATS"}
+          ]
+        },
+        {
+          "name": "Streaming (Netflix, Spotify, Hulu, Disney+)",
+          "categoryKey": "subscriptions",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "NETFLIX"},
+            {"field": "description", "op": "contains", "value": "SPOTIFY"},
+            {"field": "description", "op": "contains", "value": "HULU"},
+            {"field": "description", "op": "contains", "value": "DISNEY+"}
+          ]
+        },
+        {
+          "name": "Groceries",
+          "categoryKey": "groceries",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "WALMART"},
+            {"field": "description", "op": "contains", "value": "KROGER"},
+            {"field": "description", "op": "contains", "value": "SAFEWAY"},
+            {"field": "description", "op": "contains", "value": "TRADER JOE"},
+            {"field": "description", "op": "contains", "value": "WHOLE FOODS"},
+            {"field": "description", "op": "contains", "value": "ALDI"},
+            {"field": "description", "op": "contains", "value": "PUBLIX"},
+            {"field": "description", "op": "contains", "value": "COSTCO"}
+          ]
+        },
+        {
+          "name": "Gas station",
+          "categoryKey": "fuel",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "SHELL"},
+            {"field": "description", "op": "contains", "value": "CHEVRON"},
+            {"field": "description", "op": "contains", "value": "EXXON"},
+            {"field": "description", "op": "contains", "value": "BP"},
+            {"field": "description", "op": "contains", "value": "MARATHON"},
+            {"field": "description", "op": "contains", "value": "SPEEDWAY"}
+          ]
+        },
+        {
+          "name": "Pharmacy",
+          "categoryKey": "pharmacy",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "CVS"},
+            {"field": "description", "op": "contains", "value": "WALGREENS"},
+            {"field": "description", "op": "contains", "value": "RITE AID"}
+          ]
+        },
+        {
+          "name": "Utilities",
+          "categoryKey": "utilities",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "PG&E"},
+            {"field": "description", "op": "contains", "value": "CON EDISON"},
+            {"field": "description", "op": "contains", "value": "DUKE ENERGY"},
+            {"field": "description", "op": "contains", "value": "DOMINION"}
+          ]
+        },
+        {
+          "name": "Internet / phone",
+          "categoryKey": "internet",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "COMCAST"},
+            {"field": "description", "op": "contains", "value": "XFINITY"},
+            {"field": "description", "op": "contains", "value": "VERIZON"},
+            {"field": "description", "op": "contains", "value": "AT&T"},
+            {"field": "description", "op": "contains", "value": "T-MOBILE"},
+            {"field": "description", "op": "contains", "value": "SPECTRUM"}
+          ]
+        },
+        {
+          "name": "Payroll",
+          "categoryKey": "salary",
+          "priority": 5,
+          "matchOp": "and",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "PAYROLL"},
+            {"field": "type", "op": "equals", "value": "income"}
+          ]
+        },
+        {
+          "name": "Direct deposit",
+          "categoryKey": "salary",
+          "priority": 5,
+          "matchOp": "and",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "DIRECT DEP"},
+            {"field": "type", "op": "equals", "value": "income"}
+          ]
+        },
+        {
+          "name": "Gym",
+          "categoryKey": "fitness",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "PLANET FITNESS"},
+            {"field": "description", "op": "contains", "value": "LA FITNESS"},
+            {"field": "description", "op": "contains", "value": "EQUINOX"}
+          ]
+        },
+        {
+          "name": "Amazon",
+          "categoryKey": "shopping",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "AMAZON"},
+            {"field": "description", "op": "contains", "value": "AMZN"}
+          ]
+        },
+        {
+          "name": "Cinema / entertainment",
+          "categoryKey": "entertainment",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "AMC"},
+            {"field": "description", "op": "contains", "value": "REGAL"},
+            {"field": "description", "op": "contains", "value": "FANDANGO"},
+            {"field": "description", "op": "contains", "value": "TICKETMASTER"}
+          ]
+        },
+        {
+          "name": "Coffee",
+          "categoryKey": "coffee",
+          "priority": 10,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "STARBUCKS"},
+            {"field": "description", "op": "contains", "value": "DUNKIN"},
+            {"field": "description", "op": "contains", "value": "PEET"}
+          ]
+        },
+        {
+          "name": "Rideshare tips / misc",
+          "categoryKey": "otherExpense",
+          "priority": 90,
+          "matchOp": "or",
+          "conditions": [
+            {"field": "description", "op": "contains", "value": "UBER TIP"},
+            {"field": "description", "op": "contains", "value": "LYFT TIP"},
+            {"field": "description", "op": "contains", "value": "RIDESHARE"},
+            {"field": "description", "op": "contains", "value": "MISC"}
+          ]
+        }
+      ]
+    }
+  ]
+}

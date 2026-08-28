@@ -159,6 +159,7 @@
       "accounts": "Conturi",
       "transactions": "Tranzacții",
       "categories": "Categorii",
+      "rules": "Reguli",
       "budgets": "Bugete",
       "goals": "Obiective",
       "reports": "Rapoarte",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Anulează",
         "save": "Salvează"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatizare",
+    "title": "Reguli",
+    "description": "Categorizează automat tranzacțiile când le imporți.",
+    "card": {
+      "title": "Reguli de categorizare"
+    },
+    "actions": {
+      "export": "Exportă",
+      "import": "Importă",
+      "packs": "Pachete de reguli",
+      "reapply": "Aplică din nou",
+      "add": "Adaugă",
+      "delete": "Șterge",
+      "edit": "Editează"
+    },
+    "sort": {
+      "label": "Sortează după",
+      "priority": "Prioritate",
+      "name": "Nume",
+      "category": "Categorie"
+    },
+    "empty": {
+      "title": "Nu există încă reguli de categorizare",
+      "description": "Creează o regulă pentru a categoriza automat tranzacțiile când le imporți."
+    },
+    "form": {
+      "newTitle": "Regulă nouă de categorizare",
+      "editTitle": "Editează regula de categorizare",
+      "name": "Nume",
+      "priority": "Prioritate",
+      "active": "Activă",
+      "category": "Categorie",
+      "match": "Potrivire",
+      "matchAnd": "ȘI",
+      "matchOr": "SAU",
+      "conditions": "Condiții",
+      "conditionHint": "Folosește una sau mai multe condiții.",
+      "value": "Valoare",
+      "addCondition": "Adaugă o condiție",
+      "addGroup": "Adaugă un grup",
+      "remove": "Elimină",
+      "saveError": "Regula nu a putut fi salvată. Încearcă din nou.",
+      "badRegex": "Introdu o expresie regulată validă.",
+      "needCondition": "Adaugă cel puțin o condiție.",
+      "blankValue": "Fiecare condiție are nevoie de o valoare."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Descriere",
+        "notes": "Note",
+        "amount": "Sumă",
+        "type": "Tip"
+      },
+      "ops": {
+        "contains": "conține",
+        "not_contains": "nu conține",
+        "equals": "este egal cu",
+        "not_equals": "nu este egal cu",
+        "starts_with": "începe cu",
+        "ends_with": "se termină cu",
+        "regex": "corespunde expresiei regulate",
+        "gt": "este mai mare decât",
+        "gte": "este cel puțin",
+        "lt": "este mai mic decât",
+        "lte": "este cel mult"
+      },
+      "join": {
+        "and": " ȘI ",
+        "or": " SAU "
+      },
+      "typeValues": {
+        "income": "Venit",
+        "expense": "Cheltuială"
+      }
+    },
+    "delete": {
+      "title": "Ștergi regula?",
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi regula \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Aplici din nou regulile?",
+      "message": "Aplici regulile de categorizare tranzacțiilor existente?",
+      "overwrite": "Suprascrie categoriile existente",
+      "done": "{{count}} de tranzacții au fost actualizate."
+    },
+    "import": {
+      "title": "Imporți regulile?",
+      "message": "Imporți {{count}} de reguli de categorizare?",
+      "done": "Au fost importate {{imported}} reguli; au fost omise {{skipped}}.",
+      "invalid": "Acest fișier nu este un export valid de reguli LealFinance ({{count}} reguli).",
+      "badgeTitle": "Regulă potrivită: {{name}}"
+    },
+    "packs": {
+      "title": "Pachete de reguli",
+      "rulesCount": "{{count}} reguli",
+      "install": "Instalează",
+      "installed": "Instalat",
+      "result": "Au fost instalate {{installed}} reguli; au fost omise {{skipped}}.",
+      "names": {
+        "BR": "Brazilia",
+        "US": "Statele Unite"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Suma nu poate fi zero.",
         "missing_description": "Descrierea este obligatorie."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Există deja o regulă cu acest nume.",
+      "not_found": "Regula nu a fost găsită.",
+      "no_conditions": "Adaugă cel puțin o condiție.",
+      "invalid_operator": "Acest operator nu este valid pentru câmpul selectat.",
+      "blank_value": "Fiecare condiție are nevoie de o valoare.",
+      "invalid_regex": "Introdu o expresie regulată validă.",
+      "invalid_amount": "Introdu o sumă validă.",
+      "invalid_type_value": "Selectează un tip de tranzacție valid."
+    },
+    "rule_pack": {
+      "not_found": "Pachetul de reguli nu a fost găsit."
+    },
+    "rule_import": {
+      "invalid_format": "Acest fișier nu este un export valid de reguli LealFinance."
     }
   }
 }

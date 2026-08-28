@@ -159,6 +159,7 @@
       "accounts": "Konta",
       "transactions": "Transakcje",
       "categories": "Kategorie",
+      "rules": "Reguły",
       "budgets": "Budżety",
       "goals": "Cele",
       "reports": "Raporty",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Anuluj",
         "save": "Zapisz"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Automatyzacja",
+    "title": "Reguły",
+    "description": "Automatycznie kategoryzuj transakcje podczas ich importowania.",
+    "card": {
+      "title": "Reguły kategoryzacji"
+    },
+    "actions": {
+      "export": "Eksportuj",
+      "import": "Importuj",
+      "packs": "Pakiety reguł",
+      "reapply": "Zastosuj ponownie",
+      "add": "Dodaj",
+      "delete": "Usuń",
+      "edit": "Edytuj"
+    },
+    "sort": {
+      "label": "Sortuj według",
+      "priority": "Priorytet",
+      "name": "Nazwa",
+      "category": "Kategoria"
+    },
+    "empty": {
+      "title": "Brak reguł kategoryzacji",
+      "description": "Utwórz regułę, aby automatycznie kategoryzować transakcje podczas ich importowania."
+    },
+    "form": {
+      "newTitle": "Nowa reguła kategoryzacji",
+      "editTitle": "Edytuj regułę kategoryzacji",
+      "name": "Nazwa",
+      "priority": "Priorytet",
+      "active": "Aktywna",
+      "category": "Kategoria",
+      "match": "Dopasowanie",
+      "matchAnd": "I",
+      "matchOr": "LUB",
+      "conditions": "Warunki",
+      "conditionHint": "Użyj co najmniej jednego warunku.",
+      "value": "Wartość",
+      "addCondition": "Dodaj warunek",
+      "addGroup": "Dodaj grupę",
+      "remove": "Usuń",
+      "saveError": "Nie udało się zapisać reguły. Spróbuj ponownie.",
+      "badRegex": "Wpisz prawidłowe wyrażenie regularne.",
+      "needCondition": "Dodaj co najmniej jeden warunek.",
+      "blankValue": "Każdy warunek wymaga wartości."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Opis",
+        "notes": "Notatki",
+        "amount": "Kwota",
+        "type": "Typ"
+      },
+      "ops": {
+        "contains": "zawiera",
+        "not_contains": "nie zawiera",
+        "equals": "równa się",
+        "not_equals": "nie równa się",
+        "starts_with": "zaczyna się od",
+        "ends_with": "kończy się na",
+        "regex": "pasuje do wyrażenia regularnego",
+        "gt": "jest większe niż",
+        "gte": "co najmniej",
+        "lt": "jest mniejsze niż",
+        "lte": "najwyżej"
+      },
+      "join": {
+        "and": " I ",
+        "or": " LUB "
+      },
+      "typeValues": {
+        "income": "Przychód",
+        "expense": "Wydatek"
+      }
+    },
+    "delete": {
+      "title": "Usunąć regułę?",
+      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć regułę \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Zastosować reguły ponownie?",
+      "message": "Zastosować reguły kategoryzacji do istniejących transakcji?",
+      "overwrite": "Zastąp istniejące kategorie",
+      "done": "Zaktualizowano transakcji: {{count}}."
+    },
+    "import": {
+      "title": "Importować reguły?",
+      "message": "Importować {{count}} reguł kategoryzacji?",
+      "done": "Zaimportowano {{imported}} reguł; pominięto {{skipped}}.",
+      "invalid": "Ten plik nie jest prawidłowym eksportem reguł LealFinance ({{count}} reguł).",
+      "badgeTitle": "Dopasowana reguła: {{name}}"
+    },
+    "packs": {
+      "title": "Pakiety reguł",
+      "rulesCount": "{{count}} reguł",
+      "install": "Zainstaluj",
+      "installed": "Zainstalowano",
+      "result": "Zainstalowano {{installed}} reguł; pominięto {{skipped}}.",
+      "names": {
+        "BR": "Brazylia",
+        "US": "Stany Zjednoczone"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Kwota nie może wynosić zero.",
         "missing_description": "Opis jest wymagany."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Reguła o tej nazwie już istnieje.",
+      "not_found": "Nie znaleziono tej reguły.",
+      "no_conditions": "Dodaj co najmniej jeden warunek.",
+      "invalid_operator": "Ten operator jest nieprawidłowy dla wybranego pola.",
+      "blank_value": "Każdy warunek wymaga wartości.",
+      "invalid_regex": "Wpisz prawidłowe wyrażenie regularne.",
+      "invalid_amount": "Wpisz prawidłową kwotę.",
+      "invalid_type_value": "Wybierz prawidłowy typ transakcji."
+    },
+    "rule_pack": {
+      "not_found": "Nie znaleziono tego pakietu reguł."
+    },
+    "rule_import": {
+      "invalid_format": "Ten plik nie jest prawidłowym eksportem reguł LealFinance."
     }
   }
 }

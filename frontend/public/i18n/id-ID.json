@@ -159,6 +159,7 @@
       "accounts": "Akun",
       "transactions": "Transaksi",
       "categories": "Kategori",
+      "rules": "Aturan",
       "budgets": "Anggaran",
       "goals": "Target",
       "reports": "Laporan",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "Batal",
         "save": "Simpan"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Otomatisasi",
+    "title": "Aturan",
+    "description": "Kategorikan transaksi secara otomatis saat diimpor.",
+    "card": {
+      "title": "Aturan kategorisasi"
+    },
+    "actions": {
+      "export": "Ekspor",
+      "import": "Impor",
+      "packs": "Paket aturan",
+      "reapply": "Terapkan ulang",
+      "add": "Tambah",
+      "delete": "Hapus",
+      "edit": "Edit"
+    },
+    "sort": {
+      "label": "Urutkan berdasarkan",
+      "priority": "Prioritas",
+      "name": "Nama",
+      "category": "Kategori"
+    },
+    "empty": {
+      "title": "Belum ada aturan kategorisasi",
+      "description": "Buat aturan untuk mengategorikan transaksi secara otomatis saat diimpor."
+    },
+    "form": {
+      "newTitle": "Aturan kategorisasi baru",
+      "editTitle": "Edit aturan kategorisasi",
+      "name": "Nama",
+      "priority": "Prioritas",
+      "active": "Aktif",
+      "category": "Kategori",
+      "match": "Pencocokan",
+      "matchAnd": "DAN",
+      "matchOr": "ATAU",
+      "conditions": "Kondisi",
+      "conditionHint": "Gunakan satu atau beberapa kondisi.",
+      "value": "Nilai",
+      "addCondition": "Tambah kondisi",
+      "addGroup": "Tambah grup",
+      "remove": "Hapus",
+      "saveError": "Aturan tidak dapat disimpan. Coba lagi.",
+      "badRegex": "Masukkan ekspresi reguler yang valid.",
+      "needCondition": "Tambahkan setidaknya satu kondisi.",
+      "blankValue": "Setiap kondisi memerlukan nilai."
+    },
+    "conditions": {
+      "fields": {
+        "description": "Deskripsi",
+        "notes": "Catatan",
+        "amount": "Jumlah",
+        "type": "Jenis"
+      },
+      "ops": {
+        "contains": "berisi",
+        "not_contains": "tidak berisi",
+        "equals": "sama dengan",
+        "not_equals": "tidak sama dengan",
+        "starts_with": "diawali dengan",
+        "ends_with": "diakhiri dengan",
+        "regex": "cocok dengan regex",
+        "gt": "lebih besar dari",
+        "gte": "setidaknya",
+        "lt": "kurang dari",
+        "lte": "paling banyak"
+      },
+      "join": {
+        "and": " DAN ",
+        "or": " ATAU "
+      },
+      "typeValues": {
+        "income": "Pendapatan",
+        "expense": "Pengeluaran"
+      }
+    },
+    "delete": {
+      "title": "Hapus aturan?",
+      "message": "Tindakan ini tidak dapat dibatalkan. Hapus aturan \"{{name}}\"?"
+    },
+    "reapply": {
+      "title": "Terapkan ulang aturan?",
+      "message": "Terapkan aturan kategorisasi ke transaksi yang ada?",
+      "overwrite": "Timpa kategori yang ada",
+      "done": "{{count}} transaksi diperbarui."
+    },
+    "import": {
+      "title": "Impor aturan?",
+      "message": "Impor {{count}} aturan kategorisasi?",
+      "done": "{{imported}} aturan diimpor; {{skipped}} dilewati.",
+      "invalid": "File ini bukan ekspor aturan LealFinance yang valid ({{count}} aturan).",
+      "badgeTitle": "Aturan yang cocok: {{name}}"
+    },
+    "packs": {
+      "title": "Paket aturan",
+      "rulesCount": "{{count}} aturan",
+      "install": "Instal",
+      "installed": "Terinstal",
+      "result": "{{installed}} aturan terinstal; {{skipped}} dilewati.",
+      "names": {
+        "BR": "Brasil",
+        "US": "Amerika Serikat"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "Jumlah tidak boleh nol.",
         "missing_description": "Deskripsi wajib diisi."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "Aturan dengan nama ini sudah ada.",
+      "not_found": "Aturan ini tidak ditemukan.",
+      "no_conditions": "Tambahkan setidaknya satu kondisi.",
+      "invalid_operator": "Operator ini tidak valid untuk bidang yang dipilih.",
+      "blank_value": "Setiap kondisi memerlukan nilai.",
+      "invalid_regex": "Masukkan ekspresi reguler yang valid.",
+      "invalid_amount": "Masukkan jumlah yang valid.",
+      "invalid_type_value": "Pilih jenis transaksi yang valid."
+    },
+    "rule_pack": {
+      "not_found": "Paket aturan ini tidak ditemukan."
+    },
+    "rule_import": {
+      "invalid_format": "File ini bukan ekspor aturan LealFinance yang valid."
     }
   }
 }

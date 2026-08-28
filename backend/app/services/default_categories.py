@@ -39,6 +39,21 @@ _DEFAULTS = cast(
     ),
 )
 
+_KEY_KIND: dict[str, str] = {
+    category["key"]: group["kind"]
+    for group in _DEFAULTS["structure"]
+    for category in group["categories"]
+}
+
+
+def category_kind_for_key(key: str) -> str | None:
+    return _KEY_KIND.get(key)
+
+
+def category_names_for_key(key: str) -> set[str]:
+    """Every locale's display name for a default-category key."""
+    return {names[key] for names in _DEFAULTS["names"].values() if key in names}
+
 
 def _resolve_locale_names(locale: str) -> dict[str, str]:
     names = _DEFAULTS["names"]

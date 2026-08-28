@@ -159,6 +159,7 @@
       "accounts": "الحسابات",
       "transactions": "المعاملات",
       "categories": "الفئات",
+      "rules": "القواعد",
       "budgets": "الميزانيات",
       "goals": "الأهداف",
       "reports": "التقارير",
@@ -668,6 +669,111 @@
       "actions": {
         "cancel": "إلغاء",
         "save": "حفظ"
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "الأتمتة",
+    "title": "القواعد",
+    "description": "صنّف المعاملات تلقائيًا أثناء استيرادها.",
+    "card": {
+      "title": "قواعد التصنيف"
+    },
+    "actions": {
+      "export": "تصدير",
+      "import": "استيراد",
+      "packs": "حزم القواعد",
+      "reapply": "إعادة التطبيق",
+      "add": "إضافة",
+      "delete": "حذف",
+      "edit": "تعديل"
+    },
+    "sort": {
+      "label": "الترتيب حسب",
+      "priority": "الأولوية",
+      "name": "الاسم",
+      "category": "الفئة"
+    },
+    "empty": {
+      "title": "لا توجد قواعد تصنيف بعد",
+      "description": "أنشئ قاعدة لتصنيف المعاملات تلقائيًا أثناء استيرادها."
+    },
+    "form": {
+      "newTitle": "قاعدة تصنيف جديدة",
+      "editTitle": "تعديل قاعدة تصنيف",
+      "name": "الاسم",
+      "priority": "الأولوية",
+      "active": "نشطة",
+      "category": "الفئة",
+      "match": "المطابقة",
+      "matchAnd": "و",
+      "matchOr": "أو",
+      "conditions": "الشروط",
+      "conditionHint": "استخدم شرطًا واحدًا أو أكثر.",
+      "value": "القيمة",
+      "addCondition": "إضافة شرط",
+      "addGroup": "إضافة مجموعة",
+      "remove": "إزالة",
+      "saveError": "تعذر حفظ القاعدة. حاول مرة أخرى.",
+      "badRegex": "أدخل تعبيرًا نمطيًا صالحًا.",
+      "needCondition": "أضف شرطًا واحدًا على الأقل.",
+      "blankValue": "يحتاج كل شرط إلى قيمة."
+    },
+    "conditions": {
+      "fields": {
+        "description": "الوصف",
+        "notes": "الملاحظات",
+        "amount": "المبلغ",
+        "type": "النوع"
+      },
+      "ops": {
+        "contains": "يحتوي على",
+        "not_contains": "لا يحتوي على",
+        "equals": "يساوي",
+        "not_equals": "لا يساوي",
+        "starts_with": "يبدأ بـ",
+        "ends_with": "ينتهي بـ",
+        "regex": "يطابق تعبيرًا نمطيًا",
+        "gt": "أكبر من",
+        "gte": "على الأقل",
+        "lt": "أقل من",
+        "lte": "على الأكثر"
+      },
+      "join": {
+        "and": " و ",
+        "or": " أو "
+      },
+      "typeValues": {
+        "income": "دخل",
+        "expense": "مصروف"
+      }
+    },
+    "delete": {
+      "title": "حذف القاعدة؟",
+      "message": "لا يمكن التراجع عن هذا الإجراء. هل تريد حذف القاعدة \"{{name}}\"؟"
+    },
+    "reapply": {
+      "title": "إعادة تطبيق القواعد؟",
+      "message": "تطبيق قواعد التصنيف على المعاملات الحالية؟",
+      "overwrite": "استبدال الفئات الحالية",
+      "done": "تم تحديث {{count}} معاملة."
+    },
+    "import": {
+      "title": "استيراد القواعد؟",
+      "message": "استيراد {{count}} قاعدة تصنيف؟",
+      "done": "تم استيراد {{imported}} قاعدة؛ تم تخطي {{skipped}}.",
+      "invalid": "هذا الملف ليس تصديرًا صالحًا لقواعد LealFinance ({{count}} قاعدة).",
+      "badgeTitle": "القاعدة المطابقة: {{name}}"
+    },
+    "packs": {
+      "title": "حزم القواعد",
+      "rulesCount": "{{count}} قاعدة",
+      "install": "تثبيت",
+      "installed": "مثبّتة",
+      "result": "تم تثبيت {{installed}} قاعدة؛ تم تخطي {{skipped}}.",
+      "names": {
+        "BR": "البرازيل",
+        "US": "الولايات المتحدة"
       }
     }
   },
@@ -1272,6 +1378,22 @@
         "zero_amount": "لا يمكن أن يكون المبلغ صفرًا.",
         "missing_description": "الوصف مطلوب."
       }
+    },
+    "categorization_rule": {
+      "duplicate_name": "توجد قاعدة بهذا الاسم بالفعل.",
+      "not_found": "تعذر العثور على هذه القاعدة.",
+      "no_conditions": "أضف شرطًا واحدًا على الأقل.",
+      "invalid_operator": "هذا العامل غير صالح للحقل المحدد.",
+      "blank_value": "يحتاج كل شرط إلى قيمة.",
+      "invalid_regex": "أدخل تعبيرًا نمطيًا صالحًا.",
+      "invalid_amount": "أدخل مبلغًا صالحًا.",
+      "invalid_type_value": "حدد نوع معاملة صالحًا."
+    },
+    "rule_pack": {
+      "not_found": "تعذر العثور على حزمة القواعد هذه."
+    },
+    "rule_import": {
+      "invalid_format": "هذا الملف ليس تصديرًا صالحًا لقواعد LealFinance."
     }
   }
 }
