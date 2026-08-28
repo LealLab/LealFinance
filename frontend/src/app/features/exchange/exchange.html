@@ -1,7 +1,7 @@
 <div *transloco="let t">
   <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')" />
 
-  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
     @if (feeRatesReady()) {
       <app-stat-tile
         [label]="t('exchange.stats.feesPaid')"
@@ -10,6 +10,10 @@
     } @else {
       <app-skeleton height="4.25rem" />
     }
+    <app-stat-tile
+      [label]="t('exchange.stats.automaticRates')"
+      [value]="automaticRates().length + ''"
+    />
     <app-stat-tile
       [label]="t('exchange.stats.needsAttention')"
       [value]="needsAttentionRows().length + ''"
@@ -20,6 +24,43 @@
       [value]="currenciesNeedingRate().length + ''"
       [tone]="currenciesNeedingRate().length > 0 ? 'negative' : 'default'"
     />
+  </div>
+
+  <div class="mb-6">
+    <h2 class="mb-1 text-sm font-semibold text-content-primary">
+      {{ t('exchange.automaticRates.title') }}
+    </h2>
+    <p class="mb-3 text-sm text-content-muted">{{ t('exchange.automaticRates.description') }}</p>
+
+    @if (isAutomaticRatesEmpty()) {
+      <app-empty-state
+        icon="refresh"
+        [title]="t('exchange.automaticRates.empty.title')"
+        [description]="t('exchange.automaticRates.empty.description')"
+      />
+    } @else {
+      <app-card [padded]="false">
+        <ul>
+          @for (rate of automaticRates(); track rate.baseCode) {
+            <li
+              class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0"
+            >
+              <div class="flex items-center gap-2">
+                <span
+                  class="inline-block h-1.5 w-1.5 rounded-full bg-positive"
+                  aria-hidden="true"
+                ></span>
+                <span class="font-mono text-sm font-semibold text-content-primary">
+                  {{ rate.baseCode }} → {{ rate.quoteCode }}
+                </span>
+                <span class="text-xs text-content-muted">{{ rate.asOf }}</span>
+              </div>
+              <span class="font-mono text-sm tabular-nums text-content-primary">{{ rate.rate }}</span>
+            </li>
+          }
+        </ul>
+      </app-card>
+    }
   </div>
 
   <div class="mb-6">

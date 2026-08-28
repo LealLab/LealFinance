@@ -120,6 +120,22 @@ export class Exchange {
   );
 
   /**
+   * The live provider rates currently converting foreign account balances
+   * to the display currency - the visible confirmation that automatic
+   * fetching is working. Manual-sourced pairs are excluded here; they have
+   * their own section below.
+   */
+  protected readonly automaticRates = computed(() =>
+    (this.accountRatesResource.value() ?? [])
+      .filter((rate) => !rate.isFallback && rate.source === 'quote')
+      .slice()
+      .sort((a, b) => a.baseCode.localeCompare(b.baseCode))
+  );
+  protected readonly isAutomaticRatesEmpty = computed(
+    () => !this.accountRatesResource.isLoading() && this.automaticRates().length === 0
+  );
+
+  /**
    * Currencies any recorded fee is denominated in, other than the display
    * currency - drives the rate fetch below, mirroring
    * features/dashboard/dashboard.ts's `foreignCurrencies`/`converter` pair.

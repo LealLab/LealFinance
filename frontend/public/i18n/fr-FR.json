@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Frais de conversion payés",
       "needsAttention": "Opérations nécessitant votre attention",
-      "currenciesNeedingRate": "Devises sans taux"
+      "currenciesNeedingRate": "Devises sans taux",
+      "automaticRates": "Taux en direct"
     },
     "needsAttention": {
       "title": "Nécessite votre attention",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Aucune devise ne nécessite de taux",
         "description": "Chaque devise de compte correspond déjà à un taux réel."
+      }
+    },
+    "automaticRates": {
+      "title": "Taux automatiques",
+      "description": "Taux du fournisseur, actualisés automatiquement toutes les quelques heures. Les taux manuels ci-dessous sont prioritaires.",
+      "empty": {
+        "title": "Aucun taux automatique pour l'instant",
+        "description": "Les taux apparaissent ici une fois qu'une clé de fournisseur est définie et que vos comptes utilisent plusieurs devises."
       }
     },
     "manualRates": {

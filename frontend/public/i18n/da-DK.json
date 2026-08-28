@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Betalte omregningsgebyrer",
       "needsAttention": "Transaktioner, der kræver opmærksomhed",
-      "currenciesNeedingRate": "Valutaer uden kurs"
+      "currenciesNeedingRate": "Valutaer uden kurs",
+      "automaticRates": "Live-kurser"
     },
     "needsAttention": {
       "title": "Kræver opmærksomhed",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Ingen valuta mangler en kurs",
         "description": "Alle kontovalutaer omregnes allerede med en faktisk kurs."
+      }
+    },
+    "automaticRates": {
+      "title": "Automatiske kurser",
+      "description": "Kurser fra udbyderen, opdateres automatisk med få timers mellemrum. Manuelle kurser nedenfor har forrang.",
+      "empty": {
+        "title": "Ingen automatiske kurser endnu",
+        "description": "Kurser vises her, når en udbydernøgle er angivet, og dine konti bruger mere end én valuta."
       }
     },
     "manualRates": {

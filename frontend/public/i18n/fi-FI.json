@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Maksetut vaihtokulut",
       "needsAttention": "Tarkistettavat tapahtumat",
-      "currenciesNeedingRate": "Valuutat, joilta puuttuu kurssi"
+      "currenciesNeedingRate": "Valuutat, joilta puuttuu kurssi",
+      "automaticRates": "Reaaliaikaiset kurssit"
     },
     "needsAttention": {
       "title": "Tarkistettavaa",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Yksikään valuutta ei tarvitse kurssia",
         "description": "Jokaiselle tilivaluutalle löytyy jo todellinen kurssi."
+      }
+    },
+    "automaticRates": {
+      "title": "Automaattiset kurssit",
+      "description": "Palveluntarjoajan kurssit, jotka päivittyvät automaattisesti muutaman tunnin välein. Alla olevat manuaaliset kurssit ohittavat nämä.",
+      "empty": {
+        "title": "Ei vielä automaattisia kursseja",
+        "description": "Kurssit näkyvät tässä, kun palveluntarjoajan avain on asetettu ja tileilläsi on käytössä useampi kuin yksi valuutta."
       }
     },
     "manualRates": {

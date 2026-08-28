@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Zapłacone opłaty za przewalutowanie",
       "needsAttention": "Transakcje wymagające uwagi",
-      "currenciesNeedingRate": "Waluty bez ustalonego kursu"
+      "currenciesNeedingRate": "Waluty bez ustalonego kursu",
+      "automaticRates": "Kursy na żywo"
     },
     "needsAttention": {
       "title": "Wymaga uwagi",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Wszystkie waluty mają kurs",
         "description": "Każda waluta konta jest już przeliczana według rzeczywistego kursu."
+      }
+    },
+    "automaticRates": {
+      "title": "Kursy automatyczne",
+      "description": "Kursy od dostawcy, odświeżane automatycznie co kilka godzin. Kursy ręczne poniżej mają pierwszeństwo.",
+      "empty": {
+        "title": "Brak kursów automatycznych",
+        "description": "Kursy pojawią się tutaj, gdy zostanie ustawiony klucz dostawcy, a Twoje konta używają więcej niż jednej waluty."
       }
     },
     "manualRates": {

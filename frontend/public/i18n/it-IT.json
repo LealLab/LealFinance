@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Commissioni di conversione pagate",
       "needsAttention": "Transazioni da verificare",
-      "currenciesNeedingRate": "Valute senza tasso"
+      "currenciesNeedingRate": "Valute senza tasso",
+      "automaticRates": "Tassi in tempo reale"
     },
     "needsAttention": {
       "title": "Da verificare",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Nessuna valuta richiede un tasso",
         "description": "Ogni valuta dei conti corrisponde già a un tasso effettivo."
+      }
+    },
+    "automaticRates": {
+      "title": "Tassi automatici",
+      "description": "Tassi del fornitore, aggiornati automaticamente ogni poche ore. I tassi manuali qui sotto hanno la precedenza.",
+      "empty": {
+        "title": "Ancora nessun tasso automatico",
+        "description": "I tassi compaiono qui quando è impostata una chiave del fornitore e i tuoi conti usano più di una valuta."
       }
     },
     "manualRates": {

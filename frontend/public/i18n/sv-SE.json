@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Betalda omräkningsavgifter",
       "needsAttention": "Transaktioner som kräver åtgärd",
-      "currenciesNeedingRate": "Valutor utan kurs"
+      "currenciesNeedingRate": "Valutor utan kurs",
+      "automaticRates": "Live-kurser"
     },
     "needsAttention": {
       "title": "Kräver åtgärd",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Ingen valuta saknar kurs",
         "description": "Alla kontovalutor omräknas redan med en riktig kurs."
+      }
+    },
+    "automaticRates": {
+      "title": "Automatiska kurser",
+      "description": "Kurser från leverantören, uppdateras automatiskt med några timmars mellanrum. Manuella kurser nedan har företräde.",
+      "empty": {
+        "title": "Inga automatiska kurser än",
+        "description": "Kurser visas här när en leverantörsnyckel har angetts och dina konton använder mer än en valuta."
       }
     },
     "manualRates": {

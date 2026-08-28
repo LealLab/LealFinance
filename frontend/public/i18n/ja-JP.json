@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "支払った換算手数料",
       "needsAttention": "要対応の取引",
-      "currenciesNeedingRate": "レート未設定の通貨"
+      "currenciesNeedingRate": "レート未設定の通貨",
+      "automaticRates": "リアルタイムレート"
     },
     "needsAttention": {
       "title": "要対応",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "レートが必要な通貨はありません",
         "description": "すべての口座通貨に実際のレートが設定されています。"
+      }
+    },
+    "automaticRates": {
+      "title": "自動レート",
+      "description": "プロバイダーからのレートで、数時間ごとに自動更新されます。下の手動レートが優先されます。",
+      "empty": {
+        "title": "自動レートはまだありません",
+        "description": "プロバイダーキーを設定し、口座が複数の通貨を使用するとレートがここに表示されます。"
       }
     },
     "manualRates": {

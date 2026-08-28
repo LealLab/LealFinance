@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Bezahlte Umrechnungsgebühren",
       "needsAttention": "Transaktionen mit Handlungsbedarf",
-      "currenciesNeedingRate": "Währungen ohne Wechselkurs"
+      "currenciesNeedingRate": "Währungen ohne Wechselkurs",
+      "automaticRates": "Live-Kurse"
     },
     "needsAttention": {
       "title": "Prüfung erforderlich",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Für keine Währung wird ein Wechselkurs benötigt",
         "description": "Für jede Kontowährung ist bereits ein tatsächlicher Wechselkurs verfügbar."
+      }
+    },
+    "automaticRates": {
+      "title": "Automatische Kurse",
+      "description": "Kurse vom Anbieter, alle paar Stunden automatisch aktualisiert. Manuelle Kurse unten haben Vorrang.",
+      "empty": {
+        "title": "Noch keine automatischen Kurse",
+        "description": "Kurse erscheinen hier, sobald ein Anbieter-Schlüssel gesetzt ist und Ihre Konten mehr als eine Währung verwenden."
       }
     },
     "manualRates": {

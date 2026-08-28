@@ -1002,7 +1002,8 @@
     "stats": {
       "feesPaid": "Biaya konversi yang dibayar",
       "needsAttention": "Transaksi yang perlu diperhatikan",
-      "currenciesNeedingRate": "Mata uang tanpa kurs"
+      "currenciesNeedingRate": "Mata uang tanpa kurs",
+      "automaticRates": "Kurs langsung"
     },
     "needsAttention": {
       "title": "Perlu diperhatikan",
@@ -1021,6 +1022,14 @@
       "empty": {
         "title": "Semua mata uang memiliki kurs",
         "description": "Setiap mata uang akun sudah menggunakan kurs sebenarnya."
+      }
+    },
+    "automaticRates": {
+      "title": "Kurs otomatis",
+      "description": "Kurs dari penyedia, disegarkan otomatis setiap beberapa jam. Kurs manual di bawah lebih diutamakan.",
+      "empty": {
+        "title": "Belum ada kurs otomatis",
+        "description": "Kurs muncul di sini setelah kunci penyedia disetel dan akun Anda menggunakan lebih dari satu mata uang."
       }
     },
     "manualRates": {
