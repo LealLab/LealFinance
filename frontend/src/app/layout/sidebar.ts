@@ -30,7 +30,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -50,6 +50,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { path: '/budgets', labelKey: 'layout.nav.budgets', icon: 'piggy' },
       { path: '/goals', labelKey: 'layout.nav.goals', icon: 'target' },
+      { path: '/loans', labelKey: 'layout.nav.loans', icon: 'handCoins' },
       { path: '/categories', labelKey: 'layout.nav.categories', icon: 'tag' },
       { path: '/rules', labelKey: 'layout.nav.rules', icon: 'funnel' },
       { path: '/exchange', labelKey: 'layout.nav.exchange', icon: 'refresh' },

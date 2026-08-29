@@ -58,6 +58,7 @@ class TransactionRead(BaseModel):
     description: str
     notes: str | None
     recurring_rule_id: UUID | None
+    loan_id: UUID | None
     conversion: ConversionRead | None
 
     @field_serializer("amount")
@@ -76,6 +77,7 @@ class TransactionCreate(BaseModel):
     description: str = Field(min_length=1, max_length=200)
     notes: str | None = None
     recurring_rule_id: UUID | None = None
+    loan_id: UUID | None = None
     conversion: ConversionInput | None = None
 
 
@@ -106,4 +108,5 @@ class TransactionUpdate(PatchModel):
     description: str | None = Field(default=None, min_length=1, max_length=200)
     notes: str | None = None
     recurring_rule_id: UUID | None = None
+    loan_id: UUID | None = None
     conversion: ConversionInput | None = None

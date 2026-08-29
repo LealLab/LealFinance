@@ -20,6 +20,7 @@ import type { CategoryGroup } from '../../domain/models/category-group';
 import type { ExchangeRate } from '../../domain/models/exchange-rate';
 import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
+import type { Loan } from '../../domain/models/loan';
 import type {
   InvestmentAsset,
   InvestmentPosition,
@@ -75,6 +76,10 @@ import type {
   GoalWire,
   GoalWithAccountInputWire,
   GoalWithAccountPatchWire,
+  LoanInputWire,
+  LoanPatchWire,
+  LoanPaymentWire,
+  LoanWire,
   InvestmentAssetInputWire,
   InvestmentAssetPatchWire,
   InvestmentAssetWire,
@@ -296,6 +301,7 @@ export const mapTransaction = (wire: TransactionWire): Transaction => ({
   description: wire.description,
   notes: wire.notes ?? undefined,
   recurringRuleId: wire.recurring_rule_id ?? undefined,
+  loanId: wire.loan_id ?? undefined,
   conversion: wire.conversion ? mapConversion(wire.conversion) : undefined,
 });
 export const mapTransactionCreate = (input: Omit<Transaction, 'id'>): TransactionInputWire => ({
@@ -309,6 +315,7 @@ export const mapTransactionCreate = (input: Omit<Transaction, 'id'>): Transactio
   description: input.description,
   notes: nullable(input.notes),
   recurring_rule_id: nullable(input.recurringRuleId),
+  loan_id: nullable(input.loanId),
   conversion: input.conversion ? mapConversionInput(input.conversion) : null,
 });
 export function mapTransactionPatch(input: Partial<Omit<Transaction, 'id'>>): TransactionPatchWire {
@@ -323,6 +330,7 @@ export function mapTransactionPatch(input: Partial<Omit<Transaction, 'id'>>): Tr
   if (has(input, 'description')) wire.description = nullable(input.description);
   if (has(input, 'notes')) wire.notes = nullable(input.notes);
   if (has(input, 'recurringRuleId')) wire.recurring_rule_id = nullable(input.recurringRuleId);
+  if (has(input, 'loanId')) wire.loan_id = nullable(input.loanId);
   if (has(input, 'conversion'))
     wire.conversion = input.conversion ? mapConversionInput(input.conversion) : null;
   return wire;
@@ -508,6 +516,71 @@ export function mapGoalPatch(
   if (has(input, 'interval')) wire.interval = nullable(input.interval);
   return wire;
 }
+
+export const mapLoan = (wire: LoanWire): Loan => ({
+  id: wire.id,
+  name: wire.name,
+  categoryId: wire.category_id,
+  currency: wire.currency,
+  amountBorrowed: wire.amount_borrowed,
+  fees: wire.fees,
+  interestRate: wire.interest_rate,
+  ratePeriod: wire.rate_period,
+  installmentCount: wire.installment_count,
+  installmentAmount: wire.installment_amount,
+  firstPaymentDate: wire.first_payment_date,
+  autoPost: wire.auto_post,
+  paymentAccountId: wire.payment_account_id ?? undefined,
+  notes: wire.notes ?? undefined,
+  archived: wire.archived,
+  installmentsPaid: wire.installments_paid,
+});
+export const mapLoanCreate = (
+  input: Omit<Loan, 'id' | 'installmentAmount' | 'installmentsPaid'>,
+): LoanInputWire => ({
+  name: input.name,
+  category_id: input.categoryId,
+  currency: input.currency,
+  amount_borrowed: input.amountBorrowed,
+  fees: input.fees,
+  interest_rate: input.interestRate,
+  rate_period: input.ratePeriod,
+  installment_count: input.installmentCount,
+  first_payment_date: input.firstPaymentDate,
+  auto_post: input.autoPost,
+  payment_account_id: nullable(input.paymentAccountId),
+  notes: nullable(input.notes),
+  archived: input.archived,
+});
+export function mapLoanPatch(
+  input: Partial<Omit<Loan, 'id' | 'installmentAmount' | 'installmentsPaid' | 'archived'>>,
+): LoanPatchWire {
+  const wire: LoanPatchWire = {};
+  if (has(input, 'name')) wire.name = nullable(input.name);
+  if (has(input, 'categoryId')) wire.category_id = nullable(input.categoryId);
+  if (has(input, 'currency')) wire.currency = nullable(input.currency);
+  if (has(input, 'amountBorrowed')) wire.amount_borrowed = nullable(input.amountBorrowed);
+  if (has(input, 'fees')) wire.fees = nullable(input.fees);
+  if (has(input, 'interestRate')) wire.interest_rate = nullable(input.interestRate);
+  if (has(input, 'ratePeriod')) wire.rate_period = nullable(input.ratePeriod);
+  if (has(input, 'installmentCount')) wire.installment_count = nullable(input.installmentCount);
+  if (has(input, 'firstPaymentDate')) wire.first_payment_date = nullable(input.firstPaymentDate);
+  if (has(input, 'autoPost')) wire.auto_post = nullable(input.autoPost);
+  if (has(input, 'paymentAccountId')) wire.payment_account_id = nullable(input.paymentAccountId);
+  if (has(input, 'notes')) wire.notes = nullable(input.notes);
+  return wire;
+}
+export const mapLoanPayment = (input: {
+  amount?: string;
+  date?: string;
+  accountId?: string;
+  description?: string;
+}): LoanPaymentWire => ({
+  amount: nullable(input.amount),
+  date: nullable(input.date),
+  account_id: nullable(input.accountId),
+  description: nullable(input.description),
+});
 
 export const mapInvestmentWallet = (wire: InvestmentWalletWire): InvestmentWallet => ({
   id: wire.id,

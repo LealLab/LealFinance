@@ -28,6 +28,7 @@ from app.models._conversion import CONVERSION_SOURCE_FALLBACK, ConversionValue
 from app.models.account import Account
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
+from app.models.loan import Loan
 from app.models.recurring import RecurringRule
 from app.models.transaction import (
     TRANSACTION_TYPE_EXPENSE,
@@ -278,6 +279,7 @@ async def build_transaction(
         currency=data.currency,
     )
     await ownership.get_owned_or_none(db, RecurringRule, data.recurring_rule_id, user_id)
+    await ownership.get_owned_or_none(db, Loan, data.loan_id, user_id)
 
     destination_currency = to_account.currency if to_account is not None else account.currency
     conversion = await resolve_conversion(
@@ -300,6 +302,7 @@ async def build_transaction(
         description=data.description,
         notes=data.notes,
         recurring_rule_id=data.recurring_rule_id,
+        loan_id=data.loan_id,
     )
     _apply_conversion(transaction, conversion)
     db.add(transaction)
@@ -345,6 +348,8 @@ async def update_transaction(
         await get_active_currency(db, changes["currency"])
     if "recurring_rule_id" in changes:
         await ownership.get_owned_or_none(db, RecurringRule, changes["recurring_rule_id"], user_id)
+    if "loan_id" in changes:
+        await ownership.get_owned_or_none(db, Loan, changes["loan_id"], user_id)
 
     effective_type = changes.get("type", transaction.type)
     effective_account_id = changes.get("account_id", transaction.account_id)

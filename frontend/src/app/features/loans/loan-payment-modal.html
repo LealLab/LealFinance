@@ -1,0 +1,70 @@
+<div *transloco="let t">
+  <app-modal [(open)]="open" [titleText]="t('loans.payment.title')">
+    <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label" for="loan-payment-amount">{{
+            t('loans.payment.fields.amount')
+          }}</label>
+          <input
+            id="loan-payment-amount"
+            type="text"
+            inputmode="decimal"
+            class="form-input font-mono"
+            formControlName="amount"
+          />
+        </div>
+        <div>
+          <label class="form-label" for="loan-payment-date">{{
+            t('loans.payment.fields.date')
+          }}</label>
+          <input id="loan-payment-date" type="date" class="form-input" formControlName="date" />
+          <p class="mt-1 text-xs text-content-muted">{{ t('loans.payment.fields.dateHint') }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label class="form-label" for="loan-payment-account">{{
+          t('loans.payment.fields.account')
+        }}</label>
+        <select id="loan-payment-account" class="form-input" formControlName="accountId">
+          @for (group of accountGroups(); track group.institution?.id ?? 'none') {
+            <optgroup [label]="group.institution?.name ?? t('loans.payment.fields.noInstitution')">
+              @for (account of group.accounts; track account.id) {
+                <option [value]="account.id">{{ account.name }}</option>
+              }
+            </optgroup>
+          }
+        </select>
+        @if (form.controls.accountId.invalid && form.controls.accountId.touched) {
+          <p class="form-error">{{ t('loans.form.errors.required') }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="form-label" for="loan-payment-description">{{
+          t('loans.payment.fields.description')
+        }}</label>
+        <input
+          id="loan-payment-description"
+          type="text"
+          class="form-input"
+          formControlName="description"
+        />
+      </div>
+
+      @if (saveErrorKey(); as errorKey) {
+        <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+      }
+
+      <div class="mt-2 flex justify-end gap-2">
+        <button appButton type="button" variant="secondary" (click)="open.set(false)">
+          {{ t('loans.form.actions.cancel') }}
+        </button>
+        <button appButton type="submit" variant="primary" [disabled]="saving()">
+          {{ t('loans.payment.actions.confirm') }}
+        </button>
+      </div>
+    </form>
+  </app-modal>
+</div>

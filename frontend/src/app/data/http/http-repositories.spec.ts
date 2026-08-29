@@ -9,6 +9,7 @@ import { HttpCategoryGroupRepository } from './http-category-group.repository';
 import { HttpCategoryRepository } from './http-category.repository';
 import { HttpExchangeRateRepository } from './http-exchange-rate.repository';
 import { HttpGoalRepository } from './http-goal.repository';
+import { HttpLoanRepository } from './http-loan.repository';
 import { HttpManualRateRepository } from './http-manual-rate.repository';
 import { HttpTransactionRepository } from './http-transaction.repository';
 
@@ -283,6 +284,7 @@ describe('HTTP repositories', () => {
           description: 'Coffee',
           notes: null,
           recurring_rule_id: null,
+          loan_id: null,
           conversion: null,
         },
       ],
@@ -450,5 +452,110 @@ describe('HTTP repositories', () => {
     const req = http.expectOne('/api/v1/agents/chat');
     expect(req.request.body).toEqual({ messages: [{ role: 'user', content: 'hi' }] });
     req.flush({ provider: 'anthropic', model: 'claude-sonnet-5', reply: 'hello' });
+  });
+
+  it('uses loan CRUD, archive, and payment endpoints', () => {
+    const wire = {
+      id: 'l',
+      name: 'Car',
+      category_id: 'c',
+      currency: 'BRL',
+      amount_borrowed: '40000.0000',
+      fees: '1200.0000',
+      interest_rate: '1.2000',
+      rate_period: 'monthly' as const,
+      installment_count: 48,
+      installment_amount: '1101.1021',
+      first_payment_date: '2026-01-10',
+      auto_post: true,
+      payment_account_id: 'a',
+      notes: null,
+      archived: false,
+      installments_paid: 2,
+    };
+
+    let loans: unknown;
+    TestBed.inject(HttpLoanRepository)
+      .list()
+      .subscribe((r) => (loans = r));
+    const listReq = http.expectOne('/api/v1/loans');
+    expect(listReq.request.method).toBe('GET');
+    listReq.flush([wire]);
+    expect((loans as { id: string; installmentsPaid: number }[])[0]).toMatchObject({
+      id: 'l',
+      installmentsPaid: 2,
+      paymentAccountId: 'a',
+    });
+
+    TestBed.inject(HttpLoanRepository)
+      .create({
+        name: 'Car',
+        categoryId: 'c',
+        currency: 'BRL',
+        amountBorrowed: '40000',
+        fees: '1200',
+        interestRate: '1.2',
+        ratePeriod: 'monthly',
+        installmentCount: 48,
+        firstPaymentDate: '2026-01-10',
+        autoPost: true,
+        paymentAccountId: 'a',
+        archived: false,
+      })
+      .subscribe();
+    const createReq = http.expectOne('/api/v1/loans');
+    expect(createReq.request.method).toBe('POST');
+    expect(createReq.request.body).toMatchObject({
+      name: 'Car',
+      category_id: 'c',
+      amount_borrowed: '40000',
+      rate_period: 'monthly',
+      installment_count: 48,
+      auto_post: true,
+      payment_account_id: 'a',
+    });
+    expect('installment_amount' in createReq.request.body).toBe(false);
+    createReq.flush(wire);
+
+    TestBed.inject(HttpLoanRepository).update('l', { installmentCount: 36 }).subscribe();
+    const updateReq = http.expectOne('/api/v1/loans/l');
+    expect(updateReq.request.method).toBe('PATCH');
+    expect(updateReq.request.body).toEqual({ installment_count: 36 });
+    updateReq.flush(wire);
+
+    TestBed.inject(HttpLoanRepository).setArchived('l', true).subscribe();
+    const archiveReq = http.expectOne('/api/v1/loans/l/archive');
+    expect(archiveReq.request.method).toBe('POST');
+    expect(archiveReq.request.body).toEqual({ archived: true });
+    archiveReq.flush(wire);
+
+    let payment: unknown;
+    TestBed.inject(HttpLoanRepository)
+      .recordPayment('l', { amount: '1101.1021', date: '2026-03-10', accountId: 'a' })
+      .subscribe((r) => (payment = r));
+    const payReq = http.expectOne('/api/v1/loans/l/payments');
+    expect(payReq.request.method).toBe('POST');
+    expect(payReq.request.body).toEqual({
+      amount: '1101.1021',
+      date: '2026-03-10',
+      account_id: 'a',
+      description: null,
+    });
+    payReq.flush({
+      id: 't',
+      type: 'expense',
+      date: '2026-03-10',
+      amount: '1101.1021',
+      currency: 'BRL',
+      account_id: 'a',
+      to_account_id: null,
+      category_id: 'c',
+      description: 'Car 3/48',
+      notes: null,
+      recurring_rule_id: null,
+      loan_id: 'l',
+      conversion: null,
+    });
+    expect(payment).toMatchObject({ id: 't', loanId: 'l', type: 'expense' });
   });
 });

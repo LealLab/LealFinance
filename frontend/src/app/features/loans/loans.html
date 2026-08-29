@@ -1,0 +1,210 @@
+<div *transloco="let t">
+  <!-- t(loans.ratePeriod.annual, loans.ratePeriod.monthly) -->
+  <app-page-header [title]="t('loans.title')" [description]="t('loans.description')">
+    <label class="flex items-center gap-2 text-sm text-content-muted">
+      <input
+        type="checkbox"
+        [checked]="showArchived()"
+        (change)="showArchived.set($any($event.target).checked)"
+      />
+      {{ t('loans.showArchived') }}
+    </label>
+    <button appButton variant="primary" type="button" (click)="openCreate()">
+      <app-icon name="plus" [size]="16" />
+      {{ t('loans.actions.new') }}
+    </button>
+  </app-page-header>
+
+  @if (hasFallbackRate()) {
+    <div class="mb-4">
+      <app-exchange-rate-warning [isFallback]="true" />
+    </div>
+  }
+
+  @if (actionErrorKey(); as key) {
+    <p class="mb-4 text-sm text-negative" role="alert">{{ t(key) }}</p>
+  }
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="handCoins"
+      [title]="t('loans.empty.title')"
+      [description]="t('loans.empty.description')"
+    >
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        {{ t('loans.actions.new') }}
+      </button>
+    </app-empty-state>
+  } @else {
+    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+      @for (row of rows(); track row.loan.id) {
+        <app-card>
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex min-w-0 items-start gap-3">
+              <div
+                class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent"
+              >
+                <app-icon name="handCoins" [size]="20" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="truncate text-base font-semibold text-content-primary">
+                  {{ row.loan.name }}
+                </h2>
+                <p class="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-content-muted">
+                  @if (row.category) {
+                    <span
+                      class="inline-flex items-center gap-1 rounded px-1.5 py-0.5"
+                      [style.background-color]="row.category.color + '22'"
+                    >
+                      <app-icon [name]="row.category.icon" [size]="12" />
+                      {{ row.category.name }}
+                    </span>
+                  }
+                  <span>· {{ t('loans.card.firstPayment') }}: {{ row.loan.firstPaymentDate }}</span>
+                </p>
+              </div>
+            </div>
+            <div class="flex shrink-0 items-center gap-1">
+              @if (row.loan.archived) {
+                <app-badge tone="neutral">{{ t('loans.archived') }}</app-badge>
+              }
+              @if (row.loan.autoPost) {
+                <app-badge tone="accent">{{ t('loans.autoPostBadge') }}</app-badge>
+              }
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                (click)="openEdit(row.loan)"
+                [attr.aria-label]="t('loans.actions.edit')"
+              >
+                <app-icon name="pencil" [size]="16" />
+              </button>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                (click)="archive(row.loan)"
+                [attr.aria-label]="
+                  row.loan.archived ? t('loans.actions.unarchive') : t('loans.actions.archive')
+                "
+              >
+                <app-icon name="archive" [size]="16" />
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5 flex items-end justify-between gap-4">
+            <div>
+              <p class="text-xs text-content-muted">{{ t('loans.card.installment') }}</p>
+              <p class="font-mono text-2xl font-semibold tabular-nums text-content-primary">
+                {{ row.loan.installmentAmount | money: row.loan.currency }}
+                @if (row.convertedInstallment; as converted) {
+                  <span class="text-sm font-normal text-content-muted"
+                    >({{ converted.amount | money: converted.currency }})</span
+                  >
+                }
+              </p>
+            </div>
+            <div class="text-end">
+              <p class="text-xs text-content-muted">{{ t('loans.card.totalPayable') }}</p>
+              <p class="font-mono text-sm font-semibold tabular-nums">
+                {{ row.progress.totalPayable.amount | money: row.progress.totalPayable.currency }}
+              </p>
+            </div>
+          </div>
+
+          <p class="mt-4 mb-1 text-xs text-content-muted">
+            {{ t('loans.card.paidCount', { paid: row.progress.paid, total: row.progress.total }) }}
+          </p>
+          <app-progress-bar
+            [ratio]="row.progress.ratio"
+            [label]="
+              t('loans.card.paidCount', { paid: row.progress.paid, total: row.progress.total })
+            "
+          />
+
+          <div class="mt-3 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+            <div>
+              <p class="text-xs text-content-muted">{{ t('loans.card.borrowed') }}</p>
+              <p class="font-mono font-semibold tabular-nums">
+                {{ row.loan.amountBorrowed | money: row.loan.currency }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-content-muted">{{ t('loans.card.fees') }}</p>
+              <p class="font-mono font-semibold tabular-nums">
+                {{ row.loan.fees | money: row.loan.currency }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-content-muted">{{ t('loans.card.rate') }}</p>
+              <p class="font-semibold">
+                {{ row.loan.interestRate }}% · {{ t('loans.ratePeriod.' + row.loan.ratePeriod) }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-content-muted">{{ t('loans.card.totalInterest') }}</p>
+              <p class="font-mono font-semibold tabular-nums">
+                {{ row.progress.totalInterest.amount | money: row.progress.totalInterest.currency }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-content-muted">{{ t('loans.card.remaining') }}</p>
+              <p class="font-mono font-semibold tabular-nums">
+                {{ row.progress.remaining.amount | money: row.progress.remaining.currency }}
+                @if (row.convertedRemaining; as converted) {
+                  <span class="text-xs font-normal text-content-muted"
+                    >({{ converted.amount | money: converted.currency }})</span
+                  >
+                }
+              </p>
+            </div>
+            @if (row.progress.nextDueDate; as due) {
+              <div>
+                <p class="text-xs text-content-muted">{{ t('loans.card.nextDue') }}</p>
+                <p class="font-semibold">{{ due }}</p>
+              </div>
+            }
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-2 border-t border-border pt-4">
+            @if (row.progress.paid < row.progress.total) {
+              <button
+                appButton
+                variant="primary"
+                size="sm"
+                type="button"
+                (click)="openPayment(row.loan)"
+              >
+                <app-icon name="banknote" [size]="14" />{{ t('loans.actions.recordPayment') }}
+              </button>
+            } @else {
+              <app-badge tone="positive">{{ t('loans.card.fullyPaid') }}</app-badge>
+            }
+          </div>
+        </app-card>
+      }
+    </div>
+  }
+
+  <app-loan-form-modal
+    [(open)]="formOpen"
+    [loan]="editingLoan()"
+    [expenseCategories]="expenseCategories()"
+    [accounts]="accountsResource.value() ?? []"
+    [institutions]="institutionsResource.value() ?? []"
+    (saved)="onLoanSaved()"
+  />
+  @if (paymentLoan(); as loan) {
+    <app-loan-payment-modal
+      [(open)]="paymentOpen"
+      [loan]="loan"
+      [accounts]="accountsResource.value() ?? []"
+      [institutions]="institutionsResource.value() ?? []"
+      (saved)="onPaymentSaved()"
+    />
+  }
+</div>

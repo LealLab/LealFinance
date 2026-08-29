@@ -7,6 +7,10 @@ import { Category, CategoryKind } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
+import { Loan } from '../../domain/models/loan';
+import { installmentAmount as computeInstallmentAmount } from '../../domain/calc/loans';
+import { formatIsoDate } from '../../domain/calc/dates';
+import { LoanPayment } from '../loan.repository';
 import {
   InvestmentAsset,
   InvestmentTransaction,
@@ -51,6 +55,7 @@ export class MockStore {
   private readonly categoriesSignal = signal<Category[]>([]);
   private readonly budgetsSignal = signal<Budget[]>([]);
   private readonly goalsSignal = signal<Goal[]>([]);
+  private readonly loansSignal = signal<Loan[]>([]);
   private readonly investmentWalletsSignal = signal<InvestmentWallet[]>([]);
   private readonly investmentAssetsSignal = signal<InvestmentAsset[]>([]);
   private readonly investmentTransactionsSignal = signal<InvestmentTransaction[]>([]);
@@ -68,6 +73,7 @@ export class MockStore {
   readonly categories = this.categoriesSignal.asReadonly();
   readonly budgets = this.budgetsSignal.asReadonly();
   readonly goals = this.goalsSignal.asReadonly();
+  readonly loans = this.loansSignal.asReadonly();
   readonly investmentWallets = this.investmentWalletsSignal.asReadonly();
   readonly investmentAssets = this.investmentAssetsSignal.asReadonly();
   readonly investmentTransactions = this.investmentTransactionsSignal.asReadonly();
@@ -91,6 +97,7 @@ export class MockStore {
     this.categoriesSignal.set(fixtures.categories);
     this.budgetsSignal.set(fixtures.budgets);
     this.goalsSignal.set(fixtures.goals);
+    this.loansSignal.set(fixtures.loans);
     this.investmentWalletsSignal.set(fixtures.investmentWallets);
     this.investmentAssetsSignal.set(fixtures.investmentAssets);
     this.investmentTransactionsSignal.set(fixtures.investmentTransactions);
@@ -280,6 +287,57 @@ export class MockStore {
     if (!findEntity(this.goalsSignal(), id)) notFound('Goal', id);
     this.goalsSignal.update((list) => updateEntity(list, id, changes));
     return findEntity(this.goalsSignal(), id)!;
+  }
+
+  // --- Loans ------------------------------------------------------------
+
+  /** Re-derives the two backend-computed fields: `installmentAmount` from
+   * the loan's own inputs, `installmentsPaid` from the linked ledger. */
+  private loanWithDerived(loan: Loan): Loan {
+    return {
+      ...loan,
+      installmentAmount: computeInstallmentAmount(loan),
+      installmentsPaid: this.transactionsSignal().filter((tx) => tx.loanId === loan.id).length,
+    };
+  }
+
+  listLoans(): Loan[] {
+    return this.loansSignal().map((loan) => this.loanWithDerived(loan));
+  }
+
+  createLoan(input: Omit<Loan, 'id' | 'installmentAmount' | 'installmentsPaid'>): Loan {
+    const loan: Loan = { ...input, id: newId(), installmentAmount: '0', installmentsPaid: 0 };
+    this.loansSignal.update((list) => [...list, loan]);
+    return this.loanWithDerived(loan);
+  }
+
+  updateLoan(
+    id: string,
+    changes: Partial<Omit<Loan, 'id' | 'installmentAmount' | 'installmentsPaid'>>,
+  ): Loan {
+    if (!findEntity(this.loansSignal(), id)) notFound('Loan', id);
+    this.loansSignal.update((list) => updateEntity(list, id, changes));
+    return this.loanWithDerived(findEntity(this.loansSignal(), id)!);
+  }
+
+  recordLoanPayment(id: string, payment: LoanPayment): Transaction {
+    const stored = findEntity(this.loansSignal(), id);
+    if (!stored) notFound('Loan', id);
+    const loan = this.loanWithDerived(stored);
+    const accountId = payment.accountId ?? loan.paymentAccountId;
+    if (!accountId) throw new Error('A loan payment needs a source account.');
+    return this.createTransaction({
+      type: 'expense',
+      date: payment.date ?? formatIsoDate(new Date()),
+      amount: payment.amount ?? loan.installmentAmount,
+      currency: loan.currency,
+      accountId,
+      categoryId: loan.categoryId,
+      description:
+        payment.description ??
+        `${loan.name} ${loan.installmentsPaid + 1}/${loan.installmentCount}`,
+      loanId: loan.id,
+    });
   }
 
   // --- Investment wallets, assets, and transactions --------------------
