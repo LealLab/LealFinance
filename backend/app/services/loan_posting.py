@@ -39,7 +39,7 @@ async def post_due_installments(db: AsyncSession, loan: Loan, *, today: date_typ
     isn't already covered by an existing payment. Each payment commits on
     its own (via loans_service.record_payment), so a failure partway
     through a catch-up leaves the earlier payments persisted."""
-    if not loan.auto_post:
+    if not loan.auto_post or loan.archived:
         return []
 
     created: list[UUID] = []
@@ -63,7 +63,9 @@ async def post_all_due_installments(db: AsyncSession, *, today: date_type | None
     failure (an archived payment account, a currency gone inactive) is
     logged and rolled back without aborting the rest of the run."""
     today = today or date_type.today()
-    result = await db.execute(select(Loan).where(Loan.auto_post.is_(True)))
+    result = await db.execute(
+        select(Loan).where(Loan.auto_post.is_(True), Loan.archived.is_(False))
+    )
     loans = result.scalars().all()
 
     total = 0

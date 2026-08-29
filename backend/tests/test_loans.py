@@ -323,6 +323,29 @@ async def test_auto_post_stops_at_installment_count(
     assert posted == 2
 
 
+async def test_auto_post_skips_archived_loans(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-autopost-archived@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(
+                category_id,
+                auto_post=True,
+                payment_account_id=account_id,
+                first_payment_date="2026-01-10",
+                installment_count=6,
+            ),
+        )
+    ).json()["id"]
+    await client.post(f"/api/v1/loans/{loan_id}/archive", json={"archived": True})
+
+    assert await post_all_due_installments(db_session, today=date(2026, 6, 15)) == 0
+
+
 # --- auth & ownership ------------------------------------------------------
 
 
