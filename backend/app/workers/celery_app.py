@@ -15,7 +15,11 @@ celery_app = Celery(
     "lealfinance",
     broker=settings.celery_broker_url,
     backend=settings.celery_broker_url,
-    include=["app.workers.tasks.rates", "app.workers.tasks.recurring"],
+    include=[
+        "app.workers.tasks.rates",
+        "app.workers.tasks.recurring",
+        "app.workers.tasks.loans",
+    ],
 )
 
 celery_app.conf.update(
@@ -30,6 +34,11 @@ celery_app.conf.beat_schedule = {
     "post-recurring-transactions-daily": {
         "task": "app.workers.tasks.recurring.post_recurring_transactions",
         "schedule": crontab(hour=1, minute=0),
+    },
+    # After recurring posting (01:00), before the rate backfill (02:00).
+    "post-loan-installments-daily": {
+        "task": "app.workers.tasks.loans.post_loan_installments",
+        "schedule": crontab(hour=1, minute=30),
     },
     # Every 6h keeps the cache within the provider's hourly update cadence
     # while staying far under the free plan's 1,000 requests/month (one

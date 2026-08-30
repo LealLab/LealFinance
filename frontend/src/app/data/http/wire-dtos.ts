@@ -116,10 +116,38 @@ export interface TransactionWire {
   description: string;
   notes: string | null;
   recurring_rule_id: string | null;
+  loan_id: string | null;
   conversion: ConversionWire | null;
 }
 export type TransactionInputWire = Omit<TransactionWire, 'id'>;
 export type TransactionPatchWire = NullablePatch<TransactionInputWire>;
+
+export interface LoanWire {
+  id: string;
+  name: string;
+  category_id: string;
+  currency: string;
+  amount_borrowed: string;
+  fees: string;
+  interest_rate: string;
+  rate_period: 'annual' | 'monthly';
+  installment_count: number;
+  installment_amount: string;
+  first_payment_date: string;
+  auto_post: boolean;
+  payment_account_id: string | null;
+  notes: string | null;
+  archived: boolean;
+  installments_paid: number;
+}
+export type LoanInputWire = Omit<LoanWire, 'id' | 'installment_amount' | 'installments_paid'>;
+export type LoanPatchWire = NullablePatch<Omit<LoanInputWire, 'archived'>>;
+export interface LoanPaymentWire {
+  amount?: string | null;
+  date?: string | null;
+  account_id?: string | null;
+  description?: string | null;
+}
 
 export interface ImportOptionsWire {
   date_format: 'auto' | 'iso' | 'dmy' | 'mdy';

@@ -15,6 +15,7 @@ from app.api.v1 import (
     health,
     institutions,
     investments,
+    loans,
     manual_rates,
     market_data,
     meta,
@@ -39,5 +40,6 @@ api_v1_router.include_router(recurring_rules.router)
 api_v1_router.include_router(categorization_rules.router)
 api_v1_router.include_router(manual_rates.router)
 api_v1_router.include_router(goals.router)
+api_v1_router.include_router(loans.router)
 api_v1_router.include_router(investments.router)
 api_v1_router.include_router(market_data.router)

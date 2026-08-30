@@ -19,6 +19,7 @@ import { CategorizationRuleRepository } from './data/categorization-rule.reposit
 import { ExchangeRateRepository } from './data/exchange-rate.repository';
 import { InstitutionRepository } from './data/institution.repository';
 import { GoalRepository } from './data/goal.repository';
+import { LoanRepository } from './data/loan.repository';
 import { InvestmentAssetRepository } from './data/investment-asset.repository';
 import { InvestmentTransactionRepository } from './data/investment-transaction.repository';
 import { InvestmentWalletRepository } from './data/investment-wallet.repository';
@@ -33,6 +34,7 @@ import { HttpCategoryRepository } from './data/http/http-category.repository';
 import { HttpCategorizationRuleRepository } from './data/http/http-categorization-rule.repository';
 import { HttpExchangeRateRepository } from './data/http/http-exchange-rate.repository';
 import { HttpGoalRepository } from './data/http/http-goal.repository';
+import { HttpLoanRepository } from './data/http/http-loan.repository';
 import { HttpInstitutionRepository } from './data/http/http-institution.repository';
 import { HttpInvestmentAssetRepository } from './data/http/http-investment-asset.repository';
 import { HttpInvestmentTransactionRepository } from './data/http/http-investment-transaction.repository';
@@ -62,6 +64,7 @@ export const appConfig: ApplicationConfig = {
     { provide: BudgetRepository, useClass: HttpBudgetRepository },
     { provide: BudgetPlanRepository, useClass: HttpBudgetPlanRepository },
     { provide: GoalRepository, useClass: HttpGoalRepository },
+    { provide: LoanRepository, useClass: HttpLoanRepository },
     { provide: RecurringRuleRepository, useClass: HttpRecurringRuleRepository },
     { provide: CategorizationRuleRepository, useClass: HttpCategorizationRuleRepository },
     { provide: ExchangeRateRepository, useClass: HttpExchangeRateRepository },

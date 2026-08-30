@@ -59,6 +59,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/goals/goals').then((m) => m.Goals),
       },
       {
+        path: 'loans',
+        loadComponent: () => import('./features/loans/loans').then((m) => m.Loans),
+      },
+      {
         path: 'investments',
         canActivate: [investmentsGuard],
         loadComponent: () =>

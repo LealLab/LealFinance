@@ -57,6 +57,7 @@ class Transaction(UserOwnedModel):
         ),
         *conversion_constraints("transactions", "conversion_"),
         Index("ix_transactions_user_id_date", "user_id", "date"),
+        Index("ix_transactions_loan_id", "loan_id"),
         # Idempotency guard for recurring posting (see
         # app/services/recurring_posting.py): the same rule can never post
         # two transactions on the same occurrence date. Partial, since
@@ -101,6 +102,15 @@ class Transaction(UserOwnedModel):
             ondelete="SET NULL",
             name="fk_transactions_recurring_rule_id",
         ),
+    )
+    # SET NULL, same reasoning as recurring_rule_id: deleting a loan must
+    # not delete the payments it generated - only the provenance link is
+    # lost. Set on every transaction recorded as a loan installment (see
+    # app/services/loans.py); the count of these is what "installments
+    # paid" is derived from.
+    loan_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("loans.id", ondelete="SET NULL", name="fk_transactions_loan_id"),
     )
 
     conversion_amount: Mapped[MoneyAmount | None] = mapped_column()

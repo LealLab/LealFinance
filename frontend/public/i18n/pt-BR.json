@@ -162,6 +162,7 @@
       "rules": "Regras",
       "budgets": "Orçamentos",
       "goals": "Metas",
+      "loans": "Empréstimos",
       "reports": "Relatórios",
       "exchange": "Câmbio",
       "settings": "Configurações",
@@ -920,6 +921,90 @@
         "description": "Descrição"
       },
       "saveError": "Não foi possível registrar a movimentação. Tente novamente."
+    }
+  },
+  "loans": {
+    "title": "Empréstimos",
+    "description": "Acompanhe o valor emprestado, os juros que ele custa e quanto ainda falta pagar.",
+    "showArchived": "Mostrar empréstimos arquivados",
+    "archived": "Arquivado",
+    "autoPostBadge": "Lançamento automático",
+    "archiveError": "Não foi possível alterar o arquivamento do empréstimo. Tente novamente.",
+    "actions": {
+      "new": "Novo empréstimo",
+      "edit": "Editar empréstimo",
+      "archive": "Arquivar empréstimo",
+      "unarchive": "Desarquivar empréstimo",
+      "recordPayment": "Registrar pagamento"
+    },
+    "empty": {
+      "title": "Nenhum empréstimo ainda",
+      "description": "Adicione um empréstimo para acompanhar as parcelas, os juros e o saldo restante."
+    },
+    "card": {
+      "firstPayment": "Primeiro pagamento",
+      "installment": "Parcela mensal",
+      "totalPayable": "Total a pagar",
+      "borrowed": "Emprestado",
+      "fees": "Taxas",
+      "rate": "Taxa de juros",
+      "totalInterest": "Juros totais",
+      "remaining": "Restante",
+      "nextDue": "Próximo vencimento",
+      "paidCount": "{{paid}} de {{total}} parcelas pagas",
+      "fullyPaid": "Quitado"
+    },
+    "ratePeriod": {
+      "annual": "ao ano",
+      "monthly": "ao mês"
+    },
+    "form": {
+      "newTitle": "Novo empréstimo",
+      "editTitle": "Editar empréstimo",
+      "saveError": "Não foi possível salvar o empréstimo. Tente novamente.",
+      "installmentPreview": "Parcela mensal estimada",
+      "fields": {
+        "name": "Nome",
+        "category": "Categoria",
+        "categoryPlaceholder": "Escolha uma categoria de despesa",
+        "currency": "Moeda",
+        "amountBorrowed": "Valor emprestado",
+        "fees": "Taxas",
+        "interestRate": "Taxa de juros (%)",
+        "ratePeriod": "Período da taxa",
+        "installmentCount": "Número de parcelas",
+        "firstPaymentDate": "Data do primeiro pagamento",
+        "notes": "Observações",
+        "autoPost": "Lançar cada parcela automaticamente",
+        "autoPostHint": "Um pagamento é criado em cada vencimento a partir da conta escolhida.",
+        "institution": "Instituição",
+        "allInstitutions": "Todas as instituições",
+        "paymentAccount": "Conta",
+        "paymentAccountPlaceholder": "Escolha a conta de origem"
+      },
+      "errors": {
+        "required": "Este campo é obrigatório.",
+        "paymentAccountRequired": "Escolha a conta de onde saem os pagamentos."
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      }
+    },
+    "payment": {
+      "title": "Registrar pagamento do empréstimo",
+      "saveError": "Não foi possível registrar o pagamento. Tente novamente.",
+      "fields": {
+        "amount": "Valor",
+        "date": "Data",
+        "dateHint": "Defina uma data futura para pagar uma parcela antecipadamente.",
+        "account": "Conta",
+        "noInstitution": "Sem instituição",
+        "description": "Descrição"
+      },
+      "actions": {
+        "confirm": "Registrar pagamento"
+      }
     }
   },
   "investments": {

@@ -1,0 +1,186 @@
+<div *transloco="let t">
+  <!-- t(loans.ratePeriod.annual, loans.ratePeriod.monthly) -->
+  @if (titleKey(); as title) {
+    <app-modal [(open)]="open" [titleText]="t(title)">
+      <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
+        <div>
+          <label class="form-label" for="loan-name">{{ t('loans.form.fields.name') }}</label>
+          <input id="loan-name" type="text" class="form-input" formControlName="name" />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p class="form-error">{{ t('loans.form.errors.required') }}</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="loan-category">{{
+              t('loans.form.fields.category')
+            }}</label>
+            <select id="loan-category" class="form-input" formControlName="categoryId">
+              <option value="" disabled>{{ t('loans.form.fields.categoryPlaceholder') }}</option>
+              @for (category of expenseCategories(); track category.id) {
+                <option [value]="category.id">{{ category.name }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="loan-currency">{{
+              t('loans.form.fields.currency')
+            }}</label>
+            <select
+              id="loan-currency"
+              class="form-input"
+              formControlName="currency"
+              [attr.disabled]="isEditing() ? '' : null"
+            >
+              @for (currency of currencyOptions(); track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="loan-borrowed">{{
+              t('loans.form.fields.amountBorrowed')
+            }}</label>
+            <input
+              id="loan-borrowed"
+              type="text"
+              inputmode="decimal"
+              class="form-input font-mono"
+              formControlName="amountBorrowed"
+            />
+          </div>
+          <div>
+            <label class="form-label" for="loan-fees">{{ t('loans.form.fields.fees') }}</label>
+            <input
+              id="loan-fees"
+              type="text"
+              inputmode="decimal"
+              class="form-input font-mono"
+              formControlName="fees"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="form-label" for="loan-rate">{{
+              t('loans.form.fields.interestRate')
+            }}</label>
+            <input
+              id="loan-rate"
+              type="text"
+              inputmode="decimal"
+              class="form-input font-mono"
+              formControlName="interestRate"
+            />
+          </div>
+          <div>
+            <label class="form-label" for="loan-rate-period">{{
+              t('loans.form.fields.ratePeriod')
+            }}</label>
+            <select id="loan-rate-period" class="form-input" formControlName="ratePeriod">
+              @for (period of ratePeriods; track period) {
+                <option [value]="period">{{ t('loans.ratePeriod.' + period) }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="loan-count">{{
+              t('loans.form.fields.installmentCount')
+            }}</label>
+            <input
+              id="loan-count"
+              type="number"
+              min="1"
+              class="form-input"
+              formControlName="installmentCount"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label" for="loan-first-date">{{
+            t('loans.form.fields.firstPaymentDate')
+          }}</label>
+          <input
+            id="loan-first-date"
+            type="date"
+            class="form-input"
+            formControlName="firstPaymentDate"
+          />
+        </div>
+
+        <div class="rounded-md border border-border bg-surface-sunken p-3">
+          <p class="text-xs text-content-muted">{{ t('loans.form.installmentPreview') }}</p>
+          <p class="font-mono text-lg font-semibold tabular-nums text-content-primary">
+            {{ installmentPreview().amount | money: installmentPreview().currency }}
+          </p>
+        </div>
+
+        <div>
+          <label class="form-label" for="loan-notes">{{ t('loans.form.fields.notes') }}</label>
+          <input id="loan-notes" type="text" class="form-input" formControlName="notes" />
+        </div>
+
+        <div class="rounded-md border border-border p-3">
+          <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" formControlName="autoPost" />
+            {{ t('loans.form.fields.autoPost') }}
+          </label>
+          <p class="mt-1 text-xs text-content-muted">{{ t('loans.form.fields.autoPostHint') }}</p>
+
+          @if (form.controls.autoPost.value) {
+            <div class="mt-3 grid grid-cols-2 gap-4">
+              <div>
+                <label class="form-label" for="loan-institution">{{
+                  t('loans.form.fields.institution')
+                }}</label>
+                <select id="loan-institution" class="form-input" formControlName="institutionId">
+                  <option value="">{{ t('loans.form.fields.allInstitutions') }}</option>
+                  @for (institution of institutionOptions(); track institution.id) {
+                    <option [value]="institution.id">{{ institution.name }}</option>
+                  }
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="loan-account">{{
+                  t('loans.form.fields.paymentAccount')
+                }}</label>
+                <select id="loan-account" class="form-input" formControlName="paymentAccountId">
+                  <option value="" disabled>
+                    {{ t('loans.form.fields.paymentAccountPlaceholder') }}
+                  </option>
+                  @for (account of eligibleAccounts(); track account.id) {
+                    <option [value]="account.id">{{ account.name }}</option>
+                  }
+                </select>
+                @if (
+                  form.controls.paymentAccountId.invalid && form.controls.paymentAccountId.touched
+                ) {
+                  <p class="form-error">{{ t('loans.form.errors.paymentAccountRequired') }}</p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (saveErrorKey(); as errorKey) {
+          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        }
+
+        <div class="mt-2 flex justify-end gap-2">
+          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+            {{ t('loans.form.actions.cancel') }}
+          </button>
+          <button appButton type="submit" variant="primary" [disabled]="saving()">
+            {{ t('loans.form.actions.save') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
+  }
+</div>

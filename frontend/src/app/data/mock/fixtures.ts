@@ -7,6 +7,7 @@ import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
+import { Loan } from '../../domain/models/loan';
 import {
   InvestmentAsset,
   InvestmentTransaction,
@@ -26,6 +27,7 @@ export interface Fixtures {
   categorizationRules: CategorizationRule[];
   institutions: Institution[];
   goals: Goal[];
+  loans: Loan[];
   investmentWallets: InvestmentWallet[];
   investmentAssets: InvestmentAsset[];
   investmentTransactions: InvestmentTransaction[];
@@ -667,6 +669,29 @@ function buildGoals(): Goal[] {
   ];
 }
 
+function buildLoans(): Loan[] {
+  const today = new Date();
+  return [
+    {
+      id: 'loan-car',
+      name: 'Financiamento do carro',
+      categoryId: CATEGORY_IDS.rideshare,
+      currency: 'BRL',
+      amountBorrowed: '40000.00',
+      fees: '1200.00',
+      interestRate: '1.2000',
+      ratePeriod: 'monthly',
+      installmentCount: 48,
+      installmentAmount: '0',
+      firstPaymentDate: formatIsoDate(addMonthsClamped(today, -3)),
+      autoPost: false,
+      paymentAccountId: ACCOUNT_IDS.checking,
+      archived: false,
+      installmentsPaid: 0
+    }
+  ];
+}
+
 function buildInvestmentWallets(): InvestmentWallet[] {
   return [
     {
@@ -830,6 +855,7 @@ export function createFixtures(): Fixtures {
     budgets: buildBudgets(currentMonthKey),
     institutions: buildInstitutions(),
     goals: buildGoals(),
+    loans: buildLoans(),
     investmentWallets: buildInvestmentWallets(),
     investmentAssets: buildInvestmentAssets(),
     investmentTransactions: buildInvestmentTransactions(),

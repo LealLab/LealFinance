@@ -52,6 +52,10 @@ export interface TransactionConversion {
  * RecurringRule - see domain/calc/recurrence.ts. A *projected* future
  * occurrence (not yet an actual transaction) is a plain object shaped like
  * this one but never stored; see RecurringRule for that distinction.
+ *
+ * `loanId` is set when this expense is a loan installment payment (see
+ * domain/models/loan.ts). The count of transactions carrying a given
+ * `loanId` is how many installments of that loan have been paid.
  */
 export interface Transaction {
   id: string;
@@ -65,5 +69,6 @@ export interface Transaction {
   description: string;
   notes?: string;
   recurringRuleId?: string;
+  loanId?: string;
   conversion?: TransactionConversion;
 }
