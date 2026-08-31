@@ -5,6 +5,7 @@ import { IdentityApiService } from './identity-api.service';
 import { User } from './identity.models';
 import { MetadataService } from './metadata.service';
 import { PreferenceService } from './preference.service';
+import { ThemeService } from './theme.service';
 
 const SESSION_ERROR_CODES = new Set([
   'auth.unauthenticated',
@@ -18,6 +19,7 @@ export class SessionService {
   private readonly preferences = inject(PreferenceService);
   private readonly metadata = inject(MetadataService);
   private readonly router = inject(Router);
+  private readonly theme = inject(ThemeService);
   private readonly userState = signal<User | undefined>(undefined);
   private bootstrapRequest?: Observable<boolean>;
 
@@ -63,8 +65,12 @@ export class SessionService {
     baseCurrency: string;
     locale: string;
   }): Observable<User> {
+    const theme = this.theme.current();
     return this.api.register(input).pipe(
-      tap((user) => this.userState.set(user)),
+      tap((user) => {
+        this.userState.set(user);
+        this.preferences.setTheme(theme);
+      }),
       switchMap((user) => this.preferences.hydrate().pipe(map(() => user))),
       tap(() => this.metadata.hydrate().subscribe()),
     );
