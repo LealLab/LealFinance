@@ -136,7 +136,9 @@ describe('CommandPalette', () => {
 
   it.each([
     ['idioma', 'Configurar idioma', 'settings-language'],
-    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency']
+    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency'],
+    ['exportar backup', 'Exportar backup', 'settings-backup-export'],
+    ['restaurar backup', 'Restaurar backup', 'settings-backup-restore'],
   ])('finds the %s setting and navigates to its control', (query, label, fragment) => {
     const fixture = TestBed.createComponent(CommandPalette);
     const router = TestBed.inject(Router);

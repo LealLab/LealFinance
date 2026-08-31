@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Yedekleme ve geri yükleme",
+      "description": "Verilerinizin taşınabilir bir kopyasını indirin veya mevcut verilerinizi bir yedekten değiştirin.",
+      "export": {
+        "action": "Yedeği dışa aktar",
+        "title": "Yedeği dışa aktar",
+        "keyDescription": "Şifrelenmiş yedeğiniz indirildi. Kapatmadan önce bu anahtarı ayrı bir yerde saklayın.",
+        "recoveryKey": "Kurtarma anahtarı",
+        "copyKey": "Anahtarı kopyala",
+        "keyCopied": "Kurtarma anahtarı kopyalandı.",
+        "keyWarning": "Bu anahtar yalnızca bir kez gösterilir. Anahtar olmadan şifrelenmiş yedek geri yüklenemez.",
+        "description": "Yedeği bir kurtarma anahtarıyla koruyup korumayacağınızı seçin.",
+        "security": "Güvenlik",
+        "plain": "Şifrelenmemiş JSON",
+        "plainHint": "İncelemesi kolaydır ancak dosyaya sahip olan herkes okuyabilir.",
+        "encrypted": "Şifrelenmiş",
+        "encryptedHint": "LealFinance’in asla saklamadığı bir kurtarma anahtarıyla korunur.",
+        "exporting": "Dışa aktarılıyor…",
+        "download": "Yedeği indir"
+      },
+      "restore": {
+        "security": "Güvenlik",
+        "action": "Yedeği geri yükle",
+        "title": "Yedeği geri yükle",
+        "description": "Verilerinizi değiştirmeden önce incelemek için bir LealFinance JSON yedeği seçin.",
+        "file": "Yedek dosyası",
+        "selected": "Seçilen dosya: {{filename}}",
+        "recoveryKey": "Kurtarma anahtarı",
+        "previewTitle": "Yedek önizlemesi",
+        "sourceVersion": "Kaynak uygulama sürümü",
+        "exportedAt": "Dışa aktarma tarihi",
+        "records": "Kayıtlar",
+        "replace": "Verilerimi değiştir",
+        "preview": "Yedeği önizle"
+      },
+      "status": {
+        "exported": "Yedek indirildi.",
+        "restored": "Yedek geri yüklendi."
+      },
+      "confirm": {
+        "title": "Verileriniz değiştirilsin mi?",
+        "message": "Bu işlem, yedeklenen finansal verilerinizi ve desteklenen tercihlerinizi kalıcı olarak değiştirir. Oturum açma bilgileriniz ve kimlik bilgileriniz değişmez. Devam edilsin mi?"
+      },
+      "entities": {
+        "institutions": "Finans kuruluşları",
+        "accounts": "Hesaplar",
+        "category_groups": "Kategori grupları",
+        "categories": "Kategoriler",
+        "categorization_rules": "Kategorilendirme kuralları",
+        "budgets": "Bütçeler",
+        "budget_allocations": "Bütçe tahsisleri",
+        "expected_income": "Beklenen gelir",
+        "recurring_rules": "Yinelenen kurallar",
+        "loans": "Krediler",
+        "goals": "Hedefler",
+        "manual_rates": "Elle girilen döviz kurları",
+        "transactions": "İşlemler",
+        "investment_wallets": "Yatırım cüzdanları",
+        "investment_assets": "Yatırım varlıkları",
+        "investment_transactions": "Yatırım işlemleri"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Eski {{setting}} ayarı atlanacak.",
+        "credentials_reconnect": "Kimlik bilgileri yedeklere dahil edilmez. Geri yüklemeden sonra etkilenen hizmetleri yeniden bağlayın."
+      }
+    },
     "title": "Ayarlar",
     "description": "Görünüm, dil ve demo verisi tercihleri.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Bu geçerli bir LealFinance yedeği değil.",
+      "invalid_file_type": "Bir JSON yedek dosyası seçin.",
+      "file_too_large": "Bu yedek çok büyük (25 MB sınırı).",
+      "recovery_key_required": "Bu şifrelenmiş yedeğin kurtarma anahtarını girin.",
+      "recovery_key_invalid": "Kurtarma anahtarı yanlış veya şifrelenmiş yedek değiştirilmiş.",
+      "version_unsupported": "Bu yedeğin biçimi, bu LealFinance sürümünün desteklediğinden daha yeni.",
+      "data_incompatible": "Bu yedek uyumsuz veya bozuk finansal veriler içeriyor."
+    },
     "error": {
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
       "validation": "Girdiğiniz bilgileri kontrol edip tekrar deneyin."

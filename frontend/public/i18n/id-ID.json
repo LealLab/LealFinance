@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Pencadangan dan pemulihan",
+      "description": "Unduh salinan portabel data Anda atau ganti data saat ini dari cadangan.",
+      "export": {
+        "action": "Ekspor cadangan",
+        "title": "Ekspor cadangan",
+        "keyDescription": "Cadangan terenkripsi telah diunduh. Simpan kunci ini secara terpisah sebelum menutup.",
+        "recoveryKey": "Kunci pemulihan",
+        "copyKey": "Salin kunci",
+        "keyCopied": "Kunci pemulihan disalin.",
+        "keyWarning": "Kunci ini hanya ditampilkan sekali. Tanpanya, cadangan terenkripsi tidak dapat dipulihkan.",
+        "description": "Pilih apakah cadangan akan dilindungi dengan kunci pemulihan.",
+        "security": "Keamanan",
+        "plain": "JSON tanpa enkripsi",
+        "plainHint": "Mudah diperiksa, tetapi siapa pun yang memiliki file dapat membacanya.",
+        "encrypted": "Terenkripsi",
+        "encryptedHint": "Dilindungi dengan kunci pemulihan yang tidak pernah disimpan oleh LealFinance.",
+        "exporting": "Mengekspor…",
+        "download": "Unduh cadangan"
+      },
+      "restore": {
+        "security": "Keamanan",
+        "action": "Pulihkan cadangan",
+        "title": "Pulihkan cadangan",
+        "description": "Pilih cadangan JSON LealFinance untuk ditinjau sebelum mengganti data Anda.",
+        "file": "File cadangan",
+        "selected": "File yang dipilih: {{filename}}",
+        "recoveryKey": "Kunci pemulihan",
+        "previewTitle": "Pratinjau cadangan",
+        "sourceVersion": "Versi aplikasi sumber",
+        "exportedAt": "Waktu ekspor",
+        "records": "Catatan",
+        "replace": "Ganti data saya",
+        "preview": "Pratinjau cadangan"
+      },
+      "status": {
+        "exported": "Cadangan diunduh.",
+        "restored": "Cadangan dipulihkan."
+      },
+      "confirm": {
+        "title": "Ganti data Anda?",
+        "message": "Tindakan ini mengganti secara permanen data keuangan dalam cadangan dan preferensi yang didukung. Informasi masuk dan kredensial Anda tidak berubah. Lanjutkan?"
+      },
+      "entities": {
+        "institutions": "Lembaga keuangan",
+        "accounts": "Rekening",
+        "category_groups": "Grup kategori",
+        "categories": "Kategori",
+        "categorization_rules": "Aturan kategorisasi",
+        "budgets": "Anggaran",
+        "budget_allocations": "Alokasi anggaran",
+        "expected_income": "Pendapatan yang diharapkan",
+        "recurring_rules": "Aturan berulang",
+        "loans": "Pinjaman",
+        "goals": "Sasaran",
+        "manual_rates": "Kurs manual",
+        "transactions": "Transaksi",
+        "investment_wallets": "Dompet investasi",
+        "investment_assets": "Aset investasi",
+        "investment_transactions": "Transaksi investasi"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Pengaturan usang {{setting}} akan dilewati.",
+        "credentials_reconnect": "Kredensial tidak disertakan dalam cadangan. Hubungkan kembali layanan yang terpengaruh setelah pemulihan."
+      }
+    },
     "title": "Pengaturan",
     "description": "Tampilan, bahasa, dan preferensi data demo.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Ini bukan cadangan LealFinance yang valid.",
+      "invalid_file_type": "Pilih file cadangan JSON.",
+      "file_too_large": "Cadangan ini terlalu besar (batas 25 MB).",
+      "recovery_key_required": "Masukkan kunci pemulihan untuk cadangan terenkripsi ini.",
+      "recovery_key_invalid": "Kunci pemulihan salah atau cadangan terenkripsi telah diubah.",
+      "version_unsupported": "Format cadangan ini lebih baru daripada yang didukung versi LealFinance ini.",
+      "data_incompatible": "Cadangan ini berisi data keuangan yang tidak kompatibel atau rusak."
+    },
     "error": {
       "generic": "Terjadi kesalahan. Silakan coba lagi.",
       "validation": "Periksa informasi yang Anda masukkan dan coba lagi."

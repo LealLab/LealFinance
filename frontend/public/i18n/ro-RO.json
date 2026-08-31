@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Copiere de siguranță și restaurare",
+      "description": "Descarcă o copie portabilă a datelor sau înlocuiește datele curente dintr-o copie de siguranță.",
+      "export": {
+        "action": "Exportă copia",
+        "title": "Exportă copia de siguranță",
+        "keyDescription": "Copia criptată a fost descărcată. Salvează această cheie separat înainte de a închide.",
+        "recoveryKey": "Cheie de recuperare",
+        "copyKey": "Copiază cheia",
+        "keyCopied": "Cheia de recuperare a fost copiată.",
+        "keyWarning": "Această cheie este afișată o singură dată. Fără ea, copia criptată nu poate fi restaurată.",
+        "description": "Alege dacă protejezi copia cu o cheie de recuperare.",
+        "security": "Securitate",
+        "plain": "JSON necriptat",
+        "plainHint": "Ușor de verificat, dar oricine deține fișierul îl poate citi.",
+        "encrypted": "Criptată",
+        "encryptedHint": "Protejată printr-o cheie de recuperare pe care LealFinance nu o stochează niciodată.",
+        "exporting": "Se exportă…",
+        "download": "Descarcă copia"
+      },
+      "restore": {
+        "security": "Securitate",
+        "action": "Restaurează copia",
+        "title": "Restaurează copia de siguranță",
+        "description": "Alege o copie LealFinance în format JSON pentru a o verifica înainte de înlocuirea datelor.",
+        "file": "Fișier copie de siguranță",
+        "selected": "Fișier selectat: {{filename}}",
+        "recoveryKey": "Cheie de recuperare",
+        "previewTitle": "Previzualizarea copiei",
+        "sourceVersion": "Versiunea aplicației sursă",
+        "exportedAt": "Data exportului",
+        "records": "Înregistrări",
+        "replace": "Înlocuiește datele mele",
+        "preview": "Previzualizează copia"
+      },
+      "status": {
+        "exported": "Copia de siguranță a fost descărcată.",
+        "restored": "Copia de siguranță a fost restaurată."
+      },
+      "confirm": {
+        "title": "Înlocuiești datele?",
+        "message": "Această acțiune înlocuiește definitiv datele financiare din copie și preferințele acceptate. Datele de conectare și acreditările rămân neschimbate. Continui?"
+      },
+      "entities": {
+        "institutions": "Instituții",
+        "accounts": "Conturi",
+        "category_groups": "Grupuri de categorii",
+        "categories": "Categorii",
+        "categorization_rules": "Reguli de clasificare",
+        "budgets": "Bugete",
+        "budget_allocations": "Alocări bugetare",
+        "expected_income": "Venituri estimate",
+        "recurring_rules": "Reguli recurente",
+        "loans": "Împrumuturi",
+        "goals": "Obiective",
+        "manual_rates": "Cursuri de schimb manuale",
+        "transactions": "Tranzacții",
+        "investment_wallets": "Portofele de investiții",
+        "investment_assets": "Active de investiții",
+        "investment_transactions": "Tranzacții de investiții"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Setarea învechită {{setting}} va fi omisă.",
+        "credentials_reconnect": "Acreditările nu sunt incluse în copiile de siguranță. Reconectează serviciile afectate după restaurare."
+      }
+    },
     "title": "Setări",
     "description": "Preferințe pentru aspect, limbă și date demonstrative.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Aceasta nu este o copie de siguranță LealFinance validă.",
+      "invalid_file_type": "Alege un fișier de copie JSON.",
+      "file_too_large": "Copia este prea mare (limită de 25 MB).",
+      "recovery_key_required": "Introdu cheia de recuperare pentru această copie criptată.",
+      "recovery_key_invalid": "Cheia de recuperare este incorectă sau copia criptată a fost modificată.",
+      "version_unsupported": "Formatul acestei copii este mai nou decât cel acceptat de această versiune LealFinance.",
+      "data_incompatible": "Copia conține date financiare incompatibile sau corupte."
+    },
     "error": {
       "generic": "Ceva nu a funcționat. Încearcă din nou.",
       "validation": "Verifică informațiile introduse și încearcă din nou."

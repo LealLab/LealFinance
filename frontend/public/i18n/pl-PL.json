@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Kopia zapasowa i przywracanie",
+      "description": "Pobierz przenośną kopię swoich danych lub zastąp bieżące dane danymi z kopii zapasowej.",
+      "export": {
+        "action": "Eksportuj kopię",
+        "title": "Eksportuj kopię zapasową",
+        "keyDescription": "Zaszyfrowana kopia została pobrana. Przed zamknięciem zapisz ten klucz w osobnym miejscu.",
+        "recoveryKey": "Klucz odzyskiwania",
+        "copyKey": "Kopiuj klucz",
+        "keyCopied": "Skopiowano klucz odzyskiwania.",
+        "keyWarning": "Ten klucz jest wyświetlany tylko raz. Bez niego nie można przywrócić zaszyfrowanej kopii.",
+        "description": "Wybierz, czy zabezpieczyć kopię kluczem odzyskiwania.",
+        "security": "Zabezpieczenia",
+        "plain": "Niezaszyfrowany JSON",
+        "plainHint": "Łatwy do przejrzenia, ale każdy posiadacz pliku może go odczytać.",
+        "encrypted": "Zaszyfrowana",
+        "encryptedHint": "Chroniona kluczem odzyskiwania, którego LealFinance nigdy nie zapisuje.",
+        "exporting": "Eksportowanie…",
+        "download": "Pobierz kopię"
+      },
+      "restore": {
+        "security": "Zabezpieczenia",
+        "action": "Przywróć kopię",
+        "title": "Przywróć kopię zapasową",
+        "description": "Wybierz kopię LealFinance w formacie JSON, aby ją sprawdzić przed zastąpieniem danych.",
+        "file": "Plik kopii zapasowej",
+        "selected": "Wybrany plik: {{filename}}",
+        "recoveryKey": "Klucz odzyskiwania",
+        "previewTitle": "Podgląd kopii",
+        "sourceVersion": "Wersja aplikacji źródłowej",
+        "exportedAt": "Data eksportu",
+        "records": "Rekordy",
+        "replace": "Zastąp moje dane",
+        "preview": "Wyświetl podgląd"
+      },
+      "status": {
+        "exported": "Pobrano kopię zapasową.",
+        "restored": "Przywrócono kopię zapasową."
+      },
+      "confirm": {
+        "title": "Zastąpić Twoje dane?",
+        "message": "Spowoduje to trwałe zastąpienie danych finansowych z kopii oraz obsługiwanych preferencji. Dane logowania i poświadczenia pozostaną bez zmian. Kontynuować?"
+      },
+      "entities": {
+        "institutions": "Instytucje",
+        "accounts": "Konta",
+        "category_groups": "Grupy kategorii",
+        "categories": "Kategorie",
+        "categorization_rules": "Reguły kategoryzacji",
+        "budgets": "Budżety",
+        "budget_allocations": "Przydziały budżetu",
+        "expected_income": "Oczekiwane przychody",
+        "recurring_rules": "Reguły cykliczne",
+        "loans": "Pożyczki",
+        "goals": "Cele",
+        "manual_rates": "Ręczne kursy walut",
+        "transactions": "Transakcje",
+        "investment_wallets": "Portfele inwestycyjne",
+        "investment_assets": "Aktywa inwestycyjne",
+        "investment_transactions": "Transakcje inwestycyjne"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Przestarzałe ustawienie {{setting}} zostanie pominięte.",
+        "credentials_reconnect": "Poświadczenia nie są uwzględniane w kopiach. Po przywróceniu ponownie połącz odpowiednie usługi."
+      }
+    },
     "title": "Ustawienia",
     "description": "Preferencje wyglądu, języka i danych demonstracyjnych.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "To nie jest prawidłowa kopia zapasowa LealFinance.",
+      "invalid_file_type": "Wybierz plik kopii zapasowej JSON.",
+      "file_too_large": "Ta kopia jest za duża (limit 25 MB).",
+      "recovery_key_required": "Wpisz klucz odzyskiwania do tej zaszyfrowanej kopii.",
+      "recovery_key_invalid": "Klucz odzyskiwania jest nieprawidłowy albo zaszyfrowana kopia została zmieniona.",
+      "version_unsupported": "Format tej kopii jest nowszy niż obsługiwany przez tę wersję LealFinance.",
+      "data_incompatible": "Ta kopia zawiera niezgodne lub uszkodzone dane finansowe."
+    },
     "error": {
       "generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "validation": "Sprawdź wprowadzone dane i spróbuj ponownie."

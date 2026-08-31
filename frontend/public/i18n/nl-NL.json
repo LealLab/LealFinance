@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Back-up en herstel",
+      "description": "Download een overdraagbare kopie van je gegevens of vervang je huidige gegevens vanuit een back-up.",
+      "export": {
+        "action": "Back-up exporteren",
+        "title": "Back-up exporteren",
+        "keyDescription": "Je versleutelde back-up is gedownload. Bewaar deze sleutel apart voordat je dit venster sluit.",
+        "recoveryKey": "Herstelsleutel",
+        "copyKey": "Sleutel kopiëren",
+        "keyCopied": "Herstelsleutel gekopieerd.",
+        "keyWarning": "Deze sleutel wordt maar één keer getoond. Zonder de sleutel kan de versleutelde back-up niet worden hersteld.",
+        "description": "Kies of je de back-up met een herstelsleutel wilt beveiligen.",
+        "security": "Beveiliging",
+        "plain": "Onversleutelde JSON",
+        "plainHint": "Makkelijk te bekijken, maar iedereen met het bestand kan het lezen.",
+        "encrypted": "Versleuteld",
+        "encryptedHint": "Beveiligd met een herstelsleutel die LealFinance nooit opslaat.",
+        "exporting": "Exporteren…",
+        "download": "Back-up downloaden"
+      },
+      "restore": {
+        "security": "Beveiliging",
+        "action": "Back-up herstellen",
+        "title": "Back-up herstellen",
+        "description": "Kies een JSON-back-up van LealFinance om te controleren voordat je gegevens worden vervangen.",
+        "file": "Back-upbestand",
+        "selected": "Geselecteerd bestand: {{filename}}",
+        "recoveryKey": "Herstelsleutel",
+        "previewTitle": "Voorbeeld van back-up",
+        "sourceVersion": "Versie van bron-app",
+        "exportedAt": "Geëxporteerd op",
+        "records": "Records",
+        "replace": "Mijn gegevens vervangen",
+        "preview": "Back-up bekijken"
+      },
+      "status": {
+        "exported": "Back-up gedownload.",
+        "restored": "Back-up hersteld."
+      },
+      "confirm": {
+        "title": "Je gegevens vervangen?",
+        "message": "Hiermee worden je financiële gegevens uit de back-up en ondersteunde voorkeuren definitief vervangen. Je aanmelding en inloggegevens blijven ongewijzigd. Doorgaan?"
+      },
+      "entities": {
+        "institutions": "Financiële instellingen",
+        "accounts": "Rekeningen",
+        "category_groups": "Categoriegroepen",
+        "categories": "Categorieën",
+        "categorization_rules": "Categorisatieregels",
+        "budgets": "Budgetten",
+        "budget_allocations": "Budgettoewijzingen",
+        "expected_income": "Verwachte inkomsten",
+        "recurring_rules": "Terugkerende regels",
+        "loans": "Leningen",
+        "goals": "Doelen",
+        "manual_rates": "Handmatige wisselkoersen",
+        "transactions": "Transacties",
+        "investment_wallets": "Beleggingsportefeuilles",
+        "investment_assets": "Beleggingsactiva",
+        "investment_transactions": "Beleggingstransacties"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "De verouderde instelling {{setting}} wordt overgeslagen.",
+        "credentials_reconnect": "Inloggegevens worden niet in back-ups opgenomen. Koppel betrokken diensten na herstel opnieuw."
+      }
+    },
     "title": "Instellingen",
     "description": "Voorkeuren voor uiterlijk, taal en demogegevens.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Dit is geen geldige LealFinance-back-up.",
+      "invalid_file_type": "Kies een JSON-back-upbestand.",
+      "file_too_large": "Deze back-up is te groot (limiet van 25 MB).",
+      "recovery_key_required": "Voer de herstelsleutel voor deze versleutelde back-up in.",
+      "recovery_key_invalid": "De herstelsleutel is onjuist of de versleutelde back-up is gewijzigd.",
+      "version_unsupported": "De indeling van deze back-up is nieuwer dan deze versie van LealFinance ondersteunt.",
+      "data_incompatible": "Deze back-up bevat incompatibele of beschadigde financiële gegevens."
+    },
     "error": {
       "generic": "Er is iets misgegaan. Probeer het opnieuw.",
       "validation": "Controleer de gegevens en probeer het opnieuw."

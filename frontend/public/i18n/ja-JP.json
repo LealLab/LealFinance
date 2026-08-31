@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "バックアップと復元",
+      "description": "データの持ち運び可能なコピーをダウンロードするか、バックアップから現在のデータを置き換えます。",
+      "export": {
+        "action": "バックアップを書き出す",
+        "title": "バックアップの書き出し",
+        "keyDescription": "暗号化バックアップをダウンロードしました。閉じる前に、このキーを別の場所に保存してください。",
+        "recoveryKey": "復旧キー",
+        "copyKey": "キーをコピー",
+        "keyCopied": "復旧キーをコピーしました。",
+        "keyWarning": "このキーが表示されるのは一度だけです。キーがないと暗号化バックアップを復元できません。",
+        "description": "バックアップを復旧キーで保護するか選択します。",
+        "security": "セキュリティ",
+        "plain": "暗号化しない JSON",
+        "plainHint": "内容を簡単に確認できますが、ファイルを持つ人なら誰でも読み取れます。",
+        "encrypted": "暗号化",
+        "encryptedHint": "LealFinance が保存しない復旧キーで保護します。",
+        "exporting": "書き出し中…",
+        "download": "バックアップをダウンロード"
+      },
+      "restore": {
+        "security": "セキュリティ",
+        "action": "バックアップを復元",
+        "title": "バックアップの復元",
+        "description": "データを置き換える前に確認する LealFinance の JSON バックアップを選択してください。",
+        "file": "バックアップファイル",
+        "selected": "選択したファイル：{{filename}}",
+        "recoveryKey": "復旧キー",
+        "previewTitle": "バックアップのプレビュー",
+        "sourceVersion": "作成元アプリのバージョン",
+        "exportedAt": "書き出し日時",
+        "records": "レコード",
+        "replace": "データを置き換える",
+        "preview": "バックアップを確認"
+      },
+      "status": {
+        "exported": "バックアップをダウンロードしました。",
+        "restored": "バックアップを復元しました。"
+      },
+      "confirm": {
+        "title": "データを置き換えますか？",
+        "message": "バックアップ対象の財務データと対応する設定が完全に置き換えられます。サインイン情報と認証情報は変更されません。続行しますか？"
+      },
+      "entities": {
+        "institutions": "金融機関",
+        "accounts": "口座",
+        "category_groups": "カテゴリーグループ",
+        "categories": "カテゴリー",
+        "categorization_rules": "分類ルール",
+        "budgets": "予算",
+        "budget_allocations": "予算配分",
+        "expected_income": "収入見込み",
+        "recurring_rules": "定期ルール",
+        "loans": "ローン",
+        "goals": "目標",
+        "manual_rates": "手動為替レート",
+        "transactions": "取引",
+        "investment_wallets": "投資ウォレット",
+        "investment_assets": "投資資産",
+        "investment_transactions": "投資取引"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "廃止された設定 {{setting}} はスキップされます。",
+        "credentials_reconnect": "認証情報はバックアップに含まれません。復元後、影響を受けるサービスに再接続してください。"
+      }
+    },
     "title": "設定",
     "description": "外観、言語、デモデータの設定。",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "有効な LealFinance バックアップではありません。",
+      "invalid_file_type": "JSON バックアップファイルを選択してください。",
+      "file_too_large": "バックアップが大きすぎます（上限 25 MB）。",
+      "recovery_key_required": "この暗号化バックアップの復旧キーを入力してください。",
+      "recovery_key_invalid": "復旧キーが正しくないか、暗号化バックアップが変更されています。",
+      "version_unsupported": "このバックアップ形式は、このバージョンの LealFinance が対応する形式より新しいものです。",
+      "data_incompatible": "バックアップに互換性のない、または破損した財務データが含まれています。"
+    },
     "error": {
       "generic": "問題が発生しました。もう一度お試しください。",
       "validation": "入力内容をご確認のうえ、もう一度お試しください。"

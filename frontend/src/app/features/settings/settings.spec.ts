@@ -3,10 +3,14 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { BehaviorSubject } from 'rxjs';
+import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { BehaviorSubject, of } from 'rxjs';
+import { BackupService } from '../../core/backup.service';
+import { ConfirmService } from '../../core/confirm.service';
 import { User } from '../../core/identity.models';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MetadataService } from '../../core/metadata.service';
+import { PreferenceService } from '../../core/preference.service';
 import { SessionService } from '../../core/session.service';
 import { Settings } from './settings';
 import ptBR from '../../../../public/i18n/pt-BR.json';
@@ -14,10 +18,16 @@ import ptBR from '../../../../public/i18n/pt-BR.json';
 describe('Settings', () => {
   let fragment: BehaviorSubject<string | null>;
   let sessionUser: WritableSignal<User | undefined>;
+  let backupService: {
+    export: ReturnType<typeof vi.fn>;
+    preview: ReturnType<typeof vi.fn>;
+    restore: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(async () => {
     fragment = new BehaviorSubject<string | null>(null);
     sessionUser = signal<User | undefined>(undefined);
+    backupService = { export: vi.fn(), preview: vi.fn(), restore: vi.fn() };
     await TestBed.configureTestingModule({
       imports: [
         Settings,
@@ -28,12 +38,14 @@ describe('Settings', () => {
       ],
       providers: [
         provideZonelessChangeDetection(),
+        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
         provideRouter([]),
         {
           provide: ActivatedRoute,
           useValue: { fragment: fragment.asObservable(), snapshot: { fragment: null } },
         },
         { provide: SessionService, useValue: { user: sessionUser.asReadonly() } },
+        { provide: BackupService, useValue: backupService },
       ],
     }).compileComponents();
     TestBed.inject(MetadataService).currencies.set([
@@ -41,6 +53,8 @@ describe('Settings', () => {
       { code: 'USD', name: 'US Dollar', symbol: '$', decimalDigits: 2, isActive: true },
     ]);
   });
+
+  afterEach(() => vi.restoreAllMocks());
 
   it('shows provider management to enabled admins', () => {
     sessionUser.set({
@@ -134,6 +148,8 @@ describe('Settings', () => {
   it.each([
     ['settings-language', 'settings-language'],
     ['settings-display-currency', 'settings-display-currency'],
+    ['settings-backup-export', 'settings-backup-export'],
+    ['settings-backup-restore', 'settings-backup-restore'],
   ])('focuses the %s control when its route fragment becomes active', (routeFragment, id) => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
@@ -142,5 +158,115 @@ describe('Settings', () => {
     fixture.detectChanges();
 
     expect(document.activeElement).toBe(fixture.nativeElement.querySelector(`#${id}`));
+  });
+
+  it('downloads an encrypted export and forgets its one-time key when closed', () => {
+    backupService.export.mockReturnValue(
+      of({
+        filename: 'backup.json',
+        archive: { format: 'lealfinance.backup', encrypted: true },
+        recoveryKey: 'one-time-key',
+      }),
+    );
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      value: vi.fn(() => 'blob:backup'),
+    });
+    Object.defineProperty(URL, 'revokeObjectURL', {
+      configurable: true,
+      value: vi.fn(),
+    });
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => undefined);
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    fixture.componentInstance['openExport']();
+    fixture.componentInstance['exportEncrypted'].set(true);
+    fixture.componentInstance['exportBackup']();
+    fixture.detectChanges();
+
+    expect(backupService.export).toHaveBeenCalledWith(true);
+    expect(fixture.componentInstance['recoveryKey']()).toBe('one-time-key');
+    expect(URL.createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
+    expect(fixture.nativeElement.querySelector('#backup-recovery-key').value).toBe('one-time-key');
+    expect(fixture.componentInstance['backupStatus']()).toBe('exported');
+
+    fixture.componentInstance['setExportOpen'](false);
+    expect(fixture.componentInstance['recoveryKey']()).toBeUndefined();
+  });
+
+  it('validates restore files, previews encrypted archives, confirms, and refreshes preferences', async () => {
+    const archive = { format: 'lealfinance.backup', encrypted: true };
+    const preview = {
+      sourceAppVersion: '0.2.0',
+      exportedAt: '2026-08-31T12:00:00Z',
+      encrypted: true,
+      counts: { accounts: 1 },
+      warnings: [{ code: 'credentials_reconnect', params: {} }],
+    };
+    backupService.preview.mockReturnValue(of(preview));
+    backupService.restore.mockReturnValue(of({ counts: { accounts: 1 }, warnings: [] }));
+    const preferences = TestBed.inject(PreferenceService);
+    const hydrate = vi.spyOn(preferences, 'hydrate').mockReturnValue(
+      of({
+        locale: 'pt-BR',
+        theme: 'light',
+        baseCurrency: 'BRL',
+        displayCurrency: 'BRL',
+        investmentsEnabled: false,
+        balancesHidden: false,
+      }),
+    );
+    vi.spyOn(TestBed.inject(ConfirmService), 'confirm').mockResolvedValue(true);
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+    fixture.componentInstance['openRestore']();
+    fixture.detectChanges();
+
+    const input = {
+      files: [
+        {
+          name: 'backup.json',
+          size: 128,
+          text: () => Promise.resolve(JSON.stringify(archive)),
+        },
+      ],
+      value: 'backup.json',
+    } as unknown as HTMLInputElement;
+    await fixture.componentInstance['onRestoreFile']({ target: input } as unknown as Event);
+    fixture.componentInstance['restoreRecoveryKey'].set(' key ');
+    fixture.componentInstance['previewBackup']();
+    fixture.detectChanges();
+
+    expect(backupService.preview).toHaveBeenCalledWith(archive, 'key');
+    expect(fixture.nativeElement.textContent).toContain('0.2.0');
+    expect(fixture.nativeElement.querySelector('time').textContent.trim()).not.toBe(
+      '2026-08-31T12:00:00Z',
+    );
+    expect(fixture.nativeElement.querySelector('#restore-recovery-key')).not.toBeNull();
+
+    await fixture.componentInstance['replaceFromBackup']();
+    expect(backupService.restore).toHaveBeenCalledWith(archive, 'key');
+    expect(hydrate).toHaveBeenCalled();
+    expect(fixture.componentInstance['restoreArchive']()).toBeUndefined();
+    expect(fixture.componentInstance['backupStatus']()).toBe('restored');
+  });
+
+  it('rejects non-JSON and oversized restore files before reading them', async () => {
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+    const file = (name: string, size: number) =>
+      ({
+        target: {
+          files: [{ name, size, text: vi.fn(() => Promise.resolve('{}')) }],
+          value: name,
+        },
+      }) as unknown as Event;
+
+    await fixture.componentInstance['onRestoreFile'](file('backup.txt', 1));
+    expect(fixture.componentInstance['restoreErrorCode']()).toBe('backup.invalid_file_type');
+
+    await fixture.componentInstance['onRestoreFile'](file('backup.json', 25 * 1024 * 1024 + 1));
+    expect(fixture.componentInstance['restoreErrorCode']()).toBe('backup.file_too_large');
   });
 });

@@ -1,5 +1,5 @@
 <div *transloco="let t">
-  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) t(settings.investments.marketData.title, settings.investments.marketData.description, settings.investments.marketData.twelveData, settings.investments.marketData.brapi, settings.investments.marketData.configured, settings.investments.marketData.notConfigured, settings.investments.marketData.placeholder, settings.investments.marketData.save, settings.investments.marketData.clear, settings.investments.marketData.saveError) -->
+  <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) t(settings.investments.marketData.title, settings.investments.marketData.description, settings.investments.marketData.twelveData, settings.investments.marketData.brapi, settings.investments.marketData.configured, settings.investments.marketData.notConfigured, settings.investments.marketData.placeholder, settings.investments.marketData.save, settings.investments.marketData.clear, settings.investments.marketData.saveError) t(errors.backup.invalid_archive, errors.backup.invalid_file_type, errors.backup.file_too_large, errors.backup.recovery_key_required, errors.backup.recovery_key_invalid, errors.backup.version_unsupported, errors.backup.data_incompatible) t(settings.backup.restore.security, settings.backup.entities.institutions, settings.backup.entities.accounts, settings.backup.entities.category_groups, settings.backup.entities.categories, settings.backup.entities.categorization_rules, settings.backup.entities.budgets, settings.backup.entities.budget_allocations, settings.backup.entities.expected_income, settings.backup.entities.recurring_rules, settings.backup.entities.loans, settings.backup.entities.goals, settings.backup.entities.manual_rates, settings.backup.entities.transactions, settings.backup.entities.investment_wallets, settings.backup.entities.investment_assets, settings.backup.entities.investment_transactions, settings.backup.warnings.obsolete_setting_skipped, settings.backup.warnings.credentials_reconnect, settings.backup.status.exported, settings.backup.status.restored) -->
   <app-page-header [title]="t('settings.title')" [description]="t('settings.description')" />
 
   <div class="flex max-w-2xl flex-col gap-6">
@@ -84,10 +84,48 @@
     </app-card>
 
     <app-card>
+      <h2 class="mb-1 text-sm font-semibold text-content-primary">
+        {{ t('settings.backup.title') }}
+      </h2>
+      <p class="mb-4 text-sm text-content-muted">{{ t('settings.backup.description') }}</p>
+      <div #backupActions class="flex flex-col gap-2 sm:flex-row">
+        <button
+          id="settings-backup-export"
+          appButton
+          type="button"
+          variant="primary"
+          (click)="openExport()"
+        >
+          <app-icon name="arrowDownLeft" [size]="16" />
+          {{ t('settings.backup.export.action') }}
+        </button>
+        <button
+          id="settings-backup-restore"
+          appButton
+          type="button"
+          variant="secondary"
+          (click)="openRestore()"
+        >
+          <app-icon name="refresh" [size]="16" />
+          {{ t('settings.backup.restore.action') }}
+        </button>
+      </div>
+      @if (backupStatus(); as status) {
+        <p class="mt-3 text-sm text-positive" role="status">
+          {{ t('settings.backup.status.' + status) }}
+        </p>
+      }
+    </app-card>
+
+    <app-card>
       <div class="flex items-start justify-between gap-4">
         <div>
-          <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.investments.title') }}</h2>
-          <p class="max-w-md text-sm text-content-muted">{{ t('settings.investments.description') }}</p>
+          <h2 class="mb-1 text-sm font-semibold text-content-primary">
+            {{ t('settings.investments.title') }}
+          </h2>
+          <p class="max-w-md text-sm text-content-muted">
+            {{ t('settings.investments.description') }}
+          </p>
         </div>
         <label class="flex shrink-0 items-center gap-2 text-sm text-content-muted">
           <input
@@ -208,4 +246,232 @@
       </div>
     </app-card>
   </div>
+
+  @if (exportOpen()) {
+    <app-modal
+      [open]="exportOpen()"
+      (openChange)="setExportOpen($event)"
+      [titleText]="t('settings.backup.export.title')"
+    >
+      @if (recoveryKey(); as key) {
+        <p class="mb-3 text-sm text-content-primary">
+          {{ t('settings.backup.export.keyDescription') }}
+        </p>
+        <label class="form-label" for="backup-recovery-key">
+          {{ t('settings.backup.export.recoveryKey') }}
+        </label>
+        <div class="flex flex-col gap-2 sm:flex-row">
+          <input
+            #recoveryKeyInput
+            id="backup-recovery-key"
+            class="form-input min-w-0 flex-1 font-mono text-xs"
+            dir="ltr"
+            readonly
+            [value]="key"
+            (focus)="recoveryKeyInput.select()"
+          />
+          <button
+            appButton
+            type="button"
+            variant="secondary"
+            (click)="copyRecoveryKey(recoveryKeyInput)"
+          >
+            {{ t('settings.backup.export.copyKey') }}
+          </button>
+        </div>
+        @if (recoveryKeyCopied()) {
+          <p class="mt-2 text-sm text-positive" role="status">
+            {{ t('settings.backup.export.keyCopied') }}
+          </p>
+        }
+        <p class="mt-3 text-sm font-medium text-negative" role="alert">
+          {{ t('settings.backup.export.keyWarning') }}
+        </p>
+        <div class="mt-4 flex justify-end">
+          <button appButton type="button" variant="primary" (click)="setExportOpen(false)">
+            {{ t('common.actions.close') }}
+          </button>
+        </div>
+      } @else {
+        <p class="mb-4 text-sm text-content-primary">
+          {{ t('settings.backup.export.description') }}
+        </p>
+        <fieldset class="flex flex-col gap-3">
+          <legend class="form-label">{{ t('settings.backup.export.security') }}</legend>
+          <label class="flex items-start gap-2 text-sm text-content-primary">
+            <input
+              type="radio"
+              name="backup-security"
+              [checked]="!exportEncrypted()"
+              [disabled]="exportLoading()"
+              (change)="exportEncrypted.set(false)"
+            />
+            <span>
+              <span class="block font-medium">{{ t('settings.backup.export.plain') }}</span>
+              <span class="text-content-muted">{{ t('settings.backup.export.plainHint') }}</span>
+            </span>
+          </label>
+          <label class="flex items-start gap-2 text-sm text-content-primary">
+            <input
+              type="radio"
+              name="backup-security"
+              [checked]="exportEncrypted()"
+              [disabled]="exportLoading()"
+              (change)="exportEncrypted.set(true)"
+            />
+            <span>
+              <span class="block font-medium">{{ t('settings.backup.export.encrypted') }}</span>
+              <span class="text-content-muted">{{
+                t('settings.backup.export.encryptedHint')
+              }}</span>
+            </span>
+          </label>
+        </fieldset>
+        @if (exportErrorCode(); as code) {
+          <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+        }
+        <div class="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <button appButton type="button" variant="secondary" (click)="setExportOpen(false)">
+            {{ t('common.actions.cancel') }}
+          </button>
+          <button
+            appButton
+            type="button"
+            variant="primary"
+            [disabled]="exportLoading()"
+            (click)="exportBackup()"
+          >
+            {{
+              exportLoading()
+                ? t('settings.backup.export.exporting')
+                : t('settings.backup.export.download')
+            }}
+          </button>
+        </div>
+      }
+    </app-modal>
+  }
+
+  @if (restoreOpen()) {
+    <app-modal
+      [open]="restoreOpen()"
+      (openChange)="setRestoreOpen($event)"
+      [titleText]="t('settings.backup.restore.title')"
+    >
+      <p class="mb-4 text-sm text-content-primary">
+        {{ t('settings.backup.restore.description') }}
+      </p>
+      <label class="form-label" for="backup-file">{{ t('settings.backup.restore.file') }}</label>
+      <input
+        id="backup-file"
+        class="form-input"
+        type="file"
+        accept="application/json,.json"
+        [disabled]="restoreLoading()"
+        (change)="onRestoreFile($event)"
+      />
+      @if (restoreFilename(); as filename) {
+        <p class="mt-2 text-sm text-content-muted" role="status">
+          {{ t('settings.backup.restore.selected', { filename }) }}
+        </p>
+      }
+
+      @if (restoreEncrypted()) {
+        <label class="form-label mt-4" for="restore-recovery-key">
+          {{ t('settings.backup.restore.recoveryKey') }}
+        </label>
+        <input
+          id="restore-recovery-key"
+          class="form-input font-mono"
+          dir="ltr"
+          type="text"
+          autocomplete="off"
+          [value]="restoreRecoveryKey()"
+          [disabled]="restoreLoading()"
+          (input)="restoreRecoveryKey.set($any($event.target).value)"
+        />
+      }
+
+      @if (restoreErrorCode(); as code) {
+        <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+      }
+
+      @if (restorePreview(); as preview) {
+        <section class="mt-4 rounded-md border border-border bg-surface-sunken p-3">
+          <h3 class="text-sm font-semibold text-content-primary">
+            {{ t('settings.backup.restore.previewTitle') }}
+          </h3>
+          <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+            <dt class="text-content-muted">{{ t('settings.backup.restore.sourceVersion') }}</dt>
+            <dd class="text-content-primary">{{ preview.sourceAppVersion }}</dd>
+            <dt class="text-content-muted">{{ t('settings.backup.restore.exportedAt') }}</dt>
+            <dd class="min-w-0 break-words text-content-primary">
+              <time [attr.datetime]="preview.exportedAt">{{ formatExportedAt(preview.exportedAt) }}</time>
+            </dd>
+            <dt class="text-content-muted">{{ t('settings.backup.restore.security') }}</dt>
+            <dd class="text-content-primary">
+              {{
+                preview.encrypted
+                  ? t('settings.backup.export.encrypted')
+                  : t('settings.backup.export.plain')
+              }}
+            </dd>
+          </dl>
+          <h4 class="mt-3 text-sm font-medium text-content-primary">
+            {{ t('settings.backup.restore.records') }}
+          </h4>
+          <ul class="mt-1 grid grid-cols-1 gap-x-4 text-sm sm:grid-cols-2">
+            @for (entry of countEntries(preview); track entry[0]) {
+              <li class="flex justify-between gap-2">
+                <span class="text-content-muted">{{
+                  t('settings.backup.entities.' + entry[0])
+                }}</span>
+                <span class="font-medium text-content-primary">{{ entry[1] }}</span>
+              </li>
+            }
+          </ul>
+          @if (preview.warnings.length) {
+            <div class="mt-3 rounded-md border border-warning/30 bg-warning/10 p-2" role="status">
+              @for (warning of preview.warnings; track warning.code) {
+                <p class="text-sm text-content-primary">
+                  {{ t('settings.backup.warnings.' + warning.code, warning.params) }}
+                </p>
+              }
+            </div>
+          }
+        </section>
+      }
+
+      <div class="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <button appButton type="button" variant="secondary" (click)="setRestoreOpen(false)">
+          {{ t('common.actions.cancel') }}
+        </button>
+        @if (restorePreview()) {
+          <button
+            appButton
+            type="button"
+            variant="danger"
+            [disabled]="restoreLoading()"
+            (click)="replaceFromBackup()"
+          >
+            {{ t('settings.backup.restore.replace') }}
+          </button>
+        } @else {
+          <button
+            appButton
+            type="button"
+            variant="primary"
+            [disabled]="
+              !restoreArchive() ||
+              (restoreEncrypted() && !restoreRecoveryKey().trim()) ||
+              restoreLoading()
+            "
+            (click)="previewBackup()"
+          >
+            {{ t('settings.backup.restore.preview') }}
+          </button>
+        }
+      </div>
+    </app-modal>
+  }
 </div>

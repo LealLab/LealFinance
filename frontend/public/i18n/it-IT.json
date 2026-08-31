@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Backup e ripristino",
+      "description": "Scarica una copia portatile dei tuoi dati o sostituisci i dati attuali da un backup.",
+      "export": {
+        "action": "Esporta backup",
+        "title": "Esporta backup",
+        "keyDescription": "Il backup crittografato è stato scaricato. Conserva questa chiave separatamente prima di chiudere.",
+        "recoveryKey": "Chiave di recupero",
+        "copyKey": "Copia chiave",
+        "keyCopied": "Chiave di recupero copiata.",
+        "keyWarning": "Questa chiave viene mostrata una sola volta. Senza di essa non sarà possibile ripristinare il backup crittografato.",
+        "description": "Scegli se proteggere il backup con una chiave di recupero.",
+        "security": "Sicurezza",
+        "plain": "JSON non crittografato",
+        "plainHint": "Facile da consultare, ma chiunque abbia il file può leggerlo.",
+        "encrypted": "Crittografato",
+        "encryptedHint": "Protetto da una chiave di recupero che LealFinance non memorizza mai.",
+        "exporting": "Esportazione…",
+        "download": "Scarica backup"
+      },
+      "restore": {
+        "security": "Sicurezza",
+        "action": "Ripristina backup",
+        "title": "Ripristina backup",
+        "description": "Scegli un backup JSON di LealFinance da controllare prima di sostituire i tuoi dati.",
+        "file": "File di backup",
+        "selected": "File selezionato: {{filename}}",
+        "recoveryKey": "Chiave di recupero",
+        "previewTitle": "Anteprima del backup",
+        "sourceVersion": "Versione dell’app di origine",
+        "exportedAt": "Data di esportazione",
+        "records": "Record",
+        "replace": "Sostituisci i miei dati",
+        "preview": "Mostra anteprima"
+      },
+      "status": {
+        "exported": "Backup scaricato.",
+        "restored": "Backup ripristinato."
+      },
+      "confirm": {
+        "title": "Sostituire i tuoi dati?",
+        "message": "Questa operazione sostituisce definitivamente i dati finanziari inclusi nel backup e le preferenze supportate. Accesso e credenziali restano invariati. Continuare?"
+      },
+      "entities": {
+        "institutions": "Istituti",
+        "accounts": "Conti",
+        "category_groups": "Gruppi di categorie",
+        "categories": "Categorie",
+        "categorization_rules": "Regole di categorizzazione",
+        "budgets": "Budget",
+        "budget_allocations": "Allocazioni di budget",
+        "expected_income": "Entrate previste",
+        "recurring_rules": "Regole ricorrenti",
+        "loans": "Prestiti",
+        "goals": "Obiettivi",
+        "manual_rates": "Tassi di cambio manuali",
+        "transactions": "Transazioni",
+        "investment_wallets": "Portafogli di investimento",
+        "investment_assets": "Asset di investimento",
+        "investment_transactions": "Transazioni di investimento"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "L’impostazione obsoleta {{setting}} verrà ignorata.",
+        "credentials_reconnect": "Le credenziali non sono incluse nei backup. Ricollega i servizi interessati dopo il ripristino."
+      }
+    },
     "title": "Impostazioni",
     "description": "Preferenze di aspetto, lingua e dati demo.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Questo non è un backup LealFinance valido.",
+      "invalid_file_type": "Scegli un file di backup JSON.",
+      "file_too_large": "Il backup è troppo grande (limite di 25 MB).",
+      "recovery_key_required": "Inserisci la chiave di recupero per questo backup crittografato.",
+      "recovery_key_invalid": "La chiave di recupero non è corretta oppure il backup crittografato è stato modificato.",
+      "version_unsupported": "Il formato di questo backup è più recente di quelli supportati da questa versione di LealFinance.",
+      "data_incompatible": "Questo backup contiene dati finanziari incompatibili o danneggiati."
+    },
     "error": {
       "generic": "Qualcosa è andato storto. Riprova.",
       "validation": "Controlla i dati inseriti e riprova."

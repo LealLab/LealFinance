@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Backup e restauração",
+      "description": "Baixe uma cópia portátil dos seus dados ou substitua os dados atuais por um backup.",
+      "export": {
+        "action": "Exportar backup",
+        "title": "Exportar backup",
+        "keyDescription": "Seu backup criptografado foi baixado. Guarde esta chave separadamente antes de fechar.",
+        "recoveryKey": "Chave de recuperação",
+        "copyKey": "Copiar chave",
+        "keyCopied": "Chave de recuperação copiada.",
+        "keyWarning": "Esta chave é exibida apenas uma vez. Sem ela, o backup criptografado não poderá ser restaurado.",
+        "description": "Escolha se deseja proteger o backup com uma chave de recuperação.",
+        "security": "Segurança",
+        "plain": "JSON sem criptografia",
+        "plainHint": "Fácil de inspecionar, mas qualquer pessoa com o arquivo poderá lê-lo.",
+        "encrypted": "Criptografado",
+        "encryptedHint": "Protegido por uma chave de recuperação que nunca é armazenada pelo LealFinance.",
+        "exporting": "Exportando…",
+        "download": "Baixar backup"
+      },
+      "restore": {
+        "security": "Segurança",
+        "action": "Restaurar backup",
+        "title": "Restaurar backup",
+        "description": "Escolha um backup JSON do LealFinance para conferir antes de substituir seus dados.",
+        "file": "Arquivo de backup",
+        "selected": "Arquivo selecionado: {{filename}}",
+        "recoveryKey": "Chave de recuperação",
+        "previewTitle": "Prévia do backup",
+        "sourceVersion": "Versão do aplicativo de origem",
+        "exportedAt": "Exportado em",
+        "records": "Registros",
+        "replace": "Substituir meus dados",
+        "preview": "Conferir backup"
+      },
+      "status": {
+        "exported": "Backup baixado.",
+        "restored": "Backup restaurado."
+      },
+      "confirm": {
+        "title": "Substituir seus dados?",
+        "message": "Isso substituirá permanentemente os dados financeiros incluídos no backup e as preferências compatíveis. Seu acesso e suas credenciais permanecerão inalterados. Deseja continuar?"
+      },
+      "entities": {
+        "institutions": "Instituições",
+        "accounts": "Contas",
+        "category_groups": "Grupos de categorias",
+        "categories": "Categorias",
+        "categorization_rules": "Regras de categorização",
+        "budgets": "Orçamentos",
+        "budget_allocations": "Alocações de orçamento",
+        "expected_income": "Renda esperada",
+        "recurring_rules": "Regras recorrentes",
+        "loans": "Empréstimos",
+        "goals": "Metas",
+        "manual_rates": "Taxas de câmbio manuais",
+        "transactions": "Transações",
+        "investment_wallets": "Carteiras de investimentos",
+        "investment_assets": "Ativos de investimento",
+        "investment_transactions": "Transações de investimento"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "A configuração obsoleta {{setting}} será ignorada.",
+        "credentials_reconnect": "As credenciais não são incluídas nos backups. Reconecte os serviços afetados após a restauração."
+      }
+    },
     "title": "Configurações",
     "description": "Preferências de aparência, idioma e dados de demonstração.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Este não é um backup válido do LealFinance.",
+      "invalid_file_type": "Escolha um arquivo de backup JSON.",
+      "file_too_large": "Este backup é grande demais (limite de 25 MB).",
+      "recovery_key_required": "Informe a chave de recuperação deste backup criptografado.",
+      "recovery_key_invalid": "A chave de recuperação está incorreta ou o backup criptografado foi alterado.",
+      "version_unsupported": "O formato deste backup é mais recente do que o compatível com esta versão do LealFinance.",
+      "data_incompatible": "Este backup contém dados financeiros incompatíveis ou corrompidos."
+    },
     "error": {
       "generic": "Algo deu errado. Tente novamente.",
       "validation": "Verifique as informações e tente novamente."

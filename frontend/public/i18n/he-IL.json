@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "גיבוי ושחזור",
+      "description": "הורדת עותק נייד של הנתונים או החלפת הנתונים הנוכחיים מתוך גיבוי.",
+      "export": {
+        "action": "ייצוא גיבוי",
+        "title": "ייצוא גיבוי",
+        "keyDescription": "הגיבוי המוצפן הורד. יש לשמור את המפתח הזה בנפרד לפני הסגירה.",
+        "recoveryKey": "מפתח שחזור",
+        "copyKey": "העתקת המפתח",
+        "keyCopied": "מפתח השחזור הועתק.",
+        "keyWarning": "המפתח מוצג פעם אחת בלבד. בלעדיו אי אפשר לשחזר את הגיבוי המוצפן.",
+        "description": "בחרו אם להגן על הגיבוי באמצעות מפתח שחזור.",
+        "security": "אבטחה",
+        "plain": "JSON לא מוצפן",
+        "plainHint": "קל לבדיקה, אך כל מי שהקובץ ברשותו יוכל לקרוא אותו.",
+        "encrypted": "מוצפן",
+        "encryptedHint": "מוגן במפתח שחזור ש-LealFinance לעולם לא שומר.",
+        "exporting": "מתבצע ייצוא…",
+        "download": "הורדת הגיבוי"
+      },
+      "restore": {
+        "security": "אבטחה",
+        "action": "שחזור גיבוי",
+        "title": "שחזור גיבוי",
+        "description": "בחרו גיבוי JSON של LealFinance כדי לבדוק אותו לפני החלפת הנתונים.",
+        "file": "קובץ גיבוי",
+        "selected": "הקובץ שנבחר: {{filename}}",
+        "recoveryKey": "מפתח שחזור",
+        "previewTitle": "תצוגה מקדימה של הגיבוי",
+        "sourceVersion": "גרסת יישום המקור",
+        "exportedAt": "מועד הייצוא",
+        "records": "רשומות",
+        "replace": "החלפת הנתונים שלי",
+        "preview": "תצוגה מקדימה"
+      },
+      "status": {
+        "exported": "הגיבוי הורד.",
+        "restored": "הגיבוי שוחזר."
+      },
+      "confirm": {
+        "title": "להחליף את הנתונים?",
+        "message": "פעולה זו תחליף לצמיתות את הנתונים הפיננסיים שבגיבוי ואת ההעדפות הנתמכות. פרטי הכניסה ופרטי הגישה יישארו ללא שינוי. להמשיך?"
+      },
+      "entities": {
+        "institutions": "מוסדות פיננסיים",
+        "accounts": "חשבונות",
+        "category_groups": "קבוצות קטגוריות",
+        "categories": "קטגוריות",
+        "categorization_rules": "כללי סיווג",
+        "budgets": "תקציבים",
+        "budget_allocations": "הקצאות תקציב",
+        "expected_income": "הכנסה צפויה",
+        "recurring_rules": "כללים מחזוריים",
+        "loans": "הלוואות",
+        "goals": "יעדים",
+        "manual_rates": "שערי חליפין ידניים",
+        "transactions": "תנועות",
+        "investment_wallets": "תיקי השקעות",
+        "investment_assets": "נכסי השקעה",
+        "investment_transactions": "תנועות השקעה"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "ההגדרה המיושנת {{setting}} תדולג.",
+        "credentials_reconnect": "פרטי גישה אינם נכללים בגיבויים. לאחר השחזור יש לחבר מחדש את השירותים שהושפעו."
+      }
+    },
     "title": "הגדרות",
     "description": "העדפות מראה, שפה ונתוני הדגמה.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "זה אינו גיבוי LealFinance תקין.",
+      "invalid_file_type": "יש לבחור קובץ גיבוי JSON.",
+      "file_too_large": "הגיבוי גדול מדי (מגבלה של 25 MB).",
+      "recovery_key_required": "יש להזין את מפתח השחזור של הגיבוי המוצפן.",
+      "recovery_key_invalid": "מפתח השחזור שגוי או שהגיבוי המוצפן שונה.",
+      "version_unsupported": "תבנית הגיבוי חדשה יותר מזו שנתמכת בגרסה זו של LealFinance.",
+      "data_incompatible": "הגיבוי מכיל נתונים פיננסיים לא תואמים או פגומים."
+    },
     "error": {
       "generic": "משהו השתבש. נסו שוב.",
       "validation": "בדקו את הפרטים שהזנתם ונסו שוב."

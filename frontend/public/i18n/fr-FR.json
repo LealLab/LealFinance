@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Sauvegarde et restauration",
+      "description": "Téléchargez une copie portable de vos données ou remplacez vos données actuelles à partir d’une sauvegarde.",
+      "export": {
+        "action": "Exporter la sauvegarde",
+        "title": "Exporter une sauvegarde",
+        "keyDescription": "Votre sauvegarde chiffrée a été téléchargée. Conservez cette clé séparément avant de fermer.",
+        "recoveryKey": "Clé de récupération",
+        "copyKey": "Copier la clé",
+        "keyCopied": "Clé de récupération copiée.",
+        "keyWarning": "Cette clé n’est affichée qu’une seule fois. Sans elle, la sauvegarde chiffrée ne pourra pas être restaurée.",
+        "description": "Choisissez si la sauvegarde doit être protégée par une clé de récupération.",
+        "security": "Sécurité",
+        "plain": "JSON non chiffré",
+        "plainHint": "Facile à consulter, mais toute personne disposant du fichier peut le lire.",
+        "encrypted": "Chiffrée",
+        "encryptedHint": "Protégée par une clé de récupération que LealFinance ne conserve jamais.",
+        "exporting": "Exportation…",
+        "download": "Télécharger la sauvegarde"
+      },
+      "restore": {
+        "security": "Sécurité",
+        "action": "Restaurer la sauvegarde",
+        "title": "Restaurer une sauvegarde",
+        "description": "Choisissez une sauvegarde JSON LealFinance à vérifier avant de remplacer vos données.",
+        "file": "Fichier de sauvegarde",
+        "selected": "Fichier sélectionné : {{filename}}",
+        "recoveryKey": "Clé de récupération",
+        "previewTitle": "Aperçu de la sauvegarde",
+        "sourceVersion": "Version de l’application source",
+        "exportedAt": "Date d’exportation",
+        "records": "Enregistrements",
+        "replace": "Remplacer mes données",
+        "preview": "Afficher l’aperçu"
+      },
+      "status": {
+        "exported": "Sauvegarde téléchargée.",
+        "restored": "Sauvegarde restaurée."
+      },
+      "confirm": {
+        "title": "Remplacer vos données ?",
+        "message": "Cette action remplace définitivement les données financières sauvegardées et les préférences prises en charge. Vos identifiants de connexion et autres clés restent inchangés. Continuer ?"
+      },
+      "entities": {
+        "institutions": "Établissements",
+        "accounts": "Comptes",
+        "category_groups": "Groupes de catégories",
+        "categories": "Catégories",
+        "categorization_rules": "Règles de catégorisation",
+        "budgets": "Budgets",
+        "budget_allocations": "Affectations budgétaires",
+        "expected_income": "Revenus prévus",
+        "recurring_rules": "Règles récurrentes",
+        "loans": "Prêts",
+        "goals": "Objectifs",
+        "manual_rates": "Taux de change manuels",
+        "transactions": "Transactions",
+        "investment_wallets": "Portefeuilles d’investissement",
+        "investment_assets": "Actifs d’investissement",
+        "investment_transactions": "Transactions d’investissement"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Le paramètre obsolète {{setting}} sera ignoré.",
+        "credentials_reconnect": "Les identifiants et clés ne sont pas inclus dans les sauvegardes. Reconnectez les services concernés après la restauration."
+      }
+    },
     "title": "Paramètres",
     "description": "Préférences d’apparence, de langue et de données de démonstration.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Ce fichier n’est pas une sauvegarde LealFinance valide.",
+      "invalid_file_type": "Choisissez un fichier de sauvegarde JSON.",
+      "file_too_large": "Cette sauvegarde est trop volumineuse (limite de 25 Mo).",
+      "recovery_key_required": "Saisissez la clé de récupération de cette sauvegarde chiffrée.",
+      "recovery_key_invalid": "La clé de récupération est incorrecte ou la sauvegarde chiffrée a été modifiée.",
+      "version_unsupported": "Le format de cette sauvegarde est plus récent que ceux pris en charge par cette version de LealFinance.",
+      "data_incompatible": "Cette sauvegarde contient des données financières incompatibles ou corrompues."
+    },
     "error": {
       "generic": "Une erreur s’est produite. Réessayez.",
       "validation": "Vérifiez les informations saisies et réessayez."

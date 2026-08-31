@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Sichern und Wiederherstellen",
+      "description": "Laden Sie eine portable Kopie Ihrer Daten herunter oder ersetzen Sie Ihre aktuellen Daten aus einer Sicherung.",
+      "export": {
+        "action": "Sicherung exportieren",
+        "title": "Sicherung exportieren",
+        "keyDescription": "Ihre verschlüsselte Sicherung wurde heruntergeladen. Bewahren Sie diesen Schlüssel vor dem Schließen getrennt auf.",
+        "recoveryKey": "Wiederherstellungsschlüssel",
+        "copyKey": "Schlüssel kopieren",
+        "keyCopied": "Wiederherstellungsschlüssel kopiert.",
+        "keyWarning": "Dieser Schlüssel wird nur einmal angezeigt. Ohne ihn kann die verschlüsselte Sicherung nicht wiederhergestellt werden.",
+        "description": "Wählen Sie, ob die Sicherung mit einem Wiederherstellungsschlüssel geschützt werden soll.",
+        "security": "Sicherheit",
+        "plain": "Unverschlüsseltes JSON",
+        "plainHint": "Einfach einzusehen, aber jeder mit Zugriff auf die Datei kann sie lesen.",
+        "encrypted": "Verschlüsselt",
+        "encryptedHint": "Mit einem Wiederherstellungsschlüssel geschützt, den LealFinance niemals speichert.",
+        "exporting": "Export wird erstellt…",
+        "download": "Sicherung herunterladen"
+      },
+      "restore": {
+        "security": "Sicherheit",
+        "action": "Sicherung wiederherstellen",
+        "title": "Sicherung wiederherstellen",
+        "description": "Wählen Sie eine JSON-Sicherung von LealFinance aus, um sie vor dem Ersetzen Ihrer Daten zu prüfen.",
+        "file": "Sicherungsdatei",
+        "selected": "Ausgewählte Datei: {{filename}}",
+        "recoveryKey": "Wiederherstellungsschlüssel",
+        "previewTitle": "Vorschau der Sicherung",
+        "sourceVersion": "Version der Quellanwendung",
+        "exportedAt": "Exportiert am",
+        "records": "Datensätze",
+        "replace": "Meine Daten ersetzen",
+        "preview": "Sicherung prüfen"
+      },
+      "status": {
+        "exported": "Sicherung heruntergeladen.",
+        "restored": "Sicherung wiederhergestellt."
+      },
+      "confirm": {
+        "title": "Ihre Daten ersetzen?",
+        "message": "Dadurch werden Ihre gesicherten Finanzdaten und unterstützten Einstellungen dauerhaft ersetzt. Ihre Anmeldung und Zugangsdaten bleiben unverändert. Fortfahren?"
+      },
+      "entities": {
+        "institutions": "Finanzinstitute",
+        "accounts": "Konten",
+        "category_groups": "Kategoriegruppen",
+        "categories": "Kategorien",
+        "categorization_rules": "Kategorisierungsregeln",
+        "budgets": "Budgets",
+        "budget_allocations": "Budgetzuweisungen",
+        "expected_income": "Erwartete Einnahmen",
+        "recurring_rules": "Wiederkehrende Regeln",
+        "loans": "Darlehen",
+        "goals": "Ziele",
+        "manual_rates": "Manuelle Wechselkurse",
+        "transactions": "Transaktionen",
+        "investment_wallets": "Anlageportfolios",
+        "investment_assets": "Anlagewerte",
+        "investment_transactions": "Anlagetransaktionen"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Die veraltete Einstellung {{setting}} wird übersprungen.",
+        "credentials_reconnect": "Zugangsdaten sind nicht in Sicherungen enthalten. Verbinden Sie betroffene Dienste nach der Wiederherstellung erneut."
+      }
+    },
     "title": "Einstellungen",
     "description": "Einstellungen für Darstellung, Sprache und Demodaten.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Dies ist keine gültige LealFinance-Sicherung.",
+      "invalid_file_type": "Wählen Sie eine JSON-Sicherungsdatei aus.",
+      "file_too_large": "Diese Sicherung ist zu groß (maximal 25 MB).",
+      "recovery_key_required": "Geben Sie den Wiederherstellungsschlüssel für diese verschlüsselte Sicherung ein.",
+      "recovery_key_invalid": "Der Wiederherstellungsschlüssel ist falsch oder die verschlüsselte Sicherung wurde verändert.",
+      "version_unsupported": "Das Format dieser Sicherung ist neuer, als diese Version von LealFinance unterstützt.",
+      "data_incompatible": "Diese Sicherung enthält inkompatible oder beschädigte Finanzdaten."
+    },
     "error": {
       "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
       "validation": "Überprüfen Sie Ihre Angaben und versuchen Sie es erneut."

@@ -1261,6 +1261,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Sao lưu và khôi phục",
+      "description": "Tải xuống bản sao dữ liệu có thể di chuyển hoặc thay thế dữ liệu hiện tại từ bản sao lưu.",
+      "export": {
+        "action": "Xuất bản sao lưu",
+        "title": "Xuất bản sao lưu",
+        "keyDescription": "Bản sao lưu đã mã hóa đã được tải xuống. Hãy lưu riêng khóa này trước khi đóng.",
+        "recoveryKey": "Khóa khôi phục",
+        "copyKey": "Sao chép khóa",
+        "keyCopied": "Đã sao chép khóa khôi phục.",
+        "keyWarning": "Khóa này chỉ được hiển thị một lần. Không có khóa, bạn không thể khôi phục bản sao lưu đã mã hóa.",
+        "description": "Chọn có bảo vệ bản sao lưu bằng khóa khôi phục hay không.",
+        "security": "Bảo mật",
+        "plain": "JSON không mã hóa",
+        "plainHint": "Dễ kiểm tra, nhưng bất kỳ ai có tệp đều có thể đọc dữ liệu.",
+        "encrypted": "Đã mã hóa",
+        "encryptedHint": "Được bảo vệ bằng khóa khôi phục mà LealFinance không bao giờ lưu.",
+        "exporting": "Đang xuất…",
+        "download": "Tải bản sao lưu"
+      },
+      "restore": {
+        "security": "Bảo mật",
+        "action": "Khôi phục bản sao lưu",
+        "title": "Khôi phục bản sao lưu",
+        "description": "Chọn bản sao lưu JSON của LealFinance để xem trước khi thay thế dữ liệu.",
+        "file": "Tệp sao lưu",
+        "selected": "Tệp đã chọn: {{filename}}",
+        "recoveryKey": "Khóa khôi phục",
+        "previewTitle": "Xem trước bản sao lưu",
+        "sourceVersion": "Phiên bản ứng dụng nguồn",
+        "exportedAt": "Thời điểm xuất",
+        "records": "Bản ghi",
+        "replace": "Thay thế dữ liệu của tôi",
+        "preview": "Xem trước bản sao lưu"
+      },
+      "status": {
+        "exported": "Đã tải xuống bản sao lưu.",
+        "restored": "Đã khôi phục bản sao lưu."
+      },
+      "confirm": {
+        "title": "Thay thế dữ liệu của bạn?",
+        "message": "Thao tác này sẽ thay thế vĩnh viễn dữ liệu tài chính trong bản sao lưu và các tùy chọn được hỗ trợ. Thông tin đăng nhập và thông tin xác thực của bạn không thay đổi. Tiếp tục?"
+      },
+      "entities": {
+        "institutions": "Tổ chức tài chính",
+        "accounts": "Tài khoản",
+        "category_groups": "Nhóm danh mục",
+        "categories": "Danh mục",
+        "categorization_rules": "Quy tắc phân loại",
+        "budgets": "Ngân sách",
+        "budget_allocations": "Phân bổ ngân sách",
+        "expected_income": "Thu nhập dự kiến",
+        "recurring_rules": "Quy tắc định kỳ",
+        "loans": "Khoản vay",
+        "goals": "Mục tiêu",
+        "manual_rates": "Tỷ giá thủ công",
+        "transactions": "Giao dịch",
+        "investment_wallets": "Ví đầu tư",
+        "investment_assets": "Tài sản đầu tư",
+        "investment_transactions": "Giao dịch đầu tư"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Cài đặt lỗi thời {{setting}} sẽ bị bỏ qua.",
+        "credentials_reconnect": "Thông tin xác thực không được đưa vào bản sao lưu. Hãy kết nối lại các dịch vụ bị ảnh hưởng sau khi khôi phục."
+      }
+    },
     "title": "Cài đặt",
     "description": "Tùy chọn giao diện, ngôn ngữ và dữ liệu mẫu.",
     "appearance": {
@@ -1430,6 +1496,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Đây không phải là bản sao lưu LealFinance hợp lệ.",
+      "invalid_file_type": "Hãy chọn tệp sao lưu JSON.",
+      "file_too_large": "Bản sao lưu này quá lớn (giới hạn 25 MB).",
+      "recovery_key_required": "Nhập khóa khôi phục cho bản sao lưu đã mã hóa này.",
+      "recovery_key_invalid": "Khóa khôi phục không đúng hoặc bản sao lưu đã mã hóa đã bị sửa đổi.",
+      "version_unsupported": "Định dạng bản sao lưu này mới hơn mức phiên bản LealFinance hiện tại hỗ trợ.",
+      "data_incompatible": "Bản sao lưu này chứa dữ liệu tài chính không tương thích hoặc bị hỏng."
+    },
     "error": {
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
       "validation": "Vui lòng kiểm tra thông tin đã nhập và thử lại."
