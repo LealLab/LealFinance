@@ -162,7 +162,7 @@
       "rules": "Kurallar",
       "budgets": "Bütçeler",
       "goals": "Hedefler",
-      "loans": "Loans",
+      "loans": "Krediler",
       "reports": "Raporlar",
       "exchange": "Döviz",
       "settings": "Ayarlar",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Krediler",
+    "description": "Ne kadar borç aldığınızı, faizinin ne kadara mal olduğunu ve ne kadar kaldığını takip edin.",
+    "showArchived": "Arşivlenen kredileri göster",
+    "archived": "Arşivlendi",
+    "autoPostBadge": "Otomatik kayıt",
+    "archiveError": "Kredinin arşiv durumu güncellenemedi. Tekrar deneyin.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Yeni kredi",
+      "edit": "Krediyi düzenle",
+      "archive": "Krediyi arşivle",
+      "unarchive": "Krediyi arşivden çıkar",
+      "recordPayment": "Ödeme kaydet"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Henüz kredi yok",
+      "description": "Taksitlerini, faizini ve kalan bakiyesini takip etmek için bir kredi ekleyin."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "İlk ödeme",
+      "installment": "Aylık taksit",
+      "totalPayable": "Toplam ödenecek",
+      "borrowed": "Alınan borç",
+      "fees": "Ücretler",
+      "rate": "Faiz oranı",
+      "totalInterest": "Toplam faiz",
+      "remaining": "Kalan",
+      "nextDue": "Sonraki vade",
+      "paidCount": "{{total}} taksitin {{paid}} tanesi ödendi",
+      "fullyPaid": "Tamamen ödendi"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "yıllık",
+      "monthly": "aylık"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Yeni kredi",
+      "editTitle": "Krediyi düzenle",
+      "saveError": "Kredi kaydedilemedi. Tekrar deneyin.",
+      "installmentPreview": "Tahmini aylık taksit",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Ad",
+        "category": "Kategori",
+        "categoryPlaceholder": "Bir gider kategorisi seçin",
+        "currency": "Para birimi",
+        "amountBorrowed": "Alınan tutar",
+        "fees": "Ücretler",
+        "interestRate": "Faiz oranı (%)",
+        "ratePeriod": "Oran dönemi",
+        "installmentCount": "Taksit sayısı",
+        "firstPaymentDate": "İlk ödeme tarihi",
+        "notes": "Notlar",
+        "autoPost": "Her taksiti otomatik olarak kaydet",
+        "autoPostHint": "Seçtiğiniz hesaptan her vade tarihinde bir ödeme oluşturulur.",
+        "institution": "Kurum",
+        "allInstitutions": "Tüm kurumlar",
+        "paymentAccount": "Hesap",
+        "paymentAccountPlaceholder": "Kaynak hesabı seçin"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Bu alan zorunludur.",
+        "paymentAccountRequired": "Ödemelerin yapılacağı hesabı seçin."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "İptal",
+        "save": "Kaydet"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Kredi ödemesi kaydet",
+      "saveError": "Ödeme kaydedilemedi. Tekrar deneyin.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Tutar",
+        "date": "Tarih",
+        "dateHint": "Bir taksiti önceden ödemek için ileri bir tarih ayarlayın.",
+        "account": "Hesap",
+        "noInstitution": "Kurum yok",
+        "description": "Açıklama"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Ödeme kaydet"
       }
     }
   },

@@ -162,7 +162,7 @@
       "rules": "ルール",
       "budgets": "予算",
       "goals": "目標",
-      "loans": "Loans",
+      "loans": "ローン",
       "reports": "レポート",
       "exchange": "為替",
       "settings": "設定",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "ローン",
+    "description": "借入額、かかる利息、残りの返済額を把握できます。",
+    "showArchived": "アーカイブ済みのローンを表示",
+    "archived": "アーカイブ済み",
+    "autoPostBadge": "自動記帳",
+    "archiveError": "ローンのアーカイブ状態を更新できませんでした。もう一度お試しください。",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "新しいローン",
+      "edit": "ローンを編集",
+      "archive": "ローンをアーカイブ",
+      "unarchive": "ローンのアーカイブを解除",
+      "recordPayment": "支払いを記録"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "ローンはまだありません",
+      "description": "ローンを追加すると、分割払い、利息、残高を追跡できます。"
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "初回支払い",
+      "installment": "毎月の返済額",
+      "totalPayable": "支払総額",
+      "borrowed": "借入額",
+      "fees": "手数料",
+      "rate": "金利",
+      "totalInterest": "利息合計",
+      "remaining": "残額",
+      "nextDue": "次回期日",
+      "paidCount": "{{total}} 回中 {{paid}} 回支払い済み",
+      "fullyPaid": "完済"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "年利",
+      "monthly": "月利"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "新しいローン",
+      "editTitle": "ローンを編集",
+      "saveError": "ローンを保存できませんでした。もう一度お試しください。",
+      "installmentPreview": "毎月の返済額の目安",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "名前",
+        "category": "カテゴリ",
+        "categoryPlaceholder": "支出カテゴリを選択",
+        "currency": "通貨",
+        "amountBorrowed": "借入金額",
+        "fees": "手数料",
+        "interestRate": "金利 (%)",
+        "ratePeriod": "金利の期間",
+        "installmentCount": "返済回数",
+        "firstPaymentDate": "初回支払日",
+        "notes": "メモ",
+        "autoPost": "各回を自動で記帳する",
+        "autoPostHint": "選択した口座から、各期日に支払いが作成されます。",
+        "institution": "金融機関",
+        "allInstitutions": "すべての金融機関",
+        "paymentAccount": "口座",
+        "paymentAccountPlaceholder": "引き落とし口座を選択"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "この項目は必須です。",
+        "paymentAccountRequired": "支払いの引き落とし元となる口座を選択してください。"
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "キャンセル",
+        "save": "保存"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "ローンの支払いを記録",
+      "saveError": "支払いを記録できませんでした。もう一度お試しください。",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "金額",
+        "date": "日付",
+        "dateHint": "先の日付を設定すると、返済を前倒しで支払えます。",
+        "account": "口座",
+        "noInstitution": "金融機関なし",
+        "description": "説明"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "支払いを記録"
       }
     }
   },

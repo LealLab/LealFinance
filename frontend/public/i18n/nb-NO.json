@@ -162,7 +162,7 @@
       "rules": "Regler",
       "budgets": "Budsjetter",
       "goals": "Mål",
-      "loans": "Loans",
+      "loans": "Lån",
       "reports": "Rapporter",
       "exchange": "Valutaveksling",
       "settings": "Innstillinger",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Lån",
+    "description": "Hold oversikt over hva du har lånt, hva rentene koster, og hvor mye som gjenstår å betale.",
+    "showArchived": "Vis arkiverte lån",
+    "archived": "Arkivert",
+    "autoPostBadge": "Autofør",
+    "archiveError": "Kunne ikke oppdatere arkivstatusen for lånet. Prøv igjen.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Nytt lån",
+      "edit": "Rediger lån",
+      "archive": "Arkiver lån",
+      "unarchive": "Opphev arkivering av lån",
+      "recordPayment": "Registrer betaling"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Ingen lån ennå",
+      "description": "Legg til et lån for å følge terminbeløp, renter og gjenstående saldo."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Første betaling",
+      "installment": "Månedlig terminbeløp",
+      "totalPayable": "Totalt å betale",
+      "borrowed": "Lånt",
+      "fees": "Gebyrer",
+      "rate": "Rentesats",
+      "totalInterest": "Totale renter",
+      "remaining": "Gjenstår",
+      "nextDue": "Neste forfall",
+      "paidCount": "{{paid}} av {{total}} terminer betalt",
+      "fullyPaid": "Fullt betalt"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "per år",
+      "monthly": "per måned"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Nytt lån",
+      "editTitle": "Rediger lån",
+      "saveError": "Kunne ikke lagre lånet. Prøv igjen.",
+      "installmentPreview": "Anslått månedlig terminbeløp",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Navn",
+        "category": "Kategori",
+        "categoryPlaceholder": "Velg en utgiftskategori",
+        "currency": "Valuta",
+        "amountBorrowed": "Lånt beløp",
+        "fees": "Gebyrer",
+        "interestRate": "Rentesats (%)",
+        "ratePeriod": "Renteperiode",
+        "installmentCount": "Antall terminer",
+        "firstPaymentDate": "Dato for første betaling",
+        "notes": "Notater",
+        "autoPost": "Før hver termin automatisk",
+        "autoPostHint": "Det opprettes en betaling på hver forfallsdato fra kontoen du velger.",
+        "institution": "Institusjon",
+        "allInstitutions": "Alle institusjoner",
+        "paymentAccount": "Konto",
+        "paymentAccountPlaceholder": "Velg kildekontoen"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Dette feltet er påkrevd.",
+        "paymentAccountRequired": "Velg kontoen betalingene kommer fra."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Avbryt",
+        "save": "Lagre"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Registrer lånebetaling",
+      "saveError": "Kunne ikke registrere betalingen. Prøv igjen.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Beløp",
+        "date": "Dato",
+        "dateHint": "Angi en fremtidig dato for å betale en termin på forskudd.",
+        "account": "Konto",
+        "noInstitution": "Ingen institusjon",
+        "description": "Beskrivelse"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Registrer betaling"
       }
     }
   },

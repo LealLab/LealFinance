@@ -162,7 +162,7 @@
       "rules": "Правила",
       "budgets": "Бюджеты",
       "goals": "Цели",
-      "loans": "Loans",
+      "loans": "Кредиты",
       "reports": "Отчёты",
       "exchange": "Обмен валюты",
       "settings": "Настройки",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Кредиты",
+    "description": "Отслеживайте, сколько вы заняли, во сколько обходятся проценты и сколько осталось выплатить.",
+    "showArchived": "Показать архивные кредиты",
+    "archived": "В архиве",
+    "autoPostBadge": "Автопроводка",
+    "archiveError": "Не удалось обновить состояние архива кредита. Попробуйте ещё раз.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Новый кредит",
+      "edit": "Изменить кредит",
+      "archive": "Архивировать кредит",
+      "unarchive": "Вернуть из архива",
+      "recordPayment": "Записать платёж"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Кредитов пока нет",
+      "description": "Добавьте кредит, чтобы отслеживать платежи, проценты и остаток долга."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Первый платёж",
+      "installment": "Ежемесячный платёж",
+      "totalPayable": "Итого к выплате",
+      "borrowed": "Занято",
+      "fees": "Комиссии",
+      "rate": "Процентная ставка",
+      "totalInterest": "Всего процентов",
+      "remaining": "Остаток",
+      "nextDue": "Следующий платёж",
+      "paidCount": "Оплачено {{paid}} из {{total}} платежей",
+      "fullyPaid": "Полностью погашен"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "в год",
+      "monthly": "в месяц"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Новый кредит",
+      "editTitle": "Изменить кредит",
+      "saveError": "Не удалось сохранить кредит. Попробуйте ещё раз.",
+      "installmentPreview": "Ориентировочный ежемесячный платёж",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Название",
+        "category": "Категория",
+        "categoryPlaceholder": "Выберите категорию расходов",
+        "currency": "Валюта",
+        "amountBorrowed": "Сумма займа",
+        "fees": "Комиссии",
+        "interestRate": "Процентная ставка (%)",
+        "ratePeriod": "Период ставки",
+        "installmentCount": "Количество платежей",
+        "firstPaymentDate": "Дата первого платежа",
+        "notes": "Примечания",
+        "autoPost": "Автоматически проводить каждый платёж",
+        "autoPostHint": "В каждую дату платежа со счёта, который вы выберете, создаётся платёж.",
+        "institution": "Организация",
+        "allInstitutions": "Все организации",
+        "paymentAccount": "Счёт",
+        "paymentAccountPlaceholder": "Выберите счёт-источник"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Это поле обязательно.",
+        "paymentAccountRequired": "Выберите счёт, с которого идут платежи."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Отмена",
+        "save": "Сохранить"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Записать платёж по кредиту",
+      "saveError": "Не удалось записать платёж. Попробуйте ещё раз.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Сумма",
+        "date": "Дата",
+        "dateHint": "Укажите будущую дату, чтобы оплатить платёж заранее.",
+        "account": "Счёт",
+        "noInstitution": "Без организации",
+        "description": "Описание"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Записать платёж"
       }
     }
   },

@@ -162,7 +162,7 @@
       "rules": "Regler",
       "budgets": "Budgetar",
       "goals": "Mål",
-      "loans": "Loans",
+      "loans": "Lån",
       "reports": "Rapporter",
       "exchange": "Valutaväxling",
       "settings": "Inställningar",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Lån",
+    "description": "Håll koll på vad du lånat, vad räntan kostar och hur mycket som återstår att betala.",
+    "showArchived": "Visa arkiverade lån",
+    "archived": "Arkiverat",
+    "autoPostBadge": "Autobokför",
+    "archiveError": "Det gick inte att uppdatera lånets arkivstatus. Försök igen.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Nytt lån",
+      "edit": "Redigera lån",
+      "archive": "Arkivera lån",
+      "unarchive": "Avarkivera lån",
+      "recordPayment": "Registrera betalning"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Inga lån ännu",
+      "description": "Lägg till ett lån för att följa dess delbetalningar, ränta och kvarvarande saldo."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Första betalningen",
+      "installment": "Månadsbetalning",
+      "totalPayable": "Totalt att betala",
+      "borrowed": "Lånat",
+      "fees": "Avgifter",
+      "rate": "Räntesats",
+      "totalInterest": "Total ränta",
+      "remaining": "Återstår",
+      "nextDue": "Nästa förfallodag",
+      "paidCount": "{{paid}} av {{total}} delbetalningar betalda",
+      "fullyPaid": "Helt betalt"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "per år",
+      "monthly": "per månad"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Nytt lån",
+      "editTitle": "Redigera lån",
+      "saveError": "Det gick inte att spara lånet. Försök igen.",
+      "installmentPreview": "Uppskattad månadsbetalning",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Namn",
+        "category": "Kategori",
+        "categoryPlaceholder": "Välj en utgiftskategori",
+        "currency": "Valuta",
+        "amountBorrowed": "Lånat belopp",
+        "fees": "Avgifter",
+        "interestRate": "Räntesats (%)",
+        "ratePeriod": "Ränteperiod",
+        "installmentCount": "Antal delbetalningar",
+        "firstPaymentDate": "Datum för första betalning",
+        "notes": "Anteckningar",
+        "autoPost": "Bokför varje delbetalning automatiskt",
+        "autoPostHint": "En betalning skapas på varje förfallodag från kontot du väljer.",
+        "institution": "Institut",
+        "allInstitutions": "Alla institut",
+        "paymentAccount": "Konto",
+        "paymentAccountPlaceholder": "Välj källkontot"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Det här fältet är obligatoriskt.",
+        "paymentAccountRequired": "Välj kontot som betalningarna kommer från."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Avbryt",
+        "save": "Spara"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Registrera lånebetalning",
+      "saveError": "Det gick inte att registrera betalningen. Försök igen.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Belopp",
+        "date": "Datum",
+        "dateHint": "Ange ett framtida datum för att betala en delbetalning i förskott.",
+        "account": "Konto",
+        "noInstitution": "Inget institut",
+        "description": "Beskrivning"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Registrera betalning"
       }
     }
   },

@@ -162,7 +162,7 @@
       "rules": "Правила",
       "budgets": "Бюджети",
       "goals": "Цілі",
-      "loans": "Loans",
+      "loans": "Кредити",
       "reports": "Звіти",
       "exchange": "Обмін валют",
       "settings": "Налаштування",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Кредити",
+    "description": "Відстежуйте, скільки ви позичили, скільки коштують відсотки та скільки залишилося сплатити.",
+    "showArchived": "Показати архівні кредити",
+    "archived": "В архіві",
+    "autoPostBadge": "Автопроведення",
+    "archiveError": "Не вдалося оновити стан архіву кредиту. Спробуйте ще раз.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Новий кредит",
+      "edit": "Редагувати кредит",
+      "archive": "Архівувати кредит",
+      "unarchive": "Повернути з архіву",
+      "recordPayment": "Записати платіж"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Кредитів поки немає",
+      "description": "Додайте кредит, щоб відстежувати платежі, відсотки та залишок боргу."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Перший платіж",
+      "installment": "Щомісячний платіж",
+      "totalPayable": "Разом до сплати",
+      "borrowed": "Позичено",
+      "fees": "Комісії",
+      "rate": "Відсоткова ставка",
+      "totalInterest": "Усього відсотків",
+      "remaining": "Залишок",
+      "nextDue": "Наступний платіж",
+      "paidCount": "Сплачено {{paid}} із {{total}} платежів",
+      "fullyPaid": "Повністю погашено"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "на рік",
+      "monthly": "на місяць"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Новий кредит",
+      "editTitle": "Редагувати кредит",
+      "saveError": "Не вдалося зберегти кредит. Спробуйте ще раз.",
+      "installmentPreview": "Орієнтовний щомісячний платіж",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Назва",
+        "category": "Категорія",
+        "categoryPlaceholder": "Виберіть категорію витрат",
+        "currency": "Валюта",
+        "amountBorrowed": "Сума позики",
+        "fees": "Комісії",
+        "interestRate": "Відсоткова ставка (%)",
+        "ratePeriod": "Період ставки",
+        "installmentCount": "Кількість платежів",
+        "firstPaymentDate": "Дата першого платежу",
+        "notes": "Примітки",
+        "autoPost": "Автоматично проводити кожен платіж",
+        "autoPostHint": "У кожну дату платежу з обраного рахунку створюється платіж.",
+        "institution": "Установа",
+        "allInstitutions": "Усі установи",
+        "paymentAccount": "Рахунок",
+        "paymentAccountPlaceholder": "Виберіть рахунок-джерело"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Це поле обов’язкове.",
+        "paymentAccountRequired": "Виберіть рахунок, з якого здійснюються платежі."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Скасувати",
+        "save": "Зберегти"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Записати платіж за кредитом",
+      "saveError": "Не вдалося записати платіж. Спробуйте ще раз.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Сума",
+        "date": "Дата",
+        "dateHint": "Укажіть майбутню дату, щоб сплатити платіж заздалегідь.",
+        "account": "Рахунок",
+        "noInstitution": "Без установи",
+        "description": "Опис"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Записати платіж"
       }
     }
   },

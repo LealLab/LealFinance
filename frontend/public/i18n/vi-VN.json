@@ -162,7 +162,7 @@
       "rules": "Quy tắc",
       "budgets": "Ngân sách",
       "goals": "Mục tiêu",
-      "loans": "Loans",
+      "loans": "Khoản vay",
       "reports": "Báo cáo",
       "exchange": "Tỷ giá",
       "settings": "Cài đặt",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Khoản vay",
+    "description": "Theo dõi số tiền bạn đã vay, lãi phải trả và số còn lại phải thanh toán.",
+    "showArchived": "Hiện các khoản vay đã lưu trữ",
+    "archived": "Đã lưu trữ",
+    "autoPostBadge": "Tự động ghi",
+    "archiveError": "Không thể cập nhật trạng thái lưu trữ của khoản vay. Hãy thử lại.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Khoản vay mới",
+      "edit": "Sửa khoản vay",
+      "archive": "Lưu trữ khoản vay",
+      "unarchive": "Bỏ lưu trữ khoản vay",
+      "recordPayment": "Ghi nhận thanh toán"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Chưa có khoản vay nào",
+      "description": "Thêm một khoản vay để theo dõi kỳ trả góp, lãi và số dư còn lại."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Kỳ thanh toán đầu tiên",
+      "installment": "Kỳ trả góp hằng tháng",
+      "totalPayable": "Tổng phải trả",
+      "borrowed": "Đã vay",
+      "fees": "Phí",
+      "rate": "Lãi suất",
+      "totalInterest": "Tổng lãi",
+      "remaining": "Còn lại",
+      "nextDue": "Kỳ hạn kế tiếp",
+      "paidCount": "Đã trả {{paid}} trong {{total}} kỳ",
+      "fullyPaid": "Đã trả hết"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "mỗi năm",
+      "monthly": "mỗi tháng"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Khoản vay mới",
+      "editTitle": "Sửa khoản vay",
+      "saveError": "Không thể lưu khoản vay. Hãy thử lại.",
+      "installmentPreview": "Kỳ trả góp hằng tháng ước tính",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Tên",
+        "category": "Danh mục",
+        "categoryPlaceholder": "Chọn một danh mục chi tiêu",
+        "currency": "Tiền tệ",
+        "amountBorrowed": "Số tiền đã vay",
+        "fees": "Phí",
+        "interestRate": "Lãi suất (%)",
+        "ratePeriod": "Kỳ tính lãi",
+        "installmentCount": "Số kỳ trả góp",
+        "firstPaymentDate": "Ngày thanh toán đầu tiên",
+        "notes": "Ghi chú",
+        "autoPost": "Tự động ghi mỗi kỳ trả góp",
+        "autoPostHint": "Vào mỗi ngày đến hạn, một khoản thanh toán được tạo từ tài khoản bạn chọn.",
+        "institution": "Tổ chức",
+        "allInstitutions": "Tất cả tổ chức",
+        "paymentAccount": "Tài khoản",
+        "paymentAccountPlaceholder": "Chọn tài khoản nguồn"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Trường này là bắt buộc.",
+        "paymentAccountRequired": "Chọn tài khoản dùng để thanh toán."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Hủy",
+        "save": "Lưu"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Ghi nhận thanh toán khoản vay",
+      "saveError": "Không thể ghi nhận thanh toán. Hãy thử lại.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Số tiền",
+        "date": "Ngày",
+        "dateHint": "Đặt ngày trong tương lai để trả trước một kỳ.",
+        "account": "Tài khoản",
+        "noInstitution": "Không có tổ chức",
+        "description": "Mô tả"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Ghi nhận thanh toán"
       }
     }
   },

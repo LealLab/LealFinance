@@ -162,7 +162,7 @@
       "rules": "Reglas",
       "budgets": "Presupuestos",
       "goals": "Objetivos",
-      "loans": "Loans",
+      "loans": "Préstamos",
       "reports": "Informes",
       "exchange": "Cambio de divisas",
       "settings": "Ajustes",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Préstamos",
+    "description": "Controla lo que has pedido prestado, los intereses que cuesta y cuánto queda por pagar.",
+    "showArchived": "Mostrar préstamos archivados",
+    "archived": "Archivado",
+    "autoPostBadge": "Registro automático",
+    "archiveError": "No se pudo actualizar el estado de archivo del préstamo. Inténtalo de nuevo.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Nuevo préstamo",
+      "edit": "Editar préstamo",
+      "archive": "Archivar préstamo",
+      "unarchive": "Desarchivar préstamo",
+      "recordPayment": "Registrar pago"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Aún no hay préstamos",
+      "description": "Añade un préstamo para seguir sus cuotas, intereses y saldo pendiente."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Primer pago",
+      "installment": "Cuota mensual",
+      "totalPayable": "Total a pagar",
+      "borrowed": "Prestado",
+      "fees": "Comisiones",
+      "rate": "Tipo de interés",
+      "totalInterest": "Intereses totales",
+      "remaining": "Pendiente",
+      "nextDue": "Próximo vencimiento",
+      "paidCount": "{{paid}} de {{total}} cuotas pagadas",
+      "fullyPaid": "Pagado por completo"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "al año",
+      "monthly": "al mes"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Nuevo préstamo",
+      "editTitle": "Editar préstamo",
+      "saveError": "No se pudo guardar el préstamo. Inténtalo de nuevo.",
+      "installmentPreview": "Cuota mensual estimada",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Nombre",
+        "category": "Categoría",
+        "categoryPlaceholder": "Elige una categoría de gasto",
+        "currency": "Moneda",
+        "amountBorrowed": "Importe prestado",
+        "fees": "Comisiones",
+        "interestRate": "Tipo de interés (%)",
+        "ratePeriod": "Período de la tasa",
+        "installmentCount": "Número de cuotas",
+        "firstPaymentDate": "Fecha del primer pago",
+        "notes": "Notas",
+        "autoPost": "Registrar cada cuota automáticamente",
+        "autoPostHint": "Se crea un pago en cada fecha de vencimiento desde la cuenta que elijas.",
+        "institution": "Entidad",
+        "allInstitutions": "Todas las entidades",
+        "paymentAccount": "Cuenta",
+        "paymentAccountPlaceholder": "Elige la cuenta de origen"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Este campo es obligatorio.",
+        "paymentAccountRequired": "Elige la cuenta desde la que se hacen los pagos."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Cancelar",
+        "save": "Guardar"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Registrar pago del préstamo",
+      "saveError": "No se pudo registrar el pago. Inténtalo de nuevo.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Importe",
+        "date": "Fecha",
+        "dateHint": "Indica una fecha futura para pagar una cuota por adelantado.",
+        "account": "Cuenta",
+        "noInstitution": "Sin entidad",
+        "description": "Descripción"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Registrar pago"
       }
     }
   },

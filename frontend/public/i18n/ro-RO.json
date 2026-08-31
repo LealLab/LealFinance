@@ -162,7 +162,7 @@
       "rules": "Reguli",
       "budgets": "Bugete",
       "goals": "Obiective",
-      "loans": "Loans",
+      "loans": "Împrumuturi",
       "reports": "Rapoarte",
       "exchange": "Schimb valutar",
       "settings": "Setări",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Împrumuturi",
+    "description": "Urmărește cât ai împrumutat, cât te costă dobânda și cât mai ai de plătit.",
+    "showArchived": "Arată împrumuturile arhivate",
+    "archived": "Arhivat",
+    "autoPostBadge": "Înregistrare automată",
+    "archiveError": "Starea de arhivare a împrumutului nu a putut fi actualizată. Încearcă din nou.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Împrumut nou",
+      "edit": "Editează împrumutul",
+      "archive": "Arhivează împrumutul",
+      "unarchive": "Dezarhivează împrumutul",
+      "recordPayment": "Înregistrează o plată"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Niciun împrumut încă",
+      "description": "Adaugă un împrumut pentru a-i urmări ratele, dobânda și soldul rămas."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Prima plată",
+      "installment": "Rată lunară",
+      "totalPayable": "Total de plată",
+      "borrowed": "Împrumutat",
+      "fees": "Comisioane",
+      "rate": "Rată a dobânzii",
+      "totalInterest": "Dobândă totală",
+      "remaining": "Rămas",
+      "nextDue": "Următoarea scadență",
+      "paidCount": "{{paid}} din {{total}} rate plătite",
+      "fullyPaid": "Achitat integral"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "pe an",
+      "monthly": "pe lună"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Împrumut nou",
+      "editTitle": "Editează împrumutul",
+      "saveError": "Împrumutul nu a putut fi salvat. Încearcă din nou.",
+      "installmentPreview": "Rată lunară estimată",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Nume",
+        "category": "Categorie",
+        "categoryPlaceholder": "Alege o categorie de cheltuieli",
+        "currency": "Monedă",
+        "amountBorrowed": "Sumă împrumutată",
+        "fees": "Comisioane",
+        "interestRate": "Rată a dobânzii (%)",
+        "ratePeriod": "Perioada ratei",
+        "installmentCount": "Număr de rate",
+        "firstPaymentDate": "Data primei plăți",
+        "notes": "Notițe",
+        "autoPost": "Înregistrează automat fiecare rată",
+        "autoPostHint": "La fiecare scadență se creează o plată din contul pe care îl alegi.",
+        "institution": "Instituție",
+        "allInstitutions": "Toate instituțiile",
+        "paymentAccount": "Cont",
+        "paymentAccountPlaceholder": "Alege contul sursă"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Acest câmp este obligatoriu.",
+        "paymentAccountRequired": "Alege contul din care se fac plățile."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Anulează",
+        "save": "Salvează"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Înregistrează plata împrumutului",
+      "saveError": "Plata nu a putut fi înregistrată. Încearcă din nou.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Sumă",
+        "date": "Dată",
+        "dateHint": "Setează o dată viitoare pentru a plăti o rată în avans.",
+        "account": "Cont",
+        "noInstitution": "Nicio instituție",
+        "description": "Descriere"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Înregistrează plata"
       }
     }
   },

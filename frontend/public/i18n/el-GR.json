@@ -162,7 +162,7 @@
       "rules": "Κανόνες",
       "budgets": "Προϋπολογισμοί",
       "goals": "Στόχοι",
-      "loans": "Loans",
+      "loans": "Δάνεια",
       "reports": "Αναφορές",
       "exchange": "Συνάλλαγμα",
       "settings": "Ρυθμίσεις",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Δάνεια",
+    "description": "Παρακολουθήστε πόσα δανειστήκατε, πόσο κοστίζει ο τόκος και πόσα απομένουν να πληρώσετε.",
+    "showArchived": "Εμφάνιση αρχειοθετημένων δανείων",
+    "archived": "Αρχειοθετημένο",
+    "autoPostBadge": "Αυτόματη καταχώριση",
+    "archiveError": "Δεν ήταν δυνατή η ενημέρωση της κατάστασης αρχειοθέτησης του δανείου. Δοκιμάστε ξανά.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Νέο δάνειο",
+      "edit": "Επεξεργασία δανείου",
+      "archive": "Αρχειοθέτηση δανείου",
+      "unarchive": "Κατάργηση αρχειοθέτησης δανείου",
+      "recordPayment": "Καταχώριση πληρωμής"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Δεν υπάρχουν δάνεια ακόμη",
+      "description": "Προσθέστε ένα δάνειο για να παρακολουθείτε τις δόσεις, τον τόκο και το υπόλοιπο."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Πρώτη πληρωμή",
+      "installment": "Μηνιαία δόση",
+      "totalPayable": "Σύνολο πληρωτέο",
+      "borrowed": "Δανεισμένο ποσό",
+      "fees": "Χρεώσεις",
+      "rate": "Επιτόκιο",
+      "totalInterest": "Συνολικός τόκος",
+      "remaining": "Υπόλοιπο",
+      "nextDue": "Επόμενη λήξη",
+      "paidCount": "Πληρώθηκαν {{paid}} από {{total}} δόσεις",
+      "fullyPaid": "Εξοφλήθηκε πλήρως"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "ετησίως",
+      "monthly": "μηνιαίως"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Νέο δάνειο",
+      "editTitle": "Επεξεργασία δανείου",
+      "saveError": "Δεν ήταν δυνατή η αποθήκευση του δανείου. Δοκιμάστε ξανά.",
+      "installmentPreview": "Εκτιμώμενη μηνιαία δόση",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Όνομα",
+        "category": "Κατηγορία",
+        "categoryPlaceholder": "Επιλέξτε κατηγορία εξόδων",
+        "currency": "Νόμισμα",
+        "amountBorrowed": "Δανεισμένο ποσό",
+        "fees": "Χρεώσεις",
+        "interestRate": "Επιτόκιο (%)",
+        "ratePeriod": "Περίοδος επιτοκίου",
+        "installmentCount": "Αριθμός δόσεων",
+        "firstPaymentDate": "Ημερομηνία πρώτης πληρωμής",
+        "notes": "Σημειώσεις",
+        "autoPost": "Αυτόματη καταχώριση κάθε δόσης",
+        "autoPostHint": "Σε κάθε ημερομηνία λήξης δημιουργείται μια πληρωμή από τον λογαριασμό που επιλέγετε.",
+        "institution": "Ίδρυμα",
+        "allInstitutions": "Όλα τα ιδρύματα",
+        "paymentAccount": "Λογαριασμός",
+        "paymentAccountPlaceholder": "Επιλέξτε τον λογαριασμό προέλευσης"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Αυτό το πεδίο είναι υποχρεωτικό.",
+        "paymentAccountRequired": "Επιλέξτε τον λογαριασμό από τον οποίο γίνονται οι πληρωμές."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Ακύρωση",
+        "save": "Αποθήκευση"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Καταχώριση πληρωμής δανείου",
+      "saveError": "Δεν ήταν δυνατή η καταχώριση της πληρωμής. Δοκιμάστε ξανά.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Ποσό",
+        "date": "Ημερομηνία",
+        "dateHint": "Ορίστε μελλοντική ημερομηνία για να πληρώσετε μια δόση νωρίτερα.",
+        "account": "Λογαριασμός",
+        "noInstitution": "Χωρίς ίδρυμα",
+        "description": "Περιγραφή"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Καταχώριση πληρωμής"
       }
     }
   },

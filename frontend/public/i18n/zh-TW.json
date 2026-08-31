@@ -162,7 +162,7 @@
       "rules": "規則",
       "budgets": "預算",
       "goals": "目標",
-      "loans": "Loans",
+      "loans": "貸款",
       "reports": "報表",
       "exchange": "匯兌",
       "settings": "設定",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "貸款",
+    "description": "追蹤你借了多少、利息花費多少，以及還剩多少要還。",
+    "showArchived": "顯示已封存貸款",
+    "archived": "已封存",
+    "autoPostBadge": "自動入帳",
+    "archiveError": "無法更新貸款的封存狀態。請重試。",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "新增貸款",
+      "edit": "編輯貸款",
+      "archive": "封存貸款",
+      "unarchive": "取消封存貸款",
+      "recordPayment": "記錄還款"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "尚無貸款",
+      "description": "新增一筆貸款以追蹤其分期、利息與剩餘餘額。"
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "首次還款",
+      "installment": "每月分期",
+      "totalPayable": "應還總額",
+      "borrowed": "借款額",
+      "fees": "費用",
+      "rate": "利率",
+      "totalInterest": "利息總額",
+      "remaining": "剩餘",
+      "nextDue": "下次到期",
+      "paidCount": "已還 {{total}} 期中的 {{paid}} 期",
+      "fullyPaid": "已全部還清"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "每年",
+      "monthly": "每月"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "新增貸款",
+      "editTitle": "編輯貸款",
+      "saveError": "無法儲存貸款。請重試。",
+      "installmentPreview": "預估每月分期",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "名稱",
+        "category": "分類",
+        "categoryPlaceholder": "選擇一個支出分類",
+        "currency": "貨幣",
+        "amountBorrowed": "借款金額",
+        "fees": "費用",
+        "interestRate": "利率 (%)",
+        "ratePeriod": "利率週期",
+        "installmentCount": "分期期數",
+        "firstPaymentDate": "首次還款日期",
+        "notes": "備註",
+        "autoPost": "自動入帳每一期",
+        "autoPostHint": "在每個到期日會從你選擇的帳戶建立一筆還款。",
+        "institution": "機構",
+        "allInstitutions": "所有機構",
+        "paymentAccount": "帳戶",
+        "paymentAccountPlaceholder": "選擇來源帳戶"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "此欄位為必填。",
+        "paymentAccountRequired": "選擇還款所使用的帳戶。"
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "取消",
+        "save": "儲存"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "記錄貸款還款",
+      "saveError": "無法記錄還款。請重試。",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "金額",
+        "date": "日期",
+        "dateHint": "設定未來日期可提前償還某一期。",
+        "account": "帳戶",
+        "noInstitution": "無機構",
+        "description": "說明"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "記錄還款"
       }
     }
   },

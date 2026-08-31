@@ -162,7 +162,7 @@
       "rules": "नियम",
       "budgets": "बजट",
       "goals": "लक्ष्य",
-      "loans": "Loans",
+      "loans": "ऋण",
       "reports": "रिपोर्ट",
       "exchange": "मुद्रा विनिमय",
       "settings": "सेटिंग्स",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "ऋण",
+    "description": "आपने कितना उधार लिया, उस पर कितना ब्याज लगता है और कितना चुकाना बाकी है, इस पर नज़र रखें.",
+    "showArchived": "संग्रहीत ऋण दिखाएँ",
+    "archived": "संग्रहीत",
+    "autoPostBadge": "स्वतः-पोस्ट",
+    "archiveError": "ऋण की संग्रह स्थिति अपडेट नहीं की जा सकी. फिर से प्रयास करें.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "नया ऋण",
+      "edit": "ऋण संपादित करें",
+      "archive": "ऋण संग्रहित करें",
+      "unarchive": "ऋण असंग्रहित करें",
+      "recordPayment": "भुगतान दर्ज करें"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "अभी तक कोई ऋण नहीं",
+      "description": "किश्तों, ब्याज और शेष राशि पर नज़र रखने के लिए एक ऋण जोड़ें."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "पहला भुगतान",
+      "installment": "मासिक किश्त",
+      "totalPayable": "कुल देय",
+      "borrowed": "उधार लिया",
+      "fees": "शुल्क",
+      "rate": "ब्याज दर",
+      "totalInterest": "कुल ब्याज",
+      "remaining": "शेष",
+      "nextDue": "अगली नियत तिथि",
+      "paidCount": "{{total}} में से {{paid}} किश्तें चुकाई गईं",
+      "fullyPaid": "पूरा भुगतान हो गया"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "प्रति वर्ष",
+      "monthly": "प्रति माह"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "नया ऋण",
+      "editTitle": "ऋण संपादित करें",
+      "saveError": "ऋण सहेजा नहीं जा सका. फिर से प्रयास करें.",
+      "installmentPreview": "अनुमानित मासिक किश्त",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "नाम",
+        "category": "श्रेणी",
+        "categoryPlaceholder": "एक व्यय श्रेणी चुनें",
+        "currency": "मुद्रा",
+        "amountBorrowed": "उधार ली गई राशि",
+        "fees": "शुल्क",
+        "interestRate": "ब्याज दर (%)",
+        "ratePeriod": "दर अवधि",
+        "installmentCount": "किश्तों की संख्या",
+        "firstPaymentDate": "पहले भुगतान की तिथि",
+        "notes": "नोट्स",
+        "autoPost": "हर किश्त स्वतः पोस्ट करें",
+        "autoPostHint": "आपके चुने गए खाते से हर नियत तिथि पर एक भुगतान बनाया जाता है.",
+        "institution": "संस्थान",
+        "allInstitutions": "सभी संस्थान",
+        "paymentAccount": "खाता",
+        "paymentAccountPlaceholder": "स्रोत खाता चुनें"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "यह फ़ील्ड आवश्यक है.",
+        "paymentAccountRequired": "वह खाता चुनें जिससे भुगतान होते हैं."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "रद्द करें",
+        "save": "सहेजें"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "ऋण भुगतान दर्ज करें",
+      "saveError": "भुगतान दर्ज नहीं किया जा सका. फिर से प्रयास करें.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "राशि",
+        "date": "तिथि",
+        "dateHint": "किश्त पहले चुकाने के लिए भविष्य की तिथि सेट करें.",
+        "account": "खाता",
+        "noInstitution": "कोई संस्थान नहीं",
+        "description": "विवरण"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "भुगतान दर्ज करें"
       }
     }
   },
