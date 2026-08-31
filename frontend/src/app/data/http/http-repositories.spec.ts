@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HttpAccountRepository } from './http-account.repository';
+import { HttpAgentChatRepository } from './http-agent-chat.repository';
 import { HttpAgentProviderRepository } from './http-agent-provider.repository';
 import { HttpBudgetPlanRepository } from './http-budget-plan.repository';
 import { HttpBudgetRepository } from './http-budget.repository';
@@ -445,15 +446,6 @@ describe('HTTP repositories', () => {
     expect(result).toEqual({ ok: false, errorCode: 'agents.provider_unavailable' });
   });
 
-  it('sends a chat message, including provider only when set', () => {
-    TestBed.inject(HttpAgentProviderRepository)
-      .chat([{ role: 'user', content: 'hi' }])
-      .subscribe();
-    const req = http.expectOne('/api/v1/agents/chat');
-    expect(req.request.body).toEqual({ messages: [{ role: 'user', content: 'hi' }] });
-    req.flush({ provider: 'anthropic', model: 'claude-sonnet-5', reply: 'hello' });
-  });
-
   it('uses loan CRUD, archive, and payment endpoints', () => {
     const wire = {
       id: 'l',
@@ -557,5 +549,75 @@ describe('HTTP repositories', () => {
       conversion: null,
     });
     expect(payment).toMatchObject({ id: 't', loanId: 'l', type: 'expense' });
+  });
+
+  it('uses agent-chat conversation endpoints and maps the wire shape', () => {
+    let detail: unknown;
+    let token: unknown;
+
+    TestBed.inject(HttpAgentChatRepository).listConversations().subscribe();
+    const listReq = http.expectOne('/api/v1/agents/conversations');
+    expect(listReq.request.method).toBe('GET');
+    listReq.flush([]);
+
+    TestBed.inject(HttpAgentChatRepository).createConversation('anthropic').subscribe();
+    const createReq = http.expectOne('/api/v1/agents/conversations');
+    expect(createReq.request.method).toBe('POST');
+    expect(createReq.request.body).toEqual({ provider: 'anthropic' });
+    createReq.flush({
+      id: 'c1',
+      title: null,
+      provider: 'anthropic',
+      model: 'claude-sonnet-5',
+      status: 'idle',
+      created_at: '2026-01-01',
+      updated_at: '2026-01-01',
+    });
+
+    TestBed.inject(HttpAgentChatRepository)
+      .getConversation('c1')
+      .subscribe((result) => (detail = result));
+    const detailReq = http.expectOne('/api/v1/agents/conversations/c1');
+    detailReq.flush({
+      id: 'c1',
+      title: 'Groceries',
+      provider: 'anthropic',
+      model: 'claude-sonnet-5',
+      status: 'awaiting_confirmation',
+      created_at: '2026-01-01',
+      updated_at: '2026-01-02',
+      messages: [
+        {
+          id: 'm1',
+          role: 'assistant',
+          content: '',
+          tool_calls: [{ id: 'w1', name: 'create_transaction', arguments: {} }],
+          tool_call_id: null,
+          tool_name: null,
+          is_error: false,
+          position: 0,
+          created_at: '2026-01-02',
+        },
+      ],
+    });
+    expect(detail).toMatchObject({
+      id: 'c1',
+      status: 'awaiting_confirmation',
+      updatedAt: '2026-01-02',
+      messages: [{ toolCalls: [{ id: 'w1', name: 'create_transaction', arguments: {} }] }],
+    });
+
+    TestBed.inject(HttpAgentChatRepository).deleteConversation('c1').subscribe();
+    const deleteReq = http.expectOne('/api/v1/agents/conversations/c1');
+    expect(deleteReq.request.method).toBe('DELETE');
+    deleteReq.flush(null);
+
+    TestBed.inject(HttpAgentChatRepository)
+      .mintMcpToken()
+      .subscribe((result) => (token = result));
+    const tokenReq = http.expectOne('/api/v1/agents/mcp-token');
+    expect(tokenReq.request.method).toBe('POST');
+    tokenReq.flush({ token: 'abc', expires_at: '2027-01-01' });
+    expect(token).toEqual({ token: 'abc', expiresAt: '2027-01-01' });
   });
 });

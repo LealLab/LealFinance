@@ -16,7 +16,7 @@
       <div class="flex flex-col gap-3">
         @for (user of users(); track user.id) {
           <div class="rounded-md border border-border p-3">
-            <div class="grid gap-3 sm:grid-cols-[1fr_8rem_auto_auto] sm:items-end">
+            <div class="grid gap-3 sm:grid-cols-[1fr_8rem_auto_auto_auto] sm:items-end">
               <label>
                 <span class="form-label">{{ user.email }}</span>
                 <input class="form-input" [(ngModel)]="user.displayName" />
@@ -35,6 +35,14 @@
               <label class="flex items-center gap-2 pb-2 text-sm">
                 <input type="checkbox" [(ngModel)]="user.isActive" [disabled]="privilegeLocked(user)" />
                 {{ t('admin.users.active') }}
+              </label>
+              <label class="flex items-center gap-2 pb-2 text-sm">
+                <input
+                  type="checkbox"
+                  [checked]="user.aiChatEnabled"
+                  (change)="setAiChatEnabled(user, $any($event.target).checked)"
+                />
+                {{ t('admin.users.aiChat') }}
               </label>
               <button appButton variant="secondary" type="button" (click)="saveUser(user)">
                 {{ t('common.actions.save') }}

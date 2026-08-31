@@ -65,42 +65,6 @@ describe('Providers', () => {
     expect(linked).toMatchObject({ provider: 'anthropic', configured: true, source: 'user' });
   });
 
-  it('sends a try-it chat message and renders the reply', async () => {
-    const repository = TestBed.inject(AgentProviderRepository);
-    await new Promise<void>((resolve) =>
-      repository.link('anthropic', { apiKey: 'sk-test' }).subscribe(() => resolve()),
-    );
-
-    const fixture = TestBed.createComponent(Providers);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const component = fixture.componentInstance;
-    component['chatInput'].set('Ola');
-    component['sendChat']();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    expect(component['chatReply']()).toContain('Ola');
-    expect(fixture.nativeElement.textContent).toContain('Mock reply to: Ola');
-  });
-
-  it('shows not-configured error when trying a provider with nothing linked', async () => {
-    const fixture = TestBed.createComponent(Providers);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const component = fixture.componentInstance;
-    component['chatInput'].set('Ola');
-    component['sendChat']();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    expect(component['chatErrorKey']()).toBe('providers.chatError');
-  });
-
   it('opens the link modal for the chosen provider', async () => {
     const fixture = TestBed.createComponent(Providers);
     fixture.detectChanges();

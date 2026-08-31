@@ -392,6 +392,7 @@ export class CommandPalette {
       this.session.user()?.role,
       this.metadata.settings()?.agentsEnabled,
       this.preferences.preferences()?.investmentsEnabled,
+      this.session.user()?.aiChatEnabled,
     );
 
     return sections.flatMap((section) =>

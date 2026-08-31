@@ -11,6 +11,7 @@ import { httpErrorInterceptor } from './core/http-error.interceptor';
 import { provideAppTransloco } from './core/transloco.providers';
 import { AccountRepository } from './data/account.repository';
 import { AgentProviderRepository } from './data/agent-provider.repository';
+import { AgentChatRepository } from './data/agent-chat.repository';
 import { BudgetRepository } from './data/budget.repository';
 import { BudgetPlanRepository } from './data/budget-plan.repository';
 import { CategoryGroupRepository } from './data/category-group.repository';
@@ -27,6 +28,7 @@ import { ManualRateRepository } from './data/manual-rate.repository';
 import { MarketDataCredentialRepository } from './data/market-data-credential.repository';
 import { HttpAccountRepository } from './data/http/http-account.repository';
 import { HttpAgentProviderRepository } from './data/http/http-agent-provider.repository';
+import { HttpAgentChatRepository } from './data/http/http-agent-chat.repository';
 import { HttpBudgetPlanRepository } from './data/http/http-budget-plan.repository';
 import { HttpBudgetRepository } from './data/http/http-budget.repository';
 import { HttpCategoryGroupRepository } from './data/http/http-category-group.repository';
@@ -58,6 +60,7 @@ export const appConfig: ApplicationConfig = {
     provideAppTransloco(),
     { provide: AccountRepository, useClass: HttpAccountRepository },
     { provide: AgentProviderRepository, useClass: HttpAgentProviderRepository },
+    { provide: AgentChatRepository, useClass: HttpAgentChatRepository },
     { provide: TransactionRepository, useClass: HttpTransactionRepository },
     { provide: CategoryGroupRepository, useClass: HttpCategoryGroupRepository },
     { provide: CategoryRepository, useClass: HttpCategoryRepository },

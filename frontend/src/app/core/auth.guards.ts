@@ -61,3 +61,13 @@ export const investmentsGuard: CanActivateFn = () => {
       ),
     );
 };
+
+export const aiChatGuard: CanActivateFn = () => {
+  const session = inject(SessionService);
+  const router = inject(Router);
+  return session.ensureLoaded().pipe(
+    map((ready) =>
+      ready && session.user()?.aiChatEnabled ? true : router.createUrlTree(['/']),
+    ),
+  );
+};

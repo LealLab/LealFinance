@@ -2,8 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AgentProviderRepository } from '../agent-provider.repository';
 import {
-  AgentChatMessage,
-  AgentChatReply,
   AgentOAuthStart,
   AgentProviderId,
   AgentProviderLink,
@@ -12,16 +10,12 @@ import {
 } from '../../domain/models/agent-provider';
 import { ApiClient } from '../../core/api-client';
 import {
-  mapAgentChatMessages,
-  mapAgentChatReply,
   mapAgentOAuthStart,
   mapAgentProviderLink,
   mapAgentProviderStatus,
   mapAgentProviderTest,
 } from './mappers';
 import {
-  AgentChatReplyWire,
-  AgentChatRequestWire,
   AgentOAuthCompleteWire,
   AgentOAuthStartWire,
   AgentProviderLinkWire,
@@ -76,13 +70,4 @@ export class HttpAgentProviderRepository extends AgentProviderRepository {
       .pipe(map(mapAgentProviderTest));
   }
 
-  chat(messages: AgentChatMessage[], provider?: AgentProviderId): Observable<AgentChatReply> {
-    const body: AgentChatRequestWire = {
-      messages: mapAgentChatMessages(messages),
-      ...(provider ? { provider } : {}),
-    };
-    return this.api
-      .post<AgentChatReplyWire>('/agents/chat', body)
-      .pipe(map(mapAgentChatReply));
-  }
 }

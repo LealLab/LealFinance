@@ -36,6 +36,7 @@ describe('SessionService', () => {
           displayName: 'Ada Lovelace',
           role: 'admin',
           isActive: true,
+          aiChatEnabled: false,
           createdAt: '2026-08-31T00:00:00Z',
         }),
       ),

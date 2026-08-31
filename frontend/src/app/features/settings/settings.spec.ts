@@ -11,6 +11,7 @@ import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { SessionService } from '../../core/session.service';
+import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { Settings } from './settings';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
@@ -29,11 +30,13 @@ describe('Settings', () => {
     disableTotp: ReturnType<typeof vi.fn>;
     regenerateBackupCodes: ReturnType<typeof vi.fn>;
   };
+  let agentChatRepo: { mintMcpToken: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     fragment = new BehaviorSubject<string | null>(null);
     sessionUser = signal<User | undefined>(undefined);
     backupService = { export: vi.fn(), preview: vi.fn(), restore: vi.fn() };
+    agentChatRepo = { mintMcpToken: vi.fn().mockReturnValue(of({ token: 'mcp-secret', expiresAt: '2026-09-01T00:00:00Z' })) };
     // Stubbed rather than injected `{ optional: true }`: IdentityApiService is
     // providedIn:'root', so it would always resolve and then fail on HttpClient.
     identityApi = {
@@ -61,6 +64,7 @@ describe('Settings', () => {
         { provide: SessionService, useValue: { user: sessionUser.asReadonly() } },
         { provide: BackupService, useValue: backupService },
         { provide: IdentityApiService, useValue: identityApi },
+        { provide: AgentChatRepository, useValue: agentChatRepo },
       ],
     }).compileComponents();
     TestBed.inject(MetadataService).currencies.set([
@@ -78,6 +82,7 @@ describe('Settings', () => {
       displayName: 'Admin',
       role: 'admin',
       isActive: true,
+      aiChatEnabled: false,
       createdAt: '',
     });
     TestBed.inject(MetadataService).settings.set({
@@ -99,6 +104,7 @@ describe('Settings', () => {
       displayName: 'Member',
       role: 'member',
       isActive: true,
+      aiChatEnabled: false,
       createdAt: '',
     });
     TestBed.inject(MetadataService).settings.set({

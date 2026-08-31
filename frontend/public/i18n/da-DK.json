@@ -1,4 +1,38 @@
 {
+  "chat": {
+    "title": "AI chat",
+    "newChat": "New chat",
+    "empty": {
+      "title": "Start a conversation",
+      "body": "Ask about your finances or get help planning your next move."
+    },
+    "composer": {
+      "placeholder": "Ask about your finances…"
+    },
+    "send": "Send",
+    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
+    "thinking": "Thinking…",
+    "toolRunning": "Running",
+    "toolDone": "Done",
+    "confirm": {
+      "title": "Confirm action",
+      "body": "Allow {{name}} to make this change?",
+      "approve": "Confirm",
+      "reject": "Reject",
+      "account": "Account",
+      "category": "Category"
+    },
+    "delete": {
+      "title": "Delete conversation?",
+      "body": "This permanently deletes this conversation. Continue?"
+    },
+    "errors": {
+      "notConfigured": "No AI provider is configured yet.",
+      "providerUnavailable": "The AI provider is currently unavailable.",
+      "loopExhausted": "The assistant could not complete this request.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +189,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AI chat",
       "dashboard": "Oversigt",
       "accounts": "Konti",
       "transactions": "Transaktioner",
@@ -1263,6 +1298,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP access token",
+      "body": "Generate a token to connect an MCP client to your LealFinance account.",
+      "generate": "Generate token",
+      "copy": "Copy",
+      "copied": "Copied",
+      "shownOnce": "This token is shown only once. Save it before leaving this page.",
+      "expires": "Expires {{date}}"
+    },
     "backup": {
       "title": "Sikkerhedskopiering og gendannelse",
       "description": "Download en flytbar kopi af dine data, eller erstat dine nuværende data fra en sikkerhedskopi.",
@@ -1447,6 +1491,7 @@
       "admin": "Administrator"
     },
     "users": {
+      "aiChat": "AI chat",
       "title": "Brugere",
       "role": "Rolle",
       "active": "Aktiv",

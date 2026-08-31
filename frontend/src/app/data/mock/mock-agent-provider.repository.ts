@@ -2,8 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AgentProviderRepository } from '../agent-provider.repository';
 import {
-  AgentChatMessage,
-  AgentChatReply,
   AgentOAuthStart,
   AgentProviderId,
   AgentProviderLink,
@@ -157,19 +155,6 @@ export class MockAgentProviderRepository extends AgentProviderRepository {
           : { ok: false, errorCode: 'agents.not_configured' },
       this.latencyMs,
     );
-  }
-
-  chat(messages: AgentChatMessage[], provider?: AgentProviderId): Observable<AgentChatReply> {
-    return mockResult(() => {
-      const target = provider ?? (Object.keys(PROVIDER_SPECS) as AgentProviderId[])[0];
-      if (!this.linked.has(target)) throw new ApiError(422, 'agents.not_configured', {});
-      const lastMessage = messages.at(-1)?.content ?? '';
-      return {
-        provider: target,
-        model: this.linked.get(target)?.model ?? this.defaultModel(target),
-        reply: `Mock reply to: ${lastMessage}`,
-      };
-    }, this.latencyMs);
   }
 
   private defaultModel(provider: AgentProviderId): string {

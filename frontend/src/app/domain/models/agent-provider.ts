@@ -36,16 +36,3 @@ export interface AgentProviderTestResult {
   ok: boolean;
   errorCode?: string;
 }
-
-export type AgentChatRole = 'user' | 'assistant';
-
-export interface AgentChatMessage {
-  role: AgentChatRole;
-  content: string;
-}
-
-export interface AgentChatReply {
-  provider: AgentProviderId;
-  model: string;
-  reply: string;
-}
