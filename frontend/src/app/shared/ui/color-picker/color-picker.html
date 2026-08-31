@@ -1,0 +1,94 @@
+<app-modal [(open)]="open" [titleText]="titleText()">
+  <div class="flex flex-col gap-4">
+    <div
+      class="h-20 rounded-md border border-border"
+      [style.background-color]="color()"
+      aria-hidden="true"
+    ></div>
+
+    <div
+      class="color-saturation"
+      role="slider"
+      tabindex="0"
+      aria-label="Color saturation and brightness"
+      aria-orientation="horizontal"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [attr.aria-valuenow]="saturation()"
+      [attr.aria-valuetext]="saturation() + '% saturation, ' + brightness() + '% brightness'"
+      [style.background-color]="hueColor()"
+      (pointerdown)="onSaturationPointerDown($event)"
+      (pointermove)="onSaturationPointerMove($event)"
+      (pointerup)="onSaturationPointerUp()"
+      (pointercancel)="onSaturationPointerUp()"
+      (keydown)="onSaturationKeydown($event)"
+    >
+      <span
+        class="color-picker-handle"
+        [style.left.%]="saturation()"
+        [style.top.%]="100 - brightness()"
+        aria-hidden="true"
+      ></span>
+    </div>
+
+    <div
+      class="color-hue"
+      role="slider"
+      tabindex="0"
+      aria-label="Color hue"
+      aria-orientation="horizontal"
+      aria-valuemin="0"
+      aria-valuemax="360"
+      [attr.aria-valuenow]="hue()"
+      (pointerdown)="onHuePointerDown($event)"
+      (pointermove)="onHuePointerMove($event)"
+      (pointerup)="onHuePointerUp()"
+      (pointercancel)="onHuePointerUp()"
+      (keydown)="onHueKeydown($event)"
+    >
+      <span class="color-picker-handle" [style.left.%]="huePercent()" aria-hidden="true"></span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+      <button
+        type="button"
+        class="rounded px-2 py-1.5 text-xs font-semibold uppercase transition-colors"
+        [class]="
+          format() === 'hex'
+            ? 'bg-surface-raised text-content-primary shadow-sm'
+            : 'text-content-muted hover:text-content-primary'
+        "
+        [attr.aria-pressed]="format() === 'hex'"
+        (click)="setFormat('hex')"
+      >
+        HEX
+      </button>
+      <button
+        type="button"
+        class="rounded px-2 py-1.5 text-xs font-semibold uppercase transition-colors"
+        [class]="
+          format() === 'rgb'
+            ? 'bg-surface-raised text-content-primary shadow-sm'
+            : 'text-content-muted hover:text-content-primary'
+        "
+        [attr.aria-pressed]="format() === 'rgb'"
+        (click)="setFormat('rgb')"
+      >
+        RGB
+      </button>
+    </div>
+
+    <label class="form-label" for="color-picker-value">{{
+      format() === 'hex' ? '#RRGGBB' : 'rgb(r, g, b)'
+    }}</label>
+    <input
+      id="color-picker-value"
+      type="text"
+      class="form-input mt-0 font-mono"
+      [value]="value()"
+      [placeholder]="format() === 'hex' ? '#RRGGBB' : 'rgb(r, g, b)'"
+      [attr.aria-invalid]="invalid()"
+      (input)="onValueInput($any($event.target).value)"
+    />
+  </div>
+</app-modal>

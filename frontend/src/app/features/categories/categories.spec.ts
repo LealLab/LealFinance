@@ -1,4 +1,5 @@
 import { provideZonelessChangeDetection } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ConfirmService } from '../../core/confirm.service';
@@ -11,8 +12,10 @@ import { MockCategoryRepository } from '../../data/mock/mock-category.repository
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
+import { CategoryGroup } from '../../domain/models/category-group';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Categories } from './categories';
+import { CategoryFormModal } from './category-form-modal';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 function findGroupRow(el: HTMLElement, name: string): HTMLLIElement | null {
@@ -103,6 +106,20 @@ describe('Categories', () => {
         .flatMap((row) => row.categories)
         .some((row) => row.category.name === 'Test category'),
     ).toBe(true);
+  });
+
+  it('uses the group color when creating a category from a group row', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const group = fixture.componentInstance['expenseRows']().find((row) => row.group.name === 'Moradia')!.group;
+    (fixture.componentInstance as unknown as { openCreateCategoryIn: (group: CategoryGroup) => void }).openCreateCategoryIn(group);
+    fixture.detectChanges();
+
+    const form = fixture.debugElement.query(By.directive(CategoryFormModal)).componentInstance as CategoryFormModal;
+    expect(form['form'].controls.color.value).toBe(group.color);
   });
 
   it('creates and deletes an empty group, while hiding delete for groups with categories', async () => {

@@ -6,6 +6,7 @@ import { ConfirmService } from '../../core/confirm.service';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { Institution } from '../../domain/models/institution';
 import { Button } from '../../shared/ui/button/button';
+import { ColorPicker } from '../../shared/ui/color-picker/color-picker';
 import { Icon } from '../../shared/ui/icon/icon';
 import { IconPicker } from '../../shared/ui/icon-picker/icon-picker';
 import { Modal } from '../../shared/ui/modal/modal';
@@ -27,7 +28,7 @@ const DEFAULT_ICON = 'bank';
  */
 @Component({
   selector: 'app-institution-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, IconPicker],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ColorPicker, Icon, IconPicker],
   templateUrl: './institution-form-modal.html',
   styleUrl: './institution-form-modal.scss'
 })
@@ -48,6 +49,7 @@ export class InstitutionFormModal {
   protected readonly saveErrorKey = signal<string | null>(null);
   protected readonly deleteErrorKey = signal<string | null>(null);
   protected readonly iconPickerOpen = signal(false);
+  protected readonly colorPickerOpen = signal(false);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -57,6 +59,10 @@ export class InstitutionFormModal {
 
   protected readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
     initialValue: this.form.controls.icon.value
+  });
+
+  protected readonly selectedColor = toSignal(this.form.controls.color.valueChanges, {
+    initialValue: this.form.controls.color.value
   });
 
   /**

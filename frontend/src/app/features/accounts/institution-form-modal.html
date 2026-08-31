@@ -21,7 +21,26 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="form-label" for="institution-color">{{ t('institutions.form.fields.color') }}</label>
-            <input id="institution-color" type="color" class="form-input h-10 p-1" formControlName="color" />
+            <button
+              id="institution-color"
+              type="button"
+              class="form-input flex h-10 items-center gap-2"
+              aria-haspopup="dialog"
+              (click)="colorPickerOpen.set(true)"
+            >
+              <span
+                class="size-5 shrink-0 rounded border border-border"
+                [style.background-color]="selectedColor()"
+                aria-hidden="true"
+              ></span>
+              <span class="font-mono text-sm">{{ selectedColor() }}</span>
+            </button>
+            <app-color-picker
+              [(open)]="colorPickerOpen"
+              [color]="selectedColor()"
+              [titleText]="t('institutions.form.fields.color')"
+              (colorChange)="form.controls.color.setValue($event)"
+            />
           </div>
           <div>
             <label class="form-label" for="institution-icon">{{ t('institutions.form.fields.icon') }}</label>

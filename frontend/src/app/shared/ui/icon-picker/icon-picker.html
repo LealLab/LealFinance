@@ -37,7 +37,7 @@
   <!-- t(icons.groups.money) t(icons.groups.food) t(icons.groups.transport) t(icons.groups.home) -->
   <!-- t(icons.groups.shopping) t(icons.groups.health) t(icons.groups.entertainment) t(icons.groups.work) -->
   <!-- t(icons.groups.people) t(icons.groups.general) -->
-  <ng-template #grid>
+  <app-modal [(open)]="open" [titleText]="t('icons.title')">
     <div class="flex flex-col gap-3">
       <input
         type="search"
@@ -80,13 +80,5 @@
         <p class="py-6 text-center text-sm text-content-muted">{{ t('icons.empty') }}</p>
       }
     </div>
-  </ng-template>
-
-  @if (inline()) {
-    <ng-container [ngTemplateOutlet]="grid" />
-  } @else {
-    <app-modal [(open)]="open" [titleText]="t('icons.title')">
-      <ng-container [ngTemplateOutlet]="grid" />
-    </app-modal>
-  }
+  </app-modal>
 </div>
