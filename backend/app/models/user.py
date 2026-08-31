@@ -9,11 +9,14 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     CheckConstraint,
     DateTime,
     ForeignKey,
+    Integer,
     String,
+    Text,
     UniqueConstraint,
     func,
 )
@@ -60,6 +63,22 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     display_name: Mapped[str] = mapped_column(String(100), nullable=False)
     role: Mapped[str] = mapped_column(String(20), nullable=False, default=ROLE_MEMBER)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+
+    # --- Two-factor authentication (optional, off until confirmed) ---
+    # Encrypted rather than hashed: verifying a TOTP code requires the secret
+    # itself, so this is the same read-back case app/core/crypto.py exists for.
+    totp_secret_ciphertext: Mapped[str | None] = mapped_column(Text)
+    # A secret generated but never confirmed with a working code gates
+    # nothing - this timestamp, not the secret, is what "2FA is on" means.
+    totp_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # Highest TOTP time step already accepted. Replaying a code inside its
+    # own window is rejected against this floor - see app/core/totp.py.
+    totp_last_step: Mapped[int | None] = mapped_column(BigInteger)
+    # Consecutive bad second factors. POST /auth/recover is public and a code
+    # is only six digits, so this counter and the lockout it drives are the
+    # only thing standing between it and unlimited online guessing.
+    totp_failed_attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    totp_locked_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     # --- Preferences (GET/PATCH /auth/preferences) ---
     locale: Mapped[str] = mapped_column(String(10), nullable=False, default="en-US")

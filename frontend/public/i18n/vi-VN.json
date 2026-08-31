@@ -249,7 +249,9 @@
         "configureLanguage": "Thiết lập ngôn ngữ",
         "configureCurrency": "Thiết lập tiền tệ hiển thị",
         "toggleTheme": "Đổi giao diện",
-        "toggleBalances": "Hiện hoặc ẩn số dư"
+        "toggleBalances": "Hiện hoặc ẩn số dư",
+        "configureTwoFactor": "Cấu hình xác thực hai yếu tố",
+        "configureTwoFactorHint": "2FA, ứng dụng xác thực, mã dự phòng, khôi phục tài khoản"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Chỉnh sửa",
       "delete": "Xóa",
       "import": "Nhập CSV",
-    "columns": "Cột",
-    "exportCsv": "Xuất CSV"
+      "columns": "Cột",
+      "exportCsv": "Xuất CSV"
     },
     "tabs": {
       "transactions": "Giao dịch",
@@ -432,18 +434,18 @@
       "to": "Đến",
       "institution": "Tổ chức tài chính",
       "clear": "Xóa bộ lọc",
-    "title": "Lọc theo",
-    "searchPlaceholder": "Tìm kiếm giao dịch…",
-    "group": "Nhóm",
-    "date": "Ngày",
-    "amount": "Số tiền",
-    "amountMin": "Tối thiểu",
-    "amountMax": "Tối đa",
-    "any": "Bất kỳ",
-    "back": "Quay lại",
-    "dateRange": "{{from}} đến {{to}}",
-    "amountRange": "{{min}} đến {{max}}",
-    "removeChip": "Xóa bộ lọc {{filter}}"
+      "title": "Lọc theo",
+      "searchPlaceholder": "Tìm kiếm giao dịch…",
+      "group": "Nhóm",
+      "date": "Ngày",
+      "amount": "Số tiền",
+      "amountMin": "Tối thiểu",
+      "amountMax": "Tối đa",
+      "any": "Bất kỳ",
+      "back": "Quay lại",
+      "dateRange": "{{from}} đến {{to}}",
+      "amountRange": "{{min}} đến {{max}}",
+      "removeChip": "Xóa bộ lọc {{filter}}"
     },
     "empty": {
       "title": "Không tìm thấy giao dịch nào",
@@ -568,60 +570,60 @@
         "confirm": "Nhập các dòng đã xem lại"
       }
     },
-  "eyebrow": "Tài chính",
-  "view": {
-    "list": "Danh sách",
-    "calendar": "Lịch"
-  },
-  "columns": {
-    "title": "Cột",
-    "date": "Ngày",
-    "description": "Mô tả",
-    "category": "Danh mục",
-    "account": "Tài khoản",
-    "amount": "Số tiền",
-    "reorder": "Kéo để sắp xếp lại",
-    "resize": "Kéo để đổi kích thước"
-  },
-  "table": {
-    "selectAll": "Chọn tất cả các hàng",
-    "selectRow": "Chọn {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} trên tổng số {{total}}",
-    "pageSize": "Số hàng mỗi trang",
-    "previous": "Trang trước",
-    "next": "Trang sau",
-    "goToPage": "Đi đến trang {{page}}"
-  },
-  "bulk": {
-    "selected": "đã chọn",
-    "assignCategory": "Chọn danh mục…",
-    "mixedKinds": "Chọn các giao dịch cùng một loại để gán danh mục",
-    "delete": "Xóa mục đã chọn",
-    "clearSelection": "Xóa lựa chọn",
-    "deleteConfirm": {
-      "title": "Xóa giao dịch",
-      "message": "Không thể hoàn tác. Xóa {{count}} giao dịch?"
+    "eyebrow": "Tài chính",
+    "view": {
+      "list": "Danh sách",
+      "calendar": "Lịch"
+    },
+    "columns": {
+      "title": "Cột",
+      "date": "Ngày",
+      "description": "Mô tả",
+      "category": "Danh mục",
+      "account": "Tài khoản",
+      "amount": "Số tiền",
+      "reorder": "Kéo để sắp xếp lại",
+      "resize": "Kéo để đổi kích thước"
+    },
+    "table": {
+      "selectAll": "Chọn tất cả các hàng",
+      "selectRow": "Chọn {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} trên tổng số {{total}}",
+      "pageSize": "Số hàng mỗi trang",
+      "previous": "Trang trước",
+      "next": "Trang sau",
+      "goToPage": "Đi đến trang {{page}}"
+    },
+    "bulk": {
+      "selected": "đã chọn",
+      "assignCategory": "Chọn danh mục…",
+      "mixedKinds": "Chọn các giao dịch cùng một loại để gán danh mục",
+      "delete": "Xóa mục đã chọn",
+      "clearSelection": "Xóa lựa chọn",
+      "deleteConfirm": {
+        "title": "Xóa giao dịch",
+        "message": "Không thể hoàn tác. Xóa {{count}} giao dịch?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Tháng trước",
+      "nextMonth": "Tháng sau",
+      "balanceTrend": "Xu hướng số dư",
+      "selectedDay": "Ngày đã chọn",
+      "selectDayHint": "Chọn một ngày để xem hoạt động",
+      "noTransactions": "Không có giao dịch vào ngày này",
+      "legend": {
+        "income": "Thu nhập",
+        "expenses": "Chi tiêu",
+        "transfer": "Chuyển tiền",
+        "projected": "Dự kiến"
+      }
+    },
+    "export": {
+      "filename": "giaodich"
     }
-  },
-  "calendar": {
-    "previousMonth": "Tháng trước",
-    "nextMonth": "Tháng sau",
-    "balanceTrend": "Xu hướng số dư",
-    "selectedDay": "Ngày đã chọn",
-    "selectDayHint": "Chọn một ngày để xem hoạt động",
-    "noTransactions": "Không có giao dịch vào ngày này",
-    "legend": {
-      "income": "Thu nhập",
-      "expenses": "Chi tiêu",
-      "transfer": "Chuyển tiền",
-      "projected": "Dự kiến"
-    }
-  },
-  "export": {
-    "filename": "giaodich"
-  }
   },
   "categories": {
     "title": "Danh mục",
@@ -1297,6 +1299,34 @@
       "disabled": "Đã tắt",
       "enabled": "Đã bật",
       "manage": "Quản lý"
+    },
+    "twoFactor": {
+      "title": "Xác thực hai yếu tố",
+      "description": "Bảo vệ tài khoản bằng mã từ ứng dụng xác thực.",
+      "enabled": "Đã bật",
+      "enable": "Bật xác thực hai yếu tố",
+      "lockoutWarning": "Không có xác thực hai yếu tố thì không có cách nào khôi phục tài khoản nếu bạn quên mật khẩu.",
+      "enroll": {
+        "step1": "Quét mã này bằng ứng dụng xác thực của bạn.",
+        "step2": "Nhập mã mà ứng dụng hiển thị",
+        "confirm": "Xác nhận và bật",
+        "qrAlt": "Mã QR cho ứng dụng xác thực của bạn",
+        "manualEntry": "Hoặc nhập khóa này thủ công"
+      },
+      "backupCodes": {
+        "title": "Lưu các mã dự phòng",
+        "warning": "Các mã này chỉ hiển thị lúc này. Mỗi mã dùng được một lần nếu bạn mất ứng dụng xác thực.",
+        "copy": "Sao chép mã",
+        "copied": "Đã sao chép",
+        "saved": "Tôi đã lưu",
+        "remaining": "Còn {{count}} mã dự phòng"
+      },
+      "manage": {
+        "codeLabel": "Mã xác thực",
+        "codeHint": "Bắt buộc để thay đổi các cài đặt này.",
+        "regenerate": "Tạo mã dự phòng mới",
+        "disable": "Tắt"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "Email",
       "password": "Mật khẩu",
       "displayName": "Tên hiển thị",
-      "invitationToken": "Mã lời mời"
+      "invitationToken": "Mã lời mời",
+      "totpCode": "Mã xác thực",
+      "recoveryCode": "Mã xác thực hoặc mã dự phòng",
+      "newPassword": "Mật khẩu mới"
     },
     "login": {
       "title": "Đăng nhập",
@@ -1323,6 +1356,21 @@
         "title": "Tạo tài khoản quản trị viên",
         "description": "Đây là tài khoản đầu tiên trên hệ thống này - tài khoản sẽ có toàn quyền quản trị."
       }
+    },
+    "totp": {
+      "challengeTitle": "Xác minh hai bước",
+      "challengeDescription": "Nhập mã từ ứng dụng xác thực của bạn.",
+      "codeHint": "Bạn cũng có thể dùng một trong các mã dự phòng.",
+      "trustDevice": "Tin cậy thiết bị này trong 30 ngày"
+    },
+    "recover": {
+      "link": "Không đăng nhập được?",
+      "title": "Khôi phục tài khoản",
+      "description": "Đặt mật khẩu mới bằng ứng dụng xác thực hoặc mã dự phòng.",
+      "action": "Đặt lại mật khẩu",
+      "codeHint": "Mã từ ứng dụng xác thực, hoặc một trong các mã dự phòng của bạn.",
+      "doneTitle": "Đã cập nhật mật khẩu",
+      "doneDescription": "Bạn đã đăng xuất khỏi mọi thiết bị. Hãy đăng nhập bằng mật khẩu mới."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "Phải có ít nhất một quản trị viên đang hoạt động.",
       "account_inactive": "Tài khoản này không hoạt động.",
       "admin_required": "Cần có quyền quản trị viên.",
-      "peer_admin": "Quản trị viên không thể thay đổi vai trò hoặc trạng thái của quản trị viên khác."
+      "peer_admin": "Quản trị viên không thể thay đổi vai trò hoặc trạng thái của quản trị viên khác.",
+      "totp_required": "Nhập mã từ ứng dụng xác thực của bạn.",
+      "totp_invalid": "Mã không hợp lệ. Hãy thử lại.",
+      "totp_locked": "Quá nhiều mã sai. Hãy thử lại sau 15 phút."
     },
     "invitation": {
       "not_found": "Lời mời không hợp lệ.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Tệp này không phải là bản xuất quy tắc LealFinance hợp lệ."
+    },
+    "totp": {
+      "already_enabled": "Xác thực hai yếu tố đã được bật.",
+      "not_enabled": "Xác thực hai yếu tố chưa được bật."
     }
   }
 }

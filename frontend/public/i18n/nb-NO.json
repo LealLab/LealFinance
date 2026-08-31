@@ -249,7 +249,9 @@
         "configureLanguage": "Konfigurer språk",
         "configureCurrency": "Konfigurer visningsvaluta",
         "toggleTheme": "Bytt tema",
-        "toggleBalances": "Vis eller skjul saldoer"
+        "toggleBalances": "Vis eller skjul saldoer",
+        "configureTwoFactor": "Konfigurer tofaktorautentisering",
+        "configureTwoFactorHint": "2FA, autentiseringsapp, reservekoder, kontogjenoppretting"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Rediger",
       "delete": "Slett",
       "import": "Importer CSV",
-    "columns": "Kolonner",
-    "exportCsv": "Eksporter CSV"
+      "columns": "Kolonner",
+      "exportCsv": "Eksporter CSV"
     },
     "tabs": {
       "transactions": "Transaksjoner",
@@ -432,18 +434,18 @@
       "to": "Til",
       "institution": "Institusjon",
       "clear": "Nullstill filtre",
-    "title": "Filtrer etter",
-    "searchPlaceholder": "Søk i transaksjoner…",
-    "group": "Grupper",
-    "date": "Dato",
-    "amount": "Beløp",
-    "amountMin": "Minimum",
-    "amountMax": "Maksimum",
-    "any": "Alle",
-    "back": "Tilbake",
-    "dateRange": "Fra {{from}} til {{to}}",
-    "amountRange": "Fra {{min}} til {{max}}",
-    "removeChip": "Fjern {{filter}}-filteret"
+      "title": "Filtrer etter",
+      "searchPlaceholder": "Søk i transaksjoner…",
+      "group": "Grupper",
+      "date": "Dato",
+      "amount": "Beløp",
+      "amountMin": "Minimum",
+      "amountMax": "Maksimum",
+      "any": "Alle",
+      "back": "Tilbake",
+      "dateRange": "Fra {{from}} til {{to}}",
+      "amountRange": "Fra {{min}} til {{max}}",
+      "removeChip": "Fjern {{filter}}-filteret"
     },
     "empty": {
       "title": "Ingen transaksjoner funnet",
@@ -568,60 +570,60 @@
         "confirm": "Importer gjennomgåtte rader"
       }
     },
-  "eyebrow": "Økonomi",
-  "view": {
-    "list": "Liste",
-    "calendar": "Kalender"
-  },
-  "columns": {
-    "title": "Kolonner",
-    "date": "Dato",
-    "description": "Beskrivelse",
-    "category": "Kategori",
-    "account": "Konto",
-    "amount": "Beløp",
-    "reorder": "Dra for å endre rekkefølge",
-    "resize": "Dra for å endre størrelse"
-  },
-  "table": {
-    "selectAll": "Velg alle rader",
-    "selectRow": "Velg {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} av {{total}}",
-    "pageSize": "Rader per side",
-    "previous": "Forrige side",
-    "next": "Neste side",
-    "goToPage": "Gå til side {{page}}"
-  },
-  "bulk": {
-    "selected": "valgte",
-    "assignCategory": "Velg kategori…",
-    "mixedKinds": "Velg transaksjoner av én type for å tilordne en kategori",
-    "delete": "Slett valgte",
-    "clearSelection": "Fjern utvalg",
-    "deleteConfirm": {
-      "title": "Slett transaksjoner",
-      "message": "Dette kan ikke angres. Slette {{count}} transaksjoner?"
+    "eyebrow": "Økonomi",
+    "view": {
+      "list": "Liste",
+      "calendar": "Kalender"
+    },
+    "columns": {
+      "title": "Kolonner",
+      "date": "Dato",
+      "description": "Beskrivelse",
+      "category": "Kategori",
+      "account": "Konto",
+      "amount": "Beløp",
+      "reorder": "Dra for å endre rekkefølge",
+      "resize": "Dra for å endre størrelse"
+    },
+    "table": {
+      "selectAll": "Velg alle rader",
+      "selectRow": "Velg {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} av {{total}}",
+      "pageSize": "Rader per side",
+      "previous": "Forrige side",
+      "next": "Neste side",
+      "goToPage": "Gå til side {{page}}"
+    },
+    "bulk": {
+      "selected": "valgte",
+      "assignCategory": "Velg kategori…",
+      "mixedKinds": "Velg transaksjoner av én type for å tilordne en kategori",
+      "delete": "Slett valgte",
+      "clearSelection": "Fjern utvalg",
+      "deleteConfirm": {
+        "title": "Slett transaksjoner",
+        "message": "Dette kan ikke angres. Slette {{count}} transaksjoner?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Forrige måned",
+      "nextMonth": "Neste måned",
+      "balanceTrend": "Saldoens utvikling",
+      "selectedDay": "Valgt dag",
+      "selectDayHint": "Velg en dag for å se aktiviteten",
+      "noTransactions": "Ingen transaksjoner denne dagen",
+      "legend": {
+        "income": "Inntekter",
+        "expenses": "Utgifter",
+        "transfer": "Overføring",
+        "projected": "Forventet"
+      }
+    },
+    "export": {
+      "filename": "transaksjoner"
     }
-  },
-  "calendar": {
-    "previousMonth": "Forrige måned",
-    "nextMonth": "Neste måned",
-    "balanceTrend": "Saldoens utvikling",
-    "selectedDay": "Valgt dag",
-    "selectDayHint": "Velg en dag for å se aktiviteten",
-    "noTransactions": "Ingen transaksjoner denne dagen",
-    "legend": {
-      "income": "Inntekter",
-      "expenses": "Utgifter",
-      "transfer": "Overføring",
-      "projected": "Forventet"
-    }
-  },
-  "export": {
-    "filename": "transaksjoner"
-  }
   },
   "categories": {
     "title": "Kategorier",
@@ -1297,6 +1299,34 @@
       "disabled": "Deaktivert",
       "enabled": "Aktivert",
       "manage": "Administrer"
+    },
+    "twoFactor": {
+      "title": "Tofaktorautentisering",
+      "description": "Beskytt kontoen din med en kode fra en autentiseringsapp.",
+      "enabled": "Aktivert",
+      "enable": "Aktiver tofaktorautentisering",
+      "lockoutWarning": "Uten tofaktorautentisering finnes det ingen måte å gjenopprette kontoen på hvis du glemmer passordet.",
+      "enroll": {
+        "step1": "Skann denne koden med autentiseringsappen din.",
+        "step2": "Skriv inn koden appen viser",
+        "confirm": "Bekreft og aktiver",
+        "qrAlt": "QR-kode for autentiseringsappen din",
+        "manualEntry": "Eller skriv inn denne nøkkelen manuelt"
+      },
+      "backupCodes": {
+        "title": "Lagre reservekodene dine",
+        "warning": "Kodene vises bare nå. Hver av dem virker én gang hvis du mister autentiseringsappen.",
+        "copy": "Kopier koder",
+        "copied": "Kopiert",
+        "saved": "Jeg har lagret dem",
+        "remaining": "{{count}} reservekoder igjen"
+      },
+      "manage": {
+        "codeLabel": "Autentiseringskode",
+        "codeHint": "Kreves for å endre disse innstillingene.",
+        "regenerate": "Generer nye reservekoder",
+        "disable": "Deaktiver"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "E-post",
       "password": "Passord",
       "displayName": "Visningsnavn",
-      "invitationToken": "Invitasjonstoken"
+      "invitationToken": "Invitasjonstoken",
+      "totpCode": "Autentiseringskode",
+      "recoveryCode": "Autentiserings- eller reservekode",
+      "newPassword": "Nytt passord"
     },
     "login": {
       "title": "Logg inn",
@@ -1323,6 +1356,21 @@
         "title": "Opprett administratorkontoen",
         "description": "Dette er den første kontoen på denne instansen – den får full administratortilgang."
       }
+    },
+    "totp": {
+      "challengeTitle": "Totrinnsbekreftelse",
+      "challengeDescription": "Skriv inn koden fra autentiseringsappen din.",
+      "codeHint": "Du kan også bruke en av reservekodene dine.",
+      "trustDevice": "Stol på denne enheten i 30 dager"
+    },
+    "recover": {
+      "link": "Får du ikke logget inn?",
+      "title": "Gjenopprett kontoen din",
+      "description": "Angi et nytt passord med autentiseringsappen din eller en reservekode.",
+      "action": "Tilbakestill passord",
+      "codeHint": "En kode fra autentiseringsappen din, eller en av reservekodene dine.",
+      "doneTitle": "Passordet er oppdatert",
+      "doneDescription": "Du er logget ut overalt. Logg inn med det nye passordet."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "Minst én aktiv administrator kreves.",
       "account_inactive": "Denne kontoen er inaktiv.",
       "admin_required": "Du må ha administratortilgang.",
-      "peer_admin": "Administratorer kan ikke endre rollen eller statusen til en annen administrator."
+      "peer_admin": "Administratorer kan ikke endre rollen eller statusen til en annen administrator.",
+      "totp_required": "Skriv inn koden fra autentiseringsappen din.",
+      "totp_invalid": "Koden er ikke gyldig. Prøv igjen.",
+      "totp_locked": "For mange feil koder. Prøv igjen om 15 minutter."
     },
     "invitation": {
       "not_found": "Invitasjonen er ugyldig.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Denne filen er ikke en gyldig LealFinance-eksport av regler."
+    },
+    "totp": {
+      "already_enabled": "Tofaktorautentisering er allerede aktivert.",
+      "not_enabled": "Tofaktorautentisering er ikke aktivert."
     }
   }
 }

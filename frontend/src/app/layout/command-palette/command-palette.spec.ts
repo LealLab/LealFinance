@@ -34,8 +34,8 @@ describe('CommandPalette', () => {
         CommandPalette,
         TranslocoTestingModule.forRoot({
           langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
+        }),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -47,8 +47,8 @@ describe('CommandPalette', () => {
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: MetadataService, useValue: { settings } },
-        { provide: SessionService, useValue: { user: sessionUser.asReadonly() } }
-      ]
+        { provide: SessionService, useValue: { user: sessionUser.asReadonly() } },
+      ],
     }).compileComponents();
   });
 
@@ -59,7 +59,7 @@ describe('CommandPalette', () => {
       displayName: 'Admin',
       role: 'admin',
       isActive: true,
-      createdAt: ''
+      createdAt: '',
     });
     settings.set({ agentsEnabled: true });
 
@@ -73,7 +73,7 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const labels = Array.from(fixture.nativeElement.querySelectorAll('button')).map((button) =>
-      (button as HTMLButtonElement).textContent?.trim()
+      (button as HTMLButtonElement).textContent?.trim(),
     );
     expect(labels.some((label) => label?.includes('Provedores de IA'))).toBe(true);
   });
@@ -114,7 +114,9 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const buttons = Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[];
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll('button'),
+    ) as HTMLButtonElement[];
     const labels = buttons.map((b) => b.textContent?.trim());
 
     expect(labels.some((label) => label?.includes('Orçamentos'))).toBe(true);
@@ -131,12 +133,17 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    expect((fixture.nativeElement.textContent as string)).toContain('Nenhum resultado encontrado');
+    expect(fixture.nativeElement.textContent as string).toContain('Nenhum resultado encontrado');
   });
 
   it.each([
     ['idioma', 'Configurar idioma', 'settings-language'],
-    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency']
+    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency'],
+    ['dois fatores', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    // Synonyms people actually type reach the same entry, via keywordsKey.
+    ['2FA', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    ['autenticador', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    ['recuperação', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
   ])('finds the %s setting and navigates to its control', (query, label, fragment) => {
     const fixture = TestBed.createComponent(CommandPalette);
     const router = TestBed.inject(Router);
@@ -150,12 +157,37 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
-      (button as HTMLButtonElement).textContent?.includes(label)
+      (button as HTMLButtonElement).textContent?.includes(label),
     ) as HTMLButtonElement;
     expect(result).toBeTruthy();
 
     result.click();
     expect(navigate).toHaveBeenCalledWith(['/settings'], { fragment });
+  });
+
+  it('matches on search keywords without rendering them in the row', () => {
+    // Regression: these synonyms were once a sublabelKey. The sublabel slot
+    // is shrink-0, so the long keyword list took the whole row and squeezed
+    // the flex-1 label to zero width - the entry rendered with no title.
+    // Asserting on textContent alone cannot catch that (CSS truncation
+    // leaves the text in the DOM), so assert the keywords never render.
+    const fixture = TestBed.createComponent(CommandPalette);
+    TestBed.inject(CommandPaletteService).show();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = '2FA';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const row = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
+      (button as HTMLButtonElement).textContent?.includes(
+        'Configurar autenticação de dois fatores',
+      ),
+    ) as HTMLButtonElement;
+    expect(row).toBeTruthy();
+    expect(row.textContent).not.toContain('aplicativo autenticador');
+    expect(row.querySelector('.font-mono')).toBeNull();
   });
 
   it('finds the "Import transactions" quick action and navigates to the import route', () => {
@@ -171,7 +203,7 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
-      (button as HTMLButtonElement).textContent?.includes('Importar transações')
+      (button as HTMLButtonElement).textContent?.includes('Importar transações'),
     ) as HTMLButtonElement;
     expect(result).toBeTruthy();
 

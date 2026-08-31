@@ -20,15 +20,15 @@ describe('Login', () => {
         Login,
         TranslocoTestingModule.forRoot({
           langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
+        }),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: SessionService, useValue: session },
-        { provide: IdentityApiService, useValue: identityApi }
-      ]
+        { provide: IdentityApiService, useValue: identityApi },
+      ],
     }).compileComponents();
   });
 
@@ -46,14 +46,16 @@ describe('Login', () => {
     const fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
 
-    const button = fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const button = fixture.nativeElement.querySelector(
+      'button[type="submit"]',
+    ) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
 
-    fixture.componentInstance['form'].setValue({ email: 'not-an-email', password: 'secret' });
+    fixture.componentInstance['form'].patchValue({ email: 'not-an-email', password: 'secret' });
     fixture.detectChanges();
     expect(button.disabled).toBe(true);
 
-    fixture.componentInstance['form'].setValue({ email: 'user@example.com', password: 'secret' });
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'secret' });
     fixture.detectChanges();
     expect(button.disabled).toBe(false);
   });
@@ -64,10 +66,10 @@ describe('Login', () => {
     const fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
 
-    fixture.componentInstance['form'].setValue({ email: 'user@example.com', password: 'secret' });
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'secret' });
     await fixture.componentInstance['submit']();
 
-    expect(session.login).toHaveBeenCalledWith('user@example.com', 'secret');
+    expect(session.login).toHaveBeenCalledWith('user@example.com', 'secret', undefined);
     expect(navigateSpy).toHaveBeenCalledWith('/');
   });
 
@@ -76,12 +78,83 @@ describe('Login', () => {
     const fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
 
-    fixture.componentInstance['form'].setValue({ email: 'user@example.com', password: 'wrong' });
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'wrong' });
     await fixture.componentInstance['submit']();
     fixture.detectChanges();
 
     const alert = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
     expect(alert).toBeTruthy();
     expect(fixture.componentInstance['errorCode']()).toBe('auth.invalid_credentials');
+  });
+
+  it('switches to the code prompt instead of showing an error on totp_required', async () => {
+    session.login.mockReturnValue(throwError(() => ({ code: 'auth.totp_required' })));
+    const fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'secret' });
+    await fixture.componentInstance['submit']();
+    fixture.detectChanges();
+
+    // The challenge is a step, not a failure - no alert should appear.
+    expect(fixture.componentInstance['errorCode']()).toBeUndefined();
+    expect(fixture.nativeElement.querySelector('[role="alert"]')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Verificação em duas etapas');
+    expect(fixture.nativeElement.querySelector('input[type="checkbox"]')).not.toBeNull();
+  });
+
+  it('resends the credentials with the code and the trust choice', async () => {
+    session.login.mockReturnValue(throwError(() => ({ code: 'auth.totp_required' })));
+    const router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    const fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'secret' });
+    await fixture.componentInstance['submit']();
+
+    session.login.mockReturnValue(of({ id: 'u1' }));
+    fixture.componentInstance['form'].patchValue({ totpCode: '123456', trustDevice: true });
+    await fixture.componentInstance['submit']();
+
+    expect(session.login).toHaveBeenLastCalledWith('user@example.com', 'secret', {
+      code: '123456',
+      trustDevice: true,
+    });
+  });
+
+  it('defaults to not trusting the device', async () => {
+    session.login.mockReturnValue(throwError(() => ({ code: 'auth.totp_required' })));
+    const router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    const fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'secret' });
+    await fixture.componentInstance['submit']();
+
+    session.login.mockReturnValue(of({ id: 'u1' }));
+    fixture.componentInstance['form'].patchValue({ totpCode: '123456' });
+    await fixture.componentInstance['submit']();
+
+    expect(session.login).toHaveBeenLastCalledWith('user@example.com', 'secret', {
+      code: '123456',
+      trustDevice: false,
+    });
+  });
+
+  it('requires a code before the challenge can be submitted', async () => {
+    session.login.mockReturnValue(throwError(() => ({ code: 'auth.totp_required' })));
+    const fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+
+    fixture.componentInstance['form'].patchValue({ email: 'user@example.com', password: 'secret' });
+    await fixture.componentInstance['submit']();
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      'button[type="submit"]',
+    ) as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
   });
 });

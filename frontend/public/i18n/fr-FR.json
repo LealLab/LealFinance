@@ -249,7 +249,9 @@
         "configureLanguage": "Configurer la langue",
         "configureCurrency": "Configurer la devise d’affichage",
         "toggleTheme": "Changer de thème",
-        "toggleBalances": "Afficher ou masquer les soldes"
+        "toggleBalances": "Afficher ou masquer les soldes",
+        "configureTwoFactor": "Configurer l'authentification à deux facteurs",
+        "configureTwoFactorHint": "2FA, application d'authentification, codes de secours, récupération de compte"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Modifier",
       "delete": "Supprimer",
       "import": "Importer un CSV",
-    "columns": "Colonnes",
-    "exportCsv": "Exporter en CSV"
+      "columns": "Colonnes",
+      "exportCsv": "Exporter en CSV"
     },
     "tabs": {
       "transactions": "Opérations",
@@ -432,18 +434,18 @@
       "to": "Au",
       "institution": "Établissement",
       "clear": "Effacer les filtres",
-    "title": "Filtrer par",
-    "searchPlaceholder": "Rechercher des opérations…",
-    "group": "Grouper",
-    "date": "Date",
-    "amount": "Montant",
-    "amountMin": "Minimum",
-    "amountMax": "Maximum",
-    "any": "Toutes",
-    "back": "Retour",
-    "dateRange": "Du {{from}} au {{to}}",
-    "amountRange": "De {{min}} à {{max}}",
-    "removeChip": "Supprimer le filtre {{filter}}"
+      "title": "Filtrer par",
+      "searchPlaceholder": "Rechercher des opérations…",
+      "group": "Grouper",
+      "date": "Date",
+      "amount": "Montant",
+      "amountMin": "Minimum",
+      "amountMax": "Maximum",
+      "any": "Toutes",
+      "back": "Retour",
+      "dateRange": "Du {{from}} au {{to}}",
+      "amountRange": "De {{min}} à {{max}}",
+      "removeChip": "Supprimer le filtre {{filter}}"
     },
     "empty": {
       "title": "Aucune opération trouvée",
@@ -568,60 +570,60 @@
         "confirm": "Importer les lignes vérifiées"
       }
     },
-  "eyebrow": "Finances",
-  "view": {
-    "list": "Liste",
-    "calendar": "Calendrier"
-  },
-  "columns": {
-    "title": "Colonnes",
-    "date": "Date",
-    "description": "Description",
-    "category": "Catégorie",
-    "account": "Compte",
-    "amount": "Montant",
-    "reorder": "Faire glisser pour réorganiser",
-    "resize": "Faire glisser pour redimensionner"
-  },
-  "table": {
-    "selectAll": "Sélectionner toutes les lignes",
-    "selectRow": "Sélectionner {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} sur {{total}}",
-    "pageSize": "Lignes par page",
-    "previous": "Page précédente",
-    "next": "Page suivante",
-    "goToPage": "Aller à la page {{page}}"
-  },
-  "bulk": {
-    "selected": "sélectionnées",
-    "assignCategory": "Sélectionner une catégorie…",
-    "mixedKinds": "Sélectionnez des opérations d’un seul type pour attribuer une catégorie",
-    "delete": "Supprimer la sélection",
-    "clearSelection": "Effacer la sélection",
-    "deleteConfirm": {
-      "title": "Supprimer les opérations",
-      "message": "Cette action est irréversible. Supprimer {{count}} opérations ?"
+    "eyebrow": "Finances",
+    "view": {
+      "list": "Liste",
+      "calendar": "Calendrier"
+    },
+    "columns": {
+      "title": "Colonnes",
+      "date": "Date",
+      "description": "Description",
+      "category": "Catégorie",
+      "account": "Compte",
+      "amount": "Montant",
+      "reorder": "Faire glisser pour réorganiser",
+      "resize": "Faire glisser pour redimensionner"
+    },
+    "table": {
+      "selectAll": "Sélectionner toutes les lignes",
+      "selectRow": "Sélectionner {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} sur {{total}}",
+      "pageSize": "Lignes par page",
+      "previous": "Page précédente",
+      "next": "Page suivante",
+      "goToPage": "Aller à la page {{page}}"
+    },
+    "bulk": {
+      "selected": "sélectionnées",
+      "assignCategory": "Sélectionner une catégorie…",
+      "mixedKinds": "Sélectionnez des opérations d’un seul type pour attribuer une catégorie",
+      "delete": "Supprimer la sélection",
+      "clearSelection": "Effacer la sélection",
+      "deleteConfirm": {
+        "title": "Supprimer les opérations",
+        "message": "Cette action est irréversible. Supprimer {{count}} opérations ?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Mois précédent",
+      "nextMonth": "Mois suivant",
+      "balanceTrend": "Évolution du solde",
+      "selectedDay": "Jour sélectionné",
+      "selectDayHint": "Sélectionnez un jour pour voir son activité",
+      "noTransactions": "Aucune opération ce jour",
+      "legend": {
+        "income": "Revenus",
+        "expenses": "Dépenses",
+        "transfer": "Virement",
+        "projected": "Prévisionnelle"
+      }
+    },
+    "export": {
+      "filename": "operations"
     }
-  },
-  "calendar": {
-    "previousMonth": "Mois précédent",
-    "nextMonth": "Mois suivant",
-    "balanceTrend": "Évolution du solde",
-    "selectedDay": "Jour sélectionné",
-    "selectDayHint": "Sélectionnez un jour pour voir son activité",
-    "noTransactions": "Aucune opération ce jour",
-    "legend": {
-      "income": "Revenus",
-      "expenses": "Dépenses",
-      "transfer": "Virement",
-      "projected": "Prévisionnelle"
-    }
-  },
-  "export": {
-    "filename": "operations"
-  }
   },
   "categories": {
     "title": "Catégories",
@@ -1297,6 +1299,34 @@
       "disabled": "Désactivé",
       "enabled": "Activé",
       "manage": "Gérer"
+    },
+    "twoFactor": {
+      "title": "Authentification à deux facteurs",
+      "description": "Protégez votre compte avec un code d'une application d'authentification.",
+      "enabled": "Activée",
+      "enable": "Activer l'authentification à deux facteurs",
+      "lockoutWarning": "Sans authentification à deux facteurs, il n'y a aucun moyen de récupérer votre compte si vous oubliez votre mot de passe.",
+      "enroll": {
+        "step1": "Scannez ce code avec votre application d'authentification.",
+        "step2": "Saisissez le code affiché par l'application",
+        "confirm": "Confirmer et activer",
+        "qrAlt": "Code QR pour votre application d'authentification",
+        "manualEntry": "Ou saisissez cette clé manuellement"
+      },
+      "backupCodes": {
+        "title": "Enregistrez vos codes de secours",
+        "warning": "Ces codes ne sont affichés que maintenant. Chacun fonctionne une fois si vous perdez votre application d'authentification.",
+        "copy": "Copier les codes",
+        "copied": "Copié",
+        "saved": "Je les ai enregistrés",
+        "remaining": "{{count}} codes de secours restants"
+      },
+      "manage": {
+        "codeLabel": "Code d'authentification",
+        "codeHint": "Requis pour modifier ces paramètres.",
+        "regenerate": "Générer de nouveaux codes de secours",
+        "disable": "Désactiver"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "Adresse e-mail",
       "password": "Mot de passe",
       "displayName": "Nom d’affichage",
-      "invitationToken": "Jeton d’invitation"
+      "invitationToken": "Jeton d’invitation",
+      "totpCode": "Code d'authentification",
+      "recoveryCode": "Code d'authentification ou de secours",
+      "newPassword": "Nouveau mot de passe"
     },
     "login": {
       "title": "Se connecter",
@@ -1323,6 +1356,21 @@
         "title": "Créer le compte administrateur",
         "description": "Il s’agit du premier compte de cette instance — il bénéficiera d’un accès administrateur complet."
       }
+    },
+    "totp": {
+      "challengeTitle": "Vérification en deux étapes",
+      "challengeDescription": "Saisissez le code de votre application d'authentification.",
+      "codeHint": "Vous pouvez aussi utiliser l'un de vos codes de secours.",
+      "trustDevice": "Faire confiance à cet appareil pendant 30 jours"
+    },
+    "recover": {
+      "link": "Impossible de vous connecter ?",
+      "title": "Récupérer votre compte",
+      "description": "Définissez un nouveau mot de passe avec votre application d'authentification ou un code de secours.",
+      "action": "Réinitialiser le mot de passe",
+      "codeHint": "Un code de votre application d'authentification ou l'un de vos codes de secours.",
+      "doneTitle": "Mot de passe mis à jour",
+      "doneDescription": "Vous avez été déconnecté partout. Connectez-vous avec le nouveau mot de passe."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "Au moins un administrateur actif est requis.",
       "account_inactive": "Ce compte est inactif.",
       "admin_required": "Un accès administrateur est requis.",
-      "peer_admin": "Les administrateurs ne peuvent pas modifier le rôle ou le statut d'un autre administrateur."
+      "peer_admin": "Les administrateurs ne peuvent pas modifier le rôle ou le statut d'un autre administrateur.",
+      "totp_required": "Saisissez le code de votre application d'authentification.",
+      "totp_invalid": "Ce code n'est pas valide. Réessayez.",
+      "totp_locked": "Trop de codes incorrects. Réessayez dans 15 minutes."
     },
     "invitation": {
       "not_found": "L’invitation est invalide.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Ce fichier ne constitue pas un export valide de règles LealFinance."
+    },
+    "totp": {
+      "already_enabled": "L'authentification à deux facteurs est déjà activée.",
+      "not_enabled": "L'authentification à deux facteurs n'est pas activée."
     }
   }
 }

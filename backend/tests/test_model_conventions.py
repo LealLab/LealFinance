@@ -10,7 +10,20 @@ from app import models  # noqa: F401 - populates Base.registry.mappers
 from app.models.base import Base, UserOwnedModel
 
 # The only tables that are intentionally NOT scoped to a single user.
-_GLOBAL_MODELS = {"Currency", "ExchangeRate", "AssetQuote", "User", "Session", "Invitation"}
+# TotpBackupCode and TrustedDevice do carry a user_id, but like Session they
+# are auth infrastructure reached by token hash during login - before there is
+# a current user to scope to - not domain data fetched through
+# app/services/ownership.py.
+_GLOBAL_MODELS = {
+    "Currency",
+    "ExchangeRate",
+    "AssetQuote",
+    "User",
+    "Session",
+    "Invitation",
+    "TotpBackupCode",
+    "TrustedDevice",
+}
 
 
 def test_every_domain_model_is_user_owned_or_explicitly_global() -> None:

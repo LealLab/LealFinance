@@ -249,7 +249,9 @@
         "configureLanguage": "Dili ayarla",
         "configureCurrency": "Görüntüleme para birimini ayarla",
         "toggleTheme": "Temayı değiştir",
-        "toggleBalances": "Bakiyeleri göster veya gizle"
+        "toggleBalances": "Bakiyeleri göster veya gizle",
+        "configureTwoFactor": "İki faktörlü kimlik doğrulamayı yapılandır",
+        "configureTwoFactorHint": "2FA, kimlik doğrulama uygulaması, yedek kodlar, hesap kurtarma"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Düzenle",
       "delete": "Sil",
       "import": "CSV İçe Aktar",
-    "columns": "Sütunlar",
-    "exportCsv": "CSV'yi dışa aktar"
+      "columns": "Sütunlar",
+      "exportCsv": "CSV'yi dışa aktar"
     },
     "tabs": {
       "transactions": "İşlemler",
@@ -432,18 +434,18 @@
       "to": "Bitiş",
       "institution": "Finans kuruluşu",
       "clear": "Filtreleri temizle",
-    "title": "Şuna göre filtrele",
-    "searchPlaceholder": "İşlemlerde ara…",
-    "group": "Grupla",
-    "date": "Tarih",
-    "amount": "Tutar",
-    "amountMin": "Minimum",
-    "amountMax": "Maksimum",
-    "any": "Herhangi",
-    "back": "Geri",
-    "dateRange": "{{from}} ile {{to}} arası",
-    "amountRange": "{{min}} ile {{max}} arası",
-    "removeChip": "{{filter}} filtresini kaldır"
+      "title": "Şuna göre filtrele",
+      "searchPlaceholder": "İşlemlerde ara…",
+      "group": "Grupla",
+      "date": "Tarih",
+      "amount": "Tutar",
+      "amountMin": "Minimum",
+      "amountMax": "Maksimum",
+      "any": "Herhangi",
+      "back": "Geri",
+      "dateRange": "{{from}} ile {{to}} arası",
+      "amountRange": "{{min}} ile {{max}} arası",
+      "removeChip": "{{filter}} filtresini kaldır"
     },
     "empty": {
       "title": "İşlem bulunamadı",
@@ -568,60 +570,60 @@
         "confirm": "İncelenen satırları içe aktar"
       }
     },
-  "eyebrow": "Finans",
-  "view": {
-    "list": "Liste",
-    "calendar": "Takvim"
-  },
-  "columns": {
-    "title": "Sütunlar",
-    "date": "Tarih",
-    "description": "Açıklama",
-    "category": "Kategori",
-    "account": "Hesap",
-    "amount": "Tutar",
-    "reorder": "Yeniden sıralamak için sürükleyin",
-    "resize": "Boyutlandırmak için sürükleyin"
-  },
-  "table": {
-    "selectAll": "Tüm satırları seç",
-    "selectRow": "{{description}} seç"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} / {{total}}",
-    "pageSize": "Sayfa başına satır",
-    "previous": "Önceki sayfa",
-    "next": "Sonraki sayfa",
-    "goToPage": "{{page}}. sayfaya git"
-  },
-  "bulk": {
-    "selected": "seçildi",
-    "assignCategory": "Kategori seçin…",
-    "mixedKinds": "Kategori atamak için tek bir türdeki işlemleri seçin",
-    "delete": "Seçilenleri sil",
-    "clearSelection": "Seçimi temizle",
-    "deleteConfirm": {
-      "title": "İşlemleri sil",
-      "message": "Bu işlem geri alınamaz. {{count}} işlem silinsin mi?"
+    "eyebrow": "Finans",
+    "view": {
+      "list": "Liste",
+      "calendar": "Takvim"
+    },
+    "columns": {
+      "title": "Sütunlar",
+      "date": "Tarih",
+      "description": "Açıklama",
+      "category": "Kategori",
+      "account": "Hesap",
+      "amount": "Tutar",
+      "reorder": "Yeniden sıralamak için sürükleyin",
+      "resize": "Boyutlandırmak için sürükleyin"
+    },
+    "table": {
+      "selectAll": "Tüm satırları seç",
+      "selectRow": "{{description}} seç"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} / {{total}}",
+      "pageSize": "Sayfa başına satır",
+      "previous": "Önceki sayfa",
+      "next": "Sonraki sayfa",
+      "goToPage": "{{page}}. sayfaya git"
+    },
+    "bulk": {
+      "selected": "seçildi",
+      "assignCategory": "Kategori seçin…",
+      "mixedKinds": "Kategori atamak için tek bir türdeki işlemleri seçin",
+      "delete": "Seçilenleri sil",
+      "clearSelection": "Seçimi temizle",
+      "deleteConfirm": {
+        "title": "İşlemleri sil",
+        "message": "Bu işlem geri alınamaz. {{count}} işlem silinsin mi?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Önceki ay",
+      "nextMonth": "Sonraki ay",
+      "balanceTrend": "Bakiye eğilimi",
+      "selectedDay": "Seçilen gün",
+      "selectDayHint": "Etkinliğini görmek için bir gün seçin",
+      "noTransactions": "Bu gün işlem yok",
+      "legend": {
+        "income": "Gelir",
+        "expenses": "Gider",
+        "transfer": "Transfer",
+        "projected": "Öngörülen"
+      }
+    },
+    "export": {
+      "filename": "islemler"
     }
-  },
-  "calendar": {
-    "previousMonth": "Önceki ay",
-    "nextMonth": "Sonraki ay",
-    "balanceTrend": "Bakiye eğilimi",
-    "selectedDay": "Seçilen gün",
-    "selectDayHint": "Etkinliğini görmek için bir gün seçin",
-    "noTransactions": "Bu gün işlem yok",
-    "legend": {
-      "income": "Gelir",
-      "expenses": "Gider",
-      "transfer": "Transfer",
-      "projected": "Öngörülen"
-    }
-  },
-  "export": {
-    "filename": "islemler"
-  }
   },
   "categories": {
     "title": "Kategoriler",
@@ -1297,6 +1299,34 @@
       "disabled": "Devre dışı",
       "enabled": "Etkin",
       "manage": "Yönet"
+    },
+    "twoFactor": {
+      "title": "İki faktörlü kimlik doğrulama",
+      "description": "Hesabınızı bir kimlik doğrulama uygulamasındaki kodla koruyun.",
+      "enabled": "Etkin",
+      "enable": "İki faktörlü kimlik doğrulamayı etkinleştir",
+      "lockoutWarning": "İki faktörlü kimlik doğrulama olmadan parolanızı unutursanız hesabınızı kurtarmanın hiçbir yolu yoktur.",
+      "enroll": {
+        "step1": "Bu kodu kimlik doğrulama uygulamanızla tarayın.",
+        "step2": "Uygulamanın gösterdiği kodu girin",
+        "confirm": "Onayla ve etkinleştir",
+        "qrAlt": "Kimlik doğrulama uygulamanız için QR kodu",
+        "manualEntry": "Veya bu anahtarı elle girin"
+      },
+      "backupCodes": {
+        "title": "Yedek kodlarınızı kaydedin",
+        "warning": "Bu kodlar yalnızca şimdi gösterilir. Kimlik doğrulama uygulamanızı kaybederseniz her biri bir kez çalışır.",
+        "copy": "Kodları kopyala",
+        "copied": "Kopyalandı",
+        "saved": "Kaydettim",
+        "remaining": "{{count}} yedek kod kaldı"
+      },
+      "manage": {
+        "codeLabel": "Doğrulama kodu",
+        "codeHint": "Bu ayarları değiştirmek için gereklidir.",
+        "regenerate": "Yeni yedek kodlar oluştur",
+        "disable": "Devre dışı bırak"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "E-posta",
       "password": "Parola",
       "displayName": "Görünen ad",
-      "invitationToken": "Davet kodu"
+      "invitationToken": "Davet kodu",
+      "totpCode": "Doğrulama kodu",
+      "recoveryCode": "Doğrulama veya yedek kod",
+      "newPassword": "Yeni parola"
     },
     "login": {
       "title": "Giriş yap",
@@ -1323,6 +1356,21 @@
         "title": "Yönetici hesabı oluştur",
         "description": "Bu, bu örnekteki ilk hesaptır ve tam yönetici erişimine sahip olacaktır."
       }
+    },
+    "totp": {
+      "challengeTitle": "İki adımlı doğrulama",
+      "challengeDescription": "Kimlik doğrulama uygulamanızdaki kodu girin.",
+      "codeHint": "Yedek kodlarınızdan birini de kullanabilirsiniz.",
+      "trustDevice": "Bu cihaza 30 gün güven"
+    },
+    "recover": {
+      "link": "Giriş yapamıyor musunuz?",
+      "title": "Hesabınızı kurtarın",
+      "description": "Kimlik doğrulama uygulamanızla veya bir yedek kodla yeni bir parola belirleyin.",
+      "action": "Parolayı sıfırla",
+      "codeHint": "Kimlik doğrulama uygulamanızdaki bir kod ya da yedek kodlarınızdan biri.",
+      "doneTitle": "Parola güncellendi",
+      "doneDescription": "Tüm cihazlarda oturumunuz kapatıldı. Yeni parolanızla giriş yapın."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "En az bir etkin yönetici gereklidir.",
       "account_inactive": "Bu hesap etkin değil.",
       "admin_required": "Yönetici erişimi gereklidir.",
-      "peer_admin": "Yöneticiler başka bir yöneticinin rolünü veya durumunu değiştiremez."
+      "peer_admin": "Yöneticiler başka bir yöneticinin rolünü veya durumunu değiştiremez.",
+      "totp_required": "Kimlik doğrulama uygulamanızdaki kodu girin.",
+      "totp_invalid": "Bu kod geçerli değil. Tekrar deneyin.",
+      "totp_locked": "Çok fazla hatalı kod. 15 dakika sonra tekrar deneyin."
     },
     "invitation": {
       "not_found": "Davet geçersiz.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Bu dosya geçerli bir LealFinance kural dışa aktarma dosyası değil."
+    },
+    "totp": {
+      "already_enabled": "İki faktörlü kimlik doğrulama zaten etkin.",
+      "not_enabled": "İki faktörlü kimlik doğrulama etkin değil."
     }
   }
 }

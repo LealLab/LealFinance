@@ -6,18 +6,29 @@ app/services/auth.py for the bootstrap rule.
 
 from uuid import UUID
 
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Request, Response, status
 
 from app.api.deps import AdminUser, CurrentSession, CurrentUser, DbSession
-from app.core.cookies import clear_session_cookies, set_session_cookies
+from app.core.cookies import (
+    TRUST_COOKIE_NAME,
+    clear_session_cookies,
+    clear_trust_cookie,
+    set_session_cookies,
+    set_trust_cookie,
+)
 from app.models.user import Invitation, User
 from app.schemas.auth import (
+    BackupCodesResponse,
     InvitationCreate,
     InvitationCreated,
     InvitationRead,
     LoginRequest,
+    RecoverRequest,
     RegisterRequest,
     SetupStatus,
+    TotpCodeRequest,
+    TotpSetupResponse,
+    TotpStatus,
 )
 from app.schemas.user import PreferencesRead, PreferencesUpdate, UserRead, UserUpdate
 from app.services import auth as auth_service
@@ -78,15 +89,36 @@ async def register(payload: RegisterRequest, response: Response, db: DbSession) 
 
 
 @router.post("/login", response_model=UserRead)
-async def login(payload: LoginRequest, response: Response, db: DbSession) -> User:
-    issued = await auth_service.login(db, email=payload.email, password=payload.password)
+async def login(payload: LoginRequest, request: Request, response: Response, db: DbSession) -> User:
+    issued = await auth_service.login(
+        db,
+        email=payload.email,
+        password=payload.password,
+        totp_code=payload.totp_code,
+        trust_device=payload.trust_device,
+        trust_token=request.cookies.get(TRUST_COOKIE_NAME),
+    )
     set_session_cookies(
         response,
         session_token=issued.token,
         csrf_token=issued.csrf_token,
         expires_at=issued.session.expires_at,
     )
+    if issued.trust_token is not None and issued.trust_expires_at is not None:
+        set_trust_cookie(response, token=issued.trust_token, expires_at=issued.trust_expires_at)
     return issued.user
+
+
+@router.post("/recover", status_code=status.HTTP_204_NO_CONTENT)
+async def recover(payload: RecoverRequest, response: Response, db: DbSession) -> None:
+    """Public, like /login - the caller is by definition locked out, so
+    there is no session to carry a CSRF token."""
+    await auth_service.recover_password(
+        db, email=payload.email, code=payload.code, new_password=payload.new_password
+    )
+    # Every trusted device was just revoked; drop the now-dead cookie so this
+    # browser doesn't keep presenting it.
+    clear_trust_cookie(response)
 
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
@@ -99,6 +131,47 @@ async def logout(pair: CurrentSession, response: Response, db: DbSession) -> Non
 @router.get("/me", response_model=UserRead)
 async def get_me(user: CurrentUser) -> User:
     return user
+
+
+# --- Two-factor authentication (current user) -------------------------------------
+
+
+@router.get("/totp", response_model=TotpStatus)
+async def get_totp_status(user: CurrentUser, db: DbSession) -> TotpStatus:
+    enabled, remaining = await auth_service.get_totp_status(db, user=user)
+    return TotpStatus(enabled=enabled, backup_codes_remaining=remaining)
+
+
+@router.post("/totp/setup", response_model=TotpSetupResponse)
+async def setup_totp(user: CurrentUser, db: DbSession) -> TotpSetupResponse:
+    secret, uri = await auth_service.start_totp_enrollment(db, user=user)
+    return TotpSetupResponse(secret=secret, otpauth_uri=uri)
+
+
+@router.post("/totp/enable", response_model=BackupCodesResponse)
+async def enable_totp(
+    payload: TotpCodeRequest, user: CurrentUser, db: DbSession
+) -> BackupCodesResponse:
+    codes = await auth_service.confirm_totp(db, user=user, code=payload.code)
+    return BackupCodesResponse(codes=codes)
+
+
+@router.post("/totp/backup-codes", response_model=BackupCodesResponse)
+async def regenerate_backup_codes(
+    payload: TotpCodeRequest, user: CurrentUser, db: DbSession
+) -> BackupCodesResponse:
+    codes = await auth_service.regenerate_backup_codes(db, user=user, code=payload.code)
+    return BackupCodesResponse(codes=codes)
+
+
+# POST, not DELETE: turning 2FA off requires a current code in the body, and
+# DELETE with a body is poorly supported across clients and proxies.
+@router.post("/totp/disable", status_code=status.HTTP_204_NO_CONTENT)
+async def disable_totp(
+    payload: TotpCodeRequest, user: CurrentUser, response: Response, db: DbSession
+) -> None:
+    await auth_service.disable_totp(db, user=user, code=payload.code)
+    clear_trust_cookie(response)
 
 
 # --- Users (admin only) -----------------------------------------------------------

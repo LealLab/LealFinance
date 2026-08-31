@@ -249,7 +249,9 @@
         "configureLanguage": "设置语言",
         "configureCurrency": "设置显示货币",
         "toggleTheme": "切换主题",
-        "toggleBalances": "显示或隐藏余额"
+        "toggleBalances": "显示或隐藏余额",
+        "configureTwoFactor": "配置双重验证",
+        "configureTwoFactorHint": "2FA、双重验证、身份验证器应用、备用码、账户找回"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "编辑",
       "delete": "删除",
       "import": "导入 CSV",
-    "columns": "列",
-    "exportCsv": "导出 CSV"
+      "columns": "列",
+      "exportCsv": "导出 CSV"
     },
     "tabs": {
       "transactions": "交易",
@@ -432,18 +434,18 @@
       "to": "结束日期",
       "institution": "机构",
       "clear": "清除筛选",
-    "title": "筛选条件",
-    "searchPlaceholder": "搜索交易…",
-    "group": "分组",
-    "date": "日期",
-    "amount": "金额",
-    "amountMin": "最小值",
-    "amountMax": "最大值",
-    "any": "任意",
-    "back": "返回",
-    "dateRange": "{{from}} 至 {{to}}",
-    "amountRange": "{{min}} 至 {{max}}",
-    "removeChip": "移除 {{filter}} 筛选条件"
+      "title": "筛选条件",
+      "searchPlaceholder": "搜索交易…",
+      "group": "分组",
+      "date": "日期",
+      "amount": "金额",
+      "amountMin": "最小值",
+      "amountMax": "最大值",
+      "any": "任意",
+      "back": "返回",
+      "dateRange": "{{from}} 至 {{to}}",
+      "amountRange": "{{min}} 至 {{max}}",
+      "removeChip": "移除 {{filter}} 筛选条件"
     },
     "empty": {
       "title": "未找到交易",
@@ -568,60 +570,60 @@
         "confirm": "导入已检查的行"
       }
     },
-  "eyebrow": "财务",
-  "view": {
-    "list": "列表",
-    "calendar": "日历"
-  },
-  "columns": {
-    "title": "列",
-    "date": "日期",
-    "description": "描述",
-    "category": "分类",
-    "account": "账户",
-    "amount": "金额",
-    "reorder": "拖动以重新排序",
-    "resize": "拖动以调整大小"
-  },
-  "table": {
-    "selectAll": "选择所有行",
-    "selectRow": "选择 {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} / {{total}}",
-    "pageSize": "每页行数",
-    "previous": "上一页",
-    "next": "下一页",
-    "goToPage": "转到第 {{page}} 页"
-  },
-  "bulk": {
-    "selected": "已选择",
-    "assignCategory": "选择分类…",
-    "mixedKinds": "请选择同一种类的交易以分配分类",
-    "delete": "删除所选交易",
-    "clearSelection": "清除选择",
-    "deleteConfirm": {
-      "title": "删除交易",
-      "message": "此操作无法撤销。删除 {{count}} 笔交易？"
+    "eyebrow": "财务",
+    "view": {
+      "list": "列表",
+      "calendar": "日历"
+    },
+    "columns": {
+      "title": "列",
+      "date": "日期",
+      "description": "描述",
+      "category": "分类",
+      "account": "账户",
+      "amount": "金额",
+      "reorder": "拖动以重新排序",
+      "resize": "拖动以调整大小"
+    },
+    "table": {
+      "selectAll": "选择所有行",
+      "selectRow": "选择 {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} / {{total}}",
+      "pageSize": "每页行数",
+      "previous": "上一页",
+      "next": "下一页",
+      "goToPage": "转到第 {{page}} 页"
+    },
+    "bulk": {
+      "selected": "已选择",
+      "assignCategory": "选择分类…",
+      "mixedKinds": "请选择同一种类的交易以分配分类",
+      "delete": "删除所选交易",
+      "clearSelection": "清除选择",
+      "deleteConfirm": {
+        "title": "删除交易",
+        "message": "此操作无法撤销。删除 {{count}} 笔交易？"
+      }
+    },
+    "calendar": {
+      "previousMonth": "上个月",
+      "nextMonth": "下个月",
+      "balanceTrend": "余额趋势",
+      "selectedDay": "所选日期",
+      "selectDayHint": "选择日期以查看当天活动",
+      "noTransactions": "当天没有交易",
+      "legend": {
+        "income": "收入",
+        "expenses": "支出",
+        "transfer": "转账",
+        "projected": "预计"
+      }
+    },
+    "export": {
+      "filename": "jiaoyi"
     }
-  },
-  "calendar": {
-    "previousMonth": "上个月",
-    "nextMonth": "下个月",
-    "balanceTrend": "余额趋势",
-    "selectedDay": "所选日期",
-    "selectDayHint": "选择日期以查看当天活动",
-    "noTransactions": "当天没有交易",
-    "legend": {
-      "income": "收入",
-      "expenses": "支出",
-      "transfer": "转账",
-      "projected": "预计"
-    }
-  },
-  "export": {
-    "filename": "jiaoyi"
-  }
   },
   "categories": {
     "title": "分类",
@@ -1297,6 +1299,34 @@
       "disabled": "已禁用",
       "enabled": "已启用",
       "manage": "管理"
+    },
+    "twoFactor": {
+      "title": "双重验证",
+      "description": "使用身份验证器应用的验证码保护你的账户。",
+      "enabled": "已启用",
+      "enable": "启用双重验证",
+      "lockoutWarning": "没有双重验证，一旦忘记密码就无法找回账户。",
+      "enroll": {
+        "step1": "使用身份验证器应用扫描此二维码。",
+        "step2": "输入应用显示的验证码",
+        "confirm": "确认并启用",
+        "qrAlt": "身份验证器应用的二维码",
+        "manualEntry": "或手动输入此密钥"
+      },
+      "backupCodes": {
+        "title": "保存你的备用码",
+        "warning": "这些备用码只显示这一次。如果丢失身份验证器应用，每个备用码可使用一次。",
+        "copy": "复制备用码",
+        "copied": "已复制",
+        "saved": "我已保存",
+        "remaining": "剩余 {{count}} 个备用码"
+      },
+      "manage": {
+        "codeLabel": "验证码",
+        "codeHint": "更改这些设置时需要。",
+        "regenerate": "生成新的备用码",
+        "disable": "停用"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "电子邮箱",
       "password": "密码",
       "displayName": "显示名称",
-      "invitationToken": "邀请令牌"
+      "invitationToken": "邀请令牌",
+      "totpCode": "验证码",
+      "recoveryCode": "验证码或备用码",
+      "newPassword": "新密码"
     },
     "login": {
       "title": "登录",
@@ -1323,6 +1356,21 @@
         "title": "创建管理员账户",
         "description": "这是此实例上的第一个账户——将拥有完整的管理员权限。"
       }
+    },
+    "totp": {
+      "challengeTitle": "两步验证",
+      "challengeDescription": "请输入身份验证器应用中的验证码。",
+      "codeHint": "你也可以使用一个备用码。",
+      "trustDevice": "信任此设备 30 天"
+    },
+    "recover": {
+      "link": "无法登录？",
+      "title": "找回账户",
+      "description": "使用身份验证器应用或备用码设置新密码。",
+      "action": "重置密码",
+      "codeHint": "身份验证器应用中的验证码，或你的某个备用码。",
+      "doneTitle": "密码已更新",
+      "doneDescription": "已在所有设备上退出登录。请使用新密码登录。"
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "至少需要一名活跃的管理员。",
       "account_inactive": "此账户未启用。",
       "admin_required": "需要管理员权限。",
-      "peer_admin": "管理员不能更改其他管理员的角色或状态。"
+      "peer_admin": "管理员不能更改其他管理员的角色或状态。",
+      "totp_required": "请输入身份验证器应用中的验证码。",
+      "totp_invalid": "验证码无效，请重试。",
+      "totp_locked": "错误次数过多，请在 15 分钟后重试。"
     },
     "invitation": {
       "not_found": "邀请无效。",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "此文件不是有效的 LealFinance 规则导出文件。"
+    },
+    "totp": {
+      "already_enabled": "双重验证已经启用。",
+      "not_enabled": "尚未启用双重验证。"
     }
   }
 }

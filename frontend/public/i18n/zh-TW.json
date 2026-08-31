@@ -249,7 +249,9 @@
         "configureLanguage": "設定語言",
         "configureCurrency": "設定顯示貨幣",
         "toggleTheme": "切換主題",
-        "toggleBalances": "顯示或隱藏餘額"
+        "toggleBalances": "顯示或隱藏餘額",
+        "configureTwoFactor": "設定雙重驗證",
+        "configureTwoFactorHint": "2FA、雙重驗證、驗證器應用程式、備用碼、帳戶復原"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "編輯",
       "delete": "刪除",
       "import": "匯入 CSV",
-    "columns": "欄",
-    "exportCsv": "匯出 CSV"
+      "columns": "欄",
+      "exportCsv": "匯出 CSV"
     },
     "tabs": {
       "transactions": "交易",
@@ -432,18 +434,18 @@
       "to": "結束日期",
       "institution": "金融機構",
       "clear": "清除篩選條件",
-    "title": "篩選條件",
-    "searchPlaceholder": "搜尋交易…",
-    "group": "群組",
-    "date": "日期",
-    "amount": "金額",
-    "amountMin": "最低",
-    "amountMax": "最高",
-    "any": "任何",
-    "back": "返回",
-    "dateRange": "{{from}} 至 {{to}}",
-    "amountRange": "{{min}} 至 {{max}}",
-    "removeChip": "移除 {{filter}} 篩選條件"
+      "title": "篩選條件",
+      "searchPlaceholder": "搜尋交易…",
+      "group": "群組",
+      "date": "日期",
+      "amount": "金額",
+      "amountMin": "最低",
+      "amountMax": "最高",
+      "any": "任何",
+      "back": "返回",
+      "dateRange": "{{from}} 至 {{to}}",
+      "amountRange": "{{min}} 至 {{max}}",
+      "removeChip": "移除 {{filter}} 篩選條件"
     },
     "empty": {
       "title": "找不到交易",
@@ -568,60 +570,60 @@
         "confirm": "匯入已檢查的列"
       }
     },
-  "eyebrow": "財務",
-  "view": {
-    "list": "清單",
-    "calendar": "行事曆"
-  },
-  "columns": {
-    "title": "欄",
-    "date": "日期",
-    "description": "說明",
-    "category": "分類",
-    "account": "帳戶",
-    "amount": "金額",
-    "reorder": "拖曳以重新排序",
-    "resize": "拖曳以調整大小"
-  },
-  "table": {
-    "selectAll": "選取所有資料列",
-    "selectRow": "選取 {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} / 共 {{total}}",
-    "pageSize": "每頁資料列數",
-    "previous": "上一頁",
-    "next": "下一頁",
-    "goToPage": "前往第 {{page}} 頁"
-  },
-  "bulk": {
-    "selected": "已選取",
-    "assignCategory": "選取分類…",
-    "mixedKinds": "請選取相同類型的交易以指派分類",
-    "delete": "刪除選取項目",
-    "clearSelection": "清除選取項目",
-    "deleteConfirm": {
-      "title": "刪除交易",
-      "message": "此操作無法復原。刪除 {{count}} 筆交易？"
+    "eyebrow": "財務",
+    "view": {
+      "list": "清單",
+      "calendar": "行事曆"
+    },
+    "columns": {
+      "title": "欄",
+      "date": "日期",
+      "description": "說明",
+      "category": "分類",
+      "account": "帳戶",
+      "amount": "金額",
+      "reorder": "拖曳以重新排序",
+      "resize": "拖曳以調整大小"
+    },
+    "table": {
+      "selectAll": "選取所有資料列",
+      "selectRow": "選取 {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} / 共 {{total}}",
+      "pageSize": "每頁資料列數",
+      "previous": "上一頁",
+      "next": "下一頁",
+      "goToPage": "前往第 {{page}} 頁"
+    },
+    "bulk": {
+      "selected": "已選取",
+      "assignCategory": "選取分類…",
+      "mixedKinds": "請選取相同類型的交易以指派分類",
+      "delete": "刪除選取項目",
+      "clearSelection": "清除選取項目",
+      "deleteConfirm": {
+        "title": "刪除交易",
+        "message": "此操作無法復原。刪除 {{count}} 筆交易？"
+      }
+    },
+    "calendar": {
+      "previousMonth": "上個月",
+      "nextMonth": "下個月",
+      "balanceTrend": "餘額趨勢",
+      "selectedDay": "選取的日期",
+      "selectDayHint": "選取日期以查看當天活動",
+      "noTransactions": "當天沒有交易",
+      "legend": {
+        "income": "收入",
+        "expenses": "支出",
+        "transfer": "轉帳",
+        "projected": "預估"
+      }
+    },
+    "export": {
+      "filename": "jiaoyi"
     }
-  },
-  "calendar": {
-    "previousMonth": "上個月",
-    "nextMonth": "下個月",
-    "balanceTrend": "餘額趨勢",
-    "selectedDay": "選取的日期",
-    "selectDayHint": "選取日期以查看當天活動",
-    "noTransactions": "當天沒有交易",
-    "legend": {
-      "income": "收入",
-      "expenses": "支出",
-      "transfer": "轉帳",
-      "projected": "預估"
-    }
-  },
-  "export": {
-    "filename": "jiaoyi"
-  }
   },
   "categories": {
     "title": "分類",
@@ -1297,6 +1299,34 @@
       "disabled": "已停用",
       "enabled": "已啟用",
       "manage": "管理"
+    },
+    "twoFactor": {
+      "title": "雙重驗證",
+      "description": "使用驗證器應用程式的驗證碼保護你的帳戶。",
+      "enabled": "已啟用",
+      "enable": "啟用雙重驗證",
+      "lockoutWarning": "沒有雙重驗證，一旦忘記密碼就無法復原帳戶。",
+      "enroll": {
+        "step1": "使用驗證器應用程式掃描此 QR code。",
+        "step2": "輸入應用程式顯示的驗證碼",
+        "confirm": "確認並啟用",
+        "qrAlt": "驗證器應用程式的 QR code",
+        "manualEntry": "或手動輸入此金鑰"
+      },
+      "backupCodes": {
+        "title": "儲存你的備用碼",
+        "warning": "這些備用碼只會顯示這一次。若遺失驗證器應用程式，每組備用碼可使用一次。",
+        "copy": "複製備用碼",
+        "copied": "已複製",
+        "saved": "我已儲存",
+        "remaining": "剩餘 {{count}} 組備用碼"
+      },
+      "manage": {
+        "codeLabel": "驗證碼",
+        "codeHint": "變更這些設定時需要。",
+        "regenerate": "產生新的備用碼",
+        "disable": "停用"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "電子郵件",
       "password": "密碼",
       "displayName": "顯示名稱",
-      "invitationToken": "邀請權杖"
+      "invitationToken": "邀請權杖",
+      "totpCode": "驗證碼",
+      "recoveryCode": "驗證碼或備用碼",
+      "newPassword": "新密碼"
     },
     "login": {
       "title": "登入",
@@ -1323,6 +1356,21 @@
         "title": "建立管理員帳戶",
         "description": "這是此執行個體上的第一個帳戶，將擁有完整的管理員存取權。"
       }
+    },
+    "totp": {
+      "challengeTitle": "兩步驟驗證",
+      "challengeDescription": "請輸入驗證器應用程式中的驗證碼。",
+      "codeHint": "你也可以使用其中一組備用碼。",
+      "trustDevice": "信任這部裝置 30 天"
+    },
+    "recover": {
+      "link": "無法登入？",
+      "title": "復原你的帳戶",
+      "description": "使用驗證器應用程式或備用碼設定新密碼。",
+      "action": "重設密碼",
+      "codeHint": "驗證器應用程式中的驗證碼，或你的其中一組備用碼。",
+      "doneTitle": "密碼已更新",
+      "doneDescription": "已在所有裝置登出。請使用新密碼登入。"
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "至少需要一位啟用中的管理員。",
       "account_inactive": "此帳戶目前未啟用。",
       "admin_required": "需要管理員存取權。",
-      "peer_admin": "管理員無法更改其他管理員的角色或狀態。"
+      "peer_admin": "管理員無法更改其他管理員的角色或狀態。",
+      "totp_required": "請輸入驗證器應用程式中的驗證碼。",
+      "totp_invalid": "驗證碼無效，請再試一次。",
+      "totp_locked": "錯誤次數過多，請於 15 分鐘後再試。"
     },
     "invitation": {
       "not_found": "邀請無效。",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "此檔案不是有效的 LealFinance 規則匯出檔。"
+    },
+    "totp": {
+      "already_enabled": "雙重驗證已經啟用。",
+      "not_enabled": "尚未啟用雙重驗證。"
     }
   }
 }

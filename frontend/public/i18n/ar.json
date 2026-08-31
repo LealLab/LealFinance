@@ -249,7 +249,9 @@
         "configureLanguage": "إعداد اللغة",
         "configureCurrency": "إعداد عملة العرض",
         "toggleTheme": "تبديل المظهر",
-        "toggleBalances": "إظهار الأرصدة أو إخفاؤها"
+        "toggleBalances": "إظهار الأرصدة أو إخفاؤها",
+        "configureTwoFactor": "إعداد المصادقة الثنائية",
+        "configureTwoFactorHint": "2FA، تطبيق المصادقة، الرموز الاحتياطية، استعادة الحساب"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "تعديل",
       "delete": "حذف",
       "import": "استيراد CSV",
-    "columns": "الأعمدة",
-    "exportCsv": "تصدير CSV"
+      "columns": "الأعمدة",
+      "exportCsv": "تصدير CSV"
     },
     "tabs": {
       "transactions": "المعاملات",
@@ -432,18 +434,18 @@
       "to": "إلى",
       "institution": "الجهة المالية",
       "clear": "مسح عوامل التصفية",
-    "title": "تصفية حسب",
-    "searchPlaceholder": "البحث في المعاملات…",
-    "group": "تجميع",
-    "date": "التاريخ",
-    "amount": "المبلغ",
-    "amountMin": "الحد الأدنى",
-    "amountMax": "الحد الأقصى",
-    "any": "أي",
-    "back": "رجوع",
-    "dateRange": "من {{from}} إلى {{to}}",
-    "amountRange": "من {{min}} إلى {{max}}",
-    "removeChip": "إزالة عامل التصفية {{filter}}"
+      "title": "تصفية حسب",
+      "searchPlaceholder": "البحث في المعاملات…",
+      "group": "تجميع",
+      "date": "التاريخ",
+      "amount": "المبلغ",
+      "amountMin": "الحد الأدنى",
+      "amountMax": "الحد الأقصى",
+      "any": "أي",
+      "back": "رجوع",
+      "dateRange": "من {{from}} إلى {{to}}",
+      "amountRange": "من {{min}} إلى {{max}}",
+      "removeChip": "إزالة عامل التصفية {{filter}}"
     },
     "empty": {
       "title": "لم تُعثر على معاملات",
@@ -568,60 +570,60 @@
         "confirm": "استيراد الصفوف التي تمت مراجعتها"
       }
     },
-  "eyebrow": "مالي",
-  "view": {
-    "list": "قائمة",
-    "calendar": "تقويم"
-  },
-  "columns": {
-    "title": "الأعمدة",
-    "date": "التاريخ",
-    "description": "الوصف",
-    "category": "الفئة",
-    "account": "الحساب",
-    "amount": "المبلغ",
-    "reorder": "اسحب لإعادة الترتيب",
-    "resize": "اسحب لتغيير الحجم"
-  },
-  "table": {
-    "selectAll": "تحديد كل الصفوف",
-    "selectRow": "تحديد {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} من {{total}}",
-    "pageSize": "صفوف لكل صفحة",
-    "previous": "الصفحة السابقة",
-    "next": "الصفحة التالية",
-    "goToPage": "الانتقال إلى الصفحة {{page}}"
-  },
-  "bulk": {
-    "selected": "المحددة",
-    "assignCategory": "تحديد فئة…",
-    "mixedKinds": "حدد معاملات من نوع واحد لتعيين فئة",
-    "delete": "حذف المحددة",
-    "clearSelection": "مسح التحديد",
-    "deleteConfirm": {
-      "title": "حذف المعاملات",
-      "message": "لا يمكن التراجع عن ذلك. هل تريد حذف {{count}} معاملة؟"
+    "eyebrow": "مالي",
+    "view": {
+      "list": "قائمة",
+      "calendar": "تقويم"
+    },
+    "columns": {
+      "title": "الأعمدة",
+      "date": "التاريخ",
+      "description": "الوصف",
+      "category": "الفئة",
+      "account": "الحساب",
+      "amount": "المبلغ",
+      "reorder": "اسحب لإعادة الترتيب",
+      "resize": "اسحب لتغيير الحجم"
+    },
+    "table": {
+      "selectAll": "تحديد كل الصفوف",
+      "selectRow": "تحديد {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} من {{total}}",
+      "pageSize": "صفوف لكل صفحة",
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "goToPage": "الانتقال إلى الصفحة {{page}}"
+    },
+    "bulk": {
+      "selected": "المحددة",
+      "assignCategory": "تحديد فئة…",
+      "mixedKinds": "حدد معاملات من نوع واحد لتعيين فئة",
+      "delete": "حذف المحددة",
+      "clearSelection": "مسح التحديد",
+      "deleteConfirm": {
+        "title": "حذف المعاملات",
+        "message": "لا يمكن التراجع عن ذلك. هل تريد حذف {{count}} معاملة؟"
+      }
+    },
+    "calendar": {
+      "previousMonth": "الشهر السابق",
+      "nextMonth": "الشهر التالي",
+      "balanceTrend": "اتجاه الرصيد",
+      "selectedDay": "اليوم المحدد",
+      "selectDayHint": "حدد يومًا لعرض نشاطه",
+      "noTransactions": "لا توجد معاملات في هذا اليوم",
+      "legend": {
+        "income": "الدخل",
+        "expenses": "المصروفات",
+        "transfer": "تحويل",
+        "projected": "متوقع"
+      }
+    },
+    "export": {
+      "filename": "muamalat"
     }
-  },
-  "calendar": {
-    "previousMonth": "الشهر السابق",
-    "nextMonth": "الشهر التالي",
-    "balanceTrend": "اتجاه الرصيد",
-    "selectedDay": "اليوم المحدد",
-    "selectDayHint": "حدد يومًا لعرض نشاطه",
-    "noTransactions": "لا توجد معاملات في هذا اليوم",
-    "legend": {
-      "income": "الدخل",
-      "expenses": "المصروفات",
-      "transfer": "تحويل",
-      "projected": "متوقع"
-    }
-  },
-  "export": {
-    "filename": "muamalat"
-  }
   },
   "categories": {
     "title": "الفئات",
@@ -1297,6 +1299,34 @@
       "disabled": "معطّل",
       "enabled": "مفعّل",
       "manage": "إدارة"
+    },
+    "twoFactor": {
+      "title": "المصادقة الثنائية",
+      "description": "احمِ حسابك برمز من تطبيق مصادقة.",
+      "enabled": "مفعّلة",
+      "enable": "تفعيل المصادقة الثنائية",
+      "lockoutWarning": "بدون المصادقة الثنائية لا توجد أي طريقة لاستعادة حسابك إذا نسيت كلمة المرور.",
+      "enroll": {
+        "step1": "امسح هذا الرمز بتطبيق المصادقة.",
+        "step2": "أدخل الرمز الذي يعرضه التطبيق",
+        "confirm": "تأكيد وتفعيل",
+        "qrAlt": "رمز QR لتطبيق المصادقة",
+        "manualEntry": "أو أدخل هذا المفتاح يدويًا"
+      },
+      "backupCodes": {
+        "title": "احفظ رموزك الاحتياطية",
+        "warning": "تُعرض هذه الرموز الآن فقط. يعمل كل رمز مرة واحدة إذا فقدت تطبيق المصادقة.",
+        "copy": "نسخ الرموز",
+        "copied": "تم النسخ",
+        "saved": "لقد حفظتها",
+        "remaining": "بقي {{count}} رمز احتياطي"
+      },
+      "manage": {
+        "codeLabel": "رمز المصادقة",
+        "codeHint": "مطلوب لتغيير هذه الإعدادات.",
+        "regenerate": "إنشاء رموز احتياطية جديدة",
+        "disable": "تعطيل"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "البريد الإلكتروني",
       "password": "كلمة المرور",
       "displayName": "اسم العرض",
-      "invitationToken": "رمز الدعوة"
+      "invitationToken": "رمز الدعوة",
+      "totpCode": "رمز المصادقة",
+      "recoveryCode": "رمز المصادقة أو رمز احتياطي",
+      "newPassword": "كلمة المرور الجديدة"
     },
     "login": {
       "title": "تسجيل الدخول",
@@ -1323,6 +1356,21 @@
         "title": "إنشاء حساب المسؤول",
         "description": "هذا هو الحساب الأول في هذه المنصة — وسيحصل على صلاحيات المسؤول الكاملة."
       }
+    },
+    "totp": {
+      "challengeTitle": "التحقق بخطوتين",
+      "challengeDescription": "أدخل الرمز من تطبيق المصادقة.",
+      "codeHint": "يمكنك أيضًا استخدام أحد الرموز الاحتياطية.",
+      "trustDevice": "الوثوق بهذا الجهاز لمدة 30 يومًا"
+    },
+    "recover": {
+      "link": "لا يمكنك تسجيل الدخول؟",
+      "title": "استعادة حسابك",
+      "description": "عيّن كلمة مرور جديدة باستخدام تطبيق المصادقة أو رمز احتياطي.",
+      "action": "إعادة تعيين كلمة المرور",
+      "codeHint": "رمز من تطبيق المصادقة أو أحد الرموز الاحتياطية.",
+      "doneTitle": "تم تحديث كلمة المرور",
+      "doneDescription": "تم تسجيل خروجك من كل الأجهزة. سجّل الدخول بكلمة المرور الجديدة."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "يلزم وجود مسؤول نشط واحد على الأقل.",
       "account_inactive": "هذا الحساب غير نشط.",
       "admin_required": "يلزم الوصول بصلاحيات المسؤول.",
-      "peer_admin": "لا يمكن للمسؤولين تغيير دور أو حالة مسؤول آخر."
+      "peer_admin": "لا يمكن للمسؤولين تغيير دور أو حالة مسؤول آخر.",
+      "totp_required": "أدخل الرمز من تطبيق المصادقة.",
+      "totp_invalid": "هذا الرمز غير صالح. حاول مرة أخرى.",
+      "totp_locked": "عدد كبير من الرموز الخاطئة. حاول بعد 15 دقيقة."
     },
     "invitation": {
       "not_found": "الدعوة غير صالحة.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "هذا الملف ليس تصديرًا صالحًا لقواعد LealFinance."
+    },
+    "totp": {
+      "already_enabled": "المصادقة الثنائية مفعّلة بالفعل.",
+      "not_enabled": "المصادقة الثنائية غير مفعّلة."
     }
   }
 }
