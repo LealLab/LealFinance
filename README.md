@@ -5,8 +5,6 @@
 <h1 align="center">LealFinance</h1>
 <p align="center">
   <a href="https://github.com/LealLab/LealFinance/actions/workflows/ci.yml"><img src="https://github.com/LealLab/LealFinance/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <img src="docs/badges/coverage-backend.svg" alt="Backend coverage" />
-  <img src="docs/badges/coverage-frontend.svg" alt="Frontend coverage" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-blue.svg" alt="License: AGPL-3.0-only" /></a>
 </p>
 

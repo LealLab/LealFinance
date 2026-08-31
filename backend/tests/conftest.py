@@ -41,18 +41,29 @@ settings = get_settings()
 
 
 @pytest.fixture(autouse=True)
-def _no_exchange_rate_provider() -> Iterator[None]:
-    """Never let the real Open Exchange Rates key from a developer's .env
-    reach a test: a live provider call is slow, flaky, and - via
-    app/services/exchange_rates.py::refresh_rates - a real DB write. Tests
-    that exercise the provider set it back and monkeypatch `_fetch_usd_rates`.
+def _no_instance_provider_configuration() -> Iterator[None]:
+    """Never let optional instance provider settings from a developer's .env
+    reach tests. Tests that exercise a provider explicitly enable and patch it.
     """
-    original = settings.openexchangerates_app_id
+    original = (
+        settings.agents_enabled,
+        settings.openexchangerates_app_id,
+        settings.twelve_data_api_key,
+        settings.brapi_token,
+    )
+    settings.agents_enabled = False
     settings.openexchangerates_app_id = None
+    settings.twelve_data_api_key = None
+    settings.brapi_token = None
     try:
         yield
     finally:
-        settings.openexchangerates_app_id = original
+        (
+            settings.agents_enabled,
+            settings.openexchangerates_app_id,
+            settings.twelve_data_api_key,
+            settings.brapi_token,
+        ) = original
 
 
 @pytest_asyncio.fixture(scope="session")
