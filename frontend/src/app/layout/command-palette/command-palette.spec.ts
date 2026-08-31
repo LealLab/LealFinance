@@ -139,6 +139,8 @@ describe('CommandPalette', () => {
   it.each([
     ['idioma', 'Configurar idioma', 'settings-language'],
     ['moeda', 'Configurar moeda de exibição', 'settings-display-currency'],
+    ['exportar backup', 'Exportar backup', 'settings-backup-export'],
+    ['restaurar backup', 'Restaurar backup', 'settings-backup-restore'],
     ['dois fatores', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
     // Synonyms people actually type reach the same entry, via keywordsKey.
     ['2FA', 'Configurar autenticação de dois fatores', 'settings-two-factor'],

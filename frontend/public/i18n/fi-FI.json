@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Varmuuskopiointi ja palautus",
+      "description": "Lataa siirrettävä kopio tiedoistasi tai korvaa nykyiset tiedot varmuuskopiosta.",
+      "export": {
+        "action": "Vie varmuuskopio",
+        "title": "Vie varmuuskopio",
+        "keyDescription": "Salattu varmuuskopio on ladattu. Tallenna tämä avain erikseen ennen sulkemista.",
+        "recoveryKey": "Palautusavain",
+        "copyKey": "Kopioi avain",
+        "keyCopied": "Palautusavain kopioitu.",
+        "keyWarning": "Avain näytetään vain kerran. Salattua varmuuskopiota ei voi palauttaa ilman sitä.",
+        "description": "Valitse, suojataanko varmuuskopio palautusavaimella.",
+        "security": "Suojaus",
+        "plain": "Salaamaton JSON",
+        "plainHint": "Helppo tarkistaa, mutta kuka tahansa tiedoston saanut voi lukea sen.",
+        "encrypted": "Salattu",
+        "encryptedHint": "Suojattu palautusavaimella, jota LealFinance ei koskaan tallenna.",
+        "exporting": "Viedään…",
+        "download": "Lataa varmuuskopio"
+      },
+      "restore": {
+        "security": "Suojaus",
+        "action": "Palauta varmuuskopio",
+        "title": "Palauta varmuuskopio",
+        "description": "Valitse LealFinance-varmuuskopio JSON-muodossa ja tarkista se ennen tietojesi korvaamista.",
+        "file": "Varmuuskopiotiedosto",
+        "selected": "Valittu tiedosto: {{filename}}",
+        "recoveryKey": "Palautusavain",
+        "previewTitle": "Varmuuskopion esikatselu",
+        "sourceVersion": "Lähdesovelluksen versio",
+        "exportedAt": "Viety",
+        "records": "Tietueet",
+        "replace": "Korvaa tietoni",
+        "preview": "Esikatsele varmuuskopiota"
+      },
+      "status": {
+        "exported": "Varmuuskopio ladattu.",
+        "restored": "Varmuuskopio palautettu."
+      },
+      "confirm": {
+        "title": "Korvataanko tietosi?",
+        "message": "Tämä korvaa pysyvästi varmuuskopioidut taloustiedot ja tuetut asetukset. Kirjautumistietosi ja tunnuksesi eivät muutu. Jatketaanko?"
+      },
+      "entities": {
+        "institutions": "Rahoituslaitokset",
+        "accounts": "Tilit",
+        "category_groups": "Luokkaryhmät",
+        "categories": "Luokat",
+        "categorization_rules": "Luokittelusäännöt",
+        "budgets": "Budjetit",
+        "budget_allocations": "Budjettien kohdistukset",
+        "expected_income": "Odotetut tulot",
+        "recurring_rules": "Toistuvat säännöt",
+        "loans": "Lainat",
+        "goals": "Tavoitteet",
+        "manual_rates": "Manuaaliset valuuttakurssit",
+        "transactions": "Tapahtumat",
+        "investment_wallets": "Sijoitussalkut",
+        "investment_assets": "Sijoitusomaisuus",
+        "investment_transactions": "Sijoitustapahtumat"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Vanhentunut asetus {{setting}} ohitetaan.",
+        "credentials_reconnect": "Tunnuksia ei sisällytetä varmuuskopioihin. Yhdistä tarvittavat palvelut uudelleen palautuksen jälkeen."
+      }
+    },
     "title": "Asetukset",
     "description": "Ulkoasun, kielen ja esimerkkitietojen asetukset.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Tämä ei ole kelvollinen LealFinance-varmuuskopio.",
+      "invalid_file_type": "Valitse JSON-varmuuskopiotiedosto.",
+      "file_too_large": "Varmuuskopio on liian suuri (enimmäiskoko 25 Mt).",
+      "recovery_key_required": "Anna tämän salatun varmuuskopion palautusavain.",
+      "recovery_key_invalid": "Palautusavain on virheellinen tai salattua varmuuskopiota on muutettu.",
+      "version_unsupported": "Varmuuskopion muoto on uudempi kuin tämä LealFinance-versio tukee.",
+      "data_incompatible": "Varmuuskopio sisältää yhteensopimattomia tai vioittuneita taloustietoja."
+    },
     "error": {
       "generic": "Jokin meni pieleen. Yritä uudelleen.",
       "validation": "Tarkista antamasi tiedot ja yritä uudelleen."

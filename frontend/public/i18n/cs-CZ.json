@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Záloha a obnovení",
+      "description": "Stáhněte si přenositelnou kopii dat nebo nahraďte aktuální data ze zálohy.",
+      "export": {
+        "action": "Exportovat zálohu",
+        "title": "Export zálohy",
+        "keyDescription": "Šifrovaná záloha byla stažena. Před zavřením uložte tento klíč odděleně.",
+        "recoveryKey": "Klíč pro obnovení",
+        "copyKey": "Kopírovat klíč",
+        "keyCopied": "Klíč pro obnovení byl zkopírován.",
+        "keyWarning": "Tento klíč se zobrazí pouze jednou. Bez něj nelze šifrovanou zálohu obnovit.",
+        "description": "Zvolte, zda chcete zálohu chránit klíčem pro obnovení.",
+        "security": "Zabezpečení",
+        "plain": "Nešifrovaný JSON",
+        "plainHint": "Lze snadno zkontrolovat, ale kdokoli se souborem si jej může přečíst.",
+        "encrypted": "Šifrovaná",
+        "encryptedHint": "Chráněná klíčem pro obnovení, který LealFinance nikdy neukládá.",
+        "exporting": "Exportování…",
+        "download": "Stáhnout zálohu"
+      },
+      "restore": {
+        "security": "Zabezpečení",
+        "action": "Obnovit zálohu",
+        "title": "Obnovení zálohy",
+        "description": "Vyberte zálohu LealFinance ve formátu JSON a před nahrazením dat ji zkontrolujte.",
+        "file": "Soubor zálohy",
+        "selected": "Vybraný soubor: {{filename}}",
+        "recoveryKey": "Klíč pro obnovení",
+        "previewTitle": "Náhled zálohy",
+        "sourceVersion": "Verze zdrojové aplikace",
+        "exportedAt": "Datum exportu",
+        "records": "Záznamy",
+        "replace": "Nahradit moje data",
+        "preview": "Zobrazit náhled"
+      },
+      "status": {
+        "exported": "Záloha byla stažena.",
+        "restored": "Záloha byla obnovena."
+      },
+      "confirm": {
+        "title": "Nahradit vaše data?",
+        "message": "Tím se trvale nahradí finanční data ze zálohy a podporovaná nastavení. Přihlašovací a přístupové údaje zůstanou beze změny. Pokračovat?"
+      },
+      "entities": {
+        "institutions": "Instituce",
+        "accounts": "Účty",
+        "category_groups": "Skupiny kategorií",
+        "categories": "Kategorie",
+        "categorization_rules": "Pravidla kategorizace",
+        "budgets": "Rozpočty",
+        "budget_allocations": "Přidělení rozpočtu",
+        "expected_income": "Očekávané příjmy",
+        "recurring_rules": "Opakovaná pravidla",
+        "loans": "Půjčky",
+        "goals": "Cíle",
+        "manual_rates": "Ruční směnné kurzy",
+        "transactions": "Transakce",
+        "investment_wallets": "Investiční peněženky",
+        "investment_assets": "Investiční aktiva",
+        "investment_transactions": "Investiční transakce"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Zastaralé nastavení {{setting}} bude přeskočeno.",
+        "credentials_reconnect": "Přístupové údaje nejsou součástí záloh. Po obnovení znovu připojte dotčené služby."
+      }
+    },
     "title": "Nastavení",
     "description": "Vzhled, jazyk a nastavení ukázkových dat.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Toto není platná záloha LealFinance.",
+      "invalid_file_type": "Vyberte soubor zálohy JSON.",
+      "file_too_large": "Tato záloha je příliš velká (limit 25 MB).",
+      "recovery_key_required": "Zadejte klíč pro obnovení této šifrované zálohy.",
+      "recovery_key_invalid": "Klíč pro obnovení je nesprávný nebo byla šifrovaná záloha změněna.",
+      "version_unsupported": "Formát této zálohy je novější, než tato verze LealFinance podporuje.",
+      "data_incompatible": "Tato záloha obsahuje nekompatibilní nebo poškozená finanční data."
+    },
     "error": {
       "generic": "Něco se pokazilo. Zkuste to prosím znovu.",
       "validation": "Zkontrolujte zadané údaje a zkuste to znovu."

@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Sikkerhetskopiering og gjenoppretting",
+      "description": "Last ned en flyttbar kopi av dataene dine, eller erstatt gjeldende data fra en sikkerhetskopi.",
+      "export": {
+        "action": "Eksporter sikkerhetskopi",
+        "title": "Eksporter sikkerhetskopi",
+        "keyDescription": "Den krypterte sikkerhetskopien er lastet ned. Lagre denne nøkkelen separat før du lukker.",
+        "recoveryKey": "Gjenopprettingsnøkkel",
+        "copyKey": "Kopier nøkkel",
+        "keyCopied": "Gjenopprettingsnøkkelen er kopiert.",
+        "keyWarning": "Nøkkelen vises bare én gang. Uten den kan ikke den krypterte sikkerhetskopien gjenopprettes.",
+        "description": "Velg om sikkerhetskopien skal beskyttes med en gjenopprettingsnøkkel.",
+        "security": "Sikkerhet",
+        "plain": "Ukryptert JSON",
+        "plainHint": "Enkel å kontrollere, men alle som har filen, kan lese den.",
+        "encrypted": "Kryptert",
+        "encryptedHint": "Beskyttet med en gjenopprettingsnøkkel som LealFinance aldri lagrer.",
+        "exporting": "Eksporterer…",
+        "download": "Last ned sikkerhetskopi"
+      },
+      "restore": {
+        "security": "Sikkerhet",
+        "action": "Gjenopprett sikkerhetskopi",
+        "title": "Gjenopprett sikkerhetskopi",
+        "description": "Velg en JSON-sikkerhetskopi fra LealFinance, og kontroller den før dataene dine erstattes.",
+        "file": "Sikkerhetskopifil",
+        "selected": "Valgt fil: {{filename}}",
+        "recoveryKey": "Gjenopprettingsnøkkel",
+        "previewTitle": "Forhåndsvisning",
+        "sourceVersion": "Kildeappens versjon",
+        "exportedAt": "Eksportert",
+        "records": "Oppføringer",
+        "replace": "Erstatt dataene mine",
+        "preview": "Forhåndsvis sikkerhetskopi"
+      },
+      "status": {
+        "exported": "Sikkerhetskopien er lastet ned.",
+        "restored": "Sikkerhetskopien er gjenopprettet."
+      },
+      "confirm": {
+        "title": "Erstatte dataene dine?",
+        "message": "Dette erstatter permanent de sikkerhetskopierte økonomiske dataene og støttede innstillingene. Innloggingen og påloggingsopplysningene dine endres ikke. Vil du fortsette?"
+      },
+      "entities": {
+        "institutions": "Finansinstitusjoner",
+        "accounts": "Kontoer",
+        "category_groups": "Kategorigrupper",
+        "categories": "Kategorier",
+        "categorization_rules": "Kategoriseringsregler",
+        "budgets": "Budsjetter",
+        "budget_allocations": "Budsjettfordelinger",
+        "expected_income": "Forventede inntekter",
+        "recurring_rules": "Gjentakende regler",
+        "loans": "Lån",
+        "goals": "Mål",
+        "manual_rates": "Manuelle valutakurser",
+        "transactions": "Transaksjoner",
+        "investment_wallets": "Investeringsporteføljer",
+        "investment_assets": "Investeringsaktiva",
+        "investment_transactions": "Investeringstransaksjoner"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Den utdaterte innstillingen {{setting}} hoppes over.",
+        "credentials_reconnect": "Påloggingsopplysninger tas ikke med i sikkerhetskopier. Koble til berørte tjenester på nytt etter gjenoppretting."
+      }
+    },
     "title": "Innstillinger",
     "description": "Utseende, språk og innstillinger for demodata.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Dette er ikke en gyldig LealFinance-sikkerhetskopi.",
+      "invalid_file_type": "Velg en JSON-sikkerhetskopifil.",
+      "file_too_large": "Sikkerhetskopien er for stor (grensen er 25 MB).",
+      "recovery_key_required": "Skriv inn gjenopprettingsnøkkelen for denne krypterte sikkerhetskopien.",
+      "recovery_key_invalid": "Gjenopprettingsnøkkelen er feil, eller den krypterte sikkerhetskopien er endret.",
+      "version_unsupported": "Formatet til sikkerhetskopien er nyere enn denne versjonen av LealFinance støtter.",
+      "data_incompatible": "Sikkerhetskopien inneholder inkompatible eller skadede økonomiske data."
+    },
     "error": {
       "generic": "Noe gikk galt. Prøv igjen.",
       "validation": "Sjekk opplysningene og prøv igjen."

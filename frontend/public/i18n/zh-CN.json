@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "备份与恢复",
+      "description": "下载可移植的数据副本，或使用备份替换当前数据。",
+      "export": {
+        "action": "导出备份",
+        "title": "导出备份",
+        "keyDescription": "加密备份已下载。关闭前请将此密钥单独保存。",
+        "recoveryKey": "恢复密钥",
+        "copyKey": "复制密钥",
+        "keyCopied": "恢复密钥已复制。",
+        "keyWarning": "此密钥仅显示一次。没有密钥将无法恢复加密备份。",
+        "description": "选择是否使用恢复密钥保护备份。",
+        "security": "安全性",
+        "plain": "未加密的 JSON",
+        "plainHint": "便于检查，但任何拥有该文件的人都能读取内容。",
+        "encrypted": "已加密",
+        "encryptedHint": "使用 LealFinance 从不存储的恢复密钥保护。",
+        "exporting": "正在导出…",
+        "download": "下载备份"
+      },
+      "restore": {
+        "security": "安全性",
+        "action": "恢复备份",
+        "title": "恢复备份",
+        "description": "选择 LealFinance JSON 备份，以便在替换数据前预览。",
+        "file": "备份文件",
+        "selected": "已选择文件：{{filename}}",
+        "recoveryKey": "恢复密钥",
+        "previewTitle": "备份预览",
+        "sourceVersion": "源应用版本",
+        "exportedAt": "导出时间",
+        "records": "记录",
+        "replace": "替换我的数据",
+        "preview": "预览备份"
+      },
+      "status": {
+        "exported": "备份已下载。",
+        "restored": "备份已恢复。"
+      },
+      "confirm": {
+        "title": "替换您的数据？",
+        "message": "此操作会永久替换备份中的财务数据和受支持的偏好设置。您的登录信息和凭据不会更改。是否继续？"
+      },
+      "entities": {
+        "institutions": "金融机构",
+        "accounts": "账户",
+        "category_groups": "类别组",
+        "categories": "类别",
+        "categorization_rules": "分类规则",
+        "budgets": "预算",
+        "budget_allocations": "预算分配",
+        "expected_income": "预期收入",
+        "recurring_rules": "重复规则",
+        "loans": "贷款",
+        "goals": "目标",
+        "manual_rates": "手动汇率",
+        "transactions": "交易",
+        "investment_wallets": "投资钱包",
+        "investment_assets": "投资资产",
+        "investment_transactions": "投资交易"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "已弃用的设置 {{setting}} 将被跳过。",
+        "credentials_reconnect": "备份不包含凭据。恢复后请重新连接受影响的服务。"
+      }
+    },
     "title": "设置",
     "description": "外观、语言和演示数据偏好。",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "这不是有效的 LealFinance 备份。",
+      "invalid_file_type": "请选择 JSON 备份文件。",
+      "file_too_large": "此备份过大（上限为 25 MB）。",
+      "recovery_key_required": "请输入此加密备份的恢复密钥。",
+      "recovery_key_invalid": "恢复密钥不正确，或加密备份已被修改。",
+      "version_unsupported": "此备份格式比当前 LealFinance 版本支持的格式更新。",
+      "data_incompatible": "此备份包含不兼容或损坏的财务数据。"
+    },
     "error": {
       "generic": "出错了。请重试。",
       "validation": "请检查填写的信息后重试。"

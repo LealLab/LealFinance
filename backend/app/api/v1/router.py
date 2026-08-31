@@ -6,6 +6,7 @@ from app.api.v1 import (
     accounts,
     agents,
     auth,
+    backups,
     budget_plan,
     budgets,
     categories,
@@ -27,6 +28,7 @@ api_v1_router = APIRouter(prefix="/api/v1")
 api_v1_router.include_router(health.router)
 api_v1_router.include_router(meta.router)
 api_v1_router.include_router(auth.router)
+api_v1_router.include_router(backups.router)
 api_v1_router.include_router(agents.router)
 api_v1_router.include_router(institutions.router)
 api_v1_router.include_router(accounts.router)

@@ -63,7 +63,7 @@ interface PaletteGroup {
  * as-is here for the "Go to" group, via NAV_SECTIONS, and so don't need
  * re-marking). Admin-only items reuse the same keys as layout/sidebar.ts.
  *
- * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.configureTwoFactor, layout.commandPalette.actions.configureTwoFactorHint, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
+ * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.configureTwoFactor, layout.commandPalette.actions.configureTwoFactorHint, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, settings.backup.export.action, settings.backup.restore.action, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
  */
 @Component({
   selector: 'app-command-palette',
@@ -328,6 +328,18 @@ export class CommandPalette {
         labelKey: 'transactions.import.title',
         icon: 'arrowUpRight',
         run: () => this.router.navigate(['/transactions/import']),
+      },
+      {
+        id: 'quick-export-backup',
+        labelKey: 'settings.backup.export.action',
+        icon: 'arrowDownLeft',
+        run: () => this.navigateToSetting('settings-backup-export')
+      },
+      {
+        id: 'quick-restore-backup',
+        labelKey: 'settings.backup.restore.action',
+        icon: 'refresh',
+        run: () => this.navigateToSetting('settings-backup-restore')
       },
       {
         id: 'quick-configure-language',

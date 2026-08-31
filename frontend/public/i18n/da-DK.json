@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Sikkerhedskopiering og gendannelse",
+      "description": "Download en flytbar kopi af dine data, eller erstat dine nuværende data fra en sikkerhedskopi.",
+      "export": {
+        "action": "Eksportér sikkerhedskopi",
+        "title": "Eksportér sikkerhedskopi",
+        "keyDescription": "Din krypterede sikkerhedskopi er downloadet. Gem denne nøgle separat, før du lukker.",
+        "recoveryKey": "Gendannelsesnøgle",
+        "copyKey": "Kopiér nøgle",
+        "keyCopied": "Gendannelsesnøglen er kopieret.",
+        "keyWarning": "Nøglen vises kun én gang. Uden den kan den krypterede sikkerhedskopi ikke gendannes.",
+        "description": "Vælg, om sikkerhedskopien skal beskyttes med en gendannelsesnøgle.",
+        "security": "Sikkerhed",
+        "plain": "Ukrypteret JSON",
+        "plainHint": "Nem at gennemse, men alle med filen kan læse den.",
+        "encrypted": "Krypteret",
+        "encryptedHint": "Beskyttet med en gendannelsesnøgle, som LealFinance aldrig gemmer.",
+        "exporting": "Eksporterer…",
+        "download": "Download sikkerhedskopi"
+      },
+      "restore": {
+        "security": "Sikkerhed",
+        "action": "Gendan sikkerhedskopi",
+        "title": "Gendan sikkerhedskopi",
+        "description": "Vælg en JSON-sikkerhedskopi fra LealFinance, og gennemse den, før dine data erstattes.",
+        "file": "Sikkerhedskopifil",
+        "selected": "Valgt fil: {{filename}}",
+        "recoveryKey": "Gendannelsesnøgle",
+        "previewTitle": "Forhåndsvisning",
+        "sourceVersion": "Kildeappens version",
+        "exportedAt": "Eksporteret",
+        "records": "Poster",
+        "replace": "Erstat mine data",
+        "preview": "Forhåndsvis sikkerhedskopi"
+      },
+      "status": {
+        "exported": "Sikkerhedskopien er downloadet.",
+        "restored": "Sikkerhedskopien er gendannet."
+      },
+      "confirm": {
+        "title": "Erstat dine data?",
+        "message": "Dette erstatter permanent de sikkerhedskopierede økonomiske data og understøttede indstillinger. Dit login og dine legitimationsoplysninger ændres ikke. Fortsæt?"
+      },
+      "entities": {
+        "institutions": "Finansielle institutioner",
+        "accounts": "Konti",
+        "category_groups": "Kategorigrupper",
+        "categories": "Kategorier",
+        "categorization_rules": "Kategoriseringsregler",
+        "budgets": "Budgetter",
+        "budget_allocations": "Budgetfordelinger",
+        "expected_income": "Forventede indtægter",
+        "recurring_rules": "Tilbagevendende regler",
+        "loans": "Lån",
+        "goals": "Mål",
+        "manual_rates": "Manuelle valutakurser",
+        "transactions": "Transaktioner",
+        "investment_wallets": "Investeringsporteføljer",
+        "investment_assets": "Investeringsaktiver",
+        "investment_transactions": "Investeringstransaktioner"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Den forældede indstilling {{setting}} springes over.",
+        "credentials_reconnect": "Legitimationsoplysninger medtages ikke i sikkerhedskopier. Forbind berørte tjenester igen efter gendannelsen."
+      }
+    },
     "title": "Indstillinger",
     "description": "Udseende, sprog og præferencer for demodata.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Dette er ikke en gyldig LealFinance-sikkerhedskopi.",
+      "invalid_file_type": "Vælg en JSON-sikkerhedskopifil.",
+      "file_too_large": "Sikkerhedskopien er for stor (grænsen er 25 MB).",
+      "recovery_key_required": "Indtast gendannelsesnøglen til denne krypterede sikkerhedskopi.",
+      "recovery_key_invalid": "Gendannelsesnøglen er forkert, eller den krypterede sikkerhedskopi er blevet ændret.",
+      "version_unsupported": "Sikkerhedskopiens format er nyere end det, denne version af LealFinance understøtter.",
+      "data_incompatible": "Sikkerhedskopien indeholder inkompatible eller beskadigede økonomiske data."
+    },
     "error": {
       "generic": "Noget gik galt. Prøv igen.",
       "validation": "Tjek oplysningerne, og prøv igen."

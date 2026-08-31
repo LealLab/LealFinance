@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Copia de seguridad y restauración",
+      "description": "Descarga una copia portátil de tus datos o sustituye los datos actuales desde una copia de seguridad.",
+      "export": {
+        "action": "Exportar copia",
+        "title": "Exportar copia de seguridad",
+        "keyDescription": "Se ha descargado la copia cifrada. Guarda esta clave por separado antes de cerrar.",
+        "recoveryKey": "Clave de recuperación",
+        "copyKey": "Copiar clave",
+        "keyCopied": "Clave de recuperación copiada.",
+        "keyWarning": "Esta clave se muestra una sola vez. Sin ella, no podrás restaurar la copia cifrada.",
+        "description": "Elige si quieres proteger la copia con una clave de recuperación.",
+        "security": "Seguridad",
+        "plain": "JSON sin cifrar",
+        "plainHint": "Es fácil de revisar, pero cualquiera que tenga el archivo podrá leerlo.",
+        "encrypted": "Cifrada",
+        "encryptedHint": "Protegida con una clave de recuperación que LealFinance nunca almacena.",
+        "exporting": "Exportando…",
+        "download": "Descargar copia"
+      },
+      "restore": {
+        "security": "Seguridad",
+        "action": "Restaurar copia",
+        "title": "Restaurar copia de seguridad",
+        "description": "Elige una copia JSON de LealFinance para revisarla antes de sustituir tus datos.",
+        "file": "Archivo de copia",
+        "selected": "Archivo seleccionado: {{filename}}",
+        "recoveryKey": "Clave de recuperación",
+        "previewTitle": "Vista previa de la copia",
+        "sourceVersion": "Versión de la aplicación de origen",
+        "exportedAt": "Fecha de exportación",
+        "records": "Registros",
+        "replace": "Sustituir mis datos",
+        "preview": "Ver vista previa"
+      },
+      "status": {
+        "exported": "Copia descargada.",
+        "restored": "Copia restaurada."
+      },
+      "confirm": {
+        "title": "¿Sustituir tus datos?",
+        "message": "Esta acción sustituirá de forma permanente los datos financieros incluidos y las preferencias compatibles. Tus datos de acceso y credenciales no cambiarán. ¿Quieres continuar?"
+      },
+      "entities": {
+        "institutions": "Entidades financieras",
+        "accounts": "Cuentas",
+        "category_groups": "Grupos de categorías",
+        "categories": "Categorías",
+        "categorization_rules": "Reglas de categorización",
+        "budgets": "Presupuestos",
+        "budget_allocations": "Asignaciones presupuestarias",
+        "expected_income": "Ingresos previstos",
+        "recurring_rules": "Reglas periódicas",
+        "loans": "Préstamos",
+        "goals": "Objetivos",
+        "manual_rates": "Tipos de cambio manuales",
+        "transactions": "Transacciones",
+        "investment_wallets": "Carteras de inversión",
+        "investment_assets": "Activos de inversión",
+        "investment_transactions": "Transacciones de inversión"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Se omitirá el ajuste obsoleto {{setting}}.",
+        "credentials_reconnect": "Las credenciales no se incluyen en las copias. Vuelve a conectar los servicios afectados después de restaurar."
+      }
+    },
     "title": "Ajustes",
     "description": "Preferencias de apariencia, idioma y datos de demostración.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Este archivo no es una copia de seguridad válida de LealFinance.",
+      "invalid_file_type": "Elige un archivo de copia JSON.",
+      "file_too_large": "La copia es demasiado grande (límite de 25 MB).",
+      "recovery_key_required": "Introduce la clave de recuperación de esta copia cifrada.",
+      "recovery_key_invalid": "La clave de recuperación no es correcta o la copia cifrada se ha modificado.",
+      "version_unsupported": "El formato de esta copia es más reciente de lo que admite esta versión de LealFinance.",
+      "data_incompatible": "La copia contiene datos financieros incompatibles o dañados."
+    },
     "error": {
       "generic": "Algo ha salido mal. Inténtalo de nuevo.",
       "validation": "Comprueba la información e inténtalo de nuevo."

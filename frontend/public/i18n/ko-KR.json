@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "백업 및 복원",
+      "description": "데이터의 이동식 사본을 다운로드하거나 백업으로 현재 데이터를 교체하세요.",
+      "export": {
+        "action": "백업 내보내기",
+        "title": "백업 내보내기",
+        "keyDescription": "암호화된 백업을 다운로드했습니다. 닫기 전에 이 키를 별도로 보관하세요.",
+        "recoveryKey": "복구 키",
+        "copyKey": "키 복사",
+        "keyCopied": "복구 키를 복사했습니다.",
+        "keyWarning": "이 키는 한 번만 표시됩니다. 키가 없으면 암호화된 백업을 복원할 수 없습니다.",
+        "description": "백업을 복구 키로 보호할지 선택하세요.",
+        "security": "보안",
+        "plain": "암호화되지 않은 JSON",
+        "plainHint": "내용을 쉽게 확인할 수 있지만 파일을 가진 사람은 누구나 읽을 수 있습니다.",
+        "encrypted": "암호화됨",
+        "encryptedHint": "LealFinance가 저장하지 않는 복구 키로 보호됩니다.",
+        "exporting": "내보내는 중…",
+        "download": "백업 다운로드"
+      },
+      "restore": {
+        "security": "보안",
+        "action": "백업 복원",
+        "title": "백업 복원",
+        "description": "데이터를 교체하기 전에 확인할 LealFinance JSON 백업을 선택하세요.",
+        "file": "백업 파일",
+        "selected": "선택한 파일: {{filename}}",
+        "recoveryKey": "복구 키",
+        "previewTitle": "백업 미리보기",
+        "sourceVersion": "원본 앱 버전",
+        "exportedAt": "내보낸 시각",
+        "records": "레코드",
+        "replace": "내 데이터 교체",
+        "preview": "백업 미리보기"
+      },
+      "status": {
+        "exported": "백업을 다운로드했습니다.",
+        "restored": "백업을 복원했습니다."
+      },
+      "confirm": {
+        "title": "데이터를 교체할까요?",
+        "message": "백업된 재무 데이터와 지원되는 환경설정이 영구적으로 교체됩니다. 로그인 정보와 자격 증명은 변경되지 않습니다. 계속할까요?"
+      },
+      "entities": {
+        "institutions": "금융 기관",
+        "accounts": "계좌",
+        "category_groups": "카테고리 그룹",
+        "categories": "카테고리",
+        "categorization_rules": "분류 규칙",
+        "budgets": "예산",
+        "budget_allocations": "예산 배분",
+        "expected_income": "예상 수입",
+        "recurring_rules": "반복 규칙",
+        "loans": "대출",
+        "goals": "목표",
+        "manual_rates": "수동 환율",
+        "transactions": "거래",
+        "investment_wallets": "투자 지갑",
+        "investment_assets": "투자 자산",
+        "investment_transactions": "투자 거래"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "더 이상 사용되지 않는 설정 {{setting}}은(는) 건너뜁니다.",
+        "credentials_reconnect": "자격 증명은 백업에 포함되지 않습니다. 복원 후 영향을 받는 서비스에 다시 연결하세요."
+      }
+    },
     "title": "설정",
     "description": "화면 표시, 언어 및 데모 데이터 환경설정입니다.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "올바른 LealFinance 백업이 아닙니다.",
+      "invalid_file_type": "JSON 백업 파일을 선택하세요.",
+      "file_too_large": "백업이 너무 큽니다(최대 25MB).",
+      "recovery_key_required": "이 암호화된 백업의 복구 키를 입력하세요.",
+      "recovery_key_invalid": "복구 키가 잘못되었거나 암호화된 백업이 변경되었습니다.",
+      "version_unsupported": "이 백업 형식은 현재 LealFinance 버전이 지원하는 형식보다 최신입니다.",
+      "data_incompatible": "백업에 호환되지 않거나 손상된 재무 데이터가 포함되어 있습니다."
+    },
     "error": {
       "generic": "문제가 발생했습니다. 다시 시도하세요.",
       "validation": "입력하신 정보를 확인한 후 다시 시도하세요."

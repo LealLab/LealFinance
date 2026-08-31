@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Backup and restore",
+      "description": "Download a portable copy of your data or replace your current data from a backup.",
+      "export": {
+        "action": "Export backup",
+        "title": "Export backup",
+        "keyDescription": "Your encrypted backup has been downloaded. Save this key separately before closing.",
+        "recoveryKey": "Recovery key",
+        "copyKey": "Copy key",
+        "keyCopied": "Recovery key copied.",
+        "keyWarning": "This key is shown only once. Without it, the encrypted backup cannot be restored.",
+        "description": "Choose whether to protect the backup with a recovery key.",
+        "security": "Security",
+        "plain": "Plain JSON",
+        "plainHint": "Easy to inspect, but anyone with the file can read it.",
+        "encrypted": "Encrypted",
+        "encryptedHint": "Protected by a recovery key that is never stored by LealFinance.",
+        "exporting": "Exporting…",
+        "download": "Download backup"
+      },
+      "restore": {
+        "security": "Security",
+        "action": "Restore backup",
+        "title": "Restore backup",
+        "description": "Choose a LealFinance JSON backup to preview before replacing your data.",
+        "file": "Backup file",
+        "selected": "Selected file: {{filename}}",
+        "recoveryKey": "Recovery key",
+        "previewTitle": "Backup preview",
+        "sourceVersion": "Source app version",
+        "exportedAt": "Exported at",
+        "records": "Records",
+        "replace": "Replace my data",
+        "preview": "Preview backup"
+      },
+      "status": {
+        "exported": "Backup downloaded.",
+        "restored": "Backup restored."
+      },
+      "confirm": {
+        "title": "Replace your data?",
+        "message": "This permanently replaces your backed-up financial data and supported preferences. Your sign-in and credentials stay unchanged. Continue?"
+      },
+      "entities": {
+        "institutions": "Institutions",
+        "accounts": "Accounts",
+        "category_groups": "Category groups",
+        "categories": "Categories",
+        "categorization_rules": "Categorization rules",
+        "budgets": "Budgets",
+        "budget_allocations": "Budget allocations",
+        "expected_income": "Expected income",
+        "recurring_rules": "Recurring rules",
+        "loans": "Loans",
+        "goals": "Goals",
+        "manual_rates": "Manual exchange rates",
+        "transactions": "Transactions",
+        "investment_wallets": "Investment wallets",
+        "investment_assets": "Investment assets",
+        "investment_transactions": "Investment transactions"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "The obsolete setting {{setting}} will be skipped.",
+        "credentials_reconnect": "Credentials are not included in backups. Reconnect any affected services after restoring."
+      }
+    },
     "title": "Settings",
     "description": "Appearance, language, and demo-data preferences.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "This is not a valid LealFinance backup.",
+      "invalid_file_type": "Choose a JSON backup file.",
+      "file_too_large": "That backup is too large (25 MB limit).",
+      "recovery_key_required": "Enter the recovery key for this encrypted backup.",
+      "recovery_key_invalid": "The recovery key is incorrect or the encrypted backup was modified.",
+      "version_unsupported": "This backup format is newer than this version of LealFinance supports.",
+      "data_incompatible": "This backup contains incompatible or corrupt financial data."
+    },
     "error": {
       "generic": "Something went wrong. Please try again.",
       "validation": "Check your information and try again."

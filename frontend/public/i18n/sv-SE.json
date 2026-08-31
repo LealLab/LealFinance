@@ -1263,6 +1263,72 @@
     }
   },
   "settings": {
+    "backup": {
+      "title": "Säkerhetskopiering och återställning",
+      "description": "Hämta en portabel kopia av dina data eller ersätt aktuella data från en säkerhetskopia.",
+      "export": {
+        "action": "Exportera säkerhetskopia",
+        "title": "Exportera säkerhetskopia",
+        "keyDescription": "Din krypterade säkerhetskopia har hämtats. Spara nyckeln separat innan du stänger.",
+        "recoveryKey": "Återställningsnyckel",
+        "copyKey": "Kopiera nyckel",
+        "keyCopied": "Återställningsnyckeln har kopierats.",
+        "keyWarning": "Nyckeln visas bara en gång. Utan den går den krypterade säkerhetskopian inte att återställa.",
+        "description": "Välj om säkerhetskopian ska skyddas med en återställningsnyckel.",
+        "security": "Säkerhet",
+        "plain": "Okrypterad JSON",
+        "plainHint": "Enkel att granska, men alla som har filen kan läsa den.",
+        "encrypted": "Krypterad",
+        "encryptedHint": "Skyddad med en återställningsnyckel som LealFinance aldrig lagrar.",
+        "exporting": "Exporterar…",
+        "download": "Hämta säkerhetskopia"
+      },
+      "restore": {
+        "security": "Säkerhet",
+        "action": "Återställ säkerhetskopia",
+        "title": "Återställ säkerhetskopia",
+        "description": "Välj en JSON-säkerhetskopia från LealFinance och granska den innan dina data ersätts.",
+        "file": "Säkerhetskopieringsfil",
+        "selected": "Vald fil: {{filename}}",
+        "recoveryKey": "Återställningsnyckel",
+        "previewTitle": "Förhandsgranskning",
+        "sourceVersion": "Källappens version",
+        "exportedAt": "Exporterad",
+        "records": "Poster",
+        "replace": "Ersätt mina data",
+        "preview": "Förhandsgranska"
+      },
+      "status": {
+        "exported": "Säkerhetskopian har hämtats.",
+        "restored": "Säkerhetskopian har återställts."
+      },
+      "confirm": {
+        "title": "Ersätta dina data?",
+        "message": "Detta ersätter permanent de säkerhetskopierade ekonomiska uppgifterna och de inställningar som stöds. Din inloggning och dina autentiseringsuppgifter ändras inte. Fortsätta?"
+      },
+      "entities": {
+        "institutions": "Finansinstitut",
+        "accounts": "Konton",
+        "category_groups": "Kategorigrupper",
+        "categories": "Kategorier",
+        "categorization_rules": "Kategoriseringsregler",
+        "budgets": "Budgetar",
+        "budget_allocations": "Budgetfördelningar",
+        "expected_income": "Förväntade inkomster",
+        "recurring_rules": "Återkommande regler",
+        "loans": "Lån",
+        "goals": "Mål",
+        "manual_rates": "Manuella växelkurser",
+        "transactions": "Transaktioner",
+        "investment_wallets": "Investeringsportföljer",
+        "investment_assets": "Investeringstillgångar",
+        "investment_transactions": "Investeringstransaktioner"
+      },
+      "warnings": {
+        "obsolete_setting_skipped": "Den inaktuella inställningen {{setting}} hoppas över.",
+        "credentials_reconnect": "Autentiseringsuppgifter ingår inte i säkerhetskopior. Anslut berörda tjänster på nytt efter återställningen."
+      }
+    },
     "title": "Inställningar",
     "description": "Utseende, språk och inställningar för demodata.",
     "appearance": {
@@ -1478,6 +1544,15 @@
     }
   },
   "errors": {
+    "backup": {
+      "invalid_archive": "Detta är inte en giltig säkerhetskopia från LealFinance.",
+      "invalid_file_type": "Välj en JSON-säkerhetskopia.",
+      "file_too_large": "Säkerhetskopian är för stor (gränsen är 25 MB).",
+      "recovery_key_required": "Ange återställningsnyckeln för den här krypterade säkerhetskopian.",
+      "recovery_key_invalid": "Återställningsnyckeln är felaktig eller så har den krypterade säkerhetskopian ändrats.",
+      "version_unsupported": "Säkerhetskopians format är nyare än vad den här versionen av LealFinance stöder.",
+      "data_incompatible": "Säkerhetskopian innehåller inkompatibla eller skadade ekonomiska uppgifter."
+    },
     "error": {
       "generic": "Något gick fel. Försök igen.",
       "validation": "Kontrollera uppgifterna och försök igen."
