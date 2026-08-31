@@ -205,6 +205,12 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/providers/{provider}/oauth/start` | admin | → `{authorize_url, verifier, state}`. |
 | POST | `/agents/providers/{provider}/oauth/complete` | admin | Body `{verifier, state, code}`. |
 | POST | `/agents/providers/{provider}/test` | admin | → `{ok, error_code?}`. |
+| GET | `/agents/conversations` | user | Lists conversations, newest first. |
+| POST | `/agents/conversations` | user | Creates a conversation, optionally pinned to a configured provider. |
+| GET | `/agents/conversations/{id}` | user | Returns a conversation and its ordered messages. |
+| DELETE | `/agents/conversations/{id}` | user | Deletes the conversation and its messages. |
+| POST | `/agents/conversations/{id}/messages` | user | Streams the assistant response as `text/event-stream`. |
+| POST | `/agents/conversations/{id}/confirm` | user | Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
 | GET/PATCH | `/investments/wallets/{id}` | user | |
 | POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |
@@ -538,3 +544,7 @@ precedence, and the OAuth linking flow. `provider` is one of `anthropic`,
 | `agents.oauth_state_mismatch` | 422 |
 | `agents.oauth_failed` | 422 |
 | `agents.provider_unavailable` | 502 |
+| `agents.no_pending_tool` | 409 |
+| `agents.awaiting_confirmation` | 409 |
+| `agents.tool_loop_exhausted` | 200 (error event) |
+| `agents.off_topic` | 200 (refusal event) |

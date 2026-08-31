@@ -2,9 +2,10 @@
 below exposes only booleans, the credential source, and a display label."""
 
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
+from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
 ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
@@ -54,3 +55,47 @@ class ProviderTestRead(BaseModel):
 class McpTokenRead(BaseModel):
     token: str
     expires_at: datetime
+
+
+class ConversationCreate(BaseModel):
+    provider: ProviderId | None = None
+
+
+class ConversationRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    title: str | None
+    provider: str
+    model: str
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+
+class AgentMessageRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    role: str
+    content: str
+    tool_calls: list[dict[str, Any]] | None
+    tool_call_id: str | None
+    tool_name: str | None
+    is_error: bool
+    position: int
+    created_at: datetime
+
+
+class ConversationDetailRead(ConversationRead):
+    messages: list[AgentMessageRead]
+
+
+class MessageCreate(BaseModel):
+    content: str = Field(min_length=1, max_length=8000)
+
+
+class ConfirmCreate(BaseModel):
+    tool_call_id: str = Field(min_length=1)
+    approved: bool
+    arguments: dict[str, Any] | None = None

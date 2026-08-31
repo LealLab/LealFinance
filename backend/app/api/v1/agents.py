@@ -4,23 +4,32 @@ by `_require_agents_enabled` and admin auth, so the whole surface 404s as
 entirely behind (see CLAUDE.md's AI Agents section)."""
 
 from datetime import UTC, datetime, timedelta
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import StreamingResponse
 
 from app.agents import MCP_TOKEN_TTL_SECONDS
 from app.api.deps import AdminUser, AiChatUser, DbSession
 from app.core import crypto
 from app.core.config import get_settings
-from app.core.errors import NotFoundError
+from app.core.errors import ConflictError, NotFoundError
+from app.models.agent_conversation import AGENT_CONVERSATION_STATUS_AWAITING, AgentConversation
 from app.schemas.agent import (
+    AgentMessageRead,
+    ConfirmCreate,
+    ConversationCreate,
+    ConversationDetailRead,
+    ConversationRead,
     McpTokenRead,
+    MessageCreate,
     OAuthCompleteCreate,
     OAuthStartRead,
     ProviderLinkUpdate,
     ProviderStatusRead,
     ProviderTestRead,
 )
-from app.services import agent_providers
+from app.services import agent_chat, agent_providers
 
 
 def _require_agents_enabled() -> None:
@@ -72,3 +81,80 @@ async def create_mcp_token(user: AiChatUser) -> McpTokenRead:
     token = crypto.mint_mcp_token(user.id)
     expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
     return McpTokenRead(token=token, expires_at=expires_at)
+
+
+@router.get("/conversations", response_model=list[ConversationRead])
+async def list_conversations(user: AiChatUser, db: DbSession) -> list[AgentConversation]:
+    return await agent_chat.list_conversations(db, user.id)
+
+
+@router.post("/conversations", response_model=ConversationRead, status_code=status.HTTP_201_CREATED)
+async def create_conversation(
+    payload: ConversationCreate, user: AiChatUser, db: DbSession
+) -> AgentConversation:
+    return await agent_chat.create_conversation(db, user.id, payload)
+
+
+@router.get("/conversations/{conversation_id}", response_model=ConversationDetailRead)
+async def get_conversation(
+    conversation_id: UUID, user: AiChatUser, db: DbSession
+) -> ConversationDetailRead:
+    conversation, messages = await agent_chat.get_conversation_detail(db, user.id, conversation_id)
+    return ConversationDetailRead(
+        **ConversationRead.model_validate(conversation).model_dump(),
+        messages=[AgentMessageRead.model_validate(message) for message in messages],
+    )
+
+
+@router.delete("/conversations/{conversation_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_conversation(conversation_id: UUID, user: AiChatUser, db: DbSession) -> None:
+    await agent_chat.delete_conversation(db, user.id, conversation_id)
+
+
+@router.post("/conversations/{conversation_id}/messages")
+async def post_message(
+    conversation_id: UUID, payload: MessageCreate, user: AiChatUser, db: DbSession
+) -> StreamingResponse:
+    await agent_chat.get_conversation(db, user.id, conversation_id)
+    # The request session is only for the pre-stream ownership check. The
+    # generator opens its own session because FastAPI may close this one first.
+    return StreamingResponse(
+        agent_chat._heartbeat(agent_chat.stream_message(user.id, conversation_id, payload.content)),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
+
+
+@router.post("/conversations/{conversation_id}/confirm")
+async def post_confirm(
+    conversation_id: UUID, payload: ConfirmCreate, user: AiChatUser, db: DbSession
+) -> StreamingResponse:
+    conversation = await agent_chat.get_conversation(db, user.id, conversation_id)
+    if (
+        conversation.status != AGENT_CONVERSATION_STATUS_AWAITING
+        or conversation.pending_call_id != payload.tool_call_id
+    ):
+        raise ConflictError(code="agents.no_pending_tool")
+    # The request session is only for the pre-stream ownership/conflict check.
+    # The generator opens its own session because FastAPI may close this one first.
+    return StreamingResponse(
+        agent_chat._heartbeat(
+            agent_chat.stream_confirm(
+                user.id,
+                conversation_id,
+                payload.tool_call_id,
+                payload.approved,
+                payload.arguments,
+            )
+        ),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
