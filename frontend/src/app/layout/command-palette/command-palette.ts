@@ -25,8 +25,14 @@ interface PaletteItem {
   labelKey?: string;
   /** Literal text, when the label is real data (an account/category name…). */
   label?: string;
+  /** Short trailing hint, rendered right-aligned and never shrunk - a route
+   * like `/transactions`. Long text here squeezes the label to nothing. */
   sublabelKey?: string;
   sublabel?: string;
+  /** Translation key for extra search terms. Matched against, never
+   * rendered: synonyms people type ("2FA", "authenticator") belong in the
+   * query text, not in the row. */
+  keywordsKey?: string;
   icon: IconName;
   run: () => void;
 }
@@ -57,13 +63,13 @@ interface PaletteGroup {
  * as-is here for the "Go to" group, via NAV_SECTIONS, and so don't need
  * re-marking). Admin-only items reuse the same keys as layout/sidebar.ts.
  *
- * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, settings.backup.export.action, settings.backup.restore.action, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
+ * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.configureTwoFactor, layout.commandPalette.actions.configureTwoFactorHint, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, settings.backup.export.action, settings.backup.restore.action, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
  */
 @Component({
   selector: 'app-command-palette',
   imports: [TranslocoDirective, Icon],
   templateUrl: './command-palette.html',
-  styleUrl: './command-palette.scss'
+  styleUrl: './command-palette.scss',
 })
 export class CommandPalette {
   protected readonly paletteService = inject(CommandPaletteService);
@@ -94,19 +100,19 @@ export class CommandPalette {
   // while it's closed.
   private readonly accountsResource = rxResource({
     params: () => (this.paletteService.isOpen() ? {} : undefined),
-    stream: () => this.accountRepository.list()
+    stream: () => this.accountRepository.list(),
   });
   private readonly categoriesResource = rxResource({
     params: () => (this.paletteService.isOpen() ? {} : undefined),
-    stream: () => this.categoryRepository.list()
+    stream: () => this.categoryRepository.list(),
   });
   private readonly categoryGroupsResource = rxResource({
     params: () => (this.paletteService.isOpen() ? {} : undefined),
-    stream: () => this.categoryGroupRepository.list()
+    stream: () => this.categoryGroupRepository.list(),
   });
   private readonly budgetsResource = rxResource({
     params: () => (this.paletteService.isOpen() ? {} : undefined),
-    stream: () => this.budgetRepository.list()
+    stream: () => this.budgetRepository.list(),
   });
   // Transactions are searched server-side (there can be far more of them
   // than fit in memory) rather than fetched whole and fuzzy-filtered like
@@ -118,27 +124,44 @@ export class CommandPalette {
     stream: ({ params }) =>
       this.transactionRepository.list({
         search: params.search || undefined,
-        limit: RECENT_TRANSACTIONS_LIMIT
-      })
+        limit: RECENT_TRANSACTIONS_LIMIT,
+      }),
   });
 
   protected readonly groups = computed<PaletteGroup[]>(() => {
     const query = this.query();
     const groups: (PaletteGroup | null)[] = [
-      this.buildGroup('quickActions', 'layout.commandPalette.groups.quickActions', this.quickActionItems(), query),
+      this.buildGroup(
+        'quickActions',
+        'layout.commandPalette.groups.quickActions',
+        this.quickActionItems(),
+        query,
+      ),
       this.buildGroup('goTo', 'layout.commandPalette.groups.goTo', this.goToItems(), query),
-      this.buildGroup('accounts', 'layout.commandPalette.groups.accounts', this.accountItems(), query),
-      this.buildGroup('categories', 'layout.commandPalette.groups.categories', this.categoryItems(), query),
+      this.buildGroup(
+        'accounts',
+        'layout.commandPalette.groups.accounts',
+        this.accountItems(),
+        query,
+      ),
+      this.buildGroup(
+        'categories',
+        'layout.commandPalette.groups.categories',
+        this.categoryItems(),
+        query,
+      ),
       this.buildGroup('budgets', 'layout.commandPalette.groups.budgets', this.budgetItems(), query),
-      this.transactionGroup()
+      this.transactionGroup(),
     ];
     return groups.filter((group): group is PaletteGroup => group !== null);
   });
 
-  protected readonly flatItems = computed<PaletteItem[]>(() => this.groups().flatMap((group) => group.items));
+  protected readonly flatItems = computed<PaletteItem[]>(() =>
+    this.groups().flatMap((group) => group.items),
+  );
 
   protected readonly highlightedId = computed<string | undefined>(
-    () => this.flatItems()[this.highlightedIndex()]?.id
+    () => this.flatItems()[this.highlightedIndex()]?.id,
   );
 
   constructor() {
@@ -243,7 +266,12 @@ export class CommandPalette {
     this.highlightedIndex.update((index) => (index + delta + count) % count);
   }
 
-  private buildGroup(key: string, labelKey: string, items: PaletteItem[], query: string): PaletteGroup | null {
+  private buildGroup(
+    key: string,
+    labelKey: string,
+    items: PaletteItem[],
+    query: string,
+  ): PaletteGroup | null {
     const filtered = this.filterItems(items, query);
     return filtered.length > 0 ? { key, labelKey, items: filtered } : null;
   }
@@ -259,8 +287,11 @@ export class CommandPalette {
 
   private itemSearchText(item: PaletteItem): string {
     const label = item.labelKey ? this.transloco.translate(item.labelKey) : (item.label ?? '');
-    const sublabel = item.sublabelKey ? this.transloco.translate(item.sublabelKey) : (item.sublabel ?? '');
-    return `${label} ${sublabel}`;
+    const sublabel = item.sublabelKey
+      ? this.transloco.translate(item.sublabelKey)
+      : (item.sublabel ?? '');
+    const keywords = item.keywordsKey ? this.transloco.translate(item.keywordsKey) : '';
+    return `${label} ${sublabel} ${keywords}`;
   }
 
   private quickActionItems(): PaletteItem[] {
@@ -269,25 +300,25 @@ export class CommandPalette {
         id: 'quick-new-transaction',
         labelKey: 'layout.commandPalette.actions.newTransaction',
         icon: 'plus',
-        run: () => this.navigateToCreate('/transactions')
+        run: () => this.navigateToCreate('/transactions'),
       },
       {
         id: 'quick-new-account',
         labelKey: 'layout.commandPalette.actions.newAccount',
         icon: 'plus',
-        run: () => this.navigateToCreate('/accounts')
+        run: () => this.navigateToCreate('/accounts'),
       },
       {
         id: 'quick-new-category',
         labelKey: 'layout.commandPalette.actions.newCategory',
         icon: 'plus',
-        run: () => this.navigateToCreate('/categories')
+        run: () => this.navigateToCreate('/categories'),
       },
       {
         id: 'quick-new-budget',
         labelKey: 'layout.commandPalette.actions.newBudget',
         icon: 'plus',
-        run: () => this.navigateToCreate('/budgets')
+        run: () => this.navigateToCreate('/budgets'),
       },
       {
         id: 'quick-import-transactions',
@@ -296,7 +327,7 @@ export class CommandPalette {
         // commandPalette.actions.* key across all 28 locale catalogs.
         labelKey: 'transactions.import.title',
         icon: 'arrowUpRight',
-        run: () => this.router.navigate(['/transactions/import'])
+        run: () => this.router.navigate(['/transactions/import']),
       },
       {
         id: 'quick-export-backup',
@@ -314,26 +345,35 @@ export class CommandPalette {
         id: 'quick-configure-language',
         labelKey: 'layout.commandPalette.actions.configureLanguage',
         icon: 'globe',
-        run: () => this.navigateToSetting('settings-language')
+        run: () => this.navigateToSetting('settings-language'),
       },
       {
         id: 'quick-configure-currency',
         labelKey: 'layout.commandPalette.actions.configureCurrency',
         icon: 'wallet',
-        run: () => this.navigateToSetting('settings-display-currency')
+        run: () => this.navigateToSetting('settings-display-currency'),
+      },
+      {
+        id: 'quick-configure-two-factor',
+        labelKey: 'layout.commandPalette.actions.configureTwoFactor',
+        // Search-only synonyms ("2FA", "authenticator", "recovery"). Not a
+        // sublabel: that slot is shrink-0 and would squeeze out the label.
+        keywordsKey: 'layout.commandPalette.actions.configureTwoFactorHint',
+        icon: 'shield',
+        run: () => this.navigateToSetting('settings-two-factor'),
       },
       {
         id: 'quick-toggle-theme',
         labelKey: 'layout.commandPalette.actions.toggleTheme',
         icon: 'sun',
-        run: () => this.preferences.setTheme(this.theme.current() === 'dark' ? 'light' : 'dark')
+        run: () => this.preferences.setTheme(this.theme.current() === 'dark' ? 'light' : 'dark'),
       },
       {
         id: 'quick-toggle-balances',
         labelKey: 'layout.commandPalette.actions.toggleBalances',
         icon: 'eye',
-        run: () => this.preferences.setBalancesHidden(!this.balanceVisibility.hidden())
-      }
+        run: () => this.preferences.setBalancesHidden(!this.balanceVisibility.hidden()),
+      },
     ];
   }
 
@@ -360,8 +400,8 @@ export class CommandPalette {
         labelKey: item.labelKey,
         sublabel: item.path,
         icon: item.icon,
-        run: () => this.router.navigate([item.path])
-      }))
+        run: () => this.router.navigate([item.path]),
+      })),
     );
   }
 
@@ -371,7 +411,7 @@ export class CommandPalette {
       label: account.name,
       sublabel: account.currency,
       icon: 'wallet' as const,
-      run: () => this.router.navigate(['/accounts', account.id])
+      run: () => this.router.navigate(['/accounts', account.id]),
     }));
   }
 
@@ -379,22 +419,23 @@ export class CommandPalette {
     return (this.categoriesResource.value() ?? []).map((category) => ({
       id: `category-${category.id}`,
       label: category.name,
-      sublabelKey: category.kind === 'income' ? 'transactions.type.income' : 'transactions.type.expense',
+      sublabelKey:
+        category.kind === 'income' ? 'transactions.type.income' : 'transactions.type.expense',
       icon: category.icon,
-      run: () => this.router.navigate(['/categories'])
+      run: () => this.router.navigate(['/categories']),
     }));
   }
 
   private budgetItems(): PaletteItem[] {
     const categoryGroupsById = new Map(
-      (this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group])
+      (this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group]),
     );
     return (this.budgetsResource.value() ?? []).map((budget) => ({
       id: `budget-${budget.id}`,
       label: categoryGroupsById.get(budget.groupId)?.name ?? budget.groupId,
       sublabel: budget.month,
       icon: 'target' as const,
-      run: () => this.router.navigate(['/budgets'])
+      run: () => this.router.navigate(['/budgets']),
     }));
   }
 
@@ -411,7 +452,7 @@ export class CommandPalette {
         : transaction.type === 'expense'
           ? 'arrowUpRight'
           : 'swap') as IconName,
-      run: () => this.router.navigate(['/transactions'])
+      run: () => this.router.navigate(['/transactions']),
     }));
   }
 

@@ -249,7 +249,9 @@
         "configureLanguage": "言語を設定",
         "configureCurrency": "表示通貨を設定",
         "toggleTheme": "テーマを切り替え",
-        "toggleBalances": "残高を表示／非表示"
+        "toggleBalances": "残高を表示／非表示",
+        "configureTwoFactor": "2 要素認証を設定",
+        "configureTwoFactorHint": "2FA, 二段階認証, 認証アプリ, バックアップコード, アカウント復旧"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "編集",
       "delete": "削除",
       "import": "CSVをインポート",
-    "columns": "列",
-    "exportCsv": "CSVを書き出す"
+      "columns": "列",
+      "exportCsv": "CSVを書き出す"
     },
     "tabs": {
       "transactions": "取引",
@@ -432,18 +434,18 @@
       "to": "終了日",
       "institution": "金融機関",
       "clear": "フィルタをクリア",
-    "title": "フィルター",
-    "searchPlaceholder": "取引を検索…",
-    "group": "グループ",
-    "date": "日付",
-    "amount": "金額",
-    "amountMin": "最小",
-    "amountMax": "最大",
-    "any": "すべて",
-    "back": "戻る",
-    "dateRange": "{{from}}〜{{to}}",
-    "amountRange": "{{min}}〜{{max}}",
-    "removeChip": "{{filter}}フィルターを削除"
+      "title": "フィルター",
+      "searchPlaceholder": "取引を検索…",
+      "group": "グループ",
+      "date": "日付",
+      "amount": "金額",
+      "amountMin": "最小",
+      "amountMax": "最大",
+      "any": "すべて",
+      "back": "戻る",
+      "dateRange": "{{from}}〜{{to}}",
+      "amountRange": "{{min}}〜{{max}}",
+      "removeChip": "{{filter}}フィルターを削除"
     },
     "empty": {
       "title": "取引が見つかりません",
@@ -568,60 +570,60 @@
         "confirm": "確認済みの行をインポート"
       }
     },
-  "eyebrow": "財務",
-  "view": {
-    "list": "リスト",
-    "calendar": "カレンダー"
-  },
-  "columns": {
-    "title": "列",
-    "date": "日付",
-    "description": "説明",
-    "category": "カテゴリ",
-    "account": "口座",
-    "amount": "金額",
-    "reorder": "ドラッグして並べ替え",
-    "resize": "ドラッグしてサイズ変更"
-  },
-  "table": {
-    "selectAll": "すべての行を選択",
-    "selectRow": "{{description}}を選択"
-  },
-  "pagination": {
-    "showing": "{{from}}～{{to}} / {{total}}",
-    "pageSize": "ページあたりの行数",
-    "previous": "前のページ",
-    "next": "次のページ",
-    "goToPage": "ページ{{page}}に移動"
-  },
-  "bulk": {
-    "selected": "選択済み",
-    "assignCategory": "カテゴリを選択…",
-    "mixedKinds": "カテゴリを割り当てるには同じ種類の取引を選択してください",
-    "delete": "選択項目を削除",
-    "clearSelection": "選択を解除",
-    "deleteConfirm": {
-      "title": "取引を削除",
-      "message": "この操作は元に戻せません。{{count}}件の取引を削除しますか？"
+    "eyebrow": "財務",
+    "view": {
+      "list": "リスト",
+      "calendar": "カレンダー"
+    },
+    "columns": {
+      "title": "列",
+      "date": "日付",
+      "description": "説明",
+      "category": "カテゴリ",
+      "account": "口座",
+      "amount": "金額",
+      "reorder": "ドラッグして並べ替え",
+      "resize": "ドラッグしてサイズ変更"
+    },
+    "table": {
+      "selectAll": "すべての行を選択",
+      "selectRow": "{{description}}を選択"
+    },
+    "pagination": {
+      "showing": "{{from}}～{{to}} / {{total}}",
+      "pageSize": "ページあたりの行数",
+      "previous": "前のページ",
+      "next": "次のページ",
+      "goToPage": "ページ{{page}}に移動"
+    },
+    "bulk": {
+      "selected": "選択済み",
+      "assignCategory": "カテゴリを選択…",
+      "mixedKinds": "カテゴリを割り当てるには同じ種類の取引を選択してください",
+      "delete": "選択項目を削除",
+      "clearSelection": "選択を解除",
+      "deleteConfirm": {
+        "title": "取引を削除",
+        "message": "この操作は元に戻せません。{{count}}件の取引を削除しますか？"
+      }
+    },
+    "calendar": {
+      "previousMonth": "前月",
+      "nextMonth": "次月",
+      "balanceTrend": "残高の推移",
+      "selectedDay": "選択した日",
+      "selectDayHint": "日付を選択してアクティビティを表示",
+      "noTransactions": "この日の取引はありません",
+      "legend": {
+        "income": "収入",
+        "expenses": "支出",
+        "transfer": "振替",
+        "projected": "予定"
+      }
+    },
+    "export": {
+      "filename": "torihiki"
     }
-  },
-  "calendar": {
-    "previousMonth": "前月",
-    "nextMonth": "次月",
-    "balanceTrend": "残高の推移",
-    "selectedDay": "選択した日",
-    "selectDayHint": "日付を選択してアクティビティを表示",
-    "noTransactions": "この日の取引はありません",
-    "legend": {
-      "income": "収入",
-      "expenses": "支出",
-      "transfer": "振替",
-      "projected": "予定"
-    }
-  },
-  "export": {
-    "filename": "torihiki"
-  }
   },
   "categories": {
     "title": "カテゴリ",
@@ -1363,6 +1365,34 @@
       "disabled": "無効",
       "enabled": "有効",
       "manage": "管理"
+    },
+    "twoFactor": {
+      "title": "2 要素認証",
+      "description": "認証アプリのコードでアカウントを保護します。",
+      "enabled": "有効",
+      "enable": "2 要素認証を有効にする",
+      "lockoutWarning": "2 要素認証がないと、パスワードを忘れた場合にアカウントを復旧する手段がありません。",
+      "enroll": {
+        "step1": "このコードを認証アプリでスキャンしてください。",
+        "step2": "アプリに表示されたコードを入力",
+        "confirm": "確認して有効にする",
+        "qrAlt": "認証アプリ用の QR コード",
+        "manualEntry": "または、このキーを手入力してください"
+      },
+      "backupCodes": {
+        "title": "バックアップコードを保存してください",
+        "warning": "これらのコードは今だけ表示されます。認証アプリを紛失した場合、各コードは 1 回だけ使えます。",
+        "copy": "コードをコピー",
+        "copied": "コピーしました",
+        "saved": "保存しました",
+        "remaining": "残りのバックアップコード: {{count}}"
+      },
+      "manage": {
+        "codeLabel": "認証コード",
+        "codeHint": "この設定を変更するには必要です。",
+        "regenerate": "新しいバックアップコードを生成",
+        "disable": "無効にする"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "メールアドレス",
       "password": "パスワード",
       "displayName": "表示名",
-      "invitationToken": "招待トークン"
+      "invitationToken": "招待トークン",
+      "totpCode": "認証コード",
+      "recoveryCode": "認証コードまたはバックアップコード",
+      "newPassword": "新しいパスワード"
     },
     "login": {
       "title": "ログイン",
@@ -1389,6 +1422,21 @@
         "title": "管理者アカウントを作成",
         "description": "このインスタンスの最初のアカウントです。完全な管理者権限を持ちます。"
       }
+    },
+    "totp": {
+      "challengeTitle": "2 段階認証",
+      "challengeDescription": "認証アプリに表示されたコードを入力してください。",
+      "codeHint": "バックアップコードを使うこともできます。",
+      "trustDevice": "このデバイスを 30 日間信頼する"
+    },
+    "recover": {
+      "link": "ログインできませんか？",
+      "title": "アカウントの復旧",
+      "description": "認証アプリまたはバックアップコードで新しいパスワードを設定します。",
+      "action": "パスワードをリセット",
+      "codeHint": "認証アプリのコード、またはバックアップコードのいずれか。",
+      "doneTitle": "パスワードを更新しました",
+      "doneDescription": "すべてのデバイスからログアウトしました。新しいパスワードでログインしてください。"
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "有効な管理者を1人以上残す必要があります。",
       "account_inactive": "このアカウントは無効です。",
       "admin_required": "管理者権限が必要です。",
-      "peer_admin": "管理者は他の管理者のロールやステータスを変更できません。"
+      "peer_admin": "管理者は他の管理者のロールやステータスを変更できません。",
+      "totp_required": "認証アプリのコードを入力してください。",
+      "totp_invalid": "このコードは無効です。もう一度お試しください。",
+      "totp_locked": "コードの誤りが多すぎます。15 分後にお試しください。"
     },
     "invitation": {
       "not_found": "招待が無効です。",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "このファイルは有効なLealFinanceルールのエクスポートではありません。"
+    },
+    "totp": {
+      "already_enabled": "2 要素認証はすでに有効です。",
+      "not_enabled": "2 要素認証は有効になっていません。"
     }
   }
 }

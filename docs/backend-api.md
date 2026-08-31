@@ -76,6 +76,41 @@ Registration is invite-only, except the very first user on an instance.
   can't validate even if the session cookie's format is guessed.
 - `POST /auth/logout` revokes the current session and clears both cookies.
 
+### Two-factor authentication (optional, per user)
+
+- Enrollment is `POST /auth/totp/setup` (returns a base32 secret plus its
+  `otpauth://` URI) then `POST /auth/totp/enable` with a working code. Only
+  the second step arms anything: the secret is stored encrypted
+  (`app/core/crypto.py`) from the first, but `totp_confirmed_at` is what
+  gates a login. Enabling returns ten single-use backup codes, shown once
+  and stored only as keyed hashes - there is no endpoint that lists them
+  again, only `POST /auth/totp/backup-codes` to replace the set.
+- `POST /auth/totp/disable` requires a current code, so a stolen session
+  can't quietly strip the second factor.
+- Login is one endpoint in two phases. `POST /auth/login` answers `401
+  auth.totp_required` when the account has TOTP on and the request carries
+  no valid `lf_trust` cookie; the client resubmits the same body with
+  `totp_code` (a TOTP code or a backup code) and optionally
+  `trust_device: true`. There is deliberately no challenge token and no
+  pending-login state to expire or clean up. The challenge is raised only
+  after the password and active checks pass, so it never reveals which
+  accounts exist or which have a second factor.
+- `trust_device` is opt-in per login. When set, the response also carries
+  `lf_trust` (opaque, `HttpOnly`, `TRUSTED_DEVICE_TTL_DAYS`, default 30),
+  and that browser skips the challenge until it expires. Without the flag
+  every sign-in is challenged.
+- A TOTP code is burned once used: `users.totp_last_step` is the floor, so
+  the same six digits can't be replayed inside their own window. Five
+  consecutive bad codes lock the second factor for 15 minutes. That counter
+  is the only rate limiting in the API, and every code-accepting path shares
+  one verify function so none of them can bypass it.
+- `POST /auth/recover` (public, like `/login`) takes `email`, `code`, and
+  `new_password`, and returns 204. It issues no session; it revokes every
+  session and every trusted device for the user, and burns the code it used.
+  An unknown address, a deactivated account, a user without TOTP, and a wrong
+  code all return the same `auth.invalid_credentials`, so recovery can't be
+  used to enumerate accounts.
+
 ### Auth error codes
 
 | Code | Status | When |
@@ -84,6 +119,11 @@ Registration is invite-only, except the very first user on an instance.
 | `auth.session_invalid` | 401 | Cookie present but expired, revoked, or unknown. |
 | `auth.invalid_credentials` | 401 | Wrong email/password at login (indistinguishable timing from an unknown email). |
 | `auth.account_inactive` | 401 | Valid credentials/session, but the account is deactivated. |
+| `auth.totp_required` | 401 | Password accepted, but the account has TOTP enabled and this browser isn't trusted. Retry `POST /auth/login` with `totp_code`. |
+| `auth.totp_invalid` | 401 | Wrong, expired, or already-used second factor. |
+| `auth.totp_locked` | 401 | Five consecutive bad codes; further attempts are refused for 15 minutes. |
+| `totp.already_enabled` | 409 | Enrollment started on an account that already has TOTP confirmed. |
+| `totp.not_enabled` | 409 | Disable/regenerate called on an account without confirmed TOTP. |
 | `auth.csrf_invalid` | 403 | State-changing request with a missing/mismatched `X-XSRF-TOKEN`. |
 | `auth.forbidden` | 403 | Generic authorization failure. |
 | `auth.admin_required` | 403 | Non-admin called an admin-only route. |

@@ -16,6 +16,11 @@ from app.core.config import get_settings
 SESSION_COOKIE_NAME = "lf_session"
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 CSRF_HEADER_NAME = "X-XSRF-TOKEN"
+# Set only when the user ticks "trust this device" while answering a TOTP
+# challenge, and outlives the session cookie on purpose - it is what lets the
+# *next* login skip the challenge. Like the session cookie it is opaque and
+# only its hash is stored (app/models/totp.py).
+TRUST_COOKIE_NAME = "lf_trust"
 
 
 def set_session_cookies(
@@ -52,3 +57,20 @@ def set_session_cookies(
 def clear_session_cookies(response: Response) -> None:
     response.delete_cookie(SESSION_COOKIE_NAME, path="/")
     response.delete_cookie(CSRF_COOKIE_NAME, path="/")
+
+
+def set_trust_cookie(response: Response, *, token: str, expires_at: datetime) -> None:
+    settings = get_settings()
+    response.set_cookie(
+        TRUST_COOKIE_NAME,
+        token,
+        max_age=max(0, int((expires_at - datetime.now(UTC)).total_seconds())),
+        httponly=True,
+        secure=settings.environment == "production",
+        samesite="lax",
+        path="/",
+    )
+
+
+def clear_trust_cookie(response: Response) -> None:
+    response.delete_cookie(TRUST_COOKIE_NAME, path="/")

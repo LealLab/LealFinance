@@ -249,7 +249,9 @@
         "configureLanguage": "Atur bahasa",
         "configureCurrency": "Atur mata uang tampilan",
         "toggleTheme": "Ganti tema",
-        "toggleBalances": "Tampilkan atau sembunyikan saldo"
+        "toggleBalances": "Tampilkan atau sembunyikan saldo",
+        "configureTwoFactor": "Konfigurasikan autentikasi dua faktor",
+        "configureTwoFactorHint": "2FA, aplikasi autentikator, kode cadangan, pemulihan akun"
       }
     },
     "update": {
@@ -312,10 +314,10 @@
     "archivedBadge": "Diarsipkan",
     "noInstitution": "Tanpa lembaga keuangan",
     "mixedCurrencies": "Beberapa mata uang",
-  "actions": {
-    "new": "Akun baru",
-    "edit": "Edit",
-    "archive": "Arsipkan",
+    "actions": {
+      "new": "Akun baru",
+      "edit": "Edit",
+      "archive": "Arsipkan",
       "unarchive": "Pulihkan dari arsip"
     },
     "archive": {
@@ -407,13 +409,13 @@
   "transactions": {
     "title": "Transaksi",
     "description": "Pendapatan, pengeluaran, dan transfer.",
-  "actions": {
-    "new": "Transaksi baru",
-    "edit": "Sunting",
-    "delete": "Hapus",
+    "actions": {
+      "new": "Transaksi baru",
+      "edit": "Sunting",
+      "delete": "Hapus",
       "import": "Impor CSV",
-    "columns": "Kolom",
-    "exportCsv": "Ekspor CSV"
+      "columns": "Kolom",
+      "exportCsv": "Ekspor CSV"
     },
     "tabs": {
       "transactions": "Transaksi",
@@ -431,19 +433,19 @@
       "from": "Dari",
       "to": "Ke",
       "institution": "Lembaga keuangan",
-    "clear": "Hapus filter",
-    "title": "Filter berdasarkan",
-    "searchPlaceholder": "Cari transaksi…",
-    "group": "Kelompokkan",
-    "date": "Tanggal",
-    "amount": "Jumlah",
-    "amountMin": "Minimum",
-    "amountMax": "Maksimum",
-    "any": "Apa pun",
-    "back": "Kembali",
-    "dateRange": "{{from}} sampai {{to}}",
-    "amountRange": "{{min}} sampai {{max}}",
-    "removeChip": "Hapus filter {{filter}}"
+      "clear": "Hapus filter",
+      "title": "Filter berdasarkan",
+      "searchPlaceholder": "Cari transaksi…",
+      "group": "Kelompokkan",
+      "date": "Tanggal",
+      "amount": "Jumlah",
+      "amountMin": "Minimum",
+      "amountMax": "Maksimum",
+      "any": "Apa pun",
+      "back": "Kembali",
+      "dateRange": "{{from}} sampai {{to}}",
+      "amountRange": "{{min}} sampai {{max}}",
+      "removeChip": "Hapus filter {{filter}}"
     },
     "empty": {
       "title": "Transaksi tidak ditemukan",
@@ -568,60 +570,60 @@
         "confirm": "Impor baris yang ditinjau"
       }
     },
-  "eyebrow": "Keuangan",
-  "view": {
-    "list": "Daftar",
-    "calendar": "Kalender"
-  },
-  "columns": {
-    "title": "Kolom",
-    "date": "Tanggal",
-    "description": "Deskripsi",
-    "category": "Kategori",
-    "account": "Akun",
-    "amount": "Jumlah",
-    "reorder": "Tarik untuk mengurutkan ulang",
-    "resize": "Tarik untuk mengubah ukuran"
-  },
-  "table": {
-    "selectAll": "Pilih semua baris",
-    "selectRow": "Pilih {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} dari {{total}}",
-    "pageSize": "Baris per halaman",
-    "previous": "Halaman sebelumnya",
-    "next": "Halaman berikutnya",
-    "goToPage": "Buka halaman {{page}}"
-  },
-  "bulk": {
-    "selected": "dipilih",
-    "assignCategory": "Pilih kategori…",
-    "mixedKinds": "Pilih transaksi dengan satu jenis untuk menetapkan kategori",
-    "delete": "Hapus yang dipilih",
-    "clearSelection": "Hapus pilihan",
-    "deleteConfirm": {
-      "title": "Hapus transaksi",
-      "message": "Tindakan ini tidak dapat dibatalkan. Hapus {{count}} transaksi?"
+    "eyebrow": "Keuangan",
+    "view": {
+      "list": "Daftar",
+      "calendar": "Kalender"
+    },
+    "columns": {
+      "title": "Kolom",
+      "date": "Tanggal",
+      "description": "Deskripsi",
+      "category": "Kategori",
+      "account": "Akun",
+      "amount": "Jumlah",
+      "reorder": "Tarik untuk mengurutkan ulang",
+      "resize": "Tarik untuk mengubah ukuran"
+    },
+    "table": {
+      "selectAll": "Pilih semua baris",
+      "selectRow": "Pilih {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} dari {{total}}",
+      "pageSize": "Baris per halaman",
+      "previous": "Halaman sebelumnya",
+      "next": "Halaman berikutnya",
+      "goToPage": "Buka halaman {{page}}"
+    },
+    "bulk": {
+      "selected": "dipilih",
+      "assignCategory": "Pilih kategori…",
+      "mixedKinds": "Pilih transaksi dengan satu jenis untuk menetapkan kategori",
+      "delete": "Hapus yang dipilih",
+      "clearSelection": "Hapus pilihan",
+      "deleteConfirm": {
+        "title": "Hapus transaksi",
+        "message": "Tindakan ini tidak dapat dibatalkan. Hapus {{count}} transaksi?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Bulan sebelumnya",
+      "nextMonth": "Bulan berikutnya",
+      "balanceTrend": "Tren saldo",
+      "selectedDay": "Hari yang dipilih",
+      "selectDayHint": "Pilih hari untuk melihat aktivitasnya",
+      "noTransactions": "Tidak ada transaksi pada hari ini",
+      "legend": {
+        "income": "Pendapatan",
+        "expenses": "Pengeluaran",
+        "transfer": "Transfer",
+        "projected": "Perkiraan"
+      }
+    },
+    "export": {
+      "filename": "transaksi"
     }
-  },
-  "calendar": {
-    "previousMonth": "Bulan sebelumnya",
-    "nextMonth": "Bulan berikutnya",
-    "balanceTrend": "Tren saldo",
-    "selectedDay": "Hari yang dipilih",
-    "selectDayHint": "Pilih hari untuk melihat aktivitasnya",
-    "noTransactions": "Tidak ada transaksi pada hari ini",
-    "legend": {
-      "income": "Pendapatan",
-      "expenses": "Pengeluaran",
-      "transfer": "Transfer",
-      "projected": "Perkiraan"
-    }
-  },
-  "export": {
-    "filename": "transaksi"
-  }
   },
   "categories": {
     "title": "Kategori",
@@ -1363,6 +1365,34 @@
       "disabled": "Dinonaktifkan",
       "enabled": "Diaktifkan",
       "manage": "Kelola"
+    },
+    "twoFactor": {
+      "title": "Autentikasi dua faktor",
+      "description": "Lindungi akun Anda dengan kode dari aplikasi autentikator.",
+      "enabled": "Aktif",
+      "enable": "Aktifkan autentikasi dua faktor",
+      "lockoutWarning": "Tanpa autentikasi dua faktor, tidak ada cara memulihkan akun Anda jika lupa kata sandi.",
+      "enroll": {
+        "step1": "Pindai kode ini dengan aplikasi autentikator Anda.",
+        "step2": "Masukkan kode yang ditampilkan aplikasi",
+        "confirm": "Konfirmasi dan aktifkan",
+        "qrAlt": "Kode QR untuk aplikasi autentikator Anda",
+        "manualEntry": "Atau masukkan kunci ini secara manual"
+      },
+      "backupCodes": {
+        "title": "Simpan kode cadangan Anda",
+        "warning": "Kode ini hanya ditampilkan sekarang. Masing-masing berlaku sekali jika Anda kehilangan aplikasi autentikator.",
+        "copy": "Salin kode",
+        "copied": "Disalin",
+        "saved": "Sudah saya simpan",
+        "remaining": "Sisa {{count}} kode cadangan"
+      },
+      "manage": {
+        "codeLabel": "Kode autentikasi",
+        "codeHint": "Diperlukan untuk mengubah pengaturan ini.",
+        "regenerate": "Buat kode cadangan baru",
+        "disable": "Nonaktifkan"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "Email",
       "password": "Kata sandi",
       "displayName": "Nama tampilan",
-      "invitationToken": "Token undangan"
+      "invitationToken": "Token undangan",
+      "totpCode": "Kode autentikasi",
+      "recoveryCode": "Kode autentikasi atau kode cadangan",
+      "newPassword": "Kata sandi baru"
     },
     "login": {
       "title": "Masuk",
@@ -1389,6 +1422,21 @@
         "title": "Buat akun administrator",
         "description": "Ini adalah akun pertama pada instans ini — akun ini akan memiliki akses administrator penuh."
       }
+    },
+    "totp": {
+      "challengeTitle": "Verifikasi dua langkah",
+      "challengeDescription": "Masukkan kode dari aplikasi autentikator Anda.",
+      "codeHint": "Anda juga bisa memakai salah satu kode cadangan.",
+      "trustDevice": "Percayai perangkat ini selama 30 hari"
+    },
+    "recover": {
+      "link": "Tidak bisa masuk?",
+      "title": "Pulihkan akun Anda",
+      "description": "Atur kata sandi baru dengan aplikasi autentikator atau kode cadangan.",
+      "action": "Atur ulang kata sandi",
+      "codeHint": "Kode dari aplikasi autentikator Anda, atau salah satu kode cadangan.",
+      "doneTitle": "Kata sandi diperbarui",
+      "doneDescription": "Anda telah keluar dari semua perangkat. Masuk dengan kata sandi baru."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "Setidaknya diperlukan satu administrator aktif.",
       "account_inactive": "Akun ini tidak aktif.",
       "admin_required": "Diperlukan akses administrator.",
-      "peer_admin": "Admin tidak dapat mengubah peran atau status admin lain."
+      "peer_admin": "Admin tidak dapat mengubah peran atau status admin lain.",
+      "totp_required": "Masukkan kode dari aplikasi autentikator Anda.",
+      "totp_invalid": "Kode itu tidak valid. Coba lagi.",
+      "totp_locked": "Terlalu banyak kode salah. Coba lagi dalam 15 menit."
     },
     "invitation": {
       "not_found": "Undangan ini tidak valid.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "File ini bukan ekspor aturan LealFinance yang valid."
+    },
+    "totp": {
+      "already_enabled": "Autentikasi dua faktor sudah aktif.",
+      "not_enabled": "Autentikasi dua faktor tidak aktif."
     }
   }
 }

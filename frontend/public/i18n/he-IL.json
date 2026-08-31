@@ -249,7 +249,9 @@
         "configureLanguage": "הגדרת שפה",
         "configureCurrency": "הגדרת מטבע תצוגה",
         "toggleTheme": "החלפת ערכת נושא",
-        "toggleBalances": "הצגה או הסתרה של יתרות"
+        "toggleBalances": "הצגה או הסתרה של יתרות",
+        "configureTwoFactor": "הגדרת אימות דו-שלבי",
+        "configureTwoFactorHint": "2FA, אפליקציית אימות, קודי גיבוי, שחזור חשבון"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "עריכה",
       "delete": "מחיקה",
       "import": "ייבוא CSV",
-    "columns": "עמודות",
-    "exportCsv": "ייצוא CSV"
+      "columns": "עמודות",
+      "exportCsv": "ייצוא CSV"
     },
     "tabs": {
       "transactions": "תנועות",
@@ -432,18 +434,18 @@
       "to": "עד",
       "institution": "מוסד פיננסי",
       "clear": "ניקוי מסננים",
-    "title": "סינון לפי",
-    "searchPlaceholder": "חיפוש תנועות…",
-    "group": "קיבוץ",
-    "date": "תאריך",
-    "amount": "סכום",
-    "amountMin": "מינימום",
-    "amountMax": "מקסימום",
-    "any": "הכול",
-    "back": "חזרה",
-    "dateRange": "מ־{{from}} עד {{to}}",
-    "amountRange": "מ־{{min}} עד {{max}}",
-    "removeChip": "הסרת מסנן {{filter}}"
+      "title": "סינון לפי",
+      "searchPlaceholder": "חיפוש תנועות…",
+      "group": "קיבוץ",
+      "date": "תאריך",
+      "amount": "סכום",
+      "amountMin": "מינימום",
+      "amountMax": "מקסימום",
+      "any": "הכול",
+      "back": "חזרה",
+      "dateRange": "מ־{{from}} עד {{to}}",
+      "amountRange": "מ־{{min}} עד {{max}}",
+      "removeChip": "הסרת מסנן {{filter}}"
     },
     "empty": {
       "title": "לא נמצאו תנועות",
@@ -568,60 +570,60 @@
         "confirm": "ייבוא שורות שנבדקו"
       }
     },
-  "eyebrow": "פיננסים",
-  "view": {
-    "list": "רשימה",
-    "calendar": "לוח שנה"
-  },
-  "columns": {
-    "title": "עמודות",
-    "date": "תאריך",
-    "description": "תיאור",
-    "category": "קטגוריה",
-    "account": "חשבון",
-    "amount": "סכום",
-    "reorder": "גרירה לשינוי הסדר",
-    "resize": "גרירה לשינוי הגודל"
-  },
-  "table": {
-    "selectAll": "בחירת כל השורות",
-    "selectRow": "בחירת {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} מתוך {{total}}",
-    "pageSize": "שורות בעמוד",
-    "previous": "העמוד הקודם",
-    "next": "העמוד הבא",
-    "goToPage": "מעבר לעמוד {{page}}"
-  },
-  "bulk": {
-    "selected": "נבחרו",
-    "assignCategory": "בחירת קטגוריה…",
-    "mixedKinds": "יש לבחור תנועות מסוג אחד כדי להקצות קטגוריה",
-    "delete": "מחיקת הנבחרות",
-    "clearSelection": "ניקוי הבחירה",
-    "deleteConfirm": {
-      "title": "מחיקת תנועות",
-      "message": "לא ניתן לבטל פעולה זו. למחוק {{count}} תנועות?"
+    "eyebrow": "פיננסים",
+    "view": {
+      "list": "רשימה",
+      "calendar": "לוח שנה"
+    },
+    "columns": {
+      "title": "עמודות",
+      "date": "תאריך",
+      "description": "תיאור",
+      "category": "קטגוריה",
+      "account": "חשבון",
+      "amount": "סכום",
+      "reorder": "גרירה לשינוי הסדר",
+      "resize": "גרירה לשינוי הגודל"
+    },
+    "table": {
+      "selectAll": "בחירת כל השורות",
+      "selectRow": "בחירת {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} מתוך {{total}}",
+      "pageSize": "שורות בעמוד",
+      "previous": "העמוד הקודם",
+      "next": "העמוד הבא",
+      "goToPage": "מעבר לעמוד {{page}}"
+    },
+    "bulk": {
+      "selected": "נבחרו",
+      "assignCategory": "בחירת קטגוריה…",
+      "mixedKinds": "יש לבחור תנועות מסוג אחד כדי להקצות קטגוריה",
+      "delete": "מחיקת הנבחרות",
+      "clearSelection": "ניקוי הבחירה",
+      "deleteConfirm": {
+        "title": "מחיקת תנועות",
+        "message": "לא ניתן לבטל פעולה זו. למחוק {{count}} תנועות?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "החודש הקודם",
+      "nextMonth": "החודש הבא",
+      "balanceTrend": "מגמת היתרה",
+      "selectedDay": "היום שנבחר",
+      "selectDayHint": "בחירת יום להצגת הפעילות שלו",
+      "noTransactions": "אין תנועות ביום זה",
+      "legend": {
+        "income": "הכנסות",
+        "expenses": "הוצאות",
+        "transfer": "העברה",
+        "projected": "חזויה"
+      }
+    },
+    "export": {
+      "filename": "tnuot"
     }
-  },
-  "calendar": {
-    "previousMonth": "החודש הקודם",
-    "nextMonth": "החודש הבא",
-    "balanceTrend": "מגמת היתרה",
-    "selectedDay": "היום שנבחר",
-    "selectDayHint": "בחירת יום להצגת הפעילות שלו",
-    "noTransactions": "אין תנועות ביום זה",
-    "legend": {
-      "income": "הכנסות",
-      "expenses": "הוצאות",
-      "transfer": "העברה",
-      "projected": "חזויה"
-    }
-  },
-  "export": {
-    "filename": "tnuot"
-  }
   },
   "categories": {
     "title": "קטגוריות",
@@ -1363,6 +1365,34 @@
       "disabled": "מושבתים",
       "enabled": "מופעלים",
       "manage": "ניהול"
+    },
+    "twoFactor": {
+      "title": "אימות דו-שלבי",
+      "description": "הגן על החשבון בעזרת קוד מאפליקציית אימות.",
+      "enabled": "מופעל",
+      "enable": "הפעלת אימות דו-שלבי",
+      "lockoutWarning": "ללא אימות דו-שלבי אין שום דרך לשחזר את החשבון אם תשכח את הסיסמה.",
+      "enroll": {
+        "step1": "סרוק קוד זה באמצעות אפליקציית האימות.",
+        "step2": "הזן את הקוד שהאפליקציה מציגה",
+        "confirm": "אישור והפעלה",
+        "qrAlt": "קוד QR לאפליקציית האימות",
+        "manualEntry": "או הזן מפתח זה ידנית"
+      },
+      "backupCodes": {
+        "title": "שמור את קודי הגיבוי",
+        "warning": "הקודים מוצגים רק עכשיו. כל קוד פועל פעם אחת אם תאבד את אפליקציית האימות.",
+        "copy": "העתק קודים",
+        "copied": "הועתק",
+        "saved": "שמרתי אותם",
+        "remaining": "נותרו {{count}} קודי גיבוי"
+      },
+      "manage": {
+        "codeLabel": "קוד אימות",
+        "codeHint": "נדרש כדי לשנות הגדרות אלה.",
+        "regenerate": "צור קודי גיבוי חדשים",
+        "disable": "כבה"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "אימייל",
       "password": "סיסמה",
       "displayName": "שם תצוגה",
-      "invitationToken": "אסימון הזמנה"
+      "invitationToken": "אסימון הזמנה",
+      "totpCode": "קוד אימות",
+      "recoveryCode": "קוד אימות או קוד גיבוי",
+      "newPassword": "סיסמה חדשה"
     },
     "login": {
       "title": "כניסה",
@@ -1389,6 +1422,21 @@
         "title": "יצירת חשבון המנהל",
         "description": "זהו החשבון הראשון במופע זה – תהיה לו גישת מנהל מלאה."
       }
+    },
+    "totp": {
+      "challengeTitle": "אימות דו-שלבי",
+      "challengeDescription": "הזן את הקוד מאפליקציית האימות שלך.",
+      "codeHint": "אפשר גם להשתמש באחד מקודי הגיבוי שלך.",
+      "trustDevice": "לסמוך על מכשיר זה למשך 30 יום"
+    },
+    "recover": {
+      "link": "לא מצליח להתחבר?",
+      "title": "שחזור החשבון",
+      "description": "הגדר סיסמה חדשה בעזרת אפליקציית האימות או קוד גיבוי.",
+      "action": "איפוס סיסמה",
+      "codeHint": "קוד מאפליקציית האימות או אחד מקודי הגיבוי שלך.",
+      "doneTitle": "הסיסמה עודכנה",
+      "doneDescription": "נותקת מכל המכשירים. התחבר עם הסיסמה החדשה."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "נדרש לפחות מנהל מערכת פעיל אחד.",
       "account_inactive": "חשבון זה אינו פעיל.",
       "admin_required": "נדרשת גישת מנהל מערכת.",
-      "peer_admin": "מנהלים אינם יכולים לשנות את התפקיד או הסטטוס של מנהל אחר."
+      "peer_admin": "מנהלים אינם יכולים לשנות את התפקיד או הסטטוס של מנהל אחר.",
+      "totp_required": "הזן את הקוד מאפליקציית האימות שלך.",
+      "totp_invalid": "הקוד אינו תקין. נסה שוב.",
+      "totp_locked": "יותר מדי קודים שגויים. נסה שוב בעוד 15 דקות."
     },
     "invitation": {
       "not_found": "ההזמנה אינה תקפה.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "הקובץ אינו ייצוא חוקי של כללי LealFinance."
+    },
+    "totp": {
+      "already_enabled": "האימות הדו-שלבי כבר מופעל.",
+      "not_enabled": "האימות הדו-שלבי אינו מופעל."
     }
   }
 }

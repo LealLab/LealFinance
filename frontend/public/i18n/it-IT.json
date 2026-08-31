@@ -249,7 +249,9 @@
         "configureLanguage": "Configura la lingua",
         "configureCurrency": "Configura la valuta di visualizzazione",
         "toggleTheme": "Cambia tema",
-        "toggleBalances": "Mostra o nascondi i saldi"
+        "toggleBalances": "Mostra o nascondi i saldi",
+        "configureTwoFactor": "Configura l'autenticazione a due fattori",
+        "configureTwoFactorHint": "2FA, app di autenticazione, codici di backup, recupero account"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Modifica",
       "delete": "Elimina",
       "import": "Importa CSV",
-    "columns": "Colonne",
-    "exportCsv": "Esporta CSV"
+      "columns": "Colonne",
+      "exportCsv": "Esporta CSV"
     },
     "tabs": {
       "transactions": "Transazioni",
@@ -432,18 +434,18 @@
       "to": "A",
       "institution": "Istituto",
       "clear": "Azzera filtri",
-    "title": "Filtra per",
-    "searchPlaceholder": "Cerca transazioni…",
-    "group": "Raggruppa",
-    "date": "Data",
-    "amount": "Importo",
-    "amountMin": "Minimo",
-    "amountMax": "Massimo",
-    "any": "Qualsiasi",
-    "back": "Indietro",
-    "dateRange": "Da {{from}} a {{to}}",
-    "amountRange": "Da {{min}} a {{max}}",
-    "removeChip": "Rimuovi filtro {{filter}}"
+      "title": "Filtra per",
+      "searchPlaceholder": "Cerca transazioni…",
+      "group": "Raggruppa",
+      "date": "Data",
+      "amount": "Importo",
+      "amountMin": "Minimo",
+      "amountMax": "Massimo",
+      "any": "Qualsiasi",
+      "back": "Indietro",
+      "dateRange": "Da {{from}} a {{to}}",
+      "amountRange": "Da {{min}} a {{max}}",
+      "removeChip": "Rimuovi filtro {{filter}}"
     },
     "empty": {
       "title": "Nessuna transazione trovata",
@@ -568,60 +570,60 @@
         "confirm": "Importa righe controllate"
       }
     },
-  "eyebrow": "Finanza",
-  "view": {
-    "list": "Elenco",
-    "calendar": "Calendario"
-  },
-  "columns": {
-    "title": "Colonne",
-    "date": "Data",
-    "description": "Descrizione",
-    "category": "Categoria",
-    "account": "Conto",
-    "amount": "Importo",
-    "reorder": "Trascina per riordinare",
-    "resize": "Trascina per ridimensionare"
-  },
-  "table": {
-    "selectAll": "Seleziona tutte le righe",
-    "selectRow": "Seleziona {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} di {{total}}",
-    "pageSize": "Righe per pagina",
-    "previous": "Pagina precedente",
-    "next": "Pagina successiva",
-    "goToPage": "Vai alla pagina {{page}}"
-  },
-  "bulk": {
-    "selected": "selezionate",
-    "assignCategory": "Seleziona categoria…",
-    "mixedKinds": "Seleziona transazioni di un solo tipo per assegnare una categoria",
-    "delete": "Elimina selezionate",
-    "clearSelection": "Cancella selezione",
-    "deleteConfirm": {
-      "title": "Elimina transazioni",
-      "message": "Questa operazione non può essere annullata. Eliminare {{count}} transazioni?"
+    "eyebrow": "Finanza",
+    "view": {
+      "list": "Elenco",
+      "calendar": "Calendario"
+    },
+    "columns": {
+      "title": "Colonne",
+      "date": "Data",
+      "description": "Descrizione",
+      "category": "Categoria",
+      "account": "Conto",
+      "amount": "Importo",
+      "reorder": "Trascina per riordinare",
+      "resize": "Trascina per ridimensionare"
+    },
+    "table": {
+      "selectAll": "Seleziona tutte le righe",
+      "selectRow": "Seleziona {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} di {{total}}",
+      "pageSize": "Righe per pagina",
+      "previous": "Pagina precedente",
+      "next": "Pagina successiva",
+      "goToPage": "Vai alla pagina {{page}}"
+    },
+    "bulk": {
+      "selected": "selezionate",
+      "assignCategory": "Seleziona categoria…",
+      "mixedKinds": "Seleziona transazioni di un solo tipo per assegnare una categoria",
+      "delete": "Elimina selezionate",
+      "clearSelection": "Cancella selezione",
+      "deleteConfirm": {
+        "title": "Elimina transazioni",
+        "message": "Questa operazione non può essere annullata. Eliminare {{count}} transazioni?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Mese precedente",
+      "nextMonth": "Mese successivo",
+      "balanceTrend": "Andamento del saldo",
+      "selectedDay": "Giorno selezionato",
+      "selectDayHint": "Seleziona un giorno per visualizzarne l’attività",
+      "noTransactions": "Nessuna transazione in questo giorno",
+      "legend": {
+        "income": "Entrate",
+        "expenses": "Uscite",
+        "transfer": "Trasferimento",
+        "projected": "Prevista"
+      }
+    },
+    "export": {
+      "filename": "transazioni"
     }
-  },
-  "calendar": {
-    "previousMonth": "Mese precedente",
-    "nextMonth": "Mese successivo",
-    "balanceTrend": "Andamento del saldo",
-    "selectedDay": "Giorno selezionato",
-    "selectDayHint": "Seleziona un giorno per visualizzarne l’attività",
-    "noTransactions": "Nessuna transazione in questo giorno",
-    "legend": {
-      "income": "Entrate",
-      "expenses": "Uscite",
-      "transfer": "Trasferimento",
-      "projected": "Prevista"
-    }
-  },
-  "export": {
-    "filename": "transazioni"
-  }
   },
   "categories": {
     "title": "Categorie",
@@ -1363,6 +1365,34 @@
       "disabled": "Disattivati",
       "enabled": "Attivati",
       "manage": "Gestisci"
+    },
+    "twoFactor": {
+      "title": "Autenticazione a due fattori",
+      "description": "Proteggi il tuo account con un codice di un'app di autenticazione.",
+      "enabled": "Attiva",
+      "enable": "Attiva l'autenticazione a due fattori",
+      "lockoutWarning": "Senza l'autenticazione a due fattori non c'è modo di recuperare il tuo account se dimentichi la password.",
+      "enroll": {
+        "step1": "Scansiona questo codice con la tua app di autenticazione.",
+        "step2": "Inserisci il codice mostrato dall'app",
+        "confirm": "Conferma e attiva",
+        "qrAlt": "Codice QR per la tua app di autenticazione",
+        "manualEntry": "Oppure inserisci questa chiave manualmente"
+      },
+      "backupCodes": {
+        "title": "Salva i tuoi codici di backup",
+        "warning": "Questi codici vengono mostrati solo ora. Ognuno funziona una volta se perdi l'app di autenticazione.",
+        "copy": "Copia codici",
+        "copied": "Copiato",
+        "saved": "Li ho salvati",
+        "remaining": "{{count}} codici di backup rimasti"
+      },
+      "manage": {
+        "codeLabel": "Codice di autenticazione",
+        "codeHint": "Necessario per modificare queste impostazioni.",
+        "regenerate": "Genera nuovi codici di backup",
+        "disable": "Disattiva"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "Email",
       "password": "Password",
       "displayName": "Nome visualizzato",
-      "invitationToken": "Token di invito"
+      "invitationToken": "Token di invito",
+      "totpCode": "Codice di autenticazione",
+      "recoveryCode": "Codice di autenticazione o di backup",
+      "newPassword": "Nuova password"
     },
     "login": {
       "title": "Accedi",
@@ -1389,6 +1422,21 @@
         "title": "Crea l'account amministratore",
         "description": "Questo è il primo account di questa istanza: avrà accesso completo come amministratore."
       }
+    },
+    "totp": {
+      "challengeTitle": "Verifica in due passaggi",
+      "challengeDescription": "Inserisci il codice della tua app di autenticazione.",
+      "codeHint": "Puoi anche usare uno dei tuoi codici di backup.",
+      "trustDevice": "Considera attendibile questo dispositivo per 30 giorni"
+    },
+    "recover": {
+      "link": "Non riesci ad accedere?",
+      "title": "Recupera il tuo account",
+      "description": "Imposta una nuova password con la tua app di autenticazione o un codice di backup.",
+      "action": "Reimposta password",
+      "codeHint": "Un codice della tua app di autenticazione o uno dei tuoi codici di backup.",
+      "doneTitle": "Password aggiornata",
+      "doneDescription": "La tua sessione è stata chiusa ovunque. Accedi con la nuova password."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "È necessario almeno un amministratore attivo.",
       "account_inactive": "Questo account è inattivo.",
       "admin_required": "Sono necessari i privilegi di amministratore.",
-      "peer_admin": "Gli amministratori non possono modificare il ruolo o lo stato di un altro amministratore."
+      "peer_admin": "Gli amministratori non possono modificare il ruolo o lo stato di un altro amministratore.",
+      "totp_required": "Inserisci il codice della tua app di autenticazione.",
+      "totp_invalid": "Questo codice non è valido. Riprova.",
+      "totp_locked": "Troppi codici errati. Riprova tra 15 minuti."
     },
     "invitation": {
       "not_found": "L'invito non è valido.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Il file non è un export valido delle regole di LealFinance."
+    },
+    "totp": {
+      "already_enabled": "L'autenticazione a due fattori è già attiva.",
+      "not_enabled": "L'autenticazione a due fattori non è attiva."
     }
   }
 }

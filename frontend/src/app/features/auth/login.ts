@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
-import { IdentityApiService } from '../../core/identity-api.service';
+import { IdentityApiService, TOTP_REQUIRED } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { LanguageSelect } from '../../shared/ui/language-select/language-select';
@@ -32,12 +32,17 @@ export class Login {
 
   protected readonly submitting = signal(false);
   protected readonly errorCode = signal<string | undefined>(undefined);
+  /** True once the backend has answered auth.totp_required: the same form is
+   * resubmitted to the same endpoint with the code filled in. */
+  protected readonly challenging = signal(false);
   protected readonly form = new FormGroup({
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    totpCode: new FormControl('', { nonNullable: true }),
+    trustDevice: new FormControl(false, { nonNullable: true }),
   });
 
   constructor() {
@@ -53,15 +58,27 @@ export class Login {
     this.submitting.set(true);
     this.errorCode.set(undefined);
     try {
-      const { email, password } = this.form.getRawValue();
-      await firstValueFrom(this.session.login(email, password));
+      const { email, password, totpCode, trustDevice } = this.form.getRawValue();
+      const secondFactor = this.challenging() ? { code: totpCode, trustDevice } : undefined;
+      await firstValueFrom(this.session.login(email, password, secondFactor));
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
       await this.router.navigateByUrl(returnUrl);
     } catch (error) {
-      this.errorCode.set(this.readCode(error));
+      const code = this.readCode(error);
+      if (code === TOTP_REQUIRED) {
+        this.beginChallenge();
+        return;
+      }
+      this.errorCode.set(code);
     } finally {
       this.submitting.set(false);
     }
+  }
+
+  private beginChallenge(): void {
+    this.challenging.set(true);
+    this.form.controls.totpCode.addValidators(Validators.required);
+    this.form.controls.totpCode.updateValueAndValidity();
   }
 
   private readCode(error: unknown): string {

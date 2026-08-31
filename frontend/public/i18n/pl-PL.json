@@ -249,7 +249,9 @@
         "configureLanguage": "Skonfiguruj język",
         "configureCurrency": "Skonfiguruj walutę wyświetlania",
         "toggleTheme": "Przełącz motyw",
-        "toggleBalances": "Pokaż lub ukryj salda"
+        "toggleBalances": "Pokaż lub ukryj salda",
+        "configureTwoFactor": "Skonfiguruj uwierzytelnianie dwuskładnikowe",
+        "configureTwoFactorHint": "2FA, aplikacja uwierzytelniająca, kody zapasowe, odzyskiwanie konta"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Edytuj",
       "delete": "Usuń",
       "import": "Importuj CSV",
-    "columns": "Kolumny",
-    "exportCsv": "Eksportuj CSV"
+      "columns": "Kolumny",
+      "exportCsv": "Eksportuj CSV"
     },
     "tabs": {
       "transactions": "Transakcje",
@@ -422,7 +424,7 @@
     "type": {
       "income": "Przychód",
       "expense": "Wydatek",
-    "transfer": "Przelew"
+      "transfer": "Przelew"
     },
     "filters": {
       "type": "Typ",
@@ -432,18 +434,18 @@
       "to": "Do",
       "institution": "Instytucja",
       "clear": "Wyczyść filtry",
-    "title": "Filtruj według",
-    "searchPlaceholder": "Szukaj transakcji…",
-    "group": "Grupuj",
-    "date": "Data",
-    "amount": "Kwota",
-    "amountMin": "Minimum",
-    "amountMax": "Maksimum",
-    "any": "Dowolne",
-    "back": "Wstecz",
-    "dateRange": "Od {{from}} do {{to}}",
-    "amountRange": "Od {{min}} do {{max}}",
-    "removeChip": "Usuń filtr {{filter}}"
+      "title": "Filtruj według",
+      "searchPlaceholder": "Szukaj transakcji…",
+      "group": "Grupuj",
+      "date": "Data",
+      "amount": "Kwota",
+      "amountMin": "Minimum",
+      "amountMax": "Maksimum",
+      "any": "Dowolne",
+      "back": "Wstecz",
+      "dateRange": "Od {{from}} do {{to}}",
+      "amountRange": "Od {{min}} do {{max}}",
+      "removeChip": "Usuń filtr {{filter}}"
     },
     "empty": {
       "title": "Nie znaleziono transakcji",
@@ -568,60 +570,60 @@
         "confirm": "Importuj sprawdzone wiersze"
       }
     },
-  "eyebrow": "Finanse",
-  "view": {
-    "list": "Lista",
-    "calendar": "Kalendarz"
-  },
-  "columns": {
-    "title": "Kolumny",
-    "date": "Data",
-    "description": "Opis",
-    "category": "Kategoria",
-    "account": "Konto",
-    "amount": "Kwota",
-    "reorder": "Przeciągnij, aby zmienić kolejność",
-    "resize": "Przeciągnij, aby zmienić rozmiar"
-  },
-  "table": {
-    "selectAll": "Zaznacz wszystkie wiersze",
-    "selectRow": "Zaznacz {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} z {{total}}",
-    "pageSize": "Wierszy na stronę",
-    "previous": "Poprzednia strona",
-    "next": "Następna strona",
-    "goToPage": "Przejdź do strony {{page}}"
-  },
-  "bulk": {
-    "selected": "wybrano",
-    "assignCategory": "Wybierz kategorię…",
-    "mixedKinds": "Wybierz transakcje jednego rodzaju, aby przypisać kategorię",
-    "delete": "Usuń zaznaczone",
-    "clearSelection": "Wyczyść zaznaczenie",
-    "deleteConfirm": {
-      "title": "Usuń transakcje",
-      "message": "Tej operacji nie można cofnąć. Usunąć {{count}} transakcji?"
+    "eyebrow": "Finanse",
+    "view": {
+      "list": "Lista",
+      "calendar": "Kalendarz"
+    },
+    "columns": {
+      "title": "Kolumny",
+      "date": "Data",
+      "description": "Opis",
+      "category": "Kategoria",
+      "account": "Konto",
+      "amount": "Kwota",
+      "reorder": "Przeciągnij, aby zmienić kolejność",
+      "resize": "Przeciągnij, aby zmienić rozmiar"
+    },
+    "table": {
+      "selectAll": "Zaznacz wszystkie wiersze",
+      "selectRow": "Zaznacz {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} z {{total}}",
+      "pageSize": "Wierszy na stronę",
+      "previous": "Poprzednia strona",
+      "next": "Następna strona",
+      "goToPage": "Przejdź do strony {{page}}"
+    },
+    "bulk": {
+      "selected": "wybrano",
+      "assignCategory": "Wybierz kategorię…",
+      "mixedKinds": "Wybierz transakcje jednego rodzaju, aby przypisać kategorię",
+      "delete": "Usuń zaznaczone",
+      "clearSelection": "Wyczyść zaznaczenie",
+      "deleteConfirm": {
+        "title": "Usuń transakcje",
+        "message": "Tej operacji nie można cofnąć. Usunąć {{count}} transakcji?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Poprzedni miesiąc",
+      "nextMonth": "Następny miesiąc",
+      "balanceTrend": "Trend salda",
+      "selectedDay": "Wybrany dzień",
+      "selectDayHint": "Wybierz dzień, aby zobaczyć jego aktywność",
+      "noTransactions": "Brak transakcji w tym dniu",
+      "legend": {
+        "income": "Przychody",
+        "expenses": "Wydatki",
+        "transfer": "Przelew",
+        "projected": "Prognozowane"
+      }
+    },
+    "export": {
+      "filename": "transakcje"
     }
-  },
-  "calendar": {
-    "previousMonth": "Poprzedni miesiąc",
-    "nextMonth": "Następny miesiąc",
-    "balanceTrend": "Trend salda",
-    "selectedDay": "Wybrany dzień",
-    "selectDayHint": "Wybierz dzień, aby zobaczyć jego aktywność",
-    "noTransactions": "Brak transakcji w tym dniu",
-    "legend": {
-      "income": "Przychody",
-      "expenses": "Wydatki",
-      "transfer": "Przelew",
-      "projected": "Prognozowane"
-    }
-  },
-  "export": {
-    "filename": "transakcje"
-  }
   },
   "categories": {
     "title": "Kategorie",
@@ -1363,6 +1365,34 @@
       "disabled": "Wyłączeni",
       "enabled": "Włączeni",
       "manage": "Zarządzaj"
+    },
+    "twoFactor": {
+      "title": "Uwierzytelnianie dwuskładnikowe",
+      "description": "Chroń konto kodem z aplikacji uwierzytelniającej.",
+      "enabled": "Włączone",
+      "enable": "Włącz uwierzytelnianie dwuskładnikowe",
+      "lockoutWarning": "Bez uwierzytelniania dwuskładnikowego nie ma sposobu na odzyskanie konta, jeśli zapomnisz hasła.",
+      "enroll": {
+        "step1": "Zeskanuj ten kod aplikacją uwierzytelniającą.",
+        "step2": "Wprowadź kod wyświetlany przez aplikację",
+        "confirm": "Potwierdź i włącz",
+        "qrAlt": "Kod QR dla aplikacji uwierzytelniającej",
+        "manualEntry": "Albo wprowadź ten klucz ręcznie"
+      },
+      "backupCodes": {
+        "title": "Zapisz kody zapasowe",
+        "warning": "Te kody są pokazywane tylko teraz. Każdy działa raz, jeśli stracisz aplikację uwierzytelniającą.",
+        "copy": "Kopiuj kody",
+        "copied": "Skopiowano",
+        "saved": "Zapisałem je",
+        "remaining": "Pozostało kodów zapasowych: {{count}}"
+      },
+      "manage": {
+        "codeLabel": "Kod uwierzytelniający",
+        "codeHint": "Wymagany do zmiany tych ustawień.",
+        "regenerate": "Wygeneruj nowe kody zapasowe",
+        "disable": "Wyłącz"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "Adres e-mail",
       "password": "Hasło",
       "displayName": "Nazwa wyświetlana",
-      "invitationToken": "Token zaproszenia"
+      "invitationToken": "Token zaproszenia",
+      "totpCode": "Kod uwierzytelniający",
+      "recoveryCode": "Kod uwierzytelniający lub zapasowy",
+      "newPassword": "Nowe hasło"
     },
     "login": {
       "title": "Zaloguj się",
@@ -1389,6 +1422,21 @@
         "title": "Utwórz konto administratora",
         "description": "To pierwsze konto w tej instancji — będzie mieć pełny dostęp administratora."
       }
+    },
+    "totp": {
+      "challengeTitle": "Weryfikacja dwuetapowa",
+      "challengeDescription": "Wprowadź kod z aplikacji uwierzytelniającej.",
+      "codeHint": "Możesz też użyć jednego z kodów zapasowych.",
+      "trustDevice": "Ufaj temu urządzeniu przez 30 dni"
+    },
+    "recover": {
+      "link": "Nie możesz się zalogować?",
+      "title": "Odzyskaj konto",
+      "description": "Ustaw nowe hasło przy użyciu aplikacji uwierzytelniającej lub kodu zapasowego.",
+      "action": "Zresetuj hasło",
+      "codeHint": "Kod z aplikacji uwierzytelniającej lub jeden z kodów zapasowych.",
+      "doneTitle": "Hasło zaktualizowane",
+      "doneDescription": "Wylogowano Cię wszędzie. Zaloguj się nowym hasłem."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "Wymagany jest co najmniej jeden aktywny administrator.",
       "account_inactive": "To konto jest nieaktywne.",
       "admin_required": "Wymagany jest dostęp administratora.",
-      "peer_admin": "Administratorzy nie mogą zmieniać roli ani statusu innego administratora."
+      "peer_admin": "Administratorzy nie mogą zmieniać roli ani statusu innego administratora.",
+      "totp_required": "Wprowadź kod z aplikacji uwierzytelniającej.",
+      "totp_invalid": "Ten kod jest nieprawidłowy. Spróbuj ponownie.",
+      "totp_locked": "Zbyt wiele błędnych kodów. Spróbuj ponownie za 15 minut."
     },
     "invitation": {
       "not_found": "Zaproszenie jest nieprawidłowe.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Ten plik nie jest prawidłowym eksportem reguł LealFinance."
+    },
+    "totp": {
+      "already_enabled": "Uwierzytelnianie dwuskładnikowe jest już włączone.",
+      "not_enabled": "Uwierzytelnianie dwuskładnikowe nie jest włączone."
     }
   }
 }

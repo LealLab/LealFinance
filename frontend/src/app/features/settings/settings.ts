@@ -11,11 +11,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
-import { catchError, of, switchMap } from 'rxjs';
+import qrcode from 'qrcode-generator';
+import { Observable, catchError, of, switchMap } from 'rxjs';
 import { ApiError } from '../../core/api-error';
 import { BackupArchive, BackupPreview, BackupService } from '../../core/backup.service';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
+import { IdentityApiService } from '../../core/identity-api.service';
+import { TotpSetup, TotpStatus } from '../../core/identity.models';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { SessionService } from '../../core/session.service';
@@ -50,6 +53,7 @@ export class Settings {
   protected readonly preferences = inject(PreferenceService);
   protected readonly metadata = inject(MetadataService);
   protected readonly session = inject(SessionService);
+  private readonly identityApi = inject(IdentityApiService);
   private readonly marketDataCredentials = inject(MarketDataCredentialRepository, {
     optional: true,
   });
@@ -81,6 +85,18 @@ export class Settings {
   protected readonly restoreErrorCode = signal<string | undefined>(undefined);
   protected readonly backupStatus = signal<'exported' | 'restored' | undefined>(undefined);
 
+  // --- Two-factor authentication ---
+  protected readonly totp = signal<TotpStatus | undefined>(undefined);
+  /** Set while enrolling: holds the pending secret and its QR image. */
+  protected readonly totpSetup = signal<(TotpSetup & { qrDataUrl: string }) | undefined>(undefined);
+  /** Shown exactly once, right after enrollment or regeneration - the server
+   * only stores hashes, so there is no way to display them again later. */
+  protected readonly backupCodes = signal<string[] | undefined>(undefined);
+  protected readonly totpCode = signal('');
+  protected readonly totpBusy = signal(false);
+  protected readonly totpErrorCode = signal<string | undefined>(undefined);
+  protected readonly backupCodesCopied = signal(false);
+
   protected readonly currencyOptions = this.metadata.currencies;
   protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];
   protected readonly activeLang = toSignal(this.transloco.langChanges$, {
@@ -93,9 +109,11 @@ export class Settings {
   private readonly displayCurrencySelect =
     viewChild<ElementRef<HTMLSelectElement>>('displayCurrencySelect');
   private readonly backupActions = viewChild<ElementRef<HTMLDivElement>>('backupActions');
+  private readonly twoFactorSection = viewChild<ElementRef<HTMLElement>>('twoFactorSection');
 
   constructor() {
     this.loadMarketDataCredentials();
+    this.loadTotpStatus();
     effect(() => {
       const target =
         this.fragment() === 'settings-language'
@@ -110,7 +128,9 @@ export class Settings {
                 ? this.backupActions()?.nativeElement.querySelector<HTMLButtonElement>(
                     '#settings-backup-restore',
                   )
-                : undefined;
+                : this.fragment() === 'settings-two-factor'
+                  ? this.twoFactorSection()?.nativeElement
+                  : undefined;
 
       if (!target) return;
       target.scrollIntoView?.({ block: 'center' });
@@ -353,5 +373,106 @@ export class Settings {
 
   private codeOf(error: unknown): string {
     return error instanceof ApiError ? error.code : 'error.generic';
+  }
+
+  // --- Two-factor authentication ---
+
+  protected setTotpCode(value: string): void {
+    this.totpCode.set(value);
+  }
+
+  protected startTotpEnrollment(): void {
+    this.runTotpAction(this.identityApi.startTotpEnrollment(), (setup) => {
+      this.totpSetup.set({ ...setup, qrDataUrl: this.qrDataUrl(setup.otpauthUri) });
+    });
+  }
+
+  protected cancelTotpEnrollment(): void {
+    // The pending secret stays on the server but gates nothing until it is
+    // confirmed, and starting over simply overwrites it.
+    this.totpSetup.set(undefined);
+    this.totpCode.set('');
+    this.totpErrorCode.set(undefined);
+  }
+
+  protected confirmTotp(): void {
+    const code = this.totpCode().trim();
+    if (!code) return;
+    this.runTotpAction(this.identityApi.enableTotp(code), (codes) => {
+      this.totpSetup.set(undefined);
+      this.showBackupCodes(codes);
+      this.loadTotpStatus();
+    });
+  }
+
+  protected regenerateBackupCodes(): void {
+    const code = this.totpCode().trim();
+    if (!code) return;
+    this.runTotpAction(this.identityApi.regenerateBackupCodes(code), (codes) => {
+      this.showBackupCodes(codes);
+      this.loadTotpStatus();
+    });
+  }
+
+  protected disableTotp(): void {
+    const code = this.totpCode().trim();
+    if (!code) return;
+    this.runTotpAction(this.identityApi.disableTotp(code), () => {
+      this.backupCodes.set(undefined);
+      this.loadTotpStatus();
+    });
+  }
+
+  protected dismissBackupCodes(): void {
+    this.backupCodes.set(undefined);
+    this.backupCodesCopied.set(false);
+  }
+
+  protected copyBackupCodes(): void {
+    const codes = this.backupCodes();
+    if (!codes) return;
+    void navigator.clipboard?.writeText(codes.join('\n'));
+    this.backupCodesCopied.set(true);
+  }
+
+  private showBackupCodes(codes: string[]): void {
+    this.backupCodes.set(codes);
+    this.backupCodesCopied.set(false);
+  }
+
+  /** GIF data URI for an <img>. The QR is drawn client-side so the backend
+   * only ever hands out the otpauth:// URI. */
+  private qrDataUrl(otpauthUri: string): string {
+    const qr = qrcode(0, 'M');
+    qr.addData(otpauthUri);
+    qr.make();
+    return qr.createDataURL(6, 2);
+  }
+
+  private runTotpAction<T>(request: Observable<T>, onSuccess: (value: T) => void): void {
+    this.totpBusy.set(true);
+    this.totpErrorCode.set(undefined);
+    request.subscribe({
+      next: (value) => {
+        this.totpCode.set('');
+        onSuccess(value);
+        this.totpBusy.set(false);
+      },
+      error: (error: unknown) => {
+        this.totpErrorCode.set(
+          typeof error === 'object' && error !== null && 'code' in error
+            ? String((error as { code: unknown }).code)
+            : 'error.generic',
+        );
+        this.totpBusy.set(false);
+      },
+    });
+  }
+
+  private loadTotpStatus(): void {
+    this.identityApi.totpStatus().subscribe({
+      next: (status) => this.totp.set(status),
+      error: () => this.totp.set(undefined),
+    });
   }
 }

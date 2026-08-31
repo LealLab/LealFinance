@@ -8,23 +8,45 @@
       <app-logo [size]="30" class="text-accent" />
       {{ t('app.title') }}
     </div>
-    <h1 class="text-2xl font-semibold">{{ t('auth.login.title') }}</h1>
-    <p class="mt-1 text-sm text-content-muted">{{ t('auth.login.description') }}</p>
+    <h1 class="text-2xl font-semibold">
+      {{ challenging() ? t('auth.totp.challengeTitle') : t('auth.login.title') }}
+    </h1>
+    <p class="mt-1 text-sm text-content-muted">
+      {{ challenging() ? t('auth.totp.challengeDescription') : t('auth.login.description') }}
+    </p>
 
     <form class="mt-6 flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
-      <label>
-        <span class="form-label">{{ t('auth.fields.email') }}</span>
-        <input class="form-input" type="email" autocomplete="email" formControlName="email" />
-      </label>
-      <label>
-        <span class="form-label">{{ t('auth.fields.password') }}</span>
-        <input
-          class="form-input"
-          type="password"
-          autocomplete="current-password"
-          formControlName="password"
-        />
-      </label>
+      @if (challenging()) {
+        <label>
+          <span class="form-label">{{ t('auth.fields.totpCode') }}</span>
+          <input
+            class="form-input"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            formControlName="totpCode"
+          />
+          <span class="form-hint">{{ t('auth.totp.codeHint') }}</span>
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+          <input class="form-checkbox" type="checkbox" formControlName="trustDevice" />
+          <span>{{ t('auth.totp.trustDevice') }}</span>
+        </label>
+      } @else {
+        <label>
+          <span class="form-label">{{ t('auth.fields.email') }}</span>
+          <input class="form-input" type="email" autocomplete="email" formControlName="email" />
+        </label>
+        <label>
+          <span class="form-label">{{ t('auth.fields.password') }}</span>
+          <input
+            class="form-input"
+            type="password"
+            autocomplete="current-password"
+            formControlName="password"
+          />
+        </label>
+      }
       @if (errorCode(); as code) {
         <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }
@@ -32,11 +54,16 @@
         {{ submitting() ? t('common.actions.saving') : t('auth.login.action') }}
       </button>
     </form>
-    <p class="mt-5 text-sm text-content-muted">
-      {{ t('auth.login.invited') }}
-      <a class="text-accent hover:underline" routerLink="/register">{{
-        t('auth.register.action')
-      }}</a>
+    @if (!challenging()) {
+      <p class="mt-5 text-sm text-content-muted">
+        {{ t('auth.login.invited') }}
+        <a class="text-accent hover:underline" routerLink="/register">{{
+          t('auth.register.action')
+        }}</a>
+      </p>
+    }
+    <p class="mt-2 text-sm text-content-muted">
+      <a class="text-accent hover:underline" routerLink="/recover">{{ t('auth.recover.link') }}</a>
     </p>
   </section>
 </main>

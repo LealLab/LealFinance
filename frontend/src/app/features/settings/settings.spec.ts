@@ -4,9 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { BackupService } from '../../core/backup.service';
 import { ConfirmService } from '../../core/confirm.service';
+import { IdentityApiService } from '../../core/identity-api.service';
 import { User } from '../../core/identity.models';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MetadataService } from '../../core/metadata.service';
@@ -23,11 +24,29 @@ describe('Settings', () => {
     preview: ReturnType<typeof vi.fn>;
     restore: ReturnType<typeof vi.fn>;
   };
+  let identityApi: {
+    totpStatus: ReturnType<typeof vi.fn>;
+    startTotpEnrollment: ReturnType<typeof vi.fn>;
+    enableTotp: ReturnType<typeof vi.fn>;
+    disableTotp: ReturnType<typeof vi.fn>;
+    regenerateBackupCodes: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(async () => {
     fragment = new BehaviorSubject<string | null>(null);
     sessionUser = signal<User | undefined>(undefined);
     backupService = { export: vi.fn(), preview: vi.fn(), restore: vi.fn() };
+    // Stubbed rather than injected `{ optional: true }`: IdentityApiService is
+    // providedIn:'root', so it would always resolve and then fail on HttpClient.
+    identityApi = {
+      totpStatus: vi.fn().mockReturnValue(of({ enabled: false, backupCodesRemaining: 0 })),
+      startTotpEnrollment: vi
+        .fn()
+        .mockReturnValue(of({ secret: 'JBSWY3DPEHPK3PXP', otpauthUri: 'otpauth://totp/x' })),
+      enableTotp: vi.fn().mockReturnValue(of(['aaaa-1111', 'bbbb-2222'])),
+      disableTotp: vi.fn().mockReturnValue(of(undefined)),
+      regenerateBackupCodes: vi.fn().mockReturnValue(of(['cccc-3333'])),
+    };
     await TestBed.configureTestingModule({
       imports: [
         Settings,
@@ -46,6 +65,7 @@ describe('Settings', () => {
         },
         { provide: SessionService, useValue: { user: sessionUser.asReadonly() } },
         { provide: BackupService, useValue: backupService },
+        { provide: IdentityApiService, useValue: identityApi },
       ],
     }).compileComponents();
     TestBed.inject(MetadataService).currencies.set([
@@ -150,6 +170,7 @@ describe('Settings', () => {
     ['settings-display-currency', 'settings-display-currency'],
     ['settings-backup-export', 'settings-backup-export'],
     ['settings-backup-restore', 'settings-backup-restore'],
+    ['settings-two-factor', 'settings-two-factor'],
   ])('focuses the %s control when its route fragment becomes active', (routeFragment, id) => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
@@ -268,5 +289,59 @@ describe('Settings', () => {
 
     await fixture.componentInstance['onRestoreFile'](file('backup.json', 25 * 1024 * 1024 + 1));
     expect(fixture.componentInstance['restoreErrorCode']()).toBe('backup.file_too_large');
+  });
+
+  it('warns about unrecoverable lockout while two-factor is off', () => {
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Autenticação de dois fatores');
+    expect(text).toContain('não há como recuperar sua conta');
+  });
+
+  it('shows the QR code and the manual key when enrollment starts', () => {
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    fixture.componentInstance['startTotpEnrollment']();
+    fixture.detectChanges();
+
+    const qr = fixture.nativeElement.querySelector('img[src^="data:image/gif"]');
+    expect(qr).not.toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('JBSWY3DPEHPK3PXP');
+  });
+
+  it('shows the backup codes once after confirming enrollment', () => {
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+    fixture.componentInstance['startTotpEnrollment']();
+    fixture.detectChanges();
+
+    fixture.componentInstance['setTotpCode']('123456');
+    fixture.componentInstance['confirmTotp']();
+    fixture.detectChanges();
+
+    expect(identityApi.enableTotp).toHaveBeenCalledWith('123456');
+    expect(fixture.nativeElement.textContent).toContain('aaaa-1111');
+
+    // Dismissing is one-way: nothing can render them again.
+    fixture.componentInstance['dismissBackupCodes']();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('aaaa-1111');
+  });
+
+  it('surfaces the backend error code when a code is rejected', () => {
+    identityApi.disableTotp.mockReturnValue(throwError(() => ({ code: 'auth.totp_invalid' })));
+    identityApi.totpStatus.mockReturnValue(of({ enabled: true, backupCodesRemaining: 10 }));
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    fixture.componentInstance['setTotpCode']('000000');
+    fixture.componentInstance['disableTotp']();
+    fixture.detectChanges();
+
+    const alert = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
+    expect(alert.textContent).toContain('Esse código não é válido');
   });
 });

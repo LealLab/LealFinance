@@ -249,7 +249,9 @@
         "configureLanguage": "Configurează limba",
         "configureCurrency": "Configurează moneda de afișare",
         "toggleTheme": "Schimbă tema",
-        "toggleBalances": "Afișează sau ascunde soldurile"
+        "toggleBalances": "Afișează sau ascunde soldurile",
+        "configureTwoFactor": "Configurează autentificarea în doi factori",
+        "configureTwoFactorHint": "2FA, aplicație de autentificare, coduri de rezervă, recuperare cont"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Editează",
       "delete": "Șterge",
       "import": "Importă CSV",
-    "columns": "Coloane",
-    "exportCsv": "Exportă CSV"
+      "columns": "Coloane",
+      "exportCsv": "Exportă CSV"
     },
     "tabs": {
       "transactions": "Tranzacții",
@@ -432,18 +434,18 @@
       "to": "Până la",
       "institution": "Instituție",
       "clear": "Șterge filtrele",
-    "title": "Filtrează după",
-    "searchPlaceholder": "Caută tranzacții…",
-    "group": "Grupează",
-    "date": "Dată",
-    "amount": "Sumă",
-    "amountMin": "Minim",
-    "amountMax": "Maxim",
-    "any": "Oricare",
-    "back": "Înapoi",
-    "dateRange": "De la {{from}} până la {{to}}",
-    "amountRange": "De la {{min}} până la {{max}}",
-    "removeChip": "Elimină filtrul {{filter}}"
+      "title": "Filtrează după",
+      "searchPlaceholder": "Caută tranzacții…",
+      "group": "Grupează",
+      "date": "Dată",
+      "amount": "Sumă",
+      "amountMin": "Minim",
+      "amountMax": "Maxim",
+      "any": "Oricare",
+      "back": "Înapoi",
+      "dateRange": "De la {{from}} până la {{to}}",
+      "amountRange": "De la {{min}} până la {{max}}",
+      "removeChip": "Elimină filtrul {{filter}}"
     },
     "empty": {
       "title": "Nu s-a găsit nicio tranzacție",
@@ -568,60 +570,60 @@
         "confirm": "Importă rândurile verificate"
       }
     },
-  "eyebrow": "Finanțe",
-  "view": {
-    "list": "Listă",
-    "calendar": "Calendar"
-  },
-  "columns": {
-    "title": "Coloane",
-    "date": "Dată",
-    "description": "Descriere",
-    "category": "Categorie",
-    "account": "Cont",
-    "amount": "Sumă",
-    "reorder": "Trage pentru a reordona",
-    "resize": "Trage pentru a redimensiona"
-  },
-  "table": {
-    "selectAll": "Selectează toate rândurile",
-    "selectRow": "Selectează {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} din {{total}}",
-    "pageSize": "Rânduri pe pagină",
-    "previous": "Pagina anterioară",
-    "next": "Pagina următoare",
-    "goToPage": "Mergi la pagina {{page}}"
-  },
-  "bulk": {
-    "selected": "selectate",
-    "assignCategory": "Selectează categoria…",
-    "mixedKinds": "Selectează tranzacții de un singur tip pentru a atribui o categorie",
-    "delete": "Șterge selecția",
-    "clearSelection": "Golește selecția",
-    "deleteConfirm": {
-      "title": "Șterge tranzacțiile",
-      "message": "Acest lucru nu poate fi anulat. Ștergi {{count}} tranzacții?"
+    "eyebrow": "Finanțe",
+    "view": {
+      "list": "Listă",
+      "calendar": "Calendar"
+    },
+    "columns": {
+      "title": "Coloane",
+      "date": "Dată",
+      "description": "Descriere",
+      "category": "Categorie",
+      "account": "Cont",
+      "amount": "Sumă",
+      "reorder": "Trage pentru a reordona",
+      "resize": "Trage pentru a redimensiona"
+    },
+    "table": {
+      "selectAll": "Selectează toate rândurile",
+      "selectRow": "Selectează {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} din {{total}}",
+      "pageSize": "Rânduri pe pagină",
+      "previous": "Pagina anterioară",
+      "next": "Pagina următoare",
+      "goToPage": "Mergi la pagina {{page}}"
+    },
+    "bulk": {
+      "selected": "selectate",
+      "assignCategory": "Selectează categoria…",
+      "mixedKinds": "Selectează tranzacții de un singur tip pentru a atribui o categorie",
+      "delete": "Șterge selecția",
+      "clearSelection": "Golește selecția",
+      "deleteConfirm": {
+        "title": "Șterge tranzacțiile",
+        "message": "Acest lucru nu poate fi anulat. Ștergi {{count}} tranzacții?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Luna anterioară",
+      "nextMonth": "Luna următoare",
+      "balanceTrend": "Evoluția soldului",
+      "selectedDay": "Ziua selectată",
+      "selectDayHint": "Selectează o zi pentru a vedea activitatea",
+      "noTransactions": "Nicio tranzacție în această zi",
+      "legend": {
+        "income": "Venituri",
+        "expenses": "Cheltuieli",
+        "transfer": "Transfer",
+        "projected": "Estimată"
+      }
+    },
+    "export": {
+      "filename": "tranzactii"
     }
-  },
-  "calendar": {
-    "previousMonth": "Luna anterioară",
-    "nextMonth": "Luna următoare",
-    "balanceTrend": "Evoluția soldului",
-    "selectedDay": "Ziua selectată",
-    "selectDayHint": "Selectează o zi pentru a vedea activitatea",
-    "noTransactions": "Nicio tranzacție în această zi",
-    "legend": {
-      "income": "Venituri",
-      "expenses": "Cheltuieli",
-      "transfer": "Transfer",
-      "projected": "Estimată"
-    }
-  },
-  "export": {
-    "filename": "tranzactii"
-  }
   },
   "categories": {
     "title": "Categorii",
@@ -1363,6 +1365,34 @@
       "disabled": "Dezactivați",
       "enabled": "Activați",
       "manage": "Gestionare"
+    },
+    "twoFactor": {
+      "title": "Autentificare în doi factori",
+      "description": "Protejează-ți contul cu un cod dintr-o aplicație de autentificare.",
+      "enabled": "Activată",
+      "enable": "Activează autentificarea în doi factori",
+      "lockoutWarning": "Fără autentificare în doi factori nu există nicio modalitate de a-ți recupera contul dacă uiți parola.",
+      "enroll": {
+        "step1": "Scanează acest cod cu aplicația de autentificare.",
+        "step2": "Introdu codul afișat de aplicație",
+        "confirm": "Confirmă și activează",
+        "qrAlt": "Cod QR pentru aplicația de autentificare",
+        "manualEntry": "Sau introdu manual această cheie"
+      },
+      "backupCodes": {
+        "title": "Salvează-ți codurile de rezervă",
+        "warning": "Aceste coduri sunt afișate doar acum. Fiecare funcționează o singură dată dacă pierzi aplicația de autentificare.",
+        "copy": "Copiază codurile",
+        "copied": "Copiat",
+        "saved": "Le-am salvat",
+        "remaining": "Au mai rămas {{count}} coduri de rezervă"
+      },
+      "manage": {
+        "codeLabel": "Cod de autentificare",
+        "codeHint": "Necesar pentru a modifica aceste setări.",
+        "regenerate": "Generează coduri de rezervă noi",
+        "disable": "Dezactivează"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "E-mail",
       "password": "Parolă",
       "displayName": "Nume afișat",
-      "invitationToken": "Codul invitației"
+      "invitationToken": "Codul invitației",
+      "totpCode": "Cod de autentificare",
+      "recoveryCode": "Cod de autentificare sau de rezervă",
+      "newPassword": "Parolă nouă"
     },
     "login": {
       "title": "Autentificare",
@@ -1389,6 +1422,21 @@
         "title": "Creează contul de administrator",
         "description": "Acesta este primul cont din această instanță și va avea acces complet de administrator."
       }
+    },
+    "totp": {
+      "challengeTitle": "Verificare în doi pași",
+      "challengeDescription": "Introdu codul din aplicația de autentificare.",
+      "codeHint": "Poți folosi și unul dintre codurile de rezervă.",
+      "trustDevice": "Ai încredere în acest dispozitiv timp de 30 de zile"
+    },
+    "recover": {
+      "link": "Nu te poți autentifica?",
+      "title": "Recuperează-ți contul",
+      "description": "Setează o parolă nouă cu aplicația de autentificare sau cu un cod de rezervă.",
+      "action": "Resetează parola",
+      "codeHint": "Un cod din aplicația de autentificare sau unul dintre codurile de rezervă.",
+      "doneTitle": "Parola a fost actualizată",
+      "doneDescription": "Ai fost deconectat peste tot. Autentifică-te cu noua parolă."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "Este necesar cel puțin un administrator activ.",
       "account_inactive": "Acest cont este inactiv.",
       "admin_required": "Este necesar accesul de administrator.",
-      "peer_admin": "Administratorii nu pot schimba rolul sau starea unui alt administrator."
+      "peer_admin": "Administratorii nu pot schimba rolul sau starea unui alt administrator.",
+      "totp_required": "Introdu codul din aplicația de autentificare.",
+      "totp_invalid": "Codul nu este valid. Încearcă din nou.",
+      "totp_locked": "Prea multe coduri greșite. Încearcă din nou în 15 minute."
     },
     "invitation": {
       "not_found": "Invitația nu este validă.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Acest fișier nu este un export valid de reguli LealFinance."
+    },
+    "totp": {
+      "already_enabled": "Autentificarea în doi factori este deja activată.",
+      "not_enabled": "Autentificarea în doi factori nu este activată."
     }
   }
 }

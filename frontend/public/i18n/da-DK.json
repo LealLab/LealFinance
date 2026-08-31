@@ -249,7 +249,9 @@
         "configureLanguage": "Konfigurer sprog",
         "configureCurrency": "Konfigurer visningsvaluta",
         "toggleTheme": "Skift tema",
-        "toggleBalances": "Vis eller skjul saldi"
+        "toggleBalances": "Vis eller skjul saldi",
+        "configureTwoFactor": "Konfigurér tofaktorgodkendelse",
+        "configureTwoFactorHint": "2FA, godkendelsesapp, reservekoder, kontogendannelse"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Rediger",
       "delete": "Slet",
       "import": "Importér CSV",
-    "columns": "Kolonner",
-    "exportCsv": "Eksportér CSV"
+      "columns": "Kolonner",
+      "exportCsv": "Eksportér CSV"
     },
     "tabs": {
       "transactions": "Transaktioner",
@@ -432,18 +434,18 @@
       "to": "Til",
       "institution": "Institution",
       "clear": "Ryd filtre",
-    "title": "Filtrér efter",
-    "searchPlaceholder": "Søg i transaktioner…",
-    "group": "Gruppér",
-    "date": "Dato",
-    "amount": "Beløb",
-    "amountMin": "Minimum",
-    "amountMax": "Maksimum",
-    "any": "Alle",
-    "back": "Tilbage",
-    "dateRange": "Fra {{from}} til {{to}}",
-    "amountRange": "Fra {{min}} til {{max}}",
-    "removeChip": "Fjern filteret {{filter}}"
+      "title": "Filtrér efter",
+      "searchPlaceholder": "Søg i transaktioner…",
+      "group": "Gruppér",
+      "date": "Dato",
+      "amount": "Beløb",
+      "amountMin": "Minimum",
+      "amountMax": "Maksimum",
+      "any": "Alle",
+      "back": "Tilbage",
+      "dateRange": "Fra {{from}} til {{to}}",
+      "amountRange": "Fra {{min}} til {{max}}",
+      "removeChip": "Fjern filteret {{filter}}"
     },
     "empty": {
       "title": "Ingen transaktioner fundet",
@@ -568,60 +570,60 @@
         "confirm": "Importér gennemgåede linjer"
       }
     },
-  "eyebrow": "Finans",
-  "view": {
-    "list": "Liste",
-    "calendar": "Kalender"
-  },
-  "columns": {
-    "title": "Kolonner",
-    "date": "Dato",
-    "description": "Beskrivelse",
-    "category": "Kategori",
-    "account": "Konto",
-    "amount": "Beløb",
-    "reorder": "Træk for at ændre rækkefølge",
-    "resize": "Træk for at ændre størrelse"
-  },
-  "table": {
-    "selectAll": "Vælg alle rækker",
-    "selectRow": "Vælg {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} af {{total}}",
-    "pageSize": "Rækker pr. side",
-    "previous": "Forrige side",
-    "next": "Næste side",
-    "goToPage": "Gå til side {{page}}"
-  },
-  "bulk": {
-    "selected": "valgte",
-    "assignCategory": "Vælg kategori…",
-    "mixedKinds": "Vælg transaktioner af samme type for at tildele en kategori",
-    "delete": "Slet valgte",
-    "clearSelection": "Ryd valg",
-    "deleteConfirm": {
-      "title": "Slet transaktioner",
-      "message": "Dette kan ikke fortrydes. Slet {{count}} transaktioner?"
+    "eyebrow": "Finans",
+    "view": {
+      "list": "Liste",
+      "calendar": "Kalender"
+    },
+    "columns": {
+      "title": "Kolonner",
+      "date": "Dato",
+      "description": "Beskrivelse",
+      "category": "Kategori",
+      "account": "Konto",
+      "amount": "Beløb",
+      "reorder": "Træk for at ændre rækkefølge",
+      "resize": "Træk for at ændre størrelse"
+    },
+    "table": {
+      "selectAll": "Vælg alle rækker",
+      "selectRow": "Vælg {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} af {{total}}",
+      "pageSize": "Rækker pr. side",
+      "previous": "Forrige side",
+      "next": "Næste side",
+      "goToPage": "Gå til side {{page}}"
+    },
+    "bulk": {
+      "selected": "valgte",
+      "assignCategory": "Vælg kategori…",
+      "mixedKinds": "Vælg transaktioner af samme type for at tildele en kategori",
+      "delete": "Slet valgte",
+      "clearSelection": "Ryd valg",
+      "deleteConfirm": {
+        "title": "Slet transaktioner",
+        "message": "Dette kan ikke fortrydes. Slet {{count}} transaktioner?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Forrige måned",
+      "nextMonth": "Næste måned",
+      "balanceTrend": "Saldoens udvikling",
+      "selectedDay": "Valgt dag",
+      "selectDayHint": "Vælg en dag for at se dens aktivitet",
+      "noTransactions": "Ingen transaktioner denne dag",
+      "legend": {
+        "income": "Indtægter",
+        "expenses": "Udgifter",
+        "transfer": "Overførsel",
+        "projected": "Forventet"
+      }
+    },
+    "export": {
+      "filename": "transaktioner"
     }
-  },
-  "calendar": {
-    "previousMonth": "Forrige måned",
-    "nextMonth": "Næste måned",
-    "balanceTrend": "Saldoens udvikling",
-    "selectedDay": "Valgt dag",
-    "selectDayHint": "Vælg en dag for at se dens aktivitet",
-    "noTransactions": "Ingen transaktioner denne dag",
-    "legend": {
-      "income": "Indtægter",
-      "expenses": "Udgifter",
-      "transfer": "Overførsel",
-      "projected": "Forventet"
-    }
-  },
-  "export": {
-    "filename": "transaktioner"
-  }
   },
   "categories": {
     "title": "Kategorier",
@@ -1363,6 +1365,34 @@
       "disabled": "Deaktiveret",
       "enabled": "Aktiveret",
       "manage": "Administrer"
+    },
+    "twoFactor": {
+      "title": "Tofaktorgodkendelse",
+      "description": "Beskyt din konto med en kode fra en godkendelsesapp.",
+      "enabled": "Aktiveret",
+      "enable": "Aktivér tofaktorgodkendelse",
+      "lockoutWarning": "Uden tofaktorgodkendelse er der ingen måde at gendanne din konto på, hvis du glemmer din adgangskode.",
+      "enroll": {
+        "step1": "Scan denne kode med din godkendelsesapp.",
+        "step2": "Indtast koden, som appen viser",
+        "confirm": "Bekræft og aktivér",
+        "qrAlt": "QR-kode til din godkendelsesapp",
+        "manualEntry": "Eller indtast denne nøgle manuelt"
+      },
+      "backupCodes": {
+        "title": "Gem dine reservekoder",
+        "warning": "Koderne vises kun nu. Hver kode virker én gang, hvis du mister din godkendelsesapp.",
+        "copy": "Kopiér koder",
+        "copied": "Kopieret",
+        "saved": "Jeg har gemt dem",
+        "remaining": "{{count}} reservekoder tilbage"
+      },
+      "manage": {
+        "codeLabel": "Godkendelseskode",
+        "codeHint": "Kræves for at ændre disse indstillinger.",
+        "regenerate": "Generér nye reservekoder",
+        "disable": "Deaktivér"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "E-mail",
       "password": "Adgangskode",
       "displayName": "Visningsnavn",
-      "invitationToken": "Invitationstoken"
+      "invitationToken": "Invitationstoken",
+      "totpCode": "Godkendelseskode",
+      "recoveryCode": "Godkendelses- eller reservekode",
+      "newPassword": "Ny adgangskode"
     },
     "login": {
       "title": "Log ind",
@@ -1389,6 +1422,21 @@
         "title": "Opret administratorkontoen",
         "description": "Dette er den første konto på denne installation – den får fuld administratoradgang."
       }
+    },
+    "totp": {
+      "challengeTitle": "To-trinsbekræftelse",
+      "challengeDescription": "Indtast koden fra din godkendelsesapp.",
+      "codeHint": "Du kan også bruge en af dine reservekoder.",
+      "trustDevice": "Stol på denne enhed i 30 dage"
+    },
+    "recover": {
+      "link": "Kan du ikke logge ind?",
+      "title": "Gendan din konto",
+      "description": "Vælg en ny adgangskode med din godkendelsesapp eller en reservekode.",
+      "action": "Nulstil adgangskode",
+      "codeHint": "En kode fra din godkendelsesapp eller en af dine reservekoder.",
+      "doneTitle": "Adgangskoden er opdateret",
+      "doneDescription": "Du er logget ud alle steder. Log ind med din nye adgangskode."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "Der kræves mindst én aktiv administrator.",
       "account_inactive": "Denne konto er inaktiv.",
       "admin_required": "Administratoradgang er påkrævet.",
-      "peer_admin": "Administratorer kan ikke ændre en anden administrators rolle eller status."
+      "peer_admin": "Administratorer kan ikke ændre en anden administrators rolle eller status.",
+      "totp_required": "Indtast koden fra din godkendelsesapp.",
+      "totp_invalid": "Koden er ikke gyldig. Prøv igen.",
+      "totp_locked": "For mange forkerte koder. Prøv igen om 15 minutter."
     },
     "invitation": {
       "not_found": "Invitationen er ugyldig.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Denne fil er ikke en gyldig LealFinance-eksport af regler."
+    },
+    "totp": {
+      "already_enabled": "Tofaktorgodkendelse er allerede aktiveret.",
+      "not_enabled": "Tofaktorgodkendelse er ikke aktiveret."
     }
   }
 }

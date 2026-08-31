@@ -249,7 +249,9 @@
         "configureLanguage": "언어 설정",
         "configureCurrency": "표시 통화 설정",
         "toggleTheme": "테마 전환",
-        "toggleBalances": "잔액 표시 또는 숨기기"
+        "toggleBalances": "잔액 표시 또는 숨기기",
+        "configureTwoFactor": "2단계 인증 설정",
+        "configureTwoFactorHint": "2FA, 인증 앱, 백업 코드, 계정 복구"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "수정",
       "delete": "삭제",
       "import": "CSV 가져오기",
-    "columns": "열",
-    "exportCsv": "CSV 내보내기"
+      "columns": "열",
+      "exportCsv": "CSV 내보내기"
     },
     "tabs": {
       "transactions": "거래내역",
@@ -432,18 +434,18 @@
       "to": "종료일",
       "institution": "금융기관",
       "clear": "필터 지우기",
-    "title": "필터 기준",
-    "searchPlaceholder": "거래내역 검색…",
-    "group": "그룹",
-    "date": "날짜",
-    "amount": "금액",
-    "amountMin": "최소",
-    "amountMax": "최대",
-    "any": "모두",
-    "back": "뒤로",
-    "dateRange": "{{from}}부터 {{to}}까지",
-    "amountRange": "{{min}}부터 {{max}}까지",
-    "removeChip": "{{filter}} 필터 제거"
+      "title": "필터 기준",
+      "searchPlaceholder": "거래내역 검색…",
+      "group": "그룹",
+      "date": "날짜",
+      "amount": "금액",
+      "amountMin": "최소",
+      "amountMax": "최대",
+      "any": "모두",
+      "back": "뒤로",
+      "dateRange": "{{from}}부터 {{to}}까지",
+      "amountRange": "{{min}}부터 {{max}}까지",
+      "removeChip": "{{filter}} 필터 제거"
     },
     "empty": {
       "title": "거래를 찾을 수 없습니다",
@@ -568,60 +570,60 @@
         "confirm": "검토된 행 가져오기"
       }
     },
-  "eyebrow": "재무",
-  "view": {
-    "list": "목록",
-    "calendar": "캘린더"
-  },
-  "columns": {
-    "title": "열",
-    "date": "날짜",
-    "description": "설명",
-    "category": "카테고리",
-    "account": "계좌",
-    "amount": "금액",
-    "reorder": "드래그하여 순서 변경",
-    "resize": "드래그하여 크기 조절"
-  },
-  "table": {
-    "selectAll": "모든 행 선택",
-    "selectRow": "{{description}} 선택"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} / 총 {{total}}",
-    "pageSize": "페이지당 행 수",
-    "previous": "이전 페이지",
-    "next": "다음 페이지",
-    "goToPage": "{{page}}페이지로 이동"
-  },
-  "bulk": {
-    "selected": "선택됨",
-    "assignCategory": "카테고리 선택…",
-    "mixedKinds": "카테고리를 지정하려면 같은 유형의 거래를 선택하세요",
-    "delete": "선택 항목 삭제",
-    "clearSelection": "선택 해제",
-    "deleteConfirm": {
-      "title": "거래내역 삭제",
-      "message": "취소할 수 없습니다. 거래내역 {{count}}개를 삭제하시겠습니까?"
+    "eyebrow": "재무",
+    "view": {
+      "list": "목록",
+      "calendar": "캘린더"
+    },
+    "columns": {
+      "title": "열",
+      "date": "날짜",
+      "description": "설명",
+      "category": "카테고리",
+      "account": "계좌",
+      "amount": "금액",
+      "reorder": "드래그하여 순서 변경",
+      "resize": "드래그하여 크기 조절"
+    },
+    "table": {
+      "selectAll": "모든 행 선택",
+      "selectRow": "{{description}} 선택"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} / 총 {{total}}",
+      "pageSize": "페이지당 행 수",
+      "previous": "이전 페이지",
+      "next": "다음 페이지",
+      "goToPage": "{{page}}페이지로 이동"
+    },
+    "bulk": {
+      "selected": "선택됨",
+      "assignCategory": "카테고리 선택…",
+      "mixedKinds": "카테고리를 지정하려면 같은 유형의 거래를 선택하세요",
+      "delete": "선택 항목 삭제",
+      "clearSelection": "선택 해제",
+      "deleteConfirm": {
+        "title": "거래내역 삭제",
+        "message": "취소할 수 없습니다. 거래내역 {{count}}개를 삭제하시겠습니까?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "이전 달",
+      "nextMonth": "다음 달",
+      "balanceTrend": "잔액 추이",
+      "selectedDay": "선택한 날짜",
+      "selectDayHint": "활동을 보려면 날짜를 선택하세요",
+      "noTransactions": "이 날짜에는 거래내역이 없습니다",
+      "legend": {
+        "income": "수입",
+        "expenses": "지출",
+        "transfer": "이체",
+        "projected": "예정"
+      }
+    },
+    "export": {
+      "filename": "georae"
     }
-  },
-  "calendar": {
-    "previousMonth": "이전 달",
-    "nextMonth": "다음 달",
-    "balanceTrend": "잔액 추이",
-    "selectedDay": "선택한 날짜",
-    "selectDayHint": "활동을 보려면 날짜를 선택하세요",
-    "noTransactions": "이 날짜에는 거래내역이 없습니다",
-    "legend": {
-      "income": "수입",
-      "expenses": "지출",
-      "transfer": "이체",
-      "projected": "예정"
-    }
-  },
-  "export": {
-    "filename": "georae"
-  }
   },
   "categories": {
     "title": "카테고리",
@@ -1363,6 +1365,34 @@
       "disabled": "비활성화됨",
       "enabled": "활성화됨",
       "manage": "관리"
+    },
+    "twoFactor": {
+      "title": "2단계 인증",
+      "description": "인증 앱의 코드로 계정을 보호하세요.",
+      "enabled": "사용 중",
+      "enable": "2단계 인증 사용",
+      "lockoutWarning": "2단계 인증이 없으면 비밀번호를 잊었을 때 계정을 복구할 방법이 없습니다.",
+      "enroll": {
+        "step1": "인증 앱으로 이 코드를 스캔하세요.",
+        "step2": "앱에 표시된 코드를 입력하세요",
+        "confirm": "확인하고 사용",
+        "qrAlt": "인증 앱용 QR 코드",
+        "manualEntry": "또는 이 키를 직접 입력하세요"
+      },
+      "backupCodes": {
+        "title": "백업 코드를 저장하세요",
+        "warning": "이 코드는 지금만 표시됩니다. 인증 앱을 잃어버린 경우 각 코드는 한 번씩 사용할 수 있습니다.",
+        "copy": "코드 복사",
+        "copied": "복사됨",
+        "saved": "저장했습니다",
+        "remaining": "백업 코드 {{count}}개 남음"
+      },
+      "manage": {
+        "codeLabel": "인증 코드",
+        "codeHint": "이 설정을 변경하려면 필요합니다.",
+        "regenerate": "새 백업 코드 생성",
+        "disable": "사용 중지"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "이메일",
       "password": "비밀번호",
       "displayName": "표시 이름",
-      "invitationToken": "초대 토큰"
+      "invitationToken": "초대 토큰",
+      "totpCode": "인증 코드",
+      "recoveryCode": "인증 코드 또는 백업 코드",
+      "newPassword": "새 비밀번호"
     },
     "login": {
       "title": "로그인",
@@ -1389,6 +1422,21 @@
         "title": "관리자 계정 만들기",
         "description": "이 인스턴스의 첫 번째 계정이며 모든 관리자 권한을 갖게 됩니다."
       }
+    },
+    "totp": {
+      "challengeTitle": "2단계 인증",
+      "challengeDescription": "인증 앱에 표시된 코드를 입력하세요.",
+      "codeHint": "백업 코드 중 하나를 사용할 수도 있습니다.",
+      "trustDevice": "이 기기를 30일 동안 신뢰"
+    },
+    "recover": {
+      "link": "로그인할 수 없나요?",
+      "title": "계정 복구",
+      "description": "인증 앱 또는 백업 코드로 새 비밀번호를 설정하세요.",
+      "action": "비밀번호 재설정",
+      "codeHint": "인증 앱의 코드 또는 백업 코드 중 하나입니다.",
+      "doneTitle": "비밀번호가 변경되었습니다",
+      "doneDescription": "모든 기기에서 로그아웃되었습니다. 새 비밀번호로 로그인하세요."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "활성 관리자 계정이 한 명 이상 필요합니다.",
       "account_inactive": "이 계정은 비활성 상태입니다.",
       "admin_required": "관리자 권한이 필요합니다.",
-      "peer_admin": "관리자는 다른 관리자의 역할이나 상태를 변경할 수 없습니다."
+      "peer_admin": "관리자는 다른 관리자의 역할이나 상태를 변경할 수 없습니다.",
+      "totp_required": "인증 앱의 코드를 입력하세요.",
+      "totp_invalid": "코드가 올바르지 않습니다. 다시 시도하세요.",
+      "totp_locked": "잘못된 코드를 너무 많이 입력했습니다. 15분 후에 다시 시도하세요."
     },
     "invitation": {
       "not_found": "초대장이 유효하지 않습니다.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "이 파일은 유효한 LealFinance 규칙 내보내기 파일이 아닙니다."
+    },
+    "totp": {
+      "already_enabled": "2단계 인증이 이미 사용 중입니다.",
+      "not_enabled": "2단계 인증이 사용 중이 아닙니다."
     }
   }
 }

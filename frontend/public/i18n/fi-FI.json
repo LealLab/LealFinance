@@ -249,7 +249,9 @@
         "configureLanguage": "Määritä kieli",
         "configureCurrency": "Määritä näyttövaluutta",
         "toggleTheme": "Vaihda teemaa",
-        "toggleBalances": "Näytä tai piilota saldot"
+        "toggleBalances": "Näytä tai piilota saldot",
+        "configureTwoFactor": "Määritä kaksivaiheinen todennus",
+        "configureTwoFactorHint": "2FA, todennussovellus, varakoodit, tilin palautus"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Muokkaa",
       "delete": "Poista",
       "import": "Tuo CSV",
-    "columns": "Sarakkeet",
-    "exportCsv": "Vie CSV"
+      "columns": "Sarakkeet",
+      "exportCsv": "Vie CSV"
     },
     "tabs": {
       "transactions": "Tapahtumat",
@@ -432,18 +434,18 @@
       "to": "Asti",
       "institution": "Rahoituslaitos",
       "clear": "Tyhjennä suodattimet",
-    "title": "Suodata",
-    "searchPlaceholder": "Hae tapahtumia…",
-    "group": "Ryhmittele",
-    "date": "Päivämäärä",
-    "amount": "Summa",
-    "amountMin": "Vähintään",
-    "amountMax": "Enintään",
-    "any": "Mikä tahansa",
-    "back": "Takaisin",
-    "dateRange": "{{from}} – {{to}}",
-    "amountRange": "{{min}} – {{max}}",
-    "removeChip": "Poista {{filter}}-suodatin"
+      "title": "Suodata",
+      "searchPlaceholder": "Hae tapahtumia…",
+      "group": "Ryhmittele",
+      "date": "Päivämäärä",
+      "amount": "Summa",
+      "amountMin": "Vähintään",
+      "amountMax": "Enintään",
+      "any": "Mikä tahansa",
+      "back": "Takaisin",
+      "dateRange": "{{from}} – {{to}}",
+      "amountRange": "{{min}} – {{max}}",
+      "removeChip": "Poista {{filter}}-suodatin"
     },
     "empty": {
       "title": "Tapahtumia ei löytynyt",
@@ -568,60 +570,60 @@
         "confirm": "Tuo tarkistetut rivit"
       }
     },
-  "eyebrow": "Talous",
-  "view": {
-    "list": "Luettelo",
-    "calendar": "Kalenteri"
-  },
-  "columns": {
-    "title": "Sarakkeet",
-    "date": "Päivämäärä",
-    "description": "Kuvaus",
-    "category": "Luokka",
-    "account": "Tili",
-    "amount": "Summa",
-    "reorder": "Vedä järjestääksesi uudelleen",
-    "resize": "Vedä muuttaaksesi kokoa"
-  },
-  "table": {
-    "selectAll": "Valitse kaikki rivit",
-    "selectRow": "Valitse {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} / {{total}}",
-    "pageSize": "Rivejä sivulla",
-    "previous": "Edellinen sivu",
-    "next": "Seuraava sivu",
-    "goToPage": "Siirry sivulle {{page}}"
-  },
-  "bulk": {
-    "selected": "valittu",
-    "assignCategory": "Valitse luokka…",
-    "mixedKinds": "Valitse yhden tyyppisiä tapahtumia luokan määrittämiseksi",
-    "delete": "Poista valitut",
-    "clearSelection": "Tyhjennä valinta",
-    "deleteConfirm": {
-      "title": "Poista tapahtumat",
-      "message": "Tätä ei voi kumota. Poistetaanko {{count}} tapahtumaa?"
+    "eyebrow": "Talous",
+    "view": {
+      "list": "Luettelo",
+      "calendar": "Kalenteri"
+    },
+    "columns": {
+      "title": "Sarakkeet",
+      "date": "Päivämäärä",
+      "description": "Kuvaus",
+      "category": "Luokka",
+      "account": "Tili",
+      "amount": "Summa",
+      "reorder": "Vedä järjestääksesi uudelleen",
+      "resize": "Vedä muuttaaksesi kokoa"
+    },
+    "table": {
+      "selectAll": "Valitse kaikki rivit",
+      "selectRow": "Valitse {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} / {{total}}",
+      "pageSize": "Rivejä sivulla",
+      "previous": "Edellinen sivu",
+      "next": "Seuraava sivu",
+      "goToPage": "Siirry sivulle {{page}}"
+    },
+    "bulk": {
+      "selected": "valittu",
+      "assignCategory": "Valitse luokka…",
+      "mixedKinds": "Valitse yhden tyyppisiä tapahtumia luokan määrittämiseksi",
+      "delete": "Poista valitut",
+      "clearSelection": "Tyhjennä valinta",
+      "deleteConfirm": {
+        "title": "Poista tapahtumat",
+        "message": "Tätä ei voi kumota. Poistetaanko {{count}} tapahtumaa?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Edellinen kuukausi",
+      "nextMonth": "Seuraava kuukausi",
+      "balanceTrend": "Saldon kehitys",
+      "selectedDay": "Valittu päivä",
+      "selectDayHint": "Valitse päivä nähdäksesi sen tapahtumat",
+      "noTransactions": "Tänä päivänä ei ole tapahtumia",
+      "legend": {
+        "income": "Tulot",
+        "expenses": "Menot",
+        "transfer": "Tilisiirto",
+        "projected": "Ennuste"
+      }
+    },
+    "export": {
+      "filename": "tapahtumat"
     }
-  },
-  "calendar": {
-    "previousMonth": "Edellinen kuukausi",
-    "nextMonth": "Seuraava kuukausi",
-    "balanceTrend": "Saldon kehitys",
-    "selectedDay": "Valittu päivä",
-    "selectDayHint": "Valitse päivä nähdäksesi sen tapahtumat",
-    "noTransactions": "Tänä päivänä ei ole tapahtumia",
-    "legend": {
-      "income": "Tulot",
-      "expenses": "Menot",
-      "transfer": "Tilisiirto",
-      "projected": "Ennuste"
-    }
-  },
-  "export": {
-    "filename": "tapahtumat"
-  }
   },
   "categories": {
     "title": "Luokat",
@@ -1363,6 +1365,34 @@
       "disabled": "Pois käytöstä",
       "enabled": "Käytössä",
       "manage": "Hallinnoi"
+    },
+    "twoFactor": {
+      "title": "Kaksivaiheinen todennus",
+      "description": "Suojaa tilisi todennussovelluksen koodilla.",
+      "enabled": "Käytössä",
+      "enable": "Ota kaksivaiheinen todennus käyttöön",
+      "lockoutWarning": "Ilman kaksivaiheista todennusta tiliä ei voi mitenkään palauttaa, jos unohdat salasanasi.",
+      "enroll": {
+        "step1": "Skannaa tämä koodi todennussovelluksellasi.",
+        "step2": "Anna sovelluksen näyttämä koodi",
+        "confirm": "Vahvista ja ota käyttöön",
+        "qrAlt": "QR-koodi todennussovellustasi varten",
+        "manualEntry": "Tai syötä tämä avain käsin"
+      },
+      "backupCodes": {
+        "title": "Tallenna varakoodisi",
+        "warning": "Nämä koodit näytetään vain nyt. Kukin toimii kerran, jos menetät todennussovelluksesi.",
+        "copy": "Kopioi koodit",
+        "copied": "Kopioitu",
+        "saved": "Tallensin ne",
+        "remaining": "{{count}} varakoodia jäljellä"
+      },
+      "manage": {
+        "codeLabel": "Todennuskoodi",
+        "codeHint": "Vaaditaan näiden asetusten muuttamiseen.",
+        "regenerate": "Luo uudet varakoodit",
+        "disable": "Poista käytöstä"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "Sähköposti",
       "password": "Salasana",
       "displayName": "Näyttönimi",
-      "invitationToken": "Kutsutunnus"
+      "invitationToken": "Kutsutunnus",
+      "totpCode": "Todennuskoodi",
+      "recoveryCode": "Todennus- tai varakoodi",
+      "newPassword": "Uusi salasana"
     },
     "login": {
       "title": "Kirjaudu sisään",
@@ -1389,6 +1422,21 @@
         "title": "Luo järjestelmänvalvojan tili",
         "description": "Tämä on tämän asennuksen ensimmäinen tili, joten sillä on täydet järjestelmänvalvojan oikeudet."
       }
+    },
+    "totp": {
+      "challengeTitle": "Kaksivaiheinen vahvistus",
+      "challengeDescription": "Anna todennussovelluksesi koodi.",
+      "codeHint": "Voit käyttää myös jotakin varakoodeistasi.",
+      "trustDevice": "Luota tähän laitteeseen 30 päivän ajan"
+    },
+    "recover": {
+      "link": "Etkö pääse kirjautumaan?",
+      "title": "Palauta tilisi",
+      "description": "Aseta uusi salasana todennussovelluksella tai varakoodilla.",
+      "action": "Nollaa salasana",
+      "codeHint": "Todennussovelluksesi koodi tai jokin varakoodeistasi.",
+      "doneTitle": "Salasana päivitetty",
+      "doneDescription": "Sinut on kirjattu ulos kaikkialta. Kirjaudu sisään uudella salasanalla."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "Vähintään yhden järjestelmänvalvojan on oltava aktiivinen.",
       "account_inactive": "Tämä tili ei ole aktiivinen.",
       "admin_required": "Toiminto edellyttää järjestelmänvalvojan oikeuksia.",
-      "peer_admin": "Järjestelmänvalvojat eivät voi muuttaa toisen järjestelmänvalvojan roolia tai tilaa."
+      "peer_admin": "Järjestelmänvalvojat eivät voi muuttaa toisen järjestelmänvalvojan roolia tai tilaa.",
+      "totp_required": "Anna todennussovelluksesi koodi.",
+      "totp_invalid": "Koodi ei kelpaa. Yritä uudelleen.",
+      "totp_locked": "Liian monta väärää koodia. Yritä uudelleen 15 minuutin kuluttua."
     },
     "invitation": {
       "not_found": "Kutsu ei ole kelvollinen.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Tämä tiedosto ei ole kelvollinen LealFinance-sääntöjen vientitiedosto."
+    },
+    "totp": {
+      "already_enabled": "Kaksivaiheinen todennus on jo käytössä.",
+      "not_enabled": "Kaksivaiheinen todennus ei ole käytössä."
     }
   }
 }

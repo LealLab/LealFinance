@@ -249,7 +249,9 @@
         "configureLanguage": "Konfigurera språk",
         "configureCurrency": "Konfigurera visningsvaluta",
         "toggleTheme": "Växla tema",
-        "toggleBalances": "Visa eller dölj saldon"
+        "toggleBalances": "Visa eller dölj saldon",
+        "configureTwoFactor": "Konfigurera tvåfaktorsautentisering",
+        "configureTwoFactorHint": "2FA, autentiseringsapp, reservkoder, kontoåterställning"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Redigera",
       "delete": "Ta bort",
       "import": "Importera CSV",
-    "columns": "Kolumner",
-    "exportCsv": "Exportera CSV"
+      "columns": "Kolumner",
+      "exportCsv": "Exportera CSV"
     },
     "tabs": {
       "transactions": "Transaktioner",
@@ -432,18 +434,18 @@
       "to": "Till",
       "institution": "Finansiellt institut",
       "clear": "Rensa filter",
-    "title": "Filtrera efter",
-    "searchPlaceholder": "Sök transaktioner…",
-    "group": "Gruppera",
-    "date": "Datum",
-    "amount": "Belopp",
-    "amountMin": "Minimum",
-    "amountMax": "Maximum",
-    "any": "Alla",
-    "back": "Tillbaka",
-    "dateRange": "Från {{from}} till {{to}}",
-    "amountRange": "Från {{min}} till {{max}}",
-    "removeChip": "Ta bort filtret {{filter}}"
+      "title": "Filtrera efter",
+      "searchPlaceholder": "Sök transaktioner…",
+      "group": "Gruppera",
+      "date": "Datum",
+      "amount": "Belopp",
+      "amountMin": "Minimum",
+      "amountMax": "Maximum",
+      "any": "Alla",
+      "back": "Tillbaka",
+      "dateRange": "Från {{from}} till {{to}}",
+      "amountRange": "Från {{min}} till {{max}}",
+      "removeChip": "Ta bort filtret {{filter}}"
     },
     "empty": {
       "title": "Inga transaktioner hittades",
@@ -568,60 +570,60 @@
         "confirm": "Importera granskade rader"
       }
     },
-  "eyebrow": "Ekonomi",
-  "view": {
-    "list": "Lista",
-    "calendar": "Kalender"
-  },
-  "columns": {
-    "title": "Kolumner",
-    "date": "Datum",
-    "description": "Beskrivning",
-    "category": "Kategori",
-    "account": "Konto",
-    "amount": "Belopp",
-    "reorder": "Dra för att ändra ordning",
-    "resize": "Dra för att ändra storlek"
-  },
-  "table": {
-    "selectAll": "Markera alla rader",
-    "selectRow": "Markera {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} av {{total}}",
-    "pageSize": "Rader per sida",
-    "previous": "Föregående sida",
-    "next": "Nästa sida",
-    "goToPage": "Gå till sida {{page}}"
-  },
-  "bulk": {
-    "selected": "markerade",
-    "assignCategory": "Välj kategori…",
-    "mixedKinds": "Välj transaktioner av samma typ för att tilldela en kategori",
-    "delete": "Ta bort markerade",
-    "clearSelection": "Rensa markering",
-    "deleteConfirm": {
-      "title": "Ta bort transaktioner",
-      "message": "Detta kan inte ångras. Ta bort {{count}} transaktioner?"
+    "eyebrow": "Ekonomi",
+    "view": {
+      "list": "Lista",
+      "calendar": "Kalender"
+    },
+    "columns": {
+      "title": "Kolumner",
+      "date": "Datum",
+      "description": "Beskrivning",
+      "category": "Kategori",
+      "account": "Konto",
+      "amount": "Belopp",
+      "reorder": "Dra för att ändra ordning",
+      "resize": "Dra för att ändra storlek"
+    },
+    "table": {
+      "selectAll": "Markera alla rader",
+      "selectRow": "Markera {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} av {{total}}",
+      "pageSize": "Rader per sida",
+      "previous": "Föregående sida",
+      "next": "Nästa sida",
+      "goToPage": "Gå till sida {{page}}"
+    },
+    "bulk": {
+      "selected": "markerade",
+      "assignCategory": "Välj kategori…",
+      "mixedKinds": "Välj transaktioner av samma typ för att tilldela en kategori",
+      "delete": "Ta bort markerade",
+      "clearSelection": "Rensa markering",
+      "deleteConfirm": {
+        "title": "Ta bort transaktioner",
+        "message": "Detta kan inte ångras. Ta bort {{count}} transaktioner?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Föregående månad",
+      "nextMonth": "Nästa månad",
+      "balanceTrend": "Saldoutveckling",
+      "selectedDay": "Vald dag",
+      "selectDayHint": "Välj en dag för att se dess aktivitet",
+      "noTransactions": "Inga transaktioner denna dag",
+      "legend": {
+        "income": "Inkomster",
+        "expenses": "Utgifter",
+        "transfer": "Överföring",
+        "projected": "Prognostiserade"
+      }
+    },
+    "export": {
+      "filename": "transaktioner"
     }
-  },
-  "calendar": {
-    "previousMonth": "Föregående månad",
-    "nextMonth": "Nästa månad",
-    "balanceTrend": "Saldoutveckling",
-    "selectedDay": "Vald dag",
-    "selectDayHint": "Välj en dag för att se dess aktivitet",
-    "noTransactions": "Inga transaktioner denna dag",
-    "legend": {
-      "income": "Inkomster",
-      "expenses": "Utgifter",
-      "transfer": "Överföring",
-      "projected": "Prognostiserade"
-    }
-  },
-  "export": {
-    "filename": "transaktioner"
-  }
   },
   "categories": {
     "title": "Kategorier",
@@ -1363,6 +1365,34 @@
       "disabled": "Inaktiverade",
       "enabled": "Aktiverade",
       "manage": "Hantera"
+    },
+    "twoFactor": {
+      "title": "Tvåfaktorsautentisering",
+      "description": "Skydda ditt konto med en kod från en autentiseringsapp.",
+      "enabled": "Aktiverad",
+      "enable": "Aktivera tvåfaktorsautentisering",
+      "lockoutWarning": "Utan tvåfaktorsautentisering finns det inget sätt att återställa ditt konto om du glömmer lösenordet.",
+      "enroll": {
+        "step1": "Skanna den här koden med din autentiseringsapp.",
+        "step2": "Ange koden som appen visar",
+        "confirm": "Bekräfta och aktivera",
+        "qrAlt": "QR-kod för din autentiseringsapp",
+        "manualEntry": "Eller ange den här nyckeln manuellt"
+      },
+      "backupCodes": {
+        "title": "Spara dina reservkoder",
+        "warning": "Koderna visas bara nu. Var och en fungerar en gång om du förlorar din autentiseringsapp.",
+        "copy": "Kopiera koder",
+        "copied": "Kopierat",
+        "saved": "Jag har sparat dem",
+        "remaining": "{{count}} reservkoder kvar"
+      },
+      "manage": {
+        "codeLabel": "Autentiseringskod",
+        "codeHint": "Krävs för att ändra de här inställningarna.",
+        "regenerate": "Generera nya reservkoder",
+        "disable": "Inaktivera"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "E-post",
       "password": "Lösenord",
       "displayName": "Visningsnamn",
-      "invitationToken": "Inbjudningstoken"
+      "invitationToken": "Inbjudningstoken",
+      "totpCode": "Autentiseringskod",
+      "recoveryCode": "Autentiserings- eller reservkod",
+      "newPassword": "Nytt lösenord"
     },
     "login": {
       "title": "Logga in",
@@ -1389,6 +1422,21 @@
         "title": "Skapa administratörskontot",
         "description": "Det här är det första kontot på den här instansen – det får full administratörsbehörighet."
       }
+    },
+    "totp": {
+      "challengeTitle": "Tvåstegsverifiering",
+      "challengeDescription": "Ange koden från din autentiseringsapp.",
+      "codeHint": "Du kan också använda en av dina reservkoder.",
+      "trustDevice": "Lita på den här enheten i 30 dagar"
+    },
+    "recover": {
+      "link": "Kan du inte logga in?",
+      "title": "Återställ ditt konto",
+      "description": "Ange ett nytt lösenord med din autentiseringsapp eller en reservkod.",
+      "action": "Återställ lösenord",
+      "codeHint": "En kod från din autentiseringsapp eller en av dina reservkoder.",
+      "doneTitle": "Lösenordet har uppdaterats",
+      "doneDescription": "Du har loggats ut överallt. Logga in med ditt nya lösenord."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "Minst en aktiv administratör krävs.",
       "account_inactive": "Det här kontot är inaktivt.",
       "admin_required": "Administratörsbehörighet krävs.",
-      "peer_admin": "Administratörer kan inte ändra en annan administratörs roll eller status."
+      "peer_admin": "Administratörer kan inte ändra en annan administratörs roll eller status.",
+      "totp_required": "Ange koden från din autentiseringsapp.",
+      "totp_invalid": "Koden är ogiltig. Försök igen.",
+      "totp_locked": "För många felaktiga koder. Försök igen om 15 minuter."
     },
     "invitation": {
       "not_found": "Inbjudan är ogiltig.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Filen är inte en giltig export av LealFinance-regler."
+    },
+    "totp": {
+      "already_enabled": "Tvåfaktorsautentisering är redan aktiverad.",
+      "not_enabled": "Tvåfaktorsautentisering är inte aktiverad."
     }
   }
 }

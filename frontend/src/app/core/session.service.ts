@@ -38,8 +38,17 @@ export class SessionService {
     return this.bootstrapRequest;
   }
 
-  login(email: string, password: string): Observable<User> {
-    return this.api.login(email, password).pipe(
+  /** `secondFactor` is supplied on the retry after a login answered
+   * auth.totp_required - see IdentityApiService.login. That code is
+   * deliberately absent from SESSION_ERROR_CODES above: treating it as an
+   * expired session would redirect the user away from the challenge they
+   * are standing on. */
+  login(
+    email: string,
+    password: string,
+    secondFactor?: { code: string; trustDevice: boolean },
+  ): Observable<User> {
+    return this.api.login(email, password, secondFactor).pipe(
       tap((user) => this.userState.set(user)),
       switchMap((user) => this.preferences.hydrate().pipe(map(() => user))),
       tap(() => this.metadata.hydrate().subscribe()),

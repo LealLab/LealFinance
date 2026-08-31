@@ -249,7 +249,9 @@
         "configureLanguage": "Configurar idioma",
         "configureCurrency": "Configurar moeda de exibição",
         "toggleTheme": "Alternar tema",
-        "toggleBalances": "Ocultar ou mostrar saldos"
+        "toggleBalances": "Ocultar ou mostrar saldos",
+        "configureTwoFactor": "Configurar autenticação de dois fatores",
+        "configureTwoFactorHint": "2FA, aplicativo autenticador, códigos de backup, recuperação de conta"
       }
     },
     "update": {
@@ -441,8 +443,8 @@
       "amountMax": "Máximo",
       "any": "Qualquer",
       "back": "Voltar",
-    "dateRange": "De {{from}} a {{to}}",
-    "amountRange": "De {{min}} a {{max}}",
+      "dateRange": "De {{from}} a {{to}}",
+      "amountRange": "De {{min}} a {{max}}",
       "removeChip": "Remover filtro {{filter}}"
     },
     "empty": {
@@ -580,8 +582,8 @@
       "category": "Categoria",
       "account": "Conta",
       "amount": "Valor",
-    "reorder": "Arraste para reordenar",
-    "resize": "Arraste para redimensionar"
+      "reorder": "Arraste para reordenar",
+      "resize": "Arraste para redimensionar"
     },
     "table": {
       "selectAll": "Selecionar todas as linhas",
@@ -1363,6 +1365,34 @@
       "disabled": "Desativado",
       "enabled": "Ativado",
       "manage": "Gerenciar"
+    },
+    "twoFactor": {
+      "title": "Autenticação de dois fatores",
+      "description": "Proteja sua conta com um código de um aplicativo autenticador.",
+      "enabled": "Ativada",
+      "enable": "Ativar autenticação de dois fatores",
+      "lockoutWarning": "Sem a autenticação de dois fatores não há como recuperar sua conta se você esquecer a senha.",
+      "enroll": {
+        "step1": "Escaneie este código com seu aplicativo autenticador.",
+        "step2": "Digite o código que o aplicativo mostra",
+        "confirm": "Confirmar e ativar",
+        "qrAlt": "Código QR para seu aplicativo autenticador",
+        "manualEntry": "Ou insira esta chave manualmente"
+      },
+      "backupCodes": {
+        "title": "Salve seus códigos de backup",
+        "warning": "Estes códigos são exibidos apenas agora. Cada um funciona uma vez se você perder o aplicativo autenticador.",
+        "copy": "Copiar códigos",
+        "copied": "Copiado",
+        "saved": "Eu salvei",
+        "remaining": "{{count}} códigos de backup restantes"
+      },
+      "manage": {
+        "codeLabel": "Código de autenticação",
+        "codeHint": "Necessário para alterar estas configurações.",
+        "regenerate": "Gerar novos códigos de backup",
+        "disable": "Desativar"
+      }
     }
   },
   "auth": {
@@ -1371,7 +1401,10 @@
       "email": "E-mail",
       "password": "Senha",
       "displayName": "Nome de exibição",
-      "invitationToken": "Token do convite"
+      "invitationToken": "Token do convite",
+      "totpCode": "Código de autenticação",
+      "recoveryCode": "Código de autenticação ou de backup",
+      "newPassword": "Nova senha"
     },
     "login": {
       "title": "Entrar",
@@ -1389,6 +1422,21 @@
         "title": "Criar a conta de administrador",
         "description": "Esta é a primeira conta desta instância - ela terá acesso total de administrador."
       }
+    },
+    "totp": {
+      "challengeTitle": "Verificação em duas etapas",
+      "challengeDescription": "Digite o código do seu aplicativo autenticador.",
+      "codeHint": "Você também pode usar um dos seus códigos de backup.",
+      "trustDevice": "Confiar neste dispositivo por 30 dias"
+    },
+    "recover": {
+      "link": "Não consegue entrar?",
+      "title": "Recuperar sua conta",
+      "description": "Defina uma nova senha usando seu aplicativo autenticador ou um código de backup.",
+      "action": "Redefinir senha",
+      "codeHint": "Um código do seu aplicativo autenticador ou um dos seus códigos de backup.",
+      "doneTitle": "Senha atualizada",
+      "doneDescription": "Sua sessão foi encerrada em todos os dispositivos. Entre com a nova senha."
     }
   },
   "admin": {
@@ -1515,7 +1563,10 @@
       "last_admin": "É necessário manter ao menos um administrador ativo.",
       "account_inactive": "Esta conta está inativa.",
       "admin_required": "É necessário acesso de administrador.",
-      "peer_admin": "Administradores não podem alterar a função ou o status de outro administrador."
+      "peer_admin": "Administradores não podem alterar a função ou o status de outro administrador.",
+      "totp_required": "Digite o código do seu aplicativo autenticador.",
+      "totp_invalid": "Esse código não é válido. Tente novamente.",
+      "totp_locked": "Muitos códigos incorretos. Tente novamente em 15 minutos."
     },
     "invitation": {
       "not_found": "O convite é inválido.",
@@ -1554,6 +1605,10 @@
     },
     "rule_import": {
       "invalid_format": "Este arquivo não é uma exportação válida de regras do LealFinance."
+    },
+    "totp": {
+      "already_enabled": "A autenticação de dois fatores já está ativada.",
+      "not_enabled": "A autenticação de dois fatores não está ativada."
     }
   }
 }
