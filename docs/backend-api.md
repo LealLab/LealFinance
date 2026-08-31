@@ -529,6 +529,7 @@ precedence, and the OAuth linking flow. `provider` is one of `anthropic`,
 | Code | Status |
 | --- | --- |
 | `agents.disabled` | 404 |
+| `agents.chat_not_allowed` | 403 |
 | `agents.provider_unknown` | 404 |
 | `agent_credential.not_found` | 404 |
 | `agents.not_configured` | 422 |

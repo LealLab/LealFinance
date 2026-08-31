@@ -3,14 +3,19 @@ by `_require_agents_enabled` and admin auth, so the whole surface 404s as
 `agents.disabled` when `AGENTS_ENABLED=false` - the flag this router is
 entirely behind (see CLAUDE.md's AI Agents section)."""
 
+from datetime import UTC, datetime, timedelta
+
 from fastapi import APIRouter, Depends, status
 
-from app.api.deps import AdminUser, DbSession
+from app.agents import MCP_TOKEN_TTL_SECONDS
+from app.api.deps import AdminUser, AiChatUser, DbSession
+from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import NotFoundError
 from app.schemas.agent import (
     ChatCreate,
     ChatRead,
+    McpTokenRead,
     OAuthCompleteCreate,
     OAuthStartRead,
     ProviderLinkUpdate,
@@ -67,3 +72,10 @@ async def test_provider(provider: str, admin: AdminUser, db: DbSession) -> Provi
 @router.post("/chat", response_model=ChatRead)
 async def chat(payload: ChatCreate, admin: AdminUser, db: DbSession) -> ChatRead:
     return await agent_providers.send_chat(db, admin.id, payload)
+
+
+@router.post("/mcp-token", response_model=McpTokenRead)
+async def create_mcp_token(user: AiChatUser) -> McpTokenRead:
+    token = crypto.mint_mcp_token(user.id)
+    expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
+    return McpTokenRead(token=token, expires_at=expires_at)

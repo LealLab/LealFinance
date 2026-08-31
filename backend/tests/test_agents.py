@@ -6,6 +6,7 @@ appears in any response body.
 """
 
 from datetime import UTC, datetime, timedelta
+from uuid import uuid4
 
 import httpx
 import pytest
@@ -15,8 +16,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import app.agents.credentials as credentials_module
 import app.api.v1.agents as agents_router
 import app.services.agent_providers as agent_providers_module
+from app.agents import MCP_TOKEN_TTL_SECONDS, oauth
 from app.agents import chat as chat_module
-from app.agents import oauth
 from app.agents.credentials import ResolvedCredential
 from app.agents.oauth import OAuthTokens
 from app.core import crypto
@@ -681,6 +682,68 @@ def test_decrypt_returns_none_after_key_rotation(monkeypatch: pytest.MonkeyPatch
 
 def test_decrypt_returns_none_for_garbage() -> None:
     assert crypto.decrypt_secret("not-a-valid-fernet-token") is None
+
+
+def test_mcp_token_round_trip() -> None:
+    user_id = uuid4()
+    token = crypto.mint_mcp_token(user_id)
+    assert crypto.verify_mcp_token(token, max_age=MCP_TOKEN_TTL_SECONDS) == user_id
+
+
+def test_verify_mcp_token_returns_none_for_invalid_tokens() -> None:
+    token = crypto.mint_mcp_token(uuid4())
+    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+
+    assert crypto.verify_mcp_token(tampered, max_age=MCP_TOKEN_TTL_SECONDS) is None
+    assert crypto.verify_mcp_token("garbage", max_age=MCP_TOKEN_TTL_SECONDS) is None
+    assert crypto.verify_mcp_token(token, max_age=-1) is None
+
+
+def test_mcp_tokens_are_domain_separated_from_credentials() -> None:
+    assert (
+        crypto.verify_mcp_token(crypto.encrypt_secret("x"), max_age=MCP_TOKEN_TTL_SECONDS) is None
+    )
+
+
+async def test_create_mcp_token_for_ai_chat_member(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    user, password = await make_user(db_session, email="mcp-enabled@example.com", role=ROLE_MEMBER)
+    user.ai_chat_enabled = True
+    await db_session.commit()
+    await login_as(client, email=user.email, password=password)
+
+    response = await client.post("/api/v1/agents/mcp-token")
+
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["token"]
+    assert body["expires_at"]
+    assert crypto.verify_mcp_token(body["token"], max_age=MCP_TOKEN_TTL_SECONDS) == user.id
+
+
+async def test_create_mcp_token_requires_ai_chat_enabled_member(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "mcp-disabled-user@example.com", role=ROLE_MEMBER)
+
+    response = await client.post("/api/v1/agents/mcp-token")
+
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "agents.chat_not_allowed"
+
+
+async def test_mcp_token_route_is_disabled_with_agents_flag(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "mcp-agents-disabled@example.com", role=ROLE_MEMBER)
+
+    response = await client.post("/api/v1/agents/mcp-token")
+
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "agents.disabled"
 
 
 # --- OAuth helper functions (no network) ----------------------------------

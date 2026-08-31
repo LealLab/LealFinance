@@ -1,6 +1,7 @@
 """AI provider DTOs. Secrets are never serialized here - every Read model
 below exposes only booleans, the credential source, and a display label."""
 
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -65,3 +66,8 @@ class ChatRead(BaseModel):
     provider: ProviderId
     model: str
     reply: str
+
+
+class McpTokenRead(BaseModel):
+    token: str
+    expires_at: datetime
