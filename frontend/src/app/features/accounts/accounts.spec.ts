@@ -5,6 +5,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -39,6 +40,7 @@ describe('Accounts', () => {
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
+    TestBed.inject(DisplayCurrencyService).setCurrency('USD');
   });
 
   it('creates and renders the seeded accounts without error', async () => {

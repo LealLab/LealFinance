@@ -20,6 +20,7 @@ import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Account } from '../../domain/models/account';
 import { MetadataService } from '../../core/metadata.service';
+import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { Exchange } from './exchange';
 import ptBR from '../../../../public/i18n/pt-BR.json';
 
@@ -56,6 +57,7 @@ describe('Exchange', () => {
         isActive: true,
       })),
     );
+    TestBed.inject(DisplayCurrencyService).setCurrency('USD');
   });
 
   it('renders the "needs attention" and "manual rates" empty states when there is no cross-currency activity', async () => {
