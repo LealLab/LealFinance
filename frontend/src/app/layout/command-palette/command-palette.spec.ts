@@ -140,8 +140,7 @@ describe('CommandPalette', () => {
     ['idioma', 'Configurar idioma', 'settings-language'],
     ['moeda', 'Configurar moeda de exibição', 'settings-display-currency'],
     ['dois fatores', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
-    // Matching runs over label + sublabel, so the synonyms people actually
-    // type reach the same entry.
+    // Synonyms people actually type reach the same entry, via keywordsKey.
     ['2FA', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
     ['autenticador', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
     ['recuperação', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
@@ -164,6 +163,31 @@ describe('CommandPalette', () => {
 
     result.click();
     expect(navigate).toHaveBeenCalledWith(['/settings'], { fragment });
+  });
+
+  it('matches on search keywords without rendering them in the row', () => {
+    // Regression: these synonyms were once a sublabelKey. The sublabel slot
+    // is shrink-0, so the long keyword list took the whole row and squeezed
+    // the flex-1 label to zero width - the entry rendered with no title.
+    // Asserting on textContent alone cannot catch that (CSS truncation
+    // leaves the text in the DOM), so assert the keywords never render.
+    const fixture = TestBed.createComponent(CommandPalette);
+    TestBed.inject(CommandPaletteService).show();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = '2FA';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const row = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
+      (button as HTMLButtonElement).textContent?.includes(
+        'Configurar autenticação de dois fatores',
+      ),
+    ) as HTMLButtonElement;
+    expect(row).toBeTruthy();
+    expect(row.textContent).not.toContain('aplicativo autenticador');
+    expect(row.querySelector('.font-mono')).toBeNull();
   });
 
   it('finds the "Import transactions" quick action and navigates to the import route', () => {

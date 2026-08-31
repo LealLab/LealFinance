@@ -25,8 +25,14 @@ interface PaletteItem {
   labelKey?: string;
   /** Literal text, when the label is real data (an account/category name…). */
   label?: string;
+  /** Short trailing hint, rendered right-aligned and never shrunk - a route
+   * like `/transactions`. Long text here squeezes the label to nothing. */
   sublabelKey?: string;
   sublabel?: string;
+  /** Translation key for extra search terms. Matched against, never
+   * rendered: synonyms people type ("2FA", "authenticator") belong in the
+   * query text, not in the row. */
+  keywordsKey?: string;
   icon: IconName;
   run: () => void;
 }
@@ -284,7 +290,8 @@ export class CommandPalette {
     const sublabel = item.sublabelKey
       ? this.transloco.translate(item.sublabelKey)
       : (item.sublabel ?? '');
-    return `${label} ${sublabel}`;
+    const keywords = item.keywordsKey ? this.transloco.translate(item.keywordsKey) : '';
+    return `${label} ${sublabel} ${keywords}`;
   }
 
   private quickActionItems(): PaletteItem[] {
@@ -337,10 +344,9 @@ export class CommandPalette {
       {
         id: 'quick-configure-two-factor',
         labelKey: 'layout.commandPalette.actions.configureTwoFactor',
-        // Filtering matches label + sublabel text only - there is no keyword
-        // field - so the sublabel carries the terms people actually type
-        // ("2FA", "authenticator", "recovery").
-        sublabelKey: 'layout.commandPalette.actions.configureTwoFactorHint',
+        // Search-only synonyms ("2FA", "authenticator", "recovery"). Not a
+        // sublabel: that slot is shrink-0 and would squeeze out the label.
+        keywordsKey: 'layout.commandPalette.actions.configureTwoFactorHint',
         icon: 'shield',
         run: () => this.navigateToSetting('settings-two-factor'),
       },
