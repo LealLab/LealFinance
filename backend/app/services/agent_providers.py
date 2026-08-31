@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents import chat as chat_module
 from app.agents import credentials, oauth
+from app.agents.events import TextDelta, Turn
 from app.agents.providers import PROVIDERS
 from app.core.crypto import encrypt_secret
 from app.core.errors import AppError, BadGatewayError, NotFoundError, ValidationAppError
@@ -21,8 +22,6 @@ from app.models.agent_credential import (
     AgentCredential,
 )
 from app.schemas.agent import (
-    ChatCreate,
-    ChatRead,
     OAuthCompleteCreate,
     OAuthStartRead,
     ProviderLinkUpdate,
@@ -163,28 +162,15 @@ async def test_provider(db: AsyncSession, user_id: UUID, provider: str) -> Provi
     resolved = await credentials.resolve(db, user_id, provider)
     if resolved is None:
         return ProviderTestRead(ok=False, error_code="agents.not_configured")
+    saw_text = False
     try:
-        await chat_module.send_chat(resolved, [{"role": "user", "content": "ping"}])
+        async for event in chat_module.stream_turn(
+            resolved, "You are a diagnostic ping. Reply 'ok'.", [Turn(role="user", text="ping")], []
+        ):
+            saw_text |= isinstance(event, TextDelta)
     except BadGatewayError as exc:
         return ProviderTestRead(ok=False, error_code=exc.code)
-    return ProviderTestRead(ok=True)
-
-
-async def send_chat(db: AsyncSession, user_id: UUID, data: ChatCreate) -> ChatRead:
-    provider = data.provider
-    if provider is not None:
-        _require_known_provider(provider)
-        resolved = await credentials.resolve(db, user_id, provider)
-    else:
-        resolved = None
-        for candidate in PROVIDERS:
-            resolved = await credentials.resolve(db, user_id, candidate)
-            if resolved is not None:
-                break
-
-    if resolved is None:
-        raise ValidationAppError(code="agents.not_configured")
-
-    messages = [{"role": m.role, "content": m.content} for m in data.messages]
-    reply = await chat_module.send_chat(resolved, messages)
-    return ChatRead(provider=resolved.provider, model=resolved.model, reply=reply)
+    return ProviderTestRead(
+        ok=saw_text,
+        error_code=None if saw_text else "agents.provider_unavailable",
+    )

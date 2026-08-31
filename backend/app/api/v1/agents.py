@@ -13,8 +13,6 @@ from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import NotFoundError
 from app.schemas.agent import (
-    ChatCreate,
-    ChatRead,
     McpTokenRead,
     OAuthCompleteCreate,
     OAuthStartRead,
@@ -67,11 +65,6 @@ async def complete_provider_oauth(
 @router.post("/providers/{provider}/test", response_model=ProviderTestRead)
 async def test_provider(provider: str, admin: AdminUser, db: DbSession) -> ProviderTestRead:
     return await agent_providers.test_provider(db, admin.id, provider)
-
-
-@router.post("/chat", response_model=ChatRead)
-async def chat(payload: ChatCreate, admin: AdminUser, db: DbSession) -> ChatRead:
-    return await agent_providers.send_chat(db, admin.id, payload)
 
 
 @router.post("/mcp-token", response_model=McpTokenRead)

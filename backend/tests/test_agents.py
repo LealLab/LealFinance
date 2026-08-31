@@ -1,8 +1,5 @@
-"""AI provider linking, credential precedence (user row overrides .env),
-OAuth PKCE state checking, the non-streaming smoke-chat call, ownership
-isolation, and - the money/security-adjacent part - that a stored secret
-is encrypted at rest, degrades cleanly after a key rotation, and never
-appears in any response body.
+"""AI provider linking, credential precedence, OAuth PKCE state checking,
+streaming provider adapters, ownership isolation, and secret handling.
 """
 
 from datetime import UTC, datetime, timedelta
@@ -19,6 +16,7 @@ import app.services.agent_providers as agent_providers_module
 from app.agents import MCP_TOKEN_TTL_SECONDS, oauth
 from app.agents import chat as chat_module
 from app.agents.credentials import ResolvedCredential
+from app.agents.events import TextDelta, ToolCall, Turn, TurnEnd
 from app.agents.oauth import OAuthTokens
 from app.core import crypto
 from app.core.config import get_settings
@@ -508,78 +506,29 @@ async def test_oauth_complete_openai_bare_code_still_accepted(
     assert _json.loads(captured["request"].content)["code"] == "ac_abc123"
 
 
-# --- Chat -------------------------------------------------------------
-
-
-async def test_chat_not_configured(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    _enable_agents(monkeypatch)
-    await _authed(client, db_session, "chat-not-configured@example.com")
-
-    response = await client.post(
-        "/api/v1/agents/chat", json={"messages": [{"role": "user", "content": "hi"}]}
-    )
-    assert response.status_code == 422
-    assert response.json()["error"]["code"] == "agents.not_configured"
-
-
-async def test_chat_success(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    _enable_agents(monkeypatch, anthropic_api_key="sk-chat")
-    await _authed(client, db_session, "chat-success@example.com")
-
-    async def fake_send_chat(_credential: object, _messages: object) -> str:
-        return "pong"
-
-    monkeypatch.setattr(agent_providers_module.chat_module, "send_chat", fake_send_chat)
-
-    response = await client.post(
-        "/api/v1/agents/chat",
-        json={"provider": "anthropic", "messages": [{"role": "user", "content": "ping"}]},
-    )
-    assert response.status_code == 200, response.text
-    assert response.json()["reply"] == "pong"
-    assert response.json()["provider"] == "anthropic"
-
-
-async def test_chat_provider_unavailable_never_surfaces_as_500(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    _enable_agents(monkeypatch, anthropic_api_key="sk-chat")
-    await _authed(client, db_session, "chat-unavailable@example.com")
-
-    async def fake_send_chat(_credential: object, _messages: object) -> str:
-        raise BadGatewayError(code="agents.provider_unavailable")
-
-    monkeypatch.setattr(agent_providers_module.chat_module, "send_chat", fake_send_chat)
-
-    response = await client.post(
-        "/api/v1/agents/chat",
-        json={"provider": "anthropic", "messages": [{"role": "user", "content": "ping"}]},
-    )
-    assert response.status_code == 502
-    assert response.json()["error"]["code"] == "agents.provider_unavailable"
-
-
 async def test_provider_test_endpoint(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch, anthropic_api_key="sk-test")
     await _authed(client, db_session, "provider-test@example.com")
 
-    async def ok_send_chat(_credential: object, _messages: object) -> str:
-        return "pong"
+    def ok_handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b"event: content_block_delta\n"
+            b'data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"ok"}}\n\n'
+            b"event: message_stop\n"
+            b'data: {"type":"message_stop"}\n\n'
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
 
-    monkeypatch.setattr(agent_providers_module.chat_module, "send_chat", ok_send_chat)
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(ok_handler))
     ok_response = await client.post("/api/v1/agents/providers/anthropic/test")
     assert ok_response.json() == {"ok": True, "error_code": None}
 
-    async def failing_send_chat(_credential: object, _messages: object) -> str:
-        raise BadGatewayError(code="agents.provider_unavailable")
+    def failing_handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(500, json={"error": "boom"})
 
-    monkeypatch.setattr(agent_providers_module.chat_module, "send_chat", failing_send_chat)
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(failing_handler))
     failed_response = await client.post("/api/v1/agents/providers/anthropic/test")
     assert failed_response.json() == {"ok": False, "error_code": "agents.provider_unavailable"}
 
@@ -786,324 +735,227 @@ def _mock_client_factory(
     return factory
 
 
-async def test_send_chat_anthropic_api_key_mode(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, httpx.Request] = {}
+def _credential(
+    provider: str,
+    *,
+    auth_mode: str = "api_key",
+    secret: str | None = "test-secret",
+    base_url: str | None = None,
+    reasoning_effort: str | None = None,
+) -> ResolvedCredential:
+    return ResolvedCredential(
+        provider=provider,
+        auth_mode=auth_mode,
+        secret=secret,
+        base_url=base_url,
+        model="claude-sonnet-5" if provider == "anthropic" else "gpt-5.6-luna",
+        account_id="acct_1" if auth_mode == "oauth" else None,
+        account_label="ChatGPT subscription" if auth_mode == "oauth" else None,
+        source="user",
+        reasoning_effort=reasoning_effort,
+    )
 
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
-        return httpx.Response(200, json={"content": [{"type": "text", "text": "hello"}]})
+
+async def test_stream_turn_anthropic_text(monkeypatch: pytest.MonkeyPatch) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b"event: content_block_delta\n"
+            b'data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"He"}}\n\n'
+            b"event: content_block_delta\n"
+            b'data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"llo"}}\n\n'
+            b"event: message_delta\n"
+            b'data: {"type":"message_delta","delta":{"stop_reason":"end_turn"}}\n\n'
+            b"event: message_stop\n"
+            b'data: {"type":"message_stop"}\n\n'
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
 
     monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="anthropic",
-        auth_mode="api_key",
-        secret="sk-x",
-        base_url=None,
-        model="claude-sonnet-5",
-        account_id=None,
-        account_label=None,
-        source="env",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "hello"
-    assert captured["request"].headers["x-api-key"] == "sk-x"
-    assert "anthropic-beta" not in captured["request"].headers
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("anthropic"), "sys", [Turn(role="user", text="hi")], []
+        )
+    ]
+    assert events == [TextDelta("He"), TextDelta("llo"), TurnEnd("end_turn")]
 
 
-async def test_send_chat_anthropic_oauth_mode_includes_system_prompt(
+async def test_stream_turn_anthropic_tool_use(monkeypatch: pytest.MonkeyPatch) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b"event: content_block_start\n"
+            b'data: {"type":"content_block_start","index":0,'
+            b'"content_block":{"type":"tool_use","id":"call-1","name":"lookup"}}\n\n'
+            b"event: content_block_delta\n"
+            b'data: {"type":"content_block_delta","index":0,'
+            b'"delta":{"type":"input_json_delta",'
+            b'"partial_json":"{\\"city\\":\\"S"}}\n\n'
+            b"event: content_block_delta\n"
+            b'data: {"type":"content_block_delta","index":0,'
+            b'"delta":{"type":"input_json_delta",'
+            b'"partial_json":"eattle\\"}"}}\n\n'
+            b"event: content_block_stop\n"
+            b'data: {"type":"content_block_stop","index":0}\n\n'
+            b"event: message_delta\n"
+            b'data: {"type":"message_delta","delta":{"stop_reason":"tool_use"}}\n\n'
+            b"event: message_stop\n"
+            b'data: {"type":"message_stop"}\n\n'
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("anthropic"), "sys", [Turn(role="user", text="hi")], []
+        )
+    ]
+    assert events == [ToolCall("call-1", "lookup", {"city": "Seattle"}), TurnEnd("tool_use")]
+
+
+async def test_stream_turn_anthropic_request_shape_and_oauth_system(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     captured: dict[str, httpx.Request] = {}
 
     def handler(request: httpx.Request) -> httpx.Response:
         captured["request"] = request
-        return httpx.Response(200, json={"content": [{"type": "text", "text": "hi there"}]})
+        body = b'event: message_stop\ndata: {"type":"message_stop"}\n\n'
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
 
     monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    credential = _credential("anthropic", auth_mode="oauth", reasoning_effort="medium")
+    [event async for event in chat_module.stream_turn(credential, "sys", [], [])]
 
-    credential = ResolvedCredential(
-        provider="anthropic",
-        auth_mode="oauth",
-        secret="oauth-token",
-        base_url=None,
-        model="claude-sonnet-5",
-        account_id=None,
-        account_label=None,
-        source="user",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "hi there"
-    request = captured["request"]
-    assert request.headers["authorization"] == "Bearer oauth-token"
-    assert request.headers["anthropic-beta"] == "oauth-2025-04-20"
     import json as _json
 
+    request = captured["request"]
     body = _json.loads(request.content)
-    assert body["system"] == [{"type": "text", "text": chat_module._ANTHROPIC_OAUTH_SYSTEM_PREFIX}]
+    assert body["thinking"] == {"type": "adaptive"}
+    assert "budget_tokens" not in _json.dumps(body)
+    assert body["output_config"] == {"effort": "medium"}
+    assert body["max_tokens"] == 16000
+    assert body["stream"] is True
+    assert body["system"] == [
+        {"type": "text", "text": chat_module._ANTHROPIC_OAUTH_SYSTEM_PREFIX},
+        {"type": "text", "text": "sys"},
+    ]
+    assert request.headers["authorization"] == "Bearer test-secret"
+    assert request.headers["anthropic-beta"] == "oauth-2025-04-20"
 
 
-async def test_send_chat_ollama_uses_base_url_and_no_auth(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, httpx.Request] = {}
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
-        return httpx.Response(200, json={"choices": [{"message": {"content": "pong"}}]})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="ollama",
-        auth_mode="none",
-        secret=None,
-        base_url="http://ollama:11434",
-        model="llama3.1",
-        account_id=None,
-        account_label=None,
-        source="env",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "pong"
-    request = captured["request"]
-    assert str(request.url) == "http://ollama:11434/v1/chat/completions"
-    assert "authorization" not in request.headers
-
-
-async def test_send_chat_openai_api_key_mode(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, httpx.Request] = {}
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
-        return httpx.Response(200, json={"choices": [{"message": {"content": "hey"}}]})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="openai",
-        auth_mode="api_key",
-        secret="sk-y",
-        base_url=None,
-        model="gpt-5.1",
-        account_id=None,
-        account_label=None,
-        source="env",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "hey"
-    request = captured["request"]
-    assert request.headers["authorization"] == "Bearer sk-y"
-    assert str(request.url) == "https://api.openai.com/v1/chat/completions"
-
-
-async def test_send_chat_openai_oauth_mode_streams_sse(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, httpx.Request] = {}
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
+async def test_stream_turn_codex_text(monkeypatch: pytest.MonkeyPatch) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
         body = (
-            b'data: {"type":"response.output_text.delta","delta":"Hel"}\n\n'
-            b'data: {"type":"response.output_text.delta","delta":"lo"}\n\n'
-            b"data: [DONE]\n\n"
+            b'data: {"type":"response.output_text.delta","delta":"He"}\n\n'
+            b'data: {"type":"response.output_text.delta","delta":"llo"}\n\n'
+            b'data: {"type":"response.completed"}\n\n'
         )
         return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
 
     monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="openai",
-        auth_mode="oauth",
-        secret="codex-token",
-        base_url=None,
-        model="gpt-5.6-luna",
-        account_id="acct_1",
-        account_label="ChatGPT subscription",
-        source="user",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "Hello"
-    assert captured["request"].headers["chatgpt-account-id"] == "acct_1"
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("openai", auth_mode="oauth"), "sys", [Turn(role="user", text="hi")], []
+        )
+    ]
+    assert events == [TextDelta("He"), TextDelta("llo"), TurnEnd("end_turn")]
 
 
-async def test_send_chat_wraps_http_errors_as_bad_gateway(monkeypatch: pytest.MonkeyPatch) -> None:
+async def test_stream_turn_codex_tool_call(monkeypatch: pytest.MonkeyPatch) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b'data: {"type":"response.output_item.done","item":'
+            b'{"type":"function_call","call_id":"call-2","name":"lookup",'
+            b'"arguments":"{\\"city\\":\\"Seattle\\"}"}}\n\n'
+            b'data: {"type":"response.completed"}\n\n'
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("openai", auth_mode="oauth"), "sys", [Turn(role="user", text="hi")], []
+        )
+    ]
+    assert events == [ToolCall("call-2", "lookup", {"city": "Seattle"}), TurnEnd("tool_use")]
+
+
+async def test_stream_turn_codex_malformed_sse_is_bad_gateway(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=b"data: {not valid json\n\n", headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    with pytest.raises(BadGatewayError) as exc_info:
+        [
+            event
+            async for event in chat_module.stream_turn(
+                _credential("openai", auth_mode="oauth"), "sys", [Turn(role="user", text="hi")], []
+            )
+        ]
+    assert exc_info.value.code == "agents.provider_unavailable"
+
+
+async def test_stream_turn_ollama_text_and_end(monkeypatch: pytest.MonkeyPatch) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b'data: {"choices":[{"delta":{"content":"Hel"},"finish_reason":null}]}\n\n'
+            b'data: {"choices":[{"delta":{"content":"lo"},"finish_reason":"stop"}]}\n\n'
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("ollama", secret=None, base_url="http://ollama:11434"),
+            "sys",
+            [Turn(role="user", text="hi")],
+            [],
+        )
+    ]
+    assert events == [TextDelta("Hel"), TextDelta("lo"), TurnEnd("end_turn")]
+
+
+async def test_stream_turn_ollama_tool_call(monkeypatch: pytest.MonkeyPatch) -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        body = (
+            b'data: {"choices":[{"delta":{"tool_calls":[{"index":0,'
+            b'"id":"call-3","function":{"name":"lookup",'
+            b'"arguments":"{\\"city\\":\\"Seattle\\"}"}}]},'
+            b'"finish_reason":"tool_calls"}]}\n\n'
+        )
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("ollama", secret=None, base_url="http://ollama:11434"),
+            "sys",
+            [Turn(role="user", text="hi")],
+            [],
+        )
+    ]
+    assert events == [ToolCall("call-3", "lookup", {"city": "Seattle"}), TurnEnd("tool_use")]
+
+
+async def test_stream_turn_500_is_bad_gateway(monkeypatch: pytest.MonkeyPatch) -> None:
     def handler(_request: httpx.Request) -> httpx.Response:
         return httpx.Response(500, json={"error": "boom"})
 
     monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="anthropic",
-        auth_mode="api_key",
-        secret="sk-x",
-        base_url=None,
-        model="claude-sonnet-5",
-        account_id=None,
-        account_label=None,
-        source="env",
-    )
     with pytest.raises(BadGatewayError) as exc_info:
-        await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
+        [
+            event
+            async for event in chat_module.stream_turn(
+                _credential("anthropic"), "sys", [Turn(role="user", text="hi")], []
+            )
+        ]
     assert exc_info.value.code == "agents.provider_unavailable"
-
-
-async def test_send_chat_openai_oauth_sends_codex_request_shape(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """The Codex subscription endpoint (backend-api.../codex/responses)
-    rejects requests missing these fields - this is what PR #19 shipped
-    without, which is why every chat after linking a ChatGPT subscription
-    came back as agents.provider_unavailable."""
-    import json as _json
-
-    captured: dict[str, httpx.Request] = {}
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
-        body = b'data: {"type":"response.output_text.delta","delta":"Hel"}\n\n'
-        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="openai",
-        auth_mode="oauth",
-        secret="codex-token",
-        base_url=None,
-        model="gpt-5.6-luna",
-        account_id="acct_1",
-        account_label="ChatGPT subscription",
-        source="user",
-        reasoning_effort="high",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "Hel"
-
-    request = captured["request"]
-    assert request.headers["originator"] == "codex_cli_rs"
-    body = _json.loads(request.content)
-    assert body["store"] is False
-    assert body["reasoning"] == {"effort": "high", "summary": "auto"}
-    assert body["input"] == [
-        {
-            "type": "message",
-            "role": "user",
-            "content": [{"type": "input_text", "text": "hi"}],
-        }
-    ]
-
-
-async def test_send_chat_openai_oauth_ignores_non_output_text_events(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """Only response.output_text.delta events are the answer - a reasoning
-    summary delta (or any other event carrying a top-level "delta" string)
-    must not leak into the reply."""
-
-    def handler(_request: httpx.Request) -> httpx.Response:
-        body = (
-            b'data: {"type":"response.reasoning_summary_text.delta","delta":"thinking..."}\n\n'
-            b'data: {"type":"response.output_text.delta","delta":"answer"}\n\n'
-            b"data: [DONE]\n\n"
-        )
-        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="openai",
-        auth_mode="oauth",
-        secret="codex-token",
-        base_url=None,
-        model="gpt-5.6-luna",
-        account_id=None,
-        account_label=None,
-        source="user",
-    )
-    reply = await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert reply == "answer"
-
-
-async def test_send_chat_openai_oauth_malformed_sse_line_is_bad_gateway_not_500(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """A json.loads failure on a malformed SSE data line is a ValueError,
-    which used to escape send_chat's except clause entirely and surface as
-    an unhandled 500 instead of agents.provider_unavailable."""
-
-    def handler(_request: httpx.Request) -> httpx.Response:
-        body = b"data: {not valid json\n\n"
-        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="openai",
-        auth_mode="oauth",
-        secret="codex-token",
-        base_url=None,
-        model="gpt-5.6-luna",
-        account_id=None,
-        account_label=None,
-        source="user",
-    )
-    with pytest.raises(BadGatewayError) as exc_info:
-        await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    assert exc_info.value.code == "agents.provider_unavailable"
-
-
-async def test_send_chat_anthropic_reasoning_effort_sets_thinking_budget(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    import json as _json
-
-    captured: dict[str, httpx.Request] = {}
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
-        return httpx.Response(200, json={"content": [{"type": "text", "text": "hi"}]})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="anthropic",
-        auth_mode="api_key",
-        secret="sk-x",
-        base_url=None,
-        model="claude-sonnet-5",
-        account_id=None,
-        account_label=None,
-        source="user",
-        reasoning_effort="medium",
-    )
-    await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    body = _json.loads(captured["request"].content)
-    assert body["thinking"] == {"type": "enabled", "budget_tokens": 4096}
-    assert body["max_tokens"] > 4096
-
-
-async def test_send_chat_anthropic_without_effort_omits_thinking(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    import json as _json
-
-    captured: dict[str, httpx.Request] = {}
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured["request"] = request
-        return httpx.Response(200, json={"content": [{"type": "text", "text": "hi"}]})
-
-    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
-
-    credential = ResolvedCredential(
-        provider="anthropic",
-        auth_mode="api_key",
-        secret="sk-x",
-        base_url=None,
-        model="claude-sonnet-5",
-        account_id=None,
-        account_label=None,
-        source="env",
-    )
-    await chat_module.send_chat(credential, [{"role": "user", "content": "hi"}])
-    body = _json.loads(captured["request"].content)
-    assert "thinking" not in body
-    assert body["max_tokens"] == 1024

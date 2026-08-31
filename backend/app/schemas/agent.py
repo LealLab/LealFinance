@@ -7,7 +7,6 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
-ChatRole = Literal["user", "assistant"]
 ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
 
 
@@ -50,22 +49,6 @@ class OAuthCompleteCreate(BaseModel):
 class ProviderTestRead(BaseModel):
     ok: bool
     error_code: str | None = None
-
-
-class ChatMessageInput(BaseModel):
-    role: ChatRole
-    content: str = Field(min_length=1, max_length=8000)
-
-
-class ChatCreate(BaseModel):
-    provider: ProviderId | None = None
-    messages: list[ChatMessageInput] = Field(min_length=1, max_length=50)
-
-
-class ChatRead(BaseModel):
-    provider: ProviderId
-    model: str
-    reply: str
 
 
 class McpTokenRead(BaseModel):

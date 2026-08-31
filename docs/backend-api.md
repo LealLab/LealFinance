@@ -205,7 +205,6 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/providers/{provider}/oauth/start` | admin | → `{authorize_url, verifier, state}`. |
 | POST | `/agents/providers/{provider}/oauth/complete` | admin | Body `{verifier, state, code}`. |
 | POST | `/agents/providers/{provider}/test` | admin | → `{ok, error_code?}`. |
-| POST | `/agents/chat` | admin | Body `{provider?, messages}`. Non-streaming. |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
 | GET/PATCH | `/investments/wallets/{id}` | user | |
 | POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |
