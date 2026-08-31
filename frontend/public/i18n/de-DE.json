@@ -249,7 +249,9 @@
         "configureLanguage": "Sprache konfigurieren",
         "configureCurrency": "Anzeigewährung konfigurieren",
         "toggleTheme": "Design wechseln",
-        "toggleBalances": "Kontostände ein- oder ausblenden"
+        "toggleBalances": "Kontostände ein- oder ausblenden",
+        "configureTwoFactor": "Zwei-Faktor-Authentifizierung konfigurieren",
+        "configureTwoFactorHint": "2FA, Authenticator-App, Backup-Codes, Kontowiederherstellung"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Bearbeiten",
       "delete": "Löschen",
       "import": "CSV importieren",
-    "columns": "Spalten",
-    "exportCsv": "CSV exportieren"
+      "columns": "Spalten",
+      "exportCsv": "CSV exportieren"
     },
     "tabs": {
       "transactions": "Transaktionen",
@@ -432,18 +434,18 @@
       "to": "Bis",
       "institution": "Institut",
       "clear": "Filter löschen",
-    "title": "Filtern nach",
-    "searchPlaceholder": "Transaktionen suchen…",
-    "group": "Gruppieren",
-    "date": "Datum",
-    "amount": "Betrag",
-    "amountMin": "Minimum",
-    "amountMax": "Maximum",
-    "any": "Beliebig",
-    "back": "Zurück",
-    "dateRange": "Von {{from}} bis {{to}}",
-    "amountRange": "Von {{min}} bis {{max}}",
-    "removeChip": "Filter {{filter}} entfernen"
+      "title": "Filtern nach",
+      "searchPlaceholder": "Transaktionen suchen…",
+      "group": "Gruppieren",
+      "date": "Datum",
+      "amount": "Betrag",
+      "amountMin": "Minimum",
+      "amountMax": "Maximum",
+      "any": "Beliebig",
+      "back": "Zurück",
+      "dateRange": "Von {{from}} bis {{to}}",
+      "amountRange": "Von {{min}} bis {{max}}",
+      "removeChip": "Filter {{filter}} entfernen"
     },
     "empty": {
       "title": "Keine Transaktionen gefunden",
@@ -568,60 +570,60 @@
         "confirm": "Geprüfte Zeilen importieren"
       }
     },
-  "eyebrow": "Finanzen",
-  "view": {
-    "list": "Liste",
-    "calendar": "Kalender"
-  },
-  "columns": {
-    "title": "Spalten",
-    "date": "Datum",
-    "description": "Beschreibung",
-    "category": "Kategorie",
-    "account": "Konto",
-    "amount": "Betrag",
-    "reorder": "Zum Neuanordnen ziehen",
-    "resize": "Zum Ändern der Größe ziehen"
-  },
-  "table": {
-    "selectAll": "Alle Zeilen auswählen",
-    "selectRow": "{{description}} auswählen"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} von {{total}}",
-    "pageSize": "Zeilen pro Seite",
-    "previous": "Vorherige Seite",
-    "next": "Nächste Seite",
-    "goToPage": "Zu Seite {{page}}"
-  },
-  "bulk": {
-    "selected": "ausgewählt",
-    "assignCategory": "Kategorie auswählen…",
-    "mixedKinds": "Wähle Transaktionen derselben Art aus, um eine Kategorie zuzuweisen",
-    "delete": "Ausgewählte löschen",
-    "clearSelection": "Auswahl aufheben",
-    "deleteConfirm": {
-      "title": "Transaktionen löschen",
-      "message": "Dies kann nicht rückgängig gemacht werden. {{count}} Transaktionen löschen?"
+    "eyebrow": "Finanzen",
+    "view": {
+      "list": "Liste",
+      "calendar": "Kalender"
+    },
+    "columns": {
+      "title": "Spalten",
+      "date": "Datum",
+      "description": "Beschreibung",
+      "category": "Kategorie",
+      "account": "Konto",
+      "amount": "Betrag",
+      "reorder": "Zum Neuanordnen ziehen",
+      "resize": "Zum Ändern der Größe ziehen"
+    },
+    "table": {
+      "selectAll": "Alle Zeilen auswählen",
+      "selectRow": "{{description}} auswählen"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} von {{total}}",
+      "pageSize": "Zeilen pro Seite",
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite",
+      "goToPage": "Zu Seite {{page}}"
+    },
+    "bulk": {
+      "selected": "ausgewählt",
+      "assignCategory": "Kategorie auswählen…",
+      "mixedKinds": "Wähle Transaktionen derselben Art aus, um eine Kategorie zuzuweisen",
+      "delete": "Ausgewählte löschen",
+      "clearSelection": "Auswahl aufheben",
+      "deleteConfirm": {
+        "title": "Transaktionen löschen",
+        "message": "Dies kann nicht rückgängig gemacht werden. {{count}} Transaktionen löschen?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Vorheriger Monat",
+      "nextMonth": "Nächster Monat",
+      "balanceTrend": "Kontostandverlauf",
+      "selectedDay": "Ausgewählter Tag",
+      "selectDayHint": "Wähle einen Tag aus, um seine Aktivitäten zu sehen",
+      "noTransactions": "Keine Transaktionen an diesem Tag",
+      "legend": {
+        "income": "Einnahmen",
+        "expenses": "Ausgaben",
+        "transfer": "Umbuchung",
+        "projected": "Voraussichtlich"
+      }
+    },
+    "export": {
+      "filename": "transaktionen"
     }
-  },
-  "calendar": {
-    "previousMonth": "Vorheriger Monat",
-    "nextMonth": "Nächster Monat",
-    "balanceTrend": "Kontostandverlauf",
-    "selectedDay": "Ausgewählter Tag",
-    "selectDayHint": "Wähle einen Tag aus, um seine Aktivitäten zu sehen",
-    "noTransactions": "Keine Transaktionen an diesem Tag",
-    "legend": {
-      "income": "Einnahmen",
-      "expenses": "Ausgaben",
-      "transfer": "Umbuchung",
-      "projected": "Voraussichtlich"
-    }
-  },
-  "export": {
-    "filename": "transaktionen"
-  }
   },
   "categories": {
     "title": "Kategorien",
@@ -1297,6 +1299,34 @@
       "disabled": "Deaktiviert",
       "enabled": "Aktiviert",
       "manage": "Verwalten"
+    },
+    "twoFactor": {
+      "title": "Zwei-Faktor-Authentifizierung",
+      "description": "Schütze dein Konto mit einem Code aus einer Authenticator-App.",
+      "enabled": "Aktiviert",
+      "enable": "Zwei-Faktor-Authentifizierung aktivieren",
+      "lockoutWarning": "Ohne Zwei-Faktor-Authentifizierung gibt es keine Möglichkeit, dein Konto wiederherzustellen, wenn du dein Passwort vergisst.",
+      "enroll": {
+        "step1": "Scanne diesen Code mit deiner Authenticator-App.",
+        "step2": "Gib den Code ein, den die App anzeigt",
+        "confirm": "Bestätigen und aktivieren",
+        "qrAlt": "QR-Code für deine Authenticator-App",
+        "manualEntry": "Oder gib diesen Schlüssel manuell ein"
+      },
+      "backupCodes": {
+        "title": "Sichere deine Backup-Codes",
+        "warning": "Diese Codes werden nur jetzt angezeigt. Jeder funktioniert einmal, falls du deine Authenticator-App verlierst.",
+        "copy": "Codes kopieren",
+        "copied": "Kopiert",
+        "saved": "Ich habe sie gespeichert",
+        "remaining": "Noch {{count}} Backup-Codes"
+      },
+      "manage": {
+        "codeLabel": "Authentifizierungscode",
+        "codeHint": "Erforderlich, um diese Einstellungen zu ändern.",
+        "regenerate": "Neue Backup-Codes erzeugen",
+        "disable": "Deaktivieren"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "E-Mail-Adresse",
       "password": "Passwort",
       "displayName": "Anzeigename",
-      "invitationToken": "Einladungstoken"
+      "invitationToken": "Einladungstoken",
+      "totpCode": "Authentifizierungscode",
+      "recoveryCode": "Authentifizierungs- oder Backup-Code",
+      "newPassword": "Neues Passwort"
     },
     "login": {
       "title": "Anmelden",
@@ -1323,6 +1356,21 @@
         "title": "Administratorkonto erstellen",
         "description": "Dies ist das erste Konto dieser Instanz – es erhält vollständigen Administratorzugriff."
       }
+    },
+    "totp": {
+      "challengeTitle": "Bestätigung in zwei Schritten",
+      "challengeDescription": "Gib den Code aus deiner Authenticator-App ein.",
+      "codeHint": "Du kannst auch einen deiner Backup-Codes verwenden.",
+      "trustDevice": "Diesem Gerät 30 Tage lang vertrauen"
+    },
+    "recover": {
+      "link": "Anmeldung nicht möglich?",
+      "title": "Konto wiederherstellen",
+      "description": "Lege mit deiner Authenticator-App oder einem Backup-Code ein neues Passwort fest.",
+      "action": "Passwort zurücksetzen",
+      "codeHint": "Ein Code aus deiner Authenticator-App oder einer deiner Backup-Codes.",
+      "doneTitle": "Passwort aktualisiert",
+      "doneDescription": "Du wurdest überall abgemeldet. Melde dich mit dem neuen Passwort an."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "Mindestens ein aktiver Administrator ist erforderlich.",
       "account_inactive": "Dieses Konto ist inaktiv.",
       "admin_required": "Administratorzugriff ist erforderlich.",
-      "peer_admin": "Administratoren können die Rolle oder den Status eines anderen Administrators nicht ändern."
+      "peer_admin": "Administratoren können die Rolle oder den Status eines anderen Administrators nicht ändern.",
+      "totp_required": "Gib den Code aus deiner Authenticator-App ein.",
+      "totp_invalid": "Dieser Code ist ungültig. Versuche es erneut.",
+      "totp_locked": "Zu viele falsche Codes. Versuche es in 15 Minuten erneut."
     },
     "invitation": {
       "not_found": "Die Einladung ist ungültig.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Diese Datei ist kein gültiger LealFinance-Regel-Export."
+    },
+    "totp": {
+      "already_enabled": "Die Zwei-Faktor-Authentifizierung ist bereits aktiviert.",
+      "not_enabled": "Die Zwei-Faktor-Authentifizierung ist nicht aktiviert."
     }
   }
 }

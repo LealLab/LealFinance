@@ -249,7 +249,9 @@
         "configureLanguage": "Taal instellen",
         "configureCurrency": "Weergavevaluta instellen",
         "toggleTheme": "Thema wisselen",
-        "toggleBalances": "Saldi tonen of verbergen"
+        "toggleBalances": "Saldi tonen of verbergen",
+        "configureTwoFactor": "Tweefactorauthenticatie instellen",
+        "configureTwoFactorHint": "2FA, authenticator-app, back-upcodes, accountherstel"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Bewerken",
       "delete": "Verwijderen",
       "import": "CSV importeren",
-    "columns": "Kolommen",
-    "exportCsv": "CSV exporteren"
+      "columns": "Kolommen",
+      "exportCsv": "CSV exporteren"
     },
     "tabs": {
       "transactions": "Transacties",
@@ -432,18 +434,18 @@
       "to": "Tot en met",
       "institution": "Instelling",
       "clear": "Filters wissen",
-    "title": "Filteren op",
-    "searchPlaceholder": "Transacties zoeken…",
-    "group": "Groeperen",
-    "date": "Datum",
-    "amount": "Bedrag",
-    "amountMin": "Minimum",
-    "amountMax": "Maximum",
-    "any": "Elke",
-    "back": "Terug",
-    "dateRange": "Van {{from}} t/m {{to}}",
-    "amountRange": "Van {{min}} t/m {{max}}",
-    "removeChip": "Filter {{filter}} verwijderen"
+      "title": "Filteren op",
+      "searchPlaceholder": "Transacties zoeken…",
+      "group": "Groeperen",
+      "date": "Datum",
+      "amount": "Bedrag",
+      "amountMin": "Minimum",
+      "amountMax": "Maximum",
+      "any": "Elke",
+      "back": "Terug",
+      "dateRange": "Van {{from}} t/m {{to}}",
+      "amountRange": "Van {{min}} t/m {{max}}",
+      "removeChip": "Filter {{filter}} verwijderen"
     },
     "empty": {
       "title": "Geen transacties gevonden",
@@ -568,60 +570,60 @@
         "confirm": "Gecontroleerde regels importeren"
       }
     },
-  "eyebrow": "Financiën",
-  "view": {
-    "list": "Lijst",
-    "calendar": "Kalender"
-  },
-  "columns": {
-    "title": "Kolommen",
-    "date": "Datum",
-    "description": "Omschrijving",
-    "category": "Categorie",
-    "account": "Rekening",
-    "amount": "Bedrag",
-    "reorder": "Slepen om te herschikken",
-    "resize": "Slepen om formaat te wijzigen"
-  },
-  "table": {
-    "selectAll": "Alle rijen selecteren",
-    "selectRow": "{{description}} selecteren"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} van {{total}}",
-    "pageSize": "Rijen per pagina",
-    "previous": "Vorige pagina",
-    "next": "Volgende pagina",
-    "goToPage": "Ga naar pagina {{page}}"
-  },
-  "bulk": {
-    "selected": "geselecteerd",
-    "assignCategory": "Categorie selecteren…",
-    "mixedKinds": "Selecteer transacties van één soort om een categorie toe te wijzen",
-    "delete": "Geselecteerde verwijderen",
-    "clearSelection": "Selectie wissen",
-    "deleteConfirm": {
-      "title": "Transacties verwijderen",
-      "message": "Dit kan niet ongedaan worden gemaakt. {{count}} transacties verwijderen?"
+    "eyebrow": "Financiën",
+    "view": {
+      "list": "Lijst",
+      "calendar": "Kalender"
+    },
+    "columns": {
+      "title": "Kolommen",
+      "date": "Datum",
+      "description": "Omschrijving",
+      "category": "Categorie",
+      "account": "Rekening",
+      "amount": "Bedrag",
+      "reorder": "Slepen om te herschikken",
+      "resize": "Slepen om formaat te wijzigen"
+    },
+    "table": {
+      "selectAll": "Alle rijen selecteren",
+      "selectRow": "{{description}} selecteren"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} van {{total}}",
+      "pageSize": "Rijen per pagina",
+      "previous": "Vorige pagina",
+      "next": "Volgende pagina",
+      "goToPage": "Ga naar pagina {{page}}"
+    },
+    "bulk": {
+      "selected": "geselecteerd",
+      "assignCategory": "Categorie selecteren…",
+      "mixedKinds": "Selecteer transacties van één soort om een categorie toe te wijzen",
+      "delete": "Geselecteerde verwijderen",
+      "clearSelection": "Selectie wissen",
+      "deleteConfirm": {
+        "title": "Transacties verwijderen",
+        "message": "Dit kan niet ongedaan worden gemaakt. {{count}} transacties verwijderen?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Vorige maand",
+      "nextMonth": "Volgende maand",
+      "balanceTrend": "Saldoverloop",
+      "selectedDay": "Geselecteerde dag",
+      "selectDayHint": "Selecteer een dag om de activiteit te bekijken",
+      "noTransactions": "Geen transacties op deze dag",
+      "legend": {
+        "income": "Inkomsten",
+        "expenses": "Uitgaven",
+        "transfer": "Overboeking",
+        "projected": "Verwacht"
+      }
+    },
+    "export": {
+      "filename": "transacties"
     }
-  },
-  "calendar": {
-    "previousMonth": "Vorige maand",
-    "nextMonth": "Volgende maand",
-    "balanceTrend": "Saldoverloop",
-    "selectedDay": "Geselecteerde dag",
-    "selectDayHint": "Selecteer een dag om de activiteit te bekijken",
-    "noTransactions": "Geen transacties op deze dag",
-    "legend": {
-      "income": "Inkomsten",
-      "expenses": "Uitgaven",
-      "transfer": "Overboeking",
-      "projected": "Verwacht"
-    }
-  },
-  "export": {
-    "filename": "transacties"
-  }
   },
   "categories": {
     "title": "Categorieën",
@@ -1297,6 +1299,34 @@
       "disabled": "Uitgeschakeld",
       "enabled": "Ingeschakeld",
       "manage": "Beheren"
+    },
+    "twoFactor": {
+      "title": "Tweefactorauthenticatie",
+      "description": "Beveilig je account met een code uit een authenticator-app.",
+      "enabled": "Ingeschakeld",
+      "enable": "Tweefactorauthenticatie inschakelen",
+      "lockoutWarning": "Zonder tweefactorauthenticatie is er geen manier om je account te herstellen als je je wachtwoord vergeet.",
+      "enroll": {
+        "step1": "Scan deze code met je authenticator-app.",
+        "step2": "Voer de code in die de app toont",
+        "confirm": "Bevestigen en inschakelen",
+        "qrAlt": "QR-code voor je authenticator-app",
+        "manualEntry": "Of voer deze sleutel handmatig in"
+      },
+      "backupCodes": {
+        "title": "Bewaar je back-upcodes",
+        "warning": "Deze codes worden alleen nu getoond. Elke code werkt één keer als je je authenticator-app kwijtraakt.",
+        "copy": "Codes kopiëren",
+        "copied": "Gekopieerd",
+        "saved": "Ik heb ze bewaard",
+        "remaining": "Nog {{count}} back-upcodes"
+      },
+      "manage": {
+        "codeLabel": "Verificatiecode",
+        "codeHint": "Vereist om deze instellingen te wijzigen.",
+        "regenerate": "Nieuwe back-upcodes genereren",
+        "disable": "Uitschakelen"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "E-mailadres",
       "password": "Wachtwoord",
       "displayName": "Weergavenaam",
-      "invitationToken": "Uitnodigingstoken"
+      "invitationToken": "Uitnodigingstoken",
+      "totpCode": "Verificatiecode",
+      "recoveryCode": "Verificatie- of back-upcode",
+      "newPassword": "Nieuw wachtwoord"
     },
     "login": {
       "title": "Inloggen",
@@ -1323,6 +1356,21 @@
         "title": "Beheerdersaccount aanmaken",
         "description": "Dit is het eerste account op deze instantie en krijgt volledige beheerdersrechten."
       }
+    },
+    "totp": {
+      "challengeTitle": "Verificatie in twee stappen",
+      "challengeDescription": "Voer de code uit je authenticator-app in.",
+      "codeHint": "Je kunt ook een van je back-upcodes gebruiken.",
+      "trustDevice": "Dit apparaat 30 dagen vertrouwen"
+    },
+    "recover": {
+      "link": "Kun je niet inloggen?",
+      "title": "Je account herstellen",
+      "description": "Stel een nieuw wachtwoord in met je authenticator-app of een back-upcode.",
+      "action": "Wachtwoord opnieuw instellen",
+      "codeHint": "Een code uit je authenticator-app of een van je back-upcodes.",
+      "doneTitle": "Wachtwoord bijgewerkt",
+      "doneDescription": "Je bent overal afgemeld. Log in met je nieuwe wachtwoord."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "Er moet ten minste één actieve beheerder zijn.",
       "account_inactive": "Dit account is inactief.",
       "admin_required": "Beheerdersrechten zijn vereist.",
-      "peer_admin": "Beheerders kunnen de rol of status van een andere beheerder niet wijzigen."
+      "peer_admin": "Beheerders kunnen de rol of status van een andere beheerder niet wijzigen.",
+      "totp_required": "Voer de code uit je authenticator-app in.",
+      "totp_invalid": "Die code is niet geldig. Probeer het opnieuw.",
+      "totp_locked": "Te veel onjuiste codes. Probeer het over 15 minuten opnieuw."
     },
     "invitation": {
       "not_found": "De uitnodiging is ongeldig.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Dit bestand is geen geldige export van LealFinance-regels."
+    },
+    "totp": {
+      "already_enabled": "Tweefactorauthenticatie is al ingeschakeld.",
+      "not_enabled": "Tweefactorauthenticatie is niet ingeschakeld."
     }
   }
 }

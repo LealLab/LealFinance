@@ -47,6 +47,18 @@ export interface PublicSettings {
   agentsEnabled: boolean;
 }
 
+export interface TotpStatus {
+  enabled: boolean;
+  backupCodesRemaining: number;
+}
+
+export interface TotpSetup {
+  /** Base32, for users typing the secret in rather than scanning. */
+  secret: string;
+  /** The otpauth:// URI the enrollment QR code encodes. */
+  otpauthUri: string;
+}
+
 export interface UpdateStatus {
   currentVersion: string;
   latestVersion?: string;

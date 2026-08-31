@@ -24,6 +24,7 @@ from app.models.investment import (
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
 from app.models.recurring import RecurringRule
+from app.models.totp import TotpBackupCode, TrustedDevice
 from app.models.transaction import Transaction
 from app.models.user import Invitation, Session, User
 
@@ -50,6 +51,8 @@ __all__ = [
     "ManualRate",
     "RecurringRule",
     "Session",
+    "TotpBackupCode",
     "Transaction",
+    "TrustedDevice",
     "User",
 ]

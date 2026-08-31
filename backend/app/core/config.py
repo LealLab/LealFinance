@@ -45,6 +45,10 @@ class Settings(BaseSettings):
     # --- Auth / sessions ---
     session_ttl_days: int = 30
     invitation_ttl_days: int = 7
+    # How long a browser stays exempt from the TOTP challenge after the user
+    # ticks "trust this device". Trust is opt-in per login, so this only ever
+    # applies to devices the user deliberately marked.
+    trusted_device_ttl_days: int = 30
 
     # --- AI Agents (optional, off by default) ---
     agents_enabled: bool = False

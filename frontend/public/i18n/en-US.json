@@ -249,7 +249,9 @@
         "configureLanguage": "Configure language",
         "configureCurrency": "Configure display currency",
         "toggleTheme": "Toggle theme",
-        "toggleBalances": "Show or hide balances"
+        "toggleBalances": "Show or hide balances",
+        "configureTwoFactor": "Configure two-factor authentication",
+        "configureTwoFactorHint": "2FA, authenticator app, backup codes, account recovery"
       }
     },
     "update": {
@@ -1297,6 +1299,34 @@
       "disabled": "Disabled",
       "enabled": "Enabled",
       "manage": "Manage"
+    },
+    "twoFactor": {
+      "title": "Two-factor authentication",
+      "description": "Protect your account with a code from an authenticator app.",
+      "enabled": "Enabled",
+      "enable": "Enable two-factor authentication",
+      "lockoutWarning": "Without two-factor authentication there is no way to recover your account if you forget your password.",
+      "enroll": {
+        "step1": "Scan this code with your authenticator app.",
+        "step2": "Enter the code your app shows",
+        "confirm": "Confirm and enable",
+        "qrAlt": "QR code for your authenticator app",
+        "manualEntry": "Or enter this key manually"
+      },
+      "backupCodes": {
+        "title": "Save your backup codes",
+        "warning": "These codes are shown only now. Each one works once if you lose your authenticator app.",
+        "copy": "Copy codes",
+        "copied": "Copied",
+        "saved": "I saved them",
+        "remaining": "{{count}} backup codes left"
+      },
+      "manage": {
+        "codeLabel": "Authentication code",
+        "codeHint": "Required to change these settings.",
+        "regenerate": "Generate new backup codes",
+        "disable": "Disable"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "Email",
       "password": "Password",
       "displayName": "Display name",
-      "invitationToken": "Invitation token"
+      "invitationToken": "Invitation token",
+      "totpCode": "Authentication code",
+      "recoveryCode": "Authentication or backup code",
+      "newPassword": "New password"
     },
     "login": {
       "title": "Sign in",
@@ -1323,6 +1356,21 @@
         "title": "Create the administrator account",
         "description": "This is the first account on this instance - it will have full administrator access."
       }
+    },
+    "totp": {
+      "challengeTitle": "Two-step verification",
+      "challengeDescription": "Enter the code from your authenticator app.",
+      "codeHint": "You can also use one of your backup codes.",
+      "trustDevice": "Trust this device for 30 days"
+    },
+    "recover": {
+      "link": "Can't sign in?",
+      "title": "Recover your account",
+      "description": "Set a new password using your authenticator app or a backup code.",
+      "action": "Reset password",
+      "codeHint": "A code from your authenticator app, or one of your backup codes.",
+      "doneTitle": "Password updated",
+      "doneDescription": "You have been signed out everywhere. Sign in with your new password."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "At least one active administrator is required.",
       "account_inactive": "This account is inactive.",
       "admin_required": "Administrator access is required.",
-      "peer_admin": "Administrators cannot change another administrator's role or status."
+      "peer_admin": "Administrators cannot change another administrator's role or status.",
+      "totp_required": "Enter the code from your authenticator app.",
+      "totp_invalid": "That code is not valid. Try again.",
+      "totp_locked": "Too many incorrect codes. Try again in 15 minutes."
     },
     "invitation": {
       "not_found": "The invitation is invalid.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "This file is not a valid LealFinance rules export."
+    },
+    "totp": {
+      "already_enabled": "Two-factor authentication is already enabled.",
+      "not_enabled": "Two-factor authentication is not enabled."
     }
   }
 }

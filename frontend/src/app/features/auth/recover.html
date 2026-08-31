@@ -1,0 +1,59 @@
+<main *transloco="let t" class="auth-page relative">
+  <div class="absolute end-4 top-4 flex items-center gap-1">
+    <app-language-select compact />
+    <app-theme-toggle />
+  </div>
+  <section class="auth-card">
+    <div class="mb-6 flex items-center gap-2 text-lg font-semibold">
+      <app-logo [size]="30" class="text-accent" />
+      {{ t('app.title') }}
+    </div>
+
+    @if (done()) {
+      <h1 class="text-2xl font-semibold">{{ t('auth.recover.doneTitle') }}</h1>
+      <p class="mt-1 text-sm text-content-muted">{{ t('auth.recover.doneDescription') }}</p>
+      <button appButton class="mt-6 w-full" type="button" (click)="goToLogin()">
+        {{ t('auth.login.action') }}
+      </button>
+    } @else {
+      <h1 class="text-2xl font-semibold">{{ t('auth.recover.title') }}</h1>
+      <p class="mt-1 text-sm text-content-muted">{{ t('auth.recover.description') }}</p>
+
+      <form class="mt-6 flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          <span class="form-label">{{ t('auth.fields.email') }}</span>
+          <input class="form-input" type="email" autocomplete="email" formControlName="email" />
+        </label>
+        <label>
+          <span class="form-label">{{ t('auth.fields.recoveryCode') }}</span>
+          <input
+            class="form-input"
+            type="text"
+            autocomplete="one-time-code"
+            formControlName="code"
+          />
+          <span class="form-hint">{{ t('auth.recover.codeHint') }}</span>
+        </label>
+        <label>
+          <span class="form-label">{{ t('auth.fields.newPassword') }}</span>
+          <input
+            class="form-input"
+            type="password"
+            autocomplete="new-password"
+            formControlName="newPassword"
+          />
+          <span class="form-hint">{{ t('auth.register.passwordHint') }}</span>
+        </label>
+        @if (errorCode(); as code) {
+          <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+        }
+        <button appButton type="submit" [disabled]="form.invalid || submitting()">
+          {{ submitting() ? t('common.actions.saving') : t('auth.recover.action') }}
+        </button>
+      </form>
+      <a class="mt-5 block text-sm text-accent hover:underline" routerLink="/login">
+        {{ t('auth.register.backToLogin') }}
+      </a>
+    }
+  </section>
+</main>

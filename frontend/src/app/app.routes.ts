@@ -12,6 +12,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/register').then((m) => m.Register),
   },
   {
+    // Outside the Shell like login/register: whoever needs this is locked out
+    // by definition, so it cannot sit behind authGuard.
+    path: 'recover',
+    loadComponent: () => import('./features/auth/recover').then((m) => m.Recover),
+  },
+  {
     path: '',
     component: Shell,
     canActivate: [authGuard],

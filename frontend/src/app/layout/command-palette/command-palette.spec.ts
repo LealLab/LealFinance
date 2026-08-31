@@ -34,8 +34,8 @@ describe('CommandPalette', () => {
         CommandPalette,
         TranslocoTestingModule.forRoot({
           langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
+        }),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -47,8 +47,8 @@ describe('CommandPalette', () => {
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: MetadataService, useValue: { settings } },
-        { provide: SessionService, useValue: { user: sessionUser.asReadonly() } }
-      ]
+        { provide: SessionService, useValue: { user: sessionUser.asReadonly() } },
+      ],
     }).compileComponents();
   });
 
@@ -59,7 +59,7 @@ describe('CommandPalette', () => {
       displayName: 'Admin',
       role: 'admin',
       isActive: true,
-      createdAt: ''
+      createdAt: '',
     });
     settings.set({ agentsEnabled: true });
 
@@ -73,7 +73,7 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const labels = Array.from(fixture.nativeElement.querySelectorAll('button')).map((button) =>
-      (button as HTMLButtonElement).textContent?.trim()
+      (button as HTMLButtonElement).textContent?.trim(),
     );
     expect(labels.some((label) => label?.includes('Provedores de IA'))).toBe(true);
   });
@@ -114,7 +114,9 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const buttons = Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[];
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll('button'),
+    ) as HTMLButtonElement[];
     const labels = buttons.map((b) => b.textContent?.trim());
 
     expect(labels.some((label) => label?.includes('Orçamentos'))).toBe(true);
@@ -131,12 +133,18 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    expect((fixture.nativeElement.textContent as string)).toContain('Nenhum resultado encontrado');
+    expect(fixture.nativeElement.textContent as string).toContain('Nenhum resultado encontrado');
   });
 
   it.each([
     ['idioma', 'Configurar idioma', 'settings-language'],
-    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency']
+    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency'],
+    ['dois fatores', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    // Matching runs over label + sublabel, so the synonyms people actually
+    // type reach the same entry.
+    ['2FA', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    ['autenticador', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    ['recuperação', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
   ])('finds the %s setting and navigates to its control', (query, label, fragment) => {
     const fixture = TestBed.createComponent(CommandPalette);
     const router = TestBed.inject(Router);
@@ -150,7 +158,7 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
-      (button as HTMLButtonElement).textContent?.includes(label)
+      (button as HTMLButtonElement).textContent?.includes(label),
     ) as HTMLButtonElement;
     expect(result).toBeTruthy();
 
@@ -171,7 +179,7 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
-      (button as HTMLButtonElement).textContent?.includes('Importar transações')
+      (button as HTMLButtonElement).textContent?.includes('Importar transações'),
     ) as HTMLButtonElement;
     expect(result).toBeTruthy();
 

@@ -249,7 +249,9 @@
         "configureLanguage": "Nastavit jazyk",
         "configureCurrency": "Nastavit měnu zobrazení",
         "toggleTheme": "Přepnout motiv",
-        "toggleBalances": "Zobrazit nebo skrýt zůstatky"
+        "toggleBalances": "Zobrazit nebo skrýt zůstatky",
+        "configureTwoFactor": "Nastavit dvoufaktorové ověření",
+        "configureTwoFactorHint": "2FA, ověřovací aplikace, záložní kódy, obnovení účtu"
       }
     },
     "update": {
@@ -412,8 +414,8 @@
       "edit": "Upravit",
       "delete": "Odstranit",
       "import": "Importovat CSV",
-    "columns": "Sloupce",
-    "exportCsv": "Exportovat CSV"
+      "columns": "Sloupce",
+      "exportCsv": "Exportovat CSV"
     },
     "tabs": {
       "transactions": "Transakce",
@@ -432,18 +434,18 @@
       "to": "Do",
       "institution": "Instituce",
       "clear": "Vymazat filtry",
-    "title": "Filtrovat podle",
-    "searchPlaceholder": "Hledat transakce…",
-    "group": "Seskupit",
-    "date": "Datum",
-    "amount": "Částka",
-    "amountMin": "Minimum",
-    "amountMax": "Maximum",
-    "any": "Libovolné",
-    "back": "Zpět",
-    "dateRange": "Od {{from}} do {{to}}",
-    "amountRange": "Od {{min}} do {{max}}",
-    "removeChip": "Odebrat filtr {{filter}}"
+      "title": "Filtrovat podle",
+      "searchPlaceholder": "Hledat transakce…",
+      "group": "Seskupit",
+      "date": "Datum",
+      "amount": "Částka",
+      "amountMin": "Minimum",
+      "amountMax": "Maximum",
+      "any": "Libovolné",
+      "back": "Zpět",
+      "dateRange": "Od {{from}} do {{to}}",
+      "amountRange": "Od {{min}} do {{max}}",
+      "removeChip": "Odebrat filtr {{filter}}"
     },
     "empty": {
       "title": "Nebyly nalezeny žádné transakce",
@@ -568,60 +570,60 @@
         "confirm": "Importovat zkontrolované řádky"
       }
     },
-  "eyebrow": "Finance",
-  "view": {
-    "list": "Seznam",
-    "calendar": "Kalendář"
-  },
-  "columns": {
-    "title": "Sloupce",
-    "date": "Datum",
-    "description": "Popis",
-    "category": "Kategorie",
-    "account": "Účet",
-    "amount": "Částka",
-    "reorder": "Přetažením změníte pořadí",
-    "resize": "Přetažením změníte velikost"
-  },
-  "table": {
-    "selectAll": "Vybrat všechny řádky",
-    "selectRow": "Vybrat {{description}}"
-  },
-  "pagination": {
-    "showing": "{{from}}–{{to}} z {{total}}",
-    "pageSize": "Řádků na stránku",
-    "previous": "Předchozí stránka",
-    "next": "Další stránka",
-    "goToPage": "Přejít na stránku {{page}}"
-  },
-  "bulk": {
-    "selected": "vybráno",
-    "assignCategory": "Vybrat kategorii…",
-    "mixedKinds": "Pro přiřazení kategorie vyberte transakce pouze jednoho typu",
-    "delete": "Odstranit vybrané",
-    "clearSelection": "Zrušit výběr",
-    "deleteConfirm": {
-      "title": "Odstranit transakce",
-      "message": "Tuto akci nelze vrátit zpět. Odstranit {{count}} transakcí?"
+    "eyebrow": "Finance",
+    "view": {
+      "list": "Seznam",
+      "calendar": "Kalendář"
+    },
+    "columns": {
+      "title": "Sloupce",
+      "date": "Datum",
+      "description": "Popis",
+      "category": "Kategorie",
+      "account": "Účet",
+      "amount": "Částka",
+      "reorder": "Přetažením změníte pořadí",
+      "resize": "Přetažením změníte velikost"
+    },
+    "table": {
+      "selectAll": "Vybrat všechny řádky",
+      "selectRow": "Vybrat {{description}}"
+    },
+    "pagination": {
+      "showing": "{{from}}–{{to}} z {{total}}",
+      "pageSize": "Řádků na stránku",
+      "previous": "Předchozí stránka",
+      "next": "Další stránka",
+      "goToPage": "Přejít na stránku {{page}}"
+    },
+    "bulk": {
+      "selected": "vybráno",
+      "assignCategory": "Vybrat kategorii…",
+      "mixedKinds": "Pro přiřazení kategorie vyberte transakce pouze jednoho typu",
+      "delete": "Odstranit vybrané",
+      "clearSelection": "Zrušit výběr",
+      "deleteConfirm": {
+        "title": "Odstranit transakce",
+        "message": "Tuto akci nelze vrátit zpět. Odstranit {{count}} transakcí?"
+      }
+    },
+    "calendar": {
+      "previousMonth": "Předchozí měsíc",
+      "nextMonth": "Následující měsíc",
+      "balanceTrend": "Vývoj zůstatku",
+      "selectedDay": "Vybraný den",
+      "selectDayHint": "Vyberte den a zobrazte jeho aktivitu",
+      "noTransactions": "Tento den nejsou žádné transakce",
+      "legend": {
+        "income": "Příjmy",
+        "expenses": "Výdaje",
+        "transfer": "Převod",
+        "projected": "Plánované"
+      }
+    },
+    "export": {
+      "filename": "transakce"
     }
-  },
-  "calendar": {
-    "previousMonth": "Předchozí měsíc",
-    "nextMonth": "Následující měsíc",
-    "balanceTrend": "Vývoj zůstatku",
-    "selectedDay": "Vybraný den",
-    "selectDayHint": "Vyberte den a zobrazte jeho aktivitu",
-    "noTransactions": "Tento den nejsou žádné transakce",
-    "legend": {
-      "income": "Příjmy",
-      "expenses": "Výdaje",
-      "transfer": "Převod",
-      "projected": "Plánované"
-    }
-  },
-  "export": {
-    "filename": "transakce"
-  }
   },
   "categories": {
     "title": "Kategorie",
@@ -1297,6 +1299,34 @@
       "disabled": "Vypnuto",
       "enabled": "Zapnuto",
       "manage": "Spravovat"
+    },
+    "twoFactor": {
+      "title": "Dvoufaktorové ověření",
+      "description": "Chraňte svůj účet kódem z ověřovací aplikace.",
+      "enabled": "Zapnuto",
+      "enable": "Zapnout dvoufaktorové ověření",
+      "lockoutWarning": "Bez dvoufaktorového ověření neexistuje způsob, jak účet obnovit, pokud zapomenete heslo.",
+      "enroll": {
+        "step1": "Naskenujte tento kód ověřovací aplikací.",
+        "step2": "Zadejte kód, který aplikace zobrazuje",
+        "confirm": "Potvrdit a zapnout",
+        "qrAlt": "QR kód pro vaši ověřovací aplikaci",
+        "manualEntry": "Nebo zadejte tento klíč ručně"
+      },
+      "backupCodes": {
+        "title": "Uložte si záložní kódy",
+        "warning": "Tyto kódy se zobrazují jen teď. Každý funguje jednou, pokud ztratíte ověřovací aplikaci.",
+        "copy": "Kopírovat kódy",
+        "copied": "Zkopírováno",
+        "saved": "Uložil jsem si je",
+        "remaining": "Zbývá záložních kódů: {{count}}"
+      },
+      "manage": {
+        "codeLabel": "Ověřovací kód",
+        "codeHint": "Vyžadován pro změnu tohoto nastavení.",
+        "regenerate": "Vygenerovat nové záložní kódy",
+        "disable": "Vypnout"
+      }
     }
   },
   "auth": {
@@ -1305,7 +1335,10 @@
       "email": "E-mail",
       "password": "Heslo",
       "displayName": "Zobrazované jméno",
-      "invitationToken": "Token pozvánky"
+      "invitationToken": "Token pozvánky",
+      "totpCode": "Ověřovací kód",
+      "recoveryCode": "Ověřovací nebo záložní kód",
+      "newPassword": "Nové heslo"
     },
     "login": {
       "title": "Přihlášení",
@@ -1323,6 +1356,21 @@
         "title": "Vytvořit účet správce",
         "description": "Toto je první účet v této instanci – bude mít úplný přístup správce."
       }
+    },
+    "totp": {
+      "challengeTitle": "Dvoufázové ověření",
+      "challengeDescription": "Zadejte kód z ověřovací aplikace.",
+      "codeHint": "Můžete použít i jeden ze záložních kódů.",
+      "trustDevice": "Důvěřovat tomuto zařízení po dobu 30 dnů"
+    },
+    "recover": {
+      "link": "Nemůžete se přihlásit?",
+      "title": "Obnovení účtu",
+      "description": "Nastavte nové heslo pomocí ověřovací aplikace nebo záložního kódu.",
+      "action": "Obnovit heslo",
+      "codeHint": "Kód z ověřovací aplikace nebo jeden ze záložních kódů.",
+      "doneTitle": "Heslo bylo změněno",
+      "doneDescription": "Byli jste odhlášeni všude. Přihlaste se novým heslem."
     }
   },
   "admin": {
@@ -1440,7 +1488,10 @@
       "last_admin": "Je vyžadován alespoň jeden aktivní správce.",
       "account_inactive": "Tento účet je neaktivní.",
       "admin_required": "Je vyžadován přístup správce.",
-      "peer_admin": "Administrátoři nemohou měnit roli ani stav jiného administrátora."
+      "peer_admin": "Administrátoři nemohou měnit roli ani stav jiného administrátora.",
+      "totp_required": "Zadejte kód z ověřovací aplikace.",
+      "totp_invalid": "Tento kód není platný. Zkuste to znovu.",
+      "totp_locked": "Příliš mnoho nesprávných kódů. Zkuste to za 15 minut."
     },
     "invitation": {
       "not_found": "Pozvánka není platná.",
@@ -1479,6 +1530,10 @@
     },
     "rule_import": {
       "invalid_format": "Tento soubor není platným exportem pravidel LealFinance."
+    },
+    "totp": {
+      "already_enabled": "Dvoufaktorové ověření je již zapnuto.",
+      "not_enabled": "Dvoufaktorové ověření není zapnuto."
     }
   }
 }
