@@ -6,7 +6,8 @@
         <button appButton variant="secondary" type="button" (click)="respond(false)">
           {{ t('common.actions.cancel') }}
         </button>
-        <button appButton [variant]="confirmVariant()" type="button" (click)="respond(true)">
+        <!-- eslint-disable-next-line @angular-eslint/template/no-autofocus -->
+        <button appButton [variant]="confirmVariant()" type="button" autofocus (click)="respond(true)">
           {{ t('common.actions.confirm') }}
         </button>
       </div>
