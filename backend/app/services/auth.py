@@ -551,6 +551,7 @@ async def update_user(
     role: str | None,
     is_active: bool | None,
     display_name: str | None,
+    ai_chat_enabled: bool | None,
 ) -> User:
     if (role is not None and role != ROLE_ADMIN) or is_active is False:
         # Serialize every transition that could remove an active admin. The
@@ -590,6 +591,8 @@ async def update_user(
         user.is_active = is_active
     if display_name is not None:
         user.display_name = display_name.strip()
+    if ai_chat_enabled is not None:
+        user.ai_chat_enabled = ai_chat_enabled
 
     await db.commit()
     await db.refresh(user)

@@ -191,6 +191,7 @@ async def update_user(user_id: UUID, payload: UserUpdate, admin: AdminUser, db: 
         role=payload.role,
         is_active=payload.is_active,
         display_name=payload.display_name,
+        ai_chat_enabled=payload.ai_chat_enabled,
     )
 
 

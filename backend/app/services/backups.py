@@ -18,7 +18,9 @@ from sqlalchemy.sql.elements import ColumnElement
 from app.core.config import get_settings
 from app.core.errors import AppError, ValidationAppError
 from app.models.account import Account
+from app.models.agent_conversation import AgentConversation
 from app.models.agent_credential import AgentCredential
+from app.models.agent_message import AgentMessage
 from app.models.base import UserOwnedModel
 from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
 from app.models.categorization_rule import CategorizationRule
@@ -81,6 +83,10 @@ BACKUP_TABLES = (
 EXCLUDED_USER_OWNED_MODELS = {
     AgentCredential: "agent_credentials",
     MarketDataCredential: "market_data_credentials",
+    # Chat history is transient and provider-specific, not restorable financial
+    # state; it is never exported or reconstructed.
+    AgentConversation: "agent_conversations",
+    AgentMessage: "agent_messages",
 }
 
 _PREFERENCE_FIELDS = (
