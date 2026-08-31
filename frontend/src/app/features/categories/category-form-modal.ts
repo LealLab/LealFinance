@@ -7,6 +7,8 @@ import { CategoryRepository } from '../../data/category.repository';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Button } from '../../shared/ui/button/button';
+import { ColorPicker } from '../../shared/ui/color-picker/color-picker';
+import { Icon } from '../../shared/ui/icon/icon';
 import { IconPicker } from '../../shared/ui/icon-picker/icon-picker';
 import { Modal } from '../../shared/ui/modal/modal';
 
@@ -16,7 +18,7 @@ const DEFAULT_ICON = 'tag';
 /** Create/edit form for either a CategoryGroup or a Category. */
 @Component({
   selector: 'app-category-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, IconPicker],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ColorPicker, Icon, IconPicker],
   templateUrl: './category-form-modal.html',
   styleUrl: './category-form-modal.scss'
 })
@@ -35,6 +37,8 @@ export class CategoryFormModal {
 
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
+  protected readonly colorPickerOpen = signal(false);
+  protected readonly iconPickerOpen = signal(false);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -50,6 +54,10 @@ export class CategoryFormModal {
 
   protected readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
     initialValue: this.form.controls.icon.value
+  });
+
+  protected readonly selectedColor = toSignal(this.form.controls.color.valueChanges, {
+    initialValue: this.form.controls.color.value
   });
 
   /** True while creating a category via the preset-group shortcut - the kind picker is locked to the group's kind. */
@@ -93,7 +101,7 @@ export class CategoryFormModal {
         name: category?.name ?? group?.name ?? '',
         kind: category?.kind ?? group?.kind ?? preset?.kind ?? 'expense',
         groupId: category?.groupId ?? preset?.id ?? '',
-        color: category?.color ?? group?.color ?? DEFAULT_COLOR,
+        color: category?.color ?? group?.color ?? preset?.color ?? DEFAULT_COLOR,
         icon: category?.icon ?? group?.icon ?? DEFAULT_ICON
       });
       this.saveErrorKey.set(null);

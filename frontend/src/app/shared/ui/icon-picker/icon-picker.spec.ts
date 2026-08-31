@@ -22,20 +22,6 @@ class IconPickerHost {
   }
 }
 
-@Component({
-  selector: 'app-inline-icon-picker-host',
-  imports: [IconPicker],
-  template: `<app-icon-picker [inline]="true" [selected]="selected()" (picked)="onPicked($event)" />`
-})
-class InlineIconPickerHost {
-  readonly selected = signal<IconName>('tag');
-  readonly lastPicked = signal<IconName | undefined>(undefined);
-
-  onPicked(name: IconName): void {
-    this.lastPicked.set(name);
-  }
-}
-
 describe('IconPicker', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -105,17 +91,20 @@ describe('IconPicker', () => {
     expect(fixture.componentInstance.open()).toBe(false);
   });
 
-  it('renders inline without a dialog and still emits picked icons', () => {
-    const fixture = TestBed.createComponent(InlineIconPickerHost);
+  it('clears the search query whenever it opens', () => {
+    const fixture = TestBed.createComponent(IconPickerHost);
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('dialog')).toBeNull();
-    expect(fixture.nativeElement.querySelectorAll('button[aria-pressed]').length).toBe(PICKABLE_ICON_COUNT);
-
-    const button = fixture.nativeElement.querySelector('button[aria-pressed]') as HTMLButtonElement;
-    button.click();
+    const search = fixture.nativeElement.querySelector('input[type="search"]') as HTMLInputElement;
+    search.value = 'wallet';
+    search.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    fixture.componentInstance.open.set(false);
+    fixture.detectChanges();
+    fixture.componentInstance.open.set(true);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.lastPicked()).toBe(ICON_GROUPS.money[0]);
+    expect((fixture.nativeElement.querySelector('input[type="search"]') as HTMLInputElement).value).toBe('');
+    expect(fixture.nativeElement.querySelectorAll('dialog button[aria-pressed]').length).toBe(PICKABLE_ICON_COUNT);
   });
 });

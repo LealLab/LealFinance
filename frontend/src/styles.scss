@@ -2,3 +2,27 @@
 /* Tailwind's own import lives in src/styles/tailwind.css (plain CSS) - see
    that file for why it isn't imported here. Both are registered as global
    styles in angular.json. */
+
+html {
+  scrollbar-color: var(--color-border-strong) var(--color-surface-page);
+  scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--color-surface-page);
+}
+
+html::-webkit-scrollbar-thumb {
+  border: 2px solid var(--color-surface-page);
+  border-radius: 9999px;
+  background-color: var(--color-border-strong);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-content-muted);
+}
