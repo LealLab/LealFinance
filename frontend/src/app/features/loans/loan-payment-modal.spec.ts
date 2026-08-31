@@ -1,13 +1,11 @@
 import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { of } from 'rxjs';
 import { LoanRepository } from '../../data/loan.repository';
 import { Account } from '../../domain/models/account';
 import { Loan } from '../../domain/models/loan';
 import { LoanPaymentModal } from './loan-payment-modal';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 class StubLoanRepository {
   readonly payments: unknown[] = [];
@@ -53,14 +51,11 @@ function setup() {
   TestBed.configureTestingModule({
     imports: [
       LoanPaymentModal,
-      TranslocoTestingModule.forRoot({
-        langs: { 'pt-BR': ptBR },
-        translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-      }),
+      provideTestTransloco(),
     ],
     providers: [
       provideZonelessChangeDetection(),
-      provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+      provideTestTranslocoLocale(),
       { provide: LoanRepository, useValue: repo },
     ],
   });

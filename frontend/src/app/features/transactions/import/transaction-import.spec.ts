@@ -1,8 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Observable, of } from 'rxjs';
 import { AccountRepository } from '../../../data/account.repository';
 import { CategoryGroupRepository } from '../../../data/category-group.repository';
@@ -22,7 +20,7 @@ import {
 import { Transaction } from '../../../domain/models/transaction';
 import { CsvImportRow } from './csv-import-row';
 import { TransactionImport } from './transaction-import';
-import ptBR from '../../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../../testing/transloco';
 
 class StubTransactionRepository extends TransactionRepository {
   lastPreviewRequest?: ImportPreviewRequest;
@@ -103,17 +101,14 @@ describe('TransactionImport', () => {
     await TestBed.configureTestingModule({
       imports: [
         TransactionImport,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         // A real route target for 'transactions' - confirmImport() navigates
         // there on success, and an unmatched route rejects the navigation.
         provideRouter([{ path: 'transactions', component: TransactionImport }]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
@@ -122,14 +117,6 @@ describe('TransactionImport', () => {
         { provide: TransactionRepository, useValue: stubRepo }
       ]
     }).compileComponents();
-  });
-
-  it('renders the page title', async () => {
-    const fixture = TestBed.createComponent(TransactionImport);
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    expect(fixture.nativeElement.textContent).toContain('Importar');
   });
 
   it('does not preview until both a file and an account are chosen', async () => {

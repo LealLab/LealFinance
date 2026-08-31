@@ -1,14 +1,12 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Institution } from '../../domain/models/institution';
 import { EMPTY_FILTERS, TransactionFilters } from './transaction-filters';
 import { TransactionFilterBar } from './transaction-filter-bar';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 const accounts: Account[] = [
   { id: 'acc-1', name: 'Checking', type: 'checking', currency: 'BRL', openingBalance: '0', archived: false },
@@ -55,13 +53,10 @@ describe('TransactionFilterBar', () => {
     TestBed.configureTestingModule({
       imports: [
         FilterHost,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection(),
       ],
     });
@@ -83,11 +78,15 @@ describe('TransactionFilterBar', () => {
     (el.querySelector('[dropdownTrigger]') as HTMLButtonElement).click();
     fixture.detectChanges();
 
-    const accountRow = [...el.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Conta')!;
+    const accountRow = el.querySelector<HTMLButtonElement>(
+      'app-dropdown > div[role="menu"] > button:first-of-type',
+    )!;
     accountRow.click();
     fixture.detectChanges();
 
-    const option = [...el.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Checking')!;
+    const option = el.querySelector<HTMLButtonElement>(
+      'app-dropdown > div[role="menu"] > div > button.filter-option:nth-of-type(2)',
+    )!;
     option.click();
     fixture.detectChanges();
 
@@ -102,9 +101,7 @@ describe('TransactionFilterBar', () => {
     const chips = el.querySelectorAll('.rounded-full');
     expect(chips.length).toBeGreaterThanOrEqual(2);
 
-    const removeAccount = [...el.querySelectorAll('button')].find((b) =>
-      b.getAttribute('aria-label')?.includes('Conta'),
-    )!;
+    const removeAccount = el.querySelector<HTMLButtonElement>('.rounded-full button')!;
     removeAccount.click();
     fixture.detectChanges();
 
@@ -114,7 +111,7 @@ describe('TransactionFilterBar', () => {
 
   it('emits clearAll from the "Clear filters" button', () => {
     const { fixture, el } = setup();
-    const clear = [...el.querySelectorAll('button')].find((b) => b.textContent?.includes('Limpar filtros'))!;
+    const clear = el.querySelector<HTMLButtonElement>('button[variant="ghost"]')!;
     clear.click();
     expect(fixture.componentInstance.cleared).toBe(true);
   });

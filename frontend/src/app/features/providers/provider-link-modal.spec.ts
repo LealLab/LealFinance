@@ -1,12 +1,11 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import { MockAgentProviderRepository } from '../../data/mock/mock-agent-provider.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { AgentProviderStatus } from '../../domain/models/agent-provider';
 import { ProviderLinkModal } from './provider-link-modal';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../../testing/transloco';
 
 const ANTHROPIC_STATUS: AgentProviderStatus = {
   provider: 'anthropic',
@@ -47,10 +46,7 @@ describe('ProviderLinkModal', () => {
     await TestBed.configureTestingModule({
       imports: [
         ProviderLinkModal,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),

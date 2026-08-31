@@ -1,8 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
@@ -11,22 +9,19 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockInvestmentWalletRepository } from '../../data/mock/mock-investment-wallet.repository';
 import { Investments } from './investments';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Investments', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         Investments,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
@@ -41,6 +36,10 @@ describe('Investments', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Carteira Europa');
+    expect(fixture.componentInstance['walletsResource'].value()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'investment-wallet-europe', currency: 'EUR' }),
+      ])
+    );
   });
 });

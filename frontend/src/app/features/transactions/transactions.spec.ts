@@ -1,8 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Observable, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -27,22 +25,19 @@ import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { Page } from '../../core/api-client';
 import { ImportPreview, TransactionRepository } from '../../data/transaction.repository';
 import { Transactions } from './transactions';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Transactions', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         Transactions,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -62,8 +57,7 @@ describe('Transactions', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance).toBeTruthy();
-    expect(fixture.nativeElement.textContent).toContain('Transações');
+    expect(fixture.componentInstance['rows']().length).toBeGreaterThan(0);
   });
 
   it('uses blue for transfers and the neutral color for zero amounts', async () => {
@@ -78,7 +72,7 @@ describe('Transactions', () => {
     );
   });
 
-  it('renders the recurring rules tab without error', async () => {
+  it('switches to the recurring rules tab', async () => {
     const fixture = TestBed.createComponent(Transactions);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -88,7 +82,7 @@ describe('Transactions', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Recorrências');
+    expect(fixture.componentInstance['tab']()).toBe('recurring');
   });
 
   it('creates a new expense transaction end-to-end through the modal', async () => {
@@ -98,9 +92,7 @@ describe('Transactions', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    const newButton = Array.from(el.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Nova transação')
-    );
+    const newButton = el.querySelector<HTMLButtonElement>('app-page-header button[variant="primary"]')!;
     newButton!.click();
     fixture.detectChanges();
 
@@ -133,8 +125,11 @@ describe('Transactions', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(false);
-    expect(el.textContent).toContain('Transação de teste E2E');
-    expect(el.textContent).toContain('42,50');
+    const created = fixture.componentInstance['rows']().find(
+      (row) => row.description === 'Transação de teste E2E',
+    );
+    expect(created?.description).toBe('Transação de teste E2E');
+    expect(created?.amount).toBe('42.50');
   });
 
   it('toggling a sort column flips order and resets to page 1', async () => {
@@ -244,15 +239,12 @@ describe('Transactions - calendar with a cross-currency month', () => {
     await TestBed.configureTestingModule({
       imports: [
         Transactions,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: StubTransactionRepository },
@@ -364,15 +356,12 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
     await TestBed.configureTestingModule({
       imports: [
         Transactions,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: StubTransactionRepository },

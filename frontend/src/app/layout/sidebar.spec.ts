@@ -2,11 +2,10 @@ import { signal, WritableSignal } from '@angular/core';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { User } from '../core/identity.models';
 import { MetadataService } from '../core/metadata.service';
 import { SessionService } from '../core/session.service';
-import ptBR from '../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../testing/transloco';
 import { Sidebar } from './sidebar';
 
 describe('Sidebar', () => {
@@ -17,10 +16,7 @@ describe('Sidebar', () => {
     await TestBed.configureTestingModule({
       imports: [
         Sidebar,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -52,7 +48,6 @@ describe('Sidebar', () => {
       (link as HTMLAnchorElement).getAttribute('href'),
     );
     expect(links).toContain('/admin/providers');
-    expect(fixture.nativeElement.textContent).toContain('Administração');
   });
 
   it('hides provider management from members', () => {

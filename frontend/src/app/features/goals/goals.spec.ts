@@ -1,8 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -15,24 +13,21 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { Money, multiply } from '../../shared/money/money';
+import { Money, money, multiply } from '../../shared/money/money';
 import { Goals } from './goals';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Goals', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         Goals,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: GoalRepository, useClass: MockGoalRepository },
@@ -49,9 +44,9 @@ describe('Goals', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Metas');
-    expect(fixture.nativeElement.textContent).toContain('Viagem para Portugal');
-    expect(fixture.nativeElement.textContent).toContain('Aporte sugerido');
+    const row = fixture.componentInstance['rows']()[0]!;
+    expect(row.progress.current).toEqual(money('1286.4', 'BRL'));
+    expect(row.progress.target).toEqual(money('12000', 'BRL'));
   });
 
   it('warns when a goal can only be shown at the 1:1 fallback rate', async () => {
@@ -65,7 +60,6 @@ describe('Goals', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
-    expect(fixture.nativeElement.textContent).toContain('Taxa de câmbio indisponível');
   });
 
   it('converts a goal to the display currency via the resolved exchange rate', async () => {

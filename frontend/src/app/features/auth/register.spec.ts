@@ -1,13 +1,12 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import { of, throwError } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Register } from './register';
-import enUS from '../../../../public/i18n/en-US.json';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../../testing/transloco';
 
 const CURRENCIES = [
   { code: 'USD', name: 'US Dollar', symbol: '$', decimalDigits: 2, isActive: true },
@@ -27,10 +26,7 @@ describe('Register', () => {
     await TestBed.configureTestingModule({
       imports: [
         Register,
-        TranslocoTestingModule.forRoot({
-          langs: { 'en-US': enUS, 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['en-US', 'pt-BR'], defaultLang: 'en-US' },
-        }),
+        provideTestTransloco(['en-US', 'pt-BR']),
       ],
       providers: [
         provideZonelessChangeDetection(),

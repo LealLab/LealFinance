@@ -1,21 +1,16 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import { App } from './app';
-import ar from '../../public/i18n/ar.json';
-import heIL from '../../public/i18n/he-IL.json';
-import ptBR from '../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../testing/transloco';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         App,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR, ar, 'he-IL': heIL },
-          translocoConfig: { availableLangs: ['pt-BR', 'ar', 'he-IL'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco(['pt-BR', 'ar', 'he-IL'])
       ],
       providers: [provideZonelessChangeDetection(), provideRouter([])]
     }).compileComponents();

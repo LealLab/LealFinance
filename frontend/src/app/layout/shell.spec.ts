@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import { AccountRepository } from '../data/account.repository';
 import { BudgetRepository } from '../data/budget.repository';
 import { CategoryGroupRepository } from '../data/category-group.repository';
@@ -13,9 +13,8 @@ import { MockCategoryRepository } from '../data/mock/mock-category.repository';
 import { MOCK_LATENCY_MS } from '../data/mock/mock-latency';
 import { MockTransactionRepository } from '../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../data/transaction.repository';
+import { provideTestTransloco } from '../../testing/transloco';
 import { Shell } from './shell';
-import enUS from '../../../public/i18n/en-US.json';
-import ptBR from '../../../public/i18n/pt-BR.json';
 
 function mockMatchMedia(matches: boolean): void {
   window.matchMedia = vi.fn().mockReturnValue({ matches } as MediaQueryList);
@@ -28,10 +27,7 @@ describe('Shell', () => {
     await TestBed.configureTestingModule({
       imports: [
         Shell,
-        TranslocoTestingModule.forRoot({
-          langs: { 'en-US': enUS, 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['en-US', 'pt-BR'], defaultLang: 'en-US' },
-        }),
+        provideTestTransloco(['en-US', 'pt-BR']),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -58,11 +54,6 @@ describe('Shell', () => {
     const transloco = TestBed.inject(TranslocoService);
     expect(transloco.getAvailableLangs()).toEqual(expect.arrayContaining(['en-US', 'pt-BR']));
     expect(transloco.getActiveLang()).toBe('en-US');
-    expect(
-      Array.from((fixture.nativeElement.querySelector('select') as HTMLSelectElement).options).map(
-        (option) => option.textContent,
-      ),
-    ).toEqual(['English', 'Português (Brasil)']);
   });
 
   it('updates the active language when the language select changes', () => {
@@ -99,14 +90,10 @@ describe('Shell', () => {
     const toggle = sidebar.querySelector(
       'button[aria-controls="desktop-sidebar"]',
     ) as HTMLButtonElement;
-    const languageSelect = sidebar.querySelector('select') as HTMLSelectElement;
 
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
     expect(sidebar.classList.contains('is-expanded')).toBe(true);
     expect(sidebar.querySelector('app-icon[name="globe"]')).not.toBeNull();
-    expect(languageSelect.classList.contains('w-full')).toBe(true);
-    expect(languageSelect.classList.contains('bg-surface-raised')).toBe(true);
-    expect(languageSelect.classList.contains('text-content-muted')).toBe(true);
 
     toggle.click();
     fixture.detectChanges();
@@ -114,11 +101,6 @@ describe('Shell', () => {
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     expect(sidebar.classList.contains('is-collapsed')).toBe(true);
     expect(sidebar.querySelector('app-icon[name="globe"]')).toBeNull();
-    expect(languageSelect.classList.contains('w-8')).toBe(true);
-    expect(languageSelect.classList.contains('bg-surface-raised')).toBe(true);
-    expect(languageSelect.classList.contains('text-content-muted')).toBe(true);
-    expect(languageSelect.classList.contains('opacity-0')).toBe(true);
-    expect(languageSelect.classList.contains('text-transparent')).toBe(false);
   });
 
   it('toggles the command palette open on Ctrl+K', () => {

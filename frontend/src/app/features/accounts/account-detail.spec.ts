@@ -1,8 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -15,23 +13,21 @@ import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Account } from '../../domain/models/account';
+import { money } from '../../shared/money/money';
 import { AccountDetail } from './account-detail';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('AccountDetail', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         AccountDetail,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -48,8 +44,7 @@ describe('AccountDetail', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance).toBeTruthy();
-    expect(fixture.nativeElement.textContent).toContain('Conta não encontrada');
+    expect(fixture.componentInstance['account']()).toBeUndefined();
   });
 
   it('renders a seeded account by id', async () => {
@@ -64,7 +59,7 @@ describe('AccountDetail', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain(account.name);
+    expect(fixture.componentInstance['account']()).toEqual(account);
   });
 
   it('shows the display-currency equivalent next to a foreign-currency account balance', async () => {
@@ -80,9 +75,9 @@ describe('AccountDetail', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('€');
-    expect(text).toMatch(/\(US\$\s*[\d.,]+\)/);
+    const balance = fixture.componentInstance['balance']();
+    expect(balance).toBeDefined();
+    expect(fixture.componentInstance['convertedBalance']()).toEqual(money(balance!.amount, 'USD'));
   });
 
   it('asks for confirmation before archiving from the detail page', async () => {
@@ -97,9 +92,9 @@ describe('AccountDetail', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const archiveButton = Array.from(
-      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>
-    ).find((button) => button.textContent?.includes('Arquivar'))!;
+    const archiveButton = fixture.nativeElement.querySelector(
+      'app-page-header button:last-of-type'
+    ) as HTMLButtonElement;
     archiveButton.click();
     fixture.detectChanges();
 

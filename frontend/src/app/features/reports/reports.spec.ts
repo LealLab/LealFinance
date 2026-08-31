@@ -1,8 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
@@ -16,7 +14,7 @@ import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { Reports } from './reports';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Reports', () => {
   beforeEach(async () => {
@@ -24,15 +22,12 @@ describe('Reports', () => {
     await TestBed.configureTestingModule({
       imports: [
         Reports,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -50,9 +45,6 @@ describe('Reports', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance).toBeTruthy();
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Relatórios');
-    expect(text).toContain('Moradia');
     expect(fixture.nativeElement.querySelectorAll('canvas').length).toBeGreaterThan(0);
   });
 

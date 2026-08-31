@@ -1,11 +1,10 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { of, throwError } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { Recover } from './recover';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../../testing/transloco';
 
 const VALID = {
   email: 'user@example.com',
@@ -21,10 +20,7 @@ describe('Recover', () => {
     await TestBed.configureTestingModule({
       imports: [
         Recover,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -56,7 +52,7 @@ describe('Recover', () => {
     fixture.detectChanges();
 
     expect(identityApi.recover).toHaveBeenCalledWith(VALID.email, VALID.code, VALID.newPassword);
-    expect(fixture.nativeElement.textContent).toContain('Senha atualizada');
+    expect(fixture.componentInstance['done']()).toBe(true);
     expect(fixture.nativeElement.querySelector('form')).toBeNull();
   });
 
@@ -70,7 +66,8 @@ describe('Recover', () => {
     fixture.detectChanges();
 
     const alert = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
-    expect(alert.textContent).toContain('e-mail ou a senha');
+    expect(fixture.componentInstance['errorCode']()).toBe('auth.invalid_credentials');
+    expect(alert).toBeTruthy();
     expect(fixture.componentInstance['done']()).toBe(false);
   });
 

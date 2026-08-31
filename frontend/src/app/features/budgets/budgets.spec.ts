@@ -1,8 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { TranslocoService } from '@jsverse/transloco';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { BudgetPlanRepository } from '../../data/budget-plan.repository';
@@ -19,7 +18,7 @@ import { MockTransactionRepository } from '../../data/mock/mock-transaction.repo
 import { TransactionRepository } from '../../data/transaction.repository';
 import { money } from '../../shared/money/money';
 import { Budgets } from './budgets';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Budgets', () => {
   beforeEach(async () => {
@@ -27,15 +26,12 @@ describe('Budgets', () => {
     await TestBed.configureTestingModule({
       imports: [
         Budgets,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: BudgetPlanRepository, useClass: MockBudgetPlanRepository },
@@ -54,14 +50,15 @@ describe('Budgets', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance).toBeTruthy();
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Orçamentos');
     // Fixtures deliberately size Alimentação over budget and leave
     // Saúde/Educação unbudgeted this month (see data/mock/fixtures.ts) -
     // asserting on that is a real regression check, not just a smoke test.
-    expect(text).toContain('Estourado');
-    expect(text).toContain('Gastos sem orçamento definido');
-    expect(text).toContain('44.44%');
+    const component = fixture.componentInstance;
+    expect(component['budgetRows']().some((row) => row.state === 'over')).toBe(true);
+    expect(component['unbudgetedRows']().length).toBeGreaterThan(0);
+    expect(
+      component['allocationRows']().find((row) => row.group.id === 'group-housing')?.percentage,
+    ).toBe('44.44');
   });
 
   it('colors budget totals by semantic direction and leaves zero neutral', () => {
@@ -81,8 +78,10 @@ describe('Budgets', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
+    // No stable hook; queried by a Transloco-resolved label, not hardcoded copy.
+    const setBudgetLabel = TestBed.inject(TranslocoService).translate('budgets.unbudgeted.setBudget');
     const setBudgetButton = Array.from(el.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Definir orçamento'),
+      b.textContent?.includes(setBudgetLabel),
     );
     expect(setBudgetButton).toBeTruthy();
     setBudgetButton!.click();
@@ -103,7 +102,9 @@ describe('Budgets', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(false);
-    expect(el.textContent).toContain('300,00');
+    expect(
+      fixture.componentInstance['budgetRows']().some((row) => row.budget.amount === '300'),
+    ).toBe(true);
   });
 
   it('warns and does not save when percentage allocations exceed 100%', async () => {
@@ -120,15 +121,12 @@ describe('Budgets', () => {
     component.setAllocation('group-education', '20');
     fixture.detectChanges();
 
-    const total = fixture.nativeElement.querySelector('h2') as HTMLElement;
-    expect(total.className).toContain('text-negative');
+    expect(fixture.componentInstance['totalPercentage']()).toBeGreaterThan(100);
 
     component.savePlanner();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain(
-      'A distribuição não pode ultrapassar 100%.',
-    );
+    expect(fixture.componentInstance['plannerError']()).toBe('budgets.planner.errors.total');
   });
 
   it('converts budget aggregates when the display currency changes', async () => {
