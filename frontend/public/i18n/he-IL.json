@@ -162,7 +162,7 @@
       "rules": "כללים",
       "budgets": "תקציבים",
       "goals": "יעדים",
-      "loans": "Loans",
+      "loans": "הלוואות",
       "reports": "דוחות",
       "exchange": "המרת מטבע",
       "settings": "הגדרות",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "הלוואות",
+    "description": "עקוב אחר מה שלווית, כמה עולה הריבית וכמה נותר לשלם.",
+    "showArchived": "הצג הלוואות בארכיון",
+    "archived": "בארכיון",
+    "autoPostBadge": "רישום אוטומטי",
+    "archiveError": "לא ניתן היה לעדכן את מצב הארכיון של ההלוואה. נסה שוב.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "הלוואה חדשה",
+      "edit": "עריכת הלוואה",
+      "archive": "העברת הלוואה לארכיון",
+      "unarchive": "הוצאת הלוואה מהארכיון",
+      "recordPayment": "רישום תשלום"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "אין עדיין הלוואות",
+      "description": "הוסף הלוואה כדי לעקוב אחר התשלומים, הריבית והיתרה שנותרה."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "תשלום ראשון",
+      "installment": "תשלום חודשי",
+      "totalPayable": "סך הכול לתשלום",
+      "borrowed": "סכום שנלווה",
+      "fees": "עמלות",
+      "rate": "שיעור ריבית",
+      "totalInterest": "סך הריבית",
+      "remaining": "נותר",
+      "nextDue": "מועד התשלום הבא",
+      "paidCount": "שולמו {{paid}} מתוך {{total}} תשלומים",
+      "fullyPaid": "שולם במלואו"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "לשנה",
+      "monthly": "לחודש"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "הלוואה חדשה",
+      "editTitle": "עריכת הלוואה",
+      "saveError": "לא ניתן היה לשמור את ההלוואה. נסה שוב.",
+      "installmentPreview": "תשלום חודשי משוער",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "שם",
+        "category": "קטגוריה",
+        "categoryPlaceholder": "בחר קטגוריית הוצאה",
+        "currency": "מטבע",
+        "amountBorrowed": "סכום שנלווה",
+        "fees": "עמלות",
+        "interestRate": "שיעור ריבית (%)",
+        "ratePeriod": "תקופת הריבית",
+        "installmentCount": "מספר תשלומים",
+        "firstPaymentDate": "תאריך התשלום הראשון",
+        "notes": "הערות",
+        "autoPost": "רישום אוטומטי של כל תשלום",
+        "autoPostHint": "בכל מועד תשלום נוצר תשלום מהחשבון שתבחר.",
+        "institution": "מוסד",
+        "allInstitutions": "כל המוסדות",
+        "paymentAccount": "חשבון",
+        "paymentAccountPlaceholder": "בחר את חשבון המקור"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "שדה זה הוא חובה.",
+        "paymentAccountRequired": "בחר את החשבון שממנו מתבצעים התשלומים."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "ביטול",
+        "save": "שמירה"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "רישום תשלום הלוואה",
+      "saveError": "לא ניתן היה לרשום את התשלום. נסה שוב.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "סכום",
+        "date": "תאריך",
+        "dateHint": "הגדר תאריך עתידי כדי לשלם תשלום מראש.",
+        "account": "חשבון",
+        "noInstitution": "ללא מוסד",
+        "description": "תיאור"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "רישום תשלום"
       }
     }
   },

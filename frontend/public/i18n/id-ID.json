@@ -162,7 +162,7 @@
       "rules": "Aturan",
       "budgets": "Anggaran",
       "goals": "Target",
-      "loans": "Loans",
+      "loans": "Pinjaman",
       "reports": "Laporan",
       "exchange": "Penukaran",
       "settings": "Pengaturan",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Pinjaman",
+    "description": "Pantau berapa yang Anda pinjam, biaya bunganya, dan berapa sisa yang harus dibayar.",
+    "showArchived": "Tampilkan pinjaman yang diarsipkan",
+    "archived": "Diarsipkan",
+    "autoPostBadge": "Pos otomatis",
+    "archiveError": "Tidak dapat memperbarui status arsip pinjaman. Coba lagi.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Pinjaman baru",
+      "edit": "Edit pinjaman",
+      "archive": "Arsipkan pinjaman",
+      "unarchive": "Batalkan arsip pinjaman",
+      "recordPayment": "Catat pembayaran"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Belum ada pinjaman",
+      "description": "Tambahkan pinjaman untuk memantau cicilan, bunga, dan sisa saldonya."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Pembayaran pertama",
+      "installment": "Cicilan bulanan",
+      "totalPayable": "Total yang harus dibayar",
+      "borrowed": "Dipinjam",
+      "fees": "Biaya",
+      "rate": "Suku bunga",
+      "totalInterest": "Total bunga",
+      "remaining": "Sisa",
+      "nextDue": "Jatuh tempo berikutnya",
+      "paidCount": "{{paid}} dari {{total}} cicilan terbayar",
+      "fullyPaid": "Lunas sepenuhnya"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "per tahun",
+      "monthly": "per bulan"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Pinjaman baru",
+      "editTitle": "Edit pinjaman",
+      "saveError": "Tidak dapat menyimpan pinjaman. Coba lagi.",
+      "installmentPreview": "Perkiraan cicilan bulanan",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Nama",
+        "category": "Kategori",
+        "categoryPlaceholder": "Pilih kategori pengeluaran",
+        "currency": "Mata uang",
+        "amountBorrowed": "Jumlah yang dipinjam",
+        "fees": "Biaya",
+        "interestRate": "Suku bunga (%)",
+        "ratePeriod": "Periode suku bunga",
+        "installmentCount": "Jumlah cicilan",
+        "firstPaymentDate": "Tanggal pembayaran pertama",
+        "notes": "Catatan",
+        "autoPost": "Pos setiap cicilan secara otomatis",
+        "autoPostHint": "Pembayaran dibuat pada setiap tanggal jatuh tempo dari akun yang Anda pilih.",
+        "institution": "Institusi",
+        "allInstitutions": "Semua institusi",
+        "paymentAccount": "Akun",
+        "paymentAccountPlaceholder": "Pilih akun sumber"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Kolom ini wajib diisi.",
+        "paymentAccountRequired": "Pilih akun asal pembayaran."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Batal",
+        "save": "Simpan"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Catat pembayaran pinjaman",
+      "saveError": "Tidak dapat mencatat pembayaran. Coba lagi.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Jumlah",
+        "date": "Tanggal",
+        "dateHint": "Setel tanggal mendatang untuk membayar cicilan lebih awal.",
+        "account": "Akun",
+        "noInstitution": "Tanpa institusi",
+        "description": "Deskripsi"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Catat pembayaran"
       }
     }
   },

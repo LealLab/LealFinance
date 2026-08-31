@@ -162,7 +162,7 @@
       "rules": "Regels",
       "budgets": "Budgetten",
       "goals": "Doelen",
-      "loans": "Loans",
+      "loans": "Leningen",
       "reports": "Rapporten",
       "exchange": "Wisselkoersen",
       "settings": "Instellingen",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Leningen",
+    "description": "Houd bij wat je hebt geleend, hoeveel rente het kost en hoeveel er nog openstaat.",
+    "showArchived": "Gearchiveerde leningen tonen",
+    "archived": "Gearchiveerd",
+    "autoPostBadge": "Autoboeking",
+    "archiveError": "Kon de archiefstatus van de lening niet bijwerken. Probeer het opnieuw.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Nieuwe lening",
+      "edit": "Lening bewerken",
+      "archive": "Lening archiveren",
+      "unarchive": "Lening dearchiveren",
+      "recordPayment": "Betaling vastleggen"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Nog geen leningen",
+      "description": "Voeg een lening toe om termijnen, rente en het openstaande saldo bij te houden."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Eerste betaling",
+      "installment": "Maandtermijn",
+      "totalPayable": "Totaal te betalen",
+      "borrowed": "Geleend",
+      "fees": "Kosten",
+      "rate": "Rentepercentage",
+      "totalInterest": "Totale rente",
+      "remaining": "Openstaand",
+      "nextDue": "Volgende vervaldatum",
+      "paidCount": "{{paid}} van {{total}} termijnen betaald",
+      "fullyPaid": "Volledig afbetaald"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "per jaar",
+      "monthly": "per maand"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Nieuwe lening",
+      "editTitle": "Lening bewerken",
+      "saveError": "Kon de lening niet opslaan. Probeer het opnieuw.",
+      "installmentPreview": "Geschatte maandtermijn",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Naam",
+        "category": "Categorie",
+        "categoryPlaceholder": "Kies een uitgavencategorie",
+        "currency": "Valuta",
+        "amountBorrowed": "Geleend bedrag",
+        "fees": "Kosten",
+        "interestRate": "Rentepercentage (%)",
+        "ratePeriod": "Renteperiode",
+        "installmentCount": "Aantal termijnen",
+        "firstPaymentDate": "Datum eerste betaling",
+        "notes": "Notities",
+        "autoPost": "Elke termijn automatisch boeken",
+        "autoPostHint": "Op elke vervaldatum wordt een betaling aangemaakt vanaf de rekening die je kiest.",
+        "institution": "Instelling",
+        "allInstitutions": "Alle instellingen",
+        "paymentAccount": "Rekening",
+        "paymentAccountPlaceholder": "Kies de bronrekening"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Dit veld is verplicht.",
+        "paymentAccountRequired": "Kies de rekening waarvan de betalingen komen."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Annuleren",
+        "save": "Opslaan"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Leningbetaling vastleggen",
+      "saveError": "Kon de betaling niet vastleggen. Probeer het opnieuw.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Bedrag",
+        "date": "Datum",
+        "dateHint": "Stel een datum in de toekomst in om een termijn vooruit te betalen.",
+        "account": "Rekening",
+        "noInstitution": "Geen instelling",
+        "description": "Omschrijving"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Betaling vastleggen"
       }
     }
   },

@@ -162,7 +162,7 @@
       "rules": "Säännöt",
       "budgets": "Budjetit",
       "goals": "Tavoitteet",
-      "loans": "Loans",
+      "loans": "Lainat",
       "reports": "Raportit",
       "exchange": "Valuuttakurssit",
       "settings": "Asetukset",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Lainat",
+    "description": "Seuraa, paljonko olet lainannut, mitä korko maksaa ja paljonko on vielä maksettavaa.",
+    "showArchived": "Näytä arkistoidut lainat",
+    "archived": "Arkistoitu",
+    "autoPostBadge": "Automaattikirjaus",
+    "archiveError": "Lainan arkistointitilaa ei voitu päivittää. Yritä uudelleen.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Uusi laina",
+      "edit": "Muokkaa lainaa",
+      "archive": "Arkistoi laina",
+      "unarchive": "Palauta laina arkistosta",
+      "recordPayment": "Kirjaa maksu"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Ei lainoja vielä",
+      "description": "Lisää laina, niin voit seurata sen eriä, korkoa ja jäljellä olevaa saldoa."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "Ensimmäinen maksu",
+      "installment": "Kuukausierä",
+      "totalPayable": "Maksettavaa yhteensä",
+      "borrowed": "Lainattu",
+      "fees": "Kulut",
+      "rate": "Korko",
+      "totalInterest": "Korko yhteensä",
+      "remaining": "Jäljellä",
+      "nextDue": "Seuraava eräpäivä",
+      "paidCount": "{{paid}} / {{total}} erää maksettu",
+      "fullyPaid": "Maksettu kokonaan"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "vuodessa",
+      "monthly": "kuukaudessa"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Uusi laina",
+      "editTitle": "Muokkaa lainaa",
+      "saveError": "Lainaa ei voitu tallentaa. Yritä uudelleen.",
+      "installmentPreview": "Arvioitu kuukausierä",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Nimi",
+        "category": "Luokka",
+        "categoryPlaceholder": "Valitse menoluokka",
+        "currency": "Valuutta",
+        "amountBorrowed": "Lainattu määrä",
+        "fees": "Kulut",
+        "interestRate": "Korko (%)",
+        "ratePeriod": "Koron jakso",
+        "installmentCount": "Erien määrä",
+        "firstPaymentDate": "Ensimmäisen maksun päivä",
+        "notes": "Muistiinpanot",
+        "autoPost": "Kirjaa jokainen erä automaattisesti",
+        "autoPostHint": "Jokaisena eräpäivänä luodaan maksu valitsemaltasi tililtä.",
+        "institution": "Laitos",
+        "allInstitutions": "Kaikki laitokset",
+        "paymentAccount": "Tili",
+        "paymentAccountPlaceholder": "Valitse lähdetili"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Tämä kenttä on pakollinen.",
+        "paymentAccountRequired": "Valitse tili, jolta maksut suoritetaan."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Peruuta",
+        "save": "Tallenna"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Kirjaa lainan maksu",
+      "saveError": "Maksua ei voitu kirjata. Yritä uudelleen.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Määrä",
+        "date": "Päivämäärä",
+        "dateHint": "Aseta tuleva päivä maksaaksesi erän etukäteen.",
+        "account": "Tili",
+        "noInstitution": "Ei laitosta",
+        "description": "Kuvaus"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Kirjaa maksu"
       }
     }
   },

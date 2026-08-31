@@ -162,7 +162,7 @@
       "rules": "Pravidla",
       "budgets": "Rozpočty",
       "goals": "Cíle",
-      "loans": "Loans",
+      "loans": "Půjčky",
       "reports": "Přehledy",
       "exchange": "Směna měn",
       "settings": "Nastavení",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "Půjčky",
+    "description": "Sledujte, kolik jste si půjčili, kolik stojí úrok a kolik zbývá splatit.",
+    "showArchived": "Zobrazit archivované půjčky",
+    "archived": "Archivováno",
+    "autoPostBadge": "Auto-zaúčtování",
+    "archiveError": "Stav archivace půjčky se nepodařilo aktualizovat. Zkuste to znovu.",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "Nová půjčka",
+      "edit": "Upravit půjčku",
+      "archive": "Archivovat půjčku",
+      "unarchive": "Zrušit archivaci půjčky",
+      "recordPayment": "Zaznamenat splátku"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "Zatím žádné půjčky",
+      "description": "Přidejte půjčku a sledujte její splátky, úrok a zbývající zůstatek."
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "První splátka",
+      "installment": "Měsíční splátka",
+      "totalPayable": "Celkem k úhradě",
+      "borrowed": "Půjčeno",
+      "fees": "Poplatky",
+      "rate": "Úroková sazba",
+      "totalInterest": "Úrok celkem",
+      "remaining": "Zbývá",
+      "nextDue": "Další splatnost",
+      "paidCount": "Splaceno {{paid}} z {{total}} splátek",
+      "fullyPaid": "Zcela splaceno"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "ročně",
+      "monthly": "měsíčně"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "Nová půjčka",
+      "editTitle": "Upravit půjčku",
+      "saveError": "Půjčku se nepodařilo uložit. Zkuste to znovu.",
+      "installmentPreview": "Odhadovaná měsíční splátka",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "Název",
+        "category": "Kategorie",
+        "categoryPlaceholder": "Vyberte kategorii výdaje",
+        "currency": "Měna",
+        "amountBorrowed": "Půjčená částka",
+        "fees": "Poplatky",
+        "interestRate": "Úroková sazba (%)",
+        "ratePeriod": "Období sazby",
+        "installmentCount": "Počet splátek",
+        "firstPaymentDate": "Datum první splátky",
+        "notes": "Poznámky",
+        "autoPost": "Zaúčtovat každou splátku automaticky",
+        "autoPostHint": "V každé datum splatnosti se z vybraného účtu vytvoří platba.",
+        "institution": "Instituce",
+        "allInstitutions": "Všechny instituce",
+        "paymentAccount": "Účet",
+        "paymentAccountPlaceholder": "Vyberte zdrojový účet"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "Toto pole je povinné.",
+        "paymentAccountRequired": "Vyberte účet, ze kterého platby odcházejí."
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "Zrušit",
+        "save": "Uložit"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "Zaznamenat splátku půjčky",
+      "saveError": "Splátku se nepodařilo zaznamenat. Zkuste to znovu.",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "Částka",
+        "date": "Datum",
+        "dateHint": "Nastavte budoucí datum pro splacení splátky předem.",
+        "account": "Účet",
+        "noInstitution": "Žádná instituce",
+        "description": "Popis"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "Zaznamenat splátku"
       }
     }
   },

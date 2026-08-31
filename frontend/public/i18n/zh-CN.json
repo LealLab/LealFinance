@@ -162,7 +162,7 @@
       "rules": "规则",
       "budgets": "预算",
       "goals": "目标",
-      "loans": "Loans",
+      "loans": "贷款",
       "reports": "报表",
       "exchange": "汇率",
       "settings": "设置",
@@ -924,86 +924,86 @@
     }
   },
   "loans": {
-    "title": "Loans",
-    "description": "Track what you borrowed, the interest it costs, and how much is left to pay.",
-    "showArchived": "Show archived loans",
-    "archived": "Archived",
-    "autoPostBadge": "Auto-post",
-    "archiveError": "Could not update the loan archive state. Try again.",
+    "title": "贷款",
+    "description": "跟踪你借了多少、利息花费多少，以及还剩多少要还。",
+    "showArchived": "显示已归档贷款",
+    "archived": "已归档",
+    "autoPostBadge": "自动入账",
+    "archiveError": "无法更新贷款的归档状态。请重试。",
     "actions": {
-      "new": "New loan",
-      "edit": "Edit loan",
-      "archive": "Archive loan",
-      "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "new": "新建贷款",
+      "edit": "编辑贷款",
+      "archive": "归档贷款",
+      "unarchive": "取消归档贷款",
+      "recordPayment": "记录还款"
     },
     "empty": {
-      "title": "No loans yet",
-      "description": "Add a loan to track its installments, interest, and remaining balance."
+      "title": "还没有贷款",
+      "description": "添加一笔贷款以跟踪其分期、利息和剩余余额。"
     },
     "card": {
-      "firstPayment": "First payment",
-      "installment": "Monthly installment",
-      "totalPayable": "Total payable",
-      "borrowed": "Borrowed",
-      "fees": "Fees",
-      "rate": "Interest rate",
-      "totalInterest": "Total interest",
-      "remaining": "Remaining",
-      "nextDue": "Next due",
-      "paidCount": "{{paid}} of {{total}} installments paid",
-      "fullyPaid": "Fully paid"
+      "firstPayment": "首次还款",
+      "installment": "每月分期",
+      "totalPayable": "应还总额",
+      "borrowed": "借款额",
+      "fees": "费用",
+      "rate": "利率",
+      "totalInterest": "利息总额",
+      "remaining": "剩余",
+      "nextDue": "下次到期",
+      "paidCount": "已还 {{total}} 期中的 {{paid}} 期",
+      "fullyPaid": "已全部还清"
     },
     "ratePeriod": {
-      "annual": "per year",
-      "monthly": "per month"
+      "annual": "每年",
+      "monthly": "每月"
     },
     "form": {
-      "newTitle": "New loan",
-      "editTitle": "Edit loan",
-      "saveError": "Could not save the loan. Try again.",
-      "installmentPreview": "Estimated monthly installment",
+      "newTitle": "新建贷款",
+      "editTitle": "编辑贷款",
+      "saveError": "无法保存贷款。请重试。",
+      "installmentPreview": "预计每月分期",
       "fields": {
-        "name": "Name",
-        "category": "Category",
-        "categoryPlaceholder": "Choose an expense category",
-        "currency": "Currency",
-        "amountBorrowed": "Amount borrowed",
-        "fees": "Fees",
-        "interestRate": "Interest rate (%)",
-        "ratePeriod": "Rate period",
-        "installmentCount": "Number of installments",
-        "firstPaymentDate": "First payment date",
-        "notes": "Notes",
-        "autoPost": "Post each installment automatically",
-        "autoPostHint": "A payment is created on each due date from the account you choose.",
-        "institution": "Institution",
-        "allInstitutions": "All institutions",
-        "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "name": "名称",
+        "category": "分类",
+        "categoryPlaceholder": "选择一个支出分类",
+        "currency": "货币",
+        "amountBorrowed": "借款金额",
+        "fees": "费用",
+        "interestRate": "利率 (%)",
+        "ratePeriod": "利率周期",
+        "installmentCount": "分期期数",
+        "firstPaymentDate": "首次还款日期",
+        "notes": "备注",
+        "autoPost": "自动入账每一期",
+        "autoPostHint": "在每个到期日会从你选择的账户创建一笔还款。",
+        "institution": "机构",
+        "allInstitutions": "所有机构",
+        "paymentAccount": "账户",
+        "paymentAccountPlaceholder": "选择来源账户"
       },
       "errors": {
-        "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "required": "此字段为必填项。",
+        "paymentAccountRequired": "选择还款所使用的账户。"
       },
       "actions": {
-        "cancel": "Cancel",
-        "save": "Save"
+        "cancel": "取消",
+        "save": "保存"
       }
     },
     "payment": {
-      "title": "Record loan payment",
-      "saveError": "Could not record the payment. Try again.",
+      "title": "记录贷款还款",
+      "saveError": "无法记录还款。请重试。",
       "fields": {
-        "amount": "Amount",
-        "date": "Date",
-        "dateHint": "Set a future date to pay an installment in advance.",
-        "account": "Account",
-        "noInstitution": "No institution",
-        "description": "Description"
+        "amount": "金额",
+        "date": "日期",
+        "dateHint": "设置将来的日期可提前偿还某一期。",
+        "account": "账户",
+        "noInstitution": "无机构",
+        "description": "描述"
       },
       "actions": {
-        "confirm": "Record payment"
+        "confirm": "记录还款"
       }
     }
   },

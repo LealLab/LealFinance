@@ -75,6 +75,11 @@ See [`docs/money-and-currency.md`](docs/money-and-currency.md).
 
 - Backend errors are machine-readable codes, never translated strings.
 - New user-facing text must use Transloco; run `task i18n:validate`.
+- A new key is not done until **every** catalog in `frontend/public/i18n/`
+  has a real translation for it. Never paste the English value into another
+  locale as a placeholder: `task i18n:validate` only checks key parity, so an
+  English copy passes CI and ships untranslated. After adding keys, diff each
+  locale against `en-US.json` and confirm the new values actually changed.
 - Check new layouts with longer translations and a 320px viewport.
 
 See [`docs/i18n.md`](docs/i18n.md).
