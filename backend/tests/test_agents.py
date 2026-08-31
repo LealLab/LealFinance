@@ -163,7 +163,7 @@ async def test_link_model_only_update_preserves_oauth_tokens(
     assert response.status_code == 200, response.text
     body = response.json()
     assert body["auth_mode"] == "oauth"
-    assert body["account_label"] == "Claude subscription"
+    assert body["account_label"] == row.account_label
     assert body["model"] == "claude-opus-5"
 
     await db_session.refresh(row)

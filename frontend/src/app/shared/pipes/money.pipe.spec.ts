@@ -1,7 +1,6 @@
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 import { BalanceVisibilityService } from '../../core/balance-visibility.service';
 import { MoneyPipe } from './money.pipe';
 
@@ -20,13 +19,10 @@ describe('MoneyPipe', () => {
     localStorage.clear();
     TestBed.configureTestingModule({
       imports: [
-        TranslocoTestingModule.forRoot({
-          langs: {},
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection()
       ]
     });
@@ -79,13 +75,10 @@ describe('MoneyPipe reactivity to BalanceVisibilityService', () => {
     TestBed.configureTestingModule({
       imports: [
         MoneyPipeHost,
-        TranslocoTestingModule.forRoot({
-          langs: {},
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection()
       ]
     });

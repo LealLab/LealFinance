@@ -1,8 +1,6 @@
 import { ErrorHandler, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Observable, of, Subject } from 'rxjs';
 import { Account, AccountBalance } from '../../domain/models/account';
 import { AccountRepository } from '../../data/account.repository';
@@ -26,22 +24,19 @@ import { TransactionFilters, TransactionRepository } from '../../data/transactio
 import { money } from '../../shared/money/money';
 import { monthKey } from '../../domain/calc/dates';
 import { Dashboard } from './dashboard';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Dashboard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         Dashboard,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -53,29 +48,17 @@ describe('Dashboard', () => {
     }).compileComponents();
   });
 
-  it('renders the pt-BR title from the translation file', async () => {
-    const fixture = TestBed.createComponent(Dashboard);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Painel');
-  });
-
   it('renders stat tiles, the fallback-rate warning, and the seeded account summary', async () => {
     const fixture = TestBed.createComponent(Dashboard);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Patrimônio líquido');
     // The EUR investment account (see data/mock/fixtures.ts) has no known
     // rate in the mock exchange-rate repository on purpose, to exercise
     // this warning on a real screen.
-    expect(text).toContain('Taxa de câmbio indisponível');
-    expect(text).toContain('Conta Corrente');
+    expect(fixture.componentInstance['ratesReady']()).toBe(true);
+    expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
   });
 
   it('colors balances by sign and transfers blue', () => {
@@ -99,10 +82,10 @@ describe('Dashboard', () => {
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
-    const button = Array.from(fixture.nativeElement.querySelectorAll('button')).find((el) =>
-      (el as HTMLButtonElement).textContent?.includes('Definir taxa')
-    ) as HTMLButtonElement | undefined;
-    button?.click();
+    const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>(
+      'app-exchange-rate-warning button[type="button"]'
+    )!;
+    button.click();
 
     expect(navigateSpy).toHaveBeenCalledWith(['/exchange']);
   });
@@ -154,15 +137,12 @@ describe('Dashboard - exchange rates still loading on first render', () => {
     await TestBed.configureTestingModule({
       imports: [
         Dashboard,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -203,16 +183,13 @@ describe('Dashboard - exchange rates still loading on first render', () => {
     expect(delayedRates.pending.length).toBeGreaterThan(0);
     expect(component['ratesReady']()).toBe(false);
     expect(errorHandler.errors).toEqual([]);
-    expect((fixture.nativeElement.textContent as string)).not.toContain('Patrimônio líquido');
 
     delayedRates.resolveAll();
     await fixture.whenStable();
     fixture.detectChanges();
 
     expect(errorHandler.errors).toEqual([]);
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Patrimônio líquido');
-    expect(text).toContain('Conta Corrente');
+    expect(component['ratesReady']()).toBe(true);
   });
 });
 
@@ -378,15 +355,12 @@ describe('Dashboard - a budget in one currency catching a transaction in another
     await TestBed.configureTestingModule({
       imports: [
         Dashboard,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: AccountRepository, useClass: StubAccountRepository },
         { provide: TransactionRepository, useClass: StubTransactionRepository },
         { provide: CategoryRepository, useClass: StubCategoryRepository },

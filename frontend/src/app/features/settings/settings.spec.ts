@@ -2,8 +2,6 @@ import { signal, WritableSignal } from '@angular/core';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { BackupService } from '../../core/backup.service';
 import { ConfirmService } from '../../core/confirm.service';
@@ -14,7 +12,7 @@ import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { SessionService } from '../../core/session.service';
 import { Settings } from './settings';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Settings', () => {
   let fragment: BehaviorSubject<string | null>;
@@ -50,14 +48,11 @@ describe('Settings', () => {
     await TestBed.configureTestingModule({
       imports: [
         Settings,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideRouter([]),
         {
           provide: ActivatedRoute,
@@ -118,25 +113,25 @@ describe('Settings', () => {
     expect(fixture.nativeElement.querySelector('a[href="/admin/providers"]')).toBeNull();
   });
 
-  it('renders appearance, currency, and agents sections without mock controls', () => {
+  it('renders the language, display-currency, and two-factor controls', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Configurações');
-    expect(text).toContain('Aparência');
-    expect(text).toContain('Moeda de exibição');
-    expect(text).not.toContain('Dados de demonstração');
-    expect(text).toContain('Agentes de IA');
+    // Deliberately no app-card count here: it breaks every time a section is
+    // added (as the backup card did) without telling us anything. The control
+    // ids below are what the page actually has to render.
+    expect(fixture.nativeElement.querySelector('#settings-language')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('#settings-display-currency')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('#settings-two-factor')).not.toBeNull();
   });
 
   it('switches the theme when a theme button is clicked', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
-    const darkButton = Array.from(fixture.nativeElement.querySelectorAll('button')).find((b) =>
-      (b as HTMLButtonElement).textContent?.includes('Escuro'),
-    ) as HTMLButtonElement;
+    const darkButton = fixture.nativeElement
+      .querySelector('app-icon[name="moon"]')
+      ?.closest('button') as HTMLButtonElement;
     darkButton.click();
     fixture.detectChanges();
 
@@ -295,9 +290,7 @@ describe('Settings', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Autenticação de dois fatores');
-    expect(text).toContain('não há como recuperar sua conta');
+    expect(fixture.nativeElement.querySelector('p[class*="border-warning"]')).not.toBeNull();
   });
 
   it('shows the QR code and the manual key when enrollment starts', () => {
@@ -309,7 +302,7 @@ describe('Settings', () => {
 
     const qr = fixture.nativeElement.querySelector('img[src^="data:image/gif"]');
     expect(qr).not.toBeNull();
-    expect(fixture.nativeElement.textContent).toContain('JBSWY3DPEHPK3PXP');
+    expect(fixture.componentInstance['totpSetup']()?.secret).toBe('JBSWY3DPEHPK3PXP');
   });
 
   it('shows the backup codes once after confirming enrollment', () => {
@@ -323,11 +316,15 @@ describe('Settings', () => {
     fixture.detectChanges();
 
     expect(identityApi.enableTotp).toHaveBeenCalledWith('123456');
-    expect(fixture.nativeElement.textContent).toContain('aaaa-1111');
+    expect(fixture.componentInstance['backupCodes']()).toEqual(['aaaa-1111', 'bbbb-2222']);
 
-    // Dismissing is one-way: nothing can render them again.
+    // Dismissing is one-way: nothing can render them again. Assert the secret
+    // is gone from the DOM too, not just from the signal - this is the
+    // guarantee that actually matters, and a stale template binding would
+    // keep it on screen with the signal already cleared.
     fixture.componentInstance['dismissBackupCodes']();
     fixture.detectChanges();
+    expect(fixture.componentInstance['backupCodes']()).toBeUndefined();
     expect(fixture.nativeElement.textContent).not.toContain('aaaa-1111');
   });
 
@@ -342,6 +339,7 @@ describe('Settings', () => {
     fixture.detectChanges();
 
     const alert = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
-    expect(alert.textContent).toContain('Esse código não é válido');
+    expect(fixture.componentInstance['totpErrorCode']()).toBe('auth.totp_invalid');
+    expect(alert).toBeTruthy();
   });
 });

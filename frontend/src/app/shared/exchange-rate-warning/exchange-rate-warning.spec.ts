@@ -1,18 +1,15 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
+import { provideTestTransloco } from '../../../testing/transloco';
 import { ExchangeRateWarning } from './exchange-rate-warning';
-import ptBR from '../../../../public/i18n/pt-BR.json';
 
 describe('ExchangeRateWarning', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         ExchangeRateWarning,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [provideZonelessChangeDetection()]
     }).compileComponents();
@@ -34,7 +31,11 @@ describe('ExchangeRateWarning', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const alert = compiled.querySelector('[role="alert"]');
-    expect(alert?.textContent).toContain('Taxa de câmbio indisponível');
+    // Assert the component rendered the right KEY, resolved through Transloco,
+    // rather than pinning the copy - rewording the catalog must not fail this.
+    expect(alert?.textContent).toContain(
+      TestBed.inject(TranslocoService).translate('currency.fallbackRateWarning')
+    );
   });
 
   it('renders no action button when actionLabelKey is not set', () => {
@@ -56,7 +57,11 @@ describe('ExchangeRateWarning', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const button = compiled.querySelector('button');
-    expect(button?.textContent).toContain('Definir taxa');
+    // The caller-supplied actionLabelKey is looked up dynamically, so this
+    // proves the dynamic t(labelKey) lookup resolves the key it was given.
+    expect(button?.textContent).toContain(
+      TestBed.inject(TranslocoService).translate('currency.fallbackRateWarningAction')
+    );
 
     button?.click();
     expect(emitted).toBe(1);

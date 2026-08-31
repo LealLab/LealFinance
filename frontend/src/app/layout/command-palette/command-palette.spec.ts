@@ -2,7 +2,6 @@ import { signal, WritableSignal } from '@angular/core';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { CommandPaletteService } from '../../core/command-palette.service';
 import { User } from '../../core/identity.models';
 import { MetadataService } from '../../core/metadata.service';
@@ -19,8 +18,8 @@ import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { provideTestTransloco } from '../../../testing/transloco';
 import { CommandPalette } from './command-palette';
-import ptBR from '../../../../public/i18n/pt-BR.json';
 
 describe('CommandPalette', () => {
   let sessionUser: WritableSignal<User | undefined>;
@@ -32,10 +31,7 @@ describe('CommandPalette', () => {
     await TestBed.configureTestingModule({
       imports: [
         CommandPalette,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -72,10 +68,9 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const labels = Array.from(fixture.nativeElement.querySelectorAll('button')).map((button) =>
-      (button as HTMLButtonElement).textContent?.trim(),
-    );
-    expect(labels.some((label) => label?.includes('Provedores de IA'))).toBe(true);
+    expect(
+      fixture.componentInstance['flatItems']().some((item) => item.id === 'goto-/admin/providers'),
+    ).toBe(true);
   });
 
   it('stays closed until CommandPaletteService.show() is called', () => {
@@ -114,13 +109,9 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const buttons = Array.from(
-      fixture.nativeElement.querySelectorAll('button'),
-    ) as HTMLButtonElement[];
-    const labels = buttons.map((b) => b.textContent?.trim());
-
-    expect(labels.some((label) => label?.includes('Orçamentos'))).toBe(true);
-    expect(labels.some((label) => label?.includes('Contas'))).toBe(false);
+    const itemIds = fixture.componentInstance['flatItems']().map((item) => item.id);
+    expect(itemIds).toContain('goto-/budgets');
+    expect(itemIds).not.toContain('goto-/accounts');
   });
 
   it('shows an empty state when nothing matches the query', () => {
@@ -133,20 +124,20 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent as string).toContain('Nenhum resultado encontrado');
+    expect(fixture.componentInstance['groups']()).toHaveLength(0);
   });
 
   it.each([
-    ['idioma', 'Configurar idioma', 'settings-language'],
-    ['moeda', 'Configurar moeda de exibição', 'settings-display-currency'],
-    ['exportar backup', 'Exportar backup', 'settings-backup-export'],
-    ['restaurar backup', 'Restaurar backup', 'settings-backup-restore'],
-    ['dois fatores', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
+    ['idioma', 'quick-configure-language', 'settings-language'],
+    ['moeda', 'quick-configure-currency', 'settings-display-currency'],
+    ['exportar backup', 'quick-export-backup', 'settings-backup-export'],
+    ['restaurar backup', 'quick-restore-backup', 'settings-backup-restore'],
+    ['dois fatores', 'quick-configure-two-factor', 'settings-two-factor'],
     // Synonyms people actually type reach the same entry, via keywordsKey.
-    ['2FA', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
-    ['autenticador', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
-    ['recuperação', 'Configurar autenticação de dois fatores', 'settings-two-factor'],
-  ])('finds the %s setting and navigates to its control', (query, label, fragment) => {
+    ['2FA', 'quick-configure-two-factor', 'settings-two-factor'],
+    ['autenticador', 'quick-configure-two-factor', 'settings-two-factor'],
+    ['recuperação', 'quick-configure-two-factor', 'settings-two-factor'],
+  ])('finds the %s setting and navigates to its control', (query, id, fragment) => {
     const fixture = TestBed.createComponent(CommandPalette);
     const router = TestBed.inject(Router);
     const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
@@ -158,12 +149,12 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
-      (button as HTMLButtonElement).textContent?.includes(label),
-    ) as HTMLButtonElement;
-    expect(result).toBeTruthy();
+    const result = fixture.componentInstance['flatItems']().find(
+      (item) => item.id === id,
+    );
+    expect(result).toBeDefined();
 
-    result.click();
+    fixture.componentInstance['selectItem'](result!);
     expect(navigate).toHaveBeenCalledWith(['/settings'], { fragment });
   });
 
@@ -204,12 +195,12 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const result = Array.from(fixture.nativeElement.querySelectorAll('button')).find((button) =>
-      (button as HTMLButtonElement).textContent?.includes('Importar transações'),
-    ) as HTMLButtonElement;
-    expect(result).toBeTruthy();
+    const result = fixture.componentInstance['flatItems']().find(
+      (item) => item.id === 'quick-import-transactions',
+    );
+    expect(result).toBeDefined();
 
-    result.click();
+    fixture.componentInstance['selectItem'](result!);
     expect(navigate).toHaveBeenCalledWith(['/transactions/import']);
   });
 
@@ -222,11 +213,10 @@ describe('CommandPalette', () => {
     fixture.detectChanges();
 
     const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
-    // Narrow the list down to just the "toggle theme" quick action so
-    // Enter on the first (only) highlighted result is unambiguous.
-    input.value = 'Alternar tema';
-    input.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    const themeItem = fixture.componentInstance['flatItems']().find(
+      (item) => item.id === 'quick-toggle-theme',
+    );
+    fixture.componentInstance['highlightItem'](themeItem!);
 
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     fixture.detectChanges();

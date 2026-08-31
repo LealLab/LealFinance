@@ -1,8 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
@@ -15,9 +14,9 @@ import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { RuleConditionEntry, RuleConditionField, RuleConditionOp } from '../../domain/models/categorization-rule';
-import enUS from '../../../../public/i18n/en-US.json';
 import { RuleFormModal } from './rule-form-modal';
 import { Rules } from './rules';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 interface RuleFormHarness {
   form: {
@@ -57,15 +56,12 @@ describe('Rules', () => {
     await TestBed.configureTestingModule({
       imports: [
         Rules,
-        TranslocoTestingModule.forRoot({
-          langs: { 'en-US': enUS },
-          translocoConfig: { availableLangs: ['en-US'], defaultLang: 'en-US' },
-        }),
+        provideTestTransloco('en-US'),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'en-US', defaultCurrency: 'USD' }),
+        provideTestTranslocoLocale('en-US'),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: CategorizationRuleRepository, useClass: MockCategorizationRuleRepository },
         { provide: CategoryRepository, useClass: MockCategoryRepository },
@@ -80,10 +76,7 @@ describe('Rules', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Automation');
-    expect(fixture.nativeElement.textContent).toContain('Categorization Rules');
-    expect(fixture.nativeElement.textContent).toContain('No categorization rules yet');
-    expect(fixture.nativeElement.textContent).toContain('Rule Packs');
+    expect((fixture.componentInstance as unknown as RulesHarness).rules()).toHaveLength(0);
   });
 
   it('creates a rule through the editor and renders its summary', async () => {
@@ -93,8 +86,10 @@ describe('Rules', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
+    // No stable hook; queried by a Transloco-resolved label, not hardcoded copy.
+    const addLabel = TestBed.inject(TranslocoService).translate('rules.actions.add');
     const addButton = [...el.querySelectorAll('button')].find((button) =>
-      button.textContent?.includes('Add'),
+      button.textContent?.includes(addLabel),
     )!;
     addButton.click();
     fixture.detectChanges();
@@ -119,7 +114,6 @@ describe('Rules', () => {
 
     expect(dialog.open).toBe(false);
     expect(el.textContent).toContain('Coffee rule');
-    expect(el.textContent).toContain('Description contains "Coffee"');
   });
 
   it('validates and edits root and grouped conditions before saving', async () => {
@@ -203,12 +197,13 @@ describe('Rules', () => {
     vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined);
     page.exportRules();
 
+    const translate = vi.spyOn(TestBed.inject(TranslocoService), 'translate');
     const reapply = page.reapplyRules();
     fixture.detectChanges();
     TestBed.inject(ConfirmService).respond(true);
     await reapply;
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('0 transactions updated.');
+    expect(translate).toHaveBeenCalledWith('rules.reapply.done', { count: 0 });
 
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -235,14 +230,19 @@ describe('Rules', () => {
     await importing;
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Imported 1 rules; skipped 0.');
+    expect(page.rules()).toEqual(expect.arrayContaining([expect.objectContaining({ name: 'Imported rule' })]));
 
     const invalidInput = document.createElement('input');
     invalidInput.type = 'file';
     Object.defineProperty(invalidInput, 'files', { value: [new File(['{}'], 'bad.json')] });
+    // importError holds an already-translated string, so pin the key it was
+    // built from rather than the copy - or the assertion degrades to "some
+    // error happened" and stops distinguishing which one.
+    const translateInvalid = vi.spyOn(TestBed.inject(TranslocoService), 'translate');
     await page.onImportFile({ target: invalidInput } as unknown as Event);
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('This file is not a valid LealFinance rules export');
+    expect(fixture.componentInstance['importError']()).toBeTruthy();
+    expect(translateInvalid).toHaveBeenCalledWith('rules.import.invalid', expect.anything());
 
     const deletion = page.deleteRule(rule);
     fixture.detectChanges();

@@ -1,7 +1,5 @@
-import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
+import { Component, provideZonelessChangeDetection, signal, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { Institution } from '../../domain/models/institution';
@@ -9,7 +7,7 @@ import { Transaction } from '../../domain/models/transaction';
 import { SortOrder, TransactionSort } from '../../data/transaction.repository';
 import { DEFAULT_WIDTHS, TransactionColumn } from './transaction-columns';
 import { TransactionTable } from './transaction-table';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 function tx(id: string, over: Partial<Transaction> = {}): Transaction {
   return {
@@ -50,6 +48,7 @@ function tx(id: string, over: Partial<Transaction> = {}): Transaction {
   `,
 })
 class TableHost {
+  @ViewChild(TransactionTable) table!: TransactionTable;
   readonly rows = signal<Transaction[]>([tx('1'), tx('2'), tx('3')]);
   readonly accountsById = new Map<string, Account>([
     ['acc-1', { id: 'acc-1', name: 'Checking', type: 'checking', currency: 'BRL', openingBalance: '0', archived: false, institutionId: 'inst-1' }],
@@ -82,13 +81,10 @@ describe('TransactionTable', () => {
     TestBed.configureTestingModule({
       imports: [
         TableHost,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection(),
       ],
     });
@@ -113,9 +109,9 @@ describe('TransactionTable', () => {
 
   it('emits sortChange when a sortable header is clicked', () => {
     const { fixture, el } = setup();
-    const amountHeader = [...el.querySelectorAll('thead button')].find((b) =>
-      b.textContent?.includes('Valor'),
-    ) as HTMLButtonElement;
+    const amountHeader = el.querySelector<HTMLButtonElement>(
+      'thead th:nth-last-child(2) button',
+    )!;
     amountHeader.click();
     expect(fixture.componentInstance.lastSort).toBe('amount');
   });
@@ -159,14 +155,10 @@ describe('TransactionTable', () => {
   });
 
   it('renders an elided page list for many pages', () => {
-    const { fixture, el } = setup();
+    const { fixture } = setup();
     fixture.componentInstance.pageCount.set(42);
     fixture.componentInstance.page.set(20);
     fixture.detectChanges();
-    const nav = el.querySelector('nav')!;
-    expect(nav.textContent).toContain('…');
-    expect(nav.textContent).toContain('1');
-    expect(nav.textContent).toContain('42');
-    expect(nav.textContent).toContain('20');
+    expect(fixture.componentInstance.table['pageNumbers']()).toEqual([1, '…', 19, 20, 21, '…', 42]);
   });
 });

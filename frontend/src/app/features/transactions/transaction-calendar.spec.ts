@@ -1,14 +1,12 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { Institution } from '../../domain/models/institution';
 import { money } from '../../shared/money/money';
 import { buildMonthGrid, CalendarDay } from './calendar-month';
 import { TransactionCalendar } from './transaction-calendar';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 const passthrough = (amount: ReturnType<typeof money>, target: string) => money(amount.amount, target);
 
@@ -68,13 +66,10 @@ describe('TransactionCalendar', () => {
     TestBed.configureTestingModule({
       imports: [
         CalendarHost,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection(),
       ],
     });

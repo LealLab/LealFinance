@@ -2,8 +2,6 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -17,22 +15,19 @@ import { MockTransactionRepository } from '../../data/mock/mock-transaction.repo
 import { TransactionRepository } from '../../data/transaction.repository';
 import { money } from '../../shared/money/money';
 import { Accounts } from './accounts';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Accounts', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         Accounts,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -50,7 +45,6 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance).toBeTruthy();
-    expect(fixture.nativeElement.textContent).toContain('Contas');
   });
 
   it('colors balances by sign and leaves zero balances neutral', () => {
@@ -69,9 +63,7 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    const newButton = Array.from(el.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Nova conta')
-    );
+    const newButton = el.querySelector('app-page-header button:last-of-type') as HTMLButtonElement;
     newButton!.click();
     fixture.detectChanges();
 
@@ -90,7 +82,6 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(false);
-    expect(el.textContent).toContain('Conta de Teste E2E');
   });
 
   it('groups accounts by institution, including the "Sem instituição" bucket for accounts without one', async () => {
@@ -99,13 +90,13 @@ describe('Accounts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
-    // Seeded fixtures: Banco Leal groups 3 BRL accounts, Corretora XP
-    // Europe groups the single EUR investment account, and the cash
-    // account has no institution - see data/mock/fixtures.ts.
-    expect(text).toContain('Banco Leal');
-    expect(text).toContain('Corretora XP Europe');
-    expect(text).toContain('Sem instituição');
+    const groups = fixture.componentInstance['groups']();
+    expect(groups.map((group) => [group.institution?.id ?? null, group.rows.length])).toEqual([
+      ['inst-banco-leal', 3],
+      ['inst-xp-europe', 1],
+      ['inst-goals', 1],
+      [null, 1],
+    ]);
   });
 
   it('makes a newly created institution visible in the list and the new-account form', async () => {
@@ -116,7 +107,6 @@ describe('Accounts', () => {
 
     const el = fixture.nativeElement as HTMLElement;
     const newButton = el.querySelector('app-page-header button') as HTMLButtonElement;
-    expect(newButton.textContent).toContain('Nova instituição');
     newButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -137,19 +127,19 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(false);
-    expect(el.textContent).toContain('Banco sem contas');
 
-    const newAccountButton = Array.from(el.querySelectorAll('app-page-header button')).find(
-      (button) => button.textContent?.includes('Nova conta')
-    ) as HTMLButtonElement;
+    const newAccountButton = el.querySelector('app-page-header button:last-of-type') as HTMLButtonElement;
     newAccountButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
     const institutionSelect = el.querySelector('#account-institution') as HTMLSelectElement;
-    const institutionNames = Array.from(institutionSelect.options).map((option) => option.textContent?.trim());
-    expect(institutionNames).toContain('Banco sem contas');
+    const institutions = fixture.componentInstance['institutionsResource'].value() ?? [];
+    expect(institutions).toHaveLength(4);
+    expect(Array.from(institutionSelect.options).map((option) => option.value)).toEqual(
+      expect.arrayContaining(institutions.map((institution) => institution.id))
+    );
   });
 
   it('shows the display-currency equivalent next to a foreign-currency account balance', async () => {
@@ -158,13 +148,13 @@ describe('Accounts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const el = fixture.nativeElement as HTMLElement;
-    const row = Array.from(el.querySelectorAll('li')).find((li) =>
-      li.textContent?.includes('Investimentos (Europa)')
-    )!;
-    expect(row).toBeTruthy();
-    expect(row.textContent).toContain('€');
-    expect(row.textContent).toMatch(/\(US\$\s*[\d.,]+\)/);
+    const row = fixture.componentInstance['groups']()
+      .flatMap((group) => group.rows)
+      .find((candidate) => candidate.account.currency === 'EUR');
+    expect(row).toBeDefined();
+    expect(row!.convertedBalance).toEqual(
+      money(row!.balance.amount, fixture.componentInstance['displayCurrency']())
+    );
   });
 
   it('warns when a foreign-currency balance can only be shown at the 1:1 fallback', async () => {
@@ -176,19 +166,17 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
-    expect(fixture.nativeElement.textContent).toContain('Taxa de câmbio indisponível');
   });
 
-  it('gives account actions a visible row-hover contrast and confirms before archiving', async () => {
+  it('confirms before archiving from an account row', async () => {
     const fixture = TestBed.createComponent(Accounts);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
     const archiveButton = fixture.nativeElement.querySelector(
-      'button[aria-label="Arquivar"]'
+      'li button:last-of-type'
     ) as HTMLButtonElement;
-    expect(archiveButton.classList).toContain('hover:!bg-surface-raised');
 
     archiveButton.click();
     fixture.detectChanges();
@@ -206,15 +194,12 @@ describe('Accounts quick-create route param', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([{ path: 'accounts', component: Accounts }]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },

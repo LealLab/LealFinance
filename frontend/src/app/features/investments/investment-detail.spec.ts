@@ -2,8 +2,6 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { InvestmentAssetRepository } from '../../data/investment-asset.repository';
@@ -17,22 +15,19 @@ import { MockInvestmentTransactionRepository } from '../../data/mock/mock-invest
 import { MockInvestmentWalletRepository } from '../../data/mock/mock-investment-wallet.repository';
 import { InvestmentDetail } from './investment-detail';
 import { InvestmentTransactionFormModal } from './investment-transaction-form-modal';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('InvestmentDetail', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         InvestmentDetail,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
@@ -50,9 +45,13 @@ describe('InvestmentDetail', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('ACME');
-    expect(fixture.nativeElement.textContent).toContain('WORLD');
-    expect(fixture.nativeElement.textContent).toContain('Bitcoin');
+    expect(fixture.componentInstance['positions']().map((position) => position.asset.id)).toEqual(
+      expect.arrayContaining([
+        'investment-asset-acme',
+        'investment-asset-world',
+        'investment-asset-bitcoin',
+      ])
+    );
   });
 
   it('submits a buy transaction through the real form validation path', async () => {

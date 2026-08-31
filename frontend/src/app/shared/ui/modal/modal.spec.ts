@@ -1,8 +1,7 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { Modal } from './modal';
-import ptBR from '../../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../../../testing/transloco';
 
 @Component({
   selector: 'app-modal-host',
@@ -18,10 +17,7 @@ describe('Modal', () => {
     TestBed.configureTestingModule({
       imports: [
         ModalHost,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [provideZonelessChangeDetection()]
     });

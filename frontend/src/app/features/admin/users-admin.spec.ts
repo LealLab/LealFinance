@@ -1,13 +1,12 @@
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { of, throwError } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { User, Invitation, CreatedInvitation } from '../../core/identity.models';
 import { SessionService } from '../../core/session.service';
 import { UsersAdmin } from './users-admin';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../../testing/transloco';
 
 const USERS: User[] = [
   {
@@ -58,10 +57,7 @@ describe('UsersAdmin', () => {
     await TestBed.configureTestingModule({
       imports: [
         UsersAdmin,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -116,7 +112,7 @@ describe('UsersAdmin', () => {
     expect(api.createInvitation).toHaveBeenCalledWith('new@example.com', 'member');
     expect(fixture.componentInstance['inviteEmail']()).toBe('');
     expect(fixture.componentInstance['issued']()).toEqual(issued);
-    expect((fixture.nativeElement.textContent as string)).toContain('secret-token');
+    expect(fixture.componentInstance['issued']()?.token).toBe('secret-token');
     expect(api.listUsers).toHaveBeenCalledTimes(2);
   });
 

@@ -1,8 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { TranslocoService } from '@jsverse/transloco';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -22,22 +21,19 @@ import { Account } from '../../domain/models/account';
 import { MetadataService } from '../../core/metadata.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { Exchange } from './exchange';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Exchange', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         Exchange,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
@@ -66,10 +62,8 @@ describe('Exchange', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Câmbio');
-    expect(text).toContain('Nada precisa de atenção');
-    expect(text).toContain('Nenhuma taxa manual ainda');
+    expect(fixture.componentInstance['needsAttentionRows']()).toHaveLength(0);
+    expect(fixture.componentInstance['manualRates']()).toHaveLength(0);
   });
 
   it('flags an account currency with no real rate to the display currency, even with no transaction involved', async () => {
@@ -83,13 +77,13 @@ describe('Exchange', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Nada precisa de atenção');
-    expect(text).toContain('EUR');
+    expect(fixture.componentInstance['currenciesNeedingRate']()).toEqual(['EUR']);
 
+    // No stable hook; queried by a Transloco-resolved label, not hardcoded copy.
+    const setRateLabel = TestBed.inject(TranslocoService).translate('currency.fallbackRateWarningAction');
     const setRateButton = Array.from(
       fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>
-    ).find((button) => button.textContent?.includes('Definir taxa'))!;
+    ).find((button) => button.textContent?.includes(setRateLabel))!;
     expect(setRateButton).toBeTruthy();
     setRateButton.click();
     fixture.detectChanges();
@@ -119,9 +113,6 @@ describe('Exchange', () => {
     expect(row!.quoteCode).toBe('USD');
     expect(row!.source).toBe('quote');
 
-    const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Taxas automáticas');
-    expect(text).toContain('BRL → USD');
   });
 
   it('stops flagging a currency once a manual rate covers it', async () => {
@@ -137,7 +128,7 @@ describe('Exchange', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Nenhuma moeda precisa de uma taxa');
+    expect(fixture.componentInstance['currenciesNeedingRate']()).toHaveLength(0);
   });
 
   it('lists a transaction whose conversion used a fallback rate, and opens it for editing via "Fix"', async () => {
@@ -172,9 +163,13 @@ describe('Exchange', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Aporte convertido às pressas');
 
+    // No stable hook in the template, so this is queried by label - but the
+    // label is resolved through Transloco rather than hardcoded, so rewording
+    // the catalog moves both sides together and cannot break the query.
+    const fixLabel = TestBed.inject(TranslocoService).translate('exchange.needsAttention.actions.fix');
     const fixButton = Array.from(
       fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>
-    ).find((button) => button.textContent?.trim() === 'Corrigir')!;
+    ).find((button) => button.textContent?.trim() === fixLabel)!;
     fixButton.click();
     fixture.detectChanges();
 
@@ -189,8 +184,10 @@ describe('Exchange', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
+    // No stable hook; queried by a Transloco-resolved label, not hardcoded copy.
+    const addLabel = TestBed.inject(TranslocoService).translate('exchange.manualRates.actions.add');
     const addButton = Array.from(el.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Adicionar taxa')
+      b.textContent?.includes(addLabel)
     )!;
     addButton.click();
     fixture.detectChanges();
@@ -212,7 +209,10 @@ describe('Exchange', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(false);
-    expect(el.textContent).toContain('5.35');
-    expect(el.textContent).toContain('USD → BRL');
+    expect(fixture.componentInstance['manualRates']()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ baseCode: 'USD', quoteCode: 'BRL', rate: '5.35' }),
+      ]),
+    );
   });
 });

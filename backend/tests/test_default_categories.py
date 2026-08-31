@@ -45,8 +45,6 @@ async def test_registration_seeds_localized_and_fallback_defaults(
     assert len(categories_response.json()) == 27
     assert {row["name"] for row in groups_response.json()} == german_groups
     assert {row["name"] for row in categories_response.json()} == german_categories
-    assert "Wohnen" in {row["name"] for row in groups_response.json()}
-    assert "Miete" in {row["name"] for row in categories_response.json()}
 
     invitation_response = await client.post(
         "/api/v1/auth/invitations", json={"email": "fallback@example.com", "role": "member"}
@@ -73,5 +71,3 @@ async def test_registration_seeds_localized_and_fallback_defaults(
     assert len(fallback_categories_response.json()) == 27
     assert {row["name"] for row in fallback_groups_response.json()} == english_groups
     assert {row["name"] for row in fallback_categories_response.json()} == english_categories
-    assert "Housing" in {row["name"] for row in fallback_groups_response.json()}
-    assert "Rent" in {row["name"] for row in fallback_categories_response.json()}

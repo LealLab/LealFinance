@@ -1,12 +1,10 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { Transaction } from '../../domain/models/transaction';
 import { TransactionBulkBar } from './transaction-bulk-bar';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 function tx(over: Partial<Transaction>): Transaction {
   return {
@@ -60,13 +58,10 @@ describe('TransactionBulkBar', () => {
     TestBed.configureTestingModule({
       imports: [
         BulkHost,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
-        provideTranslocoLocale({ defaultLocale: 'pt-BR', defaultCurrency: 'BRL' }),
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection(),
       ],
     });
@@ -86,7 +81,7 @@ describe('TransactionBulkBar', () => {
     fixture.componentInstance.signedTotal.set('-20.00');
     fixture.detectChanges();
 
-    expect(el.textContent).toContain('2');
+    expect(fixture.componentInstance.selected()).toHaveLength(2);
     const trigger = el.querySelector('[dropdownTrigger]') as HTMLButtonElement;
     expect(trigger.disabled).toBe(false);
   });
@@ -103,9 +98,9 @@ describe('TransactionBulkBar', () => {
     const { fixture, el } = setup();
     fixture.componentInstance.selected.set([tx({ type: 'expense' })]);
     fixture.detectChanges();
-    const buttons = [...el.querySelectorAll('button')];
-    buttons.find((b) => b.getAttribute('aria-label')?.includes('Excluir'))!.click();
-    buttons.find((b) => b.getAttribute('aria-label')?.includes('seleç') || b.getAttribute('aria-label')?.includes('Limpar'))!.click();
+    const buttons = el.querySelectorAll<HTMLButtonElement>('app-transaction-bulk-bar > div > button');
+    buttons[0].click();
+    buttons[1].click();
     expect(fixture.componentInstance.deleted).toBe(true);
     expect(fixture.componentInstance.cleared).toBe(true);
   });

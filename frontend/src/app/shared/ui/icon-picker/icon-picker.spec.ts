@@ -1,9 +1,9 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { provideTestTransloco } from '../../../../testing/transloco';
 import { ICON_GROUPS, IconName } from '../icon/icon';
 import { IconPicker } from './icon-picker';
-import ptBR from '../../../../../public/i18n/pt-BR.json';
 
 const PICKABLE_ICON_COUNT = Object.values(ICON_GROUPS).flat().length;
 
@@ -41,10 +41,7 @@ describe('IconPicker', () => {
     TestBed.configureTestingModule({
       imports: [
         IconPickerHost,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' }
-        })
+        provideTestTransloco()
       ],
       providers: [provideZonelessChangeDetection()]
     });
@@ -65,8 +62,10 @@ describe('IconPicker', () => {
     const fixture = TestBed.createComponent(IconPickerHost);
     fixture.detectChanges();
 
-    const button = fixture.nativeElement.querySelector('dialog button[aria-label="Seta para Baixo"]');
-    expect(button).toBeNull();
+    const picker = fixture.debugElement.query(By.directive(IconPicker)).componentInstance as IconPicker;
+    expect(
+      picker['filtered']().flatMap((section) => section.names),
+    ).not.toContain('chevronDown');
   });
 
   it('narrows the grid when searching and restores it when the query clears', () => {
@@ -113,10 +112,10 @@ describe('IconPicker', () => {
     expect(fixture.nativeElement.querySelector('dialog')).toBeNull();
     expect(fixture.nativeElement.querySelectorAll('button[aria-pressed]').length).toBe(PICKABLE_ICON_COUNT);
 
-    const button = fixture.nativeElement.querySelector('button[aria-label="Carteira"]') as HTMLButtonElement;
+    const button = fixture.nativeElement.querySelector('button[aria-pressed]') as HTMLButtonElement;
     button.click();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.lastPicked()).toBe('wallet');
+    expect(fixture.componentInstance.lastPicked()).toBe(ICON_GROUPS.money[0]);
   });
 });

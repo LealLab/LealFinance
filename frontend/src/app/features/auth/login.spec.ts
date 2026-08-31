@@ -1,12 +1,11 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { TranslocoTestingModule } from '@jsverse/transloco';
 import { of, throwError } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
 import { Login } from './login';
-import ptBR from '../../../../public/i18n/pt-BR.json';
+import { provideTestTransloco } from '../../../testing/transloco';
 
 describe('Login', () => {
   let session: { login: ReturnType<typeof vi.fn> };
@@ -18,10 +17,7 @@ describe('Login', () => {
     await TestBed.configureTestingModule({
       imports: [
         Login,
-        TranslocoTestingModule.forRoot({
-          langs: { 'pt-BR': ptBR },
-          translocoConfig: { availableLangs: ['pt-BR'], defaultLang: 'pt-BR' },
-        }),
+        provideTestTransloco(),
       ],
       providers: [
         provideZonelessChangeDetection(),
@@ -99,7 +95,7 @@ describe('Login', () => {
     // The challenge is a step, not a failure - no alert should appear.
     expect(fixture.componentInstance['errorCode']()).toBeUndefined();
     expect(fixture.nativeElement.querySelector('[role="alert"]')).toBeNull();
-    expect(fixture.nativeElement.textContent).toContain('Verificação em duas etapas');
+    expect(fixture.componentInstance['challenging']()).toBe(true);
     expect(fixture.nativeElement.querySelector('input[type="checkbox"]')).not.toBeNull();
   });
 
