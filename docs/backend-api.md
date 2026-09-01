@@ -209,8 +209,9 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/conversations` | user | Creates a conversation, optionally pinned to a configured provider. |
 | GET | `/agents/conversations/{id}` | user | Returns a conversation and its ordered messages. |
 | DELETE | `/agents/conversations/{id}` | user | Deletes the conversation and its messages. |
-| POST | `/agents/conversations/{id}/messages` | user | Streams the assistant response as `text/event-stream`. |
-| POST | `/agents/conversations/{id}/confirm` | user | Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
+| POST | `/agents/conversations/{id}/messages` | user | Body `{content}`. Streams the assistant response as `text/event-stream`. Needs `ai_chat_enabled`. |
+| POST | `/agents/conversations/{id}/confirm` | user | Body `{tool_call_id, approved, arguments?}`. Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
+| POST | `/agents/mcp-token` | user | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Needs `ai_chat_enabled`. |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
 | GET/PATCH | `/investments/wallets/{id}` | user | |
 | POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |
@@ -528,8 +529,32 @@ never a `Date` pinned to the 1st.
 ## AI agents
 
 See [`ai-agents.md`](ai-agents.md) for provider setup, credential
-precedence, and the OAuth linking flow. `provider` is one of `anthropic`,
-`openai`, `ollama`.
+precedence, the OAuth linking flow, the tool set, and the MCP server.
+`provider` is one of `anthropic`, `openai`, `ollama`.
+
+Provider linking is administrator-only. Chat is per user, gated by the
+admin-set `ai_chat_enabled` flag on the user (see `PATCH /auth/users/{id}`).
+
+### Streaming responses
+
+`/messages` and `/confirm` respond with `text/event-stream`. The client must
+POST (not `EventSource`) so the `X-XSRF-TOKEN` header can be sent. Frames are
+`event: <name>\ndata: <json>\n\n`, interleaved with `: heartbeat\n\n` comments.
+Every stream ends with exactly one `done` **or** one `error`.
+
+| Event | Payload |
+| --- | --- |
+| `delta` | `{text}` - append to the current assistant message |
+| `tool_call` | `{id, name, arguments}` - a read tool started |
+| `tool_result` | `{id, name, ok}` - that tool finished |
+| `tool_confirm` | `{id, name, arguments}` - a write tool is waiting; call `/confirm` |
+| `refusal` | `{code}` - always `agents.off_topic`; render a translated message |
+| `error` | `{code, params}` - same envelope as a normal error body |
+| `done` | `{status, message_id}` - `status` is `idle` or `awaiting_confirmation` |
+
+Failures before the `200` (unknown conversation, flag off, stale confirm) are
+normal JSON error bodies with real status codes; failures after it are `error`
+frames carrying the same `code`/`params`.
 
 | Code | Status |
 | --- | --- |
@@ -537,9 +562,12 @@ precedence, and the OAuth linking flow. `provider` is one of `anthropic`,
 | `agents.chat_not_allowed` | 403 |
 | `agents.provider_unknown` | 404 |
 | `agent_credential.not_found` | 404 |
+| `agent_conversation.not_found` | 404 |
 | `agents.not_configured` | 422 |
 | `agents.api_key_required` | 422 |
 | `agents.base_url_required` | 422 |
+| `agents.tool_arguments_invalid` | 422 |
+| `analytics.invalid_month` | 422 |
 | `agents.oauth_unsupported` | 422 |
 | `agents.oauth_state_mismatch` | 422 |
 | `agents.oauth_failed` | 422 |

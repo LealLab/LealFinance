@@ -10,10 +10,12 @@
 | `worker` | Background jobs, including recurring-rule posting. |
 | `beat` | Schedules periodic jobs for `worker`. |
 | `web` | Serves the Angular app and proxies `/api/` to `api`. |
+| `mcp` | Standalone MCP server for external clients, behind the `agents` profile. |
 | `ollama` | Optional local model runner behind the `agents` profile. |
 
-`api`, `worker`, and `beat` use the same backend image with different commands.
-The AI feature runs inside `api`; `ollama` is only the optional local provider.
+`api`, `worker`, `beat`, and `mcp` use the same backend image with different
+commands. AI chat runs inside `api`; `mcp` re-exposes the same tool set to
+external MCP clients; `ollama` is only the optional local provider.
 
 ## Request flow
 
@@ -41,7 +43,8 @@ backend/app/
 ├── dev.py                  # native dev entrypoint
 ├── core/                   # config, database, errors, security, crypto
 ├── api/                    # dependencies and HTTP routers
-├── agents/                 # optional AI provider integration
+├── agents/                 # AI: credentials, streaming adapters, tools, loop, prompt
+├── mcp/                    # standalone MCP server over the same tool registry
 ├── models/                 # SQLAlchemy models and reusable money types
 ├── schemas/                # Pydantic request/response models
 ├── services/               # domain logic and ownership scoping
