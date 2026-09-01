@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "Yapay zekâ sohbeti",
+    "conversations": "Konuşmalar",
     "newChat": "Yeni sohbet",
     "empty": {
       "title": "Bir sohbet başlatın",

@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "Chat IA",
+    "conversations": "Conversazioni",
     "newChat": "Nuova chat",
     "empty": {
       "title": "Inizia una conversazione",

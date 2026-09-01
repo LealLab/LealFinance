@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "Чат с ИИ",
+    "conversations": "Диалоги",
     "newChat": "Новый чат",
     "empty": {
       "title": "Начать разговор",

@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "Trò chuyện AI",
+    "conversations": "Cuộc trò chuyện",
     "newChat": "Cuộc trò chuyện mới",
     "empty": {
       "title": "Bắt đầu cuộc trò chuyện",

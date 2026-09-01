@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "AI 聊天",
+    "conversations": "對話",
     "newChat": "新聊天",
     "empty": {
       "title": "開始對話",

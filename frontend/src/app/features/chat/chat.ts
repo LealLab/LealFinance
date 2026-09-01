@@ -49,7 +49,7 @@ interface ConfirmationEntry {
 }
 
 /**
- * t(chat.title, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
+ * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
  */
 @Component({
   selector: 'app-chat',

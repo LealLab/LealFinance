@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "Чат зі ШІ",
+    "conversations": "Діалоги",
     "newChat": "Новий чат",
     "empty": {
       "title": "Почніть розмову",

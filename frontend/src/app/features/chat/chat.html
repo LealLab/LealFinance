@@ -1,44 +1,70 @@
-<div *transloco="let t" class="min-w-0">
-  <div class="mb-4 flex items-center justify-between gap-3">
+<div *transloco="let t" class="chat-page min-w-0">
+  <div class="mb-4 flex shrink-0 items-center justify-between gap-3">
     <h1 class="text-xl font-semibold text-content-primary">{{ t('chat.title') }}</h1>
-    <button appButton type="button" size="sm" (click)="newChat()">
+    <button
+      appButton
+      variant="primary"
+      type="button"
+      size="sm"
+      class="shrink-0"
+      (click)="newChat()"
+    >
       <app-icon name="plus" [size]="16" />
       {{ t('chat.newChat') }}
     </button>
   </div>
 
-  <div class="grid min-w-0 gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
-    <app-card [padded]="false" class="min-w-0">
-      <div class="flex flex-col gap-1 p-2">
-        @for (conversation of conversationList(); track conversation.id) {
-          <div class="flex min-w-0 items-center gap-1 rounded-md hover:bg-surface-sunken">
-            <button
-              type="button"
-              class="min-w-0 flex-1 px-2 py-2 text-left text-sm text-content-primary"
-              [class.bg-surface-sunken]="activeId() === conversation.id"
-              (click)="selectConversation(conversation.id)"
-            >
-              <span class="block truncate">{{ conversation.title || t('chat.newChat') }}</span>
-              <span class="block truncate text-xs text-content-muted">{{
-                conversation.updatedAt | date
-              }}</span>
-            </button>
-            <button
-              type="button"
-              class="shrink-0 p-2 text-content-muted hover:text-negative"
-              [attr.aria-label]="t('chat.delete.title')"
-              (click)="deleteConversation(conversation.id)"
-            >
-              <app-icon name="trash" [size]="16" />
-            </button>
-          </div>
-        } @empty {
-          <p class="p-2 text-sm text-content-muted">{{ t('chat.empty.body') }}</p>
-        }
-      </div>
-    </app-card>
+  <div class="chat-layout grid min-h-0 min-w-0 flex-1 gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
+    <details open class="chat-conversations min-h-0">
+      <summary
+        class="chat-conversations-toggle flex cursor-pointer items-center justify-between gap-2 rounded-md border border-border bg-surface-raised px-3 py-2 text-sm font-medium text-content-primary md:hidden"
+      >
+        <span class="flex items-center gap-2">
+          <app-icon name="menu" [size]="16" />
+          {{ t('chat.conversations') }}
+        </span>
+        <app-icon name="chevronDown" [size]="16" class="chat-chevron" />
+      </summary>
 
-    <section class="min-w-0">
+      <app-card [padded]="false" class="chat-conversation-card min-h-0 overflow-hidden">
+        <div class="chat-conversation-list flex flex-col gap-1 p-2">
+          @for (conversation of conversationList(); track conversation.id) {
+            <div class="flex min-w-0 items-center gap-1 rounded-md hover:bg-surface-sunken">
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                class="min-w-0 flex-1 !justify-start !rounded-md !px-2 !py-2 text-left"
+                [class.bg-surface-sunken]="activeId() === conversation.id"
+                [attr.aria-current]="activeId() === conversation.id ? 'page' : null"
+                (click)="selectConversation(conversation.id)"
+              >
+                <span class="block truncate">{{ conversation.title || t('chat.newChat') }}</span>
+                <span class="block truncate text-xs text-content-muted">{{
+                  conversation.updatedAt | date
+                }}</span>
+              </button>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                class="shrink-0 !p-2 !text-content-muted hover:!text-negative"
+                [attr.aria-label]="t('chat.delete.title')"
+                (click)="deleteConversation(conversation.id)"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
+            </div>
+          } @empty {
+            <p class="p-2 text-sm text-content-muted">{{ t('chat.empty.body') }}</p>
+          }
+        </div>
+      </app-card>
+    </details>
+
+    <section class="chat-thread-panel min-h-0 min-w-0">
       @if (!activeId()) {
         <app-empty-state
           icon="sparkles"
@@ -50,81 +76,88 @@
       } @else if (detail.isLoading()) {
         <app-skeleton height="20rem" />
       } @else {
-        <div class="flex min-w-0 flex-col gap-3">
-          @for (turn of liveMessages(); track $index) {
-            <div class="flex min-w-0" [class.justify-end]="turn.role === 'user'">
-              <div
-                class="min-w-0 max-w-[90%] break-words whitespace-pre-wrap rounded-md border p-3 text-sm md:max-w-[75%]"
-                [class.border-accent]="turn.role === 'user'"
-                [class.bg-accent/10]="turn.role === 'user'"
-                [class.border-border]="turn.role === 'assistant'"
-                [class.bg-surface-raised]="turn.role === 'assistant'"
-              >
-                @if (turn.text === '[[LF_OFF_TOPIC]]') {
-                  {{ t('chat.offTopic') }}
-                } @else if (turn.text) {
-                  @if (turn.role === 'assistant') {
-                    <div class="chat-md" [innerHTML]="turn.text | markdown"></div>
-                  } @else {
-                    {{ turn.text }}
-                  }
-                } @else if (turn.role === 'assistant' && sending()) {
-                  <span class="text-content-muted">{{ t('chat.thinking') }}</span>
-                }
-                @if (turn.tools.length) {
-                  <div class="mt-2 flex flex-wrap gap-1">
-                    @for (tool of turn.tools; track tool.id) {
-                      <span
-                        class="rounded-full bg-surface-sunken px-2 py-1 text-xs text-content-muted"
-                      >
-                        {{ tool.name }} ·
-                        {{ tool.ok === undefined ? t('chat.toolRunning') : t('chat.toolDone') }}
-                      </span>
+        <div class="chat-thread flex h-full min-w-0 flex-col gap-3">
+          <div class="chat-messages min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pe-1">
+            @for (turn of liveMessages(); track $index) {
+              <div class="mb-3 flex min-w-0 last:mb-0" [class.justify-end]="turn.role === 'user'">
+                <div
+                  class="min-w-0 max-w-[90%] break-words whitespace-pre-wrap rounded-md border p-3 text-sm md:max-w-[75%]"
+                  [class.border-accent]="turn.role === 'user'"
+                  [class.bg-accent/10]="turn.role === 'user'"
+                  [class.border-border]="turn.role === 'assistant'"
+                  [class.bg-surface-raised]="turn.role === 'assistant'"
+                >
+                  @if (turn.text === '[[LF_OFF_TOPIC]]') {
+                    {{ t('chat.offTopic') }}
+                  } @else if (turn.text) {
+                    @if (turn.role === 'assistant') {
+                      <div class="chat-md" [innerHTML]="turn.text | markdown"></div>
+                    } @else {
+                      {{ turn.text }}
                     }
-                  </div>
-                }
-                @if (turn.pendingConfirm; as confirmation) {
-                  <app-card class="mt-3 border-warning/40 bg-warning/5">
-                    <h2 class="text-sm font-semibold text-content-primary">
-                      {{ t('chat.confirm.title') }}
-                    </h2>
-                    <p class="mt-1 text-sm text-content-muted">
-                      {{ t('chat.confirm.body', { name: confirmation.name }) }}
-                    </p>
-                    <dl class="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-xs">
-                      @for (entry of confirmationEntries(confirmation.arguments); track $index) {
-                        <dt class="text-content-muted">
-                          {{ entry.labelKey ? t(entry.labelKey) : entry.label }}
-                        </dt>
-                        <dd class="min-w-0 break-words text-content-primary">{{ entry.value }}</dd>
+                  } @else if (turn.role === 'assistant' && sending()) {
+                    <span class="text-content-muted">{{ t('chat.thinking') }}</span>
+                  }
+                  @if (turn.tools.length) {
+                    <div class="mt-2 flex flex-wrap gap-1">
+                      @for (tool of turn.tools; track tool.id) {
+                        <span
+                          class="rounded-full bg-surface-sunken px-2 py-1 text-xs text-content-muted"
+                        >
+                          {{ tool.name }} ·
+                          {{ tool.ok === undefined ? t('chat.toolRunning') : t('chat.toolDone') }}
+                        </span>
                       }
-                    </dl>
-                    <div class="mt-3 flex flex-wrap gap-2">
-                      <button
-                        appButton
-                        type="button"
-                        size="sm"
-                        (click)="confirmTool(confirmation, true)"
-                      >
-                        {{ t('chat.confirm.approve') }}
-                      </button>
-                      <button
-                        appButton
-                        type="button"
-                        variant="danger"
-                        size="sm"
-                        (click)="confirmTool(confirmation, false)"
-                      >
-                        {{ t('chat.confirm.reject') }}
-                      </button>
                     </div>
-                  </app-card>
-                }
+                  }
+                  @if (turn.pendingConfirm; as confirmation) {
+                    <app-card class="mt-3 border-warning/40 bg-warning/5">
+                      <h2 class="text-sm font-semibold text-content-primary">
+                        {{ t('chat.confirm.title') }}
+                      </h2>
+                      <p class="mt-1 text-sm text-content-muted">
+                        {{ t('chat.confirm.body', { name: confirmation.name }) }}
+                      </p>
+                      <dl class="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-xs">
+                        @for (entry of confirmationEntries(confirmation.arguments); track $index) {
+                          <dt class="text-content-muted">
+                            {{ entry.labelKey ? t(entry.labelKey) : entry.label }}
+                          </dt>
+                          <dd class="min-w-0 break-words text-content-primary">
+                            {{ entry.value }}
+                          </dd>
+                        }
+                      </dl>
+                      <div class="mt-3 flex flex-wrap gap-2">
+                        <button
+                          appButton
+                          variant="primary"
+                          type="button"
+                          size="sm"
+                          (click)="confirmTool(confirmation, true)"
+                        >
+                          <app-icon name="check" [size]="16" />
+                          {{ t('chat.confirm.approve') }}
+                        </button>
+                        <button
+                          appButton
+                          type="button"
+                          variant="danger"
+                          size="sm"
+                          (click)="confirmTool(confirmation, false)"
+                        >
+                          <app-icon name="close" [size]="16" />
+                          {{ t('chat.confirm.reject') }}
+                        </button>
+                      </div>
+                    </app-card>
+                  }
+                </div>
               </div>
-            </div>
-          } @empty {
-            <p class="text-sm text-content-muted">{{ t('chat.empty.body') }}</p>
-          }
+            } @empty {
+              <p class="text-sm text-content-muted">{{ t('chat.empty.body') }}</p>
+            }
+          </div>
 
           @if (errorKey(); as key) {
             <p
@@ -135,33 +168,41 @@
             </p>
           }
 
-          <div class="flex min-w-0 flex-col gap-2 border-t border-border pt-3">
-            <textarea
-              class="form-input min-h-24 min-w-0 resize-y"
-              [placeholder]="t('chat.composer.placeholder')"
-              [value]="composer()"
-              [disabled]="
-                sending() ||
-                detail.value()?.status === 'awaiting_confirmation' ||
-                liveMessages().some((turn) => turn.pendingConfirm)
-              "
-              (input)="composer.set($any($event.target).value)"
-              (keydown)="onComposerKeydown($event)"
-            ></textarea>
-            <button
-              appButton
-              type="button"
-              class="self-end"
-              [disabled]="
-                sending() ||
-                !composer().trim() ||
-                detail.value()?.status === 'awaiting_confirmation' ||
-                liveMessages().some((turn) => turn.pendingConfirm)
-              "
-              (click)="send(composer())"
-            >
-              {{ sending() ? t('chat.thinking') : t('chat.send') }}
-            </button>
+          <div class="chat-composer shrink-0 border-t border-border pt-3">
+            <div class="flex min-w-0 items-end gap-2">
+              <textarea
+                class="form-input !mt-0 min-h-20 min-w-0 flex-1 resize-none"
+                [placeholder]="t('chat.composer.placeholder')"
+                [attr.aria-label]="t('chat.composer.placeholder')"
+                [value]="composer()"
+                [disabled]="
+                  sending() ||
+                  detail.value()?.status === 'awaiting_confirmation' ||
+                  liveMessages().some((turn) => turn.pendingConfirm)
+                "
+                (input)="composer.set($any($event.target).value)"
+                (keydown)="onComposerKeydown($event)"
+              ></textarea>
+              <button
+                appButton
+                type="button"
+                variant="primary"
+                class="shrink-0"
+                [attr.aria-label]="sending() ? t('chat.thinking') : t('chat.send')"
+                [disabled]="
+                  sending() ||
+                  !composer().trim() ||
+                  detail.value()?.status === 'awaiting_confirmation' ||
+                  liveMessages().some((turn) => turn.pendingConfirm)
+                "
+                (click)="send(composer())"
+              >
+                <app-icon name="cornerDownLeft" [size]="16" />
+                <span class="hidden sm:inline">{{
+                  sending() ? t('chat.thinking') : t('chat.send')
+                }}</span>
+              </button>
+            </div>
           </div>
         </div>
       }

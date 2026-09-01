@@ -1,6 +1,7 @@
 {
   "chat": {
     "title": "AI चैट",
+    "conversations": "बातचीत",
     "newChat": "नई चैट",
     "empty": {
       "title": "बातचीत शुरू करें",
