@@ -14,6 +14,7 @@ import {
   AgentStreamEvent,
 } from '../../domain/models/agent-chat';
 import { ConfirmService } from '../../core/confirm.service';
+import { MarkdownPipe } from '../../shared/pipes/markdown.pipe';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
@@ -52,7 +53,7 @@ interface ConfirmationEntry {
  */
 @Component({
   selector: 'app-chat',
-  imports: [TranslocoDirective, DatePipe, Button, Card, EmptyState, Icon, Skeleton],
+  imports: [TranslocoDirective, DatePipe, MarkdownPipe, Button, Card, EmptyState, Icon, Skeleton],
   templateUrl: './chat.html',
   styleUrl: './chat.scss',
 })

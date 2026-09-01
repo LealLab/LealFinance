@@ -63,7 +63,11 @@
                 @if (turn.text === '[[LF_OFF_TOPIC]]') {
                   {{ t('chat.offTopic') }}
                 } @else if (turn.text) {
-                  {{ turn.text }}
+                  @if (turn.role === 'assistant') {
+                    <div class="chat-md" [innerHTML]="turn.text | markdown"></div>
+                  } @else {
+                    {{ turn.text }}
+                  }
                 } @else if (turn.role === 'assistant' && sending()) {
                   <span class="text-content-muted">{{ t('chat.thinking') }}</span>
                 }
