@@ -19,7 +19,7 @@ from app.models.agent_conversation import (
 )
 from app.models.agent_message import AgentMessage
 from app.models.transaction import Transaction
-from app.models.user import ROLE_MEMBER
+from app.models.user import ROLE_ADMIN, ROLE_MEMBER
 from tests.factories import login_as, make_user
 
 
@@ -41,8 +41,8 @@ def _enable_agents(monkeypatch: pytest.MonkeyPatch, **overrides: object) -> None
     monkeypatch.setattr(credentials_module, "get_settings", lambda: patched)
 
 
-async def _chat_user(client: AsyncClient, db: AsyncSession, email: str):
-    user, password = await make_user(db, email=email, role=ROLE_MEMBER)
+async def _chat_user(client: AsyncClient, db: AsyncSession, email: str, role: str = ROLE_MEMBER):
+    user, password = await make_user(db, email=email, role=role)
     user.ai_chat_enabled = True
     await db.commit()
     await login_as(client, email=user.email, password=password)
@@ -347,6 +347,18 @@ async def test_foreign_conversation_is_hidden_from_all_routes(
         await other_client.post(f"{path}/confirm", json={"tool_call_id": "w1", "approved": True}),
     ):
         assert response.status_code == 404
+
+
+async def test_active_admin_can_chat_without_ai_chat_flag(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    await _chat_user(client, db_session, "chat-admin@example.com", role=ROLE_ADMIN)
+
+    response = await client.get("/api/v1/agents/conversations")
+
+    assert response.status_code == 200, response.text
+    assert response.json() == []
 
 
 async def test_disabled_chat_member_is_rejected_on_all_new_routes(

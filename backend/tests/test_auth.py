@@ -232,6 +232,24 @@ async def test_admin_can_list_and_update_users(
     assert disabled_member["ai_chat_enabled"] is False
 
 
+async def test_demoting_admin_preserves_stored_ai_chat_flag(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    admin, password = await make_user(
+        db_session, email="demote-preserve-chat@example.com", role=ROLE_ADMIN
+    )
+    await make_user(db_session, email="remaining-admin@example.com", role=ROLE_ADMIN)
+    admin.ai_chat_enabled = True
+    await db_session.commit()
+    await login_as(client, email=admin.email, password=password)
+
+    response = await client.patch(f"/api/v1/auth/users/{admin.id}", json={"role": "member"})
+
+    assert response.status_code == 200
+    assert response.json()["role"] == "member"
+    assert response.json()["ai_chat_enabled"] is True
+
+
 async def test_cannot_demote_the_last_admin(client: AsyncClient, db_session: AsyncSession) -> None:
     admin, password = await make_user(db_session, email="lastadmin@example.com", role=ROLE_ADMIN)
     await login_as(client, email=admin.email, password=password)

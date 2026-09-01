@@ -18,7 +18,7 @@ from starlette.types import Receive, Scope, Send
 import app.mcp.server as mcp_server
 from app.agents import tools
 from app.core import crypto
-from app.models.user import ROLE_MEMBER, User
+from app.models.user import ROLE_ADMIN, ROLE_MEMBER, User
 from tests.factories import make_user
 
 
@@ -70,12 +70,12 @@ async def _get_real(path: str, token: str | None = None) -> httpx.Response:
 
 
 async def _user_token(
-    db_session: AsyncSession, *, enabled: bool, active: bool = True
+    db_session: AsyncSession, *, enabled: bool, active: bool = True, role: str = ROLE_MEMBER
 ) -> tuple[User, str]:
     user, _ = await make_user(
         db_session,
         email=f"mcp-{enabled}-{active}@example.com",
-        role=ROLE_MEMBER,
+        role=role,
         is_active=active,
     )
     user.ai_chat_enabled = enabled
@@ -125,6 +125,22 @@ async def test_mcp_accepts_active_chat_user(db_session) -> None:
     spy = _SpyApp()
     assert await _call_middleware(spy, token=token) == 200
     assert spy.called is True
+
+
+async def test_mcp_accepts_active_admin_without_chat_flag(db_session) -> None:
+    _, token = await _user_token(db_session, enabled=False, role=ROLE_ADMIN)
+
+    spy = _SpyApp()
+    assert await _call_middleware(spy, token=token) == 200
+    assert spy.called is True
+
+
+async def test_mcp_rejects_inactive_admin(db_session) -> None:
+    _, token = await _user_token(db_session, enabled=False, active=False, role=ROLE_ADMIN)
+
+    spy = _SpyApp()
+    assert await _call_middleware(spy, token=token) == 401
+    assert spy.called is False
 
 
 def test_registered_tools_match_registry() -> None:

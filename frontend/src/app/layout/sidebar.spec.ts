@@ -48,6 +48,7 @@ describe('Sidebar', () => {
     const links = [...fixture.nativeElement.querySelectorAll('a')].map((link) =>
       (link as HTMLAnchorElement).getAttribute('href'),
     );
+    expect(links).toContain('/chat');
     expect(links).toContain('/admin/providers');
   });
 

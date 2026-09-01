@@ -67,7 +67,9 @@ export const aiChatGuard: CanActivateFn = () => {
   const router = inject(Router);
   return session.ensureLoaded().pipe(
     map((ready) =>
-      ready && session.user()?.aiChatEnabled ? true : router.createUrlTree(['/']),
+      ready && (session.user()?.role === 'admin' || session.user()?.aiChatEnabled)
+        ? true
+        : router.createUrlTree(['/']),
     ),
   );
 };

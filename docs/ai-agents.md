@@ -12,11 +12,13 @@ and never call a provider.
 
 ## Access
 
-Provider linking (`/agents/providers/*`) stays administrator-only. Chat is
-per user and gated by `ai_chat_enabled`, a flag an administrator sets from
-Administration -> Users (`PATCH /auth/users/{id}`), off by default. The same
-flag governs the MCP server, so clearing it revokes a user's access
-immediately - including outstanding MCP tokens.
+Provider linking (`/agents/providers/*`) stays administrator-only. Active
+administrators always have chat access. Members are gated by `ai_chat_enabled`,
+a flag an administrator sets from Administration -> Users
+(`PATCH /auth/users/{id}`), off by default. The same rule governs the MCP
+server, so clearing the flag revokes a member's access immediately - including
+outstanding MCP tokens. An administrator's stored flag is preserved if they
+are later demoted, at which point it governs their member access.
 
 ## Tools
 
@@ -54,9 +56,10 @@ The `agents` Compose profile also starts a standalone MCP server
 external MCP clients such as Claude Desktop. It authenticates with a per-user
 bearer token from `POST /api/v1/agents/mcp-token` - a Fernet value derived from
 `API_SECRET_KEY` carrying only the user id, valid for one year, shown once.
-Individual tokens cannot be revoked; the levers are clearing `ai_chat_enabled`,
-deactivating the user, or rotating `API_SECRET_KEY`. Publishing port 8001 (or
-adding an nginx location) to reach it from the host is an operator decision.
+Individual tokens cannot be revoked; the levers are clearing `ai_chat_enabled`
+for a member, deactivating the user, or rotating `API_SECRET_KEY`. Publishing
+port 8001 (or adding an nginx location) to reach it from the host is an
+operator decision.
 
 ## Enable the feature
 
@@ -72,7 +75,7 @@ OLLAMA_BASE_URL=http://ollama:11434
 
 `ollama` is a Compose hostname. Use the address of an external Ollama server
 instead when it runs elsewhere. After enabling, an administrator links a
-provider and turns on `ai_chat_enabled` for each user who should have chat.
+provider and turns on `ai_chat_enabled` for each member who should have chat.
 
 Ollama is supported for plain chat; its tool-calling is best-effort and not
 relied on.

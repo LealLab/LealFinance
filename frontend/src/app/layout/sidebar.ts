@@ -74,7 +74,7 @@ export function navSectionsFor(
             { path: '/investments', labelKey: 'layout.nav.investments', icon: 'chart' as IconName },
           ],
         }
-      : section.labelKey === 'layout.nav.sections.analysis' && aiChatEnabled
+      : section.labelKey === 'layout.nav.sections.analysis' && (role === 'admin' || aiChatEnabled)
         ? {
             ...section,
             items: [

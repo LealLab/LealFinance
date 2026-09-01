@@ -21,7 +21,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from app.agents import MCP_TOKEN_TTL_SECONDS, tools
 from app.core import crypto
 from app.core.db import session_scope
-from app.models.user import User
+from app.models.user import ROLE_ADMIN, User
 
 _CURRENT_USER: ContextVar[UUID] = ContextVar("mcp_user_id")
 
@@ -76,7 +76,7 @@ def _bearer_token(headers: list[tuple[bytes, bytes]]) -> str | None:
 async def _chat_allowed(user_id: UUID) -> bool:
     async with session_scope() as db:
         user = await db.get(User, user_id)
-    return bool(user and user.ai_chat_enabled and user.is_active)
+    return bool(user and user.is_active and (user.role == ROLE_ADMIN or user.ai_chat_enabled))
 
 
 async def _send_401(send: Send) -> None:

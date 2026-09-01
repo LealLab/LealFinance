@@ -97,6 +97,23 @@ describe('Settings', () => {
     expect(fixture.nativeElement.querySelector('a[href="/admin/providers"]')).not.toBeNull();
   });
 
+  it('shows MCP access to administrators regardless of the stored chat flag', () => {
+    sessionUser.set({
+      id: 'admin-id',
+      email: 'admin@example.com',
+      displayName: 'Admin',
+      role: 'admin',
+      isActive: true,
+      aiChatEnabled: false,
+      createdAt: '',
+    });
+
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Token de acesso MCP');
+  });
+
   it('hides provider management from members', () => {
     sessionUser.set({
       id: 'member-id',

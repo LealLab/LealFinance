@@ -15,7 +15,7 @@
   </div>
 
   <div class="chat-layout grid min-h-0 min-w-0 flex-1 gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
-    <details open class="chat-conversations min-h-0">
+    <details open class="chat-conversations flex min-h-0 flex-col">
       <summary
         class="chat-conversations-toggle flex cursor-pointer items-center justify-between gap-2 rounded-md border border-border bg-surface-raised px-3 py-2 text-sm font-medium text-content-primary md:hidden"
       >
@@ -26,8 +26,8 @@
         <app-icon name="chevronDown" [size]="16" class="chat-chevron" />
       </summary>
 
-      <app-card [padded]="false" class="chat-conversation-card min-h-0 overflow-hidden">
-        <div class="chat-conversation-list flex flex-col gap-1 p-2">
+      <app-card [padded]="false" class="chat-conversation-card min-h-0 flex-1 flex-col overflow-hidden">
+        <div class="chat-conversation-list flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2">
           @for (conversation of conversationList(); track conversation.id) {
             <div class="flex min-w-0 items-center gap-1 rounded-md hover:bg-surface-sunken">
               <button
@@ -72,6 +72,14 @@
           [description]="t('chat.empty.body')"
         >
           <button appButton type="button" (click)="newChat()">{{ t('chat.newChat') }}</button>
+          @if (errorKey(); as key) {
+            <p
+              class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+              role="alert"
+            >
+              {{ t(key) }}
+            </p>
+          }
         </app-empty-state>
       } @else if (detail.isLoading()) {
         <app-skeleton height="20rem" />

@@ -25,19 +25,24 @@
   min-height: 0;
 }
 
-.chat-conversation-card,
+.chat-conversation-card {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.chat-conversation-list {
+  height: auto;
+  overflow-y: auto;
+}
+
 .chat-thread-panel,
 .chat-thread {
   height: 100%;
 }
 
-.chat-conversation-list,
 .chat-messages {
   overflow-y: auto;
-}
-
-.chat-conversation-list {
-  height: 100%;
 }
 
 .chat-conversations-toggle {
@@ -67,6 +72,7 @@
 
   .chat-conversation-card,
   .chat-conversation-list {
+    flex: none;
     height: auto;
     max-height: 10rem;
   }

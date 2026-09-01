@@ -289,7 +289,9 @@ describe('Chat', () => {
       throwError(() => new ApiError(422, 'agents.not_configured', {}));
 
     chat['newChat']();
+    fixture.detectChanges();
 
     expect(chat['errorKey']()).toBe('chat.errors.notConfigured');
+    expect(fixture.nativeElement.querySelector('[role="alert"]')).not.toBeNull();
   });
 });
