@@ -3,8 +3,12 @@
 // bubbles - Angular's style scoping does not reach that content, so the
 // rules are bounded with `::ng-deep` under `.chat-md` rather than left global.
 .chat-md {
+  // The bubble sets `whitespace-pre-wrap` for plain-text turns; the rendered
+  // markdown must not inherit it, or the newlines marked emits between tags
+  // show up as blank lines.
+  white-space: normal;
   font-size: 0.875rem;
-  line-height: 1.55;
+  line-height: 1.5;
 
   ::ng-deep {
     > :first-child {
@@ -21,27 +25,32 @@
     pre,
     blockquote,
     table {
-      margin: 0.5rem 0;
+      margin: 0.3rem 0;
     }
 
     ul,
     ol {
-      padding-left: 1.35rem;
+      padding-left: 1.25rem;
     }
 
     li {
-      margin: 0.15rem 0;
+      margin: 0.05rem 0;
     }
 
     li > p {
       margin: 0;
     }
 
+    li > ul,
+    li > ol {
+      margin: 0.05rem 0;
+    }
+
     h1,
     h2,
     h3,
     h4 {
-      margin: 0.9rem 0 0.4rem;
+      margin: 0.55rem 0 0.2rem;
       font-weight: 600;
       line-height: 1.3;
     }
