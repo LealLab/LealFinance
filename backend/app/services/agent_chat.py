@@ -154,7 +154,7 @@ async def _heartbeat(events: AsyncIterator[bytes], interval: float = 15.0) -> As
 
 
 async def stream_message(
-    user_id: UUID, conversation_id: UUID, content: str
+    user_id: UUID, conversation_id: UUID, content: str, today: date | None = None
 ) -> AsyncIterator[bytes]:
     async with session_scope() as db:
         conversation = await get_conversation(db, user_id, conversation_id)
@@ -176,7 +176,7 @@ async def stream_message(
             yield _sse_frame("error", {"code": "agents.not_configured", "params": {}})
             return
 
-        system = prompt.build(user, date.today())
+        system = prompt.build(user, today or date.today())
         async for event in loop.run_turn(db, conversation, turns, credential, system):
             yield _serialize(event)
 
@@ -187,6 +187,7 @@ async def stream_confirm(
     tool_call_id: str,
     approved: bool,
     arguments: dict[str, Any] | None,
+    today: date | None = None,
 ) -> AsyncIterator[bytes]:
     async with session_scope() as db:
         conversation = await get_conversation(db, user_id, conversation_id)
@@ -265,6 +266,6 @@ async def stream_confirm(
             return
 
         turns = loop.rehydrate_turns(await _messages(db, conversation.id))
-        system = prompt.build(user, date.today())
+        system = prompt.build(user, today or date.today())
         async for event in loop.run_turn(db, conversation, turns, credential, system):
             yield _serialize(event)

@@ -119,7 +119,11 @@ async def post_message(
     # The request session is only for the pre-stream ownership check. The
     # generator opens its own session because FastAPI may close this one first.
     return StreamingResponse(
-        agent_chat._heartbeat(agent_chat.stream_message(user.id, conversation_id, payload.content)),
+        agent_chat._heartbeat(
+            agent_chat.stream_message(
+                user.id, conversation_id, payload.content, payload.client_date
+            )
+        ),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",
@@ -149,6 +153,7 @@ async def post_confirm(
                 payload.tool_call_id,
                 payload.approved,
                 payload.arguments,
+                payload.client_date,
             )
         ),
         media_type="text/event-stream",

@@ -66,6 +66,15 @@ const mapDetail = (value: ConversationDetailWire): AgentConversationDetail => ({
   messages: value.messages.map(mapMessage),
 });
 
+/** The viewer's local calendar day (YYYY-MM-DD), sent so the assistant's
+ * "today" matches the user's timezone rather than the server's UTC. */
+const localDate = (): string => {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${now.getFullYear()}-${month}-${day}`;
+};
+
 @Injectable({ providedIn: 'root' })
 export class HttpAgentChatRepository extends AgentChatRepository {
   private readonly api = inject(ApiClient);
@@ -88,7 +97,10 @@ export class HttpAgentChatRepository extends AgentChatRepository {
     return this.api.delete<void>(`/agents/conversations/${id}`);
   }
   sendMessage(id: string, content: string): Observable<AgentStreamEvent> {
-    return this.stream.stream(`/agents/conversations/${id}/messages`, { content });
+    return this.stream.stream(`/agents/conversations/${id}/messages`, {
+      content,
+      client_date: localDate(),
+    });
   }
   confirm(
     id: string,
@@ -99,6 +111,7 @@ export class HttpAgentChatRepository extends AgentChatRepository {
     return this.stream.stream(`/agents/conversations/${id}/confirm`, {
       tool_call_id: toolCallId,
       approved,
+      client_date: localDate(),
       ...(args ? { arguments: args } : {}),
     });
   }

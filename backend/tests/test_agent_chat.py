@@ -184,6 +184,30 @@ async def test_message_stream_persists_user_and_assistant(
     assert [message["role"] for message in body["messages"]] == ["user", "assistant"]
 
 
+async def test_message_stream_uses_client_date_in_system_prompt(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    await _chat_user(client, db_session, "chat-client-date@example.com")
+    conversation = await _conversation(client)
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        return httpx.Response(
+            200, content=_text_body("ok"), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    response = await client.post(
+        f"/api/v1/agents/conversations/{conversation['id']}/messages",
+        json={"content": "spent 10", "client_date": "2031-03-14"},
+    )
+    assert response.status_code == 200, response.text
+    body = json.loads(captured["request"].content)
+    assert "2031-03-14" in body["system"]
+
+
 async def test_write_tool_confirmation_executes_only_after_approval(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:

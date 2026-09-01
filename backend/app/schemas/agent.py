@@ -1,7 +1,7 @@
 """AI provider DTOs. Secrets are never serialized here - every Read model
 below exposes only booleans, the credential source, and a display label."""
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Literal
 from uuid import UUID
 
@@ -93,9 +93,14 @@ class ConversationDetailRead(ConversationRead):
 
 class MessageCreate(BaseModel):
     content: str = Field(min_length=1, max_length=8000)
+    # The client's local calendar day, so "today" in the prompt matches the
+    # user's timezone rather than the server's UTC. Falls back to the server
+    # date when absent (e.g. an external MCP client).
+    client_date: date | None = None
 
 
 class ConfirmCreate(BaseModel):
     tool_call_id: str = Field(min_length=1)
     approved: bool
     arguments: dict[str, Any] | None = None
+    client_date: date | None = None

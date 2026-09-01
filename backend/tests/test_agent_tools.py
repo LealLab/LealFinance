@@ -29,16 +29,17 @@ async def _create_account(
     name: str = "Checking",
     currency: str = "BRL",
     opening_balance: str = "0.00",
+    institution_id: str | None = None,
 ) -> str:
-    response = await client.post(
-        "/api/v1/accounts",
-        json={
-            "name": name,
-            "type": "checking",
-            "currency": currency,
-            "opening_balance": opening_balance,
-        },
-    )
+    body: dict[str, object] = {
+        "name": name,
+        "type": "checking",
+        "currency": currency,
+        "opening_balance": opening_balance,
+    }
+    if institution_id is not None:
+        body["institution_id"] = institution_id
+    response = await client.post("/api/v1/accounts", json=body)
     assert response.status_code == 201, response.text
     return response.json()["id"]
 
@@ -117,9 +118,17 @@ async def test_list_accounts_returns_string_balances_and_filters_archived(
     assert set(by_id) == {active_id}
     assert by_id[active_id]["balance"] == "87.5000"
     assert isinstance(by_id[active_id]["balance"], str)
+    assert by_id[active_id]["institution_name"] is None
 
     rows_with_archived = await spec.run(db_session, user.id, {"include_archived": True})
     assert {row["id"] for row in rows_with_archived} == {active_id, archived_id}
+
+    bank = await institutions_service.create_institution(
+        db_session, user.id, InstitutionCreate(name="Nubank", icon="bank")
+    )
+    linked_id = await _create_account(client, name="Checking", institution_id=str(bank.id))
+    linked = next(row for row in await spec.run(db_session, user.id, {}) if row["id"] == linked_id)
+    assert linked["institution_name"] == "Nubank"
 
 
 async def test_list_institutions_returns_only_current_users_institutions(

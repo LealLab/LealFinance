@@ -95,16 +95,23 @@ async def _list_accounts(
     payload = _validate(_ListAccountsArgs, args)
     accounts = await accounts_service.list_accounts(db, user_id)
     balances = await accounts_service.account_balances(db, user_id)
+    institutions = await institutions_service.list_institutions(db, user_id)
     balance_by_account = {
         row.account_id: AccountBalanceRead.model_validate(row, from_attributes=True).model_dump(
             mode="json"
         )["balance"]
         for row in balances
     }
+    name_by_institution = {institution.id: institution.name for institution in institutions}
     return [
         {
             **AccountRead.model_validate(account, from_attributes=True).model_dump(mode="json"),
             "balance": balance_by_account.get(account.id, "0"),
+            "institution_name": (
+                name_by_institution.get(account.institution_id)
+                if account.institution_id is not None
+                else None
+            ),
         }
         for account in accounts
         if payload.include_archived or not account.archived
