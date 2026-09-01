@@ -219,6 +219,35 @@ describe('UsersAdmin', () => {
     expect(fixture.componentInstance['users']()[1].aiChatEnabled).toBe(true);
   });
 
+  it('shows administrator AI chat as enabled and locked while members retain the toggle', async () => {
+    const users = USERS.map((user) => ({
+      ...user,
+      role: user.id === 'u1' ? 'admin' : 'member',
+      aiChatEnabled: false,
+    }));
+    api.listUsers.mockReturnValue(of(users));
+    const fixture = TestBed.createComponent(UsersAdmin);
+    fixture.detectChanges();
+    await fixture.componentInstance['reload']();
+    fixture.detectChanges();
+
+    const adminCheckbox = findUserRow(fixture.nativeElement, 'ada@example.com').querySelectorAll(
+      'input[type="checkbox"]',
+    )[1] as HTMLInputElement;
+    const memberCheckbox = findUserRow(
+      fixture.nativeElement,
+      'grace@example.com',
+    ).querySelectorAll('input[type="checkbox"]')[1] as HTMLInputElement;
+
+    expect(adminCheckbox.checked).toBe(true);
+    expect(adminCheckbox.disabled).toBe(true);
+    expect(memberCheckbox.checked).toBe(false);
+    expect(memberCheckbox.disabled).toBe(false);
+    expect(
+      findUserRow(fixture.nativeElement, 'ada@example.com').querySelector('.form-label')?.classList,
+    ).toContain('truncate');
+  });
+
   it('locks the role and active controls for a peer admin', async () => {
     const peerAdmin: User = { ...USERS[1], id: 'u3', email: 'grace-admin@example.com', role: 'admin' };
     api.listUsers.mockReturnValue(of([...USERS, peerAdmin]));

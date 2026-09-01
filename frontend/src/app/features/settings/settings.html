@@ -207,7 +207,7 @@
       </div>
     </app-card>
 
-    @if (session.user()?.aiChatEnabled) {
+    @if (session.user()?.role === 'admin' || session.user()?.aiChatEnabled) {
       <app-card>
         <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.mcp.title') }}</h2>
         <p class="mb-4 max-w-md text-sm text-content-muted">{{ t('settings.mcp.body') }}</p>

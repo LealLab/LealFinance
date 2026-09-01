@@ -672,6 +672,18 @@ async def test_create_mcp_token_for_ai_chat_member(
     assert crypto.verify_mcp_token(body["token"], max_age=MCP_TOKEN_TTL_SECONDS) == user.id
 
 
+async def test_create_mcp_token_for_active_admin_without_ai_chat_flag(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "mcp-admin@example.com", role=ROLE_ADMIN)
+
+    response = await client.post("/api/v1/agents/mcp-token")
+
+    assert response.status_code == 200, response.text
+    assert response.json()["token"]
+
+
 async def test_create_mcp_token_requires_ai_chat_enabled_member(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:

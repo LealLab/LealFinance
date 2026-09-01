@@ -209,9 +209,9 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/conversations` | user | Creates a conversation, optionally pinned to a configured provider. |
 | GET | `/agents/conversations/{id}` | user | Returns a conversation and its ordered messages. |
 | DELETE | `/agents/conversations/{id}` | user | Deletes the conversation and its messages. |
-| POST | `/agents/conversations/{id}/messages` | user | Body `{content}`. Streams the assistant response as `text/event-stream`. Needs `ai_chat_enabled`. |
+| POST | `/agents/conversations/{id}/messages` | user | Body `{content}`. Streams the assistant response as `text/event-stream`. Members need `ai_chat_enabled`. |
 | POST | `/agents/conversations/{id}/confirm` | user | Body `{tool_call_id, approved, arguments?}`. Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
-| POST | `/agents/mcp-token` | user | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Needs `ai_chat_enabled`. |
+| POST | `/agents/mcp-token` | user | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Members need `ai_chat_enabled`. |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
 | GET/PATCH | `/investments/wallets/{id}` | user | |
 | POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |
@@ -532,8 +532,9 @@ See [`ai-agents.md`](ai-agents.md) for provider setup, credential
 precedence, the OAuth linking flow, the tool set, and the MCP server.
 `provider` is one of `anthropic`, `openai`, `ollama`.
 
-Provider linking is administrator-only. Chat is per user, gated by the
-admin-set `ai_chat_enabled` flag on the user (see `PATCH /auth/users/{id}`).
+Provider linking is administrator-only. Active administrators always have chat
+access; members are gated by the admin-set `ai_chat_enabled` flag on the user
+(see `PATCH /auth/users/{id}`).
 
 ### Streaming responses
 

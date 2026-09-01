@@ -89,7 +89,8 @@ See [`docs/i18n.md`](docs/i18n.md).
 - Chat runs inside `api` and is disabled by `AGENTS_ENABLED`; the `agents`
   Compose profile starts the `mcp` server and optional Ollama.
 - Provider linking is admin-only. Chat is per user, gated by the admin-set
-  `users.ai_chat_enabled` flag (not a preference; excluded from backups).
+  `users.ai_chat_enabled` flag for members (not a preference; excluded from
+  backups); active administrators always have chat access.
 - The tool set lives in `app/agents/tools.py`; the streaming provider adapters
   in `app/agents/chat.py::stream_turn`; the tool-calling loop, system prompt,
   and off-topic gate in `app/agents/loop.py` / `prompt.py`. Every tool call goes

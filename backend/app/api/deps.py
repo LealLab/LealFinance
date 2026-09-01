@@ -73,7 +73,7 @@ AdminUser = Annotated[User, Depends(require_admin)]
 
 
 async def require_ai_chat(user: CurrentUser) -> User:
-    if not user.ai_chat_enabled:
+    if user.role != ROLE_ADMIN and not user.ai_chat_enabled:
         raise ForbiddenError(code="agents.chat_not_allowed")
     return user
 
