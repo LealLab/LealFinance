@@ -21,7 +21,14 @@ import {
 } from '../../data/transaction.repository';
 import { identityConverter } from '../../domain/calc/aggregations';
 import { effectiveAmount } from '../../domain/calc/conversion';
-import { addDays, addMonthsClamped, formatIsoDate, monthKey, parseIsoDate } from '../../domain/calc/dates';
+import {
+  addDays,
+  addMonthsClamped,
+  formatIsoDate,
+  monthKey,
+  parseIsoDate,
+  todayIso
+} from '../../domain/calc/dates';
 import { projectOccurrences } from '../../domain/calc/recurrence';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction, TransactionType } from '../../domain/models/transaction';
@@ -121,7 +128,7 @@ export class Transactions {
   protected readonly sort = signal<TransactionSort>('date');
   protected readonly order = signal<SortOrder>('desc');
   protected readonly selectedIds = signal<ReadonlySet<string>>(new Set());
-  protected readonly calendarMonth = signal(monthKey(new Date().toISOString()));
+  protected readonly calendarMonth = signal(monthKey(todayIso()));
   protected readonly selectedDay = signal<string | null>(null);
 
   protected readonly txFormOpen = signal(false);
@@ -165,7 +172,7 @@ export class Transactions {
   // so a projection for an occurrence the backend already posted isn't
   // drawn as a ghost row.
   protected readonly postedOccurrencesResource = rxResource({
-    stream: () => this.transactionRepository.list({ dateFrom: formatIsoDate(new Date()) }),
+    stream: () => this.transactionRepository.list({ dateFrom: todayIso() }),
   });
 
   protected readonly accountsById = computed(
@@ -194,8 +201,8 @@ export class Transactions {
     const rules = this.recurringRulesResource.value() ?? [];
     const filters = this.filters();
     const posted = this.postedOccurrences();
-    const from = formatIsoDate(new Date());
-    const to = formatIsoDate(addDays(new Date(), PROJECTION_HORIZON_DAYS));
+    const from = todayIso();
+    const to = formatIsoDate(addDays(parseIsoDate(from), PROJECTION_HORIZON_DAYS));
 
     return rules
       .flatMap((rule) => projectOccurrences(rule, from, to))
@@ -213,7 +220,7 @@ export class Transactions {
   );
 
   private readonly selectionConverter = displayConverter(() => [
-    ...new Set(this.selectedRows().map((tx) => tx.currency)),
+    ...new Set(this.selectedRows().map((tx) => effectiveAmount(tx).currency)),
   ]);
 
   protected readonly selectedTotal = computed<string | null>(() => {
@@ -222,7 +229,10 @@ export class Transactions {
     const target = this.displayCurrency();
     const total = this.selectedRows().reduce((acc, tx) => {
       if (tx.type === 'transfer') return acc;
-      const value = convert(money(tx.conversion?.amount ?? tx.amount, tx.currency), target);
+      // effectiveAmount pairs the amount with the currency it is actually
+      // denominated in - conversion.amount is in conversion.currency, not
+      // tx.currency.
+      const value = convert(effectiveAmount(tx), target);
       return tx.type === 'expense' ? subtract(acc, value) : add(acc, value);
     }, zero(target));
     return total.amount;
@@ -278,6 +288,10 @@ export class Transactions {
     ),
   ]);
 
+  // Exposed to the calendar so its day-net panel converts with the same
+  // rates as the running balances rather than summing raw amounts.
+  protected readonly calendarConverter = computed(() => this.monthConverter.converter());
+
   // Any of the three converters resolving a pair at the 1:1 fallback means
   // the selection total and the calendar running balances are approximate.
   protected readonly hasFallbackRate = computed(
@@ -314,7 +328,7 @@ export class Transactions {
       // invoked here; identityConverter throws loudly if that ever changes.
       convert ?? identityConverter,
       weekStart,
-      formatIsoDate(new Date()),
+      todayIso(),
     );
 
     // Filters narrow the activity dots and the day drill-down, but never the
@@ -435,7 +449,7 @@ export class Transactions {
     const name =
       this.transloco.translate('transactions.export.filename') +
       '-' +
-      formatIsoDate(new Date()) +
+      todayIso() +
       '.csv';
     downloadCsv(name, toCsv(headers, body));
   }
@@ -557,8 +571,8 @@ export class Transactions {
   }
 
   protected nextOccurrence(rule: RecurringRule): string | undefined {
-    const from = formatIsoDate(new Date());
-    const to = formatIsoDate(addDays(new Date(), 366));
+    const from = todayIso();
+    const to = formatIsoDate(addDays(parseIsoDate(from), 366));
     return projectOccurrences(rule, from, to)[0]?.date;
   }
 

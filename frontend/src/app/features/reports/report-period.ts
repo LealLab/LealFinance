@@ -1,4 +1,4 @@
-import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
+import { addMonthsClamped, formatIsoDate, monthKey, monthStartUtc } from '../../domain/calc/dates';
 
 export type ReportPeriod = 'month' | '3m' | '6m' | '12m' | 'custom';
 
@@ -23,14 +23,9 @@ function toBucket(start: Date, locale: string): MonthBucket {
   return { key: monthKey(formatIsoDate(start)), label, start, end };
 }
 
-function currentMonthStart(): Date {
-  const now = new Date();
-  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-}
-
 /** The last `count` months, ending with the current month (inclusive). */
 function trailingMonths(count: number, locale: string): MonthBucket[] {
-  const end = currentMonthStart();
+  const end = monthStartUtc();
   return Array.from({ length: count }, (_, i) => toBucket(addMonthsClamped(end, -(count - 1 - i)), locale));
 }
 

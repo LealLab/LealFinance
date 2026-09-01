@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { InvestmentTransactionRepository } from '../../data/investment-transaction.repository';
 import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import {
   InvestmentAsset,
   InvestmentTransaction,
@@ -52,7 +52,7 @@ export class InvestmentTransactionFormModal {
   protected readonly form = this.fb.nonNullable.group({
     type: ['buy' as InvestmentTransactionType, Validators.required],
     assetId: [''],
-    date: [formatIsoDate(new Date()), Validators.required],
+    date: [todayIso(), Validators.required],
     quantity: ['', decimalAmountValidator(10)],
     price: ['', decimalAmountValidator(10)],
     amount: ['', decimalAmountValidator()],
@@ -99,7 +99,7 @@ export class InvestmentTransactionFormModal {
       this.form.reset({
         type: transaction?.type ?? 'buy',
         assetId: transaction?.assetId ?? '',
-        date: transaction?.date ?? formatIsoDate(new Date()),
+        date: transaction?.date ?? todayIso(),
         quantity: transaction?.quantity ?? '',
         price: transaction?.price ?? '',
         amount: transaction?.amount ?? '',

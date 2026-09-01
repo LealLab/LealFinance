@@ -124,9 +124,12 @@ async def test_past_date_uses_the_historical_endpoint_and_its_own_cache_key(
     assert result.as_of == past
     assert calls == [past]
 
-    # Today's cache is a separate key - still cold.
+    # A later date with no exact row of its own carries the newest rate on or
+    # before it forward, reported at that row's date - never the 1:1 fallback.
     today = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
-    assert today.is_fallback is True
+    assert today.is_fallback is False
+    assert today.rate == Decimal("5.25")
+    assert today.as_of == past
 
 
 async def test_unknown_currency_is_left_uncached(

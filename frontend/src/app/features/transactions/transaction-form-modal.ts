@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
@@ -98,7 +98,7 @@ export class TransactionFormModal {
 
   protected readonly form = this.fb.nonNullable.group({
     type: ['expense' as TransactionType, Validators.required],
-    date: [formatIsoDate(new Date()), Validators.required],
+    date: [todayIso(), Validators.required],
     amount: ['', [Validators.required, decimalAmountValidator()]],
     currency: [this.baseCurrency(), Validators.required],
     accountId: ['', Validators.required],
@@ -257,7 +257,7 @@ export class TransactionFormModal {
       this.applyingReset = true;
       this.form.reset({
         type: tx?.type ?? this.initialType(),
-        date: tx?.date ?? formatIsoDate(new Date()),
+        date: tx?.date ?? todayIso(),
         amount: tx?.amount ?? '',
         currency: tx?.currency ?? fromAccount?.currency ?? this.baseCurrency(),
         accountId: tx?.accountId ?? '',

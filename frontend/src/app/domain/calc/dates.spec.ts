@@ -1,4 +1,12 @@
-import { addDays, addMonthsClamped, formatIsoDate, monthKey, parseIsoDate } from './dates';
+import {
+  addDays,
+  addMonthsClamped,
+  formatIsoDate,
+  monthKey,
+  monthStartUtc,
+  parseIsoDate,
+  todayIso
+} from './dates';
 
 describe('parseIsoDate / formatIsoDate', () => {
   it('round-trips an ISO date through UTC without shifting a day', () => {
@@ -9,6 +17,26 @@ describe('parseIsoDate / formatIsoDate', () => {
 describe('monthKey', () => {
   it('extracts the YYYY-MM prefix', () => {
     expect(monthKey('2026-03-15')).toBe('2026-03');
+  });
+});
+
+describe('todayIso', () => {
+  it("uses the local calendar day, not UTC's", () => {
+    // Constructed in local time - late evening on the 31st. `formatIsoDate`
+    // would roll this to the 1st (next month) for any zone behind UTC;
+    // `todayIso` must stay on the 31st everywhere.
+    const localLateEvening = new Date(2026, 0, 31, 22, 0, 0);
+    expect(todayIso(localLateEvening)).toBe('2026-01-31');
+  });
+
+  it('zero-pads month and day', () => {
+    expect(todayIso(new Date(2026, 2, 5, 9, 0, 0))).toBe('2026-03-05');
+  });
+});
+
+describe('monthStartUtc', () => {
+  it('is the first of the local current month, UTC-anchored', () => {
+    expect(formatIsoDate(monthStartUtc(new Date(2026, 0, 15, 23, 30)))).toBe('2026-01-01');
   });
 });
 

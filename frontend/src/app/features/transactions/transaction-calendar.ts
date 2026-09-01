@@ -4,11 +4,13 @@ import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { Institution } from '../../domain/models/institution';
+import { CurrencyConverter } from '../../domain/calc/aggregations';
 import { addDays, parseIsoDate } from '../../domain/calc/dates';
 import { Transaction } from '../../domain/models/transaction';
+import { add, toNumber, zero } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Icon } from '../../shared/ui/icon/icon';
-import { CalendarDay } from './calendar-month';
+import { CalendarDay, portfolioDelta } from './calendar-month';
 import { rowSign, rowToneClass } from './transaction-tone';
 
 /**
@@ -28,6 +30,9 @@ export class TransactionCalendar {
   readonly days = input.required<readonly CalendarDay[]>();
   readonly selectedDay = input<string | null>(null);
   readonly displayCurrency = input.required<string>();
+  /** Same portfolio converter the grid's running balances use; null until
+   * every rate has arrived, which suppresses the day-net line. */
+  readonly converter = input<CurrencyConverter | null>(null);
   readonly accountsById = input.required<ReadonlyMap<string, Account>>();
   readonly institutionsById = input<ReadonlyMap<string, Institution>>(new Map());
   readonly categoriesById = input.required<ReadonlyMap<string, Category>>();
@@ -64,16 +69,19 @@ export class TransactionCalendar {
       : '';
   });
 
-  protected readonly dayNet = computed(() => {
+  protected readonly dayNet = computed<number | null>(() => {
     const day = this.selected();
-    if (!day) return null;
-    // Signed sum, matching the grid's running math (transfers net to ~0).
-    return day.transactions.reduce((sum, tx) => {
-      const value = Number(tx.conversion?.amount ?? tx.amount);
-      if (tx.type === 'income' || tx.type === 'interest') return sum + value;
-      if (tx.type === 'expense') return sum - value;
-      return sum;
-    }, 0);
+    const convert = this.converter();
+    if (!day || !convert) return null;
+    // Same per-transaction delta the grid's running balance uses, so the
+    // panel and the cell above it agree - every leg converted into the
+    // display currency, transfers netting to ~0.
+    const target = this.displayCurrency();
+    const total = day.transactions.reduce(
+      (acc, tx) => add(acc, portfolioDelta(tx, convert, target)),
+      zero(target),
+    );
+    return toNumber(total);
   });
 
   protected readonly absNet = computed(() => Math.abs(this.dayNet() ?? 0).toFixed(2));

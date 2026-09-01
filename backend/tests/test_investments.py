@@ -1,11 +1,13 @@
 """Investment CRUD, ownership, settlement, and wire-format coverage."""
 
+from datetime import date
 from decimal import Decimal
 
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.account import Account
+from app.models.currency import ExchangeRate
 from app.models.transaction import Transaction
 from tests.factories import login_as, make_user
 
@@ -225,6 +227,57 @@ async def test_cross_currency_buy_records_conversion(
     assert ledger.conversion_currency == "BRL"
     assert ledger.conversion_rate is not None
     assert ledger.conversion_source is not None
+
+
+async def test_backdated_buy_settles_at_the_trade_date_rate(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """The cash leg of a backdated trade must convert at the rate on the trade
+    date, not today's - a stored conversion is never re-derived, so a wrong
+    rate here is permanent.
+    """
+    await _authed(client, db_session, "investment-backdated-rate@example.com")
+    db_session.add_all(
+        [
+            ExchangeRate(
+                base_code="USD",
+                quote_code="BRL",
+                as_of=date(2026, 1, 1),
+                source="openexchangerates",
+                rate=Decimal("5.0000000000"),
+            ),
+            ExchangeRate(
+                base_code="USD",
+                quote_code="BRL",
+                as_of=date(2026, 6, 1),
+                source="openexchangerates",
+                rate=Decimal("6.0000000000"),
+            ),
+        ]
+    )
+    await db_session.flush()
+
+    cash = await _create_account(client, currency="USD", opening_balance="1000")
+    wallet = await _create_wallet(client, currency="BRL", cash_account_id=cash["id"])
+    asset = await _create_asset(client)
+
+    response = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "quantity": "1",
+            "price": "100",
+            "amount": "100",
+            "currency": "BRL",
+        },
+    )
+    assert response.status_code == 201, response.text
+    ledger = await db_session.get(Transaction, response.json()["transaction_id"])
+    assert ledger is not None
+    assert ledger.conversion_rate == Decimal("5")
 
 
 async def test_oversell_is_rejected(client: AsyncClient, db_session: AsyncSession) -> None:

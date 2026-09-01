@@ -13,7 +13,13 @@ import { TransactionRepository } from '../../data/transaction.repository';
 import { categoryBreakdown, netWorth as netWorthOf, totalsFor } from '../../domain/calc/aggregations';
 import { budgetProgress } from '../../domain/calc/budgets';
 import { effectiveAmount } from '../../domain/calc/conversion';
-import { addMonthsClamped, formatIsoDate, monthKey } from '../../domain/calc/dates';
+import {
+  addMonthsClamped,
+  formatIsoDate,
+  monthKey,
+  monthStartUtc,
+  todayIso
+} from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { compare, isNegative, isZero, money, Money, ratio, toNumber, zero } from '../../shared/money/money';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
@@ -68,10 +74,7 @@ export class Dashboard {
   // the full ledger. Net worth and per-account balances instead come from
   // accountRepository.balances(), which covers all-time history server-side.
   private readonly windowStartDate: string = formatIsoDate(
-    addMonthsClamped(
-      new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1)),
-      -(CASH_FLOW_MONTHS - 1)
-    )
+    addMonthsClamped(monthStartUtc(), -(CASH_FLOW_MONTHS - 1))
   );
 
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
@@ -109,7 +112,7 @@ export class Dashboard {
   // arrived, which is never instantaneous on first load.
   protected readonly ratesReady = computed(() => this.converter() !== null);
 
-  private readonly currentMonth = monthKey(new Date().toISOString());
+  private readonly currentMonth = monthKey(todayIso());
 
   private readonly currentMonthTransactions = computed(() =>
     (this.transactionsResource.value() ?? []).filter(
@@ -147,11 +150,7 @@ export class Dashboard {
     const convert = this.converter();
     if (!convert) return { labels: [], datasets: [] as ChartDataset[] };
     const transactions = this.transactionsResource.value() ?? [];
-    const today = new Date();
-    const start = addMonthsClamped(
-      new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1)),
-      -(CASH_FLOW_MONTHS - 1)
-    );
+    const start = addMonthsClamped(monthStartUtc(), -(CASH_FLOW_MONTHS - 1));
 
     const labels: string[] = [];
     const income: number[] = [];

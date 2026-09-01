@@ -16,7 +16,7 @@ import {
   isCategoryGroupDeletable
 } from '../../domain/calc/category-usage';
 import { effectiveAmount } from '../../domain/calc/conversion';
-import { monthKey } from '../../domain/calc/dates';
+import { monthKey, todayIso } from '../../domain/calc/dates';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
 import { add, Money, zero } from '../../shared/money/money';
@@ -118,7 +118,7 @@ export class Categories {
   private readonly spendByCategory = computed<Map<string, Money>>(() => {
     const convert = this.converter();
     if (!convert) return new Map();
-    const currentMonth = monthKey(new Date().toISOString());
+    const currentMonth = monthKey(todayIso());
     const transactions = this.transactionsResource.value() ?? [];
     const categories = this.categoriesResource.value() ?? [];
     const kindById = new Map(categories.map((c) => [c.id, c.kind]));

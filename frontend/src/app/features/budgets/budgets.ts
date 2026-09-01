@@ -25,7 +25,7 @@ import {
   UnbudgetedSpend,
   unbudgetedSpend,
 } from '../../domain/calc/budgets';
-import { monthKey } from '../../domain/calc/dates';
+import { monthKey, todayIso } from '../../domain/calc/dates';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
 import { Category } from '../../domain/models/category';
@@ -147,7 +147,7 @@ export class Budgets {
   protected readonly hasFallbackRate = this.rates.hasFallbackRate;
   protected readonly ratesReady = computed(() => this.converter() !== null);
 
-  protected readonly selectedMonth = signal(monthKey(new Date().toISOString()));
+  protected readonly selectedMonth = signal(monthKey(todayIso()));
   private readonly percentageDraft = signal<Record<string, string>>({});
   protected readonly incomeDraft = signal('');
   protected readonly plannerError = signal<string | null>(null);

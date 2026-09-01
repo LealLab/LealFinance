@@ -370,7 +370,8 @@ async def update_transaction(
     )
 
     shape_changed = any(
-        field in changes for field in ("type", "account_id", "to_account_id", "currency", "amount")
+        field in changes
+        for field in ("type", "account_id", "to_account_id", "currency", "amount", "date")
     )
     if conversion_provided or shape_changed:
         destination_currency = to_account.currency if to_account is not None else account.currency
@@ -397,6 +398,11 @@ async def update_transaction(
                 rate=rate_result.rate,
                 source=to_conversion_source(rate_result),
             )
+        elif effective_currency == destination_currency:
+            # Origin and destination now match (e.g. moved to a same-currency
+            # account) - any stored conversion is meaningless, so drop it
+            # rather than replaying it into `conversion_not_needed`.
+            conversion_input = None
         else:
             conversion_input = _existing_conversion_input(transaction)
         conversion = await resolve_conversion(

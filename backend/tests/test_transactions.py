@@ -483,6 +483,41 @@ async def test_conversion_fee_deducted_before_rate(
     assert response.json()["conversion"]["amount"] == "18.0000"
 
 
+async def test_moving_to_a_same_currency_account_clears_the_conversion(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """A BRL expense on a USD account carries a conversion. Re-pointing it at a
+    BRL account makes the conversion meaningless - the update must drop it and
+    return 200, not replay the stored conversion into `conversion_not_needed`.
+    """
+    await _authed(client, db_session, "conversion-clear@example.com")
+    usd_account_id = await _create_account(client, name="USD wallet", currency="USD")
+    brl_account_id = await _create_account(client, name="BRL wallet", currency="BRL")
+    category_id = await _create_category(client)
+
+    create_response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-01",
+            "amount": "100.00",
+            "currency": "BRL",
+            "account_id": usd_account_id,
+            "category_id": category_id,
+            "description": "Was cross-currency",
+            "conversion": {"currency": "USD", "rate": "0.2", "source": "manual"},
+        },
+    )
+    assert create_response.status_code == 201, create_response.text
+    transaction_id = create_response.json()["id"]
+
+    response = await client.patch(
+        f"/api/v1/transactions/{transaction_id}", json={"account_id": brl_account_id}
+    )
+    assert response.status_code == 200, response.text
+    assert response.json()["conversion"] is None
+
+
 async def test_conversion_amount_mismatch_is_rejected(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

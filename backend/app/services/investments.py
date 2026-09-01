@@ -306,7 +306,7 @@ async def _settle_cash_leg(
             conversion = None
         else:
             rate_result = await get_exchange_rate(
-                db, cash_account.currency, wallet.currency, user_id=user_id
+                db, cash_account.currency, wallet.currency, user_id=user_id, as_of=data.date
             )
             cash_currency = await get_active_currency(db, cash_account.currency)
             transfer_amount = (total / rate_result.rate).quantize(
@@ -332,7 +332,7 @@ async def _settle_cash_leg(
             conversion = None
         else:
             rate_result = await get_exchange_rate(
-                db, wallet.currency, cash_account.currency, user_id=user_id
+                db, wallet.currency, cash_account.currency, user_id=user_id, as_of=data.date
             )
             conversion = ConversionInput(
                 amount=None,

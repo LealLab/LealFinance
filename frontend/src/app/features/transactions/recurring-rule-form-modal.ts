@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { CategoryGroup } from '../../domain/models/category-group';
@@ -50,7 +50,7 @@ export class RecurringRuleFormModal {
     type: ['expense' as 'income' | 'expense', Validators.required],
     frequency: ['monthly' as RecurringFrequency, Validators.required],
     interval: [1, [Validators.required, Validators.min(1)]],
-    startDate: [formatIsoDate(new Date()), Validators.required],
+    startDate: [todayIso(), Validators.required],
     endDate: [''],
     amount: ['', [Validators.required, decimalAmountValidator()]],
     accountId: ['', Validators.required],
@@ -90,7 +90,7 @@ export class RecurringRuleFormModal {
         type: (rule?.template.type as 'income' | 'expense') ?? 'expense',
         frequency: rule?.frequency ?? 'monthly',
         interval: rule?.interval ?? 1,
-        startDate: rule?.startDate ?? formatIsoDate(new Date()),
+        startDate: rule?.startDate ?? todayIso(),
         endDate: rule?.endDate ?? '',
         amount: rule?.template.amount ?? '',
         accountId: rule?.template.accountId ?? '',
