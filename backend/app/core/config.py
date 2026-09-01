@@ -64,6 +64,10 @@ class Settings(BaseSettings):
     # Free key from https://openexchangerates.org/signup/free. Without one,
     # cross-currency rates fall back to 1:1 - see app/services/exchange_rates.py.
     openexchangerates_app_id: str | None = None
+    # Minimum gap between manual refreshes (POST /meta/exchange-rates/refresh).
+    # The free plan updates hourly and caps usage at ~1,000 requests/month, so
+    # lowering this trades quota for freshness the provider may not have yet.
+    exchange_rate_refresh_cooldown_minutes: int = 15
     # Optional live quote-provider keys; per-user credentials take precedence.
     twelve_data_api_key: str | None = None
     brapi_token: str | None = None

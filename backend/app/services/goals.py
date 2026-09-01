@@ -15,6 +15,7 @@ from app.schemas.goal import GoalCreate, GoalUpdate, GoalWithAccountCreate, Goal
 from app.services import accounts as accounts_service
 from app.services import ownership
 from app.services.currencies import get_active_currency
+from app.services.exchange_rates import ensure_rates_cached
 
 
 async def _validate_account(
@@ -118,6 +119,7 @@ async def create_goal_with_account(
         await db.flush()
         goal = Goal(user_id=user_id, account_id=account.id, **data.model_dump())
         db.add(goal)
+        await ensure_rates_cached(db)
         await db.commit()
     except Exception:
         await db.rollback()
@@ -149,6 +151,8 @@ async def update_goal_with_account(
         account.currency = currency
     for field, value in changes.items():
         setattr(goal, field, value)
+    if "currency" in changes:
+        await ensure_rates_cached(db)
     try:
         await db.commit()
     except Exception:

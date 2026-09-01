@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExchangeRateRepository } from '../exchange-rate.repository';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
+import { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import { ManualRate } from '../../domain/models/manual-rate';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { invertRate } from '../../shared/money/rate';
@@ -36,6 +36,20 @@ export class MockExchangeRateRepository extends ExchangeRateRepository {
     asOf = formatIsoDate(new Date()),
   ): Observable<ExchangeRate> {
     return mockResult(() => this.resolve(baseCode, quoteCode, asOf), this.latencyMs);
+  }
+
+  /** The mock table is static, so a "refresh" just reports success. */
+  refresh(): Observable<RateRefresh> {
+    const now = new Date();
+    return mockResult(
+      () => ({
+        asOf: formatIsoDate(now),
+        updated: 0,
+        throttled: false,
+        refreshedAt: now.toISOString(),
+      }),
+      this.latencyMs,
+    );
   }
 
   /**

@@ -4,7 +4,7 @@ Amounts and rates are serialized as strings, never JSON numbers - see
 docs/money-and-currency.md for why (NUMERIC(19,4) exceeds float64 precision).
 """
 
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, field_serializer
@@ -37,6 +37,21 @@ class ExchangeRateRead(BaseModel):
     @field_serializer("rate")
     def serialize_rate(self, value: Decimal) -> str:
         return str(value)
+
+
+class ExchangeRateRefreshRead(BaseModel):
+    """Result of the admin "refresh rates now" action - see
+    app/services/exchange_rates.py::refresh_rates_manual.
+
+    `throttled=True` means the cooldown was still in effect and no provider
+    call was made; `updated` is then 0 and `refreshed_at` is when the cache
+    last actually refreshed.
+    """
+
+    as_of: date
+    updated: int
+    throttled: bool
+    refreshed_at: datetime | None
 
 
 class ExchangeRateQuoteRead(BaseModel):

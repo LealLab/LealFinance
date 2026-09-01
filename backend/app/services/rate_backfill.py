@@ -25,13 +25,19 @@ from app.core.errors import ValidationAppError
 from app.models._conversion import CONVERSION_SOURCE_FALLBACK
 from app.models.transaction import Transaction
 from app.services.conversion import ConversionInput, resolve_conversion
-from app.services.exchange_rates import get_exchange_rate, refresh_rates, to_conversion_source
+from app.services.exchange_rates import (
+    get_exchange_rate,
+    has_cached_rates,
+    refresh_rates,
+    to_conversion_source,
+)
 
 logger = logging.getLogger(__name__)
 
-# Safety valve: each distinct transaction date costs one provider request.
-# Bounds a single run's provider usage regardless of backlog size; the rest
-# heal on later runs, and dates cached by an earlier run are free.
+# Safety valve: each distinct *uncached* transaction date costs one provider
+# request. Bounds a single run's provider usage regardless of backlog size;
+# the rest heal on later runs, and dates already cached (by an earlier run or
+# the scheduled refresh) are free and do not count against the budget.
 MAX_PROVIDER_DATES = 25
 
 
@@ -56,15 +62,22 @@ async def backfill_fallback_conversions(
 
     healed = 0
     dates_done: set[date] = set()
+    provider_dates = 0
     for tx in rows:
         if tx.date not in dates_done:
-            if len(dates_done) >= max_provider_dates:
+            if await has_cached_rates(db, tx.date):
+                dates_done.add(tx.date)  # free - no provider call, no budget spent
+            elif provider_dates >= max_provider_dates:
                 continue  # over budget for this run - heal on the next one
-            dates_done.add(tx.date)
-            try:
-                await refresh_rates(db, tx.date)
-            except Exception:
-                logger.warning("Rate refresh for %s failed during backfill", tx.date, exc_info=True)
+            else:
+                dates_done.add(tx.date)
+                provider_dates += 1
+                try:
+                    await refresh_rates(db, tx.date)
+                except Exception:
+                    logger.warning(
+                        "Rate refresh for %s failed during backfill", tx.date, exc_info=True
+                    )
 
         assert tx.conversion_currency is not None  # source == fallback implies a full set
 

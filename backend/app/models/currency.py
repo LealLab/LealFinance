@@ -1,9 +1,11 @@
 """Currency reference data and exchange rates.
 
-`exchange_rates` holds USD-anchored provider rates keyed by date. It is
-filled on demand by app/services/exchange_rates.py and kept warm by the
-scheduled refresh in app/workers/tasks/rates.py; it is empty until a
-provider key is configured.
+`exchange_rates` holds USD-anchored provider rates keyed by date. Lookups
+in app/services/exchange_rates.py are pure reads; the table is filled only
+by writes - the scheduled refresh in app/workers/tasks/rates.py,
+`ensure_rates_cached` on currency-introducing writes and at API startup,
+and the admin refresh endpoint. It is empty until a provider key is
+configured.
 """
 
 from datetime import date

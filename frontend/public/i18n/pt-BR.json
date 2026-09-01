@@ -1297,6 +1297,13 @@
           "save": "Salvar"
         }
       }
+    },
+    "actions": {
+      "refresh": "Atualizar agora"
+    },
+    "refresh": {
+      "updated": "{{count}} taxas atualizadas.",
+      "upToDate": "As taxas já estão atualizadas."
     }
   },
   "settings": {

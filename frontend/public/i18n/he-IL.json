@@ -1297,6 +1297,13 @@
           "save": "שמירה"
         }
       }
+    },
+    "actions": {
+      "refresh": "רענן עכשיו"
+    },
+    "refresh": {
+      "updated": "עודכנו {{count}} שערים.",
+      "upToDate": "השערים כבר מעודכנים."
     }
   },
   "settings": {

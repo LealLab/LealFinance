@@ -1297,6 +1297,13 @@
           "save": "Lagre"
         }
       }
+    },
+    "actions": {
+      "refresh": "Oppdater nå"
+    },
+    "refresh": {
+      "updated": "{{count}} kurser oppdatert.",
+      "upToDate": "Kursene er allerede oppdatert."
     }
   },
   "settings": {

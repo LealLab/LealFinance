@@ -15,7 +15,7 @@ import type {
 } from '../../domain/models/categorization-rule';
 import type { Category } from '../../domain/models/category';
 import type { CategoryGroup } from '../../domain/models/category-group';
-import type { ExchangeRate } from '../../domain/models/exchange-rate';
+import type { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
 import type { Loan } from '../../domain/models/loan';
@@ -66,6 +66,7 @@ import type {
   CategoryPatchWire,
   CategoryWire,
   ConversionWire,
+  ExchangeRateRefreshWire,
   ExchangeRateWire,
   ExpectedIncomeInputWire,
   ExpectedIncomeWire,
@@ -479,6 +480,12 @@ export const mapExchangeRate = (wire: ExchangeRateWire): ExchangeRate => ({
   isFallback: wire.is_fallback,
   source: wire.is_fallback ? 'fallback' : wire.source === 'manual' ? 'manual' : 'quote',
   asOf: wire.as_of,
+});
+export const mapRateRefresh = (wire: ExchangeRateRefreshWire): RateRefresh => ({
+  asOf: wire.as_of,
+  updated: wire.updated,
+  throttled: wire.throttled,
+  refreshedAt: wire.refreshed_at,
 });
 export const mapGoal = (wire: GoalWire): Goal => ({
   id: wire.id,

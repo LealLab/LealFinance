@@ -109,3 +109,18 @@ async def test_backfill_respects_the_per_run_provider_budget(
 
 async def test_backfill_is_a_noop_without_any_fallback_rows(db_session: AsyncSession) -> None:
     assert await backfill_fallback_conversions(db_session) == 0
+
+
+async def test_backfill_does_not_spend_budget_on_an_already_cached_date(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A date the scheduled refresh (or a prior run) already cached costs no
+    provider request, so even a zero budget still heals it."""
+    await _authed(client, db_session, "backfill-cached-date@example.com")
+    await _fallback_transfer(client)
+    _stub(monkeypatch, {"USD": Decimal("1"), "BRL": Decimal("5.25")})
+
+    await rates_service.refresh_rates(db_session, _TX_DATE)
+
+    healed = await backfill_fallback_conversions(db_session, max_provider_dates=0)
+    assert healed == 1

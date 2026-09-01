@@ -1297,6 +1297,13 @@
           "save": "Spara"
         }
       }
+    },
+    "actions": {
+      "refresh": "Uppdatera nu"
+    },
+    "refresh": {
+      "updated": "{{count}} kurser uppdaterade.",
+      "upToDate": "Kurserna är redan uppdaterade."
     }
   },
   "settings": {

@@ -1,15 +1,19 @@
 """Goal CRUD, the goal-account/currency-matching invariants, archive
 semantics (no delete), and ownership isolation."""
 
+from datetime import date
 from decimal import Decimal
 
 import pytest
 from httpx import AsyncClient
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import get_settings
 from app.models.account import Account
+from app.models.currency import ExchangeRate
+from app.services import exchange_rates as rates_service
 from app.services import goals as goals_service
 from tests.factories import login_as, make_user
 
@@ -179,6 +183,34 @@ async def test_create_goal_with_account_is_atomic_aggregate(
     assert body["account"]["type"] == "goal"
     assert body["account"]["opening_balance"] == "0.0000"
     assert body["account"]["institution_id"] is None
+
+
+async def test_create_goal_with_account_warms_the_rate_cache(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Regression: creating a goal (and its account) in a foreign currency
+    must populate today's provider cache, exactly like a plain account does -
+    otherwise the goal sits at the 1:1 fallback until the next beat run."""
+    monkeypatch.setattr(get_settings(), "openexchangerates_app_id", "test-key")
+
+    async def _fake(app_id: str, as_of: date) -> dict[str, Decimal]:
+        return {"USD": Decimal("1"), "BRL": Decimal("5.25"), "EUR": Decimal("0.92")}
+
+    monkeypatch.setattr(rates_service, "_fetch_usd_rates", _fake)
+    await _authed(client, db_session, "goal-warms-cache@example.com")
+
+    response = await client.post(
+        "/api/v1/goals/with-account",
+        json={"name": "Trip to Japan", "target_amount": "10000.00", "currency": "USD"},
+    )
+    assert response.status_code == 201, response.text
+
+    cached = await db_session.scalar(
+        select(func.count())
+        .select_from(ExchangeRate)
+        .where(ExchangeRate.source == rates_service.OXR_SOURCE, ExchangeRate.as_of == date.today())
+    )
+    assert cached and cached > 0
 
 
 async def test_update_goal_with_account_updates_both_records(

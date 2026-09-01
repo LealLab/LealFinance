@@ -1,4 +1,7 @@
-"""Read-only reference data: currencies, active settings, exchange rates."""
+"""Reference data: currencies, active settings, exchange rates.
+
+Mostly read-only; the one write is the admin-only exchange-rate refresh.
+"""
 
 from datetime import date
 
@@ -8,9 +11,14 @@ from sqlalchemy import select
 from app.api.deps import AdminUser, CurrentUser, DbSession
 from app.core.config import get_settings
 from app.models.currency import Currency
-from app.schemas.currency import CurrencyRead, ExchangeRateQuoteRead, PublicSettingsRead
+from app.schemas.currency import (
+    CurrencyRead,
+    ExchangeRateQuoteRead,
+    ExchangeRateRefreshRead,
+    PublicSettingsRead,
+)
 from app.schemas.update import UpdateStatusRead
-from app.services.exchange_rates import get_exchange_rate
+from app.services.exchange_rates import get_exchange_rate, refresh_rates_manual
 from app.services.updates import get_update_status
 
 router = APIRouter(prefix="/meta", tags=["meta"])
@@ -48,6 +56,25 @@ async def get_exchange_rate_quote(
         is_fallback=result.is_fallback,
         source=result.source,
         as_of=result.as_of,
+    )
+
+
+@router.post("/exchange-rates/refresh", response_model=ExchangeRateRefreshRead)
+async def refresh_exchange_rates(_admin: AdminUser, db: DbSession) -> ExchangeRateRefreshRead:
+    """Admin-only "refresh rates now" - pulls today's USD-anchored rates from
+    the provider ahead of the scheduled Celery run. Cooldown-gated
+    (EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES) and shared across processes;
+    within the cooldown it returns `throttled=True` without a provider call.
+    Read-computed values (accounts, goals, analytics) pick up the new rates
+    immediately; transactions frozen at the 1:1 fallback still heal via the
+    nightly backfill task."""
+    result = await refresh_rates_manual(db)
+    await db.commit()
+    return ExchangeRateRefreshRead(
+        as_of=result.as_of,
+        updated=result.updated,
+        throttled=result.throttled,
+        refreshed_at=result.refreshed_at,
     )
 
 

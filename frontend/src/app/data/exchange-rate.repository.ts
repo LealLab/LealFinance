@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ExchangeRate } from '../domain/models/exchange-rate';
+import { ExchangeRate, RateRefresh } from '../domain/models/exchange-rate';
 
 /**
  * See account.repository.ts for the DI-token pattern this follows. Not to
@@ -10,4 +10,10 @@ import { ExchangeRate } from '../domain/models/exchange-rate';
  */
 export abstract class ExchangeRateRepository {
   abstract getRate(baseCode: string, quoteCode: string, asOf?: string): Observable<ExchangeRate>;
+
+  /**
+   * Admin-only: pull today's provider rates into the cache now instead of
+   * waiting for the scheduled refresh. Cooldown-gated on the backend.
+   */
+  abstract refresh(): Observable<RateRefresh>;
 }

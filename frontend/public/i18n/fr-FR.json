@@ -1297,6 +1297,13 @@
           "save": "Enregistrer"
         }
       }
+    },
+    "actions": {
+      "refresh": "Actualiser"
+    },
+    "refresh": {
+      "updated": "{{count}} taux mis à jour.",
+      "upToDate": "Les taux sont déjà à jour."
     }
   },
   "settings": {

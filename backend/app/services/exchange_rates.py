@@ -14,15 +14,17 @@ The Open Exchange Rates free plan only quotes against USD and caps usage at
 1,000 requests/month, so the cache is USD-anchored: one `refresh_rates`
 call fetches `latest.json` (or `historical/{date}.json` for a past date)
 and stores one `USD -> X` row per known currency. Any pair is then a local
-division. The cache is filled by the scheduled Celery task
-(app/workers/tasks/rates.py, every few hours) and by `warm_cache_for` when
-an account first uses a currency - never as a side effect of a lookup.
+division. The cache is filled, never as a side effect of a lookup, by:
 
-Without a key, without a scheduled refresh yet, or if the provider call
-fails, lookups return a 1:1 fallback, flagged so callers can show a warning
-rather than silently using a wrong number. Provider failures never
-propagate as an error - a broken exchange-rate lookup should never be why a
-request fails.
+- the scheduled Celery task (app/workers/tasks/rates.py, every few hours);
+- `ensure_rates_cached`, called from every write that introduces a currency
+  (account/goal/wallet create, currency change) and once at API startup;
+- `refresh_rates_manual`, the admin "refresh now" endpoint, cooldown-gated.
+
+Without a key, without a refresh yet, or if the provider call fails, lookups
+return a 1:1 fallback, flagged so callers can show a warning rather than
+silently using a wrong number. Provider failures never propagate as an
+error - a broken exchange-rate lookup should never be why a request fails.
 
 Manual rates (steps 2-3) are user-scoped and only consulted when a caller
 passes `user_id` - see app/services/manual_rates.py for the CRUD side.
@@ -30,7 +32,7 @@ passes `user_id` - see app/services/manual_rates.py for the CRUD side.
 
 import logging
 from dataclasses import dataclass
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
 
@@ -108,8 +110,9 @@ async def get_exchange_rate(
         return cached
 
     # No cached rate. This is a pure read - the cache is filled by the
-    # scheduled refresh (app/workers/tasks/rates.py) and by `warm_cache_for`
-    # when an account first uses a currency, never as a side effect here.
+    # scheduled refresh (app/workers/tasks/rates.py), by `ensure_rates_cached`
+    # on currency-introducing writes, and by `refresh_rates_manual`, never as a
+    # side effect here.
     logger.info("No cached rate for %s->%s on %s; using 1:1 fallback", base_code, quote_code, as_of)
     return _fallback(as_of)
 
@@ -253,22 +256,77 @@ async def refresh_rates(db: AsyncSession, as_of: date | None = None) -> int:
     return len(values)
 
 
-async def warm_cache_for(db: AsyncSession, currency: str, *, as_of: date | None = None) -> None:
-    """Best-effort: ensure today's cache covers `currency` so an account
-    that just started using it converts against a real rate instead of
-    sitting at the 1:1 fallback until the next scheduled refresh. Rides the
-    caller's transaction (call before its commit). Never raises.
+async def has_cached_rates(db: AsyncSession, as_of: date) -> bool:
+    """Whether the provider cache holds any row for *exactly* `as_of`.
+
+    Deliberately an exact-date check, unlike `_anchor_rate`'s `as_of <= ...`:
+    a stale row from days ago must not make today look covered, or a cache
+    that stopped updating would never recover.
     """
-    currency = currency.upper()
+    return bool(
+        await db.scalar(
+            select(
+                select(ExchangeRate.id)
+                .where(
+                    ExchangeRate.source == OXR_SOURCE,
+                    ExchangeRate.as_of == as_of,
+                )
+                .exists()
+            )
+        )
+    )
+
+
+async def ensure_rates_cached(db: AsyncSession, *, as_of: date | None = None) -> None:
+    """Best-effort: make sure the cache holds today's rates so a freshly
+    introduced currency converts against a real rate instead of sitting at
+    the 1:1 fallback until the next scheduled refresh. One `refresh_rates`
+    call covers every currency, so this takes no currency argument. Rides
+    the caller's transaction (call before its commit). Never raises.
+    """
     as_of = as_of or date.today()
-    if currency == _ANCHOR or not get_settings().openexchangerates_app_id:
+    if not get_settings().openexchangerates_app_id:
         return
-    if await _anchor_rate(db, currency, as_of) is not None:
+    if await has_cached_rates(db, as_of):
         return
     try:
         await refresh_rates(db, as_of)
     except Exception:
-        logger.warning("Exchange-rate cache warm-up failed for %s", currency, exc_info=True)
+        logger.warning("Exchange-rate cache warm-up failed for %s", as_of, exc_info=True)
+
+
+@dataclass(frozen=True)
+class RefreshResult:
+    as_of: date
+    updated: int
+    throttled: bool
+    refreshed_at: datetime | None
+
+
+async def refresh_rates_manual(db: AsyncSession) -> RefreshResult:
+    """Operator-triggered "refresh now" (POST /meta/exchange-rates/refresh).
+
+    Cooldown-gated on the newest `updated_at` across provider rows, shared by
+    every process: within `exchange_rate_refresh_cooldown_minutes` it returns
+    `throttled=True` without calling the provider. Otherwise it refreshes
+    today's rates and commits nothing - the caller owns the transaction.
+    """
+    settings = get_settings()
+    today = date.today()
+    last = await db.scalar(
+        select(func.max(ExchangeRate.updated_at)).where(ExchangeRate.source == OXR_SOURCE)
+    )
+    if last is not None:
+        if last.tzinfo is None:
+            last = last.replace(tzinfo=UTC)
+        cooldown = timedelta(minutes=settings.exchange_rate_refresh_cooldown_minutes)
+        if datetime.now(UTC) - last < cooldown:
+            return RefreshResult(as_of=today, updated=0, throttled=True, refreshed_at=last)
+
+    updated = await refresh_rates(db, today)
+    return RefreshResult(
+        as_of=today, updated=updated, throttled=False, refreshed_at=datetime.now(UTC)
+    )
 
 
 async def _fetch_usd_rates(app_id: str, as_of: date) -> dict[str, Decimal]:

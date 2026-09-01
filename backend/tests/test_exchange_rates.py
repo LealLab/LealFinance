@@ -147,23 +147,38 @@ async def test_unknown_currency_is_left_uncached(
     assert result.source == rates_service.FALLBACK_SOURCE
 
 
-async def test_warm_cache_for_populates_a_currency_then_stays_quiet(
+async def test_ensure_rates_cached_populates_today_then_stays_quiet(
     db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _with_key(monkeypatch)
     calls = _stub_fetch(monkeypatch, _USD_RATES)
 
-    await rates_service.warm_cache_for(db_session, "BRL")
+    await rates_service.ensure_rates_cached(db_session)
     assert len(calls) == 1
     resolved = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
     assert resolved.is_fallback is False
 
     # Already covered for today - no second call.
-    await rates_service.warm_cache_for(db_session, "BRL")
+    await rates_service.ensure_rates_cached(db_session)
     assert len(calls) == 1
 
 
-async def test_warm_cache_for_never_raises_on_provider_failure(
+async def test_ensure_rates_cached_refreshes_when_only_a_stale_row_exists(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A row from yesterday must not make today look covered - otherwise a
+    cache that stopped updating never recovers."""
+    _with_key(monkeypatch)
+    calls = _stub_fetch(monkeypatch, _USD_RATES)
+
+    await rates_service.refresh_rates(db_session, date.today() - timedelta(days=1))
+    assert len(calls) == 1
+
+    await rates_service.ensure_rates_cached(db_session)
+    assert calls == [date.today() - timedelta(days=1), date.today()]
+
+
+async def test_ensure_rates_cached_never_raises_on_provider_failure(
     db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _with_key(monkeypatch)
@@ -173,9 +188,51 @@ async def test_warm_cache_for_never_raises_on_provider_failure(
 
     monkeypatch.setattr(rates_service, "_fetch_usd_rates", _boom)
 
-    await rates_service.warm_cache_for(db_session, "BRL")  # must not raise
+    await rates_service.ensure_rates_cached(db_session)  # must not raise
     result = await rates_service.get_exchange_rate(db_session, "USD", "BRL")
     assert result.is_fallback is True
+
+
+async def test_refresh_rates_manual_is_throttled_inside_the_cooldown(
+    db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _with_key(monkeypatch)
+    calls = _stub_fetch(monkeypatch, _USD_RATES)
+
+    first = await rates_service.refresh_rates_manual(db_session)
+    assert first.throttled is False
+    assert first.updated == 2
+    assert len(calls) == 1
+
+    # Default 15-minute cooldown is still in effect - no provider call.
+    second = await rates_service.refresh_rates_manual(db_session)
+    assert second.throttled is True
+    assert second.updated == 0
+    assert len(calls) == 1
+
+    # With the cooldown disabled it refreshes again.
+    monkeypatch.setattr(get_settings(), "exchange_rate_refresh_cooldown_minutes", 0)
+    third = await rates_service.refresh_rates_manual(db_session)
+    assert third.throttled is False
+    assert len(calls) == 2
+
+
+async def test_refresh_exchange_rates_endpoint_is_admin_only(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "exchange-refresh-member@example.com")
+    denied = await client.post("/api/v1/meta/exchange-rates/refresh")
+    assert denied.status_code == 403
+
+    admin, password = await make_user(
+        db_session, email="exchange-refresh-admin@example.com", role="admin"
+    )
+    await login_as(client, email=admin.email, password=password)
+    allowed = await client.post("/api/v1/meta/exchange-rates/refresh")
+    assert allowed.status_code == 200
+    body = allowed.json()
+    assert body["throttled"] is False  # no key configured -> updated 0, not an error
+    assert body["updated"] == 0
 
 
 async def test_exchange_rate_endpoint_requires_authentication(client: AsyncClient) -> None:

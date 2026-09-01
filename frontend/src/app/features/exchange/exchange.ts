@@ -6,6 +6,7 @@ import { forkJoin, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
+import { SessionService } from '../../core/session.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -14,7 +15,7 @@ import { ManualRateRepository } from '../../data/manual-rate.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { totalConversionFees, transactionsNeedingAttention } from '../../domain/calc/exchange';
 import { displayConverter } from '../../shared/money/display-converter';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
+import { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import { ManualRate } from '../../domain/models/manual-rate';
 import { Transaction } from '../../domain/models/transaction';
 import { zero } from '../../shared/money/money';
@@ -63,8 +64,14 @@ export class Exchange {
   private readonly manualRateRepository = inject(ManualRateRepository);
   private readonly exchangeRateRepository = inject(ExchangeRateRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly session = inject(SessionService);
   private readonly route = inject(ActivatedRoute);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
+
+  /** The manual refresh is an admin action - members don't see the button. */
+  protected readonly isAdmin = computed(() => this.session.user()?.role === 'admin');
+  protected readonly refreshing = signal(false);
+  protected readonly refreshResult = signal<RateRefresh | null>(null);
 
   protected readonly transactionsResource = rxResource({ stream: () => this.transactionRepository.list() });
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
@@ -186,6 +193,24 @@ export class Exchange {
     effect(() => {
       if (this.fragment() !== 'manual-rates') return;
       this.manualRatesSection()?.nativeElement.scrollIntoView({ block: 'start' });
+    });
+  }
+
+  protected refreshRates(): void {
+    this.refreshing.set(true);
+    this.refreshResult.set(null);
+    this.exchangeRateRepository.refresh().subscribe({
+      next: (result) => {
+        this.refreshing.set(false);
+        this.refreshResult.set(result);
+        this.accountRatesResource.reload();
+        this.transactionsResource.reload();
+        this.feeRates.reload();
+      },
+      error: () => {
+        this.refreshing.set(false);
+        this.mutationErrors.show();
+      },
     });
   }
 

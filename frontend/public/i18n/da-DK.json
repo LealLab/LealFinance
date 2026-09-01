@@ -1297,6 +1297,13 @@
           "save": "Gem"
         }
       }
+    },
+    "actions": {
+      "refresh": "Opdater nu"
+    },
+    "refresh": {
+      "updated": "{{count}} kurser opdateret.",
+      "upToDate": "Kurserne er allerede opdaterede."
     }
   },
   "settings": {
