@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { adminGuard, agentsGuard, authGuard, investmentsGuard } from './core/auth.guards';
+import { adminGuard, agentsGuard, aiChatGuard, authGuard, investmentsGuard } from './core/auth.guards';
 import { Shell } from './layout/shell';
 
 export const routes: Routes = [
@@ -91,6 +91,11 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
+      },
+      {
+        path: 'chat',
+        canActivate: [aiChatGuard],
+        loadComponent: () => import('./features/chat/chat').then((m) => m.Chat),
       },
       {
         path: 'admin/users',

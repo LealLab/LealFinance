@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "AI-chat",
+    "conversations": "Samtaler",
+    "newChat": "Ny chat",
+    "empty": {
+      "title": "Start en samtale",
+      "body": "Spør om økonomien din, eller få hjelp til å planlegge neste steg."
+    },
+    "composer": {
+      "placeholder": "Spør om økonomien din…"
+    },
+    "send": "Send",
+    "offTopic": "Jeg kan hjelpe med LealFinance og økonomien din, men ikke med dette temaet.",
+    "thinking": "Tenker…",
+    "toolRunning": "Kjører",
+    "toolDone": "Ferdig",
+    "confirm": {
+      "title": "Bekreft handling",
+      "body": "Vil du la {{name}} gjøre denne endringen?",
+      "approve": "Bekreft",
+      "reject": "Avvis",
+      "account": "Konto",
+      "category": "Kategori",
+      "institution": "Institusjon"
+    },
+    "delete": {
+      "title": "Slett samtale?",
+      "body": "Denne samtalen slettes permanent. Vil du fortsette?"
+    },
+    "errors": {
+      "notConfigured": "Ingen AI-leverandør er konfigurert ennå.",
+      "providerUnavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå.",
+      "loopExhausted": "Assistenten kunne ikke fullføre denne forespørselen.",
+      "generic": "Noe gikk galt. Prøv igjen."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AI-chat",
       "dashboard": "Oversikt",
       "accounts": "Kontoer",
       "transactions": "Transaksjoner",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP-tilgangstoken",
+      "body": "Generer et token for å koble en MCP-klient til LealFinance-kontoen din.",
+      "generate": "Generer token",
+      "copy": "Kopier",
+      "copied": "Kopiert",
+      "shownOnce": "Dette tokenet vises bare én gang. Lagre det før du forlater denne siden.",
+      "expires": "Utløper {{date}}"
+    },
     "backup": {
       "title": "Sikkerhetskopiering og gjenoppretting",
       "description": "Last ned en flyttbar kopi av dataene dine, eller erstatt gjeldende data fra en sikkerhetskopi.",
@@ -1447,6 +1493,7 @@
       "admin": "Administrator"
     },
     "users": {
+      "aiChat": "AI-chat",
       "title": "Brukere",
       "role": "Rolle",
       "active": "Aktiv",
@@ -1496,14 +1543,6 @@
       "message": "Fjerne dine tilknyttede opplysninger for denne leverandøren? En instansomfattende nøkkel satt av en administrator brukes i stedet, hvis den finnes."
     },
     "unlinkError": "Kunne ikke fjerne tilkoblingen til denne leverandøren. Prøv igjen.",
-    "tryIt": {
-      "title": "Prøv det",
-      "description": "Send én melding til en konfigurert leverandør for å bekrefte at den svarer.",
-      "autoProvider": "Bruk den første konfigurerte leverandøren",
-      "placeholder": "Spør om noe…",
-      "send": "Send"
-    },
-    "chatError": "Fikk ikke noe svar. Sjekk at leverandøren er riktig konfigurert.",
     "form": {
       "apiKeyTitle": "Koble til med en API-nøkkel",
       "oauthTitle": "Koble til et abonnement",

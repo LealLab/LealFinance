@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "AIチャット",
+    "conversations": "会話",
+    "newChat": "新しいチャット",
+    "empty": {
+      "title": "会話を始める",
+      "body": "家計について質問したり、次の一手を計画するためのサポートを受けたりできます。"
+    },
+    "composer": {
+      "placeholder": "家計について質問…"
+    },
+    "send": "送信",
+    "offTopic": "LealFinanceや家計についてはお手伝いできますが、その話題には対応できません。",
+    "thinking": "考え中…",
+    "toolRunning": "実行中",
+    "toolDone": "完了",
+    "confirm": {
+      "title": "操作を確認",
+      "body": "{{name}}にこの変更を許可しますか？",
+      "approve": "確認",
+      "reject": "拒否",
+      "account": "アカウント",
+      "category": "カテゴリ",
+      "institution": "金融機関"
+    },
+    "delete": {
+      "title": "会話を削除しますか？",
+      "body": "この会話は完全に削除されます。続行しますか？"
+    },
+    "errors": {
+      "notConfigured": "AIプロバイダーがまだ設定されていません。",
+      "providerUnavailable": "現在、AIプロバイダーを利用できません。",
+      "loopExhausted": "アシスタントはこのリクエストを完了できませんでした。",
+      "generic": "問題が発生しました。もう一度お試しください。"
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AIチャット",
       "dashboard": "ダッシュボード",
       "accounts": "口座",
       "transactions": "取引",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCPアクセストークン",
+      "body": "MCPクライアントをLealFinanceアカウントに接続するためのトークンを生成します。",
+      "generate": "トークンを生成",
+      "copy": "コピー",
+      "copied": "コピーしました",
+      "shownOnce": "このトークンは一度しか表示されません。このページを離れる前に保存してください。",
+      "expires": "有効期限: {{date}}"
+    },
     "backup": {
       "title": "バックアップと復元",
       "description": "データの持ち運び可能なコピーをダウンロードするか、バックアップから現在のデータを置き換えます。",
@@ -1447,6 +1493,7 @@
       "admin": "管理者"
     },
     "users": {
+      "aiChat": "AIチャット",
       "title": "ユーザー",
       "role": "役割",
       "active": "有効",
@@ -1496,14 +1543,6 @@
       "message": "このプロバイダーとの連携済み認証情報を削除しますか？管理者が設定したインスタンス共通のキーがあれば、代わりに使用されます。"
     },
     "unlinkError": "このプロバイダーの連携を解除できませんでした。もう一度お試しください。",
-    "tryIt": {
-      "title": "試してみる",
-      "description": "設定済みのプロバイダーにメッセージを送信し、応答することを確認します。",
-      "autoProvider": "最初に設定されたプロバイダーを使用",
-      "placeholder": "何か聞いてみる…",
-      "send": "送信"
-    },
-    "chatError": "応答を取得できませんでした。プロバイダーが正しく設定されているか確認してください。",
     "form": {
       "apiKeyTitle": "APIキーで連携",
       "oauthTitle": "サブスクリプションを連携",

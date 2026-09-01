@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "AI-chat",
+    "conversations": "Gesprekken",
+    "newChat": "Nieuwe chat",
+    "empty": {
+      "title": "Begin een gesprek",
+      "body": "Vraag naar je financiën of krijg hulp bij het plannen van je volgende stap."
+    },
+    "composer": {
+      "placeholder": "Vraag naar je financiën…"
+    },
+    "send": "Versturen",
+    "offTopic": "Ik kan je helpen met LealFinance en je financiën, maar niet met dat onderwerp.",
+    "thinking": "Denken…",
+    "toolRunning": "Wordt uitgevoerd",
+    "toolDone": "Klaar",
+    "confirm": {
+      "title": "Actie bevestigen",
+      "body": "Mag {{name}} deze wijziging uitvoeren?",
+      "approve": "Bevestigen",
+      "reject": "Weigeren",
+      "account": "Rekening",
+      "category": "Categorie",
+      "institution": "Instelling"
+    },
+    "delete": {
+      "title": "Gesprek verwijderen?",
+      "body": "Dit gesprek wordt definitief verwijderd. Wil je doorgaan?"
+    },
+    "errors": {
+      "notConfigured": "Er is nog geen AI-provider geconfigureerd.",
+      "providerUnavailable": "De AI-provider is momenteel niet beschikbaar.",
+      "loopExhausted": "De assistent kon dit verzoek niet voltooien.",
+      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AI-chat",
       "dashboard": "Overzicht",
       "accounts": "Rekeningen",
       "transactions": "Transacties",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP-toegangstoken",
+      "body": "Genereer een token om een MCP-client met je LealFinance-account te verbinden.",
+      "generate": "Token genereren",
+      "copy": "Kopiëren",
+      "copied": "Gekopieerd",
+      "shownOnce": "Dit token wordt maar één keer getoond. Sla het op voordat je deze pagina verlaat.",
+      "expires": "Verloopt op {{date}}"
+    },
     "backup": {
       "title": "Back-up en herstel",
       "description": "Download een overdraagbare kopie van je gegevens of vervang je huidige gegevens vanuit een back-up.",
@@ -1447,6 +1493,7 @@
       "admin": "Beheerder"
     },
     "users": {
+      "aiChat": "AI-chat",
       "title": "Gebruikers",
       "role": "Rol",
       "active": "Actief",
@@ -1496,14 +1543,6 @@
       "message": "Je gekoppelde gegevens voor deze provider verwijderen? Een instantiebrede sleutel van een beheerder wordt dan in plaats daarvan gebruikt, indien aanwezig."
     },
     "unlinkError": "Kon deze provider niet ontkoppelen. Probeer het opnieuw.",
-    "tryIt": {
-      "title": "Proberen",
-      "description": "Stuur een bericht naar een geconfigureerde provider om te bevestigen dat deze antwoordt.",
-      "autoProvider": "Eerste geconfigureerde provider gebruiken",
-      "placeholder": "Vraag iets…",
-      "send": "Verstuur"
-    },
-    "chatError": "Geen antwoord ontvangen. Controleer of de provider juist is geconfigureerd.",
     "form": {
       "apiKeyTitle": "Koppelen met een API-sleutel",
       "oauthTitle": "Abonnement koppelen",

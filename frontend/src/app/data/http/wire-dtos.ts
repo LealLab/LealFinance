@@ -1,7 +1,6 @@
 import type { AccountType } from '../../domain/models/account';
 import type {
   AgentAuthMode,
-  AgentChatRole,
   AgentCredentialSource,
   AgentProviderId,
   AgentReasoningEffort,
@@ -406,20 +405,4 @@ export interface AgentOAuthCompleteWire {
 export interface AgentProviderTestWire {
   ok: boolean;
   error_code: string | null;
-}
-
-export interface AgentChatMessageWire {
-  role: AgentChatRole;
-  content: string;
-}
-
-export interface AgentChatRequestWire {
-  provider?: AgentProviderId;
-  messages: AgentChatMessageWire[];
-}
-
-export interface AgentChatReplyWire {
-  provider: AgentProviderId;
-  model: string;
-  reply: string;
 }

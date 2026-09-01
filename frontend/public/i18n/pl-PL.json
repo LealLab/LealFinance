@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Czat AI",
+    "conversations": "Rozmowy",
+    "newChat": "Nowy czat",
+    "empty": {
+      "title": "Rozpocznij rozmowę",
+      "body": "Zapytaj o swoje finanse lub uzyskaj pomoc w zaplanowaniu kolejnego kroku."
+    },
+    "composer": {
+      "placeholder": "Zapytaj o swoje finanse…"
+    },
+    "send": "Wyślij",
+    "offTopic": "Mogę pomóc w sprawach LealFinance i Twoich finansów, ale nie w tym temacie.",
+    "thinking": "Myślę…",
+    "toolRunning": "Uruchamianie",
+    "toolDone": "Gotowe",
+    "confirm": {
+      "title": "Potwierdź działanie",
+      "body": "Czy zezwolić użytkownikowi {{name}} na wprowadzenie tej zmiany?",
+      "approve": "Potwierdź",
+      "reject": "Odrzuć",
+      "account": "Konto",
+      "category": "Kategoria",
+      "institution": "Instytucja"
+    },
+    "delete": {
+      "title": "Usunąć rozmowę?",
+      "body": "Ta rozmowa zostanie trwale usunięta. Czy chcesz kontynuować?"
+    },
+    "errors": {
+      "notConfigured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
+      "providerUnavailable": "Dostawca AI jest obecnie niedostępny.",
+      "loopExhausted": "Asystent nie mógł ukończyć tego żądania.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "Czat AI",
       "dashboard": "Panel",
       "accounts": "Konta",
       "transactions": "Transakcje",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "Token dostępu MCP",
+      "body": "Wygeneruj token, aby połączyć klienta MCP ze swoim kontem LealFinance.",
+      "generate": "Wygeneruj token",
+      "copy": "Kopiuj",
+      "copied": "Skopiowano",
+      "shownOnce": "Ten token jest wyświetlany tylko raz. Zapisz go przed opuszczeniem tej strony.",
+      "expires": "Wygasa {{date}}"
+    },
     "backup": {
       "title": "Kopia zapasowa i przywracanie",
       "description": "Pobierz przenośną kopię swoich danych lub zastąp bieżące dane danymi z kopii zapasowej.",
@@ -1447,6 +1493,7 @@
       "admin": "Administrator"
     },
     "users": {
+      "aiChat": "Czat AI",
       "title": "Użytkownicy",
       "role": "Rola",
       "active": "Aktywny",
@@ -1496,14 +1543,6 @@
       "message": "Usunąć powiązane dane uwierzytelniające dla tego dostawcy? Zamiast tego zostanie użyty klucz instancji ustawiony przez administratora, jeśli istnieje."
     },
     "unlinkError": "Nie udało się odłączyć tego dostawcy. Spróbuj ponownie.",
-    "tryIt": {
-      "title": "Wypróbuj",
-      "description": "Wyślij jedną wiadomość do skonfigurowanego dostawcy, aby sprawdzić, czy odpowiada.",
-      "autoProvider": "Użyj pierwszego skonfigurowanego dostawcy",
-      "placeholder": "Zapytaj o coś…",
-      "send": "Wyślij"
-    },
-    "chatError": "Nie udało się uzyskać odpowiedzi. Sprawdź, czy dostawca jest poprawnie skonfigurowany.",
     "form": {
       "apiKeyTitle": "Połącz za pomocą klucza API",
       "oauthTitle": "Połącz subskrypcję",

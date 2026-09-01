@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Yapay zekâ sohbeti",
+    "conversations": "Konuşmalar",
+    "newChat": "Yeni sohbet",
+    "empty": {
+      "title": "Bir sohbet başlatın",
+      "body": "Finansınız hakkında soru sorun veya sonraki adımınızı planlamak için yardım alın."
+    },
+    "composer": {
+      "placeholder": "Finansınız hakkında soru sorun…"
+    },
+    "send": "Gönder",
+    "offTopic": "LealFinance ve finansınız konusunda yardımcı olabilirim, ancak bu konuda yardımcı olamam.",
+    "thinking": "Düşünüyor…",
+    "toolRunning": "Çalışıyor",
+    "toolDone": "Tamamlandı",
+    "confirm": {
+      "title": "İşlemi onayla",
+      "body": "{{name}} bu değişikliği yapsın mı?",
+      "approve": "Onayla",
+      "reject": "Reddet",
+      "account": "Hesap",
+      "category": "Kategori",
+      "institution": "Kurum"
+    },
+    "delete": {
+      "title": "Sohbet silinsin mi?",
+      "body": "Bu sohbet kalıcı olarak silinecek. Devam etmek istiyor musunuz?"
+    },
+    "errors": {
+      "notConfigured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
+      "providerUnavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor.",
+      "loopExhausted": "Asistan bu isteği tamamlayamadı.",
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "Yapay zekâ sohbeti",
       "dashboard": "Genel bakış",
       "accounts": "Hesaplar",
       "transactions": "İşlemler",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP erişim belirteci",
+      "body": "LealFinance hesabınıza bir MCP istemcisi bağlamak için belirteç oluşturun.",
+      "generate": "Belirteç oluştur",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "shownOnce": "Bu belirteç yalnızca bir kez gösterilir. Bu sayfadan ayrılmadan önce kaydedin.",
+      "expires": "Son kullanma tarihi: {{date}}"
+    },
     "backup": {
       "title": "Yedekleme ve geri yükleme",
       "description": "Verilerinizin taşınabilir bir kopyasını indirin veya mevcut verilerinizi bir yedekten değiştirin.",
@@ -1447,6 +1493,7 @@
       "admin": "Yönetici"
     },
     "users": {
+      "aiChat": "Yapay zekâ sohbeti",
       "title": "Kullanıcılar",
       "role": "Rol",
       "active": "Etkin",
@@ -1496,14 +1543,6 @@
       "message": "Bu sağlayıcı için bağlı kimlik bilgilerinizi kaldırılsın mı? Varsa, bir yöneticinin ayarladığı örnek geneli anahtar bunun yerine kullanılır."
     },
     "unlinkError": "Bu sağlayıcının bağlantısı kaldırılamadı. Tekrar deneyin.",
-    "tryIt": {
-      "title": "Dene",
-      "description": "Yanıt verdiğini doğrulamak için yapılandırılmış bir sağlayıcıya bir mesaj gönderin.",
-      "autoProvider": "İlk yapılandırılmış sağlayıcıyı kullan",
-      "placeholder": "Bir şey sor…",
-      "send": "Gönder"
-    },
-    "chatError": "Yanıt alınamadı. Sağlayıcının doğru yapılandırıldığından emin olun.",
     "form": {
       "apiKeyTitle": "API anahtarıyla bağla",
       "oauthTitle": "Abonelik bağla",

@@ -15,7 +15,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
  * string literals, but the call itself isn't to the `t` marker function,
  * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as categories.ts:
- * t(admin.users.roleChange.title, admin.users.roleChange.promote, admin.users.roleChange.demote)
+ * t(admin.users.roleChange.title, admin.users.roleChange.promote, admin.users.roleChange.demote, admin.users.aiChat)
  */
 @Component({
   selector: 'app-users-admin',
@@ -108,6 +108,18 @@ export class UsersAdmin {
     } catch (error) {
       this.setError(error);
       await this.reload();
+    }
+  }
+
+  protected async setAiChatEnabled(user: User, enabled: boolean): Promise<void> {
+    const previous = user.aiChatEnabled;
+    user.aiChatEnabled = enabled;
+    try {
+      const saved = await firstValueFrom(this.api.updateUser(user.id, { aiChatEnabled: enabled }));
+      this.users.update((rows) => rows.map((row) => (row.id === saved.id ? saved : row)));
+    } catch (error) {
+      user.aiChatEnabled = previous;
+      this.setError(error);
     }
   }
 

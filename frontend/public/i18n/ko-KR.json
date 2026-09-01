@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "AI 채팅",
+    "conversations": "대화",
+    "newChat": "새 채팅",
+    "empty": {
+      "title": "대화 시작하기",
+      "body": "재무에 대해 질문하거나 다음 계획을 세우는 데 도움을 받아보세요."
+    },
+    "composer": {
+      "placeholder": "재무에 대해 질문해 보세요…"
+    },
+    "send": "보내기",
+    "offTopic": "LealFinance와 재무 관련 도움을 드릴 수 있지만, 해당 주제에 대해서는 도와드릴 수 없습니다.",
+    "thinking": "생각 중…",
+    "toolRunning": "실행 중",
+    "toolDone": "완료",
+    "confirm": {
+      "title": "작업 확인",
+      "body": "{{name}}이(가) 이 변경을 수행하도록 허용할까요?",
+      "approve": "확인",
+      "reject": "거부",
+      "account": "계정",
+      "category": "카테고리",
+      "institution": "기관"
+    },
+    "delete": {
+      "title": "대화를 삭제할까요?",
+      "body": "이 대화가 영구적으로 삭제됩니다. 계속할까요?"
+    },
+    "errors": {
+      "notConfigured": "아직 구성된 AI 제공업체가 없습니다.",
+      "providerUnavailable": "현재 AI 제공업체를 사용할 수 없습니다.",
+      "loopExhausted": "어시스턴트가 이 요청을 완료하지 못했습니다.",
+      "generic": "문제가 발생했습니다. 다시 시도해 주세요."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AI 채팅",
       "dashboard": "대시보드",
       "accounts": "계좌",
       "transactions": "거래내역",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP 액세스 토큰",
+      "body": "MCP 클라이언트를 LealFinance 계정에 연결할 토큰을 생성하세요.",
+      "generate": "토큰 생성",
+      "copy": "복사",
+      "copied": "복사됨",
+      "shownOnce": "이 토큰은 한 번만 표시됩니다. 이 페이지를 떠나기 전에 저장하세요.",
+      "expires": "만료일 {{date}}"
+    },
     "backup": {
       "title": "백업 및 복원",
       "description": "데이터의 이동식 사본을 다운로드하거나 백업으로 현재 데이터를 교체하세요.",
@@ -1447,6 +1493,7 @@
       "admin": "관리자"
     },
     "users": {
+      "aiChat": "AI 채팅",
       "title": "사용자",
       "role": "역할",
       "active": "활성",
@@ -1496,14 +1543,6 @@
       "message": "이 제공업체에 연결된 자격 증명을 제거할까요? 관리자가 설정한 인스턴스 전체 키가 있으면 대신 사용됩니다."
     },
     "unlinkError": "이 제공업체 연결을 해제할 수 없습니다. 다시 시도하세요.",
-    "tryIt": {
-      "title": "사용해보기",
-      "description": "설정된 제공업체에 메시지를 보내 응답하는지 확인하세요.",
-      "autoProvider": "처음 설정된 제공업체 사용",
-      "placeholder": "무엇이든 물어보세요…",
-      "send": "보내기"
-    },
-    "chatError": "응답을 받지 못했습니다. 제공업체가 올바르게 설정되었는지 확인하세요.",
     "form": {
       "apiKeyTitle": "API 키로 연결",
       "oauthTitle": "구독 연결",

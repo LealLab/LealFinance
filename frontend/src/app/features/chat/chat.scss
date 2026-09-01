@@ -1,0 +1,206 @@
+// The chat owns the viewport so history can grow without growing the page.
+:host {
+  display: block;
+  min-width: 0;
+  height: calc(100dvh - 4rem);
+}
+
+.chat-page {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.chat-layout {
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.chat-conversations,
+.chat-conversation-card,
+.chat-thread-panel,
+.chat-thread,
+.chat-messages {
+  min-height: 0;
+}
+
+.chat-conversation-card,
+.chat-thread-panel,
+.chat-thread {
+  height: 100%;
+}
+
+.chat-conversation-list,
+.chat-messages {
+  overflow-y: auto;
+}
+
+.chat-conversation-list {
+  height: 100%;
+}
+
+.chat-conversations-toggle {
+  list-style: none;
+}
+
+.chat-conversations-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.chat-chevron {
+  transition: transform 150ms ease;
+}
+
+.chat-conversations[open] .chat-chevron {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 767px) {
+  :host {
+    height: calc(100dvh - 6rem);
+  }
+
+  .chat-layout {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .chat-conversation-card,
+  .chat-conversation-list {
+    height: auto;
+    max-height: 10rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-chevron {
+    transition: none;
+  }
+}
+
+// Utility classes in chat.html cover the layout. The block below styles the
+// HTML that the markdown pipe renders into `[innerHTML]` on assistant
+// bubbles - Angular's style scoping does not reach that content, so the
+// rules are bounded with `::ng-deep` under `.chat-md` rather than left global.
+.chat-md {
+  // The bubble sets `whitespace-pre-wrap` for plain-text turns; the rendered
+  // markdown must not inherit it, or the newlines marked emits between tags
+  // show up as blank lines.
+  white-space: normal;
+  font-size: 0.875rem;
+  line-height: 1.5;
+
+  ::ng-deep {
+    > :first-child {
+      margin-top: 0;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+
+    p,
+    ul,
+    ol,
+    pre,
+    blockquote,
+    table {
+      margin: 0.3rem 0;
+    }
+
+    ul,
+    ol {
+      padding-left: 1.25rem;
+    }
+
+    li {
+      margin: 0.05rem 0;
+    }
+
+    li > p {
+      margin: 0;
+    }
+
+    li > ul,
+    li > ol {
+      margin: 0.05rem 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0.55rem 0 0.2rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 1.15rem;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+    }
+
+    h3,
+    h4 {
+      font-size: 0.95rem;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--content-primary);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    code {
+      padding: 0.1em 0.35em;
+      border-radius: 0.3rem;
+      background: var(--surface-sunken);
+      font-size: 0.85em;
+    }
+
+    pre {
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background: var(--surface-sunken);
+      overflow-x: auto;
+
+      code {
+        padding: 0;
+        background: none;
+        font-size: 0.85em;
+      }
+    }
+
+    blockquote {
+      padding-left: 0.75rem;
+      border-left: 2px solid var(--border-strong);
+      color: var(--content-muted);
+    }
+
+    hr {
+      margin: 0.9rem 0;
+      border: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    table {
+      border-collapse: collapse;
+      display: block;
+      overflow-x: auto;
+    }
+
+    th,
+    td {
+      padding: 0.35rem 0.6rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+  }
+}

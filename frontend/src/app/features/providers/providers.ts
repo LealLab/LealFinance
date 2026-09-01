@@ -4,7 +4,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ConfirmService } from '../../core/confirm.service';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import {
-  AgentChatMessage,
   AgentProviderId,
   AgentProviderStatus,
   AgentReasoningEffort,
@@ -16,7 +15,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProviderLinkModal } from './provider-link-modal';
 
 /**
- * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.chatError, providers.model.label, providers.model.recommendedOption, providers.modelError, providers.effort.label)
+ * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.model.label, providers.model.recommendedOption, providers.modelError, providers.effort.label)
  *
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals but aren't calls to the `t` marker function, so
@@ -42,12 +41,6 @@ export class Providers {
   protected readonly testResult = signal<{ provider: AgentProviderId; ok: boolean } | undefined>(
     undefined,
   );
-
-  protected readonly chatProvider = signal<AgentProviderId | undefined>(undefined);
-  protected readonly chatInput = signal('');
-  protected readonly chatSending = signal(false);
-  protected readonly chatReply = signal<string | undefined>(undefined);
-  protected readonly chatErrorKey = signal<string | undefined>(undefined);
 
   protected openLink(provider: AgentProviderStatus): void {
     this.linkModalProvider.set(provider);
@@ -104,23 +97,4 @@ export class Providers {
     });
   }
 
-  protected sendChat(): void {
-    const content = this.chatInput().trim();
-    if (!content) return;
-
-    const messages: AgentChatMessage[] = [{ role: 'user', content }];
-    this.chatSending.set(true);
-    this.chatErrorKey.set(undefined);
-    this.chatReply.set(undefined);
-    this.repository.chat(messages, this.chatProvider()).subscribe({
-      next: (result) => {
-        this.chatSending.set(false);
-        this.chatReply.set(result.reply);
-      },
-      error: () => {
-        this.chatSending.set(false);
-        this.chatErrorKey.set('providers.chatError');
-      },
-    });
-  }
 }

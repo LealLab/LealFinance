@@ -31,6 +31,7 @@ interface UserWire {
   display_name: string;
   role: UserRole;
   is_active: boolean;
+  ai_chat_enabled: boolean;
   created_at: string;
 }
 
@@ -95,6 +96,7 @@ const mapUser = (value: UserWire): User => ({
   displayName: value.display_name,
   role: value.role,
   isActive: value.is_active,
+  aiChatEnabled: value.ai_chat_enabled,
   createdAt: value.created_at,
 });
 
@@ -242,12 +244,13 @@ export class IdentityApiService {
 
   updateUser(
     id: string,
-    changes: Partial<Pick<User, 'displayName' | 'role' | 'isActive'>>,
+    changes: Partial<Pick<User, 'displayName' | 'role' | 'isActive' | 'aiChatEnabled'>>,
   ): Observable<User> {
     const body: Record<string, unknown> = {};
     if (Object.hasOwn(changes, 'displayName')) body['display_name'] = changes.displayName;
     if (Object.hasOwn(changes, 'role')) body['role'] = changes.role;
     if (Object.hasOwn(changes, 'isActive')) body['is_active'] = changes.isActive;
+    if (Object.hasOwn(changes, 'aiChatEnabled')) body['ai_chat_enabled'] = changes.aiChatEnabled;
     return this.api.patch<UserWire>(`/auth/users/${id}`, body).pipe(map(mapUser));
   }
 

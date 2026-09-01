@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Chat IA",
+    "conversations": "Conversations",
+    "newChat": "Nouveau chat",
+    "empty": {
+      "title": "Commencer une conversation",
+      "body": "Posez vos questions sur vos finances ou obtenez de l’aide pour planifier votre prochaine étape."
+    },
+    "composer": {
+      "placeholder": "Posez une question sur vos finances…"
+    },
+    "send": "Envoyer",
+    "offTopic": "Je peux vous aider avec LealFinance et vos finances, mais pas sur ce sujet.",
+    "thinking": "Réflexion…",
+    "toolRunning": "Exécution",
+    "toolDone": "Terminé",
+    "confirm": {
+      "title": "Confirmer l’action",
+      "body": "Autoriser {{name}} à effectuer cette modification ?",
+      "approve": "Confirmer",
+      "reject": "Refuser",
+      "account": "Compte",
+      "category": "Catégorie",
+      "institution": "Établissement"
+    },
+    "delete": {
+      "title": "Supprimer la conversation ?",
+      "body": "Cette conversation sera définitivement supprimée. Voulez-vous continuer ?"
+    },
+    "errors": {
+      "notConfigured": "Aucun fournisseur d’IA n’est encore configuré.",
+      "providerUnavailable": "Le fournisseur d’IA est actuellement indisponible.",
+      "loopExhausted": "L’assistant n’a pas pu terminer cette demande.",
+      "generic": "Une erreur s’est produite. Veuillez réessayer."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "Chat IA",
       "dashboard": "Tableau de bord",
       "accounts": "Comptes",
       "transactions": "Opérations",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "Jeton d’accès MCP",
+      "body": "Générez un jeton pour connecter un client MCP à votre compte LealFinance.",
+      "generate": "Générer un jeton",
+      "copy": "Copier",
+      "copied": "Copié",
+      "shownOnce": "Ce jeton ne sera affiché qu’une seule fois. Enregistrez-le avant de quitter cette page.",
+      "expires": "Expire le {{date}}"
+    },
     "backup": {
       "title": "Sauvegarde et restauration",
       "description": "Téléchargez une copie portable de vos données ou remplacez vos données actuelles à partir d’une sauvegarde.",
@@ -1447,6 +1493,7 @@
       "admin": "Administrateur"
     },
     "users": {
+      "aiChat": "Chat IA",
       "title": "Utilisateurs",
       "role": "Rôle",
       "active": "Actif",
@@ -1496,14 +1543,6 @@
       "message": "Supprimer votre identifiant lié à ce fournisseur ? La clé de l'instance définie par un administrateur, le cas échéant, sera utilisée à la place."
     },
     "unlinkError": "Impossible de délier ce fournisseur. Réessayez.",
-    "tryIt": {
-      "title": "Essayer",
-      "description": "Envoyez un message à un fournisseur configuré pour confirmer qu’il répond.",
-      "autoProvider": "Utiliser le premier fournisseur configuré",
-      "placeholder": "Posez une question…",
-      "send": "Envoyer"
-    },
-    "chatError": "Impossible d'obtenir une réponse. Vérifiez que le fournisseur est bien configuré.",
     "form": {
       "apiKeyTitle": "Lier avec une clé API",
       "oauthTitle": "Lier un abonnement",

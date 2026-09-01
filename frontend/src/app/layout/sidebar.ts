@@ -30,7 +30,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.chat, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -63,6 +63,7 @@ export function navSectionsFor(
   role: string | undefined,
   agentsEnabled: boolean | undefined,
   investmentsEnabled: boolean | undefined,
+  aiChatEnabled: boolean | undefined,
 ): NavSection[] {
   const sections = NAV_SECTIONS.map((section) =>
     section.labelKey === 'layout.nav.sections.accounts' && investmentsEnabled
@@ -73,6 +74,14 @@ export function navSectionsFor(
             { path: '/investments', labelKey: 'layout.nav.investments', icon: 'chart' as IconName },
           ],
         }
+      : section.labelKey === 'layout.nav.sections.analysis' && aiChatEnabled
+        ? {
+            ...section,
+            items: [
+              ...section.items,
+              { path: '/chat', labelKey: 'layout.nav.chat', icon: 'sparkles' as IconName },
+            ],
+          }
       : section,
   );
   if (role !== 'admin') return sections;
@@ -122,6 +131,7 @@ export class Sidebar {
       this.session.user()?.role,
       this.metadata.settings()?.agentsEnabled,
       this.preferences.preferences()?.investmentsEnabled,
+      this.session.user()?.aiChatEnabled,
     ),
   );
   protected readonly labelClass = computed(() =>

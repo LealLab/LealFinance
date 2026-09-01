@@ -130,6 +130,35 @@ services:
     healthcheck:
       disable: true
 
+  # Publish port 8001 (or add an nginx location) to reach external MCP clients; operator decision.
+  mcp:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    profiles: ["agents"]
+    command: ["uvicorn", "app.mcp.server:app", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: ${POSTGRES_DB:-lealfinance}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      API_SECRET_KEY: ${API_SECRET_KEY:?API_SECRET_KEY must be set}
+      AGENTS_ENABLED: ${AGENTS_ENABLED:-false}
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/healthz', timeout=2)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+
   web:
     build:
       context: .

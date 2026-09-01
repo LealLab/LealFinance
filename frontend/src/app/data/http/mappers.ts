@@ -1,7 +1,5 @@
 import type { Account, AccountBalance } from '../../domain/models/account';
 import type {
-  AgentChatMessage,
-  AgentChatReply,
   AgentOAuthStart,
   AgentProviderLink,
   AgentProviderStatus,
@@ -50,8 +48,6 @@ import type {
   AccountInputWire,
   AccountPatchWire,
   AccountWire,
-  AgentChatMessageWire,
-  AgentChatReplyWire,
   AgentOAuthStartWire,
   AgentProviderLinkWire,
   AgentProviderStatusWire,
@@ -748,11 +744,4 @@ export const mapAgentOAuthStart = (wire: AgentOAuthStartWire): AgentOAuthStart =
 export const mapAgentProviderTest = (wire: AgentProviderTestWire): AgentProviderTestResult => ({
   ok: wire.ok,
   errorCode: wire.error_code ?? undefined,
-});
-export const mapAgentChatMessages = (messages: AgentChatMessage[]): AgentChatMessageWire[] =>
-  messages.map((message) => ({ role: message.role, content: message.content }));
-export const mapAgentChatReply = (wire: AgentChatReplyWire): AgentChatReply => ({
-  provider: wire.provider,
-  model: wire.model,
-  reply: wire.reply,
 });

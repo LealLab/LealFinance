@@ -207,6 +207,38 @@
       </div>
     </app-card>
 
+    @if (session.user()?.aiChatEnabled) {
+      <app-card>
+        <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.mcp.title') }}</h2>
+        <p class="mb-4 max-w-md text-sm text-content-muted">{{ t('settings.mcp.body') }}</p>
+        @if (mcpToken(); as token) {
+          <label class="form-label" for="settings-mcp-token">{{ t('settings.mcp.title') }}</label>
+          <div class="flex min-w-0 flex-col gap-2 sm:flex-row">
+            <input
+              id="settings-mcp-token"
+              class="form-input min-w-0 flex-1 font-mono text-xs"
+              readonly
+              [value]="token.token"
+            />
+            <button appButton type="button" variant="secondary" (click)="copyMcpToken()">
+              {{ mcpCopied() ? t('settings.mcp.copied') : t('settings.mcp.copy') }}
+            </button>
+          </div>
+          <p class="mt-2 text-sm text-content-muted">{{ t('settings.mcp.shownOnce') }}</p>
+          <p class="mt-1 text-xs text-content-muted">
+            {{ t('settings.mcp.expires', { date: formatMcpExpiresAt(token.expiresAt) }) }}
+          </p>
+        } @else {
+          <button appButton type="button" [disabled]="mcpBusy()" (click)="generateMcpToken()">
+            {{ t('settings.mcp.generate') }}
+          </button>
+        }
+        @if (mcpError()) {
+          <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.error.generic') }}</p>
+        }
+      </app-card>
+    }
+
     @if (preferences.errorCode(); as code) {
       <p
         class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"

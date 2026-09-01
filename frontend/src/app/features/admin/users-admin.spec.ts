@@ -15,6 +15,7 @@ const USERS: User[] = [
     displayName: 'Ada',
     role: 'admin',
     isActive: true,
+    aiChatEnabled: false,
     createdAt: '2026-01-01T00:00:00Z'
   },
   {
@@ -23,6 +24,7 @@ const USERS: User[] = [
     displayName: 'Grace',
     role: 'member',
     isActive: true,
+    aiChatEnabled: false,
     createdAt: '2026-01-01T00:00:00Z'
   }
 ];
@@ -203,6 +205,18 @@ describe('UsersAdmin', () => {
 
     expect(TestBed.inject(ConfirmService).request()).toBeNull();
     expect(api.updateUser).toHaveBeenCalled();
+  });
+
+  it('updates AI chat access immediately when toggled', async () => {
+    const fixture = TestBed.createComponent(UsersAdmin);
+    fixture.detectChanges();
+    await fixture.componentInstance['reload']();
+    api.updateUser.mockReturnValue(of({ ...USERS[1], aiChatEnabled: true }));
+
+    await fixture.componentInstance['setAiChatEnabled'](fixture.componentInstance['users']()[1], true);
+
+    expect(api.updateUser).toHaveBeenCalledWith('u2', { aiChatEnabled: true });
+    expect(fixture.componentInstance['users']()[1].aiChatEnabled).toBe(true);
   });
 
   it('locks the role and active controls for a peer admin', async () => {

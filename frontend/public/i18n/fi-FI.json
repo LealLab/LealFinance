@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "AI-chat",
+    "conversations": "Keskustelut",
+    "newChat": "Uusi chat",
+    "empty": {
+      "title": "Aloita keskustelu",
+      "body": "Kysy taloudestasi tai pyydä apua seuraavan askeleesi suunnitteluun."
+    },
+    "composer": {
+      "placeholder": "Kysy taloudestasi…"
+    },
+    "send": "Lähetä",
+    "offTopic": "Voin auttaa LealFinanceen ja talouteesi liittyvissä asioissa, mutta en tässä aiheessa.",
+    "thinking": "Mietitään…",
+    "toolRunning": "Suoritetaan",
+    "toolDone": "Valmis",
+    "confirm": {
+      "title": "Vahvista toiminto",
+      "body": "Sallitko käyttäjän {{name}} tehdä tämän muutoksen?",
+      "approve": "Vahvista",
+      "reject": "Hylkää",
+      "account": "Tili",
+      "category": "Luokka",
+      "institution": "Laitos"
+    },
+    "delete": {
+      "title": "Poista keskustelu?",
+      "body": "Tämä keskustelu poistetaan pysyvästi. Haluatko jatkaa?"
+    },
+    "errors": {
+      "notConfigured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
+      "providerUnavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä.",
+      "loopExhausted": "Avustaja ei voinut suorittaa pyyntöä loppuun.",
+      "generic": "Jokin meni pieleen. Yritä uudelleen."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AI-chat",
       "dashboard": "Yhteenveto",
       "accounts": "Tilit",
       "transactions": "Tapahtumat",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP-käyttöoikeustunnus",
+      "body": "Luo tunnus, jolla voit yhdistää MCP-asiakasohjelman LealFinance-tiliisi.",
+      "generate": "Luo tunnus",
+      "copy": "Kopioi",
+      "copied": "Kopioitu",
+      "shownOnce": "Tunnus näytetään vain kerran. Tallenna se ennen kuin poistut tältä sivulta.",
+      "expires": "Vanhenee {{date}}"
+    },
     "backup": {
       "title": "Varmuuskopiointi ja palautus",
       "description": "Lataa siirrettävä kopio tiedoistasi tai korvaa nykyiset tiedot varmuuskopiosta.",
@@ -1447,6 +1493,7 @@
       "admin": "Järjestelmänvalvoja"
     },
     "users": {
+      "aiChat": "AI-chat",
       "title": "Käyttäjät",
       "role": "Rooli",
       "active": "Aktiivinen",
@@ -1496,14 +1543,6 @@
       "message": "Poistetaanko tähän palveluntarjoajaan linkitetyt tunnukset? Sen sijaan käytetään ylläpitäjän asettamaa instanssikohtaista avainta, jos sellainen on."
     },
     "unlinkError": "Palveluntarjoajan linkitystä ei voitu poistaa. Yritä uudelleen.",
-    "tryIt": {
-      "title": "Kokeile",
-      "description": "Lähetä yksi viesti määritetylle palveluntarjoajalle varmistaaksesi, että se vastaa.",
-      "autoProvider": "Käytä ensimmäistä määritettyä palveluntarjoajaa",
-      "placeholder": "Kysy jotain…",
-      "send": "Lähetä"
-    },
-    "chatError": "Vastausta ei saatu. Tarkista, että palveluntarjoaja on määritetty oikein.",
     "form": {
       "apiKeyTitle": "Linkitä API-avaimella",
       "oauthTitle": "Linkitä tilaus",

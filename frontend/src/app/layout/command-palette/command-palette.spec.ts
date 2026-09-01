@@ -55,6 +55,7 @@ describe('CommandPalette', () => {
       displayName: 'Admin',
       role: 'admin',
       isActive: true,
+      aiChatEnabled: false,
       createdAt: '',
     });
     settings.set({ agentsEnabled: true });

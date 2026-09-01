@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Chat AI",
+    "conversations": "Percakapan",
+    "newChat": "Chat baru",
+    "empty": {
+      "title": "Mulai percakapan",
+      "body": "Tanyakan tentang keuangan Anda atau dapatkan bantuan merencanakan langkah berikutnya."
+    },
+    "composer": {
+      "placeholder": "Tanyakan tentang keuangan Anda…"
+    },
+    "send": "Kirim",
+    "offTopic": "Saya dapat membantu tentang LealFinance dan keuangan Anda, tetapi bukan topik itu.",
+    "thinking": "Sedang berpikir…",
+    "toolRunning": "Menjalankan",
+    "toolDone": "Selesai",
+    "confirm": {
+      "title": "Konfirmasi tindakan",
+      "body": "Izinkan {{name}} melakukan perubahan ini?",
+      "approve": "Konfirmasi",
+      "reject": "Tolak",
+      "account": "Akun",
+      "category": "Kategori",
+      "institution": "Institusi"
+    },
+    "delete": {
+      "title": "Hapus percakapan?",
+      "body": "Percakapan ini akan dihapus secara permanen. Lanjutkan?"
+    },
+    "errors": {
+      "notConfigured": "Belum ada penyedia AI yang dikonfigurasi.",
+      "providerUnavailable": "Penyedia AI sedang tidak tersedia.",
+      "loopExhausted": "Asisten tidak dapat menyelesaikan permintaan ini.",
+      "generic": "Terjadi kesalahan. Silakan coba lagi."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "Chat AI",
       "dashboard": "Dasbor",
       "accounts": "Akun",
       "transactions": "Transaksi",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "Token akses MCP",
+      "body": "Buat token untuk menghubungkan klien MCP ke akun LealFinance Anda.",
+      "generate": "Buat token",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "shownOnce": "Token ini hanya ditampilkan sekali. Simpan sebelum meninggalkan halaman ini.",
+      "expires": "Kedaluwarsa {{date}}"
+    },
     "backup": {
       "title": "Pencadangan dan pemulihan",
       "description": "Unduh salinan portabel data Anda atau ganti data saat ini dari cadangan.",
@@ -1447,6 +1493,7 @@
       "admin": "Administrator"
     },
     "users": {
+      "aiChat": "Chat AI",
       "title": "Pengguna",
       "role": "Peran",
       "active": "Aktif",
@@ -1496,14 +1543,6 @@
       "message": "Hapus kredensial yang tertaut untuk penyedia ini? Kunci instans yang diatur administrator (jika ada) akan digunakan sebagai gantinya."
     },
     "unlinkError": "Tidak dapat memutuskan tautan penyedia ini. Coba lagi.",
-    "tryIt": {
-      "title": "Coba",
-      "description": "Kirim satu pesan ke penyedia yang telah dikonfigurasi untuk memastikan ia merespons.",
-      "autoProvider": "Gunakan penyedia pertama yang dikonfigurasi",
-      "placeholder": "Tanyakan sesuatu…",
-      "send": "Kirim"
-    },
-    "chatError": "Tidak bisa mendapatkan balasan. Periksa apakah penyedia dikonfigurasi dengan benar.",
     "form": {
       "apiKeyTitle": "Tautkan dengan kunci API",
       "oauthTitle": "Tautkan langganan",

@@ -31,6 +31,7 @@ async def test_login_success_sets_httponly_session_and_readable_csrf_cookie(
 
     assert response.status_code == 200
     assert response.json()["email"] == user.email
+    assert response.json()["ai_chat_enabled"] is False
     assert "password" not in response.text and "password_hash" not in response.text
 
     set_cookie_headers = response.headers.get_list("set-cookie")
@@ -185,6 +186,12 @@ async def test_member_cannot_access_admin_routes(
     assert create_invitation_response.status_code == 403
     assert create_invitation_response.json()["error"]["code"] == "auth.admin_required"
 
+    update_user_response = await client.patch(
+        f"/api/v1/auth/users/{user.id}", json={"ai_chat_enabled": True}
+    )
+    assert update_user_response.status_code == 403
+    assert update_user_response.json()["error"]["code"] == "auth.admin_required"
+
 
 async def test_admin_can_list_and_update_users(
     client: AsyncClient, db_session: AsyncSession
@@ -199,10 +206,30 @@ async def test_admin_can_list_and_update_users(
     assert {admin.email, member.email} <= emails
 
     update_response = await client.patch(
-        f"/api/v1/auth/users/{member.id}", json={"display_name": "Renamed"}
+        f"/api/v1/auth/users/{member.id}",
+        json={"display_name": "Renamed", "ai_chat_enabled": True},
     )
     assert update_response.status_code == 200
     assert update_response.json()["display_name"] == "Renamed"
+    assert update_response.json()["ai_chat_enabled"] is True
+
+    enabled_list_response = await client.get("/api/v1/auth/users")
+    enabled_member = next(
+        row for row in enabled_list_response.json() if row["id"] == str(member.id)
+    )
+    assert enabled_member["ai_chat_enabled"] is True
+
+    disable_response = await client.patch(
+        f"/api/v1/auth/users/{member.id}", json={"ai_chat_enabled": False}
+    )
+    assert disable_response.status_code == 200
+    assert disable_response.json()["ai_chat_enabled"] is False
+
+    disabled_list_response = await client.get("/api/v1/auth/users")
+    disabled_member = next(
+        row for row in disabled_list_response.json() if row["id"] == str(member.id)
+    )
+    assert disabled_member["ai_chat_enabled"] is False
 
 
 async def test_cannot_demote_the_last_admin(client: AsyncClient, db_session: AsyncSession) -> None:
@@ -305,6 +332,7 @@ async def test_concurrent_admin_demotions_leave_one_active_admin(_engine: AsyncE
                     role="member",
                     is_active=None,
                     display_name=None,
+                    ai_chat_enabled=None,
                 )
 
         results = await asyncio.gather(
@@ -334,6 +362,7 @@ async def test_preferences_round_trip(client: AsyncClient, db_session: AsyncSess
     assert get_response.json()["base_currency"] == "USD"
     assert get_response.json()["display_currency"] == "BRL"
     assert get_response.json()["investments_enabled"] is False
+    assert "ai_chat_enabled" not in get_response.json()
 
     update_response = await client.patch(
         "/api/v1/auth/preferences",

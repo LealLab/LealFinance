@@ -1,12 +1,13 @@
 """AI provider DTOs. Secrets are never serialized here - every Read model
 below exposes only booleans, the credential source, and a display label."""
 
-from typing import Literal
+from datetime import date, datetime
+from typing import Any, Literal
+from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
-ChatRole = Literal["user", "assistant"]
 ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
 
 
@@ -51,17 +52,55 @@ class ProviderTestRead(BaseModel):
     error_code: str | None = None
 
 
-class ChatMessageInput(BaseModel):
-    role: ChatRole
-    content: str = Field(min_length=1, max_length=8000)
+class McpTokenRead(BaseModel):
+    token: str
+    expires_at: datetime
 
 
-class ChatCreate(BaseModel):
+class ConversationCreate(BaseModel):
     provider: ProviderId | None = None
-    messages: list[ChatMessageInput] = Field(min_length=1, max_length=50)
 
 
-class ChatRead(BaseModel):
-    provider: ProviderId
+class ConversationRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    title: str | None
+    provider: str
     model: str
-    reply: str
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+
+class AgentMessageRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    role: str
+    content: str
+    tool_calls: list[dict[str, Any]] | None
+    tool_call_id: str | None
+    tool_name: str | None
+    is_error: bool
+    position: int
+    created_at: datetime
+
+
+class ConversationDetailRead(ConversationRead):
+    messages: list[AgentMessageRead]
+
+
+class MessageCreate(BaseModel):
+    content: str = Field(min_length=1, max_length=8000)
+    # The client's local calendar day, so "today" in the prompt matches the
+    # user's timezone rather than the server's UTC. Falls back to the server
+    # date when absent (e.g. an external MCP client).
+    client_date: date | None = None
+
+
+class ConfirmCreate(BaseModel):
+    tool_call_id: str = Field(min_length=1)
+    approved: bool
+    arguments: dict[str, Any] | None = None
+    client_date: date | None = None

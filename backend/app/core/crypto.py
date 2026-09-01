@@ -15,6 +15,7 @@ a new surprise, and avoids a second secret to provision and rotate.
 
 from base64 import urlsafe_b64encode
 from functools import lru_cache
+from uuid import UUID
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.primitives import hashes
@@ -23,11 +24,20 @@ from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from app.core.config import get_settings
 
 _HKDF_INFO = b"lealfinance.agents.creds.v1"
+_MCP_HKDF_INFO = b"lealfinance.mcp.token.v1"
 
 
 @lru_cache
 def _fernet() -> Fernet:
     key = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=_HKDF_INFO).derive(
+        get_settings().api_secret_key.encode("utf-8")
+    )
+    return Fernet(urlsafe_b64encode(key))
+
+
+@lru_cache
+def _mcp_fernet() -> Fernet:
+    key = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=_MCP_HKDF_INFO).derive(
         get_settings().api_secret_key.encode("utf-8")
     )
     return Fernet(urlsafe_b64encode(key))
@@ -44,4 +54,18 @@ def decrypt_secret(ciphertext: str) -> str | None:
     try:
         return _fernet().decrypt(ciphertext.encode("utf-8")).decode("utf-8")
     except InvalidToken:
+        return None
+
+
+def mint_mcp_token(user_id: UUID) -> str:
+    """Opaque bearer token for the standalone MCP server."""
+    return _mcp_fernet().encrypt(str(user_id).encode("utf-8")).decode("ascii")
+
+
+def verify_mcp_token(token: str, *, max_age: int) -> UUID | None:
+    """Returns the user id, or None on any verification failure."""
+    try:
+        raw = _mcp_fernet().decrypt(token.encode("utf-8"), ttl=max_age).decode("utf-8")
+        return UUID(raw)
+    except (InvalidToken, ValueError):
         return None

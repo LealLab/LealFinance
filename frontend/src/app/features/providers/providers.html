@@ -123,54 +123,6 @@
       </p>
     }
 
-    <app-card>
-      <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('providers.tryIt.title') }}</h2>
-      <p class="mb-3 text-sm text-content-muted">{{ t('providers.tryIt.description') }}</p>
-
-      <div class="flex flex-col gap-3">
-        <select
-          class="form-input max-w-xs"
-          [value]="chatProvider() ?? ''"
-          (change)="chatProvider.set($any($event.target).value || undefined)"
-        >
-          <option value="">{{ t('providers.tryIt.autoProvider') }}</option>
-          @for (provider of providersResource.value(); track provider.provider) {
-            @if (provider.configured) {
-              <option [value]="provider.provider">{{ t('providers.names.' + provider.provider) }}</option>
-            }
-          }
-        </select>
-
-        <textarea
-          class="form-input"
-          rows="3"
-          [placeholder]="t('providers.tryIt.placeholder')"
-          [value]="chatInput()"
-          (input)="chatInput.set($any($event.target).value)"
-        ></textarea>
-
-        @if (chatErrorKey(); as key) {
-          <p class="form-error" role="alert">{{ t(key) }}</p>
-        }
-
-        @if (chatReply(); as reply) {
-          <p class="rounded-md border border-border bg-surface-sunken p-3 text-sm text-content-primary">
-            {{ reply }}
-          </p>
-        }
-
-        <button
-          appButton
-          type="button"
-          variant="primary"
-          class="self-end"
-          [disabled]="chatSending() || !chatInput().trim()"
-          (click)="sendChat()"
-        >
-          {{ t('providers.tryIt.send') }}
-        </button>
-      </div>
-    </app-card>
   </div>
 
   @if (linkModalProvider(); as provider) {

@@ -21,6 +21,7 @@ dependencies = [
     # (app/models/agent_credential.py) - the only secret in this codebase
     # that must be read back rather than one-way hashed.
     "cryptography>=46.0.3",
+    "mcp>=1.29,<2",
 ]
 
 [dependency-groups]
@@ -53,6 +54,16 @@ ignore_missing_imports = true
 # from the call site, only from the module doing the decorating.
 [[tool.mypy.overrides]]
 module = ["app.workers.tasks.*"]
+disallow_untyped_decorators = false
+
+# The MCP SDK ships no py.typed marker; @mcp.custom_route(...) is untyped at
+# the call site, same situation as the celery task decorator above.
+[[tool.mypy.overrides]]
+module = ["mcp.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["app.mcp.*"]
 disallow_untyped_decorators = false
 
 [tool.pytest.ini_options]

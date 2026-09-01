@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "AI 聊天",
+    "conversations": "对话",
+    "newChat": "新建聊天",
+    "empty": {
+      "title": "开始对话",
+      "body": "询问你的财务状况，或获取规划下一步的帮助。"
+    },
+    "composer": {
+      "placeholder": "询问你的财务状况…"
+    },
+    "send": "发送",
+    "offTopic": "我可以帮助你了解 LealFinance 和你的财务状况，但无法处理这个话题。",
+    "thinking": "思考中…",
+    "toolRunning": "运行中",
+    "toolDone": "完成",
+    "confirm": {
+      "title": "确认操作",
+      "body": "允许 {{name}} 进行此更改吗？",
+      "approve": "确认",
+      "reject": "拒绝",
+      "account": "账户",
+      "category": "类别",
+      "institution": "机构"
+    },
+    "delete": {
+      "title": "删除对话？",
+      "body": "此对话将被永久删除。要继续吗？"
+    },
+    "errors": {
+      "notConfigured": "尚未配置 AI 提供商。",
+      "providerUnavailable": "AI 提供商当前不可用。",
+      "loopExhausted": "助手无法完成此请求。",
+      "generic": "出了点问题，请重试。"
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "AI 聊天",
       "dashboard": "仪表盘",
       "accounts": "账户",
       "transactions": "交易",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP 访问令牌",
+      "body": "生成令牌，以将 MCP 客户端连接到你的 LealFinance 账户。",
+      "generate": "生成令牌",
+      "copy": "复制",
+      "copied": "已复制",
+      "shownOnce": "此令牌仅显示一次。离开此页面前请保存。",
+      "expires": "将于 {{date}} 过期"
+    },
     "backup": {
       "title": "备份与恢复",
       "description": "下载可移植的数据副本，或使用备份替换当前数据。",
@@ -1447,6 +1493,7 @@
       "admin": "管理员"
     },
     "users": {
+      "aiChat": "AI 聊天",
       "title": "用户",
       "role": "角色",
       "active": "活跃",
@@ -1496,14 +1543,6 @@
       "message": "要移除此提供方的已关联凭据吗？如果管理员设置了实例级密钥，将改用该密钥。"
     },
     "unlinkError": "无法取消关联该提供方，请重试。",
-    "tryIt": {
-      "title": "试一试",
-      "description": "向已配置的提供方发送一条消息，以确认其能够响应。",
-      "autoProvider": "使用第一个已配置的提供方",
-      "placeholder": "问点什么…",
-      "send": "发送"
-    },
-    "chatError": "未能获取回复，请检查该提供方是否配置正确。",
     "form": {
       "apiKeyTitle": "使用 API 密钥关联",
       "oauthTitle": "关联订阅",

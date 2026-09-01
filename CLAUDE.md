@@ -86,13 +86,19 @@ See [`docs/i18n.md`](docs/i18n.md).
 
 ## AI agents and secrets
 
-- Agents run inside `api` and are disabled by `AGENTS_ENABLED`; the `agents`
-  Compose profile only starts optional Ollama.
-- Provider credentials are resolved in this order: user-linked credential,
-  instance `.env` credential, then unavailable.
-- Never return provider secrets. They are encrypted with a key derived from
-  `API_SECRET_KEY`; rotating that key invalidates sessions, invitations, and
-  stored provider credentials.
+- Chat runs inside `api` and is disabled by `AGENTS_ENABLED`; the `agents`
+  Compose profile starts the `mcp` server and optional Ollama.
+- Provider linking is admin-only. Chat is per user, gated by the admin-set
+  `users.ai_chat_enabled` flag (not a preference; excluded from backups).
+- The tool set lives in `app/agents/tools.py`; the streaming provider adapters
+  in `app/agents/chat.py::stream_turn`; the tool-calling loop, system prompt,
+  and off-topic gate in `app/agents/loop.py` / `prompt.py`. Every tool call goes
+  through a user-scoped service; no tool schema takes a `user_id`.
+- Write tools never execute without an explicit `/agents/conversations/{id}/confirm`.
+- Provider credentials resolve as: user-linked, instance `.env`, then unavailable.
+- Never return provider secrets. They and MCP tokens are Fernet values keyed from
+  `API_SECRET_KEY`; rotating that key invalidates sessions, invitations, stored
+  provider credentials, and outstanding MCP tokens.
 
 See [`docs/ai-agents.md`](docs/ai-agents.md).
 

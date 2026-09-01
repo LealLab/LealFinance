@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "KI-Chat",
+    "conversations": "Unterhaltungen",
+    "newChat": "Neuer Chat",
+    "empty": {
+      "title": "Gespräch beginnen",
+      "body": "Frage nach deinen Finanzen oder lass dir bei der Planung deines nächsten Schritts helfen."
+    },
+    "composer": {
+      "placeholder": "Frage nach deinen Finanzen…"
+    },
+    "send": "Senden",
+    "offTopic": "Ich kann dir bei LealFinance und deinen Finanzen helfen, aber nicht bei diesem Thema.",
+    "thinking": "Denkt nach…",
+    "toolRunning": "Wird ausgeführt",
+    "toolDone": "Erledigt",
+    "confirm": {
+      "title": "Aktion bestätigen",
+      "body": "Darf {{name}} diese Änderung vornehmen?",
+      "approve": "Bestätigen",
+      "reject": "Ablehnen",
+      "account": "Konto",
+      "category": "Kategorie",
+      "institution": "Institut"
+    },
+    "delete": {
+      "title": "Unterhaltung löschen?",
+      "body": "Diese Unterhaltung wird dauerhaft gelöscht. Möchtest du fortfahren?"
+    },
+    "errors": {
+      "notConfigured": "Noch kein KI-Anbieter konfiguriert.",
+      "providerUnavailable": "Der KI-Anbieter ist derzeit nicht verfügbar.",
+      "loopExhausted": "Der Assistent konnte diese Anfrage nicht abschließen.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "KI-Chat",
       "dashboard": "Übersicht",
       "accounts": "Konten",
       "transactions": "Transaktionen",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "MCP-Zugriffstoken",
+      "body": "Generiere ein Token, um einen MCP-Client mit deinem LealFinance-Konto zu verbinden.",
+      "generate": "Token generieren",
+      "copy": "Kopieren",
+      "copied": "Kopiert",
+      "shownOnce": "Dieses Token wird nur einmal angezeigt. Speichere es, bevor du diese Seite verlässt.",
+      "expires": "Läuft ab {{date}}"
+    },
     "backup": {
       "title": "Sichern und Wiederherstellen",
       "description": "Laden Sie eine portable Kopie Ihrer Daten herunter oder ersetzen Sie Ihre aktuellen Daten aus einer Sicherung.",
@@ -1447,6 +1493,7 @@
       "admin": "Administrator"
     },
     "users": {
+      "aiChat": "KI-Chat",
       "title": "Benutzer",
       "role": "Rolle",
       "active": "Aktiv",
@@ -1496,14 +1543,6 @@
       "message": "Deine verknüpfte Zugangsdaten für diesen Anbieter entfernen? Ein von einem Administrator hinterlegter instanzweiter Schlüssel wird dann stattdessen verwendet, falls vorhanden."
     },
     "unlinkError": "Der Anbieter konnte nicht getrennt werden. Versuche es erneut.",
-    "tryIt": {
-      "title": "Ausprobieren",
-      "description": "Sende eine Nachricht an einen konfigurierten Anbieter, um zu bestätigen, dass er antwortet.",
-      "autoProvider": "Ersten konfigurierten Anbieter verwenden",
-      "placeholder": "Frag etwas…",
-      "send": "Senden"
-    },
-    "chatError": "Keine Antwort erhalten. Prüfe, ob der Anbieter richtig konfiguriert ist.",
     "form": {
       "apiKeyTitle": "Mit API-Schlüssel verknüpfen",
       "oauthTitle": "Abonnement verknüpfen",

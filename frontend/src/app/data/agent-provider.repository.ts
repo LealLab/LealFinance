@@ -1,7 +1,5 @@
 import { Observable } from 'rxjs';
 import {
-  AgentChatMessage,
-  AgentChatReply,
   AgentOAuthStart,
   AgentProviderId,
   AgentProviderLink,
@@ -19,8 +17,4 @@ export abstract class AgentProviderRepository {
     input: { verifier: string; state: string; code: string },
   ): Observable<AgentProviderStatus>;
   abstract test(provider: AgentProviderId): Observable<AgentProviderTestResult>;
-  abstract chat(
-    messages: AgentChatMessage[],
-    provider?: AgentProviderId,
-  ): Observable<AgentChatReply>;
 }

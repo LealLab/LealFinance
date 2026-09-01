@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Chat com IA",
+    "conversations": "Conversas",
+    "newChat": "Nova conversa",
+    "empty": {
+      "title": "Comece uma conversa",
+      "body": "Pergunte sobre suas finanças ou peça ajuda para planejar seu próximo passo."
+    },
+    "composer": {
+      "placeholder": "Pergunte sobre suas finanças…"
+    },
+    "send": "Enviar",
+    "offTopic": "Posso ajudar com o LealFinance e suas finanças, mas não com esse assunto.",
+    "thinking": "Pensando…",
+    "toolRunning": "Executando",
+    "toolDone": "Concluído",
+    "confirm": {
+      "title": "Confirmar ação",
+      "body": "Permitir que {{name}} faça esta alteração?",
+      "approve": "Confirmar",
+      "reject": "Rejeitar",
+      "account": "Conta",
+      "category": "Categoria",
+      "institution": "Instituição"
+    },
+    "delete": {
+      "title": "Excluir conversa?",
+      "body": "Esta conversa será excluída permanentemente. Deseja continuar?"
+    },
+    "errors": {
+      "notConfigured": "Nenhum provedor de IA foi configurado ainda.",
+      "providerUnavailable": "O provedor de IA está indisponível no momento.",
+      "loopExhausted": "O assistente não conseguiu concluir esta solicitação.",
+      "generic": "Algo deu errado. Tente novamente."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -166,6 +202,7 @@
       "reports": "Relatórios",
       "exchange": "Câmbio",
       "settings": "Configurações",
+      "chat": "Chat com IA",
       "investments": "Investimentos",
       "adminUsers": "Usuários e convites",
       "sections": {
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "Token de acesso MCP",
+      "body": "Gere um token para conectar um cliente MCP à sua conta do LealFinance.",
+      "generate": "Gerar token",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "shownOnce": "Este token é exibido apenas uma vez. Salve-o antes de sair desta página.",
+      "expires": "Expira em {{date}}"
+    },
     "backup": {
       "title": "Backup e restauração",
       "description": "Baixe uma cópia portátil dos seus dados ou substitua os dados atuais por um backup.",
@@ -1450,6 +1496,7 @@
       "title": "Usuários",
       "role": "Função",
       "active": "Ativo",
+      "aiChat": "Chat com IA",
       "empty": "Nenhum usuário encontrado.",
       "roleChange": {
         "title": "Alterar função?",
@@ -1496,14 +1543,6 @@
       "message": "Remover a credencial vinculada a este provedor? Uma chave da instância definida pelo administrador, se houver, será usada em seu lugar."
     },
     "unlinkError": "Não foi possível desvincular este provedor. Tente novamente.",
-    "tryIt": {
-      "title": "Testar",
-      "description": "Envie uma mensagem a um provedor configurado para confirmar que ele responde.",
-      "autoProvider": "Usar o primeiro provedor configurado",
-      "placeholder": "Pergunte algo…",
-      "send": "Enviar"
-    },
-    "chatError": "Não foi possível obter uma resposta. Verifique se o provedor está configurado corretamente.",
     "form": {
       "apiKeyTitle": "Vincular com uma chave de API",
       "oauthTitle": "Vincular uma assinatura",

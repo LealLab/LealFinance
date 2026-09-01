@@ -33,6 +33,7 @@ describe('Sidebar', () => {
       displayName: 'Admin',
       role: 'admin',
       isActive: true,
+      aiChatEnabled: false,
       createdAt: '',
     });
     TestBed.inject(MetadataService).settings.set({
@@ -57,6 +58,7 @@ describe('Sidebar', () => {
       displayName: 'Member',
       role: 'member',
       isActive: true,
+      aiChatEnabled: false,
       createdAt: '',
     });
     TestBed.inject(MetadataService).settings.set({

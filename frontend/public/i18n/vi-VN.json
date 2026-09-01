@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Trò chuyện AI",
+    "conversations": "Cuộc trò chuyện",
+    "newChat": "Cuộc trò chuyện mới",
+    "empty": {
+      "title": "Bắt đầu cuộc trò chuyện",
+      "body": "Hỏi về tài chính của bạn hoặc nhận trợ giúp lập kế hoạch cho bước tiếp theo."
+    },
+    "composer": {
+      "placeholder": "Hỏi về tài chính của bạn…"
+    },
+    "send": "Gửi",
+    "offTopic": "Tôi có thể hỗ trợ về LealFinance và tài chính của bạn, nhưng không thể hỗ trợ chủ đề đó.",
+    "thinking": "Đang suy nghĩ…",
+    "toolRunning": "Đang chạy",
+    "toolDone": "Đã xong",
+    "confirm": {
+      "title": "Xác nhận thao tác",
+      "body": "Cho phép {{name}} thực hiện thay đổi này?",
+      "approve": "Xác nhận",
+      "reject": "Từ chối",
+      "account": "Tài khoản",
+      "category": "Danh mục",
+      "institution": "Tổ chức"
+    },
+    "delete": {
+      "title": "Xóa cuộc trò chuyện?",
+      "body": "Cuộc trò chuyện này sẽ bị xóa vĩnh viễn. Bạn có muốn tiếp tục không?"
+    },
+    "errors": {
+      "notConfigured": "Chưa cấu hình nhà cung cấp AI.",
+      "providerUnavailable": "Nhà cung cấp AI hiện không khả dụng.",
+      "loopExhausted": "Trợ lý không thể hoàn tất yêu cầu này.",
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "Trò chuyện AI",
       "dashboard": "Bảng điều khiển",
       "accounts": "Tài khoản",
       "transactions": "Giao dịch",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "Mã thông báo truy cập MCP",
+      "body": "Tạo mã thông báo để kết nối ứng dụng khách MCP với tài khoản LealFinance của bạn.",
+      "generate": "Tạo mã thông báo",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "shownOnce": "Mã thông báo này chỉ được hiển thị một lần. Hãy lưu lại trước khi rời khỏi trang.",
+      "expires": "Hết hạn {{date}}"
+    },
     "backup": {
       "title": "Sao lưu và khôi phục",
       "description": "Tải xuống bản sao dữ liệu có thể di chuyển hoặc thay thế dữ liệu hiện tại từ bản sao lưu.",
@@ -1447,6 +1493,7 @@
       "admin": "Quản trị viên"
     },
     "users": {
+      "aiChat": "Trò chuyện AI",
       "title": "Người dùng",
       "role": "Vai trò",
       "active": "Đang hoạt động",
@@ -1496,14 +1543,6 @@
       "message": "Xóa thông tin xác thực đã liên kết cho nhà cung cấp này? Khóa toàn thể hiện do quản trị viên thiết lập (nếu có) sẽ được dùng thay thế."
     },
     "unlinkError": "Không thể hủy liên kết nhà cung cấp này. Hãy thử lại.",
-    "tryIt": {
-      "title": "Dùng thử",
-      "description": "Gửi một tin nhắn đến nhà cung cấp đã cấu hình để xác nhận nó phản hồi.",
-      "autoProvider": "Dùng nhà cung cấp đã cấu hình đầu tiên",
-      "placeholder": "Hỏi điều gì đó…",
-      "send": "Gửi"
-    },
-    "chatError": "Không nhận được phản hồi. Kiểm tra xem nhà cung cấp đã được cấu hình đúng chưa.",
     "form": {
       "apiKeyTitle": "Liên kết bằng khóa API",
       "oauthTitle": "Liên kết gói đăng ký",

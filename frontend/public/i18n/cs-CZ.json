@@ -1,4 +1,40 @@
 {
+  "chat": {
+    "title": "Chat s AI",
+    "conversations": "Konverzace",
+    "newChat": "Nový chat",
+    "empty": {
+      "title": "Začněte konverzaci",
+      "body": "Zeptejte se na své finance nebo si nechte poradit s plánováním dalšího kroku."
+    },
+    "composer": {
+      "placeholder": "Zeptejte se na své finance…"
+    },
+    "send": "Odeslat",
+    "offTopic": "Mohu vám pomoci s LealFinance a vašimi financemi, ale ne s tímto tématem.",
+    "thinking": "Přemýšlím…",
+    "toolRunning": "Spouští se",
+    "toolDone": "Hotovo",
+    "confirm": {
+      "title": "Potvrdit akci",
+      "body": "Povolit {{name}} provést tuto změnu?",
+      "approve": "Potvrdit",
+      "reject": "Odmítnout",
+      "account": "Účet",
+      "category": "Kategorie",
+      "institution": "Instituce"
+    },
+    "delete": {
+      "title": "Smazat konverzaci?",
+      "body": "Tato konverzace bude trvale smazána. Chcete pokračovat?"
+    },
+    "errors": {
+      "notConfigured": "Zatím není nastaven žádný poskytovatel AI.",
+      "providerUnavailable": "Poskytovatel AI je momentálně nedostupný.",
+      "loopExhausted": "Asistent nemohl tento požadavek dokončit.",
+      "generic": "Něco se pokazilo. Zkuste to prosím znovu."
+    }
+  },
   "app": {
     "title": "LealFinance"
   },
@@ -155,6 +191,7 @@
   },
   "layout": {
     "nav": {
+      "chat": "Chat s AI",
       "dashboard": "Přehled",
       "accounts": "Účty",
       "transactions": "Transakce",
@@ -1263,6 +1300,15 @@
     }
   },
   "settings": {
+    "mcp": {
+      "title": "Přístupový token MCP",
+      "body": "Vygenerujte token pro připojení klienta MCP k účtu LealFinance.",
+      "generate": "Vygenerovat token",
+      "copy": "Kopírovat",
+      "copied": "Zkopírováno",
+      "shownOnce": "Tento token se zobrazí pouze jednou. Před opuštěním této stránky si ho uložte.",
+      "expires": "Vyprší {{date}}"
+    },
     "backup": {
       "title": "Záloha a obnovení",
       "description": "Stáhněte si přenositelnou kopii dat nebo nahraďte aktuální data ze zálohy.",
@@ -1447,6 +1493,7 @@
       "admin": "Správce"
     },
     "users": {
+      "aiChat": "Chat s AI",
       "title": "Uživatelé",
       "role": "Uživatelská role",
       "active": "Aktivní",
@@ -1496,14 +1543,6 @@
       "message": "Odstranit vaše propojené přihlašovací údaje pro tohoto poskytovatele? Místo nich se použije klíč nastavený administrátorem pro celou instanci, pokud existuje."
     },
     "unlinkError": "Propojení tohoto poskytovatele se nepodařilo zrušit. Zkuste to znovu.",
-    "tryIt": {
-      "title": "Vyzkoušet",
-      "description": "Odešlete jednu zprávu nakonfigurovanému poskytovateli, abyste ověřili, že odpovídá.",
-      "autoProvider": "Použít prvního nakonfigurovaného poskytovatele",
-      "placeholder": "Zeptejte se na něco…",
-      "send": "Odeslat"
-    },
-    "chatError": "Nepodařilo se získat odpověď. Zkontrolujte, zda je poskytovatel správně nakonfigurován.",
     "form": {
       "apiKeyTitle": "Propojit pomocí API klíče",
       "oauthTitle": "Propojit předplatné",
