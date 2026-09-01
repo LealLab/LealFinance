@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Чат зі ШІ",
+    "newChat": "Новий чат",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Почніть розмову",
+      "body": "Запитайте про свої фінанси або отримайте допомогу з планування наступного кроку."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Запитайте про свої фінанси…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Надіслати",
+    "offTopic": "Я можу допомогти з LealFinance і вашими фінансами, але не з цією темою.",
+    "thinking": "Думаю…",
+    "toolRunning": "Виконується",
+    "toolDone": "Готово",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Підтвердити дію",
+      "body": "Дозволити {{name}} виконати цю зміну?",
+      "approve": "Підтвердити",
+      "reject": "Відхилити",
+      "account": "Рахунок",
+      "category": "Категорія"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Видалити розмову?",
+      "body": "Цю розмову буде видалено назавжди. Продовжити?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Постачальника ШІ ще не налаштовано.",
+      "providerUnavailable": "Постачальник ШІ наразі недоступний.",
+      "loopExhausted": "Асистент не зміг виконати цей запит.",
+      "generic": "Щось пішло не так. Спробуйте ще раз."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Чат зі ШІ",
       "dashboard": "Панель керування",
       "accounts": "Рахунки",
       "transactions": "Транзакції",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Токен доступу MCP",
+      "body": "Згенеруйте токен, щоб підключити клієнт MCP до свого облікового запису LealFinance.",
+      "generate": "Згенерувати токен",
+      "copy": "Копіювати",
+      "copied": "Скопійовано",
+      "shownOnce": "Цей токен відображається лише один раз. Збережіть його, перш ніж залишити цю сторінку.",
+      "expires": "Дійсний до {{date}}"
     },
     "backup": {
       "title": "Резервне копіювання та відновлення",
@@ -1491,7 +1491,7 @@
       "admin": "Адміністратор"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Чат зі ШІ",
       "title": "Користувачі",
       "role": "Роль",
       "active": "Активний",

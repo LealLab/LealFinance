@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Chat AI",
+    "newChat": "Chat nou",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Începe o conversație",
+      "body": "Întreabă despre finanțele tale sau primește ajutor pentru a-ți planifica următorul pas."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Întreabă despre finanțele tale…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Trimite",
+    "offTopic": "Te pot ajuta cu LealFinance și cu finanțele tale, dar nu cu acest subiect.",
+    "thinking": "Mă gândesc…",
+    "toolRunning": "Se execută",
+    "toolDone": "Gata",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Confirmă acțiunea",
+      "body": "Permiți ca {{name}} să facă această modificare?",
+      "approve": "Confirmă",
+      "reject": "Respinge",
+      "account": "Cont",
+      "category": "Categorie"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Ștergi conversația?",
+      "body": "Această conversație va fi ștearsă definitiv. Continui?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Nu este configurat încă niciun furnizor AI.",
+      "providerUnavailable": "Furnizorul AI nu este disponibil momentan.",
+      "loopExhausted": "Asistentul nu a putut finaliza această solicitare.",
+      "generic": "Ceva nu a funcționat. Încearcă din nou."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Chat AI",
       "dashboard": "Panou de control",
       "accounts": "Conturi",
       "transactions": "Tranzacții",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Token de acces MCP",
+      "body": "Generează un token pentru a conecta un client MCP la contul tău LealFinance.",
+      "generate": "Generează token",
+      "copy": "Copiază",
+      "copied": "Copiat",
+      "shownOnce": "Acest token este afișat o singură dată. Salvează-l înainte de a părăsi pagina.",
+      "expires": "Expiră la {{date}}"
     },
     "backup": {
       "title": "Copiere de siguranță și restaurare",
@@ -1491,7 +1491,7 @@
       "admin": "Administrator"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Chat AI",
       "title": "Utilizatori",
       "role": "Rol",
       "active": "Activ",

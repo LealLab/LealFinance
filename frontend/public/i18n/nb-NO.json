@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "AI-chat",
+    "newChat": "Ny chat",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Start en samtale",
+      "body": "Spør om økonomien din, eller få hjelp til å planlegge neste steg."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Spør om økonomien din…"
     },
     "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "offTopic": "Jeg kan hjelpe med LealFinance og økonomien din, men ikke med dette temaet.",
+    "thinking": "Tenker…",
+    "toolRunning": "Kjører",
+    "toolDone": "Ferdig",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Bekreft handling",
+      "body": "Vil du la {{name}} gjøre denne endringen?",
+      "approve": "Bekreft",
+      "reject": "Avvis",
+      "account": "Konto",
+      "category": "Kategori"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Slett samtale?",
+      "body": "Denne samtalen slettes permanent. Vil du fortsette?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Ingen AI-leverandør er konfigurert ennå.",
+      "providerUnavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå.",
+      "loopExhausted": "Assistenten kunne ikke fullføre denne forespørselen.",
+      "generic": "Noe gikk galt. Prøv igjen."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "AI-chat",
       "dashboard": "Oversikt",
       "accounts": "Kontoer",
       "transactions": "Transaksjoner",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCP-tilgangstoken",
+      "body": "Generer et token for å koble en MCP-klient til LealFinance-kontoen din.",
+      "generate": "Generer token",
+      "copy": "Kopier",
+      "copied": "Kopiert",
+      "shownOnce": "Dette tokenet vises bare én gang. Lagre det før du forlater denne siden.",
+      "expires": "Utløper {{date}}"
     },
     "backup": {
       "title": "Sikkerhetskopiering og gjenoppretting",
@@ -1491,7 +1491,7 @@
       "admin": "Administrator"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "AI-chat",
       "title": "Brukere",
       "role": "Rolle",
       "active": "Aktiv",

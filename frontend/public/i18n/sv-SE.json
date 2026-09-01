@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "AI-chatt",
+    "newChat": "Ny chatt",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Starta en konversation",
+      "body": "Fråga om din ekonomi eller få hjälp med att planera ditt nästa steg."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Fråga om din ekonomi…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Skicka",
+    "offTopic": "Jag kan hjälpa dig med LealFinance och din ekonomi, men inte med det ämnet.",
+    "thinking": "Tänker…",
+    "toolRunning": "Kör",
+    "toolDone": "Klart",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Bekräfta åtgärd",
+      "body": "Vill du tillåta {{name}} att göra den här ändringen?",
+      "approve": "Bekräfta",
+      "reject": "Avvisa",
+      "account": "Konto",
+      "category": "Kategori"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Radera konversation?",
+      "body": "Den här konversationen raderas permanent. Vill du fortsätta?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Ingen AI-leverantör har konfigurerats ännu.",
+      "providerUnavailable": "AI-leverantören är inte tillgänglig just nu.",
+      "loopExhausted": "Assistenten kunde inte slutföra den här begäran.",
+      "generic": "Något gick fel. Försök igen."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "AI-chatt",
       "dashboard": "Översikt",
       "accounts": "Konton",
       "transactions": "Transaktioner",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCP-åtkomsttoken",
+      "body": "Skapa en token för att ansluta en MCP-klient till ditt LealFinance-konto.",
+      "generate": "Skapa token",
+      "copy": "Kopiera",
+      "copied": "Kopierad",
+      "shownOnce": "Den här tokenen visas bara en gång. Spara den innan du lämnar sidan.",
+      "expires": "Går ut {{date}}"
     },
     "backup": {
       "title": "Säkerhetskopiering och återställning",
@@ -1491,7 +1491,7 @@
       "admin": "Administratör"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "AI-chatt",
       "title": "Användare",
       "role": "Roll",
       "active": "Aktiv",

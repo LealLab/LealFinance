@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Συνομιλία με AI",
+    "newChat": "Νέα συνομιλία",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Ξεκινήστε μια συζήτηση",
+      "body": "Ρωτήστε για τα οικονομικά σας ή λάβετε βοήθεια για να σχεδιάσετε το επόμενο βήμα σας."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Ρωτήστε για τα οικονομικά σας…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Αποστολή",
+    "offTopic": "Μπορώ να βοηθήσω με το LealFinance και τα οικονομικά σας, αλλά όχι με αυτό το θέμα.",
+    "thinking": "Σκέφτομαι…",
+    "toolRunning": "Εκτέλεση",
+    "toolDone": "Ολοκληρώθηκε",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Επιβεβαίωση ενέργειας",
+      "body": "Να επιτραπεί στο {{name}} να κάνει αυτή την αλλαγή;",
+      "approve": "Επιβεβαίωση",
+      "reject": "Απόρριψη",
+      "account": "Λογαριασμός",
+      "category": "Κατηγορία"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Διαγραφή συνομιλίας;",
+      "body": "Αυτή η συνομιλία θα διαγραφεί οριστικά. Θέλετε να συνεχίσετε;"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Δεν έχει ρυθμιστεί ακόμη πάροχος AI.",
+      "providerUnavailable": "Ο πάροχος AI δεν είναι διαθέσιμος αυτήν τη στιγμή.",
+      "loopExhausted": "Ο βοηθός δεν μπόρεσε να ολοκληρώσει το αίτημα.",
+      "generic": "Κάτι πήγε στραβά. Δοκιμάστε ξανά."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Συνομιλία με AI",
       "dashboard": "Επισκόπηση",
       "accounts": "Λογαριασμοί",
       "transactions": "Συναλλαγές",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Token πρόσβασης MCP",
+      "body": "Δημιουργήστε ένα token για να συνδέσετε έναν πελάτη MCP στον λογαριασμό σας στο LealFinance.",
+      "generate": "Δημιουργία token",
+      "copy": "Αντιγραφή",
+      "copied": "Αντιγράφηκε",
+      "shownOnce": "Αυτό το token εμφανίζεται μόνο μία φορά. Αποθηκεύστε το πριν φύγετε από αυτήν τη σελίδα.",
+      "expires": "Λήγει {{date}}"
     },
     "backup": {
       "title": "Αντίγραφο ασφαλείας και επαναφορά",
@@ -1491,7 +1491,7 @@
       "admin": "Διαχειριστής"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Συνομιλία με AI",
       "title": "Χρήστες",
       "role": "Ρόλος",
       "active": "Ενεργός",

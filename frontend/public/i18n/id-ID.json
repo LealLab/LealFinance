@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Chat AI",
+    "newChat": "Chat baru",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Mulai percakapan",
+      "body": "Tanyakan tentang keuangan Anda atau dapatkan bantuan merencanakan langkah berikutnya."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Tanyakan tentang keuangan Anda…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Kirim",
+    "offTopic": "Saya dapat membantu tentang LealFinance dan keuangan Anda, tetapi bukan topik itu.",
+    "thinking": "Sedang berpikir…",
+    "toolRunning": "Menjalankan",
+    "toolDone": "Selesai",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Konfirmasi tindakan",
+      "body": "Izinkan {{name}} melakukan perubahan ini?",
+      "approve": "Konfirmasi",
+      "reject": "Tolak",
+      "account": "Akun",
+      "category": "Kategori"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Hapus percakapan?",
+      "body": "Percakapan ini akan dihapus secara permanen. Lanjutkan?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Belum ada penyedia AI yang dikonfigurasi.",
+      "providerUnavailable": "Penyedia AI sedang tidak tersedia.",
+      "loopExhausted": "Asisten tidak dapat menyelesaikan permintaan ini.",
+      "generic": "Terjadi kesalahan. Silakan coba lagi."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Chat AI",
       "dashboard": "Dasbor",
       "accounts": "Akun",
       "transactions": "Transaksi",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Token akses MCP",
+      "body": "Buat token untuk menghubungkan klien MCP ke akun LealFinance Anda.",
+      "generate": "Buat token",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "shownOnce": "Token ini hanya ditampilkan sekali. Simpan sebelum meninggalkan halaman ini.",
+      "expires": "Kedaluwarsa {{date}}"
     },
     "backup": {
       "title": "Pencadangan dan pemulihan",
@@ -1491,7 +1491,7 @@
       "admin": "Administrator"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Chat AI",
       "title": "Pengguna",
       "role": "Peran",
       "active": "Aktif",

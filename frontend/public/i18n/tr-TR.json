@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Yapay zekâ sohbeti",
+    "newChat": "Yeni sohbet",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Bir sohbet başlatın",
+      "body": "Finansınız hakkında soru sorun veya sonraki adımınızı planlamak için yardım alın."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Finansınız hakkında soru sorun…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Gönder",
+    "offTopic": "LealFinance ve finansınız konusunda yardımcı olabilirim, ancak bu konuda yardımcı olamam.",
+    "thinking": "Düşünüyor…",
+    "toolRunning": "Çalışıyor",
+    "toolDone": "Tamamlandı",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "İşlemi onayla",
+      "body": "{{name}} bu değişikliği yapsın mı?",
+      "approve": "Onayla",
+      "reject": "Reddet",
+      "account": "Hesap",
+      "category": "Kategori"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Sohbet silinsin mi?",
+      "body": "Bu sohbet kalıcı olarak silinecek. Devam etmek istiyor musunuz?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
+      "providerUnavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor.",
+      "loopExhausted": "Asistan bu isteği tamamlayamadı.",
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Yapay zekâ sohbeti",
       "dashboard": "Genel bakış",
       "accounts": "Hesaplar",
       "transactions": "İşlemler",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCP erişim belirteci",
+      "body": "LealFinance hesabınıza bir MCP istemcisi bağlamak için belirteç oluşturun.",
+      "generate": "Belirteç oluştur",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "shownOnce": "Bu belirteç yalnızca bir kez gösterilir. Bu sayfadan ayrılmadan önce kaydedin.",
+      "expires": "Son kullanma tarihi: {{date}}"
     },
     "backup": {
       "title": "Yedekleme ve geri yükleme",
@@ -1491,7 +1491,7 @@
       "admin": "Yönetici"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Yapay zekâ sohbeti",
       "title": "Kullanıcılar",
       "role": "Rol",
       "active": "Etkin",

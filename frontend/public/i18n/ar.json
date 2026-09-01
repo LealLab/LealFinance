@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "دردشة بالذكاء الاصطناعي",
+    "newChat": "محادثة جديدة",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "ابدأ محادثة",
+      "body": "اسأل عن شؤونك المالية أو احصل على مساعدة في التخطيط لخطوتك التالية."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "اسأل عن شؤونك المالية…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "إرسال",
+    "offTopic": "يمكنني مساعدتك في LealFinance وشؤونك المالية، لكن ليس في هذا الموضوع.",
+    "thinking": "جارٍ التفكير…",
+    "toolRunning": "جارٍ التنفيذ",
+    "toolDone": "تم",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "تأكيد الإجراء",
+      "body": "هل تسمح لـ {{name}} بإجراء هذا التغيير؟",
+      "approve": "تأكيد",
+      "reject": "رفض",
+      "account": "الحساب",
+      "category": "الفئة"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "حذف المحادثة؟",
+      "body": "سيؤدي ذلك إلى حذف هذه المحادثة نهائيًا. هل تريد المتابعة؟"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "لم يتم إعداد أي مزود للذكاء الاصطناعي بعد.",
+      "providerUnavailable": "مزود الذكاء الاصطناعي غير متاح حاليًا.",
+      "loopExhausted": "تعذر على المساعد إكمال هذا الطلب.",
+      "generic": "حدث خطأ ما. يُرجى المحاولة مرة أخرى."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "دردشة بالذكاء الاصطناعي",
       "dashboard": "لوحة المعلومات",
       "accounts": "الحسابات",
       "transactions": "المعاملات",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "رمز وصول MCP",
+      "body": "أنشئ رمزًا لربط عميل MCP بحسابك على LealFinance.",
+      "generate": "إنشاء الرمز",
+      "copy": "نسخ",
+      "copied": "تم النسخ",
+      "shownOnce": "يظهر هذا الرمز مرة واحدة فقط. احفظه قبل مغادرة هذه الصفحة.",
+      "expires": "تنتهي صلاحيته في {{date}}"
     },
     "backup": {
       "title": "النسخ الاحتياطي والاستعادة",
@@ -1491,7 +1491,7 @@
       "admin": "مسؤول"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "دردشة بالذكاء الاصطناعي",
       "title": "المستخدمون",
       "role": "الدور",
       "active": "نشط",

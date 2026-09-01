@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "AIチャット",
+    "newChat": "新しいチャット",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "会話を始める",
+      "body": "家計について質問したり、次の一手を計画するためのサポートを受けたりできます。"
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "家計について質問…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "送信",
+    "offTopic": "LealFinanceや家計についてはお手伝いできますが、その話題には対応できません。",
+    "thinking": "考え中…",
+    "toolRunning": "実行中",
+    "toolDone": "完了",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "操作を確認",
+      "body": "{{name}}にこの変更を許可しますか？",
+      "approve": "確認",
+      "reject": "拒否",
+      "account": "アカウント",
+      "category": "カテゴリ"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "会話を削除しますか？",
+      "body": "この会話は完全に削除されます。続行しますか？"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "AIプロバイダーがまだ設定されていません。",
+      "providerUnavailable": "現在、AIプロバイダーを利用できません。",
+      "loopExhausted": "アシスタントはこのリクエストを完了できませんでした。",
+      "generic": "問題が発生しました。もう一度お試しください。"
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "AIチャット",
       "dashboard": "ダッシュボード",
       "accounts": "口座",
       "transactions": "取引",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCPアクセストークン",
+      "body": "MCPクライアントをLealFinanceアカウントに接続するためのトークンを生成します。",
+      "generate": "トークンを生成",
+      "copy": "コピー",
+      "copied": "コピーしました",
+      "shownOnce": "このトークンは一度しか表示されません。このページを離れる前に保存してください。",
+      "expires": "有効期限: {{date}}"
     },
     "backup": {
       "title": "バックアップと復元",
@@ -1491,7 +1491,7 @@
       "admin": "管理者"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "AIチャット",
       "title": "ユーザー",
       "role": "役割",
       "active": "有効",

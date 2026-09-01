@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "AI 聊天",
+    "newChat": "新聊天",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "開始對話",
+      "body": "詢問你的財務狀況，或取得規劃下一步的協助。"
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "詢問你的財務狀況…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "傳送",
+    "offTopic": "我可以協助處理 LealFinance 和你的財務，但無法協助這個主題。",
+    "thinking": "思考中…",
+    "toolRunning": "執行中",
+    "toolDone": "完成",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "確認操作",
+      "body": "允許 {{name}} 進行這項變更嗎？",
+      "approve": "確認",
+      "reject": "拒絕",
+      "account": "帳戶",
+      "category": "類別"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "刪除對話？",
+      "body": "這段對話將永久刪除。要繼續嗎？"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "尚未設定 AI 提供者。",
+      "providerUnavailable": "AI 提供者目前無法使用。",
+      "loopExhausted": "助理無法完成此要求。",
+      "generic": "發生錯誤，請再試一次。"
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "AI 聊天",
       "dashboard": "儀表板",
       "accounts": "帳戶",
       "transactions": "交易",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCP 存取權杖",
+      "body": "產生權杖以將 MCP 用戶端連線至你的 LealFinance 帳戶。",
+      "generate": "產生權杖",
+      "copy": "複製",
+      "copied": "已複製",
+      "shownOnce": "此權杖只會顯示一次。離開此頁面前請先儲存。",
+      "expires": "將於 {{date}} 到期"
     },
     "backup": {
       "title": "備份與還原",
@@ -1491,7 +1491,7 @@
       "admin": "管理員"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "AI 聊天",
       "title": "使用者",
       "role": "角色",
       "active": "啟用中",

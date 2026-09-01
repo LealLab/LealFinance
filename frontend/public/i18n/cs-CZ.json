@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Chat s AI",
+    "newChat": "Nový chat",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Začněte konverzaci",
+      "body": "Zeptejte se na své finance nebo si nechte poradit s plánováním dalšího kroku."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Zeptejte se na své finance…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Odeslat",
+    "offTopic": "Mohu vám pomoci s LealFinance a vašimi financemi, ale ne s tímto tématem.",
+    "thinking": "Přemýšlím…",
+    "toolRunning": "Spouští se",
+    "toolDone": "Hotovo",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Potvrdit akci",
+      "body": "Povolit {{name}} provést tuto změnu?",
+      "approve": "Potvrdit",
+      "reject": "Odmítnout",
+      "account": "Účet",
+      "category": "Kategorie"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Smazat konverzaci?",
+      "body": "Tato konverzace bude trvale smazána. Chcete pokračovat?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Zatím není nastaven žádný poskytovatel AI.",
+      "providerUnavailable": "Poskytovatel AI je momentálně nedostupný.",
+      "loopExhausted": "Asistent nemohl tento požadavek dokončit.",
+      "generic": "Něco se pokazilo. Zkuste to prosím znovu."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Chat s AI",
       "dashboard": "Přehled",
       "accounts": "Účty",
       "transactions": "Transakce",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Přístupový token MCP",
+      "body": "Vygenerujte token pro připojení klienta MCP k účtu LealFinance.",
+      "generate": "Vygenerovat token",
+      "copy": "Kopírovat",
+      "copied": "Zkopírováno",
+      "shownOnce": "Tento token se zobrazí pouze jednou. Před opuštěním této stránky si ho uložte.",
+      "expires": "Vyprší {{date}}"
     },
     "backup": {
       "title": "Záloha a obnovení",
@@ -1491,7 +1491,7 @@
       "admin": "Správce"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Chat s AI",
       "title": "Uživatelé",
       "role": "Uživatelská role",
       "active": "Aktivní",

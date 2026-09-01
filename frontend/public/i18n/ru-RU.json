@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Чат с ИИ",
+    "newChat": "Новый чат",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Начать разговор",
+      "body": "Спросите о своих финансах или получите помощь в планировании следующего шага."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Спросите о своих финансах…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Отправить",
+    "offTopic": "Я могу помочь с LealFinance и вашими финансами, но не с этой темой.",
+    "thinking": "Думаю…",
+    "toolRunning": "Выполняется",
+    "toolDone": "Готово",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Подтвердить действие",
+      "body": "Разрешить {{name}} выполнить это изменение?",
+      "approve": "Подтвердить",
+      "reject": "Отклонить",
+      "account": "Счёт",
+      "category": "Категория"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Удалить разговор?",
+      "body": "Этот разговор будет удалён навсегда. Продолжить?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Поставщик ИИ ещё не настроен.",
+      "providerUnavailable": "Поставщик ИИ сейчас недоступен.",
+      "loopExhausted": "Ассистент не смог выполнить этот запрос.",
+      "generic": "Что-то пошло не так. Попробуйте ещё раз."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Чат с ИИ",
       "dashboard": "Обзор",
       "accounts": "Счета",
       "transactions": "Операции",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Токен доступа MCP",
+      "body": "Создайте токен, чтобы подключить клиент MCP к своей учётной записи LealFinance.",
+      "generate": "Создать токен",
+      "copy": "Копировать",
+      "copied": "Скопировано",
+      "shownOnce": "Этот токен отображается только один раз. Сохраните его, прежде чем покинуть страницу.",
+      "expires": "Истекает {{date}}"
     },
     "backup": {
       "title": "Резервное копирование и восстановление",
@@ -1491,7 +1491,7 @@
       "admin": "Администратор"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Чат с ИИ",
       "title": "Пользователи",
       "role": "Роль",
       "active": "Активен",

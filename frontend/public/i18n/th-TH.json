@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "แชต AI",
+    "newChat": "แชตใหม่",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "เริ่มการสนทนา",
+      "body": "สอบถามเรื่องการเงินของคุณ หรือขอความช่วยเหลือในการวางแผนก้าวต่อไป"
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "สอบถามเรื่องการเงินของคุณ…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "ส่ง",
+    "offTopic": "ฉันช่วยเรื่อง LealFinance และการเงินของคุณได้ แต่ไม่สามารถช่วยเรื่องนั้นได้",
+    "thinking": "กำลังคิด…",
+    "toolRunning": "กำลังดำเนินการ",
+    "toolDone": "เสร็จแล้ว",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "ยืนยันการดำเนินการ",
+      "body": "อนุญาตให้ {{name}} เปลี่ยนแปลงรายการนี้หรือไม่",
+      "approve": "ยืนยัน",
+      "reject": "ปฏิเสธ",
+      "account": "บัญชี",
+      "category": "หมวดหมู่"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "ลบการสนทนา?",
+      "body": "การสนทนานี้จะถูกลบอย่างถาวร ต้องการดำเนินการต่อหรือไม่"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "ยังไม่ได้กำหนดค่าผู้ให้บริการ AI",
+      "providerUnavailable": "ขณะนี้ผู้ให้บริการ AI ไม่พร้อมใช้งาน",
+      "loopExhausted": "ผู้ช่วยไม่สามารถดำเนินการตามคำขอนี้ให้เสร็จสิ้นได้",
+      "generic": "เกิดข้อผิดพลาด โปรดลองอีกครั้ง"
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "แชต AI",
       "dashboard": "แดชบอร์ด",
       "accounts": "บัญชี",
       "transactions": "ธุรกรรม",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "โทเค็นการเข้าถึง MCP",
+      "body": "สร้างโทเค็นเพื่อเชื่อมต่อไคลเอ็นต์ MCP กับบัญชี LealFinance ของคุณ",
+      "generate": "สร้างโทเค็น",
+      "copy": "คัดลอก",
+      "copied": "คัดลอกแล้ว",
+      "shownOnce": "โทเค็นนี้จะแสดงเพียงครั้งเดียว โปรดบันทึกไว้ก่อนออกจากหน้านี้",
+      "expires": "หมดอายุ {{date}}"
     },
     "backup": {
       "title": "การสำรองและกู้คืนข้อมูล",
@@ -1491,7 +1491,7 @@
       "admin": "ผู้ดูแลระบบ"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "แชต AI",
       "title": "ผู้ใช้",
       "role": "บทบาท",
       "active": "ใช้งานอยู่",

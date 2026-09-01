@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "AI चैट",
+    "newChat": "नई चैट",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "बातचीत शुरू करें",
+      "body": "अपने वित्त के बारे में पूछें या अगला कदम तय करने में मदद लें।"
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "अपने वित्त के बारे में पूछें…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "भेजें",
+    "offTopic": "मैं LealFinance और आपके वित्त से जुड़ी मदद कर सकता हूँ, लेकिन उस विषय में नहीं।",
+    "thinking": "सोच रहा हूँ…",
+    "toolRunning": "चल रहा है",
+    "toolDone": "हो गया",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "कार्रवाई की पुष्टि करें",
+      "body": "{{name}} को यह बदलाव करने की अनुमति दें?",
+      "approve": "पुष्टि करें",
+      "reject": "अस्वीकार करें",
+      "account": "खाता",
+      "category": "श्रेणी"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "बातचीत मिटाएँ?",
+      "body": "यह बातचीत स्थायी रूप से मिटा दी जाएगी। क्या जारी रखें?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "अभी तक कोई AI प्रदाता कॉन्फ़िगर नहीं किया गया है।",
+      "providerUnavailable": "AI प्रदाता इस समय उपलब्ध नहीं है।",
+      "loopExhausted": "सहायक इस अनुरोध को पूरा नहीं कर सका।",
+      "generic": "कुछ गड़बड़ हो गई। कृपया फिर कोशिश करें।"
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "AI चैट",
       "dashboard": "डैशबोर्ड",
       "accounts": "खाते",
       "transactions": "लेन-देन",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCP एक्सेस टोकन",
+      "body": "अपने LealFinance खाते से MCP क्लाइंट कनेक्ट करने के लिए टोकन जनरेट करें।",
+      "generate": "टोकन जनरेट करें",
+      "copy": "कॉपी करें",
+      "copied": "कॉपी हो गया",
+      "shownOnce": "यह टोकन केवल एक बार दिखाया जाता है। पेज छोड़ने से पहले इसे सेव कर लें।",
+      "expires": "समाप्त होगा {{date}}"
     },
     "backup": {
       "title": "बैकअप और पुनर्स्थापना",
@@ -1491,7 +1491,7 @@
       "admin": "व्यवस्थापक"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "AI चैट",
       "title": "उपयोगकर्ता",
       "role": "भूमिका",
       "active": "सक्रिय",

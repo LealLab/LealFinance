@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "Chat IA",
+    "newChat": "Nuova chat",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Inizia una conversazione",
+      "body": "Chiedi informazioni sulle tue finanze o ricevi aiuto per pianificare il tuo prossimo passo."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Chiedi informazioni sulle tue finanze…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Invia",
+    "offTopic": "Posso aiutarti con LealFinance e le tue finanze, ma non con questo argomento.",
+    "thinking": "Sto pensando…",
+    "toolRunning": "In esecuzione",
+    "toolDone": "Fatto",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Conferma azione",
+      "body": "Consentire a {{name}} di apportare questa modifica?",
+      "approve": "Conferma",
+      "reject": "Rifiuta",
+      "account": "Conto",
+      "category": "Categoria"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Eliminare la conversazione?",
+      "body": "Questa conversazione verrà eliminata definitivamente. Vuoi continuare?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "Non è ancora configurato alcun provider AI.",
+      "providerUnavailable": "Il provider AI non è al momento disponibile.",
+      "loopExhausted": "L’assistente non ha potuto completare questa richiesta.",
+      "generic": "Qualcosa è andato storto. Riprova."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "Chat IA",
       "dashboard": "Panoramica",
       "accounts": "Conti",
       "transactions": "Transazioni",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "Token di accesso MCP",
+      "body": "Genera un token per collegare un client MCP al tuo account LealFinance.",
+      "generate": "Genera token",
+      "copy": "Copia",
+      "copied": "Copiato",
+      "shownOnce": "Questo token viene mostrato una sola volta. Salvalo prima di lasciare questa pagina.",
+      "expires": "Scade il {{date}}"
     },
     "backup": {
       "title": "Backup e ripristino",
@@ -1491,7 +1491,7 @@
       "admin": "Amministratore"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "Chat IA",
       "title": "Utenti",
       "role": "Ruolo",
       "active": "Attivo",

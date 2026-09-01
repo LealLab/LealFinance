@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "AI-chat",
+    "newChat": "Uusi chat",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "Aloita keskustelu",
+      "body": "Kysy taloudestasi tai pyydä apua seuraavan askeleesi suunnitteluun."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "Kysy taloudestasi…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "Lähetä",
+    "offTopic": "Voin auttaa LealFinanceen ja talouteesi liittyvissä asioissa, mutta en tässä aiheessa.",
+    "thinking": "Mietitään…",
+    "toolRunning": "Suoritetaan",
+    "toolDone": "Valmis",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "Vahvista toiminto",
+      "body": "Sallitko käyttäjän {{name}} tehdä tämän muutoksen?",
+      "approve": "Vahvista",
+      "reject": "Hylkää",
+      "account": "Tili",
+      "category": "Luokka"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "Poista keskustelu?",
+      "body": "Tämä keskustelu poistetaan pysyvästi. Haluatko jatkaa?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
+      "providerUnavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä.",
+      "loopExhausted": "Avustaja ei voinut suorittaa pyyntöä loppuun.",
+      "generic": "Jokin meni pieleen. Yritä uudelleen."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "AI-chat",
       "dashboard": "Yhteenveto",
       "accounts": "Tilit",
       "transactions": "Tapahtumat",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "MCP-käyttöoikeustunnus",
+      "body": "Luo tunnus, jolla voit yhdistää MCP-asiakasohjelman LealFinance-tiliisi.",
+      "generate": "Luo tunnus",
+      "copy": "Kopioi",
+      "copied": "Kopioitu",
+      "shownOnce": "Tunnus näytetään vain kerran. Tallenna se ennen kuin poistut tältä sivulta.",
+      "expires": "Vanhenee {{date}}"
     },
     "backup": {
       "title": "Varmuuskopiointi ja palautus",
@@ -1491,7 +1491,7 @@
       "admin": "Järjestelmänvalvoja"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "AI-chat",
       "title": "Käyttäjät",
       "role": "Rooli",
       "active": "Aktiivinen",

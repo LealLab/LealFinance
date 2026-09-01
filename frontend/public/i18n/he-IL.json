@@ -1,36 +1,36 @@
 {
   "chat": {
-    "title": "AI chat",
-    "newChat": "New chat",
+    "title": "צ'אט AI",
+    "newChat": "צ'אט חדש",
     "empty": {
-      "title": "Start a conversation",
-      "body": "Ask about your finances or get help planning your next move."
+      "title": "התחילו שיחה",
+      "body": "שאלו על הכספים שלכם או קבלו עזרה בתכנון הצעד הבא שלכם."
     },
     "composer": {
-      "placeholder": "Ask about your finances…"
+      "placeholder": "שאלו על הכספים שלכם…"
     },
-    "send": "Send",
-    "offTopic": "I can help with LealFinance and your finances, but not that topic.",
-    "thinking": "Thinking…",
-    "toolRunning": "Running",
-    "toolDone": "Done",
+    "send": "שליחה",
+    "offTopic": "אני יכול לעזור עם LealFinance ועם הכספים שלכם, אבל לא בנושא הזה.",
+    "thinking": "חושב…",
+    "toolRunning": "בהרצה",
+    "toolDone": "הסתיים",
     "confirm": {
-      "title": "Confirm action",
-      "body": "Allow {{name}} to make this change?",
-      "approve": "Confirm",
-      "reject": "Reject",
-      "account": "Account",
-      "category": "Category"
+      "title": "אישור פעולה",
+      "body": "לאפשר ל-{{name}} לבצע את השינוי הזה?",
+      "approve": "אישור",
+      "reject": "דחייה",
+      "account": "חשבון",
+      "category": "קטגוריה"
     },
     "delete": {
-      "title": "Delete conversation?",
-      "body": "This permanently deletes this conversation. Continue?"
+      "title": "מחיקת השיחה?",
+      "body": "השיחה הזו תימחק לצמיתות. להמשיך?"
     },
     "errors": {
-      "notConfigured": "No AI provider is configured yet.",
-      "providerUnavailable": "The AI provider is currently unavailable.",
-      "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "notConfigured": "עדיין לא הוגדר ספק AI.",
+      "providerUnavailable": "ספק ה-AI אינו זמין כרגע.",
+      "loopExhausted": "העוזר לא הצליח להשלים את הבקשה הזו.",
+      "generic": "משהו השתבש. נסו שוב."
     }
   },
   "app": {
@@ -189,7 +189,7 @@
   },
   "layout": {
     "nav": {
-      "chat": "AI chat",
+      "chat": "צ'אט AI",
       "dashboard": "לוח בקרה",
       "accounts": "חשבונות",
       "transactions": "תנועות",
@@ -1299,13 +1299,13 @@
   },
   "settings": {
     "mcp": {
-      "title": "MCP access token",
-      "body": "Generate a token to connect an MCP client to your LealFinance account.",
-      "generate": "Generate token",
-      "copy": "Copy",
-      "copied": "Copied",
-      "shownOnce": "This token is shown only once. Save it before leaving this page.",
-      "expires": "Expires {{date}}"
+      "title": "אסימון גישה ל-MCP",
+      "body": "צרו אסימון כדי לחבר לקוח MCP לחשבון LealFinance שלכם.",
+      "generate": "יצירת אסימון",
+      "copy": "העתקה",
+      "copied": "הועתק",
+      "shownOnce": "האסימון מוצג פעם אחת בלבד. שמרו אותו לפני שתעזבו את הדף.",
+      "expires": "יפוג תוקפו ב-{{date}}"
     },
     "backup": {
       "title": "גיבוי ושחזור",
@@ -1491,7 +1491,7 @@
       "admin": "מנהל מערכת"
     },
     "users": {
-      "aiChat": "AI chat",
+      "aiChat": "צ'אט AI",
       "title": "משתמשים",
       "role": "תפקיד",
       "active": "פעיל",
