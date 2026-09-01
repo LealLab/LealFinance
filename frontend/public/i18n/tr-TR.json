@@ -1542,14 +1542,6 @@
       "message": "Bu sağlayıcı için bağlı kimlik bilgilerinizi kaldırılsın mı? Varsa, bir yöneticinin ayarladığı örnek geneli anahtar bunun yerine kullanılır."
     },
     "unlinkError": "Bu sağlayıcının bağlantısı kaldırılamadı. Tekrar deneyin.",
-    "tryIt": {
-      "title": "Dene",
-      "description": "Yanıt verdiğini doğrulamak için yapılandırılmış bir sağlayıcıya bir mesaj gönderin.",
-      "autoProvider": "İlk yapılandırılmış sağlayıcıyı kullan",
-      "placeholder": "Bir şey sor…",
-      "send": "Gönder"
-    },
-    "chatError": "Yanıt alınamadı. Sağlayıcının doğru yapılandırıldığından emin olun.",
     "form": {
       "apiKeyTitle": "API anahtarıyla bağla",
       "oauthTitle": "Abonelik bağla",

@@ -1542,14 +1542,6 @@
       "message": "Deine verknüpfte Zugangsdaten für diesen Anbieter entfernen? Ein von einem Administrator hinterlegter instanzweiter Schlüssel wird dann stattdessen verwendet, falls vorhanden."
     },
     "unlinkError": "Der Anbieter konnte nicht getrennt werden. Versuche es erneut.",
-    "tryIt": {
-      "title": "Ausprobieren",
-      "description": "Sende eine Nachricht an einen konfigurierten Anbieter, um zu bestätigen, dass er antwortet.",
-      "autoProvider": "Ersten konfigurierten Anbieter verwenden",
-      "placeholder": "Frag etwas…",
-      "send": "Senden"
-    },
-    "chatError": "Keine Antwort erhalten. Prüfe, ob der Anbieter richtig konfiguriert ist.",
     "form": {
       "apiKeyTitle": "Mit API-Schlüssel verknüpfen",
       "oauthTitle": "Abonnement verknüpfen",

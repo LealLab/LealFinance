@@ -1542,14 +1542,6 @@
       "message": "要移除此提供者的已連結憑證嗎？如果管理員設定了執行個體層級的金鑰，將改用該金鑰。"
     },
     "unlinkError": "無法取消連結此提供者，請再試一次。",
-    "tryIt": {
-      "title": "試試看",
-      "description": "向已設定的提供者傳送一則訊息，以確認其能夠回應。",
-      "autoProvider": "使用第一個已設定的提供者",
-      "placeholder": "問點什麼…",
-      "send": "傳送"
-    },
-    "chatError": "無法取得回覆，請檢查該提供者是否設定正確。",
     "form": {
       "apiKeyTitle": "使用 API 金鑰連結",
       "oauthTitle": "連結訂閱",

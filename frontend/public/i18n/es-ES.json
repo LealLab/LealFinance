@@ -1542,14 +1542,6 @@
       "message": "¿Quitar tu credencial vinculada a este proveedor? Se usará en su lugar la clave de la instancia definida por un administrador, si existe."
     },
     "unlinkError": "No se pudo desvincular este proveedor. Inténtalo de nuevo.",
-    "tryIt": {
-      "title": "Probar",
-      "description": "Envía un mensaje a un proveedor configurado para confirmar que responde.",
-      "autoProvider": "Usar el primer proveedor configurado",
-      "placeholder": "Pregunta algo…",
-      "send": "Enviar"
-    },
-    "chatError": "No se pudo obtener una respuesta. Comprueba que el proveedor esté bien configurado.",
     "form": {
       "apiKeyTitle": "Vincular con una clave de API",
       "oauthTitle": "Vincular una suscripción",

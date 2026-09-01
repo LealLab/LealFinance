@@ -1542,14 +1542,6 @@
       "message": "Je gekoppelde gegevens voor deze provider verwijderen? Een instantiebrede sleutel van een beheerder wordt dan in plaats daarvan gebruikt, indien aanwezig."
     },
     "unlinkError": "Kon deze provider niet ontkoppelen. Probeer het opnieuw.",
-    "tryIt": {
-      "title": "Proberen",
-      "description": "Stuur een bericht naar een geconfigureerde provider om te bevestigen dat deze antwoordt.",
-      "autoProvider": "Eerste geconfigureerde provider gebruiken",
-      "placeholder": "Vraag iets…",
-      "send": "Verstuur"
-    },
-    "chatError": "Geen antwoord ontvangen. Controleer of de provider juist is geconfigureerd.",
     "form": {
       "apiKeyTitle": "Koppelen met een API-sleutel",
       "oauthTitle": "Abonnement koppelen",

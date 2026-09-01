@@ -1542,14 +1542,6 @@
       "message": "要移除此提供方的已关联凭据吗？如果管理员设置了实例级密钥，将改用该密钥。"
     },
     "unlinkError": "无法取消关联该提供方，请重试。",
-    "tryIt": {
-      "title": "试一试",
-      "description": "向已配置的提供方发送一条消息，以确认其能够响应。",
-      "autoProvider": "使用第一个已配置的提供方",
-      "placeholder": "问点什么…",
-      "send": "发送"
-    },
-    "chatError": "未能获取回复，请检查该提供方是否配置正确。",
     "form": {
       "apiKeyTitle": "使用 API 密钥关联",
       "oauthTitle": "关联订阅",

@@ -1542,14 +1542,6 @@
       "message": "Fjerne dine tilknyttede opplysninger for denne leverandøren? En instansomfattende nøkkel satt av en administrator brukes i stedet, hvis den finnes."
     },
     "unlinkError": "Kunne ikke fjerne tilkoblingen til denne leverandøren. Prøv igjen.",
-    "tryIt": {
-      "title": "Prøv det",
-      "description": "Send én melding til en konfigurert leverandør for å bekrefte at den svarer.",
-      "autoProvider": "Bruk den første konfigurerte leverandøren",
-      "placeholder": "Spør om noe…",
-      "send": "Send"
-    },
-    "chatError": "Fikk ikke noe svar. Sjekk at leverandøren er riktig konfigurert.",
     "form": {
       "apiKeyTitle": "Koble til med en API-nøkkel",
       "oauthTitle": "Koble til et abonnement",

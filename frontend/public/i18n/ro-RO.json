@@ -1542,14 +1542,6 @@
       "message": "Elimini datele de acces asociate acestui furnizor? În loc de acestea se va folosi o cheie la nivel de instanță setată de un administrator, dacă există."
     },
     "unlinkError": "Nu s-a putut deconecta acest furnizor. Încearcă din nou.",
-    "tryIt": {
-      "title": "Încearcă",
-      "description": "Trimite un mesaj către un furnizor configurat pentru a confirma că răspunde.",
-      "autoProvider": "Folosește primul furnizor configurat",
-      "placeholder": "Întreabă ceva…",
-      "send": "Trimite"
-    },
-    "chatError": "Nu s-a putut obține un răspuns. Verifică dacă furnizorul este configurat corect.",
     "form": {
       "apiKeyTitle": "Conectează cu o cheie API",
       "oauthTitle": "Conectează un abonament",

@@ -1542,14 +1542,6 @@
       "message": "Poistetaanko tähän palveluntarjoajaan linkitetyt tunnukset? Sen sijaan käytetään ylläpitäjän asettamaa instanssikohtaista avainta, jos sellainen on."
     },
     "unlinkError": "Palveluntarjoajan linkitystä ei voitu poistaa. Yritä uudelleen.",
-    "tryIt": {
-      "title": "Kokeile",
-      "description": "Lähetä yksi viesti määritetylle palveluntarjoajalle varmistaaksesi, että se vastaa.",
-      "autoProvider": "Käytä ensimmäistä määritettyä palveluntarjoajaa",
-      "placeholder": "Kysy jotain…",
-      "send": "Lähetä"
-    },
-    "chatError": "Vastausta ei saatu. Tarkista, että palveluntarjoaja on määritetty oikein.",
     "form": {
       "apiKeyTitle": "Linkitä API-avaimella",
       "oauthTitle": "Linkitä tilaus",

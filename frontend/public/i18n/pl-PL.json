@@ -1542,14 +1542,6 @@
       "message": "Usunąć powiązane dane uwierzytelniające dla tego dostawcy? Zamiast tego zostanie użyty klucz instancji ustawiony przez administratora, jeśli istnieje."
     },
     "unlinkError": "Nie udało się odłączyć tego dostawcy. Spróbuj ponownie.",
-    "tryIt": {
-      "title": "Wypróbuj",
-      "description": "Wyślij jedną wiadomość do skonfigurowanego dostawcy, aby sprawdzić, czy odpowiada.",
-      "autoProvider": "Użyj pierwszego skonfigurowanego dostawcy",
-      "placeholder": "Zapytaj o coś…",
-      "send": "Wyślij"
-    },
-    "chatError": "Nie udało się uzyskać odpowiedzi. Sprawdź, czy dostawca jest poprawnie skonfigurowany.",
     "form": {
       "apiKeyTitle": "Połącz za pomocą klucza API",
       "oauthTitle": "Połącz subskrypcję",

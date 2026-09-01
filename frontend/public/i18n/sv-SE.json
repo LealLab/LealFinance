@@ -1542,14 +1542,6 @@
       "message": "Ta bort dina länkade uppgifter för denna leverantör? En instansomfattande nyckel som en administratör angett används i så fall istället, om en sådan finns."
     },
     "unlinkError": "Kunde inte ta bort länken till denna leverantör. Försök igen.",
-    "tryIt": {
-      "title": "Prova",
-      "description": "Skicka ett meddelande till en konfigurerad leverantör för att bekräfta att den svarar.",
-      "autoProvider": "Använd första konfigurerade leverantören",
-      "placeholder": "Fråga något…",
-      "send": "Skicka"
-    },
-    "chatError": "Kunde inte få ett svar. Kontrollera att leverantören är korrekt konfigurerad.",
     "form": {
       "apiKeyTitle": "Länka med en API-nyckel",
       "oauthTitle": "Länka en prenumeration",

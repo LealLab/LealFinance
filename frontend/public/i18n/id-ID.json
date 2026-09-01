@@ -1542,14 +1542,6 @@
       "message": "Hapus kredensial yang tertaut untuk penyedia ini? Kunci instans yang diatur administrator (jika ada) akan digunakan sebagai gantinya."
     },
     "unlinkError": "Tidak dapat memutuskan tautan penyedia ini. Coba lagi.",
-    "tryIt": {
-      "title": "Coba",
-      "description": "Kirim satu pesan ke penyedia yang telah dikonfigurasi untuk memastikan ia merespons.",
-      "autoProvider": "Gunakan penyedia pertama yang dikonfigurasi",
-      "placeholder": "Tanyakan sesuatu…",
-      "send": "Kirim"
-    },
-    "chatError": "Tidak bisa mendapatkan balasan. Periksa apakah penyedia dikonfigurasi dengan benar.",
     "form": {
       "apiKeyTitle": "Tautkan dengan kunci API",
       "oauthTitle": "Tautkan langganan",

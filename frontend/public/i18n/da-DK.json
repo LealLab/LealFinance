@@ -1542,14 +1542,6 @@
       "message": "Fjern dine tilknyttede oplysninger for denne udbyder? En instansbred nøgle, som en administrator har angivet, bruges i stedet, hvis der findes en."
     },
     "unlinkError": "Kunne ikke fjerne tilknytningen til denne udbyder. Prøv igen.",
-    "tryIt": {
-      "title": "Prøv det",
-      "description": "Send én besked til en konfigureret udbyder for at bekræfte, at den svarer.",
-      "autoProvider": "Brug den første konfigurerede udbyder",
-      "placeholder": "Spørg om noget…",
-      "send": "Send"
-    },
-    "chatError": "Kunne ikke få et svar. Tjek at udbyderen er konfigureret korrekt.",
     "form": {
       "apiKeyTitle": "Tilknyt med en API-nøgle",
       "oauthTitle": "Tilknyt et abonnement",

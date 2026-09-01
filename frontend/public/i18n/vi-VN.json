@@ -1542,14 +1542,6 @@
       "message": "Xóa thông tin xác thực đã liên kết cho nhà cung cấp này? Khóa toàn thể hiện do quản trị viên thiết lập (nếu có) sẽ được dùng thay thế."
     },
     "unlinkError": "Không thể hủy liên kết nhà cung cấp này. Hãy thử lại.",
-    "tryIt": {
-      "title": "Dùng thử",
-      "description": "Gửi một tin nhắn đến nhà cung cấp đã cấu hình để xác nhận nó phản hồi.",
-      "autoProvider": "Dùng nhà cung cấp đã cấu hình đầu tiên",
-      "placeholder": "Hỏi điều gì đó…",
-      "send": "Gửi"
-    },
-    "chatError": "Không nhận được phản hồi. Kiểm tra xem nhà cung cấp đã được cấu hình đúng chưa.",
     "form": {
       "apiKeyTitle": "Liên kết bằng khóa API",
       "oauthTitle": "Liên kết gói đăng ký",

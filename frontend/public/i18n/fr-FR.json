@@ -1542,14 +1542,6 @@
       "message": "Supprimer votre identifiant lié à ce fournisseur ? La clé de l'instance définie par un administrateur, le cas échéant, sera utilisée à la place."
     },
     "unlinkError": "Impossible de délier ce fournisseur. Réessayez.",
-    "tryIt": {
-      "title": "Essayer",
-      "description": "Envoyez un message à un fournisseur configuré pour confirmer qu’il répond.",
-      "autoProvider": "Utiliser le premier fournisseur configuré",
-      "placeholder": "Posez une question…",
-      "send": "Envoyer"
-    },
-    "chatError": "Impossible d'obtenir une réponse. Vérifiez que le fournisseur est bien configuré.",
     "form": {
       "apiKeyTitle": "Lier avec une clé API",
       "oauthTitle": "Lier un abonnement",

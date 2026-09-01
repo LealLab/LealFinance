@@ -1542,14 +1542,6 @@
       "message": "Rimuovere la credenziale collegata a questo provider? Verrà usata al suo posto la chiave dell'istanza impostata da un amministratore, se presente."
     },
     "unlinkError": "Impossibile scollegare questo provider. Riprova.",
-    "tryIt": {
-      "title": "Prova",
-      "description": "Invia un messaggio a un provider configurato per verificare che risponda.",
-      "autoProvider": "Usa il primo provider configurato",
-      "placeholder": "Chiedi qualcosa…",
-      "send": "Invia"
-    },
-    "chatError": "Impossibile ottenere una risposta. Verifica che il provider sia configurato correttamente.",
     "form": {
       "apiKeyTitle": "Collega con una chiave API",
       "oauthTitle": "Collega un abbonamento",
