@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Goal } from '../../domain/models/goal';
 import { Transaction } from '../../domain/models/transaction';
@@ -46,7 +46,7 @@ export class GoalEntryModal {
 
   protected readonly form = this.fb.nonNullable.group({
     amount: ['', [Validators.required, decimalAmountValidator()]],
-    date: [formatIsoDate(new Date()), Validators.required],
+    date: [todayIso(), Validators.required],
     sourceAccountId: ['', Validators.required],
     description: ['', Validators.required],
   });
@@ -59,7 +59,7 @@ export class GoalEntryModal {
       const mode = this.mode();
       this.form.reset({
         amount: '',
-        date: formatIsoDate(new Date()),
+        date: todayIso(),
         sourceAccountId: this.sourceAccounts()[0]?.id ?? '',
         description:
           mode === 'interest'

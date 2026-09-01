@@ -22,8 +22,13 @@ cd LealFinance
 cp .env.example .env
 ```
 
-Edit `.env` and replace `POSTGRES_PASSWORD` and `API_SECRET_KEY`. Then use the
-base Compose file explicitly:
+Edit `.env`:
+
+- set `ENVIRONMENT=production` - this makes the session and CSRF cookies
+  `Secure` and enables the guard that refuses the two placeholder values below;
+- replace `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
+
+Then use the base Compose file explicitly:
 
 ```bash
 docker compose -f docker-compose.yml up -d --build

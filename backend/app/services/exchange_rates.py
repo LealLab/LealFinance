@@ -159,11 +159,14 @@ async def _get_cached_rate(
     """A directly stored pair wins (legacy rows, and lets a manual direct
     write shortcut the bridge); otherwise divide two USD-anchored rows."""
     direct = await db.execute(
-        select(ExchangeRate).where(
+        select(ExchangeRate)
+        .where(
             ExchangeRate.base_code == base_code,
             ExchangeRate.quote_code == quote_code,
-            ExchangeRate.as_of == as_of,
+            ExchangeRate.as_of <= as_of,
         )
+        .order_by(ExchangeRate.as_of.desc())
+        .limit(1)
     )
     row = direct.scalars().first()
     if row is not None:
@@ -179,23 +182,34 @@ async def _get_cached_rate(
     if anchor_base is None or anchor_quote is None:
         return None
 
-    rate = (anchor_quote / anchor_base).quantize(_RATE_QUANTUM, rounding=ROUND_HALF_UP)
-    return RateResult(rate=rate, is_fallback=False, source=OXR_SOURCE, as_of=as_of)
+    rate = (anchor_quote[0] / anchor_base[0]).quantize(_RATE_QUANTUM, rounding=ROUND_HALF_UP)
+    # Report the older of the two anchors so callers see the date actually used.
+    effective_as_of = min(anchor_base[1], anchor_quote[1])
+    return RateResult(rate=rate, is_fallback=False, source=OXR_SOURCE, as_of=effective_as_of)
 
 
-async def _anchor_rate(db: AsyncSession, code: str, as_of: date) -> Decimal | None:
-    """`USD -> code` for `as_of`. USD against itself is 1 with no row."""
+async def _anchor_rate(db: AsyncSession, code: str, as_of: date) -> tuple[Decimal, date] | None:
+    """`USD -> code` on or before `as_of`. USD against itself is 1 with no row.
+
+    Falls back to the newest row at or before `as_of` (mirroring the manual-rate
+    lookup) rather than requiring an exact date match - a single missing day
+    would otherwise collapse the whole rate to the flagged 1:1 fallback.
+    """
     if code == _ANCHOR:
-        return Decimal(1)
+        return (Decimal(1), as_of)
     result = await db.execute(
-        select(ExchangeRate.rate).where(
+        select(ExchangeRate.rate, ExchangeRate.as_of)
+        .where(
             ExchangeRate.base_code == _ANCHOR,
             ExchangeRate.quote_code == code,
-            ExchangeRate.as_of == as_of,
+            ExchangeRate.as_of <= as_of,
             ExchangeRate.source == OXR_SOURCE,
         )
+        .order_by(ExchangeRate.as_of.desc())
+        .limit(1)
     )
-    return result.scalars().first()
+    row = result.first()
+    return None if row is None else (row[0], row[1])
 
 
 async def refresh_rates(db: AsyncSession, as_of: date | None = None) -> int:

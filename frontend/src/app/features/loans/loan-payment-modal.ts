@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LoanRepository } from '../../data/loan.repository';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import { loanProgress } from '../../domain/calc/loans';
 import { Account } from '../../domain/models/account';
 import { Institution } from '../../domain/models/institution';
@@ -45,7 +45,7 @@ export class LoanPaymentModal {
 
   protected readonly form = this.fb.nonNullable.group({
     amount: ['', [Validators.required, decimalAmountValidator()]],
-    date: [formatIsoDate(new Date()), Validators.required],
+    date: [todayIso(), Validators.required],
     accountId: ['', Validators.required],
     description: ['', Validators.required],
   });
@@ -57,7 +57,7 @@ export class LoanPaymentModal {
       const progress = loanProgress(loan);
       this.form.reset({
         amount: loan.installmentAmount,
-        date: progress.nextDueDate ?? formatIsoDate(new Date()),
+        date: progress.nextDueDate ?? todayIso(),
         accountId: loan.paymentAccountId ?? this.eligibleAccounts()[0]?.id ?? '',
         description: `${loan.name} ${Math.min(progress.paid + 1, loan.installmentCount)}/${loan.installmentCount}`,
       });

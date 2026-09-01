@@ -6,7 +6,7 @@ import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { LoanRepository } from '../../data/loan.repository';
 import { installmentAmount } from '../../domain/calc/loans';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { Institution } from '../../domain/models/institution';
@@ -63,7 +63,7 @@ export class LoanFormModal {
     interestRate: ['0', [Validators.required, decimalAmountValidator()]],
     ratePeriod: ['annual' as LoanRatePeriod, Validators.required],
     installmentCount: [12, [Validators.required, Validators.min(1)]],
-    firstPaymentDate: [formatIsoDate(new Date()), Validators.required],
+    firstPaymentDate: [todayIso(), Validators.required],
     notes: [''],
     autoPost: [false],
     institutionId: [''],
@@ -122,7 +122,7 @@ export class LoanFormModal {
         interestRate: loan?.interestRate ?? '0',
         ratePeriod: loan?.ratePeriod ?? 'annual',
         installmentCount: loan?.installmentCount ?? 12,
-        firstPaymentDate: loan?.firstPaymentDate ?? formatIsoDate(new Date()),
+        firstPaymentDate: loan?.firstPaymentDate ?? todayIso(),
         notes: loan?.notes ?? '',
         autoPost: loan?.autoPost ?? false,
         institutionId: '',

@@ -1,7 +1,7 @@
 import { Account } from '../models/account';
 import { Goal } from '../models/goal';
 import { Transaction } from '../models/transaction';
-import { addDays, addMonthsClamped, formatIsoDate, parseIsoDate } from './dates';
+import { addDays, addMonthsClamped, parseIsoDate, todayIso } from './dates';
 import { accountBalance } from './balances';
 import { compare, Money, money, multiply, subtract } from '../../shared/money/money';
 
@@ -43,7 +43,7 @@ export function goalProgress(
   goal: Goal,
   account: Account,
   transactions: readonly Transaction[],
-  today = formatIsoDate(new Date()),
+  today = todayIso(),
 ): GoalProgress {
   const current = accountBalance(account, transactions);
   const target = money(goal.targetAmount, goal.currency);

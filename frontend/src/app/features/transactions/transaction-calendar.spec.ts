@@ -1,5 +1,6 @@
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { Institution } from '../../domain/models/institution';
@@ -18,6 +19,7 @@ const passthrough = (amount: ReturnType<typeof money>, target: string) => money(
       [days]="days()"
       [selectedDay]="selectedDay()"
       displayCurrency="BRL"
+      [converter]="converter"
       [accountsById]="accountsById"
       [institutionsById]="institutionsById"
       [categoriesById]="categoriesById"
@@ -26,6 +28,7 @@ const passthrough = (amount: ReturnType<typeof money>, target: string) => money(
   `,
 })
 class CalendarHost {
+  converter = passthrough;
   readonly days = signal<CalendarDay[]>(
     buildMonthGrid(
       '2026-03',
@@ -102,5 +105,44 @@ describe('TransactionCalendar', () => {
   it('draws a sparkline polyline once there are running balances', () => {
     const { el } = setup();
     expect(el.querySelector('svg polyline')?.getAttribute('points')).toBeTruthy();
+  });
+
+  it('nets a foreign-currency day through the converter, matching the grid delta', () => {
+    const usdToBrl = (amount: ReturnType<typeof money>, target: string) =>
+      target === 'BRL' && amount.currency === 'USD'
+        ? money((Number(amount.amount) * 5.2).toFixed(2), 'BRL')
+        : money(amount.amount, target);
+
+    const { fixture } = setup();
+    fixture.componentInstance.converter = usdToBrl;
+    fixture.componentInstance.days.set(
+      buildMonthGrid(
+        '2026-03',
+        [
+          {
+            id: 'u1',
+            type: 'expense',
+            date: '2026-03-10',
+            amount: '100.00',
+            currency: 'USD',
+            accountId: 'acc-1',
+            categoryId: 'cat-1',
+            description: 'Hosting',
+          },
+        ],
+        [],
+        money('1000', 'BRL'),
+        usdToBrl,
+        1,
+        '2026-03-15',
+      ),
+    );
+    fixture.componentInstance.selectedDay.set('2026-03-10');
+    fixture.detectChanges();
+
+    // -520 (100 USD expense * 5.2), converted - not a raw -100.
+    const calendar = fixture.debugElement.query(By.directive(TransactionCalendar))
+      .componentInstance as { dayNet: () => number | null };
+    expect(calendar.dayNet()).toBeCloseTo(-520, 2);
   });
 });

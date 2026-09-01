@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ManualRateRepository } from '../../data/manual-rate.repository';
-import { formatIsoDate } from '../../domain/calc/dates';
+import { todayIso } from '../../domain/calc/dates';
 import { ManualRate } from '../../domain/models/manual-rate';
 import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
@@ -44,7 +44,7 @@ export class ManualRateFormModal {
     baseCode: ['USD', Validators.required],
     quoteCode: ['BRL', Validators.required],
     rate: ['', [Validators.required, decimalAmountValidator()]],
-    asOf: [formatIsoDate(new Date()), Validators.required],
+    asOf: [todayIso(), Validators.required],
   });
 
   /**
@@ -62,7 +62,7 @@ export class ManualRateFormModal {
         baseCode: rate?.baseCode ?? this.prefillBaseCode() ?? 'USD',
         quoteCode: rate?.quoteCode ?? this.prefillQuoteCode() ?? 'BRL',
         rate: rate?.rate ?? '',
-        asOf: rate?.asOf ?? formatIsoDate(new Date()),
+        asOf: rate?.asOf ?? todayIso(),
       });
       this.saveErrorKey.set(null);
     });

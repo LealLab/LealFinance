@@ -37,10 +37,16 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
 
 
 def create_app() -> FastAPI:
+    # The interactive docs expose the whole API surface; keep them off in
+    # production, where every deployed instance would otherwise serve them.
+    docs_enabled = settings.environment != "production"
     app = FastAPI(
         title="LealFinance API",
         version=settings.app_version,
         lifespan=lifespan,
+        docs_url="/docs" if docs_enabled else None,
+        redoc_url="/redoc" if docs_enabled else None,
+        openapi_url="/openapi.json" if docs_enabled else None,
     )
 
     app.add_middleware(
