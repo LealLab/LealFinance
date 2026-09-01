@@ -20,7 +20,8 @@
       "approve": "Bekræft",
       "reject": "Afvis",
       "account": "Konto",
-      "category": "Kategori"
+      "category": "Kategori",
+      "institution": "Institution"
     },
     "delete": {
       "title": "Slet samtale?",

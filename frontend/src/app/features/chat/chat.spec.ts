@@ -5,9 +5,11 @@ import { throwError } from 'rxjs';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAgentChatRepository } from '../../data/mock/mock-agent-chat.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { ConfirmService } from '../../core/confirm.service';
 import { ApiError } from '../../core/api-error';
@@ -26,6 +28,7 @@ function setup(confirmResult = true) {
       { provide: AgentChatRepository, useClass: MockAgentChatRepository },
       { provide: AccountRepository, useClass: MockAccountRepository },
       { provide: CategoryRepository, useClass: MockCategoryRepository },
+      { provide: InstitutionRepository, useClass: MockInstitutionRepository },
       { provide: ConfirmService, useValue: confirmService },
     ],
   });
@@ -174,10 +177,12 @@ describe('Chat', () => {
     fixture.detectChanges();
     const accounts = fixture.componentInstance['accounts'].value() ?? [];
     const categories = fixture.componentInstance['categories'].value() ?? [];
+    const institutions = fixture.componentInstance['institutions'].value() ?? [];
 
     const entries = fixture.componentInstance['confirmationEntries']({
       account_id: accounts[0]?.id ?? 'x',
       category_id: categories[0]?.id ?? 'y',
+      institution_id: institutions[0]?.id ?? 'z',
       amount: '10',
       meta: { a: 1 },
     });
@@ -187,6 +192,9 @@ describe('Chat', () => {
     );
     expect(entries.find((e) => e.labelKey === 'chat.confirm.category')?.value).toBe(
       categories[0]?.name ?? 'y',
+    );
+    expect(entries.find((e) => e.labelKey === 'chat.confirm.institution')?.value).toBe(
+      institutions[0]?.name ?? 'z',
     );
     expect(entries.find((e) => e.label === 'Amount')?.value).toBe('10');
     expect(entries.find((e) => e.label === 'Meta')?.value).toBe('{"a":1}');

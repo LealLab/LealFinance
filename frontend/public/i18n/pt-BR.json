@@ -20,7 +20,8 @@
       "approve": "Confirmar",
       "reject": "Rejeitar",
       "account": "Conta",
-      "category": "Categoria"
+      "category": "Categoria",
+      "institution": "Instituição"
     },
     "delete": {
       "title": "Excluir conversa?",

@@ -20,7 +20,8 @@
       "approve": "Konfirmasi",
       "reject": "Tolak",
       "account": "Akun",
-      "category": "Kategori"
+      "category": "Kategori",
+      "institution": "Institusi"
     },
     "delete": {
       "title": "Hapus percakapan?",

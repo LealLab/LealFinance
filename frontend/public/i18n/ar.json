@@ -20,7 +20,8 @@
       "approve": "تأكيد",
       "reject": "رفض",
       "account": "الحساب",
-      "category": "الفئة"
+      "category": "الفئة",
+      "institution": "المؤسسة"
     },
     "delete": {
       "title": "حذف المحادثة؟",

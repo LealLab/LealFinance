@@ -20,7 +20,8 @@
       "approve": "Vahvista",
       "reject": "Hylkää",
       "account": "Tili",
-      "category": "Luokka"
+      "category": "Luokka",
+      "institution": "Laitos"
     },
     "delete": {
       "title": "Poista keskustelu?",

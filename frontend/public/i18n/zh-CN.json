@@ -20,7 +20,8 @@
       "approve": "确认",
       "reject": "拒绝",
       "account": "账户",
-      "category": "类别"
+      "category": "类别",
+      "institution": "机构"
     },
     "delete": {
       "title": "删除对话？",

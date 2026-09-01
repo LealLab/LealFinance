@@ -20,7 +20,8 @@
       "approve": "Bekräfta",
       "reject": "Avvisa",
       "account": "Konto",
-      "category": "Kategori"
+      "category": "Kategori",
+      "institution": "Institut"
     },
     "delete": {
       "title": "Radera konversation?",

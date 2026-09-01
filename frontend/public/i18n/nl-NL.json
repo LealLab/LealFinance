@@ -20,7 +20,8 @@
       "approve": "Bevestigen",
       "reject": "Weigeren",
       "account": "Rekening",
-      "category": "Categorie"
+      "category": "Categorie",
+      "institution": "Instelling"
     },
     "delete": {
       "title": "Gesprek verwijderen?",

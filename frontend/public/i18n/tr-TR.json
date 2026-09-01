@@ -20,7 +20,8 @@
       "approve": "Onayla",
       "reject": "Reddet",
       "account": "Hesap",
-      "category": "Kategori"
+      "category": "Kategori",
+      "institution": "Kurum"
     },
     "delete": {
       "title": "Sohbet silinsin mi?",

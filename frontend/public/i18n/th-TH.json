@@ -20,7 +20,8 @@
       "approve": "ยืนยัน",
       "reject": "ปฏิเสธ",
       "account": "บัญชี",
-      "category": "หมวดหมู่"
+      "category": "หมวดหมู่",
+      "institution": "สถาบัน"
     },
     "delete": {
       "title": "ลบการสนทนา?",

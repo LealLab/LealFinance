@@ -20,7 +20,8 @@
       "approve": "Bestätigen",
       "reject": "Ablehnen",
       "account": "Konto",
-      "category": "Kategorie"
+      "category": "Kategorie",
+      "institution": "Institut"
     },
     "delete": {
       "title": "Unterhaltung löschen?",

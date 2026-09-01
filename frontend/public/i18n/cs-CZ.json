@@ -20,7 +20,8 @@
       "approve": "Potvrdit",
       "reject": "Odmítnout",
       "account": "Účet",
-      "category": "Kategorie"
+      "category": "Kategorie",
+      "institution": "Instituce"
     },
     "delete": {
       "title": "Smazat konverzaci?",

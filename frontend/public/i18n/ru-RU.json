@@ -20,7 +20,8 @@
       "approve": "Подтвердить",
       "reject": "Отклонить",
       "account": "Счёт",
-      "category": "Категория"
+      "category": "Категория",
+      "institution": "Организация"
     },
     "delete": {
       "title": "Удалить разговор?",

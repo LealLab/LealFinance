@@ -20,7 +20,8 @@
       "approve": "確認",
       "reject": "拒絕",
       "account": "帳戶",
-      "category": "類別"
+      "category": "類別",
+      "institution": "機構"
     },
     "delete": {
       "title": "刪除對話？",

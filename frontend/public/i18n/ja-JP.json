@@ -20,7 +20,8 @@
       "approve": "確認",
       "reject": "拒否",
       "account": "アカウント",
-      "category": "カテゴリ"
+      "category": "カテゴリ",
+      "institution": "金融機関"
     },
     "delete": {
       "title": "会話を削除しますか？",

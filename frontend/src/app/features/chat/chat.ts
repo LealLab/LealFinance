@@ -7,6 +7,7 @@ import { ApiError } from '../../core/api-error';
 import { AccountRepository } from '../../data/account.repository';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { InstitutionRepository } from '../../data/institution.repository';
 import {
   AgentConversation,
   AgentConversationDetail,
@@ -47,7 +48,7 @@ interface ConfirmationEntry {
 }
 
 /**
- * t(chat.title, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
+ * t(chat.title, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
  */
 @Component({
   selector: 'app-chat',
@@ -59,6 +60,7 @@ export class Chat {
   private readonly repo = inject(AgentChatRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
 
   protected readonly conversations = rxResource({ stream: () => this.repo.listConversations() });
@@ -70,6 +72,7 @@ export class Chat {
   });
   protected readonly accounts = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categories = rxResource({ stream: () => this.categoryRepository.list() });
+  protected readonly institutions = rxResource({ stream: () => this.institutionRepository.list() });
   protected readonly liveMessages = signal<ChatTurn[]>([]);
   protected readonly sending = signal(false);
   protected readonly errorKey = signal<string | null>(null);
@@ -184,7 +187,8 @@ export class Chat {
     return Object.entries(args).map(([key, value]) => ({
       ...(this.isAccountKey(key) ? { labelKey: 'chat.confirm.account' } : {}),
       ...(this.isCategoryKey(key) ? { labelKey: 'chat.confirm.category' } : {}),
-      ...(!this.isAccountKey(key) && !this.isCategoryKey(key)
+      ...(this.isInstitutionKey(key) ? { labelKey: 'chat.confirm.institution' } : {}),
+      ...(!this.isAccountKey(key) && !this.isCategoryKey(key) && !this.isInstitutionKey(key)
         ? { label: key.replaceAll('_', ' ').replace(/^./, (letter) => letter.toUpperCase()) }
         : {}),
       value: this.displayArgument(key, value),
@@ -288,6 +292,10 @@ export class Chat {
     return key === 'category' || key === 'category_id' || key === 'categoryId';
   }
 
+  private isInstitutionKey(key: string): boolean {
+    return key === 'institution' || key === 'institution_id' || key === 'institutionId';
+  }
+
   private displayArgument(key: string, value: unknown): string {
     if (this.isAccountKey(key)) {
       return (
@@ -298,6 +306,12 @@ export class Chat {
     if (this.isCategoryKey(key)) {
       return (
         this.categories.value()?.find((category) => category.id === String(value))?.name ??
+        String(value)
+      );
+    }
+    if (this.isInstitutionKey(key)) {
+      return (
+        this.institutions.value()?.find((institution) => institution.id === String(value))?.name ??
         String(value)
       );
     }

@@ -20,7 +20,8 @@
       "approve": "Potwierdź",
       "reject": "Odrzuć",
       "account": "Konto",
-      "category": "Kategoria"
+      "category": "Kategoria",
+      "institution": "Instytucja"
     },
     "delete": {
       "title": "Usunąć rozmowę?",

@@ -20,7 +20,8 @@
       "approve": "Confirm",
       "reject": "Reject",
       "account": "Account",
-      "category": "Category"
+      "category": "Category",
+      "institution": "Institution"
     },
     "delete": {
       "title": "Delete conversation?",

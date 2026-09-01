@@ -20,7 +20,8 @@
       "approve": "Confirmer",
       "reject": "Refuser",
       "account": "Compte",
-      "category": "Catégorie"
+      "category": "Catégorie",
+      "institution": "Établissement"
     },
     "delete": {
       "title": "Supprimer la conversation ?",

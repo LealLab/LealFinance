@@ -20,7 +20,8 @@
       "approve": "אישור",
       "reject": "דחייה",
       "account": "חשבון",
-      "category": "קטגוריה"
+      "category": "קטגוריה",
+      "institution": "מוסד"
     },
     "delete": {
       "title": "מחיקת השיחה?",

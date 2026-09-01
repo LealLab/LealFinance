@@ -20,7 +20,8 @@
       "approve": "Підтвердити",
       "reject": "Відхилити",
       "account": "Рахунок",
-      "category": "Категорія"
+      "category": "Категорія",
+      "institution": "Установа"
     },
     "delete": {
       "title": "Видалити розмову?",

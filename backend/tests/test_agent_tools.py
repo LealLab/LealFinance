@@ -11,7 +11,9 @@ from app.agents import tools
 from app.core.errors import AppError
 from app.models.user import User
 from app.schemas.budget import BudgetUpsert
+from app.schemas.institution import InstitutionCreate
 from app.services import budgets as budgets_service
+from app.services import institutions as institutions_service
 from tests.factories import login_as, make_user
 
 
@@ -118,6 +120,24 @@ async def test_list_accounts_returns_string_balances_and_filters_archived(
 
     rows_with_archived = await spec.run(db_session, user.id, {"include_archived": True})
     assert {row["id"] for row in rows_with_archived} == {active_id, archived_id}
+
+
+async def test_list_institutions_returns_only_current_users_institutions(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-institutions@example.com")
+    own = await institutions_service.create_institution(
+        db_session, user.id, InstitutionCreate(name="Own Bank", icon="bank")
+    )
+    other_user, _ = await make_user(db_session, email="agent-other-institutions@example.com")
+    other = await institutions_service.create_institution(
+        db_session, other_user.id, InstitutionCreate(name="Other Bank", icon="bank")
+    )
+
+    rows = await tools.SPEC_BY_NAME["list_institutions"].run(db_session, user.id, {})
+
+    assert [row["id"] for row in rows] == [str(own.id)]
+    assert str(other.id) not in {row["id"] for row in rows}
 
 
 async def test_list_categories_filters_by_kind(
@@ -294,6 +314,93 @@ async def test_create_transaction_writes_and_preserves_service_errors(
             },
         )
     assert error.value.code == "transaction.category_required"
+
+
+async def test_create_institution_defaults_icon_and_wraps_invalid_icon(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-create-institution@example.com")
+    spec = tools.SPEC_BY_NAME["create_institution"]
+    assert spec.writes
+
+    row = await spec.run(db_session, user.id, {"name": "New Bank"})
+
+    assert row["name"] == "New Bank"
+    assert row["icon"] == "bank"
+    assert len(await institutions_service.list_institutions(db_session, user.id)) == 1
+
+    with pytest.raises(AppError) as error:
+        await spec.run(db_session, user.id, {"name": "Bad Bank", "icon": "not-an-icon"})
+    assert error.value.code == "agents.tool_arguments_invalid"
+
+
+async def test_create_account_writes_and_preserves_service_errors(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-create-account@example.com")
+    spec = tools.SPEC_BY_NAME["create_account"]
+    assert spec.writes
+
+    row = await spec.run(
+        db_session,
+        user.id,
+        {
+            "name": "New Checking",
+            "type": "checking",
+            "currency": "BRL",
+            "opening_balance": "123.45",
+        },
+    )
+
+    assert row["name"] == "New Checking"
+    assert row["opening_balance"] == "123.4500"
+    assert row["currency"] == "BRL"
+
+    with pytest.raises(AppError) as error:
+        await spec.run(
+            db_session,
+            user.id,
+            {
+                "name": "Invalid Savings",
+                "type": "savings",
+                "currency": "BRL",
+                "credit_limit": "100.00",
+            },
+        )
+    assert error.value.code == "account.credit_fields_not_applicable"
+
+    with pytest.raises(AppError) as error:
+        await spec.run(
+            db_session,
+            user.id,
+            {"name": "Unknown Currency", "type": "checking", "currency": "XYZ"},
+        )
+    assert error.value.code == "currency.not_found"
+
+
+async def test_create_account_rejects_foreign_institution(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    owner = await _authed(client, db_session, "agent-institution-owner@example.com")
+    institution = await institutions_service.create_institution(
+        db_session, owner.id, InstitutionCreate(name="Owner Bank", icon="bank")
+    )
+    other_user, _ = await make_user(db_session, email="agent-account-other@example.com")
+
+    with pytest.raises(AppError) as error:
+        await tools.SPEC_BY_NAME["create_account"].run(
+            db_session,
+            other_user.id,
+            {
+                "name": "Foreign Institution Account",
+                "type": "checking",
+                "currency": "BRL",
+                "institution_id": str(institution.id),
+            },
+        )
+
+    assert error.value.status_code == 404
+    assert error.value.code == "institution.not_found"
 
 
 async def test_create_transaction_rejects_foreign_account(

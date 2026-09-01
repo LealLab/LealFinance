@@ -20,7 +20,8 @@
       "approve": "पुष्टि करें",
       "reject": "अस्वीकार करें",
       "account": "खाता",
-      "category": "श्रेणी"
+      "category": "श्रेणी",
+      "institution": "संस्थान"
     },
     "delete": {
       "title": "बातचीत मिटाएँ?",

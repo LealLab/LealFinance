@@ -3,8 +3,9 @@
 AI agents are optional and disabled by default (`AGENTS_ENABLED`). When enabled,
 the feature is a streaming chat over the user's own financial data: the model
 answers questions about accounts, transactions, categories, budgets, and
-spending, and can create a transaction after the user confirms it. Requests
-unrelated to personal finance or to this application are refused.
+spending, and can create an institution, account, or transaction after the user
+confirms it. Requests unrelated to personal finance or to this application are
+refused.
 
 Disabled instances return `agents.disabled` for every `/api/v1/agents/*` route
 and never call a provider.
@@ -25,12 +26,15 @@ delegating to an existing user-scoped service:
 | Tool | Purpose |
 | --- | --- |
 | `list_accounts` | accounts with current balances |
+| `list_institutions` | user's institutions |
 | `list_categories` | categories, optionally filtered by kind |
 | `search_transactions` | filtered, paginated ledger search |
 | `spend_by_category` | expense totals per category group over a date range |
 | `monthly_totals` | income / expense / net per month |
 | `budget_status` | budget vs. actual for a month |
 | `create_transaction` | **write** - always shown to the user for confirmation first |
+| `create_institution` | **write** - always shown to the user for confirmation first |
+| `create_account` | **write** - always shown to the user for confirmation first |
 
 Read tools run automatically inside one turn (bounded at 8 iterations). A write
 tool suspends the turn: the conversation goes to `awaiting_confirmation`, the

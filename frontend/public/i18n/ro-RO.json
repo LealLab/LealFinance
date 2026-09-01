@@ -20,7 +20,8 @@
       "approve": "Confirmă",
       "reject": "Respinge",
       "account": "Cont",
-      "category": "Categorie"
+      "category": "Categorie",
+      "institution": "Instituție"
     },
     "delete": {
       "title": "Ștergi conversația?",

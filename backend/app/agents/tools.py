@@ -1,6 +1,6 @@
 """Financial agent tools.
 
-Deferred tools: categorize_transactions, create_account, update/delete
+Deferred tools: categorize_transactions, update/delete
 transaction, goals, loans, investments, and recurring rules.
 """
 
@@ -16,12 +16,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.events import ToolSpec
 from app.core.errors import ValidationAppError
-from app.schemas.account import AccountBalanceRead, AccountRead
+from app.schemas.account import AccountBalanceRead, AccountCreate, AccountRead
 from app.schemas.category import CategoryRead
+from app.schemas.institution import InstitutionCreate, InstitutionRead
 from app.schemas.transaction import TransactionCreate, TransactionRead, TransactionType
 from app.services import accounts as accounts_service
 from app.services import analytics
 from app.services import categories as categories_service
+from app.services import institutions as institutions_service
 from app.services import transactions as transactions_service
 
 
@@ -31,6 +33,23 @@ class _ToolArgs(BaseModel):
 
 class _ListAccountsArgs(_ToolArgs):
     include_archived: bool = False
+
+
+class _CreateInstitutionArgs(_ToolArgs):
+    name: str
+    icon: str | None = None
+    color: str | None = None
+
+
+class _CreateAccountArgs(_ToolArgs):
+    name: str
+    type: Literal["checking", "savings", "cash", "credit_card", "investment", "goal"]
+    currency: str
+    opening_balance: Decimal | None = None
+    institution_id: UUID | None = None
+    credit_limit: Decimal | None = None
+    closing_day: int | None = None
+    due_day: int | None = None
 
 
 class _ListCategoriesArgs(_ToolArgs):
@@ -101,6 +120,17 @@ async def _list_categories(
         CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
         for category in categories
         if payload.kind is None or category.kind == payload.kind
+    ]
+
+
+async def _list_institutions(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> list[dict[str, Any]]:
+    _validate(_ToolArgs, args)
+    rows = await institutions_service.list_institutions(db, user_id)
+    return [
+        InstitutionRead.model_validate(row, from_attributes=True).model_dump(mode="json")
+        for row in rows
     ]
 
 
@@ -196,6 +226,29 @@ async def _create_transaction(
     return TransactionRead.model_validate(transaction, from_attributes=True).model_dump(mode="json")
 
 
+async def _create_institution(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any]:
+    parsed = _validate(_CreateInstitutionArgs, args)
+    payload = _validate(
+        InstitutionCreate,
+        {
+            "name": parsed.name,
+            "icon": parsed.icon or "bank",
+            **({"color": parsed.color} if parsed.color is not None else {}),
+        },
+    )
+    institution = await institutions_service.create_institution(db, user_id, payload)
+    return InstitutionRead.model_validate(institution, from_attributes=True).model_dump(mode="json")
+
+
+async def _create_account(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    parsed = _validate(_CreateAccountArgs, args)
+    payload = _validate(AccountCreate, parsed.model_dump(exclude_none=True))
+    account = await accounts_service.create_account(db, user_id, payload)
+    return AccountRead.model_validate(account, from_attributes=True).model_dump(mode="json")
+
+
 @dataclass(frozen=True, slots=True)
 class ToolDef:
     name: str
@@ -219,6 +272,17 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_list_accounts,
+    ),
+    ToolDef(
+        name="list_institutions",
+        description="List the user's institutions.",
+        schema={
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": False,
+        },
+        run=_list_institutions,
     ),
     ToolDef(
         name="list_categories",
@@ -323,6 +387,63 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_create_transaction,
+        writes=True,
+    ),
+    ToolDef(
+        name="create_institution",
+        description="Create an institution for the user.",
+        schema={
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "icon": {
+                    "type": "string",
+                    "description": (
+                        "Icon name, e.g. bank, creditCard, wallet, piggy, building. "
+                        "Defaults to bank."
+                    ),
+                },
+                "color": {"type": "string"},
+            },
+            "required": ["name"],
+            "additionalProperties": False,
+        },
+        run=_create_institution,
+        writes=True,
+    ),
+    ToolDef(
+        name="create_account",
+        description="Create an account for the user.",
+        schema={
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "checking",
+                        "savings",
+                        "cash",
+                        "credit_card",
+                        "investment",
+                        "goal",
+                    ],
+                    "description": (
+                        "Account type. credit_limit, closing_day, and due_day only apply "
+                        "to credit_card."
+                    ),
+                },
+                "currency": {"type": "string"},
+                "opening_balance": {"type": "string"},
+                "institution_id": {"type": "string", "format": "uuid"},
+                "credit_limit": {"type": "string"},
+                "closing_day": {"type": "integer", "minimum": 1, "maximum": 31},
+                "due_day": {"type": "integer", "minimum": 1, "maximum": 31},
+            },
+            "required": ["name", "type", "currency"],
+            "additionalProperties": False,
+        },
+        run=_create_account,
         writes=True,
     ),
 ]

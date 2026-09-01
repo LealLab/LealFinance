@@ -20,7 +20,8 @@
       "approve": "확인",
       "reject": "거부",
       "account": "계정",
-      "category": "카테고리"
+      "category": "카테고리",
+      "institution": "기관"
     },
     "delete": {
       "title": "대화를 삭제할까요?",

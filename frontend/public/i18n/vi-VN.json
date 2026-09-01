@@ -20,7 +20,8 @@
       "approve": "Xác nhận",
       "reject": "Từ chối",
       "account": "Tài khoản",
-      "category": "Danh mục"
+      "category": "Danh mục",
+      "institution": "Tổ chức"
     },
     "delete": {
       "title": "Xóa cuộc trò chuyện?",
