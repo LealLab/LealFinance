@@ -1297,6 +1297,13 @@
           "save": "保存"
         }
       }
+    },
+    "actions": {
+      "refresh": "立即刷新"
+    },
+    "refresh": {
+      "updated": "已更新 {{count}} 个汇率。",
+      "upToDate": "汇率已是最新。"
     }
   },
   "settings": {

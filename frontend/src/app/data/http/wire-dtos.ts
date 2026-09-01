@@ -275,6 +275,13 @@ export interface ExchangeRateWire {
   as_of: string;
 }
 
+export interface ExchangeRateRefreshWire {
+  as_of: string;
+  updated: number;
+  throttled: boolean;
+  refreshed_at: string | null;
+}
+
 export interface GoalWire {
   id: string;
   account_id: string;

@@ -1,7 +1,9 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
+import { of } from 'rxjs';
+import { SessionService } from '../../core/session.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -24,7 +26,10 @@ import { Exchange } from './exchange';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Exchange', () => {
+  const sessionUser = signal<{ role: string } | undefined>(undefined);
+
   beforeEach(async () => {
+    sessionUser.set(undefined);
     await TestBed.configureTestingModule({
       imports: [
         Exchange,
@@ -41,7 +46,8 @@ describe('Exchange', () => {
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
         { provide: ManualRateRepository, useClass: MockManualRateRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
-        { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository }
+        { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
+        { provide: SessionService, useValue: { user: sessionUser.asReadonly() } }
       ]
     }).compileComponents();
     TestBed.inject(MetadataService).currencies.set(
@@ -213,6 +219,54 @@ describe('Exchange', () => {
       expect.arrayContaining([
         expect.objectContaining({ baseCode: 'USD', quoteCode: 'BRL', rate: '5.35' }),
       ]),
+    );
+  });
+
+  it('hides the manual "refresh now" action from non-admins', async () => {
+    sessionUser.set({ role: 'member' });
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const refreshLabel = TestBed.inject(TranslocoService).translate('exchange.actions.refresh');
+    const button = Array.from(
+      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>,
+    ).find((b) => b.textContent?.trim() === refreshLabel);
+    expect(button).toBeUndefined();
+  });
+
+  it('lets an admin trigger a refresh and reloads the rate views', async () => {
+    sessionUser.set({ role: 'admin' });
+    const repo = TestBed.inject(ExchangeRateRepository);
+    const refreshSpy = vi
+      .spyOn(repo, 'refresh')
+      .mockReturnValue(of({ asOf: '2026-09-01', updated: 3, throttled: false, refreshedAt: null }));
+
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      accountRatesResource: { reload: () => void };
+    };
+    const reloadSpy = vi.spyOn(component.accountRatesResource, 'reload');
+
+    const refreshLabel = TestBed.inject(TranslocoService).translate('exchange.actions.refresh');
+    const button = Array.from(
+      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>,
+    ).find((b) => b.textContent?.trim() === refreshLabel)!;
+    expect(button).toBeTruthy();
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(refreshSpy).toHaveBeenCalledTimes(1);
+    expect(reloadSpy).toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).toContain(
+      TestBed.inject(TranslocoService).translate('exchange.refresh.updated', { count: 3 }),
     );
   });
 });

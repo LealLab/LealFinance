@@ -51,9 +51,16 @@ The cache is filled by writes, never by a lookup:
 
 - A Celery beat task (`refresh_exchange_rates`) refreshes today's rates
   every six hours.
-- `warm_cache_for` runs when an account is created or changed to a foreign
-  currency, so its balances convert against a real rate without waiting for
-  the next scheduled refresh.
+- `ensure_rates_cached` runs on every write that introduces a currency
+  (creating an account, goal, or investment wallet, or changing one's
+  currency) and once at API startup, so balances convert against a real
+  rate without waiting for the next scheduled refresh. It checks the
+  *exact* day, so a cache that stopped updating recovers on the next such
+  write rather than looking permanently warm.
+- `POST /api/v1/meta/exchange-rates/refresh` (admin only) forces a refresh
+  now. It is cooldown-gated by `EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES`
+  (default 15) shared across processes; inside the cooldown it returns
+  `throttled: true` without calling the provider.
 
 A nightly Celery task (`backfill_fallback_conversions`) re-resolves
 transactions whose conversion was recorded at the 1:1 fallback before a key

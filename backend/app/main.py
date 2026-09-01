@@ -1,6 +1,7 @@
 """FastAPI application factory."""
 
 import asyncio
+import logging
 import sys
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
@@ -8,6 +9,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.pool import NullPool
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 # Same Windows event-loop caveat as alembic/env.py and tests/conftest.py:
@@ -26,13 +29,32 @@ from app.core.errors import (
     validation_error_handler,
 )
 from app.core.logging import configure_logging
+from app.services.exchange_rates import ensure_rates_cached
 
 settings = get_settings()
+logger = logging.getLogger(__name__)
+
+
+async def _warm_exchange_rates() -> None:
+    """Populate today's rate cache at startup so a newly added provider key
+    takes effect without waiting up to six hours for the Celery beat run.
+    A no-op once today's rows exist, or with no key. Its own short-lived
+    engine - same event-loop reasoning as app/workers/tasks/rates.py."""
+    engine = create_async_engine(settings.sqlalchemy_database_uri, poolclass=NullPool)
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as db:
+            await ensure_rates_cached(db)
+            await db.commit()
+    except Exception:
+        logger.warning("Startup exchange-rate warm-up failed", exc_info=True)
+    finally:
+        await engine.dispose()
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
     configure_logging(settings.log_level)
+    await _warm_exchange_rates()
     yield
 
 

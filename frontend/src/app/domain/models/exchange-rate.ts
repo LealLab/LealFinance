@@ -15,3 +15,17 @@ export interface ExchangeRate {
   /** Effective date used by the rate resolver, preserved as an ISO date. */
   asOf: string;
 }
+
+/**
+ * Outcome of the admin "refresh rates now" action (POST
+ * /api/v1/meta/exchange-rates/refresh). `throttled` means the cooldown was
+ * still in effect and no provider call was made; `updated` is then 0 and
+ * `refreshedAt` is when the cache last actually refreshed (ISO datetime, or
+ * null if it never has).
+ */
+export interface RateRefresh {
+  asOf: string;
+  updated: number;
+  throttled: boolean;
+  refreshedAt: string | null;
+}

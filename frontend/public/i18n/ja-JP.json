@@ -1297,6 +1297,13 @@
           "save": "保存"
         }
       }
+    },
+    "actions": {
+      "refresh": "今すぐ更新"
+    },
+    "refresh": {
+      "updated": "{{count}} 件のレートを更新しました。",
+      "upToDate": "レートはすでに最新です。"
     }
   },
   "settings": {

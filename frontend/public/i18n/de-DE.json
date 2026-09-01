@@ -1297,6 +1297,13 @@
           "save": "Speichern"
         }
       }
+    },
+    "actions": {
+      "refresh": "Jetzt aktualisieren"
+    },
+    "refresh": {
+      "updated": "{{count}} Kurse aktualisiert.",
+      "upToDate": "Die Kurse sind bereits aktuell."
     }
   },
   "settings": {

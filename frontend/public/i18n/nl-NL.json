@@ -1297,6 +1297,13 @@
           "save": "Opslaan"
         }
       }
+    },
+    "actions": {
+      "refresh": "Nu vernieuwen"
+    },
+    "refresh": {
+      "updated": "{{count}} koersen bijgewerkt.",
+      "upToDate": "De koersen zijn al up-to-date."
     }
   },
   "settings": {

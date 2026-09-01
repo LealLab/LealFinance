@@ -1297,6 +1297,13 @@
           "save": "Salva"
         }
       }
+    },
+    "actions": {
+      "refresh": "Aggiorna ora"
+    },
+    "refresh": {
+      "updated": "{{count}} tassi aggiornati.",
+      "upToDate": "I tassi sono già aggiornati."
     }
   },
   "settings": {

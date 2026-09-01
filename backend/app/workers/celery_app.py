@@ -42,8 +42,9 @@ celery_app.conf.beat_schedule = {
     },
     # Every 6h keeps the cache within the provider's hourly update cadence
     # while staying far under the free plan's 1,000 requests/month (one
-    # request per run covers every currency). A cache miss also refreshes
-    # inline, so this is just the steady-state warm-up.
+    # request per run covers every currency). Currency-introducing writes and
+    # the admin refresh endpoint also fill the cache; this is the
+    # steady-state warm-up.
     "refresh-exchange-rates": {
         "task": "app.workers.tasks.rates.refresh_exchange_rates",
         "schedule": crontab(minute=0, hour="*/6"),

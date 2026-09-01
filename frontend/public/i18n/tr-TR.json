@@ -1297,6 +1297,13 @@
           "save": "Kaydet"
         }
       }
+    },
+    "actions": {
+      "refresh": "Şimdi yenile"
+    },
+    "refresh": {
+      "updated": "{{count}} kur güncellendi.",
+      "upToDate": "Kurlar zaten güncel."
     }
   },
   "settings": {

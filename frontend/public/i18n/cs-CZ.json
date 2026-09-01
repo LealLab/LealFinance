@@ -1297,6 +1297,13 @@
           "save": "Uložit"
         }
       }
+    },
+    "actions": {
+      "refresh": "Obnovit"
+    },
+    "refresh": {
+      "updated": "Aktualizováno kurzů: {{count}}.",
+      "upToDate": "Kurzy jsou již aktuální."
     }
   },
   "settings": {

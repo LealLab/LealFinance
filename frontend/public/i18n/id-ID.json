@@ -1297,6 +1297,13 @@
           "save": "Simpan"
         }
       }
+    },
+    "actions": {
+      "refresh": "Segarkan sekarang"
+    },
+    "refresh": {
+      "updated": "{{count}} kurs diperbarui.",
+      "upToDate": "Kurs sudah terbaru."
     }
   },
   "settings": {

@@ -148,6 +148,7 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/meta/currencies` | public | Active currencies only. |
 | GET | `/meta/settings` | public | `default_currency`, `default_locale`, and boolean `agents_enabled`. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |
+| POST | `/meta/exchange-rates/refresh` | admin | Force a provider refresh of today's rates; cooldown-gated. See "Exchange rates" below. |
 | GET | `/meta/update-status` | admin | Current/latest version and whether an update is available; see "Updates" below. |
 | POST | `/auth/invitations` | admin | Body `{email, role}`. Returns the raw token once. |
 | GET | `/auth/invitations` | admin | Never includes the token. |
@@ -484,8 +485,20 @@ No delete - archive only, matching `GoalRepository`.
 
 `GET /meta/exchange-rate` follows the full precedence in
 `money-and-currency.md` (identity → the caller's manual rate → its inverse
-→ cached provider rate → live provider fetch → 1:1 fallback). `PUT
-/manual-rates/{pair}/{date}` upserts, keyed on `(user, base_code,
+→ cached provider rate → 1:1 fallback). It is a pure read and never fetches
+from the provider; the cache is filled by the scheduled Celery task, by
+currency-introducing writes, at API startup, and by the refresh endpoint
+below.
+
+`POST /meta/exchange-rates/refresh` (admin only) pulls today's USD-anchored
+rates from the provider ahead of the scheduled run. It is cooldown-gated by
+`EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES` (default 15), shared across
+processes; inside the cooldown it returns `{as_of, updated: 0, throttled:
+true, refreshed_at}` without a provider call. Read-computed values pick up
+new rates immediately; transactions frozen at the 1:1 fallback still heal
+via the nightly backfill task.
+
+`PUT /manual-rates/{pair}/{date}` upserts, keyed on `(user, base_code,
 quote_code, as_of)`; `{pair}` is two 3-letter codes joined by `_`
 (`USD_BRL`), case-insensitive.
 

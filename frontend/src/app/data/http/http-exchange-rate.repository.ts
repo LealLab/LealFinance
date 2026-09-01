@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ApiClient } from '../../core/api-client';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
+import { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import { ExchangeRateRepository } from '../exchange-rate.repository';
-import { mapExchangeRate } from './mappers';
-import { ExchangeRateWire } from './wire-dtos';
+import { mapExchangeRate, mapRateRefresh } from './mappers';
+import { ExchangeRateRefreshWire, ExchangeRateWire } from './wire-dtos';
 
 @Injectable({ providedIn: 'root' })
 export class HttpExchangeRateRepository extends ExchangeRateRepository {
@@ -17,5 +17,11 @@ export class HttpExchangeRateRepository extends ExchangeRateRepository {
         as_of: asOf,
       })
       .pipe(map(mapExchangeRate));
+  }
+
+  refresh(): Observable<RateRefresh> {
+    return this.api
+      .post<ExchangeRateRefreshWire>('/meta/exchange-rates/refresh')
+      .pipe(map(mapRateRefresh));
   }
 }

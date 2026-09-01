@@ -1297,6 +1297,13 @@
           "save": "Lưu"
         }
       }
+    },
+    "actions": {
+      "refresh": "Làm mới ngay"
+    },
+    "refresh": {
+      "updated": "Đã cập nhật {{count}} tỷ giá.",
+      "upToDate": "Tỷ giá đã được cập nhật."
     }
   },
   "settings": {

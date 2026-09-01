@@ -1297,6 +1297,13 @@
           "save": "Save"
         }
       }
+    },
+    "actions": {
+      "refresh": "Refresh now"
+    },
+    "refresh": {
+      "updated": "Updated {{count}} live rates.",
+      "upToDate": "Rates are already up to date."
     }
   },
   "settings": {

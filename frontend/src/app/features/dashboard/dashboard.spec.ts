@@ -11,7 +11,7 @@ import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { Category, CategoryKind } from '../../domain/models/category';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
-import { ExchangeRate } from '../../domain/models/exchange-rate';
+import { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
@@ -116,6 +116,10 @@ class DelayedExchangeRateRepository extends ExchangeRateRepository {
       subject.next({ baseCode, quoteCode, rate: '5.2', isFallback: false, source: 'quote', asOf: '2026-01-01' });
       subject.complete();
     }
+  }
+
+  refresh(): Observable<RateRefresh> {
+    return of({ asOf: '2026-01-01', updated: 0, throttled: false, refreshedAt: null });
   }
 }
 
@@ -337,6 +341,9 @@ class StubBudgetRepository extends BudgetRepository {
 class StubExchangeRateRepository extends ExchangeRateRepository {
   getRate(baseCode: string, quoteCode: string): Observable<ExchangeRate> {
     return of({ baseCode, quoteCode, rate: '1.1', isFallback: false, source: 'quote', asOf: '2026-01-01' });
+  }
+  refresh(): Observable<RateRefresh> {
+    return of({ asOf: '2026-01-01', updated: 0, throttled: false, refreshedAt: null });
   }
 }
 

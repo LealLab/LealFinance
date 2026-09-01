@@ -1297,6 +1297,13 @@
           "save": "Salvează"
         }
       }
+    },
+    "actions": {
+      "refresh": "Actualizează acum"
+    },
+    "refresh": {
+      "updated": "{{count}} cursuri actualizate.",
+      "upToDate": "Cursurile sunt deja actualizate."
     }
   },
   "settings": {

@@ -1,5 +1,29 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')" />
+  <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')">
+    @if (isAdmin()) {
+      <div class="flex flex-col items-end gap-1">
+        <button
+          appButton
+          variant="secondary"
+          size="sm"
+          type="button"
+          [disabled]="refreshing()"
+          (click)="refreshRates()"
+        >
+          {{ t('exchange.actions.refresh') }}
+        </button>
+        @if (refreshResult(); as result) {
+          <p class="text-xs text-content-muted" role="status">
+            @if (!result.throttled && result.updated > 0) {
+              {{ t('exchange.refresh.updated', { count: result.updated }) }}
+            } @else {
+              {{ t('exchange.refresh.upToDate') }}
+            }
+          </p>
+        }
+      </div>
+    }
+  </app-page-header>
 
   <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
     @if (feeRatesReady()) {

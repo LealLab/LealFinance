@@ -33,7 +33,11 @@ from app.services import accounts as accounts_service
 from app.services import investment_positions, ownership
 from app.services.conversion import ConversionInput
 from app.services.currencies import get_active_currency
-from app.services.exchange_rates import get_exchange_rate, to_conversion_source
+from app.services.exchange_rates import (
+    ensure_rates_cached,
+    get_exchange_rate,
+    to_conversion_source,
+)
 from app.services.transactions import build_transaction
 
 _B3_SYMBOL = re.compile(r"^[A-Z]{4}\d{1,2}$")
@@ -68,6 +72,7 @@ async def create_wallet(
         await db.flush()
         wallet = InvestmentWallet(user_id=user_id, account_id=account.id, **data.model_dump())
         db.add(wallet)
+        await ensure_rates_cached(db)
         await db.commit()
     except Exception:
         await db.rollback()
