@@ -24,6 +24,7 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import text
+from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
 from app.core.config import get_settings
@@ -66,8 +67,38 @@ def _no_instance_provider_configuration() -> Iterator[None]:
         ) = original
 
 
+async def _ensure_test_database() -> None:
+    """Refuse to run against anything but a dedicated ``*_test`` database, and
+    create that database on first run.
+
+    The session fixture below drops every table on teardown. A run pointed at
+    the dev database (e.g. ``POSTGRES_DB`` left at its normal value) would wipe
+    real data, so bail out loudly instead.
+    """
+    url = make_url(settings.sqlalchemy_database_uri)
+    if not (url.database or "").endswith("_test"):
+        raise RuntimeError(
+            f"Backend tests must run against a database named '*_test', got "
+            f"'{url.database}'. Run them via `task backend:test`, which targets "
+            f"'lealfinance_test'."
+        )
+
+    admin_engine = create_async_engine(url.set(database="postgres"), isolation_level="AUTOCOMMIT")
+    try:
+        async with admin_engine.connect() as conn:
+            exists = await conn.scalar(
+                text("SELECT 1 FROM pg_database WHERE datname = :name"),
+                {"name": url.database},
+            )
+            if not exists:
+                await conn.execute(text(f'CREATE DATABASE "{url.database}"'))
+    finally:
+        await admin_engine.dispose()
+
+
 @pytest_asyncio.fixture(scope="session")
 async def _engine() -> AsyncGenerator[AsyncEngine]:
+    await _ensure_test_database()
     engine = create_async_engine(settings.sqlalchemy_database_uri)
 
     async with engine.begin() as conn:

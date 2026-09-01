@@ -78,7 +78,11 @@ jobs:
 
       - name: Test
         # Coverage (>=80% gate) is configured in pyproject.toml so it runs
-        # identically via `task backend:test`.
+        # identically via `task backend:test`. The suite refuses any database
+        # not named *_test and creates this one itself (see tests/conftest.py);
+        # the round-trip step above keeps using the job-level `lealfinance` URL.
+        env:
+          DATABASE_URL: postgresql+psycopg://lealfinance:ci-password@localhost:5432/lealfinance_test
         run: uv run pytest -q
 
   frontend:
