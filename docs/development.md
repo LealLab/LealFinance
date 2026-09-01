@@ -126,9 +126,11 @@ Backend tests require real PostgreSQL and Redis. They build the test schema
 from the ORM metadata and roll back test data after each test; there is no
 SQLite fallback. The test command also enforces the 80% coverage threshold.
 
-Do not run `task backend:migrate` and `task backend:test` against the same
-database without a reset between them. Migrations leave committed seed data,
-while the test fixture creates its own schema.
+`task backend:test` runs against a dedicated `lealfinance_test` database on the
+same PostgreSQL instance, created automatically on first run. The suite builds
+and drops its own schema, so it refuses to start against any database whose name
+does not end in `_test` - a dev or production database can never be wiped by a
+mis-pointed test run. Override the name with `POSTGRES_TEST_DB` if needed.
 
 ## First admin and demo data
 

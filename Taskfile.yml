@@ -72,6 +72,11 @@ tasks:
     env:
       POSTGRES_HOST: localhost
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
+      # Tests build and drop their own schema - keep them off the dev
+      # database. conftest.py refuses any database not named *_test and
+      # creates this one on first run.
+      POSTGRES_DB: '{{.POSTGRES_TEST_DB | default "lealfinance_test"}}'
+      DATABASE_URL: ""
       REDIS_HOST: localhost
       REDIS_PORT: '{{.REDIS_HOST_PORT | default "6379"}}'
     cmds:

@@ -29,9 +29,9 @@ Prefer these Taskfile targets over raw `uv`, `pnpm`, or Compose commands.
 | Translation keys | `task i18n:validate` |
 | Full stack up | `task up` |
 
-Migration changes must pass upgrade -> downgrade -> upgrade. Do not run
-`task backend:migrate` and `task backend:test` against the same database
-without resetting it between runs.
+Migration changes must pass upgrade -> downgrade -> upgrade. `task backend:test`
+uses its own `lealfinance_test` database (auto-created) and refuses to run
+against any database not named `*_test`, so it never touches dev data.
 
 ## Where code goes
 
