@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { forkJoin, of } from 'rxjs';
@@ -45,6 +45,7 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { MonthSwitcher } from '../../shared/ui/month-switcher/month-switcher';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { StatTile, StatTone } from '../../shared/ui/stat-tile/stat-tile';
 import { BudgetFormModal } from './budget-form-modal';
@@ -76,6 +77,7 @@ interface BudgetRow extends BudgetProgress {
     EmptyState,
     Icon,
     PageHeader,
+    MonthSwitcher,
     ProgressBar,
     ExchangeRateWarning,
     StatTile,
@@ -153,6 +155,14 @@ export class Budgets {
   protected readonly plannerError = signal<string | null>(null);
 
   constructor() {
+    let previousMonth = this.selectedMonth();
+    effect(() => {
+      const month = this.selectedMonth();
+      if (month === previousMonth) return;
+      previousMonth = month;
+      this.incomeDraft.set('');
+      this.plannerError.set(null);
+    });
     openOnNewParam(() => this.openCreate());
   }
 
@@ -332,14 +342,6 @@ export class Budgets {
   protected readonly formOpen = signal(false);
   protected readonly editingBudget = signal<Budget | undefined>(undefined);
   protected readonly prefillGroupId = signal<string | undefined>(undefined);
-
-  protected onMonthChange(value: string): void {
-    if (value) {
-      this.selectedMonth.set(value);
-      this.incomeDraft.set('');
-      this.plannerError.set(null);
-    }
-  }
 
   protected openCreate(): void {
     this.editingBudget.set(undefined);

@@ -7,31 +7,11 @@
   >
     @if (tab() === 'transactions') {
       @if (mode() === 'calendar') {
-        <div class="flex items-center gap-1">
-          <button
-            appButton
-            variant="secondary"
-            size="sm"
-            type="button"
-            (click)="stepMonth(-1)"
-            [attr.aria-label]="t('transactions.calendar.previousMonth')"
-          >
-            <app-icon name="chevronRight" [size]="16" class="rotate-180" />
-          </button>
-          <span class="min-w-32 text-center text-sm font-medium text-content-primary">
-            {{ monthLabel() }}
-          </span>
-          <button
-            appButton
-            variant="secondary"
-            size="sm"
-            type="button"
-            (click)="stepMonth(1)"
-            [attr.aria-label]="t('transactions.calendar.nextMonth')"
-          >
-            <app-icon name="chevronRight" [size]="16" />
-          </button>
-        </div>
+        <app-month-switcher
+          [(month)]="calendarMonth"
+          [prevLabel]="t('common.actions.previousMonth')"
+          [nextLabel]="t('common.actions.nextMonth')"
+        />
       }
 
       <div class="flex items-center gap-1 rounded border border-border p-0.5">

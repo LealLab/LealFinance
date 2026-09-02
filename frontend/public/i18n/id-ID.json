@@ -44,7 +44,9 @@
       "cancel": "Batal",
       "confirm": "Konfirmasi",
       "save": "Simpan",
-      "saving": "Menyimpan…"
+      "saving": "Menyimpan…",
+      "previousMonth": "Bulan sebelumnya",
+      "nextMonth": "Bulan berikutnya"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Bulan sebelumnya",
-      "nextMonth": "Bulan berikutnya",
       "balanceTrend": "Tren saldo",
       "selectedDay": "Hari yang dipilih",
       "selectDayHint": "Pilih hari untuk melihat aktivitasnya",
@@ -884,7 +884,6 @@
         "save": "Distribusi tidak dapat disimpan. Coba lagi."
       }
     },
-    "monthLabel": "Bulan",
     "actions": {
       "new": "Anggaran baru",
       "edit": "Edit",

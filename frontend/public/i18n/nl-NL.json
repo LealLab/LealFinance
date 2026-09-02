@@ -44,7 +44,9 @@
       "cancel": "Annuleren",
       "confirm": "Bevestigen",
       "save": "Opslaan",
-      "saving": "Opslaan…"
+      "saving": "Opslaan…",
+      "previousMonth": "Vorige maand",
+      "nextMonth": "Volgende maand"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Vorige maand",
-      "nextMonth": "Volgende maand",
       "balanceTrend": "Saldoverloop",
       "selectedDay": "Geselecteerde dag",
       "selectDayHint": "Selecteer een dag om de activiteit te bekijken",
@@ -884,7 +884,6 @@
         "save": "De verdeling kon niet worden opgeslagen. Probeer het opnieuw."
       }
     },
-    "monthLabel": "Maand",
     "actions": {
       "new": "Nieuw budget",
       "edit": "Bewerken",

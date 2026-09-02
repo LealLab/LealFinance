@@ -44,7 +44,9 @@
       "cancel": "ביטול",
       "confirm": "אישור",
       "save": "שמירה",
-      "saving": "שומר…"
+      "saving": "שומר…",
+      "previousMonth": "החודש הקודם",
+      "nextMonth": "החודש הבא"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "החודש הקודם",
-      "nextMonth": "החודש הבא",
       "balanceTrend": "מגמת היתרה",
       "selectedDay": "היום שנבחר",
       "selectDayHint": "בחירת יום להצגת הפעילות שלו",
@@ -884,7 +884,6 @@
         "save": "לא ניתן לשמור את החלוקה. נסו שוב."
       }
     },
-    "monthLabel": "חודש",
     "actions": {
       "new": "תקציב חדש",
       "edit": "עריכה",

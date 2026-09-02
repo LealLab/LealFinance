@@ -44,7 +44,9 @@
       "cancel": "Anulează",
       "confirm": "Confirmă",
       "save": "Salvează",
-      "saving": "Se salvează…"
+      "saving": "Se salvează…",
+      "previousMonth": "Luna anterioară",
+      "nextMonth": "Luna următoare"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Luna anterioară",
-      "nextMonth": "Luna următoare",
       "balanceTrend": "Evoluția soldului",
       "selectedDay": "Ziua selectată",
       "selectDayHint": "Selectează o zi pentru a vedea activitatea",
@@ -884,7 +884,6 @@
         "save": "Distribuția nu a putut fi salvată. Încearcă din nou."
       }
     },
-    "monthLabel": "Lună",
     "actions": {
       "new": "Buget nou",
       "edit": "Editează",

@@ -44,7 +44,9 @@
       "cancel": "取消",
       "confirm": "确认",
       "save": "保存",
-      "saving": "保存中…"
+      "saving": "保存中…",
+      "previousMonth": "上个月",
+      "nextMonth": "下个月"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "上个月",
-      "nextMonth": "下个月",
       "balanceTrend": "余额趋势",
       "selectedDay": "所选日期",
       "selectDayHint": "选择日期以查看当天活动",
@@ -884,7 +884,6 @@
         "save": "无法保存分配。请重试。"
       }
     },
-    "monthLabel": "月份",
     "actions": {
       "new": "新建预算",
       "edit": "编辑",

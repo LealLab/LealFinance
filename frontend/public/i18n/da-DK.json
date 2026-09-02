@@ -44,7 +44,9 @@
       "cancel": "Annuller",
       "confirm": "Bekræft",
       "save": "Gem",
-      "saving": "Gemmer…"
+      "saving": "Gemmer…",
+      "previousMonth": "Forrige måned",
+      "nextMonth": "Næste måned"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Forrige måned",
-      "nextMonth": "Næste måned",
       "balanceTrend": "Saldoens udvikling",
       "selectedDay": "Valgt dag",
       "selectDayHint": "Vælg en dag for at se dens aktivitet",
@@ -884,7 +884,6 @@
         "save": "Fordelingen kunne ikke gemmes. Prøv igen."
       }
     },
-    "monthLabel": "Måned",
     "actions": {
       "new": "Nyt budget",
       "edit": "Rediger",

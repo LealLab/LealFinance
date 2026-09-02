@@ -1,8 +1,7 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
@@ -23,7 +22,6 @@ import { identityConverter } from '../../domain/calc/aggregations';
 import { effectiveAmount } from '../../domain/calc/conversion';
 import {
   addDays,
-  addMonthsClamped,
   formatIsoDate,
   monthKey,
   parseIsoDate,
@@ -43,6 +41,7 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { MonthSwitcher } from '../../shared/ui/month-switcher/month-switcher';
 import { buildMonthGrid } from './calendar-month';
 import { RecurringRuleFormModal } from './recurring-rule-form-modal';
 import { ALL_COLUMNS, TransactionColumn } from './transaction-columns';
@@ -81,6 +80,7 @@ const SEARCH_DEBOUNCE_MS = 250;
     EmptyState,
     Icon,
     PageHeader,
+    MonthSwitcher,
     ExchangeRateWarning,
     TransactionFilterBar,
     TransactionTable,
@@ -102,7 +102,6 @@ export class Transactions {
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly transloco = inject(TranslocoService);
-  private readonly locale = inject(TranslocoLocaleService);
   private readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly prefs = inject(TransactionViewPrefsService);
 
@@ -250,13 +249,6 @@ export class Transactions {
     };
   });
 
-  protected readonly monthLabel = computed(() =>
-    this.locale.localizeDate(`${this.calendarMonth()}-01`, undefined, {
-      year: 'numeric',
-      month: 'long',
-    }),
-  );
-
   protected readonly monthTxResource = rxResource({
     params: () => this.monthBounds(),
     // ponytail: unbounded - a calendar month has no limit. Add one only if
@@ -365,6 +357,13 @@ export class Transactions {
   });
 
   constructor() {
+    let previousMonth = this.calendarMonth();
+    effect(() => {
+      const month = this.calendarMonth();
+      if (month === previousMonth) return;
+      previousMonth = month;
+      this.selectedDay.set(null);
+    });
     openOnNewParam(() => this.openCreateTx());
   }
 
@@ -431,13 +430,6 @@ export class Transactions {
 
   protected setMode(mode: 'list' | 'calendar'): void {
     this.mode.set(mode);
-  }
-
-  protected stepMonth(delta: number): void {
-    this.calendarMonth.set(
-      monthKey(formatIsoDate(addMonthsClamped(parseIsoDate(`${this.calendarMonth()}-01`), delta))),
-    );
-    this.selectedDay.set(null);
   }
 
   // --- CSV ------------------------------------------------------------

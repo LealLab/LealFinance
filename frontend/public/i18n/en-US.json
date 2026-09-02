@@ -44,7 +44,9 @@
       "cancel": "Cancel",
       "confirm": "Confirm",
       "save": "Save",
-      "saving": "Saving…"
+      "saving": "Saving…",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Previous month",
-      "nextMonth": "Next month",
       "balanceTrend": "Balance trend",
       "selectedDay": "Selected day",
       "selectDayHint": "Select a day to see its activity",
@@ -884,7 +884,6 @@
         "save": "Could not save the distribution. Try again."
       }
     },
-    "monthLabel": "Month",
     "actions": {
       "new": "New budget",
       "edit": "Edit",

@@ -44,7 +44,9 @@
       "cancel": "Zrušit",
       "confirm": "Potvrdit",
       "save": "Uložit",
-      "saving": "Ukládání…"
+      "saving": "Ukládání…",
+      "previousMonth": "Předchozí měsíc",
+      "nextMonth": "Následující měsíc"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Předchozí měsíc",
-      "nextMonth": "Následující měsíc",
       "balanceTrend": "Vývoj zůstatku",
       "selectedDay": "Vybraný den",
       "selectDayHint": "Vyberte den a zobrazte jeho aktivitu",
@@ -884,7 +884,6 @@
         "save": "Rozdělení se nepodařilo uložit. Zkuste to znovu."
       }
     },
-    "monthLabel": "Měsíc",
     "actions": {
       "new": "Nový rozpočet",
       "edit": "Upravit",

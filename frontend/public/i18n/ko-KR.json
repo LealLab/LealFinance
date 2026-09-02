@@ -44,7 +44,9 @@
       "cancel": "취소",
       "confirm": "확인",
       "save": "저장",
-      "saving": "저장 중…"
+      "saving": "저장 중…",
+      "previousMonth": "이전 달",
+      "nextMonth": "다음 달"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "이전 달",
-      "nextMonth": "다음 달",
       "balanceTrend": "잔액 추이",
       "selectedDay": "선택한 날짜",
       "selectDayHint": "활동을 보려면 날짜를 선택하세요",
@@ -884,7 +884,6 @@
         "save": "배분 내역을 저장하지 못했습니다. 다시 시도하세요."
       }
     },
-    "monthLabel": "월",
     "actions": {
       "new": "예산 추가",
       "edit": "수정",

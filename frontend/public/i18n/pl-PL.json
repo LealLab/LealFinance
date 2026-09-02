@@ -44,7 +44,9 @@
       "cancel": "Anuluj",
       "confirm": "Potwierdź",
       "save": "Zapisz",
-      "saving": "Zapisywanie…"
+      "saving": "Zapisywanie…",
+      "previousMonth": "Poprzedni miesiąc",
+      "nextMonth": "Następny miesiąc"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Poprzedni miesiąc",
-      "nextMonth": "Następny miesiąc",
       "balanceTrend": "Trend salda",
       "selectedDay": "Wybrany dzień",
       "selectDayHint": "Wybierz dzień, aby zobaczyć jego aktywność",
@@ -884,7 +884,6 @@
         "save": "Nie udało się zapisać podziału. Spróbuj ponownie."
       }
     },
-    "monthLabel": "Miesiąc",
     "actions": {
       "new": "Nowy budżet",
       "edit": "Edytuj",

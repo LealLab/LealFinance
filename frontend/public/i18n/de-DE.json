@@ -44,7 +44,9 @@
       "cancel": "Abbrechen",
       "confirm": "Bestätigen",
       "save": "Speichern",
-      "saving": "Wird gespeichert…"
+      "saving": "Wird gespeichert…",
+      "previousMonth": "Vorheriger Monat",
+      "nextMonth": "Nächster Monat"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Vorheriger Monat",
-      "nextMonth": "Nächster Monat",
       "balanceTrend": "Kontostandverlauf",
       "selectedDay": "Ausgewählter Tag",
       "selectDayHint": "Wähle einen Tag aus, um seine Aktivitäten zu sehen",
@@ -884,7 +884,6 @@
         "save": "Die Verteilung konnte nicht gespeichert werden. Versuchen Sie es erneut."
       }
     },
-    "monthLabel": "Monat",
     "actions": {
       "new": "Neues Budget",
       "edit": "Bearbeiten",

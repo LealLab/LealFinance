@@ -44,7 +44,9 @@
       "cancel": "キャンセル",
       "confirm": "確認",
       "save": "保存",
-      "saving": "保存中…"
+      "saving": "保存中…",
+      "previousMonth": "前月",
+      "nextMonth": "次月"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "前月",
-      "nextMonth": "次月",
       "balanceTrend": "残高の推移",
       "selectedDay": "選択した日",
       "selectDayHint": "日付を選択してアクティビティを表示",
@@ -884,7 +884,6 @@
         "save": "配分を保存できませんでした。もう一度お試しください。"
       }
     },
-    "monthLabel": "月",
     "actions": {
       "new": "新しい予算",
       "edit": "編集",

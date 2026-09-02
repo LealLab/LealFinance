@@ -1,14 +1,10 @@
 <div *transloco="let t">
   <app-page-header [title]="t('budgets.title')" [description]="t('budgets.description')">
-    <label class="flex items-center gap-2 text-sm text-content-muted">
-      <span class="sr-only">{{ t('budgets.monthLabel') }}</span>
-      <input
-        type="month"
-        class="form-input mt-0"
-        [value]="selectedMonth()"
-        (change)="onMonthChange($any($event.target).value)"
-      />
-    </label>
+    <app-month-switcher
+      [(month)]="selectedMonth"
+      [prevLabel]="t('common.actions.previousMonth')"
+      [nextLabel]="t('common.actions.nextMonth')"
+    />
     <button appButton variant="primary" type="button" (click)="openCreate()">
       <app-icon name="plus" [size]="16" />
       {{ t('budgets.actions.new') }}

@@ -44,7 +44,9 @@
       "cancel": "إلغاء",
       "confirm": "تأكيد",
       "save": "حفظ",
-      "saving": "جارٍ الحفظ…"
+      "saving": "جارٍ الحفظ…",
+      "previousMonth": "الشهر السابق",
+      "nextMonth": "الشهر التالي"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "الشهر السابق",
-      "nextMonth": "الشهر التالي",
       "balanceTrend": "اتجاه الرصيد",
       "selectedDay": "اليوم المحدد",
       "selectDayHint": "حدد يومًا لعرض نشاطه",
@@ -884,7 +884,6 @@
         "save": "تعذّر حفظ التوزيع. حاول مرة أخرى."
       }
     },
-    "monthLabel": "الشهر",
     "actions": {
       "new": "ميزانية جديدة",
       "edit": "تعديل",

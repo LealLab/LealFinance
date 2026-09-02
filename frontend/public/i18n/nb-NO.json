@@ -44,7 +44,9 @@
       "cancel": "Avbryt",
       "confirm": "Bekreft",
       "save": "Lagre",
-      "saving": "Lagrer…"
+      "saving": "Lagrer…",
+      "previousMonth": "Forrige måned",
+      "nextMonth": "Neste måned"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Forrige måned",
-      "nextMonth": "Neste måned",
       "balanceTrend": "Saldoens utvikling",
       "selectedDay": "Valgt dag",
       "selectDayHint": "Velg en dag for å se aktiviteten",
@@ -884,7 +884,6 @@
         "save": "Fordelingen kunne ikke lagres. Prøv igjen."
       }
     },
-    "monthLabel": "Måned",
     "actions": {
       "new": "Nytt budsjett",
       "edit": "Rediger",

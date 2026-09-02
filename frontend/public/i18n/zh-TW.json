@@ -44,7 +44,9 @@
       "cancel": "取消",
       "confirm": "確認",
       "save": "儲存",
-      "saving": "儲存中…"
+      "saving": "儲存中…",
+      "previousMonth": "上個月",
+      "nextMonth": "下個月"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "上個月",
-      "nextMonth": "下個月",
       "balanceTrend": "餘額趨勢",
       "selectedDay": "選取的日期",
       "selectDayHint": "選取日期以查看當天活動",
@@ -884,7 +884,6 @@
         "save": "無法儲存分配，請再試一次。"
       }
     },
-    "monthLabel": "月份",
     "actions": {
       "new": "新增預算",
       "edit": "編輯",

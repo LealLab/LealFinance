@@ -44,7 +44,9 @@
       "cancel": "Hủy",
       "confirm": "Xác nhận",
       "save": "Lưu",
-      "saving": "Đang lưu…"
+      "saving": "Đang lưu…",
+      "previousMonth": "Tháng trước",
+      "nextMonth": "Tháng sau"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Tháng trước",
-      "nextMonth": "Tháng sau",
       "balanceTrend": "Xu hướng số dư",
       "selectedDay": "Ngày đã chọn",
       "selectDayHint": "Chọn một ngày để xem hoạt động",
@@ -884,7 +884,6 @@
         "save": "Không thể lưu phân bổ. Vui lòng thử lại."
       }
     },
-    "monthLabel": "Tháng",
     "actions": {
       "new": "Ngân sách mới",
       "edit": "Chỉnh sửa",

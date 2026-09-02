@@ -44,7 +44,9 @@
       "cancel": "İptal",
       "confirm": "Onayla",
       "save": "Kaydet",
-      "saving": "Kaydediliyor…"
+      "saving": "Kaydediliyor…",
+      "previousMonth": "Önceki ay",
+      "nextMonth": "Sonraki ay"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Önceki ay",
-      "nextMonth": "Sonraki ay",
       "balanceTrend": "Bakiye eğilimi",
       "selectedDay": "Seçilen gün",
       "selectDayHint": "Etkinliğini görmek için bir gün seçin",
@@ -884,7 +884,6 @@
         "save": "Dağılım kaydedilemedi. Tekrar deneyin."
       }
     },
-    "monthLabel": "Ay",
     "actions": {
       "new": "Yeni bütçe",
       "edit": "Düzenle",

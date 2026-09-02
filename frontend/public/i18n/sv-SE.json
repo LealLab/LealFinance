@@ -44,7 +44,9 @@
       "cancel": "Avbryt",
       "confirm": "Bekräfta",
       "save": "Spara",
-      "saving": "Sparar…"
+      "saving": "Sparar…",
+      "previousMonth": "Föregående månad",
+      "nextMonth": "Nästa månad"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Föregående månad",
-      "nextMonth": "Nästa månad",
       "balanceTrend": "Saldoutveckling",
       "selectedDay": "Vald dag",
       "selectDayHint": "Välj en dag för att se dess aktivitet",
@@ -884,7 +884,6 @@
         "save": "Det gick inte att spara fördelningen. Försök igen."
       }
     },
-    "monthLabel": "Månad",
     "actions": {
       "new": "Ny budget",
       "edit": "Redigera",

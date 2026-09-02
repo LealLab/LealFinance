@@ -44,7 +44,9 @@
       "cancel": "Annuler",
       "confirm": "Confirmer",
       "save": "Enregistrer",
-      "saving": "Enregistrement…"
+      "saving": "Enregistrement…",
+      "previousMonth": "Mois précédent",
+      "nextMonth": "Mois suivant"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Mois précédent",
-      "nextMonth": "Mois suivant",
       "balanceTrend": "Évolution du solde",
       "selectedDay": "Jour sélectionné",
       "selectDayHint": "Sélectionnez un jour pour voir son activité",
@@ -884,7 +884,6 @@
         "save": "Impossible d’enregistrer la répartition. Réessayez."
       }
     },
-    "monthLabel": "Mois",
     "actions": {
       "new": "Nouveau budget",
       "edit": "Modifier",

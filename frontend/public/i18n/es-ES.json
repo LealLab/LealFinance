@@ -44,7 +44,9 @@
       "cancel": "Cancelar",
       "confirm": "Confirmar",
       "save": "Guardar",
-      "saving": "Guardando…"
+      "saving": "Guardando…",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Mes anterior",
-      "nextMonth": "Mes siguiente",
       "balanceTrend": "Tendencia del saldo",
       "selectedDay": "Día seleccionado",
       "selectDayHint": "Selecciona un día para ver su actividad",
@@ -884,7 +884,6 @@
         "save": "No se ha podido guardar la distribución. Inténtalo de nuevo."
       }
     },
-    "monthLabel": "Mes",
     "actions": {
       "new": "Nuevo presupuesto",
       "edit": "Editar",

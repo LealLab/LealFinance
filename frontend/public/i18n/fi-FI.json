@@ -44,7 +44,9 @@
       "cancel": "Peruuta",
       "confirm": "Vahvista",
       "save": "Tallenna",
-      "saving": "Tallennetaan…"
+      "saving": "Tallennetaan…",
+      "previousMonth": "Edellinen kuukausi",
+      "nextMonth": "Seuraava kuukausi"
     }
   },
   "icons": {
@@ -691,8 +693,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Edellinen kuukausi",
-      "nextMonth": "Seuraava kuukausi",
       "balanceTrend": "Saldon kehitys",
       "selectedDay": "Valittu päivä",
       "selectDayHint": "Valitse päivä nähdäksesi sen tapahtumat",
@@ -884,7 +884,6 @@
         "save": "Jakauman tallentaminen epäonnistui. Yritä uudelleen."
       }
     },
-    "monthLabel": "Kuukausi",
     "actions": {
       "new": "Uusi budjetti",
       "edit": "Muokkaa",
