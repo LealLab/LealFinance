@@ -45,21 +45,6 @@
           }
         </select>
       </label>
-      <label>
-        <span class="form-label">{{ t('settings.appearance.language') }}</span>
-        <select
-          class="form-input"
-          formControlName="locale"
-          (change)="setLocale($any($event.target).value)"
-        >
-          @for (lang of availableLangs; track lang) {
-            <option
-              [value]="lang"
-              [textContent]="t('layout.languageSwitcher.options.' + lang)"
-            ></option>
-          }
-        </select>
-      </label>
       @if (errorCode(); as code) {
         <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }
@@ -70,9 +55,12 @@
     <a class="mt-5 block text-sm text-accent hover:underline" routerLink="/login">
       {{ t('auth.register.backToLogin') }}
     </a>
-    <div class="mt-6 flex flex-col items-stretch gap-2 border-t border-border pt-4">
+    <div class="mt-6 flex flex-col gap-3 border-t border-border pt-4">
       <app-language-select />
-      <app-theme-toggle />
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-content-muted">{{ t('settings.appearance.theme') }}</span>
+        <app-theme-toggle />
+      </div>
     </div>
   </section>
 </main>

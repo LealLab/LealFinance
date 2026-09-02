@@ -6,7 +6,6 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { CurrencyMetadata } from '../../core/identity.models';
-import { PreferenceService } from '../../core/preference.service';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { LanguageSelect } from '../../shared/ui/language-select/language-select';
@@ -30,7 +29,6 @@ import { ThemeToggle } from '../../shared/ui/theme-toggle/theme-toggle';
 export class Register {
   private readonly session = inject(SessionService);
   private readonly identityApi = inject(IdentityApiService);
-  private readonly preferences = inject(PreferenceService);
   private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -41,7 +39,6 @@ export class Register {
   protected readonly needsSetup = signal(false);
   protected readonly currencies = signal<CurrencyMetadata[]>([]);
   protected readonly currencyOptions = computed(() => this.currencies().map((row) => row.code));
-  protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];
   private readonly activeLang = toSignal(this.transloco.langChanges$, {
     initialValue: this.transloco.getActiveLang(),
   });
@@ -80,10 +77,6 @@ export class Register {
       this.form.controls.token.removeValidators(Validators.required);
       this.form.controls.token.updateValueAndValidity();
     });
-  }
-
-  protected setLocale(locale: string): void {
-    this.preferences.setLocale(locale);
   }
 
   protected async submit(): Promise<void> {
