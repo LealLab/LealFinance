@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "कुल संपत्ति",
+      "realBalance": "वास्तविक शेष",
       "income": "मासिक आय",
       "expense": "मासिक खर्च",
       "savingsRate": "बचत दर"
@@ -385,7 +386,10 @@
         "institution": "वित्तीय संस्था",
         "creditLimit": "क्रेडिट सीमा",
         "closingDay": "स्टेटमेंट बंद होने का दिन",
-        "dueDay": "भुगतान की नियत तारीख"
+        "dueDay": "भुगतान की नियत तारीख",
+        "paymentAccount": "भुगतान खाता",
+        "paymentAccountNone": "कोई नहीं (मैन्युअल भुगतान)",
+        "autoPay": "देय तिथि पर बिल का स्वतः भुगतान करें"
       },
       "errors": {
         "required": "यह फ़ील्ड आवश्यक है।",
@@ -411,6 +415,37 @@
         "limit": "सीमा",
         "available": "उपलब्ध",
         "closingDay": "बंद होने का दिन"
+      },
+      "invoices": {
+        "title": "बिल",
+        "loading": "बिल लोड हो रहे हैं…",
+        "total": "कुल",
+        "paid": "भुगतान किया",
+        "pay": "बिल भरें",
+        "payEarly": "पहले भुगतान करें",
+        "previous": "पिछले बिल",
+        "upcoming": "आगामी बिल",
+        "closesOn": "{{date}} को बंद",
+        "dueOn": "{{date}} को देय",
+        "status": {
+          "open": "खुला",
+          "closed": "बंद",
+          "overdue": "अतिदेय",
+          "paid": "भुगतान किया",
+          "projected": "अनुमानित"
+        },
+        "notConfigured": {
+          "title": "बिलिंग चक्र सेट नहीं है",
+          "description": "इस कार्ड के बिल देखने के लिए क्लोज़िंग दिन और देय दिन सेट करें."
+        },
+        "empty": {
+          "title": "अभी कोई बिल नहीं",
+          "description": "कार्ड पर गतिविधि होने पर बिल दिखते हैं."
+        },
+        "payConfirm": {
+          "title": "यह बिल भरें?",
+          "message": "भुगतान खाते से {{amount}} {{currency}} का ट्रांसफ़र दर्ज किया जाएगा."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "इस लेन-देन को दोहराएँ",
         "frequency": "आवृत्ति",
         "interval": "हर",
-        "selectPlaceholder": "चुनें"
+        "selectPlaceholder": "चुनें",
+        "installments": "किस्तें",
+        "installmentsPlaceholder": "जैसे 10"
       },
       "hints": {
         "effectiveRate": "प्रभावी विनिमय दर: {{rate}}",
-        "recurringUnavailableCrossCurrency": "अलग-अलग मुद्राओं वाले लेन-देन के लिए दोहराव उपलब्ध नहीं है - हर बार दर फिर से निर्धारित करनी होगी।"
+        "recurringUnavailableCrossCurrency": "अलग-अलग मुद्राओं वाले लेन-देन के लिए दोहराव उपलब्ध नहीं है - हर बार दर फिर से निर्धारित करनी होगी।",
+        "installments": "क्रेडिट कार्ड पर चार्ज करें और इसे समान मासिक किस्तों में बाँटें, हर बिल पर एक."
       },
       "errors": {
         "invalid": "सहेजने से पहले आवश्यक फ़ील्ड जाँचें।",
-        "convertedAmountRequired": "सहेजने से पहले रूपांतरित राशि दर्ज करें।"
+        "convertedAmountRequired": "सहेजने से पहले रूपांतरित राशि दर्ज करें।",
+        "fieldRequired": "आवश्यक"
       },
       "actions": {
         "cancel": "रद्द करें",

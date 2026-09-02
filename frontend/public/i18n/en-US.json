@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Net worth",
+      "realBalance": "Real balance",
       "income": "Monthly income",
       "expense": "Monthly expenses",
       "savingsRate": "Savings rate"
@@ -385,7 +386,10 @@
         "institution": "Institution",
         "creditLimit": "Credit limit",
         "closingDay": "Closing day",
-        "dueDay": "Due day"
+        "dueDay": "Due day",
+        "paymentAccount": "Payment account",
+        "paymentAccountNone": "None (pay manually)",
+        "autoPay": "Pay the invoice automatically on its due date"
       },
       "errors": {
         "required": "This field is required.",
@@ -411,6 +415,37 @@
         "limit": "Limit",
         "available": "Available",
         "closingDay": "Closing"
+      },
+      "invoices": {
+        "title": "Invoices",
+        "loading": "Loading invoices…",
+        "total": "Total",
+        "paid": "Paid",
+        "pay": "Pay invoice",
+        "payEarly": "Pay early",
+        "previous": "Previous invoices",
+        "upcoming": "Upcoming invoices",
+        "closesOn": "Closes {{date}}",
+        "dueOn": "Due {{date}}",
+        "status": {
+          "open": "Open",
+          "closed": "Closed",
+          "overdue": "Overdue",
+          "paid": "Paid",
+          "projected": "Projected"
+        },
+        "notConfigured": {
+          "title": "Billing cycle not set",
+          "description": "Set the closing day and due day on this card to see its invoices."
+        },
+        "empty": {
+          "title": "No invoices yet",
+          "description": "Invoices appear once this card has activity."
+        },
+        "payConfirm": {
+          "title": "Pay this invoice?",
+          "message": "A transfer of {{amount}} {{currency}} will be recorded from the payment account."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Repeat this transaction",
         "frequency": "Frequency",
         "interval": "Every",
-        "selectPlaceholder": "Select"
+        "selectPlaceholder": "Select",
+        "installments": "Installments",
+        "installmentsPlaceholder": "e.g. 10"
       },
       "hints": {
         "effectiveRate": "Effective rate: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Repeating isn't available for a cross-currency transaction - the rate would need to be set again for every occurrence."
+        "recurringUnavailableCrossCurrency": "Repeating isn't available for a cross-currency transaction - the rate would need to be set again for every occurrence.",
+        "installments": "Charge to a credit card and split it into equal monthly installments, one per invoice."
       },
       "errors": {
         "invalid": "Check the required fields before saving.",
-        "convertedAmountRequired": "Enter the converted amount before saving."
+        "convertedAmountRequired": "Enter the converted amount before saving.",
+        "fieldRequired": "Required"
       },
       "actions": {
         "cancel": "Cancel",

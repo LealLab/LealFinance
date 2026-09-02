@@ -19,6 +19,7 @@ celery_app = Celery(
         "app.workers.tasks.rates",
         "app.workers.tasks.recurring",
         "app.workers.tasks.loans",
+        "app.workers.tasks.cards",
     ],
 )
 
@@ -39,6 +40,12 @@ celery_app.conf.beat_schedule = {
     "post-loan-installments-daily": {
         "task": "app.workers.tasks.loans.post_loan_installments",
         "schedule": crontab(hour=1, minute=30),
+    },
+    # After loans (01:30): a card's invoice may include an auto-posted
+    # recurring charge or loan installment from earlier in the run.
+    "post-card-invoice-payments-daily": {
+        "task": "app.workers.tasks.cards.post_card_invoice_payments",
+        "schedule": crontab(hour=1, minute=45),
     },
     # Every 6h keeps the cache within the provider's hourly update cadence
     # while staying far under the free plan's 1,000 requests/month (one

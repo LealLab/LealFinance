@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Nettovermogen",
+      "realBalance": "Reëel saldo",
       "income": "Inkomsten deze maand",
       "expense": "Uitgaven deze maand",
       "savingsRate": "Spaarpercentage"
@@ -385,7 +386,10 @@
         "institution": "Instelling",
         "creditLimit": "Kredietlimiet",
         "closingDay": "Afsluitdag",
-        "dueDay": "Vervaldag"
+        "dueDay": "Vervaldag",
+        "paymentAccount": "Betaalrekening",
+        "paymentAccountNone": "Geen (handmatig betalen)",
+        "autoPay": "De factuur automatisch op de vervaldag betalen"
       },
       "errors": {
         "required": "Dit veld is verplicht.",
@@ -411,6 +415,37 @@
         "limit": "Limiet",
         "available": "Beschikbaar",
         "closingDay": "Afsluiting"
+      },
+      "invoices": {
+        "title": "Facturen",
+        "loading": "Facturen laden…",
+        "total": "Totaal",
+        "paid": "Betaald",
+        "pay": "Factuur betalen",
+        "payEarly": "Eerder betalen",
+        "previous": "Vorige facturen",
+        "upcoming": "Komende facturen",
+        "closesOn": "Sluit op {{date}}",
+        "dueOn": "Vervalt op {{date}}",
+        "status": {
+          "open": "Open",
+          "closed": "Gesloten",
+          "overdue": "Achterstallig",
+          "paid": "Betaald",
+          "projected": "Verwacht"
+        },
+        "notConfigured": {
+          "title": "Factuurcyclus niet ingesteld",
+          "description": "Stel de afsluitdag en vervaldag van deze kaart in om de facturen te zien."
+        },
+        "empty": {
+          "title": "Nog geen facturen",
+          "description": "Facturen verschijnen zodra de kaart activiteit heeft."
+        },
+        "payConfirm": {
+          "title": "Deze factuur betalen?",
+          "message": "Er wordt een overboeking van {{amount}} {{currency}} vanaf de betaalrekening geregistreerd."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Deze transactie herhalen",
         "frequency": "Frequentie",
         "interval": "Elke",
-        "selectPlaceholder": "Selecteer"
+        "selectPlaceholder": "Selecteer",
+        "installments": "Termijnen",
+        "installmentsPlaceholder": "bijv. 10"
       },
       "hints": {
         "effectiveRate": "Effectieve koers: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Herhaling is niet beschikbaar voor een transactie met verschillende valuta – de koers zou voor elke keer opnieuw moeten worden ingesteld."
+        "recurringUnavailableCrossCurrency": "Herhaling is niet beschikbaar voor een transactie met verschillende valuta – de koers zou voor elke keer opnieuw moeten worden ingesteld.",
+        "installments": "Boek op een creditcard en verdeel in gelijke maandtermijnen, één per factuur."
       },
       "errors": {
         "invalid": "Controleer de verplichte velden voordat je opslaat.",
-        "convertedAmountRequired": "Voer het omgerekende bedrag in voordat je opslaat."
+        "convertedAmountRequired": "Voer het omgerekende bedrag in voordat je opslaat.",
+        "fieldRequired": "Verplicht"
       },
       "actions": {
         "cancel": "Annuleren",

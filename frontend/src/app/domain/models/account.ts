@@ -30,6 +30,14 @@ export interface Account {
   closingDay?: number;
   /** credit_card only: day of month payment is due (1-31). */
   dueDay?: number;
+  /** credit_card only: the account whose money pays this card's invoices. */
+  paymentAccountId?: string;
+  /**
+   * credit_card only: pay each invoice automatically on its due date from
+   * `paymentAccountId`. The backend always sends it (default false);
+   * optional here so non-card fixtures needn't carry it.
+   */
+  autoPay?: boolean;
 }
 
 /**

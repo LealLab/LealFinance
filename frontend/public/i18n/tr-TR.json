@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Net varlık",
+      "realBalance": "Gerçek bakiye",
       "income": "Aylık gelir",
       "expense": "Aylık gider",
       "savingsRate": "Tasarruf oranı"
@@ -385,7 +386,10 @@
         "institution": "Finans kuruluşu",
         "creditLimit": "Kredi limiti",
         "closingDay": "Hesap kesim günü",
-        "dueDay": "Son ödeme günü"
+        "dueDay": "Son ödeme günü",
+        "paymentAccount": "Ödeme hesabı",
+        "paymentAccountNone": "Yok (elle öde)",
+        "autoPay": "Ekstreyi son ödeme gününde otomatik öde"
       },
       "errors": {
         "required": "Bu alan zorunludur.",
@@ -411,6 +415,37 @@
         "limit": "Limit",
         "available": "Kullanılabilir",
         "closingDay": "Hesap kesimi"
+      },
+      "invoices": {
+        "title": "Ekstreler",
+        "loading": "Ekstreler yükleniyor…",
+        "total": "Toplam",
+        "paid": "Ödendi",
+        "pay": "Ekstreyi öde",
+        "payEarly": "Erken öde",
+        "previous": "Önceki ekstreler",
+        "upcoming": "Yaklaşan ekstreler",
+        "closesOn": "Kapanış {{date}}",
+        "dueOn": "Son ödeme {{date}}",
+        "status": {
+          "open": "Açık",
+          "closed": "Kapandı",
+          "overdue": "Gecikmiş",
+          "paid": "Ödendi",
+          "projected": "Öngörülen"
+        },
+        "notConfigured": {
+          "title": "Hesap dönemi ayarlanmadı",
+          "description": "Ekstreleri görmek için bu kartın kesim ve son ödeme gününü ayarlayın."
+        },
+        "empty": {
+          "title": "Henüz ekstre yok",
+          "description": "Kartta hareket oldukça ekstreler görünür."
+        },
+        "payConfirm": {
+          "title": "Bu ekstre ödensin mi?",
+          "message": "Ödeme hesabından {{amount}} {{currency}} tutarında bir transfer kaydedilecek."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Bu işlemi tekrarla",
         "frequency": "Sıklık",
         "interval": "Her",
-        "selectPlaceholder": "Seçin"
+        "selectPlaceholder": "Seçin",
+        "installments": "Taksitler",
+        "installmentsPlaceholder": "örn. 10"
       },
       "hints": {
         "effectiveRate": "Geçerli kur: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Para birimleri farklı olan işlemler tekrarlanamaz; her yineleme için kurun yeniden belirlenmesi gerekir."
+        "recurringUnavailableCrossCurrency": "Para birimleri farklı olan işlemler tekrarlanamaz; her yineleme için kurun yeniden belirlenmesi gerekir.",
+        "installments": "Bir kredi kartına yazın ve her ekstreye bir tane gelecek şekilde eşit aylık taksitlere bölün."
       },
       "errors": {
         "invalid": "Kaydetmeden önce zorunlu alanları kontrol edin.",
-        "convertedAmountRequired": "Kaydetmeden önce dönüştürülen tutarı girin."
+        "convertedAmountRequired": "Kaydetmeden önce dönüştürülen tutarı girin.",
+        "fieldRequired": "Zorunlu"
       },
       "actions": {
         "cancel": "İptal",

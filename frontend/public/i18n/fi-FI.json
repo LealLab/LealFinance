@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Nettovarallisuus",
+      "realBalance": "Todellinen saldo",
       "income": "Kuukauden tulot",
       "expense": "Kuukauden menot",
       "savingsRate": "Säästöaste"
@@ -385,7 +386,10 @@
         "institution": "Rahoituslaitos",
         "creditLimit": "Luottoraja",
         "closingDay": "Katkaisupäivä",
-        "dueDay": "Eräpäivä"
+        "dueDay": "Eräpäivä",
+        "paymentAccount": "Maksutili",
+        "paymentAccountNone": "Ei mitään (maksa manuaalisesti)",
+        "autoPay": "Maksa lasku automaattisesti eräpäivänä"
       },
       "errors": {
         "required": "Tämä kenttä on pakollinen.",
@@ -411,6 +415,37 @@
         "limit": "Luottoraja",
         "available": "Käytettävissä",
         "closingDay": "Katkaisupäivä"
+      },
+      "invoices": {
+        "title": "Laskut",
+        "loading": "Ladataan laskuja…",
+        "total": "Yhteensä",
+        "paid": "Maksettu",
+        "pay": "Maksa lasku",
+        "payEarly": "Maksa etuajassa",
+        "previous": "Aiemmat laskut",
+        "upcoming": "Tulevat laskut",
+        "closesOn": "Sulkeutuu {{date}}",
+        "dueOn": "Eräpäivä {{date}}",
+        "status": {
+          "open": "Avoin",
+          "closed": "Suljettu",
+          "overdue": "Erääntynyt",
+          "paid": "Maksettu",
+          "projected": "Ennuste"
+        },
+        "notConfigured": {
+          "title": "Laskutusjaksoa ei ole asetettu",
+          "description": "Aseta kortin sulkeutumispäivä ja eräpäivä nähdäksesi sen laskut."
+        },
+        "empty": {
+          "title": "Ei vielä laskuja",
+          "description": "Laskut näkyvät, kun kortilla on tapahtumia."
+        },
+        "payConfirm": {
+          "title": "Maksetaanko tämä lasku?",
+          "message": "Maksutililtä kirjataan {{amount}} {{currency}} suuruinen siirto."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Toista tämä tapahtuma",
         "frequency": "Toistuvuus",
         "interval": "Joka",
-        "selectPlaceholder": "Valitse"
+        "selectPlaceholder": "Valitse",
+        "installments": "Erät",
+        "installmentsPlaceholder": "esim. 10"
       },
       "hints": {
         "effectiveRate": "Todellinen kurssi: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Eri valuuttojen välistä tapahtumaa ei voi toistaa, koska kurssi pitäisi määrittää uudelleen jokaiselle tapahtumakerralle."
+        "recurringUnavailableCrossCurrency": "Eri valuuttojen välistä tapahtumaa ei voi toistaa, koska kurssi pitäisi määrittää uudelleen jokaiselle tapahtumakerralle.",
+        "installments": "Veloita luottokortilta ja jaa yhtä suuriin kuukausieriin, yksi kutakin laskua kohti."
       },
       "errors": {
         "invalid": "Tarkista pakolliset kentät ennen tallentamista.",
-        "convertedAmountRequired": "Anna muunnettu summa ennen tallentamista."
+        "convertedAmountRequired": "Anna muunnettu summa ennen tallentamista.",
+        "fieldRequired": "Pakollinen"
       },
       "actions": {
         "cancel": "Peruuta",

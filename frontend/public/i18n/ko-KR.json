@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "순자산",
+      "realBalance": "실제 잔액",
       "income": "월 수입",
       "expense": "월 지출",
       "savingsRate": "저축률"
@@ -385,7 +386,10 @@
         "institution": "금융기관",
         "creditLimit": "신용 한도",
         "closingDay": "결제일",
-        "dueDay": "납부일"
+        "dueDay": "납부일",
+        "paymentAccount": "결제 계좌",
+        "paymentAccountNone": "없음 (수동 결제)",
+        "autoPay": "결제일에 청구서를 자동으로 결제"
       },
       "errors": {
         "required": "필수 입력 항목입니다.",
@@ -411,6 +415,37 @@
         "limit": "한도",
         "available": "사용 가능 금액",
         "closingDay": "결제일"
+      },
+      "invoices": {
+        "title": "청구서",
+        "loading": "청구서 불러오는 중…",
+        "total": "합계",
+        "paid": "결제됨",
+        "pay": "청구서 결제",
+        "payEarly": "미리 결제",
+        "previous": "이전 청구서",
+        "upcoming": "예정 청구서",
+        "closesOn": "{{date}} 마감",
+        "dueOn": "{{date}} 결제일",
+        "status": {
+          "open": "진행 중",
+          "closed": "마감",
+          "overdue": "연체",
+          "paid": "결제 완료",
+          "projected": "예상"
+        },
+        "notConfigured": {
+          "title": "청구 주기가 설정되지 않음",
+          "description": "이 카드의 마감일과 결제일을 설정하면 청구서가 표시됩니다."
+        },
+        "empty": {
+          "title": "아직 청구서가 없습니다",
+          "description": "카드 사용 내역이 있으면 청구서가 표시됩니다."
+        },
+        "payConfirm": {
+          "title": "이 청구서를 결제할까요?",
+          "message": "결제 계좌에서 {{amount}} {{currency}} 이체가 기록됩니다."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "이 거래를 반복 거래로 설정",
         "frequency": "반복 주기",
         "interval": "간격",
-        "selectPlaceholder": "선택"
+        "selectPlaceholder": "선택",
+        "installments": "할부",
+        "installmentsPlaceholder": "예: 10"
       },
       "hints": {
         "effectiveRate": "적용 환율: {{rate}}",
-        "recurringUnavailableCrossCurrency": "다중 통화 거래에는 반복 설정을 사용할 수 없습니다. 매번 환율을 다시 설정해야 합니다."
+        "recurringUnavailableCrossCurrency": "다중 통화 거래에는 반복 설정을 사용할 수 없습니다. 매번 환율을 다시 설정해야 합니다.",
+        "installments": "신용카드로 결제하고 매달 균등 할부로 나눕니다(청구서당 1회)."
       },
       "errors": {
         "invalid": "저장하기 전에 필수 입력 항목을 확인하세요.",
-        "convertedAmountRequired": "저장하기 전에 환산 금액을 입력하세요."
+        "convertedAmountRequired": "저장하기 전에 환산 금액을 입력하세요.",
+        "fieldRequired": "필수"
       },
       "actions": {
         "cancel": "취소",

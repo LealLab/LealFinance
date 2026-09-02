@@ -1,4 +1,5 @@
 import type { Account, AccountBalance } from '../../domain/models/account';
+import type { CardInvoice, CardInvoicePayment } from '../../domain/models/card-invoice';
 import type {
   AgentOAuthStart,
   AgentProviderLink,
@@ -56,6 +57,8 @@ import type {
   BudgetAllocationWire,
   BudgetInputWire,
   BudgetWire,
+  CardInvoicePaymentWire,
+  CardInvoiceWire,
   CategorizationRuleInputWire,
   CategorizationRulePatchWire,
   CategorizationRuleWire,
@@ -122,6 +125,8 @@ export const mapAccount = (wire: AccountWire): Account => ({
   creditLimit: wire.credit_limit ?? undefined,
   closingDay: wire.closing_day ?? undefined,
   dueDay: wire.due_day ?? undefined,
+  paymentAccountId: wire.payment_account_id ?? undefined,
+  autoPay: wire.auto_pay,
 });
 
 export const mapAccountCreate = (input: Omit<Account, 'id'>): AccountInputWire => ({
@@ -134,6 +139,8 @@ export const mapAccountCreate = (input: Omit<Account, 'id'>): AccountInputWire =
   credit_limit: nullable(input.creditLimit),
   closing_day: nullable(input.closingDay),
   due_day: nullable(input.dueDay),
+  payment_account_id: nullable(input.paymentAccountId),
+  auto_pay: input.autoPay ?? false,
 });
 
 export function mapAccountPatch(input: Partial<Omit<Account, 'id'>>): AccountPatchWire {
@@ -147,6 +154,8 @@ export function mapAccountPatch(input: Partial<Omit<Account, 'id'>>): AccountPat
   if (has(input, 'creditLimit')) wire.credit_limit = nullable(input.creditLimit);
   if (has(input, 'closingDay')) wire.closing_day = nullable(input.closingDay);
   if (has(input, 'dueDay')) wire.due_day = nullable(input.dueDay);
+  if (has(input, 'paymentAccountId')) wire.payment_account_id = nullable(input.paymentAccountId);
+  if (has(input, 'autoPay')) wire.auto_pay = nullable(input.autoPay);
   return wire;
 }
 
@@ -154,6 +163,25 @@ export const mapAccountBalance = (wire: AccountBalanceWire): AccountBalance => (
   accountId: wire.account_id,
   currency: wire.currency,
   balance: wire.balance,
+});
+
+export const mapCardInvoice = (wire: CardInvoiceWire): CardInvoice => ({
+  closeDate: wire.close_date,
+  dueDate: wire.due_date,
+  periodStart: wire.period_start,
+  periodEnd: wire.period_end,
+  currency: wire.currency,
+  total: wire.total,
+  paid: wire.paid,
+  remaining: wire.remaining,
+  status: wire.status,
+});
+
+export const mapCardInvoicePayment = (input: CardInvoicePayment): CardInvoicePaymentWire => ({
+  account_id: nullable(input.accountId),
+  date: nullable(input.date),
+  amount: nullable(input.amount),
+  description: nullable(input.description),
 });
 
 export const mapInstitution = (wire: InstitutionWire): Institution => ({
@@ -299,9 +327,15 @@ export const mapTransaction = (wire: TransactionWire): Transaction => ({
   notes: wire.notes ?? undefined,
   recurringRuleId: wire.recurring_rule_id ?? undefined,
   loanId: wire.loan_id ?? undefined,
+  cardInvoiceCloseDate: wire.card_invoice_close_date ?? undefined,
+  installmentGroupId: wire.installment_group_id ?? undefined,
+  installmentNumber: wire.installment_number ?? undefined,
+  installmentCount: wire.installment_count ?? undefined,
   conversion: wire.conversion ? mapConversion(wire.conversion) : undefined,
 });
-export const mapTransactionCreate = (input: Omit<Transaction, 'id'>): TransactionInputWire => ({
+export const mapTransactionCreate = (
+  input: Omit<Transaction, 'id'> & { installments?: number },
+): TransactionInputWire => ({
   type: input.type,
   date: input.date,
   amount: input.amount,
@@ -313,7 +347,9 @@ export const mapTransactionCreate = (input: Omit<Transaction, 'id'>): Transactio
   notes: nullable(input.notes),
   recurring_rule_id: nullable(input.recurringRuleId),
   loan_id: nullable(input.loanId),
+  card_invoice_close_date: nullable(input.cardInvoiceCloseDate),
   conversion: input.conversion ? mapConversionInput(input.conversion) : null,
+  ...(input.installments ? { installments: input.installments } : {}),
 });
 export function mapTransactionPatch(input: Partial<Omit<Transaction, 'id'>>): TransactionPatchWire {
   const wire: TransactionPatchWire = {};
@@ -328,6 +364,8 @@ export function mapTransactionPatch(input: Partial<Omit<Transaction, 'id'>>): Tr
   if (has(input, 'notes')) wire.notes = nullable(input.notes);
   if (has(input, 'recurringRuleId')) wire.recurring_rule_id = nullable(input.recurringRuleId);
   if (has(input, 'loanId')) wire.loan_id = nullable(input.loanId);
+  if (has(input, 'cardInvoiceCloseDate'))
+    wire.card_invoice_close_date = nullable(input.cardInvoiceCloseDate);
   if (has(input, 'conversion'))
     wire.conversion = input.conversion ? mapConversionInput(input.conversion) : null;
   return wire;

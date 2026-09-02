@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Patrimônio líquido",
+      "realBalance": "Saldo real",
       "income": "Receita do mês",
       "expense": "Despesa do mês",
       "savingsRate": "Taxa de poupança"
@@ -385,7 +386,10 @@
         "institution": "Instituição",
         "creditLimit": "Limite do cartão",
         "closingDay": "Dia de fechamento",
-        "dueDay": "Dia de vencimento"
+        "dueDay": "Dia de vencimento",
+        "paymentAccount": "Conta pagadora",
+        "paymentAccountNone": "Nenhuma (pagar manualmente)",
+        "autoPay": "Pagar a fatura automaticamente no vencimento"
       },
       "errors": {
         "required": "Este campo é obrigatório.",
@@ -411,6 +415,37 @@
         "limit": "Limite",
         "available": "Disponível",
         "closingDay": "Fechamento"
+      },
+      "invoices": {
+        "title": "Faturas",
+        "loading": "Carregando faturas…",
+        "total": "Total",
+        "paid": "Pago",
+        "pay": "Pagar fatura",
+        "payEarly": "Adiantar pagamento",
+        "previous": "Faturas anteriores",
+        "upcoming": "Faturas futuras",
+        "closesOn": "Fecha em {{date}}",
+        "dueOn": "Vence em {{date}}",
+        "status": {
+          "open": "Aberta",
+          "closed": "Fechada",
+          "overdue": "Vencida",
+          "paid": "Paga",
+          "projected": "Prevista"
+        },
+        "notConfigured": {
+          "title": "Ciclo de faturamento não definido",
+          "description": "Defina o dia de fechamento e o de vencimento deste cartão para ver as faturas."
+        },
+        "empty": {
+          "title": "Nenhuma fatura ainda",
+          "description": "As faturas aparecem quando o cartão tiver movimentação."
+        },
+        "payConfirm": {
+          "title": "Pagar esta fatura?",
+          "message": "Será lançada uma transferência de {{amount}} {{currency}} a partir da conta pagadora."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Repetir esta transação",
         "frequency": "Frequência",
         "interval": "A cada",
-        "selectPlaceholder": "Selecione"
+        "selectPlaceholder": "Selecione",
+        "installments": "Parcelas",
+        "installmentsPlaceholder": "ex.: 10"
       },
       "hints": {
         "effectiveRate": "Taxa efetiva: {{rate}}",
-        "recurringUnavailableCrossCurrency": "A repetição não está disponível para uma transação em outra moeda - a taxa precisaria ser definida novamente a cada ocorrência."
+        "recurringUnavailableCrossCurrency": "A repetição não está disponível para uma transação em outra moeda - a taxa precisaria ser definida novamente a cada ocorrência.",
+        "installments": "Lance no cartão de crédito e divida em parcelas mensais iguais, uma por fatura."
       },
       "errors": {
         "invalid": "Verifique os campos obrigatórios antes de salvar.",
-        "convertedAmountRequired": "Informe o valor convertido antes de salvar."
+        "convertedAmountRequired": "Informe o valor convertido antes de salvar.",
+        "fieldRequired": "Obrigatório"
       },
       "actions": {
         "cancel": "Cancelar",

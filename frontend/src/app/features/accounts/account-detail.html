@@ -82,6 +82,10 @@
         </app-card>
       }
 
+      @if (account.type === 'credit_card') {
+        <app-card-invoices [accountId]="id()" [card]="account" (paid)="onInvoicePaid()" />
+      }
+
       <app-card [padded]="false">
         <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
           {{ t('accounts.detail.history') }}

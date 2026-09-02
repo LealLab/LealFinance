@@ -17,11 +17,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.agents.events import ToolSpec
 from app.core.errors import ValidationAppError
 from app.schemas.account import AccountBalanceRead, AccountCreate, AccountRead
+from app.schemas.card_invoice import CardInvoiceRead
 from app.schemas.category import CategoryRead
 from app.schemas.institution import InstitutionCreate, InstitutionRead
 from app.schemas.transaction import TransactionCreate, TransactionRead, TransactionType
 from app.services import accounts as accounts_service
 from app.services import analytics
+from app.services import card_invoices as card_invoices_service
 from app.services import categories as categories_service
 from app.services import institutions as institutions_service
 from app.services import transactions as transactions_service
@@ -77,6 +79,12 @@ class _DateRangeArgs(_ToolArgs):
 
 class _BudgetStatusArgs(_ToolArgs):
     month: str
+
+
+class _ListCardInvoicesArgs(_ToolArgs):
+    account_id: UUID
+    months_back: int = Field(default=6, ge=0, le=36)
+    months_ahead: int = Field(default=6, ge=0, le=36)
 
 
 def _validate[ModelT: BaseModel](model: type[ModelT], args: dict[str, Any]) -> ModelT:
@@ -256,6 +264,24 @@ async def _create_account(db: AsyncSession, user_id: UUID, args: dict[str, Any])
     return AccountRead.model_validate(account, from_attributes=True).model_dump(mode="json")
 
 
+async def _list_card_invoices(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> list[dict[str, Any]]:
+    payload = _validate(_ListCardInvoicesArgs, args)
+    invoices = await card_invoices_service.list_invoices(
+        db,
+        user_id,
+        payload.account_id,
+        today=date.today(),
+        months_back=payload.months_back,
+        months_ahead=payload.months_ahead,
+    )
+    return [
+        CardInvoiceRead.model_validate(invoice, from_attributes=True).model_dump(mode="json")
+        for invoice in invoices
+    ]
+
+
 @dataclass(frozen=True, slots=True)
 class ToolDef:
     name: str
@@ -370,6 +396,24 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_budget_status,
+    ),
+    ToolDef(
+        name="list_card_invoices",
+        description=(
+            "List a credit-card account's invoices (faturas): past, current, and projected "
+            "future billing cycles with their totals, due dates, and payment status."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "account_id": {"type": "string", "format": "uuid"},
+                "months_back": {"type": "integer", "minimum": 0, "maximum": 36, "default": 6},
+                "months_ahead": {"type": "integer", "minimum": 0, "maximum": 36, "default": 6},
+            },
+            "required": ["account_id"],
+            "additionalProperties": False,
+        },
+        run=_list_card_invoices,
     ),
     ToolDef(
         name="create_transaction",

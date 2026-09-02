@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "純資産",
+      "realBalance": "実質残高",
       "income": "月間収入",
       "expense": "月間支出",
       "savingsRate": "貯蓄率"
@@ -385,7 +386,10 @@
         "institution": "金融機関",
         "creditLimit": "クレジット限度額",
         "closingDay": "締め日",
-        "dueDay": "支払日"
+        "dueDay": "支払日",
+        "paymentAccount": "支払い口座",
+        "paymentAccountNone": "なし（手動で支払う）",
+        "autoPay": "支払期日に請求を自動で支払う"
       },
       "errors": {
         "required": "この項目は必須です。",
@@ -411,6 +415,37 @@
         "limit": "限度額",
         "available": "利用可能額",
         "closingDay": "締め日"
+      },
+      "invoices": {
+        "title": "請求",
+        "loading": "請求を読み込み中…",
+        "total": "合計",
+        "paid": "支払済み",
+        "pay": "請求を支払う",
+        "payEarly": "早めに支払う",
+        "previous": "過去の請求",
+        "upcoming": "今後の請求",
+        "closesOn": "{{date}} 締め",
+        "dueOn": "{{date}} 期日",
+        "status": {
+          "open": "未確定",
+          "closed": "確定",
+          "overdue": "延滞",
+          "paid": "支払済み",
+          "projected": "見込み"
+        },
+        "notConfigured": {
+          "title": "請求サイクルが未設定です",
+          "description": "このカードの締め日と支払期日を設定すると請求が表示されます。"
+        },
+        "empty": {
+          "title": "まだ請求はありません",
+          "description": "カードに利用があると請求が表示されます。"
+        },
+        "payConfirm": {
+          "title": "この請求を支払いますか？",
+          "message": "支払い口座から {{amount}} {{currency}} の振替を記録します。"
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "この取引を繰り返す",
         "frequency": "頻度",
         "interval": "毎",
-        "selectPlaceholder": "選択"
+        "selectPlaceholder": "選択",
+        "installments": "分割回数",
+        "installmentsPlaceholder": "例: 10"
       },
       "hints": {
         "effectiveRate": "実効為替レート：{{rate}}",
-        "recurringUnavailableCrossCurrency": "通貨が異なる取引では定期設定を利用できません。発生するたびに為替レートを再設定する必要があります。"
+        "recurringUnavailableCrossCurrency": "通貨が異なる取引では定期設定を利用できません。発生するたびに為替レートを再設定する必要があります。",
+        "installments": "クレジットカードで支払い、毎月均等の分割払いにします（請求ごとに1回）。"
       },
       "errors": {
         "invalid": "保存する前に必須項目を確認してください。",
-        "convertedAmountRequired": "保存する前に換算後の金額を入力してください。"
+        "convertedAmountRequired": "保存する前に換算後の金額を入力してください。",
+        "fieldRequired": "必須"
       },
       "actions": {
         "cancel": "キャンセル",

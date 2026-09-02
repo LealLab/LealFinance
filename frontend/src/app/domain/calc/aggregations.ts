@@ -138,6 +138,33 @@ export function netWorth(
 }
 
 /**
+ * Sum server-computed cash-position contributions into the display currency.
+ * Unlike `netWorth`, configured card rows already replace the raw card
+ * balance with only invoices due by today; the currency and archive rules
+ * stay identical.
+ */
+export function realBalance(
+  accounts: readonly Account[],
+  contributions: readonly AccountBalance[],
+  targetCurrency: string,
+  convert: CurrencyConverter = identityConverter
+): Money {
+  const contributionByAccountId = new Map(contributions.map((b) => [b.accountId, b]));
+  return sum(
+    accounts
+      .filter((account) => !account.archived)
+      .map((account) => {
+        const contribution = contributionByAccountId.get(account.id);
+        return convert(
+          contribution ? money(contribution.balance, contribution.currency) : zero(account.currency),
+          targetCurrency
+        );
+      }),
+    targetCurrency
+  );
+}
+
+/**
  * Builds a `CurrencyConverter` from a batch of fetched rates (one
  * `ExchangeRate` per currency, keyed by `baseCode`) - the shape every
  * screen gets back from forking a `ExchangeRateRepository.getRate()` call

@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "صافي الثروة",
+      "realBalance": "الرصيد الفعلي",
       "income": "الدخل الشهري",
       "expense": "المصروفات الشهرية",
       "savingsRate": "معدل الادخار"
@@ -385,7 +386,10 @@
         "institution": "الجهة المالية",
         "creditLimit": "الحد الائتماني",
         "closingDay": "يوم الإقفال",
-        "dueDay": "يوم الاستحقاق"
+        "dueDay": "يوم الاستحقاق",
+        "paymentAccount": "حساب السداد",
+        "paymentAccountNone": "لا شيء (الدفع يدويًا)",
+        "autoPay": "دفع الفاتورة تلقائيًا في تاريخ الاستحقاق"
       },
       "errors": {
         "required": "هذا الحقل مطلوب.",
@@ -411,6 +415,37 @@
         "limit": "الحد",
         "available": "المتاح",
         "closingDay": "الإقفال"
+      },
+      "invoices": {
+        "title": "الفواتير",
+        "loading": "جارٍ تحميل الفواتير…",
+        "total": "الإجمالي",
+        "paid": "المدفوع",
+        "pay": "دفع الفاتورة",
+        "payEarly": "الدفع مبكرًا",
+        "previous": "الفواتير السابقة",
+        "upcoming": "الفواتير القادمة",
+        "closesOn": "تُغلق في {{date}}",
+        "dueOn": "تستحق في {{date}}",
+        "status": {
+          "open": "مفتوحة",
+          "closed": "مغلقة",
+          "overdue": "متأخرة",
+          "paid": "مدفوعة",
+          "projected": "متوقعة"
+        },
+        "notConfigured": {
+          "title": "لم تُحدَّد دورة الفوترة",
+          "description": "حدِّد يوم الإغلاق ويوم الاستحقاق لهذه البطاقة لعرض فواتيرها."
+        },
+        "empty": {
+          "title": "لا فواتير بعد",
+          "description": "تظهر الفواتير عند وجود حركة على البطاقة."
+        },
+        "payConfirm": {
+          "title": "دفع هذه الفاتورة؟",
+          "message": "سيتم تسجيل تحويل بقيمة {{amount}} {{currency}} من حساب السداد."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "تكرار هذه المعاملة",
         "frequency": "التكرار",
         "interval": "كل",
-        "selectPlaceholder": "اختيار"
+        "selectPlaceholder": "اختيار",
+        "installments": "الأقساط",
+        "installmentsPlaceholder": "مثال: 10"
       },
       "hints": {
         "effectiveRate": "سعر الصرف الفعلي: {{rate}}",
-        "recurringUnavailableCrossCurrency": "لا يتوفر التكرار للمعاملة متعددة العملات — يجب تحديد السعر من جديد لكل تكرار."
+        "recurringUnavailableCrossCurrency": "لا يتوفر التكرار للمعاملة متعددة العملات — يجب تحديد السعر من جديد لكل تكرار.",
+        "installments": "قيِّده على بطاقة ائتمان وقسِّمه إلى أقساط شهرية متساوية، قسط لكل فاتورة."
       },
       "errors": {
         "invalid": "تحقّق من الحقول المطلوبة قبل الحفظ.",
-        "convertedAmountRequired": "أدخل المبلغ بعد التحويل قبل الحفظ."
+        "convertedAmountRequired": "أدخل المبلغ بعد التحويل قبل الحفظ.",
+        "fieldRequired": "مطلوب"
       },
       "actions": {
         "cancel": "إلغاء",

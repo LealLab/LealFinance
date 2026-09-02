@@ -11,6 +11,7 @@ import {
   CurrencyConverter,
   groupByMonth,
   netWorth,
+  realBalance,
   ratesCover,
   totalsFor
 } from './aggregations';
@@ -233,6 +234,47 @@ describe('netWorth', () => {
     const convert: CurrencyConverter = () => money('520', 'BRL');
 
     expect(netWorth(accounts, balances, 'BRL', convert)).toEqual(money('520', 'BRL'));
+  });
+});
+
+describe('realBalance', () => {
+  function account(overrides: Partial<Account> = {}): Account {
+    return {
+      id: 'acc',
+      name: 'Account',
+      type: 'checking',
+      currency: 'BRL',
+      openingBalance: '0',
+      archived: false,
+      ...overrides
+    };
+  }
+
+  it('sums the server-provided cash-position contributions and excludes archived accounts', () => {
+    const accounts = [
+      account({ id: 'checking' }),
+      account({ id: 'card', type: 'credit_card' }),
+      account({ id: 'old', archived: true })
+    ];
+    const contributions = [
+      { accountId: 'checking', currency: 'BRL', balance: '1000' },
+      { accountId: 'card', currency: 'BRL', balance: '-250' },
+      { accountId: 'old', currency: 'BRL', balance: '900' }
+    ];
+
+    expect(realBalance(accounts, contributions, 'BRL')).toEqual(money('750', 'BRL'));
+  });
+
+  it('converts each contribution before summing', () => {
+    const accounts = [account({ id: 'brl' }), account({ id: 'usd', currency: 'USD' })];
+    const contributions = [
+      { accountId: 'brl', currency: 'BRL', balance: '1000' },
+      { accountId: 'usd', currency: 'USD', balance: '100' }
+    ];
+    const convert: CurrencyConverter = (amount, target) =>
+      amount.currency === target ? amount : money('520', target);
+
+    expect(realBalance(accounts, contributions, 'BRL', convert)).toEqual(money('1520', 'BRL'));
   });
 });
 

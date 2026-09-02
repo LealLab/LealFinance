@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Nettoformue",
+      "realBalance": "Reell saldo",
       "income": "Månedlige inntekter",
       "expense": "Månedlige utgifter",
       "savingsRate": "Sparegrad"
@@ -385,7 +386,10 @@
         "institution": "Institusjon",
         "creditLimit": "Kredittgrense",
         "closingDay": "Avslutningsdag",
-        "dueDay": "Forfallsdag"
+        "dueDay": "Forfallsdag",
+        "paymentAccount": "Betalingskonto",
+        "paymentAccountNone": "Ingen (betal manuelt)",
+        "autoPay": "Betal fakturaen automatisk på forfallsdatoen"
       },
       "errors": {
         "required": "Dette feltet er obligatorisk.",
@@ -411,6 +415,37 @@
         "limit": "Grense",
         "available": "Tilgjengelig",
         "closingDay": "Avslutning"
+      },
+      "invoices": {
+        "title": "Fakturaer",
+        "loading": "Laster fakturaer…",
+        "total": "Totalt",
+        "paid": "Betalt",
+        "pay": "Betal faktura",
+        "payEarly": "Betal tidlig",
+        "previous": "Tidligere fakturaer",
+        "upcoming": "Kommende fakturaer",
+        "closesOn": "Stenger {{date}}",
+        "dueOn": "Forfaller {{date}}",
+        "status": {
+          "open": "Åpen",
+          "closed": "Stengt",
+          "overdue": "Forfalt",
+          "paid": "Betalt",
+          "projected": "Beregnet"
+        },
+        "notConfigured": {
+          "title": "Faktureringssyklus er ikke angitt",
+          "description": "Angi kortets sluttdag og forfallsdag for å se fakturaene."
+        },
+        "empty": {
+          "title": "Ingen fakturaer ennå",
+          "description": "Fakturaer vises når kortet har aktivitet."
+        },
+        "payConfirm": {
+          "title": "Betale denne fakturaen?",
+          "message": "En overføring på {{amount}} {{currency}} bokføres fra betalingskontoen."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Gjenta denne transaksjonen",
         "frequency": "Frekvens",
         "interval": "Hver",
-        "selectPlaceholder": "Velg"
+        "selectPlaceholder": "Velg",
+        "installments": "Avdrag",
+        "installmentsPlaceholder": "f.eks. 10"
       },
       "hints": {
         "effectiveRate": "Effektiv valutakurs: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Gjentakelse er ikke tilgjengelig for en transaksjon i flere valutaer – kursen må angis på nytt for hver forekomst."
+        "recurringUnavailableCrossCurrency": "Gjentakelse er ikke tilgjengelig for en transaksjon i flere valutaer – kursen må angis på nytt for hver forekomst.",
+        "installments": "Belast et kredittkort og del opp i like store månedlige avdrag, ett per faktura."
       },
       "errors": {
         "invalid": "Kontroller de obligatoriske feltene før du lagrer.",
-        "convertedAmountRequired": "Skriv inn det omregnede beløpet før du lagrer."
+        "convertedAmountRequired": "Skriv inn det omregnede beløpet før du lagrer.",
+        "fieldRequired": "Påkrevd"
       },
       "actions": {
         "cancel": "Avbryt",

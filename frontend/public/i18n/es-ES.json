@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Patrimonio neto",
+      "realBalance": "Saldo real",
       "income": "Ingresos mensuales",
       "expense": "Gastos mensuales",
       "savingsRate": "Porcentaje de ahorro"
@@ -385,7 +386,10 @@
         "institution": "Entidad",
         "creditLimit": "Límite de crédito",
         "closingDay": "Día de cierre",
-        "dueDay": "Día de vencimiento"
+        "dueDay": "Día de vencimiento",
+        "paymentAccount": "Cuenta de pago",
+        "paymentAccountNone": "Ninguna (pagar manualmente)",
+        "autoPay": "Pagar la factura automáticamente en su vencimiento"
       },
       "errors": {
         "required": "Este campo es obligatorio.",
@@ -411,6 +415,37 @@
         "limit": "Límite",
         "available": "Disponible",
         "closingDay": "Cierre"
+      },
+      "invoices": {
+        "title": "Facturas",
+        "loading": "Cargando facturas…",
+        "total": "Total",
+        "paid": "Pagado",
+        "pay": "Pagar factura",
+        "payEarly": "Adelantar pago",
+        "previous": "Facturas anteriores",
+        "upcoming": "Próximas facturas",
+        "closesOn": "Cierra el {{date}}",
+        "dueOn": "Vence el {{date}}",
+        "status": {
+          "open": "Abierta",
+          "closed": "Cerrada",
+          "overdue": "Vencida",
+          "paid": "Pagada",
+          "projected": "Prevista"
+        },
+        "notConfigured": {
+          "title": "Ciclo de facturación no configurado",
+          "description": "Configura el día de cierre y el de vencimiento de esta tarjeta para ver sus facturas."
+        },
+        "empty": {
+          "title": "Aún no hay facturas",
+          "description": "Las facturas aparecen cuando la tarjeta tiene actividad."
+        },
+        "payConfirm": {
+          "title": "¿Pagar esta factura?",
+          "message": "Se registrará una transferencia de {{amount}} {{currency}} desde la cuenta de pago."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Repetir este movimiento",
         "frequency": "Frecuencia",
         "interval": "Cada",
-        "selectPlaceholder": "Seleccionar"
+        "selectPlaceholder": "Seleccionar",
+        "installments": "Cuotas",
+        "installmentsPlaceholder": "p. ej. 10"
       },
       "hints": {
         "effectiveRate": "Tipo de cambio efectivo: {{rate}}",
-        "recurringUnavailableCrossCurrency": "No se puede repetir un movimiento entre distintas monedas: habría que establecer el tipo de cambio de nuevo en cada ocurrencia."
+        "recurringUnavailableCrossCurrency": "No se puede repetir un movimiento entre distintas monedas: habría que establecer el tipo de cambio de nuevo en cada ocurrencia.",
+        "installments": "Cárgalo a una tarjeta de crédito y divídelo en cuotas mensuales iguales, una por factura."
       },
       "errors": {
         "invalid": "Comprueba los campos obligatorios antes de guardar.",
-        "convertedAmountRequired": "Introduce el importe convertido antes de guardar."
+        "convertedAmountRequired": "Introduce el importe convertido antes de guardar.",
+        "fieldRequired": "Obligatorio"
       },
       "actions": {
         "cancel": "Cancelar",

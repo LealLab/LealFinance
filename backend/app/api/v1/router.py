@@ -9,6 +9,7 @@ from app.api.v1 import (
     backups,
     budget_plan,
     budgets,
+    card_invoices,
     categories,
     categorization_rules,
     category_groups,
@@ -32,6 +33,7 @@ api_v1_router.include_router(backups.router)
 api_v1_router.include_router(agents.router)
 api_v1_router.include_router(institutions.router)
 api_v1_router.include_router(accounts.router)
+api_v1_router.include_router(card_invoices.router)
 api_v1_router.include_router(category_groups.router)
 api_v1_router.include_router(categories.router)
 api_v1_router.include_router(budgets.router)

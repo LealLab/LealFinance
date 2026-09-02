@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Kekayaan bersih",
+      "realBalance": "Saldo riil",
       "income": "Pendapatan bulanan",
       "expense": "Pengeluaran bulanan",
       "savingsRate": "Tingkat tabungan"
@@ -385,7 +386,10 @@
         "institution": "Lembaga keuangan",
         "creditLimit": "Limit kredit",
         "closingDay": "Hari penutupan",
-        "dueDay": "Hari jatuh tempo"
+        "dueDay": "Hari jatuh tempo",
+        "paymentAccount": "Rekening pembayaran",
+        "paymentAccountNone": "Tidak ada (bayar manual)",
+        "autoPay": "Bayar tagihan otomatis pada tanggal jatuh tempo"
       },
       "errors": {
         "required": "Kolom ini wajib diisi.",
@@ -411,6 +415,37 @@
         "limit": "Limit",
         "available": "Tersedia",
         "closingDay": "Penutupan"
+      },
+      "invoices": {
+        "title": "Tagihan",
+        "loading": "Memuat tagihan…",
+        "total": "Total",
+        "paid": "Dibayar",
+        "pay": "Bayar tagihan",
+        "payEarly": "Bayar lebih awal",
+        "previous": "Tagihan sebelumnya",
+        "upcoming": "Tagihan mendatang",
+        "closesOn": "Tutup {{date}}",
+        "dueOn": "Jatuh tempo {{date}}",
+        "status": {
+          "open": "Terbuka",
+          "closed": "Ditutup",
+          "overdue": "Terlambat",
+          "paid": "Lunas",
+          "projected": "Perkiraan"
+        },
+        "notConfigured": {
+          "title": "Siklus penagihan belum diatur",
+          "description": "Atur tanggal tutup dan jatuh tempo kartu ini untuk melihat tagihannya."
+        },
+        "empty": {
+          "title": "Belum ada tagihan",
+          "description": "Tagihan muncul setelah kartu memiliki transaksi."
+        },
+        "payConfirm": {
+          "title": "Bayar tagihan ini?",
+          "message": "Transfer sebesar {{amount}} {{currency}} akan dicatat dari rekening pembayaran."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Ulangi transaksi ini",
         "frequency": "Frekuensi",
         "interval": "Setiap",
-        "selectPlaceholder": "Pilih"
+        "selectPlaceholder": "Pilih",
+        "installments": "Cicilan",
+        "installmentsPlaceholder": "mis. 10"
       },
       "hints": {
         "effectiveRate": "Kurs efektif: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Transaksi dengan mata uang berbeda tidak dapat diulang — kurs perlu ditetapkan lagi untuk setiap kejadian."
+        "recurringUnavailableCrossCurrency": "Transaksi dengan mata uang berbeda tidak dapat diulang — kurs perlu ditetapkan lagi untuk setiap kejadian.",
+        "installments": "Bebankan ke kartu kredit dan bagi menjadi cicilan bulanan yang sama, satu per tagihan."
       },
       "errors": {
         "invalid": "Periksa kolom wajib sebelum menyimpan.",
-        "convertedAmountRequired": "Masukkan jumlah hasil konversi sebelum menyimpan."
+        "convertedAmountRequired": "Masukkan jumlah hasil konversi sebelum menyimpan.",
+        "fieldRequired": "Wajib diisi"
       },
       "actions": {
         "cancel": "Batal",

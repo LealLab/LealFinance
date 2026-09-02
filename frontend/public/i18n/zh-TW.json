@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "淨資產",
+      "realBalance": "實際餘額",
       "income": "每月收入",
       "expense": "每月支出",
       "savingsRate": "儲蓄率"
@@ -385,7 +386,10 @@
         "institution": "金融機構",
         "creditLimit": "信用額度",
         "closingDay": "結帳日",
-        "dueDay": "繳款到期日"
+        "dueDay": "繳款到期日",
+        "paymentAccount": "還款帳戶",
+        "paymentAccountNone": "無（手動還款）",
+        "autoPay": "於到期日自動支付帳單"
       },
       "errors": {
         "required": "此欄位為必填。",
@@ -411,6 +415,37 @@
         "limit": "額度",
         "available": "可用額度",
         "closingDay": "結帳日"
+      },
+      "invoices": {
+        "title": "帳單",
+        "loading": "正在載入帳單…",
+        "total": "合計",
+        "paid": "已付",
+        "pay": "支付帳單",
+        "payEarly": "提前還款",
+        "previous": "歷史帳單",
+        "upcoming": "未來帳單",
+        "closesOn": "{{date}} 結帳",
+        "dueOn": "{{date}} 到期",
+        "status": {
+          "open": "未結帳",
+          "closed": "已結帳",
+          "overdue": "逾期",
+          "paid": "已付清",
+          "projected": "預估"
+        },
+        "notConfigured": {
+          "title": "未設定帳單週期",
+          "description": "設定這張卡的結帳日與到期日即可查看帳單。"
+        },
+        "empty": {
+          "title": "尚無帳單",
+          "description": "這張卡有交易後會顯示帳單。"
+        },
+        "payConfirm": {
+          "title": "支付這張帳單？",
+          "message": "將從還款帳戶記錄一筆 {{amount}} {{currency}} 的轉帳。"
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "重複此交易",
         "frequency": "頻率",
         "interval": "每",
-        "selectPlaceholder": "選取"
+        "selectPlaceholder": "選取",
+        "installments": "分期",
+        "installmentsPlaceholder": "例如 10"
       },
       "hints": {
         "effectiveRate": "實際匯率：{{rate}}",
-        "recurringUnavailableCrossCurrency": "跨貨幣交易無法重複，因為每次發生時都需要重新設定匯率。"
+        "recurringUnavailableCrossCurrency": "跨貨幣交易無法重複，因為每次發生時都需要重新設定匯率。",
+        "installments": "記入信用卡並按等額月付分期，每期一張帳單。"
       },
       "errors": {
         "invalid": "儲存前請檢查必填欄位。",
-        "convertedAmountRequired": "儲存前請輸入換算後金額。"
+        "convertedAmountRequired": "儲存前請輸入換算後金額。",
+        "fieldRequired": "必填"
       },
       "actions": {
         "cancel": "取消",

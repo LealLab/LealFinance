@@ -1,4 +1,5 @@
 import type { AccountType } from '../../domain/models/account';
+import type { CardInvoiceStatus } from '../../domain/models/card-invoice';
 import type {
   AgentAuthMode,
   AgentCredentialSource,
@@ -32,6 +33,8 @@ export interface AccountWire {
   credit_limit: string | null;
   closing_day: number | null;
   due_day: number | null;
+  payment_account_id: string | null;
+  auto_pay: boolean;
 }
 
 export type AccountInputWire = Omit<AccountWire, 'id'>;
@@ -116,10 +119,21 @@ export interface TransactionWire {
   notes: string | null;
   recurring_rule_id: string | null;
   loan_id: string | null;
+  card_invoice_close_date: string | null;
+  installment_group_id: string | null;
+  installment_number: number | null;
+  installment_count: number | null;
   conversion: ConversionWire | null;
 }
-export type TransactionInputWire = Omit<TransactionWire, 'id'>;
-export type TransactionPatchWire = NullablePatch<TransactionInputWire>;
+/** `installments` is create-only - it makes the backend write N rows. The
+ * stored installment_* fields are read-only, so they're dropped from the
+ * input/patch shapes. */
+type TransactionWritableWire = Omit<
+  TransactionWire,
+  'id' | 'installment_group_id' | 'installment_number' | 'installment_count'
+>;
+export type TransactionInputWire = TransactionWritableWire & { installments?: number };
+export type TransactionPatchWire = NullablePatch<TransactionWritableWire>;
 
 export interface LoanWire {
   id: string;
@@ -189,6 +203,25 @@ export interface AccountBalanceWire {
   account_id: string;
   currency: string;
   balance: string;
+}
+
+export interface CardInvoiceWire {
+  close_date: string;
+  due_date: string;
+  period_start: string;
+  period_end: string;
+  currency: string;
+  total: string;
+  paid: string;
+  remaining: string;
+  status: CardInvoiceStatus;
+}
+
+export interface CardInvoicePaymentWire {
+  account_id: string | null;
+  date: string | null;
+  amount: string | null;
+  description: string | null;
 }
 
 export interface RecurringTemplateWire {

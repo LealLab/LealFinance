@@ -59,6 +59,10 @@ class TransactionRead(BaseModel):
     notes: str | None
     recurring_rule_id: UUID | None
     loan_id: UUID | None
+    card_invoice_close_date: date_type | None
+    installment_group_id: UUID | None
+    installment_number: int | None
+    installment_count: int | None
     conversion: ConversionRead | None
 
     @field_serializer("amount")
@@ -78,6 +82,15 @@ class TransactionCreate(BaseModel):
     notes: str | None = None
     recurring_rule_id: UUID | None = None
     loan_id: UUID | None = None
+    # Provenance for a credit-card invoice payment - set by
+    # app/services/card_invoices.py::pay_invoice, same as loan_id is set by
+    # the loan payment flow. Only valid on a transfer into a credit_card
+    # account (enforced in transactions.build_transaction).
+    card_invoice_close_date: date_type | None = None
+    # Split this expense into N equal monthly installments on a credit
+    # card. Handled by transactions.create_transaction, which writes N rows
+    # (see ck_transactions_installment_shape); not accepted anywhere else.
+    installments: int | None = Field(default=None, ge=2, le=99)
     conversion: ConversionInput | None = None
 
 
@@ -109,4 +122,5 @@ class TransactionUpdate(PatchModel):
     notes: str | None = None
     recurring_rule_id: UUID | None = None
     loan_id: UUID | None = None
+    card_invoice_close_date: date_type | None = None
     conversion: ConversionInput | None = None

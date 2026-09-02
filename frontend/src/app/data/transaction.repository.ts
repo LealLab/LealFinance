@@ -1,6 +1,13 @@
 import { Observable } from 'rxjs';
 import { Page } from '../core/api-client';
-import { Transaction, TransactionType } from '../domain/models/transaction';
+import {
+  Transaction,
+  TransactionInstallmentOptions,
+  TransactionType,
+} from '../domain/models/transaction';
+
+/** A create request: a transaction, plus the optional installment split. */
+export type TransactionCreateInput = Omit<Transaction, 'id'> & TransactionInstallmentOptions;
 
 export type TransactionSort = 'date' | 'description' | 'amount';
 export type SortOrder = 'asc' | 'desc';
@@ -11,6 +18,8 @@ export interface TransactionFilters {
   /** Category group - resolved server-side to that group's categories. */
   groupId?: string;
   institutionId?: string;
+  /** All rows of one installment purchase ("3/10"). */
+  installmentGroupId?: string;
   /** Repeatable - omitted means "every type". */
   types?: readonly TransactionType[];
   dateFrom?: string;
@@ -81,7 +90,7 @@ export abstract class TransactionRepository {
    * count for classical page-number pagination. */
   abstract listPage(filters: TransactionFilters): Observable<Page<Transaction>>;
   abstract get(id: string): Observable<Transaction | undefined>;
-  abstract create(input: Omit<Transaction, 'id'>): Observable<Transaction>;
+  abstract create(input: TransactionCreateInput): Observable<Transaction>;
   abstract update(id: string, changes: Partial<Omit<Transaction, 'id'>>): Observable<Transaction>;
   abstract delete(id: string): Observable<void>;
   /** Atomic server-side delete of every listed transaction; one foreign or

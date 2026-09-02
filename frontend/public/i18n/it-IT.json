@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Patrimonio netto",
+      "realBalance": "Saldo reale",
       "income": "Entrate mensili",
       "expense": "Uscite mensili",
       "savingsRate": "Tasso di risparmio"
@@ -385,7 +386,10 @@
         "institution": "Istituto",
         "creditLimit": "Limite di credito",
         "closingDay": "Giorno di chiusura",
-        "dueDay": "Giorno di scadenza"
+        "dueDay": "Giorno di scadenza",
+        "paymentAccount": "Conto di pagamento",
+        "paymentAccountNone": "Nessuno (pagamento manuale)",
+        "autoPay": "Paga la fattura automaticamente alla scadenza"
       },
       "errors": {
         "required": "Campo obbligatorio.",
@@ -411,6 +415,37 @@
         "limit": "Limite",
         "available": "Disponibile",
         "closingDay": "Chiusura"
+      },
+      "invoices": {
+        "title": "Fatture",
+        "loading": "Caricamento fatture…",
+        "total": "Totale",
+        "paid": "Pagato",
+        "pay": "Paga fattura",
+        "payEarly": "Paga in anticipo",
+        "previous": "Fatture precedenti",
+        "upcoming": "Prossime fatture",
+        "closesOn": "Chiude il {{date}}",
+        "dueOn": "Scade il {{date}}",
+        "status": {
+          "open": "Aperta",
+          "closed": "Chiusa",
+          "overdue": "Scaduta",
+          "paid": "Pagata",
+          "projected": "Prevista"
+        },
+        "notConfigured": {
+          "title": "Ciclo di fatturazione non impostato",
+          "description": "Imposta il giorno di chiusura e di scadenza di questa carta per vedere le fatture."
+        },
+        "empty": {
+          "title": "Ancora nessuna fattura",
+          "description": "Le fatture compaiono quando la carta ha movimenti."
+        },
+        "payConfirm": {
+          "title": "Pagare questa fattura?",
+          "message": "Sarà registrato un bonifico di {{amount}} {{currency}} dal conto di pagamento."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Ripeti questa transazione",
         "frequency": "Frequenza",
         "interval": "Ogni",
-        "selectPlaceholder": "Seleziona"
+        "selectPlaceholder": "Seleziona",
+        "installments": "Rate",
+        "installmentsPlaceholder": "es. 10"
       },
       "hints": {
         "effectiveRate": "Tasso effettivo: {{rate}}",
-        "recurringUnavailableCrossCurrency": "La ripetizione non è disponibile per una transazione in una valuta diversa: il tasso dovrebbe essere impostato di nuovo per ogni occorrenza."
+        "recurringUnavailableCrossCurrency": "La ripetizione non è disponibile per una transazione in una valuta diversa: il tasso dovrebbe essere impostato di nuovo per ogni occorrenza.",
+        "installments": "Addebita su una carta di credito e dividi in rate mensili uguali, una per fattura."
       },
       "errors": {
         "invalid": "Controlla i campi obbligatori prima di salvare.",
-        "convertedAmountRequired": "Inserisci l'importo convertito prima di salvare."
+        "convertedAmountRequired": "Inserisci l'importo convertito prima di salvare.",
+        "fieldRequired": "Obbligatorio"
       },
       "actions": {
         "cancel": "Annulla",

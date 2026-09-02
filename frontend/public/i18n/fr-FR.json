@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Patrimoine net",
+      "realBalance": "Solde réel",
       "income": "Revenus mensuels",
       "expense": "Dépenses mensuelles",
       "savingsRate": "Taux d’épargne"
@@ -385,7 +386,10 @@
         "institution": "Établissement",
         "creditLimit": "Plafond de crédit",
         "closingDay": "Jour de clôture",
-        "dueDay": "Jour d’échéance"
+        "dueDay": "Jour d’échéance",
+        "paymentAccount": "Compte de paiement",
+        "paymentAccountNone": "Aucun (paiement manuel)",
+        "autoPay": "Payer la facture automatiquement à l’échéance"
       },
       "errors": {
         "required": "Ce champ est obligatoire.",
@@ -411,6 +415,37 @@
         "limit": "Plafond",
         "available": "Disponible",
         "closingDay": "Clôture"
+      },
+      "invoices": {
+        "title": "Factures",
+        "loading": "Chargement des factures…",
+        "total": "Total",
+        "paid": "Payé",
+        "pay": "Payer la facture",
+        "payEarly": "Payer en avance",
+        "previous": "Factures précédentes",
+        "upcoming": "Factures à venir",
+        "closesOn": "Clôture le {{date}}",
+        "dueOn": "Échéance le {{date}}",
+        "status": {
+          "open": "Ouverte",
+          "closed": "Clôturée",
+          "overdue": "En retard",
+          "paid": "Payée",
+          "projected": "Prévue"
+        },
+        "notConfigured": {
+          "title": "Cycle de facturation non défini",
+          "description": "Définissez le jour de clôture et l’échéance de cette carte pour voir ses factures."
+        },
+        "empty": {
+          "title": "Pas encore de factures",
+          "description": "Les factures apparaissent dès que la carte a de l’activité."
+        },
+        "payConfirm": {
+          "title": "Payer cette facture ?",
+          "message": "Un virement de {{amount}} {{currency}} sera enregistré depuis le compte de paiement."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Répéter cette opération",
         "frequency": "Fréquence",
         "interval": "Tous les",
-        "selectPlaceholder": "Sélectionner"
+        "selectPlaceholder": "Sélectionner",
+        "installments": "Échéances",
+        "installmentsPlaceholder": "ex. 10"
       },
       "hints": {
         "effectiveRate": "Taux effectif : {{rate}}",
-        "recurringUnavailableCrossCurrency": "La répétition n’est pas disponible pour une opération dans une autre devise — le taux devrait être défini à nouveau pour chaque occurrence."
+        "recurringUnavailableCrossCurrency": "La répétition n’est pas disponible pour une opération dans une autre devise — le taux devrait être défini à nouveau pour chaque occurrence.",
+        "installments": "Débitez une carte de crédit et répartissez en mensualités égales, une par facture."
       },
       "errors": {
         "invalid": "Vérifiez les champs obligatoires avant d’enregistrer.",
-        "convertedAmountRequired": "Saisissez le montant converti avant d’enregistrer."
+        "convertedAmountRequired": "Saisissez le montant converti avant d’enregistrer.",
+        "fieldRequired": "Obligatoire"
       },
       "actions": {
         "cancel": "Annuler",
