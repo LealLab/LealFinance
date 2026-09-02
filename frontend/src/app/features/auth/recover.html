@@ -1,8 +1,4 @@
-<main *transloco="let t" class="auth-page relative">
-  <div class="absolute end-4 top-4 flex items-center gap-1">
-    <app-language-select compact />
-    <app-theme-toggle />
-  </div>
+<main *transloco="let t" class="auth-page">
   <section class="auth-card">
     <div class="mb-6 flex items-center gap-2 text-lg font-semibold">
       <app-logo [size]="30" class="text-accent" />
@@ -55,5 +51,9 @@
         {{ t('auth.register.backToLogin') }}
       </a>
     }
+    <div class="mt-6 flex flex-col items-stretch gap-2 border-t border-border pt-4">
+      <app-language-select />
+      <app-theme-toggle />
+    </div>
   </section>
 </main>
