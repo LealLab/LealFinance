@@ -132,7 +132,9 @@ function buildAccounts(): Account[] {
       archived: false,
       creditLimit: '8000',
       closingDay: 20,
-      dueDay: 27
+      dueDay: 27,
+      paymentAccountId: ACCOUNT_IDS.checking,
+      autoPay: true
     },
     {
       // Deliberately a currency the mock exchange-rate repository doesn't

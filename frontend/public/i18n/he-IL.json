@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "הון נטו",
+      "realBalance": "יתרה אמיתית",
       "income": "הכנסה חודשית",
       "expense": "הוצאות חודשיות",
       "savingsRate": "שיעור החיסכון"
@@ -385,7 +386,10 @@
         "institution": "מוסד פיננסי",
         "creditLimit": "מסגרת אשראי",
         "closingDay": "יום סגירת החיוב",
-        "dueDay": "יום התשלום"
+        "dueDay": "יום התשלום",
+        "paymentAccount": "חשבון לתשלום",
+        "paymentAccountNone": "ללא (תשלום ידני)",
+        "autoPay": "לשלם את החשבונית אוטומטית במועד הפירעון"
       },
       "errors": {
         "required": "שדה חובה.",
@@ -411,6 +415,37 @@
         "limit": "מסגרת",
         "available": "זמין",
         "closingDay": "סגירה"
+      },
+      "invoices": {
+        "title": "חשבוניות",
+        "loading": "טוען חשבוניות…",
+        "total": "סך הכול",
+        "paid": "שולם",
+        "pay": "תשלום חשבונית",
+        "payEarly": "תשלום מוקדם",
+        "previous": "חשבוניות קודמות",
+        "upcoming": "חשבוניות קרובות",
+        "closesOn": "נסגרת ב-{{date}}",
+        "dueOn": "לתשלום עד {{date}}",
+        "status": {
+          "open": "פתוחה",
+          "closed": "סגורה",
+          "overdue": "באיחור",
+          "paid": "שולמה",
+          "projected": "צפויה"
+        },
+        "notConfigured": {
+          "title": "מחזור החיוב לא הוגדר",
+          "description": "הגדירו את יום הסגירה ויום הפירעון של הכרטיס כדי לראות את החשבוניות."
+        },
+        "empty": {
+          "title": "אין עדיין חשבוניות",
+          "description": "חשבוניות מופיעות כשיש פעילות בכרטיס."
+        },
+        "payConfirm": {
+          "title": "לשלם את החשבונית הזו?",
+          "message": "תירשם העברה של {{amount}} {{currency}} מחשבון התשלום."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "חזרה על תנועה זו",
         "frequency": "תדירות",
         "interval": "כל",
-        "selectPlaceholder": "בחירה"
+        "selectPlaceholder": "בחירה",
+        "installments": "תשלומים",
+        "installmentsPlaceholder": "לדוגמה 10"
       },
       "hints": {
         "effectiveRate": "שער אפקטיבי: {{rate}}",
-        "recurringUnavailableCrossCurrency": "לא ניתן להגדיר תנועה מחזורית במטבעות שונים – יהיה צורך להזין את השער מחדש בכל מופע."
+        "recurringUnavailableCrossCurrency": "לא ניתן להגדיר תנועה מחזורית במטבעות שונים – יהיה צורך להזין את השער מחדש בכל מופע.",
+        "installments": "חייבו כרטיס אשראי ופצלו לתשלומים חודשיים שווים, אחד לכל חשבונית."
       },
       "errors": {
         "invalid": "בדקו את שדות החובה לפני השמירה.",
-        "convertedAmountRequired": "הזינו את הסכום המומר לפני השמירה."
+        "convertedAmountRequired": "הזינו את הסכום המומר לפני השמירה.",
+        "fieldRequired": "שדה חובה"
       },
       "actions": {
         "cancel": "ביטול",

@@ -120,6 +120,27 @@
                 formControlName="dueDay"
               />
             </div>
+
+            <div class="col-span-3">
+              <label class="form-label" for="account-payment-account">
+                {{ t('accounts.form.fields.paymentAccount') }}
+              </label>
+              <select
+                id="account-payment-account"
+                class="form-input"
+                formControlName="paymentAccountId"
+              >
+                <option value="">{{ t('accounts.form.fields.paymentAccountNone') }}</option>
+                @for (option of paymentAccountOptions(); track option.id) {
+                  <option [value]="option.id">{{ option.name }}</option>
+                }
+              </select>
+            </div>
+
+            <label class="col-span-3 flex items-center gap-2 text-sm">
+              <input type="checkbox" formControlName="autoPay" [disabled]="!canAutoPay()" />
+              {{ t('accounts.form.fields.autoPay') }}
+            </label>
           </div>
         }
 

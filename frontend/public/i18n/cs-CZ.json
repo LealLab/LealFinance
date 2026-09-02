@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Čisté jmění",
+      "realBalance": "Skutečný zůstatek",
       "income": "Měsíční příjmy",
       "expense": "Měsíční výdaje",
       "savingsRate": "Míra úspor"
@@ -385,7 +386,10 @@
         "institution": "Instituce",
         "creditLimit": "Úvěrový limit",
         "closingDay": "Den uzávěrky",
-        "dueDay": "Den splatnosti"
+        "dueDay": "Den splatnosti",
+        "paymentAccount": "Účet pro platbu",
+        "paymentAccountNone": "Žádný (platit ručně)",
+        "autoPay": "Zaplatit vyúčtování automaticky v den splatnosti"
       },
       "errors": {
         "required": "Toto pole je povinné.",
@@ -411,6 +415,37 @@
         "limit": "Úvěrový limit",
         "available": "K dispozici",
         "closingDay": "Uzávěrka"
+      },
+      "invoices": {
+        "title": "Vyúčtování",
+        "loading": "Načítání vyúčtování…",
+        "total": "Celkem",
+        "paid": "Zaplaceno",
+        "pay": "Zaplatit vyúčtování",
+        "payEarly": "Zaplatit dříve",
+        "previous": "Předchozí vyúčtování",
+        "upcoming": "Nadcházející vyúčtování",
+        "closesOn": "Uzávěrka {{date}}",
+        "dueOn": "Splatnost {{date}}",
+        "status": {
+          "open": "Otevřené",
+          "closed": "Uzavřené",
+          "overdue": "Po splatnosti",
+          "paid": "Zaplacené",
+          "projected": "Předpokládané"
+        },
+        "notConfigured": {
+          "title": "Zúčtovací cyklus není nastaven",
+          "description": "Nastavte den uzávěrky a splatnosti této karty, abyste viděli její vyúčtování."
+        },
+        "empty": {
+          "title": "Zatím žádné vyúčtování",
+          "description": "Vyúčtování se zobrazí, jakmile má karta pohyby."
+        },
+        "payConfirm": {
+          "title": "Zaplatit toto vyúčtování?",
+          "message": "Z účtu pro platbu bude zaznamenán převod {{amount}} {{currency}}."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Opakovat tuto transakci",
         "frequency": "Frekvence",
         "interval": "Každých",
-        "selectPlaceholder": "Vyberte"
+        "selectPlaceholder": "Vyberte",
+        "installments": "Splátky",
+        "installmentsPlaceholder": "např. 10"
       },
       "hints": {
         "effectiveRate": "Efektivní kurz: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Opakování není dostupné pro transakce mezi různými měnami – kurz by bylo nutné nastavit znovu pro každý výskyt."
+        "recurringUnavailableCrossCurrency": "Opakování není dostupné pro transakce mezi různými měnami – kurz by bylo nutné nastavit znovu pro každý výskyt.",
+        "installments": "Zaúčtujte na kreditní kartu a rozdělte na stejné měsíční splátky, jednu na každé vyúčtování."
       },
       "errors": {
         "invalid": "Před uložením zkontrolujte povinná pole.",
-        "convertedAmountRequired": "Před uložením zadejte převedenou částku."
+        "convertedAmountRequired": "Před uložením zadejte převedenou částku.",
+        "fieldRequired": "Povinné"
       },
       "actions": {
         "cancel": "Zrušit",

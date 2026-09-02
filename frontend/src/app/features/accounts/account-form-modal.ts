@@ -59,6 +59,9 @@ export class AccountFormModal {
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutions.list(),
   });
+  protected readonly accountsResource = rxResource({
+    stream: () => this.accounts.list(),
+  });
   protected readonly institutionFormOpen = signal(false);
 
   protected readonly saving = signal(false);
@@ -73,12 +76,34 @@ export class AccountFormModal {
     creditLimit: ['', decimalAmountValidator()],
     closingDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)]),
     dueDay: this.fb.control<number | null>(null, [Validators.min(1), Validators.max(31)]),
+    paymentAccountId: [''],
+    autoPay: [false],
   });
 
   private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
     initialValue: this.form.controls.type.value,
   });
+  private readonly selectedCurrency = toSignal(this.form.controls.currency.valueChanges, {
+    initialValue: this.form.controls.currency.value,
+  });
+  private readonly selectedPaymentAccount = toSignal(
+    this.form.controls.paymentAccountId.valueChanges,
+    { initialValue: this.form.controls.paymentAccountId.value },
+  );
   protected readonly isCreditCard = computed(() => this.selectedType() === 'credit_card');
+
+  /** Accounts that can pay this card's invoices: the user's own, not a
+   * card, not archived, same currency, and not the card being edited. */
+  protected readonly paymentAccountOptions = computed(() => {
+    const currency = this.selectedCurrency();
+    const selfId = this.account()?.id;
+    return (this.accountsResource.value() ?? []).filter(
+      (a) => a.type !== 'credit_card' && !a.archived && a.currency === currency && a.id !== selfId,
+    );
+  });
+
+  /** auto_pay needs a payment account - both DB-enforced and here. */
+  protected readonly canAutoPay = computed(() => !!this.selectedPaymentAccount());
 
   /**
    * titleKey/saveErrorKey below hold these as plain string literals, only
@@ -97,10 +122,11 @@ export class AccountFormModal {
     // serve both "new" (account undefined) and "edit" (account set).
     effect(() => {
       if (!this.open()) return;
-      // This resource is owned by the account modal, so it may be stale
-      // after an institution was created from the Accounts page while the
-      // modal was closed.
+      // These resources are owned by the account modal, so they may be
+      // stale after an institution or account was created from the
+      // Accounts page while the modal was closed.
       this.institutionsResource.reload();
+      this.accountsResource.reload();
       const account = this.account();
       this.form.reset({
         name: account?.name ?? '',
@@ -111,6 +137,8 @@ export class AccountFormModal {
         creditLimit: account?.creditLimit ?? '',
         closingDay: account?.closingDay ?? null,
         dueDay: account?.dueDay ?? null,
+        paymentAccountId: account?.paymentAccountId ?? '',
+        autoPay: account?.autoPay ?? false,
       });
       this.saveErrorKey.set(null);
     });
@@ -124,6 +152,7 @@ export class AccountFormModal {
 
     const raw = this.form.getRawValue();
     const isCreditCard = raw.type === 'credit_card';
+    const paymentAccountId = isCreditCard && raw.paymentAccountId ? raw.paymentAccountId : undefined;
     const payload: Omit<Account, 'id'> = {
       name: raw.name.trim(),
       type: raw.type,
@@ -134,6 +163,8 @@ export class AccountFormModal {
       creditLimit: isCreditCard && raw.creditLimit ? raw.creditLimit : undefined,
       closingDay: isCreditCard && raw.closingDay ? raw.closingDay : undefined,
       dueDay: isCreditCard && raw.dueDay ? raw.dueDay : undefined,
+      paymentAccountId,
+      autoPay: isCreditCard && paymentAccountId ? raw.autoPay : false,
     };
 
     this.saving.set(true);

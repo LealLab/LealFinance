@@ -28,6 +28,8 @@ class AccountRead(BaseModel):
     credit_limit: Decimal | None
     closing_day: int | None
     due_day: int | None
+    payment_account_id: UUID | None
+    auto_pay: bool
 
     @field_serializer("opening_balance", "credit_limit")
     def _serialize_money(self, value: Decimal | None) -> str | None:
@@ -44,6 +46,8 @@ class AccountCreate(BaseModel):
     credit_limit: Decimal | None = None
     closing_day: int | None = Field(default=None, ge=1, le=31)
     due_day: int | None = Field(default=None, ge=1, le=31)
+    payment_account_id: UUID | None = None
+    auto_pay: bool = False
 
 
 class AccountBalanceRead(BaseModel):
@@ -65,7 +69,9 @@ class AccountBalanceRead(BaseModel):
 
 
 class AccountUpdate(PatchModel):
-    non_nullable_fields = frozenset({"name", "type", "currency", "opening_balance", "archived"})
+    non_nullable_fields = frozenset(
+        {"name", "type", "currency", "opening_balance", "archived", "auto_pay"}
+    )
 
     name: str | None = Field(default=None, min_length=1, max_length=100)
     type: AccountType | None = None
@@ -76,3 +82,6 @@ class AccountUpdate(PatchModel):
     credit_limit: Decimal | None = None
     closing_day: int | None = Field(default=None, ge=1, le=31)
     due_day: int | None = Field(default=None, ge=1, le=31)
+    # Nullable in PATCH so the card can be unlinked; auto_pay is not (above).
+    payment_account_id: UUID | None = None
+    auto_pay: bool | None = None

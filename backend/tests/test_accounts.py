@@ -98,6 +98,67 @@ async def test_account_closing_day_out_of_range_is_rejected(
     assert response.json()["error"]["code"] == "error.validation"
 
 
+async def test_credit_card_auto_pay_requires_payment_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "autopay@example.com")
+    response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Visa",
+            "type": "credit_card",
+            "currency": "BRL",
+            "closing_day": 10,
+            "due_day": 20,
+            "auto_pay": True,
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "account.auto_pay_requires_account"
+
+
+async def test_credit_card_payment_account_currency_must_match(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "curmismatch@example.com")
+    usd = await client.post(
+        "/api/v1/accounts", json={"name": "USD", "type": "checking", "currency": "USD"}
+    )
+    response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Visa",
+            "type": "credit_card",
+            "currency": "BRL",
+            "closing_day": 10,
+            "due_day": 20,
+            "payment_account_id": usd.json()["id"],
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "account.payment_account_currency_mismatch"
+
+
+async def test_non_credit_card_rejects_payment_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "noncardpay@example.com")
+    checking = await client.post(
+        "/api/v1/accounts", json={"name": "Main", "type": "checking", "currency": "BRL"}
+    )
+    response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Savings",
+            "type": "savings",
+            "currency": "BRL",
+            "payment_account_id": checking.json()["id"],
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "account.credit_fields_not_applicable"
+
+
 async def test_account_with_own_institution_succeeds(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Avere netă",
+      "realBalance": "Sold real",
       "income": "Venit lunar",
       "expense": "Cheltuieli lunare",
       "savingsRate": "Rată de economisire"
@@ -385,7 +386,10 @@
         "institution": "Instituție",
         "creditLimit": "Limită de credit",
         "closingDay": "Ziua închiderii extrasului",
-        "dueDay": "Ziua scadenței"
+        "dueDay": "Ziua scadenței",
+        "paymentAccount": "Cont de plată",
+        "paymentAccountNone": "Niciunul (plată manuală)",
+        "autoPay": "Plătește factura automat la scadență"
       },
       "errors": {
         "required": "Acest câmp este obligatoriu.",
@@ -411,6 +415,37 @@
         "limit": "Limită",
         "available": "Disponibil",
         "closingDay": "Închidere"
+      },
+      "invoices": {
+        "title": "Facturi",
+        "loading": "Se încarcă facturile…",
+        "total": "Total",
+        "paid": "Plătit",
+        "pay": "Plătește factura",
+        "payEarly": "Plătește în avans",
+        "previous": "Facturi anterioare",
+        "upcoming": "Facturi viitoare",
+        "closesOn": "Se închide pe {{date}}",
+        "dueOn": "Scadență pe {{date}}",
+        "status": {
+          "open": "Deschisă",
+          "closed": "Închisă",
+          "overdue": "Restantă",
+          "paid": "Plătită",
+          "projected": "Estimată"
+        },
+        "notConfigured": {
+          "title": "Ciclul de facturare nu este setat",
+          "description": "Setează ziua de închidere și scadența acestui card pentru a vedea facturile."
+        },
+        "empty": {
+          "title": "Încă nu există facturi",
+          "description": "Facturile apar când cardul are activitate."
+        },
+        "payConfirm": {
+          "title": "Plătești această factură?",
+          "message": "Se va înregistra un transfer de {{amount}} {{currency}} din contul de plată."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Repetă această tranzacție",
         "frequency": "Frecvență",
         "interval": "La fiecare",
-        "selectPlaceholder": "Selectează"
+        "selectPlaceholder": "Selectează",
+        "installments": "Rate",
+        "installmentsPlaceholder": "ex. 10"
       },
       "hints": {
         "effectiveRate": "Curs efectiv: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Repetarea nu este disponibilă pentru o tranzacție între monede diferite - cursul ar trebui stabilit din nou la fiecare apariție."
+        "recurringUnavailableCrossCurrency": "Repetarea nu este disponibilă pentru o tranzacție între monede diferite - cursul ar trebui stabilit din nou la fiecare apariție.",
+        "installments": "Încarcă pe un card de credit și împarte în rate lunare egale, câte una pe factură."
       },
       "errors": {
         "invalid": "Verifică toate câmpurile obligatorii înainte de salvare.",
-        "convertedAmountRequired": "Introdu suma convertită înainte de salvare."
+        "convertedAmountRequired": "Introdu suma convertită înainte de salvare.",
+        "fieldRequired": "Obligatoriu"
       },
       "actions": {
         "cancel": "Anulează",

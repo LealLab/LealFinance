@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Nettovermögen",
+      "realBalance": "Verfügbarer Saldo",
       "income": "Monatliche Einnahmen",
       "expense": "Monatliche Ausgaben",
       "savingsRate": "Sparquote"
@@ -385,7 +386,10 @@
         "institution": "Institut",
         "creditLimit": "Kreditrahmen",
         "closingDay": "Abrechnungstag",
-        "dueDay": "Fälligkeitstag"
+        "dueDay": "Fälligkeitstag",
+        "paymentAccount": "Zahlungskonto",
+        "paymentAccountNone": "Keines (manuell zahlen)",
+        "autoPay": "Rechnung am Fälligkeitstag automatisch bezahlen"
       },
       "errors": {
         "required": "Dieses Feld ist erforderlich.",
@@ -411,6 +415,37 @@
         "limit": "Limit",
         "available": "Verfügbar",
         "closingDay": "Abrechnung"
+      },
+      "invoices": {
+        "title": "Rechnungen",
+        "loading": "Rechnungen werden geladen…",
+        "total": "Gesamt",
+        "paid": "Bezahlt",
+        "pay": "Rechnung bezahlen",
+        "payEarly": "Vorzeitig zahlen",
+        "previous": "Frühere Rechnungen",
+        "upcoming": "Kommende Rechnungen",
+        "closesOn": "Abschluss am {{date}}",
+        "dueOn": "Fällig am {{date}}",
+        "status": {
+          "open": "Offen",
+          "closed": "Abgeschlossen",
+          "overdue": "Überfällig",
+          "paid": "Bezahlt",
+          "projected": "Voraussichtlich"
+        },
+        "notConfigured": {
+          "title": "Abrechnungszyklus nicht festgelegt",
+          "description": "Lege Abschluss- und Fälligkeitstag dieser Karte fest, um ihre Rechnungen zu sehen."
+        },
+        "empty": {
+          "title": "Noch keine Rechnungen",
+          "description": "Rechnungen erscheinen, sobald die Karte Umsätze hat."
+        },
+        "payConfirm": {
+          "title": "Diese Rechnung bezahlen?",
+          "message": "Vom Zahlungskonto wird eine Überweisung von {{amount}} {{currency}} gebucht."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Diese Transaktion wiederholen",
         "frequency": "Häufigkeit",
         "interval": "Alle",
-        "selectPlaceholder": "Auswählen"
+        "selectPlaceholder": "Auswählen",
+        "installments": "Raten",
+        "installmentsPlaceholder": "z. B. 10"
       },
       "hints": {
         "effectiveRate": "Effektiver Wechselkurs: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Wiederholungen sind für Transaktionen in einer anderen Währung nicht verfügbar – der Wechselkurs müsste für jede Ausführung erneut festgelegt werden."
+        "recurringUnavailableCrossCurrency": "Wiederholungen sind für Transaktionen in einer anderen Währung nicht verfügbar – der Wechselkurs müsste für jede Ausführung erneut festgelegt werden.",
+        "installments": "Auf eine Kreditkarte buchen und in gleiche monatliche Raten aufteilen, eine je Rechnung."
       },
       "errors": {
         "invalid": "Prüfen Sie vor dem Speichern die erforderlichen Felder.",
-        "convertedAmountRequired": "Geben Sie vor dem Speichern den umgerechneten Betrag ein."
+        "convertedAmountRequired": "Geben Sie vor dem Speichern den umgerechneten Betrag ein.",
+        "fieldRequired": "Pflichtfeld"
       },
       "actions": {
         "cancel": "Abbrechen",

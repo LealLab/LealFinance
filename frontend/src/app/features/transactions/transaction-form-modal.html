@@ -44,6 +44,15 @@
             class="form-input font-mono"
             formControlName="amount"
           />
+          @if (form.controls.amount.invalid && form.controls.amount.touched) {
+            <p class="form-error">
+              {{
+                form.controls.amount.errors?.['required']
+                  ? t('transactions.form.errors.fieldRequired')
+                  : t('transactions.form.errors.invalid')
+              }}
+            </p>
+          }
         </div>
       </div>
 
@@ -79,6 +88,9 @@
                 <option [value]="account.id">{{ account.name }}</option>
               }
             </select>
+            @if (!form.controls.accountId.value && form.controls.accountId.touched) {
+              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+            }
           </div>
         </div>
 
@@ -104,6 +116,13 @@
                 <option [value]="account.id">{{ account.name }}</option>
               }
             </select>
+            @if (
+              form.controls.toAccountId.touched &&
+              (!form.controls.toAccountId.value ||
+                form.controls.toAccountId.value === form.controls.accountId.value)
+            ) {
+              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+            }
           </div>
         </div>
       } @else {
@@ -120,6 +139,9 @@
                 </optgroup>
               }
             </select>
+            @if (!form.controls.accountId.value && form.controls.accountId.touched) {
+              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+            }
           </div>
           <div>
             <label class="form-label" for="tx-category">{{ t('transactions.form.fields.category') }}</label>
@@ -133,6 +155,9 @@
                 </optgroup>
               }
             </select>
+            @if (!form.controls.categoryId.value && form.controls.categoryId.touched) {
+              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+            }
           </div>
         </div>
       }
@@ -176,12 +201,35 @@
           {{ t('transactions.form.fields.description') }}
         </label>
         <input id="tx-description" type="text" class="form-input" formControlName="description" />
+        @if (form.controls.description.invalid && form.controls.description.touched) {
+          <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+        }
       </div>
 
       <div>
         <label class="form-label" for="tx-notes">{{ t('transactions.form.fields.notes') }}</label>
         <textarea id="tx-notes" rows="2" class="form-input" formControlName="notes"></textarea>
       </div>
+
+      @if (!transaction() && canInstall()) {
+        <div>
+          <label class="form-label" for="tx-installments">
+            {{ t('transactions.form.fields.installments') }}
+          </label>
+          <input
+            id="tx-installments"
+            type="number"
+            min="2"
+            max="99"
+            class="form-input"
+            [placeholder]="t('transactions.form.fields.installmentsPlaceholder')"
+            formControlName="installments"
+          />
+          <p class="mt-1 text-xs text-content-muted">
+            {{ t('transactions.form.hints.installments') }}
+          </p>
+        </div>
+      }
 
       @if (!transaction() && !isTransfer()) {
         @if (crossCurrency()) {

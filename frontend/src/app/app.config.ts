@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { httpErrorInterceptor } from './core/http-error.interceptor';
 import { provideAppTransloco } from './core/transloco.providers';
 import { AccountRepository } from './data/account.repository';
+import { CardInvoiceRepository } from './data/card-invoice.repository';
 import { AgentProviderRepository } from './data/agent-provider.repository';
 import { AgentChatRepository } from './data/agent-chat.repository';
 import { BudgetRepository } from './data/budget.repository';
@@ -27,6 +28,7 @@ import { InvestmentWalletRepository } from './data/investment-wallet.repository'
 import { ManualRateRepository } from './data/manual-rate.repository';
 import { MarketDataCredentialRepository } from './data/market-data-credential.repository';
 import { HttpAccountRepository } from './data/http/http-account.repository';
+import { HttpCardInvoiceRepository } from './data/http/http-card-invoice.repository';
 import { HttpAgentProviderRepository } from './data/http/http-agent-provider.repository';
 import { HttpAgentChatRepository } from './data/http/http-agent-chat.repository';
 import { HttpBudgetPlanRepository } from './data/http/http-budget-plan.repository';
@@ -59,6 +61,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([httpErrorInterceptor])),
     provideAppTransloco(),
     { provide: AccountRepository, useClass: HttpAccountRepository },
+    { provide: CardInvoiceRepository, useClass: HttpCardInvoiceRepository },
     { provide: AgentProviderRepository, useClass: HttpAgentProviderRepository },
     { provide: AgentChatRepository, useClass: HttpAgentChatRepository },
     { provide: TransactionRepository, useClass: HttpTransactionRepository },

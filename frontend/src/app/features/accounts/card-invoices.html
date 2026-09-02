@@ -1,0 +1,117 @@
+<app-card *transloco="let t">
+  <div class="mb-3 flex items-center justify-between">
+    <h2 class="text-sm font-semibold text-content-primary">{{ t('accounts.detail.invoices.title') }}</h2>
+  </div>
+
+  @if (!cycleConfigured()) {
+    <app-empty-state
+      icon="calendar"
+      [title]="t('accounts.detail.invoices.notConfigured.title')"
+      [description]="t('accounts.detail.invoices.notConfigured.description')"
+    />
+  } @else if (invoicesResource.isLoading()) {
+    <p class="text-sm text-content-muted">{{ t('accounts.detail.invoices.loading') }}</p>
+  } @else {
+    @if (current(); as current) {
+      <div class="rounded-lg border border-border p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <app-badge [tone]="tone(current.status)">
+              {{ t('accounts.detail.invoices.status.' + current.status) }}
+            </app-badge>
+            <span class="text-xs text-content-muted">
+              {{ t('accounts.detail.invoices.dueOn', { date: current.dueDate }) }}
+            </span>
+          </div>
+          <span class="font-mono text-2xl font-semibold tabular-nums">
+            {{ current.remaining | money: current.currency }}
+          </span>
+        </div>
+        <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <span class="text-xs text-content-muted">
+            {{ t('accounts.detail.invoices.closesOn', { date: current.closeDate }) }} ·
+            {{ t('accounts.detail.invoices.total') }}: {{ current.total | money: current.currency }} ·
+            {{ t('accounts.detail.invoices.paid') }}: {{ current.paid | money: current.currency }}
+          </span>
+          @if (canPay(current)) {
+            <button
+              appButton
+              variant="primary"
+              type="button"
+              [disabled]="paying() === current.closeDate"
+              (click)="pay(current)"
+            >
+              <app-icon name="check" [size]="16" />
+              {{
+                current.status === 'open'
+                  ? t('accounts.detail.invoices.payEarly')
+                  : t('accounts.detail.invoices.pay')
+              }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    @if (past().length > 0) {
+      <h3 class="mt-4 mb-2 text-xs font-semibold uppercase tracking-wide text-content-muted">
+        {{ t('accounts.detail.invoices.previous') }}
+      </h3>
+      <ul class="flex flex-col gap-2">
+        @for (invoice of past(); track invoice.closeDate) {
+          <li class="flex flex-wrap items-center justify-between gap-2 rounded border border-border px-3 py-2">
+            <div class="flex items-center gap-2">
+              <app-badge [tone]="tone(invoice.status)">
+                {{ t('accounts.detail.invoices.status.' + invoice.status) }}
+              </app-badge>
+              <span class="text-xs text-content-muted">{{ invoice.closeDate }}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-mono text-sm font-semibold tabular-nums">
+                {{ invoice.remaining | money: invoice.currency }}
+              </span>
+              @if (canPay(invoice)) {
+                <button
+                  appButton
+                  variant="secondary"
+                  type="button"
+                  [disabled]="paying() === invoice.closeDate"
+                  (click)="pay(invoice)"
+                >
+                  {{ t('accounts.detail.invoices.pay') }}
+                </button>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
+
+    @if (upcoming().length > 0) {
+      <h3 class="mt-4 mb-2 text-xs font-semibold uppercase tracking-wide text-content-muted">
+        {{ t('accounts.detail.invoices.upcoming') }}
+      </h3>
+      <ul class="flex flex-col gap-2">
+        @for (invoice of upcoming(); track invoice.closeDate) {
+          <li class="flex flex-wrap items-center justify-between gap-2 rounded border border-dashed border-border px-3 py-2 text-content-muted">
+            <div class="flex items-center gap-2">
+              <app-badge tone="neutral">{{ t('accounts.detail.invoices.status.projected') }}</app-badge>
+              <span class="text-xs">{{ invoice.closeDate }}</span>
+            </div>
+            <span class="font-mono text-sm tabular-nums">
+              {{ invoice.total | money: invoice.currency }}
+            </span>
+          </li>
+        }
+      </ul>
+    }
+
+    @if (!current() && past().length === 0 && upcoming().length === 0) {
+      <app-empty-state
+        icon="invoice"
+        [title]="t('accounts.detail.invoices.empty.title')"
+        [description]="t('accounts.detail.invoices.empty.description')"
+      />
+    }
+  }
+</app-card>

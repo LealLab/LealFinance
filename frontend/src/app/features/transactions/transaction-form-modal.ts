@@ -112,7 +112,8 @@ export class TransactionFormModal {
     fromInstitutionId: [''],
     toInstitutionId: [''],
     convertedAmount: ['', decimalAmountValidator()],
-    fee: ['', decimalAmountValidator()]
+    fee: ['', decimalAmountValidator()],
+    installments: this.fb.control<number | null>(null, [Validators.min(2), Validators.max(99)])
   });
 
   private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
@@ -199,6 +200,15 @@ export class TransactionFormModal {
     return !!origin && !!destination && origin !== destination;
   });
 
+  /** Splitting into installments is offered only for a same-currency
+   * expense charged to a credit-card account. */
+  protected readonly canInstall = computed(
+    () =>
+      this.selectedType() === 'expense' &&
+      this.sourceAccount()?.type === 'credit_card' &&
+      !this.crossCurrency()
+  );
+
   /** Live/mock quote for the current pair - only fetched while this transaction is actually cross-currency. */
   protected readonly rateResource = rxResource({
     params: () => ({
@@ -271,7 +281,8 @@ export class TransactionFormModal {
         fromInstitutionId: fromAccount?.institutionId ?? '',
         toInstitutionId: toAccount?.institutionId ?? '',
         convertedAmount: tx?.conversion?.amount ?? '',
-        fee: tx?.conversion?.fee ?? ''
+        fee: tx?.conversion?.fee ?? '',
+        installments: null
       });
       this.applyingReset = false;
       // A conversion already on record is treated as "touched" so the
@@ -459,7 +470,9 @@ export class TransactionFormModal {
       return;
     }
 
-    this.transactions.create(basePayload).subscribe({
+    const installments =
+      this.canInstall() && raw.installments && raw.installments >= 2 ? raw.installments : undefined;
+    this.transactions.create(installments ? { ...basePayload, installments } : basePayload).subscribe({
       next: () => this.onSaveSuccess(),
       error: () => this.onSaveError()
     });

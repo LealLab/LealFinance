@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "净资产",
+      "realBalance": "实际余额",
       "income": "月收入",
       "expense": "月支出",
       "savingsRate": "储蓄率"
@@ -385,7 +386,10 @@
         "institution": "机构",
         "creditLimit": "信用额度",
         "closingDay": "账单日",
-        "dueDay": "还款日"
+        "dueDay": "还款日",
+        "paymentAccount": "还款账户",
+        "paymentAccountNone": "无（手动还款）",
+        "autoPay": "在到期日自动支付账单"
       },
       "errors": {
         "required": "此字段为必填项。",
@@ -411,6 +415,37 @@
         "limit": "额度",
         "available": "可用额度",
         "closingDay": "账单日"
+      },
+      "invoices": {
+        "title": "账单",
+        "loading": "正在加载账单…",
+        "total": "合计",
+        "paid": "已付",
+        "pay": "支付账单",
+        "payEarly": "提前还款",
+        "previous": "历史账单",
+        "upcoming": "未来账单",
+        "closesOn": "{{date}} 结算",
+        "dueOn": "{{date}} 到期",
+        "status": {
+          "open": "未出账",
+          "closed": "已出账",
+          "overdue": "逾期",
+          "paid": "已付清",
+          "projected": "预估"
+        },
+        "notConfigured": {
+          "title": "未设置账单周期",
+          "description": "设置该卡的结算日和到期日即可查看账单。"
+        },
+        "empty": {
+          "title": "暂无账单",
+          "description": "该卡有交易后会显示账单。"
+        },
+        "payConfirm": {
+          "title": "支付这张账单？",
+          "message": "将从还款账户记录一笔 {{amount}} {{currency}} 的转账。"
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "将此交易设为周期性",
         "frequency": "频率",
         "interval": "每",
-        "selectPlaceholder": "选择"
+        "selectPlaceholder": "选择",
+        "installments": "分期",
+        "installmentsPlaceholder": "例如 10"
       },
       "hints": {
         "effectiveRate": "有效汇率：{{rate}}",
-        "recurringUnavailableCrossCurrency": "跨币种交易无法设置周期性规则——每次发生时都需要重新设置汇率。"
+        "recurringUnavailableCrossCurrency": "跨币种交易无法设置周期性规则——每次发生时都需要重新设置汇率。",
+        "installments": "记入信用卡并按等额月供分期，每期一张账单。"
       },
       "errors": {
         "invalid": "保存前请检查必填字段。",
-        "convertedAmountRequired": "保存前请输入换算后金额。"
+        "convertedAmountRequired": "保存前请输入换算后金额。",
+        "fieldRequired": "必填"
       },
       "actions": {
         "cancel": "取消",

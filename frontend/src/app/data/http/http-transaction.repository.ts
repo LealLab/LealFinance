@@ -5,6 +5,7 @@ import { Transaction } from '../../domain/models/transaction';
 import {
   ImportPreview,
   ImportPreviewRequest,
+  TransactionCreateInput,
   TransactionFilters,
   TransactionRepository,
 } from '../transaction.repository';
@@ -28,6 +29,7 @@ export class HttpTransactionRepository extends TransactionRepository {
       category_id: filters.categoryId,
       group_id: filters.groupId,
       institution_id: filters.institutionId,
+      installment_group_id: filters.installmentGroupId,
       type: filters.types,
       date_from: filters.dateFrom,
       date_to: filters.dateTo,
@@ -58,7 +60,7 @@ export class HttpTransactionRepository extends TransactionRepository {
       catchError((e) => notFoundOrThrow<Transaction>(e, 'transaction.not_found')),
     );
   }
-  create(input: Omit<Transaction, 'id'>): Observable<Transaction> {
+  create(input: TransactionCreateInput): Observable<Transaction> {
     return this.api
       .post<TransactionWire>('/transactions', mapTransactionCreate(input))
       .pipe(map(mapTransaction));

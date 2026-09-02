@@ -34,6 +34,13 @@ async def get_account_balances(
     return await accounts_service.account_balances(db, user.id, as_of=as_of)
 
 
+@router.get("/real-balances", response_model=list[AccountBalanceRead])
+async def get_real_balances(
+    user: CurrentUser, db: DbSession
+) -> list[accounts_service.AccountBalance]:
+    return await accounts_service.real_balance_contributions(db, user.id, today=date.today())
+
+
 @router.get("/{account_id}", response_model=AccountRead)
 async def get_account(account_id: UUID, user: CurrentUser, db: DbSession) -> Account:
     return await accounts_service.get_account(db, user.id, account_id)

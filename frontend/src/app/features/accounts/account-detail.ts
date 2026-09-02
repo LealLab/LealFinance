@@ -26,6 +26,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { AccountFormModal } from './account-form-modal';
 import { accountTypeOption } from './account-type';
+import { CardInvoices } from './card-invoices';
 
 const PAGE_SIZE = 30;
 
@@ -52,7 +53,8 @@ const PAGE_SIZE = 30;
     PageHeader,
     ProgressBar,
     ExchangeRateWarning,
-    AccountFormModal
+    AccountFormModal,
+    CardInvoices
   ],
   templateUrl: './account-detail.html',
   styleUrl: './account-detail.scss'
@@ -209,6 +211,18 @@ export class AccountDetail {
       next: () => this.accountsResource.reload(),
       error: () => this.mutationErrors.show(),
     });
+  }
+
+  /** A paid invoice posts a transfer touching this card - refresh balance and history. */
+  protected onInvoicePaid(): void {
+    this.accountsResource.reload();
+    this.balancesResource.reload();
+    this.loadSubscription?.unsubscribe();
+    this.loadingMore = false;
+    this.rows.set([]);
+    this.offset.set(0);
+    this.exhausted.set(false);
+    this.loadMore();
   }
 
   protected onSaved(): void {

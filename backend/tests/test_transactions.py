@@ -2,6 +2,8 @@
 matching, cross-currency conversion), filtering, and ownership isolation.
 """
 
+from decimal import Decimal
+
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -1223,3 +1225,84 @@ async def test_list_transactions_pages_without_gaps_or_duplicates(
     assert len(ids_seen) == len(set(ids_seen)) == 5
     assert set(ids_seen) == set(created_ids)
     assert len(page3.json()) == 1
+
+
+async def _create_card(client: AsyncClient) -> str:
+    response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Visa",
+            "type": "credit_card",
+            "currency": "BRL",
+            "closing_day": 10,
+            "due_day": 20,
+            "credit_limit": "10000.00",
+        },
+    )
+    assert response.status_code == 201, response.text
+    return response.json()["id"]
+
+
+async def test_installments_split_across_months_and_sum_to_total(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "inst1@example.com")
+    card_id = await _create_card(client)
+    category_id = await _create_category(client)
+
+    response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-31",
+            "amount": "100.00",
+            "currency": "BRL",
+            "account_id": card_id,
+            "category_id": category_id,
+            "description": "Sofa",
+            "installments": 3,
+        },
+    )
+    assert response.status_code == 201, response.text
+    first = response.json()
+    assert first["installment_number"] == 1
+    assert first["installment_count"] == 3
+    group_id = first["installment_group_id"]
+    assert group_id is not None
+
+    rows = (
+        await client.get("/api/v1/transactions", params={"installment_group_id": group_id})
+    ).json()
+    assert len(rows) == 3
+    amounts = sorted(row["amount"] for row in rows)
+    # 100 / 3 -> 33.3333 base, remainder 0.0001 on the first part.
+    assert amounts == ["33.3333", "33.3333", "33.3334"]
+    assert sum(Decimal(row["amount"]) for row in rows) == Decimal("100.0000")
+    # one part per month, day-31 anchor preserved past February's clamp
+    dates = sorted(row["date"] for row in rows)
+    assert dates == ["2026-01-31", "2026-02-28", "2026-03-31"]
+    assert {row["installment_number"] for row in rows} == {1, 2, 3}
+
+
+async def test_installments_require_a_credit_card_expense(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "inst2@example.com")
+    checking_id = await _create_account(client)
+    category_id = await _create_category(client)
+
+    response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-10",
+            "amount": "90.00",
+            "currency": "BRL",
+            "account_id": checking_id,
+            "category_id": category_id,
+            "description": "Nope",
+            "installments": 3,
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.installments_require_credit_card"

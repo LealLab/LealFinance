@@ -4,9 +4,11 @@ import { provideRouter } from '@angular/router';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
+import { CardInvoiceRepository } from '../../data/card-invoice.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
+import { MockCardInvoiceRepository } from '../../data/mock/mock-card-invoice.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
@@ -30,6 +32,7 @@ describe('AccountDetail', () => {
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
+        { provide: CardInvoiceRepository, useClass: MockCardInvoiceRepository },
         { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }

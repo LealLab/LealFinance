@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Majątek netto",
+      "realBalance": "Saldo rzeczywiste",
       "income": "Przychody miesięczne",
       "expense": "Wydatki miesięczne",
       "savingsRate": "Stopa oszczędności"
@@ -385,7 +386,10 @@
         "institution": "Instytucja",
         "creditLimit": "Limit karty",
         "closingDay": "Dzień zamknięcia",
-        "dueDay": "Termin płatności"
+        "dueDay": "Termin płatności",
+        "paymentAccount": "Konto do spłaty",
+        "paymentAccountNone": "Brak (spłata ręczna)",
+        "autoPay": "Automatycznie opłać rachunek w terminie płatności"
       },
       "errors": {
         "required": "To pole jest wymagane.",
@@ -411,6 +415,37 @@
         "limit": "Limit",
         "available": "Dostępne środki",
         "closingDay": "Zamknięcie"
+      },
+      "invoices": {
+        "title": "Rachunki",
+        "loading": "Wczytywanie rachunków…",
+        "total": "Razem",
+        "paid": "Zapłacono",
+        "pay": "Opłać rachunek",
+        "payEarly": "Zapłać wcześniej",
+        "previous": "Poprzednie rachunki",
+        "upcoming": "Nadchodzące rachunki",
+        "closesOn": "Zamknięcie {{date}}",
+        "dueOn": "Termin {{date}}",
+        "status": {
+          "open": "Otwarty",
+          "closed": "Zamknięty",
+          "overdue": "Po terminie",
+          "paid": "Zapłacony",
+          "projected": "Prognozowany"
+        },
+        "notConfigured": {
+          "title": "Nie ustawiono cyklu rozliczeniowego",
+          "description": "Ustaw dzień zamknięcia i termin płatności tej karty, aby zobaczyć rachunki."
+        },
+        "empty": {
+          "title": "Brak rachunków",
+          "description": "Rachunki pojawią się, gdy karta będzie mieć operacje."
+        },
+        "payConfirm": {
+          "title": "Opłacić ten rachunek?",
+          "message": "Z konta do spłaty zostanie zapisany przelew {{amount}} {{currency}}."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Powtórz tę transakcję",
         "frequency": "Częstotliwość",
         "interval": "Co",
-        "selectPlaceholder": "Wybierz"
+        "selectPlaceholder": "Wybierz",
+        "installments": "Raty",
+        "installmentsPlaceholder": "np. 10"
       },
       "hints": {
         "effectiveRate": "Rzeczywisty kurs: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Powtarzanie nie jest dostępne dla transakcji w różnych walutach — kurs trzeba byłoby ustawiać ponownie dla każdego wystąpienia."
+        "recurringUnavailableCrossCurrency": "Powtarzanie nie jest dostępne dla transakcji w różnych walutach — kurs trzeba byłoby ustawiać ponownie dla każdego wystąpienia.",
+        "installments": "Obciąż kartę kredytową i podziel na równe raty miesięczne, po jednej na rachunek."
       },
       "errors": {
         "invalid": "Sprawdź wymagane pola przed zapisaniem.",
-        "convertedAmountRequired": "Przed zapisaniem wpisz kwotę po przewalutowaniu."
+        "convertedAmountRequired": "Przed zapisaniem wpisz kwotę po przewalutowaniu.",
+        "fieldRequired": "Wymagane"
       },
       "actions": {
         "cancel": "Anuluj",

@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Nettoförmögenhet",
+      "realBalance": "Verkligt saldo",
       "income": "Månadsinkomster",
       "expense": "Månadens utgifter",
       "savingsRate": "Sparandegrad"
@@ -385,7 +386,10 @@
         "institution": "Finansiellt institut",
         "creditLimit": "Kreditgräns",
         "closingDay": "Brytdag",
-        "dueDay": "Förfallodag"
+        "dueDay": "Förfallodag",
+        "paymentAccount": "Betalkonto",
+        "paymentAccountNone": "Inget (betala manuellt)",
+        "autoPay": "Betala fakturan automatiskt på förfallodagen"
       },
       "errors": {
         "required": "Det här fältet är obligatoriskt.",
@@ -411,6 +415,37 @@
         "limit": "Gräns",
         "available": "Tillgängligt",
         "closingDay": "Brytdag"
+      },
+      "invoices": {
+        "title": "Fakturor",
+        "loading": "Laddar fakturor…",
+        "total": "Totalt",
+        "paid": "Betalt",
+        "pay": "Betala faktura",
+        "payEarly": "Betala i förväg",
+        "previous": "Tidigare fakturor",
+        "upcoming": "Kommande fakturor",
+        "closesOn": "Stänger {{date}}",
+        "dueOn": "Förfaller {{date}}",
+        "status": {
+          "open": "Öppen",
+          "closed": "Stängd",
+          "overdue": "Förfallen",
+          "paid": "Betald",
+          "projected": "Beräknad"
+        },
+        "notConfigured": {
+          "title": "Faktureringscykel saknas",
+          "description": "Ange kortets stängningsdag och förfallodag för att se dess fakturor."
+        },
+        "empty": {
+          "title": "Inga fakturor än",
+          "description": "Fakturor visas när kortet har transaktioner."
+        },
+        "payConfirm": {
+          "title": "Betala den här fakturan?",
+          "message": "En överföring på {{amount}} {{currency}} bokförs från betalkontot."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Upprepa den här transaktionen",
         "frequency": "Frekvens",
         "interval": "Varje",
-        "selectPlaceholder": "Välj"
+        "selectPlaceholder": "Välj",
+        "installments": "Delbetalningar",
+        "installmentsPlaceholder": "t.ex. 10"
       },
       "hints": {
         "effectiveRate": "Effektiv växelkurs: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Det går inte att upprepa en transaktion i flera valutor – kursen måste anges på nytt för varje förekomst."
+        "recurringUnavailableCrossCurrency": "Det går inte att upprepa en transaktion i flera valutor – kursen måste anges på nytt för varje förekomst.",
+        "installments": "Dra på ett kreditkort och dela upp i lika stora månadsbetalningar, en per faktura."
       },
       "errors": {
         "invalid": "Kontrollera de obligatoriska fälten innan du sparar.",
-        "convertedAmountRequired": "Ange det omräknade beloppet innan du sparar."
+        "convertedAmountRequired": "Ange det omräknade beloppet innan du sparar.",
+        "fieldRequired": "Obligatoriskt"
       },
       "actions": {
         "cancel": "Avbryt",

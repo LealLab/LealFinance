@@ -27,7 +27,7 @@ from app.models.transaction import (
     Transaction,
 )
 from app.schemas.account import AccountCreate, AccountUpdate
-from app.services import ownership
+from app.services import card_invoices, ownership
 from app.services.currencies import get_active_currency
 from app.services.exchange_rates import ensure_rates_cached
 
@@ -37,11 +37,40 @@ def _check_credit_card_fields(
     credit_limit: Decimal | None,
     closing_day: int | None,
     due_day: int | None,
+    payment_account_id: UUID | None,
+    auto_pay: bool,
 ) -> None:
     if account_type != ACCOUNT_TYPE_CREDIT_CARD and (
-        credit_limit is not None or closing_day is not None or due_day is not None
+        credit_limit is not None
+        or closing_day is not None
+        or due_day is not None
+        or payment_account_id is not None
+        or auto_pay
     ):
         raise ValidationAppError(code="account.credit_fields_not_applicable")
+    if auto_pay and payment_account_id is None:
+        raise ValidationAppError(code="account.auto_pay_requires_account")
+
+
+async def _validate_payment_account(
+    db: AsyncSession,
+    user_id: UUID,
+    card_id: UUID | None,
+    payment_account_id: UUID,
+    card_currency: str,
+) -> None:
+    """The account that pays a card's invoices: owned, not archived, same
+    currency as the card, and not the card itself. Mirrors
+    app/services/loans.py::_validate_payment_account."""
+    account = await ownership.get_owned(db, Account, payment_account_id, user_id)
+    if account.id == card_id:
+        raise ValidationAppError(code="account.payment_account_is_self")
+    if account.archived:
+        raise ValidationAppError(code="account.payment_account_archived")
+    if account.type == ACCOUNT_TYPE_CREDIT_CARD:
+        raise ValidationAppError(code="account.payment_account_is_credit_card")
+    if account.currency != card_currency:
+        raise ValidationAppError(code="account.payment_account_currency_mismatch")
 
 
 async def list_accounts(db: AsyncSession, user_id: UUID) -> list[Account]:
@@ -118,6 +147,70 @@ async def account_balances(
     ]
 
 
+async def real_balance_contributions(
+    db: AsyncSession, user_id: UUID, *, today: date_type
+) -> list[AccountBalance]:
+    """Return each active account's contribution to the cash-position view.
+
+    A configured credit card contributes only the residual of invoices due by
+    ``today``; its raw ledger balance is deliberately excluded so an open
+    cycle does not reduce available cash. Cards without a complete cycle
+    configuration fall back to their raw balance because there is no due date
+    at which their debt can become a cash obligation.
+    """
+    accounts = list(await ownership.list_owned(db, Account, user_id))
+    balances = {row.account_id: row for row in await account_balances(db, user_id)}
+    contributions: list[AccountBalance] = []
+
+    for account in accounts:
+        if account.archived:
+            continue
+        balance = balances[account.id]
+        contribution = balance.balance
+        if (
+            account.type == ACCOUNT_TYPE_CREDIT_CARD
+            and account.closing_day is not None
+            and account.due_day is not None
+        ):
+            transaction_scope = (
+                ownership.owned(Transaction, user_id)
+                .where(
+                    or_(
+                        Transaction.account_id == account.id,
+                        Transaction.to_account_id == account.id,
+                    )
+                )
+                .subquery()
+            )
+            oldest = await db.scalar(select(func.min(transaction_scope.c.date)))
+            months_back = (
+                max((today.year - oldest.year) * 12 + today.month - oldest.month + 1, 0)
+                if oldest is not None
+                else 0
+            )
+            invoices = await card_invoices.list_invoices(
+                db,
+                user_id,
+                account.id,
+                today=today,
+                months_back=months_back,
+                months_ahead=0,
+            )
+            contribution = -sum(
+                (invoice.remaining for invoice in invoices if invoice.due_date <= today),
+                Decimal(0),
+            )
+        contributions.append(
+            AccountBalance(
+                account_id=account.id,
+                currency=account.currency,
+                balance=contribution,
+            )
+        )
+
+    return contributions
+
+
 async def get_account(db: AsyncSession, user_id: UUID, account_id: UUID) -> Account:
     return await ownership.get_owned(db, Account, account_id, user_id)
 
@@ -125,7 +218,16 @@ async def get_account(db: AsyncSession, user_id: UUID, account_id: UUID) -> Acco
 async def create_account(db: AsyncSession, user_id: UUID, data: AccountCreate) -> Account:
     await get_active_currency(db, data.currency)
     await ownership.get_owned_or_none(db, Institution, data.institution_id, user_id)
-    _check_credit_card_fields(data.type, data.credit_limit, data.closing_day, data.due_day)
+    _check_credit_card_fields(
+        data.type,
+        data.credit_limit,
+        data.closing_day,
+        data.due_day,
+        data.payment_account_id,
+        data.auto_pay,
+    )
+    if data.payment_account_id is not None:
+        await _validate_payment_account(db, user_id, None, data.payment_account_id, data.currency)
 
     account = Account(user_id=user_id, **data.model_dump())
     db.add(account)
@@ -185,12 +287,22 @@ async def update_account(
         new_currency=changes.get("currency", account.currency),
     )
 
+    effective_type = changes.get("type", account.type)
+    effective_currency = changes.get("currency", account.currency)
+    effective_payment_account_id = changes.get("payment_account_id", account.payment_account_id)
+    effective_auto_pay = changes.get("auto_pay", account.auto_pay)
     _check_credit_card_fields(
-        changes.get("type", account.type),
+        effective_type,
         changes.get("credit_limit", account.credit_limit),
         changes.get("closing_day", account.closing_day),
         changes.get("due_day", account.due_day),
+        effective_payment_account_id,
+        effective_auto_pay,
     )
+    if effective_payment_account_id is not None:
+        await _validate_payment_account(
+            db, user_id, account.id, effective_payment_account_id, effective_currency
+        )
 
     for field, value in changes.items():
         setattr(account, field, value)

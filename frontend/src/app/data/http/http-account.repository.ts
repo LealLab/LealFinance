@@ -18,6 +18,11 @@ export class HttpAccountRepository extends AccountRepository {
       .get<AccountBalanceWire[]>('/accounts/balances', { as_of: asOf })
       .pipe(map((items) => items.map(mapAccountBalance)));
   }
+  override realBalances(): Observable<AccountBalance[]> {
+    return this.api
+      .get<AccountBalanceWire[]>('/accounts/real-balances')
+      .pipe(map((items) => items.map(mapAccountBalance)));
+  }
   get(id: string): Observable<Account | undefined> {
     return this.api.get<AccountWire>(`/accounts/${id}`).pipe(
       map(mapAccount),

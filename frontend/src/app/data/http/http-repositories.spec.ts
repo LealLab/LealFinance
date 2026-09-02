@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HttpAccountRepository } from './http-account.repository';
+import { HttpCardInvoiceRepository } from './http-card-invoice.repository';
 import { HttpAgentChatRepository } from './http-agent-chat.repository';
 import { HttpAgentProviderRepository } from './http-agent-provider.repository';
 import { HttpBudgetPlanRepository } from './http-budget-plan.repository';
@@ -157,6 +158,17 @@ describe('HTTP repositories', () => {
     expect(balances).toEqual([{ accountId: 'a', currency: 'BRL', balance: '300.0000' }]);
   });
 
+  it('fetches and maps real account balances', () => {
+    let balances: unknown;
+    TestBed.inject(HttpAccountRepository)
+      .realBalances()
+      .subscribe((result) => (balances = result));
+    const req = http.expectOne('/api/v1/accounts/real-balances');
+    expect(req.request.method).toBe('GET');
+    req.flush([{ account_id: 'a', currency: 'BRL', balance: '-50.0000' }]);
+    expect(balances).toEqual([{ accountId: 'a', currency: 'BRL', balance: '-50.0000' }]);
+  });
+
   it('uses the atomic goal create endpoint and maps its aggregate response', () => {
     let goalId: string | undefined;
     TestBed.inject(HttpGoalRepository)
@@ -286,6 +298,7 @@ describe('HTTP repositories', () => {
           notes: null,
           recurring_rule_id: null,
           loan_id: null,
+          card_invoice_close_date: null,
           conversion: null,
         },
       ],
@@ -549,6 +562,77 @@ describe('HTTP repositories', () => {
       conversion: null,
     });
     expect(payment).toMatchObject({ id: 't', loanId: 'l', type: 'expense' });
+  });
+
+  it('lists and pays card invoices for an account', () => {
+    let invoices: unknown;
+    TestBed.inject(HttpCardInvoiceRepository)
+      .list('c', { back: 3, ahead: 3 })
+      .subscribe((r) => (invoices = r));
+    const listReq = http.expectOne((r) => r.url === '/api/v1/accounts/c/invoices');
+    expect(listReq.request.method).toBe('GET');
+    expect(listReq.request.params.get('months_back')).toBe('3');
+    expect(listReq.request.params.get('months_ahead')).toBe('3');
+    listReq.flush([
+      {
+        close_date: '2026-01-20',
+        due_date: '2026-01-27',
+        period_start: '2025-12-21',
+        period_end: '2026-01-20',
+        currency: 'BRL',
+        total: '120.0000',
+        paid: '0.0000',
+        remaining: '120.0000',
+        status: 'closed',
+      },
+    ]);
+    expect(invoices).toEqual([
+      {
+        closeDate: '2026-01-20',
+        dueDate: '2026-01-27',
+        periodStart: '2025-12-21',
+        periodEnd: '2026-01-20',
+        currency: 'BRL',
+        total: '120.0000',
+        paid: '0.0000',
+        remaining: '120.0000',
+        status: 'closed',
+      },
+    ]);
+
+    let paid: unknown;
+    TestBed.inject(HttpCardInvoiceRepository)
+      .pay('c', '2026-01-20', { accountId: 'a' })
+      .subscribe((r) => (paid = r));
+    const payReq = http.expectOne('/api/v1/accounts/c/invoices/2026-01-20/pay');
+    expect(payReq.request.method).toBe('POST');
+    expect(payReq.request.body).toEqual({
+      account_id: 'a',
+      date: null,
+      amount: null,
+      description: null,
+    });
+    payReq.flush({
+      id: 't',
+      type: 'transfer',
+      date: '2026-01-25',
+      amount: '120.0000',
+      currency: 'BRL',
+      account_id: 'a',
+      to_account_id: 'c',
+      category_id: null,
+      description: 'Card',
+      notes: null,
+      recurring_rule_id: null,
+      loan_id: null,
+      card_invoice_close_date: '2026-01-20',
+      conversion: null,
+    });
+    expect(paid).toMatchObject({
+      id: 't',
+      type: 'transfer',
+      cardInvoiceCloseDate: '2026-01-20',
+    });
   });
 
   it('uses agent-chat conversation endpoints and maps the wire shape', () => {

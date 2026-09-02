@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Giá trị tài sản ròng",
+      "realBalance": "Số dư thực",
       "income": "Thu nhập hàng tháng",
       "expense": "Chi tiêu hàng tháng",
       "savingsRate": "Tỷ lệ tiết kiệm"
@@ -385,7 +386,10 @@
         "institution": "Tổ chức tài chính",
         "creditLimit": "Hạn mức tín dụng",
         "closingDay": "Ngày chốt sao kê",
-        "dueDay": "Ngày đến hạn"
+        "dueDay": "Ngày đến hạn",
+        "paymentAccount": "Tài khoản thanh toán",
+        "paymentAccountNone": "Không (thanh toán thủ công)",
+        "autoPay": "Tự động thanh toán sao kê vào ngày đến hạn"
       },
       "errors": {
         "required": "Trường này là bắt buộc.",
@@ -411,6 +415,37 @@
         "limit": "Hạn mức",
         "available": "Còn khả dụng",
         "closingDay": "Ngày chốt sao kê"
+      },
+      "invoices": {
+        "title": "Sao kê",
+        "loading": "Đang tải sao kê…",
+        "total": "Tổng",
+        "paid": "Đã trả",
+        "pay": "Thanh toán sao kê",
+        "payEarly": "Trả sớm",
+        "previous": "Sao kê trước",
+        "upcoming": "Sao kê sắp tới",
+        "closesOn": "Chốt ngày {{date}}",
+        "dueOn": "Đến hạn {{date}}",
+        "status": {
+          "open": "Đang mở",
+          "closed": "Đã chốt",
+          "overdue": "Quá hạn",
+          "paid": "Đã thanh toán",
+          "projected": "Dự kiến"
+        },
+        "notConfigured": {
+          "title": "Chưa đặt chu kỳ sao kê",
+          "description": "Đặt ngày chốt và ngày đến hạn của thẻ này để xem sao kê."
+        },
+        "empty": {
+          "title": "Chưa có sao kê",
+          "description": "Sao kê xuất hiện khi thẻ có giao dịch."
+        },
+        "payConfirm": {
+          "title": "Thanh toán sao kê này?",
+          "message": "Một giao dịch chuyển {{amount}} {{currency}} sẽ được ghi nhận từ tài khoản thanh toán."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Lặp lại giao dịch này",
         "frequency": "Tần suất",
         "interval": "Mỗi",
-        "selectPlaceholder": "Chọn"
+        "selectPlaceholder": "Chọn",
+        "installments": "Kỳ trả góp",
+        "installmentsPlaceholder": "ví dụ 10"
       },
       "hints": {
         "effectiveRate": "Tỷ giá thực tế: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Không thể lặp lại giao dịch giữa các loại tiền tệ - cần thiết lập lại tỷ giá cho mỗi lần phát sinh."
+        "recurringUnavailableCrossCurrency": "Không thể lặp lại giao dịch giữa các loại tiền tệ - cần thiết lập lại tỷ giá cho mỗi lần phát sinh.",
+        "installments": "Ghi nợ vào thẻ tín dụng và chia thành các kỳ trả góp hằng tháng bằng nhau, mỗi kỳ một sao kê."
       },
       "errors": {
         "invalid": "Kiểm tra các trường bắt buộc trước khi lưu.",
-        "convertedAmountRequired": "Nhập số tiền sau quy đổi trước khi lưu."
+        "convertedAmountRequired": "Nhập số tiền sau quy đổi trước khi lưu.",
+        "fieldRequired": "Bắt buộc"
       },
       "actions": {
         "cancel": "Hủy",

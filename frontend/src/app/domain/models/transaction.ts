@@ -56,6 +56,16 @@ export interface TransactionConversion {
  * `loanId` is set when this expense is a loan installment payment (see
  * domain/models/loan.ts). The count of transactions carrying a given
  * `loanId` is how many installments of that loan have been paid.
+ *
+ * `cardInvoiceCloseDate` is set on the transfer that pays a credit-card
+ * invoice - it's the close date of the billing cycle the payment settles
+ * (see domain/models/card-invoice.ts). Read-only here: payments are made
+ * through the pay-invoice endpoint, not by setting this directly.
+ *
+ * `installmentGroupId` / `installmentNumber` / `installmentCount` are set
+ * on each row of a credit-card purchase split into equal monthly
+ * installments ("3/10"). They are written by the backend when a create
+ * request carries an `installments` count; all three are present or none.
  */
 export interface Transaction {
   id: string;
@@ -70,5 +80,17 @@ export interface Transaction {
   notes?: string;
   recurringRuleId?: string;
   loanId?: string;
+  cardInvoiceCloseDate?: string;
+  installmentGroupId?: string;
+  installmentNumber?: number;
+  installmentCount?: number;
   conversion?: TransactionConversion;
+}
+
+/**
+ * Extra field on a create request: split a credit-card expense into N
+ * equal monthly installments. Not part of the stored Transaction.
+ */
+export interface TransactionInstallmentOptions {
+  installments?: number;
 }

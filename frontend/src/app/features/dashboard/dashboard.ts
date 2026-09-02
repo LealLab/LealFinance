@@ -10,7 +10,12 @@ import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
-import { categoryBreakdown, netWorth as netWorthOf, totalsFor } from '../../domain/calc/aggregations';
+import {
+  categoryBreakdown,
+  netWorth as netWorthOf,
+  realBalance as realBalanceOf,
+  totalsFor
+} from '../../domain/calc/aggregations';
 import { budgetProgress } from '../../domain/calc/budgets';
 import { effectiveAmount } from '../../domain/calc/conversion';
 import {
@@ -81,6 +86,9 @@ export class Dashboard {
   protected readonly balancesResource = rxResource({
     stream: () => this.accountRepository.balances()
   });
+  protected readonly realBalancesResource = rxResource({
+    stream: () => this.accountRepository.realBalances()
+  });
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list({ dateFrom: this.windowStartDate })
   });
@@ -126,6 +134,17 @@ export class Dashboard {
     return netWorthOf(
       this.accountsResource.value() ?? [],
       this.balancesResource.value() ?? [],
+      this.displayCurrency(),
+      convert
+    );
+  });
+
+  protected readonly realBalance = computed(() => {
+    const convert = this.converter();
+    if (!convert) return zero(this.displayCurrency());
+    return realBalanceOf(
+      this.accountsResource.value() ?? [],
+      this.realBalancesResource.value() ?? [],
       this.displayCurrency(),
       convert
     );

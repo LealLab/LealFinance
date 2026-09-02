@@ -16,16 +16,16 @@ against the exact same rules as a real transaction.
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date as date_type
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Literal
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from sqlalchemy import Select, delete, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
 from app.models._conversion import CONVERSION_SOURCE_FALLBACK, ConversionValue
-from app.models.account import Account
+from app.models.account import ACCOUNT_TYPE_CREDIT_CARD, Account
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
 from app.models.loan import Loan
@@ -43,6 +43,9 @@ from app.services import ownership
 from app.services.conversion import ConversionInput, resolve_conversion
 from app.services.currencies import get_active_currency
 from app.services.exchange_rates import get_exchange_rate, to_conversion_source
+from app.services.recurrence import add_months_clamped
+
+_CENTS = Decimal("0.0001")
 
 
 async def validate_transaction_shape(
@@ -154,6 +157,7 @@ def _filtered_transactions(
     category_id: UUID | None,
     group_id: UUID | None,
     institution_id: UUID | None,
+    installment_group_id: UUID | None,
     types: Sequence[str] | None,
     date_from: date_type | None,
     date_to: date_type | None,
@@ -162,6 +166,8 @@ def _filtered_transactions(
     amount_max: Decimal | None,
 ) -> Select[tuple[Transaction]]:
     query = ownership.owned(Transaction, user_id)
+    if installment_group_id is not None:
+        query = query.where(Transaction.installment_group_id == installment_group_id)
     if account_id is not None:
         query = query.where(
             (Transaction.account_id == account_id) | (Transaction.to_account_id == account_id)
@@ -211,6 +217,7 @@ async def list_transactions(
     category_id: UUID | None = None,
     group_id: UUID | None = None,
     institution_id: UUID | None = None,
+    installment_group_id: UUID | None = None,
     types: Sequence[str] | None = None,
     date_from: date_type | None = None,
     date_to: date_type | None = None,
@@ -232,6 +239,7 @@ async def list_transactions(
         category_id=category_id,
         group_id=group_id,
         institution_id=institution_id,
+        installment_group_id=installment_group_id,
         types=types,
         date_from=date_from,
         date_to=date_to,
@@ -281,6 +289,11 @@ async def build_transaction(
     await ownership.get_owned_or_none(db, RecurringRule, data.recurring_rule_id, user_id)
     await ownership.get_owned_or_none(db, Loan, data.loan_id, user_id)
 
+    if data.card_invoice_close_date is not None and (
+        to_account is None or to_account.type != ACCOUNT_TYPE_CREDIT_CARD
+    ):
+        raise ValidationAppError(code="transaction.card_invoice_requires_card_transfer")
+
     destination_currency = to_account.currency if to_account is not None else account.currency
     conversion = await resolve_conversion(
         db,
@@ -303,6 +316,7 @@ async def build_transaction(
         notes=data.notes,
         recurring_rule_id=data.recurring_rule_id,
         loan_id=data.loan_id,
+        card_invoice_close_date=data.card_invoice_close_date,
     )
     _apply_conversion(transaction, conversion)
     db.add(transaction)
@@ -312,10 +326,63 @@ async def build_transaction(
 async def create_transaction(
     db: AsyncSession, user_id: UUID, data: TransactionCreate
 ) -> Transaction:
+    if data.installments is not None:
+        return await _create_installments(db, user_id, data)
     transaction = await build_transaction(db, user_id, data)
     await db.commit()
     await db.refresh(transaction)
     return transaction
+
+
+async def _create_installments(
+    db: AsyncSession, user_id: UUID, data: TransactionCreate
+) -> Transaction:
+    """Split one credit-card expense into N equal monthly installment
+    rows, one per future billing cycle. Installment k (0-based) is dated
+    ``add_months_clamped(date, k)``; each part carries the same
+    ``installment_group_id`` and its own ``number``/``count``. The base
+    part is ``amount / N`` quantized to 4dp and the rounding remainder
+    goes on the first part, so the parts always sum back to ``amount``
+    (Brazilian card practice).
+    """
+    count = data.installments
+    assert count is not None
+    account = await ownership.get_owned(db, Account, data.account_id, user_id)
+    if data.type != TRANSACTION_TYPE_EXPENSE or account.type != ACCOUNT_TYPE_CREDIT_CARD:
+        raise ValidationAppError(code="transaction.installments_require_credit_card")
+    if data.conversion is not None or data.currency != account.currency:
+        raise ValidationAppError(code="transaction.installments_no_conversion")
+
+    base = (data.amount / count).quantize(_CENTS, rounding=ROUND_HALF_UP)
+    remainder = data.amount - base * count
+    group_id = uuid4()
+
+    first: Transaction | None = None
+    for k in range(count):
+        part = await build_transaction(
+            db,
+            user_id,
+            TransactionCreate(
+                type=data.type,
+                date=add_months_clamped(data.date, k),
+                amount=base + (remainder if k == 0 else Decimal(0)),
+                currency=data.currency,
+                account_id=data.account_id,
+                category_id=data.category_id,
+                description=data.description,
+                notes=data.notes,
+            ),
+        )
+        part.installment_group_id = group_id
+        part.installment_number = k + 1
+        part.installment_count = count
+        if first is None:
+            first = part
+
+    await db.commit()
+    assert first is not None
+    await db.refresh(first)
+    return first
 
 
 async def import_transactions(

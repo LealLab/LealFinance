@@ -52,9 +52,20 @@ class Account(UserOwnedModel):
         ),
         # Card-only fields must be absent on every other account type.
         CheckConstraint(
-            "type = 'credit_card' OR "
-            "(credit_limit IS NULL AND closing_day IS NULL AND due_day IS NULL)",
+            "type = 'credit_card' OR ("
+            "credit_limit IS NULL AND closing_day IS NULL AND due_day IS NULL "
+            "AND payment_account_id IS NULL AND NOT auto_pay)",
             name="ck_accounts_credit_card_fields_only",
+        ),
+        # Mirrors ck_loans_auto_post_requires_account: the invoice can't be
+        # auto-paid without a source account to pay it from.
+        CheckConstraint(
+            "NOT auto_pay OR payment_account_id IS NOT NULL",
+            name="ck_accounts_auto_pay_requires_account",
+        ),
+        CheckConstraint(
+            "payment_account_id IS NULL OR payment_account_id <> id",
+            name="ck_accounts_payment_account_distinct",
         ),
     )
 
@@ -77,3 +88,12 @@ class Account(UserOwnedModel):
     credit_limit: Mapped[MoneyAmount | None] = mapped_column()
     closing_day: Mapped[int | None] = mapped_column(SmallInteger)
     due_day: Mapped[int | None] = mapped_column(SmallInteger)
+    # Credit-card only: the account whose money pays this card's invoices,
+    # both for the manual "pay now" action and (when auto_pay is on) for the
+    # nightly posting in app/services/card_invoice_posting.py. RESTRICT
+    # mirrors fk_loans_payment_account_id.
+    payment_account_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("accounts.id", ondelete="RESTRICT", name="fk_accounts_payment_account_id"),
+    )
+    auto_pay: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)

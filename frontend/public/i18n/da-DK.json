@@ -314,6 +314,7 @@
     },
     "stats": {
       "netWorth": "Nettoformue",
+      "realBalance": "Reel saldo",
       "income": "Månedlige indtægter",
       "expense": "Månedlige udgifter",
       "savingsRate": "Opsparingsprocent"
@@ -385,7 +386,10 @@
         "institution": "Institution",
         "creditLimit": "Kreditgrænse",
         "closingDay": "Lukningsdag",
-        "dueDay": "Forfaldsdag"
+        "dueDay": "Forfaldsdag",
+        "paymentAccount": "Betalingskonto",
+        "paymentAccountNone": "Ingen (betal manuelt)",
+        "autoPay": "Betal regningen automatisk på forfaldsdagen"
       },
       "errors": {
         "required": "Dette felt er påkrævet.",
@@ -411,6 +415,37 @@
         "limit": "Grænse",
         "available": "Til rådighed",
         "closingDay": "Lukning"
+      },
+      "invoices": {
+        "title": "Regninger",
+        "loading": "Indlæser regninger…",
+        "total": "I alt",
+        "paid": "Betalt",
+        "pay": "Betal regning",
+        "payEarly": "Betal før tid",
+        "previous": "Tidligere regninger",
+        "upcoming": "Kommende regninger",
+        "closesOn": "Lukker {{date}}",
+        "dueOn": "Forfalder {{date}}",
+        "status": {
+          "open": "Åben",
+          "closed": "Lukket",
+          "overdue": "Forfalden",
+          "paid": "Betalt",
+          "projected": "Forventet"
+        },
+        "notConfigured": {
+          "title": "Faktureringscyklus ikke angivet",
+          "description": "Angiv kortets skæringsdag og forfaldsdag for at se dets regninger."
+        },
+        "empty": {
+          "title": "Ingen regninger endnu",
+          "description": "Regninger vises, når kortet har aktivitet."
+        },
+        "payConfirm": {
+          "title": "Betal denne regning?",
+          "message": "Der bogføres en overførsel på {{amount}} {{currency}} fra betalingskontoen."
+        }
       }
     }
   },
@@ -518,15 +553,19 @@
         "repeat": "Gentag denne transaktion",
         "frequency": "Hyppighed",
         "interval": "Hver",
-        "selectPlaceholder": "Vælg"
+        "selectPlaceholder": "Vælg",
+        "installments": "Rater",
+        "installmentsPlaceholder": "f.eks. 10"
       },
       "hints": {
         "effectiveRate": "Effektiv kurs: {{rate}}",
-        "recurringUnavailableCrossCurrency": "Gentagelse er ikke tilgængelig for en transaktion i flere valutaer – kursen skulle angives igen for hver forekomst."
+        "recurringUnavailableCrossCurrency": "Gentagelse er ikke tilgængelig for en transaktion i flere valutaer – kursen skulle angives igen for hver forekomst.",
+        "installments": "Træk på et kreditkort og del op i lige store månedlige rater, én pr. regning."
       },
       "errors": {
         "invalid": "Kontrollér de påkrævede felter, før du gemmer.",
-        "convertedAmountRequired": "Angiv det omregnede beløb, før du gemmer."
+        "convertedAmountRequired": "Angiv det omregnede beløb, før du gemmer.",
+        "fieldRequired": "Påkrævet"
       },
       "actions": {
         "cancel": "Annuller",

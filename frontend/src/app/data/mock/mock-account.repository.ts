@@ -29,6 +29,12 @@ export class MockAccountRepository extends AccountRepository {
     }, this.latencyMs);
   }
 
+  override realBalances(): Observable<AccountBalance[]> {
+    // The mock store has no invoice projector; keep the test double usable
+    // while the HTTP repository remains the production source of truth.
+    return this.balances();
+  }
+
   get(id: string): Observable<Account | undefined> {
     return mockResult(() => this.store.accounts().find((account) => account.id === id), this.latencyMs);
   }

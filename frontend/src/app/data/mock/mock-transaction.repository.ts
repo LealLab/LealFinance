@@ -2,11 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ImportPreview,
+  TransactionCreateInput,
   TransactionFilters,
   TransactionRepository,
 } from '../transaction.repository';
 import { Page } from '../../core/api-client';
 import { Transaction } from '../../domain/models/transaction';
+import { addMonthsClamped, formatIsoDate, parseIsoDate } from '../../domain/calc/dates';
 import { compare, money } from '../../shared/money/money';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
@@ -43,6 +45,8 @@ export class MockTransactionRepository extends TransactionRepository {
           (!filters.accountId ||
             transaction.accountId === filters.accountId ||
             transaction.toAccountId === filters.accountId) &&
+          (!filters.installmentGroupId ||
+            transaction.installmentGroupId === filters.installmentGroupId) &&
           (!filters.categoryId || transaction.categoryId === filters.categoryId) &&
           (!groupCategoryIds ||
             (transaction.categoryId !== undefined &&
@@ -109,8 +113,34 @@ export class MockTransactionRepository extends TransactionRepository {
     );
   }
 
-  create(input: Omit<Transaction, 'id'>): Observable<Transaction> {
-    return mockResult(() => this.store.createTransaction(input), this.latencyMs);
+  create(input: TransactionCreateInput): Observable<Transaction> {
+    return mockResult(() => {
+      const { installments, ...transaction } = input;
+      if (!installments || installments < 2) return this.store.createTransaction(transaction);
+      // Mirror app/services/transactions.py::_create_installments: N rows,
+      // one per month, base amount to 4dp with the remainder on the first.
+      const total = money(transaction.amount, transaction.currency);
+      const base = money(
+        (Number(total.amount) / installments).toFixed(4),
+        transaction.currency,
+      );
+      const remainder = Number(total.amount) - Number(base.amount) * installments;
+      const groupId = `inst-${Date.now()}`;
+      const start = parseIsoDate(transaction.date);
+      let first: Transaction | undefined;
+      for (let k = 0; k < installments; k++) {
+        const row = this.store.createTransaction({
+          ...transaction,
+          date: formatIsoDate(addMonthsClamped(start, k)),
+          amount: (Number(base.amount) + (k === 0 ? remainder : 0)).toFixed(4),
+          installmentGroupId: groupId,
+          installmentNumber: k + 1,
+          installmentCount: installments,
+        });
+        first ??= row;
+      }
+      return first!;
+    }, this.latencyMs);
   }
 
   update(id: string, changes: Partial<Omit<Transaction, 'id'>>): Observable<Transaction> {

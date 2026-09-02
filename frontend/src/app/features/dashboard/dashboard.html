@@ -19,8 +19,9 @@
     }
 
     @if (ratesReady()) {
-      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
+        <app-stat-tile [label]="t('dashboard.stats.realBalance')" [value]="realBalance().amount | money: realBalance().currency" />
         <app-stat-tile
           [label]="t('dashboard.stats.income')"
           [value]="monthTotals().income.amount | money: monthTotals().income.currency"
@@ -34,8 +35,8 @@
         <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
       </div>
     } @else {
-      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true">
-        @for (i of [0, 1, 2, 3]; track i) {
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5" aria-busy="true">
+        @for (i of [0, 1, 2, 3, 4]; track i) {
           <app-skeleton height="4.25rem" />
         }
       </div>

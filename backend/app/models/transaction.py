@@ -10,7 +10,7 @@ app/services/conversion.py for the validation this shape supports.
 import uuid
 from datetime import date as date_type
 
-from sqlalchemy import CheckConstraint, Date, ForeignKey, Index, String, Text, text
+from sqlalchemy import CheckConstraint, Date, ForeignKey, Index, SmallInteger, String, Text, text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -55,9 +55,20 @@ class Transaction(UserOwnedModel):
             "type NOT IN ('transfer', 'interest') OR category_id IS NULL",
             name="ck_transactions_category_absent_for_transfer_interest",
         ),
+        # An installment row carries all three fields or none, with a
+        # 1-based number inside a group of at least two.
+        CheckConstraint(
+            "(installment_group_id IS NULL AND installment_number IS NULL "
+            "AND installment_count IS NULL) OR "
+            "(installment_group_id IS NOT NULL AND installment_count >= 2 "
+            "AND installment_number BETWEEN 1 AND installment_count)",
+            name="ck_transactions_installment_shape",
+        ),
         *conversion_constraints("transactions", "conversion_"),
         Index("ix_transactions_user_id_date", "user_id", "date"),
         Index("ix_transactions_loan_id", "loan_id"),
+        Index("ix_transactions_card_invoice_close_date", "card_invoice_close_date"),
+        Index("ix_transactions_installment_group_id", "installment_group_id"),
         # Idempotency guard for recurring posting (see
         # app/services/recurring_posting.py): the same rule can never post
         # two transactions on the same occurrence date. Partial, since
@@ -112,6 +123,22 @@ class Transaction(UserOwnedModel):
         UUID(as_uuid=True),
         ForeignKey("loans.id", ondelete="SET NULL", name="fk_transactions_loan_id"),
     )
+    # Set only on a transfer that pays a credit-card invoice: the close date
+    # of the cycle it settles. This is what makes invoice "paid" a derived
+    # SUM (app/services/card_invoices.py) rather than stored state, and what
+    # makes the nightly auto-pay idempotent without a cursor - deleting the
+    # payment reopens the invoice on its own. Same provenance pattern as
+    # loan_id / recurring_rule_id.
+    card_invoice_close_date: Mapped[date_type | None] = mapped_column(Date)
+
+    # A purchase split into equal monthly installments on a credit card.
+    # `installment_group_id` ties the rows together; `number`/`count`
+    # ("3/10") are stored, not derived - they are immutable facts of the
+    # purchase and save a window function on every ledger read. See
+    # app/services/transactions.py::create_transaction for the split.
+    installment_group_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    installment_number: Mapped[int | None] = mapped_column(SmallInteger)
+    installment_count: Mapped[int | None] = mapped_column(SmallInteger)
 
     conversion_amount: Mapped[MoneyAmount | None] = mapped_column()
     conversion_currency: Mapped[CurrencyCode | None] = mapped_column(

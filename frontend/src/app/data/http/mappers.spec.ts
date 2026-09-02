@@ -2,6 +2,8 @@ import {
   mapAccount,
   mapAccountBalance,
   mapAccountPatch,
+  mapCardInvoice,
+  mapCardInvoicePayment,
   mapBudget,
   mapBudgetAllocation,
   mapBudgetAllocationInput,
@@ -16,6 +18,8 @@ import {
   mapImportPreview,
   mapImportPreviewRequest,
   mapRecurringRule,
+  mapTransaction,
+  mapTransactionCreate,
   mapTransactionPatch,
 } from './mappers';
 
@@ -113,6 +117,8 @@ describe('HTTP wire mappers', () => {
         credit_limit: null,
         closing_day: null,
         due_day: null,
+        payment_account_id: null,
+        auto_pay: false,
       }),
     ).toEqual({
       id: 'a',
@@ -125,6 +131,79 @@ describe('HTTP wire mappers', () => {
       creditLimit: undefined,
       closingDay: undefined,
       dueDay: undefined,
+      paymentAccountId: undefined,
+      autoPay: false,
+    });
+  });
+
+  it('carries installment fields in and out and only sends installments when splitting', () => {
+    const wire = {
+      id: 't',
+      type: 'expense' as const,
+      date: '2026-01-31',
+      amount: '33.3334',
+      currency: 'BRL',
+      account_id: 'card',
+      to_account_id: null,
+      category_id: 'c',
+      description: 'Sofa',
+      notes: null,
+      recurring_rule_id: null,
+      loan_id: null,
+      card_invoice_close_date: null,
+      installment_group_id: 'grp',
+      installment_number: 1,
+      installment_count: 3,
+      conversion: null,
+    };
+    expect(mapTransaction(wire)).toMatchObject({
+      installmentGroupId: 'grp',
+      installmentNumber: 1,
+      installmentCount: 3,
+    });
+
+    const base = {
+      type: 'expense' as const,
+      date: '2026-01-31',
+      amount: '100.00',
+      currency: 'BRL',
+      accountId: 'card',
+      categoryId: 'c',
+      description: 'Sofa',
+    };
+    expect('installments' in mapTransactionCreate(base)).toBe(false);
+    expect(mapTransactionCreate({ ...base, installments: 3 })).toMatchObject({ installments: 3 });
+  });
+
+  it('maps a card invoice and drops nulls from a payment body', () => {
+    expect(
+      mapCardInvoice({
+        close_date: '2026-01-20',
+        due_date: '2026-01-27',
+        period_start: '2025-12-21',
+        period_end: '2026-01-20',
+        currency: 'BRL',
+        total: '120.0000',
+        paid: '20.0000',
+        remaining: '100.0000',
+        status: 'closed',
+      }),
+    ).toEqual({
+      closeDate: '2026-01-20',
+      dueDate: '2026-01-27',
+      periodStart: '2025-12-21',
+      periodEnd: '2026-01-20',
+      currency: 'BRL',
+      total: '120.0000',
+      paid: '20.0000',
+      remaining: '100.0000',
+      status: 'closed',
+    });
+    expect(mapCardInvoicePayment({ amount: '50.00' })).toEqual({
+      account_id: null,
+      date: null,
+      amount: '50.00',
+      description: null,
     });
   });
 

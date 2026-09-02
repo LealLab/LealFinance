@@ -115,6 +115,11 @@
                         />
                       </span>
                       <span class="font-medium text-content-primary">{{ tx.description }}</span>
+                      @if (tx.installmentCount) {
+                        <app-badge tone="neutral">
+                          {{ tx.installmentNumber }}/{{ tx.installmentCount }}
+                        </app-badge>
+                      }
                       @if (tx.recurringRuleId) {
                         <app-badge tone="neutral">{{ t('transactions.projected.badge') }}</app-badge>
                       }
