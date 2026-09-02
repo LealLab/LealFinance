@@ -1362,7 +1362,8 @@
       "placeholder": "Exempel: håll svaren korta och visa alltid mina månadssummor per kategori.",
       "counter": "{{count}} / {{max}} tecken",
       "save": "Spara instruktioner",
-      "saved": "Sparat"
+      "saved": "Sparat",
+      "loadError": "Det gick inte att läsa in dina sparade instruktioner. Ladda om sidan innan du redigerar dem så att du inte skriver över dem."
     },
     "backup": {
       "title": "Säkerhetskopiering och återställning",

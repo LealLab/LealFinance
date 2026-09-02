@@ -1362,7 +1362,8 @@
       "placeholder": "Exemplo: responda de forma curta e sempre mostre meus totais mensais por categoria.",
       "counter": "{{count}} / {{max}} caracteres",
       "save": "Salvar instruções",
-      "saved": "Salvo"
+      "saved": "Salvo",
+      "loadError": "Não foi possível carregar suas instruções salvas. Recarregue a página antes de editá-las para não sobrescrevê-las."
     },
     "backup": {
       "title": "Backup e restauração",

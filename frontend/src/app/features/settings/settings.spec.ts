@@ -404,6 +404,21 @@ describe('Settings', () => {
     expect(textarea.value).toBe('Sempre em BRL.');
   });
 
+  it('blocks saving when stored AI instructions fail to load', () => {
+    asAdmin();
+    agentChatRepo.getInstructions.mockReturnValue(throwError(() => new Error('temporary failure')));
+
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['aiInstructionsLoadError']()).toBe(true);
+    const saveButton = fixture.nativeElement
+      .querySelector('#settings-ai-instructions')
+      .closest('app-card')
+      .querySelector('button') as HTMLButtonElement;
+    expect(saveButton.disabled).toBe(true);
+  });
+
   it('does not request AI instructions for a member without chat access', () => {
     sessionUser.set({
       id: 'member-id',

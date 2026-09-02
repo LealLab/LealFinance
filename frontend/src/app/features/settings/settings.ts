@@ -95,11 +95,13 @@ export class Settings {
   // --- Custom AI instructions ---
   protected readonly aiInstructions = signal('');
   protected readonly aiInstructionsBusy = signal(false);
+  protected readonly aiInstructionsLoadError = signal(false);
   protected readonly aiInstructionsSaved = signal(false);
   /** Backend error code, rendered as `errors.<code>`. */
   protected readonly aiInstructionsErrorCode = signal<string | undefined>(undefined);
   /** The classifier's one-line reason, already written in the user's language. */
   protected readonly aiInstructionsReason = signal<string | undefined>(undefined);
+  // Mirrors the backend INSTRUCTIONS_MAX_LENGTH cap; keep the two in sync.
   protected readonly aiInstructionsMaxLength = 2000;
 
   // --- Two-factor authentication ---
@@ -193,8 +195,11 @@ export class Settings {
     const user = this.session.user();
     if (user?.role !== 'admin' && !user?.aiChatEnabled) return;
     this.agentChatRepo.getInstructions().subscribe({
-      next: (value) => this.aiInstructions.set(value),
-      error: () => undefined,
+      next: (value) => {
+        this.aiInstructions.set(value);
+        this.aiInstructionsLoadError.set(false);
+      },
+      error: () => this.aiInstructionsLoadError.set(true),
     });
   }
 
@@ -206,6 +211,7 @@ export class Settings {
   }
 
   protected saveAiInstructions(): void {
+    if (this.aiInstructionsLoadError()) return;
     this.aiInstructionsBusy.set(true);
     this.aiInstructionsSaved.set(false);
     this.aiInstructionsErrorCode.set(undefined);

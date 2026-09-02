@@ -1362,7 +1362,8 @@
       "placeholder": "Eksempel: hold svarene korte, og vis altid mine månedlige totaler pr. kategori.",
       "counter": "{{count}} / {{max}} tegn",
       "save": "Gem instruktioner",
-      "saved": "Gemt"
+      "saved": "Gemt",
+      "loadError": "Vi kunne ikke indlæse dine gemte instruktioner. Genindlæs siden, før du redigerer, så du ikke overskriver dem."
     },
     "backup": {
       "title": "Sikkerhedskopiering og gendannelse",

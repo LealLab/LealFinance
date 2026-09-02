@@ -1362,7 +1362,8 @@
       "placeholder": "Exemplu: răspunde pe scurt și afișează întotdeauna totalurile lunare pe categorii.",
       "counter": "{{count}} / {{max}} caractere",
       "save": "Salvează instrucțiunile",
-      "saved": "Salvat"
+      "saved": "Salvat",
+      "loadError": "Instrucțiunile salvate nu au putut fi încărcate. Reîncarcă pagina înainte de a le edita, pentru a nu le suprascrie."
     },
     "backup": {
       "title": "Copiere de siguranță și restaurare",

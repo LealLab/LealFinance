@@ -1362,7 +1362,8 @@
       "placeholder": "Eksempel: hold svarene korte og vis alltid månedlige summer per kategori.",
       "counter": "{{count}} / {{max}} tegn",
       "save": "Lagre instruksjoner",
-      "saved": "Lagret"
+      "saved": "Lagret",
+      "loadError": "Vi kunne ikke laste inn de lagrede instruksjonene dine. Last inn siden på nytt før du redigerer, slik at du ikke overskriver dem."
     },
     "backup": {
       "title": "Sikkerhetskopiering og gjenoppretting",

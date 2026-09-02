@@ -1362,7 +1362,8 @@
       "placeholder": "Příklad: odpovídej stručně a vždy zobraz měsíční součty podle kategorií.",
       "counter": "{{count}} / {{max}} znaků",
       "save": "Uložit pokyny",
-      "saved": "Uloženo"
+      "saved": "Uloženo",
+      "loadError": "Nepodařilo se načíst vaše uložené pokyny. Před úpravou znovu načtěte stránku, abyste je nepřepsali."
     },
     "backup": {
       "title": "Záloha a obnovení",

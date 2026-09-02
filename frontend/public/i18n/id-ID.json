@@ -1362,7 +1362,8 @@
       "placeholder": "Contoh: jawab dengan singkat dan selalu tampilkan total bulanan per kategori.",
       "counter": "{{count}} / {{max}} karakter",
       "save": "Simpan instruksi",
-      "saved": "Tersimpan"
+      "saved": "Tersimpan",
+      "loadError": "Instruksi tersimpan Anda tidak dapat dimuat. Muat ulang halaman sebelum mengedit agar tidak menimpanya."
     },
     "backup": {
       "title": "Pencadangan dan pemulihan",

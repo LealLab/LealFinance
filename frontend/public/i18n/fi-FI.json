@@ -1362,7 +1362,8 @@
       "placeholder": "Esimerkki: vastaa lyhyesti ja näytä aina kuukausisummat kategorioittain.",
       "counter": "{{count}} / {{max}} merkkiä",
       "save": "Tallenna ohjeet",
-      "saved": "Tallennettu"
+      "saved": "Tallennettu",
+      "loadError": "Tallennettujen ohjeidesi lataaminen ei onnistunut. Lataa sivu uudelleen ennen muokkaamista, jotta et korvaa niitä."
     },
     "backup": {
       "title": "Varmuuskopiointi ja palautus",

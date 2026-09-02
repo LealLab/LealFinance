@@ -247,6 +247,12 @@
           {{ t('settings.aiInstructions.body') }}
         </p>
 
+        @if (aiInstructionsLoadError()) {
+          <p class="mb-3 text-sm text-negative" role="alert">
+            {{ t('settings.aiInstructions.loadError') }}
+          </p>
+        }
+
         <label class="form-label" for="settings-ai-instructions">
           {{ t('settings.aiInstructions.label') }}
         </label>
@@ -272,7 +278,7 @@
           <button
             appButton
             type="button"
-            [disabled]="aiInstructionsBusy()"
+            [disabled]="aiInstructionsBusy() || aiInstructionsLoadError()"
             (click)="saveAiInstructions()"
           >
             {{ t('settings.aiInstructions.save') }}

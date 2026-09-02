@@ -86,6 +86,15 @@ async def test_allowed_instructions_are_stored(db_session: AsyncSession) -> None
     assert user.ai_custom_instructions == ON_TOPIC
 
 
+async def test_save_rejects_over_the_length_cap(db_session: AsyncSession) -> None:
+    user, _ = await make_user(db_session, email="service-toolong@example.com")
+
+    with pytest.raises(ValidationAppError) as excinfo:
+        await agent_instructions.save(db_session, user, "a" * (agent_instructions.MAX_LENGTH + 1))
+
+    assert excinfo.value.code == "agents.instructions_rejected"
+
+
 async def test_allow_verdict_tolerates_surrounding_whitespace(db_session: AsyncSession) -> None:
     user = await _user_with_provider(db_session, "allow-ws@example.com")
 

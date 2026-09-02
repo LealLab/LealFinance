@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
 ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
+INSTRUCTIONS_MAX_LENGTH = 2000
 
 
 class ProviderStatusRead(BaseModel):
@@ -113,4 +114,4 @@ class InstructionsRead(BaseModel):
 class InstructionsUpdate(BaseModel):
     # Empty clears the field; the router treats that as a delete and skips the
     # provider check so removal works even when no provider is reachable.
-    instructions: str = Field(default="", max_length=2000)
+    instructions: str = Field(default="", max_length=INSTRUCTIONS_MAX_LENGTH)

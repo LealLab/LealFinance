@@ -1362,7 +1362,8 @@
       "placeholder": "Beispiel: Antworte kurz und zeige immer meine Monatssummen nach Kategorie.",
       "counter": "{{count}} / {{max}} Zeichen",
       "save": "Anweisungen speichern",
-      "saved": "Gespeichert"
+      "saved": "Gespeichert",
+      "loadError": "Ihre gespeicherten Anweisungen konnten nicht geladen werden. Laden Sie die Seite neu, bevor Sie sie bearbeiten, damit Sie sie nicht überschreiben."
     },
     "backup": {
       "title": "Sichern und Wiederherstellen",

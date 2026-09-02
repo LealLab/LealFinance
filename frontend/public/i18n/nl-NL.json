@@ -1362,7 +1362,8 @@
       "placeholder": "Voorbeeld: houd antwoorden kort en toon altijd mijn maandtotalen per categorie.",
       "counter": "{{count}} / {{max}} tekens",
       "save": "Instructies opslaan",
-      "saved": "Opgeslagen"
+      "saved": "Opgeslagen",
+      "loadError": "We konden je opgeslagen instructies niet laden. Laad de pagina opnieuw voordat je ze bewerkt, zodat je ze niet overschrijft."
     },
     "backup": {
       "title": "Back-up en herstel",

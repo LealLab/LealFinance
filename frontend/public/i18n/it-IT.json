@@ -1362,7 +1362,8 @@
       "placeholder": "Esempio: rispondi in modo breve e mostra sempre i totali mensili per categoria.",
       "counter": "{{count}} / {{max}} caratteri",
       "save": "Salva istruzioni",
-      "saved": "Salvato"
+      "saved": "Salvato",
+      "loadError": "Non è stato possibile caricare le tue istruzioni salvate. Ricarica la pagina prima di modificarle per non sovrascriverle."
     },
     "backup": {
       "title": "Backup e ripristino",

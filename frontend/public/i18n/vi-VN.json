@@ -1362,7 +1362,8 @@
       "placeholder": "Ví dụ: trả lời ngắn gọn và luôn hiển thị tổng theo tháng cho từng danh mục.",
       "counter": "{{count}} / {{max}} ký tự",
       "save": "Lưu hướng dẫn",
-      "saved": "Đã lưu"
+      "saved": "Đã lưu",
+      "loadError": "Không thể tải hướng dẫn đã lưu của bạn. Hãy tải lại trang trước khi chỉnh sửa để không ghi đè lên chúng."
     },
     "backup": {
       "title": "Sao lưu và khôi phục",

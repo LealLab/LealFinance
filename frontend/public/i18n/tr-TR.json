@@ -1362,7 +1362,8 @@
       "placeholder": "Örnek: yanıtları kısa tut ve her zaman kategoriye göre aylık toplamları göster.",
       "counter": "{{count}} / {{max}} karakter",
       "save": "Talimatları kaydet",
-      "saved": "Kaydedildi"
+      "saved": "Kaydedildi",
+      "loadError": "Kayıtlı talimatlarınız yüklenemedi. Üzerine yazmamak için düzenlemeden önce sayfayı yenileyin."
     },
     "backup": {
       "title": "Yedekleme ve geri yükleme",

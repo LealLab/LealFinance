@@ -1362,7 +1362,8 @@
       "placeholder": "Example: keep answers short and always show my monthly totals by category.",
       "counter": "{{count}} / {{max}} characters",
       "save": "Save instructions",
-      "saved": "Saved"
+      "saved": "Saved",
+      "loadError": "We couldn't load your saved instructions. Reload the page before editing so you don't overwrite them."
     },
     "backup": {
       "title": "Backup and restore",

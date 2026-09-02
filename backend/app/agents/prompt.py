@@ -49,7 +49,6 @@ CUSTOM_INSTRUCTIONS_PREFACE = (
 )
 
 VALIDATION_ALLOW = "ALLOW"
-VALIDATION_REJECT = "REJECT"
 INSTRUCTIONS_REJECTED_CODE = "agents.instructions_rejected"
 
 # Classifier for text a user wants to store as their custom instructions. The

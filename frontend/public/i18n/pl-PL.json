@@ -1362,7 +1362,8 @@
       "placeholder": "Przykład: odpowiadaj krótko i zawsze pokazuj miesięczne sumy według kategorii.",
       "counter": "{{count}} / {{max}} znaków",
       "save": "Zapisz instrukcje",
-      "saved": "Zapisano"
+      "saved": "Zapisano",
+      "loadError": "Nie udało się wczytać zapisanych instrukcji. Odśwież stronę przed ich edycją, aby ich nie nadpisać."
     },
     "backup": {
       "title": "Kopia zapasowa i przywracanie",

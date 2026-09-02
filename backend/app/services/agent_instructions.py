@@ -14,9 +14,9 @@ from app.agents import chat, prompt
 from app.agents.events import ProviderEvent, TextDelta, Turn
 from app.core.errors import ValidationAppError
 from app.models.user import User
+from app.schemas.agent import INSTRUCTIONS_MAX_LENGTH as MAX_LENGTH
 from app.services.agent_chat import _resolve_provider
 
-MAX_LENGTH = 2000
 # Enough for the classifier's one-sentence reason; longer means it ignored the
 # format and the text is rejected anyway.
 MAX_REASON_LENGTH = 200
@@ -67,6 +67,8 @@ async def save(
 ) -> str | None:
     """Validate and store the user's instructions, or raise if they are refused."""
     cleaned = text.strip()
+    if len(cleaned) > MAX_LENGTH:
+        raise ValidationAppError(code=prompt.INSTRUCTIONS_REJECTED_CODE)
     stored = user.ai_custom_instructions
 
     # Clearing must always work, including while no provider is reachable -

@@ -1362,7 +1362,8 @@
       "placeholder": "Exemple : réponds brièvement et affiche toujours mes totaux mensuels par catégorie.",
       "counter": "{{count}} / {{max}} caractères",
       "save": "Enregistrer les instructions",
-      "saved": "Enregistré"
+      "saved": "Enregistré",
+      "loadError": "Impossible de charger vos instructions enregistrées. Rechargez la page avant de les modifier pour ne pas les écraser."
     },
     "backup": {
       "title": "Sauvegarde et restauration",
