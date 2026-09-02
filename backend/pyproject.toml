@@ -1,6 +1,6 @@
 [project]
 name = "lealfinance-api"
-version = "0.2.0"
+version = "0.3.0"
 description = "LealFinance backend API"
 requires-python = ">=3.13,<3.14"
 dependencies = [
