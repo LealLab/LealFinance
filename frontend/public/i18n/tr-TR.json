@@ -44,7 +44,9 @@
       "cancel": "İptal",
       "confirm": "Onayla",
       "save": "Kaydet",
-      "saving": "Kaydediliyor…"
+      "saving": "Kaydediliyor…",
+      "previousMonth": "Önceki ay",
+      "nextMonth": "Sonraki ay"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Finans kuruluşu silinsin mi?",
-      "message": "Bu işlem geri alınamaz. Bu finans kuruluşunu silmek istiyor musunuz?"
+      "message": "Seçin: bağlantıyı kaldırmak hesapları ve geçmişi korur; kademeli silme hesapları, işlemleri ve tüm geçmişi yok eder. Bu finans kuruluşunu silmek istiyor musunuz?",
+      "unlinkAndDelete": "Hesapların bağlantısını kaldır ve sil",
+      "cascade": "Finans kuruluşunu ve tüm hesapları sil"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "İşlem silinsin mi?",
-      "message": "Bu işlem geri alınamaz. Bu işlemi silmek istiyor musunuz?"
+      "message": "Bu işlem geri alınamaz. Bu işlemi silmek istiyor musunuz?",
+      "installment": {
+        "title": "Taksit {{number}}/{{count}} silinsin mi?",
+        "message": "Bu işlem bir taksit planının parçasıdır. Hangi taksitlerin silineceğini seçin.",
+        "onlyThis": "Sadece bu",
+        "thisAndFuture": "Bu ve sonrakiler",
+        "allInSeries": "Tüm {{count}} taksit"
+      }
     },
     "form": {
       "newTitle": "Yeni işlem",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Önceki ay",
-      "nextMonth": "Sonraki ay",
       "balanceTrend": "Bakiye eğilimi",
       "selectedDay": "Seçilen gün",
       "selectDayHint": "Etkinliğini görmek için bir gün seçin",
@@ -877,7 +886,6 @@
         "save": "Dağılım kaydedilemedi. Tekrar deneyin."
       }
     },
-    "monthLabel": "Ay",
     "actions": {
       "new": "Yeni bütçe",
       "edit": "Düzenle",

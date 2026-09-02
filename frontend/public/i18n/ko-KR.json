@@ -44,7 +44,9 @@
       "cancel": "취소",
       "confirm": "확인",
       "save": "저장",
-      "saving": "저장 중…"
+      "saving": "저장 중…",
+      "previousMonth": "이전 달",
+      "nextMonth": "다음 달"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "금융기관 삭제",
-      "message": "이 작업은 되돌릴 수 없습니다. 이 금융기관을 삭제하시겠어요?"
+      "message": "선택하세요: 연결 해제는 계좌와 내역을 유지하지만, 연쇄 삭제는 계좌·거래·모든 내역을 삭제합니다. 이 금융기관을 삭제하시겠습니까?",
+      "unlinkAndDelete": "계좌 연결 해제 후 삭제",
+      "cascade": "금융기관과 모든 계좌 삭제"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "거래 삭제",
-      "message": "이 작업은 되돌릴 수 없습니다. 이 거래를 삭제하시겠어요?"
+      "message": "이 작업은 되돌릴 수 없습니다. 이 거래를 삭제하시겠어요?",
+      "installment": {
+        "title": "{{count}}회 할부 중 {{number}}회를 삭제하시겠어요?",
+        "message": "이 거래는 할부 계획의 일부입니다. 삭제할 할부 항목을 선택하세요.",
+        "onlyThis": "이번 항목만",
+        "thisAndFuture": "이번 항목과 이후 항목",
+        "allInSeries": "전체 {{count}}회 할부"
+      }
     },
     "form": {
       "newTitle": "거래 추가",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "이전 달",
-      "nextMonth": "다음 달",
       "balanceTrend": "잔액 추이",
       "selectedDay": "선택한 날짜",
       "selectDayHint": "활동을 보려면 날짜를 선택하세요",
@@ -877,7 +886,6 @@
         "save": "배분 내역을 저장하지 못했습니다. 다시 시도하세요."
       }
     },
-    "monthLabel": "월",
     "actions": {
       "new": "예산 추가",
       "edit": "수정",

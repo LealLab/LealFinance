@@ -44,7 +44,9 @@
       "cancel": "Hủy",
       "confirm": "Xác nhận",
       "save": "Lưu",
-      "saving": "Đang lưu…"
+      "saving": "Đang lưu…",
+      "previousMonth": "Tháng trước",
+      "nextMonth": "Tháng sau"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Xóa tổ chức tài chính",
-      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa tổ chức tài chính này không?"
+      "message": "Chọn: ngắt liên kết sẽ giữ lại tài khoản và lịch sử; xóa theo tầng sẽ xóa tài khoản, giao dịch và toàn bộ lịch sử. Bạn có muốn xóa tổ chức tài chính này không?",
+      "unlinkAndDelete": "Ngắt liên kết tài khoản & xóa",
+      "cascade": "Xóa tổ chức tài chính và tất cả tài khoản"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Xóa giao dịch",
-      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa giao dịch này không?"
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa giao dịch này không?",
+      "installment": {
+        "title": "Xóa kỳ trả góp {{number}} trên tổng số {{count}} kỳ?",
+        "message": "Giao dịch này thuộc một kế hoạch trả góp. Hãy chọn các kỳ trả góp cần xóa.",
+        "onlyThis": "Chỉ kỳ này",
+        "thisAndFuture": "Kỳ này và các kỳ sau",
+        "allInSeries": "Tất cả {{count}} kỳ"
+      }
     },
     "form": {
       "newTitle": "Giao dịch mới",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Tháng trước",
-      "nextMonth": "Tháng sau",
       "balanceTrend": "Xu hướng số dư",
       "selectedDay": "Ngày đã chọn",
       "selectDayHint": "Chọn một ngày để xem hoạt động",
@@ -877,7 +886,6 @@
         "save": "Không thể lưu phân bổ. Vui lòng thử lại."
       }
     },
-    "monthLabel": "Tháng",
     "actions": {
       "new": "Ngân sách mới",
       "edit": "Chỉnh sửa",

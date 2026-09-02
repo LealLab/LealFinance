@@ -1,13 +1,23 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ManualRateRepository } from '../../data/manual-rate.repository';
 import { todayIso } from '../../domain/calc/dates';
 import { ManualRate } from '../../domain/models/manual-rate';
 import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
+import { money } from '../../shared/money/money';
+import { convertByRate } from '../../shared/money/rate';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
+
+const positiveRateValidator: ValidatorFn = (control) => {
+  const value = control.value;
+  return value === null || value === undefined || value === '' || Number(value) > 0
+    ? null
+    : { nonPositiveRate: true };
+};
 
 /**
  * Create/edit for a ManualRate - a user-defined exchange rate for one
@@ -43,8 +53,21 @@ export class ManualRateFormModal {
   protected readonly form = this.fb.nonNullable.group({
     baseCode: ['USD', Validators.required],
     quoteCode: ['BRL', Validators.required],
-    rate: ['', [Validators.required, decimalAmountValidator()]],
+    rate: ['1', [Validators.required, decimalAmountValidator(10), positiveRateValidator]],
     asOf: [todayIso(), Validators.required],
+  });
+  private readonly formValue = toSignal(this.form.valueChanges, {
+    initialValue: this.form.getRawValue(),
+  });
+  protected readonly ratePreview = computed(() => {
+    const { baseCode, quoteCode, rate } = this.formValue();
+    if (!baseCode || !quoteCode || baseCode === quoteCode || !rate) return null;
+    try {
+      const converted = convertByRate(money('1', baseCode), String(rate), quoteCode);
+      return { baseCode, quoteCode, amount: converted.amount };
+    } catch {
+      return null;
+    }
   });
 
   /**
@@ -61,7 +84,7 @@ export class ManualRateFormModal {
       this.form.reset({
         baseCode: rate?.baseCode ?? this.prefillBaseCode() ?? 'USD',
         quoteCode: rate?.quoteCode ?? this.prefillQuoteCode() ?? 'BRL',
-        rate: rate?.rate ?? '',
+        rate: rate?.rate ?? '1',
         asOf: rate?.asOf ?? todayIso(),
       });
       this.saveErrorKey.set(null);

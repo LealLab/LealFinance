@@ -1,9 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { TranslocoLocaleService } from '@jsverse/transloco-locale';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
@@ -23,7 +22,6 @@ import { identityConverter } from '../../domain/calc/aggregations';
 import { effectiveAmount } from '../../domain/calc/conversion';
 import {
   addDays,
-  addMonthsClamped,
   formatIsoDate,
   monthKey,
   parseIsoDate,
@@ -43,6 +41,7 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { MonthSwitcher } from '../../shared/ui/month-switcher/month-switcher';
 import { buildMonthGrid } from './calendar-month';
 import { RecurringRuleFormModal } from './recurring-rule-form-modal';
 import { ALL_COLUMNS, TransactionColumn } from './transaction-columns';
@@ -61,10 +60,10 @@ const TRANSACTION_TYPES: readonly TransactionType[] = ['income', 'expense', 'tra
 const SEARCH_DEBOUNCE_MS = 250;
 
 /**
- * The literal keys passed to `confirmService.confirm(...)` below are real
+ * The literal keys passed to `confirmService.confirm(...)`/`choose(...)` below are real
  * string literals, invisible to transloco-keys-manager's extractor -
  * declare them so `task i18n:validate` sees them:
- * t(transactions.delete.title, transactions.delete.message, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
+ * t(transactions.delete.title, transactions.delete.message, transactions.delete.installment.title, transactions.delete.installment.message, transactions.delete.installment.onlyThis, transactions.delete.installment.thisAndFuture, transactions.delete.installment.allInSeries, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
  * The CSV header and column-menu keys are built by concatenation:
  * t(transactions.columns.date, transactions.columns.description, transactions.columns.category, transactions.columns.account, transactions.columns.amount, transactions.columns.title, transactions.export.filename, transactions.type.income, transactions.type.expense, transactions.type.transfer)
  */
@@ -81,6 +80,7 @@ const SEARCH_DEBOUNCE_MS = 250;
     EmptyState,
     Icon,
     PageHeader,
+    MonthSwitcher,
     ExchangeRateWarning,
     TransactionFilterBar,
     TransactionTable,
@@ -102,7 +102,6 @@ export class Transactions {
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly transloco = inject(TranslocoService);
-  private readonly locale = inject(TranslocoLocaleService);
   private readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly prefs = inject(TransactionViewPrefsService);
 
@@ -250,13 +249,6 @@ export class Transactions {
     };
   });
 
-  protected readonly monthLabel = computed(() =>
-    this.locale.localizeDate(`${this.calendarMonth()}-01`, undefined, {
-      year: 'numeric',
-      month: 'long',
-    }),
-  );
-
   protected readonly monthTxResource = rxResource({
     params: () => this.monthBounds(),
     // ponytail: unbounded - a calendar month has no limit. Add one only if
@@ -365,6 +357,13 @@ export class Transactions {
   });
 
   constructor() {
+    let previousMonth = this.calendarMonth();
+    effect(() => {
+      const month = this.calendarMonth();
+      if (month === previousMonth) return;
+      previousMonth = month;
+      this.selectedDay.set(null);
+    });
     openOnNewParam(() => this.openCreateTx());
   }
 
@@ -433,13 +432,6 @@ export class Transactions {
     this.mode.set(mode);
   }
 
-  protected stepMonth(delta: number): void {
-    this.calendarMonth.set(
-      monthKey(formatIsoDate(addMonthsClamped(parseIsoDate(`${this.calendarMonth()}-01`), delta))),
-    );
-    this.selectedDay.set(null);
-  }
-
   // --- CSV ------------------------------------------------------------
 
   protected exportCsv(): void {
@@ -493,6 +485,52 @@ export class Transactions {
   }
 
   protected async deleteTx(tx: Transaction): Promise<void> {
+    if (tx.installmentGroupId) {
+      const choice = await this.confirmService.choose(
+        'transactions.delete.installment.title',
+        'transactions.delete.installment.message',
+        [
+          { labelKey: 'transactions.delete.installment.onlyThis', value: 'onlyThis' },
+          { labelKey: 'transactions.delete.installment.thisAndFuture', value: 'thisAndFuture' },
+          {
+            labelKey: 'transactions.delete.installment.allInSeries',
+            value: 'allInSeries',
+            tone: 'danger',
+          },
+        ],
+        { number: tx.installmentNumber, count: tx.installmentCount },
+      );
+      if (!choice) return;
+
+      const deletion$ =
+        choice === 'onlyThis'
+          ? this.transactionRepository.delete(tx.id)
+          : this.transactionRepository
+              .list({ installmentGroupId: tx.installmentGroupId })
+              .pipe(
+                switchMap((rows) =>
+                  this.transactionRepository.bulkDelete(
+                    rows
+                      .filter(
+                        (row) =>
+                          choice === 'allInSeries' ||
+                          row.installmentNumber! >= tx.installmentNumber!,
+                      )
+                      .map((row) => row.id),
+                  ),
+                ),
+              );
+      deletion$.subscribe({
+        next: () => {
+          this.pageResource.reload();
+          this.monthTxResource.reload();
+          this.postedOccurrencesResource.reload();
+        },
+        error: () => this.mutationErrors.show(),
+      });
+      return;
+    }
+
     const confirmed = await this.confirmService.confirm(
       'transactions.delete.title',
       'transactions.delete.message',

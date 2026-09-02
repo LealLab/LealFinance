@@ -44,7 +44,9 @@
       "cancel": "Annulla",
       "confirm": "Conferma",
       "save": "Salva",
-      "saving": "Salvataggio…"
+      "saving": "Salvataggio…",
+      "previousMonth": "Mese precedente",
+      "nextMonth": "Mese successivo"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Elimina istituto",
-      "message": "Questa azione non può essere annullata. Vuoi eliminare questo istituto?"
+      "message": "Scegli: scollegare mantiene conti e cronologia; l’eliminazione a cascata cancella conti, transazioni e tutta la cronologia. Vuoi eliminare questo istituto?",
+      "unlinkAndDelete": "Scollega conti ed elimina",
+      "cascade": "Elimina istituto e tutti i conti"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Elimina transazione",
-      "message": "Questa azione non può essere annullata. Vuoi eliminare questa transazione?"
+      "message": "Questa azione non può essere annullata. Vuoi eliminare questa transazione?",
+      "installment": {
+        "title": "Eliminare la rata {{number}} di {{count}}?",
+        "message": "Questa transazione fa parte di un piano rateale. Scegli quali rate eliminare.",
+        "onlyThis": "Solo questa",
+        "thisAndFuture": "Questa e le successive",
+        "allInSeries": "Tutte le {{count}} rate"
+      }
     },
     "form": {
       "newTitle": "Nuova transazione",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Mese precedente",
-      "nextMonth": "Mese successivo",
       "balanceTrend": "Andamento del saldo",
       "selectedDay": "Giorno selezionato",
       "selectDayHint": "Seleziona un giorno per visualizzarne l’attività",
@@ -877,7 +886,6 @@
         "save": "Impossibile salvare la distribuzione. Riprova."
       }
     },
-    "monthLabel": "Mese",
     "actions": {
       "new": "Nuovo budget",
       "edit": "Modifica",

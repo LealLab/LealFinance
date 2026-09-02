@@ -44,7 +44,9 @@
       "cancel": "Annuler",
       "confirm": "Confirmer",
       "save": "Enregistrer",
-      "saving": "Enregistrement…"
+      "saving": "Enregistrement…",
+      "previousMonth": "Mois précédent",
+      "nextMonth": "Mois suivant"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Supprimer l’établissement",
-      "message": "Cette action est irréversible. Voulez-vous supprimer cet établissement ?"
+      "message": "Choisissez : dissocier conserve les comptes et l’historique ; la suppression en cascade détruit les comptes, les transactions et tout l’historique. Voulez-vous supprimer cet établissement ?",
+      "unlinkAndDelete": "Dissocier les comptes et supprimer",
+      "cascade": "Supprimer l’établissement et tous les comptes"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Supprimer l’opération",
-      "message": "Cette action est irréversible. Voulez-vous supprimer cette opération ?"
+      "message": "Cette action est irréversible. Voulez-vous supprimer cette opération ?",
+      "installment": {
+        "title": "Supprimer l’échéance {{number}} sur {{count}} ?",
+        "message": "Cette opération fait partie d’un plan de paiement échelonné. Choisissez les échéances à supprimer.",
+        "onlyThis": "Cette échéance uniquement",
+        "thisAndFuture": "Cette échéance et les suivantes",
+        "allInSeries": "Toutes les {{count}} échéances"
+      }
     },
     "form": {
       "newTitle": "Nouvelle opération",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Mois précédent",
-      "nextMonth": "Mois suivant",
       "balanceTrend": "Évolution du solde",
       "selectedDay": "Jour sélectionné",
       "selectDayHint": "Sélectionnez un jour pour voir son activité",
@@ -877,7 +886,6 @@
         "save": "Impossible d’enregistrer la répartition. Réessayez."
       }
     },
-    "monthLabel": "Mois",
     "actions": {
       "new": "Nouveau budget",
       "edit": "Modifier",

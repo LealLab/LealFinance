@@ -44,7 +44,9 @@
       "cancel": "Batal",
       "confirm": "Konfirmasi",
       "save": "Simpan",
-      "saving": "Menyimpan…"
+      "saving": "Menyimpan…",
+      "previousMonth": "Bulan sebelumnya",
+      "nextMonth": "Bulan berikutnya"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Hapus lembaga keuangan",
-      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus lembaga keuangan ini?"
+      "message": "Pilih: melepas tautan mempertahankan akun dan riwayat; penghapusan berantai menghapus akun, transaksi, dan seluruh riwayat. Apakah Anda ingin menghapus lembaga keuangan ini?",
+      "unlinkAndDelete": "Lepas akun & hapus",
+      "cascade": "Hapus lembaga keuangan dan semua akun"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Hapus transaksi",
-      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus transaksi ini?"
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus transaksi ini?",
+      "installment": {
+        "title": "Hapus cicilan {{number}} dari {{count}}?",
+        "message": "Transaksi ini merupakan bagian dari rencana cicilan. Pilih cicilan yang ingin dihapus.",
+        "onlyThis": "Hanya ini",
+        "thisAndFuture": "Ini dan yang akan datang",
+        "allInSeries": "Semua {{count}} cicilan"
+      }
     },
     "form": {
       "newTitle": "Transaksi baru",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Bulan sebelumnya",
-      "nextMonth": "Bulan berikutnya",
       "balanceTrend": "Tren saldo",
       "selectedDay": "Hari yang dipilih",
       "selectDayHint": "Pilih hari untuk melihat aktivitasnya",
@@ -877,7 +886,6 @@
         "save": "Distribusi tidak dapat disimpan. Coba lagi."
       }
     },
-    "monthLabel": "Bulan",
     "actions": {
       "new": "Anggaran baru",
       "edit": "Edit",

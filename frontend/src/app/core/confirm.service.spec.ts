@@ -36,4 +36,33 @@ describe('ConfirmService', () => {
     void service.confirm('t', 'm');
     expect(service.request()?.tone).toBe('default');
   });
+
+  it('exposes choices and resolves the selected value', async () => {
+    const choices = [
+      { labelKey: 'one', value: 'one' },
+      { labelKey: 'all', value: 'all', tone: 'danger' as const },
+    ];
+    const promise = service.choose('title', 'message', choices, { count: 10 });
+
+    expect(service.request()).toEqual(
+      expect.objectContaining({
+        titleKey: 'title',
+        messageKey: 'message',
+        choices,
+        params: { count: 10 },
+      }),
+    );
+
+    service.respondChoice('all');
+
+    expect(await promise).toBe('all');
+    expect(service.request()).toBeNull();
+  });
+
+  it('resolves null when a choice dialog is dismissed', async () => {
+    const promise = service.choose('title', 'message', [{ labelKey: 'one', value: 'one' }]);
+    service.dismiss();
+
+    expect(await promise).toBeNull();
+  });
 });

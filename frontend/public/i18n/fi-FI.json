@@ -44,7 +44,9 @@
       "cancel": "Peruuta",
       "confirm": "Vahvista",
       "save": "Tallenna",
-      "saving": "Tallennetaan…"
+      "saving": "Tallennetaan…",
+      "previousMonth": "Edellinen kuukausi",
+      "nextMonth": "Seuraava kuukausi"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Poista rahoituslaitos",
-      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän rahoituslaitoksen?"
+      "message": "Valitse: linkityksen poistaminen säilyttää tilit ja historian; ketjupoisto tuhoaa tilit, tapahtumat ja koko historian. Haluatko poistaa tämän rahoituslaitoksen?",
+      "unlinkAndDelete": "Poista linkitys ja poista",
+      "cascade": "Poista rahoituslaitos ja kaikki tilit"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Poista tapahtuma",
-      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän tapahtuman?"
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän tapahtuman?",
+      "installment": {
+        "title": "Poistetaanko erä {{number}}/{{count}}?",
+        "message": "Tämä tapahtuma on osa osamaksusuunnitelmaa. Valitse poistettavat erät.",
+        "onlyThis": "Vain tämä",
+        "thisAndFuture": "Tämä ja tulevat",
+        "allInSeries": "Kaikki {{count}} erää"
+      }
     },
     "form": {
       "newTitle": "Uusi tapahtuma",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Edellinen kuukausi",
-      "nextMonth": "Seuraava kuukausi",
       "balanceTrend": "Saldon kehitys",
       "selectedDay": "Valittu päivä",
       "selectDayHint": "Valitse päivä nähdäksesi sen tapahtumat",
@@ -877,7 +886,6 @@
         "save": "Jakauman tallentaminen epäonnistui. Yritä uudelleen."
       }
     },
-    "monthLabel": "Kuukausi",
     "actions": {
       "new": "Uusi budjetti",
       "edit": "Muokkaa",

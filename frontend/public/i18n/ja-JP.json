@@ -44,7 +44,9 @@
       "cancel": "キャンセル",
       "confirm": "確認",
       "save": "保存",
-      "saving": "保存中…"
+      "saving": "保存中…",
+      "previousMonth": "前月",
+      "nextMonth": "次月"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "金融機関を削除",
-      "message": "この操作は取り消せません。この金融機関を削除しますか？"
+      "message": "選択してください：リンク解除では口座と履歴が保持されます。カスケード削除では口座、取引、すべての履歴が削除されます。この金融機関を削除しますか？",
+      "unlinkAndDelete": "口座のリンクを解除して削除",
+      "cascade": "金融機関とすべての口座を削除"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "取引を削除",
-      "message": "この操作は取り消せません。この取引を削除しますか？"
+      "message": "この操作は取り消せません。この取引を削除しますか？",
+      "installment": {
+        "title": "{{count}}回払いの{{number}}回目を削除しますか？",
+        "message": "この取引は分割払いの一部です。削除する分割払いを選択してください。",
+        "onlyThis": "この回だけ",
+        "thisAndFuture": "この回と今後の分",
+        "allInSeries": "{{count}}回分すべて"
+      }
     },
     "form": {
       "newTitle": "新しい取引",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "前月",
-      "nextMonth": "次月",
       "balanceTrend": "残高の推移",
       "selectedDay": "選択した日",
       "selectDayHint": "日付を選択してアクティビティを表示",
@@ -877,7 +886,6 @@
         "save": "配分を保存できませんでした。もう一度お試しください。"
       }
     },
-    "monthLabel": "月",
     "actions": {
       "new": "新しい予算",
       "edit": "編集",

@@ -44,7 +44,9 @@
       "cancel": "取消",
       "confirm": "确认",
       "save": "保存",
-      "saving": "保存中…"
+      "saving": "保存中…",
+      "previousMonth": "上个月",
+      "nextMonth": "下个月"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "删除机构",
-      "message": "此操作无法撤销。要删除此机构吗？"
+      "message": "请选择：解除关联会保留账户和历史记录；级联删除会删除账户、交易和全部历史记录。要删除此机构吗？",
+      "unlinkAndDelete": "解除关联并删除",
+      "cascade": "删除机构及所有账户"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "删除交易",
-      "message": "此操作无法撤销。要删除此交易吗？"
+      "message": "此操作无法撤销。要删除此交易吗？",
+      "installment": {
+        "title": "删除第 {{number}}/{{count}} 期？",
+        "message": "此交易属于分期计划。请选择要删除的分期。",
+        "onlyThis": "仅此一期",
+        "thisAndFuture": "此期及之后",
+        "allInSeries": "全部 {{count}} 期"
+      }
     },
     "form": {
       "newTitle": "新建交易",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "上个月",
-      "nextMonth": "下个月",
       "balanceTrend": "余额趋势",
       "selectedDay": "所选日期",
       "selectDayHint": "选择日期以查看当天活动",
@@ -877,7 +886,6 @@
         "save": "无法保存分配。请重试。"
       }
     },
-    "monthLabel": "月份",
     "actions": {
       "new": "新建预算",
       "edit": "编辑",

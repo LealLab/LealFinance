@@ -44,7 +44,9 @@
       "cancel": "Avbryt",
       "confirm": "Bekräfta",
       "save": "Spara",
-      "saving": "Sparar…"
+      "saving": "Sparar…",
+      "previousMonth": "Föregående månad",
+      "nextMonth": "Nästa månad"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Ta bort finansiellt institut",
-      "message": "Åtgärden kan inte ångras. Vill du ta bort det finansiella institutet?"
+      "message": "Välj: frånkoppling behåller konton och historik; kaskadradering tar bort konton, transaktioner och all historik. Vill du ta bort detta finansiella institut?",
+      "unlinkAndDelete": "Koppla bort konton och ta bort",
+      "cascade": "Ta bort finansiellt institut och alla konton"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Ta bort transaktion",
-      "message": "Åtgärden kan inte ångras. Vill du ta bort transaktionen?"
+      "message": "Åtgärden kan inte ångras. Vill du ta bort transaktionen?",
+      "installment": {
+        "title": "Ta bort delbetalning {{number}} av {{count}}?",
+        "message": "Den här transaktionen ingår i en delbetalningsplan. Välj vilka delbetalningar som ska tas bort.",
+        "onlyThis": "Endast denna",
+        "thisAndFuture": "Denna och framtida",
+        "allInSeries": "Alla {{count}} delbetalningar"
+      }
     },
     "form": {
       "newTitle": "Ny transaktion",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Föregående månad",
-      "nextMonth": "Nästa månad",
       "balanceTrend": "Saldoutveckling",
       "selectedDay": "Vald dag",
       "selectDayHint": "Välj en dag för att se dess aktivitet",
@@ -877,7 +886,6 @@
         "save": "Det gick inte att spara fördelningen. Försök igen."
       }
     },
-    "monthLabel": "Månad",
     "actions": {
       "new": "Ny budget",
       "edit": "Redigera",

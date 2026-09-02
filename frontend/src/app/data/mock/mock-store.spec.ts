@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { ApiError } from '../../core/api-error';
 import { MockStore } from './mock-store';
 
 describe('MockStore', () => {
@@ -347,8 +348,159 @@ describe('MockStore', () => {
         archived: false
       });
 
-      expect(() => store.deleteInstitution(institution.id)).toThrow();
+      let error: unknown;
+      try {
+        store.deleteInstitution(institution.id);
+      } catch (caught) {
+        error = caught;
+      }
+      expect(error).toBeInstanceOf(ApiError);
+      expect(error).toMatchObject({
+        status: 409,
+        code: 'institution.has_accounts',
+        params: { accounts: 1, wallets: 0 },
+      });
       expect(store.institutions().find((i) => i.id === institution.id)).toBeDefined();
+    });
+
+    it('detaches accounts and wallets before deleting an institution', () => {
+      const institution = store.createInstitution({
+        name: 'Instituição em Uso',
+        icon: 'bank',
+        archived: false,
+        position: 99,
+      });
+      const account = store.createAccount({
+        name: 'Conta Vinculada',
+        type: 'investment',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const wallet = store.createInvestmentWallet({
+        accountId: account.id,
+        name: 'Carteira Vinculada',
+        currency: 'BRL',
+        institutionId: institution.id,
+        archived: false,
+      });
+
+      store.deleteInstitution(institution.id, 'detach');
+
+      expect(store.institutions().find((item) => item.id === institution.id)).toBeUndefined();
+      expect(
+        store.accounts().find((item) => item.id === account.id)?.institutionId,
+      ).toBeUndefined();
+      expect(
+        store.investmentWallets().find((item) => item.id === wallet.id)?.institutionId,
+      ).toBeUndefined();
+    });
+
+    it('cascades an institution and all account-owned data', () => {
+      const institution = store.createInstitution({
+        name: 'Instituição para cascata',
+        icon: 'bank',
+        archived: false,
+        position: 99,
+      });
+      const account = store.createAccount({
+        name: 'Conta para cascata',
+        type: 'checking',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const goalAccount = store.createAccount({
+        name: 'Meta para cascata',
+        type: 'goal',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const survivor = store.createAccount({
+        name: 'Cartão sobrevivente',
+        type: 'credit_card',
+        currency: 'BRL',
+        openingBalance: '0',
+        paymentAccountId: account.id,
+        archived: false,
+      });
+      const transaction = store.createTransaction({
+        type: 'expense',
+        date: '2026-01-01',
+        amount: '10',
+        currency: 'BRL',
+        accountId: account.id,
+        description: 'Transação para cascata',
+      });
+      const wallet = store.createInvestmentWallet({
+        accountId: account.id,
+        name: 'Carteira para cascata',
+        currency: 'BRL',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const investmentTransaction = store.createInvestmentTransaction({
+        walletId: wallet.id,
+        type: 'fee',
+        date: '2026-01-01',
+        amount: '1',
+        fee: '0',
+        currency: 'BRL',
+      });
+      const goal = store.createGoal({
+        accountId: goalAccount.id,
+        name: 'Meta',
+        targetAmount: '100',
+        currency: 'BRL',
+        archived: false,
+      });
+      const loan = store.createLoan({
+        name: 'Empréstimo',
+        categoryId: 'category',
+        currency: 'BRL',
+        amountBorrowed: '100',
+        fees: '0',
+        interestRate: '0',
+        ratePeriod: 'monthly',
+        installmentCount: 1,
+        firstPaymentDate: '2026-01-01',
+        autoPost: false,
+        paymentAccountId: account.id,
+        archived: false,
+        notes: undefined,
+      });
+      const recurringRule = store.createRecurringRule({
+        frequency: 'monthly',
+        interval: 1,
+        startDate: '2026-01-01',
+        template: {
+          type: 'expense',
+          amount: '10',
+          currency: 'BRL',
+          accountId: account.id,
+          categoryId: 'category',
+          description: 'Regra para cascata',
+        },
+      });
+
+      store.deleteInstitution(institution.id, 'cascade');
+
+      expect(store.institutions().find((item) => item.id === institution.id)).toBeUndefined();
+      expect(store.accounts().find((item) => item.id === account.id)).toBeUndefined();
+      expect(store.accounts().find((item) => item.id === goalAccount.id)).toBeUndefined();
+      expect(store.transactions().find((item) => item.id === transaction.id)).toBeUndefined();
+      expect(
+        store.investmentTransactions().find((item) => item.id === investmentTransaction.id),
+      ).toBeUndefined();
+      expect(store.investmentWallets().find((item) => item.id === wallet.id)).toBeUndefined();
+      expect(store.goals().find((item) => item.id === goal.id)).toBeUndefined();
+      expect(store.loans().find((item) => item.id === loan.id)).toBeUndefined();
+      expect(store.recurringRules().find((item) => item.id === recurringRule.id)).toBeUndefined();
+      expect(store.accounts().find((item) => item.id === survivor.id)?.paymentAccountId).toBeUndefined();
     });
 
     it('throws when deleting an institution that does not exist', () => {

@@ -1,5 +1,8 @@
-"""Account CRUD and archive/unarchive - no delete (accounts are archived,
-never removed, matching the frontend's AccountRepository)."""
+"""Account CRUD and archive/unarchive.
+
+Accounts can be deleted only as part of an institution cascade; there is no
+standalone per-account delete endpoint.
+"""
 
 from datetime import date
 from uuid import UUID

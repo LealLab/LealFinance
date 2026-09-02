@@ -8,16 +8,23 @@ import { Injectable, signal } from '@angular/core';
  */
 export type ConfirmParams = Record<string, unknown>;
 
+export interface ConfirmChoice {
+  labelKey: string;
+  value: string;
+  tone?: 'default' | 'danger';
+}
+
 export interface ConfirmRequest {
   titleKey: string;
   messageKey: string;
   tone: 'default' | 'danger';
   /** Interpolation values for `messageKey`, e.g. `{{count}}` placeholders - see t() usage in confirm-dialog.html. */
   params?: ConfirmParams;
+  choices?: ConfirmChoice[];
 }
 
 interface PendingConfirm extends ConfirmRequest {
-  resolve: (confirmed: boolean) => void;
+  resolve: (value: boolean | string | null) => void;
 }
 
 /**
@@ -37,15 +44,44 @@ export class ConfirmService {
     titleKey: string,
     messageKey: string,
     tone: 'default' | 'danger' = 'default',
-    params?: ConfirmParams
+    params?: ConfirmParams,
   ): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.pending.set({ titleKey, messageKey, tone, params, resolve });
+    return this.ask({ titleKey, messageKey, tone, params });
+  }
+
+  choose(
+    titleKey: string,
+    messageKey: string,
+    choices: ConfirmChoice[],
+    params?: ConfirmParams,
+  ): Promise<string | null> {
+    return this.ask({ titleKey, messageKey, tone: 'default', choices, params });
+  }
+
+  private ask<T>(request: ConfirmRequest): Promise<T> {
+    return new Promise<T>((resolve) => {
+      this.pending.set({
+        ...request,
+        resolve: resolve as (value: boolean | string | null) => void,
+      });
     });
   }
 
   respond(confirmed: boolean): void {
-    this.pending()?.resolve(confirmed);
+    this.complete(confirmed);
+  }
+
+  respondChoice(value: string | null): void {
+    this.complete(value);
+  }
+
+  dismiss(): void {
+    const pending = this.pending();
+    if (pending) this.complete(pending.choices ? null : false);
+  }
+
+  private complete(value: boolean | string | null): void {
+    this.pending()?.resolve(value);
     this.pending.set(null);
   }
 }

@@ -44,7 +44,9 @@
       "cancel": "Cancelar",
       "confirm": "Confirmar",
       "save": "Guardar",
-      "saving": "Guardando…"
+      "saving": "Guardando…",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Eliminar entidad",
-      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar esta entidad?"
+      "message": "Elige: desvincular conserva las cuentas y el historial; la eliminación en cascada borra las cuentas, las transacciones y todo el historial. ¿Quieres eliminar esta entidad?",
+      "unlinkAndDelete": "Desvincular cuentas y eliminar",
+      "cascade": "Eliminar entidad y todas las cuentas"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Eliminar movimiento",
-      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este movimiento?"
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este movimiento?",
+      "installment": {
+        "title": "¿Eliminar el movimiento {{number}} de {{count}}?",
+        "message": "Este movimiento forma parte de un plan de cuotas. Elige qué cuotas quieres eliminar.",
+        "onlyThis": "Solo esta",
+        "thisAndFuture": "Esta y las siguientes",
+        "allInSeries": "Todas las {{count}} cuotas"
+      }
     },
     "form": {
       "newTitle": "Nuevo movimiento",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Mes anterior",
-      "nextMonth": "Mes siguiente",
       "balanceTrend": "Tendencia del saldo",
       "selectedDay": "Día seleccionado",
       "selectDayHint": "Selecciona un día para ver su actividad",
@@ -877,7 +886,6 @@
         "save": "No se ha podido guardar la distribución. Inténtalo de nuevo."
       }
     },
-    "monthLabel": "Mes",
     "actions": {
       "new": "Nuevo presupuesto",
       "edit": "Editar",

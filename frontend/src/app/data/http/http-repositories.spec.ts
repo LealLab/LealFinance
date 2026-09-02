@@ -11,6 +11,7 @@ import { HttpCategoryGroupRepository } from './http-category-group.repository';
 import { HttpCategoryRepository } from './http-category.repository';
 import { HttpExchangeRateRepository } from './http-exchange-rate.repository';
 import { HttpGoalRepository } from './http-goal.repository';
+import { HttpInstitutionRepository } from './http-institution.repository';
 import { HttpLoanRepository } from './http-loan.repository';
 import { HttpManualRateRepository } from './http-manual-rate.repository';
 import { HttpTransactionRepository } from './http-transaction.repository';
@@ -115,6 +116,14 @@ describe('HTTP repositories', () => {
     expect(allocationReq.request.method).toBe('PUT');
     expect(allocationReq.request.body).toEqual({ group_id: 'g', percentage: '20' });
     allocationReq.flush({ id: 'a', group_id: 'g', percentage: '20' });
+  });
+
+  it('sends the institution delete mode', () => {
+    TestBed.inject(HttpInstitutionRepository).delete('i', 'detach').subscribe();
+    const req = http.expectOne((request) => request.url === '/api/v1/institutions/i');
+    expect(req.request.method).toBe('DELETE');
+    expect(req.request.params.get('mode')).toBe('detach');
+    req.flush(null);
   });
 
   it('sends transaction filters with backend parameter names', () => {

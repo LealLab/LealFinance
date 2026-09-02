@@ -44,7 +44,9 @@
       "cancel": "Anulează",
       "confirm": "Confirmă",
       "save": "Salvează",
-      "saving": "Se salvează…"
+      "saving": "Se salvează…",
+      "previousMonth": "Luna anterioară",
+      "nextMonth": "Luna următoare"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Șterge instituția",
-      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această instituție?"
+      "message": "Alege: deconectarea păstrează conturile și istoricul; ștergerea în cascadă elimină conturile, tranzacțiile și întregul istoric. Vrei să ștergi această instituție?",
+      "unlinkAndDelete": "Deconectează conturile și șterge",
+      "cascade": "Șterge instituția și toate conturile"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Șterge tranzacția",
-      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această tranzacție?"
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această tranzacție?",
+      "installment": {
+        "title": "Ștergi rata {{number}} din {{count}}?",
+        "message": "Această tranzacție face parte dintr-un plan de plată în rate. Alege ce rate vrei să ștergi.",
+        "onlyThis": "Doar aceasta",
+        "thisAndFuture": "Aceasta și cele viitoare",
+        "allInSeries": "Toate cele {{count}} de rate"
+      }
     },
     "form": {
       "newTitle": "Tranzacție nouă",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Luna anterioară",
-      "nextMonth": "Luna următoare",
       "balanceTrend": "Evoluția soldului",
       "selectedDay": "Ziua selectată",
       "selectDayHint": "Selectează o zi pentru a vedea activitatea",
@@ -877,7 +886,6 @@
         "save": "Distribuția nu a putut fi salvată. Încearcă din nou."
       }
     },
-    "monthLabel": "Lună",
     "actions": {
       "new": "Buget nou",
       "edit": "Editează",

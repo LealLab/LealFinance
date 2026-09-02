@@ -44,7 +44,9 @@
       "cancel": "Zrušit",
       "confirm": "Potvrdit",
       "save": "Uložit",
-      "saving": "Ukládání…"
+      "saving": "Ukládání…",
+      "previousMonth": "Předchozí měsíc",
+      "nextMonth": "Následující měsíc"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Odstranit instituci",
-      "message": "Tuto akci nelze vrátit zpět. Chcete tuto instituci odstranit?"
+      "message": "Zvolte: odpojení zachová účty a historii; kaskádové odstranění smaže účty, transakce a celou historii. Chcete tuto instituci odstranit?",
+      "unlinkAndDelete": "Odpojit účty a odstranit",
+      "cascade": "Odstranit instituci a všechny účty"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Odstranit transakci",
-      "message": "Tuto akci nelze vrátit zpět. Chcete tuto transakci odstranit?"
+      "message": "Tuto akci nelze vrátit zpět. Chcete tuto transakci odstranit?",
+      "installment": {
+        "title": "Odstranit splátku {{number}} z {{count}}?",
+        "message": "Tato transakce je součástí splátkového plánu. Vyberte, které splátky chcete odstranit.",
+        "onlyThis": "Pouze tuto",
+        "thisAndFuture": "Tuto a následující",
+        "allInSeries": "Celou sérii ({{count}} splátek)"
+      }
     },
     "form": {
       "newTitle": "Nová transakce",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Předchozí měsíc",
-      "nextMonth": "Následující měsíc",
       "balanceTrend": "Vývoj zůstatku",
       "selectedDay": "Vybraný den",
       "selectDayHint": "Vyberte den a zobrazte jeho aktivitu",
@@ -877,7 +886,6 @@
         "save": "Rozdělení se nepodařilo uložit. Zkuste to znovu."
       }
     },
-    "monthLabel": "Měsíc",
     "actions": {
       "new": "Nový rozpočet",
       "edit": "Upravit",

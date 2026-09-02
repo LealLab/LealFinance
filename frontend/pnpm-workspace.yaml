@@ -3,3 +3,9 @@ allowBuilds:
   esbuild: true
   lmdb: true
   msgpackr-extract: true
+
+# Transitive dev-only deps pulled in by @angular-eslint/builder, pinned to
+# the patched versions ahead of the parent packages picking them up.
+overrides:
+  fast-uri: '^3.1.6'
+  qs: '^6.16.0'

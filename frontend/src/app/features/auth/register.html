@@ -1,8 +1,4 @@
-<main *transloco="let t" class="auth-page relative">
-  <div class="absolute end-4 top-4 flex items-center gap-1">
-    <app-language-select compact />
-    <app-theme-toggle />
-  </div>
+<main *transloco="let t" class="auth-page">
   <section class="auth-card">
     <div class="mb-6 flex items-center gap-2 text-lg font-semibold">
       <app-logo [size]="30" class="text-accent" />
@@ -49,21 +45,6 @@
           }
         </select>
       </label>
-      <label>
-        <span class="form-label">{{ t('settings.appearance.language') }}</span>
-        <select
-          class="form-input"
-          formControlName="locale"
-          (change)="setLocale($any($event.target).value)"
-        >
-          @for (lang of availableLangs; track lang) {
-            <option
-              [value]="lang"
-              [textContent]="t('layout.languageSwitcher.options.' + lang)"
-            ></option>
-          }
-        </select>
-      </label>
       @if (errorCode(); as code) {
         <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }
@@ -74,5 +55,12 @@
     <a class="mt-5 block text-sm text-accent hover:underline" routerLink="/login">
       {{ t('auth.register.backToLogin') }}
     </a>
+    <div class="mt-6 flex flex-col gap-3 border-t border-border pt-4">
+      <app-language-select />
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-content-muted">{{ t('settings.appearance.theme') }}</span>
+        <app-theme-toggle />
+      </div>
+    </div>
   </section>
 </main>

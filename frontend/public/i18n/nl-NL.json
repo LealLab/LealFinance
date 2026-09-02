@@ -44,7 +44,9 @@
       "cancel": "Annuleren",
       "confirm": "Bevestigen",
       "save": "Opslaan",
-      "saving": "Opslaan…"
+      "saving": "Opslaan…",
+      "previousMonth": "Vorige maand",
+      "nextMonth": "Volgende maand"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Instelling verwijderen",
-      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze instelling verwijderen?"
+      "message": "Kies: loskoppelen behoudt rekeningen en geschiedenis; trapsgewijs verwijderen wist rekeningen, transacties en de volledige geschiedenis. Wil je deze instelling verwijderen?",
+      "unlinkAndDelete": "Rekeningen loskoppelen en verwijderen",
+      "cascade": "Instelling en alle rekeningen verwijderen"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Transactie verwijderen",
-      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze transactie verwijderen?"
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze transactie verwijderen?",
+      "installment": {
+        "title": "Termijn {{number}} van {{count}} verwijderen?",
+        "message": "Deze transactie maakt deel uit van een termijnplan. Kies welke termijnen je wilt verwijderen.",
+        "onlyThis": "Alleen deze",
+        "thisAndFuture": "Deze en toekomstige",
+        "allInSeries": "Alle {{count}} termijnen"
+      }
     },
     "form": {
       "newTitle": "Nieuwe transactie",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Vorige maand",
-      "nextMonth": "Volgende maand",
       "balanceTrend": "Saldoverloop",
       "selectedDay": "Geselecteerde dag",
       "selectDayHint": "Selecteer een dag om de activiteit te bekijken",
@@ -877,7 +886,6 @@
         "save": "De verdeling kon niet worden opgeslagen. Probeer het opnieuw."
       }
     },
-    "monthLabel": "Maand",
     "actions": {
       "new": "Nieuw budget",
       "edit": "Bewerken",

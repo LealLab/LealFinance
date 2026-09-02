@@ -44,7 +44,9 @@
       "cancel": "Annuller",
       "confirm": "Bekræft",
       "save": "Gem",
-      "saving": "Gemmer…"
+      "saving": "Gemmer…",
+      "previousMonth": "Forrige måned",
+      "nextMonth": "Næste måned"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Slet institution",
-      "message": "Denne handling kan ikke fortrydes. Vil du slette denne institution?"
+      "message": "Vælg: Afkobling bevarer konti og historik; kaskadesletning fjerner konti, transaktioner og al historik. Vil du slette denne institution?",
+      "unlinkAndDelete": "Afkobl konti og slet",
+      "cascade": "Slet institution og alle konti"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Slet transaktion",
-      "message": "Denne handling kan ikke fortrydes. Vil du slette denne transaktion?"
+      "message": "Denne handling kan ikke fortrydes. Vil du slette denne transaktion?",
+      "installment": {
+        "title": "Slet rate {{number}} af {{count}}?",
+        "message": "Denne transaktion er en del af en afbetalingsplan. Vælg, hvilke rater der skal slettes.",
+        "onlyThis": "Kun denne",
+        "thisAndFuture": "Denne og fremtidige",
+        "allInSeries": "Alle {{count}} rater"
+      }
     },
     "form": {
       "newTitle": "Ny transaktion",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Forrige måned",
-      "nextMonth": "Næste måned",
       "balanceTrend": "Saldoens udvikling",
       "selectedDay": "Valgt dag",
       "selectDayHint": "Vælg en dag for at se dens aktivitet",
@@ -877,7 +886,6 @@
         "save": "Fordelingen kunne ikke gemmes. Prøv igen."
       }
     },
-    "monthLabel": "Måned",
     "actions": {
       "new": "Nyt budget",
       "edit": "Rediger",

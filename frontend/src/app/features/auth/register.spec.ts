@@ -64,28 +64,26 @@ describe('Register', () => {
     expect(options.map((o) => o.value)).toEqual(['USD', 'BRL']);
   });
 
-  it('defaults the base language to the active language', () => {
+  it('defaults the submitted locale to the active language', () => {
     const fixture = TestBed.createComponent(Register);
     fixture.detectChanges();
 
-    expect(
-      (fixture.nativeElement.querySelector('select[formcontrolname="locale"]') as HTMLSelectElement)
-        .value,
-    ).toBe('en-US');
+    expect(fixture.componentInstance['form'].controls.locale.value).toBe('en-US');
   });
 
-  it('switches the page language when the base language changes', () => {
+  it('follows the page language when it is switched from the card control', () => {
     const fixture = TestBed.createComponent(Register);
     fixture.detectChanges();
 
     const select = fixture.nativeElement.querySelector(
-      'select[formcontrolname="locale"]',
+      'app-language-select select',
     ) as HTMLSelectElement;
     select.value = 'pt-BR';
     select.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
     expect(TestBed.inject(TranslocoService).getActiveLang()).toBe('pt-BR');
+    expect(fixture.componentInstance['form'].controls.locale.value).toBe('pt-BR');
   });
 
   it('registers and navigates home on success', async () => {

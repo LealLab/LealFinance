@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { ApiError } from '../../core/api-error';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
@@ -11,6 +12,7 @@ import { Loan } from '../../domain/models/loan';
 import { installmentAmount as computeInstallmentAmount } from '../../domain/calc/loans';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { LoanPayment } from '../loan.repository';
+import { InstitutionDeleteMode } from '../institution.repository';
 import {
   InvestmentAsset,
   InvestmentTransaction,
@@ -138,20 +140,118 @@ export class MockStore {
     return findEntity(this.institutionsSignal(), id)!;
   }
 
-  /**
-   * Refuses to delete an institution that any account still references -
-   * unlike Transactions/Budgets/RecurringRules (freely deletable), this is
-   * an invariant check enforced at the store level (the categories
-   * workstream's usage-guard equivalent lives one layer up instead; either
-   * placement is fine, this just needs to be the one used consistently
-   * here). A thrown Error is this repo's existing convention for a
-   * store-level invariant violation - see `notFound` above.
-   */
-  deleteInstitution(id: string): void {
+  deleteInstitution(id: string, mode: InstitutionDeleteMode = 'guard'): void {
     if (!findEntity(this.institutionsSignal(), id)) notFound('Institution', id);
-    const inUse = this.accountsSignal().some((account) => account.institutionId === id);
-    if (inUse) {
-      throw new Error(`Institution "${id}" is still referenced by at least one account`);
+    const accounts = this.accountsSignal().filter((account) => account.institutionId === id);
+    const wallets = this.investmentWalletsSignal().filter((wallet) => wallet.institutionId === id);
+    if (mode === 'guard' && (accounts.length || wallets.length)) {
+      throw new ApiError(409, 'institution.has_accounts', {
+        accounts: accounts.length,
+        wallets: wallets.length,
+      });
+    }
+    if (mode === 'detach') {
+      this.accountsSignal.update((list) =>
+        list.map((account) =>
+          account.institutionId === id ? { ...account, institutionId: undefined } : account,
+        ),
+      );
+      this.investmentWalletsSignal.update((list) =>
+        list.map((wallet) =>
+          wallet.institutionId === id ? { ...wallet, institutionId: undefined } : wallet,
+        ),
+      );
+    }
+    if (mode === 'cascade') {
+      const accountIds = new Set(accounts.map((account) => account.id));
+      const walletIds = new Set(
+        this.investmentWalletsSignal()
+          .filter(
+            (wallet) =>
+              wallet.institutionId === id ||
+              accountIds.has(wallet.accountId) ||
+              (wallet.cashAccountId !== undefined && accountIds.has(wallet.cashAccountId)),
+          )
+          .map((wallet) => wallet.id),
+      );
+      const transactionIds = new Set(
+        this.transactionsSignal()
+          .filter(
+            (transaction) =>
+              accountIds.has(transaction.accountId) ||
+              (transaction.toAccountId !== undefined && accountIds.has(transaction.toAccountId)),
+          )
+          .map((transaction) => transaction.id),
+      );
+      const investmentTransactionIds = new Set(
+        this.investmentTransactionsSignal()
+          .filter(
+            (transaction) =>
+              walletIds.has(transaction.walletId) ||
+              (transaction.transactionId !== undefined &&
+                transactionIds.has(transaction.transactionId)),
+          )
+          .map((transaction) => transaction.id),
+      );
+      const goalIds = new Set(
+        this.goalsSignal()
+          .filter((goal) => accountIds.has(goal.accountId))
+          .map((goal) => goal.id),
+      );
+      const loanIds = new Set(
+        this.loansSignal()
+          .filter(
+            (loan) =>
+              loan.paymentAccountId !== undefined && accountIds.has(loan.paymentAccountId),
+          )
+          .map((loan) => loan.id),
+      );
+      const recurringRuleIds = new Set(
+        this.recurringRulesSignal()
+          .filter(
+            (rule) =>
+              accountIds.has(rule.template.accountId) ||
+              (rule.template.toAccountId !== undefined &&
+                accountIds.has(rule.template.toAccountId)),
+          )
+          .map((rule) => rule.id),
+      );
+
+      this.investmentTransactionsSignal.update((list) =>
+        list.filter((transaction) => !investmentTransactionIds.has(transaction.id)),
+      );
+      this.investmentWalletsSignal.update((list) =>
+        list.filter((wallet) => !walletIds.has(wallet.id)),
+      );
+      this.transactionsSignal.update((list) =>
+        list
+          .filter((transaction) => !transactionIds.has(transaction.id))
+          .map((transaction) => {
+            const next = { ...transaction };
+            if (next.loanId !== undefined && loanIds.has(next.loanId)) next.loanId = undefined;
+            if (
+              next.recurringRuleId !== undefined &&
+              recurringRuleIds.has(next.recurringRuleId)
+            ) {
+              next.recurringRuleId = undefined;
+            }
+            return next;
+          }),
+      );
+      this.goalsSignal.update((list) => list.filter((goal) => !goalIds.has(goal.id)));
+      this.loansSignal.update((list) => list.filter((loan) => !loanIds.has(loan.id)));
+      this.recurringRulesSignal.update((list) =>
+        list.filter((rule) => !recurringRuleIds.has(rule.id)),
+      );
+      this.accountsSignal.update((list) =>
+        list
+          .filter((account) => !accountIds.has(account.id))
+          .map((account) =>
+            account.paymentAccountId !== undefined && accountIds.has(account.paymentAccountId)
+              ? { ...account, paymentAccountId: undefined }
+              : account,
+          ),
+      );
     }
     this.institutionsSignal.update((list) => removeEntity(list, id));
   }

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { ApiClient } from '../../core/api-client';
 import { Institution } from '../../domain/models/institution';
-import { InstitutionRepository } from '../institution.repository';
+import { InstitutionDeleteMode, InstitutionRepository } from '../institution.repository';
 import { mapInstitution, mapInstitutionCreate, mapInstitutionPatch } from './mappers';
 import { notFoundOrThrow } from './repository-errors';
 import { InstitutionWire } from './wire-dtos';
@@ -36,7 +36,7 @@ export class HttpInstitutionRepository extends InstitutionRepository {
       .post<InstitutionWire>(`/institutions/${id}/archive`, { archived })
       .pipe(map(mapInstitution));
   }
-  delete(id: string): Observable<void> {
-    return this.api.delete(`/institutions/${id}`);
+  delete(id: string, mode: InstitutionDeleteMode = 'guard'): Observable<void> {
+    return this.api.delete(`/institutions/${id}`, { mode });
   }
 }

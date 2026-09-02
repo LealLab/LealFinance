@@ -2,14 +2,35 @@
   <div *transloco="let t">
     <app-modal [open]="open()" (openChange)="onOpenChange($event)" [titleText]="t(request.titleKey)">
       <p class="text-sm text-content-primary">{{ t(request.messageKey, request.params) }}</p>
-      <div class="mt-4 flex justify-end gap-2">
-        <button appButton variant="secondary" type="button" (click)="respond(false)">
-          {{ t('common.actions.cancel') }}
-        </button>
-        <!-- eslint-disable-next-line @angular-eslint/template/no-autofocus -->
-        <button appButton [variant]="confirmVariant()" type="button" autofocus (click)="respond(true)">
-          {{ t('common.actions.confirm') }}
-        </button>
+      <div class="mt-4 flex flex-wrap justify-end gap-2">
+        @if (request.choices; as choices) {
+          <button
+            appButton
+            variant="secondary"
+            type="button"
+            (click)="respondChoice(null)"
+          >
+            {{ t('common.actions.cancel') }}
+          </button>
+          @for (choice of choices; track choice.value) {
+            <button
+              appButton
+              [variant]="choice.tone === 'danger' ? 'danger' : 'primary'"
+              type="button"
+              (click)="respondChoice(choice.value)"
+            >
+              {{ t(choice.labelKey) }}
+            </button>
+          }
+        } @else {
+          <button appButton variant="secondary" type="button" (click)="respond(false)">
+            {{ t('common.actions.cancel') }}
+          </button>
+          <!-- eslint-disable-next-line @angular-eslint/template/no-autofocus -->
+          <button appButton [variant]="confirmVariant()" type="button" autofocus (click)="respond(true)">
+            {{ t('common.actions.confirm') }}
+          </button>
+        }
       </div>
     </app-modal>
   </div>

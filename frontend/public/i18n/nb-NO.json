@@ -44,7 +44,9 @@
       "cancel": "Avbryt",
       "confirm": "Bekreft",
       "save": "Lagre",
-      "saving": "Lagrer…"
+      "saving": "Lagrer…",
+      "previousMonth": "Forrige måned",
+      "nextMonth": "Neste måned"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Slett institusjon",
-      "message": "Denne handlingen kan ikke angres. Vil du slette denne institusjonen?"
+      "message": "Velg: Frakobling beholder kontoer og historikk; kaskadesletting sletter kontoer, transaksjoner og all historikk. Vil du slette denne institusjonen?",
+      "unlinkAndDelete": "Koble fra kontoer og slett",
+      "cascade": "Slett institusjon og alle kontoer"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Slett transaksjon",
-      "message": "Denne handlingen kan ikke angres. Vil du slette denne transaksjonen?"
+      "message": "Denne handlingen kan ikke angres. Vil du slette denne transaksjonen?",
+      "installment": {
+        "title": "Slett avdrag {{number}} av {{count}}?",
+        "message": "Denne transaksjonen er en del av en avdragsordning. Velg hvilke avdrag som skal slettes.",
+        "onlyThis": "Bare dette",
+        "thisAndFuture": "Dette og fremtidige",
+        "allInSeries": "Alle {{count}} avdrag"
+      }
     },
     "form": {
       "newTitle": "Ny transaksjon",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Forrige måned",
-      "nextMonth": "Neste måned",
       "balanceTrend": "Saldoens utvikling",
       "selectedDay": "Valgt dag",
       "selectDayHint": "Velg en dag for å se aktiviteten",
@@ -877,7 +886,6 @@
         "save": "Fordelingen kunne ikke lagres. Prøv igjen."
       }
     },
-    "monthLabel": "Måned",
     "actions": {
       "new": "Nytt budsjett",
       "edit": "Rediger",

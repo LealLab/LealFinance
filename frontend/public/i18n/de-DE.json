@@ -44,7 +44,9 @@
       "cancel": "Abbrechen",
       "confirm": "Bestätigen",
       "save": "Speichern",
-      "saving": "Wird gespeichert…"
+      "saving": "Wird gespeichert…",
+      "previousMonth": "Vorheriger Monat",
+      "nextMonth": "Nächster Monat"
     }
   },
   "icons": {
@@ -475,7 +477,9 @@
     },
     "delete": {
       "title": "Institut löschen",
-      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie dieses Institut löschen?"
+      "message": "Wählen Sie: Beim Trennen bleiben Konten und Verlauf erhalten; beim Löschen im Verbund werden Konten, Transaktionen und der gesamte Verlauf gelöscht. Möchten Sie dieses Institut löschen?",
+      "unlinkAndDelete": "Konten trennen & löschen",
+      "cascade": "Institut und alle Konten löschen"
     }
   },
   "transactions": {
@@ -529,7 +533,14 @@
     },
     "delete": {
       "title": "Transaktion löschen",
-      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diese Transaktion löschen?"
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diese Transaktion löschen?",
+      "installment": {
+        "title": "Rate {{number}} von {{count}} löschen?",
+        "message": "Diese Transaktion ist Teil eines Ratenplans. Wählen Sie aus, welche Raten gelöscht werden sollen.",
+        "onlyThis": "Nur diese",
+        "thisAndFuture": "Diese und folgende",
+        "allInSeries": "Alle {{count}} Raten"
+      }
     },
     "form": {
       "newTitle": "Neue Transaktion",
@@ -684,8 +695,6 @@
       }
     },
     "calendar": {
-      "previousMonth": "Vorheriger Monat",
-      "nextMonth": "Nächster Monat",
       "balanceTrend": "Kontostandverlauf",
       "selectedDay": "Ausgewählter Tag",
       "selectDayHint": "Wähle einen Tag aus, um seine Aktivitäten zu sehen",
@@ -877,7 +886,6 @@
         "save": "Die Verteilung konnte nicht gespeichert werden. Versuchen Sie es erneut."
       }
     },
-    "monthLabel": "Monat",
     "actions": {
       "new": "Neues Budget",
       "edit": "Bearbeiten",
