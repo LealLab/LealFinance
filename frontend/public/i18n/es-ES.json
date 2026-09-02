@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Eliminar entidad",
-      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar esta entidad?"
+      "message": "Las cuentas y carteras de inversión vinculadas se desvincularán, no se eliminarán. ¿Quieres eliminar esta entidad?",
+      "unlinkAndDelete": "Desvincular cuentas y eliminar"
     }
   },
   "transactions": {

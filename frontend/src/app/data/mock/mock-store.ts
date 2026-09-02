@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { ApiError } from '../../core/api-error';
 import { Account } from '../../domain/models/account';
 import { Budget } from '../../domain/models/budget';
 import { BudgetAllocation, ExpectedIncome } from '../../domain/models/budget-plan';
@@ -138,20 +139,27 @@ export class MockStore {
     return findEntity(this.institutionsSignal(), id)!;
   }
 
-  /**
-   * Refuses to delete an institution that any account still references -
-   * unlike Transactions/Budgets/RecurringRules (freely deletable), this is
-   * an invariant check enforced at the store level (the categories
-   * workstream's usage-guard equivalent lives one layer up instead; either
-   * placement is fine, this just needs to be the one used consistently
-   * here). A thrown Error is this repo's existing convention for a
-   * store-level invariant violation - see `notFound` above.
-   */
-  deleteInstitution(id: string): void {
+  deleteInstitution(id: string, detach = false): void {
     if (!findEntity(this.institutionsSignal(), id)) notFound('Institution', id);
-    const inUse = this.accountsSignal().some((account) => account.institutionId === id);
-    if (inUse) {
-      throw new Error(`Institution "${id}" is still referenced by at least one account`);
+    const accounts = this.accountsSignal().filter((account) => account.institutionId === id);
+    const wallets = this.investmentWalletsSignal().filter((wallet) => wallet.institutionId === id);
+    if (!detach && (accounts.length || wallets.length)) {
+      throw new ApiError(409, 'institution.has_accounts', {
+        accounts: accounts.length,
+        wallets: wallets.length,
+      });
+    }
+    if (detach) {
+      this.accountsSignal.update((list) =>
+        list.map((account) =>
+          account.institutionId === id ? { ...account, institutionId: undefined } : account,
+        ),
+      );
+      this.investmentWalletsSignal.update((list) =>
+        list.map((wallet) =>
+          wallet.institutionId === id ? { ...wallet, institutionId: undefined } : wallet,
+        ),
+      );
     }
     this.institutionsSignal.update((list) => removeEntity(list, id));
   }

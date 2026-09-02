@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Ta bort finansiellt institut",
-      "message": "Åtgärden kan inte ångras. Vill du ta bort det finansiella institutet?"
+      "message": "Kopplade konton och investeringsplånböcker kommer att kopplas bort, inte tas bort. Vill du ta bort detta finansiella institut?",
+      "unlinkAndDelete": "Koppla bort konton och ta bort"
     }
   },
   "transactions": {

@@ -1,14 +1,18 @@
 """Institution CRUD, archive/unarchive, delete guard, and ownership isolation."""
 
+from uuid import UUID
+
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from tests.factories import login_as, make_user
+from app.models.user import User
+from tests.factories import login_as, make_investment_wallet, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
+async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> User:
     user, password = await make_user(db_session, email=email)
     await login_as(client, email=user.email, password=password)
+    return user
 
 
 async def test_create_and_list_institution(client: AsyncClient, db_session: AsyncSession) -> None:
@@ -116,6 +120,69 @@ async def test_delete_institution_with_accounts_is_blocked(
     delete_response = await client.delete(f"/api/v1/institutions/{institution_id}")
     assert delete_response.status_code == 409
     assert delete_response.json()["error"]["code"] == "institution.has_accounts"
+    assert delete_response.json()["error"]["params"] == {"accounts": 1, "wallets": 0}
+
+
+async def test_delete_institution_with_accounts_detaches_them(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "frank-detach@example.com")
+    institution_response = await client.post(
+        "/api/v1/institutions", json={"name": "Detach Accounts", "icon": "bank"}
+    )
+    institution_id = institution_response.json()["id"]
+
+    account_response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Checking",
+            "type": "checking",
+            "currency": "BRL",
+            "opening_balance": "100.0000",
+            "institution_id": institution_id,
+        },
+    )
+    account_id = account_response.json()["id"]
+
+    delete_response = await client.delete(f"/api/v1/institutions/{institution_id}?detach=true")
+    assert delete_response.status_code == 204
+
+    account_after_delete = await client.get(f"/api/v1/accounts/{account_id}")
+    assert account_after_delete.status_code == 200
+    assert account_after_delete.json()["institution_id"] is None
+
+
+async def test_delete_institution_with_wallet_is_guarded_and_detaches_wallet(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "frank-wallet@example.com")
+    institution_response = await client.post(
+        "/api/v1/institutions", json={"name": "Wallet Institution", "icon": "bank"}
+    )
+    institution_id = UUID(institution_response.json()["id"])
+
+    account_response = await client.post(
+        "/api/v1/accounts",
+        json={"name": "Investment Account", "type": "investment", "currency": "BRL"},
+    )
+    wallet = await make_investment_wallet(
+        db_session,
+        user_id=user.id,
+        account_id=UUID(account_response.json()["id"]),
+        institution_id=institution_id,
+    )
+
+    blocked_response = await client.delete(f"/api/v1/institutions/{institution_id}")
+    assert blocked_response.status_code == 409
+    assert blocked_response.json()["error"]["code"] == "institution.has_accounts"
+    assert blocked_response.json()["error"]["params"] == {"accounts": 0, "wallets": 1}
+
+    delete_response = await client.delete(f"/api/v1/institutions/{institution_id}?detach=true")
+    assert delete_response.status_code == 204
+
+    wallet_after_delete = await client.get(f"/api/v1/investments/wallets/{wallet.id}")
+    assert wallet_after_delete.status_code == 200
+    assert wallet_after_delete.json()["institution_id"] is None
 
 
 async def test_institution_routes_require_authentication(client: AsyncClient) -> None:

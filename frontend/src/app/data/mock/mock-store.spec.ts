@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { ApiError } from '../../core/api-error';
 import { MockStore } from './mock-store';
 
 describe('MockStore', () => {
@@ -347,8 +348,53 @@ describe('MockStore', () => {
         archived: false
       });
 
-      expect(() => store.deleteInstitution(institution.id)).toThrow();
+      let error: unknown;
+      try {
+        store.deleteInstitution(institution.id);
+      } catch (caught) {
+        error = caught;
+      }
+      expect(error).toBeInstanceOf(ApiError);
+      expect(error).toMatchObject({
+        status: 409,
+        code: 'institution.has_accounts',
+        params: { accounts: 1, wallets: 0 },
+      });
       expect(store.institutions().find((i) => i.id === institution.id)).toBeDefined();
+    });
+
+    it('detaches accounts and wallets before deleting an institution', () => {
+      const institution = store.createInstitution({
+        name: 'Instituição em Uso',
+        icon: 'bank',
+        archived: false,
+        position: 99,
+      });
+      const account = store.createAccount({
+        name: 'Conta Vinculada',
+        type: 'investment',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const wallet = store.createInvestmentWallet({
+        accountId: account.id,
+        name: 'Carteira Vinculada',
+        currency: 'BRL',
+        institutionId: institution.id,
+        archived: false,
+      });
+
+      store.deleteInstitution(institution.id, true);
+
+      expect(store.institutions().find((item) => item.id === institution.id)).toBeUndefined();
+      expect(
+        store.accounts().find((item) => item.id === account.id)?.institutionId,
+      ).toBeUndefined();
+      expect(
+        store.investmentWallets().find((item) => item.id === wallet.id)?.institutionId,
+      ).toBeUndefined();
     });
 
     it('throws when deleting an institution that does not exist', () => {

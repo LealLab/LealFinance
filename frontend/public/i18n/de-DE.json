@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Institut löschen",
-      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie dieses Institut löschen?"
+      "message": "Verknüpfte Konten und Investment-Wallets werden getrennt, nicht gelöscht. Möchten Sie dieses Institut löschen?",
+      "unlinkAndDelete": "Konten trennen & löschen"
     }
   },
   "transactions": {

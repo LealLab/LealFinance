@@ -5,11 +5,13 @@ more readable as plain functions than as declarative factory classes.
 """
 
 import secrets
+from uuid import UUID
 
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password, normalize_email
+from app.models.investment import InvestmentWallet
 from app.models.user import ROLE_MEMBER, User
 
 DEFAULT_PASSWORD = "correct horse battery staple"
@@ -49,3 +51,25 @@ async def login_as(client: AsyncClient, *, email: str, password: str = DEFAULT_P
     response = await client.post("/api/v1/auth/login", json={"email": email, "password": password})
     assert response.status_code == 200, response.text
     client.headers["X-XSRF-TOKEN"] = client.cookies["XSRF-TOKEN"]
+
+
+async def make_investment_wallet(
+    db: AsyncSession,
+    *,
+    user_id: UUID,
+    account_id: UUID,
+    institution_id: UUID | None = None,
+    currency: str = "BRL",
+) -> InvestmentWallet:
+    wallet = InvestmentWallet(
+        user_id=user_id,
+        account_id=account_id,
+        name="Test wallet",
+        currency=currency,
+        institution_id=institution_id,
+        archived=False,
+    )
+    db.add(wallet)
+    await db.commit()
+    await db.refresh(wallet)
+    return wallet

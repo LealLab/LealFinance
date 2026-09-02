@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Hapus lembaga keuangan",
-      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus lembaga keuangan ini?"
+      "message": "Akun dan dompet investasi yang tertaut akan dilepas, bukan dihapus. Apakah Anda ingin menghapus lembaga keuangan ini?",
+      "unlinkAndDelete": "Lepas akun & hapus"
     }
   },
   "transactions": {

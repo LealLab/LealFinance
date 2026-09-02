@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "刪除金融機構",
-      "message": "此操作無法復原。要刪除此金融機構嗎？"
+      "message": "已連結的帳戶和投資錢包將解除連結，不會刪除。要刪除此金融機構嗎？",
+      "unlinkAndDelete": "解除連結並刪除"
     }
   },
   "transactions": {

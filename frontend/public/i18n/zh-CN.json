@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "删除机构",
-      "message": "此操作无法撤销。要删除此机构吗？"
+      "message": "关联账户和投资钱包将解除关联，但不会删除。要删除此机构吗？",
+      "unlinkAndDelete": "解除关联并删除"
     }
   },
   "transactions": {

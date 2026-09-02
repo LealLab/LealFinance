@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Șterge instituția",
-      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această instituție?"
+      "message": "Conturile și portofelele de investiții asociate vor fi deconectate, nu șterse. Vrei să ștergi această instituție?",
+      "unlinkAndDelete": "Deconectează conturile și șterge"
     }
   },
   "transactions": {

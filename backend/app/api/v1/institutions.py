@@ -47,5 +47,7 @@ async def archive_institution(
 
 
 @router.delete("/{institution_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_institution(institution_id: UUID, user: CurrentUser, db: DbSession) -> None:
-    await institutions_service.delete_institution(db, user.id, institution_id)
+async def delete_institution(
+    institution_id: UUID, user: CurrentUser, db: DbSession, detach: bool = False
+) -> None:
+    await institutions_service.delete_institution(db, user.id, institution_id, detach=detach)

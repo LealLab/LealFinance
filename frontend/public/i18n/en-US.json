@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Delete institution",
-      "message": "This action cannot be undone. Do you want to delete this institution?"
+      "message": "Linked accounts and investment wallets will be unlinked, not deleted. Do you want to delete this institution?",
+      "unlinkAndDelete": "Unlink accounts & delete"
     }
   },
   "transactions": {

@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Elimina istituto",
-      "message": "Questa azione non può essere annullata. Vuoi eliminare questo istituto?"
+      "message": "I conti e i portafogli di investimento collegati verranno scollegati, non eliminati. Vuoi eliminare questo istituto?",
+      "unlinkAndDelete": "Scollega conti ed elimina"
     }
   },
   "transactions": {

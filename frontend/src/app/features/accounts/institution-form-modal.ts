@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { ConfirmService } from '../../core/confirm.service';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { Institution } from '../../domain/models/institution';
@@ -21,10 +22,8 @@ const DEFAULT_ICON = 'bank';
  * for both "new" (institution undefined) and "edit", and the form
  * repopulates whenever the modal opens.
  *
- * Also offers deletion from the edit view: MockStore.deleteInstitution
- * refuses to delete an institution any account still references, and that
- * refusal is surfaced here as a translated inline error rather than an
- * unhandled console error.
+ * Also offers deletion from the edit view, including detaching references
+ * before deleting the institution.
  */
 @Component({
   selector: 'app-institution-form-modal',
@@ -70,7 +69,7 @@ export class InstitutionFormModal {
    * literals, only ever reached through the template's translation call -
    * see account-form-modal.ts for why that needs this JSDoc "dynamic
    * markings" block:
-   * t(institutions.form.editTitle, institutions.form.newTitle, institutions.form.saveError, institutions.form.deleteInUseError, institutions.delete.title, institutions.delete.message)
+   * t(institutions.form.editTitle, institutions.form.newTitle, institutions.form.saveError, institutions.form.deleteInUseError, institutions.delete.title, institutions.delete.message, institutions.delete.unlinkAndDelete)
    */
   protected readonly titleKey = computed(() =>
     this.institution() ? 'institutions.form.editTitle' : 'institutions.form.newTitle'
@@ -128,24 +127,29 @@ export class InstitutionFormModal {
     const existing = this.institution();
     if (!existing) return;
 
-    const confirmed = await this.confirmService.confirm(
+    const choice = await this.confirmService.choose(
       'institutions.delete.title',
       'institutions.delete.message',
-      'danger'
+      [{ labelKey: 'institutions.delete.unlinkAndDelete', value: 'detach', tone: 'danger' }],
+      {},
     );
-    if (!confirmed) return;
+    if (choice !== 'detach') return;
 
     this.deleting.set(true);
-    this.institutions.delete(existing.id).subscribe({
+    this.institutions.delete(existing.id, true).subscribe({
       next: () => {
         this.deleting.set(false);
         this.open.set(false);
         this.deleted.emit();
       },
-      error: () => {
+      error: (error: unknown) => {
         this.deleting.set(false);
-        this.deleteErrorKey.set('institutions.form.deleteInUseError');
-      }
+        this.deleteErrorKey.set(
+          error instanceof ApiError && error.code === 'institution.has_accounts'
+            ? 'institutions.form.deleteInUseError'
+            : 'institutions.form.saveError'
+        );
+      },
     });
   }
 }

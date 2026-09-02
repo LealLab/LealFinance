@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Finans kuruluşu silinsin mi?",
-      "message": "Bu işlem geri alınamaz. Bu finans kuruluşunu silmek istiyor musunuz?"
+      "message": "Bağlı hesapların ve yatırım cüzdanlarının bağlantısı kaldırılacak, ancak silinmeyecek. Bu finans kuruluşunu silmek istiyor musunuz?",
+      "unlinkAndDelete": "Hesapların bağlantısını kaldır ve sil"
     }
   },
   "transactions": {

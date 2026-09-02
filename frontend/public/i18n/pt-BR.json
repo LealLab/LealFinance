@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Excluir instituição",
-      "message": "Esta ação não pode ser desfeita. Deseja excluir esta instituição?"
+      "message": "As contas e carteiras de investimento vinculadas serão desvinculadas, não excluídas. Deseja excluir esta instituição?",
+      "unlinkAndDelete": "Desvincular contas e excluir"
     }
   },
   "transactions": {

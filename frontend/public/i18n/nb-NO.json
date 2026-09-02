@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Slett institusjon",
-      "message": "Denne handlingen kan ikke angres. Vil du slette denne institusjonen?"
+      "message": "Tilknyttede kontoer og investeringslommebøker blir koblet fra, ikke slettet. Vil du slette denne institusjonen?",
+      "unlinkAndDelete": "Koble fra kontoer og slett"
     }
   },
   "transactions": {

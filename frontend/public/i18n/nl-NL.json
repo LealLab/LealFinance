@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Instelling verwijderen",
-      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze instelling verwijderen?"
+      "message": "Gekoppelde rekeningen en investeringsportefeuilles worden losgekoppeld, niet verwijderd. Wil je deze instelling verwijderen?",
+      "unlinkAndDelete": "Rekeningen loskoppelen en verwijderen"
     }
   },
   "transactions": {

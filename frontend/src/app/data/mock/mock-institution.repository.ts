@@ -34,7 +34,7 @@ export class MockInstitutionRepository extends InstitutionRepository {
     return mockResult(() => this.store.updateInstitution(id, { archived }), this.latencyMs);
   }
 
-  delete(id: string): Observable<void> {
-    return mockResult(() => this.store.deleteInstitution(id), this.latencyMs);
+  delete(id: string, detach = false): Observable<void> {
+    return mockResult(() => this.store.deleteInstitution(id, detach), this.latencyMs);
   }
 }

@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Usuń instytucję",
-      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć tę instytucję?"
+      "message": "Powiązane konta i portfele inwestycyjne zostaną odłączone, a nie usunięte. Czy chcesz usunąć tę instytucję?",
+      "unlinkAndDelete": "Odłącz konta i usuń"
     }
   },
   "transactions": {

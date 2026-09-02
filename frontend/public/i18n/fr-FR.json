@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Supprimer l’établissement",
-      "message": "Cette action est irréversible. Voulez-vous supprimer cet établissement ?"
+      "message": "Les comptes et portefeuilles d’investissement associés seront dissociés, pas supprimés. Voulez-vous supprimer cet établissement ?",
+      "unlinkAndDelete": "Dissocier les comptes et supprimer"
     }
   },
   "transactions": {

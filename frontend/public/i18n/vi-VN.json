@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Xóa tổ chức tài chính",
-      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa tổ chức tài chính này không?"
+      "message": "Các tài khoản và ví đầu tư được liên kết sẽ được ngắt liên kết, không bị xóa. Bạn có muốn xóa tổ chức tài chính này không?",
+      "unlinkAndDelete": "Ngắt liên kết tài khoản & xóa"
     }
   },
   "transactions": {

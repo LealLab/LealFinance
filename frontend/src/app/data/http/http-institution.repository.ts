@@ -36,7 +36,7 @@ export class HttpInstitutionRepository extends InstitutionRepository {
       .post<InstitutionWire>(`/institutions/${id}/archive`, { archived })
       .pipe(map(mapInstitution));
   }
-  delete(id: string): Observable<void> {
-    return this.api.delete(`/institutions/${id}`);
+  delete(id: string, detach = false): Observable<void> {
+    return this.api.delete(`/institutions/${id}`, detach ? { detach: true } : undefined);
   }
 }

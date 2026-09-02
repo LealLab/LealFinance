@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Odstranit instituci",
-      "message": "Tuto akci nelze vrátit zpět. Chcete tuto instituci odstranit?"
+      "message": "Propojené účty a investiční peněženky budou odpojeny, nikoli odstraněny. Chcete tuto instituci odstranit?",
+      "unlinkAndDelete": "Odpojit účty a odstranit"
     }
   },
   "transactions": {

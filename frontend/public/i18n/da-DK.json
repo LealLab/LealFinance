@@ -477,7 +477,8 @@
     },
     "delete": {
       "title": "Slet institution",
-      "message": "Denne handling kan ikke fortrydes. Vil du slette denne institution?"
+      "message": "Tilknyttede konti og investeringspunge vil blive afkoblet, ikke slettet. Vil du slette denne institution?",
+      "unlinkAndDelete": "Afkobl konti og slet"
     }
   },
   "transactions": {

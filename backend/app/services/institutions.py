@@ -1,15 +1,18 @@
-"""Institution CRUD, archive/unarchive, and the delete guard that blocks
-removing an institution while any account still references it.
+"""Institution CRUD, archive/unarchive, and guarded delete with detach mode.
+
+Deleting an institution can optionally detach its referencing accounts and
+investment wallets in the same transaction.
 """
 
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError
 from app.models.account import Account
 from app.models.institution import Institution
+from app.models.investment import InvestmentWallet
 from app.schemas.institution import InstitutionCreate, InstitutionUpdate
 from app.services.ownership import get_owned, list_owned
 
@@ -53,17 +56,44 @@ async def set_institution_archived(
     return institution
 
 
-async def delete_institution(db: AsyncSession, user_id: UUID, institution_id: UUID) -> None:
+async def delete_institution(
+    db: AsyncSession, user_id: UUID, institution_id: UUID, detach: bool = False
+) -> None:
     institution = await get_owned(db, Institution, institution_id, user_id)
 
     # An account can only reference institutions its own owner created (see
     # create_account's get_owned_or_none check), so no extra user_id filter
-    # is needed here - any account referencing this id is already theirs.
-    has_accounts = await db.execute(
-        select(Account.id).where(Account.institution_id == institution_id).limit(1)
+    # is needed here - any account referencing this id is already theirs. The
+    # same ownership invariant is enforced for InvestmentWallet by
+    # create_wallet's get_owned_or_none check.
+    account_count = await db.scalar(
+        select(func.count()).select_from(Account).where(Account.institution_id == institution_id)
     )
-    if has_accounts.scalar_one_or_none() is not None:
-        raise ConflictError(code="institution.has_accounts")
+    wallet_count = await db.scalar(
+        select(func.count())
+        .select_from(InvestmentWallet)
+        .where(InvestmentWallet.institution_id == institution_id)
+    )
+    account_count = int(account_count or 0)
+    wallet_count = int(wallet_count or 0)
+
+    if not detach and (account_count or wallet_count):
+        raise ConflictError(
+            code="institution.has_accounts",
+            params={"accounts": account_count, "wallets": wallet_count},
+        )
+
+    if detach:
+        await db.execute(
+            update(Account)
+            .where(Account.institution_id == institution_id)
+            .values(institution_id=None)
+        )
+        await db.execute(
+            update(InvestmentWallet)
+            .where(InvestmentWallet.institution_id == institution_id)
+            .values(institution_id=None)
+        )
 
     await db.delete(institution)
     await db.commit()
