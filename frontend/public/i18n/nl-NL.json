@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Transactie verwijderen",
-      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze transactie verwijderen?"
+      "message": "Deze actie kan niet ongedaan worden gemaakt. Wil je deze transactie verwijderen?",
+      "installment": {
+        "title": "Termijn {{number}} van {{count}} verwijderen?",
+        "message": "Deze transactie maakt deel uit van een termijnplan. Kies welke termijnen je wilt verwijderen.",
+        "onlyThis": "Alleen deze",
+        "thisAndFuture": "Deze en toekomstige",
+        "allInSeries": "Alle {{count}} termijnen"
+      }
     },
     "form": {
       "newTitle": "Nieuwe transactie",

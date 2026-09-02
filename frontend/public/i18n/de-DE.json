@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Transaktion löschen",
-      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diese Transaktion löschen?"
+      "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diese Transaktion löschen?",
+      "installment": {
+        "title": "Rate {{number}} von {{count}} löschen?",
+        "message": "Diese Transaktion ist Teil eines Ratenplans. Wählen Sie aus, welche Raten gelöscht werden sollen.",
+        "onlyThis": "Nur diese",
+        "thisAndFuture": "Diese und folgende",
+        "allInSeries": "Alle {{count}} Raten"
+      }
     },
     "form": {
       "newTitle": "Neue Transaktion",

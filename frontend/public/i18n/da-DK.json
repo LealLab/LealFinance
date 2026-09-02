@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Slet transaktion",
-      "message": "Denne handling kan ikke fortrydes. Vil du slette denne transaktion?"
+      "message": "Denne handling kan ikke fortrydes. Vil du slette denne transaktion?",
+      "installment": {
+        "title": "Slet rate {{number}} af {{count}}?",
+        "message": "Denne transaktion er en del af en afbetalingsplan. Vælg, hvilke rater der skal slettes.",
+        "onlyThis": "Kun denne",
+        "thisAndFuture": "Denne og fremtidige",
+        "allInSeries": "Alle {{count}} rater"
+      }
     },
     "form": {
       "newTitle": "Ny transaktion",

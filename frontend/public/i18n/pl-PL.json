@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Usuń transakcję",
-      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć tę transakcję?"
+      "message": "Tej operacji nie można cofnąć. Czy chcesz usunąć tę transakcję?",
+      "installment": {
+        "title": "Usunąć ratę {{number}} z {{count}}?",
+        "message": "Ta transakcja jest częścią planu ratalnego. Wybierz, które raty chcesz usunąć.",
+        "onlyThis": "Tylko tę",
+        "thisAndFuture": "Tę i przyszłe",
+        "allInSeries": "Wszystkie {{count}} rat"
+      }
     },
     "form": {
       "newTitle": "Nowa transakcja",

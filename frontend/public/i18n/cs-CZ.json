@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Odstranit transakci",
-      "message": "Tuto akci nelze vrátit zpět. Chcete tuto transakci odstranit?"
+      "message": "Tuto akci nelze vrátit zpět. Chcete tuto transakci odstranit?",
+      "installment": {
+        "title": "Odstranit splátku {{number}} z {{count}}?",
+        "message": "Tato transakce je součástí splátkového plánu. Vyberte, které splátky chcete odstranit.",
+        "onlyThis": "Pouze tuto",
+        "thisAndFuture": "Tuto a následující",
+        "allInSeries": "Celou sérii ({{count}} splátek)"
+      }
     },
     "form": {
       "newTitle": "Nová transakce",

@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Xóa giao dịch",
-      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa giao dịch này không?"
+      "message": "Thao tác này không thể hoàn tác. Bạn có muốn xóa giao dịch này không?",
+      "installment": {
+        "title": "Xóa kỳ trả góp {{number}} trên tổng số {{count}} kỳ?",
+        "message": "Giao dịch này thuộc một kế hoạch trả góp. Hãy chọn các kỳ trả góp cần xóa.",
+        "onlyThis": "Chỉ kỳ này",
+        "thisAndFuture": "Kỳ này và các kỳ sau",
+        "allInSeries": "Tất cả {{count}} kỳ"
+      }
     },
     "form": {
       "newTitle": "Giao dịch mới",

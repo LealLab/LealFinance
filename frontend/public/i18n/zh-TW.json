@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "刪除交易",
-      "message": "此操作無法復原。要刪除此交易嗎？"
+      "message": "此操作無法復原。要刪除此交易嗎？",
+      "installment": {
+        "title": "刪除第 {{number}}/{{count}} 期？",
+        "message": "此交易屬於分期付款計畫。請選擇要刪除的分期。",
+        "onlyThis": "僅此一期",
+        "thisAndFuture": "此期及之後",
+        "allInSeries": "全部 {{count}} 期"
+      }
     },
     "form": {
       "newTitle": "新增交易",

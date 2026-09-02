@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Slett transaksjon",
-      "message": "Denne handlingen kan ikke angres. Vil du slette denne transaksjonen?"
+      "message": "Denne handlingen kan ikke angres. Vil du slette denne transaksjonen?",
+      "installment": {
+        "title": "Slett avdrag {{number}} av {{count}}?",
+        "message": "Denne transaksjonen er en del av en avdragsordning. Velg hvilke avdrag som skal slettes.",
+        "onlyThis": "Bare dette",
+        "thisAndFuture": "Dette og fremtidige",
+        "allInSeries": "Alle {{count}} avdrag"
+      }
     },
     "form": {
       "newTitle": "Ny transaksjon",

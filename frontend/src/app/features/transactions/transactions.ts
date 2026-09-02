@@ -3,7 +3,7 @@ import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
@@ -61,10 +61,10 @@ const TRANSACTION_TYPES: readonly TransactionType[] = ['income', 'expense', 'tra
 const SEARCH_DEBOUNCE_MS = 250;
 
 /**
- * The literal keys passed to `confirmService.confirm(...)` below are real
+ * The literal keys passed to `confirmService.confirm(...)`/`choose(...)` below are real
  * string literals, invisible to transloco-keys-manager's extractor -
  * declare them so `task i18n:validate` sees them:
- * t(transactions.delete.title, transactions.delete.message, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
+ * t(transactions.delete.title, transactions.delete.message, transactions.delete.installment.title, transactions.delete.installment.message, transactions.delete.installment.onlyThis, transactions.delete.installment.thisAndFuture, transactions.delete.installment.allInSeries, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
  * The CSV header and column-menu keys are built by concatenation:
  * t(transactions.columns.date, transactions.columns.description, transactions.columns.category, transactions.columns.account, transactions.columns.amount, transactions.columns.title, transactions.export.filename, transactions.type.income, transactions.type.expense, transactions.type.transfer)
  */
@@ -493,6 +493,52 @@ export class Transactions {
   }
 
   protected async deleteTx(tx: Transaction): Promise<void> {
+    if (tx.installmentGroupId) {
+      const choice = await this.confirmService.choose(
+        'transactions.delete.installment.title',
+        'transactions.delete.installment.message',
+        [
+          { labelKey: 'transactions.delete.installment.onlyThis', value: 'onlyThis' },
+          { labelKey: 'transactions.delete.installment.thisAndFuture', value: 'thisAndFuture' },
+          {
+            labelKey: 'transactions.delete.installment.allInSeries',
+            value: 'allInSeries',
+            tone: 'danger',
+          },
+        ],
+        { number: tx.installmentNumber, count: tx.installmentCount },
+      );
+      if (!choice) return;
+
+      const deletion$ =
+        choice === 'onlyThis'
+          ? this.transactionRepository.delete(tx.id)
+          : this.transactionRepository
+              .list({ installmentGroupId: tx.installmentGroupId })
+              .pipe(
+                switchMap((rows) =>
+                  this.transactionRepository.bulkDelete(
+                    rows
+                      .filter(
+                        (row) =>
+                          choice === 'allInSeries' ||
+                          row.installmentNumber! >= tx.installmentNumber!,
+                      )
+                      .map((row) => row.id),
+                  ),
+                ),
+              );
+      deletion$.subscribe({
+        next: () => {
+          this.pageResource.reload();
+          this.monthTxResource.reload();
+          this.postedOccurrencesResource.reload();
+        },
+        error: () => this.mutationErrors.show(),
+      });
+      return;
+    }
+
     const confirmed = await this.confirmService.confirm(
       'transactions.delete.title',
       'transactions.delete.message',

@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Excluir transação",
-      "message": "Esta ação não pode ser desfeita. Deseja excluir esta transação?"
+      "message": "Esta ação não pode ser desfeita. Deseja excluir esta transação?",
+      "installment": {
+        "title": "Excluir a parcela {{number}} de {{count}}?",
+        "message": "Esta transação faz parte de um plano de parcelamento. Escolha quais parcelas excluir.",
+        "onlyThis": "Somente esta",
+        "thisAndFuture": "Esta e as futuras",
+        "allInSeries": "Todas as {{count}} parcelas"
+      }
     },
     "form": {
       "newTitle": "Nova transação",

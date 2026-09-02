@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Elimina transazione",
-      "message": "Questa azione non può essere annullata. Vuoi eliminare questa transazione?"
+      "message": "Questa azione non può essere annullata. Vuoi eliminare questa transazione?",
+      "installment": {
+        "title": "Eliminare la rata {{number}} di {{count}}?",
+        "message": "Questa transazione fa parte di un piano rateale. Scegli quali rate eliminare.",
+        "onlyThis": "Solo questa",
+        "thisAndFuture": "Questa e le successive",
+        "allInSeries": "Tutte le {{count}} rate"
+      }
     },
     "form": {
       "newTitle": "Nuova transazione",

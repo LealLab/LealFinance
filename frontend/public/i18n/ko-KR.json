@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "거래 삭제",
-      "message": "이 작업은 되돌릴 수 없습니다. 이 거래를 삭제하시겠어요?"
+      "message": "이 작업은 되돌릴 수 없습니다. 이 거래를 삭제하시겠어요?",
+      "installment": {
+        "title": "{{count}}회 할부 중 {{number}}회를 삭제하시겠어요?",
+        "message": "이 거래는 할부 계획의 일부입니다. 삭제할 할부 항목을 선택하세요.",
+        "onlyThis": "이번 항목만",
+        "thisAndFuture": "이번 항목과 이후 항목",
+        "allInSeries": "전체 {{count}}회 할부"
+      }
     },
     "form": {
       "newTitle": "거래 추가",

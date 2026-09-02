@@ -181,6 +181,40 @@ describe('Transactions', () => {
     expect(bulkDelete).toHaveBeenCalledWith(expectedIds);
     expect(component.selectedIds().size).toBe(0);
   });
+
+  it('deletes the selected installment and future installments in its series', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const tx = {
+      ...fixture.componentInstance['rows']()[0],
+      installmentGroupId: 'series-1',
+      installmentNumber: 3,
+      installmentCount: 10,
+    };
+    const list = vi
+      .spyOn(MockTransactionRepository.prototype, 'list')
+      .mockImplementation((filters = {}) =>
+        filters.installmentGroupId === 'series-1'
+          ? of([
+              { ...tx, id: 'inst-2', installmentNumber: 2 },
+              { ...tx, id: 'inst-3', installmentNumber: 3 },
+              { ...tx, id: 'inst-4', installmentNumber: 4 },
+            ])
+          : of([]),
+      );
+    const bulkDelete = vi
+      .spyOn(MockTransactionRepository.prototype, 'bulkDelete')
+      .mockReturnValue(of(undefined));
+    vi.spyOn(ConfirmService.prototype, 'choose').mockResolvedValue('thisAndFuture');
+
+    await fixture.componentInstance['deleteTx'](tx);
+
+    expect(list).toHaveBeenCalledWith({ installmentGroupId: 'series-1' });
+    expect(bulkDelete).toHaveBeenCalledWith(['inst-3', 'inst-4']);
+  });
 });
 
 describe('Transactions - calendar with a cross-currency month', () => {

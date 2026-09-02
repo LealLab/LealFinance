@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "İşlem silinsin mi?",
-      "message": "Bu işlem geri alınamaz. Bu işlemi silmek istiyor musunuz?"
+      "message": "Bu işlem geri alınamaz. Bu işlemi silmek istiyor musunuz?",
+      "installment": {
+        "title": "Taksit {{number}}/{{count}} silinsin mi?",
+        "message": "Bu işlem bir taksit planının parçasıdır. Hangi taksitlerin silineceğini seçin.",
+        "onlyThis": "Sadece bu",
+        "thisAndFuture": "Bu ve sonrakiler",
+        "allInSeries": "Tüm {{count}} taksit"
+      }
     },
     "form": {
       "newTitle": "Yeni işlem",

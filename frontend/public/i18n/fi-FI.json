@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Poista tapahtuma",
-      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän tapahtuman?"
+      "message": "Tätä toimintoa ei voi kumota. Haluatko poistaa tämän tapahtuman?",
+      "installment": {
+        "title": "Poistetaanko erä {{number}}/{{count}}?",
+        "message": "Tämä tapahtuma on osa osamaksusuunnitelmaa. Valitse poistettavat erät.",
+        "onlyThis": "Vain tämä",
+        "thisAndFuture": "Tämä ja tulevat",
+        "allInSeries": "Kaikki {{count}} erää"
+      }
     },
     "form": {
       "newTitle": "Uusi tapahtuma",

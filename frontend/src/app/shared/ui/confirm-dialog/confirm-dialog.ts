@@ -27,9 +27,13 @@ export class ConfirmDialog {
     this.confirmService.respond(confirmed);
   }
 
+  protected respondChoice(value: string | null): void {
+    this.confirmService.respondChoice(value);
+  }
+
   protected onOpenChange(open: boolean): void {
     // The modal can close itself (Escape, backdrop click) without going
     // through respond() - treat that the same as cancelling.
-    if (!open) this.confirmService.respond(false);
+    if (!open) this.confirmService.dismiss();
   }
 }

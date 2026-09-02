@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Șterge tranzacția",
-      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această tranzacție?"
+      "message": "Această acțiune nu poate fi anulată. Vrei să ștergi această tranzacție?",
+      "installment": {
+        "title": "Ștergi rata {{number}} din {{count}}?",
+        "message": "Această tranzacție face parte dintr-un plan de plată în rate. Alege ce rate vrei să ștergi.",
+        "onlyThis": "Doar aceasta",
+        "thisAndFuture": "Aceasta și cele viitoare",
+        "allInSeries": "Toate cele {{count}} de rate"
+      }
     },
     "form": {
       "newTitle": "Tranzacție nouă",

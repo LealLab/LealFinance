@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "取引を削除",
-      "message": "この操作は取り消せません。この取引を削除しますか？"
+      "message": "この操作は取り消せません。この取引を削除しますか？",
+      "installment": {
+        "title": "{{count}}回払いの{{number}}回目を削除しますか？",
+        "message": "この取引は分割払いの一部です。削除する分割払いを選択してください。",
+        "onlyThis": "この回だけ",
+        "thisAndFuture": "この回と今後の分",
+        "allInSeries": "{{count}}回分すべて"
+      }
     },
     "form": {
       "newTitle": "新しい取引",

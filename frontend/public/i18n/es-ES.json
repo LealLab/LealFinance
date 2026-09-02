@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Eliminar movimiento",
-      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este movimiento?"
+      "message": "Esta acción no se puede deshacer. ¿Quieres eliminar este movimiento?",
+      "installment": {
+        "title": "¿Eliminar el movimiento {{number}} de {{count}}?",
+        "message": "Este movimiento forma parte de un plan de cuotas. Elige qué cuotas quieres eliminar.",
+        "onlyThis": "Solo esta",
+        "thisAndFuture": "Esta y las siguientes",
+        "allInSeries": "Todas las {{count}} cuotas"
+      }
     },
     "form": {
       "newTitle": "Nuevo movimiento",

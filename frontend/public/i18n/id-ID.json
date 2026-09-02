@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Hapus transaksi",
-      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus transaksi ini?"
+      "message": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus transaksi ini?",
+      "installment": {
+        "title": "Hapus cicilan {{number}} dari {{count}}?",
+        "message": "Transaksi ini merupakan bagian dari rencana cicilan. Pilih cicilan yang ingin dihapus.",
+        "onlyThis": "Hanya ini",
+        "thisAndFuture": "Ini dan yang akan datang",
+        "allInSeries": "Semua {{count}} cicilan"
+      }
     },
     "form": {
       "newTitle": "Transaksi baru",

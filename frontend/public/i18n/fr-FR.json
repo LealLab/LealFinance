@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Supprimer l’opération",
-      "message": "Cette action est irréversible. Voulez-vous supprimer cette opération ?"
+      "message": "Cette action est irréversible. Voulez-vous supprimer cette opération ?",
+      "installment": {
+        "title": "Supprimer l’échéance {{number}} sur {{count}} ?",
+        "message": "Cette opération fait partie d’un plan de paiement échelonné. Choisissez les échéances à supprimer.",
+        "onlyThis": "Cette échéance uniquement",
+        "thisAndFuture": "Cette échéance et les suivantes",
+        "allInSeries": "Toutes les {{count}} échéances"
+      }
     },
     "form": {
       "newTitle": "Nouvelle opération",

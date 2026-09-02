@@ -529,7 +529,14 @@
     },
     "delete": {
       "title": "Ta bort transaktion",
-      "message": "Åtgärden kan inte ångras. Vill du ta bort transaktionen?"
+      "message": "Åtgärden kan inte ångras. Vill du ta bort transaktionen?",
+      "installment": {
+        "title": "Ta bort delbetalning {{number}} av {{count}}?",
+        "message": "Den här transaktionen ingår i en delbetalningsplan. Välj vilka delbetalningar som ska tas bort.",
+        "onlyThis": "Endast denna",
+        "thisAndFuture": "Denna och framtida",
+        "allInSeries": "Alla {{count}} delbetalningar"
+      }
     },
     "form": {
       "newTitle": "Ny transaktion",
