@@ -1355,6 +1355,15 @@
       "shownOnce": "Ce jeton ne sera affiché qu’une seule fois. Enregistrez-le avant de quitter cette page.",
       "expires": "Expire le {{date}}"
     },
+    "aiInstructions": {
+      "title": "Instructions IA personnalisées",
+      "body": "Indiquez à l'assistant comment vous voulez qu'il réponde. Les instructions doivent porter sur vos finances ou sur l'usage de cette application ; tout le reste est refusé et n'est pas enregistré.",
+      "label": "Vos instructions",
+      "placeholder": "Exemple : réponds brièvement et affiche toujours mes totaux mensuels par catégorie.",
+      "counter": "{{count}} / {{max}} caractères",
+      "save": "Enregistrer les instructions",
+      "saved": "Enregistré"
+    },
     "backup": {
       "title": "Sauvegarde et restauration",
       "description": "Téléchargez une copie portable de vos données ou remplacez vos données actuelles à partir d’une sauvegarde.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Une erreur s’est produite. Réessayez.",
       "validation": "Vérifiez les informations saisies et réessayez."
+    },
+    "agents": {
+      "instructions_rejected": "Ces instructions n'ont pas été enregistrées : elles ne portent pas sur vos finances ni sur cette application.",
+      "not_configured": "Aucun fournisseur d’IA n’est encore configuré.",
+      "provider_unavailable": "Le fournisseur d’IA est actuellement indisponible."
     },
     "auth": {
       "invalid_credentials": "L’adresse e-mail ou le mot de passe est incorrect.",

@@ -1355,6 +1355,15 @@
       "shownOnce": "此令牌仅显示一次。离开此页面前请保存。",
       "expires": "将于 {{date}} 过期"
     },
+    "aiInstructions": {
+      "title": "自定义 AI 指令",
+      "body": "告诉助手你希望它如何回答。指令必须与你的财务或本应用的使用有关，其他内容将被拒绝且不会保存。",
+      "label": "你的指令",
+      "placeholder": "示例：回答简明扼要，并始终按分类显示每月合计。",
+      "counter": "{{count}} / {{max}} 个字符",
+      "save": "保存指令",
+      "saved": "已保存"
+    },
     "backup": {
       "title": "备份与恢复",
       "description": "下载可移植的数据副本，或使用备份替换当前数据。",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "出错了。请重试。",
       "validation": "请检查填写的信息后重试。"
+    },
+    "agents": {
+      "instructions_rejected": "这些指令未保存：它们与你的财务或本应用无关。",
+      "not_configured": "尚未配置 AI 提供商。",
+      "provider_unavailable": "AI 提供商当前不可用。"
     },
     "auth": {
       "invalid_credentials": "邮箱或密码不正确。",

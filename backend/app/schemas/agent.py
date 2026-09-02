@@ -104,3 +104,13 @@ class ConfirmCreate(BaseModel):
     approved: bool
     arguments: dict[str, Any] | None = None
     client_date: date | None = None
+
+
+class InstructionsRead(BaseModel):
+    instructions: str | None
+
+
+class InstructionsUpdate(BaseModel):
+    # Empty clears the field; the router treats that as a delete and skips the
+    # provider check so removal works even when no provider is reachable.
+    instructions: str = Field(default="", max_length=2000)

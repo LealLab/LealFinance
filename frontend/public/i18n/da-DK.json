@@ -1355,6 +1355,15 @@
       "shownOnce": "Dette token vises kun én gang. Gem det, før du forlader denne side.",
       "expires": "Udløber {{date}}"
     },
+    "aiInstructions": {
+      "title": "Tilpassede AI-instruktioner",
+      "body": "Fortæl assistenten, hvordan den skal svare. Instruktionerne skal handle om din økonomi eller din brug af denne app – alt andet afvises og gemmes ikke.",
+      "label": "Dine instruktioner",
+      "placeholder": "Eksempel: hold svarene korte, og vis altid mine månedlige totaler pr. kategori.",
+      "counter": "{{count}} / {{max}} tegn",
+      "save": "Gem instruktioner",
+      "saved": "Gemt"
+    },
     "backup": {
       "title": "Sikkerhedskopiering og gendannelse",
       "description": "Download en flytbar kopi af dine data, eller erstat dine nuværende data fra en sikkerhedskopi.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Noget gik galt. Prøv igen.",
       "validation": "Tjek oplysningerne, og prøv igen."
+    },
+    "agents": {
+      "instructions_rejected": "Disse instruktioner blev ikke gemt: de handler ikke om din økonomi eller denne app.",
+      "not_configured": "Der er endnu ikke konfigureret nogen AI-udbyder.",
+      "provider_unavailable": "AI-udbyderen er ikke tilgængelig lige nu."
     },
     "auth": {
       "invalid_credentials": "E-mailadressen eller adgangskoden er forkert.",

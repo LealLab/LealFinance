@@ -3,6 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
+import { ApiError } from '../../core/api-error';
 import { BackupService } from '../../core/backup.service';
 import { ConfirmService } from '../../core/confirm.service';
 import { IdentityApiService } from '../../core/identity-api.service';
@@ -30,13 +31,23 @@ describe('Settings', () => {
     disableTotp: ReturnType<typeof vi.fn>;
     regenerateBackupCodes: ReturnType<typeof vi.fn>;
   };
-  let agentChatRepo: { mintMcpToken: ReturnType<typeof vi.fn> };
+  let agentChatRepo: {
+    mintMcpToken: ReturnType<typeof vi.fn>;
+    getInstructions: ReturnType<typeof vi.fn>;
+    saveInstructions: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(async () => {
     fragment = new BehaviorSubject<string | null>(null);
     sessionUser = signal<User | undefined>(undefined);
     backupService = { export: vi.fn(), preview: vi.fn(), restore: vi.fn() };
-    agentChatRepo = { mintMcpToken: vi.fn().mockReturnValue(of({ token: 'mcp-secret', expiresAt: '2026-09-01T00:00:00Z' })) };
+    agentChatRepo = {
+      mintMcpToken: vi
+        .fn()
+        .mockReturnValue(of({ token: 'mcp-secret', expiresAt: '2026-09-01T00:00:00Z' })),
+      getInstructions: vi.fn().mockReturnValue(of('')),
+      saveInstructions: vi.fn().mockReturnValue(of('')),
+    };
     // Stubbed rather than injected `{ optional: true }`: IdentityApiService is
     // providedIn:'root', so it would always resolve and then fail on HttpClient.
     identityApi = {
@@ -364,5 +375,91 @@ describe('Settings', () => {
     const alert = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
     expect(fixture.componentInstance['totpErrorCode']()).toBe('auth.totp_invalid');
     expect(alert).toBeTruthy();
+  });
+
+  // --- Custom AI instructions ---
+
+  const asAdmin = (): void =>
+    sessionUser.set({
+      id: 'admin-id',
+      email: 'admin@example.com',
+      displayName: 'Admin',
+      role: 'admin',
+      isActive: true,
+      aiChatEnabled: false,
+      createdAt: '',
+    });
+
+  it('loads the stored AI instructions into the editor', () => {
+    asAdmin();
+    agentChatRepo.getInstructions.mockReturnValue(of('Sempre em BRL.'));
+
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['aiInstructions']()).toBe('Sempre em BRL.');
+    const textarea = fixture.nativeElement.querySelector(
+      '#settings-ai-instructions',
+    ) as HTMLTextAreaElement;
+    expect(textarea.value).toBe('Sempre em BRL.');
+  });
+
+  it('does not request AI instructions for a member without chat access', () => {
+    sessionUser.set({
+      id: 'member-id',
+      email: 'member@example.com',
+      displayName: 'Member',
+      role: 'member',
+      isActive: true,
+      aiChatEnabled: false,
+      createdAt: '',
+    });
+
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    expect(agentChatRepo.getInstructions).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('#settings-ai-instructions')).toBeNull();
+  });
+
+  it('saves accepted AI instructions', () => {
+    asAdmin();
+    agentChatRepo.saveInstructions.mockReturnValue(of('Respostas curtas.'));
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    fixture.componentInstance['setAiInstructions']('Respostas curtas.');
+    fixture.componentInstance['saveAiInstructions']();
+    fixture.detectChanges();
+
+    expect(agentChatRepo.saveInstructions).toHaveBeenCalledWith('Respostas curtas.');
+    expect(fixture.componentInstance['aiInstructionsSaved']()).toBe(true);
+    expect(fixture.componentInstance['aiInstructionsErrorCode']()).toBeUndefined();
+  });
+
+  it('warns with the backend reason when AI instructions are refused, keeping the text to edit', () => {
+    asAdmin();
+    agentChatRepo.saveInstructions.mockReturnValue(
+      throwError(
+        () =>
+          new ApiError(422, 'agents.instructions_rejected', {
+            reason: 'Não é sobre suas finanças.',
+          }),
+      ),
+    );
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+
+    fixture.componentInstance['setAiInstructions']('Escreva um poema.');
+    fixture.componentInstance['saveAiInstructions']();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['aiInstructionsErrorCode']()).toBe(
+      'agents.instructions_rejected',
+    );
+    expect(fixture.componentInstance['aiInstructionsSaved']()).toBe(false);
+    // Refused text is never stored, so the editor keeps it for the user to fix.
+    expect(fixture.componentInstance['aiInstructions']()).toBe('Escreva um poema.');
+    expect(fixture.nativeElement.textContent).toContain('Não é sobre suas finanças.');
   });
 });

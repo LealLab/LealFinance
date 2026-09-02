@@ -213,6 +213,8 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/conversations/{id}/messages` | user | Body `{content}`. Streams the assistant response as `text/event-stream`. Members need `ai_chat_enabled`. |
 | POST | `/agents/conversations/{id}/confirm` | user | Body `{tool_call_id, approved, arguments?}`. Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
 | POST | `/agents/mcp-token` | user | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Members need `ai_chat_enabled`. |
+| GET | `/agents/instructions` | user | → `{instructions}`, the caller's stored custom instructions, or `null`. |
+| PUT | `/agents/instructions` | user | Body `{instructions}` (max 2000 chars). Classified before it is stored; off-topic text is refused with `agents.instructions_rejected` and never saved. An empty value clears the field without contacting a provider. |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
 | GET/PATCH | `/investments/wallets/{id}` | user | |
 | POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |
@@ -549,6 +551,18 @@ Provider linking is administrator-only. Active administrators always have chat
 access; members are gated by the admin-set `ai_chat_enabled` flag on the user
 (see `PATCH /auth/users/{id}`).
 
+### Custom instructions
+
+A user can store free text that is folded into the system prompt, so it is
+admitted only after the user's own provider classifies it: text that is not
+about that user's finances or the use of this application is refused with
+`agents.instructions_rejected`, whose `params.reason` carries one short
+sentence written in the user's locale. Saving therefore needs a working
+provider - `agents.not_configured` (422) or `agents.provider_unavailable`
+(502) when none is reachable. Clearing the field is the exception and always
+works. The value is per user, is not a preference on `/auth/preferences`, and
+is excluded from backup export/restore.
+
 ### Streaming responses
 
 `/messages` and `/confirm` respond with `text/event-stream`. The client must
@@ -581,6 +595,7 @@ frames carrying the same `code`/`params`.
 | `agents.api_key_required` | 422 |
 | `agents.base_url_required` | 422 |
 | `agents.tool_arguments_invalid` | 422 |
+| `agents.instructions_rejected` | 422 |
 | `analytics.invalid_month` | 422 |
 | `agents.oauth_unsupported` | 422 |
 | `agents.oauth_state_mismatch` | 422 |

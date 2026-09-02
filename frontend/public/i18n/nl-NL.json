@@ -1355,6 +1355,15 @@
       "shownOnce": "Dit token wordt maar één keer getoond. Sla het op voordat je deze pagina verlaat.",
       "expires": "Verloopt op {{date}}"
     },
+    "aiInstructions": {
+      "title": "Eigen AI-instructies",
+      "body": "Vertel de assistent hoe je wilt dat hij antwoordt. Instructies moeten over je financiën of het gebruik van deze app gaan; al het andere wordt geweigerd en niet opgeslagen.",
+      "label": "Jouw instructies",
+      "placeholder": "Voorbeeld: houd antwoorden kort en toon altijd mijn maandtotalen per categorie.",
+      "counter": "{{count}} / {{max}} tekens",
+      "save": "Instructies opslaan",
+      "saved": "Opgeslagen"
+    },
     "backup": {
       "title": "Back-up en herstel",
       "description": "Download een overdraagbare kopie van je gegevens of vervang je huidige gegevens vanuit een back-up.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Er is iets misgegaan. Probeer het opnieuw.",
       "validation": "Controleer de gegevens en probeer het opnieuw."
+    },
+    "agents": {
+      "instructions_rejected": "Deze instructies zijn niet opgeslagen: ze gaan niet over je financiën of deze app.",
+      "not_configured": "Er is nog geen AI-provider geconfigureerd.",
+      "provider_unavailable": "De AI-provider is momenteel niet beschikbaar."
     },
     "auth": {
       "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",

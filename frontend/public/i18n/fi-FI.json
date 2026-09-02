@@ -1355,6 +1355,15 @@
       "shownOnce": "Tunnus näytetään vain kerran. Tallenna se ennen kuin poistut tältä sivulta.",
       "expires": "Vanhenee {{date}}"
     },
+    "aiInstructions": {
+      "title": "Omat tekoälyohjeet",
+      "body": "Kerro avustajalle, miten haluat sen vastaavan. Ohjeiden on liityttävä talouteesi tai tämän sovelluksen käyttöön – muu hylätään eikä sitä tallenneta.",
+      "label": "Omat ohjeesi",
+      "placeholder": "Esimerkki: vastaa lyhyesti ja näytä aina kuukausisummat kategorioittain.",
+      "counter": "{{count}} / {{max}} merkkiä",
+      "save": "Tallenna ohjeet",
+      "saved": "Tallennettu"
+    },
     "backup": {
       "title": "Varmuuskopiointi ja palautus",
       "description": "Lataa siirrettävä kopio tiedoistasi tai korvaa nykyiset tiedot varmuuskopiosta.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Jokin meni pieleen. Yritä uudelleen.",
       "validation": "Tarkista antamasi tiedot ja yritä uudelleen."
+    },
+    "agents": {
+      "instructions_rejected": "Näitä ohjeita ei tallennettu: ne eivät liity talouteesi tai tähän sovellukseen.",
+      "not_configured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
+      "provider_unavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä."
     },
     "auth": {
       "invalid_credentials": "Sähköpostiosoite tai salasana on väärä.",

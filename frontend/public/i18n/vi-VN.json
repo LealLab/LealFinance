@@ -1355,6 +1355,15 @@
       "shownOnce": "Mã thông báo này chỉ được hiển thị một lần. Hãy lưu lại trước khi rời khỏi trang.",
       "expires": "Hết hạn {{date}}"
     },
+    "aiInstructions": {
+      "title": "Hướng dẫn AI tùy chỉnh",
+      "body": "Cho trợ lý biết bạn muốn nó trả lời như thế nào. Hướng dẫn phải liên quan đến tài chính của bạn hoặc cách dùng ứng dụng này; mọi nội dung khác sẽ bị từ chối và không được lưu.",
+      "label": "Hướng dẫn của bạn",
+      "placeholder": "Ví dụ: trả lời ngắn gọn và luôn hiển thị tổng theo tháng cho từng danh mục.",
+      "counter": "{{count}} / {{max}} ký tự",
+      "save": "Lưu hướng dẫn",
+      "saved": "Đã lưu"
+    },
     "backup": {
       "title": "Sao lưu và khôi phục",
       "description": "Tải xuống bản sao dữ liệu có thể di chuyển hoặc thay thế dữ liệu hiện tại từ bản sao lưu.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
       "validation": "Vui lòng kiểm tra thông tin đã nhập và thử lại."
+    },
+    "agents": {
+      "instructions_rejected": "Hướng dẫn này không được lưu: nội dung không liên quan đến tài chính của bạn hoặc ứng dụng này.",
+      "not_configured": "Chưa cấu hình nhà cung cấp AI.",
+      "provider_unavailable": "Nhà cung cấp AI hiện không khả dụng."
     },
     "auth": {
       "invalid_credentials": "Email hoặc mật khẩu không chính xác.",

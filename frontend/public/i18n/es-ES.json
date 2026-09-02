@@ -1355,6 +1355,15 @@
       "shownOnce": "Este token solo se muestra una vez. Guárdalo antes de salir de esta página.",
       "expires": "Caduca el {{date}}"
     },
+    "aiInstructions": {
+      "title": "Instrucciones personalizadas para la IA",
+      "body": "Indica al asistente cómo quieres que responda. Las instrucciones deben tratar sobre tus finanzas o el uso de esta aplicación; cualquier otra cosa se rechaza y no se guarda.",
+      "label": "Tus instrucciones",
+      "placeholder": "Ejemplo: responde de forma breve y muestra siempre mis totales mensuales por categoría.",
+      "counter": "{{count}} / {{max}} caracteres",
+      "save": "Guardar instrucciones",
+      "saved": "Guardado"
+    },
     "backup": {
       "title": "Copia de seguridad y restauración",
       "description": "Descarga una copia portátil de tus datos o sustituye los datos actuales desde una copia de seguridad.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Algo ha salido mal. Inténtalo de nuevo.",
       "validation": "Comprueba la información e inténtalo de nuevo."
+    },
+    "agents": {
+      "instructions_rejected": "Estas instrucciones no se guardaron: no tratan sobre tus finanzas ni sobre esta aplicación.",
+      "not_configured": "Aún no hay ningún proveedor de IA configurado.",
+      "provider_unavailable": "El proveedor de IA no está disponible en este momento."
     },
     "auth": {
       "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",

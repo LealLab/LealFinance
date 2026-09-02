@@ -1355,6 +1355,15 @@
       "shownOnce": "Dette tokenet vises bare én gang. Lagre det før du forlater denne siden.",
       "expires": "Utløper {{date}}"
     },
+    "aiInstructions": {
+      "title": "Egendefinerte AI-instruksjoner",
+      "body": "Fortell assistenten hvordan du vil at den skal svare. Instruksjonene må handle om økonomien din eller bruken av denne appen – alt annet avvises og lagres ikke.",
+      "label": "Dine instruksjoner",
+      "placeholder": "Eksempel: hold svarene korte og vis alltid månedlige summer per kategori.",
+      "counter": "{{count}} / {{max}} tegn",
+      "save": "Lagre instruksjoner",
+      "saved": "Lagret"
+    },
     "backup": {
       "title": "Sikkerhetskopiering og gjenoppretting",
       "description": "Last ned en flyttbar kopi av dataene dine, eller erstatt gjeldende data fra en sikkerhetskopi.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Noe gikk galt. Prøv igjen.",
       "validation": "Sjekk opplysningene og prøv igjen."
+    },
+    "agents": {
+      "instructions_rejected": "Disse instruksjonene ble ikke lagret: de handler ikke om økonomien din eller denne appen.",
+      "not_configured": "Ingen AI-leverandør er konfigurert ennå.",
+      "provider_unavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller passordet er feil.",

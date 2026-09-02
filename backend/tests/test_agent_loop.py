@@ -430,3 +430,32 @@ async def test_prompt_build_includes_context() -> None:
     assert "USD" in built
     assert "2026-01-15" in built
     assert "pt-BR" in built
+
+
+def _prompt_user(instructions: str | None) -> User:
+    return User(
+        email="custom@example.com",
+        normalized_email="custom@example.com",
+        password_hash="unused",
+        display_name="Custom User",
+        locale="pt-BR",
+        display_currency="USD",
+        ai_custom_instructions=instructions,
+    )
+
+
+async def test_prompt_build_appends_custom_instructions_after_the_rules() -> None:
+    built = prompt.build(_prompt_user("Keep answers to three bullet points."), date(2026, 1, 15))
+
+    assert "<user_preferences>\nKeep answers to three bullet points.\n</user_preferences>" in built
+    # The preface must sit between the base prompt and the user's text so the
+    # guardrails, not the user, have the last word before the block.
+    assert built.index(prompt.OFF_TOPIC_MARKER) < built.index(prompt.CUSTOM_INSTRUCTIONS_PREFACE)
+    assert built.index(prompt.CUSTOM_INSTRUCTIONS_PREFACE) < built.index("<user_preferences>")
+
+
+async def test_prompt_build_ignores_blank_custom_instructions() -> None:
+    baseline = prompt.build(_prompt_user(None), date(2026, 1, 15))
+
+    assert prompt.build(_prompt_user("   \n  "), date(2026, 1, 15)) == baseline
+    assert "<user_preferences>" not in baseline

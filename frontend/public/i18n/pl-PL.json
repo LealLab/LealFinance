@@ -1355,6 +1355,15 @@
       "shownOnce": "Ten token jest wyświetlany tylko raz. Zapisz go przed opuszczeniem tej strony.",
       "expires": "Wygasa {{date}}"
     },
+    "aiInstructions": {
+      "title": "Własne instrukcje dla AI",
+      "body": "Powiedz asystentowi, jak ma odpowiadać. Instrukcje muszą dotyczyć Twoich finansów lub korzystania z tej aplikacji – wszystko inne zostanie odrzucone i nie zapisane.",
+      "label": "Twoje instrukcje",
+      "placeholder": "Przykład: odpowiadaj krótko i zawsze pokazuj miesięczne sumy według kategorii.",
+      "counter": "{{count}} / {{max}} znaków",
+      "save": "Zapisz instrukcje",
+      "saved": "Zapisano"
+    },
     "backup": {
       "title": "Kopia zapasowa i przywracanie",
       "description": "Pobierz przenośną kopię swoich danych lub zastąp bieżące dane danymi z kopii zapasowej.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "validation": "Sprawdź wprowadzone dane i spróbuj ponownie."
+    },
+    "agents": {
+      "instructions_rejected": "Te instrukcje nie zostały zapisane: nie dotyczą Twoich finansów ani tej aplikacji.",
+      "not_configured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
+      "provider_unavailable": "Dostawca AI jest obecnie niedostępny."
     },
     "auth": {
       "invalid_credentials": "Podany adres e-mail lub hasło są nieprawidłowe.",

@@ -1355,6 +1355,15 @@
       "shownOnce": "Tento token se zobrazí pouze jednou. Před opuštěním této stránky si ho uložte.",
       "expires": "Vyprší {{date}}"
     },
+    "aiInstructions": {
+      "title": "Vlastní pokyny pro AI",
+      "body": "Řekněte asistentovi, jak má odpovídat. Pokyny se musí týkat vašich financí nebo používání této aplikace – cokoli jiného bude odmítnuto a neuloží se.",
+      "label": "Vaše pokyny",
+      "placeholder": "Příklad: odpovídej stručně a vždy zobraz měsíční součty podle kategorií.",
+      "counter": "{{count}} / {{max}} znaků",
+      "save": "Uložit pokyny",
+      "saved": "Uloženo"
+    },
     "backup": {
       "title": "Záloha a obnovení",
       "description": "Stáhněte si přenositelnou kopii dat nebo nahraďte aktuální data ze zálohy.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Něco se pokazilo. Zkuste to prosím znovu.",
       "validation": "Zkontrolujte zadané údaje a zkuste to znovu."
+    },
+    "agents": {
+      "instructions_rejected": "Tyto pokyny nebyly uloženy: netýkají se vašich financí ani této aplikace.",
+      "not_configured": "Zatím není nastaven žádný poskytovatel AI.",
+      "provider_unavailable": "Poskytovatel AI je momentálně nedostupný."
     },
     "auth": {
       "invalid_credentials": "E-mail nebo heslo nejsou správné.",

@@ -704,4 +704,26 @@ describe('HTTP repositories', () => {
     tokenReq.flush({ token: 'abc', expires_at: '2027-01-01' });
     expect(token).toEqual({ token: 'abc', expiresAt: '2027-01-01' });
   });
+
+  it('reads and writes the custom AI instructions, mapping a null to an empty string', () => {
+    let loaded: unknown;
+    let saved: unknown;
+
+    TestBed.inject(HttpAgentChatRepository)
+      .getInstructions()
+      .subscribe((result) => (loaded = result));
+    const getReq = http.expectOne('/api/v1/agents/instructions');
+    expect(getReq.request.method).toBe('GET');
+    getReq.flush({ instructions: null });
+    expect(loaded).toBe('');
+
+    TestBed.inject(HttpAgentChatRepository)
+      .saveInstructions('Keep answers short.')
+      .subscribe((result) => (saved = result));
+    const putReq = http.expectOne('/api/v1/agents/instructions');
+    expect(putReq.request.method).toBe('PUT');
+    expect(putReq.request.body).toEqual({ instructions: 'Keep answers short.' });
+    putReq.flush({ instructions: 'Keep answers short.' });
+    expect(saved).toBe('Keep answers short.');
+  });
 });

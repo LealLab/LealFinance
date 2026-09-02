@@ -1355,6 +1355,15 @@
       "shownOnce": "Acest token este afișat o singură dată. Salvează-l înainte de a părăsi pagina.",
       "expires": "Expiră la {{date}}"
     },
+    "aiInstructions": {
+      "title": "Instrucțiuni AI personalizate",
+      "body": "Spune-i asistentului cum vrei să răspundă. Instrucțiunile trebuie să fie despre finanțele tale sau despre utilizarea acestei aplicații — orice altceva este refuzat și nu se salvează.",
+      "label": "Instrucțiunile tale",
+      "placeholder": "Exemplu: răspunde pe scurt și afișează întotdeauna totalurile lunare pe categorii.",
+      "counter": "{{count}} / {{max}} caractere",
+      "save": "Salvează instrucțiunile",
+      "saved": "Salvat"
+    },
     "backup": {
       "title": "Copiere de siguranță și restaurare",
       "description": "Descarcă o copie portabilă a datelor sau înlocuiește datele curente dintr-o copie de siguranță.",
@@ -1641,6 +1650,11 @@
     "error": {
       "generic": "Ceva nu a funcționat. Încearcă din nou.",
       "validation": "Verifică informațiile introduse și încearcă din nou."
+    },
+    "agents": {
+      "instructions_rejected": "Aceste instrucțiuni nu au fost salvate: nu sunt despre finanțele tale sau despre această aplicație.",
+      "not_configured": "Nu este configurat încă niciun furnizor AI.",
+      "provider_unavailable": "Furnizorul AI nu este disponibil momentan."
     },
     "auth": {
       "invalid_credentials": "Adresa de e-mail sau parola este incorectă.",

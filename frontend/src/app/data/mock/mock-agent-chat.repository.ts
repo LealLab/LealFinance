@@ -8,6 +8,7 @@ import {
   AgentStreamEvent,
   McpToken,
 } from '../../domain/models/agent-chat';
+import { ApiError } from '../../core/api-error';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 
@@ -20,6 +21,7 @@ export class MockAgentChatRepository extends AgentChatRepository {
     { conversation: AgentConversation; messages: AgentMessage[] }
   >();
   private nextId = 1;
+  private instructions = '';
 
   listConversations(): Observable<AgentConversation[]> {
     return mockResult(
@@ -76,6 +78,21 @@ export class MockAgentChatRepository extends AgentChatRepository {
       approved ? 'Mock: confirmed' : 'Mock: rejected',
       false,
     );
+  }
+  getInstructions(): Observable<string> {
+    return mockResult(() => this.instructions, this.latencyMs);
+  }
+  saveInstructions(instructions: string): Observable<string> {
+    return mockResult(() => {
+      const cleaned = instructions.trim();
+      // Stands in for the backend's classifier so the rejected path is testable.
+      if (cleaned.length > 0 && !/budget|spend|account|transaction|currency|finance/i.test(cleaned))
+        throw new ApiError(422, 'agents.instructions_rejected', {
+          reason: 'This is not about your finances.',
+        });
+      this.instructions = cleaned;
+      return cleaned;
+    }, this.latencyMs);
   }
   mintMcpToken(): Observable<McpToken> {
     return mockResult(

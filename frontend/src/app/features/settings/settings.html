@@ -237,6 +237,60 @@
           <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.error.generic') }}</p>
         }
       </app-card>
+
+      <!-- t(errors.agents.instructions_rejected, errors.agents.not_configured, errors.agents.provider_unavailable) -->
+      <app-card>
+        <h2 class="mb-1 text-sm font-semibold text-content-primary">
+          {{ t('settings.aiInstructions.title') }}
+        </h2>
+        <p class="mb-4 max-w-md text-sm text-content-muted">
+          {{ t('settings.aiInstructions.body') }}
+        </p>
+
+        <label class="form-label" for="settings-ai-instructions">
+          {{ t('settings.aiInstructions.label') }}
+        </label>
+        <textarea
+          id="settings-ai-instructions"
+          class="form-input min-h-32 w-full"
+          rows="5"
+          [attr.maxlength]="aiInstructionsMaxLength"
+          [value]="aiInstructions()"
+          [placeholder]="t('settings.aiInstructions.placeholder')"
+          (input)="setAiInstructions($any($event.target).value)"
+        ></textarea>
+        <p class="form-hint">
+          {{
+            t('settings.aiInstructions.counter', {
+              count: aiInstructions().length,
+              max: aiInstructionsMaxLength,
+            })
+          }}
+        </p>
+
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            appButton
+            type="button"
+            [disabled]="aiInstructionsBusy()"
+            (click)="saveAiInstructions()"
+          >
+            {{ t('settings.aiInstructions.save') }}
+          </button>
+          @if (aiInstructionsSaved()) {
+            <span class="text-sm text-content-muted">{{ t('settings.aiInstructions.saved') }}</span>
+          }
+        </div>
+
+        @if (aiInstructionsErrorCode(); as code) {
+          <p class="mt-3 text-sm text-negative" role="alert">
+            {{ t('errors.' + code) }}
+            @if (aiInstructionsReason(); as reason) {
+              <span class="block text-content-muted">{{ reason }}</span>
+            }
+          </p>
+        }
+      </app-card>
     }
 
     @if (preferences.errorCode(); as code) {
