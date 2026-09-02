@@ -1355,6 +1355,16 @@
       "shownOnce": "Este token é exibido apenas uma vez. Salve-o antes de sair desta página.",
       "expires": "Expira em {{date}}"
     },
+    "aiInstructions": {
+      "title": "Instruções personalizadas para a IA",
+      "body": "Diga ao assistente como você quer que ele responda. As instruções precisam ser sobre suas finanças ou sobre o uso deste aplicativo — qualquer outra coisa é recusada e não é salva.",
+      "label": "Suas instruções",
+      "placeholder": "Exemplo: responda de forma curta e sempre mostre meus totais mensais por categoria.",
+      "counter": "{{count}} / {{max}} caracteres",
+      "save": "Salvar instruções",
+      "saved": "Salvo",
+      "loadError": "Não foi possível carregar suas instruções salvas. Recarregue a página antes de editá-las para não sobrescrevê-las."
+    },
     "backup": {
       "title": "Backup e restauração",
       "description": "Baixe uma cópia portátil dos seus dados ou substitua os dados atuais por um backup.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Algo deu errado. Tente novamente.",
       "validation": "Verifique as informações e tente novamente."
+    },
+    "agents": {
+      "instructions_rejected": "Estas instruções não foram salvas: não são sobre suas finanças nem sobre este aplicativo.",
+      "not_configured": "Nenhum provedor de IA foi configurado ainda.",
+      "provider_unavailable": "O provedor de IA está indisponível no momento."
     },
     "auth": {
       "invalid_credentials": "O e-mail ou a senha está incorreto.",

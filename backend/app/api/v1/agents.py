@@ -21,6 +21,8 @@ from app.schemas.agent import (
     ConversationCreate,
     ConversationDetailRead,
     ConversationRead,
+    InstructionsRead,
+    InstructionsUpdate,
     McpTokenRead,
     MessageCreate,
     OAuthCompleteCreate,
@@ -29,7 +31,7 @@ from app.schemas.agent import (
     ProviderStatusRead,
     ProviderTestRead,
 )
-from app.services import agent_chat, agent_providers
+from app.services import agent_chat, agent_instructions, agent_providers
 
 
 def _require_agents_enabled() -> None:
@@ -81,6 +83,19 @@ async def create_mcp_token(user: AiChatUser) -> McpTokenRead:
     token = crypto.mint_mcp_token(user.id)
     expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
     return McpTokenRead(token=token, expires_at=expires_at)
+
+
+@router.get("/instructions", response_model=InstructionsRead)
+async def get_instructions(user: AiChatUser) -> InstructionsRead:
+    return InstructionsRead(instructions=agent_instructions.get(user))
+
+
+@router.put("/instructions", response_model=InstructionsRead)
+async def update_instructions(
+    payload: InstructionsUpdate, user: AiChatUser, db: DbSession
+) -> InstructionsRead:
+    stored = await agent_instructions.save(db, user, payload.instructions)
+    return InstructionsRead(instructions=stored)
 
 
 @router.get("/conversations", response_model=list[ConversationRead])

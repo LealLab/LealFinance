@@ -92,6 +92,18 @@ export class Settings {
   protected readonly mcpCopied = signal(false);
   protected readonly mcpError = signal(false);
 
+  // --- Custom AI instructions ---
+  protected readonly aiInstructions = signal('');
+  protected readonly aiInstructionsBusy = signal(false);
+  protected readonly aiInstructionsLoadError = signal(false);
+  protected readonly aiInstructionsSaved = signal(false);
+  /** Backend error code, rendered as `errors.<code>`. */
+  protected readonly aiInstructionsErrorCode = signal<string | undefined>(undefined);
+  /** The classifier's one-line reason, already written in the user's language. */
+  protected readonly aiInstructionsReason = signal<string | undefined>(undefined);
+  // Mirrors the backend INSTRUCTIONS_MAX_LENGTH cap; keep the two in sync.
+  protected readonly aiInstructionsMaxLength = 2000;
+
   // --- Two-factor authentication ---
   protected readonly totp = signal<TotpStatus | undefined>(undefined);
   /** Set while enrolling: holds the pending secret and its QR image. */
@@ -121,6 +133,7 @@ export class Settings {
   constructor() {
     this.loadMarketDataCredentials();
     this.loadTotpStatus();
+    this.loadAiInstructions();
     effect(() => {
       const target =
         this.fragment() === 'settings-language'
@@ -174,6 +187,50 @@ export class Settings {
       error: () => {
         this.mcpBusy.set(false);
         this.mcpError.set(true);
+      },
+    });
+  }
+
+  private loadAiInstructions(): void {
+    const user = this.session.user();
+    if (user?.role !== 'admin' && !user?.aiChatEnabled) return;
+    this.agentChatRepo.getInstructions().subscribe({
+      next: (value) => {
+        this.aiInstructions.set(value);
+        this.aiInstructionsLoadError.set(false);
+      },
+      error: () => this.aiInstructionsLoadError.set(true),
+    });
+  }
+
+  protected setAiInstructions(value: string): void {
+    this.aiInstructions.set(value);
+    this.aiInstructionsSaved.set(false);
+    this.aiInstructionsErrorCode.set(undefined);
+    this.aiInstructionsReason.set(undefined);
+  }
+
+  protected saveAiInstructions(): void {
+    if (this.aiInstructionsLoadError()) return;
+    this.aiInstructionsBusy.set(true);
+    this.aiInstructionsSaved.set(false);
+    this.aiInstructionsErrorCode.set(undefined);
+    this.aiInstructionsReason.set(undefined);
+    this.agentChatRepo.saveInstructions(this.aiInstructions()).subscribe({
+      next: (value) => {
+        // Only a saved value is reflected back - a refused one is never stored,
+        // so the textarea keeps what the user typed for them to edit.
+        this.aiInstructions.set(value);
+        this.aiInstructionsBusy.set(false);
+        this.aiInstructionsSaved.set(true);
+      },
+      error: (error: unknown) => {
+        this.aiInstructionsBusy.set(false);
+        this.aiInstructionsErrorCode.set(
+          error instanceof ApiError ? error.code : 'error.generic',
+        );
+        const reason = error instanceof ApiError ? error.params?.['reason'] : undefined;
+        this.aiInstructionsReason.set(typeof reason === 'string' ? reason : undefined);
       },
     });
   }

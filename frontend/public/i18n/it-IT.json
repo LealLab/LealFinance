@@ -1355,6 +1355,16 @@
       "shownOnce": "Questo token viene mostrato una sola volta. Salvalo prima di lasciare questa pagina.",
       "expires": "Scade il {{date}}"
     },
+    "aiInstructions": {
+      "title": "Istruzioni IA personalizzate",
+      "body": "Indica all'assistente come vuoi che risponda. Le istruzioni devono riguardare le tue finanze o l'uso di questa applicazione: qualsiasi altra cosa viene rifiutata e non salvata.",
+      "label": "Le tue istruzioni",
+      "placeholder": "Esempio: rispondi in modo breve e mostra sempre i totali mensili per categoria.",
+      "counter": "{{count}} / {{max}} caratteri",
+      "save": "Salva istruzioni",
+      "saved": "Salvato",
+      "loadError": "Non è stato possibile caricare le tue istruzioni salvate. Ricarica la pagina prima di modificarle per non sovrascriverle."
+    },
     "backup": {
       "title": "Backup e ripristino",
       "description": "Scarica una copia portatile dei tuoi dati o sostituisci i dati attuali da un backup.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Qualcosa è andato storto. Riprova.",
       "validation": "Controlla i dati inseriti e riprova."
+    },
+    "agents": {
+      "instructions_rejected": "Queste istruzioni non sono state salvate: non riguardano le tue finanze né questa applicazione.",
+      "not_configured": "Non è ancora configurato alcun provider AI.",
+      "provider_unavailable": "Il provider AI non è al momento disponibile."
     },
     "auth": {
       "invalid_credentials": "Email o password non valide.",

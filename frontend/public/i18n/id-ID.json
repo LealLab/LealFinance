@@ -1355,6 +1355,16 @@
       "shownOnce": "Token ini hanya ditampilkan sekali. Simpan sebelum meninggalkan halaman ini.",
       "expires": "Kedaluwarsa {{date}}"
     },
+    "aiInstructions": {
+      "title": "Instruksi AI khusus",
+      "body": "Beri tahu asisten bagaimana Anda ingin ia menjawab. Instruksi harus berkaitan dengan keuangan Anda atau penggunaan aplikasi ini; selain itu akan ditolak dan tidak disimpan.",
+      "label": "Instruksi Anda",
+      "placeholder": "Contoh: jawab dengan singkat dan selalu tampilkan total bulanan per kategori.",
+      "counter": "{{count}} / {{max}} karakter",
+      "save": "Simpan instruksi",
+      "saved": "Tersimpan",
+      "loadError": "Instruksi tersimpan Anda tidak dapat dimuat. Muat ulang halaman sebelum mengedit agar tidak menimpanya."
+    },
     "backup": {
       "title": "Pencadangan dan pemulihan",
       "description": "Unduh salinan portabel data Anda atau ganti data saat ini dari cadangan.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Terjadi kesalahan. Silakan coba lagi.",
       "validation": "Periksa informasi yang Anda masukkan dan coba lagi."
+    },
+    "agents": {
+      "instructions_rejected": "Instruksi ini tidak disimpan: tidak berkaitan dengan keuangan Anda atau aplikasi ini.",
+      "not_configured": "Belum ada penyedia AI yang dikonfigurasi.",
+      "provider_unavailable": "Penyedia AI sedang tidak tersedia."
     },
     "auth": {
       "invalid_credentials": "Email atau kata sandi salah.",

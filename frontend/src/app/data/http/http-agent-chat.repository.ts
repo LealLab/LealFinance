@@ -36,6 +36,9 @@ interface MessageWire {
 interface ConversationDetailWire extends ConversationWire {
   messages: MessageWire[];
 }
+interface InstructionsWire {
+  instructions: string | null;
+}
 interface McpTokenWire {
   token: string;
   expires_at: string;
@@ -114,6 +117,16 @@ export class HttpAgentChatRepository extends AgentChatRepository {
       client_date: localDate(),
       ...(args ? { arguments: args } : {}),
     });
+  }
+  getInstructions(): Observable<string> {
+    return this.api
+      .get<InstructionsWire>('/agents/instructions')
+      .pipe(map((value) => value.instructions ?? ''));
+  }
+  saveInstructions(instructions: string): Observable<string> {
+    return this.api
+      .put<InstructionsWire>('/agents/instructions', { instructions })
+      .pipe(map((value) => value.instructions ?? ''));
   }
   mintMcpToken(): Observable<McpToken> {
     return this.api

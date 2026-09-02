@@ -19,4 +19,7 @@ export abstract class AgentChatRepository {
     args?: Record<string, unknown>,
   ): Observable<AgentStreamEvent>;
   abstract mintMcpToken(): Observable<McpToken>;
+  abstract getInstructions(): Observable<string>;
+  /** Rejected text is refused by the backend and never stored. */
+  abstract saveInstructions(instructions: string): Observable<string>;
 }

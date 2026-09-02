@@ -20,6 +20,23 @@ server, so clearing the flag revokes a member's access immediately - including
 outstanding MCP tokens. An administrator's stored flag is preserved if they
 are later demoted, at which point it governs their member access.
 
+## Custom instructions
+
+Each user can write their own instructions for the assistant from Settings.
+The text is folded into the system prompt after the assistant's own rules,
+which are restated around it: instructions refine tone, format, and level of
+detail, and cannot grant abilities, change a tool, skip a write confirmation,
+or lift the off-topic rule.
+
+Because the text reaches the system prompt, it is classified before it is
+stored. The user's own provider is asked to judge the candidate as data - not
+as a message to answer - and only a bare `ALLOW` verdict saves it. Anything
+else, including an unparseable answer, is refused as
+`agents.instructions_rejected` and never written, with a one-line reason in
+the user's language. Saving needs a reachable provider; clearing the field
+does not. The value is excluded from backup export/restore, so a restore
+cannot reinstate text without re-running the check.
+
 ## Tools
 
 The model is given a fixed tool set (`backend/app/agents/tools.py`), each tool

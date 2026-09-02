@@ -1355,6 +1355,16 @@
       "shownOnce": "Dieses Token wird nur einmal angezeigt. Speichere es, bevor du diese Seite verlässt.",
       "expires": "Läuft ab {{date}}"
     },
+    "aiInstructions": {
+      "title": "Eigene KI-Anweisungen",
+      "body": "Sagen Sie dem Assistenten, wie er antworten soll. Die Anweisungen müssen Ihre Finanzen oder die Nutzung dieser App betreffen – alles andere wird abgelehnt und nicht gespeichert.",
+      "label": "Ihre Anweisungen",
+      "placeholder": "Beispiel: Antworte kurz und zeige immer meine Monatssummen nach Kategorie.",
+      "counter": "{{count}} / {{max}} Zeichen",
+      "save": "Anweisungen speichern",
+      "saved": "Gespeichert",
+      "loadError": "Ihre gespeicherten Anweisungen konnten nicht geladen werden. Laden Sie die Seite neu, bevor Sie sie bearbeiten, damit Sie sie nicht überschreiben."
+    },
     "backup": {
       "title": "Sichern und Wiederherstellen",
       "description": "Laden Sie eine portable Kopie Ihrer Daten herunter oder ersetzen Sie Ihre aktuellen Daten aus einer Sicherung.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
       "validation": "Überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
+    },
+    "agents": {
+      "instructions_rejected": "Diese Anweisungen wurden nicht gespeichert: Sie betreffen weder Ihre Finanzen noch diese App.",
+      "not_configured": "Noch kein KI-Anbieter konfiguriert.",
+      "provider_unavailable": "Der KI-Anbieter ist derzeit nicht verfügbar."
     },
     "auth": {
       "invalid_credentials": "E-Mail-Adresse oder Passwort ist falsch.",

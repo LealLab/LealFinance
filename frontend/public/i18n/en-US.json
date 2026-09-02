@@ -1355,6 +1355,16 @@
       "shownOnce": "This token is shown only once. Save it before leaving this page.",
       "expires": "Expires {{date}}"
     },
+    "aiInstructions": {
+      "title": "Custom AI instructions",
+      "body": "Tell the assistant how you want it to answer. Instructions must be about your finances or your use of this app - anything else is refused and not saved.",
+      "label": "Your instructions",
+      "placeholder": "Example: keep answers short and always show my monthly totals by category.",
+      "counter": "{{count}} / {{max}} characters",
+      "save": "Save instructions",
+      "saved": "Saved",
+      "loadError": "We couldn't load your saved instructions. Reload the page before editing so you don't overwrite them."
+    },
     "backup": {
       "title": "Backup and restore",
       "description": "Download a portable copy of your data or replace your current data from a backup.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Something went wrong. Please try again.",
       "validation": "Check your information and try again."
+    },
+    "agents": {
+      "instructions_rejected": "These instructions were not saved: they are not about your finances or this app.",
+      "not_configured": "No AI provider is configured yet.",
+      "provider_unavailable": "The AI provider is currently unavailable."
     },
     "auth": {
       "invalid_credentials": "The email or password is incorrect.",

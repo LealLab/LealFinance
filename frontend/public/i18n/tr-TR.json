@@ -1355,6 +1355,16 @@
       "shownOnce": "Bu belirteç yalnızca bir kez gösterilir. Bu sayfadan ayrılmadan önce kaydedin.",
       "expires": "Son kullanma tarihi: {{date}}"
     },
+    "aiInstructions": {
+      "title": "Özel yapay zekâ talimatları",
+      "body": "Asistanın nasıl yanıt vermesini istediğinizi belirtin. Talimatlar finanslarınızla veya bu uygulamanın kullanımıyla ilgili olmalıdır; bunun dışındakiler reddedilir ve kaydedilmez.",
+      "label": "Talimatlarınız",
+      "placeholder": "Örnek: yanıtları kısa tut ve her zaman kategoriye göre aylık toplamları göster.",
+      "counter": "{{count}} / {{max}} karakter",
+      "save": "Talimatları kaydet",
+      "saved": "Kaydedildi",
+      "loadError": "Kayıtlı talimatlarınız yüklenemedi. Üzerine yazmamak için düzenlemeden önce sayfayı yenileyin."
+    },
     "backup": {
       "title": "Yedekleme ve geri yükleme",
       "description": "Verilerinizin taşınabilir bir kopyasını indirin veya mevcut verilerinizi bir yedekten değiştirin.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
       "validation": "Girdiğiniz bilgileri kontrol edip tekrar deneyin."
+    },
+    "agents": {
+      "instructions_rejected": "Bu talimatlar kaydedilmedi: finanslarınızla ya da bu uygulamayla ilgili değiller.",
+      "not_configured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
+      "provider_unavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor."
     },
     "auth": {
       "invalid_credentials": "E-posta veya parola yanlış.",

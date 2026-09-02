@@ -96,6 +96,11 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     investments_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     ai_chat_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     balances_hidden: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # Free text the user writes to steer the assistant. It lands in the system
+    # prompt, so it is only ever written through app/services/agent_instructions.py,
+    # which classifies it before storing. Excluded from backups (see backups.py):
+    # restoring would reinstate text without re-running that check.
+    ai_custom_instructions: Mapped[str | None] = mapped_column(Text)
 
 
 class Session(Base, UUIDPrimaryKeyMixin, TimestampMixin):

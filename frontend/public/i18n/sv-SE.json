@@ -1355,6 +1355,16 @@
       "shownOnce": "Den här tokenen visas bara en gång. Spara den innan du lämnar sidan.",
       "expires": "Går ut {{date}}"
     },
+    "aiInstructions": {
+      "title": "Egna AI-instruktioner",
+      "body": "Berätta för assistenten hur du vill att den ska svara. Instruktionerna måste handla om din ekonomi eller om hur du använder den här appen – allt annat avvisas och sparas inte.",
+      "label": "Dina instruktioner",
+      "placeholder": "Exempel: håll svaren korta och visa alltid mina månadssummor per kategori.",
+      "counter": "{{count}} / {{max}} tecken",
+      "save": "Spara instruktioner",
+      "saved": "Sparat",
+      "loadError": "Det gick inte att läsa in dina sparade instruktioner. Ladda om sidan innan du redigerar dem så att du inte skriver över dem."
+    },
     "backup": {
       "title": "Säkerhetskopiering och återställning",
       "description": "Hämta en portabel kopia av dina data eller ersätt aktuella data från en säkerhetskopia.",
@@ -1641,6 +1651,11 @@
     "error": {
       "generic": "Något gick fel. Försök igen.",
       "validation": "Kontrollera uppgifterna och försök igen."
+    },
+    "agents": {
+      "instructions_rejected": "Instruktionerna sparades inte: de handlar inte om din ekonomi eller den här appen.",
+      "not_configured": "Ingen AI-leverantör har konfigurerats ännu.",
+      "provider_unavailable": "AI-leverantören är inte tillgänglig just nu."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller lösenordet är felaktigt.",
