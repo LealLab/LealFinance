@@ -6,18 +6,21 @@ that touches the account (Phase 5) - deliberately no stored balance column,
 so the two can never drift apart.
 """
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date as date_type
 from decimal import Decimal
 from uuid import UUID
 
-from sqlalchemy import case, exists, func, or_, select
+from sqlalchemy import case, delete, exists, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
 from app.models.account import ACCOUNT_TYPE_CREDIT_CARD, ACCOUNT_TYPE_GOAL, Account
 from app.models.goal import Goal
 from app.models.institution import Institution
+from app.models.investment import InvestmentTransaction, InvestmentWallet
+from app.models.loan import Loan
 from app.models.recurring import RecurringRule
 from app.models.transaction import (
     TRANSACTION_TYPE_EXPENSE,
@@ -321,3 +324,120 @@ async def set_account_archived(
     await db.commit()
     await db.refresh(account)
     return account
+
+
+async def cascade_delete_accounts(
+    db: AsyncSession,
+    user_id: UUID,
+    account_ids: Sequence[UUID],
+    *,
+    commit: bool = True,
+) -> None:
+    """Delete owned accounts and their dependent financial data atomically."""
+    accounts = await ownership.get_many_owned(db, Account, account_ids, user_id)
+    if not accounts:
+        if commit:
+            await db.commit()
+        return
+
+    target_ids = tuple(accounts)
+    target_account_ids = (
+        ownership.owned(Account, user_id)
+        .where(Account.id.in_(target_ids))
+        .with_only_columns(Account.id)
+    )
+    target_wallet_ids = (
+        ownership.owned(InvestmentWallet, user_id)
+        .where(
+            or_(
+                InvestmentWallet.account_id.in_(target_account_ids),
+                InvestmentWallet.cash_account_id.in_(target_account_ids),
+            )
+        )
+        .with_only_columns(InvestmentWallet.id)
+    )
+    target_transaction_ids = (
+        ownership.owned(Transaction, user_id)
+        .where(
+            or_(
+                Transaction.account_id.in_(target_account_ids),
+                Transaction.to_account_id.in_(target_account_ids),
+            )
+        )
+        .with_only_columns(Transaction.id)
+    )
+
+    # 1. Investment transactions reference both wallets and transactions.
+    await db.execute(
+        delete(InvestmentTransaction).where(
+            InvestmentTransaction.id.in_(
+                ownership.owned(InvestmentTransaction, user_id)
+                .where(
+                    or_(
+                        InvestmentTransaction.wallet_id.in_(target_wallet_ids),
+                        InvestmentTransaction.transaction_id.in_(target_transaction_ids),
+                    )
+                )
+                .with_only_columns(InvestmentTransaction.id)
+            )
+        )
+    )
+    # 2. Investment wallets reference accounts through either account leg.
+    await db.execute(delete(InvestmentWallet).where(InvestmentWallet.id.in_(target_wallet_ids)))
+    # 3. Transactions reference accounts through either ledger leg.
+    await db.execute(delete(Transaction).where(Transaction.id.in_(target_transaction_ids)))
+    # 4. Goals reference their account directly.
+    await db.execute(
+        delete(Goal).where(
+            Goal.id.in_(
+                ownership.owned(Goal, user_id)
+                .where(Goal.account_id.in_(target_account_ids))
+                .with_only_columns(Goal.id)
+            )
+        )
+    )
+    # 5. Loans reference their optional payment account.
+    await db.execute(
+        delete(Loan).where(
+            Loan.id.in_(
+                ownership.owned(Loan, user_id)
+                .where(Loan.payment_account_id.in_(target_account_ids))
+                .with_only_columns(Loan.id)
+            )
+        )
+    )
+    # 6. Recurring rules reference one or both template accounts.
+    await db.execute(
+        delete(RecurringRule).where(
+            RecurringRule.id.in_(
+                ownership.owned(RecurringRule, user_id)
+                .where(
+                    or_(
+                        RecurringRule.template_account_id.in_(target_account_ids),
+                        RecurringRule.template_to_account_id.in_(target_account_ids),
+                    )
+                )
+                .with_only_columns(RecurringRule.id)
+            )
+        )
+    )
+    # 7. Clear surviving accounts' self-referential payment links.
+    await db.execute(
+        update(Account)
+        .where(
+            Account.id.in_(
+                ownership.owned(Account, user_id)
+                .where(
+                    Account.id.not_in(target_ids),
+                    Account.payment_account_id.in_(target_ids),
+                )
+                .with_only_columns(Account.id)
+            )
+        )
+        .values(payment_account_id=None)
+    )
+    # 8. Delete the accounts themselves.
+    await db.execute(delete(Account).where(Account.id.in_(target_account_ids)))
+
+    if commit:
+        await db.commit()

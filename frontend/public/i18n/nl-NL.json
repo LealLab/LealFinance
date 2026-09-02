@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Instelling verwijderen",
-      "message": "Gekoppelde rekeningen en investeringsportefeuilles worden losgekoppeld, niet verwijderd. Wil je deze instelling verwijderen?",
-      "unlinkAndDelete": "Rekeningen loskoppelen en verwijderen"
+      "message": "Kies: loskoppelen behoudt rekeningen en geschiedenis; trapsgewijs verwijderen wist rekeningen, transacties en de volledige geschiedenis. Wil je deze instelling verwijderen?",
+      "unlinkAndDelete": "Rekeningen loskoppelen en verwijderen",
+      "cascade": "Instelling en alle rekeningen verwijderen"
     }
   },
   "transactions": {

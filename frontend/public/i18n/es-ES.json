@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Eliminar entidad",
-      "message": "Las cuentas y carteras de inversión vinculadas se desvincularán, no se eliminarán. ¿Quieres eliminar esta entidad?",
-      "unlinkAndDelete": "Desvincular cuentas y eliminar"
+      "message": "Elige: desvincular conserva las cuentas y el historial; la eliminación en cascada borra las cuentas, las transacciones y todo el historial. ¿Quieres eliminar esta entidad?",
+      "unlinkAndDelete": "Desvincular cuentas y eliminar",
+      "cascade": "Eliminar entidad y todas las cuentas"
     }
   },
   "transactions": {

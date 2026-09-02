@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Supprimer l’établissement",
-      "message": "Les comptes et portefeuilles d’investissement associés seront dissociés, pas supprimés. Voulez-vous supprimer cet établissement ?",
-      "unlinkAndDelete": "Dissocier les comptes et supprimer"
+      "message": "Choisissez : dissocier conserve les comptes et l’historique ; la suppression en cascade détruit les comptes, les transactions et tout l’historique. Voulez-vous supprimer cet établissement ?",
+      "unlinkAndDelete": "Dissocier les comptes et supprimer",
+      "cascade": "Supprimer l’établissement et tous les comptes"
     }
   },
   "transactions": {

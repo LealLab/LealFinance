@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Slett institusjon",
-      "message": "Tilknyttede kontoer og investeringslommebøker blir koblet fra, ikke slettet. Vil du slette denne institusjonen?",
-      "unlinkAndDelete": "Koble fra kontoer og slett"
+      "message": "Velg: Frakobling beholder kontoer og historikk; kaskadesletting sletter kontoer, transaksjoner og all historikk. Vil du slette denne institusjonen?",
+      "unlinkAndDelete": "Koble fra kontoer og slett",
+      "cascade": "Slett institusjon og alle kontoer"
     }
   },
   "transactions": {

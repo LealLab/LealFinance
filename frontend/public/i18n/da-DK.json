@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Slet institution",
-      "message": "Tilknyttede konti og investeringspunge vil blive afkoblet, ikke slettet. Vil du slette denne institution?",
-      "unlinkAndDelete": "Afkobl konti og slet"
+      "message": "Vælg: Afkobling bevarer konti og historik; kaskadesletning fjerner konti, transaktioner og al historik. Vil du slette denne institution?",
+      "unlinkAndDelete": "Afkobl konti og slet",
+      "cascade": "Slet institution og alle konti"
     }
   },
   "transactions": {

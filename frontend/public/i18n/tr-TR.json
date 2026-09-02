@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Finans kuruluşu silinsin mi?",
-      "message": "Bağlı hesapların ve yatırım cüzdanlarının bağlantısı kaldırılacak, ancak silinmeyecek. Bu finans kuruluşunu silmek istiyor musunuz?",
-      "unlinkAndDelete": "Hesapların bağlantısını kaldır ve sil"
+      "message": "Seçin: bağlantıyı kaldırmak hesapları ve geçmişi korur; kademeli silme hesapları, işlemleri ve tüm geçmişi yok eder. Bu finans kuruluşunu silmek istiyor musunuz?",
+      "unlinkAndDelete": "Hesapların bağlantısını kaldır ve sil",
+      "cascade": "Finans kuruluşunu ve tüm hesapları sil"
     }
   },
   "transactions": {

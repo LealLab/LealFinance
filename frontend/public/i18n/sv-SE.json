@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Ta bort finansiellt institut",
-      "message": "Kopplade konton och investeringsplånböcker kommer att kopplas bort, inte tas bort. Vill du ta bort detta finansiella institut?",
-      "unlinkAndDelete": "Koppla bort konton och ta bort"
+      "message": "Välj: frånkoppling behåller konton och historik; kaskadradering tar bort konton, transaktioner och all historik. Vill du ta bort detta finansiella institut?",
+      "unlinkAndDelete": "Koppla bort konton och ta bort",
+      "cascade": "Ta bort finansiellt institut och alla konton"
     }
   },
   "transactions": {

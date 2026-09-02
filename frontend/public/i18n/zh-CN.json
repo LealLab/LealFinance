@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "删除机构",
-      "message": "关联账户和投资钱包将解除关联，但不会删除。要删除此机构吗？",
-      "unlinkAndDelete": "解除关联并删除"
+      "message": "请选择：解除关联会保留账户和历史记录；级联删除会删除账户、交易和全部历史记录。要删除此机构吗？",
+      "unlinkAndDelete": "解除关联并删除",
+      "cascade": "删除机构及所有账户"
     }
   },
   "transactions": {

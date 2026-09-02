@@ -22,8 +22,8 @@ const DEFAULT_ICON = 'bank';
  * for both "new" (institution undefined) and "edit", and the form
  * repopulates whenever the modal opens.
  *
- * Also offers deletion from the edit view, including detaching references
- * before deleting the institution.
+ * Also offers deletion from the edit view, including detaching or cascading
+ * references before deleting the institution.
  */
 @Component({
   selector: 'app-institution-form-modal',
@@ -69,7 +69,7 @@ export class InstitutionFormModal {
    * literals, only ever reached through the template's translation call -
    * see account-form-modal.ts for why that needs this JSDoc "dynamic
    * markings" block:
-   * t(institutions.form.editTitle, institutions.form.newTitle, institutions.form.saveError, institutions.form.deleteInUseError, institutions.delete.title, institutions.delete.message, institutions.delete.unlinkAndDelete)
+   * t(institutions.form.editTitle, institutions.form.newTitle, institutions.form.saveError, institutions.form.deleteInUseError, institutions.delete.title, institutions.delete.message, institutions.delete.unlinkAndDelete, institutions.delete.cascade)
    */
   protected readonly titleKey = computed(() =>
     this.institution() ? 'institutions.form.editTitle' : 'institutions.form.newTitle'
@@ -130,13 +130,17 @@ export class InstitutionFormModal {
     const choice = await this.confirmService.choose(
       'institutions.delete.title',
       'institutions.delete.message',
-      [{ labelKey: 'institutions.delete.unlinkAndDelete', value: 'detach', tone: 'danger' }],
+      [
+        { labelKey: 'institutions.delete.unlinkAndDelete', value: 'detach' },
+        { labelKey: 'institutions.delete.cascade', value: 'cascade', tone: 'danger' },
+      ],
       {},
     );
-    if (choice !== 'detach') return;
+    const mode = choice === 'detach' || choice === 'cascade' ? choice : null;
+    if (!mode) return;
 
     this.deleting.set(true);
-    this.institutions.delete(existing.id, true).subscribe({
+    this.institutions.delete(existing.id, mode).subscribe({
       next: () => {
         this.deleting.set(false);
         this.open.set(false);

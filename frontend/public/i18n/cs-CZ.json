@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Odstranit instituci",
-      "message": "Propojené účty a investiční peněženky budou odpojeny, nikoli odstraněny. Chcete tuto instituci odstranit?",
-      "unlinkAndDelete": "Odpojit účty a odstranit"
+      "message": "Zvolte: odpojení zachová účty a historii; kaskádové odstranění smaže účty, transakce a celou historii. Chcete tuto instituci odstranit?",
+      "unlinkAndDelete": "Odpojit účty a odstranit",
+      "cascade": "Odstranit instituci a všechny účty"
     }
   },
   "transactions": {

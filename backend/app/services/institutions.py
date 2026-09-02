@@ -1,20 +1,29 @@
-"""Institution CRUD, archive/unarchive, and guarded delete with detach mode.
+"""Institution CRUD, archive/unarchive, and guarded delete modes.
 
-Deleting an institution can optionally detach its referencing accounts and
+Deleting an institution can detach or cascade its referencing accounts and
 investment wallets in the same transaction.
 """
 
+from enum import StrEnum
 from uuid import UUID
 
-from sqlalchemy import func, select, update
+from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError
 from app.models.account import Account
 from app.models.institution import Institution
-from app.models.investment import InvestmentWallet
+from app.models.investment import InvestmentTransaction, InvestmentWallet
 from app.schemas.institution import InstitutionCreate, InstitutionUpdate
+from app.services import accounts as accounts_service
+from app.services import ownership
 from app.services.ownership import get_owned, list_owned
+
+
+class InstitutionDeleteMode(StrEnum):
+    GUARD = "guard"
+    DETACH = "detach"
+    CASCADE = "cascade"
 
 
 async def list_institutions(db: AsyncSession, user_id: UUID) -> list[Institution]:
@@ -57,43 +66,64 @@ async def set_institution_archived(
 
 
 async def delete_institution(
-    db: AsyncSession, user_id: UUID, institution_id: UUID, detach: bool = False
+    db: AsyncSession,
+    user_id: UUID,
+    institution_id: UUID,
+    mode: InstitutionDeleteMode = InstitutionDeleteMode.GUARD,
 ) -> None:
     institution = await get_owned(db, Institution, institution_id, user_id)
 
-    # An account can only reference institutions its own owner created (see
-    # create_account's get_owned_or_none check), so no extra user_id filter
-    # is needed here - any account referencing this id is already theirs. The
-    # same ownership invariant is enforced for InvestmentWallet by
-    # create_wallet's get_owned_or_none check.
-    account_count = await db.scalar(
-        select(func.count()).select_from(Account).where(Account.institution_id == institution_id)
+    accounts = list(
+        (
+            await db.scalars(
+                ownership.owned(Account, user_id).where(Account.institution_id == institution_id)
+            )
+        ).all()
     )
-    wallet_count = await db.scalar(
-        select(func.count())
-        .select_from(InvestmentWallet)
-        .where(InvestmentWallet.institution_id == institution_id)
+    wallets = list(
+        (
+            await db.scalars(
+                ownership.owned(InvestmentWallet, user_id).where(
+                    InvestmentWallet.institution_id == institution_id
+                )
+            )
+        ).all()
     )
-    account_count = int(account_count or 0)
-    wallet_count = int(wallet_count or 0)
+    account_ids = [account.id for account in accounts]
+    wallet_ids = [wallet.id for wallet in wallets]
 
-    if not detach and (account_count or wallet_count):
+    if mode == "guard" and (account_ids or wallet_ids):
         raise ConflictError(
             code="institution.has_accounts",
-            params={"accounts": account_count, "wallets": wallet_count},
+            params={"accounts": len(account_ids), "wallets": len(wallet_ids)},
         )
 
-    if detach:
+    if mode == "detach":
         await db.execute(
-            update(Account)
-            .where(Account.institution_id == institution_id)
-            .values(institution_id=None)
+            update(Account).where(Account.id.in_(account_ids)).values(institution_id=None)
         )
         await db.execute(
             update(InvestmentWallet)
-            .where(InvestmentWallet.institution_id == institution_id)
+            .where(InvestmentWallet.id.in_(wallet_ids))
             .values(institution_id=None)
         )
+    elif mode == "cascade":
+        await accounts_service.cascade_delete_accounts(db, user_id, account_ids, commit=False)
+        # A wallet may be linked to an institution without its account being
+        # linked to it; remove those wallet-only references too.
+        if wallet_ids:
+            await db.execute(
+                delete(InvestmentTransaction).where(
+                    InvestmentTransaction.user_id == user_id,
+                    InvestmentTransaction.wallet_id.in_(wallet_ids),
+                )
+            )
+            await db.execute(
+                delete(InvestmentWallet).where(
+                    InvestmentWallet.user_id == user_id,
+                    InvestmentWallet.id.in_(wallet_ids),
+                )
+            )
 
     await db.delete(institution)
     await db.commit()

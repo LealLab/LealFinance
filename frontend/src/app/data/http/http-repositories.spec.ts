@@ -118,11 +118,11 @@ describe('HTTP repositories', () => {
     allocationReq.flush({ id: 'a', group_id: 'g', percentage: '20' });
   });
 
-  it('sends detach when deleting an institution with references', () => {
-    TestBed.inject(HttpInstitutionRepository).delete('i', true).subscribe();
+  it('sends the institution delete mode', () => {
+    TestBed.inject(HttpInstitutionRepository).delete('i', 'detach').subscribe();
     const req = http.expectOne((request) => request.url === '/api/v1/institutions/i');
     expect(req.request.method).toBe('DELETE');
-    expect(req.request.params.get('detach')).toBe('true');
+    expect(req.request.params.get('mode')).toBe('detach');
     req.flush(null);
   });
 

@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Poista rahoituslaitos",
-      "message": "Liitettyjen tilien ja sijoituslompakoiden linkitys poistetaan, mutta niitä ei poisteta. Haluatko poistaa tämän rahoituslaitoksen?",
-      "unlinkAndDelete": "Poista linkitys ja poista"
+      "message": "Valitse: linkityksen poistaminen säilyttää tilit ja historian; ketjupoisto tuhoaa tilit, tapahtumat ja koko historian. Haluatko poistaa tämän rahoituslaitoksen?",
+      "unlinkAndDelete": "Poista linkitys ja poista",
+      "cascade": "Poista rahoituslaitos ja kaikki tilit"
     }
   },
   "transactions": {

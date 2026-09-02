@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Excluir instituição",
-      "message": "As contas e carteiras de investimento vinculadas serão desvinculadas, não excluídas. Deseja excluir esta instituição?",
-      "unlinkAndDelete": "Desvincular contas e excluir"
+      "message": "Escolha: desvincular mantém as contas e o histórico; excluir em cascata apaga as contas, transações e todo o histórico. Deseja excluir esta instituição?",
+      "unlinkAndDelete": "Desvincular contas e excluir",
+      "cascade": "Excluir instituição e todas as contas"
     }
   },
   "transactions": {

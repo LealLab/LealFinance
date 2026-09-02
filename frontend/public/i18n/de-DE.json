@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Institut löschen",
-      "message": "Verknüpfte Konten und Investment-Wallets werden getrennt, nicht gelöscht. Möchten Sie dieses Institut löschen?",
-      "unlinkAndDelete": "Konten trennen & löschen"
+      "message": "Wählen Sie: Beim Trennen bleiben Konten und Verlauf erhalten; beim Löschen im Verbund werden Konten, Transaktionen und der gesamte Verlauf gelöscht. Möchten Sie dieses Institut löschen?",
+      "unlinkAndDelete": "Konten trennen & löschen",
+      "cascade": "Institut und alle Konten löschen"
     }
   },
   "transactions": {

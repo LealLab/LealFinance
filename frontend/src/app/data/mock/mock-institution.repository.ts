@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { InstitutionRepository } from '../institution.repository';
+import { InstitutionDeleteMode, InstitutionRepository } from '../institution.repository';
 import { Institution } from '../../domain/models/institution';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
@@ -34,7 +34,7 @@ export class MockInstitutionRepository extends InstitutionRepository {
     return mockResult(() => this.store.updateInstitution(id, { archived }), this.latencyMs);
   }
 
-  delete(id: string, detach = false): Observable<void> {
-    return mockResult(() => this.store.deleteInstitution(id, detach), this.latencyMs);
+  delete(id: string, mode: InstitutionDeleteMode = 'guard'): Observable<void> {
+    return mockResult(() => this.store.deleteInstitution(id, mode), this.latencyMs);
   }
 }

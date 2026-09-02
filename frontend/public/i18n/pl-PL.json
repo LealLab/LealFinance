@@ -477,8 +477,9 @@
     },
     "delete": {
       "title": "Usuń instytucję",
-      "message": "Powiązane konta i portfele inwestycyjne zostaną odłączone, a nie usunięte. Czy chcesz usunąć tę instytucję?",
-      "unlinkAndDelete": "Odłącz konta i usuń"
+      "message": "Wybierz: odłączenie zachowa konta i historię; usunięcie kaskadowe skasuje konta, transakcje i całą historię. Czy chcesz usunąć tę instytucję?",
+      "unlinkAndDelete": "Odłącz konta i usuń",
+      "cascade": "Usuń instytucję i wszystkie konta"
     }
   },
   "transactions": {
