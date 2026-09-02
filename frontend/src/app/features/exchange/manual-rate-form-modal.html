@@ -41,6 +41,14 @@
           }
         </div>
 
+        @if (ratePreview(); as p) {
+          <p class="rounded bg-surface-sunken px-3 py-2 text-sm text-content-muted">
+            1&nbsp;{{ p.baseCode }}&nbsp;=
+            <span class="font-mono font-medium text-content-primary">{{ p.amount }}</span>
+            &nbsp;{{ p.quoteCode }}
+          </p>
+        }
+
         <div>
           <label class="form-label" for="manual-rate-as-of">
             {{ t('exchange.manualRates.form.fields.asOf') }}
