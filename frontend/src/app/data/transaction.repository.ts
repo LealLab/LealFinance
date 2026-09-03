@@ -62,12 +62,15 @@ export interface ImportRow {
   index: number;
   date?: string;
   description: string;
-  type?: 'income' | 'expense';
+  type?: 'income' | 'expense' | 'transfer';
   amount?: string;
   categoryId?: string;
   categoryName?: string;
   ruleName?: string;
   notes?: string;
+  counterpartyAccountId?: string;
+  counterpartyAccountName?: string;
+  transferDirection?: 'incoming' | 'outgoing';
   error?: string;
   duplicate: boolean;
 }

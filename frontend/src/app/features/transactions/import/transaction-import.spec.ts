@@ -193,6 +193,8 @@ describe('TransactionImport', () => {
       date: 'Data',
       description: '',
       amount: 'Valor',
+      type: '',
+      counterparty_account: '',
       category: '',
       notes: ''
     });
@@ -283,6 +285,56 @@ describe('TransactionImport', () => {
     expect(stubRepo.lastCommitItems?.[0].description).toBe('Tea');
     expect(component.importedCount()).toBe(2);
     expect(component.rows()).toEqual([]);
+  });
+
+  it('commits transfer rows in the direction implied by the preview', async () => {
+    const fixture = TestBed.createComponent(TransactionImport);
+    const component = fixture.componentInstance as unknown as TestableComponent;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await previewedRows(component, [
+      {
+        ...baseRow,
+        index: 0,
+        date: '2026-01-15',
+        type: 'transfer',
+        amount: '5.00',
+        counterpartyAccountId: 'acc-savings',
+        counterpartyAccountName: 'PoupanÃ§a',
+        transferDirection: 'outgoing'
+      },
+      {
+        ...baseRow,
+        index: 1,
+        date: '2026-01-16',
+        type: 'transfer',
+        amount: '6.00',
+        counterpartyAccountId: 'acc-savings',
+        counterpartyAccountName: 'PoupanÃ§a',
+        transferDirection: 'incoming'
+      }
+    ]);
+    component.toggleReviewed(component.rows()[0]);
+    component.toggleReviewed(component.rows()[1]);
+    component.askBeforeImport.set(false);
+
+    await component.confirmImport();
+
+    expect(stubRepo.lastCommitItems).toEqual([
+      expect.objectContaining({
+        type: 'transfer',
+        accountId: 'acc-checking',
+        toAccountId: 'acc-savings',
+        categoryId: undefined
+      }),
+      expect.objectContaining({
+        type: 'transfer',
+        accountId: 'acc-savings',
+        toAccountId: 'acc-checking',
+        categoryId: undefined
+      })
+    ]);
   });
 
   it('tints a row by its income/expense direction, and leaves an undetermined row untinted', async () => {

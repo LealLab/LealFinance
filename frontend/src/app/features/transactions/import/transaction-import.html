@@ -77,11 +77,11 @@
   @if (hasFile() && accountId()) {
     <app-card class="mb-6">
       <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('transactions.import.mapping.title') }}</h2>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         @for (field of targetFields; track field) {
           <div>
             <label class="form-label" [for]="'import-map-' + field">
-              {{ t('transactions.form.fields.' + field) }}
+              {{ t(mappingLabel(field)) }}
             </label>
             <select
               [id]="'import-map-' + field"
@@ -245,6 +245,7 @@
                   }
                 </button>
               </th>
+              <th class="p-3 text-start">{{ t('transactions.form.fields.account') }}</th>
               <th class="p-3 text-start">{{ t('transactions.form.fields.category') }}</th>
               <th class="p-3 text-start">
                 <button type="button" class="inline-flex items-center gap-1" (click)="toggleSort('amount')">
@@ -295,6 +296,7 @@
                     [value]="row.type ?? ''"
                     (change)="setRowType(row, $any($event.target).value)"
                   >
+                    <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
                     @for (type of rowTypes; track type) {
                       <option [value]="type">{{ t('transactions.type.' + type) }}</option>
                     }
@@ -303,6 +305,23 @@
                 <td class="p-3 align-top">
                   <select
                     class="form-input"
+                    [value]="row.counterpartyAccountId ?? ''"
+                    [disabled]="row.type !== 'transfer'"
+                    (change)="setRowCounterparty(row, $any($event.target).value)"
+                  >
+                    <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+                    @for (account of counterpartyAccounts(); track account.id) {
+                      <option [value]="account.id">{{ account.name }}</option>
+                    }
+                  </select>
+                  @if (row.type === 'transfer' && row.counterpartyAccountName && !row.counterpartyAccountId) {
+                    <span class="mt-1 block text-xs text-warning">{{ row.counterpartyAccountName }}</span>
+                  }
+                </td>
+                <td class="p-3 align-top">
+                  <select
+                    class="form-input"
+                    [disabled]="row.type !== 'income' && row.type !== 'expense'"
                     (change)="setRowCategory(row, $any($event.target).value)"
                   >
                     <option value="" [selected]="!row.categoryId">

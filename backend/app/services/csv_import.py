@@ -35,7 +35,15 @@ from app.services.transactions import list_transactions
 MAX_CONTENT_BYTES = 2 * 1024 * 1024
 MAX_ROWS = 2000
 
-TARGET_FIELDS = ("date", "description", "amount", "category", "notes")
+TARGET_FIELDS = (
+    "date",
+    "description",
+    "amount",
+    "type",
+    "counterparty_account",
+    "category",
+    "notes",
+)
 REQUIRED_FIELDS = ("date", "description", "amount")
 
 # English + Portuguese only, matching the two locales the project ships
@@ -45,6 +53,16 @@ _HEADER_KEYWORDS: dict[str, tuple[str, ...]] = {
     "date": ("date", "data"),
     "description": ("description", "descricao", "descrição", "historico", "histórico", "memo"),
     "amount": ("amount", "valor", "montante"),
+    "type": ("type", "tipo", "transaction type", "tipo de transacao", "tipo de transação"),
+    "counterparty_account": (
+        "counterparty account",
+        "counterparty",
+        "account",
+        "conta",
+        "conta contraparte",
+        "conta destino",
+        "contrapartida",
+    ),
     "category": ("category", "categoria"),
     "notes": ("notes", "observacoes", "observações", "obs"),
 }
@@ -146,6 +164,8 @@ class ParsedRow:
     category_name: str | None
     notes: str | None
     error: str | None
+    counterparty_account_name: str | None = None
+    transfer_direction: str | None = None
 
 
 def parse_rows(
@@ -161,6 +181,8 @@ def parse_rows(
     amount_col = mapping.get("amount")
     category_col = mapping.get("category")
     notes_col = mapping.get("notes")
+    type_col = mapping.get("type")
+    counterparty_account_col = mapping.get("counterparty_account")
 
     rows: list[ParsedRow] = []
     for index, raw in enumerate(raw_rows):
@@ -168,6 +190,12 @@ def parse_rows(
         description = raw.get(desc_col, "").strip() if desc_col else ""
         category_name = (raw.get(category_col, "").strip() or None) if category_col else None
         notes = (raw.get(notes_col, "").strip() or None) if notes_col else None
+        counterparty_account_name = (
+            raw.get(counterparty_account_col, "").strip() or None
+            if counterparty_account_col
+            else None
+        )
+        raw_type = raw.get(type_col, "").strip().casefold() if type_col else ""
         signed_amount = (
             parse_amount(raw.get(amount_col, ""), decimal_separator) if amount_col else None
         )
@@ -184,11 +212,17 @@ def parse_rows(
 
         tx_type: str | None = None
         amount: Decimal | None = None
+        transfer_direction: str | None = None
         if error is None:
             assert signed_amount is not None
             effective = -signed_amount if invert_sign else signed_amount
-            tx_type = "expense" if effective < 0 else "income"
+            if raw_type in {"income", "expense", "transfer"}:
+                tx_type = raw_type
+            if tx_type is None and not raw_type:
+                tx_type = "expense" if effective < 0 else "income"
             amount = abs(effective)
+            if tx_type == "transfer":
+                transfer_direction = "outgoing" if effective < 0 else "incoming"
 
         rows.append(
             ParsedRow(
@@ -200,6 +234,8 @@ def parse_rows(
                 category_name=category_name,
                 notes=notes,
                 error=error,
+                counterparty_account_name=counterparty_account_name,
+                transfer_direction=transfer_direction,
             )
         )
     return rows
@@ -218,6 +254,9 @@ class ImportRowResult:
     notes: str | None
     error: str | None
     duplicate: bool
+    counterparty_account_id: UUID | None = None
+    counterparty_account_name: str | None = None
+    transfer_direction: str | None = None
 
 
 @dataclass
@@ -261,6 +300,9 @@ async def preview_import(
     )
 
     categories = await ownership.list_owned(db, Category, user_id)
+    accounts = await ownership.list_owned(db, Account, user_id)
+    account_by_name = {account.name.strip().casefold(): account for account in accounts}
+    selected_account = next(account for account in accounts if account.id == account_id)
     category_index = {
         (category.kind, category.name.strip().casefold()): category.id for category in categories
     }
@@ -292,7 +334,7 @@ async def preview_import(
                     type=row.type,
                 ),
             )
-            if row.error is None and row.type is not None
+            if row.error is None and row.type in ("income", "expense")
             else None
         )
         category_id = (
@@ -304,6 +346,15 @@ async def preview_import(
                 else None
             )
         )
+        counterparty_account_id = None
+        if row.type == "transfer" and row.counterparty_account_name:
+            counterparty = account_by_name.get(row.counterparty_account_name.casefold())
+            if (
+                counterparty is not None
+                and counterparty.id != account_id
+                and counterparty.currency == selected_account.currency
+            ):
+                counterparty_account_id = counterparty.id
         results.append(
             ImportRowResult(
                 index=row.index,
@@ -321,6 +372,9 @@ async def preview_import(
                     and row.date is not None
                     and (row.date, row.amount, row.description.strip().casefold()) in existing_keys
                 ),
+                counterparty_account_id=counterparty_account_id,
+                counterparty_account_name=row.counterparty_account_name,
+                transfer_direction=row.transfer_direction,
             )
         )
 

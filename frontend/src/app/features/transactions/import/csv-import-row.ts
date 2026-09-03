@@ -39,7 +39,7 @@ export function pendingCategoryCreations(rows: readonly CsvImportRow[]): Pending
   for (const row of rows) {
     const suggestion = row.suggestion;
     if (row.categoryId || !suggestion || suggestion.categoryId || !suggestion.categoryName) continue;
-    if (!suggestion.groupName || !row.type) continue;
+    if (!suggestion.groupName || (row.type !== 'income' && row.type !== 'expense')) continue;
     const key = `${row.type} ${suggestion.groupId ?? suggestion.groupName.toLowerCase()}`;
     let entry = byGroup.get(key);
     if (!entry) {
@@ -69,13 +69,15 @@ export function toImportRows(rows: readonly ImportRow[]): CsvImportRow[] {
   return rows.map((row) => ({ ...row, reviewed: false, excluded: row.duplicate }));
 }
 
-/** A row can be marked reviewed only once it parses cleanly and carries a
- * category - the backend requires one on every income/expense transaction
- * (see transaction.category_required in
- * backend/app/services/transactions.py), and import never produces
- * transfers or interest entries. */
+/** A row can be marked reviewed only once it parses cleanly and carries the
+ * reference its transaction shape needs: a category for income/expense or a
+ * counterparty for transfers. */
 export function isReviewable(row: CsvImportRow): boolean {
-  return !row.error && !!row.categoryId;
+  return (
+    !row.error &&
+    !!row.type &&
+    (row.type === 'transfer' ? !!row.counterpartyAccountId : !!row.categoryId)
+  );
 }
 
 /** What Confirm actually imports: reviewed, not excluded, and still

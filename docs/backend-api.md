@@ -350,8 +350,13 @@ detected `headers`, the `mapping` actually used (the guess, or the caller's
 mapping echoed back), and one `rows` entry per CSV data row:
 
 - `type`/`amount` are derived from the amount column's sign (negative →
-  `expense`, positive → `income`, `invert_sign` flips this) - import only
-  ever produces income/expense rows, never transfers or interest.
+  `expense`, positive → `income`, `invert_sign` flips this) unless an optional
+  `type` column is mapped. A mapped `transfer` row uses the optional
+  `counterparty_account` column and records the selected account as the
+  source for a negative effective amount, or the destination for a positive
+  effective amount. The type and counterparty mappings are echoed in the
+  returned `mapping`; an unknown counterparty remains as its name until the
+  caller selects an owned account. Transfers do not use categories.
 - `category_id` is set only when a `category` column is mapped and its text
 case-insensitively matches one of the caller's own categories
   whose `kind` matches the row's derived type; otherwise `null` and the
@@ -362,6 +367,11 @@ case-insensitively matches one of the caller's own categories
 - `duplicate` is `true` when an existing transaction on the same account
   already matches `(date, amount, description)` case-insensitively - a
   single query against the CSV's date range, not one query per row.
+
+Transfer counterparties are matched case-insensitively against the user's
+owned account names. Only same-currency transfer counterparties are resolved
+for import; a cross-currency transfer requires explicit conversion data at
+commit time.
 
 Limits, rejected as `error.validation` (`ValidationAppError`, not per-row):
 content over 2 MiB, over 2000 data rows, zero data rows, or the `date`/

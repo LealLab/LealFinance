@@ -43,7 +43,7 @@ class ImportRowRead(BaseModel):
     index: int
     date: date_type | None
     description: str
-    type: Literal["income", "expense"] | None
+    type: Literal["income", "expense", "transfer"] | None
     amount: Decimal | None
     category_id: UUID | None
     category_name: str | None
@@ -51,6 +51,9 @@ class ImportRowRead(BaseModel):
     notes: str | None
     error: ImportRowError | None
     duplicate: bool
+    counterparty_account_id: UUID | None = None
+    counterparty_account_name: str | None = None
+    transfer_direction: Literal["incoming", "outgoing"] | None = None
 
     @field_serializer("amount")
     def _serialize_amount(self, value: Decimal | None) -> str | None:
