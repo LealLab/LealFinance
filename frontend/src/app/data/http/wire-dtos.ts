@@ -179,7 +179,7 @@ export interface ImportRowWire {
   index: number;
   date: string | null;
   description: string;
-  type: 'income' | 'expense' | null;
+  type: 'income' | 'expense' | 'transfer' | null;
   amount: string | null;
   category_id: string | null;
   category_name: string | null;
@@ -187,6 +187,9 @@ export interface ImportRowWire {
   notes: string | null;
   error: string | null;
   duplicate: boolean;
+  counterparty_account_id?: string | null;
+  counterparty_account_name?: string | null;
+  transfer_direction?: 'incoming' | 'outgoing' | null;
 }
 
 export interface ImportPreviewWire {

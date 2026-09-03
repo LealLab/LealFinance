@@ -663,6 +663,7 @@ describe('HTTP repositories', () => {
       provider: 'anthropic',
       model: 'claude-sonnet-5',
       status: 'idle',
+      pending_call_id: null,
       created_at: '2026-01-01',
       updated_at: '2026-01-01',
     });
@@ -677,6 +678,7 @@ describe('HTTP repositories', () => {
       provider: 'anthropic',
       model: 'claude-sonnet-5',
       status: 'awaiting_confirmation',
+      pending_call_id: 'w1',
       created_at: '2026-01-01',
       updated_at: '2026-01-02',
       messages: [
@@ -696,6 +698,7 @@ describe('HTTP repositories', () => {
     expect(detail).toMatchObject({
       id: 'c1',
       status: 'awaiting_confirmation',
+      pendingCallId: 'w1',
       updatedAt: '2026-01-02',
       messages: [{ toolCalls: [{ id: 'w1', name: 'create_transaction', arguments: {} }] }],
     });

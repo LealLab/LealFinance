@@ -42,6 +42,7 @@ export class MockAgentChatRepository extends AgentChatRepository {
         provider: provider ?? 'mock',
         model: 'mock-model',
         status: 'idle',
+        pendingCallId: null,
         createdAt: now,
         updatedAt: now,
       };

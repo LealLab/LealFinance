@@ -34,11 +34,26 @@ import {
   toImportRows
 } from './csv-import-row';
 
-type TargetField = 'date' | 'description' | 'amount' | 'category' | 'notes';
-const TARGET_FIELDS: readonly TargetField[] = ['date', 'description', 'amount', 'category', 'notes'];
+type TargetField =
+  | 'date'
+  | 'description'
+  | 'amount'
+  | 'type'
+  | 'counterparty_account'
+  | 'category'
+  | 'notes';
+const TARGET_FIELDS: readonly TargetField[] = [
+  'date',
+  'description',
+  'amount',
+  'type',
+  'counterparty_account',
+  'category',
+  'notes'
+];
 const REQUIRED_FIELDS: readonly TargetField[] = ['date', 'description', 'amount'];
-type RowType = 'income' | 'expense';
-const ROW_TYPES: readonly RowType[] = ['expense', 'income'];
+type RowType = 'income' | 'expense' | 'transfer';
+const ROW_TYPES: readonly RowType[] = ['expense', 'income', 'transfer'];
 
 /**
  * Bank-statement CSV import: pick a file + target account, map columns
@@ -126,6 +141,12 @@ export class TransactionImport {
     const direction = this.sortDirection() === 'asc' ? 1 : -1;
     return [...this.rows()].sort((a, b) => direction * compareRows(a, b, column));
   });
+  protected readonly nonTransferRows = computed(() =>
+    this.sortedRows().filter((row) => row.type !== 'transfer')
+  );
+  protected readonly transferRows = computed(() =>
+    this.sortedRows().filter((row) => row.type === 'transfer')
+  );
 
   protected readonly askBeforeImport = signal(true);
   protected readonly importing = signal(false);
@@ -163,6 +184,12 @@ export class TransactionImport {
   protected readonly selectedAccount = computed(() =>
     this.accountsResource.value()?.find((account) => account.id === this.accountId())
   );
+  protected readonly counterpartyAccounts = computed(() => {
+    const selected = this.selectedAccount();
+    return (this.accountsResource.value() ?? []).filter(
+      (account) => account.id !== selected?.id && account.currency === selected?.currency
+    );
+  });
 
   protected readonly hasFile = computed(() => this.csvContent() !== undefined);
   protected readonly reviewedRowCount = computed(() => reviewedCount(this.rows()));
@@ -170,7 +197,21 @@ export class TransactionImport {
   protected readonly isReviewable = isReviewable;
 
   private emptyMapping(): Record<TargetField, string> {
-    return { date: '', description: '', amount: '', category: '', notes: '' };
+    return {
+      date: '',
+      description: '',
+      amount: '',
+      type: '',
+      counterparty_account: '',
+      category: '',
+      notes: ''
+    };
+  }
+
+  protected mappingLabel(field: TargetField): string {
+    if (field === 'type') return 'transactions.filters.type';
+    if (field === 'counterparty_account') return 'transactions.form.fields.account';
+    return `transactions.form.fields.${field}`;
   }
 
   protected categoriesForType(type: RowType | undefined) {
@@ -198,13 +239,11 @@ export class TransactionImport {
     );
   }
 
-  /** Income/expense tint so a row's direction reads at a glance, matching
-   * the positive/negative color tokens badges already use elsewhere - a
-   * stronger fill than a badge's, since a badge is a small bold pill and a
-   * full-width row needs more weight to register at a glance. */
+  /** Color rows by transaction type so direction reads at a glance. */
   protected rowBackgroundClass(row: CsvImportRow): string {
     if (row.type === 'income') return 'bg-positive/20';
     if (row.type === 'expense') return 'bg-negative/20';
+    if (row.type === 'transfer') return 'bg-accent/20';
     return '';
   }
 
@@ -321,9 +360,14 @@ export class TransactionImport {
     this.updateRow(row.index, { reviewed: !row.reviewed });
   }
 
-  protected toggleAllReviewed(checked: boolean): void {
+  protected toggleAllReviewed(checked: boolean, scopedRows?: readonly CsvImportRow[]): void {
+    const scopedIndices = scopedRows && new Set(scopedRows.map((row) => row.index));
     this.rows.update((rows) =>
-      rows.map((row) => (isReviewable(row) ? { ...row, reviewed: checked } : row))
+      rows.map((row) =>
+        (!scopedIndices || scopedIndices.has(row.index)) && isReviewable(row)
+          ? { ...row, reviewed: checked }
+          : row
+      )
     );
   }
 
@@ -348,11 +392,21 @@ export class TransactionImport {
   }
 
   protected setRowType(row: CsvImportRow, type: RowType): void {
+    if (type === 'transfer') {
+      this.updateRow(row.index, {
+        type,
+        categoryId: undefined,
+        categoryName: undefined,
+        suggestion: undefined
+      });
+      return;
+    }
     const stillValid = this.categoriesForType(type).some((category) => category.id === row.categoryId);
     this.updateRow(row.index, {
       type,
       categoryId: stillValid ? row.categoryId : undefined,
-      categoryName: stillValid ? row.categoryName : undefined
+      categoryName: stillValid ? row.categoryName : undefined,
+      suggestion: stillValid ? row.suggestion : undefined
     });
   }
 
@@ -361,6 +415,14 @@ export class TransactionImport {
     this.updateRow(row.index, {
       categoryId: categoryId || undefined,
       categoryName: category?.name
+    });
+  }
+
+  protected setRowCounterparty(row: CsvImportRow, accountId: string): void {
+    const account = this.accountsResource.value()?.find((item) => item.id === accountId);
+    this.updateRow(row.index, {
+      counterpartyAccountId: account?.id,
+      counterpartyAccountName: account?.name ?? row.counterpartyAccountName
     });
   }
 
@@ -376,7 +438,13 @@ export class TransactionImport {
     if (this.suggesting() || this.suggested()) return;
     const representatives = new Map<string, CsvImportRow>();
     for (const row of this.rows()) {
-      if (row.categoryId || row.error || !row.description || !row.type) continue;
+      if (
+        row.categoryId ||
+        row.error ||
+        !row.description ||
+        (row.type !== 'income' && row.type !== 'expense')
+      )
+        continue;
       const key = this.suggestKey(row.type, row.description);
       if (!representatives.has(key)) representatives.set(key, row);
     }
@@ -390,7 +458,7 @@ export class TransactionImport {
       .map((row) => ({
         index: row.index,
         description: row.description,
-        type: row.type as RowType
+        type: row.type as 'income' | 'expense'
       }));
 
     this.suggesting.set(true);
@@ -510,13 +578,20 @@ export class TransactionImport {
   }
 
   private toTransactionInput(row: CsvImportRow, currency: string): Omit<Transaction, 'id'> {
+    const transfer = row.type === 'transfer';
+    const incoming = row.transferDirection === 'incoming';
     return {
       type: row.type as TransactionType,
       date: row.date as string,
       amount: row.amount as string,
       currency,
-      accountId: this.accountId(),
-      categoryId: row.categoryId,
+      accountId: transfer && incoming ? (row.counterpartyAccountId as string) : this.accountId(),
+      toAccountId: transfer
+        ? incoming
+          ? this.accountId()
+          : row.counterpartyAccountId
+        : undefined,
+      categoryId: transfer ? undefined : row.categoryId,
       description: row.description,
       notes: row.notes
     };

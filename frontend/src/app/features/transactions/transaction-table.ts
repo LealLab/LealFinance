@@ -106,6 +106,10 @@ export class TransactionTable {
     return id ? (this.accountsById().get(id)?.name ?? '') : '';
   }
 
+  protected descriptionPreview(description: string): string {
+    return description.length > 40 ? `${description.slice(0, 37)}...` : description;
+  }
+
   /** The institution an account belongs to - '' for a cash account or an
    * unknown id. Shown under the account name so same-named accounts at
    * different banks are tellable apart. */

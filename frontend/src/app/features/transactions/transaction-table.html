@@ -114,7 +114,12 @@
                           [size]="14"
                         />
                       </span>
-                      <span class="font-medium text-content-primary">{{ tx.description }}</span>
+                      <span
+                        class="font-medium text-content-primary"
+                        [attr.title]="tx.description"
+                      >
+                        {{ descriptionPreview(tx.description) }}
+                      </span>
                       @if (tx.installmentCount) {
                         <app-badge tone="neutral">
                           {{ tx.installmentNumber }}/{{ tx.installmentCount }}

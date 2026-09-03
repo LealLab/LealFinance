@@ -102,6 +102,12 @@ def test_guess_mapping_leaves_unmatched_field_none() -> None:
     assert guess["notes"] is None
 
 
+def test_guess_mapping_matches_transfer_fields() -> None:
+    guess = guess_mapping(["Date", "Type", "Counterparty Account"])
+    assert guess["type"] == "Type"
+    assert guess["counterparty_account"] == "Counterparty Account"
+
+
 def test_parse_rows_negative_amount_is_expense() -> None:
     raw_rows = [{"date": "2026-01-15", "description": "Coffee", "amount": "-5.00"}]
     mapping = {"date": "date", "description": "description", "amount": "amount"}
@@ -129,6 +135,46 @@ def test_parse_rows_positive_amount_is_income() -> None:
         raw_rows, mapping, date_format="auto", decimal_separator="auto", invert_sign=False
     )
     assert rows[0].type == "income"
+
+
+def test_parse_rows_explicit_transfer_uses_effective_amount_direction() -> None:
+    raw_rows = [
+        {
+            "date": "2026-01-15",
+            "description": "Move to savings",
+            "amount": "-5.00",
+            "type": "Transfer",
+            "counterparty": "Savings",
+        }
+    ]
+    rows = parse_rows(
+        raw_rows,
+        {
+            "date": "date",
+            "description": "description",
+            "amount": "amount",
+            "type": "type",
+            "counterparty_account": "counterparty",
+        },
+        date_format="auto",
+        decimal_separator="auto",
+        invert_sign=False,
+    )
+    assert rows[0].type == "transfer"
+    assert rows[0].amount == Decimal("5.00")
+    assert rows[0].counterparty_account_name == "Savings"
+    assert rows[0].transfer_direction == "outgoing"
+
+
+def test_parse_rows_invert_sign_reverses_transfer_direction() -> None:
+    rows = parse_rows(
+        [{"date": "2026-01-15", "description": "Move", "amount": "-5.00", "type": "transfer"}],
+        {"date": "date", "description": "description", "amount": "amount", "type": "type"},
+        date_format="auto",
+        decimal_separator="auto",
+        invert_sign=True,
+    )
+    assert rows[0].transfer_direction == "incoming"
 
 
 def test_parse_rows_invert_sign_flips_type() -> None:
@@ -184,9 +230,11 @@ async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> 
     await login_as(client, email=user.email, password=password)
 
 
-async def _create_account(client: AsyncClient, currency: str = "BRL") -> str:
+async def _create_account(
+    client: AsyncClient, currency: str = "BRL", name: str = "Checking"
+) -> str:
     response = await client.post(
-        "/api/v1/accounts", json={"name": "Checking", "type": "checking", "currency": currency}
+        "/api/v1/accounts", json={"name": name, "type": "checking", "currency": currency}
     )
     assert response.status_code == 201, response.text
     return response.json()["id"]
@@ -355,6 +403,129 @@ async def test_preview_returns_detected_headers(
     )
     assert response.status_code == 200, response.text
     assert response.json()["headers"] == ["date", "description", "amount", "category"]
+
+
+async def test_preview_resolves_transfer_counterparty_and_direction(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "preview-transfer@example.com")
+    account_id = await _create_account(client, name="Checking")
+    counterparty_id = await _create_account(client, name="Savings")
+
+    response = await client.post(
+        "/api/v1/transactions/import/preview",
+        json={
+            "content": (
+                "date,description,amount,type,counterparty\n"
+                "2026-01-15,To savings,-5.00,Transfer,sAvInGs\n"
+                "2026-01-16,From savings,6.00,transfer,savings\n"
+                "2026-01-17,Same account,7.00,transfer,checking\n"
+            ),
+            "account_id": account_id,
+        },
+    )
+    assert response.status_code == 200, response.text
+    rows = response.json()["rows"]
+    assert rows[0]["type"] == "transfer"
+    assert rows[0]["counterparty_account_id"] == counterparty_id
+    assert rows[0]["counterparty_account_name"] == "sAvInGs"
+    assert rows[0]["transfer_direction"] == "outgoing"
+    assert rows[1]["counterparty_account_id"] == counterparty_id
+    assert rows[1]["transfer_direction"] == "incoming"
+    assert rows[0]["category_id"] is None
+    assert rows[2]["counterparty_account_id"] is None
+
+
+async def test_preview_leaves_cross_currency_counterparty_unresolved(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "preview-transfer-currency@example.com")
+    account_id = await _create_account(client, name="Checking")
+    await _create_account(client, currency="EUR", name="Euro")
+
+    response = await client.post(
+        "/api/v1/transactions/import/preview",
+        json={
+            "content": (
+                "date,description,amount,type,counterparty\n2026-01-15,Move,-5,transfer,Euro\n"
+            ),
+            "account_id": account_id,
+        },
+    )
+    assert response.status_code == 200, response.text
+    row = response.json()["rows"][0]
+    assert row["counterparty_account_id"] is None
+    assert row["counterparty_account_name"] == "Euro"
+
+
+async def test_commit_imports_transfer_rows_without_categories(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "commit-transfer@example.com")
+    selected_id = await _create_account(client, name="Checking")
+    counterparty_id = await _create_account(client, name="Savings")
+
+    response = await client.post(
+        "/api/v1/transactions/import",
+        json={
+            "items": [
+                {
+                    "type": "transfer",
+                    "date": "2026-01-15",
+                    "amount": "5.00",
+                    "currency": "BRL",
+                    "account_id": selected_id,
+                    "to_account_id": counterparty_id,
+                    "description": "To savings",
+                },
+                {
+                    "type": "transfer",
+                    "date": "2026-01-16",
+                    "amount": "6.00",
+                    "currency": "BRL",
+                    "account_id": counterparty_id,
+                    "to_account_id": selected_id,
+                    "description": "From savings",
+                },
+            ]
+        },
+    )
+    assert response.status_code == 201, response.text
+    assert response.json() == {"created": 2}
+
+    rows = (await client.get("/api/v1/transactions")).json()
+    assert [(row["account_id"], row["to_account_id"]) for row in rows] == [
+        (counterparty_id, selected_id),
+        (selected_id, counterparty_id),
+    ]
+
+
+async def test_commit_rejects_cross_currency_transfer_without_conversion(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "commit-transfer-currency@example.com")
+    account_id = await _create_account(client, name="Checking")
+    counterparty_id = await _create_account(client, currency="EUR", name="Euro")
+
+    response = await client.post(
+        "/api/v1/transactions/import",
+        json={
+            "items": [
+                {
+                    "type": "transfer",
+                    "date": "2026-01-15",
+                    "amount": "5.00",
+                    "currency": "BRL",
+                    "account_id": account_id,
+                    "to_account_id": counterparty_id,
+                    "description": "Move",
+                }
+            ]
+        },
+    )
+    assert response.status_code == 422, response.text
+    assert response.json()["error"]["code"] == "transaction.conversion_required"
+    assert (await client.get("/api/v1/transactions")).json() == []
 
 
 async def test_preview_flags_existing_transaction_as_duplicate(

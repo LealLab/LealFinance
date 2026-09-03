@@ -98,6 +98,20 @@ describe('TransactionTable', () => {
     expect(el.querySelectorAll('tbody tr').length).toBe(3);
   });
 
+  it('truncates visible descriptions while preserving the full description', () => {
+    const { fixture, el } = setup();
+    const description = 'A'.repeat(56);
+    fixture.componentInstance.rows.set([tx('1', { description })]);
+    fixture.detectChanges();
+
+    const visible = el.querySelector<HTMLElement>('tbody tr .font-medium')!;
+    const checkbox = el.querySelector<HTMLInputElement>('tbody tr input[type=checkbox]')!;
+    expect(visible.textContent?.trim()).toBe(`${'A'.repeat(37)}...`);
+    expect(visible.textContent?.trim()).toHaveLength(40);
+    expect(visible.title).toBe(description);
+    expect(checkbox.getAttribute('aria-label')).toContain(description);
+  });
+
   it('drives the header checkbox indeterminate on a partial selection', () => {
     const { fixture, el } = setup();
     fixture.componentInstance.selectedIds.set(new Set(['1']));

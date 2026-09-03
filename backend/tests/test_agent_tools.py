@@ -1,7 +1,7 @@
 """Tests for the financial agent tool registry."""
 
 import inspect
-from uuid import UUID
+from uuid import UUID, uuid4
 
 import pytest
 from httpx import AsyncClient
@@ -605,6 +605,112 @@ async def test_delete_tools_surface_in_use_errors(
     assert group_error.value.code == "category_group.in_use"
 
 
+async def test_delete_category_structure_deletes_categories_and_groups_in_one_commit(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    user = await _authed(client, db_session, "agent-delete-structure@example.com")
+    first_group, first_category = await _create_group(client, "First")
+    second_group, second_category = await _create_group(client, "Second")
+
+    commit_count = 0
+    original_commit = db_session.commit
+
+    async def counted_commit() -> None:
+        nonlocal commit_count
+        commit_count += 1
+        await original_commit()
+
+    monkeypatch.setattr(db_session, "commit", counted_commit)
+    result = await tools.SPEC_BY_NAME["delete_category_structure"].run(
+        db_session,
+        user.id,
+        {
+            "category_ids": [first_category, second_category],
+            "group_ids": [first_group, second_group],
+        },
+    )
+
+    assert result == {
+        "deleted": True,
+        "category_ids": [first_category, second_category],
+        "group_ids": [first_group, second_group],
+    }
+    assert commit_count == 1
+    assert await category_groups_service.list_groups(db_session, user.id) == []
+    assert await categories_service.list_categories(db_session, user.id) == []
+
+
+async def test_delete_category_structure_validates_all_before_deleting(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-delete-structure-validation@example.com")
+    account_id = await _create_account(client)
+    first_group, first_category = await _create_group(client, "Used")
+    second_group, second_category = await _create_group(client, "Other")
+    await _create_transaction(
+        client,
+        account_id=account_id,
+        transaction_type="expense",
+        transaction_date="2026-02-01",
+        amount="9.99",
+        category_id=first_category,
+    )
+
+    with pytest.raises(AppError) as error:
+        await tools.SPEC_BY_NAME["delete_category_structure"].run(
+            db_session,
+            user.id,
+            {
+                "category_ids": [first_category, second_category],
+                "group_ids": [first_group, second_group],
+            },
+        )
+    assert error.value.code == "category.in_use"
+    assert {
+        group.name for group in await category_groups_service.list_groups(db_session, user.id)
+    } == {"Used", "Other"}
+    assert {
+        category.name for category in await categories_service.list_categories(db_session, user.id)
+    } == {"Used category", "Other category"}
+
+    with pytest.raises(AppError) as incomplete:
+        await tools.SPEC_BY_NAME["delete_category_structure"].run(
+            db_session, user.id, {"category_ids": [], "group_ids": [first_group]}
+        )
+    assert incomplete.value.code == "agents.category_structure_group_not_empty"
+
+
+async def test_delete_category_structure_rejects_duplicates_limits_and_foreign_ids(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-delete-structure-inputs@example.com")
+    group_id, category_id = await _create_group(client, "Owned")
+    spec = tools.SPEC_BY_NAME["delete_category_structure"]
+
+    with pytest.raises(AppError) as duplicate:
+        await spec.run(
+            db_session,
+            user.id,
+            {"category_ids": [category_id, category_id], "group_ids": []},
+        )
+    assert duplicate.value.code == "agents.category_structure_duplicate_ids"
+
+    with pytest.raises(AppError) as too_many:
+        await spec.run(
+            db_session,
+            user.id,
+            {"category_ids": [uuid4() for _ in range(501)], "group_ids": []},
+        )
+    assert too_many.value.code == "agents.category_structure_too_many_ids"
+
+    other_user, _ = await make_user(db_session, email="agent-delete-structure-other@example.com")
+    with pytest.raises(AppError) as foreign:
+        await spec.run(
+            db_session, other_user.id, {"category_ids": [category_id], "group_ids": [group_id]}
+        )
+    assert foreign.value.code == "category.not_found"
+
+
 async def test_category_tools_coerce_unknown_icon_to_fallback(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -674,6 +780,7 @@ def test_registry_has_provider_safe_schemas_and_async_runners() -> None:
         "create_category_group",
         "update_category_group",
         "delete_category_group",
+        "delete_category_structure",
         "create_category",
         "update_category",
         "delete_category",

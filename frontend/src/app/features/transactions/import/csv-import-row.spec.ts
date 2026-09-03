@@ -49,6 +49,14 @@ describe('isReviewable', () => {
   it('is true for a clean, categorized row', () => {
     expect(isReviewable(toImportRows([cleanRow])[0])).toBe(true);
   });
+
+  it('requires a counterparty instead of a category for transfer rows', () => {
+    const transfer = toImportRows([
+      { ...cleanRow, type: 'transfer', categoryId: undefined, categoryName: undefined }
+    ])[0];
+    expect(isReviewable(transfer)).toBe(false);
+    expect(isReviewable({ ...transfer, counterpartyAccountId: 'account-2' })).toBe(true);
+  });
 });
 
 describe('isImportable', () => {

@@ -13,6 +13,7 @@ export interface AgentConversation {
   provider: string;
   model: string;
   status: AgentConversationStatus;
+  pendingCallId: string | null;
   createdAt: string;
   updatedAt: string;
 }
