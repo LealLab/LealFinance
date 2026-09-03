@@ -12,10 +12,13 @@ from typing import Any, Literal, get_args
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.events import ToolSpec
-from app.core.errors import ValidationAppError
+from app.core.errors import ConflictError, ValidationAppError
+from app.models.budget import Budget, BudgetAllocation
+from app.models.category import Category
 from app.models.category_group import CategoryGroup
 from app.schemas.account import AccountBalanceRead, AccountCreate, AccountRead
 from app.schemas.card_invoice import CardInvoiceRead
@@ -27,7 +30,12 @@ from app.schemas.category_group import (
 )
 from app.schemas.common import IconName
 from app.schemas.institution import InstitutionCreate, InstitutionRead
-from app.schemas.transaction import TransactionCreate, TransactionRead, TransactionType
+from app.schemas.transaction import (
+    MAX_BULK_IDS,
+    TransactionCreate,
+    TransactionRead,
+    TransactionType,
+)
 from app.services import accounts as accounts_service
 from app.services import analytics, ownership
 from app.services import card_invoices as card_invoices_service
@@ -159,6 +167,11 @@ class _UpdateCategoryArgs(_ToolArgs):
 
 class _DeleteCategoryArgs(_ToolArgs):
     category_id: UUID
+
+
+class _DeleteCategoryStructureArgs(_ToolArgs):
+    category_ids: list[UUID]
+    group_ids: list[UUID]
 
 
 def _validate[ModelT: BaseModel](model: type[ModelT], args: dict[str, Any]) -> ModelT:
@@ -459,6 +472,87 @@ async def _delete_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]
     parsed = _validate(_DeleteCategoryArgs, args)
     await categories_service.delete_category(db, user_id, parsed.category_id)
     return {"deleted": True, "id": str(parsed.category_id)}
+
+
+async def _delete_category_structure(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any]:
+    parsed = _validate(_DeleteCategoryStructureArgs, args)
+    category_ids = parsed.category_ids
+    group_ids = parsed.group_ids
+
+    if not category_ids and not group_ids:
+        raise ValidationAppError(code="agents.category_structure_empty")
+    if (
+        len(category_ids) > MAX_BULK_IDS
+        or len(group_ids) > MAX_BULK_IDS
+        or len(category_ids) + len(group_ids) > MAX_BULK_IDS
+    ):
+        raise ValidationAppError(
+            code="agents.category_structure_too_many_ids",
+            params={"max": MAX_BULK_IDS},
+        )
+
+    for kind, ids in (("category", category_ids), ("group", group_ids)):
+        if len(ids) != len(set(ids)):
+            raise ValidationAppError(
+                code="agents.category_structure_duplicate_ids", params={"kind": kind}
+            )
+
+    await ownership.get_many_owned(db, Category, category_ids, user_id)
+    await ownership.get_many_owned(db, CategoryGroup, group_ids, user_id)
+
+    if group_ids:
+        result = await db.execute(
+            select(Category.id, Category.group_id).where(
+                Category.user_id == user_id, Category.group_id.in_(group_ids)
+            )
+        )
+        selected_category_ids = set(category_ids)
+        missing = next(
+            (
+                (group_id, category_id)
+                for category_id, group_id in result.all()
+                if category_id not in selected_category_ids
+            ),
+            None,
+        )
+        if missing is not None:
+            group_id, category_id = missing
+            raise ValidationAppError(
+                code="agents.category_structure_group_not_empty",
+                params={"group_id": str(group_id), "category_id": str(category_id)},
+            )
+
+    for category_id in category_ids:
+        if await categories_service._category_in_use(db, category_id):
+            raise ConflictError(code="category.in_use", params={"id": str(category_id)})
+
+    if category_ids:
+        await db.execute(
+            delete(Category).where(Category.user_id == user_id, Category.id.in_(category_ids))
+        )
+    if group_ids:
+        await db.execute(
+            delete(Budget).where(Budget.user_id == user_id, Budget.group_id.in_(group_ids))
+        )
+        await db.execute(
+            delete(BudgetAllocation).where(
+                BudgetAllocation.user_id == user_id,
+                BudgetAllocation.group_id.in_(group_ids),
+            )
+        )
+        await db.execute(
+            delete(CategoryGroup).where(
+                CategoryGroup.user_id == user_id, CategoryGroup.id.in_(group_ids)
+            )
+        )
+    await db.commit()
+    return {
+        "deleted": True,
+        "category_ids": [str(category_id) for category_id in category_ids],
+        "group_ids": [str(group_id) for group_id in group_ids],
+    }
 
 
 async def _list_card_invoices(
@@ -775,6 +869,32 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_delete_category_group,
+        writes=True,
+    ),
+    ToolDef(
+        name="delete_category_structure",
+        description=(
+            "Delete a complete set of category structures in one confirmed action. Pass every "
+            "category id inside each group id; validation happens before any deletion."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "category_ids": {
+                    "type": "array",
+                    "items": {"type": "string", "format": "uuid"},
+                    "maxItems": MAX_BULK_IDS,
+                },
+                "group_ids": {
+                    "type": "array",
+                    "items": {"type": "string", "format": "uuid"},
+                    "maxItems": MAX_BULK_IDS,
+                },
+            },
+            "required": ["category_ids", "group_ids"],
+            "additionalProperties": False,
+        },
+        run=_delete_category_structure,
         writes=True,
     ),
     ToolDef(
