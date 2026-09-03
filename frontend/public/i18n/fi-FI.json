@@ -639,6 +639,7 @@
         "missingRequired": "Yhdistä päivämäärä-, kuvaus- ja summasarakkeet ennen rivien tarkistamista."
       },
       "loading": "Analysoidaan tiedostoa...",
+      "importedNotice": "{{count}} tapahtumaa tuotu tähän mennessä.",
       "remapConfirm": {
         "title": "Hylätäänkö tarkistuksen eteneminen?",
         "message": "Tiedoston, tilin tai sarakeyhdistämisen muuttaminen analysoi tiedoston uudelleen ja tyhjentää jo tarkistetut rivit."
@@ -655,7 +656,24 @@
         "message": "Tämä kirjaa {{count}} tarkistettua riviä tilille {{account}}. Tätä ei voi perua."
       },
       "actions": {
-        "confirm": "Tuo tarkistetut rivit"
+        "confirm": "Tuo tarkistetut rivit",
+        "done": "Siirry tapahtumiin"
+      },
+      "ai": {
+        "button": "Tekoälyapuri",
+        "running": "Luokitellaan…",
+        "accept": "Hyväksy",
+        "acceptAll": "Hyväksy kaikki ({{count}})",
+        "suggestionsTitle": "Kategoriaehdotukset",
+        "suggestionsDescription": "Avustaja liitti kategorian riveihin, joihin se pystyi. Hyväksy ne alla yksitellen tai kaikki kerralla.",
+        "dismiss": "Hylkää",
+        "noSuggestions": "Näille riveille ei ole uusia ehdotuksia.",
+        "proposedBadge": "{{group}} / {{category}} (uusi)",
+        "proposalsTitle": "Luotavat uudet kategoriat",
+        "proposalsDescription": "Avustaja ehdottaa näitä riveille, jotka eivät sovi mihinkään olemassa olevaan kategoriaan. Tarkista ne ja luo ja liitä ne yhdellä vaiheella.",
+        "newGroupBadge": "uusi ryhmä",
+        "existingGroupBadge": "olemassa oleva ryhmä",
+        "createAndAssign": "Luo ja liitä"
       }
     },
     "eyebrow": "Talous",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Näitä ohjeita ei tallennettu: ne eivät liity talouteesi tai tähän sovellukseen.",
       "not_configured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
-      "provider_unavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä."
+      "provider_unavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä.",
+      "suggest_unreadable": "Tekoälyn vastausta ei voitu lukea. Yritä uudelleen."
     },
     "auth": {
       "invalid_credentials": "Sähköpostiosoite tai salasana on väärä.",

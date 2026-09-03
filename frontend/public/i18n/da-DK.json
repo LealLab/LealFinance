@@ -639,6 +639,7 @@
         "missingRequired": "Tilknyt kolonnerne dato, beskrivelse og beløb, før du gennemgår linjerne."
       },
       "loading": "Analyserer filen...",
+      "importedNotice": "{{count}} transaktioner importeret indtil videre.",
       "remapConfirm": {
         "title": "Kassér gennemgangens fremdrift?",
         "message": "Ændring af fil, konto eller kolonnetilknytning analyserer filen igen og rydder linjer, der allerede er gennemgået."
@@ -655,7 +656,24 @@
         "message": "Dette bogfører {{count}} gennemgåede linjer på {{account}}. Dette kan ikke fortrydes."
       },
       "actions": {
-        "confirm": "Importér gennemgåede linjer"
+        "confirm": "Importér gennemgåede linjer",
+        "done": "Gå til transaktioner"
+      },
+      "ai": {
+        "button": "AI-assistent",
+        "running": "Kategoriserer…",
+        "accept": "Accepter",
+        "acceptAll": "Accepter alle ({{count}})",
+        "suggestionsTitle": "Kategoriforslag",
+        "suggestionsDescription": "Assistenten tildelte en kategori til de rækker, den kunne. Accepter dem én ad gangen nedenfor, eller alle på én gang.",
+        "dismiss": "Afvis",
+        "noSuggestions": "Ingen nye forslag til disse rækker.",
+        "proposedBadge": "{{group}} / {{category}} (ny)",
+        "proposalsTitle": "Nye kategorier, der skal oprettes",
+        "proposalsDescription": "Assistenten foreslår disse til rækker, der ikke passer til nogen eksisterende kategori. Gennemgå dem, og opret og tildel dem i ét trin.",
+        "newGroupBadge": "ny gruppe",
+        "existingGroupBadge": "eksisterende gruppe",
+        "createAndAssign": "Opret og tildel"
       }
     },
     "eyebrow": "Finans",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Disse instruktioner blev ikke gemt: de handler ikke om din økonomi eller denne app.",
       "not_configured": "Der er endnu ikke konfigureret nogen AI-udbyder.",
-      "provider_unavailable": "AI-udbyderen er ikke tilgængelig lige nu."
+      "provider_unavailable": "AI-udbyderen er ikke tilgængelig lige nu.",
+      "suggest_unreadable": "AI-svaret kunne ikke læses. Prøv igen."
     },
     "auth": {
       "invalid_credentials": "E-mailadressen eller adgangskoden er forkert.",

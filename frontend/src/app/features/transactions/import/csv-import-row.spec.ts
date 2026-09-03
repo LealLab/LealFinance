@@ -1,5 +1,13 @@
 import { ImportRow } from '../../../data/transaction.repository';
-import { compareRows, isImportable, isReviewable, reviewedCount, toImportRows } from './csv-import-row';
+import {
+  compareRows,
+  CsvImportRow,
+  isImportable,
+  isReviewable,
+  pendingCategoryCreations,
+  reviewedCount,
+  toImportRows
+} from './csv-import-row';
 
 const cleanRow: ImportRow = {
   index: 0,
@@ -71,6 +79,52 @@ describe('reviewedCount', () => {
       (row, i) => (i === 0 ? { ...row, reviewed: true } : row)
     );
     expect(reviewedCount(rows)).toBe(1);
+  });
+});
+
+describe('pendingCategoryCreations', () => {
+  const proposalRow = (over: Partial<CsvImportRow>): CsvImportRow => ({
+    ...toImportRows([{ ...cleanRow, categoryId: undefined, categoryName: undefined }])[0],
+    ...over
+  });
+
+  it('groups proposals by group name and kind, de-duplicating category names', () => {
+    const plan = pendingCategoryCreations([
+      proposalRow({ index: 0, type: 'expense', suggestion: { groupName: 'Food', categoryName: 'Coffee' } }),
+      proposalRow({ index: 1, type: 'expense', suggestion: { groupName: 'food', categoryName: 'coffee' } }),
+      proposalRow({ index: 2, type: 'expense', suggestion: { groupName: 'Food', categoryName: 'Lunch' } })
+    ]);
+    expect(plan).toHaveLength(1);
+    expect(plan[0]).toMatchObject({ groupName: 'Food', kind: 'expense' });
+    expect(plan[0].categories).toEqual(['Coffee', 'Lunch']);
+  });
+
+  it('splits a same-named group across kinds', () => {
+    const plan = pendingCategoryCreations([
+      proposalRow({ index: 0, type: 'expense', suggestion: { groupName: 'Misc', categoryName: 'Fees' } }),
+      proposalRow({ index: 1, type: 'income', suggestion: { groupName: 'Misc', categoryName: 'Refunds' } })
+    ]);
+    expect(plan).toHaveLength(2);
+    expect(plan.map((g) => g.kind).sort()).toEqual(['expense', 'income']);
+  });
+
+  it('ignores rows that already have a category or whose suggestion points at an existing one', () => {
+    const plan = pendingCategoryCreations([
+      proposalRow({ index: 0, categoryId: 'c1', suggestion: { groupName: 'Food', categoryName: 'Coffee' } }),
+      proposalRow({ index: 1, type: 'expense', suggestion: { categoryId: 'c9', categoryName: 'Groceries' } })
+    ]);
+    expect(plan).toEqual([]);
+  });
+
+  it('keeps an existing groupId so the caller skips creating that group', () => {
+    const plan = pendingCategoryCreations([
+      proposalRow({
+        index: 0,
+        type: 'expense',
+        suggestion: { groupId: 'g1', groupName: 'Food', categoryName: 'Coffee' }
+      })
+    ]);
+    expect(plan[0].groupId).toBe('g1');
   });
 });
 

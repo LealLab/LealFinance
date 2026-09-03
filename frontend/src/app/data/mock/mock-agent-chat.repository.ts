@@ -1,6 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, from, mergeMap } from 'rxjs';
-import { AgentChatRepository } from '../agent-chat.repository';
+import { Observable, from, mergeMap, of } from 'rxjs';
+import {
+  AgentChatRepository,
+  ImportSuggestion,
+  ImportSuggestItem,
+} from '../agent-chat.repository';
 import {
   AgentConversation,
   AgentConversationDetail,
@@ -93,6 +97,10 @@ export class MockAgentChatRepository extends AgentChatRepository {
       this.instructions = cleaned;
       return cleaned;
     }, this.latencyMs);
+  }
+  suggestImportCategories(items: readonly ImportSuggestItem[]): Observable<ImportSuggestion[]> {
+    void items;
+    return of([]);
   }
   mintMcpToken(): Observable<McpToken> {
     return mockResult(

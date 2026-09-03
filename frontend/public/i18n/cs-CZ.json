@@ -639,6 +639,7 @@
         "missingRequired": "Před kontrolou řádků přiřaďte sloupce data, popisu a částky."
       },
       "loading": "Analyzuji soubor...",
+      "importedNotice": "Zatím naimportováno {{count}} transakcí.",
       "remapConfirm": {
         "title": "Zahodit postup kontroly?",
         "message": "Změna souboru, účtu nebo přiřazení sloupců znovu analyzuje soubor a vymaže již zkontrolované řádky."
@@ -655,7 +656,24 @@
         "message": "Tímto se zaúčtuje {{count}} zkontrolovaných řádků na účet {{account}}. Tuto akci nelze vrátit zpět."
       },
       "actions": {
-        "confirm": "Importovat zkontrolované řádky"
+        "confirm": "Importovat zkontrolované řádky",
+        "done": "Přejít na transakce"
+      },
+      "ai": {
+        "button": "Asistent AI",
+        "running": "Kategorizace…",
+        "accept": "Přijmout",
+        "acceptAll": "Přijmout vše ({{count}})",
+        "suggestionsTitle": "Návrhy kategorií",
+        "suggestionsDescription": "Asistent přiřadil kategorii k řádkům, u kterých to šlo. Přijměte je níže po jednom, nebo všechny najednou.",
+        "dismiss": "Zahodit",
+        "noSuggestions": "Pro tyto řádky nejsou žádné nové návrhy.",
+        "proposedBadge": "{{group}} / {{category}} (nová)",
+        "proposalsTitle": "Nové kategorie k vytvoření",
+        "proposalsDescription": "Asistent je navrhuje pro řádky, které neodpovídají žádné existující kategorii. Zkontrolujte je a jedním krokem je vytvořte a přiřaďte.",
+        "newGroupBadge": "nová skupina",
+        "existingGroupBadge": "existující skupina",
+        "createAndAssign": "Vytvořit a přiřadit"
       }
     },
     "eyebrow": "Finance",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Tyto pokyny nebyly uloženy: netýkají se vašich financí ani této aplikace.",
       "not_configured": "Zatím není nastaven žádný poskytovatel AI.",
-      "provider_unavailable": "Poskytovatel AI je momentálně nedostupný."
+      "provider_unavailable": "Poskytovatel AI je momentálně nedostupný.",
+      "suggest_unreadable": "Odpověď AI se nepodařilo přečíst. Zkuste to znovu."
     },
     "auth": {
       "invalid_credentials": "E-mail nebo heslo nejsou správné.",

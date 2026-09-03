@@ -639,6 +639,7 @@
         "missingRequired": "Asocia las columnas de fecha, descripción e importe antes de revisar las filas."
       },
       "loading": "Analizando el archivo...",
+      "importedNotice": "{{count}} transacciones importadas hasta ahora.",
       "remapConfirm": {
         "title": "¿Descartar el progreso de la revisión?",
         "message": "Cambiar el archivo, la cuenta o la asociación de columnas vuelve a analizar el archivo y borra las filas ya revisadas."
@@ -655,7 +656,24 @@
         "message": "Esto registrará {{count}} filas revisadas en {{account}}. Esta acción no se puede deshacer."
       },
       "actions": {
-        "confirm": "Importar filas revisadas"
+        "confirm": "Importar filas revisadas",
+        "done": "Ir a transacciones"
+      },
+      "ai": {
+        "button": "Asistente de IA",
+        "running": "Categorizando…",
+        "accept": "Aceptar",
+        "acceptAll": "Aceptar todas ({{count}})",
+        "suggestionsTitle": "Sugerencias de categoría",
+        "suggestionsDescription": "El asistente asignó una categoría a las filas que pudo. Acéptalas una a una abajo o todas a la vez.",
+        "dismiss": "Descartar",
+        "noSuggestions": "No hay nuevas sugerencias para estas filas.",
+        "proposedBadge": "{{group}} / {{category}} (nueva)",
+        "proposalsTitle": "Nuevas categorías por crear",
+        "proposalsDescription": "El asistente las sugiere para las filas que no encajan en ninguna categoría existente. Revísalas y créalas y asígnalas en un solo paso.",
+        "newGroupBadge": "grupo nuevo",
+        "existingGroupBadge": "grupo existente",
+        "createAndAssign": "Crear y asignar"
       }
     },
     "eyebrow": "Finanzas",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Estas instrucciones no se guardaron: no tratan sobre tus finanzas ni sobre esta aplicación.",
       "not_configured": "Aún no hay ningún proveedor de IA configurado.",
-      "provider_unavailable": "El proveedor de IA no está disponible en este momento."
+      "provider_unavailable": "El proveedor de IA no está disponible en este momento.",
+      "suggest_unreadable": "No se pudo leer la respuesta de la IA. Inténtalo de nuevo."
     },
     "auth": {
       "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",

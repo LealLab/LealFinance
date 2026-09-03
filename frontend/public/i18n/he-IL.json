@@ -639,6 +639,7 @@
         "missingRequired": "התאם את עמודות התאריך, התיאור והסכום לפני בדיקת השורות."
       },
       "loading": "מנתח את הקובץ...",
+      "importedNotice": "{{count}} תנועות יובאו עד כה.",
       "remapConfirm": {
         "title": "לבטל את התקדמות הבדיקה?",
         "message": "שינוי הקובץ, החשבון או התאמת העמודות מנתח מחדש את הקובץ ומנקה שורות שכבר נבדקו."
@@ -655,7 +656,24 @@
         "message": "פעולה זו תרשום {{count}} שורות שנבדקו לחשבון {{account}}. לא ניתן לבטל פעולה זו."
       },
       "actions": {
-        "confirm": "ייבוא שורות שנבדקו"
+        "confirm": "ייבוא שורות שנבדקו",
+        "done": "מעבר לתנועות"
+      },
+      "ai": {
+        "button": "עוזר AI",
+        "running": "מסווג…",
+        "accept": "קבל",
+        "acceptAll": "קבל הכול ({{count}})",
+        "suggestionsTitle": "הצעות קטגוריה",
+        "suggestionsDescription": "העוזר התאים קטגוריה לשורות שיכול היה. אשר אותן אחת-אחת למטה, או את כולן בבת אחת.",
+        "dismiss": "התעלם",
+        "noSuggestions": "אין הצעות חדשות לשורות אלה.",
+        "proposedBadge": "{{group}} / {{category}} (חדש)",
+        "proposalsTitle": "קטגוריות חדשות ליצירה",
+        "proposalsDescription": "העוזר מציע אותן לשורות שאינן מתאימות לאף קטגוריה קיימת. בדוק אותן, וצור והקצה אותן בשלב אחד.",
+        "newGroupBadge": "קבוצה חדשה",
+        "existingGroupBadge": "קבוצה קיימת",
+        "createAndAssign": "צור והקצה"
       }
     },
     "eyebrow": "פיננסים",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "ההנחיות האלה לא נשמרו: הן אינן קשורות לכספים שלך או לאפליקציה הזו.",
       "not_configured": "עדיין לא הוגדר ספק AI.",
-      "provider_unavailable": "ספק ה-AI אינו זמין כרגע."
+      "provider_unavailable": "ספק ה-AI אינו זמין כרגע.",
+      "suggest_unreadable": "לא ניתן היה לקרוא את תגובת ה-AI. נסה שוב."
     },
     "auth": {
       "invalid_credentials": "האימייל או הסיסמה שגויים.",

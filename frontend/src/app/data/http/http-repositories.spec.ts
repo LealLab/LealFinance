@@ -735,4 +735,27 @@ describe('HTTP repositories', () => {
     putReq.flush({ instructions: 'Keep answers short.' });
     expect(saved).toBe('Keep answers short.');
   });
+
+  it('posts import rows to the categorizer and maps null wire fields to undefined', () => {
+    let result: unknown;
+    TestBed.inject(HttpAgentChatRepository)
+      .suggestImportCategories([{ index: 0, description: 'UBER', type: 'expense' }])
+      .subscribe((rows) => (result = rows));
+
+    const req = http.expectOne('/api/v1/agents/import/suggest');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      items: [{ index: 0, description: 'UBER', type: 'expense' }],
+    });
+    req.flush({
+      suggestions: [
+        { index: 0, category_id: 'c1', group_id: null, group_name: null, category_name: null },
+        { index: 1, category_id: null, group_id: null, group_name: 'Pets', category_name: 'Vet' },
+      ],
+    });
+    expect(result).toEqual([
+      { index: 0, categoryId: 'c1', groupId: undefined, groupName: undefined, categoryName: undefined },
+      { index: 1, categoryId: undefined, groupId: undefined, groupName: 'Pets', categoryName: 'Vet' },
+    ]);
+  });
 });

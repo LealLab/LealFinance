@@ -107,6 +107,33 @@ class ConfirmCreate(BaseModel):
     client_date: date | None = None
 
 
+class ImportSuggestItem(BaseModel):
+    index: int
+    description: str = Field(min_length=1, max_length=300)
+    type: Literal["income", "expense"]
+
+
+class ImportSuggestRequest(BaseModel):
+    items: list[ImportSuggestItem] = Field(min_length=1, max_length=200)
+
+
+class ImportSuggestionRead(BaseModel):
+    """One row's outcome. Either `category_id` is an existing category to
+    assign, or `group_name` + `category_name` propose a new category the
+    frontend creates on the user's confirmation. `group_id` is filled when a
+    proposed category joins an existing group."""
+
+    index: int
+    category_id: UUID | None = None
+    group_id: UUID | None = None
+    group_name: str | None = None
+    category_name: str | None = None
+
+
+class ImportSuggestRead(BaseModel):
+    suggestions: list[ImportSuggestionRead]
+
+
 class InstructionsRead(BaseModel):
     instructions: str | None
 

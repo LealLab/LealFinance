@@ -21,6 +21,8 @@ from app.schemas.agent import (
     ConversationCreate,
     ConversationDetailRead,
     ConversationRead,
+    ImportSuggestRead,
+    ImportSuggestRequest,
     InstructionsRead,
     InstructionsUpdate,
     McpTokenRead,
@@ -31,7 +33,7 @@ from app.schemas.agent import (
     ProviderStatusRead,
     ProviderTestRead,
 )
-from app.services import agent_chat, agent_instructions, agent_providers
+from app.services import agent_chat, agent_instructions, agent_providers, import_suggest
 
 
 def _require_agents_enabled() -> None:
@@ -83,6 +85,14 @@ async def create_mcp_token(user: AiChatUser) -> McpTokenRead:
     token = crypto.mint_mcp_token(user.id)
     expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
     return McpTokenRead(token=token, expires_at=expires_at)
+
+
+@router.post("/import/suggest", response_model=ImportSuggestRead)
+async def suggest_import_categories(
+    payload: ImportSuggestRequest, user: AiChatUser, db: DbSession
+) -> ImportSuggestRead:
+    suggestions = await import_suggest.suggest(db, user.id, payload.items, user.locale)
+    return ImportSuggestRead(suggestions=suggestions)
 
 
 @router.get("/instructions", response_model=InstructionsRead)

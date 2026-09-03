@@ -639,6 +639,7 @@
         "missingRequired": "Cocokkan kolom tanggal, deskripsi, dan jumlah sebelum meninjau baris."
       },
       "loading": "Menganalisis berkas...",
+      "importedNotice": "{{count}} transaksi diimpor sejauh ini.",
       "remapConfirm": {
         "title": "Buang progres peninjauan?",
         "message": "Mengubah berkas, akun, atau pencocokan kolom akan menganalisis ulang berkas dan menghapus baris yang sudah ditinjau."
@@ -655,7 +656,24 @@
         "message": "Ini akan mencatat {{count}} baris yang ditinjau ke {{account}}. Tindakan ini tidak dapat dibatalkan."
       },
       "actions": {
-        "confirm": "Impor baris yang ditinjau"
+        "confirm": "Impor baris yang ditinjau",
+        "done": "Buka transaksi"
+      },
+      "ai": {
+        "button": "Asisten AI",
+        "running": "Mengkategorikan…",
+        "accept": "Terima",
+        "acceptAll": "Terima semua ({{count}})",
+        "suggestionsTitle": "Saran kategori",
+        "suggestionsDescription": "Asisten mencocokkan kategori ke baris yang bisa. Terima satu per satu di bawah, atau semuanya sekaligus.",
+        "dismiss": "Abaikan",
+        "noSuggestions": "Tidak ada saran baru untuk baris ini.",
+        "proposedBadge": "{{group}} / {{category}} (baru)",
+        "proposalsTitle": "Kategori baru untuk dibuat",
+        "proposalsDescription": "Asisten menyarankan ini untuk baris yang tidak cocok dengan kategori mana pun yang ada. Tinjau, lalu buat dan tetapkan dalam satu langkah.",
+        "newGroupBadge": "grup baru",
+        "existingGroupBadge": "grup yang ada",
+        "createAndAssign": "Buat dan tetapkan"
       }
     },
     "eyebrow": "Keuangan",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Instruksi ini tidak disimpan: tidak berkaitan dengan keuangan Anda atau aplikasi ini.",
       "not_configured": "Belum ada penyedia AI yang dikonfigurasi.",
-      "provider_unavailable": "Penyedia AI sedang tidak tersedia."
+      "provider_unavailable": "Penyedia AI sedang tidak tersedia.",
+      "suggest_unreadable": "Respons AI tidak dapat dibaca. Coba lagi."
     },
     "auth": {
       "invalid_credentials": "Email atau kata sandi salah.",

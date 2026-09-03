@@ -639,6 +639,7 @@
         "missingRequired": "Asociază coloanele dată, descriere și sumă înainte de a verifica rândurile."
       },
       "loading": "Se analizează fișierul...",
+      "importedNotice": "{{count}} tranzacții importate până acum.",
       "remapConfirm": {
         "title": "Renunți la progresul verificării?",
         "message": "Schimbarea fișierului, a contului sau a asocierii coloanelor reanalizează fișierul și șterge rândurile deja verificate."
@@ -655,7 +656,24 @@
         "message": "Aceasta va înregistra {{count}} rânduri verificate în {{account}}. Această acțiune nu poate fi anulată."
       },
       "actions": {
-        "confirm": "Importă rândurile verificate"
+        "confirm": "Importă rândurile verificate",
+        "done": "Mergi la tranzacții"
+      },
+      "ai": {
+        "button": "Asistent AI",
+        "running": "Se clasifică…",
+        "accept": "Acceptă",
+        "acceptAll": "Acceptă toate ({{count}})",
+        "suggestionsTitle": "Sugestii de categorie",
+        "suggestionsDescription": "Asistentul a asociat o categorie rândurilor pentru care a putut. Acceptă-le pe rând mai jos sau pe toate deodată.",
+        "dismiss": "Respinge",
+        "noSuggestions": "Nu există sugestii noi pentru aceste rânduri.",
+        "proposedBadge": "{{group}} / {{category}} (nouă)",
+        "proposalsTitle": "Categorii noi de creat",
+        "proposalsDescription": "Asistentul le sugerează pentru rândurile care nu se potrivesc niciunei categorii existente. Verifică-le, apoi creează-le și atribuie-le într-un singur pas.",
+        "newGroupBadge": "grup nou",
+        "existingGroupBadge": "grup existent",
+        "createAndAssign": "Creează și atribuie"
       }
     },
     "eyebrow": "Finanțe",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Aceste instrucțiuni nu au fost salvate: nu sunt despre finanțele tale sau despre această aplicație.",
       "not_configured": "Nu este configurat încă niciun furnizor AI.",
-      "provider_unavailable": "Furnizorul AI nu este disponibil momentan."
+      "provider_unavailable": "Furnizorul AI nu este disponibil momentan.",
+      "suggest_unreadable": "Răspunsul AI nu a putut fi citit. Încearcă din nou."
     },
     "auth": {
       "invalid_credentials": "Adresa de e-mail sau parola este incorectă.",

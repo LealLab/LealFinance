@@ -639,6 +639,7 @@
         "missingRequired": "Dopasuj kolumny daty, opisu i kwoty przed sprawdzeniem wierszy."
       },
       "loading": "Analizowanie pliku...",
+      "importedNotice": "Zaimportowano dotąd {{count}} transakcji.",
       "remapConfirm": {
         "title": "Odrzucić postęp sprawdzania?",
         "message": "Zmiana pliku, konta lub dopasowania kolumn ponownie analizuje plik i czyści już sprawdzone wiersze."
@@ -655,7 +656,24 @@
         "message": "Spowoduje to zaksięgowanie {{count}} sprawdzonych wierszy na koncie {{account}}. Tej czynności nie można cofnąć."
       },
       "actions": {
-        "confirm": "Importuj sprawdzone wiersze"
+        "confirm": "Importuj sprawdzone wiersze",
+        "done": "Przejdź do transakcji"
+      },
+      "ai": {
+        "button": "Asystent AI",
+        "running": "Kategoryzowanie…",
+        "accept": "Zastosuj",
+        "acceptAll": "Zastosuj wszystkie ({{count}})",
+        "suggestionsTitle": "Propozycje kategorii",
+        "suggestionsDescription": "Asystent dopasował kategorię do wierszy, dla których było to możliwe. Zaakceptuj je poniżej pojedynczo lub wszystkie naraz.",
+        "dismiss": "Odrzuć",
+        "noSuggestions": "Brak nowych sugestii dla tych wierszy.",
+        "proposedBadge": "{{group}} / {{category}} (nowa)",
+        "proposalsTitle": "Nowe kategorie do utworzenia",
+        "proposalsDescription": "Asystent proponuje je dla wierszy, które nie pasują do żadnej istniejącej kategorii. Sprawdź je, a następnie utwórz i przypisz w jednym kroku.",
+        "newGroupBadge": "nowa grupa",
+        "existingGroupBadge": "istniejąca grupa",
+        "createAndAssign": "Utwórz i przypisz"
       }
     },
     "eyebrow": "Finanse",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Te instrukcje nie zostały zapisane: nie dotyczą Twoich finansów ani tej aplikacji.",
       "not_configured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
-      "provider_unavailable": "Dostawca AI jest obecnie niedostępny."
+      "provider_unavailable": "Dostawca AI jest obecnie niedostępny.",
+      "suggest_unreadable": "Nie udało się odczytać odpowiedzi AI. Spróbuj ponownie."
     },
     "auth": {
       "invalid_credentials": "Podany adres e-mail lub hasło są nieprawidłowe.",

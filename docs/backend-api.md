@@ -367,6 +367,11 @@ Limits, rejected as `error.validation` (`ValidationAppError`, not per-row):
 content over 2 MiB, over 2000 data rows, zero data rows, or the `date`/
 `description`/`amount` target fields left unmapped after guessing.
 
+When AI is enabled for the user, the page can also call
+`POST /agents/import/suggest` to categorize the still-uncategorized rows - see
+[AI agents](#import-categorization). That call never writes; the frontend applies
+each suggestion on the user's confirmation.
+
 **Commit** (`ImportCommitRequest{items}` → `{created}`) reuses
 `TransactionCreate` verbatim for `items` - the frontend sends exactly the
 rows it marked reviewed, with any edits already applied, through the same
@@ -563,6 +568,22 @@ provider - `agents.not_configured` (422) or `agents.provider_unavailable`
 works. The value is per user, is not a preference on `/auth/preferences`, and
 is excluded from backup export/restore.
 
+### Import categorization
+
+`POST /agents/import/suggest` (`ImportSuggestRequest{items:[{index, description,
+type}]}` -> `ImportSuggestRead{suggestions:[{index, category_id?, group_id?,
+group_name?, category_name?}]}`) is a one-shot, non-streaming call used by the
+transaction import page. Same gate as chat (`agents.disabled` 404,
+`agents.chat_not_allowed` 403) and the same provider resolution. Each returned
+suggestion either names an existing `category_id` to assign or proposes a new
+category (`group_name` + `category_name`, with `group_id` set when the group
+already exists); the server drops anything it cannot verify against the caller's
+own categories. Nothing is written - the client applies accepted picks and
+creates proposed groups/categories through the category endpoints. Unusable
+model output is `agents.suggest_unreadable` (502); `agents.not_configured` (422)
+and `agents.provider_unavailable` (502) as elsewhere. See
+[`ai-agents.md`](ai-agents.md#import-categorization).
+
 ### Streaming responses
 
 `/messages` and `/confirm` respond with `text/event-stream`. The client must
@@ -596,6 +617,7 @@ frames carrying the same `code`/`params`.
 | `agents.base_url_required` | 422 |
 | `agents.tool_arguments_invalid` | 422 |
 | `agents.instructions_rejected` | 422 |
+| `agents.suggest_unreadable` | 502 |
 | `analytics.invalid_month` | 422 |
 | `agents.oauth_unsupported` | 422 |
 | `agents.oauth_state_mismatch` | 422 |

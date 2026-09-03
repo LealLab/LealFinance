@@ -639,6 +639,7 @@
         "missingRequired": "Ordnen Sie die Spalten Datum, Beschreibung und Betrag zu, bevor Sie Zeilen prüfen."
       },
       "loading": "Datei wird analysiert...",
+      "importedNotice": "{{count}} Transaktionen bisher importiert.",
       "remapConfirm": {
         "title": "Prüffortschritt verwerfen?",
         "message": "Das Ändern von Datei, Konto oder Spaltenzuordnung analysiert die Datei neu und löscht bereits geprüfte Zeilen."
@@ -655,7 +656,24 @@
         "message": "Dadurch werden {{count}} geprüfte Zeilen auf {{account}} gebucht. Dies kann nicht rückgängig gemacht werden."
       },
       "actions": {
-        "confirm": "Geprüfte Zeilen importieren"
+        "confirm": "Geprüfte Zeilen importieren",
+        "done": "Zu den Transaktionen"
+      },
+      "ai": {
+        "button": "KI-Assistent",
+        "running": "Kategorisierung läuft…",
+        "accept": "Übernehmen",
+        "acceptAll": "Alle übernehmen ({{count}})",
+        "suggestionsTitle": "Kategorievorschläge",
+        "suggestionsDescription": "Der Assistent hat den Zeilen, bei denen es möglich war, eine Kategorie zugeordnet. Übernehmen Sie sie unten einzeln oder alle auf einmal.",
+        "dismiss": "Verwerfen",
+        "noSuggestions": "Keine neuen Vorschläge für diese Zeilen.",
+        "proposedBadge": "{{group}} / {{category}} (neu)",
+        "proposalsTitle": "Neue Kategorien anlegen",
+        "proposalsDescription": "Der Assistent schlägt diese für Zeilen vor, die zu keiner vorhandenen Kategorie passen. Prüfen Sie sie und legen Sie sie in einem Schritt an und weisen Sie sie zu.",
+        "newGroupBadge": "neue Gruppe",
+        "existingGroupBadge": "vorhandene Gruppe",
+        "createAndAssign": "Anlegen und zuweisen"
       }
     },
     "eyebrow": "Finanzen",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Diese Anweisungen wurden nicht gespeichert: Sie betreffen weder Ihre Finanzen noch diese App.",
       "not_configured": "Noch kein KI-Anbieter konfiguriert.",
-      "provider_unavailable": "Der KI-Anbieter ist derzeit nicht verfügbar."
+      "provider_unavailable": "Der KI-Anbieter ist derzeit nicht verfügbar.",
+      "suggest_unreadable": "Die KI-Antwort konnte nicht gelesen werden. Bitte erneut versuchen."
     },
     "auth": {
       "invalid_credentials": "E-Mail-Adresse oder Passwort ist falsch.",

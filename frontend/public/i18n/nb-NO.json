@@ -639,6 +639,7 @@
         "missingRequired": "Koble kolonnene dato, beskrivelse og beløp før du gjennomgår radene."
       },
       "loading": "Analyserer filen...",
+      "importedNotice": "{{count}} transaksjoner importert så langt.",
       "remapConfirm": {
         "title": "Forkaste fremgangen i gjennomgangen?",
         "message": "Å endre fil, konto eller kolonnekobling analyserer filen på nytt og fjerner rader som allerede er gjennomgått."
@@ -655,7 +656,24 @@
         "message": "Dette bokfører {{count}} gjennomgåtte rader på {{account}}. Dette kan ikke angres."
       },
       "actions": {
-        "confirm": "Importer gjennomgåtte rader"
+        "confirm": "Importer gjennomgåtte rader",
+        "done": "Gå til transaksjoner"
+      },
+      "ai": {
+        "button": "AI-assistent",
+        "running": "Kategoriserer…",
+        "accept": "Godta",
+        "acceptAll": "Godta alle ({{count}})",
+        "suggestionsTitle": "Kategoriforslag",
+        "suggestionsDescription": "Assistenten koblet en kategori til radene den kunne. Godta dem én for én nedenfor, eller alle på én gang.",
+        "dismiss": "Avvis",
+        "noSuggestions": "Ingen nye forslag for disse radene.",
+        "proposedBadge": "{{group}} / {{category}} (ny)",
+        "proposalsTitle": "Nye kategorier som skal opprettes",
+        "proposalsDescription": "Assistenten foreslår disse for rader som ikke passer i noen eksisterende kategori. Se gjennom dem, og opprett og tilordne dem i ett steg.",
+        "newGroupBadge": "ny gruppe",
+        "existingGroupBadge": "eksisterende gruppe",
+        "createAndAssign": "Opprett og tilordne"
       }
     },
     "eyebrow": "Økonomi",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Disse instruksjonene ble ikke lagret: de handler ikke om økonomien din eller denne appen.",
       "not_configured": "Ingen AI-leverandør er konfigurert ennå.",
-      "provider_unavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå."
+      "provider_unavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå.",
+      "suggest_unreadable": "AI-svaret kunne ikke leses. Prøv igjen."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller passordet er feil.",

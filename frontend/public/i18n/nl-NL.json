@@ -639,6 +639,7 @@
         "missingRequired": "Koppel de kolommen datum, omschrijving en bedrag voordat je regels controleert."
       },
       "loading": "Bestand wordt geanalyseerd...",
+      "importedNotice": "{{count}} transacties tot nu toe geïmporteerd.",
       "remapConfirm": {
         "title": "Voortgang van controle verwijderen?",
         "message": "Het wijzigen van bestand, rekening of kolomkoppeling analyseert het bestand opnieuw en wist de al gecontroleerde regels."
@@ -655,7 +656,24 @@
         "message": "Hiermee worden {{count}} gecontroleerde regels naar {{account}} geboekt. Dit kan niet ongedaan worden gemaakt."
       },
       "actions": {
-        "confirm": "Gecontroleerde regels importeren"
+        "confirm": "Gecontroleerde regels importeren",
+        "done": "Naar transacties"
+      },
+      "ai": {
+        "button": "AI-assistent",
+        "running": "Categoriseren…",
+        "accept": "Toepassen",
+        "acceptAll": "Alles toepassen ({{count}})",
+        "suggestionsTitle": "Categoriesuggesties",
+        "suggestionsDescription": "De assistent heeft een categorie gekoppeld aan de rijen waar dat kon. Accepteer ze hieronder één voor één, of allemaal tegelijk.",
+        "dismiss": "Negeren",
+        "noSuggestions": "Geen nieuwe suggesties voor deze rijen.",
+        "proposedBadge": "{{group}} / {{category}} (nieuw)",
+        "proposalsTitle": "Nieuwe categorieën om te maken",
+        "proposalsDescription": "De assistent stelt deze voor bij rijen die in geen enkele bestaande categorie passen. Controleer ze en maak en wijs ze in één stap toe.",
+        "newGroupBadge": "nieuwe groep",
+        "existingGroupBadge": "bestaande groep",
+        "createAndAssign": "Maken en toewijzen"
       }
     },
     "eyebrow": "Financiën",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Deze instructies zijn niet opgeslagen: ze gaan niet over je financiën of deze app.",
       "not_configured": "Er is nog geen AI-provider geconfigureerd.",
-      "provider_unavailable": "De AI-provider is momenteel niet beschikbaar."
+      "provider_unavailable": "De AI-provider is momenteel niet beschikbaar.",
+      "suggest_unreadable": "Het AI-antwoord kon niet worden gelezen. Probeer het opnieuw."
     },
     "auth": {
       "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",
