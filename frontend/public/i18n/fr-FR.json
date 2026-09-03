@@ -639,6 +639,7 @@
         "missingRequired": "Associez les colonnes date, description et montant avant de vérifier les lignes."
       },
       "loading": "Analyse du fichier...",
+      "importedNotice": "{{count}} transactions importées jusqu’à présent.",
       "remapConfirm": {
         "title": "Abandonner la progression de la vérification ?",
         "message": "Changer le fichier, le compte ou l'association des colonnes relance l'analyse du fichier et efface les lignes déjà vérifiées."
@@ -655,7 +656,24 @@
         "message": "Cela enregistrera {{count}} lignes vérifiées dans {{account}}. Cette action est irréversible."
       },
       "actions": {
-        "confirm": "Importer les lignes vérifiées"
+        "confirm": "Importer les lignes vérifiées",
+        "done": "Aller aux transactions"
+      },
+      "ai": {
+        "button": "Assistant IA",
+        "running": "Catégorisation…",
+        "accept": "Accepter",
+        "acceptAll": "Tout accepter ({{count}})",
+        "suggestionsTitle": "Suggestions de catégorie",
+        "suggestionsDescription": "L’assistant a associé une catégorie aux lignes qu’il a pu. Acceptez-les une par une ci-dessous, ou toutes d’un coup.",
+        "dismiss": "Ignorer",
+        "noSuggestions": "Aucune nouvelle suggestion pour ces lignes.",
+        "proposedBadge": "{{group}} / {{category}} (nouveau)",
+        "proposalsTitle": "Nouvelles catégories à créer",
+        "proposalsDescription": "L’assistant les propose pour les lignes qui ne correspondent à aucune catégorie existante. Vérifiez-les, puis créez-les et affectez-les en une seule étape.",
+        "newGroupBadge": "nouveau groupe",
+        "existingGroupBadge": "groupe existant",
+        "createAndAssign": "Créer et affecter"
       }
     },
     "eyebrow": "Finances",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Ces instructions n'ont pas été enregistrées : elles ne portent pas sur vos finances ni sur cette application.",
       "not_configured": "Aucun fournisseur d’IA n’est encore configuré.",
-      "provider_unavailable": "Le fournisseur d’IA est actuellement indisponible."
+      "provider_unavailable": "Le fournisseur d’IA est actuellement indisponible.",
+      "suggest_unreadable": "La réponse de l’IA n’a pas pu être lue. Réessayez."
     },
     "auth": {
       "invalid_credentials": "L’adresse e-mail ou le mot de passe est incorrect.",

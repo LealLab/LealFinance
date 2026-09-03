@@ -38,6 +38,22 @@ the user's language. Saving needs a reachable provider; clearing the field
 does not. The value is excluded from backup export/restore, so a restore
 cannot reinstate text without re-running the check.
 
+## Import categorization
+
+The transaction import page (`/transactions/import`) has an opt-in **AI Assist**
+that is a one-shot structured call, not a conversation:
+`POST /api/v1/agents/import/suggest` (`app/services/import_suggest.py`) sends the
+still-uncategorized row descriptions - as data inside a `<rows>` block, never as
+instructions - together with the user's own categories and groups, and asks the
+model for a JSON array of per-row picks. It is gated by the same
+`AGENTS_ENABLED` + `ai_chat_enabled` rules as chat, resolves the provider the
+same way, and runs no tools. The response is validated server-side: a suggested
+`category_id` must be one of the caller's own categories with a matching kind, a
+new-category proposal must carry both a group and a category name, and anything
+else is dropped. Nothing is written - the frontend applies each suggestion only
+when the user accepts it, and creates any proposed groups/categories through the
+normal category endpoints on an explicit "Create and assign".
+
 ## Tools
 
 The model is given a fixed tool set (`backend/app/agents/tools.py`), each tool

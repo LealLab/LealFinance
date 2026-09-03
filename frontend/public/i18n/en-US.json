@@ -639,6 +639,7 @@
         "missingRequired": "Map the date, description, and amount columns before reviewing rows."
       },
       "loading": "Parsing the file...",
+      "importedNotice": "{{count}} transactions imported so far.",
       "remapConfirm": {
         "title": "Discard review progress?",
         "message": "Changing the file, account, or column mapping re-parses the file and clears which rows you've already reviewed."
@@ -655,7 +656,24 @@
         "message": "This posts {{count}} reviewed rows to {{account}}. This cannot be undone."
       },
       "actions": {
-        "confirm": "Import reviewed rows"
+        "confirm": "Import reviewed rows",
+        "done": "Go to transactions"
+      },
+      "ai": {
+        "button": "AI Assist",
+        "running": "Categorizing…",
+        "accept": "Accept",
+        "acceptAll": "Accept all {{count}}",
+        "suggestionsTitle": "Category suggestions",
+        "suggestionsDescription": "The assistant matched a category to the rows it could. Accept them one by one below, or all at once.",
+        "dismiss": "Dismiss",
+        "noSuggestions": "No new suggestions for these rows.",
+        "proposedBadge": "{{group}} / {{category}} (new)",
+        "proposalsTitle": "New categories to create",
+        "proposalsDescription": "The assistant suggests these for rows that fit no existing category. Review them, then create and assign in one step.",
+        "newGroupBadge": "new group",
+        "existingGroupBadge": "existing group",
+        "createAndAssign": "Create and assign"
       }
     },
     "eyebrow": "Financial",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "These instructions were not saved: they are not about your finances or this app.",
       "not_configured": "No AI provider is configured yet.",
-      "provider_unavailable": "The AI provider is currently unavailable."
+      "provider_unavailable": "The AI provider is currently unavailable.",
+      "suggest_unreadable": "The AI response could not be read. Try again."
     },
     "auth": {
       "invalid_credentials": "The email or password is incorrect.",

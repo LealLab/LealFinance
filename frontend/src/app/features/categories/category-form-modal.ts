@@ -12,8 +12,10 @@ import { Icon } from '../../shared/ui/icon/icon';
 import { IconPicker } from '../../shared/ui/icon-picker/icon-picker';
 import { Modal } from '../../shared/ui/modal/modal';
 
-const DEFAULT_COLOR = '#1F5C6B';
-const DEFAULT_ICON = 'tag';
+/** Shared so other create flows (e.g. AI-proposed categories on the import
+ * page) fall back to the same swatch and glyph as this form. */
+export const DEFAULT_COLOR = '#1F5C6B';
+export const DEFAULT_ICON = 'tag';
 
 /** Create/edit form for either a CategoryGroup or a Category. */
 @Component({

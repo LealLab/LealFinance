@@ -639,6 +639,7 @@
         "missingRequired": "Koppla kolumnerna datum, beskrivning och belopp innan du granskar raderna."
       },
       "loading": "Analyserar filen...",
+      "importedNotice": "{{count}} transaktioner importerade hittills.",
       "remapConfirm": {
         "title": "Kasta bort granskningens framsteg?",
         "message": "Att ändra fil, konto eller kolumnkoppling analyserar filen igen och rensar redan granskade rader."
@@ -655,7 +656,24 @@
         "message": "Detta bokför {{count}} granskade rader till {{account}}. Detta kan inte ångras."
       },
       "actions": {
-        "confirm": "Importera granskade rader"
+        "confirm": "Importera granskade rader",
+        "done": "Gå till transaktioner"
+      },
+      "ai": {
+        "button": "AI-assistent",
+        "running": "Kategoriserar…",
+        "accept": "Använd",
+        "acceptAll": "Använd alla ({{count}})",
+        "suggestionsTitle": "Kategoriförslag",
+        "suggestionsDescription": "Assistenten kopplade en kategori till de rader den kunde. Acceptera dem en och en nedan, eller alla på en gång.",
+        "dismiss": "Avfärda",
+        "noSuggestions": "Inga nya förslag för de här raderna.",
+        "proposedBadge": "{{group}} / {{category}} (ny)",
+        "proposalsTitle": "Nya kategorier att skapa",
+        "proposalsDescription": "Assistenten föreslår dessa för rader som inte passar i någon befintlig kategori. Granska dem och skapa och tilldela dem i ett steg.",
+        "newGroupBadge": "ny grupp",
+        "existingGroupBadge": "befintlig grupp",
+        "createAndAssign": "Skapa och tilldela"
       }
     },
     "eyebrow": "Ekonomi",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Instruktionerna sparades inte: de handlar inte om din ekonomi eller den här appen.",
       "not_configured": "Ingen AI-leverantör har konfigurerats ännu.",
-      "provider_unavailable": "AI-leverantören är inte tillgänglig just nu."
+      "provider_unavailable": "AI-leverantören är inte tillgänglig just nu.",
+      "suggest_unreadable": "AI-svaret kunde inte läsas. Försök igen."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller lösenordet är felaktigt.",

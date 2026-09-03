@@ -2,20 +2,26 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { firstValueFrom } from 'rxjs';
 import { ApiError } from '../../../core/api-error';
 import { ConfirmService } from '../../../core/confirm.service';
+import { MetadataService } from '../../../core/metadata.service';
 import { MutationErrorService } from '../../../core/mutation-error.service';
+import { SessionService } from '../../../core/session.service';
 import { AccountRepository } from '../../../data/account.repository';
+import { AgentChatRepository, ImportSuggestItem } from '../../../data/agent-chat.repository';
 import { CategoryGroupRepository } from '../../../data/category-group.repository';
 import { CategoryRepository } from '../../../data/category.repository';
 import { InstitutionRepository } from '../../../data/institution.repository';
 import { ImportOptions, TransactionRepository } from '../../../data/transaction.repository';
+import { Category } from '../../../domain/models/category';
 import { Transaction, TransactionType } from '../../../domain/models/transaction';
 import { groupCategoriesByGroup } from '../category-grouping';
 import { Button } from '../../../shared/ui/button/button';
 import { Card } from '../../../shared/ui/card/card';
 import { Icon } from '../../../shared/ui/icon/icon';
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
+import { DEFAULT_COLOR, DEFAULT_ICON } from '../../categories/category-form-modal';
 import { groupAccountsByInstitution } from '../../accounts/institution-grouping';
 import {
   compareRows,
@@ -23,6 +29,7 @@ import {
   ImportSortColumn,
   isImportable,
   isReviewable,
+  pendingCategoryCreations,
   reviewedCount,
   toImportRows
 } from './csv-import-row';
@@ -49,14 +56,16 @@ const ROW_TYPES: readonly RowType[] = ['expense', 'income'];
  * transactions.import.remapConfirm.title, transactions.import.remapConfirm.message,
  * transactions.import.confirm.title, transactions.import.confirm.message)
  *
- * `previewErrorKey`/each row's `error` are built as `'errors.' + <backend
- * code>` (transaction-import.ts/.html), so transloco-keys-manager's static
- * extractor never sees the literal keys - same "dynamic markings" situation
- * as transaction-form-modal.ts:
+ * `previewErrorKey`/`suggestErrorKey`/each row's `error` are built as
+ * `'errors.' + <backend code>` (transaction-import.ts/.html), so
+ * transloco-keys-manager's static extractor never sees the literal keys -
+ * same "dynamic markings" situation as transaction-form-modal.ts:
  * t(errors.import.file_too_large, errors.import.no_rows, errors.import.too_many_rows,
  * errors.import.column_required, errors.import.row.invalid_date,
  * errors.import.row.invalid_amount, errors.import.row.zero_amount,
- * errors.import.row.missing_description)
+ * errors.import.row.missing_description, errors.agents.suggest_unreadable,
+ * errors.agents.not_configured, errors.agents.provider_unavailable,
+ * errors.error.generic, transactions.import.ai.noSuggestions)
  */
 @Component({
   selector: 'app-transaction-import',
@@ -70,6 +79,9 @@ export class TransactionImport {
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly agentRepository = inject(AgentChatRepository);
+  private readonly metadata = inject(MetadataService);
+  private readonly session = inject(SessionService);
   private readonly confirmService = inject(ConfirmService);
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly router = inject(Router);
@@ -117,6 +129,36 @@ export class TransactionImport {
 
   protected readonly askBeforeImport = signal(true);
   protected readonly importing = signal(false);
+  /** Running total posted from this file so far - the page stays open after a
+   * commit so the remaining rows can be imported in later batches. */
+  protected readonly importedCount = signal(0);
+
+  protected readonly suggesting = signal(false);
+  protected readonly creatingCategories = signal(false);
+  protected readonly suggestErrorKey = signal<string | undefined>(undefined);
+  /** True once an analysis has completed for the current preview - the button
+   * stays disabled afterwards. A new preview (`runPreview`) clears it. */
+  protected readonly suggested = signal(false);
+
+  /** AI Assist needs the instance flag on AND chat access for this user
+   * (admins always have it) - the same rule as core/auth.guards.ts. */
+  protected readonly aiAvailable = computed(() => {
+    const user = this.session.user();
+    return (
+      !!this.metadata.settings()?.agentsEnabled &&
+      (user?.role === 'admin' || !!user?.aiChatEnabled)
+    );
+  });
+
+  /** New groups/categories the accepted proposals would create. */
+  protected readonly pendingCreations = computed(() => pendingCategoryCreations(this.rows()));
+
+  /** A row carries an accept-able suggestion when it points at a real
+   * category and the row has none yet. */
+  protected readonly acceptableSuggestionCount = computed(
+    () =>
+      this.rows().filter((row) => !row.categoryId && row.suggestion?.categoryId).length
+  );
 
   protected readonly selectedAccount = computed(() =>
     this.accountsResource.value()?.find((account) => account.id === this.accountId())
@@ -135,6 +177,18 @@ export class TransactionImport {
     return (this.categoriesResource.value() ?? []).filter(
       (category) => category.kind === type
     );
+  }
+
+  /** Human-readable name for an existing-category suggestion - the backend
+   * only sends the id, so resolve it against the loaded categories the same
+   * way the grid's own <select> is labelled ("Group / Category"). */
+  protected suggestionCategoryLabel(row: CsvImportRow): string {
+    const categoryId = row.suggestion?.categoryId;
+    if (!categoryId) return '';
+    const category = this.categoriesResource.value()?.find((c) => c.id === categoryId);
+    if (!category) return '';
+    const group = this.categoryGroupsResource.value()?.find((g) => g.id === category.groupId);
+    return group ? `${group.name} / ${category.name}` : category.name;
   }
 
   protected categoryGroupsForType(type: RowType | undefined) {
@@ -236,6 +290,10 @@ export class TransactionImport {
           for (const field of TARGET_FIELDS) mapping[field] = preview.mapping[field] ?? '';
           this.fieldMapping.set(mapping);
           this.rows.set(toImportRows(preview.rows));
+          // A fresh row set is a new analysis target and a new import session.
+          this.suggested.set(false);
+          this.suggestErrorKey.set(undefined);
+          this.importedCount.set(0);
           this.loading.set(false);
         },
         error: (error: unknown) => {
@@ -306,6 +364,151 @@ export class TransactionImport {
     });
   }
 
+  /** Key a row by its (type, cleaned description) so one AI answer covers
+   * every repeat of the same merchant. */
+  private suggestKey(type: RowType, description: string): string {
+    return `${type} ${description.trim().toLowerCase()}`;
+  }
+
+  /** Ask the assistant to categorize every still-uncategorized, clean row.
+   * De-duplicated by merchant before the call, then fanned back out. */
+  protected async runSuggest(): Promise<void> {
+    if (this.suggesting() || this.suggested()) return;
+    const representatives = new Map<string, CsvImportRow>();
+    for (const row of this.rows()) {
+      if (row.categoryId || row.error || !row.description || !row.type) continue;
+      const key = this.suggestKey(row.type, row.description);
+      if (!representatives.has(key)) representatives.set(key, row);
+    }
+    if (representatives.size === 0) {
+      this.suggestErrorKey.set('transactions.import.ai.noSuggestions');
+      return;
+    }
+
+    const items: ImportSuggestItem[] = [...representatives.values()]
+      .slice(0, 200)
+      .map((row) => ({
+        index: row.index,
+        description: row.description,
+        type: row.type as RowType
+      }));
+
+    this.suggesting.set(true);
+    this.suggestErrorKey.set(undefined);
+    try {
+      const suggestions = await firstValueFrom(this.agentRepository.suggestImportCategories(items));
+      const rowByIndex = new Map(this.rows().map((row) => [row.index, row]));
+      for (const suggestion of suggestions) {
+        const representative = rowByIndex.get(suggestion.index);
+        if (!representative || !representative.type) continue;
+        const key = this.suggestKey(representative.type, representative.description);
+        this.rows.update((rows) =>
+          rows.map((row) =>
+            !row.categoryId && row.type && this.suggestKey(row.type, row.description) === key
+              ? { ...row, suggestion: { ...suggestion } }
+              : row
+          )
+        );
+      }
+      if (!this.rows().some((row) => row.suggestion)) {
+        this.suggestErrorKey.set('transactions.import.ai.noSuggestions');
+      }
+      // Analysis done for this preview - one pass only.
+      this.suggested.set(true);
+    } catch (error: unknown) {
+      this.suggestErrorKey.set(
+        error instanceof ApiError ? `errors.${error.code}` : 'errors.error.generic'
+      );
+    } finally {
+      this.suggesting.set(false);
+    }
+  }
+
+  /** Apply an existing-category suggestion to one row. */
+  protected acceptSuggestion(row: CsvImportRow): void {
+    const categoryId = row.suggestion?.categoryId;
+    if (!categoryId) return;
+    this.setRowCategory(row, categoryId);
+    this.updateRow(row.index, { suggestion: undefined });
+  }
+
+  protected dismissSuggestion(row: CsvImportRow): void {
+    this.updateRow(row.index, { suggestion: undefined });
+  }
+
+  /** Apply every existing-category suggestion in one go. */
+  protected acceptAllSuggestions(): void {
+    for (const row of this.rows()) {
+      if (!row.categoryId && row.suggestion?.categoryId) this.acceptSuggestion(row);
+    }
+  }
+
+  /** Create the AI-proposed groups/categories through the normal endpoints,
+   * then assign the new ids to the rows that proposed them. Deliberately does
+   * NOT re-run the preview - that would wipe every reviewed tick. */
+  protected async createSuggestedCategories(): Promise<void> {
+    const plan = this.pendingCreations();
+    if (plan.length === 0 || this.creatingCategories()) return;
+
+    this.creatingCategories.set(true);
+    const createdIdByKey = new Map<string, string>();
+    try {
+      for (const group of plan) {
+        const groupId =
+          group.groupId ??
+          (
+            await firstValueFrom(
+              this.categoryGroupRepository.create({
+                name: group.groupName,
+                kind: group.kind,
+                color: DEFAULT_COLOR,
+                icon: DEFAULT_ICON as Category['icon']
+              })
+            )
+          ).id;
+        for (const name of group.categories) {
+          const category = await firstValueFrom(
+            this.categoryRepository.create({
+              name,
+              kind: group.kind,
+              groupId,
+              color: DEFAULT_COLOR,
+              icon: DEFAULT_ICON as Category['icon']
+            })
+          );
+          createdIdByKey.set(this.proposalKey(group.kind, group.groupName, name), category.id);
+        }
+      }
+    } catch {
+      this.mutationErrors.show();
+      this.creatingCategories.set(false);
+      return;
+    }
+
+    this.categoriesResource.reload();
+    this.categoryGroupsResource.reload();
+
+    this.rows.update((rows) =>
+      rows.map((row) => {
+        const suggestion = row.suggestion;
+        if (row.categoryId || !suggestion?.categoryName || !suggestion.groupName || !row.type) {
+          return row;
+        }
+        const id = createdIdByKey.get(
+          this.proposalKey(row.type, suggestion.groupName, suggestion.categoryName)
+        );
+        return id
+          ? { ...row, categoryId: id, categoryName: suggestion.categoryName, suggestion: undefined }
+          : row;
+      })
+    );
+    this.creatingCategories.set(false);
+  }
+
+  private proposalKey(kind: RowType, groupName: string, categoryName: string): string {
+    return `${kind}|${groupName.toLowerCase()}|${categoryName.toLowerCase()}`;
+  }
+
   private toTransactionInput(row: CsvImportRow, currency: string): Omit<Transaction, 'id'> {
     return {
       type: row.type as TransactionType,
@@ -333,17 +536,26 @@ export class TransactionImport {
       if (!confirmed) return;
     }
 
-    const items = this.rows()
-      .filter(isImportable)
-      .map((row) => this.toTransactionInput(row, account.currency));
+    const importable = this.rows().filter(isImportable);
+    const importedIndices = new Set(importable.map((row) => row.index));
+    const items = importable.map((row) => this.toTransactionInput(row, account.currency));
 
     this.importing.set(true);
     this.transactionRepository.importCommit(items).subscribe({
-      next: () => this.router.navigate(['/transactions']),
+      next: () => {
+        this.importing.set(false);
+        this.importedCount.update((total) => total + items.length);
+        // Drop only the rows just posted; the rest stay for another batch.
+        this.rows.update((rows) => rows.filter((row) => !importedIndices.has(row.index)));
+      },
       error: () => {
         this.importing.set(false);
         this.mutationErrors.show();
       }
     });
+  }
+
+  protected goToTransactions(): void {
+    this.router.navigate(['/transactions']);
   }
 }

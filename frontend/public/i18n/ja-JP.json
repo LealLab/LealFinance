@@ -639,6 +639,7 @@
         "missingRequired": "行を確認する前に、日付・説明・金額の列を対応付けてください。"
       },
       "loading": "ファイルを解析しています...",
+      "importedNotice": "これまでに {{count}} 件の取引をインポートしました。",
       "remapConfirm": {
         "title": "確認済みの内容を破棄しますか？",
         "message": "ファイル、口座、または列の対応付けを変更すると、ファイルが再解析され、確認済みの行がクリアされます。"
@@ -655,7 +656,24 @@
         "message": "確認済みの{{count}}件を{{account}}に記帳します。この操作は元に戻せません。"
       },
       "actions": {
-        "confirm": "確認済みの行をインポート"
+        "confirm": "確認済みの行をインポート",
+        "done": "取引へ移動"
+      },
+      "ai": {
+        "button": "AIアシスト",
+        "running": "分類中…",
+        "accept": "適用",
+        "acceptAll": "すべて適用（{{count}}）",
+        "suggestionsTitle": "カテゴリの提案",
+        "suggestionsDescription": "アシスタントが可能な行にカテゴリを割り当てました。下で1件ずつ、またはまとめて適用できます。",
+        "dismiss": "却下",
+        "noSuggestions": "これらの行に新しい提案はありません。",
+        "proposedBadge": "{{group}} / {{category}}（新規）",
+        "proposalsTitle": "作成する新しいカテゴリ",
+        "proposalsDescription": "既存のどのカテゴリにも当てはまらない行について、アシスタントが提案します。内容を確認し、1 ステップで作成して割り当てます。",
+        "newGroupBadge": "新しいグループ",
+        "existingGroupBadge": "既存のグループ",
+        "createAndAssign": "作成して割り当て"
       }
     },
     "eyebrow": "財務",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "この指示は保存されませんでした。ご自身の家計にもこのアプリにも関係のない内容です。",
       "not_configured": "AIプロバイダーがまだ設定されていません。",
-      "provider_unavailable": "現在、AIプロバイダーを利用できません。"
+      "provider_unavailable": "現在、AIプロバイダーを利用できません。",
+      "suggest_unreadable": "AI の応答を読み取れませんでした。もう一度お試しください。"
     },
     "auth": {
       "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",

@@ -10,7 +10,11 @@ import {
   AgentToolCall,
   McpToken,
 } from '../../domain/models/agent-chat';
-import { AgentChatRepository } from '../agent-chat.repository';
+import {
+  AgentChatRepository,
+  ImportSuggestion,
+  ImportSuggestItem,
+} from '../agent-chat.repository';
 
 interface ConversationWire {
   id: string;
@@ -42,6 +46,13 @@ interface InstructionsWire {
 interface McpTokenWire {
   token: string;
   expires_at: string;
+}
+interface SuggestionWire {
+  index: number;
+  category_id: string | null;
+  group_id: string | null;
+  group_name: string | null;
+  category_name: string | null;
 }
 
 const mapConversation = (value: ConversationWire): AgentConversation => ({
@@ -117,6 +128,23 @@ export class HttpAgentChatRepository extends AgentChatRepository {
       client_date: localDate(),
       ...(args ? { arguments: args } : {}),
     });
+  }
+  suggestImportCategories(
+    items: readonly ImportSuggestItem[],
+  ): Observable<ImportSuggestion[]> {
+    return this.api
+      .post<{ suggestions: SuggestionWire[] }>('/agents/import/suggest', { items })
+      .pipe(
+        map((value) =>
+          value.suggestions.map((row) => ({
+            index: row.index,
+            categoryId: row.category_id ?? undefined,
+            groupId: row.group_id ?? undefined,
+            groupName: row.group_name ?? undefined,
+            categoryName: row.category_name ?? undefined,
+          })),
+        ),
+      );
   }
   getInstructions(): Observable<string> {
     return this.api

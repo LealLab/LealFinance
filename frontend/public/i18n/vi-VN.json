@@ -639,6 +639,7 @@
         "missingRequired": "Khớp các cột ngày, mô tả và số tiền trước khi xem lại các dòng."
       },
       "loading": "Đang phân tích tệp...",
+      "importedNotice": "Đã nhập {{count}} giao dịch cho đến nay.",
       "remapConfirm": {
         "title": "Hủy bỏ tiến trình xem lại?",
         "message": "Thay đổi tệp, tài khoản hoặc khớp cột sẽ phân tích lại tệp và xóa các dòng đã xem lại."
@@ -655,7 +656,24 @@
         "message": "Thao tác này sẽ ghi sổ {{count}} dòng đã xem lại vào {{account}}. Không thể hoàn tác thao tác này."
       },
       "actions": {
-        "confirm": "Nhập các dòng đã xem lại"
+        "confirm": "Nhập các dòng đã xem lại",
+        "done": "Đến trang giao dịch"
+      },
+      "ai": {
+        "button": "Trợ lý AI",
+        "running": "Đang phân loại…",
+        "accept": "Áp dụng",
+        "acceptAll": "Áp dụng tất cả ({{count}})",
+        "suggestionsTitle": "Gợi ý danh mục",
+        "suggestionsDescription": "Trợ lý đã ghép danh mục cho các hàng có thể. Chấp nhận từng mục bên dưới hoặc tất cả cùng lúc.",
+        "dismiss": "Bỏ qua",
+        "noSuggestions": "Không có gợi ý mới cho các hàng này.",
+        "proposedBadge": "{{group}} / {{category}} (mới)",
+        "proposalsTitle": "Danh mục mới cần tạo",
+        "proposalsDescription": "Trợ lý gợi ý các mục này cho những hàng không khớp với danh mục hiện có. Xem lại, rồi tạo và gán trong một bước.",
+        "newGroupBadge": "nhóm mới",
+        "existingGroupBadge": "nhóm hiện có",
+        "createAndAssign": "Tạo và gán"
       }
     },
     "eyebrow": "Tài chính",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Hướng dẫn này không được lưu: nội dung không liên quan đến tài chính của bạn hoặc ứng dụng này.",
       "not_configured": "Chưa cấu hình nhà cung cấp AI.",
-      "provider_unavailable": "Nhà cung cấp AI hiện không khả dụng."
+      "provider_unavailable": "Nhà cung cấp AI hiện không khả dụng.",
+      "suggest_unreadable": "Không thể đọc phản hồi của AI. Hãy thử lại."
     },
     "auth": {
       "invalid_credentials": "Email hoặc mật khẩu không chính xác.",

@@ -639,6 +639,7 @@
         "missingRequired": "Associa le colonne data, descrizione e importo prima di controllare le righe."
       },
       "loading": "Analisi del file in corso...",
+      "importedNotice": "{{count}} transazioni importate finora.",
       "remapConfirm": {
         "title": "Annullare il progresso della revisione?",
         "message": "Cambiare file, conto o associazione delle colonne ripete l'analisi del file e cancella le righe già controllate."
@@ -655,7 +656,24 @@
         "message": "Verranno registrate {{count}} righe controllate su {{account}}. Questa azione non può essere annullata."
       },
       "actions": {
-        "confirm": "Importa righe controllate"
+        "confirm": "Importa righe controllate",
+        "done": "Vai alle transazioni"
+      },
+      "ai": {
+        "button": "Assistente IA",
+        "running": "Categorizzazione…",
+        "accept": "Accetta",
+        "acceptAll": "Accetta tutte ({{count}})",
+        "suggestionsTitle": "Suggerimenti di categoria",
+        "suggestionsDescription": "L’assistente ha associato una categoria alle righe possibili. Accettale una a una qui sotto oppure tutte insieme.",
+        "dismiss": "Ignora",
+        "noSuggestions": "Nessun nuovo suggerimento per queste righe.",
+        "proposedBadge": "{{group}} / {{category}} (nuova)",
+        "proposalsTitle": "Nuove categorie da creare",
+        "proposalsDescription": "L’assistente le suggerisce per le righe che non rientrano in nessuna categoria esistente. Verificale, poi creale e assegnale in un solo passaggio.",
+        "newGroupBadge": "nuovo gruppo",
+        "existingGroupBadge": "gruppo esistente",
+        "createAndAssign": "Crea e assegna"
       }
     },
     "eyebrow": "Finanza",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Queste istruzioni non sono state salvate: non riguardano le tue finanze né questa applicazione.",
       "not_configured": "Non è ancora configurato alcun provider AI.",
-      "provider_unavailable": "Il provider AI non è al momento disponibile."
+      "provider_unavailable": "Il provider AI non è al momento disponibile.",
+      "suggest_unreadable": "Impossibile leggere la risposta dell’IA. Riprova."
     },
     "auth": {
       "invalid_credentials": "Email o password non valide.",

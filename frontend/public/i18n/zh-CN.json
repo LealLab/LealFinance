@@ -639,6 +639,7 @@
         "missingRequired": "在检查行之前，请匹配日期、描述和金额列。"
       },
       "loading": "正在解析文件...",
+      "importedNotice": "已导入 {{count}} 笔交易。",
       "remapConfirm": {
         "title": "放弃检查进度？",
         "message": "更改文件、账户或列匹配会重新解析文件，并清除已检查的行。"
@@ -655,7 +656,24 @@
         "message": "此操作会将 {{count}} 行已检查的记录过账到{{account}}。此操作无法撤销。"
       },
       "actions": {
-        "confirm": "导入已检查的行"
+        "confirm": "导入已检查的行",
+        "done": "前往交易"
+      },
+      "ai": {
+        "button": "AI 助手",
+        "running": "正在分类…",
+        "accept": "采用",
+        "acceptAll": "全部采用（{{count}}）",
+        "suggestionsTitle": "分类建议",
+        "suggestionsDescription": "助手已为可识别的行匹配分类。可在下方逐条采用，或一次全部采用。",
+        "dismiss": "忽略",
+        "noSuggestions": "这些行没有新的建议。",
+        "proposedBadge": "{{group}} / {{category}}（新）",
+        "proposalsTitle": "待创建的新分类",
+        "proposalsDescription": "对于不属于任何现有分类的行，助手会给出这些建议。确认后可一步创建并分配。",
+        "newGroupBadge": "新分组",
+        "existingGroupBadge": "现有分组",
+        "createAndAssign": "创建并分配"
       }
     },
     "eyebrow": "财务",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "这些指令未保存：它们与你的财务或本应用无关。",
       "not_configured": "尚未配置 AI 提供商。",
-      "provider_unavailable": "AI 提供商当前不可用。"
+      "provider_unavailable": "AI 提供商当前不可用。",
+      "suggest_unreadable": "无法读取 AI 响应。请重试。"
     },
     "auth": {
       "invalid_credentials": "邮箱或密码不正确。",

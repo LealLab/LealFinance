@@ -639,6 +639,7 @@
         "missingRequired": "Satırları incelemeden önce tarih, açıklama ve tutar sütunlarını eşleştir."
       },
       "loading": "Dosya analiz ediliyor...",
+      "importedNotice": "Şu ana kadar {{count}} işlem içe aktarıldı.",
       "remapConfirm": {
         "title": "İnceleme ilerlemesi silinsin mi?",
         "message": "Dosyayı, hesabı veya sütun eşleştirmesini değiştirmek dosyayı yeniden analiz eder ve zaten incelenmiş satırları temizler."
@@ -655,7 +656,24 @@
         "message": "Bu işlem {{count}} incelenen satırı {{account}} hesabına kaydeder. Bu işlem geri alınamaz."
       },
       "actions": {
-        "confirm": "İncelenen satırları içe aktar"
+        "confirm": "İncelenen satırları içe aktar",
+        "done": "İşlemlere git"
+      },
+      "ai": {
+        "button": "Yapay Zekâ Yardımı",
+        "running": "Kategorilere ayrılıyor…",
+        "accept": "Uygula",
+        "acceptAll": "Tümünü uygula ({{count}})",
+        "suggestionsTitle": "Kategori önerileri",
+        "suggestionsDescription": "Asistan, yapabildiği satırlara bir kategori eşleştirdi. Aşağıda tek tek ya da hepsini birden kabul edin.",
+        "dismiss": "Yoksay",
+        "noSuggestions": "Bu satırlar için yeni öneri yok.",
+        "proposedBadge": "{{group}} / {{category}} (yeni)",
+        "proposalsTitle": "Oluşturulacak yeni kategoriler",
+        "proposalsDescription": "Asistan bunları mevcut hiçbir kategoriye uymayan satırlar için önerir. Gözden geçirin, ardından tek adımda oluşturup atayın.",
+        "newGroupBadge": "yeni grup",
+        "existingGroupBadge": "mevcut grup",
+        "createAndAssign": "Oluştur ve ata"
       }
     },
     "eyebrow": "Finans",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "Bu talimatlar kaydedilmedi: finanslarınızla ya da bu uygulamayla ilgili değiller.",
       "not_configured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
-      "provider_unavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor."
+      "provider_unavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor.",
+      "suggest_unreadable": "Yapay zekâ yanıtı okunamadı. Yeniden deneyin."
     },
     "auth": {
       "invalid_credentials": "E-posta veya parola yanlış.",

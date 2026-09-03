@@ -639,6 +639,7 @@
         "missingRequired": "在檢查列之前，請對應日期、說明和金額欄位。"
       },
       "loading": "正在解析檔案...",
+      "importedNotice": "已匯入 {{count}} 筆交易。",
       "remapConfirm": {
         "title": "放棄檢查進度？",
         "message": "變更檔案、帳戶或欄位對應會重新解析檔案，並清除已檢查的列。"
@@ -655,7 +656,24 @@
         "message": "此操作會將 {{count}} 列已檢查的記錄過帳到{{account}}。此操作無法復原。"
       },
       "actions": {
-        "confirm": "匯入已檢查的列"
+        "confirm": "匯入已檢查的列",
+        "done": "前往交易"
+      },
+      "ai": {
+        "button": "AI 助理",
+        "running": "正在分類…",
+        "accept": "採用",
+        "acceptAll": "全部採用（{{count}}）",
+        "suggestionsTitle": "分類建議",
+        "suggestionsDescription": "助理已為可辨識的列比對分類。可於下方逐一採用，或一次全部採用。",
+        "dismiss": "略過",
+        "noSuggestions": "這些列沒有新的建議。",
+        "proposedBadge": "{{group}} / {{category}}（新）",
+        "proposalsTitle": "待建立的新分類",
+        "proposalsDescription": "對於不屬於任何現有分類的列，助理會提供這些建議。確認後可一步建立並指派。",
+        "newGroupBadge": "新群組",
+        "existingGroupBadge": "現有群組",
+        "createAndAssign": "建立並指派"
       }
     },
     "eyebrow": "財務",
@@ -1664,7 +1682,8 @@
     "agents": {
       "instructions_rejected": "這些指令未儲存：與你的財務或本應用程式無關。",
       "not_configured": "尚未設定 AI 提供者。",
-      "provider_unavailable": "AI 提供者目前無法使用。"
+      "provider_unavailable": "AI 提供者目前無法使用。",
+      "suggest_unreadable": "無法讀取 AI 回應。請再試一次。"
     },
     "auth": {
       "invalid_credentials": "電子郵件或密碼不正確。",
