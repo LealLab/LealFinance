@@ -387,7 +387,24 @@ describe('TransactionImport', () => {
 
     expect(component.rowBackgroundClass({ ...baseRow, type: 'income' })).toBe('bg-positive/20');
     expect(component.rowBackgroundClass({ ...baseRow, type: 'expense' })).toBe('bg-negative/20');
+    expect(component.rowBackgroundClass({ ...baseRow, type: 'transfer' })).toBe('bg-accent/20');
     expect(component.rowBackgroundClass({ ...baseRow, type: undefined })).toBe('');
+  });
+
+  it('keeps the transfer type selected after a row moves to the transfer grid', async () => {
+    const fixture = TestBed.createComponent(TransactionImport);
+    const component = fixture.componentInstance as unknown as TestableComponent;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await previewedRows(component, [
+      { ...baseRow, type: 'expense', amount: '5.00', categoryId: 'cat-groceries' }
+    ]);
+    component.setRowType(component.rows()[0], 'transfer');
+    fixture.detectChanges();
+
+    const typeSelect = fixture.nativeElement.querySelector('table select') as HTMLSelectElement;
+    expect(typeSelect.value).toBe('transfer');
   });
 
   it('hides AI Assist when the AI feature is not available to the user', async () => {

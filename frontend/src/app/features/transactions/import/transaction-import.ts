@@ -239,13 +239,11 @@ export class TransactionImport {
     );
   }
 
-  /** Income/expense tint so a row's direction reads at a glance, matching
-   * the positive/negative color tokens badges already use elsewhere - a
-   * stronger fill than a badge's, since a badge is a small bold pill and a
-   * full-width row needs more weight to register at a glance. */
+  /** Color rows by transaction type so direction reads at a glance. */
   protected rowBackgroundClass(row: CsvImportRow): string {
     if (row.type === 'income') return 'bg-positive/20';
     if (row.type === 'expense') return 'bg-negative/20';
+    if (row.type === 'transfer') return 'bg-accent/20';
     return '';
   }
 

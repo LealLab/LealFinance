@@ -296,9 +296,13 @@
                       [value]="row.type ?? ''"
                       (change)="setRowType(row, $any($event.target).value)"
                     >
-                      <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+                      <option value="" [selected]="!row.type">
+                        {{ t('transactions.form.fields.selectPlaceholder') }}
+                      </option>
                       @for (type of rowTypes; track type) {
-                        <option [value]="type">{{ t('transactions.type.' + type) }}</option>
+                        <option [value]="type" [selected]="type === row.type">
+                          {{ t('transactions.type.' + type) }}
+                        </option>
                       }
                     </select>
                   </td>
@@ -487,9 +491,13 @@
                       [value]="row.type ?? ''"
                       (change)="setRowType(row, $any($event.target).value)"
                     >
-                      <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+                      <option value="" [selected]="!row.type">
+                        {{ t('transactions.form.fields.selectPlaceholder') }}
+                      </option>
                       @for (type of rowTypes; track type) {
-                        <option [value]="type">{{ t('transactions.type.' + type) }}</option>
+                        <option [value]="type" [selected]="type === row.type">
+                          {{ t('transactions.type.' + type) }}
+                        </option>
                       }
                     </select>
                   </td>
