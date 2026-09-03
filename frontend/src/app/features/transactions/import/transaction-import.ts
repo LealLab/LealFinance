@@ -141,6 +141,12 @@ export class TransactionImport {
     const direction = this.sortDirection() === 'asc' ? 1 : -1;
     return [...this.rows()].sort((a, b) => direction * compareRows(a, b, column));
   });
+  protected readonly nonTransferRows = computed(() =>
+    this.sortedRows().filter((row) => row.type !== 'transfer')
+  );
+  protected readonly transferRows = computed(() =>
+    this.sortedRows().filter((row) => row.type === 'transfer')
+  );
 
   protected readonly askBeforeImport = signal(true);
   protected readonly importing = signal(false);
@@ -356,9 +362,14 @@ export class TransactionImport {
     this.updateRow(row.index, { reviewed: !row.reviewed });
   }
 
-  protected toggleAllReviewed(checked: boolean): void {
+  protected toggleAllReviewed(checked: boolean, scopedRows?: readonly CsvImportRow[]): void {
+    const scopedIndices = scopedRows && new Set(scopedRows.map((row) => row.index));
     this.rows.update((rows) =>
-      rows.map((row) => (isReviewable(row) ? { ...row, reviewed: checked } : row))
+      rows.map((row) =>
+        (!scopedIndices || scopedIndices.has(row.index)) && isReviewable(row)
+          ? { ...row, reviewed: checked }
+          : row
+      )
     );
   }
 

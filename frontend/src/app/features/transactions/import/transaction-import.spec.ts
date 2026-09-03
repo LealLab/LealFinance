@@ -96,10 +96,14 @@ interface TestableComponent {
   fieldMapping: () => Record<string, string>;
   rows: () => CsvImportRow[];
   sortedRows: () => CsvImportRow[];
+  nonTransferRows: () => CsvImportRow[];
+  transferRows: () => CsvImportRow[];
   canConfirm: () => boolean;
   askBeforeImport: { set(value: boolean): void };
   onFileSelected(event: Event): Promise<void>;
   onAccountChange(id: string): Promise<void>;
+  setRowType(row: CsvImportRow, type: 'income' | 'expense' | 'transfer'): void;
+  toggleAllReviewed(checked: boolean, scopedRows?: readonly CsvImportRow[]): void;
   toggleReviewed(row: CsvImportRow): void;
   toggleSort(column: 'date' | 'type' | 'amount'): void;
   confirmImport(): Promise<void>;
@@ -335,6 +339,44 @@ describe('TransactionImport', () => {
         categoryId: undefined
       })
     ]);
+  });
+
+  it('partitions transfer rows and moves them when their type changes', async () => {
+    const fixture = TestBed.createComponent(TransactionImport);
+    const component = fixture.componentInstance as unknown as TestableComponent;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await previewedRows(component, [
+      { ...baseRow, index: 0, type: 'expense', amount: '5.00', categoryId: 'cat-groceries' },
+      {
+        ...baseRow,
+        index: 1,
+        type: 'transfer',
+        amount: '10.00',
+        counterpartyAccountId: 'acc-savings',
+        transferDirection: 'outgoing'
+      },
+      { ...baseRow, index: 2, type: undefined, amount: '15.00' }
+    ]);
+
+    expect(component.nonTransferRows().map((row) => row.index)).toEqual([0, 2]);
+    expect(component.transferRows().map((row) => row.index)).toEqual([1]);
+
+    component.toggleAllReviewed(true, component.nonTransferRows());
+    expect(component.rows().map((row) => row.reviewed)).toEqual([true, false, false]);
+    component.toggleAllReviewed(true, component.transferRows());
+    expect(component.rows().map((row) => row.reviewed)).toEqual([true, true, false]);
+    component.toggleAllReviewed(false, component.nonTransferRows());
+    expect(component.rows().map((row) => row.reviewed)).toEqual([false, true, false]);
+
+    component.setRowType(component.rows()[0], 'transfer');
+    expect(component.nonTransferRows().map((row) => row.index)).toEqual([2]);
+    expect(component.transferRows().map((row) => row.index)).toEqual([0, 1]);
+
+    component.setRowType(component.rows()[1], 'expense');
+    expect(component.nonTransferRows().map((row) => row.index)).toEqual([1, 2]);
+    expect(component.transferRows().map((row) => row.index)).toEqual([0]);
   });
 
   it('tints a row by its income/expense direction, and leaves an undetermined row untinted', async () => {
