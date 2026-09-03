@@ -506,7 +506,7 @@ async def test_update_category_renames_and_moves_between_groups(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     user = await _authed(client, db_session, "agent-update-category@example.com")
-    group_a, category_id = await _create_group(client, "Group A")
+    _, category_id = await _create_group(client, "Group A")
     group_b, _ = await _create_group(client, "Group B")
 
     row = await tools.SPEC_BY_NAME["update_category"].run(
@@ -516,7 +516,65 @@ async def test_update_category_renames_and_moves_between_groups(
     )
     assert row["name"] == "Renamed"
     assert row["group_id"] == group_b
-    assert group_a != group_b
+
+    stored = {
+        str(category.id): category
+        for category in await categories_service.list_categories(db_session, user.id)
+    }
+    assert stored[category_id].name == "Renamed"
+    assert str(stored[category_id].group_id) == group_b
+
+
+async def test_update_category_rejects_cross_kind_move(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-cross-kind@example.com")
+    _, category_id = await _create_group(client, "Spending")
+    income_group, _ = await _create_group(client, "Earning", kind="income")
+
+    with pytest.raises(AppError) as error:
+        await tools.SPEC_BY_NAME["update_category"].run(
+            db_session, user.id, {"category_id": category_id, "group_id": income_group}
+        )
+    assert error.value.code == "category.group_kind_mismatch"
+
+
+async def test_update_and_delete_tools_reject_cross_user_ids(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    owner = await _authed(client, db_session, "agent-group-owner@example.com")
+    group_id, category_id = await _create_group(client, "Owner Group")
+    other_user, _ = await make_user(db_session, email="agent-group-intruder@example.com")
+
+    for name, args in (
+        ("update_category_group", {"group_id": group_id, "name": "Hijacked"}),
+        ("delete_category_group", {"group_id": group_id}),
+        ("update_category", {"category_id": category_id, "name": "Hijacked"}),
+        ("delete_category", {"category_id": category_id}),
+    ):
+        with pytest.raises(AppError) as error:
+            await tools.SPEC_BY_NAME[name].run(db_session, other_user.id, args)
+        assert error.value.status_code == 404, name
+    assert owner.id != other_user.id
+
+
+async def test_create_category_group_aborts_before_group_when_a_child_is_invalid(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-child-invalid@example.com")
+
+    with pytest.raises(AppError) as error:
+        await tools.SPEC_BY_NAME["create_category_group"].run(
+            db_session,
+            user.id,
+            {
+                "name": "Half",
+                "kind": "expense",
+                "categories": [{"name": "Fine"}, {"name": "Bad", "color": "#" + "0" * 20}],
+            },
+        )
+    assert error.value.code == "agents.tool_arguments_invalid"
+    assert await category_groups_service.list_groups(db_session, user.id) == []
 
 
 async def test_delete_tools_surface_in_use_errors(
@@ -554,9 +612,41 @@ async def test_category_tools_coerce_unknown_icon_to_fallback(
     result = await tools.SPEC_BY_NAME["create_category_group"].run(
         db_session,
         user.id,
-        {"name": "Misc", "kind": "expense", "icon": "totally-made-up"},
+        {
+            "name": "Misc",
+            "kind": "expense",
+            "icon": "totally-made-up",
+            "categories": [{"name": "Thing", "icon": "also-bogus"}],
+        },
     )
     assert result["group"]["icon"] == "tag"
+    assert result["categories"][0]["icon"] == "tag"
+
+
+async def test_update_tools_ignore_an_unknown_icon_instead_of_overwriting(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-icon-update@example.com")
+    group_id, category_id = await _create_group(client, "Keeps Icon")
+    original = await tools.SPEC_BY_NAME["update_category_group"].run(
+        db_session, user.id, {"group_id": group_id, "icon": "wallet"}
+    )
+    assert original["icon"] == "wallet"
+
+    unchanged = await tools.SPEC_BY_NAME["update_category_group"].run(
+        db_session, user.id, {"group_id": group_id, "name": "Keeps Icon 2", "icon": "nope"}
+    )
+    assert unchanged["name"] == "Keeps Icon 2"
+    assert unchanged["icon"] == "wallet"
+
+    category = await tools.SPEC_BY_NAME["update_category"].run(
+        db_session, user.id, {"category_id": category_id, "icon": "book"}
+    )
+    assert category["icon"] == "book"
+    still_book = await tools.SPEC_BY_NAME["update_category"].run(
+        db_session, user.id, {"category_id": category_id, "name": "Kept", "icon": "bogus"}
+    )
+    assert still_book["icon"] == "book"
 
 
 async def test_list_category_groups_filters_by_kind(

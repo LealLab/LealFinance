@@ -39,13 +39,20 @@ from app.services import transactions as transactions_service
 _ICON_NAMES = frozenset(get_args(IconName))
 _CATEGORY_ICON_HINT = (
     "Icon name, e.g. tag, home, cart, car, utensils, heart, gift, book, plane, "
-    "coffee, phone, briefcase. Defaults to tag if unknown."
+    "coffee, phone, briefcase. On create an unknown name becomes tag; on update "
+    "it is ignored."
 )
 
 
 def _icon(value: str | None, fallback: str) -> str:
     """Coerce an unknown icon name to a safe fallback rather than 422ing the call."""
     return value if value is not None and value in _ICON_NAMES else fallback
+
+
+def _drop_unknown_icon(changes: dict[str, Any]) -> None:
+    """On an update, a typo'd icon name is a no-op, not an overwrite with the fallback."""
+    if "icon" in changes and changes["icon"] not in _ICON_NAMES:
+        del changes["icon"]
 
 
 class _ToolArgs(BaseModel):
@@ -113,7 +120,7 @@ class _ListCategoryGroupsArgs(_ToolArgs):
 class _CategoryChildArgs(_ToolArgs):
     name: str = Field(min_length=1, max_length=100)
     icon: str | None = None
-    color: str | None = None
+    color: str | None = Field(default=None, min_length=1, max_length=9)
 
 
 class _CreateCategoryGroupArgs(_ToolArgs):
@@ -365,21 +372,9 @@ async def _create_category_group(
 ) -> dict[str, Any]:
     parsed = _validate(_CreateCategoryGroupArgs, args)
     color = parsed.color or "#64748B"
-    # Validate every child up front so a bad name or icon can't leave a
-    # half-built group behind.
-    children = [
-        _validate(
-            CategoryCreate,
-            {
-                "name": child.name,
-                "kind": parsed.kind,
-                "group_id": "00000000-0000-0000-0000-000000000000",
-                "color": child.color or color,
-                "icon": _icon(child.icon, "tag"),
-            },
-        )
-        for child in (parsed.categories or [])
-    ]
+    # _CreateCategoryGroupArgs has already validated every child's name and
+    # color, so nothing below can 422 after the group row is written.
+    children = parsed.categories or []
     group_payload = _validate(
         CategoryGroupCreate,
         {
@@ -394,9 +389,14 @@ async def _create_category_group(
     # transaction if partial groups ever show up in practice.
     created: list[dict[str, Any]] = []
     for child in children:
-        category = await categories_service.create_category(
-            db, user_id, child.model_copy(update={"group_id": group.id})
+        payload = CategoryCreate(
+            name=child.name,
+            kind=parsed.kind,
+            group_id=group.id,
+            color=child.color or color,
+            icon=_icon(child.icon, "tag"),
         )
+        category = await categories_service.create_category(db, user_id, payload)
         created.append(
             CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
         )
@@ -414,8 +414,7 @@ async def _update_category_group(
     parsed = _validate(_UpdateCategoryGroupArgs, args)
     changes = parsed.model_dump(exclude_none=True)
     changes.pop("group_id")
-    if "icon" in changes:
-        changes["icon"] = _icon(changes["icon"], "tag")
+    _drop_unknown_icon(changes)
     payload = _validate(CategoryGroupUpdate, changes)
     group = await category_groups_service.update_group(db, user_id, parsed.group_id, payload)
     return CategoryGroupRead.model_validate(group, from_attributes=True).model_dump(mode="json")
@@ -450,8 +449,7 @@ async def _update_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]
     parsed = _validate(_UpdateCategoryArgs, args)
     changes = parsed.model_dump(exclude_none=True)
     changes.pop("category_id")
-    if "icon" in changes:
-        changes["icon"] = _icon(changes["icon"], "tag")
+    _drop_unknown_icon(changes)
     payload = _validate(CategoryUpdate, changes)
     category = await categories_service.update_category(db, user_id, parsed.category_id, payload)
     return CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
