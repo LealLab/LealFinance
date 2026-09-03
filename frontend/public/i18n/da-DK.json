@@ -22,6 +22,7 @@
       "reject": "Afvis",
       "account": "Konto",
       "category": "Kategori",
+      "group": "Gruppe",
       "institution": "Institution"
     },
     "delete": {

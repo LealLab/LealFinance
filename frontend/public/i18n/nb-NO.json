@@ -22,6 +22,7 @@
       "reject": "Avvis",
       "account": "Konto",
       "category": "Kategori",
+      "group": "Gruppe",
       "institution": "Institusjon"
     },
     "delete": {

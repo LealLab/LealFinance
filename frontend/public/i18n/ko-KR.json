@@ -22,6 +22,7 @@
       "reject": "거부",
       "account": "계정",
       "category": "카테고리",
+      "group": "그룹",
       "institution": "기관"
     },
     "delete": {

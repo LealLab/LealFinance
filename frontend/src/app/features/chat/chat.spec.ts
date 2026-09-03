@@ -5,10 +5,12 @@ import { throwError } from 'rxjs';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { MockAgentChatRepository } from '../../data/mock/mock-agent-chat.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { ConfirmService } from '../../core/confirm.service';
@@ -28,6 +30,7 @@ function setup(confirmResult = true) {
       { provide: AgentChatRepository, useClass: MockAgentChatRepository },
       { provide: AccountRepository, useClass: MockAccountRepository },
       { provide: CategoryRepository, useClass: MockCategoryRepository },
+      { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
       { provide: InstitutionRepository, useClass: MockInstitutionRepository },
       { provide: ConfirmService, useValue: confirmService },
     ],
