@@ -7,6 +7,7 @@ import { ApiError } from '../../core/api-error';
 import { AccountRepository } from '../../data/account.repository';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { CategoryRepository } from '../../data/category.repository';
+import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import {
   AgentConversation,
@@ -49,7 +50,7 @@ interface ConfirmationEntry {
 }
 
 /**
- * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
+ * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.group, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
  */
 @Component({
   selector: 'app-chat',
@@ -61,6 +62,7 @@ export class Chat {
   private readonly repo = inject(AgentChatRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
+  private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
 
@@ -73,6 +75,7 @@ export class Chat {
   });
   protected readonly accounts = rxResource({ stream: () => this.accountRepository.list() });
   protected readonly categories = rxResource({ stream: () => this.categoryRepository.list() });
+  protected readonly groups = rxResource({ stream: () => this.categoryGroupRepository.list() });
   protected readonly institutions = rxResource({ stream: () => this.institutionRepository.list() });
   protected readonly liveMessages = signal<ChatTurn[]>([]);
   protected readonly sending = signal(false);
@@ -188,8 +191,12 @@ export class Chat {
     return Object.entries(args).map(([key, value]) => ({
       ...(this.isAccountKey(key) ? { labelKey: 'chat.confirm.account' } : {}),
       ...(this.isCategoryKey(key) ? { labelKey: 'chat.confirm.category' } : {}),
+      ...(this.isGroupKey(key) ? { labelKey: 'chat.confirm.group' } : {}),
       ...(this.isInstitutionKey(key) ? { labelKey: 'chat.confirm.institution' } : {}),
-      ...(!this.isAccountKey(key) && !this.isCategoryKey(key) && !this.isInstitutionKey(key)
+      ...(!this.isAccountKey(key) &&
+      !this.isCategoryKey(key) &&
+      !this.isGroupKey(key) &&
+      !this.isInstitutionKey(key)
         ? { label: key.replaceAll('_', ' ').replace(/^./, (letter) => letter.toUpperCase()) }
         : {}),
       value: this.displayArgument(key, value),
@@ -293,6 +300,10 @@ export class Chat {
     return key === 'category' || key === 'category_id' || key === 'categoryId';
   }
 
+  private isGroupKey(key: string): boolean {
+    return key === 'group' || key === 'group_id' || key === 'groupId';
+  }
+
   private isInstitutionKey(key: string): boolean {
     return key === 'institution' || key === 'institution_id' || key === 'institutionId';
   }
@@ -310,11 +321,26 @@ export class Chat {
         String(value)
       );
     }
+    if (this.isGroupKey(key)) {
+      return (
+        this.groups.value()?.find((group) => group.id === String(value))?.name ?? String(value)
+      );
+    }
     if (this.isInstitutionKey(key)) {
       return (
         this.institutions.value()?.find((institution) => institution.id === String(value))?.name ??
         String(value)
       );
+    }
+    if (Array.isArray(value)) {
+      const named = value
+        .map((item) =>
+          item && typeof item === 'object' && 'name' in item ? String(item.name) : null,
+        )
+        .filter((name): name is string => name !== null);
+      if (named.length === value.length && named.length > 0) {
+        return named.join(', ');
+      }
     }
     return typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value);
   }

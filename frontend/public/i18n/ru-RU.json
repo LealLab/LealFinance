@@ -22,6 +22,7 @@
       "reject": "Отклонить",
       "account": "Счёт",
       "category": "Категория",
+      "group": "Группа",
       "institution": "Организация"
     },
     "delete": {

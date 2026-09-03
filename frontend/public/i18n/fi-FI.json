@@ -22,6 +22,7 @@
       "reject": "Hylkää",
       "account": "Tili",
       "category": "Luokka",
+      "group": "Ryhmä",
       "institution": "Laitos"
     },
     "delete": {

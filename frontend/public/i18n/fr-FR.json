@@ -22,6 +22,7 @@
       "reject": "Refuser",
       "account": "Compte",
       "category": "Catégorie",
+      "group": "Groupe",
       "institution": "Établissement"
     },
     "delete": {

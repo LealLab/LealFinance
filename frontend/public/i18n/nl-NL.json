@@ -22,6 +22,7 @@
       "reject": "Weigeren",
       "account": "Rekening",
       "category": "Categorie",
+      "group": "Groep",
       "institution": "Instelling"
     },
     "delete": {

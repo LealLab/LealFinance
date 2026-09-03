@@ -8,7 +8,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Any, Literal
+from typing import Any, Literal, get_args
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -16,17 +16,43 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.events import ToolSpec
 from app.core.errors import ValidationAppError
+from app.models.category_group import CategoryGroup
 from app.schemas.account import AccountBalanceRead, AccountCreate, AccountRead
 from app.schemas.card_invoice import CardInvoiceRead
-from app.schemas.category import CategoryRead
+from app.schemas.category import CategoryCreate, CategoryRead, CategoryUpdate
+from app.schemas.category_group import (
+    CategoryGroupCreate,
+    CategoryGroupRead,
+    CategoryGroupUpdate,
+)
+from app.schemas.common import IconName
 from app.schemas.institution import InstitutionCreate, InstitutionRead
 from app.schemas.transaction import TransactionCreate, TransactionRead, TransactionType
 from app.services import accounts as accounts_service
-from app.services import analytics
+from app.services import analytics, ownership
 from app.services import card_invoices as card_invoices_service
 from app.services import categories as categories_service
+from app.services import category_groups as category_groups_service
 from app.services import institutions as institutions_service
 from app.services import transactions as transactions_service
+
+_ICON_NAMES = frozenset(get_args(IconName))
+_CATEGORY_ICON_HINT = (
+    "Icon name, e.g. tag, home, cart, car, utensils, heart, gift, book, plane, "
+    "coffee, phone, briefcase. On create an unknown name becomes tag; on update "
+    "it is ignored."
+)
+
+
+def _icon(value: str | None, fallback: str) -> str:
+    """Coerce an unknown icon name to a safe fallback rather than 422ing the call."""
+    return value if value is not None and value in _ICON_NAMES else fallback
+
+
+def _drop_unknown_icon(changes: dict[str, Any]) -> None:
+    """On an update, a typo'd icon name is a no-op, not an overwrite with the fallback."""
+    if "icon" in changes and changes["icon"] not in _ICON_NAMES:
+        del changes["icon"]
 
 
 class _ToolArgs(BaseModel):
@@ -87,6 +113,54 @@ class _ListCardInvoicesArgs(_ToolArgs):
     months_ahead: int = Field(default=6, ge=0, le=36)
 
 
+class _ListCategoryGroupsArgs(_ToolArgs):
+    kind: Literal["income", "expense"] | None = None
+
+
+class _CategoryChildArgs(_ToolArgs):
+    name: str = Field(min_length=1, max_length=100)
+    icon: str | None = None
+    color: str | None = Field(default=None, min_length=1, max_length=9)
+
+
+class _CreateCategoryGroupArgs(_ToolArgs):
+    name: str = Field(min_length=1, max_length=100)
+    kind: Literal["income", "expense"]
+    icon: str | None = None
+    color: str | None = None
+    categories: list[_CategoryChildArgs] | None = None
+
+
+class _UpdateCategoryGroupArgs(_ToolArgs):
+    group_id: UUID
+    name: str | None = Field(default=None, min_length=1, max_length=100)
+    icon: str | None = None
+    color: str | None = Field(default=None, min_length=1, max_length=9)
+
+
+class _DeleteCategoryGroupArgs(_ToolArgs):
+    group_id: UUID
+
+
+class _CreateCategoryArgs(_ToolArgs):
+    name: str = Field(min_length=1, max_length=100)
+    group_id: UUID
+    icon: str | None = None
+    color: str | None = None
+
+
+class _UpdateCategoryArgs(_ToolArgs):
+    category_id: UUID
+    name: str | None = Field(default=None, min_length=1, max_length=100)
+    group_id: UUID | None = None
+    icon: str | None = None
+    color: str | None = Field(default=None, min_length=1, max_length=9)
+
+
+class _DeleteCategoryArgs(_ToolArgs):
+    category_id: UUID
+
+
 def _validate[ModelT: BaseModel](model: type[ModelT], args: dict[str, Any]) -> ModelT:
     try:
         return model.model_validate(args)
@@ -126,15 +200,36 @@ async def _list_accounts(
     ]
 
 
+async def _group_names(db: AsyncSession, user_id: UUID) -> dict[str, str]:
+    groups = await category_groups_service.list_groups(db, user_id)
+    return {str(group.id): group.name for group in groups}
+
+
 async def _list_categories(
     db: AsyncSession, user_id: UUID, args: dict[str, Any]
 ) -> list[dict[str, Any]]:
     payload = _validate(_ListCategoriesArgs, args)
     categories = await categories_service.list_categories(db, user_id)
+    group_names = await _group_names(db, user_id)
     return [
-        CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
+        {
+            **CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json"),
+            "group_name": group_names.get(str(category.group_id)),
+        }
         for category in categories
         if payload.kind is None or category.kind == payload.kind
+    ]
+
+
+async def _list_category_groups(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> list[dict[str, Any]]:
+    payload = _validate(_ListCategoryGroupsArgs, args)
+    groups = await category_groups_service.list_groups(db, user_id)
+    return [
+        CategoryGroupRead.model_validate(group, from_attributes=True).model_dump(mode="json")
+        for group in groups
+        if payload.kind is None or group.kind == payload.kind
     ]
 
 
@@ -178,7 +273,7 @@ async def _search_transactions(
 
 async def _spend_by_category(
     db: AsyncSession, user_id: UUID, args: dict[str, Any]
-) -> list[dict[str, str]]:
+) -> list[dict[str, str | None]]:
     payload = _validate(_DateRangeArgs, args)
     rows = await analytics.spend_by_category_group(
         db,
@@ -187,8 +282,14 @@ async def _spend_by_category(
         date_to=payload.date_to,
         currency=payload.currency,
     )
+    group_names = await _group_names(db, user_id)
     return [
-        {"group_id": str(row.group_id), "currency": row.currency, "total": str(row.total)}
+        {
+            "group_id": str(row.group_id),
+            "group_name": group_names.get(str(row.group_id)),
+            "currency": row.currency,
+            "total": str(row.total),
+        }
         for row in rows
     ]
 
@@ -221,9 +322,11 @@ async def _budget_status(
 ) -> list[dict[str, str | None]]:
     payload = _validate(_BudgetStatusArgs, args)
     rows = await analytics.budget_status(db, user_id, month=payload.month)
+    group_names = await _group_names(db, user_id)
     return [
         {
             "group_id": str(row.group_id),
+            "group_name": group_names.get(str(row.group_id)),
             "currency": row.currency,
             "budget": None if row.budget is None else str(row.budget),
             "spent": str(row.spent),
@@ -262,6 +365,100 @@ async def _create_account(db: AsyncSession, user_id: UUID, args: dict[str, Any])
     payload = _validate(AccountCreate, parsed.model_dump(exclude_none=True))
     account = await accounts_service.create_account(db, user_id, payload)
     return AccountRead.model_validate(account, from_attributes=True).model_dump(mode="json")
+
+
+async def _create_category_group(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any]:
+    parsed = _validate(_CreateCategoryGroupArgs, args)
+    color = parsed.color or "#64748B"
+    # _CreateCategoryGroupArgs has already validated every child's name and
+    # color, so nothing below can 422 after the group row is written.
+    children = parsed.categories or []
+    group_payload = _validate(
+        CategoryGroupCreate,
+        {
+            "name": parsed.name,
+            "kind": parsed.kind,
+            "color": color,
+            "icon": _icon(parsed.icon, "tag"),
+        },
+    )
+    group = await category_groups_service.create_group(db, user_id, group_payload)
+    # ponytail: children are created one commit at a time; wrap in a single
+    # transaction if partial groups ever show up in practice.
+    created: list[dict[str, Any]] = []
+    for child in children:
+        payload = CategoryCreate(
+            name=child.name,
+            kind=parsed.kind,
+            group_id=group.id,
+            color=child.color or color,
+            icon=_icon(child.icon, "tag"),
+        )
+        category = await categories_service.create_category(db, user_id, payload)
+        created.append(
+            CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
+        )
+    return {
+        "group": CategoryGroupRead.model_validate(group, from_attributes=True).model_dump(
+            mode="json"
+        ),
+        "categories": created,
+    }
+
+
+async def _update_category_group(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any]:
+    parsed = _validate(_UpdateCategoryGroupArgs, args)
+    changes = parsed.model_dump(exclude_none=True)
+    changes.pop("group_id")
+    _drop_unknown_icon(changes)
+    payload = _validate(CategoryGroupUpdate, changes)
+    group = await category_groups_service.update_group(db, user_id, parsed.group_id, payload)
+    return CategoryGroupRead.model_validate(group, from_attributes=True).model_dump(mode="json")
+
+
+async def _delete_category_group(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any]:
+    parsed = _validate(_DeleteCategoryGroupArgs, args)
+    await category_groups_service.delete_group(db, user_id, parsed.group_id)
+    return {"deleted": True, "id": str(parsed.group_id)}
+
+
+async def _create_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    parsed = _validate(_CreateCategoryArgs, args)
+    group = await ownership.get_owned(db, CategoryGroup, parsed.group_id, user_id)
+    payload = _validate(
+        CategoryCreate,
+        {
+            "name": parsed.name,
+            "kind": group.kind,
+            "group_id": str(group.id),
+            "color": parsed.color or group.color,
+            "icon": _icon(parsed.icon, "tag"),
+        },
+    )
+    category = await categories_service.create_category(db, user_id, payload)
+    return CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
+
+
+async def _update_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    parsed = _validate(_UpdateCategoryArgs, args)
+    changes = parsed.model_dump(exclude_none=True)
+    changes.pop("category_id")
+    _drop_unknown_icon(changes)
+    payload = _validate(CategoryUpdate, changes)
+    category = await categories_service.update_category(db, user_id, parsed.category_id, payload)
+    return CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
+
+
+async def _delete_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    parsed = _validate(_DeleteCategoryArgs, args)
+    await categories_service.delete_category(db, user_id, parsed.category_id)
+    return {"deleted": True, "id": str(parsed.category_id)}
 
 
 async def _list_card_invoices(
@@ -327,6 +524,20 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_list_categories,
+    ),
+    ToolDef(
+        name="list_category_groups",
+        description=(
+            "List the user's category groups. Categories belong to a group; a group is "
+            "income or expense and a category takes its kind from its group."
+        ),
+        schema={
+            "type": "object",
+            "properties": {"kind": {"type": "string", "enum": ["income", "expense"]}},
+            "required": [],
+            "additionalProperties": False,
+        },
+        run=_list_category_groups,
     ),
     ToolDef(
         name="search_transactions",
@@ -495,6 +706,131 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_create_account,
+        writes=True,
+    ),
+    ToolDef(
+        name="create_category_group",
+        description=(
+            "Create a category group and, optionally, its categories in one call. Prefer "
+            "this over one create_category call per category when setting up a structure."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "kind": {"type": "string", "enum": ["income", "expense"]},
+                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
+                "color": {"type": "string", "description": "Hex like #64748B. Defaults to grey."},
+                "categories": {
+                    "type": "array",
+                    "description": "Categories to create in the new group.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
+                            "color": {
+                                "type": "string",
+                                "description": "Hex colour; defaults to the group's colour.",
+                            },
+                        },
+                        "required": ["name"],
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            "required": ["name", "kind"],
+            "additionalProperties": False,
+        },
+        run=_create_category_group,
+        writes=True,
+    ),
+    ToolDef(
+        name="update_category_group",
+        description="Rename or restyle a category group. Kind cannot change here.",
+        schema={
+            "type": "object",
+            "properties": {
+                "group_id": {"type": "string", "format": "uuid"},
+                "name": {"type": "string"},
+                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
+                "color": {"type": "string", "description": "Hex like #64748B."},
+            },
+            "required": ["group_id"],
+            "additionalProperties": False,
+        },
+        run=_update_category_group,
+        writes=True,
+    ),
+    ToolDef(
+        name="delete_category_group",
+        description=(
+            "Delete a category group. Fails while it still has categories; move or delete "
+            "those first."
+        ),
+        schema={
+            "type": "object",
+            "properties": {"group_id": {"type": "string", "format": "uuid"}},
+            "required": ["group_id"],
+            "additionalProperties": False,
+        },
+        run=_delete_category_group,
+        writes=True,
+    ),
+    ToolDef(
+        name="create_category",
+        description=(
+            "Create a category inside an existing group. Its kind is the group's kind. "
+            "Call list_category_groups first to reuse a group."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "group_id": {"type": "string", "format": "uuid"},
+                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
+                "color": {
+                    "type": "string",
+                    "description": "Hex colour; defaults to the group's colour.",
+                },
+            },
+            "required": ["name", "group_id"],
+            "additionalProperties": False,
+        },
+        run=_create_category,
+        writes=True,
+    ),
+    ToolDef(
+        name="update_category",
+        description=(
+            "Rename, restyle, or move a category to another group of the same kind. Kind "
+            "cannot change here."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "category_id": {"type": "string", "format": "uuid"},
+                "name": {"type": "string"},
+                "group_id": {"type": "string", "format": "uuid"},
+                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
+                "color": {"type": "string", "description": "Hex like #64748B."},
+            },
+            "required": ["category_id"],
+            "additionalProperties": False,
+        },
+        run=_update_category,
+        writes=True,
+    ),
+    ToolDef(
+        name="delete_category",
+        description="Delete a category. Fails while a transaction or recurring rule uses it.",
+        schema={
+            "type": "object",
+            "properties": {"category_id": {"type": "string", "format": "uuid"}},
+            "required": ["category_id"],
+            "additionalProperties": False,
+        },
+        run=_delete_category,
         writes=True,
     ),
 ]

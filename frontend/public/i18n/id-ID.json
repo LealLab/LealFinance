@@ -22,6 +22,7 @@
       "reject": "Tolak",
       "account": "Akun",
       "category": "Kategori",
+      "group": "Grup",
       "institution": "Institusi"
     },
     "delete": {
