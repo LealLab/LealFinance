@@ -22,6 +22,7 @@ interface ConversationWire {
   provider: string;
   model: string;
   status: AgentConversation['status'];
+  pending_call_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -61,6 +62,7 @@ const mapConversation = (value: ConversationWire): AgentConversation => ({
   provider: value.provider,
   model: value.model,
   status: value.status,
+  pendingCallId: value.pending_call_id,
   createdAt: value.created_at,
   updatedAt: value.updated_at,
 });

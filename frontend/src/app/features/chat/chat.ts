@@ -82,6 +82,7 @@ export class Chat {
   protected readonly errorKey = signal<string | null>(null);
   protected readonly refused = signal(false);
   protected readonly composer = signal('');
+  private refreshDetailAfterConfirmation = false;
   /**
    * The conversation id whose persisted messages have already been folded
    * into `liveMessages`. The `detail` resource reloads after every streamed
@@ -167,6 +168,7 @@ export class Chat {
     const id = this.activeId();
     if (!id || this.sending()) return;
     this.updateLastAssistant((turn) => ({ ...turn, pendingConfirm: undefined }));
+    this.refreshDetailAfterConfirmation = true;
     this.readStream(this.repo.confirm(id, confirm.id, approved));
   }
 
@@ -243,14 +245,18 @@ export class Chat {
         this.updateLastAssistant((turn) => ({ ...turn, text: OFF_TOPIC }));
         break;
       case 'error':
+        this.refreshDetailAfterConfirmation = false;
         this.errorKey.set(this.errorKeyFor(event.code));
         this.sending.set(false);
         break;
       case 'done':
         this.sending.set(false);
-        // Refresh the list (titles/status); the thread stays as streamed -
-        // re-fetching `detail` here would clobber the live bubbles.
         this.conversations.reload();
+        if (this.refreshDetailAfterConfirmation) {
+          this.refreshDetailAfterConfirmation = false;
+          // `seededFor` keeps this reload from clobbering streamed bubbles.
+          this.detail.reload();
+        }
         break;
     }
   }
@@ -268,6 +274,8 @@ export class Chat {
 
   private toChatTurns(conversation: AgentConversationDetail): ChatTurn[] {
     const turns: ChatTurn[] = [];
+    const pendingCallId =
+      conversation.status === 'awaiting_confirmation' ? conversation.pendingCallId : null;
     for (const message of [...conversation.messages].sort((a, b) => a.position - b.position)) {
       if (message.role === 'tool') {
         const assistant = [...turns].reverse().find((turn) => turn.role === 'assistant');
@@ -283,10 +291,20 @@ export class Chat {
         }
         continue;
       }
+      const pendingCall = message.toolCalls?.find((tool) => tool.id === pendingCallId);
       turns.push({
         role: message.role === 'user' ? 'user' : 'assistant',
         text: message.content,
         tools: message.toolCalls?.map((tool) => ({ id: tool.id, name: tool.name })) ?? [],
+        ...(pendingCall
+          ? {
+              pendingConfirm: {
+                id: pendingCall.id,
+                name: pendingCall.name,
+                arguments: pendingCall.arguments,
+              },
+            }
+          : {}),
       });
     }
     return turns;
@@ -297,11 +315,23 @@ export class Chat {
   }
 
   private isCategoryKey(key: string): boolean {
-    return key === 'category' || key === 'category_id' || key === 'categoryId';
+    return (
+      key === 'category' ||
+      key === 'category_id' ||
+      key === 'categoryId' ||
+      key === 'category_ids' ||
+      key === 'categoryIds'
+    );
   }
 
   private isGroupKey(key: string): boolean {
-    return key === 'group' || key === 'group_id' || key === 'groupId';
+    return (
+      key === 'group' ||
+      key === 'group_id' ||
+      key === 'groupId' ||
+      key === 'group_ids' ||
+      key === 'groupIds'
+    );
   }
 
   private isInstitutionKey(key: string): boolean {
@@ -310,27 +340,16 @@ export class Chat {
 
   private displayArgument(key: string, value: unknown): string {
     if (this.isAccountKey(key)) {
-      return (
-        this.accounts.value()?.find((account) => account.id === String(value))?.name ??
-        String(value)
-      );
+      return this.displayEntityArgument(value, this.accounts.value());
     }
     if (this.isCategoryKey(key)) {
-      return (
-        this.categories.value()?.find((category) => category.id === String(value))?.name ??
-        String(value)
-      );
+      return this.displayEntityArgument(value, this.categories.value());
     }
     if (this.isGroupKey(key)) {
-      return (
-        this.groups.value()?.find((group) => group.id === String(value))?.name ?? String(value)
-      );
+      return this.displayEntityArgument(value, this.groups.value());
     }
     if (this.isInstitutionKey(key)) {
-      return (
-        this.institutions.value()?.find((institution) => institution.id === String(value))?.name ??
-        String(value)
-      );
+      return this.displayEntityArgument(value, this.institutions.value());
     }
     if (Array.isArray(value)) {
       const named = value
@@ -343,6 +362,15 @@ export class Chat {
       }
     }
     return typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value);
+  }
+
+  private displayEntityArgument(
+    value: unknown,
+    entities: readonly { id: string; name: string }[] | undefined,
+  ): string {
+    const resolve = (id: unknown) =>
+      entities?.find((entity) => entity.id === String(id))?.name ?? String(id);
+    return Array.isArray(value) ? value.map(resolve).join(', ') : resolve(value);
   }
 
   private errorKeyFor(code: string): string {

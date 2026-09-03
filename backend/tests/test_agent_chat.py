@@ -181,6 +181,7 @@ async def test_message_stream_persists_user_and_assistant(
     detail = await client.get(f"/api/v1/agents/conversations/{conversation['id']}")
     body = detail.json()
     assert body["title"] == "Hello assistant"
+    assert body["pending_call_id"] is None
     assert [message["role"] for message in body["messages"]] == ["user", "assistant"]
 
 
@@ -268,6 +269,9 @@ async def test_write_tool_confirmation_executes_only_after_approval(
     assert row is not None
     assert row.status == AGENT_CONVERSATION_STATUS_AWAITING
     assert row.pending_call_id == "w1"
+
+    pending_detail = await client.get(f"/api/v1/agents/conversations/{conversation['id']}")
+    assert pending_detail.json()["pending_call_id"] == "w1"
 
     confirmed = await client.post(
         f"/api/v1/agents/conversations/{conversation['id']}/confirm",

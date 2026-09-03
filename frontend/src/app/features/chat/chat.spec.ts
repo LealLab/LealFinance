@@ -2,6 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { throwError } from 'rxjs';
+import { vi } from 'vitest';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
@@ -116,6 +117,7 @@ describe('Chat', () => {
       provider: 'anthropic',
       model: 'm',
       status: 'idle',
+      pendingCallId: null,
       createdAt: '',
       updatedAt: '',
       messages: [
@@ -173,6 +175,56 @@ describe('Chat', () => {
     expect(turns[2].text).toBe('[[LF_OFF_TOPIC]]');
   });
 
+  it('rehydrates the exact pending persisted tool call', () => {
+    const fixture = setup();
+    const turns = fixture.componentInstance['toChatTurns']({
+      id: 'c9',
+      title: 't',
+      provider: 'anthropic',
+      model: 'm',
+      status: 'awaiting_confirmation',
+      pendingCallId: 'w1',
+      createdAt: '',
+      updatedAt: '',
+      messages: [
+        {
+          id: 'm1',
+          role: 'assistant',
+          content: '',
+          toolCalls: [
+            {
+              id: 'w1',
+              name: 'delete_category_structure',
+              arguments: {
+                category_ids: ['c1', 'unknown-category'],
+                group_ids: ['g1', 'unknown-group'],
+              },
+            },
+          ],
+          toolCallId: null,
+          toolName: null,
+          isError: false,
+          position: 0,
+          createdAt: '',
+        },
+        {
+          id: 'm2',
+          role: 'assistant',
+          content: '',
+          toolCalls: [{ id: 'w2', name: 'delete_category_structure', arguments: {} }],
+          toolCallId: null,
+          toolName: null,
+          isError: false,
+          position: 1,
+          createdAt: '',
+        },
+      ],
+    });
+
+    expect(turns[0].pendingConfirm?.id).toBe('w1');
+    expect(turns[1].pendingConfirm).toBeUndefined();
+  });
+
   it('labels confirmation entries and resolves account and category ids', async () => {
     const fixture = setup();
     fixture.detectChanges();
@@ -180,11 +232,14 @@ describe('Chat', () => {
     fixture.detectChanges();
     const accounts = fixture.componentInstance['accounts'].value() ?? [];
     const categories = fixture.componentInstance['categories'].value() ?? [];
+    const groups = fixture.componentInstance['groups'].value() ?? [];
     const institutions = fixture.componentInstance['institutions'].value() ?? [];
 
     const entries = fixture.componentInstance['confirmationEntries']({
       account_id: accounts[0]?.id ?? 'x',
       category_id: categories[0]?.id ?? 'y',
+      category_ids: [categories[0]?.id ?? 'y', 'unknown-category'],
+      group_ids: [groups[0]?.id ?? 'z', 'unknown-group'],
       institution_id: institutions[0]?.id ?? 'z',
       amount: '10',
       meta: { a: 1 },
@@ -196,6 +251,14 @@ describe('Chat', () => {
     expect(entries.find((e) => e.labelKey === 'chat.confirm.category')?.value).toBe(
       categories[0]?.name ?? 'y',
     );
+    expect(entries.find((e) => e.value.includes('unknown-category'))).toMatchObject({
+      labelKey: 'chat.confirm.category',
+      value: `${categories[0]?.name ?? 'y'}, unknown-category`,
+    });
+    expect(entries.find((e) => e.value.includes('unknown-group'))).toMatchObject({
+      labelKey: 'chat.confirm.group',
+      value: `${groups[0]?.name ?? 'z'}, unknown-group`,
+    });
     expect(entries.find((e) => e.labelKey === 'chat.confirm.institution')?.value).toBe(
       institutions[0]?.name ?? 'z',
     );
@@ -208,8 +271,14 @@ describe('Chat', () => {
     fixture.detectChanges();
     fixture.componentInstance['newChat']();
     await fixture.whenStable();
+    const reload = vi.spyOn(fixture.componentInstance['detail'], 'reload');
     fixture.componentInstance['liveMessages'].set([
-      { role: 'assistant', text: '', tools: [], pendingConfirm: { id: 'w1', name: 'x', arguments: {} } },
+      {
+        role: 'assistant',
+        text: '',
+        tools: [],
+        pendingConfirm: { id: 'w1', name: 'x', arguments: {} },
+      },
     ]);
 
     fixture.componentInstance['confirmTool']({ id: 'w1', name: 'x', arguments: {} }, true);
@@ -217,6 +286,7 @@ describe('Chat', () => {
 
     expect(fixture.componentInstance['liveMessages']().at(-1)?.pendingConfirm).toBeUndefined();
     expect(fixture.componentInstance['liveMessages']().at(-1)?.text).toContain('confirmed');
+    expect(reload).toHaveBeenCalledTimes(1);
   });
 
   it('deletes a conversation after confirmation', async () => {

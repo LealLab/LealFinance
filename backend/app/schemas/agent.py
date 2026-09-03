@@ -70,6 +70,7 @@ class ConversationRead(BaseModel):
     provider: str
     model: str
     status: str
+    pending_call_id: str | None
     created_at: datetime
     updated_at: datetime
 
