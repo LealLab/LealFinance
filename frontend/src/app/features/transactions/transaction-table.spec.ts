@@ -106,8 +106,8 @@ describe('TransactionTable', () => {
 
     const visible = el.querySelector<HTMLElement>('tbody tr .font-medium')!;
     const checkbox = el.querySelector<HTMLInputElement>('tbody tr input[type=checkbox]')!;
-    expect(visible.textContent?.trim()).toBe(`${'A'.repeat(52)}...`);
-    expect(visible.textContent?.trim()).toHaveLength(55);
+    expect(visible.textContent?.trim()).toBe(`${'A'.repeat(37)}...`);
+    expect(visible.textContent?.trim()).toHaveLength(40);
     expect(visible.title).toBe(description);
     expect(checkbox.getAttribute('aria-label')).toContain(description);
   });

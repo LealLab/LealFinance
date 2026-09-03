@@ -107,7 +107,7 @@ export class TransactionTable {
   }
 
   protected descriptionPreview(description: string): string {
-    return description.length > 55 ? `${description.slice(0, 52)}...` : description;
+    return description.length > 40 ? `${description.slice(0, 37)}...` : description;
   }
 
   /** The institution an account belongs to - '' for a cash account or an
