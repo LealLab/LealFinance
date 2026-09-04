@@ -1042,7 +1042,8 @@
       "edit": "Krediyi düzenle",
       "archive": "Krediyi arşivle",
       "unarchive": "Krediyi arşivden çıkar",
-      "recordPayment": "Ödeme kaydet"
+      "recordPayment": "Ödeme kaydet",
+      "delete": "Krediyi sil"
     },
     "empty": {
       "title": "Henüz kredi yok",
@@ -1149,6 +1150,14 @@
         "overdue": "Gecikmiş",
         "paid": "Ödendi"
       }
+    },
+    "deleteError": "Kredi silinemedi. Tekrar deneyin.",
+    "delete": {
+      "title": "Kredi silinsin mi?",
+      "message": "\"{{name}}\" için kaydedilmiş {{count}} ödeme var. Bunları normal işlem olarak mı bırakmak istersiniz, yoksa krediyle birlikte mi silmek istersiniz?",
+      "messageNoPayments": "Bu işlem geri alınamaz. \"{{name}}\" silinsin mi?",
+      "keepPayments": "Krediyi sil, ödemeleri koru",
+      "deletePayments": "Krediyi ve ödemelerini sil"
     }
   },
   "investments": {

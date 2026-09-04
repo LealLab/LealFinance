@@ -2,6 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
@@ -130,5 +131,115 @@ describe('Loans', () => {
     fixture.detectChanges();
 
     expect(modal['form'].controls.mode.value).toBe('last');
+  });
+
+  it('deletes a loan with no payments after a plain confirmation', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const confirmService = TestBed.inject(ConfirmService);
+    const pending = fixture.componentInstance['deleteLoan'](loan);
+    await Promise.resolve();
+    expect(confirmService.request()?.titleKey).toBe('loans.delete.title');
+    expect(confirmService.request()?.messageKey).toBe('loans.delete.messageNoPayments');
+    expect(confirmService.request()?.choices).toBeUndefined();
+
+    confirmService.respond(true);
+    await pending;
+
+    expect(store.listLoans().some((row) => row.id === loan.id)).toBe(false);
+  });
+
+  it('offers to keep or delete payments, and cascades them on request', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+    const payment = store.createTransaction({
+      type: 'expense',
+      date: '2026-02-01',
+      amount: loan.installmentAmount,
+      currency: loan.currency,
+      accountId: 'account-checking',
+      categoryId: loan.categoryId,
+      description: 'Loan payment',
+      loanId: loan.id,
+      installmentNumber: 1,
+      installmentCount: loan.installmentCount,
+    });
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const confirmService = TestBed.inject(ConfirmService);
+    const pending = fixture.componentInstance['deleteLoan'](loan);
+    await Promise.resolve();
+    expect(confirmService.request()?.messageKey).toBe('loans.delete.message');
+    expect(confirmService.request()?.choices?.map((choice) => choice.value)).toEqual([
+      'detach',
+      'cascade',
+    ]);
+
+    confirmService.respondChoice('cascade');
+    await pending;
+
+    expect(store.listLoans().some((row) => row.id === loan.id)).toBe(false);
+    expect(store.transactions().some((tx) => tx.id === payment.id)).toBe(false);
+  });
+
+  it('keeps payments as plain expenses when the user chooses to detach', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+    const payment = store.createTransaction({
+      type: 'expense',
+      date: '2026-02-01',
+      amount: loan.installmentAmount,
+      currency: loan.currency,
+      accountId: 'account-checking',
+      categoryId: loan.categoryId,
+      description: 'Loan payment',
+      loanId: loan.id,
+      installmentNumber: 1,
+      installmentCount: loan.installmentCount,
+    });
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const confirmService = TestBed.inject(ConfirmService);
+    const pending = fixture.componentInstance['deleteLoan'](loan);
+    await Promise.resolve();
+    confirmService.respondChoice('detach');
+    await pending;
+
+    expect(store.listLoans().some((row) => row.id === loan.id)).toBe(false);
+    const kept = store.transactions().find((tx) => tx.id === payment.id);
+    expect(kept).toBeDefined();
+    expect(kept!.loanId).toBeUndefined();
+  });
+
+  it('deletes nothing when the confirmation is dismissed', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const confirmService = TestBed.inject(ConfirmService);
+    const pending = fixture.componentInstance['deleteLoan'](loan);
+    await Promise.resolve();
+    confirmService.respond(false);
+    await pending;
+
+    expect(store.listLoans().some((row) => row.id === loan.id)).toBe(true);
   });
 });

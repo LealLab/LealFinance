@@ -1042,7 +1042,8 @@
       "edit": "Edit loan",
       "archive": "Archive loan",
       "unarchive": "Unarchive loan",
-      "recordPayment": "Record payment"
+      "recordPayment": "Record payment",
+      "delete": "Delete loan"
     },
     "empty": {
       "title": "No loans yet",
@@ -1149,6 +1150,14 @@
         "overdue": "Overdue",
         "paid": "Paid"
       }
+    },
+    "deleteError": "Could not delete the loan. Try again.",
+    "delete": {
+      "title": "Delete loan?",
+      "message": "\"{{name}}\" has {{count}} recorded payments. Keep them as regular transactions, or delete them along with the loan?",
+      "messageNoPayments": "This action cannot be undone. Do you want to delete \"{{name}}\"?",
+      "keepPayments": "Delete loan, keep payments",
+      "deletePayments": "Delete loan and its payments"
     }
   },
   "investments": {

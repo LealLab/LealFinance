@@ -1042,7 +1042,8 @@
       "edit": "Modifier le prêt",
       "archive": "Archiver le prêt",
       "unarchive": "Désarchiver le prêt",
-      "recordPayment": "Enregistrer un paiement"
+      "recordPayment": "Enregistrer un paiement",
+      "delete": "Supprimer le prêt"
     },
     "empty": {
       "title": "Aucun prêt pour l’instant",
@@ -1149,6 +1150,14 @@
         "overdue": "En retard",
         "paid": "Payée"
       }
+    },
+    "deleteError": "Impossible de supprimer le prêt. Réessayez.",
+    "delete": {
+      "title": "Supprimer le prêt ?",
+      "message": "« {{name}} » comporte {{count}} paiements enregistrés. Voulez-vous les conserver comme des transactions normales, ou les supprimer avec le prêt ?",
+      "messageNoPayments": "Cette action est irréversible. Voulez-vous supprimer « {{name}} » ?",
+      "keepPayments": "Supprimer le prêt, conserver les paiements",
+      "deletePayments": "Supprimer le prêt et ses paiements"
     }
   },
   "investments": {

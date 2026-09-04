@@ -1042,7 +1042,8 @@
       "edit": "編輯貸款",
       "archive": "封存貸款",
       "unarchive": "取消封存貸款",
-      "recordPayment": "記錄還款"
+      "recordPayment": "記錄還款",
+      "delete": "刪除貸款"
     },
     "empty": {
       "title": "尚無貸款",
@@ -1149,6 +1150,14 @@
         "overdue": "已逾期",
         "paid": "已還款"
       }
+    },
+    "deleteError": "無法刪除該貸款，請重試。",
+    "delete": {
+      "title": "刪除貸款？",
+      "message": "「{{name}}」有{{count}}筆已記錄的還款。要保留為一般交易，還是與貸款一起刪除？",
+      "messageNoPayments": "此操作無法復原。要刪除「{{name}}」嗎？",
+      "keepPayments": "刪除貸款，保留還款",
+      "deletePayments": "刪除貸款及其還款"
     }
   },
   "investments": {

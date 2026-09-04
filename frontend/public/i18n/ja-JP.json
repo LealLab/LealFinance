@@ -1042,7 +1042,8 @@
       "edit": "ローンを編集",
       "archive": "ローンをアーカイブ",
       "unarchive": "ローンのアーカイブを解除",
-      "recordPayment": "支払いを記録"
+      "recordPayment": "支払いを記録",
+      "delete": "ローンを削除"
     },
     "empty": {
       "title": "ローンはまだありません",
@@ -1149,6 +1150,14 @@
         "overdue": "延滞",
         "paid": "支払い済み"
       }
+    },
+    "deleteError": "ローンを削除できませんでした。もう一度お試しください。",
+    "delete": {
+      "title": "ローンを削除しますか？",
+      "message": "「{{name}}」には{{count}}件の記録された支払いがあります。通常の取引として残しますか、それともローンと一緒に削除しますか？",
+      "messageNoPayments": "この操作は取り消せません。「{{name}}」を削除しますか？",
+      "keepPayments": "ローンを削除し、支払いは残す",
+      "deletePayments": "ローンとその支払いを削除"
     }
   },
   "investments": {

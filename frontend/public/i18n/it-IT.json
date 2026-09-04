@@ -1042,7 +1042,8 @@
       "edit": "Modifica prestito",
       "archive": "Archivia prestito",
       "unarchive": "Ripristina prestito",
-      "recordPayment": "Registra pagamento"
+      "recordPayment": "Registra pagamento",
+      "delete": "Elimina prestito"
     },
     "empty": {
       "title": "Nessun prestito",
@@ -1149,6 +1150,14 @@
         "overdue": "Scaduta",
         "paid": "Pagata"
       }
+    },
+    "deleteError": "Impossibile eliminare il prestito. Riprova.",
+    "delete": {
+      "title": "Eliminare il prestito?",
+      "message": "\"{{name}}\" ha {{count}} pagamenti registrati. Vuoi conservarli come transazioni normali, oppure eliminarli insieme al prestito?",
+      "messageNoPayments": "Questa azione non può essere annullata. Vuoi eliminare \"{{name}}\"?",
+      "keepPayments": "Elimina prestito, conserva pagamenti",
+      "deletePayments": "Elimina prestito e i suoi pagamenti"
     }
   },
   "investments": {

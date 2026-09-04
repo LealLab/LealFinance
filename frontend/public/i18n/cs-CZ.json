@@ -1042,7 +1042,8 @@
       "edit": "Upravit půjčku",
       "archive": "Archivovat půjčku",
       "unarchive": "Zrušit archivaci půjčky",
-      "recordPayment": "Zaznamenat splátku"
+      "recordPayment": "Zaznamenat splátku",
+      "delete": "Odstranit půjčku"
     },
     "empty": {
       "title": "Zatím žádné půjčky",
@@ -1149,6 +1150,14 @@
         "overdue": "Po splatnosti",
         "paid": "Zaplacena"
       }
+    },
+    "deleteError": "Půjčku se nepodařilo odstranit. Zkuste to znovu.",
+    "delete": {
+      "title": "Odstranit půjčku?",
+      "message": "„{{name}}“ má {{count}} zaznamenaných splátek. Chcete je ponechat jako běžné transakce, nebo je odstranit spolu s půjčkou?",
+      "messageNoPayments": "Tuto akci nelze vrátit zpět. Chcete odstranit „{{name}}“?",
+      "keepPayments": "Odstranit půjčku, ponechat splátky",
+      "deletePayments": "Odstranit půjčku i splátky"
     }
   },
   "investments": {

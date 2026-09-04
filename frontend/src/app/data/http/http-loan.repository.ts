@@ -6,6 +6,7 @@ import { Transaction } from '../../domain/models/transaction';
 import {
   LoanAdvancePayment,
   LoanCreate,
+  LoanDeleteMode,
   LoanPayment,
   LoanRepository,
   LoanUpdate,
@@ -35,6 +36,9 @@ export class HttpLoanRepository extends LoanRepository {
   }
   setArchived(id: string, archived: boolean): Observable<Loan> {
     return this.api.post<LoanWire>(`/loans/${id}/archive`, { archived }).pipe(map(mapLoan));
+  }
+  delete(id: string, mode: LoanDeleteMode = 'detach'): Observable<void> {
+    return this.api.delete(`/loans/${id}`, { mode });
   }
   recordPayment(id: string, payment: LoanPayment): Observable<Transaction> {
     return this.api

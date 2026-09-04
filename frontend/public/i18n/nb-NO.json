@@ -1042,7 +1042,8 @@
       "edit": "Rediger lån",
       "archive": "Arkiver lån",
       "unarchive": "Opphev arkivering av lån",
-      "recordPayment": "Registrer betaling"
+      "recordPayment": "Registrer betaling",
+      "delete": "Slett lån"
     },
     "empty": {
       "title": "Ingen lån ennå",
@@ -1149,6 +1150,14 @@
         "overdue": "Forfalt",
         "paid": "Betalt"
       }
+    },
+    "deleteError": "Kunne ikke slette lånet. Prøv igjen.",
+    "delete": {
+      "title": "Slette lån?",
+      "message": "«{{name}}» har {{count}} registrerte betalinger. Vil du beholde dem som vanlige transaksjoner, eller slette dem sammen med lånet?",
+      "messageNoPayments": "Denne handlingen kan ikke angres. Vil du slette «{{name}}»?",
+      "keepPayments": "Slett lån, behold betalinger",
+      "deletePayments": "Slett lån og betalingene"
     }
   },
   "investments": {

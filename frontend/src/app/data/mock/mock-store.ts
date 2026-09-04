@@ -15,7 +15,7 @@ import {
   openLoanInstallments,
 } from '../../domain/calc/loans';
 import { todayIso } from '../../domain/calc/dates';
-import { LoanAdvancePayment, LoanPayment } from '../loan.repository';
+import { LoanAdvancePayment, LoanDeleteMode, LoanPayment } from '../loan.repository';
 import { InstitutionDeleteMode } from '../institution.repository';
 import {
   InvestmentAsset,
@@ -421,6 +421,18 @@ export class MockStore {
     if (!findEntity(this.loansSignal(), id)) notFound('Loan', id);
     this.loansSignal.update((list) => updateEntity(list, id, changes));
     return this.loanWithDerived(findEntity(this.loansSignal(), id)!);
+  }
+
+  deleteLoan(id: string, mode: LoanDeleteMode = 'detach'): void {
+    if (!findEntity(this.loansSignal(), id)) notFound('Loan', id);
+    if (mode === 'cascade') {
+      this.transactionsSignal.update((list) => list.filter((tx) => tx.loanId !== id));
+    } else {
+      this.transactionsSignal.update((list) =>
+        list.map((tx) => (tx.loanId === id ? { ...tx, loanId: undefined } : tx)),
+      );
+    }
+    this.loansSignal.update((list) => removeEntity(list, id));
   }
 
   recordLoanPayment(id: string, payment: LoanPayment): Transaction {

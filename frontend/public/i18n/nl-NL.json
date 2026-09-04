@@ -1042,7 +1042,8 @@
       "edit": "Lening bewerken",
       "archive": "Lening archiveren",
       "unarchive": "Lening dearchiveren",
-      "recordPayment": "Betaling vastleggen"
+      "recordPayment": "Betaling vastleggen",
+      "delete": "Lening verwijderen"
     },
     "empty": {
       "title": "Nog geen leningen",
@@ -1149,6 +1150,14 @@
         "overdue": "Achterstallig",
         "paid": "Betaald"
       }
+    },
+    "deleteError": "De lening kon niet worden verwijderd. Probeer het opnieuw.",
+    "delete": {
+      "title": "Lening verwijderen?",
+      "message": "\"{{name}}\" heeft {{count}} geregistreerde betalingen. Wil je ze behouden als gewone transacties, of ze samen met de lening verwijderen?",
+      "messageNoPayments": "Deze actie kan niet ongedaan worden gemaakt. Wil je \"{{name}}\" verwijderen?",
+      "keepPayments": "Lening verwijderen, betalingen behouden",
+      "deletePayments": "Lening en de betalingen verwijderen"
     }
   },
   "investments": {

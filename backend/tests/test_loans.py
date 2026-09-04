@@ -230,6 +230,56 @@ async def test_archive_and_unarchive_loan(client: AsyncClient, db_session: Async
     assert unarchived.json()["archived"] is False
 
 
+async def test_delete_loan_detaches_payments_by_default(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-delete-detach@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    payment = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()
+
+    response = await client.delete(f"/api/v1/loans/{loan_id}")
+    assert response.status_code == 204
+
+    assert (await client.get("/api/v1/loans")).json() == []
+    kept = (await client.get("/api/v1/transactions")).json()
+    assert [row["id"] for row in kept] == [payment["id"]]
+    assert kept[0]["loan_id"] is None
+
+
+async def test_delete_loan_cascade_removes_its_payments(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-delete-cascade@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+
+    response = await client.delete(f"/api/v1/loans/{loan_id}?mode=cascade")
+    assert response.status_code == 204
+
+    assert (await client.get("/api/v1/loans")).json() == []
+    assert (await client.get("/api/v1/transactions")).json() == []
+
+
+async def test_delete_loan_ownership_isolation(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-delete-owner@example.com")
+    await _authed(other_client, db_session, "loan-delete-intruder@example.com")
+    category_id = await _expense_category(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+
+    response = await other_client.delete(f"/api/v1/loans/{loan_id}")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "loan.not_found"
+    assert len((await client.get("/api/v1/loans")).json()) == 1
+
+
 # --- payments -----------------------------------------------------------
 
 

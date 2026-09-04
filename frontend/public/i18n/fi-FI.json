@@ -1042,7 +1042,8 @@
       "edit": "Muokkaa lainaa",
       "archive": "Arkistoi laina",
       "unarchive": "Palauta laina arkistosta",
-      "recordPayment": "Kirjaa maksu"
+      "recordPayment": "Kirjaa maksu",
+      "delete": "Poista laina"
     },
     "empty": {
       "title": "Ei lainoja vielä",
@@ -1149,6 +1150,14 @@
         "overdue": "Myöhässä",
         "paid": "Maksettu"
       }
+    },
+    "deleteError": "Lainaa ei voitu poistaa. Yritä uudelleen.",
+    "delete": {
+      "title": "Poistetaanko laina?",
+      "message": "\"{{name}}\" sisältää {{count}} kirjattua maksua. Haluatko säilyttää ne tavallisina tapahtumina vai poistaa ne yhdessä lainan kanssa?",
+      "messageNoPayments": "Tätä toimintoa ei voi kumota. Haluatko poistaa kohteen \"{{name}}\"?",
+      "keepPayments": "Poista laina, säilytä maksut",
+      "deletePayments": "Poista laina ja sen maksut"
     }
   },
   "investments": {

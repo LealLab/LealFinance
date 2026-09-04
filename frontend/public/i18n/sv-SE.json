@@ -1042,7 +1042,8 @@
       "edit": "Redigera lån",
       "archive": "Arkivera lån",
       "unarchive": "Avarkivera lån",
-      "recordPayment": "Registrera betalning"
+      "recordPayment": "Registrera betalning",
+      "delete": "Ta bort lån"
     },
     "empty": {
       "title": "Inga lån ännu",
@@ -1149,6 +1150,14 @@
         "overdue": "Förfallen",
         "paid": "Betald"
       }
+    },
+    "deleteError": "Lånet kunde inte tas bort. Försök igen.",
+    "delete": {
+      "title": "Ta bort lån?",
+      "message": "\"{{name}}\" har {{count}} registrerade betalningar. Vill du behålla dem som vanliga transaktioner, eller ta bort dem tillsammans med lånet?",
+      "messageNoPayments": "Åtgärden kan inte ångras. Vill du ta bort \"{{name}}\"?",
+      "keepPayments": "Ta bort lån, behåll betalningar",
+      "deletePayments": "Ta bort lån och dess betalningar"
     }
   },
   "investments": {

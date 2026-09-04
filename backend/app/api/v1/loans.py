@@ -1,6 +1,7 @@
 """Loan CRUD plus payment recording. Thin router - all logic and
-ownership scoping live in app/services/loans.py. Archive only, no delete:
-a loan with recorded payments must keep its provenance."""
+ownership scoping live in app/services/loans.py. Deleting a loan always
+detaches or cascade-deletes its payments per `mode`; there is no "guard"
+mode since a loan (unlike an institution) has nothing else referencing it."""
 
 from datetime import date
 from uuid import UUID
@@ -31,6 +32,16 @@ async def create_loan(payload: LoanCreate, user: CurrentUser, db: DbSession) -> 
 @router.patch("/{loan_id}", response_model=LoanRead)
 async def update_loan(loan_id: UUID, payload: LoanUpdate, user: CurrentUser, db: DbSession) -> Loan:
     return await loans_service.update_loan(db, user.id, loan_id, payload)
+
+
+@router.delete("/{loan_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_loan(
+    loan_id: UUID,
+    user: CurrentUser,
+    db: DbSession,
+    mode: loans_service.LoanDeleteMode = loans_service.LoanDeleteMode.DETACH,
+) -> None:
+    await loans_service.delete_loan(db, user.id, loan_id, mode=mode)
 
 
 @router.post("/{loan_id}/archive", response_model=LoanRead)

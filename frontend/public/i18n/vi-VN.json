@@ -1042,7 +1042,8 @@
       "edit": "Sửa khoản vay",
       "archive": "Lưu trữ khoản vay",
       "unarchive": "Bỏ lưu trữ khoản vay",
-      "recordPayment": "Ghi nhận thanh toán"
+      "recordPayment": "Ghi nhận thanh toán",
+      "delete": "Xóa khoản vay"
     },
     "empty": {
       "title": "Chưa có khoản vay nào",
@@ -1149,6 +1150,14 @@
         "overdue": "Quá hạn",
         "paid": "Đã thanh toán"
       }
+    },
+    "deleteError": "Không thể xóa khoản vay. Vui lòng thử lại.",
+    "delete": {
+      "title": "Xóa khoản vay?",
+      "message": "\"{{name}}\" có {{count}} khoản thanh toán đã ghi nhận. Bạn muốn giữ chúng như giao dịch thông thường, hay xóa cùng với khoản vay?",
+      "messageNoPayments": "Thao tác này không thể hoàn tác. Bạn có muốn xóa \"{{name}}\" không?",
+      "keepPayments": "Xóa khoản vay, giữ thanh toán",
+      "deletePayments": "Xóa khoản vay và các khoản thanh toán"
     }
   },
   "investments": {

@@ -1042,7 +1042,8 @@
       "edit": "编辑贷款",
       "archive": "归档贷款",
       "unarchive": "取消归档贷款",
-      "recordPayment": "记录还款"
+      "recordPayment": "记录还款",
+      "delete": "删除贷款"
     },
     "empty": {
       "title": "还没有贷款",
@@ -1149,6 +1150,14 @@
         "overdue": "已逾期",
         "paid": "已还款"
       }
+    },
+    "deleteError": "无法删除该贷款，请重试。",
+    "delete": {
+      "title": "删除贷款？",
+      "message": "“{{name}}”有{{count}}笔已记录的还款。要将它们保留为普通交易，还是与贷款一起删除？",
+      "messageNoPayments": "此操作无法撤销。要删除“{{name}}”吗？",
+      "keepPayments": "删除贷款，保留还款",
+      "deletePayments": "删除贷款及其还款"
     }
   },
   "investments": {

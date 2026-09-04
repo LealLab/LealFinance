@@ -1042,7 +1042,8 @@
       "edit": "Kredit bearbeiten",
       "archive": "Kredit archivieren",
       "unarchive": "Kredit wiederherstellen",
-      "recordPayment": "Zahlung erfassen"
+      "recordPayment": "Zahlung erfassen",
+      "delete": "Kredit löschen"
     },
     "empty": {
       "title": "Noch keine Kredite",
@@ -1149,6 +1150,14 @@
         "overdue": "Überfällig",
         "paid": "Bezahlt"
       }
+    },
+    "deleteError": "Der Kredit konnte nicht gelöscht werden. Versuche es erneut.",
+    "delete": {
+      "title": "Kredit löschen?",
+      "message": "„{{name}}“ hat {{count}} erfasste Zahlungen. Möchtest du sie als normale Buchungen behalten oder zusammen mit dem Kredit löschen?",
+      "messageNoPayments": "Diese Aktion kann nicht rückgängig gemacht werden. Möchtest du „{{name}}“ löschen?",
+      "keepPayments": "Kredit löschen, Zahlungen behalten",
+      "deletePayments": "Kredit und seine Zahlungen löschen"
     }
   },
   "investments": {

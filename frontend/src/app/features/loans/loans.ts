@@ -1,11 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
-import { LoanRepository } from '../../data/loan.repository';
+import { LoanDeleteMode, LoanRepository } from '../../data/loan.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { convertedOrNull } from '../../domain/calc/aggregations';
 import { LoanProgress, LoanScheduleRow, loanProgress, loanSchedule } from '../../domain/calc/loans';
@@ -35,7 +36,13 @@ interface LoanRow {
   convertedRemaining: Money | null;
 }
 
-/** t(loans.archiveError) */
+/**
+ * The literal keys passed to `confirmService.confirm(...)`/`.choose(...)` in
+ * `deleteLoan()` are real string literals, but the calls aren't to the `t`
+ * marker function, so transloco-keys-manager's extractor never sees them -
+ * same situation as categories.ts/institution-form-modal.ts.
+ * t(loans.archiveError, loans.deleteError, loans.delete.title, loans.delete.message, loans.delete.messageNoPayments, loans.delete.keepPayments, loans.delete.deletePayments)
+ */
 
 @Component({
   selector: 'app-loans',
@@ -62,6 +69,7 @@ export class Loans {
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly confirmService = inject(ConfirmService);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   protected readonly loansResource = rxResource({ stream: () => this.loanRepository.list() });
@@ -187,6 +195,41 @@ export class Loans {
     this.loanRepository.setArchived(loan.id, !loan.archived).subscribe({
       next: () => this.loansResource.reload(),
       error: () => this.actionErrorKey.set('loans.archiveError'),
+    });
+  }
+
+  protected async deleteLoan(loan: Loan): Promise<void> {
+    const linkedCount = this.loanTransactions(loan).length;
+    let mode: LoanDeleteMode = 'detach';
+
+    if (linkedCount > 0) {
+      const choice = await this.confirmService.choose(
+        'loans.delete.title',
+        'loans.delete.message',
+        [
+          { labelKey: 'loans.delete.keepPayments', value: 'detach' },
+          { labelKey: 'loans.delete.deletePayments', value: 'cascade', tone: 'danger' },
+        ],
+        { name: loan.name, count: linkedCount },
+      );
+      if (choice !== 'detach' && choice !== 'cascade') return;
+      mode = choice;
+    } else {
+      const confirmed = await this.confirmService.confirm(
+        'loans.delete.title',
+        'loans.delete.messageNoPayments',
+        'danger',
+        { name: loan.name },
+      );
+      if (!confirmed) return;
+    }
+
+    this.loanRepository.delete(loan.id, mode).subscribe({
+      next: () => {
+        this.loansResource.reload();
+        this.transactionsResource.reload();
+      },
+      error: () => this.actionErrorKey.set('loans.deleteError'),
     });
   }
 }

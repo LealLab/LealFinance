@@ -13,9 +13,10 @@ the same inputs.
 
 from datetime import date as date_type
 from decimal import ROUND_HALF_UP, Decimal
+from enum import StrEnum
 from uuid import UUID
 
-from sqlalchemy import func, select, update
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError, ValidationAppError
@@ -236,6 +237,32 @@ async def update_loan(db: AsyncSession, user_id: UUID, loan_id: UUID, data: Loan
     await db.refresh(loan)
     loan.installments_paid = await installments_paid(db, loan.id)
     return loan
+
+
+class LoanDeleteMode(StrEnum):
+    DETACH = "detach"
+    CASCADE = "cascade"
+
+
+async def delete_loan(
+    db: AsyncSession,
+    user_id: UUID,
+    loan_id: UUID,
+    *,
+    mode: LoanDeleteMode = LoanDeleteMode.DETACH,
+) -> None:
+    """Delete a loan outright. `detach` (default) leaves its payments as
+    plain expenses - `transactions.loan_id` is already `ON DELETE SET NULL`.
+    `cascade` deletes those payments too."""
+    loan = await ownership.get_owned(db, Loan, loan_id, user_id)
+    if mode == LoanDeleteMode.CASCADE:
+        await db.execute(
+            delete(Transaction).where(
+                Transaction.user_id == user_id, Transaction.loan_id == loan.id
+            )
+        )
+    await db.delete(loan)
+    await db.commit()
 
 
 async def set_loan_archived(db: AsyncSession, user_id: UUID, loan_id: UUID, archived: bool) -> Loan:

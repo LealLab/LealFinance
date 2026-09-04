@@ -1042,7 +1042,8 @@
       "edit": "대출 편집",
       "archive": "대출 보관",
       "unarchive": "대출 보관 해제",
-      "recordPayment": "상환 기록"
+      "recordPayment": "상환 기록",
+      "delete": "대출 삭제"
     },
     "empty": {
       "title": "아직 대출이 없습니다",
@@ -1149,6 +1150,14 @@
         "overdue": "연체",
         "paid": "결제됨"
       }
+    },
+    "deleteError": "대출을 삭제하지 못했습니다. 다시 시도하세요.",
+    "delete": {
+      "title": "대출을 삭제할까요?",
+      "message": "'{{name}}'에 기록된 상환이 {{count}}건 있습니다. 일반 거래로 남겨두시겠어요, 아니면 대출과 함께 삭제하시겠어요?",
+      "messageNoPayments": "이 작업은 되돌릴 수 없습니다. '{{name}}'을(를) 삭제하시겠어요?",
+      "keepPayments": "대출 삭제, 상환 내역 유지",
+      "deletePayments": "대출과 상환 내역 모두 삭제"
     }
   },
   "investments": {

@@ -93,6 +93,16 @@
               >
                 <app-icon name="archive" [size]="16" />
               </button>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                (click)="deleteLoan(row.loan)"
+                [attr.aria-label]="t('loans.actions.delete')"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
             </div>
           </div>
 

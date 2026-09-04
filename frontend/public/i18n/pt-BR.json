@@ -1042,7 +1042,8 @@
       "edit": "Editar empréstimo",
       "archive": "Arquivar empréstimo",
       "unarchive": "Desarquivar empréstimo",
-      "recordPayment": "Registrar pagamento"
+      "recordPayment": "Registrar pagamento",
+      "delete": "Excluir empréstimo"
     },
     "empty": {
       "title": "Nenhum empréstimo ainda",
@@ -1149,6 +1150,14 @@
         "overdue": "Atrasada",
         "paid": "Paga"
       }
+    },
+    "deleteError": "Não foi possível excluir o empréstimo. Tente novamente.",
+    "delete": {
+      "title": "Excluir empréstimo?",
+      "message": "\"{{name}}\" tem {{count}} pagamentos registrados. Quer mantê-los como transações normais ou excluí-los junto com o empréstimo?",
+      "messageNoPayments": "Esta ação não pode ser desfeita. Deseja excluir \"{{name}}\"?",
+      "keepPayments": "Excluir empréstimo, manter pagamentos",
+      "deletePayments": "Excluir empréstimo e seus pagamentos"
     }
   },
   "investments": {

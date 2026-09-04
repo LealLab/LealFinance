@@ -1042,7 +1042,8 @@
       "edit": "Edit pinjaman",
       "archive": "Arsipkan pinjaman",
       "unarchive": "Batalkan arsip pinjaman",
-      "recordPayment": "Catat pembayaran"
+      "recordPayment": "Catat pembayaran",
+      "delete": "Hapus pinjaman"
     },
     "empty": {
       "title": "Belum ada pinjaman",
@@ -1149,6 +1150,14 @@
         "overdue": "Terlambat",
         "paid": "Lunas"
       }
+    },
+    "deleteError": "Pinjaman tidak dapat dihapus. Coba lagi.",
+    "delete": {
+      "title": "Hapus pinjaman?",
+      "message": "\"{{name}}\" memiliki {{count}} pembayaran tercatat. Ingin menyimpannya sebagai transaksi biasa, atau menghapusnya bersama pinjaman?",
+      "messageNoPayments": "Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus \"{{name}}\"?",
+      "keepPayments": "Hapus pinjaman, simpan pembayaran",
+      "deletePayments": "Hapus pinjaman dan pembayarannya"
     }
   },
   "investments": {

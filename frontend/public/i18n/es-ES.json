@@ -1042,7 +1042,8 @@
       "edit": "Editar préstamo",
       "archive": "Archivar préstamo",
       "unarchive": "Desarchivar préstamo",
-      "recordPayment": "Registrar pago"
+      "recordPayment": "Registrar pago",
+      "delete": "Eliminar préstamo"
     },
     "empty": {
       "title": "Aún no hay préstamos",
@@ -1149,6 +1150,14 @@
         "overdue": "Vencida",
         "paid": "Pagada"
       }
+    },
+    "deleteError": "No se pudo eliminar el préstamo. Inténtalo de nuevo.",
+    "delete": {
+      "title": "¿Eliminar préstamo?",
+      "message": "«{{name}}» tiene {{count}} pagos registrados. ¿Quieres conservarlos como transacciones normales o eliminarlos junto con el préstamo?",
+      "messageNoPayments": "Esta acción no se puede deshacer. ¿Quieres eliminar «{{name}}»?",
+      "keepPayments": "Eliminar préstamo, conservar pagos",
+      "deletePayments": "Eliminar préstamo y sus pagos"
     }
   },
   "investments": {

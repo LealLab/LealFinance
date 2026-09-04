@@ -5,6 +5,7 @@ import { Transaction } from '../../domain/models/transaction';
 import {
   LoanAdvancePayment,
   LoanCreate,
+  LoanDeleteMode,
   LoanPayment,
   LoanRepository,
   LoanUpdate,
@@ -32,6 +33,10 @@ export class MockLoanRepository extends LoanRepository {
 
   setArchived(id: string, archived: boolean): Observable<Loan> {
     return mockResult(() => this.store.updateLoan(id, { archived }), this.latencyMs);
+  }
+
+  delete(id: string, mode: LoanDeleteMode = 'detach'): Observable<void> {
+    return mockResult(() => this.store.deleteLoan(id, mode), this.latencyMs);
   }
 
   recordPayment(id: string, payment: LoanPayment): Observable<Transaction> {

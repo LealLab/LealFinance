@@ -1042,7 +1042,8 @@
       "edit": "Editează împrumutul",
       "archive": "Arhivează împrumutul",
       "unarchive": "Dezarhivează împrumutul",
-      "recordPayment": "Înregistrează o plată"
+      "recordPayment": "Înregistrează o plată",
+      "delete": "Șterge împrumutul"
     },
     "empty": {
       "title": "Niciun împrumut încă",
@@ -1149,6 +1150,14 @@
         "overdue": "Restantă",
         "paid": "Plătită"
       }
+    },
+    "deleteError": "Împrumutul nu a putut fi șters. Încearcă din nou.",
+    "delete": {
+      "title": "Ștergi împrumutul?",
+      "message": "„{{name}}” are {{count}} plăți înregistrate. Vrei să le păstrezi ca tranzacții obișnuite sau să le ștergi împreună cu împrumutul?",
+      "messageNoPayments": "Această acțiune nu poate fi anulată. Vrei să ștergi „{{name}}”?",
+      "keepPayments": "Șterge împrumutul, păstrează plățile",
+      "deletePayments": "Șterge împrumutul și plățile sale"
     }
   },
   "investments": {
