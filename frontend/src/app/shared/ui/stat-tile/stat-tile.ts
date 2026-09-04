@@ -17,7 +17,6 @@ const TONE_CLASSES: Record<StatTone, string> = {
 @Component({
   selector: 'app-stat-tile',
   templateUrl: './stat-tile.html',
-  styleUrl: './stat-tile.scss'
 })
 export class StatTile {
   readonly label = input.required<string>();

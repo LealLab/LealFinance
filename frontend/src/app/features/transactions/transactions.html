@@ -37,9 +37,15 @@
 
       @if (mode() === 'list') {
         <app-dropdown panelClass="w-56">
-          <button dropdownTrigger appButton variant="secondary" type="button">
+          <button
+            dropdownTrigger
+            appButton
+            variant="secondary"
+            type="button"
+            [attr.aria-label]="t('transactions.actions.columns')"
+          >
             <app-icon name="grip" [size]="16" />
-            {{ t('transactions.actions.columns') }}
+            <span class="hidden sm:inline">{{ t('transactions.actions.columns') }}</span>
           </button>
           <p class="px-2 py-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
             {{ t('transactions.columns.title') }}
@@ -57,24 +63,48 @@
           }
         </app-dropdown>
 
-        <button appButton variant="secondary" type="button" (click)="exportCsv()">
+        <button
+          appButton
+          variant="secondary"
+          type="button"
+          [attr.aria-label]="t('transactions.actions.exportCsv')"
+          (click)="exportCsv()"
+        >
           <app-icon name="arrowDownLeft" [size]="16" />
-          {{ t('transactions.actions.exportCsv') }}
+          <span class="hidden sm:inline">{{ t('transactions.actions.exportCsv') }}</span>
         </button>
       }
 
-      <button appButton variant="secondary" type="button" routerLink="/transactions/import">
+      <button
+        appButton
+        variant="secondary"
+        type="button"
+        [attr.aria-label]="t('transactions.actions.import')"
+        routerLink="/transactions/import"
+      >
         <app-icon name="arrowUpRight" [size]="16" />
-        {{ t('transactions.actions.import') }}
+        <span class="hidden sm:inline">{{ t('transactions.actions.import') }}</span>
       </button>
-      <button appButton variant="primary" type="button" (click)="openCreateTx()">
+      <button
+        appButton
+        variant="primary"
+        type="button"
+        [attr.aria-label]="t('transactions.actions.new')"
+        (click)="openCreateTx()"
+      >
         <app-icon name="plus" [size]="16" />
-        {{ t('transactions.actions.new') }}
+        <span class="hidden sm:inline">{{ t('transactions.actions.new') }}</span>
       </button>
     } @else {
-      <button appButton variant="primary" type="button" (click)="openCreateRule()">
+      <button
+        appButton
+        variant="primary"
+        type="button"
+        [attr.aria-label]="t('transactions.recurring.actions.new')"
+        (click)="openCreateRule()"
+      >
         <app-icon name="plus" [size]="16" />
-        {{ t('transactions.recurring.actions.new') }}
+        <span class="hidden sm:inline">{{ t('transactions.recurring.actions.new') }}</span>
       </button>
     }
   </app-page-header>

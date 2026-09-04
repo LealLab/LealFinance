@@ -40,7 +40,7 @@
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.incomeExpense') }}</h2>
         @if (ratesReady()) {
-          <div class="h-64">
+          <div class="h-48 sm:h-64">
             <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
           </div>
         } @else {
@@ -51,7 +51,7 @@
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.netFlow') }}</h2>
         @if (ratesReady()) {
-          <div class="h-64">
+          <div class="h-48 sm:h-64">
             <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
           </div>
         } @else {
@@ -91,7 +91,7 @@
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.balanceTrend') }}</h2>
         @if (ratesReady()) {
-          <div class="h-64">
+          <div class="h-48 sm:h-64">
             <app-chart
               kind="line"
               [labels]="balanceTrendChart().labels"

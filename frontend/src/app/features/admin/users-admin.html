@@ -16,7 +16,7 @@
       <div class="flex flex-col gap-3">
         @for (user of users(); track user.id) {
           <div class="rounded-md border border-border p-3">
-            <div class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,8rem)_auto_auto_auto] sm:items-end">
+            <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,8rem)_auto_auto_auto] lg:items-end">
               <label class="min-w-0">
                 <span class="form-label block min-w-0 truncate" [title]="user.email">{{ user.email }}</span>
                 <input class="form-input" [(ngModel)]="user.displayName" />
@@ -65,7 +65,7 @@
       <app-card>
         <h2 class="mb-4 text-sm font-semibold">{{ t('admin.invitations.createTitle') }}</h2>
         <form
-          class="grid gap-3 sm:grid-cols-[1fr_8rem_auto] sm:items-end"
+          class="grid gap-3 lg:grid-cols-[1fr_8rem_auto] lg:items-end"
           (ngSubmit)="createInvitation()"
         >
           <label>

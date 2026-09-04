@@ -1,3 +1,18 @@
 .budget-slider {
   accent-color: var(--accent);
 }
+
+// Touch-only: a finger needs a bigger drag target than a mouse cursor does.
+@media (pointer: coarse) {
+  .budget-slider {
+    &::-webkit-slider-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    &::-moz-range-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}

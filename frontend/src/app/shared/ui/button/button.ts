@@ -32,7 +32,6 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
 @Component({
   selector: 'button[appButton]',
   templateUrl: './button.html',
-  styleUrl: './button.scss',
   host: {
     '[class]': 'classes()'
   }

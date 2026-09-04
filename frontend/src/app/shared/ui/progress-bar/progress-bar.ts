@@ -17,7 +17,6 @@ const FILL_CLASSES: Record<ProgressTone, string> = {
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.html',
-  styleUrl: './progress-bar.scss'
 })
 export class ProgressBar {
   readonly ratio = input.required<number>();

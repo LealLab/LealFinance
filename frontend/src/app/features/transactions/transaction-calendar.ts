@@ -22,7 +22,6 @@ import { rowSign, rowToneClass } from './transaction-tone';
   selector: 'app-transaction-calendar',
   imports: [TranslocoDirective, MoneyPipe, Icon],
   templateUrl: './transaction-calendar.html',
-  styleUrl: './transaction-calendar.scss',
 })
 export class TransactionCalendar {
   private readonly locale = inject(TranslocoLocaleService);

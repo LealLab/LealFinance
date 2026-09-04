@@ -86,7 +86,6 @@ const ROW_TYPES: readonly RowType[] = ['expense', 'income', 'transfer'];
   selector: 'app-transaction-import',
   imports: [TranslocoDirective, Button, Card, Icon, PageHeader],
   templateUrl: './transaction-import.html',
-  styleUrl: './transaction-import.scss'
 })
 export class TransactionImport {
   private readonly transactionRepository = inject(TransactionRepository);

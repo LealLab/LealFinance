@@ -43,7 +43,6 @@ const TYPE_OPS: readonly RuleTextOp[] = ['equals', 'not_equals'];
   selector: 'app-rule-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
   templateUrl: './rule-form-modal.html',
-  styleUrl: './rule-form-modal.scss',
 })
 export class RuleFormModal {
   private readonly ruleRepository = inject(CategorizationRuleRepository);

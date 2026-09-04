@@ -19,7 +19,7 @@
     }
 
     @if (ratesReady()) {
-      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
         <app-stat-tile [label]="t('dashboard.stats.realBalance')" [value]="realBalance().amount | money: realBalance().currency" />
         <app-stat-tile
@@ -35,7 +35,7 @@
         <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
       </div>
     } @else {
-      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5" aria-busy="true">
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5" aria-busy="true">
         @for (i of [0, 1, 2, 3, 4]; track i) {
           <app-skeleton height="4.25rem" />
         }
@@ -46,7 +46,7 @@
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.cashFlow.title') }}</h2>
         @if (ratesReady()) {
-          <div class="h-64">
+          <div class="h-48 sm:h-64">
             <app-chart kind="bar" [labels]="cashFlowChart().labels" [datasets]="cashFlowChart().datasets" [formatValue]="formatMoney" />
           </div>
         } @else {
@@ -59,7 +59,7 @@
         @if (!ratesReady()) {
           <app-skeleton height="16rem" />
         } @else if (hasCategorySpend()) {
-          <div class="h-64">
+          <div class="h-48 sm:h-64">
             <app-chart
               kind="doughnut"
               [labels]="categoryChart().labels"

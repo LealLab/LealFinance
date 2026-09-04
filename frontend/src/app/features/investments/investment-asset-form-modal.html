@@ -3,7 +3,7 @@
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="investment-asset-symbol">{{ t('investments.assets.form.fields.symbol') }}</label>
             <input id="investment-asset-symbol" type="text" class="form-input" formControlName="symbol" />
@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="investment-asset-class">{{ t('investments.assets.form.fields.assetClass') }}</label>
             <select id="investment-asset-class" class="form-input" formControlName="assetClass">

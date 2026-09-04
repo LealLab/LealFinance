@@ -11,7 +11,6 @@ import { IconName, Icon } from '../icon/icon';
   selector: 'app-empty-state',
   imports: [Icon],
   templateUrl: './empty-state.html',
-  styleUrl: './empty-state.scss'
 })
 export class EmptyState {
   readonly icon = input<IconName>('archive');

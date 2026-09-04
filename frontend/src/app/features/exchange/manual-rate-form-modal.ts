@@ -30,7 +30,6 @@ const positiveRateValidator: ValidatorFn = (control) => {
   selector: 'app-manual-rate-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
   templateUrl: './manual-rate-form-modal.html',
-  styleUrl: './manual-rate-form-modal.scss',
 })
 export class ManualRateFormModal {
   private readonly manualRates = inject(ManualRateRepository);

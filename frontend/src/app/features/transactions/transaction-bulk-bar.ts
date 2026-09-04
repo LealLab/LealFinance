@@ -17,7 +17,6 @@ import { groupCategoriesByGroup } from './category-grouping';
   selector: 'app-transaction-bulk-bar',
   imports: [TranslocoDirective, MoneyPipe, Button, Dropdown, Icon],
   templateUrl: './transaction-bulk-bar.html',
-  styleUrl: './transaction-bulk-bar.scss',
 })
 export class TransactionBulkBar {
   readonly selected = input.required<readonly Transaction[]>();

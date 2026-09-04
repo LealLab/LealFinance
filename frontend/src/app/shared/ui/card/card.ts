@@ -8,7 +8,6 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'app-card',
   templateUrl: './card.html',
-  styleUrl: './card.scss',
   host: {
     class: 'block rounded-md border border-border bg-surface-raised',
     '[class.p-4]': 'padded()'

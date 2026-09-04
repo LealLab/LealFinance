@@ -18,7 +18,6 @@ import { Icon } from '../icon/icon';
   selector: 'app-language-select',
   imports: [TranslocoDirective, Icon],
   templateUrl: './language-select.html',
-  styleUrl: './language-select.scss',
 })
 export class LanguageSelect {
   private readonly transloco = inject(TranslocoService);

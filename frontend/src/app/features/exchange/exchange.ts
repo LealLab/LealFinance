@@ -53,7 +53,6 @@ import { ManualRateFormModal } from './manual-rate-form-modal';
     ManualRateFormModal
   ],
   templateUrl: './exchange.html',
-  styleUrl: './exchange.scss'
 })
 export class Exchange {
   private readonly mutationErrors = inject(MutationErrorService);

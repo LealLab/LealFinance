@@ -24,7 +24,6 @@ const TRANSACTION_TYPES: readonly InvestmentTransactionType[] = ['buy', 'sell', 
   selector: 'app-investment-transaction-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Button, Modal, MoneyPipe],
   templateUrl: './investment-transaction-form-modal.html',
-  styleUrl: './investment-transaction-form-modal.scss',
 })
 export class InvestmentTransactionFormModal {
   private readonly transactions = inject(InvestmentTransactionRepository);

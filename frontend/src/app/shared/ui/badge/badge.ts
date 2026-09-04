@@ -14,7 +14,6 @@ const TONE_CLASSES: Record<BadgeTone, string> = {
 @Component({
   selector: 'app-badge',
   templateUrl: './badge.html',
-  styleUrl: './badge.scss',
   host: {
     '[class]': 'classes()'
   }

@@ -35,7 +35,6 @@ import { InstitutionFormModal } from './institution-form-modal';
   selector: 'app-account-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, InstitutionFormModal],
   templateUrl: './account-form-modal.html',
-  styleUrl: './account-form-modal.scss',
 })
 export class AccountFormModal {
   private readonly accounts = inject(AccountRepository);

@@ -14,7 +14,6 @@ import { Icon } from '../icon/icon';
   selector: 'app-theme-toggle',
   imports: [TranslocoDirective, Icon, Button],
   templateUrl: './theme-toggle.html',
-  styleUrl: './theme-toggle.scss',
 })
 export class ThemeToggle {
   protected readonly theme = inject(ThemeService);

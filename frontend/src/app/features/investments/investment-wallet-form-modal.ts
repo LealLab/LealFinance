@@ -21,7 +21,6 @@ import { Modal } from '../../shared/ui/modal/modal';
   selector: 'app-investment-wallet-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Button, Modal],
   templateUrl: './investment-wallet-form-modal.html',
-  styleUrl: './investment-wallet-form-modal.scss',
 })
 export class InvestmentWalletFormModal {
   private readonly wallets = inject(InvestmentWalletRepository);

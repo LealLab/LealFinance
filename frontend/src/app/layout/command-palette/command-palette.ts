@@ -69,7 +69,6 @@ interface PaletteGroup {
   selector: 'app-command-palette',
   imports: [TranslocoDirective, Icon],
   templateUrl: './command-palette.html',
-  styleUrl: './command-palette.scss',
 })
 export class CommandPalette {
   protected readonly paletteService = inject(CommandPaletteService);

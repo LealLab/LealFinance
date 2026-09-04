@@ -68,7 +68,6 @@ function trySum(amounts: Money[]): Money | null {
     InstitutionFormModal
   ],
   templateUrl: './accounts.html',
-  styleUrl: './accounts.scss'
 })
 export class Accounts {
   private readonly mutationErrors = inject(MutationErrorService);

@@ -57,7 +57,6 @@ const PAGE_SIZE = 30;
     CardInvoices
   ],
   templateUrl: './account-detail.html',
-  styleUrl: './account-detail.scss'
 })
 export class AccountDetail {
   private readonly mutationErrors = inject(MutationErrorService);

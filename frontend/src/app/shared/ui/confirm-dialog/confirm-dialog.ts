@@ -13,7 +13,6 @@ import { Modal } from '../modal/modal';
   selector: 'app-confirm-dialog',
   imports: [TranslocoDirective, Modal, Button],
   templateUrl: './confirm-dialog.html',
-  styleUrl: './confirm-dialog.scss'
 })
 export class ConfirmDialog {
   protected readonly confirmService = inject(ConfirmService);

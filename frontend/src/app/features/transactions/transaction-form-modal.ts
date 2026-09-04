@@ -58,7 +58,6 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
   selector: 'app-transaction-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ExchangeRateWarning],
   templateUrl: './transaction-form-modal.html',
-  styleUrl: './transaction-form-modal.scss'
 })
 export class TransactionFormModal {
   private readonly transactions = inject(TransactionRepository);

@@ -19,7 +19,6 @@ import { Card } from '../../shared/ui/card/card';
   selector: 'app-passkeys-section',
   imports: [TranslocoDirective, Button, Card],
   templateUrl: './passkeys-section.html',
-  styleUrl: './passkeys-section.scss',
 })
 export class PasskeysSection {
   private readonly identityApi = inject(IdentityApiService);

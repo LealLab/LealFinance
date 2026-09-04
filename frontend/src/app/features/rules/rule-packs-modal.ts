@@ -17,7 +17,6 @@ import { Modal } from '../../shared/ui/modal/modal';
   selector: 'app-rule-packs-modal',
   imports: [TranslocoDirective, Modal, Button, Badge],
   templateUrl: './rule-packs-modal.html',
-  styleUrl: './rule-packs-modal.scss',
 })
 export class RulePacksModal {
   private readonly ruleRepository = inject(CategorizationRuleRepository);

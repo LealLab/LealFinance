@@ -88,7 +88,7 @@
                           variant="ghost"
                           size="sm"
                           type="button"
-                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                           (click)="openCreateCategoryIn(row.group)"
                           [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
                         >
@@ -99,7 +99,7 @@
                           variant="ghost"
                           size="sm"
                           type="button"
-                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                           (click)="openEditGroup(row.group)"
                           [attr.aria-label]="t('categories.actions.edit')"
                         >
@@ -111,7 +111,7 @@
                             variant="ghost"
                             size="sm"
                             type="button"
-                            class="opacity-0 transition-opacity hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                            class="opacity-0 transition-opacity hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                             (click)="deleteGroup(row.group)"
                             [attr.aria-label]="t('categories.actions.delete')"
                           >
@@ -165,7 +165,7 @@
                               variant="ghost"
                               size="sm"
                               type="button"
-                              class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                              class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                               (click)="openEditCategory(categoryRow.category)"
                               [attr.aria-label]="t('categories.actions.edit')"
                             >
@@ -176,7 +176,7 @@
                               variant="ghost"
                               size="sm"
                               type="button"
-                              class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100"
+                              class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                               (click)="deleteCategory(categoryRow.category)"
                               [attr.aria-label]="t('categories.actions.delete')"
                             >

@@ -90,7 +90,6 @@ const SEARCH_DEBOUNCE_MS = 250;
     RecurringRuleFormModal,
   ],
   templateUrl: './transactions.html',
-  styleUrl: './transactions.scss',
 })
 export class Transactions {
   private readonly mutationErrors = inject(MutationErrorService);

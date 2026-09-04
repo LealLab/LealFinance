@@ -27,7 +27,6 @@ import { ThemeToggle } from '../../shared/ui/theme-toggle/theme-toggle';
     ThemeToggle,
   ],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
 })
 export class Login {
   private readonly session = inject(SessionService);
