@@ -288,6 +288,8 @@
         "newBudget": "Νέος προϋπολογισμός",
         "configureLanguage": "Ρύθμιση γλώσσας",
         "configureCurrency": "Ρύθμιση νομίσματος εμφάνισης",
+        "configurePasskeys": "Ρύθμιση passkeys",
+        "configurePasskeysHint": "passkey, WebAuthn, χωρίς κωδικό, κλειδί ασφαλείας, βιομετρικά",
         "toggleTheme": "Εναλλαγή θέματος",
         "toggleBalances": "Εμφάνιση ή απόκρυψη υπολοίπων",
         "configureTwoFactor": "Ρύθμιση ελέγχου ταυτότητας δύο παραγόντων",
@@ -1522,6 +1524,25 @@
         "regenerate": "Δημιουργία νέων εφεδρικών κωδικών",
         "disable": "Απενεργοποίηση"
       }
+    },
+    "passkeys": {
+      "title": "Κλειδιά πρόσβασης",
+      "description": "Συνδεθείτε χωρίς κωδικό πρόσβασης με το δακτυλικό αποτύπωμα, το πρόσωπο ή το PIN της συσκευής σας.",
+      "unsupported": "Τα passkeys χρειάζονται ασφαλή σύνδεση (HTTPS). Ανοίξτε αυτόν τον ιστότοπο μέσω HTTPS για να προσθέσετε passkey.",
+      "empty": "Δεν υπάρχουν passkeys ακόμη.",
+      "add": "Προσθήκη passkey",
+      "nameLabel": "Όνομα passkey",
+      "namePlaceholder": "π.χ. Προσωπικός φορητός υπολογιστής",
+      "nameHint": "Μια ετικέτα για να αναγνωρίζετε αργότερα αυτή τη συσκευή.",
+      "create": "Δημιουργία passkey",
+      "added": "Προστέθηκε {{date}}",
+      "lastUsed": "Τελευταία χρήση {{date}}",
+      "neverUsed": "Δεν έχει χρησιμοποιηθεί",
+      "remove": "Αφαίρεση",
+      "removeConfirm": {
+        "title": "Να αφαιρεθεί αυτό το passkey;",
+        "message": "Δεν θα μπορείτε πλέον να συνδέεστε με αυτό. Αυτή η ενέργεια δεν αναιρείται."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Σύνδεση",
       "description": "Χρησιμοποιήστε τον λογαριασμό σας στο LealFinance για να συνεχίσετε.",
       "action": "Σύνδεση",
-      "invited": "Έχετε πρόσκληση;"
+      "invited": "Έχετε πρόσκληση;",
+      "passkeyAction": "Σύνδεση με passkey"
     },
     "register": {
       "title": "Αποδοχή πρόσκλησης",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ήδη ενεργοποιημένος.",
       "not_enabled": "Ο έλεγχος ταυτότητας δύο παραγόντων δεν είναι ενεργοποιημένος."
+    },
+    "webauthn": {
+      "origin_invalid": "Τα passkeys δεν είναι διαθέσιμα σε αυτή τη διεύθυνση.",
+      "insecure_context": "Τα passkeys χρειάζονται ασφαλή σύνδεση (HTTPS).",
+      "challenge_invalid": "Το αίτημα passkey έληξε. Δοκιμάστε ξανά.",
+      "verification_failed": "Δεν ήταν δυνατή η επαλήθευση αυτού του passkey.",
+      "credential_exists": "Αυτό το passkey έχει ήδη καταχωριστεί.",
+      "not_found": "Το passkey δεν βρέθηκε."
     }
   }
 }

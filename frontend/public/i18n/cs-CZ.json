@@ -288,6 +288,8 @@
         "newBudget": "Nový rozpočet",
         "configureLanguage": "Nastavit jazyk",
         "configureCurrency": "Nastavit měnu zobrazení",
+        "configurePasskeys": "Nastavit přístupové klíče",
+        "configurePasskeysHint": "přístupový klíč, WebAuthn, bez hesla, bezpečnostní klíč, biometrie",
         "toggleTheme": "Přepnout motiv",
         "toggleBalances": "Zobrazit nebo skrýt zůstatky",
         "configureTwoFactor": "Nastavit dvoufaktorové ověření",
@@ -1522,6 +1524,25 @@
         "regenerate": "Vygenerovat nové záložní kódy",
         "disable": "Vypnout"
       }
+    },
+    "passkeys": {
+      "title": "Přístupové klíče",
+      "description": "Přihlaste se bez hesla pomocí otisku prstu, obličeje nebo PINu svého zařízení.",
+      "unsupported": "Přístupové klíče vyžadují zabezpečené připojení (HTTPS). Chcete-li některý přidat, otevřete tento web přes HTTPS.",
+      "empty": "Zatím nemáte žádné přístupové klíče.",
+      "add": "Přidat přístupový klíč",
+      "nameLabel": "Název přístupového klíče",
+      "namePlaceholder": "např. Osobní notebook",
+      "nameHint": "Popisek, podle kterého toto zařízení později poznáte.",
+      "create": "Vytvořit přístupový klíč",
+      "added": "Přidáno {{date}}",
+      "lastUsed": "Naposledy použito {{date}}",
+      "neverUsed": "Nikdy nepoužito",
+      "remove": "Odebrat",
+      "removeConfirm": {
+        "title": "Odebrat tento přístupový klíč?",
+        "message": "Přestanete se s ním moci přihlašovat. Tuto akci nelze vrátit."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Přihlášení",
       "description": "Pokračujte přihlášením ke svému účtu LealFinance.",
       "action": "Přihlásit se",
-      "invited": "Máte pozvánku?"
+      "invited": "Máte pozvánku?",
+      "passkeyAction": "Přihlásit se pomocí přístupového klíče"
     },
     "register": {
       "title": "Přijmout pozvánku",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Dvoufaktorové ověření je již zapnuto.",
       "not_enabled": "Dvoufaktorové ověření není zapnuto."
+    },
+    "webauthn": {
+      "origin_invalid": "Přístupové klíče nejsou na této adrese dostupné.",
+      "insecure_context": "Přístupové klíče vyžadují zabezpečené připojení (HTTPS).",
+      "challenge_invalid": "Platnost požadavku na přístupový klíč vypršela. Zkuste to znovu.",
+      "verification_failed": "Přístupový klíč se nepodařilo ověřit.",
+      "credential_exists": "Tento přístupový klíč je již zaregistrován.",
+      "not_found": "Přístupový klíč nebyl nalezen."
     }
   }
 }

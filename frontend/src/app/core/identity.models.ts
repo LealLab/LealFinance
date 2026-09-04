@@ -53,6 +53,13 @@ export interface TotpStatus {
   backupCodesRemaining: number;
 }
 
+export interface Passkey {
+  id: string;
+  name: string;
+  createdAt: string;
+  lastUsedAt?: string;
+}
+
 export interface TotpSetup {
   /** Base32, for users typing the secret in rather than scanning. */
   secret: string;

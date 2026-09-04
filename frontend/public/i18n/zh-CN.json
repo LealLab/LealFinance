@@ -288,6 +288,8 @@
         "newBudget": "新建预算",
         "configureLanguage": "设置语言",
         "configureCurrency": "设置显示货币",
+        "configurePasskeys": "配置通行密钥",
+        "configurePasskeysHint": "通行密钥、WebAuthn、无密码、安全密钥、生物识别",
         "toggleTheme": "切换主题",
         "toggleBalances": "显示或隐藏余额",
         "configureTwoFactor": "配置双重验证",
@@ -1522,6 +1524,25 @@
         "regenerate": "生成新的备用码",
         "disable": "停用"
       }
+    },
+    "passkeys": {
+      "title": "通行密钥",
+      "description": "使用设备的指纹、面容或 PIN，无需密码即可登录。",
+      "unsupported": "通行密钥需要安全的 (HTTPS) 连接。请通过 HTTPS 打开此网站以添加通行密钥。",
+      "empty": "暂无通行密钥。",
+      "add": "添加通行密钥",
+      "nameLabel": "通行密钥名称",
+      "namePlaceholder": "例如：个人笔记本电脑",
+      "nameHint": "用于帮助你稍后识别此设备的标签。",
+      "create": "创建通行密钥",
+      "added": "添加于 {{date}}",
+      "lastUsed": "上次使用于 {{date}}",
+      "neverUsed": "从未使用",
+      "remove": "移除",
+      "removeConfirm": {
+        "title": "要移除此通行密钥吗？",
+        "message": "移除后将无法再使用它登录。此操作无法撤销。"
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "登录",
       "description": "使用你的 LealFinance 账户继续。",
       "action": "登录",
-      "invited": "有邀请？"
+      "invited": "有邀请？",
+      "passkeyAction": "使用通行密钥登录"
     },
     "register": {
       "title": "接受邀请",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "双重验证已经启用。",
       "not_enabled": "尚未启用双重验证。"
+    },
+    "webauthn": {
+      "origin_invalid": "此地址不支持通行密钥。",
+      "insecure_context": "通行密钥需要安全的 (HTTPS) 连接。",
+      "challenge_invalid": "通行密钥请求已过期，请重试。",
+      "verification_failed": "无法验证该通行密钥。",
+      "credential_exists": "该通行密钥已注册。",
+      "not_found": "未找到通行密钥。"
     }
   }
 }

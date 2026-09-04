@@ -288,6 +288,8 @@
         "newBudget": "Nytt budsjett",
         "configureLanguage": "Konfigurer språk",
         "configureCurrency": "Konfigurer visningsvaluta",
+        "configurePasskeys": "Konfigurer passnøkler",
+        "configurePasskeysHint": "passnøkkel, WebAuthn, passordfri, sikkerhetsnøkkel, biometri",
         "toggleTheme": "Bytt tema",
         "toggleBalances": "Vis eller skjul saldoer",
         "configureTwoFactor": "Konfigurer tofaktorautentisering",
@@ -1522,6 +1524,25 @@
         "regenerate": "Generer nye reservekoder",
         "disable": "Deaktiver"
       }
+    },
+    "passkeys": {
+      "title": "Passnøkler",
+      "description": "Logg inn uten passord med fingeravtrykk, ansikt eller PIN-kode på enheten din.",
+      "unsupported": "Passnøkler krever en sikker (HTTPS) tilkobling. Åpne dette nettstedet via HTTPS for å legge til en.",
+      "empty": "Ingen passnøkler ennå.",
+      "add": "Legg til en passnøkkel",
+      "nameLabel": "Navn på passnøkkel",
+      "namePlaceholder": "f.eks. Personlig bærbar PC",
+      "nameHint": "En etikett som hjelper deg å kjenne igjen denne enheten senere.",
+      "create": "Opprett passnøkkel",
+      "added": "Lagt til {{date}}",
+      "lastUsed": "Sist brukt {{date}}",
+      "neverUsed": "Aldri brukt",
+      "remove": "Fjern",
+      "removeConfirm": {
+        "title": "Fjerne denne passnøkkelen?",
+        "message": "Du kan ikke lenger logge inn med den. Dette kan ikke angres."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Logg inn",
       "description": "Bruk LealFinance-kontoen din for å fortsette.",
       "action": "Logg inn",
-      "invited": "Har du en invitasjon?"
+      "invited": "Har du en invitasjon?",
+      "passkeyAction": "Logg inn med en passnøkkel"
     },
     "register": {
       "title": "Godta invitasjon",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Tofaktorautentisering er allerede aktivert.",
       "not_enabled": "Tofaktorautentisering er ikke aktivert."
+    },
+    "webauthn": {
+      "origin_invalid": "Passnøkler er ikke tilgjengelige på denne adressen.",
+      "insecure_context": "Passnøkler krever en sikker (HTTPS) tilkobling.",
+      "challenge_invalid": "Passnøkkelforespørselen utløp. Prøv igjen.",
+      "verification_failed": "Passnøkkelen kunne ikke bekreftes.",
+      "credential_exists": "Denne passnøkkelen er allerede registrert.",
+      "not_found": "Passnøkkelen ble ikke funnet."
     }
   }
 }

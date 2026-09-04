@@ -49,6 +49,17 @@
       <button appButton type="submit" [disabled]="form.invalid || submitting()">
         {{ submitting() ? t('common.actions.saving') : t('auth.login.action') }}
       </button>
+      @if (!challenging() && passkeySupported) {
+        <button
+          appButton
+          type="button"
+          variant="secondary"
+          [disabled]="submitting()"
+          (click)="signInWithPasskey()"
+        >
+          {{ t('auth.login.passkeyAction') }}
+        </button>
+      }
     </form>
     @if (!challenging()) {
       <p class="mt-5 text-sm text-content-muted">

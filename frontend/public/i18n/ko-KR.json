@@ -288,6 +288,8 @@
         "newBudget": "예산 추가",
         "configureLanguage": "언어 설정",
         "configureCurrency": "표시 통화 설정",
+        "configurePasskeys": "패스키 설정",
+        "configurePasskeysHint": "패스키, WebAuthn, 비밀번호 없음, 보안 키, 생체 인증",
         "toggleTheme": "테마 전환",
         "toggleBalances": "잔액 표시 또는 숨기기",
         "configureTwoFactor": "2단계 인증 설정",
@@ -1522,6 +1524,25 @@
         "regenerate": "새 백업 코드 생성",
         "disable": "사용 중지"
       }
+    },
+    "passkeys": {
+      "title": "패스키",
+      "description": "기기의 지문, 얼굴 인식 또는 PIN을 사용해 비밀번호 없이 로그인하세요.",
+      "unsupported": "패스키를 사용하려면 보안(HTTPS) 연결이 필요합니다. 추가하려면 이 사이트를 HTTPS로 여세요.",
+      "empty": "아직 패스키가 없습니다.",
+      "add": "패스키 추가",
+      "nameLabel": "패스키 이름",
+      "namePlaceholder": "예: 개인 노트북",
+      "nameHint": "나중에 이 기기를 알아볼 수 있도록 붙이는 이름입니다.",
+      "create": "패스키 만들기",
+      "added": "{{date}}에 추가됨",
+      "lastUsed": "마지막 사용 {{date}}",
+      "neverUsed": "사용한 적 없음",
+      "remove": "삭제",
+      "removeConfirm": {
+        "title": "이 패스키를 삭제할까요?",
+        "message": "더 이상 이 패스키로 로그인할 수 없습니다. 되돌릴 수 없습니다."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "로그인",
       "description": "LealFinance 계정으로 계속하세요.",
       "action": "로그인",
-      "invited": "초대장이 있으신가요?"
+      "invited": "초대장이 있으신가요?",
+      "passkeyAction": "패스키로 로그인"
     },
     "register": {
       "title": "초대 수락",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "2단계 인증이 이미 사용 중입니다.",
       "not_enabled": "2단계 인증이 사용 중이 아닙니다."
+    },
+    "webauthn": {
+      "origin_invalid": "이 주소에서는 패스키를 사용할 수 없습니다.",
+      "insecure_context": "패스키를 사용하려면 보안(HTTPS) 연결이 필요합니다.",
+      "challenge_invalid": "패스키 요청이 만료되었습니다. 다시 시도하세요.",
+      "verification_failed": "패스키를 확인할 수 없습니다.",
+      "credential_exists": "이 패스키는 이미 등록되어 있습니다.",
+      "not_found": "패스키를 찾을 수 없습니다."
     }
   }
 }

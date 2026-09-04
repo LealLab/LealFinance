@@ -288,6 +288,8 @@
         "newBudget": "Ngân sách mới",
         "configureLanguage": "Thiết lập ngôn ngữ",
         "configureCurrency": "Thiết lập tiền tệ hiển thị",
+        "configurePasskeys": "Cấu hình passkey",
+        "configurePasskeysHint": "passkey, WebAuthn, không mật khẩu, khóa bảo mật, sinh trắc học",
         "toggleTheme": "Đổi giao diện",
         "toggleBalances": "Hiện hoặc ẩn số dư",
         "configureTwoFactor": "Cấu hình xác thực hai yếu tố",
@@ -1522,6 +1524,25 @@
         "regenerate": "Tạo mã dự phòng mới",
         "disable": "Tắt"
       }
+    },
+    "passkeys": {
+      "title": "Passkey",
+      "description": "Đăng nhập không cần mật khẩu bằng vân tay, khuôn mặt hoặc mã PIN của thiết bị.",
+      "unsupported": "Passkey cần kết nối an toàn (HTTPS). Hãy mở trang này qua HTTPS để thêm passkey.",
+      "empty": "Chưa có passkey nào.",
+      "add": "Thêm passkey",
+      "nameLabel": "Tên passkey",
+      "namePlaceholder": "ví dụ: Máy tính xách tay cá nhân",
+      "nameHint": "Nhãn giúp bạn nhận ra thiết bị này sau này.",
+      "create": "Tạo passkey",
+      "added": "Đã thêm {{date}}",
+      "lastUsed": "Dùng lần cuối {{date}}",
+      "neverUsed": "Chưa từng dùng",
+      "remove": "Xóa",
+      "removeConfirm": {
+        "title": "Xóa passkey này?",
+        "message": "Bạn sẽ không thể đăng nhập bằng passkey này nữa. Không thể hoàn tác."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Đăng nhập",
       "description": "Sử dụng tài khoản LealFinance của bạn để tiếp tục.",
       "action": "Đăng nhập",
-      "invited": "Bạn có lời mời?"
+      "invited": "Bạn có lời mời?",
+      "passkeyAction": "Đăng nhập bằng passkey"
     },
     "register": {
       "title": "Chấp nhận lời mời",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Xác thực hai yếu tố đã được bật.",
       "not_enabled": "Xác thực hai yếu tố chưa được bật."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkey không khả dụng tại địa chỉ này.",
+      "insecure_context": "Passkey cần kết nối an toàn (HTTPS).",
+      "challenge_invalid": "Yêu cầu passkey đã hết hạn. Vui lòng thử lại.",
+      "verification_failed": "Không thể xác minh passkey này.",
+      "credential_exists": "Passkey này đã được đăng ký.",
+      "not_found": "Không tìm thấy passkey."
     }
   }
 }

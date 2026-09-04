@@ -288,6 +288,8 @@
         "newBudget": "Nyt budget",
         "configureLanguage": "Konfigurer sprog",
         "configureCurrency": "Konfigurer visningsvaluta",
+        "configurePasskeys": "Konfigurér adgangsnøgler",
+        "configurePasskeysHint": "adgangsnøgle, WebAuthn, uden adgangskode, sikkerhedsnøgle, biometrisk",
         "toggleTheme": "Skift tema",
         "toggleBalances": "Vis eller skjul saldi",
         "configureTwoFactor": "Konfigurér tofaktorgodkendelse",
@@ -1522,6 +1524,25 @@
         "regenerate": "Generér nye reservekoder",
         "disable": "Deaktivér"
       }
+    },
+    "passkeys": {
+      "title": "Adgangsnøgler",
+      "description": "Log ind uden adgangskode med din enheds fingeraftryk, ansigt eller pinkode.",
+      "unsupported": "Adgangsnøgler kræver en sikker (HTTPS) forbindelse. Åbn dette websted via HTTPS for at tilføje en.",
+      "empty": "Ingen adgangsnøgler endnu.",
+      "add": "Tilføj en adgangsnøgle",
+      "nameLabel": "Navn på adgangsnøgle",
+      "namePlaceholder": "f.eks. Personlig bærbar",
+      "nameHint": "En etiket, så du senere kan genkende denne enhed.",
+      "create": "Opret adgangsnøgle",
+      "added": "Tilføjet {{date}}",
+      "lastUsed": "Sidst brugt {{date}}",
+      "neverUsed": "Aldrig brugt",
+      "remove": "Fjern",
+      "removeConfirm": {
+        "title": "Fjern denne adgangsnøgle?",
+        "message": "Du kan ikke længere logge ind med den. Dette kan ikke fortrydes."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Log ind",
       "description": "Brug din LealFinance-konto til at fortsætte.",
       "action": "Log ind",
-      "invited": "Har du en invitation?"
+      "invited": "Har du en invitation?",
+      "passkeyAction": "Log ind med en adgangsnøgle"
     },
     "register": {
       "title": "Accepter invitation",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Tofaktorgodkendelse er allerede aktiveret.",
       "not_enabled": "Tofaktorgodkendelse er ikke aktiveret."
+    },
+    "webauthn": {
+      "origin_invalid": "Adgangsnøgler er ikke tilgængelige på denne adresse.",
+      "insecure_context": "Adgangsnøgler kræver en sikker (HTTPS) forbindelse.",
+      "challenge_invalid": "Anmodningen om adgangsnøglen er udløbet. Prøv igen.",
+      "verification_failed": "Adgangsnøglen kunne ikke bekræftes.",
+      "credential_exists": "Denne adgangsnøgle er allerede registreret.",
+      "not_found": "Adgangsnøglen blev ikke fundet."
     }
   }
 }

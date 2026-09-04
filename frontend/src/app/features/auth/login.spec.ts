@@ -8,12 +8,21 @@ import { Login } from './login';
 import { provideTestTransloco } from '../../../testing/transloco';
 
 describe('Login', () => {
-  let session: { login: ReturnType<typeof vi.fn> };
-  let identityApi: { setupStatus: ReturnType<typeof vi.fn> };
+  let session: { login: ReturnType<typeof vi.fn>; loginWithPasskey: ReturnType<typeof vi.fn> };
+  let identityApi: {
+    setupStatus: ReturnType<typeof vi.fn>;
+    passkeyLoginOptions: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(async () => {
-    session = { login: vi.fn().mockReturnValue(of({ id: 'u1' })) };
-    identityApi = { setupStatus: vi.fn().mockReturnValue(of(false)) };
+    session = {
+      login: vi.fn().mockReturnValue(of({ id: 'u1' })),
+      loginWithPasskey: vi.fn().mockReturnValue(of({ id: 'u1' })),
+    };
+    identityApi = {
+      setupStatus: vi.fn().mockReturnValue(of(false)),
+      passkeyLoginOptions: vi.fn().mockReturnValue(of({ challenge: 'Y2hhbGxlbmdl' })),
+    };
     await TestBed.configureTestingModule({
       imports: [
         Login,
@@ -152,5 +161,51 @@ describe('Login', () => {
       'button[type="submit"]',
     ) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
+  });
+
+  it('shows the passkey action and signs in through the passkey session method', async () => {
+    const router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    const fixture = TestBed.createComponent(Login);
+    Object.defineProperty(fixture.componentInstance, 'passkeySupported', { value: true });
+    fixture.detectChanges();
+
+    const bytes = new Uint8Array([1, 2, 3]).buffer;
+    const originalCredentials = navigator.credentials;
+    Object.defineProperty(window.navigator, 'credentials', {
+      configurable: true,
+      value: {
+        get: vi.fn().mockResolvedValue({
+          id: 'credential',
+          rawId: bytes,
+          type: 'public-key',
+          response: {
+            clientDataJSON: bytes,
+            authenticatorData: bytes,
+            signature: bytes,
+            userHandle: null,
+          },
+          getClientExtensionResults: () => ({}),
+        }),
+      },
+    });
+
+    const button = [...fixture.nativeElement.querySelectorAll('button')].find((candidate) =>
+      candidate.textContent?.toLowerCase().includes('passkey'),
+    ) as HTMLButtonElement;
+    expect(button).toBeTruthy();
+
+    button.click();
+    await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    Object.defineProperty(window.navigator, 'credentials', {
+      configurable: true,
+      value: originalCredentials,
+    });
+
+    expect(session.loginWithPasskey).toHaveBeenCalledWith(
+      'Y2hhbGxlbmdl',
+      expect.objectContaining({ id: 'credential', type: 'public-key' }),
+    );
   });
 });

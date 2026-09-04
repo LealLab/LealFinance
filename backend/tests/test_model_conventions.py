@@ -23,6 +23,8 @@ _GLOBAL_MODELS = {
     "Invitation",
     "TotpBackupCode",
     "TrustedDevice",
+    "WebAuthnCredential",
+    "WebAuthnChallenge",
 }
 
 

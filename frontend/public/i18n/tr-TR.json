@@ -288,6 +288,8 @@
         "newBudget": "Yeni bütçe",
         "configureLanguage": "Dili ayarla",
         "configureCurrency": "Görüntüleme para birimini ayarla",
+        "configurePasskeys": "Passkeyleri yapılandır",
+        "configurePasskeysHint": "passkey, WebAuthn, parolasız, güvenlik anahtarı, biyometri",
         "toggleTheme": "Temayı değiştir",
         "toggleBalances": "Bakiyeleri göster veya gizle",
         "configureTwoFactor": "İki faktörlü kimlik doğrulamayı yapılandır",
@@ -1522,6 +1524,25 @@
         "regenerate": "Yeni yedek kodlar oluştur",
         "disable": "Devre dışı bırak"
       }
+    },
+    "passkeys": {
+      "title": "Passkeyler",
+      "description": "Cihazınızın parmak izi, yüz tanıma veya PIN’i ile parola kullanmadan giriş yapın.",
+      "unsupported": "Passkeyler güvenli (HTTPS) bağlantı gerektirir. Bir passkey eklemek için bu siteyi HTTPS üzerinden açın.",
+      "empty": "Henüz passkey yok.",
+      "add": "Passkey ekle",
+      "nameLabel": "Passkey adı",
+      "namePlaceholder": "ör. Kişisel dizüstü bilgisayar",
+      "nameHint": "Bu cihazı daha sonra tanımanıza yardımcı olacak bir etiket.",
+      "create": "Passkey oluştur",
+      "added": "{{date}} tarihinde eklendi",
+      "lastUsed": "Son kullanım: {{date}}",
+      "neverUsed": "Hiç kullanılmadı",
+      "remove": "Kaldır",
+      "removeConfirm": {
+        "title": "Bu passkey kaldırılsın mı?",
+        "message": "Bununla artık giriş yapamazsınız. Bu işlem geri alınamaz."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Giriş yap",
       "description": "Devam etmek için LealFinance hesabınızı kullanın.",
       "action": "Giriş yap",
-      "invited": "Davetiniz mi var?"
+      "invited": "Davetiniz mi var?",
+      "passkeyAction": "Passkey ile giriş yap"
     },
     "register": {
       "title": "Daveti kabul et",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "İki faktörlü kimlik doğrulama zaten etkin.",
       "not_enabled": "İki faktörlü kimlik doğrulama etkin değil."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkeyler bu adreste kullanılamıyor.",
+      "insecure_context": "Passkeyler güvenli (HTTPS) bağlantı gerektirir.",
+      "challenge_invalid": "Passkey isteğinin süresi doldu. Lütfen tekrar deneyin.",
+      "verification_failed": "Passkey doğrulanamadı.",
+      "credential_exists": "Bu passkey zaten kayıtlı.",
+      "not_found": "Passkey bulunamadı."
     }
   }
 }

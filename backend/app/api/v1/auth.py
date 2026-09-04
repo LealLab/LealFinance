@@ -4,6 +4,7 @@ Registration is invite-only, except the first user on an instance - see
 app/services/auth.py for the bootstrap rule.
 """
 
+from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Request, Response, status
@@ -16,7 +17,9 @@ from app.core.cookies import (
     set_session_cookies,
     set_trust_cookie,
 )
+from app.core.webauthn_context import relying_party
 from app.models.user import Invitation, User
+from app.models.webauthn import WebAuthnCredential
 from app.schemas.auth import (
     BackupCodesResponse,
     InvitationCreate,
@@ -31,7 +34,9 @@ from app.schemas.auth import (
     TotpStatus,
 )
 from app.schemas.user import PreferencesRead, PreferencesUpdate, UserRead, UserUpdate
+from app.schemas.webauthn import PasskeyLoginRequest, PasskeyRead, PasskeyRegisterRequest
 from app.services import auth as auth_service
+from app.services import webauthn as webauthn_service
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -172,6 +177,70 @@ async def disable_totp(
 ) -> None:
     await auth_service.disable_totp(db, user=user, code=payload.code)
     clear_trust_cookie(response)
+
+
+# --- Passkeys (WebAuthn) ---------------------------------------------------------
+
+
+@router.post("/passkeys/register/options", response_model=dict[str, Any])
+async def passkey_register_options(
+    request: Request, user: CurrentUser, db: DbSession
+) -> dict[str, Any]:
+    rp_id, origin = relying_party(request)
+    return await webauthn_service.begin_registration(db, user=user, rp_id=rp_id, origin=origin)
+
+
+@router.post("/passkeys/register", response_model=PasskeyRead, status_code=status.HTTP_201_CREATED)
+async def register_passkey(
+    payload: PasskeyRegisterRequest, request: Request, user: CurrentUser, db: DbSession
+) -> WebAuthnCredential:
+    rp_id, origin = relying_party(request)
+    return await webauthn_service.finish_registration(
+        db,
+        user=user,
+        rp_id=rp_id,
+        origin=origin,
+        name=payload.name,
+        challenge=payload.challenge,
+        credential=payload.credential,
+    )
+
+
+@router.get("/passkeys", response_model=list[PasskeyRead])
+async def list_passkeys(user: CurrentUser, db: DbSession) -> list[WebAuthnCredential]:
+    return await webauthn_service.list_credentials(db, user=user)
+
+
+@router.delete("/passkeys/{credential_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_passkey(credential_id: UUID, user: CurrentUser, db: DbSession) -> None:
+    await webauthn_service.delete_credential(db, user=user, credential_id=credential_id)
+
+
+@router.post("/login/passkey/options", response_model=dict[str, Any])
+async def passkey_login_options(request: Request, db: DbSession) -> dict[str, Any]:
+    rp_id, origin = relying_party(request)
+    return await webauthn_service.begin_authentication(db, rp_id=rp_id, origin=origin)
+
+
+@router.post("/login/passkey", response_model=UserRead)
+async def login_with_passkey(
+    payload: PasskeyLoginRequest, request: Request, response: Response, db: DbSession
+) -> User:
+    rp_id, origin = relying_party(request)
+    issued = await webauthn_service.finish_authentication(
+        db,
+        rp_id=rp_id,
+        origin=origin,
+        challenge=payload.challenge,
+        credential=payload.credential,
+    )
+    set_session_cookies(
+        response,
+        session_token=issued.token,
+        csrf_token=issued.csrf_token,
+        expires_at=issued.session.expires_at,
+    )
+    return issued.user
 
 
 # --- Users (admin only) -----------------------------------------------------------

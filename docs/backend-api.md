@@ -26,7 +26,8 @@ money and conversion rules.
   `error.validation` with `params.errors` holding FastAPI's per-field error
   list.
 - Every route except `/health/*`, `/meta/currencies`, `/meta/settings`,
-  `/auth/login`, `/auth/register`, and `/auth/setup-status` requires an
+  `/auth/login`, `/auth/register`, `/auth/login/passkey`,
+  `/auth/login/passkey/options`, and `/auth/setup-status` requires an
   authenticated session (`auth.unauthenticated`, 401, if the session cookie
   is missing or invalid).
 - Every route scoped to a single resource (`GET/PATCH/DELETE .../{id}`)
@@ -111,6 +112,18 @@ Registration is invite-only, except the very first user on an instance.
   code all return the same `auth.invalid_credentials`, so recovery can't be
   used to enumerate accounts.
 
+### Passkeys (WebAuthn, optional, per user)
+
+- A passkey is a passwordless primary login and also satisfies 2FA: a
+  user-verified passkey combines possession with a PIN or biometric, so no TOTP
+  prompt is shown. Password login is unchanged and remains the fallback.
+- The relying-party ID is derived from the request `Origin`. Passkey routes
+  require HTTPS, except for `localhost`, `127.0.0.1`, and `::1`, which browsers
+  treat as secure contexts. No configurable RP ID is needed.
+- Registration and login challenges are single-use and expire after five
+  minutes. A stored credential is bound to the `rp_id` used when it was
+  created, so it cannot authenticate against another origin's RP ID.
+
 ### Auth error codes
 
 | Code | Status | When |
@@ -129,6 +142,12 @@ Registration is invite-only, except the very first user on an instance.
 | `auth.admin_required` | 403 | Non-admin called an admin-only route. |
 | `auth.peer_admin` | 403 | An administrator tried to change another administrator's role or active state. |
 | `auth.last_admin` | 409 | Attempt to demote or deactivate the only remaining admin. |
+| `webauthn.origin_invalid` | 403 | The browser did not send a parseable `Origin` header. |
+| `webauthn.insecure_context` | 403 | The origin is not HTTPS and is not a local secure-context exemption. |
+| `webauthn.challenge_invalid` | 401 | The challenge is missing, expired, consumed, or bound to another ceremony. |
+| `webauthn.verification_failed` | 401 | The credential assertion or registration response failed verification. |
+| `webauthn.credential_exists` | 409 | The credential is already enrolled. |
+| `webauthn.not_found` | 404 | The passkey does not belong to the current user or does not exist. |
 | `auth.invalid_role` | 422 | Role isn't `admin` or `member`. |
 | `auth.invalid_theme` | 422 | Theme preference isn't `light` or `dark`. |
 | `user.not_found` | 404 | An administrator tried to update a user id that doesn't exist. |
@@ -155,8 +174,14 @@ Registration is invite-only, except the very first user on an instance.
 | DELETE | `/auth/invitations/{id}` | admin | Revoke. |
 | POST | `/auth/register` | public | Body `{email, token, password, display_name, base_currency?}`. Logs in on success; the selected base currency also initializes display currency. |
 | POST | `/auth/login` | public | Body `{email, password}`. |
+| POST | `/auth/login/passkey/options` | public | Begin a discoverable passkey login. |
+| POST | `/auth/login/passkey` | public | Complete passkey login and issue the normal session cookies. |
 | POST | `/auth/logout` | user | 204. |
 | GET | `/auth/me` | user | |
+| POST | `/auth/passkeys/register/options` | user | Begin passkey enrollment. |
+| POST | `/auth/passkeys/register` | user | Complete passkey enrollment. |
+| GET | `/auth/passkeys` | user | List the current user's passkeys. |
+| DELETE | `/auth/passkeys/{credential_id}` | user | Remove one of the current user's passkeys. |
 | GET | `/auth/users` | admin | |
 | PATCH | `/auth/users/{id}` | admin | `{role?, is_active?, display_name?}`. |
 | GET/PATCH | `/auth/preferences` | user | `{locale, theme, base_currency, display_currency, balances_hidden}` - stored as columns on `users`, not localStorage; only display currency is changeable here. |

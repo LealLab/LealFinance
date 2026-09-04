@@ -35,12 +35,13 @@ import { Card } from '../../shared/ui/card/card';
 import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { PasskeysSection } from './passkeys-section';
 
 const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
 
 @Component({
   selector: 'app-settings',
-  imports: [TranslocoDirective, Button, Card, Icon, Modal, PageHeader, RouterLink],
+  imports: [TranslocoDirective, Button, Card, Icon, Modal, PageHeader, RouterLink, PasskeysSection],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
 })
@@ -129,6 +130,7 @@ export class Settings {
     viewChild<ElementRef<HTMLSelectElement>>('displayCurrencySelect');
   private readonly backupActions = viewChild<ElementRef<HTMLDivElement>>('backupActions');
   private readonly twoFactorSection = viewChild<ElementRef<HTMLElement>>('twoFactorSection');
+  private readonly passkeysSection = viewChild<ElementRef<HTMLElement>>('passkeysSection');
 
   constructor() {
     this.loadMarketDataCredentials();
@@ -150,7 +152,9 @@ export class Settings {
                   )
                 : this.fragment() === 'settings-two-factor'
                   ? this.twoFactorSection()?.nativeElement
-                  : undefined;
+                  : this.fragment() === 'settings-passkeys'
+                    ? this.passkeysSection()?.nativeElement
+                    : undefined;
 
       if (!target) return;
       target.scrollIntoView?.({ block: 'center' });

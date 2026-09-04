@@ -63,7 +63,7 @@ interface PaletteGroup {
  * as-is here for the "Go to" group, via NAV_SECTIONS, and so don't need
  * re-marking). Admin-only items reuse the same keys as layout/sidebar.ts.
  *
- * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.configureTwoFactor, layout.commandPalette.actions.configureTwoFactorHint, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, settings.backup.export.action, settings.backup.restore.action, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
+ * t(layout.commandPalette.groups.quickActions, layout.commandPalette.groups.goTo, layout.commandPalette.groups.accounts, layout.commandPalette.groups.categories, layout.commandPalette.groups.budgets, layout.commandPalette.groups.transactions, layout.commandPalette.actions.newTransaction, layout.commandPalette.actions.newAccount, layout.commandPalette.actions.newCategory, layout.commandPalette.actions.newBudget, layout.commandPalette.actions.configureLanguage, layout.commandPalette.actions.configureCurrency, layout.commandPalette.actions.configureTwoFactor, layout.commandPalette.actions.configureTwoFactorHint, layout.commandPalette.actions.configurePasskeys, layout.commandPalette.actions.configurePasskeysHint, layout.commandPalette.actions.toggleTheme, layout.commandPalette.actions.toggleBalances, settings.backup.export.action, settings.backup.restore.action, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.admin)
  */
 @Component({
   selector: 'app-command-palette',
@@ -361,6 +361,13 @@ export class CommandPalette {
         keywordsKey: 'layout.commandPalette.actions.configureTwoFactorHint',
         icon: 'shield',
         run: () => this.navigateToSetting('settings-two-factor'),
+      },
+      {
+        id: 'quick-configure-passkeys',
+        labelKey: 'layout.commandPalette.actions.configurePasskeys',
+        keywordsKey: 'layout.commandPalette.actions.configurePasskeysHint',
+        icon: 'key',
+        run: () => this.navigateToSetting('settings-passkeys'),
       },
       {
         id: 'quick-toggle-theme',

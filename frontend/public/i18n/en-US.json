@@ -288,6 +288,8 @@
         "newBudget": "New budget",
         "configureLanguage": "Configure language",
         "configureCurrency": "Configure display currency",
+        "configurePasskeys": "Configure passkeys",
+        "configurePasskeysHint": "passkey webauthn passwordless security key biometric",
         "toggleTheme": "Toggle theme",
         "toggleBalances": "Show or hide balances",
         "configureTwoFactor": "Configure two-factor authentication",
@@ -1522,6 +1524,25 @@
         "regenerate": "Generate new backup codes",
         "disable": "Disable"
       }
+    },
+    "passkeys": {
+      "title": "Passkeys",
+      "description": "Sign in without a password using your device's fingerprint, face, or PIN.",
+      "unsupported": "Passkeys need a secure (HTTPS) connection. Open this site over HTTPS to add one.",
+      "empty": "No passkeys yet.",
+      "add": "Add a passkey",
+      "nameLabel": "Passkey name",
+      "namePlaceholder": "e.g. Personal laptop",
+      "nameHint": "A label to help you recognize this device later.",
+      "create": "Create passkey",
+      "added": "Added {{date}}",
+      "lastUsed": "Last used {{date}}",
+      "neverUsed": "Never used",
+      "remove": "Remove",
+      "removeConfirm": {
+        "title": "Remove this passkey?",
+        "message": "You will no longer be able to sign in with it. This cannot be undone."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Sign in",
       "description": "Use your LealFinance account to continue.",
       "action": "Sign in",
-      "invited": "Have an invitation?"
+      "invited": "Have an invitation?",
+      "passkeyAction": "Sign in with a passkey"
     },
     "register": {
       "title": "Accept invitation",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Two-factor authentication is already enabled.",
       "not_enabled": "Two-factor authentication is not enabled."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkeys aren't available on this address.",
+      "insecure_context": "Passkeys need a secure (HTTPS) connection.",
+      "challenge_invalid": "That passkey request expired. Please try again.",
+      "verification_failed": "That passkey could not be verified.",
+      "credential_exists": "That passkey is already registered.",
+      "not_found": "Passkey not found."
     }
   }
 }

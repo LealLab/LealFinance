@@ -288,6 +288,8 @@
         "newBudget": "Uusi budjetti",
         "configureLanguage": "Määritä kieli",
         "configureCurrency": "Määritä näyttövaluutta",
+        "configurePasskeys": "Määritä passkeyt",
+        "configurePasskeysHint": "passkey, WebAuthn, salasanaton, suojausavain, biometria",
         "toggleTheme": "Vaihda teemaa",
         "toggleBalances": "Näytä tai piilota saldot",
         "configureTwoFactor": "Määritä kaksivaiheinen todennus",
@@ -1522,6 +1524,25 @@
         "regenerate": "Luo uudet varakoodit",
         "disable": "Poista käytöstä"
       }
+    },
+    "passkeys": {
+      "title": "Passkeyt",
+      "description": "Kirjaudu ilman salasanaa laitteesi sormenjäljellä, kasvoilla tai PIN-koodilla.",
+      "unsupported": "Passkeyt tarvitsevat suojatun (HTTPS) yhteyden. Avaa tämä sivusto HTTPS-yhteydellä lisätäksesi passkeyn.",
+      "empty": "Passkey-avaimia ei vielä ole.",
+      "add": "Lisää passkey",
+      "nameLabel": "Passkeyn nimi",
+      "namePlaceholder": "esim. Henkilökohtainen kannettava",
+      "nameHint": "Tunniste, jonka avulla tunnistat tämän laitteen myöhemmin.",
+      "create": "Luo passkey",
+      "added": "Lisätty {{date}}",
+      "lastUsed": "Käytetty viimeksi {{date}}",
+      "neverUsed": "Ei käytetty",
+      "remove": "Poista",
+      "removeConfirm": {
+        "title": "Poistetaanko tämä passkey?",
+        "message": "Et voi enää kirjautua sillä. Tätä ei voi kumota."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Kirjaudu sisään",
       "description": "Jatka kirjautumalla LealFinance-tilillesi.",
       "action": "Kirjaudu sisään",
-      "invited": "Onko sinulla kutsu?"
+      "invited": "Onko sinulla kutsu?",
+      "passkeyAction": "Kirjaudu sisään passkeylla"
     },
     "register": {
       "title": "Hyväksy kutsu",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Kaksivaiheinen todennus on jo käytössä.",
       "not_enabled": "Kaksivaiheinen todennus ei ole käytössä."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkeyt eivät ole käytettävissä tässä osoitteessa.",
+      "insecure_context": "Passkeyt tarvitsevat suojatun (HTTPS) yhteyden.",
+      "challenge_invalid": "Passkey-pyyntö vanheni. Yritä uudelleen.",
+      "verification_failed": "Passkeyn vahvistaminen ei onnistunut.",
+      "credential_exists": "Passkey on jo rekisteröity.",
+      "not_found": "Passkeyä ei löytynyt."
     }
   }
 }
