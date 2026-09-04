@@ -1,5 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
@@ -16,6 +17,7 @@ import { MockTransactionRepository } from '../../data/mock/mock-transaction.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockStore } from '../../data/mock/mock-store';
 import { Loans } from './loans';
+import { LoanPaymentModal } from './loan-payment-modal';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Loans', () => {
@@ -102,5 +104,31 @@ describe('Loans', () => {
     expect(fixture.componentInstance['loanTransactions'](loan).map((tx) => tx.id)).toEqual([
       linked.id,
     ]);
+  });
+
+  it('keeps the chosen payment mode across unrelated change-detection cycles', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    fixture.componentInstance['openPayment'](loan);
+    fixture.detectChanges();
+
+    const modal = fixture.debugElement.query(By.directive(LoanPaymentModal))
+      .componentInstance as LoanPaymentModal;
+    modal['form'].controls.mode.setValue('last');
+
+    // `[transactions]="paymentLoanTransactions()"` must stay referentially
+    // stable across re-renders, or the modal's reset effect fires again and
+    // snaps `mode` back to "next" - see the regression this guards against.
+    fixture.detectChanges();
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    expect(modal['form'].controls.mode.value).toBe('last');
   });
 });

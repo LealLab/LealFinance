@@ -275,7 +275,7 @@
       [loan]="loan"
       [accounts]="accountsResource.value() ?? []"
       [institutions]="institutionsResource.value() ?? []"
-      [transactions]="loanTransactions(loan)"
+      [transactions]="paymentLoanTransactions()"
       (saved)="onPaymentSaved()"
     />
   }

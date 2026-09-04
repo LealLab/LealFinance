@@ -166,6 +166,19 @@ export class Loans {
       .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
   }
 
+  /**
+   * A stable array reference for the payment modal's `transactions` input.
+   * Unlike `loanTransactions()`, called fresh from the template every change
+   * detection cycle, this only recomputes when the open loan or the
+   * underlying resource actually changes - otherwise the modal's reset
+   * effect (which reads this input) would fire on every tick and snap the
+   * payment mode back to "next" as soon as the user picked something else.
+   */
+  protected readonly paymentLoanTransactions = computed<Transaction[]>(() => {
+    const loan = this.paymentLoan();
+    return loan ? this.loanTransactions(loan) : [];
+  });
+
   protected loanSchedule(loan: Loan): LoanScheduleRow[] {
     return loanSchedule(loan, this.transactionsResource.value() ?? []);
   }
