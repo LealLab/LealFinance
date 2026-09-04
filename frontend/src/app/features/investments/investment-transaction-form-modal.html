@@ -3,7 +3,7 @@
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
-        <div class="grid grid-cols-4 gap-1 rounded-md bg-surface-sunken p-1">
+        <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1 sm:grid-cols-4">
           @for (type of transactionTypes; track type) {
             <button
               type="button"
@@ -16,7 +16,7 @@
           }
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="investment-tx-date">{{ t('investments.transactions.form.fields.date') }}</label>
             <input id="investment-tx-date" type="date" class="form-input" formControlName="date" />
@@ -40,7 +40,7 @@
         }
 
         @if (isTrade()) {
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label class="form-label" for="investment-tx-quantity">{{ t('investments.transactions.form.fields.quantity') }}</label>
               <input id="investment-tx-quantity" type="text" inputmode="decimal" class="form-input font-mono" formControlName="quantity" />

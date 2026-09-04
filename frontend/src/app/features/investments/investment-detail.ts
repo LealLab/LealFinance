@@ -53,7 +53,6 @@ const PAGE_SIZE = 30;
     InvestmentWalletFormModal,
   ],
   templateUrl: './investment-detail.html',
-  styleUrl: './investment-detail.scss',
 })
 export class InvestmentDetail {
   private readonly wallets = inject(InvestmentWalletRepository);

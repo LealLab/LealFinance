@@ -32,12 +32,12 @@
       </div>
     }
 
-    <div class="grid grid-cols-7 text-xs font-semibold text-content-subtle">
+    <div class="hidden sm:grid grid-cols-7 text-xs font-semibold text-content-subtle">
       @for (label of weekdayLabels(); track $index) {
         <div class="px-2 py-1">{{ label }}</div>
       }
     </div>
-    <div class="grid grid-cols-7 gap-px bg-border">
+    <div class="hidden sm:grid grid-cols-7 gap-px bg-border">
       @for (day of days(); track day.date) {
         <button
           type="button"
@@ -65,6 +65,39 @@
             </span>
           }
         </button>
+      }
+    </div>
+
+    <!-- Mobile: a 7-column grid gives ~48px cells at 375px, too small to
+         tap reliably - a scrollable agenda list of the month's days instead. -->
+    <div class="flex max-h-80 flex-col divide-y divide-border overflow-y-auto sm:hidden">
+      @for (day of days(); track day.date) {
+        @if (day.inMonth) {
+          <button
+            type="button"
+            class="flex items-center gap-3 px-2 py-2 text-left"
+            [class.bg-surface-sunken]="day.date === selectedDay()"
+            (click)="daySelected.emit(day.date)"
+          >
+            <span
+              class="flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-medium"
+              [class]="day.isToday ? 'bg-accent text-accent-content' : 'text-content-primary'"
+            >
+              {{ day.dayOfMonth }}
+            </span>
+            <span class="flex gap-0.5">
+              @if (day.hasIncome) { <span class="size-1.5 rounded-full bg-positive"></span> }
+              @if (day.hasExpense) { <span class="size-1.5 rounded-full bg-negative"></span> }
+              @if (day.hasTransfer) { <span class="size-1.5 rounded-full bg-accent"></span> }
+              @if (day.hasProjected) { <span class="size-1.5 rounded-full border border-content-subtle"></span> }
+            </span>
+            @if (day.balance !== null) {
+              <span class="ml-auto font-mono text-xs text-content-muted">
+                {{ day.balance | money: displayCurrency() : 'compact' }}
+              </span>
+            }
+          </button>
+        }
       }
     </div>
   </div>

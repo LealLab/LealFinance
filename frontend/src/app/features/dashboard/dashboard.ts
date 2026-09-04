@@ -58,7 +58,6 @@ const BUDGET_PREVIEW_LIMIT = 4;
     ExchangeRateWarning
   ],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss'
 })
 export class Dashboard {
   private readonly router = inject(Router);

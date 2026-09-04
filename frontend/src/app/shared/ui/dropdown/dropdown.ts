@@ -23,7 +23,6 @@ import { Component, computed, ElementRef, HostListener, inject, input, model } f
 @Component({
   selector: 'app-dropdown',
   templateUrl: './dropdown.html',
-  styleUrl: './dropdown.scss',
   host: { class: 'relative inline-block', '(click)': 'onHostClick($event)' },
 })
 export class Dropdown {
@@ -37,7 +36,7 @@ export class Dropdown {
 
   protected readonly panelClasses = computed(
     () =>
-      'absolute z-30 mt-2 rounded-lg border border-border bg-surface-raised p-1 shadow-lg ' +
+      'absolute z-30 mt-2 max-w-[calc(100vw-2rem)] rounded-lg border border-border bg-surface-raised p-1 shadow-lg ' +
       (this.align() === 'start' ? 'left-0 ' : 'right-0 ') +
       this.panelClass(),
   );

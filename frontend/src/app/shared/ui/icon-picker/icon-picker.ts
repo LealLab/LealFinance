@@ -31,7 +31,6 @@ const GROUPS = Object.entries(ICON_GROUPS) as [IconGroup, readonly IconName[]][]
   selector: 'app-icon-picker',
   imports: [Icon, Modal, TranslocoDirective],
   templateUrl: './icon-picker.html',
-  styleUrl: './icon-picker.scss'
 })
 export class IconPicker {
   private readonly transloco = inject(TranslocoService);

@@ -10,7 +10,6 @@ const RTL_LANGS = new Set(['ar', 'he-IL']);
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
 })
 export class App {
   private readonly document = inject(DOCUMENT);

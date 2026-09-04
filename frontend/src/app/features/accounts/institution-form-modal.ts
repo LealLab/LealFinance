@@ -29,7 +29,6 @@ const DEFAULT_ICON = 'bank';
   selector: 'app-institution-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ColorPicker, Icon, IconPicker],
   templateUrl: './institution-form-modal.html',
-  styleUrl: './institution-form-modal.scss'
 })
 export class InstitutionFormModal {
   private readonly institutions = inject(InstitutionRepository);

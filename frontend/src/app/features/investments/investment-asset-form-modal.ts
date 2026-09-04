@@ -25,7 +25,6 @@ const QUOTE_PROVIDERS: readonly InvestmentQuoteProvider[] = ['twelve_data', 'bra
   selector: 'app-investment-asset-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Button, Modal],
   templateUrl: './investment-asset-form-modal.html',
-  styleUrl: './investment-asset-form-modal.scss',
 })
 export class InvestmentAssetFormModal {
   private readonly assets = inject(InvestmentAssetRepository);

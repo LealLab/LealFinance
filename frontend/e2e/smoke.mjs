@@ -95,6 +95,42 @@ try {
   await assert.doesNotReject(() =>
     page.getByText(`Browser smoke ${suffix}`, { exact: true }).waitFor({ state: 'visible' }),
   );
+
+  // Viewport sweep: Vitest/jsdom has no layout engine and cannot catch a
+  // responsive regression, so this is the one place that can. A route with
+  // horizontal overflow at a phone/tablet width is exactly the class of bug
+  // the mobile pass fixed - routes gated behind admin/agents/investments are
+  // skipped since a fresh smoke user won't have them.
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+  ];
+  const routes = [
+    '/',
+    '/accounts',
+    '/transactions',
+    '/categories',
+    '/rules',
+    '/budgets',
+    '/goals',
+    '/reports',
+    '/exchange',
+    '/settings',
+  ];
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    for (const route of routes) {
+      await page.goto(`${appBaseUrl}${route}`);
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      );
+      assert.ok(
+        overflow <= 1,
+        `${route} overflows horizontally by ${overflow}px at ${viewport.width}x${viewport.height}`,
+      );
+    }
+  }
 } finally {
   await api.dispose();
   await browser.close();

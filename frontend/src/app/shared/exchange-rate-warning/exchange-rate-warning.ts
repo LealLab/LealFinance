@@ -18,7 +18,6 @@ import { Button } from '../ui/button/button';
   selector: 'app-exchange-rate-warning',
   imports: [TranslocoDirective, Button],
   templateUrl: './exchange-rate-warning.html',
-  styleUrl: './exchange-rate-warning.scss'
 })
 export class ExchangeRateWarning {
   isFallback = input(false);

@@ -43,7 +43,6 @@ const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
   selector: 'app-settings',
   imports: [TranslocoDirective, Button, Card, Icon, Modal, PageHeader, RouterLink, PasskeysSection],
   templateUrl: './settings.html',
-  styleUrl: './settings.scss',
 })
 export class Settings {
   protected readonly theme = inject(ThemeService);

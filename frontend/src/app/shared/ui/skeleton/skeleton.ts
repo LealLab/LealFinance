@@ -10,7 +10,6 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'app-skeleton',
   templateUrl: './skeleton.html',
-  styleUrl: './skeleton.scss',
   host: {
     class: 'block animate-pulse rounded-md bg-surface-sunken',
     '[style.height]': 'height()',

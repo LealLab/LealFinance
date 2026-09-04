@@ -11,7 +11,7 @@
           }
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="loan-category">{{
               t('loans.form.fields.category')
@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="loan-borrowed">{{
               t('loans.form.fields.amountBorrowed')
@@ -65,7 +65,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
             <label class="form-label" for="loan-rate">{{
               t('loans.form.fields.interestRate')
@@ -134,7 +134,7 @@
           <p class="mt-1 text-xs text-content-muted">{{ t('loans.form.fields.autoPostHint') }}</p>
 
           @if (form.controls.autoPost.value) {
-            <div class="mt-3 grid grid-cols-2 gap-4">
+            <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label class="form-label" for="loan-institution">{{
                   t('loans.form.fields.institution')

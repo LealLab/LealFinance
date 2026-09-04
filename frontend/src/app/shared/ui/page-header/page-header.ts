@@ -7,7 +7,6 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'app-page-header',
   templateUrl: './page-header.html',
-  styleUrl: './page-header.scss'
 })
 export class PageHeader {
   /** Small uppercase label above the title (e.g. a section name). */

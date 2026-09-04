@@ -48,7 +48,6 @@ interface CategoryTableRow {
     Skeleton,
   ],
   templateUrl: './reports.html',
-  styleUrl: './reports.scss'
 })
 export class Reports {
   private readonly accountRepository = inject(AccountRepository);

@@ -28,7 +28,6 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
   selector: 'app-recurring-rule-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
   templateUrl: './recurring-rule-form-modal.html',
-  styleUrl: './recurring-rule-form-modal.scss'
 })
 export class RecurringRuleFormModal {
   private readonly recurringRules = inject(RecurringRuleRepository);

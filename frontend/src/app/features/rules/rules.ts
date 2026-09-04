@@ -46,7 +46,6 @@ type RuleSortKey = 'priority' | 'name' | 'category';
     RulePacksModal,
   ],
   templateUrl: './rules.html',
-  styleUrl: './rules.scss',
 })
 export class Rules {
   private readonly ruleRepository = inject(CategorizationRuleRepository);

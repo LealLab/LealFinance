@@ -22,7 +22,6 @@ export const DEFAULT_ICON = 'tag';
   selector: 'app-category-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ColorPicker, Icon, IconPicker],
   templateUrl: './category-form-modal.html',
-  styleUrl: './category-form-modal.scss'
 })
 export class CategoryFormModal {
   private readonly categories = inject(CategoryRepository);

@@ -37,7 +37,6 @@ const STATUS_TONE: Record<CardInvoiceStatus, BadgeTone> = {
   selector: 'app-card-invoices',
   imports: [TranslocoDirective, MoneyPipe, Badge, Button, Card, EmptyState, Icon],
   templateUrl: './card-invoices.html',
-  styleUrl: './card-invoices.scss',
 })
 export class CardInvoices {
   private readonly repository = inject(CardInvoiceRepository);

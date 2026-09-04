@@ -17,7 +17,7 @@
           }
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="account-type">{{
               t('accounts.form.fields.type')
@@ -81,8 +81,8 @@
         </div>
 
         @if (isCreditCard()) {
-          <div class="grid grid-cols-3 gap-4 rounded-md border border-border bg-surface-sunken p-3">
-            <div class="col-span-3">
+          <div class="grid grid-cols-1 gap-4 rounded-md border border-border bg-surface-sunken p-3 sm:grid-cols-3">
+            <div class="sm:col-span-3">
               <label class="form-label" for="account-credit-limit">
                 {{ t('accounts.form.fields.creditLimit') }}
               </label>
@@ -121,7 +121,7 @@
               />
             </div>
 
-            <div class="col-span-3">
+            <div class="sm:col-span-3">
               <label class="form-label" for="account-payment-account">
                 {{ t('accounts.form.fields.paymentAccount') }}
               </label>
@@ -137,7 +137,7 @@
               </select>
             </div>
 
-            <label class="col-span-3 flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-sm sm:col-span-3">
               <input type="checkbox" formControlName="autoPay" [disabled]="!canAutoPay()" />
               {{ t('accounts.form.fields.autoPay') }}
             </label>

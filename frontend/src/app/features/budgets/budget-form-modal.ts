@@ -20,7 +20,6 @@ import { Modal } from '../../shared/ui/modal/modal';
   selector: 'app-budget-form-modal',
   imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
   templateUrl: './budget-form-modal.html',
-  styleUrl: './budget-form-modal.scss',
 })
 export class BudgetFormModal {
   private readonly budgets = inject(BudgetRepository);

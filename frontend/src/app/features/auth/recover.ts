@@ -27,7 +27,6 @@ import { ThemeToggle } from '../../shared/ui/theme-toggle/theme-toggle';
     ThemeToggle,
   ],
   templateUrl: './recover.html',
-  styleUrl: './recover.scss',
 })
 export class Recover {
   private readonly identityApi = inject(IdentityApiService);

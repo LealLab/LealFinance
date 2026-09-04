@@ -30,7 +30,7 @@
           {{ t('budgets.planner.total') }}: {{ totalPercentage() }}%
         </h2>
         @if (plannerChart().labels.length > 0) {
-          <div class="h-52 w-full">
+          <div class="h-44 w-full sm:h-52">
             <app-chart
               kind="doughnut"
               [labels]="plannerChart().labels"

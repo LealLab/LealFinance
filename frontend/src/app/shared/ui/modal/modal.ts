@@ -24,7 +24,6 @@ import { Icon } from '../icon/icon';
   selector: 'app-modal',
   imports: [Icon, Button, TranslocoDirective],
   templateUrl: './modal.html',
-  styleUrl: './modal.scss'
 })
 export class Modal {
   readonly open = model.required<boolean>();

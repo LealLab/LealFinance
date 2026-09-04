@@ -34,7 +34,6 @@ import { InvestmentWalletFormModal } from './investment-wallet-form-modal';
     InvestmentWalletFormModal,
   ],
   templateUrl: './investments.html',
-  styleUrl: './investments.scss',
 })
 export class Investments {
   private readonly wallets = inject(InvestmentWalletRepository);

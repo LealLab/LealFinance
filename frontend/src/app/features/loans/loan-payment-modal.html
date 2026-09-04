@@ -1,7 +1,7 @@
 <div *transloco="let t">
   <app-modal [(open)]="open" [titleText]="t('loans.payment.title')">
     <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label class="form-label" for="loan-payment-amount">{{
             t('loans.payment.fields.amount')

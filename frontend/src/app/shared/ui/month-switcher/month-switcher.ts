@@ -14,7 +14,6 @@ import { Icon } from '../icon/icon';
   selector: 'app-month-switcher',
   imports: [Button, Icon],
   templateUrl: './month-switcher.html',
-  styleUrl: './month-switcher.scss',
 })
 export class MonthSwitcher {
   private readonly locale = inject(TranslocoLocaleService);
