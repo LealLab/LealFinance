@@ -1087,11 +1087,17 @@
         "institution": "מוסד",
         "allInstitutions": "כל המוסדות",
         "paymentAccount": "חשבון",
-        "paymentAccountPlaceholder": "בחר את חשבון המקור"
+        "paymentAccountPlaceholder": "בחר את חשבון המקור",
+        "contractedInstallmentAmount": "תשלום חוזי",
+        "contractedInstallmentAmountHint": "מחליף את התשלום המשוער. השאר ריק כדי להשתמש בסכום המחושב משיעור הריבית.",
+        "adjustInterestRate": "התאמת שיעור הריבית",
+        "adjustInterestRateHint": "מחשב מחדש את שיעור הריבית כך שהתשלום המשוער יתאים לערך החוזי שלמעלה.",
+        "adjustInterestRateHelpLabel": "אודות התאמת שיעור הריבית"
       },
       "errors": {
         "required": "שדה זה הוא חובה.",
-        "paymentAccountRequired": "בחר את החשבון שממנו מתבצעים התשלומים."
+        "paymentAccountRequired": "בחר את החשבון שממנו מתבצעים התשלומים.",
+        "rateAdjustmentUnavailable": "אין שיעור ריבית לא שלילי שמניב תשלום זה. הגדל את התשלום החוזי או הקטן את הסכום הממומן."
       },
       "actions": {
         "cancel": "ביטול",
@@ -1107,10 +1113,41 @@
         "dateHint": "הגדר תאריך עתידי כדי לשלם תשלום מראש.",
         "account": "חשבון",
         "noInstitution": "ללא מוסד",
-        "description": "תיאור"
+        "description": "תיאור",
+        "mode": "תשלומים לתשלום",
+        "count": "כמה",
+        "totalAmount": "סכום כולל"
       },
       "actions": {
         "confirm": "רישום תשלום"
+      },
+      "modes": {
+        "next": "התשלום הבא",
+        "last": "ה-N התשלומים האחרונים",
+        "all": "כל התשלומים הפתוחים"
+      },
+      "quote": {
+        "installments": "תשלומים",
+        "original": "סכום חוזי כולל",
+        "discount": "הנחה"
+      },
+      "errors": {
+        "count": "הזן מספר בין 1 ל-{{count}}."
+      },
+      "prorateWarning": "הסכום הכולל יחולק באופן יחסי בין כל התשלומים שנבחרו, כולם יסומנו כשולמו, ויתרת ההלוואה תקטן בסכומיהם החוזיים."
+    },
+    "history": {
+      "title": "היסטוריית תשלומים",
+      "empty": "עדיין לא נרשמו תשלומים."
+    },
+    "schedule": {
+      "title": "לוח תשלומים",
+      "empty": "לא תוזמנו תשלומים.",
+      "paidOn": "שולם ב-{{date}}",
+      "status": {
+        "open": "פתוח",
+        "overdue": "באיחור",
+        "paid": "שולם"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "לא ניתן לאמת את מפתח הגישה.",
       "credential_exists": "מפתח הגישה הזה כבר רשום.",
       "not_found": "מפתח הגישה לא נמצא."
+    },
+    "loan": {
+      "advance_amount_too_small": "הסכום הכולל קטן מדי כדי לחלק בין התשלומים שנבחרו.",
+      "advance_count_exceeds_remaining": "לא נותרו כל כך הרבה תשלומים פתוחים.",
+      "installment_count_below_paid": "מספר התשלומים לא יכול להיות נמוך ממספר התשלומים ששולמו כבר."
     }
   }
 }

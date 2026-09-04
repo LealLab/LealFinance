@@ -1087,11 +1087,17 @@
         "institution": "Istituto",
         "allInstitutions": "Tutti gli istituti",
         "paymentAccount": "Conto",
-        "paymentAccountPlaceholder": "Scegli il conto di origine"
+        "paymentAccountPlaceholder": "Scegli il conto di origine",
+        "contractedInstallmentAmount": "Rata contrattuale",
+        "contractedInstallmentAmountHint": "Sostituisce la rata stimata. Lascia vuoto per usare l'importo calcolato dal tasso di interesse.",
+        "adjustInterestRate": "Regola il tasso di interesse",
+        "adjustInterestRateHint": "Ricalcola il tasso di interesse in modo che la rata stimata corrisponda al valore contrattuale sopra.",
+        "adjustInterestRateHelpLabel": "Informazioni sulla regolazione del tasso di interesse"
       },
       "errors": {
         "required": "Questo campo è obbligatorio.",
-        "paymentAccountRequired": "Scegli il conto da cui provengono i pagamenti."
+        "paymentAccountRequired": "Scegli il conto da cui provengono i pagamenti.",
+        "rateAdjustmentUnavailable": "Nessun tasso di interesse non negativo produce questa rata. Aumenta la rata contrattuale o riduci l'importo finanziato."
       },
       "actions": {
         "cancel": "Annulla",
@@ -1107,10 +1113,41 @@
         "dateHint": "Imposta una data futura per pagare una rata in anticipo.",
         "account": "Conto",
         "noInstitution": "Nessun istituto",
-        "description": "Descrizione"
+        "description": "Descrizione",
+        "mode": "Rate da pagare",
+        "count": "Quante",
+        "totalAmount": "Importo totale"
       },
       "actions": {
         "confirm": "Registra pagamento"
+      },
+      "modes": {
+        "next": "Prossima rata",
+        "last": "Ultime N rate",
+        "all": "Tutte le rate aperte"
+      },
+      "quote": {
+        "installments": "Rate",
+        "original": "Totale contrattuale",
+        "discount": "Sconto"
+      },
+      "errors": {
+        "count": "Inserisci un numero tra 1 e {{count}}."
+      },
+      "prorateWarning": "L'importo totale verrà ripartito proporzionalmente tra tutte le rate selezionate, tutte saranno contrassegnate come pagate e il saldo del prestito diminuirà dei rispettivi importi contrattuali."
+    },
+    "history": {
+      "title": "Cronologia dei pagamenti",
+      "empty": "Nessun pagamento ancora registrato."
+    },
+    "schedule": {
+      "title": "Piano di rimborso",
+      "empty": "Nessuna rata pianificata.",
+      "paidOn": "Pagata il {{date}}",
+      "status": {
+        "open": "Aperta",
+        "overdue": "Scaduta",
+        "paid": "Pagata"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Non è stato possibile verificare la passkey.",
       "credential_exists": "Questa passkey è già registrata.",
       "not_found": "Passkey non trovata."
+    },
+    "loan": {
+      "advance_amount_too_small": "Questo importo totale è troppo basso per essere ripartito tra le rate selezionate.",
+      "advance_count_exceeds_remaining": "Non ci sono così tante rate aperte rimaste.",
+      "installment_count_below_paid": "Il numero di rate non può essere inferiore al numero di rate già pagate."
     }
   }
 }

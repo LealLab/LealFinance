@@ -1087,11 +1087,17 @@
         "institution": "Instituição",
         "allInstitutions": "Todas as instituições",
         "paymentAccount": "Conta",
-        "paymentAccountPlaceholder": "Escolha a conta de origem"
+        "paymentAccountPlaceholder": "Escolha a conta de origem",
+        "contractedInstallmentAmount": "Parcela contratada",
+        "contractedInstallmentAmountHint": "Substitui a parcela estimada. Deixe em branco para usar o valor calculado pela taxa de juros.",
+        "adjustInterestRate": "Ajustar taxa de juros",
+        "adjustInterestRateHint": "Recalcula a taxa de juros para que a parcela estimada corresponda ao valor contratado acima.",
+        "adjustInterestRateHelpLabel": "Sobre o ajuste da taxa de juros"
       },
       "errors": {
         "required": "Este campo é obrigatório.",
-        "paymentAccountRequired": "Escolha a conta de onde saem os pagamentos."
+        "paymentAccountRequired": "Escolha a conta de onde saem os pagamentos.",
+        "rateAdjustmentUnavailable": "Nenhuma taxa de juros não negativa produz essa parcela. Aumente a parcela contratada ou reduza o valor financiado."
       },
       "actions": {
         "cancel": "Cancelar",
@@ -1107,10 +1113,41 @@
         "dateHint": "Defina uma data futura para pagar uma parcela antecipadamente.",
         "account": "Conta",
         "noInstitution": "Sem instituição",
-        "description": "Descrição"
+        "description": "Descrição",
+        "mode": "Parcelas a pagar",
+        "count": "Quantas",
+        "totalAmount": "Valor total"
       },
       "actions": {
         "confirm": "Registrar pagamento"
+      },
+      "modes": {
+        "next": "Próxima parcela",
+        "last": "Últimas N parcelas",
+        "all": "Todas as parcelas em aberto"
+      },
+      "quote": {
+        "installments": "Parcelas",
+        "original": "Total contratual",
+        "discount": "Desconto"
+      },
+      "errors": {
+        "count": "Informe um número entre 1 e {{count}}."
+      },
+      "prorateWarning": "O valor total será rateado proporcionalmente entre todas as parcelas selecionadas, todas serão marcadas como pagas e o saldo do empréstimo cairá pelos valores contratuais delas."
+    },
+    "history": {
+      "title": "Histórico de pagamentos",
+      "empty": "Nenhum pagamento registrado ainda."
+    },
+    "schedule": {
+      "title": "Cronograma de parcelas",
+      "empty": "Nenhuma parcela programada.",
+      "paidOn": "Paga em {{date}}",
+      "status": {
+        "open": "Em aberto",
+        "overdue": "Atrasada",
+        "paid": "Paga"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Não foi possível verificar essa passkey.",
       "credential_exists": "Essa passkey já está registrada.",
       "not_found": "Passkey não encontrada."
+    },
+    "loan": {
+      "advance_amount_too_small": "Esse valor total é pequeno demais para ser rateado entre as parcelas selecionadas.",
+      "advance_count_exceeds_remaining": "Não restam tantas parcelas em aberto.",
+      "installment_count_below_paid": "O número de parcelas não pode ser menor que a quantidade já paga."
     }
   }
 }

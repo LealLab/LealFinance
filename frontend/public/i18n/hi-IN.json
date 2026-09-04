@@ -1087,11 +1087,17 @@
         "institution": "संस्थान",
         "allInstitutions": "सभी संस्थान",
         "paymentAccount": "खाता",
-        "paymentAccountPlaceholder": "स्रोत खाता चुनें"
+        "paymentAccountPlaceholder": "स्रोत खाता चुनें",
+        "contractedInstallmentAmount": "अनुबंधित किश्त",
+        "contractedInstallmentAmountHint": "अनुमानित किश्त को अधिलेखित करता है. ब्याज दर से गणना की गई राशि उपयोग करने के लिए इसे खाली छोड़ें.",
+        "adjustInterestRate": "ब्याज दर समायोजित करें",
+        "adjustInterestRateHint": "ब्याज दर की पुनर्गणना करता है ताकि अनुमानित किश्त ऊपर दिए गए अनुबंधित मान से मेल खाए.",
+        "adjustInterestRateHelpLabel": "ब्याज दर समायोजित करने के बारे में"
       },
       "errors": {
         "required": "यह फ़ील्ड आवश्यक है.",
-        "paymentAccountRequired": "वह खाता चुनें जिससे भुगतान होते हैं."
+        "paymentAccountRequired": "वह खाता चुनें जिससे भुगतान होते हैं.",
+        "rateAdjustmentUnavailable": "कोई गैर-ऋणात्मक ब्याज दर इस किश्त को नहीं देती. अनुबंधित किश्त बढ़ाएँ या वित्तपोषित राशि घटाएँ."
       },
       "actions": {
         "cancel": "रद्द करें",
@@ -1107,10 +1113,41 @@
         "dateHint": "किश्त पहले चुकाने के लिए भविष्य की तिथि सेट करें.",
         "account": "खाता",
         "noInstitution": "कोई संस्थान नहीं",
-        "description": "विवरण"
+        "description": "विवरण",
+        "mode": "भुगतान की जाने वाली किश्तें",
+        "count": "कितनी",
+        "totalAmount": "कुल राशि"
       },
       "actions": {
         "confirm": "भुगतान दर्ज करें"
+      },
+      "modes": {
+        "next": "अगली किश्त",
+        "last": "अंतिम N किश्तें",
+        "all": "सभी खुली किश्तें"
+      },
+      "quote": {
+        "installments": "किश्तें",
+        "original": "अनुबंधित कुल",
+        "discount": "छूट"
+      },
+      "errors": {
+        "count": "1 और {{count}} के बीच एक संख्या दर्ज करें."
+      },
+      "prorateWarning": "कुल राशि सभी चयनित किश्तों में आनुपातिक रूप से बाँटी जाएगी, सभी को भुगतान की गई के रूप में चिह्नित किया जाएगा, और ऋण शेष उनकी अनुबंधित राशियों से घट जाएगा."
+    },
+    "history": {
+      "title": "भुगतान इतिहास",
+      "empty": "अभी तक कोई भुगतान दर्ज नहीं हुआ है."
+    },
+    "schedule": {
+      "title": "किश्त अनुसूची",
+      "empty": "कोई किश्त निर्धारित नहीं है.",
+      "paidOn": "{{date}} को भुगतान किया गया",
+      "status": {
+        "open": "खुली",
+        "overdue": "अतिदेय",
+        "paid": "भुगतान हो गई"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "इस पासकी का सत्यापन नहीं हो सका।",
       "credential_exists": "यह पासकी पहले से पंजीकृत है।",
       "not_found": "पासकी नहीं मिली।"
+    },
+    "loan": {
+      "advance_amount_too_small": "यह कुल राशि चयनित किश्तों में बाँटने के लिए बहुत छोटी है.",
+      "advance_count_exceeds_remaining": "इतनी खुली किश्तें शेष नहीं हैं.",
+      "installment_count_below_paid": "किश्तों की संख्या पहले से भुगतान की गई संख्या से कम नहीं हो सकती."
     }
   }
 }

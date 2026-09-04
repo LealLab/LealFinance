@@ -1087,11 +1087,17 @@
         "institution": "Kurum",
         "allInstitutions": "Tüm kurumlar",
         "paymentAccount": "Hesap",
-        "paymentAccountPlaceholder": "Kaynak hesabı seçin"
+        "paymentAccountPlaceholder": "Kaynak hesabı seçin",
+        "contractedInstallmentAmount": "Sözleşmeli taksit",
+        "contractedInstallmentAmountHint": "Tahmini taksitin yerini alır. Faiz oranından hesaplanan tutarı kullanmak için boş bırakın.",
+        "adjustInterestRate": "Faiz oranını ayarla",
+        "adjustInterestRateHint": "Tahmini taksit yukarıdaki sözleşmeli değerle eşleşecek şekilde faiz oranını yeniden hesaplar.",
+        "adjustInterestRateHelpLabel": "Faiz oranını ayarlama hakkında"
       },
       "errors": {
         "required": "Bu alan zorunludur.",
-        "paymentAccountRequired": "Ödemelerin yapılacağı hesabı seçin."
+        "paymentAccountRequired": "Ödemelerin yapılacağı hesabı seçin.",
+        "rateAdjustmentUnavailable": "Bu taksiti veren negatif olmayan bir faiz oranı yok. Sözleşmeli taksiti artırın veya finanse edilen tutarı azaltın."
       },
       "actions": {
         "cancel": "İptal",
@@ -1107,10 +1113,41 @@
         "dateHint": "Bir taksiti önceden ödemek için ileri bir tarih ayarlayın.",
         "account": "Hesap",
         "noInstitution": "Kurum yok",
-        "description": "Açıklama"
+        "description": "Açıklama",
+        "mode": "Ödenecek taksitler",
+        "count": "Kaç adet",
+        "totalAmount": "Toplam tutar"
       },
       "actions": {
         "confirm": "Ödeme kaydet"
+      },
+      "modes": {
+        "next": "Sonraki taksit",
+        "last": "Son N taksit",
+        "all": "Tüm açık taksitler"
+      },
+      "quote": {
+        "installments": "Taksitler",
+        "original": "Sözleşmeli toplam",
+        "discount": "İndirim"
+      },
+      "errors": {
+        "count": "1 ile {{count}} arasında bir sayı girin."
+      },
+      "prorateWarning": "Toplam tutar seçilen tüm taksitlere orantılı olarak dağıtılacak, hepsi ödendi olarak işaretlenecek ve kredi bakiyesi sözleşmeli tutarları kadar azalacaktır."
+    },
+    "history": {
+      "title": "Ödeme geçmişi",
+      "empty": "Henüz kaydedilmiş bir ödeme yok."
+    },
+    "schedule": {
+      "title": "Taksit takvimi",
+      "empty": "Planlanmış taksit yok.",
+      "paidOn": "{{date}} tarihinde ödendi",
+      "status": {
+        "open": "Açık",
+        "overdue": "Gecikmiş",
+        "paid": "Ödendi"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Passkey doğrulanamadı.",
       "credential_exists": "Bu passkey zaten kayıtlı.",
       "not_found": "Passkey bulunamadı."
+    },
+    "loan": {
+      "advance_amount_too_small": "Bu toplam tutar, seçilen taksitlere dağıtılamayacak kadar küçük.",
+      "advance_count_exceeds_remaining": "O kadar açık taksit kalmadı.",
+      "installment_count_below_paid": "Taksit sayısı, zaten ödenmiş olan sayıdan az olamaz."
     }
   }
 }

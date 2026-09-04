@@ -145,6 +145,7 @@ export interface LoanWire {
   interest_rate: string;
   rate_period: 'annual' | 'monthly';
   installment_count: number;
+  contracted_installment_amount: string | null;
   installment_amount: string;
   first_payment_date: string;
   auto_post: boolean;
@@ -160,6 +161,11 @@ export interface LoanPaymentWire {
   date?: string | null;
   account_id?: string | null;
   description?: string | null;
+}
+
+export interface LoanAdvancePaymentWire extends LoanPaymentWire {
+  mode: 'last' | 'all';
+  count?: number | null;
 }
 
 export interface ImportOptionsWire {

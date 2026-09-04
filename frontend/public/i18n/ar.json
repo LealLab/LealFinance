@@ -1087,11 +1087,17 @@
         "institution": "المؤسسة",
         "allInstitutions": "كل المؤسسات",
         "paymentAccount": "الحساب",
-        "paymentAccountPlaceholder": "اختر الحساب المصدر"
+        "paymentAccountPlaceholder": "اختر الحساب المصدر",
+        "contractedInstallmentAmount": "القسط المتعاقد عليه",
+        "contractedInstallmentAmountHint": "يحل محل القسط المقدَّر. اتركه فارغًا لاستخدام المبلغ المحسوب من معدل الفائدة.",
+        "adjustInterestRate": "تعديل معدل الفائدة",
+        "adjustInterestRateHint": "يعيد حساب معدل الفائدة بحيث يطابق القسط المقدَّر القيمة المتعاقد عليها أعلاه.",
+        "adjustInterestRateHelpLabel": "حول تعديل معدل الفائدة"
       },
       "errors": {
         "required": "هذا الحقل مطلوب.",
-        "paymentAccountRequired": "اختر الحساب الذي تُخصم منه الدفعات."
+        "paymentAccountRequired": "اختر الحساب الذي تُخصم منه الدفعات.",
+        "rateAdjustmentUnavailable": "لا يوجد معدل فائدة غير سالب ينتج هذا القسط. ارفع القسط المتعاقد عليه أو خفّض المبلغ الممول."
       },
       "actions": {
         "cancel": "إلغاء",
@@ -1107,10 +1113,41 @@
         "dateHint": "حدّد تاريخًا مستقبليًا لدفع قسط مقدمًا.",
         "account": "الحساب",
         "noInstitution": "بدون مؤسسة",
-        "description": "الوصف"
+        "description": "الوصف",
+        "mode": "الأقساط المراد دفعها",
+        "count": "العدد",
+        "totalAmount": "المبلغ الإجمالي"
       },
       "actions": {
         "confirm": "تسجيل الدفعة"
+      },
+      "modes": {
+        "next": "القسط التالي",
+        "last": "آخر N أقساط",
+        "all": "كل الأقساط المفتوحة"
+      },
+      "quote": {
+        "installments": "الأقساط",
+        "original": "الإجمالي المتعاقد عليه",
+        "discount": "الخصم"
+      },
+      "errors": {
+        "count": "أدخل رقمًا بين 1 و{{count}}."
+      },
+      "prorateWarning": "سيُقسَّم المبلغ الإجمالي تناسبيًا على كل الأقساط المحددة، وستُعتبر جميعها مدفوعة، وسينخفض رصيد القرض بقيمتها المتعاقد عليها."
+    },
+    "history": {
+      "title": "سجل الدفعات",
+      "empty": "لم تُسجَّل أي دفعات بعد."
+    },
+    "schedule": {
+      "title": "جدول الأقساط",
+      "empty": "لا توجد أقساط مجدولة.",
+      "paidOn": "دُفع في {{date}}",
+      "status": {
+        "open": "مفتوح",
+        "overdue": "متأخر",
+        "paid": "مدفوع"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "تعذّر التحقق من مفتاح المرور.",
       "credential_exists": "مفتاح المرور هذا مسجّل بالفعل.",
       "not_found": "مفتاح المرور غير موجود."
+    },
+    "loan": {
+      "advance_amount_too_small": "هذا المبلغ الإجمالي صغير جدًا لتوزيعه على الأقساط المحددة.",
+      "advance_count_exceeds_remaining": "لا يوجد هذا العدد من الأقساط المفتوحة.",
+      "installment_count_below_paid": "لا يمكن أن يكون عدد الأقساط أقل من عدد الأقساط المدفوعة بالفعل."
     }
   }
 }

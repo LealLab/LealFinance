@@ -1087,11 +1087,17 @@
         "institution": "Instituție",
         "allInstitutions": "Toate instituțiile",
         "paymentAccount": "Cont",
-        "paymentAccountPlaceholder": "Alege contul sursă"
+        "paymentAccountPlaceholder": "Alege contul sursă",
+        "contractedInstallmentAmount": "Rată contractuală",
+        "contractedInstallmentAmountHint": "Înlocuiește rata estimată. Lasă necompletat pentru a folosi suma calculată din rata dobânzii.",
+        "adjustInterestRate": "Ajustează rata dobânzii",
+        "adjustInterestRateHint": "Recalculează rata dobânzii astfel încât rata estimată să corespundă valorii contractuale de mai sus.",
+        "adjustInterestRateHelpLabel": "Despre ajustarea ratei dobânzii"
       },
       "errors": {
         "required": "Acest câmp este obligatoriu.",
-        "paymentAccountRequired": "Alege contul din care se fac plățile."
+        "paymentAccountRequired": "Alege contul din care se fac plățile.",
+        "rateAdjustmentUnavailable": "Nicio rată a dobânzii nenegativă nu produce această rată. Mărește rata contractuală sau micșorează suma finanțată."
       },
       "actions": {
         "cancel": "Anulează",
@@ -1107,10 +1113,41 @@
         "dateHint": "Setează o dată viitoare pentru a plăti o rată în avans.",
         "account": "Cont",
         "noInstitution": "Nicio instituție",
-        "description": "Descriere"
+        "description": "Descriere",
+        "mode": "Rate de plătit",
+        "count": "Câte",
+        "totalAmount": "Sumă totală"
       },
       "actions": {
         "confirm": "Înregistrează plata"
+      },
+      "modes": {
+        "next": "Rata următoare",
+        "last": "Ultimele N rate",
+        "all": "Toate ratele deschise"
+      },
+      "quote": {
+        "installments": "Rate",
+        "original": "Total contractual",
+        "discount": "Reducere"
+      },
+      "errors": {
+        "count": "Introdu un număr între 1 și {{count}}."
+      },
+      "prorateWarning": "Suma totală va fi împărțită proporțional între toate ratele selectate, toate vor fi marcate ca plătite, iar soldul împrumutului va scădea cu sumele lor contractuale."
+    },
+    "history": {
+      "title": "Istoricul plăților",
+      "empty": "Nu a fost înregistrată nicio plată încă."
+    },
+    "schedule": {
+      "title": "Grafic de rate",
+      "empty": "Nu este programată nicio rată.",
+      "paidOn": "Plătită la {{date}}",
+      "status": {
+        "open": "Deschisă",
+        "overdue": "Restantă",
+        "paid": "Plătită"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Cheia de acces nu a putut fi verificată.",
       "credential_exists": "Această cheie de acces este deja înregistrată.",
       "not_found": "Cheia de acces nu a fost găsită."
+    },
+    "loan": {
+      "advance_amount_too_small": "Această sumă totală este prea mică pentru a fi împărțită între ratele selectate.",
+      "advance_count_exceeds_remaining": "Nu mai rămân atât de multe rate deschise.",
+      "installment_count_below_paid": "Numărul de rate nu poate fi mai mic decât numărul celor deja plătite."
     }
   }
 }

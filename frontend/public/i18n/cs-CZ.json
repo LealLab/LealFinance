@@ -1087,11 +1087,17 @@
         "institution": "Instituce",
         "allInstitutions": "Všechny instituce",
         "paymentAccount": "Účet",
-        "paymentAccountPlaceholder": "Vyberte zdrojový účet"
+        "paymentAccountPlaceholder": "Vyberte zdrojový účet",
+        "contractedInstallmentAmount": "Smluvní splátka",
+        "contractedInstallmentAmountHint": "Nahradí odhadovanou splátku. Ponechte prázdné pro použití částky vypočtené z úrokové sazby.",
+        "adjustInterestRate": "Upravit úrokovou sazbu",
+        "adjustInterestRateHint": "Přepočítá úrokovou sazbu tak, aby odhadovaná splátka odpovídala smluvní hodnotě výše.",
+        "adjustInterestRateHelpLabel": "O úpravě úrokové sazby"
       },
       "errors": {
         "required": "Toto pole je povinné.",
-        "paymentAccountRequired": "Vyberte účet, ze kterého platby odcházejí."
+        "paymentAccountRequired": "Vyberte účet, ze kterého platby odcházejí.",
+        "rateAdjustmentUnavailable": "Žádná nezáporná úroková sazba nedává tuto splátku. Zvyšte smluvní splátku nebo snižte financovanou částku."
       },
       "actions": {
         "cancel": "Zrušit",
@@ -1107,10 +1113,41 @@
         "dateHint": "Nastavte budoucí datum pro splacení splátky předem.",
         "account": "Účet",
         "noInstitution": "Žádná instituce",
-        "description": "Popis"
+        "description": "Popis",
+        "mode": "Splátky k úhradě",
+        "count": "Kolik",
+        "totalAmount": "Celková částka"
       },
       "actions": {
         "confirm": "Zaznamenat splátku"
+      },
+      "modes": {
+        "next": "Příští splátka",
+        "last": "Posledních N splátek",
+        "all": "Všechny otevřené splátky"
+      },
+      "quote": {
+        "installments": "Splátky",
+        "original": "Smluvní celková částka",
+        "discount": "Sleva"
+      },
+      "errors": {
+        "count": "Zadejte číslo mezi 1 a {{count}}."
+      },
+      "prorateWarning": "Celková částka bude rozdělena poměrně mezi všechny vybrané splátky, všechny budou označeny jako zaplacené a zůstatek půjčky se sníží o jejich smluvní hodnoty."
+    },
+    "history": {
+      "title": "Historie plateb",
+      "empty": "Zatím nebyly zaznamenány žádné platby."
+    },
+    "schedule": {
+      "title": "Splátkový kalendář",
+      "empty": "Nejsou naplánovány žádné splátky.",
+      "paidOn": "Zaplaceno {{date}}",
+      "status": {
+        "open": "Otevřená",
+        "overdue": "Po splatnosti",
+        "paid": "Zaplacena"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Přístupový klíč se nepodařilo ověřit.",
       "credential_exists": "Tento přístupový klíč je již zaregistrován.",
       "not_found": "Přístupový klíč nebyl nalezen."
+    },
+    "loan": {
+      "advance_amount_too_small": "Tato celková částka je příliš malá na rozdělení mezi vybrané splátky.",
+      "advance_count_exceeds_remaining": "Tolik otevřených splátek už nezbývá.",
+      "installment_count_below_paid": "Počet splátek nemůže být nižší, než kolik jich už bylo zaplaceno."
     }
   }
 }

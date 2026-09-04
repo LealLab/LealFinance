@@ -1087,11 +1087,17 @@
         "institution": "Institusjon",
         "allInstitutions": "Alle institusjoner",
         "paymentAccount": "Konto",
-        "paymentAccountPlaceholder": "Velg kildekontoen"
+        "paymentAccountPlaceholder": "Velg kildekontoen",
+        "contractedInstallmentAmount": "Avtalt termin",
+        "contractedInstallmentAmountHint": "Overstyrer den beregnede terminen. La stå tomt for å bruke beløpet beregnet ut fra rentesatsen.",
+        "adjustInterestRate": "Juster rentesats",
+        "adjustInterestRateHint": "Beregner rentesatsen på nytt slik at den beregnede terminen samsvarer med den avtalte verdien ovenfor.",
+        "adjustInterestRateHelpLabel": "Om justering av rentesatsen"
       },
       "errors": {
         "required": "Dette feltet er påkrevd.",
-        "paymentAccountRequired": "Velg kontoen betalingene kommer fra."
+        "paymentAccountRequired": "Velg kontoen betalingene kommer fra.",
+        "rateAdjustmentUnavailable": "Ingen ikke-negativ rentesats gir denne terminen. Øk den avtalte terminen eller reduser det finansierte beløpet."
       },
       "actions": {
         "cancel": "Avbryt",
@@ -1107,10 +1113,41 @@
         "dateHint": "Angi en fremtidig dato for å betale en termin på forskudd.",
         "account": "Konto",
         "noInstitution": "Ingen institusjon",
-        "description": "Beskrivelse"
+        "description": "Beskrivelse",
+        "mode": "Terminer som skal betales",
+        "count": "Hvor mange",
+        "totalAmount": "Totalbeløp"
       },
       "actions": {
         "confirm": "Registrer betaling"
+      },
+      "modes": {
+        "next": "Neste termin",
+        "last": "Siste N terminer",
+        "all": "Alle åpne terminer"
+      },
+      "quote": {
+        "installments": "Terminer",
+        "original": "Avtalt totalbeløp",
+        "discount": "Rabatt"
+      },
+      "errors": {
+        "count": "Angi et tall mellom 1 og {{count}}."
+      },
+      "prorateWarning": "Totalbeløpet fordeles proporsjonalt på alle valgte terminer, alle merkes som betalt, og lånesaldoen reduseres med deres avtalte beløp."
+    },
+    "history": {
+      "title": "Betalingshistorikk",
+      "empty": "Ingen betalinger registrert ennå."
+    },
+    "schedule": {
+      "title": "Nedbetalingsplan",
+      "empty": "Ingen terminer planlagt.",
+      "paidOn": "Betalt {{date}}",
+      "status": {
+        "open": "Åpen",
+        "overdue": "Forfalt",
+        "paid": "Betalt"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Passnøkkelen kunne ikke bekreftes.",
       "credential_exists": "Denne passnøkkelen er allerede registrert.",
       "not_found": "Passnøkkelen ble ikke funnet."
+    },
+    "loan": {
+      "advance_amount_too_small": "Dette totalbeløpet er for lite til å fordeles på de valgte terminene.",
+      "advance_count_exceeds_remaining": "Det er ikke så mange åpne terminer igjen.",
+      "installment_count_below_paid": "Antall terminer kan ikke være lavere enn antallet som allerede er betalt."
     }
   }
 }

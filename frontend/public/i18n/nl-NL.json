@@ -1087,11 +1087,17 @@
         "institution": "Instelling",
         "allInstitutions": "Alle instellingen",
         "paymentAccount": "Rekening",
-        "paymentAccountPlaceholder": "Kies de bronrekening"
+        "paymentAccountPlaceholder": "Kies de bronrekening",
+        "contractedInstallmentAmount": "Contractuele termijn",
+        "contractedInstallmentAmountHint": "Overschrijft de geschatte termijn. Laat leeg om het bedrag te gebruiken dat op basis van het rentepercentage is berekend.",
+        "adjustInterestRate": "Rentepercentage aanpassen",
+        "adjustInterestRateHint": "Herberekent het rentepercentage zodat de geschatte termijn overeenkomt met de contractuele waarde hierboven.",
+        "adjustInterestRateHelpLabel": "Over het aanpassen van het rentepercentage"
       },
       "errors": {
         "required": "Dit veld is verplicht.",
-        "paymentAccountRequired": "Kies de rekening waarvan de betalingen komen."
+        "paymentAccountRequired": "Kies de rekening waarvan de betalingen komen.",
+        "rateAdjustmentUnavailable": "Geen enkel niet-negatief rentepercentage levert deze termijn op. Verhoog de contractuele termijn of verlaag het gefinancierde bedrag."
       },
       "actions": {
         "cancel": "Annuleren",
@@ -1107,10 +1113,41 @@
         "dateHint": "Stel een datum in de toekomst in om een termijn vooruit te betalen.",
         "account": "Rekening",
         "noInstitution": "Geen instelling",
-        "description": "Omschrijving"
+        "description": "Omschrijving",
+        "mode": "Te betalen termijnen",
+        "count": "Hoeveel",
+        "totalAmount": "Totaalbedrag"
       },
       "actions": {
         "confirm": "Betaling vastleggen"
+      },
+      "modes": {
+        "next": "Volgende termijn",
+        "last": "Laatste N termijnen",
+        "all": "Alle openstaande termijnen"
+      },
+      "quote": {
+        "installments": "Termijnen",
+        "original": "Contractueel totaal",
+        "discount": "Korting"
+      },
+      "errors": {
+        "count": "Voer een getal tussen 1 en {{count}} in."
+      },
+      "prorateWarning": "Het totaalbedrag wordt evenredig verdeeld over alle geselecteerde termijnen, ze worden allemaal als betaald gemarkeerd en het leningsaldo daalt met hun contractuele bedragen."
+    },
+    "history": {
+      "title": "Betalingsgeschiedenis",
+      "empty": "Nog geen betalingen geregistreerd."
+    },
+    "schedule": {
+      "title": "Aflossingsschema",
+      "empty": "Geen termijnen gepland.",
+      "paidOn": "Betaald op {{date}}",
+      "status": {
+        "open": "Openstaand",
+        "overdue": "Achterstallig",
+        "paid": "Betaald"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Deze passkey kon niet worden geverifieerd.",
       "credential_exists": "Deze passkey is al geregistreerd.",
       "not_found": "Passkey niet gevonden."
+    },
+    "loan": {
+      "advance_amount_too_small": "Dat totaalbedrag is te klein om te verdelen over de geselecteerde termijnen.",
+      "advance_count_exceeds_remaining": "Er staan niet zoveel termijnen meer open.",
+      "installment_count_below_paid": "Het aantal termijnen kan niet lager zijn dan het aantal dat al is betaald."
     }
   }
 }

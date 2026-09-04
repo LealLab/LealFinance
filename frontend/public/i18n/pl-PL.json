@@ -1087,11 +1087,17 @@
         "institution": "Instytucja",
         "allInstitutions": "Wszystkie instytucje",
         "paymentAccount": "Konto",
-        "paymentAccountPlaceholder": "Wybierz konto źródłowe"
+        "paymentAccountPlaceholder": "Wybierz konto źródłowe",
+        "contractedInstallmentAmount": "Rata umowna",
+        "contractedInstallmentAmountHint": "Zastępuje szacowaną ratę. Pozostaw puste, aby użyć kwoty obliczonej na podstawie oprocentowania.",
+        "adjustInterestRate": "Dostosuj oprocentowanie",
+        "adjustInterestRateHint": "Przelicza oprocentowanie tak, aby szacowana rata odpowiadała wartości umownej powyżej.",
+        "adjustInterestRateHelpLabel": "O dostosowywaniu oprocentowania"
       },
       "errors": {
         "required": "To pole jest wymagane.",
-        "paymentAccountRequired": "Wybierz konto, z którego pochodzą płatności."
+        "paymentAccountRequired": "Wybierz konto, z którego pochodzą płatności.",
+        "rateAdjustmentUnavailable": "Żadne nieujemne oprocentowanie nie daje tej raty. Zwiększ ratę umowną lub zmniejsz finansowaną kwotę."
       },
       "actions": {
         "cancel": "Anuluj",
@@ -1107,10 +1113,41 @@
         "dateHint": "Ustaw przyszłą datę, aby zapłacić ratę z wyprzedzeniem.",
         "account": "Konto",
         "noInstitution": "Brak instytucji",
-        "description": "Opis"
+        "description": "Opis",
+        "mode": "Raty do zapłaty",
+        "count": "Ile",
+        "totalAmount": "Kwota całkowita"
       },
       "actions": {
         "confirm": "Zarejestruj płatność"
+      },
+      "modes": {
+        "next": "Następna rata",
+        "last": "Ostatnie N rat",
+        "all": "Wszystkie otwarte raty"
+      },
+      "quote": {
+        "installments": "Raty",
+        "original": "Suma umowna",
+        "discount": "Rabat"
+      },
+      "errors": {
+        "count": "Wprowadź liczbę od 1 do {{count}}."
+      },
+      "prorateWarning": "Kwota całkowita zostanie rozdzielona proporcjonalnie na wszystkie wybrane raty, wszystkie zostaną oznaczone jako zapłacone, a saldo pożyczki zmniejszy się o ich wartości umowne."
+    },
+    "history": {
+      "title": "Historia płatności",
+      "empty": "Nie zarejestrowano jeszcze żadnych płatności."
+    },
+    "schedule": {
+      "title": "Harmonogram rat",
+      "empty": "Nie zaplanowano żadnych rat.",
+      "paidOn": "Zapłacono {{date}}",
+      "status": {
+        "open": "Otwarta",
+        "overdue": "Zaległa",
+        "paid": "Zapłacona"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Nie udało się zweryfikować klucza dostępu.",
       "credential_exists": "Ten klucz dostępu jest już zarejestrowany.",
       "not_found": "Nie znaleziono klucza dostępu."
+    },
+    "loan": {
+      "advance_amount_too_small": "Ta kwota całkowita jest zbyt mała, aby rozdzielić ją na wybrane raty.",
+      "advance_count_exceeds_remaining": "Nie zostało już tyle otwartych rat.",
+      "installment_count_below_paid": "Liczba rat nie może być mniejsza niż liczba już zapłaconych."
     }
   }
 }

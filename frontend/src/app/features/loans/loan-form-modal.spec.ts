@@ -25,6 +25,7 @@ class StubLoanRepository {
   };
   setArchived = () => of({} as Loan);
   recordPayment = () => of({} as never);
+  advancePayments = () => of([]);
 }
 
 const CATEGORY: Category = {
@@ -103,6 +104,45 @@ describe('LoanFormModal', () => {
     expect(repo.created).toHaveLength(1);
     expect(repo.created[0]).not.toHaveProperty('installmentAmount');
     expect(repo.created[0]).toMatchObject({ name: 'Car', autoPost: false, archived: false });
+  });
+
+  it('sends the contracted installment and adjusts the rate when requested', () => {
+    const { component, repo } = setup();
+    component['form'].patchValue({
+      name: 'Car',
+      categoryId: 'cat-1',
+      currency: 'BRL',
+      amountBorrowed: '40000',
+      fees: '0',
+      ratePeriod: 'monthly',
+      installmentCount: 48,
+      contractedInstallmentAmount: '1101.1021',
+      adjustInterestRate: true,
+      firstPaymentDate: '2026-01-10',
+    });
+    expect(component['form'].controls.interestRate.value).toBe('1.2000');
+
+    component['submit']();
+    expect(repo.created[0]).toMatchObject({
+      contractedInstallmentAmount: '1101.1021',
+      interestRate: '1.2000',
+    });
+    expect(repo.created[0]).not.toHaveProperty('adjustInterestRate');
+  });
+
+  it('locks the interest rate input while the rate adjustment is on', () => {
+    const { fixture, component } = setup();
+    const rateInput = () =>
+      (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('#loan-rate');
+    expect(rateInput()?.readOnly).toBe(false);
+
+    component['form'].patchValue({ adjustInterestRate: true });
+    fixture.detectChanges();
+    expect(rateInput()?.readOnly).toBe(true);
+
+    component['form'].patchValue({ adjustInterestRate: false });
+    fixture.detectChanges();
+    expect(rateInput()?.readOnly).toBe(false);
   });
 
   it('blocks auto-post without a payment account', () => {

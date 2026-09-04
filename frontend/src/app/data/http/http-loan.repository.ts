@@ -3,8 +3,21 @@ import { map, Observable } from 'rxjs';
 import { ApiClient } from '../../core/api-client';
 import { Loan } from '../../domain/models/loan';
 import { Transaction } from '../../domain/models/transaction';
-import { LoanCreate, LoanPayment, LoanRepository, LoanUpdate } from '../loan.repository';
-import { mapLoan, mapLoanCreate, mapLoanPatch, mapLoanPayment, mapTransaction } from './mappers';
+import {
+  LoanAdvancePayment,
+  LoanCreate,
+  LoanPayment,
+  LoanRepository,
+  LoanUpdate,
+} from '../loan.repository';
+import {
+  mapLoan,
+  mapLoanAdvancePayment,
+  mapLoanCreate,
+  mapLoanPatch,
+  mapLoanPayment,
+  mapTransaction,
+} from './mappers';
 import { LoanWire, TransactionWire } from './wire-dtos';
 
 @Injectable({ providedIn: 'root' })
@@ -27,5 +40,10 @@ export class HttpLoanRepository extends LoanRepository {
     return this.api
       .post<TransactionWire>(`/loans/${id}/payments`, mapLoanPayment(payment))
       .pipe(map(mapTransaction));
+  }
+  advancePayments(id: string, payment: LoanAdvancePayment): Observable<Transaction[]> {
+    return this.api
+      .post<TransactionWire[]>(`/loans/${id}/advance-payments`, mapLoanAdvancePayment(payment))
+      .pipe(map((items) => items.map(mapTransaction)));
   }
 }

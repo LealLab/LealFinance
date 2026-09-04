@@ -47,7 +47,7 @@ from app.schemas.backup import (
 )
 
 BACKUP_FORMAT = "lealfinance.backup"
-BACKUP_FORMAT_VERSION = 1
+BACKUP_FORMAT_VERSION = 2
 MAX_ARCHIVE_BYTES = 25 * 1024 * 1024
 
 
@@ -71,10 +71,10 @@ BACKUP_TABLES = (
     BackupTable("budget_allocations", BudgetAllocation),
     BackupTable("expected_income", ExpectedIncome),
     BackupTable("recurring_rules", RecurringRule),
-    BackupTable("loans", Loan),
+    BackupTable("loans", Loan, version=2),
     BackupTable("goals", Goal),
     BackupTable("manual_rates", ManualRate),
-    BackupTable("transactions", Transaction),
+    BackupTable("transactions", Transaction, version=2),
     BackupTable("investment_wallets", InvestmentWallet),
     BackupTable("investment_assets", InvestmentAsset),
     BackupTable("investment_transactions", InvestmentTransaction),
@@ -240,7 +240,7 @@ def _decode_archive(archive: object, recovery_key: str | None) -> _DecodedBackup
         format_version = envelope.get("format_version")
         if type(format_version) is not int:
             raise _IncompatibleBackup
-        if format_version != BACKUP_FORMAT_VERSION:
+        if format_version < 1 or format_version > BACKUP_FORMAT_VERSION:
             raise AppError(code="backup.version_unsupported")
         encrypted = envelope.get("encrypted")
         if type(encrypted) is not bool:
@@ -267,14 +267,20 @@ def _decode_archive(archive: object, recovery_key: str | None) -> _DecodedBackup
             payload = _require_dict(envelope.get("payload"))
     except _IncompatibleBackup as exc:
         raise AppError(code="backup.invalid_archive") from exc
-    return _DecodedBackup(payload=_migrate_payload(format_version, payload), encrypted=encrypted)
+    try:
+        payload = _migrate_payload(format_version, payload)
+    except (_IncompatibleBackup, KeyError, TypeError, ValueError) as exc:
+        raise AppError(code="backup.invalid_archive") from exc
+    return _DecodedBackup(payload=payload, encrypted=encrypted)
 
 
 def _migrate_payload(format_version: int, payload: dict[str, Any]) -> dict[str, Any]:
     """Sequential migration hook for future supported backup formats."""
     version = format_version
     migrated = payload
-    migrations: dict[int, Callable[[dict[str, Any]], dict[str, Any]]] = {}
+    migrations: dict[int, Callable[[dict[str, Any]], dict[str, Any]]] = {
+        1: _migrate_v1_to_v2,
+    }
     while version < BACKUP_FORMAT_VERSION:
         migration = migrations.get(version)
         if migration is None:
@@ -282,6 +288,45 @@ def _migrate_payload(format_version: int, payload: dict[str, Any]) -> dict[str, 
         migrated = migration(migrated)
         version += 1
     return migrated
+
+
+def _migrate_v1_to_v2(payload: dict[str, Any]) -> dict[str, Any]:
+    """Add contracted installments and number legacy loan payments."""
+    data = _require_dict(payload.get("data"))
+    loans = _require_dict(data.get("loans"))
+    transactions = _require_dict(data.get("transactions"))
+    if loans.get("version") != 1 or transactions.get("version") != 1:
+        raise _IncompatibleBackup
+
+    loan_rows = [_require_dict(row) for row in _require_list(loans.get("rows"))]
+    transaction_rows = [_require_dict(row) for row in _require_list(transactions.get("rows"))]
+    counts: dict[str, int] = {}
+    for loan in loan_rows:
+        loan["contracted_installment_amount"] = None
+        counts[_require_string(loan["id"])] = int(loan["installment_count"])
+
+    by_loan: dict[str, list[dict[str, Any]]] = {}
+    for transaction in transaction_rows:
+        loan_id = transaction.get("loan_id")
+        if loan_id is not None:
+            by_loan.setdefault(_require_string(loan_id), []).append(transaction)
+    for loan_id, payments in by_loan.items():
+        payments.sort(
+            key=lambda row: (
+                _require_string(row["date"]),
+                _require_string(row["created_at"]),
+                _require_string(row["id"]),
+            )
+        )
+        installment_count = max(counts.get(loan_id, 0), len(payments))
+        for number, payment in enumerate(payments, start=1):
+            payment["installment_group_id"] = None
+            payment["installment_number"] = number
+            payment["installment_count"] = installment_count
+
+    loans["version"] = 2
+    transactions["version"] = 2
+    return payload
 
 
 def _validate_payload(

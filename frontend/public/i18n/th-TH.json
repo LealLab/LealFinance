@@ -1087,11 +1087,17 @@
         "institution": "สถาบัน",
         "allInstitutions": "ทุกสถาบัน",
         "paymentAccount": "บัญชี",
-        "paymentAccountPlaceholder": "เลือกบัญชีต้นทาง"
+        "paymentAccountPlaceholder": "เลือกบัญชีต้นทาง",
+        "contractedInstallmentAmount": "ค่างวดตามสัญญา",
+        "contractedInstallmentAmountHint": "แทนที่ค่างวดโดยประมาณ เว้นว่างไว้เพื่อใช้จำนวนที่คำนวณจากอัตราดอกเบี้ย",
+        "adjustInterestRate": "ปรับอัตราดอกเบี้ย",
+        "adjustInterestRateHint": "คำนวณอัตราดอกเบี้ยใหม่เพื่อให้ค่างวดโดยประมาณตรงกับมูลค่าตามสัญญาด้านบน",
+        "adjustInterestRateHelpLabel": "เกี่ยวกับการปรับอัตราดอกเบี้ย"
       },
       "errors": {
         "required": "จำเป็นต้องกรอกช่องนี้",
-        "paymentAccountRequired": "เลือกบัญชีที่จะใช้ชำระเงิน"
+        "paymentAccountRequired": "เลือกบัญชีที่จะใช้ชำระเงิน",
+        "rateAdjustmentUnavailable": "ไม่มีอัตราดอกเบี้ยที่ไม่ติดลบใดให้ค่างวดนี้ได้ โปรดเพิ่มค่างวดตามสัญญาหรือลดยอดเงินที่ขอสินเชื่อ"
       },
       "actions": {
         "cancel": "ยกเลิก",
@@ -1107,10 +1113,41 @@
         "dateHint": "ตั้งวันที่ในอนาคตเพื่อชำระงวดล่วงหน้า",
         "account": "บัญชี",
         "noInstitution": "ไม่มีสถาบัน",
-        "description": "รายละเอียด"
+        "description": "รายละเอียด",
+        "mode": "งวดที่จะชำระ",
+        "count": "จำนวนงวด",
+        "totalAmount": "ยอดรวม"
       },
       "actions": {
         "confirm": "บันทึกการชำระเงิน"
+      },
+      "modes": {
+        "next": "งวดถัดไป",
+        "last": "N งวดสุดท้าย",
+        "all": "ทุกงวดที่ยังไม่ชำระ"
+      },
+      "quote": {
+        "installments": "งวด",
+        "original": "ยอดรวมตามสัญญา",
+        "discount": "ส่วนลด"
+      },
+      "errors": {
+        "count": "กรอกตัวเลขระหว่าง 1 ถึง {{count}}"
+      },
+      "prorateWarning": "ยอดรวมจะถูกแบ่งตามสัดส่วนไปยังทุกงวดที่เลือก ทุกงวดจะถูกทำเครื่องหมายว่าชำระแล้ว และยอดคงเหลือของสินเชื่อจะลดลงตามมูลค่าตามสัญญาของงวดเหล่านั้น"
+    },
+    "history": {
+      "title": "ประวัติการชำระเงิน",
+      "empty": "ยังไม่มีการบันทึกการชำระเงิน"
+    },
+    "schedule": {
+      "title": "ตารางการผ่อนชำระ",
+      "empty": "ไม่มีงวดที่กำหนดไว้",
+      "paidOn": "ชำระแล้วเมื่อ {{date}}",
+      "status": {
+        "open": "ยังไม่ชำระ",
+        "overdue": "เกินกำหนด",
+        "paid": "ชำระแล้ว"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "ไม่สามารถยืนยันพาสคีย์นี้ได้",
       "credential_exists": "พาสคีย์นี้ลงทะเบียนไว้แล้ว",
       "not_found": "ไม่พบพาสคีย์"
+    },
+    "loan": {
+      "advance_amount_too_small": "ยอดรวมนี้น้อยเกินไปที่จะแบ่งไปยังงวดที่เลือก",
+      "advance_count_exceeds_remaining": "ไม่มีงวดที่ยังไม่ชำระเหลืออยู่มากขนาดนั้น",
+      "installment_count_below_paid": "จำนวนงวดต้องไม่น้อยกว่าจำนวนที่ชำระไปแล้ว"
     }
   }
 }

@@ -6,11 +6,13 @@ import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { LoanRepository } from '../../data/loan.repository';
+import { TransactionRepository } from '../../data/transaction.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
 import { MockLoanRepository } from '../../data/mock/mock-loan.repository';
+import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockStore } from '../../data/mock/mock-store';
 import { Loans } from './loans';
@@ -32,6 +34,7 @@ describe('Loans', () => {
         { provide: CategoryRepository, useClass: MockCategoryRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
         { provide: LoanRepository, useClass: MockLoanRepository },
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
       ],
     }).compileComponents();
@@ -64,5 +67,40 @@ describe('Loans', () => {
     expect(fixture.componentInstance['rows']()).toEqual(
       expect.arrayContaining([expect.objectContaining({ loan: expect.objectContaining({ id: loanId }) })])
     );
+  });
+
+  it('shows only the ledger entries linked to each loan', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+    const linked = store.createTransaction({
+      type: 'expense',
+      date: '2026-02-01',
+      amount: loan.installmentAmount,
+      currency: loan.currency,
+      accountId: 'account-checking',
+      categoryId: loan.categoryId,
+      description: 'Loan payment',
+      loanId: loan.id,
+      installmentNumber: 1,
+      installmentCount: loan.installmentCount,
+    });
+    store.createTransaction({
+      type: 'expense',
+      date: '2026-02-02',
+      amount: '10',
+      currency: loan.currency,
+      accountId: 'account-checking',
+      categoryId: loan.categoryId,
+      description: 'Unrelated',
+    });
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['loanTransactions'](loan).map((tx) => tx.id)).toEqual([
+      linked.id,
+    ]);
   });
 });

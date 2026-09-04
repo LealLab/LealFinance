@@ -1087,11 +1087,17 @@
         "institution": "Institution",
         "allInstitutions": "All institutions",
         "paymentAccount": "Account",
-        "paymentAccountPlaceholder": "Choose the source account"
+        "paymentAccountPlaceholder": "Choose the source account",
+        "contractedInstallmentAmount": "Contracted installment",
+        "contractedInstallmentAmountHint": "Overrides the estimated installment. Leave blank to use the amount calculated from the interest rate.",
+        "adjustInterestRate": "Adjust interest rate",
+        "adjustInterestRateHint": "Recalculates the interest rate so the estimated installment matches the contracted value above.",
+        "adjustInterestRateHelpLabel": "About adjusting the interest rate"
       },
       "errors": {
         "required": "This field is required.",
-        "paymentAccountRequired": "Choose the account the payments come from."
+        "paymentAccountRequired": "Choose the account the payments come from.",
+        "rateAdjustmentUnavailable": "No non-negative interest rate produces this installment. Raise the contracted installment or lower the amount financed."
       },
       "actions": {
         "cancel": "Cancel",
@@ -1107,10 +1113,41 @@
         "dateHint": "Set a future date to pay an installment in advance.",
         "account": "Account",
         "noInstitution": "No institution",
-        "description": "Description"
+        "description": "Description",
+        "mode": "Installments to pay",
+        "count": "How many",
+        "totalAmount": "Total amount"
       },
       "actions": {
         "confirm": "Record payment"
+      },
+      "modes": {
+        "next": "Next installment",
+        "last": "Last N installments",
+        "all": "All open installments"
+      },
+      "quote": {
+        "installments": "Installments",
+        "original": "Contracted total",
+        "discount": "Discount"
+      },
+      "errors": {
+        "count": "Enter a number between 1 and {{count}}."
+      },
+      "prorateWarning": "The total will be split proportionally across every selected installment, all of them will be marked as paid, and the loan balance will drop by their contracted amounts."
+    },
+    "history": {
+      "title": "Payment history",
+      "empty": "No payments recorded yet."
+    },
+    "schedule": {
+      "title": "Installment schedule",
+      "empty": "No installments scheduled.",
+      "paidOn": "Paid on {{date}}",
+      "status": {
+        "open": "Open",
+        "overdue": "Overdue",
+        "paid": "Paid"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "That passkey could not be verified.",
       "credential_exists": "That passkey is already registered.",
       "not_found": "Passkey not found."
+    },
+    "loan": {
+      "advance_amount_too_small": "That total is too small to split across the selected installments.",
+      "advance_count_exceeds_remaining": "There aren't that many open installments left.",
+      "installment_count_below_paid": "The number of installments can't be lower than how many are already paid."
     }
   }
 }

@@ -10,7 +10,7 @@ from decimal import Decimal
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, model_validator
 
 from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal
 
@@ -30,6 +30,7 @@ class LoanRead(BaseModel):
     rate_period: LoanRatePeriod
     installment_count: int
     installment_amount: Decimal
+    contracted_installment_amount: Decimal | None
     first_payment_date: date_type
     auto_post: bool
     payment_account_id: UUID | None
@@ -39,8 +40,14 @@ class LoanRead(BaseModel):
     # the service, not a column.
     installments_paid: int
 
-    @field_serializer("amount_borrowed", "fees", "interest_rate", "installment_amount")
-    def _serialize_decimals(self, value: Decimal) -> str | None:
+    @field_serializer(
+        "amount_borrowed",
+        "fees",
+        "interest_rate",
+        "installment_amount",
+        "contracted_installment_amount",
+    )
+    def _serialize_decimals(self, value: Decimal | None) -> str | None:
         return serialize_decimal(value)
 
 
@@ -53,6 +60,7 @@ class LoanCreate(BaseModel):
     interest_rate: Decimal = Field(default=Decimal(0), ge=0)
     rate_period: LoanRatePeriod = "annual"
     installment_count: int = Field(ge=1)
+    contracted_installment_amount: Decimal | None = Field(default=None, gt=0)
     first_payment_date: date_type
     auto_post: bool = False
     payment_account_id: UUID | None = None
@@ -85,6 +93,7 @@ class LoanUpdate(PatchModel):
     interest_rate: Decimal | None = Field(default=None, ge=0)
     rate_period: LoanRatePeriod | None = None
     installment_count: int | None = Field(default=None, ge=1)
+    contracted_installment_amount: Decimal | None = Field(default=None, gt=0)
     first_payment_date: date_type | None = None
     auto_post: bool | None = None
     payment_account_id: UUID | None = None
@@ -102,3 +111,26 @@ class LoanPaymentCreate(BaseModel):
     date: date_type | None = None
     account_id: UUID | None = None
     description: str | None = Field(default=None, max_length=200)
+
+
+class LoanAdvanceCreate(BaseModel):
+    """Advance the last N, or every unpaid, installment in one atomic batch.
+
+    ``amount`` is an optional total for the batch; the service allocates it
+    proportionally across the selected installments.
+    """
+
+    mode: Literal["last", "all"]
+    count: int | None = Field(default=None, ge=1)
+    amount: Decimal | None = Field(default=None, gt=0)
+    date: date_type | None = None
+    account_id: UUID | None = None
+    description: str | None = Field(default=None, max_length=200)
+
+    @model_validator(mode="after")
+    def _validate_mode_count(self) -> "LoanAdvanceCreate":
+        if self.mode == "last" and self.count is None:
+            raise ValueError("count is required when mode is 'last'")
+        if self.mode == "all" and self.count is not None:
+            raise ValueError("count is only accepted when mode is 'last'")
+        return self

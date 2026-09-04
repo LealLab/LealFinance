@@ -1087,11 +1087,17 @@
         "institution": "Laitos",
         "allInstitutions": "Kaikki laitokset",
         "paymentAccount": "Tili",
-        "paymentAccountPlaceholder": "Valitse lähdetili"
+        "paymentAccountPlaceholder": "Valitse lähdetili",
+        "contractedInstallmentAmount": "Sopimuksen mukainen erä",
+        "contractedInstallmentAmountHint": "Korvaa arvioidun erän. Jätä tyhjäksi, jos haluat käyttää korosta laskettua määrää.",
+        "adjustInterestRate": "Muokkaa korkoa",
+        "adjustInterestRateHint": "Laskee koron uudelleen niin, että arvioitu erä vastaa yllä olevaa sopimusarvoa.",
+        "adjustInterestRateHelpLabel": "Tietoa koron muokkaamisesta"
       },
       "errors": {
         "required": "Tämä kenttä on pakollinen.",
-        "paymentAccountRequired": "Valitse tili, jolta maksut suoritetaan."
+        "paymentAccountRequired": "Valitse tili, jolta maksut suoritetaan.",
+        "rateAdjustmentUnavailable": "Mikään ei-negatiivinen korko ei tuota tätä erää. Nosta sopimuksen mukaista erää tai pienennä rahoitettavaa summaa."
       },
       "actions": {
         "cancel": "Peruuta",
@@ -1107,10 +1113,41 @@
         "dateHint": "Aseta tuleva päivä maksaaksesi erän etukäteen.",
         "account": "Tili",
         "noInstitution": "Ei laitosta",
-        "description": "Kuvaus"
+        "description": "Kuvaus",
+        "mode": "Maksettavat erät",
+        "count": "Kuinka monta",
+        "totalAmount": "Kokonaissumma"
       },
       "actions": {
         "confirm": "Kirjaa maksu"
+      },
+      "modes": {
+        "next": "Seuraava erä",
+        "last": "Viimeiset N erää",
+        "all": "Kaikki avoimet erät"
+      },
+      "quote": {
+        "installments": "Erät",
+        "original": "Sopimuksen mukainen summa",
+        "discount": "Alennus"
+      },
+      "errors": {
+        "count": "Anna luku väliltä 1–{{count}}."
+      },
+      "prorateWarning": "Kokonaissumma jaetaan suhteessa kaikkien valittujen erien kesken, kaikki merkitään maksetuiksi ja lainan saldo laskee niiden sopimuksen mukaisilla määrillä."
+    },
+    "history": {
+      "title": "Maksuhistoria",
+      "empty": "Maksuja ei ole vielä kirjattu."
+    },
+    "schedule": {
+      "title": "Maksuerien aikataulu",
+      "empty": "Ei ajoitettuja maksueriä.",
+      "paidOn": "Maksettu {{date}}",
+      "status": {
+        "open": "Avoin",
+        "overdue": "Myöhässä",
+        "paid": "Maksettu"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Passkeyn vahvistaminen ei onnistunut.",
       "credential_exists": "Passkey on jo rekisteröity.",
       "not_found": "Passkeyä ei löytynyt."
+    },
+    "loan": {
+      "advance_amount_too_small": "Tämä summa on liian pieni jaettavaksi valittujen erien kesken.",
+      "advance_count_exceeds_remaining": "Näin montaa avointa erää ei ole enää jäljellä.",
+      "installment_count_below_paid": "Erien määrä ei voi olla pienempi kuin jo maksettujen erien määrä."
     }
   }
 }

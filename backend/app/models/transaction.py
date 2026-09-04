@@ -55,12 +55,16 @@ class Transaction(UserOwnedModel):
             "type NOT IN ('transfer', 'interest') OR category_id IS NULL",
             name="ck_transactions_category_absent_for_transfer_interest",
         ),
-        # An installment row carries all three fields or none, with a
-        # 1-based number inside a group of at least two.
+        # Card purchases carry all three fields. Loan payments reuse only
+        # number/count so the UI does not treat them as a card installment
+        # series; SET NULL on loan deletion leaves that harmless provenance.
         CheckConstraint(
             "(installment_group_id IS NULL AND installment_number IS NULL "
             "AND installment_count IS NULL) OR "
-            "(installment_group_id IS NOT NULL AND installment_count >= 2 "
+            "(installment_group_id IS NOT NULL AND loan_id IS NULL "
+            "AND installment_count >= 2 "
+            "AND installment_number BETWEEN 1 AND installment_count) OR "
+            "(installment_group_id IS NULL AND installment_count >= 1 "
             "AND installment_number BETWEEN 1 AND installment_count)",
             name="ck_transactions_installment_shape",
         ),
@@ -69,6 +73,13 @@ class Transaction(UserOwnedModel):
         Index("ix_transactions_loan_id", "loan_id"),
         Index("ix_transactions_card_invoice_close_date", "card_invoice_close_date"),
         Index("ix_transactions_installment_group_id", "installment_group_id"),
+        Index(
+            "ux_transactions_loan_installment_number",
+            "loan_id",
+            "installment_number",
+            unique=True,
+            postgresql_where=text("loan_id IS NOT NULL AND installment_number IS NOT NULL"),
+        ),
         # Idempotency guard for recurring posting (see
         # app/services/recurring_posting.py): the same rule can never post
         # two transactions on the same occurrence date. Partial, since

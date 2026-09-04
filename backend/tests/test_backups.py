@@ -189,6 +189,8 @@ async def _seed_complete_graph(db: AsyncSession, user_id: UUID) -> None:
         description="Rent payment",
         recurring_rule_id=recurring.id,
         loan_id=loan.id,
+        installment_number=1,
+        installment_count=loan.installment_count,
     )
     db.add(transaction)
     await db.flush()
@@ -258,7 +260,22 @@ async def test_plain_preview_rolls_back_and_restore_replaces_only_current_user(
     archive = body["archive"]
     assert body["recovery_key"] is None
     assert body["filename"].endswith(".json")
-    assert archive["format_version"] == 1
+    assert archive["format_version"] == 2
+    legacy = deepcopy(archive)
+    legacy["format_version"] = 1
+    legacy_loans = legacy["payload"]["data"]["loans"]
+    legacy_loans["version"] = 1
+    for row in legacy_loans["rows"]:
+        row.pop("contracted_installment_amount")
+    legacy_transactions = legacy["payload"]["data"]["transactions"]
+    legacy_transactions["version"] = 1
+    for row in legacy_transactions["rows"]:
+        if row["loan_id"] is not None:
+            row["installment_group_id"] = None
+            row["installment_number"] = None
+            row["installment_count"] = None
+    legacy_preview = await client.post("/api/v1/backups/preview", json={"archive": legacy})
+    assert legacy_preview.status_code == 200
     cash_row = next(
         row for row in archive["payload"]["data"]["accounts"]["rows"] if row["name"] == "Cash"
     )
@@ -403,7 +420,7 @@ async def test_archive_validation_versions_warnings_and_atomic_failure(
     accepted = await client.post("/api/v1/backups/preview", json={"archive": old_app_archive})
     assert accepted.status_code == 200, accepted.text
     newer_format = deepcopy(archive)
-    newer_format["format_version"] = 2
+    newer_format["format_version"] = 3
     rejected = await client.post("/api/v1/backups/preview", json={"archive": newer_format})
     assert _error_code(rejected) == "backup.version_unsupported"
 

@@ -9,8 +9,9 @@ from fastapi import APIRouter, status
 
 from app.api.deps import CurrentUser, DbSession
 from app.models.loan import Loan
+from app.models.transaction import Transaction
 from app.schemas.common import ArchiveRequest
-from app.schemas.loan import LoanCreate, LoanPaymentCreate, LoanRead, LoanUpdate
+from app.schemas.loan import LoanAdvanceCreate, LoanCreate, LoanPaymentCreate, LoanRead, LoanUpdate
 from app.schemas.transaction import TransactionRead
 from app.services import loans as loans_service
 
@@ -46,3 +47,14 @@ async def record_payment(
     loan_id: UUID, payload: LoanPaymentCreate, user: CurrentUser, db: DbSession
 ) -> object:
     return await loans_service.record_payment(db, user.id, loan_id, payload, today=date.today())
+
+
+@router.post(
+    "/{loan_id}/advance-payments",
+    response_model=list[TransactionRead],
+    status_code=status.HTTP_201_CREATED,
+)
+async def advance_payments(
+    loan_id: UUID, payload: LoanAdvanceCreate, user: CurrentUser, db: DbSession
+) -> list[Transaction]:
+    return await loans_service.advance_payments(db, user.id, loan_id, payload, today=date.today())

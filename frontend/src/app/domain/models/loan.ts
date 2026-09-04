@@ -10,10 +10,9 @@ export type LoanRatePeriod = 'annual' | 'monthly';
  * loan's own `categoryId`, so the debt appears in the user's spending and
  * budgets under that category.
  *
- * `installmentAmount` is derived server-side from `amountBorrowed + fees`,
- * `interestRate` and `installmentCount` - the client sends the inputs, not
- * the result. `installmentsPaid` is COUNT(transactions with this loanId),
- * also computed by the backend.
+ * `installmentAmount` is resolved server-side from `contractedInstallmentAmount`
+ * when present, otherwise from the amortization inputs. `installmentsPaid` is
+ * COUNT(transactions with this loanId), also computed by the backend.
  */
 export interface Loan {
   id: string;
@@ -25,6 +24,8 @@ export interface Loan {
   interestRate: string;
   ratePeriod: LoanRatePeriod;
   installmentCount: number;
+  /** Optional contract value that overrides the installment calculated from the interest rate. */
+  contractedInstallmentAmount?: string;
   installmentAmount: string;
   firstPaymentDate: string;
   autoPost: boolean;

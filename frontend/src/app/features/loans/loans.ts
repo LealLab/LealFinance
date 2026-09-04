@@ -6,10 +6,12 @@ import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { LoanRepository } from '../../data/loan.repository';
+import { TransactionRepository } from '../../data/transaction.repository';
 import { convertedOrNull } from '../../domain/calc/aggregations';
-import { LoanProgress, loanProgress } from '../../domain/calc/loans';
+import { LoanProgress, LoanScheduleRow, loanProgress, loanSchedule } from '../../domain/calc/loans';
 import { Category } from '../../domain/models/category';
 import { Loan } from '../../domain/models/loan';
+import { Transaction } from '../../domain/models/transaction';
 import { Money } from '../../shared/money/money';
 import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -59,6 +61,7 @@ export class Loans {
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly transactionRepository = inject(TransactionRepository);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   protected readonly loansResource = rxResource({ stream: () => this.loanRepository.list() });
@@ -68,6 +71,9 @@ export class Loans {
   });
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutionRepository.list(),
+  });
+  protected readonly transactionsResource = rxResource({
+    stream: () => this.transactionRepository.list(),
   });
 
   protected readonly showArchived = signal(false);
@@ -97,10 +103,11 @@ export class Loans {
     const categories = this.categoriesById();
     const display = this.displayCurrency();
     const convert = this.converter();
+    const transactions = this.transactionsResource.value() ?? [];
     return (this.loansResource.value() ?? [])
       .filter((loan) => this.showArchived() || !loan.archived)
       .map((loan) => {
-        const progress = loanProgress(loan);
+        const progress = loanProgress(loan, transactions);
         return {
           loan,
           category: categories.get(loan.categoryId),
@@ -150,6 +157,17 @@ export class Loans {
   protected onPaymentSaved(): void {
     this.loansResource.reload();
     this.accountsResource.reload();
+    this.transactionsResource.reload();
+  }
+
+  protected loanTransactions(loan: Loan): Transaction[] {
+    return (this.transactionsResource.value() ?? [])
+      .filter((transaction) => transaction.loanId === loan.id)
+      .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  }
+
+  protected loanSchedule(loan: Loan): LoanScheduleRow[] {
+    return loanSchedule(loan, this.transactionsResource.value() ?? []);
   }
 
   protected archive(loan: Loan): void {

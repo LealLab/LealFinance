@@ -1087,11 +1087,17 @@
         "institution": "Institusi",
         "allInstitutions": "Semua institusi",
         "paymentAccount": "Akun",
-        "paymentAccountPlaceholder": "Pilih akun sumber"
+        "paymentAccountPlaceholder": "Pilih akun sumber",
+        "contractedInstallmentAmount": "Cicilan sesuai kontrak",
+        "contractedInstallmentAmountHint": "Menggantikan cicilan yang diperkirakan. Biarkan kosong untuk menggunakan jumlah yang dihitung dari suku bunga.",
+        "adjustInterestRate": "Sesuaikan suku bunga",
+        "adjustInterestRateHint": "Menghitung ulang suku bunga agar cicilan yang diperkirakan sesuai dengan nilai kontrak di atas.",
+        "adjustInterestRateHelpLabel": "Tentang penyesuaian suku bunga"
       },
       "errors": {
         "required": "Kolom ini wajib diisi.",
-        "paymentAccountRequired": "Pilih akun asal pembayaran."
+        "paymentAccountRequired": "Pilih akun asal pembayaran.",
+        "rateAdjustmentUnavailable": "Tidak ada suku bunga non-negatif yang menghasilkan cicilan ini. Naikkan cicilan sesuai kontrak atau turunkan jumlah yang dibiayai."
       },
       "actions": {
         "cancel": "Batal",
@@ -1107,10 +1113,41 @@
         "dateHint": "Setel tanggal mendatang untuk membayar cicilan lebih awal.",
         "account": "Akun",
         "noInstitution": "Tanpa institusi",
-        "description": "Deskripsi"
+        "description": "Deskripsi",
+        "mode": "Cicilan yang akan dibayar",
+        "count": "Berapa banyak",
+        "totalAmount": "Jumlah total"
       },
       "actions": {
         "confirm": "Catat pembayaran"
+      },
+      "modes": {
+        "next": "Cicilan berikutnya",
+        "last": "N cicilan terakhir",
+        "all": "Semua cicilan yang belum dibayar"
+      },
+      "quote": {
+        "installments": "Cicilan",
+        "original": "Total sesuai kontrak",
+        "discount": "Diskon"
+      },
+      "errors": {
+        "count": "Masukkan angka antara 1 dan {{count}}."
+      },
+      "prorateWarning": "Jumlah total akan dibagi secara proporsional ke semua cicilan yang dipilih, semuanya akan ditandai lunas, dan saldo pinjaman akan berkurang sebesar jumlah kontraknya."
+    },
+    "history": {
+      "title": "Riwayat pembayaran",
+      "empty": "Belum ada pembayaran yang tercatat."
+    },
+    "schedule": {
+      "title": "Jadwal cicilan",
+      "empty": "Tidak ada cicilan yang dijadwalkan.",
+      "paidOn": "Dibayar pada {{date}}",
+      "status": {
+        "open": "Belum dibayar",
+        "overdue": "Terlambat",
+        "paid": "Lunas"
       }
     }
   },
@@ -1767,6 +1804,11 @@
       "verification_failed": "Passkey tersebut tidak dapat diverifikasi.",
       "credential_exists": "Passkey tersebut sudah terdaftar.",
       "not_found": "Passkey tidak ditemukan."
+    },
+    "loan": {
+      "advance_amount_too_small": "Jumlah total itu terlalu kecil untuk dibagi ke cicilan yang dipilih.",
+      "advance_count_exceeds_remaining": "Tidak ada sebanyak itu cicilan yang belum dibayar.",
+      "installment_count_below_paid": "Jumlah cicilan tidak boleh kurang dari jumlah yang sudah dibayar."
     }
   }
 }

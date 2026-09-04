@@ -3,8 +3,45 @@
     <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
+          <label class="form-label" for="loan-payment-mode">{{
+            t('loans.payment.fields.mode')
+          }}</label>
+          <select id="loan-payment-mode" class="form-input" formControlName="mode">
+            <option value="next">{{ t('loans.payment.modes.next') }}</option>
+            <option value="last">{{ t('loans.payment.modes.last') }}</option>
+            <option value="all">{{ t('loans.payment.modes.all') }}</option>
+          </select>
+        </div>
+        @if (form.controls.mode.value === 'last') {
+          <div>
+            <label class="form-label" for="loan-payment-count">{{
+              t('loans.payment.fields.count')
+            }}</label>
+            <input
+              id="loan-payment-count"
+              type="number"
+              min="1"
+              [max]="pendingCount()"
+              class="form-input"
+              formControlName="count"
+            />
+            @if (form.controls.count.invalid && form.controls.count.touched) {
+              <p class="form-error">
+                {{ t('loans.payment.errors.count', { count: pendingCount() }) }}
+              </p>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
           <label class="form-label" for="loan-payment-amount">{{
-            t('loans.payment.fields.amount')
+            t(
+              form.controls.mode.value === 'next'
+                ? 'loans.payment.fields.amount'
+                : 'loans.payment.fields.totalAmount'
+            )
           }}</label>
           <input
             id="loan-payment-amount"
@@ -19,9 +56,38 @@
             t('loans.payment.fields.date')
           }}</label>
           <input id="loan-payment-date" type="date" class="form-input" formControlName="date" />
-          <p class="mt-1 text-xs text-content-muted">{{ t('loans.payment.fields.dateHint') }}</p>
+          <p class="mt-1 text-xs text-content-muted">
+            {{ t('loans.payment.fields.dateHint') }}
+          </p>
         </div>
       </div>
+
+      @if (form.controls.mode.value !== 'next') {
+        <p class="rounded-md border border-warning/30 bg-warning/10 p-3 text-sm text-warning">
+          {{ t('loans.payment.prorateWarning') }}
+        </p>
+      }
+
+      @if (quote(); as paymentQuote) {
+        <div class="grid grid-cols-1 gap-3 rounded-md border border-border bg-surface-sunken p-3 text-sm sm:grid-cols-3">
+          <div>
+            <p class="text-xs text-content-muted">{{ t('loans.payment.quote.installments') }}</p>
+            <p class="font-semibold">{{ paymentQuote.installments.length }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-content-muted">{{ t('loans.payment.quote.original') }}</p>
+            <p class="font-mono font-semibold tabular-nums">
+              {{ paymentQuote.originalAmount.amount | money: paymentQuote.originalAmount.currency }}
+            </p>
+          </div>
+          <div>
+            <p class="text-xs text-content-muted">{{ t('loans.payment.quote.discount') }}</p>
+            <p class="font-mono font-semibold tabular-nums text-positive">
+              {{ paymentQuote.discount.amount | money: paymentQuote.discount.currency }}
+            </p>
+          </div>
+        </div>
+      }
 
       <div>
         <label class="form-label" for="loan-payment-account">{{

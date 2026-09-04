@@ -2,7 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Loan } from '../../domain/models/loan';
 import { Transaction } from '../../domain/models/transaction';
-import { LoanCreate, LoanPayment, LoanRepository, LoanUpdate } from '../loan.repository';
+import {
+  LoanAdvancePayment,
+  LoanCreate,
+  LoanPayment,
+  LoanRepository,
+  LoanUpdate,
+} from '../loan.repository';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 import { MockStore } from './mock-store';
@@ -30,5 +36,9 @@ export class MockLoanRepository extends LoanRepository {
 
   recordPayment(id: string, payment: LoanPayment): Observable<Transaction> {
     return mockResult(() => this.store.recordLoanPayment(id, payment), this.latencyMs);
+  }
+
+  advancePayments(id: string, payment: LoanAdvancePayment): Observable<Transaction[]> {
+    return mockResult(() => this.store.advanceLoanPayments(id, payment), this.latencyMs);
   }
 }
