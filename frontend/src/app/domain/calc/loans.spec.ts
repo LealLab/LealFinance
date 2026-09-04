@@ -259,4 +259,32 @@ describe('loanSchedule', () => {
     };
     expect(loanSchedule(loan, []).map((row) => row.status)).toEqual(['open']);
   });
+
+  it('discounts an open installment as of today but keeps an overdue one at the contractual amount', () => {
+    // Installment 1 is due yesterday (overdue, no automatic penalty);
+    // installment 2 is due about a month out (open, discounted for today).
+    const yesterday = formatIsoDate(addDays(parseIsoDate(todayIso()), -1));
+    const loan: Loan = {
+      id: 'loan-schedule-3',
+      name: 'Car',
+      categoryId: 'cat-1',
+      currency: 'BRL',
+      amountBorrowed: '1000',
+      fees: '0',
+      interestRate: '1',
+      ratePeriod: 'monthly',
+      installmentCount: 2,
+      installmentAmount: '110.0000',
+      firstPaymentDate: yesterday,
+      autoPost: false,
+      archived: false,
+      installmentsPaid: 0,
+    };
+
+    const rows = loanSchedule(loan, []);
+    expect(rows[0].status).toBe('overdue');
+    expect(rows[0].amount.amount).toBe('110.0000');
+    expect(rows[1].status).toBe('open');
+    expect(Number(rows[1].amount.amount)).toBeLessThan(110);
+  });
 });

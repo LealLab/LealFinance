@@ -225,7 +225,7 @@ export function loanSchedule(
     return {
       number,
       dueDate,
-      amount: installment,
+      amount: discountedInstallment(loan, { number, dueDate, amount: installment }, today).amount,
       status: paidNumbers.has(number) ? 'paid' : dueDate < today ? 'overdue' : 'open',
     };
   });
