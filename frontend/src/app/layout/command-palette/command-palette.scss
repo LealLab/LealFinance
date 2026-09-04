@@ -1,5 +1,0 @@
-// Utility classes in command-palette.html cover sizing/color; positioning
-// (fixed, top-layer) and the ::backdrop pseudo-element come from the
-// native <dialog> UA stylesheet via showModal(), same as modal.scss. The
-// `mt-[12vh]` on the dialog itself (rather than perfect centering) is what
-// anchors it near the top of the viewport.

@@ -56,7 +56,7 @@ interface ConfirmationEntry {
   selector: 'app-chat',
   imports: [TranslocoDirective, DatePipe, MarkdownPipe, Button, Card, EmptyState, Icon, Skeleton],
   templateUrl: './chat.html',
-  styleUrl: './chat.scss',
+  styleUrls: ['./chat.scss', './chat-markdown.scss'],
 })
 export class Chat {
   private readonly repo = inject(AgentChatRepository);

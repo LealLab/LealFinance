@@ -1,0 +1,56 @@
+/* Shared form-field classes - every create/edit form (accounts,
+   transactions, categories, budgets) uses these instead of repeating the
+   same utility-class string in every template. */
+@layer components {
+  .form-label {
+    @apply block text-sm font-medium text-content-primary;
+  }
+
+  .form-input {
+    @apply mt-1 block w-full rounded-md border border-border bg-surface-raised px-3 py-2 text-sm text-content-primary placeholder:text-content-subtle focus:border-accent focus:outline-none;
+  }
+
+  /* Touch-only: a finger needs a ~44px target; a mouse doesn't, so this
+     leaves the desktop (pointer: fine) field height untouched. */
+  @media (pointer: coarse) {
+    .form-input {
+      min-height: 2.75rem;
+    }
+  }
+
+  .form-error {
+    @apply mt-1 text-xs text-negative;
+  }
+
+  .form-hint {
+    @apply mt-1 text-xs text-content-muted;
+  }
+
+  .form-checkbox {
+    @apply size-4 shrink-0 rounded border-border text-accent accent-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-accent;
+  }
+
+  /* Shared by the three unauthenticated pages (login/register/recover) -
+     was duplicated byte-for-byte across their component .scss files.
+     100dvh (not 100vh) so the card doesn't get pushed off screen by
+     mobile browser chrome. */
+  .auth-page {
+    display: flex;
+    min-height: 100dvh;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--surface-page);
+    color: var(--content-primary);
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 28rem;
+    padding: 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface-raised);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+  }
+}
