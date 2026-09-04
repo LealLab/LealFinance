@@ -288,6 +288,8 @@
         "newBudget": "Nuevo presupuesto",
         "configureLanguage": "Configurar idioma",
         "configureCurrency": "Configurar moneda de visualización",
+        "configurePasskeys": "Configurar claves de acceso",
+        "configurePasskeysHint": "clave de acceso, WebAuthn, sin contraseña, clave de seguridad, biometría",
         "toggleTheme": "Cambiar tema",
         "toggleBalances": "Mostrar u ocultar saldos",
         "configureTwoFactor": "Configurar la autenticación de dos factores",
@@ -1522,6 +1524,25 @@
         "regenerate": "Generar nuevos códigos de respaldo",
         "disable": "Desactivar"
       }
+    },
+    "passkeys": {
+      "title": "Claves de acceso",
+      "description": "Inicia sesión sin contraseña usando la huella, el rostro o el PIN de tu dispositivo.",
+      "unsupported": "Las claves de acceso necesitan una conexión segura (HTTPS). Abre este sitio mediante HTTPS para añadir una.",
+      "empty": "Aún no tienes claves de acceso.",
+      "add": "Añadir una clave de acceso",
+      "nameLabel": "Nombre de la clave de acceso",
+      "namePlaceholder": "p. ej., Portátil personal",
+      "nameHint": "Una etiqueta para reconocer este dispositivo más adelante.",
+      "create": "Crear clave de acceso",
+      "added": "Añadida el {{date}}",
+      "lastUsed": "Último uso: {{date}}",
+      "neverUsed": "Nunca usada",
+      "remove": "Eliminar",
+      "removeConfirm": {
+        "title": "¿Eliminar esta clave de acceso?",
+        "message": "Ya no podrás iniciar sesión con ella. Esta acción no se puede deshacer."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Iniciar sesión",
       "description": "Usa tu cuenta de LealFinance para continuar.",
       "action": "Iniciar sesión",
-      "invited": "¿Tienes una invitación?"
+      "invited": "¿Tienes una invitación?",
+      "passkeyAction": "Iniciar sesión con una clave de acceso"
     },
     "register": {
       "title": "Aceptar invitación",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "La autenticación de dos factores ya está activada.",
       "not_enabled": "La autenticación de dos factores no está activada."
+    },
+    "webauthn": {
+      "origin_invalid": "Las claves de acceso no están disponibles en esta dirección.",
+      "insecure_context": "Las claves de acceso necesitan una conexión segura (HTTPS).",
+      "challenge_invalid": "La solicitud de clave de acceso ha caducado. Inténtalo de nuevo.",
+      "verification_failed": "No se ha podido verificar la clave de acceso.",
+      "credential_exists": "Esta clave de acceso ya está registrada.",
+      "not_found": "No se ha encontrado la clave de acceso."
     }
   }
 }

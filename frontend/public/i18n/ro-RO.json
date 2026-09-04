@@ -288,6 +288,8 @@
         "newBudget": "Buget nou",
         "configureLanguage": "Configurează limba",
         "configureCurrency": "Configurează moneda de afișare",
+        "configurePasskeys": "Configurează cheile de acces",
+        "configurePasskeysHint": "cheie de acces, WebAuthn, fără parolă, cheie de securitate, biometric",
         "toggleTheme": "Schimbă tema",
         "toggleBalances": "Afișează sau ascunde soldurile",
         "configureTwoFactor": "Configurează autentificarea în doi factori",
@@ -1522,6 +1524,25 @@
         "regenerate": "Generează coduri de rezervă noi",
         "disable": "Dezactivează"
       }
+    },
+    "passkeys": {
+      "title": "Chei de acces",
+      "description": "Autentifică-te fără parolă folosind amprenta, fața sau codul PIN al dispozitivului.",
+      "unsupported": "Cheile de acces necesită o conexiune securizată (HTTPS). Deschide acest site prin HTTPS pentru a adăuga una.",
+      "empty": "Nu există încă chei de acces.",
+      "add": "Adaugă o cheie de acces",
+      "nameLabel": "Numele cheii de acces",
+      "namePlaceholder": "de ex. Laptop personal",
+      "nameHint": "O etichetă care te ajută să recunoști dispozitivul mai târziu.",
+      "create": "Creează o cheie de acces",
+      "added": "Adăugată la {{date}}",
+      "lastUsed": "Folosită ultima dată la {{date}}",
+      "neverUsed": "Nefolosită",
+      "remove": "Elimină",
+      "removeConfirm": {
+        "title": "Elimini această cheie de acces?",
+        "message": "Nu te vei mai putea autentifica folosind-o. Acțiunea nu poate fi anulată."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Autentificare",
       "description": "Folosește contul LealFinance pentru a continua.",
       "action": "Autentifică-te",
-      "invited": "Ai o invitație?"
+      "invited": "Ai o invitație?",
+      "passkeyAction": "Autentifică-te cu o cheie de acces"
     },
     "register": {
       "title": "Acceptă invitația",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Autentificarea în doi factori este deja activată.",
       "not_enabled": "Autentificarea în doi factori nu este activată."
+    },
+    "webauthn": {
+      "origin_invalid": "Cheile de acces nu sunt disponibile la această adresă.",
+      "insecure_context": "Cheile de acces necesită o conexiune securizată (HTTPS).",
+      "challenge_invalid": "Cererea cheii de acces a expirat. Încearcă din nou.",
+      "verification_failed": "Cheia de acces nu a putut fi verificată.",
+      "credential_exists": "Această cheie de acces este deja înregistrată.",
+      "not_found": "Cheia de acces nu a fost găsită."
     }
   }
 }

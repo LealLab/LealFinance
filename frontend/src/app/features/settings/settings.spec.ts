@@ -30,6 +30,7 @@ describe('Settings', () => {
     enableTotp: ReturnType<typeof vi.fn>;
     disableTotp: ReturnType<typeof vi.fn>;
     regenerateBackupCodes: ReturnType<typeof vi.fn>;
+    listPasskeys: ReturnType<typeof vi.fn>;
   };
   let agentChatRepo: {
     mintMcpToken: ReturnType<typeof vi.fn>;
@@ -58,6 +59,7 @@ describe('Settings', () => {
       enableTotp: vi.fn().mockReturnValue(of(['aaaa-1111', 'bbbb-2222'])),
       disableTotp: vi.fn().mockReturnValue(of(undefined)),
       regenerateBackupCodes: vi.fn().mockReturnValue(of(['cccc-3333'])),
+      listPasskeys: vi.fn().mockReturnValue(of([])),
     };
     await TestBed.configureTestingModule({
       imports: [

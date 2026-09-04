@@ -7,6 +7,7 @@ import {
   CurrencyMetadata,
   Invitation,
   Preferences,
+  Passkey,
   PublicSettings,
   TotpSetup,
   TotpStatus,
@@ -14,10 +15,14 @@ import {
   User,
   UserRole,
 } from './identity.models';
+import {
+  PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
+} from './webauthn';
 
 /**
  * Dynamic backend error translations used by auth and administration UI.
- * t(errors.error.generic, errors.error.validation, errors.auth.invalid_credentials, errors.auth.csrf_invalid, errors.auth.last_admin, errors.auth.peer_admin, errors.auth.account_inactive, errors.auth.admin_required, errors.auth.totp_required, errors.auth.totp_invalid, errors.auth.totp_locked, errors.totp.already_enabled, errors.totp.not_enabled, errors.invitation.not_found, errors.invitation.expired, errors.invitation.revoked, errors.invitation.already_accepted, errors.invitation.already_pending, errors.user.email_taken)
+ * t(errors.error.generic, errors.error.validation, errors.auth.invalid_credentials, errors.auth.csrf_invalid, errors.auth.last_admin, errors.auth.peer_admin, errors.auth.account_inactive, errors.auth.admin_required, errors.auth.totp_required, errors.auth.totp_invalid, errors.auth.totp_locked, errors.totp.already_enabled, errors.totp.not_enabled, errors.webauthn.origin_invalid, errors.webauthn.insecure_context, errors.webauthn.challenge_invalid, errors.webauthn.verification_failed, errors.webauthn.credential_exists, errors.webauthn.not_found, errors.invitation.not_found, errors.invitation.expired, errors.invitation.revoked, errors.invitation.already_accepted, errors.invitation.already_pending, errors.user.email_taken)
  */
 
 /** POST /auth/login answers with this code when the account has TOTP on and
@@ -86,6 +91,13 @@ interface TotpSetupWire {
   otpauth_uri: string;
 }
 
+interface PasskeyWire {
+  id: string;
+  name: string;
+  created_at: string;
+  last_used_at: string | null;
+}
+
 interface BackupCodesWire {
   codes: string[];
 }
@@ -119,6 +131,13 @@ const mapInvitation = (value: InvitationWire): Invitation => ({
   createdAt: value.created_at,
 });
 
+const mapPasskey = (value: PasskeyWire): Passkey => ({
+  id: value.id,
+  name: value.name,
+  createdAt: value.created_at,
+  lastUsedAt: value.last_used_at ?? undefined,
+});
+
 @Injectable({ providedIn: 'root' })
 export class IdentityApiService {
   private readonly api = inject(ApiClient);
@@ -140,6 +159,34 @@ export class IdentityApiService {
           ? { totp_code: secondFactor.code, trust_device: secondFactor.trustDevice }
           : {}),
       })
+      .pipe(map(mapUser));
+  }
+
+  passkeyRegisterOptions(): Observable<PublicKeyCredentialCreationOptionsJSON> {
+    return this.api.post<PublicKeyCredentialCreationOptionsJSON>('/auth/passkeys/register/options', {});
+  }
+
+  registerPasskey(name: string, challenge: string, credential: unknown): Observable<Passkey> {
+    return this.api
+      .post<PasskeyWire>('/auth/passkeys/register', { name, challenge, credential })
+      .pipe(map(mapPasskey));
+  }
+
+  listPasskeys(): Observable<Passkey[]> {
+    return this.api.get<PasskeyWire[]>('/auth/passkeys').pipe(map((rows) => rows.map(mapPasskey)));
+  }
+
+  deletePasskey(id: string): Observable<void> {
+    return this.api.delete<void>('/auth/passkeys/' + id);
+  }
+
+  passkeyLoginOptions(): Observable<PublicKeyCredentialRequestOptionsJSON> {
+    return this.api.post<PublicKeyCredentialRequestOptionsJSON>('/auth/login/passkey/options', {});
+  }
+
+  loginWithPasskey(challenge: string, credential: unknown): Observable<User> {
+    return this.api
+      .post<UserWire>('/auth/login/passkey', { challenge, credential })
       .pipe(map(mapUser));
   }
 

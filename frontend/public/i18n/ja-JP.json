@@ -288,6 +288,8 @@
         "newBudget": "新しい予算",
         "configureLanguage": "言語を設定",
         "configureCurrency": "表示通貨を設定",
+        "configurePasskeys": "パスキーを設定",
+        "configurePasskeysHint": "パスキー、WebAuthn、パスワードレス、セキュリティキー、生体認証",
         "toggleTheme": "テーマを切り替え",
         "toggleBalances": "残高を表示／非表示",
         "configureTwoFactor": "2 要素認証を設定",
@@ -1522,6 +1524,25 @@
         "regenerate": "新しいバックアップコードを生成",
         "disable": "無効にする"
       }
+    },
+    "passkeys": {
+      "title": "パスキー",
+      "description": "デバイスの指紋、顔認証、または PIN を使って、パスワードなしでログインします。",
+      "unsupported": "パスキーには安全な (HTTPS) 接続が必要です。追加するには、このサイトを HTTPS で開いてください。",
+      "empty": "パスキーはまだありません。",
+      "add": "パスキーを追加",
+      "nameLabel": "パスキー名",
+      "namePlaceholder": "例: 個人用ノートパソコン",
+      "nameHint": "後でこのデバイスを見分けるためのラベルです。",
+      "create": "パスキーを作成",
+      "added": "{{date}} に追加",
+      "lastUsed": "最終使用 {{date}}",
+      "neverUsed": "未使用",
+      "remove": "削除",
+      "removeConfirm": {
+        "title": "このパスキーを削除しますか？",
+        "message": "このパスキーではログインできなくなります。この操作は元に戻せません。"
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "ログイン",
       "description": "LealFinanceアカウントで続行してください。",
       "action": "ログイン",
-      "invited": "招待をお持ちですか？"
+      "invited": "招待をお持ちですか？",
+      "passkeyAction": "パスキーでログイン"
     },
     "register": {
       "title": "招待を受け入れる",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "2 要素認証はすでに有効です。",
       "not_enabled": "2 要素認証は有効になっていません。"
+    },
+    "webauthn": {
+      "origin_invalid": "このアドレスではパスキーを利用できません。",
+      "insecure_context": "パスキーには安全な (HTTPS) 接続が必要です。",
+      "challenge_invalid": "パスキーのリクエストの有効期限が切れました。もう一度お試しください。",
+      "verification_failed": "パスキーを検証できませんでした。",
+      "credential_exists": "このパスキーはすでに登録されています。",
+      "not_found": "パスキーが見つかりません。"
     }
   }
 }

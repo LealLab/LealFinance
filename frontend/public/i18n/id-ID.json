@@ -288,6 +288,8 @@
         "newBudget": "Anggaran baru",
         "configureLanguage": "Atur bahasa",
         "configureCurrency": "Atur mata uang tampilan",
+        "configurePasskeys": "Konfigurasikan passkey",
+        "configurePasskeysHint": "passkey, WebAuthn, tanpa kata sandi, kunci keamanan, biometrik",
         "toggleTheme": "Ganti tema",
         "toggleBalances": "Tampilkan atau sembunyikan saldo",
         "configureTwoFactor": "Konfigurasikan autentikasi dua faktor",
@@ -1522,6 +1524,25 @@
         "regenerate": "Buat kode cadangan baru",
         "disable": "Nonaktifkan"
       }
+    },
+    "passkeys": {
+      "title": "Passkey",
+      "description": "Masuk tanpa kata sandi menggunakan sidik jari, wajah, atau PIN perangkat Anda.",
+      "unsupported": "Passkey memerlukan koneksi aman (HTTPS). Buka situs ini melalui HTTPS untuk menambahkannya.",
+      "empty": "Belum ada passkey.",
+      "add": "Tambahkan passkey",
+      "nameLabel": "Nama passkey",
+      "namePlaceholder": "mis. Laptop pribadi",
+      "nameHint": "Label untuk membantu Anda mengenali perangkat ini nanti.",
+      "create": "Buat passkey",
+      "added": "Ditambahkan {{date}}",
+      "lastUsed": "Terakhir digunakan {{date}}",
+      "neverUsed": "Belum pernah digunakan",
+      "remove": "Hapus",
+      "removeConfirm": {
+        "title": "Hapus passkey ini?",
+        "message": "Anda tidak akan dapat masuk lagi dengannya. Tindakan ini tidak dapat dibatalkan."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Masuk",
       "description": "Gunakan akun LealFinance Anda untuk melanjutkan.",
       "action": "Masuk",
-      "invited": "Punya undangan?"
+      "invited": "Punya undangan?",
+      "passkeyAction": "Masuk dengan passkey"
     },
     "register": {
       "title": "Terima undangan",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Autentikasi dua faktor sudah aktif.",
       "not_enabled": "Autentikasi dua faktor tidak aktif."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkey tidak tersedia di alamat ini.",
+      "insecure_context": "Passkey memerlukan koneksi aman (HTTPS).",
+      "challenge_invalid": "Permintaan passkey kedaluwarsa. Silakan coba lagi.",
+      "verification_failed": "Passkey tersebut tidak dapat diverifikasi.",
+      "credential_exists": "Passkey tersebut sudah terdaftar.",
+      "not_found": "Passkey tidak ditemukan."
     }
   }
 }

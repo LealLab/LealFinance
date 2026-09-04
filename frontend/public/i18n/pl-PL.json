@@ -288,6 +288,8 @@
         "newBudget": "Nowy budżet",
         "configureLanguage": "Skonfiguruj język",
         "configureCurrency": "Skonfiguruj walutę wyświetlania",
+        "configurePasskeys": "Skonfiguruj klucze dostępu",
+        "configurePasskeysHint": "klucz dostępu, WebAuthn, bez hasła, klucz bezpieczeństwa, biometria",
         "toggleTheme": "Przełącz motyw",
         "toggleBalances": "Pokaż lub ukryj salda",
         "configureTwoFactor": "Skonfiguruj uwierzytelnianie dwuskładnikowe",
@@ -1522,6 +1524,25 @@
         "regenerate": "Wygeneruj nowe kody zapasowe",
         "disable": "Wyłącz"
       }
+    },
+    "passkeys": {
+      "title": "Klucze dostępu",
+      "description": "Zaloguj się bez hasła za pomocą odcisku palca, twarzy lub kodu PIN urządzenia.",
+      "unsupported": "Klucze dostępu wymagają bezpiecznego połączenia (HTTPS). Otwórz tę stronę przez HTTPS, aby dodać klucz.",
+      "empty": "Nie masz jeszcze kluczy dostępu.",
+      "add": "Dodaj klucz dostępu",
+      "nameLabel": "Nazwa klucza dostępu",
+      "namePlaceholder": "np. Prywatny laptop",
+      "nameHint": "Etykieta, która pomoże Ci później rozpoznać to urządzenie.",
+      "create": "Utwórz klucz dostępu",
+      "added": "Dodano {{date}}",
+      "lastUsed": "Ostatnio użyto {{date}}",
+      "neverUsed": "Nigdy nie użyto",
+      "remove": "Usuń",
+      "removeConfirm": {
+        "title": "Usunąć ten klucz dostępu?",
+        "message": "Nie będzie już można logować się za jego pomocą. Tej operacji nie można cofnąć."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Zaloguj się",
       "description": "Użyj swojego konta LealFinance, aby kontynuować.",
       "action": "Zaloguj się",
-      "invited": "Masz zaproszenie?"
+      "invited": "Masz zaproszenie?",
+      "passkeyAction": "Zaloguj się za pomocą klucza dostępu"
     },
     "register": {
       "title": "Przyjmij zaproszenie",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Uwierzytelnianie dwuskładnikowe jest już włączone.",
       "not_enabled": "Uwierzytelnianie dwuskładnikowe nie jest włączone."
+    },
+    "webauthn": {
+      "origin_invalid": "Klucze dostępu nie są dostępne pod tym adresem.",
+      "insecure_context": "Klucze dostępu wymagają bezpiecznego połączenia (HTTPS).",
+      "challenge_invalid": "To żądanie klucza dostępu wygasło. Spróbuj ponownie.",
+      "verification_failed": "Nie udało się zweryfikować klucza dostępu.",
+      "credential_exists": "Ten klucz dostępu jest już zarejestrowany.",
+      "not_found": "Nie znaleziono klucza dostępu."
     }
   }
 }

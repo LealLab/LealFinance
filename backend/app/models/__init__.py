@@ -29,6 +29,7 @@ from app.models.recurring import RecurringRule
 from app.models.totp import TotpBackupCode, TrustedDevice
 from app.models.transaction import Transaction
 from app.models.user import Invitation, Session, User
+from app.models.webauthn import WebAuthnChallenge, WebAuthnCredential
 
 __all__ = [
     "Account",
@@ -59,4 +60,6 @@ __all__ = [
     "Transaction",
     "TrustedDevice",
     "User",
+    "WebAuthnChallenge",
+    "WebAuthnCredential",
 ]

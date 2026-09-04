@@ -165,6 +165,11 @@ The bundled `web` service provides HTTP only. For access beyond a trusted
 local network, put an existing Caddy, Traefik, or nginx proxy in front of the
 published web port and terminate TLS there.
 
+Passkey sign-in (Settings → Passkeys) needs a secure context, so it works at
+`http://localhost` but not at `http://<host-ip>:8081`. To use passkeys from
+other devices, front the app with HTTPS as described above; password login is
+unaffected.
+
 ## Optional AI providers
 
 AI agents are disabled by default. They run in the API container; the

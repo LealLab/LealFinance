@@ -288,6 +288,8 @@
         "newBudget": "Novo orçamento",
         "configureLanguage": "Configurar idioma",
         "configureCurrency": "Configurar moeda de exibição",
+        "configurePasskeys": "Configurar passkeys",
+        "configurePasskeysHint": "passkey, WebAuthn, sem senha, chave de segurança, biometria",
         "toggleTheme": "Alternar tema",
         "toggleBalances": "Ocultar ou mostrar saldos",
         "configureTwoFactor": "Configurar autenticação de dois fatores",
@@ -1522,6 +1524,25 @@
         "regenerate": "Gerar novos códigos de backup",
         "disable": "Desativar"
       }
+    },
+    "passkeys": {
+      "title": "Chaves de acesso",
+      "description": "Entre sem senha usando a impressão digital, o rosto ou o PIN do seu dispositivo.",
+      "unsupported": "As passkeys precisam de uma conexão segura (HTTPS). Abra este site via HTTPS para adicionar uma.",
+      "empty": "Nenhuma passkey ainda.",
+      "add": "Adicionar uma passkey",
+      "nameLabel": "Nome da passkey",
+      "namePlaceholder": "ex.: Laptop pessoal",
+      "nameHint": "Um rótulo para ajudar você a reconhecer este dispositivo depois.",
+      "create": "Criar passkey",
+      "added": "Adicionada em {{date}}",
+      "lastUsed": "Usada pela última vez em {{date}}",
+      "neverUsed": "Nunca usada",
+      "remove": "Remover",
+      "removeConfirm": {
+        "title": "Remover esta passkey?",
+        "message": "Você não poderá mais entrar com ela. Não é possível desfazer esta ação."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Entrar",
       "description": "Use sua conta LealFinance para continuar.",
       "action": "Entrar",
-      "invited": "Recebeu um convite?"
+      "invited": "Recebeu um convite?",
+      "passkeyAction": "Entrar com uma passkey"
     },
     "register": {
       "title": "Aceitar convite",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "A autenticação de dois fatores já está ativada.",
       "not_enabled": "A autenticação de dois fatores não está ativada."
+    },
+    "webauthn": {
+      "origin_invalid": "As passkeys não estão disponíveis neste endereço.",
+      "insecure_context": "As passkeys precisam de uma conexão segura (HTTPS).",
+      "challenge_invalid": "Essa solicitação de passkey expirou. Tente novamente.",
+      "verification_failed": "Não foi possível verificar essa passkey.",
+      "credential_exists": "Essa passkey já está registrada.",
+      "not_found": "Passkey não encontrada."
     }
   }
 }

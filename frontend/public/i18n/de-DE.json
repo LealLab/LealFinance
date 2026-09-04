@@ -288,6 +288,8 @@
         "newBudget": "Neues Budget",
         "configureLanguage": "Sprache konfigurieren",
         "configureCurrency": "Anzeigewährung konfigurieren",
+        "configurePasskeys": "Passkeys konfigurieren",
+        "configurePasskeysHint": "Passkey, WebAuthn, passwortlos, Sicherheitsschlüssel, Biometrie",
         "toggleTheme": "Design wechseln",
         "toggleBalances": "Kontostände ein- oder ausblenden",
         "configureTwoFactor": "Zwei-Faktor-Authentifizierung konfigurieren",
@@ -1522,6 +1524,25 @@
         "regenerate": "Neue Backup-Codes erzeugen",
         "disable": "Deaktivieren"
       }
+    },
+    "passkeys": {
+      "title": "Zugangsschlüssel",
+      "description": "Melden Sie sich ohne Passwort mit Fingerabdruck, Gesichtserkennung oder PIN Ihres Geräts an.",
+      "unsupported": "Passkeys benötigen eine sichere (HTTPS-)Verbindung. Öffnen Sie diese Seite über HTTPS, um einen Passkey hinzuzufügen.",
+      "empty": "Noch keine Passkeys.",
+      "add": "Passkey hinzufügen",
+      "nameLabel": "Passkey-Name",
+      "namePlaceholder": "z. B. Privater Laptop",
+      "nameHint": "Eine Bezeichnung, an der Sie dieses Gerät später erkennen.",
+      "create": "Passkey erstellen",
+      "added": "Hinzugefügt am {{date}}",
+      "lastUsed": "Zuletzt verwendet am {{date}}",
+      "neverUsed": "Noch nie verwendet",
+      "remove": "Entfernen",
+      "removeConfirm": {
+        "title": "Diesen Passkey entfernen?",
+        "message": "Sie können sich damit nicht mehr anmelden. Dies kann nicht rückgängig gemacht werden."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Anmelden",
       "description": "Verwenden Sie Ihr LealFinance-Konto, um fortzufahren.",
       "action": "Anmelden",
-      "invited": "Haben Sie eine Einladung?"
+      "invited": "Haben Sie eine Einladung?",
+      "passkeyAction": "Mit einem Passkey anmelden"
     },
     "register": {
       "title": "Einladung annehmen",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Die Zwei-Faktor-Authentifizierung ist bereits aktiviert.",
       "not_enabled": "Die Zwei-Faktor-Authentifizierung ist nicht aktiviert."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkeys sind unter dieser Adresse nicht verfügbar.",
+      "insecure_context": "Passkeys benötigen eine sichere (HTTPS-)Verbindung.",
+      "challenge_invalid": "Diese Passkey-Anfrage ist abgelaufen. Bitte versuchen Sie es erneut.",
+      "verification_failed": "Dieser Passkey konnte nicht verifiziert werden.",
+      "credential_exists": "Dieser Passkey ist bereits registriert.",
+      "not_found": "Passkey nicht gefunden."
     }
   }
 }

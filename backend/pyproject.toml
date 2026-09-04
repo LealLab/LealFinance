@@ -22,6 +22,11 @@ dependencies = [
     # that must be read back rather than one-way hashed.
     "cryptography>=46.0.3",
     "mcp>=1.29,<2",
+    # Runtime dep: app/services/webauthn.py verifies passkey (WebAuthn)
+    # registration/authentication ceremonies - COSE key parsing, CBOR
+    # decoding, and assertion signature verification are not things to
+    # hand-roll. Wraps the already-present cryptography plus cbor2.
+    "webauthn>=3,<4",
 ]
 
 [dependency-groups]

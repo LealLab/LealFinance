@@ -288,6 +288,8 @@
         "newBudget": "Nouveau budget",
         "configureLanguage": "Configurer la langue",
         "configureCurrency": "Configurer la devise d’affichage",
+        "configurePasskeys": "Configurer les clés d’accès",
+        "configurePasskeysHint": "clé d’accès, WebAuthn, sans mot de passe, clé de sécurité, biométrie",
         "toggleTheme": "Changer de thème",
         "toggleBalances": "Afficher ou masquer les soldes",
         "configureTwoFactor": "Configurer l'authentification à deux facteurs",
@@ -1522,6 +1524,25 @@
         "regenerate": "Générer de nouveaux codes de secours",
         "disable": "Désactiver"
       }
+    },
+    "passkeys": {
+      "title": "Clés d’accès",
+      "description": "Connectez-vous sans mot de passe avec l’empreinte, le visage ou le code PIN de votre appareil.",
+      "unsupported": "Les clés d’accès nécessitent une connexion sécurisée (HTTPS). Ouvrez ce site en HTTPS pour en ajouter une.",
+      "empty": "Aucune clé d’accès pour le moment.",
+      "add": "Ajouter une clé d’accès",
+      "nameLabel": "Nom de la clé d’accès",
+      "namePlaceholder": "p. ex. Ordinateur portable personnel",
+      "nameHint": "Un libellé pour reconnaître cet appareil plus tard.",
+      "create": "Créer une clé d’accès",
+      "added": "Ajoutée le {{date}}",
+      "lastUsed": "Dernière utilisation le {{date}}",
+      "neverUsed": "Jamais utilisée",
+      "remove": "Supprimer",
+      "removeConfirm": {
+        "title": "Supprimer cette clé d’accès ?",
+        "message": "Vous ne pourrez plus vous connecter avec celle-ci. Cette action est irréversible."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Se connecter",
       "description": "Utilisez votre compte LealFinance pour continuer.",
       "action": "Se connecter",
-      "invited": "Vous avez une invitation ?"
+      "invited": "Vous avez une invitation ?",
+      "passkeyAction": "Se connecter avec une clé d’accès"
     },
     "register": {
       "title": "Accepter l’invitation",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "L'authentification à deux facteurs est déjà activée.",
       "not_enabled": "L'authentification à deux facteurs n'est pas activée."
+    },
+    "webauthn": {
+      "origin_invalid": "Les clés d’accès ne sont pas disponibles à cette adresse.",
+      "insecure_context": "Les clés d’accès nécessitent une connexion sécurisée (HTTPS).",
+      "challenge_invalid": "Cette demande de clé d’accès a expiré. Réessayez.",
+      "verification_failed": "Cette clé d’accès n’a pas pu être vérifiée.",
+      "credential_exists": "Cette clé d’accès est déjà enregistrée.",
+      "not_found": "Clé d’accès introuvable."
     }
   }
 }

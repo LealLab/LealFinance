@@ -57,6 +57,14 @@ export class SessionService {
     );
   }
 
+  loginWithPasskey(challenge: string, credential: unknown): Observable<User> {
+    return this.api.loginWithPasskey(challenge, credential).pipe(
+      tap((user) => this.userState.set(user)),
+      switchMap((user) => this.preferences.hydrate().pipe(map(() => user))),
+      tap(() => this.metadata.hydrate().subscribe()),
+    );
+  }
+
   register(input: {
     email: string;
     token?: string;

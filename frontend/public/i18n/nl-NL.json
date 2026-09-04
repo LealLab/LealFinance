@@ -288,6 +288,8 @@
         "newBudget": "Nieuw budget",
         "configureLanguage": "Taal instellen",
         "configureCurrency": "Weergavevaluta instellen",
+        "configurePasskeys": "Passkeys instellen",
+        "configurePasskeysHint": "passkey, WebAuthn, zonder wachtwoord, beveiligingssleutel, biometrie",
         "toggleTheme": "Thema wisselen",
         "toggleBalances": "Saldi tonen of verbergen",
         "configureTwoFactor": "Tweefactorauthenticatie instellen",
@@ -1522,6 +1524,25 @@
         "regenerate": "Nieuwe back-upcodes genereren",
         "disable": "Uitschakelen"
       }
+    },
+    "passkeys": {
+      "title": "Toegangssleutels",
+      "description": "Log in zonder wachtwoord met de vingerafdruk, het gezicht of de pincode van je apparaat.",
+      "unsupported": "Passkeys hebben een beveiligde (HTTPS-)verbinding nodig. Open deze site via HTTPS om er een toe te voegen.",
+      "empty": "Nog geen passkeys.",
+      "add": "Een passkey toevoegen",
+      "nameLabel": "Naam van passkey",
+      "namePlaceholder": "bijv. Persoonlijke laptop",
+      "nameHint": "Een label waaraan je dit apparaat later herkent.",
+      "create": "Passkey maken",
+      "added": "Toegevoegd op {{date}}",
+      "lastUsed": "Laatst gebruikt op {{date}}",
+      "neverUsed": "Nooit gebruikt",
+      "remove": "Verwijderen",
+      "removeConfirm": {
+        "title": "Deze passkey verwijderen?",
+        "message": "Je kunt er daarna niet meer mee inloggen. Dit kan niet ongedaan worden gemaakt."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Inloggen",
       "description": "Gebruik je LealFinance-account om door te gaan.",
       "action": "Inloggen",
-      "invited": "Heb je een uitnodiging?"
+      "invited": "Heb je een uitnodiging?",
+      "passkeyAction": "Inloggen met een passkey"
     },
     "register": {
       "title": "Uitnodiging accepteren",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Tweefactorauthenticatie is al ingeschakeld.",
       "not_enabled": "Tweefactorauthenticatie is niet ingeschakeld."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkeys zijn niet beschikbaar op dit adres.",
+      "insecure_context": "Passkeys hebben een beveiligde (HTTPS-)verbinding nodig.",
+      "challenge_invalid": "Dit passkeyverzoek is verlopen. Probeer het opnieuw.",
+      "verification_failed": "Deze passkey kon niet worden geverifieerd.",
+      "credential_exists": "Deze passkey is al geregistreerd.",
+      "not_found": "Passkey niet gevonden."
     }
   }
 }

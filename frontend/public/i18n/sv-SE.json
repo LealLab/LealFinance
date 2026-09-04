@@ -288,6 +288,8 @@
         "newBudget": "Ny budget",
         "configureLanguage": "Konfigurera språk",
         "configureCurrency": "Konfigurera visningsvaluta",
+        "configurePasskeys": "Konfigurera passkeys",
+        "configurePasskeysHint": "passkey, WebAuthn, lösenordsfritt, säkerhetsnyckel, biometri",
         "toggleTheme": "Växla tema",
         "toggleBalances": "Visa eller dölj saldon",
         "configureTwoFactor": "Konfigurera tvåfaktorsautentisering",
@@ -1522,6 +1524,25 @@
         "regenerate": "Generera nya reservkoder",
         "disable": "Inaktivera"
       }
+    },
+    "passkeys": {
+      "title": "Passnycklar",
+      "description": "Logga in utan lösenord med enhetens fingeravtryck, ansikte eller PIN-kod.",
+      "unsupported": "Passkeys kräver en säker (HTTPS) anslutning. Öppna webbplatsen via HTTPS för att lägga till en.",
+      "empty": "Inga passkeys ännu.",
+      "add": "Lägg till en passkey",
+      "nameLabel": "Passkey-namn",
+      "namePlaceholder": "t.ex. Personlig bärbar dator",
+      "nameHint": "En etikett som hjälper dig att känna igen enheten senare.",
+      "create": "Skapa passkey",
+      "added": "Tillagd {{date}}",
+      "lastUsed": "Senast använd {{date}}",
+      "neverUsed": "Aldrig använd",
+      "remove": "Ta bort",
+      "removeConfirm": {
+        "title": "Ta bort den här passkeyn?",
+        "message": "Du kommer inte längre att kunna logga in med den. Det går inte att ångra."
+      }
     }
   },
   "auth": {
@@ -1539,7 +1560,8 @@
       "title": "Logga in",
       "description": "Använd ditt LealFinance-konto för att fortsätta.",
       "action": "Logga in",
-      "invited": "Har du en inbjudan?"
+      "invited": "Har du en inbjudan?",
+      "passkeyAction": "Logga in med en passkey"
     },
     "register": {
       "title": "Acceptera inbjudan",
@@ -1737,6 +1759,14 @@
     "totp": {
       "already_enabled": "Tvåfaktorsautentisering är redan aktiverad.",
       "not_enabled": "Tvåfaktorsautentisering är inte aktiverad."
+    },
+    "webauthn": {
+      "origin_invalid": "Passkeys är inte tillgängliga på den här adressen.",
+      "insecure_context": "Passkeys kräver en säker (HTTPS) anslutning.",
+      "challenge_invalid": "Passkey-begäran har löpt ut. Försök igen.",
+      "verification_failed": "Passkeyn kunde inte verifieras.",
+      "credential_exists": "Den här passkeyn är redan registrerad.",
+      "not_found": "Passkeyn hittades inte."
     }
   }
 }

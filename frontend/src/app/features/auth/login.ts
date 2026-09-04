@@ -5,6 +5,11 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { IdentityApiService, TOTP_REQUIRED } from '../../core/identity-api.service';
 import { SessionService } from '../../core/session.service';
+import {
+  isPasskeyCancellation,
+  isPasskeySupported,
+  requestPasskeyAssertion,
+} from '../../core/webauthn';
 import { Button } from '../../shared/ui/button/button';
 import { LanguageSelect } from '../../shared/ui/language-select/language-select';
 import { Logo } from '../../shared/ui/logo/logo';
@@ -32,6 +37,7 @@ export class Login {
 
   protected readonly submitting = signal(false);
   protected readonly errorCode = signal<string | undefined>(undefined);
+  protected readonly passkeySupported = isPasskeySupported();
   /** True once the backend has answered auth.totp_required: the same form is
    * resubmitted to the same endpoint with the code filled in. */
   protected readonly challenging = signal(false);
@@ -70,6 +76,23 @@ export class Login {
         return;
       }
       this.errorCode.set(code);
+    } finally {
+      this.submitting.set(false);
+    }
+  }
+
+  protected async signInWithPasskey(): Promise<void> {
+    if (this.submitting()) return;
+    this.submitting.set(true);
+    this.errorCode.set(undefined);
+    try {
+      const opts = await firstValueFrom(this.identityApi.passkeyLoginOptions());
+      const credential = await requestPasskeyAssertion(opts);
+      await firstValueFrom(this.session.loginWithPasskey(opts.challenge, credential));
+      await this.router.navigateByUrl(this.route.snapshot.queryParamMap.get('returnUrl') || '/');
+    } catch (error) {
+      if (isPasskeyCancellation(error)) return;
+      this.errorCode.set(this.readCode(error));
     } finally {
       this.submitting.set(false);
     }
