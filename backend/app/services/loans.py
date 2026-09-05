@@ -196,7 +196,10 @@ async def create_loan(db: AsyncSession, user_id: UUID, data: LoanCreate) -> Loan
 
 
 async def update_loan(db: AsyncSession, user_id: UUID, loan_id: UUID, data: LoanUpdate) -> Loan:
-    loan = await ownership.get_owned(db, Loan, loan_id, user_id)
+    # Locked so a concurrent payment can't slip in between the paid-numbers
+    # read below and this update's commit, which would let a shrink past a
+    # since-paid installment through unnoticed.
+    loan = await _get_owned_for_update(db, user_id, loan_id)
     changes = data.model_dump(exclude_unset=True)
     paid_numbers = await paid_installment_numbers(db, loan.id)
     new_count = changes.get("installment_count", loan.installment_count)
@@ -289,6 +292,7 @@ async def record_payment(
     account_id = data.account_id or loan.payment_account_id
     if account_id is None:
         raise ValidationAppError(code="loan.payment_account_required")
+    await _validate_payment_account(db, user_id, account_id, loan.currency)
 
     payment_date = data.date or today
     payload = TransactionCreate(
@@ -317,6 +321,10 @@ async def record_payment(
 def _allocate_total(total: Decimal, weights: list[Decimal]) -> list[Decimal]:
     total = total.quantize(_CENTS, rounding=ROUND_HALF_UP)
     weight_total = sum(weights, Decimal(0))
+    if weight_total == 0:
+        # Every discounted installment rounded to zero (a very high rate on
+        # far-future installments) - there's nothing to weight the split by.
+        raise ValidationAppError(code="loan.advance_amount_too_small")
     allocated: list[Decimal] = []
     for weight in weights[:-1]:
         allocated.append((total * weight / weight_total).quantize(_CENTS, rounding=ROUND_HALF_UP))

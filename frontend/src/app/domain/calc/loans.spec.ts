@@ -196,6 +196,14 @@ describe('loanPaymentQuote', () => {
         .installments.map((item) => item.number),
     ).toEqual([8, 9]);
   });
+
+  it('selects no installments for "last" when count is 0, not the whole array', () => {
+    // `[1,2,3].slice(-0)` returns the whole array - JS normalizes -0 to 0 -
+    // so a cleared count field must short-circuit before reaching slice().
+    const quote = loanPaymentQuote(loan, [], 'last', '2026-01-15', 0);
+    expect(quote.installments).toEqual([]);
+    expect(quote.suggestedAmount.amount).toBe('0.0000');
+  });
 });
 
 describe('loanSchedule', () => {

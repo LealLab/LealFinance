@@ -326,6 +326,37 @@ async def test_record_payment_uses_loan_payment_account_by_default(
     assert response.json()["account_id"] == account_id
 
 
+async def test_record_payment_rejects_an_archived_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-pay-archived-acct@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    await client.post(f"/api/v1/accounts/{account_id}/archive", json={"archived": True})
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.payment_account_archived"
+
+
+async def test_record_payment_rejects_a_currency_mismatched_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-pay-currency-mismatch@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client, currency="USD")
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.account_currency_mismatch"
+
+
 async def test_record_payment_rejected_once_fully_paid(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -480,6 +511,37 @@ async def test_advance_amount_too_small_rejects_a_non_positive_installment(
     assert (await client.get("/api/v1/transactions")).json() == []
 
 
+async def test_advance_amount_too_small_when_every_discount_rounds_to_zero(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """A far-future installment at an extreme rate discounts to 0.0000,
+    leaving `_allocate_total` nothing to weight the split by."""
+    await _authed(client, db_session, "loan-advance-zero-weight@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(
+                category_id,
+                amount_borrowed="100.00",
+                fees="0.00",
+                interest_rate="999",
+                installment_count=1,
+                first_payment_date="2032-01-10",
+            ),
+        )
+    ).json()["id"]
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "all", "account_id": account_id, "amount": "1.00", "date": "2026-01-01"},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.advance_amount_too_small"
+    assert (await client.get("/api/v1/transactions")).json() == []
+
+
 async def test_deleting_payment_reopens_its_installment(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -500,6 +562,22 @@ async def test_deleting_payment_reopens_its_installment(
     )
     assert reopened.status_code == 201, reopened.text
     assert reopened.json()["installment_number"] == 1
+
+
+async def test_cannot_detach_a_payment_from_its_loan_through_a_plain_patch(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-payment-immutable-link@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    payment = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()
+
+    response = await client.patch(f"/api/v1/transactions/{payment['id']}", json={"loan_id": None})
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.loan_payment_provenance_immutable"
 
 
 async def test_cannot_shrink_term_below_a_paid_installment(

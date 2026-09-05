@@ -160,7 +160,11 @@ export function loanPaymentQuote(
     mode === 'all'
       ? open
       : mode === 'last'
-        ? open.slice(-Math.max(0, count))
+        ? // `slice(-0)` returns the whole array (JS normalizes -0 to 0), so a
+          // cleared/zeroed count must short-circuit before reaching slice().
+          count > 0
+          ? open.slice(-count)
+          : []
         : open.slice(0, 1);
   const installments = selected.map((item) => discountedInstallment(loan, item, paymentDate));
   const originalAmount = multiply(
