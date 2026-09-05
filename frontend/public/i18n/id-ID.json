@@ -205,6 +205,7 @@
       "loans": "Pinjaman",
       "reports": "Laporan",
       "exchange": "Penukaran",
+      "openFinance": "Open Finance",
       "settings": "Pengaturan",
       "investments": "Investasi",
       "adminUsers": "Pengguna dan undangan",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} kurs diperbarui.",
       "upToDate": "Kurs sudah terbaru."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Hubungkan bank Anda melalui Pluggy agar saldo rekening dan transaksi tetap tersinkronisasi dalam mode hanya-baca.",
+    "loading": "Memuat data Open Finance…",
+    "errors": {
+      "action": "Tindakan Open Finance ini tidak dapat diselesaikan. Coba lagi."
+    },
+    "credentials": {
+      "title": "Kredensial Pluggy",
+      "description": "Tambahkan Client ID dan Client Secret Pluggy untuk menghubungkan bank Anda. Kredensial dienkripsi dan disimpan di akun Anda.",
+      "configured": "Dikonfigurasi",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Lingkungan"
+      },
+      "sandbox": "Sandbox",
+      "production": "Produksi",
+      "actions": {
+        "save": "Simpan kredensial",
+        "unlink": "Hapus kredensial",
+        "saving": "Menyimpan…"
+      },
+      "saveError": "Kredensial ini tidak dapat disimpan. Periksa nilainya dan coba lagi.",
+      "unlinkError": "Kredensial ini tidak dapat dihapus. Coba lagi."
+    },
+    "items": {
+      "title": "Institusi terhubung",
+      "empty": {
+        "credentialsTitle": "Tambahkan kredensial Pluggy",
+        "credentialsDescription": "Simpan kredensial Pluggy di atas sebelum menghubungkan bank.",
+        "title": "Hubungkan bank",
+        "description": "Hubungkan bank melalui Pluggy untuk mengimpor rekening dan transaksi ke buku besar Anda."
+      }
+    },
+    "accounts": {
+      "title": "Rekening",
+      "loading": "Memuat rekening…",
+      "empty": "Tidak ada rekening untuk institusi ini.",
+      "syncedBalance": "Saldo tersinkron",
+      "ledgerBalance": "Saldo buku besar",
+      "drift": "Selisih saldo",
+      "noLedger": "Tidak terhubung ke rekening buku besar",
+      "holdings": "Kepemilikan",
+      "loanSchedule": "Jadwal pinjaman",
+      "detail": "Detail",
+      "value": "Nilai",
+      "noData": "Tidak ada data",
+      "lastTransaction": "Transaksi terakhir"
+    },
+    "actions": {
+      "connect": "Hubungkan bank",
+      "sync": "Sinkronkan sekarang",
+      "disconnect": "Putuskan hubungan"
+    },
+    "lastSynced": "Terakhir disinkronkan",
+    "disconnect": {
+      "title": "Putuskan hubungan dari institusi ini?",
+      "message": "Pilih apakah data buku besar yang diimpor tetap disimpan atau semua yang terhubung ke institusi ini dihapus.",
+      "keep": "Simpan data saya",
+      "delete": "Hapus semuanya"
+    },
+    "connect": {
+      "loading": "Memuat koneksi…",
+      "scriptError": "Jendela koneksi bank tidak dapat dimuat. Coba lagi.",
+      "error": "Bank ini tidak dapat dihubungkan. Coba lagi."
     }
   },
   "settings": {

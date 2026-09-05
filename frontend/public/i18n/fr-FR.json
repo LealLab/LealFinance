@@ -205,6 +205,7 @@
       "loans": "Prêts",
       "reports": "Rapports",
       "exchange": "Change",
+      "openFinance": "Open Finance",
       "settings": "Paramètres",
       "investments": "Investissements",
       "adminUsers": "Utilisateurs et invitations",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} taux mis à jour.",
       "upToDate": "Les taux sont déjà à jour."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Connectez vos banques via Pluggy pour synchroniser en lecture seule les soldes et les transactions de vos comptes.",
+    "loading": "Chargement des données Open Finance…",
+    "errors": {
+      "action": "Cette action Open Finance n’a pas pu aboutir. Réessayez."
+    },
+    "credentials": {
+      "title": "Identifiants Pluggy",
+      "description": "Ajoutez votre Client ID et votre Client Secret Pluggy pour connecter vos banques. Les identifiants sont chiffrés et enregistrés dans votre compte.",
+      "configured": "Configuré",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Environnement"
+      },
+      "sandbox": "Bac à sable",
+      "production": "Production",
+      "actions": {
+        "save": "Enregistrer les identifiants",
+        "unlink": "Supprimer les identifiants",
+        "saving": "Enregistrement…"
+      },
+      "saveError": "Impossible d’enregistrer ces identifiants. Vérifiez les valeurs et réessayez.",
+      "unlinkError": "Impossible de supprimer ces identifiants. Réessayez."
+    },
+    "items": {
+      "title": "Établissements connectés",
+      "empty": {
+        "credentialsTitle": "Ajouter vos identifiants Pluggy",
+        "credentialsDescription": "Enregistrez vos identifiants Pluggy ci-dessus avant de connecter une banque.",
+        "title": "Connecter une banque",
+        "description": "Liez une banque via Pluggy pour importer ses comptes et transactions dans votre grand livre."
+      }
+    },
+    "accounts": {
+      "title": "Comptes",
+      "loading": "Chargement des comptes…",
+      "empty": "Aucun compte trouvé pour cet établissement.",
+      "syncedBalance": "Solde synchronisé",
+      "ledgerBalance": "Solde du grand livre",
+      "drift": "Écart de solde",
+      "noLedger": "Non lié à un compte du grand livre",
+      "holdings": "Positions",
+      "loanSchedule": "Échéancier du prêt",
+      "detail": "Détail",
+      "value": "Valeur",
+      "noData": "Aucune donnée",
+      "lastTransaction": "Dernière transaction"
+    },
+    "actions": {
+      "connect": "Connecter une banque",
+      "sync": "Synchroniser maintenant",
+      "disconnect": "Déconnecter"
+    },
+    "lastSynced": "Dernière synchronisation",
+    "disconnect": {
+      "title": "Déconnecter cet établissement ?",
+      "message": "Choisissez de conserver les données importées dans le grand livre ou de supprimer tout ce qui est lié à cet établissement.",
+      "keep": "Conserver mes données",
+      "delete": "Tout supprimer"
+    },
+    "connect": {
+      "loading": "Chargement de la connexion…",
+      "scriptError": "Impossible de charger la fenêtre de connexion bancaire. Réessayez.",
+      "error": "Impossible de connecter cette banque. Réessayez."
     }
   },
   "settings": {

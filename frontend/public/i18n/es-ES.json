@@ -205,6 +205,7 @@
       "loans": "Préstamos",
       "reports": "Informes",
       "exchange": "Cambio de divisas",
+      "openFinance": "Open Finance",
       "settings": "Ajustes",
       "investments": "Inversiones",
       "adminUsers": "Usuarios e invitaciones",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "Se actualizaron {{count}} tasas.",
       "upToDate": "Las tasas ya están actualizadas."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Conecta tus bancos mediante Pluggy para mantener sincronizados, en modo de solo lectura, los saldos y las transacciones.",
+    "loading": "Cargando datos de Open Finance…",
+    "errors": {
+      "action": "No se pudo completar esta acción de Open Finance. Inténtalo de nuevo."
+    },
+    "credentials": {
+      "title": "Credenciales de Pluggy",
+      "description": "Añade tu Client ID y Client Secret de Pluggy para conectar tus bancos. Las credenciales se cifran y se guardan en tu cuenta.",
+      "configured": "Configurado",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Entorno"
+      },
+      "sandbox": "Pruebas",
+      "production": "Producción",
+      "actions": {
+        "save": "Guardar credenciales",
+        "unlink": "Eliminar credenciales",
+        "saving": "Guardando…"
+      },
+      "saveError": "No se pudieron guardar estas credenciales. Comprueba los valores e inténtalo de nuevo.",
+      "unlinkError": "No se pudieron eliminar estas credenciales. Inténtalo de nuevo."
+    },
+    "items": {
+      "title": "Instituciones conectadas",
+      "empty": {
+        "credentialsTitle": "Añade tus credenciales de Pluggy",
+        "credentialsDescription": "Guarda tus credenciales de Pluggy arriba antes de conectar un banco.",
+        "title": "Conectar un banco",
+        "description": "Vincula un banco mediante Pluggy para importar cuentas y transacciones a tu libro mayor."
+      }
+    },
+    "accounts": {
+      "title": "Cuentas",
+      "loading": "Cargando cuentas…",
+      "empty": "No se encontraron cuentas para esta institución.",
+      "syncedBalance": "Saldo sincronizado",
+      "ledgerBalance": "Saldo del libro mayor",
+      "drift": "Diferencia de saldo",
+      "noLedger": "No vinculada a una cuenta del libro mayor",
+      "holdings": "Posiciones",
+      "loanSchedule": "Calendario del préstamo",
+      "detail": "Detalle",
+      "value": "Valor",
+      "noData": "Sin datos",
+      "lastTransaction": "Última transacción"
+    },
+    "actions": {
+      "connect": "Conectar un banco",
+      "sync": "Sincronizar ahora",
+      "disconnect": "Desconectar"
+    },
+    "lastSynced": "Última sincronización",
+    "disconnect": {
+      "title": "¿Desconectar esta institución?",
+      "message": "Elige si quieres conservar los datos importados en el libro mayor o eliminar todo lo relacionado con esta institución.",
+      "keep": "Conservar mis datos",
+      "delete": "Eliminarlo todo"
+    },
+    "connect": {
+      "loading": "Cargando conexión…",
+      "scriptError": "No se pudo cargar la ventana de conexión bancaria. Inténtalo de nuevo.",
+      "error": "No se pudo conectar este banco. Inténtalo de nuevo."
     }
   },
   "settings": {

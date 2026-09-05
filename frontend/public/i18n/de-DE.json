@@ -205,6 +205,7 @@
       "loans": "Kredite",
       "reports": "Auswertungen",
       "exchange": "Wechselkurse",
+      "openFinance": "Open Finance",
       "settings": "Einstellungen",
       "investments": "Investitionen",
       "adminUsers": "Benutzer und Einladungen",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} Kurse aktualisiert.",
       "upToDate": "Die Kurse sind bereits aktuell."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Verbinden Sie Ihre Banken über Pluggy, damit Kontostände und Transaktionen schreibgeschützt synchron bleiben.",
+    "loading": "Open-Finance-Daten werden geladen…",
+    "errors": {
+      "action": "Diese Open-Finance-Aktion konnte nicht abgeschlossen werden. Versuchen Sie es erneut."
+    },
+    "credentials": {
+      "title": "Pluggy-Zugangsdaten",
+      "description": "Geben Sie Ihre Pluggy-Client-ID und Ihr Client-Secret ein, um Ihre Banken zu verbinden. Die Zugangsdaten werden verschlüsselt in Ihrem Konto gespeichert.",
+      "configured": "Konfiguriert",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Umgebung"
+      },
+      "sandbox": "Sandbox",
+      "production": "Produktion",
+      "actions": {
+        "save": "Zugangsdaten speichern",
+        "unlink": "Zugangsdaten entfernen",
+        "saving": "Wird gespeichert…"
+      },
+      "saveError": "Diese Zugangsdaten konnten nicht gespeichert werden. Prüfen Sie die Werte und versuchen Sie es erneut.",
+      "unlinkError": "Diese Zugangsdaten konnten nicht entfernt werden. Versuchen Sie es erneut."
+    },
+    "items": {
+      "title": "Verbundene Institute",
+      "empty": {
+        "credentialsTitle": "Pluggy-Zugangsdaten hinzufügen",
+        "credentialsDescription": "Speichern Sie oben Ihre Pluggy-Zugangsdaten, bevor Sie eine Bank verbinden.",
+        "title": "Bank verbinden",
+        "description": "Verbinden Sie eine Bank über Pluggy, um Konten und Transaktionen in Ihr Hauptbuch zu importieren."
+      }
+    },
+    "accounts": {
+      "title": "Konten",
+      "loading": "Konten werden geladen…",
+      "empty": "Für dieses Institut wurden keine Konten gefunden.",
+      "syncedBalance": "Synchronisierter Kontostand",
+      "ledgerBalance": "Hauptbuchsaldo",
+      "drift": "Saldoabweichung",
+      "noLedger": "Keinem Hauptbuchkonto zugeordnet",
+      "holdings": "Bestände",
+      "loanSchedule": "Darlehensplan",
+      "detail": "Detail",
+      "value": "Wert",
+      "noData": "Keine Daten",
+      "lastTransaction": "Letzte Transaktion"
+    },
+    "actions": {
+      "connect": "Bank verbinden",
+      "sync": "Jetzt synchronisieren",
+      "disconnect": "Trennen"
+    },
+    "lastSynced": "Zuletzt synchronisiert",
+    "disconnect": {
+      "title": "Dieses Institut trennen?",
+      "message": "Wählen Sie, ob die importierten Hauptbuchdaten behalten oder alle mit diesem Institut verbundenen Daten entfernt werden sollen.",
+      "keep": "Meine Daten behalten",
+      "delete": "Alles entfernen"
+    },
+    "connect": {
+      "loading": "Verbindung wird geladen…",
+      "scriptError": "Das Bankverbindungsfenster konnte nicht geladen werden. Versuchen Sie es erneut.",
+      "error": "Diese Bank konnte nicht verbunden werden. Versuchen Sie es erneut."
     }
   },
   "settings": {

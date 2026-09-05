@@ -17,6 +17,11 @@ import {
   mapExchangeRate,
   mapImportPreview,
   mapImportPreviewRequest,
+  mapConnectToken,
+  mapPluggyAccount,
+  mapPluggyCredentialStatus,
+  mapPluggyItem,
+  mapPluggySyncResult,
   mapRecurringRule,
   mapTransaction,
   mapTransactionCreate,
@@ -365,6 +370,83 @@ describe('HTTP wire mappers', () => {
           duplicate: false,
         },
       ],
+    });
+  });
+
+  it('maps Pluggy responses, including JSON-string money fields to numbers', () => {
+    expect(mapPluggyCredentialStatus({ configured: true, environment: 'production' })).toEqual({
+      configured: true,
+      environment: 'production',
+    });
+    expect(mapConnectToken({ access_token: 'token' })).toEqual({ accessToken: 'token' });
+    expect(
+      mapPluggyItem({
+        id: 'item',
+        external_id: 'external-item',
+        connector_id: 42,
+        connector_name: 'Banco Aurora',
+        connector_image_url: null,
+        status: 'UPDATED',
+        execution_status: null,
+        status_detail: null,
+        institution_id: null,
+        last_synced_at: null,
+        last_sync_error: null,
+        consent_expires_at: null,
+      }),
+    ).toEqual({
+      id: 'item',
+      externalId: 'external-item',
+      connectorId: 42,
+      connectorName: 'Banco Aurora',
+      connectorImageUrl: undefined,
+      status: 'UPDATED',
+      executionStatus: undefined,
+      statusDetail: undefined,
+      institutionId: undefined,
+      lastSyncedAt: undefined,
+      lastSyncError: undefined,
+      consentExpiresAt: undefined,
+    });
+    expect(
+      mapPluggyAccount({
+        id: 'account',
+        pluggy_item_id: 'item',
+        account_id: null,
+        external_id: 'external-account',
+        type: 'BANK',
+        subtype: 'CHECKING',
+        name: 'Conta corrente',
+        number: null,
+        currency: 'BRL',
+        synced_balance: '1234.5000',
+        credit_limit: '5000.0000',
+        available_credit_limit: null,
+        raw: { balance: '1234.5000' },
+        last_transaction_date: '2026-09-04',
+        sync_enabled: true,
+      }),
+    ).toEqual({
+      id: 'account',
+      pluggyItemId: 'item',
+      accountId: undefined,
+      externalId: 'external-account',
+      type: 'BANK',
+      subtype: 'CHECKING',
+      name: 'Conta corrente',
+      number: undefined,
+      currency: 'BRL',
+      syncedBalance: 1234.5,
+      creditLimit: 5000,
+      availableCreditLimit: undefined,
+      raw: { balance: '1234.5000' },
+      lastTransactionDate: '2026-09-04',
+      syncEnabled: true,
+    });
+    expect(mapPluggySyncResult({ transactions_imported: 3, accounts_synced: 1, error: null })).toEqual({
+      transactionsImported: 3,
+      accountsSynced: 1,
+      error: undefined,
     });
   });
 });

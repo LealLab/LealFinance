@@ -1,0 +1,9 @@
+<div *transloco="let t" class="flex flex-wrap items-center gap-2">
+  <button appButton variant="primary" type="button" [disabled]="busy()" (click)="connect()">
+    <app-icon name="bank" [size]="16" />
+    {{ busy() ? t('openFinance.connect.loading') : t('openFinance.actions.connect') }}
+  </button>
+  @if (errorKey(); as key) {
+    <span class="text-sm text-negative" role="alert">{{ t(key) }}</span>
+  }
+</div>

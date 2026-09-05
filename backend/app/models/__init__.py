@@ -25,6 +25,7 @@ from app.models.investment import (
 )
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
+from app.models.open_finance import PluggyAccount, PluggyCredential, PluggyItem
 from app.models.recurring import RecurringRule
 from app.models.totp import TotpBackupCode, TrustedDevice
 from app.models.transaction import Transaction
@@ -52,6 +53,9 @@ __all__ = [
     "InvestmentWallet",
     "Loan",
     "MarketDataCredential",
+    "PluggyAccount",
+    "PluggyCredential",
+    "PluggyItem",
     "Invitation",
     "ManualRate",
     "RecurringRule",

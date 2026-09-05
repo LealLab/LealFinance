@@ -205,6 +205,7 @@
       "loans": "Lån",
       "reports": "Rapporter",
       "exchange": "Valutakurser",
+      "openFinance": "Open Finance",
       "settings": "Indstillinger",
       "investments": "Investeringer",
       "adminUsers": "Brugere og invitationer",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} kurser opdateret.",
       "upToDate": "Kurserne er allerede opdaterede."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Forbind dine banker via Pluggy, så kontosaldi og transaktioner holdes synkroniseret i skrivebeskyttet tilstand.",
+    "loading": "Indlæser Open Finance-data…",
+    "errors": {
+      "action": "Open Finance-handlingen kunne ikke gennemføres. Prøv igen."
+    },
+    "credentials": {
+      "title": "Pluggy-loginoplysninger",
+      "description": "Tilføj dit Pluggy Client ID og Client Secret for at forbinde dine banker. Oplysningerne krypteres og gemmes på din konto.",
+      "configured": "Konfigureret",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Miljø"
+      },
+      "sandbox": "Sandbox",
+      "production": "Produktion",
+      "actions": {
+        "save": "Gem loginoplysninger",
+        "unlink": "Fjern loginoplysninger",
+        "saving": "Gemmer…"
+      },
+      "saveError": "Loginoplysningerne kunne ikke gemmes. Kontrollér værdierne, og prøv igen.",
+      "unlinkError": "Loginoplysningerne kunne ikke fjernes. Prøv igen."
+    },
+    "items": {
+      "title": "Forbundne institutioner",
+      "empty": {
+        "credentialsTitle": "Tilføj dine Pluggy-loginoplysninger",
+        "credentialsDescription": "Gem dine Pluggy-loginoplysninger ovenfor, før du forbinder en bank.",
+        "title": "Forbind en bank",
+        "description": "Forbind en bank via Pluggy for at importere konti og transaktioner til din finansbog."
+      }
+    },
+    "accounts": {
+      "title": "Konti",
+      "loading": "Indlæser konti…",
+      "empty": "Ingen konti fundet for denne institution.",
+      "syncedBalance": "Synkroniseret saldo",
+      "ledgerBalance": "Finansbogens saldo",
+      "drift": "Saldoafvigelse",
+      "noLedger": "Ikke knyttet til en finansbogskonto",
+      "holdings": "Beholdninger",
+      "loanSchedule": "Låneplan",
+      "detail": "Detalje",
+      "value": "Værdi",
+      "noData": "Ingen data",
+      "lastTransaction": "Seneste transaktion"
+    },
+    "actions": {
+      "connect": "Forbind en bank",
+      "sync": "Synkroniser nu",
+      "disconnect": "Afbryd forbindelse"
+    },
+    "lastSynced": "Senest synkroniseret",
+    "disconnect": {
+      "title": "Afbryd forbindelsen til denne institution?",
+      "message": "Vælg, om de importerede data skal bevares i finansbogen, eller om alt, der er knyttet til institutionen, skal fjernes.",
+      "keep": "Behold mine data",
+      "delete": "Fjern alt"
+    },
+    "connect": {
+      "loading": "Indlæser forbindelse…",
+      "scriptError": "Vinduet til bankforbindelsen kunne ikke indlæses. Prøv igen.",
+      "error": "Banken kunne ikke forbindes. Prøv igen."
     }
   },
   "settings": {

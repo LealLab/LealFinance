@@ -205,6 +205,7 @@
       "loans": "Pożyczki",
       "reports": "Raporty",
       "exchange": "Wymiana walut",
+      "openFinance": "Open Finance",
       "settings": "Ustawienia",
       "investments": "Inwestycje",
       "adminUsers": "Użytkownicy i zaproszenia",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "Zaktualizowano kursy: {{count}}.",
       "upToDate": "Kursy są już aktualne."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Połącz swoje banki przez Pluggy, aby synchronizować w trybie tylko do odczytu salda kont i transakcje.",
+    "loading": "Ładowanie danych Open Finance…",
+    "errors": {
+      "action": "Nie udało się ukończyć tej operacji Open Finance. Spróbuj ponownie."
+    },
+    "credentials": {
+      "title": "Dane logowania Pluggy",
+      "description": "Dodaj Pluggy Client ID i Client Secret, aby połączyć banki. Dane logowania są szyfrowane i przechowywane na koncie.",
+      "configured": "Skonfigurowano",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Środowisko"
+      },
+      "sandbox": "Piaskownica",
+      "production": "Produkcja",
+      "actions": {
+        "save": "Zapisz dane logowania",
+        "unlink": "Usuń dane logowania",
+        "saving": "Zapisywanie…"
+      },
+      "saveError": "Nie udało się zapisać tych danych logowania. Sprawdź wartości i spróbuj ponownie.",
+      "unlinkError": "Nie udało się usunąć tych danych logowania. Spróbuj ponownie."
+    },
+    "items": {
+      "title": "Połączone instytucje",
+      "empty": {
+        "credentialsTitle": "Dodaj dane logowania Pluggy",
+        "credentialsDescription": "Zapisz powyżej dane logowania Pluggy przed połączeniem banku.",
+        "title": "Połącz bank",
+        "description": "Połącz bank przez Pluggy, aby zaimportować konta i transakcje do księgi."
+      }
+    },
+    "accounts": {
+      "title": "Konta",
+      "loading": "Ładowanie kont…",
+      "empty": "Nie znaleziono kont dla tej instytucji.",
+      "syncedBalance": "Zsynchronizowane saldo",
+      "ledgerBalance": "Saldo księgi",
+      "drift": "Różnica salda",
+      "noLedger": "Niepowiązane z kontem księgi",
+      "holdings": "Aktywa",
+      "loanSchedule": "Harmonogram spłaty",
+      "detail": "Szczegóły",
+      "value": "Wartość",
+      "noData": "Brak danych",
+      "lastTransaction": "Ostatnia transakcja"
+    },
+    "actions": {
+      "connect": "Połącz bank",
+      "sync": "Synchronizuj teraz",
+      "disconnect": "Odłącz"
+    },
+    "lastSynced": "Ostatnia synchronizacja",
+    "disconnect": {
+      "title": "Odłączyć tę instytucję?",
+      "message": "Wybierz, czy zachować zaimportowane dane księgi, czy usunąć wszystko powiązane z tą instytucją.",
+      "keep": "Zachowaj moje dane",
+      "delete": "Usuń wszystko"
+    },
+    "connect": {
+      "loading": "Ładowanie połączenia…",
+      "scriptError": "Nie udało się załadować okna połączenia z bankiem. Spróbuj ponownie.",
+      "error": "Nie udało się połączyć tego banku. Spróbuj ponownie."
     }
   },
   "settings": {

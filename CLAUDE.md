@@ -113,6 +113,8 @@ See [`docs/ai-agents.md`](docs/ai-agents.md).
   recurrence calculations only project upcoming occurrences.
 - Currency lookup is on demand: identity, user manual rate, inverse manual
   rate, today's provider cache, live provider, then flagged 1:1 fallback.
+- Open Finance is a per-user, read-only Pluggy integration; see
+  [`docs/open-finance.md`](docs/open-finance.md).
 
 See [`docs/architecture.md`](docs/architecture.md) and
 [`docs/backend-api.md`](docs/backend-api.md).

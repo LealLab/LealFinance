@@ -205,6 +205,7 @@
       "loans": "القروض",
       "reports": "التقارير",
       "exchange": "الصرف",
+      "openFinance": "Open Finance",
       "settings": "الإعدادات",
       "investments": "الاستثمارات",
       "adminUsers": "المستخدمون والدعوات",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "تم تحديث {{count}} سعر.",
       "upToDate": "الأسعار محدثة بالفعل."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "اربط بنوكك عبر Pluggy للحفاظ على مزامنة أرصدة الحسابات والمعاملات للقراءة فقط.",
+    "loading": "جارٍ تحميل بيانات Open Finance…",
+    "errors": {
+      "action": "تعذر إكمال هذا الإجراء في Open Finance. يُرجى المحاولة مرة أخرى."
+    },
+    "credentials": {
+      "title": "بيانات اعتماد Pluggy",
+      "description": "أضف Client ID وClient Secret الخاصين بـ Pluggy لربط بنوكك. تُشفّر بيانات الاعتماد وتُخزّن في حسابك.",
+      "configured": "تم الإعداد",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "البيئة"
+      },
+      "sandbox": "بيئة الاختبار",
+      "production": "الإنتاج",
+      "actions": {
+        "save": "حفظ بيانات الاعتماد",
+        "unlink": "إزالة بيانات الاعتماد",
+        "saving": "جارٍ الحفظ…"
+      },
+      "saveError": "تعذر حفظ بيانات الاعتماد هذه. تحقق من القيم وحاول مرة أخرى.",
+      "unlinkError": "تعذر إزالة بيانات الاعتماد هذه. حاول مرة أخرى."
+    },
+    "items": {
+      "title": "المؤسسات المتصلة",
+      "empty": {
+        "credentialsTitle": "أضف بيانات اعتماد Pluggy",
+        "credentialsDescription": "احفظ بيانات اعتماد Pluggy أعلاه قبل ربط بنك.",
+        "title": "اربط بنكًا",
+        "description": "اربط بنكًا عبر Pluggy لاستيراد الحسابات والمعاملات إلى دفتر حساباتك."
+      }
+    },
+    "accounts": {
+      "title": "الحسابات",
+      "loading": "جارٍ تحميل الحسابات…",
+      "empty": "لم يتم العثور على حسابات لهذه المؤسسة.",
+      "syncedBalance": "الرصيد المتزامن",
+      "ledgerBalance": "رصيد دفتر الحسابات",
+      "drift": "الفرق في الرصيد",
+      "noLedger": "غير مرتبط بحساب في دفتر الحسابات",
+      "holdings": "المقتنيات",
+      "loanSchedule": "جدول القرض",
+      "detail": "التفاصيل",
+      "value": "القيمة",
+      "noData": "لا توجد بيانات",
+      "lastTransaction": "آخر معاملة"
+    },
+    "actions": {
+      "connect": "ربط بنك",
+      "sync": "مزامنة الآن",
+      "disconnect": "قطع الاتصال"
+    },
+    "lastSynced": "آخر مزامنة",
+    "disconnect": {
+      "title": "قطع اتصال هذه المؤسسة؟",
+      "message": "اختر ما إذا كنت تريد الاحتفاظ ببيانات دفتر الحسابات المستوردة أو إزالة كل ما يرتبط بهذه المؤسسة.",
+      "keep": "الاحتفاظ ببياناتي",
+      "delete": "إزالة كل شيء"
+    },
+    "connect": {
+      "loading": "جارٍ تحميل الاتصال…",
+      "scriptError": "تعذر تحميل نافذة ربط البنك. يُرجى المحاولة مرة أخرى.",
+      "error": "تعذر ربط هذا البنك. يُرجى المحاولة مرة أخرى."
     }
   },
   "settings": {

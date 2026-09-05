@@ -205,6 +205,7 @@
       "loans": "Khoản vay",
       "reports": "Báo cáo",
       "exchange": "Tỷ giá",
+      "openFinance": "Open Finance",
       "settings": "Cài đặt",
       "investments": "Đầu tư",
       "adminUsers": "Người dùng và lời mời",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "Đã cập nhật {{count}} tỷ giá.",
       "upToDate": "Tỷ giá đã được cập nhật."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Kết nối các ngân hàng qua Pluggy để đồng bộ số dư và giao dịch tài khoản ở chế độ chỉ đọc.",
+    "loading": "Đang tải dữ liệu Open Finance…",
+    "errors": {
+      "action": "Không thể hoàn tất thao tác Open Finance này. Hãy thử lại."
+    },
+    "credentials": {
+      "title": "Thông tin xác thực Pluggy",
+      "description": "Thêm Client ID và Client Secret của Pluggy để kết nối ngân hàng. Thông tin xác thực được mã hóa và lưu trong tài khoản của bạn.",
+      "configured": "Đã cấu hình",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Môi trường"
+      },
+      "sandbox": "Sandbox",
+      "production": "Sản xuất",
+      "actions": {
+        "save": "Lưu thông tin xác thực",
+        "unlink": "Xóa thông tin xác thực",
+        "saving": "Đang lưu…"
+      },
+      "saveError": "Không thể lưu thông tin xác thực này. Hãy kiểm tra các giá trị rồi thử lại.",
+      "unlinkError": "Không thể xóa thông tin xác thực này. Hãy thử lại."
+    },
+    "items": {
+      "title": "Tổ chức đã kết nối",
+      "empty": {
+        "credentialsTitle": "Thêm thông tin xác thực Pluggy",
+        "credentialsDescription": "Hãy lưu thông tin xác thực Pluggy ở trên trước khi kết nối ngân hàng.",
+        "title": "Kết nối ngân hàng",
+        "description": "Kết nối ngân hàng qua Pluggy để nhập tài khoản và giao dịch vào sổ cái của bạn."
+      }
+    },
+    "accounts": {
+      "title": "Tài khoản",
+      "loading": "Đang tải tài khoản…",
+      "empty": "Không tìm thấy tài khoản nào cho tổ chức này.",
+      "syncedBalance": "Số dư đã đồng bộ",
+      "ledgerBalance": "Số dư sổ cái",
+      "drift": "Chênh lệch số dư",
+      "noLedger": "Chưa liên kết với tài khoản sổ cái",
+      "holdings": "Tài sản đang nắm giữ",
+      "loanSchedule": "Lịch trả khoản vay",
+      "detail": "Chi tiết",
+      "value": "Giá trị",
+      "noData": "Không có dữ liệu",
+      "lastTransaction": "Giao dịch gần nhất"
+    },
+    "actions": {
+      "connect": "Kết nối ngân hàng",
+      "sync": "Đồng bộ ngay",
+      "disconnect": "Ngắt kết nối"
+    },
+    "lastSynced": "Lần đồng bộ gần nhất",
+    "disconnect": {
+      "title": "Ngắt kết nối tổ chức này?",
+      "message": "Chọn giữ lại dữ liệu sổ cái đã nhập hoặc xóa mọi thứ liên kết với tổ chức này.",
+      "keep": "Giữ dữ liệu của tôi",
+      "delete": "Xóa mọi thứ"
+    },
+    "connect": {
+      "loading": "Đang tải kết nối…",
+      "scriptError": "Không thể tải cửa sổ kết nối ngân hàng. Hãy thử lại.",
+      "error": "Không thể kết nối ngân hàng này. Hãy thử lại."
     }
   },
   "settings": {

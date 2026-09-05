@@ -18,6 +18,7 @@ import type {
   MarketDataCredentialSource,
   MarketDataProvider,
 } from '../../domain/models/market-data-credential';
+import type { PluggyEnvironment } from '../../domain/models/open-finance';
 import type { IconName } from '../../shared/ui/icon/icon';
 
 type NullablePatch<T> = { [K in keyof T]?: T[K] | null };
@@ -416,6 +417,68 @@ export interface MarketDataCredentialStatusWire {
   provider: MarketDataProvider;
   configured: boolean;
   source: MarketDataCredentialSource;
+}
+
+export interface PluggyCredentialStatusWire {
+  configured: boolean;
+  environment: PluggyEnvironment | null;
+}
+
+export interface PluggyCredentialWriteWire {
+  client_id: string;
+  client_secret: string;
+  environment: PluggyEnvironment;
+}
+
+export interface ConnectTokenRequestWire {
+  item_id?: string | null;
+}
+
+export interface ConnectTokenWire {
+  access_token: string;
+}
+
+export interface PluggyItemCreateWire {
+  external_id: string;
+}
+
+export interface PluggyItemWire {
+  id: string;
+  external_id: string;
+  connector_id: number;
+  connector_name: string;
+  connector_image_url: string | null;
+  status: string;
+  execution_status: string | null;
+  status_detail: Record<string, unknown> | null;
+  institution_id: string | null;
+  last_synced_at: string | null;
+  last_sync_error: string | null;
+  consent_expires_at: string | null;
+}
+
+export interface PluggyAccountWire {
+  id: string;
+  pluggy_item_id: string;
+  account_id: string | null;
+  external_id: string;
+  type: string;
+  subtype: string;
+  name: string;
+  number: string | null;
+  currency: string;
+  synced_balance: string;
+  credit_limit: string | null;
+  available_credit_limit: string | null;
+  raw: Record<string, unknown>;
+  last_transaction_date: string | null;
+  sync_enabled: boolean;
+}
+
+export interface PluggySyncResultWire {
+  transactions_imported: number;
+  accounts_synced: number;
+  error: string | null;
 }
 
 export interface AgentProviderStatusWire {

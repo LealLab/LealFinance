@@ -89,6 +89,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/exchange/exchange').then((m) => m.Exchange),
       },
       {
+        path: 'open-finance',
+        loadComponent: () =>
+          import('./features/open-finance/open-finance').then((m) => m.OpenFinance),
+      },
+      {
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
       },

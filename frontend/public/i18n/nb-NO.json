@@ -205,6 +205,7 @@
       "loans": "Lån",
       "reports": "Rapporter",
       "exchange": "Valutaveksling",
+      "openFinance": "Open Finance",
       "settings": "Innstillinger",
       "investments": "Investeringer",
       "adminUsers": "Brukere og invitasjoner",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} kurser oppdatert.",
       "upToDate": "Kursene er allerede oppdatert."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Koble bankene dine til via Pluggy for å holde kontosaldoer og transaksjoner synkronisert i skrivebeskyttet modus.",
+    "loading": "Laster inn Open Finance-data…",
+    "errors": {
+      "action": "Open Finance-handlingen kunne ikke fullføres. Prøv igjen."
+    },
+    "credentials": {
+      "title": "Pluggy-legitimasjon",
+      "description": "Legg til Pluggy Client ID og Client Secret for å koble til bankene dine. Legitimasjonen krypteres og lagres på kontoen din.",
+      "configured": "Konfigurert",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Miljø"
+      },
+      "sandbox": "Sandkasse",
+      "production": "Produksjon",
+      "actions": {
+        "save": "Lagre legitimasjon",
+        "unlink": "Fjern legitimasjon",
+        "saving": "Lagrer…"
+      },
+      "saveError": "Kunne ikke lagre denne legitimasjonen. Kontroller verdiene og prøv igjen.",
+      "unlinkError": "Kunne ikke fjerne denne legitimasjonen. Prøv igjen."
+    },
+    "items": {
+      "title": "Tilkoblede institusjoner",
+      "empty": {
+        "credentialsTitle": "Legg til Pluggy-legitimasjon",
+        "credentialsDescription": "Lagre Pluggy-legitimasjonen ovenfor før du kobler til en bank.",
+        "title": "Koble til en bank",
+        "description": "Koble til en bank via Pluggy for å importere kontoer og transaksjoner til hovedboken din."
+      }
+    },
+    "accounts": {
+      "title": "Kontoer",
+      "loading": "Laster inn kontoer…",
+      "empty": "Fant ingen kontoer for denne institusjonen.",
+      "syncedBalance": "Synkronisert saldo",
+      "ledgerBalance": "Saldo i hovedbok",
+      "drift": "Saldoavvik",
+      "noLedger": "Ikke koblet til en hovedbokskonto",
+      "holdings": "Beholdninger",
+      "loanSchedule": "Låneplan",
+      "detail": "Detalj",
+      "value": "Verdi",
+      "noData": "Ingen data",
+      "lastTransaction": "Siste transaksjon"
+    },
+    "actions": {
+      "connect": "Koble til en bank",
+      "sync": "Synkroniser nå",
+      "disconnect": "Koble fra"
+    },
+    "lastSynced": "Sist synkronisert",
+    "disconnect": {
+      "title": "Koble fra denne institusjonen?",
+      "message": "Velg om du vil beholde de importerte hovedboksdataene eller fjerne alt som er knyttet til denne institusjonen.",
+      "keep": "Behold dataene mine",
+      "delete": "Fjern alt"
+    },
+    "connect": {
+      "loading": "Laster inn tilkoblingen…",
+      "scriptError": "Banktilkoblingsvinduet kunne ikke lastes inn. Prøv igjen.",
+      "error": "Kunne ikke koble til denne banken. Prøv igjen."
     }
   },
   "settings": {

@@ -1,0 +1,220 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('openFinance.title')" [description]="t('openFinance.description')">
+    @if (credentials()?.configured && (itemsResource.value()?.length ?? 0) > 0) {
+      <app-pluggy-connect-button
+        [environment]="credentials()?.environment ?? 'sandbox'"
+        (connected)="onConnected()"
+      />
+    }
+  </app-page-header>
+
+  @if (actionErrorKey(); as key) {
+    <p class="mb-4 text-sm text-negative" role="alert">{{ t(key) }}</p>
+  }
+
+  <div class="flex flex-col gap-6">
+    <app-pluggy-credentials-section
+      [status]="credentials()"
+      (changed)="reloadCredentials()"
+    />
+
+    @if (credentials(); as credentialStatus) {
+      @if (!credentialStatus.configured) {
+        <app-empty-state
+          icon="bank"
+          [title]="t('openFinance.items.empty.credentialsTitle')"
+          [description]="t('openFinance.items.empty.credentialsDescription')"
+        />
+      } @else if (itemsEmpty()) {
+        <app-empty-state
+          icon="bank"
+          [title]="t('openFinance.items.empty.title')"
+          [description]="t('openFinance.items.empty.description')"
+        >
+          <app-pluggy-connect-button
+            [environment]="credentialStatus.environment ?? 'sandbox'"
+            (connected)="onConnected()"
+          />
+        </app-empty-state>
+      } @else {
+        <section aria-labelledby="open-finance-items-title">
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <h2 id="open-finance-items-title" class="text-sm font-semibold text-content-primary">
+              {{ t('openFinance.items.title') }}
+            </h2>
+            @if (itemsResource.isLoading()) {
+              <span class="text-xs text-content-muted">{{ t('openFinance.loading') }}</span>
+            }
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+            @for (item of itemsResource.value() ?? []; track item.id) {
+              <app-card>
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex min-w-0 items-start gap-3">
+                    @if (item.connectorImageUrl; as logo) {
+                      <img
+                        class="size-10 shrink-0 rounded-full border border-border bg-surface-sunken object-contain p-1"
+                        [src]="logo"
+                        [alt]="item.connectorName"
+                      />
+                    } @else {
+                      <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                        <app-icon name="bank" [size]="20" />
+                      </div>
+                    }
+                    <div class="min-w-0">
+                      <h3 class="truncate text-base font-semibold text-content-primary">
+                        {{ item.connectorName }}
+                      </h3>
+                      <p class="mt-0.5 text-xs text-content-muted">
+                        {{ item.externalId }}
+                      </p>
+                    </div>
+                  </div>
+                  <app-badge [tone]="statusTone(item.status)">{{ item.status }}</app-badge>
+                </div>
+
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+                  <div>
+                    <p class="text-xs text-content-muted">{{ t('openFinance.lastSynced') }}</p>
+                    @if (item.lastSyncedAt; as lastSyncedAt) {
+                      <p class="text-sm text-content-primary">{{ lastSyncedAt | date: 'medium' }}</p>
+                    } @else {
+                      <p class="text-sm text-content-muted">{{ t('openFinance.accounts.noData') }}</p>
+                    }
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      appButton
+                      variant="secondary"
+                      size="sm"
+                      type="button"
+                      [disabled]="syncingItemId() === item.id"
+                      (click)="syncItem(item)"
+                    >
+                      <app-icon name="refresh" [size]="15" />
+                      {{ t('openFinance.actions.sync') }}
+                    </button>
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      (click)="disconnect(item)"
+                    >
+                      <app-icon name="close" [size]="15" />
+                      {{ t('openFinance.actions.disconnect') }}
+                    </button>
+                  </div>
+                </div>
+
+                @if (item.lastSyncError) {
+                  <p class="mt-3 text-sm text-negative" role="alert">{{ t('openFinance.errors.action') }}</p>
+                }
+
+                <div class="mt-5 border-t border-border pt-4">
+                  <h4 class="mb-3 text-xs font-semibold uppercase tracking-wide text-content-subtle">
+                    {{ t('openFinance.accounts.title') }}
+                  </h4>
+                  @if (accountsByItem()[item.id]; as accounts) {
+                    @if (accounts.length === 0) {
+                      <p class="text-sm text-content-muted">{{ t('openFinance.accounts.empty') }}</p>
+                    } @else {
+                      <div class="flex flex-col gap-3">
+                        @for (account of accounts; track account.id) {
+                          @let derived = derivedBalance(account);
+                          @let accountDrift = drift(account);
+                          <div class="rounded-md border border-border bg-surface-sunken/40 p-3">
+                            <div class="flex flex-wrap items-start justify-between gap-3">
+                              <div class="min-w-0">
+                                <p class="truncate text-sm font-medium text-content-primary">
+                                  {{ account.name }}
+                                </p>
+                                <p class="mt-0.5 text-xs text-content-muted">
+                                  {{ account.type }} · {{ account.currency }}
+                                  @if (account.number) { · {{ account.number }} }
+                                </p>
+                              </div>
+                              <div class="text-end">
+                                <p class="font-mono text-sm font-semibold tabular-nums">
+                                  {{ balanceText(account.syncedBalance) | money: account.currency }}
+                                </p>
+                                <p class="text-xs text-content-muted">{{ t('openFinance.accounts.syncedBalance') }}</p>
+                              </div>
+                            </div>
+
+                            <div class="mt-3 grid grid-cols-1 gap-2 border-t border-border pt-3 sm:grid-cols-3">
+                              <div>
+                                <p class="text-xs text-content-muted">{{ t('openFinance.accounts.ledgerBalance') }}</p>
+                                @if (derived !== undefined) {
+                                  <p class="font-mono text-sm tabular-nums">
+                                    {{ derived | money: account.currency }}
+                                  </p>
+                                } @else {
+                                  <p class="text-sm text-content-muted">{{ t('openFinance.accounts.noLedger') }}</p>
+                                }
+                              </div>
+                              <div>
+                                <p class="text-xs text-content-muted">{{ t('openFinance.accounts.drift') }}</p>
+                                @if (accountDrift !== undefined) {
+                                  <p
+                                    class="font-mono text-sm tabular-nums"
+                                    [class.text-negative]="hasDrift(account)"
+                                    [class.text-positive]="!hasDrift(account)"
+                                  >
+                                    {{ accountDrift >= 0 ? '+' : '' }}{{ balanceText(accountDrift) | money: account.currency }}
+                                  </p>
+                                } @else {
+                                  <p class="text-sm text-content-muted">{{ t('openFinance.accounts.noData') }}</p>
+                                }
+                              </div>
+                              <div>
+                                <p class="text-xs text-content-muted">{{ t('openFinance.accounts.lastTransaction') }}</p>
+                                <p class="text-sm text-content-primary">{{ account.lastTransactionDate ?? t('openFinance.accounts.noData') }}</p>
+                              </div>
+                            </div>
+
+                            @if (isRawAccount(account)) {
+                              @if (rawRows(account).length > 0) {
+                                <div class="mt-3 overflow-x-auto border-t border-border pt-3">
+                                  <p class="mb-2 text-xs font-medium text-content-primary">
+                                    {{ isLoanAccount(account) ? t('openFinance.accounts.loanSchedule') : t('openFinance.accounts.holdings') }}
+                                  </p>
+                                  <table class="w-full min-w-56 text-left text-xs">
+                                    <thead class="text-content-muted">
+                                      <tr>
+                                        <th class="pb-1 font-medium">{{ t('openFinance.accounts.detail') }}</th>
+                                        <th class="pb-1 text-right font-medium">{{ t('openFinance.accounts.value') }}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      @for (row of rawRows(account); track row.label) {
+                                        <tr class="border-t border-border">
+                                          <td class="py-1.5 text-content-primary">{{ row.label }}</td>
+                                          <td class="py-1.5 text-right font-mono tabular-nums text-content-primary">{{ row.value }}</td>
+                                        </tr>
+                                      }
+                                    </tbody>
+                                  </table>
+                                </div>
+                              }
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  } @else {
+                    <p class="text-sm text-content-muted">{{ t('openFinance.accounts.loading') }}</p>
+                  }
+                </div>
+              </app-card>
+            }
+          </div>
+        </section>
+      }
+    } @else {
+      <p class="text-sm text-content-muted" role="status">{{ t('openFinance.loading') }}</p>
+    }
+  </div>
+</div>

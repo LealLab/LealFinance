@@ -205,6 +205,7 @@
       "loans": "贷款",
       "reports": "报表",
       "exchange": "汇率",
+      "openFinance": "Open Finance",
       "settings": "设置",
       "investments": "投资",
       "adminUsers": "用户与邀请",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "已更新 {{count}} 个汇率。",
       "upToDate": "汇率已是最新。"
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "通过 Pluggy 连接你的银行，让账户余额和交易以只读方式保持同步。",
+    "loading": "正在加载开放金融数据…",
+    "errors": {
+      "action": "无法完成此项开放金融操作，请重试。"
+    },
+    "credentials": {
+      "title": "Pluggy 凭据",
+      "description": "添加 Pluggy Client ID 和 Client Secret 以连接银行。凭据会加密后存储在你的账户中。",
+      "configured": "已配置",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "环境"
+      },
+      "sandbox": "沙盒",
+      "production": "生产环境",
+      "actions": {
+        "save": "保存凭据",
+        "unlink": "删除凭据",
+        "saving": "正在保存…"
+      },
+      "saveError": "无法保存这些凭据，请检查内容后重试。",
+      "unlinkError": "无法删除这些凭据，请重试。"
+    },
+    "items": {
+      "title": "已连接的机构",
+      "empty": {
+        "credentialsTitle": "添加 Pluggy 凭据",
+        "credentialsDescription": "连接银行前，请先保存上面的 Pluggy 凭据。",
+        "title": "连接银行",
+        "description": "通过 Pluggy 连接银行，将账户和交易导入你的账本。"
+      }
+    },
+    "accounts": {
+      "title": "账户",
+      "loading": "正在加载账户…",
+      "empty": "未找到该机构的账户。",
+      "syncedBalance": "已同步余额",
+      "ledgerBalance": "账本余额",
+      "drift": "余额差额",
+      "noLedger": "未关联到账本账户",
+      "holdings": "持仓",
+      "loanSchedule": "贷款计划",
+      "detail": "详情",
+      "value": "数值",
+      "noData": "暂无数据",
+      "lastTransaction": "最近交易"
+    },
+    "actions": {
+      "connect": "连接银行",
+      "sync": "立即同步",
+      "disconnect": "断开连接"
+    },
+    "lastSynced": "上次同步",
+    "disconnect": {
+      "title": "要断开此机构的连接吗？",
+      "message": "选择保留已导入的账本数据，或删除与此机构相关的所有内容。",
+      "keep": "保留我的数据",
+      "delete": "全部删除"
+    },
+    "connect": {
+      "loading": "正在加载连接…",
+      "scriptError": "无法加载银行连接窗口，请重试。",
+      "error": "无法连接此银行，请重试。"
     }
   },
   "settings": {

@@ -205,6 +205,7 @@
       "loans": "Lån",
       "reports": "Rapporter",
       "exchange": "Valutaväxling",
+      "openFinance": "Open Finance",
       "settings": "Inställningar",
       "investments": "Investeringar",
       "adminUsers": "Användare och inbjudningar",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} kurser uppdaterade.",
       "upToDate": "Kurserna är redan uppdaterade."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Anslut dina banker via Pluggy för att hålla kontosaldon och transaktioner synkroniserade i skrivskyddat läge.",
+    "loading": "Läser in Open Finance-data…",
+    "errors": {
+      "action": "Open Finance-åtgärden kunde inte slutföras. Försök igen."
+    },
+    "credentials": {
+      "title": "Pluggy-inloggningsuppgifter",
+      "description": "Lägg till ditt Pluggy Client ID och Client Secret för att ansluta dina banker. Uppgifterna krypteras och sparas på ditt konto.",
+      "configured": "Konfigurerad",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Miljö"
+      },
+      "sandbox": "Sandlåda",
+      "production": "Produktion",
+      "actions": {
+        "save": "Spara inloggningsuppgifter",
+        "unlink": "Ta bort inloggningsuppgifter",
+        "saving": "Sparar…"
+      },
+      "saveError": "Det gick inte att spara uppgifterna. Kontrollera värdena och försök igen.",
+      "unlinkError": "Det gick inte att ta bort uppgifterna. Försök igen."
+    },
+    "items": {
+      "title": "Anslutna institut",
+      "empty": {
+        "credentialsTitle": "Lägg till Pluggy-inloggningsuppgifter",
+        "credentialsDescription": "Spara Pluggy-uppgifterna ovan innan du ansluter en bank.",
+        "title": "Anslut en bank",
+        "description": "Anslut en bank via Pluggy för att importera konton och transaktioner till din huvudbok."
+      }
+    },
+    "accounts": {
+      "title": "Konton",
+      "loading": "Läser in konton…",
+      "empty": "Inga konton hittades för detta institut.",
+      "syncedBalance": "Synkroniserat saldo",
+      "ledgerBalance": "Huvudbokssaldo",
+      "drift": "Saldoskillnad",
+      "noLedger": "Inte kopplat till ett huvudbokskonto",
+      "holdings": "Innehav",
+      "loanSchedule": "Låneplan",
+      "detail": "Detalj",
+      "value": "Värde",
+      "noData": "Inga data",
+      "lastTransaction": "Senaste transaktion"
+    },
+    "actions": {
+      "connect": "Anslut en bank",
+      "sync": "Synkronisera nu",
+      "disconnect": "Koppla från"
+    },
+    "lastSynced": "Senast synkroniserad",
+    "disconnect": {
+      "title": "Koppla från detta institut?",
+      "message": "Välj om importerade huvudboksdata ska behållas eller om allt som hör till institutet ska tas bort.",
+      "keep": "Behåll mina data",
+      "delete": "Ta bort allt"
+    },
+    "connect": {
+      "loading": "Läser in anslutningen…",
+      "scriptError": "Bankanslutningsfönstret kunde inte läsas in. Försök igen.",
+      "error": "Det gick inte att ansluta banken. Försök igen."
     }
   },
   "settings": {
