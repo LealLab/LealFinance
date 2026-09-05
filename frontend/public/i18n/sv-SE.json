@@ -1042,7 +1042,8 @@
       "edit": "Redigera lån",
       "archive": "Arkivera lån",
       "unarchive": "Avarkivera lån",
-      "recordPayment": "Registrera betalning"
+      "recordPayment": "Registrera betalning",
+      "delete": "Ta bort lån"
     },
     "empty": {
       "title": "Inga lån ännu",
@@ -1087,11 +1088,17 @@
         "institution": "Institut",
         "allInstitutions": "Alla institut",
         "paymentAccount": "Konto",
-        "paymentAccountPlaceholder": "Välj källkontot"
+        "paymentAccountPlaceholder": "Välj källkontot",
+        "contractedInstallmentAmount": "Avtalad delbetalning",
+        "contractedInstallmentAmountHint": "Åsidosätter den uppskattade delbetalningen. Lämna tomt för att använda beloppet som beräknas utifrån räntesatsen.",
+        "adjustInterestRate": "Justera räntesats",
+        "adjustInterestRateHint": "Räknar om räntesatsen så att den uppskattade delbetalningen matchar det avtalade värdet ovan.",
+        "adjustInterestRateHelpLabel": "Om att justera räntesatsen"
       },
       "errors": {
         "required": "Det här fältet är obligatoriskt.",
-        "paymentAccountRequired": "Välj kontot som betalningarna kommer från."
+        "paymentAccountRequired": "Välj kontot som betalningarna kommer från.",
+        "rateAdjustmentUnavailable": "Ingen icke-negativ räntesats ger denna delbetalning. Höj den avtalade delbetalningen eller sänk det finansierade beloppet."
       },
       "actions": {
         "cancel": "Avbryt",
@@ -1107,11 +1114,50 @@
         "dateHint": "Ange ett framtida datum för att betala en delbetalning i förskott.",
         "account": "Konto",
         "noInstitution": "Inget institut",
-        "description": "Beskrivning"
+        "description": "Beskrivning",
+        "mode": "Delbetalningar att betala",
+        "count": "Hur många",
+        "totalAmount": "Totalbelopp"
       },
       "actions": {
         "confirm": "Registrera betalning"
+      },
+      "modes": {
+        "next": "Nästa delbetalning",
+        "last": "Senaste N delbetalningarna",
+        "all": "Alla öppna delbetalningar"
+      },
+      "quote": {
+        "installments": "Delbetalningar",
+        "original": "Avtalad totalsumma",
+        "discount": "Rabatt"
+      },
+      "errors": {
+        "count": "Ange ett tal mellan 1 och {{count}}."
+      },
+      "prorateWarning": "Totalbeloppet fördelas proportionellt på alla valda delbetalningar, alla markeras som betalda och lånesaldot minskar med deras avtalade belopp."
+    },
+    "history": {
+      "title": "Betalningshistorik",
+      "empty": "Inga betalningar registrerade ännu."
+    },
+    "schedule": {
+      "title": "Avbetalningsplan",
+      "empty": "Inga delbetalningar planerade.",
+      "paidOn": "Betald {{date}}",
+      "status": {
+        "open": "Öppen",
+        "overdue": "Förfallen",
+        "paid": "Betald"
       }
+    },
+    "deleteError": "Lånet kunde inte tas bort. Försök igen.",
+    "delete": {
+      "title": "Ta bort lån?",
+      "message": "\"{{name}}\" har {{count}} registrerade betalningar. Vill du behålla dem som vanliga transaktioner, eller ta bort dem tillsammans med lånet?",
+      "messageNoPayments": "Åtgärden kan inte ångras. Vill du ta bort \"{{name}}\"?",
+      "keepPayments": "Ta bort lån, behåll betalningar",
+      "deletePayments": "Ta bort lån och dess betalningar"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "Passkeyn kunde inte verifieras.",
       "credential_exists": "Den här passkeyn är redan registrerad.",
       "not_found": "Passkeyn hittades inte."
+    },
+    "loan": {
+      "advance_amount_too_small": "Det totalbeloppet är för litet för att fördelas på de valda delbetalningarna.",
+      "advance_count_exceeds_remaining": "Det finns inte så många öppna delbetalningar kvar.",
+      "installment_count_below_paid": "Antalet delbetalningar kan inte vara lägre än antalet som redan är betalda."
     }
   }
 }

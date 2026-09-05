@@ -46,6 +46,10 @@ class Loan(UserOwnedModel):
         CheckConstraint("installment_count >= 1", name="ck_loans_installment_count_positive"),
         CheckConstraint("installment_amount > 0", name="ck_loans_installment_amount_positive"),
         CheckConstraint(
+            "contracted_installment_amount IS NULL OR contracted_installment_amount > 0",
+            name="ck_loans_contracted_installment_amount_positive",
+        ),
+        CheckConstraint(
             "NOT auto_post OR payment_account_id IS NOT NULL",
             name="ck_loans_auto_post_requires_account",
         ),
@@ -66,8 +70,9 @@ class Loan(UserOwnedModel):
     interest_rate: Mapped[PercentageValue] = mapped_column(nullable=False, default=0)
     rate_period: Mapped[str] = mapped_column(String(10), nullable=False)
     installment_count: Mapped[int] = mapped_column(Integer, nullable=False)
-    # Derived server-side from the fields above - see app/services/loans.py.
+    # Effective value: the contract amount below, or the computed estimate.
     installment_amount: Mapped[MoneyAmount] = mapped_column(nullable=False)
+    contracted_installment_amount: Mapped[MoneyAmount | None] = mapped_column()
     first_payment_date: Mapped[date_type] = mapped_column(Date, nullable=False)
     auto_post: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     # Source of funds for an auto-posted (or "pay now") installment.

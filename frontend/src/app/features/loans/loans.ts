@@ -1,15 +1,18 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
-import { LoanRepository } from '../../data/loan.repository';
+import { LoanDeleteMode, LoanRepository } from '../../data/loan.repository';
+import { TransactionRepository } from '../../data/transaction.repository';
 import { convertedOrNull } from '../../domain/calc/aggregations';
-import { LoanProgress, loanProgress } from '../../domain/calc/loans';
+import { LoanProgress, LoanScheduleRow, loanProgress, loanSchedule } from '../../domain/calc/loans';
 import { Category } from '../../domain/models/category';
 import { Loan } from '../../domain/models/loan';
+import { Transaction } from '../../domain/models/transaction';
 import { Money } from '../../shared/money/money';
 import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
@@ -33,7 +36,13 @@ interface LoanRow {
   convertedRemaining: Money | null;
 }
 
-/** t(loans.archiveError) */
+/**
+ * The literal keys passed to `confirmService.confirm(...)`/`.choose(...)` in
+ * `deleteLoan()` are real string literals, but the calls aren't to the `t`
+ * marker function, so transloco-keys-manager's extractor never sees them -
+ * same situation as categories.ts/institution-form-modal.ts.
+ * t(loans.archiveError, loans.deleteError, loans.delete.title, loans.delete.message, loans.delete.messageNoPayments, loans.delete.keepPayments, loans.delete.deletePayments)
+ */
 
 @Component({
   selector: 'app-loans',
@@ -59,6 +68,8 @@ export class Loans {
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly transactionRepository = inject(TransactionRepository);
+  private readonly confirmService = inject(ConfirmService);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   protected readonly loansResource = rxResource({ stream: () => this.loanRepository.list() });
@@ -68,6 +79,9 @@ export class Loans {
   });
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutionRepository.list(),
+  });
+  protected readonly transactionsResource = rxResource({
+    stream: () => this.transactionRepository.list(),
   });
 
   protected readonly showArchived = signal(false);
@@ -97,10 +111,11 @@ export class Loans {
     const categories = this.categoriesById();
     const display = this.displayCurrency();
     const convert = this.converter();
+    const transactions = this.transactionsResource.value() ?? [];
     return (this.loansResource.value() ?? [])
       .filter((loan) => this.showArchived() || !loan.archived)
       .map((loan) => {
-        const progress = loanProgress(loan);
+        const progress = loanProgress(loan, transactions);
         return {
           loan,
           category: categories.get(loan.categoryId),
@@ -150,12 +165,71 @@ export class Loans {
   protected onPaymentSaved(): void {
     this.loansResource.reload();
     this.accountsResource.reload();
+    this.transactionsResource.reload();
+  }
+
+  protected loanTransactions(loan: Loan): Transaction[] {
+    return (this.transactionsResource.value() ?? [])
+      .filter((transaction) => transaction.loanId === loan.id)
+      .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  }
+
+  /**
+   * A stable array reference for the payment modal's `transactions` input.
+   * Unlike `loanTransactions()`, called fresh from the template every change
+   * detection cycle, this only recomputes when the open loan or the
+   * underlying resource actually changes - otherwise the modal's reset
+   * effect (which reads this input) would fire on every tick and snap the
+   * payment mode back to "next" as soon as the user picked something else.
+   */
+  protected readonly paymentLoanTransactions = computed<Transaction[]>(() => {
+    const loan = this.paymentLoan();
+    return loan ? this.loanTransactions(loan) : [];
+  });
+
+  protected loanSchedule(loan: Loan): LoanScheduleRow[] {
+    return loanSchedule(loan, this.transactionsResource.value() ?? []);
   }
 
   protected archive(loan: Loan): void {
     this.loanRepository.setArchived(loan.id, !loan.archived).subscribe({
       next: () => this.loansResource.reload(),
       error: () => this.actionErrorKey.set('loans.archiveError'),
+    });
+  }
+
+  protected async deleteLoan(loan: Loan): Promise<void> {
+    const linkedCount = this.loanTransactions(loan).length;
+    let mode: LoanDeleteMode = 'detach';
+
+    if (linkedCount > 0) {
+      const choice = await this.confirmService.choose(
+        'loans.delete.title',
+        'loans.delete.message',
+        [
+          { labelKey: 'loans.delete.keepPayments', value: 'detach' },
+          { labelKey: 'loans.delete.deletePayments', value: 'cascade', tone: 'danger' },
+        ],
+        { name: loan.name, count: linkedCount },
+      );
+      if (choice !== 'detach' && choice !== 'cascade') return;
+      mode = choice;
+    } else {
+      const confirmed = await this.confirmService.confirm(
+        'loans.delete.title',
+        'loans.delete.messageNoPayments',
+        'danger',
+        { name: loan.name },
+      );
+      if (!confirmed) return;
+    }
+
+    this.loanRepository.delete(loan.id, mode).subscribe({
+      next: () => {
+        this.loansResource.reload();
+        this.transactionsResource.reload();
+      },
+      error: () => this.actionErrorKey.set('loans.deleteError'),
     });
   }
 }

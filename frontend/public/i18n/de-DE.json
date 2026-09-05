@@ -1042,7 +1042,8 @@
       "edit": "Kredit bearbeiten",
       "archive": "Kredit archivieren",
       "unarchive": "Kredit wiederherstellen",
-      "recordPayment": "Zahlung erfassen"
+      "recordPayment": "Zahlung erfassen",
+      "delete": "Kredit löschen"
     },
     "empty": {
       "title": "Noch keine Kredite",
@@ -1087,11 +1088,17 @@
         "institution": "Institut",
         "allInstitutions": "Alle Institute",
         "paymentAccount": "Konto",
-        "paymentAccountPlaceholder": "Quellkonto auswählen"
+        "paymentAccountPlaceholder": "Quellkonto auswählen",
+        "contractedInstallmentAmount": "Vertragliche Rate",
+        "contractedInstallmentAmountHint": "Überschreibt die geschätzte Rate. Leer lassen, um den aus dem Zinssatz berechneten Betrag zu verwenden.",
+        "adjustInterestRate": "Zinssatz anpassen",
+        "adjustInterestRateHint": "Berechnet den Zinssatz so neu, dass die geschätzte Rate dem oben angegebenen Vertragswert entspricht.",
+        "adjustInterestRateHelpLabel": "Über die Anpassung des Zinssatzes"
       },
       "errors": {
         "required": "Dieses Feld ist erforderlich.",
-        "paymentAccountRequired": "Wähle das Konto, von dem die Zahlungen erfolgen."
+        "paymentAccountRequired": "Wähle das Konto, von dem die Zahlungen erfolgen.",
+        "rateAdjustmentUnavailable": "Kein nicht-negativer Zinssatz ergibt diese Rate. Erhöhe die vertragliche Rate oder senke den finanzierten Betrag."
       },
       "actions": {
         "cancel": "Abbrechen",
@@ -1107,11 +1114,50 @@
         "dateHint": "Lege ein zukünftiges Datum fest, um eine Rate im Voraus zu zahlen.",
         "account": "Konto",
         "noInstitution": "Kein Institut",
-        "description": "Beschreibung"
+        "description": "Beschreibung",
+        "mode": "Zu zahlende Raten",
+        "count": "Wie viele",
+        "totalAmount": "Gesamtbetrag"
       },
       "actions": {
         "confirm": "Zahlung erfassen"
+      },
+      "modes": {
+        "next": "Nächste Rate",
+        "last": "Letzte N Raten",
+        "all": "Alle offenen Raten"
+      },
+      "quote": {
+        "installments": "Raten",
+        "original": "Vertraglicher Gesamtbetrag",
+        "discount": "Abzug"
+      },
+      "errors": {
+        "count": "Gib eine Zahl zwischen 1 und {{count}} ein."
+      },
+      "prorateWarning": "Der Gesamtbetrag wird anteilig auf alle ausgewählten Raten verteilt, alle werden als bezahlt markiert, und der Kreditsaldo sinkt um deren vertragliche Beträge."
+    },
+    "history": {
+      "title": "Zahlungsverlauf",
+      "empty": "Noch keine Zahlungen erfasst."
+    },
+    "schedule": {
+      "title": "Ratenplan",
+      "empty": "Keine Raten geplant.",
+      "paidOn": "Bezahlt am {{date}}",
+      "status": {
+        "open": "Offen",
+        "overdue": "Überfällig",
+        "paid": "Bezahlt"
       }
+    },
+    "deleteError": "Der Kredit konnte nicht gelöscht werden. Versuche es erneut.",
+    "delete": {
+      "title": "Kredit löschen?",
+      "message": "„{{name}}“ hat {{count}} erfasste Zahlungen. Möchtest du sie als normale Buchungen behalten oder zusammen mit dem Kredit löschen?",
+      "messageNoPayments": "Diese Aktion kann nicht rückgängig gemacht werden. Möchtest du „{{name}}“ löschen?",
+      "keepPayments": "Kredit löschen, Zahlungen behalten",
+      "deletePayments": "Kredit und seine Zahlungen löschen"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "Dieser Passkey konnte nicht verifiziert werden.",
       "credential_exists": "Dieser Passkey ist bereits registriert.",
       "not_found": "Passkey nicht gefunden."
+    },
+    "loan": {
+      "advance_amount_too_small": "Dieser Gesamtbetrag ist zu klein, um auf die ausgewählten Raten aufgeteilt zu werden.",
+      "advance_count_exceeds_remaining": "So viele offene Raten gibt es nicht mehr.",
+      "installment_count_below_paid": "Die Anzahl der Raten kann nicht niedriger sein als die Anzahl der bereits bezahlten."
     }
   }
 }

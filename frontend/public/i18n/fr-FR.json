@@ -1042,7 +1042,8 @@
       "edit": "Modifier le prêt",
       "archive": "Archiver le prêt",
       "unarchive": "Désarchiver le prêt",
-      "recordPayment": "Enregistrer un paiement"
+      "recordPayment": "Enregistrer un paiement",
+      "delete": "Supprimer le prêt"
     },
     "empty": {
       "title": "Aucun prêt pour l’instant",
@@ -1087,11 +1088,17 @@
         "institution": "Établissement",
         "allInstitutions": "Tous les établissements",
         "paymentAccount": "Compte",
-        "paymentAccountPlaceholder": "Choisissez le compte source"
+        "paymentAccountPlaceholder": "Choisissez le compte source",
+        "contractedInstallmentAmount": "Mensualité contractuelle",
+        "contractedInstallmentAmountHint": "Remplace la mensualité estimée. Laissez vide pour utiliser le montant calculé à partir du taux d'intérêt.",
+        "adjustInterestRate": "Ajuster le taux d'intérêt",
+        "adjustInterestRateHint": "Recalcule le taux d'intérêt pour que la mensualité estimée corresponde à la valeur contractuelle ci-dessus.",
+        "adjustInterestRateHelpLabel": "À propos de l'ajustement du taux d'intérêt"
       },
       "errors": {
         "required": "Ce champ est obligatoire.",
-        "paymentAccountRequired": "Choisissez le compte d’où proviennent les paiements."
+        "paymentAccountRequired": "Choisissez le compte d’où proviennent les paiements.",
+        "rateAdjustmentUnavailable": "Aucun taux d'intérêt non négatif ne produit cette mensualité. Augmentez la mensualité contractuelle ou réduisez le montant financé."
       },
       "actions": {
         "cancel": "Annuler",
@@ -1107,11 +1114,50 @@
         "dateHint": "Indiquez une date future pour payer une échéance à l’avance.",
         "account": "Compte",
         "noInstitution": "Aucun établissement",
-        "description": "Description"
+        "description": "Description",
+        "mode": "Échéances à payer",
+        "count": "Combien",
+        "totalAmount": "Montant total"
       },
       "actions": {
         "confirm": "Enregistrer le paiement"
+      },
+      "modes": {
+        "next": "Prochaine échéance",
+        "last": "N dernières échéances",
+        "all": "Toutes les échéances en attente"
+      },
+      "quote": {
+        "installments": "Échéances",
+        "original": "Total contractuel",
+        "discount": "Remise"
+      },
+      "errors": {
+        "count": "Saisissez un nombre entre 1 et {{count}}."
+      },
+      "prorateWarning": "Le montant total sera réparti proportionnellement entre toutes les échéances sélectionnées, elles seront toutes marquées comme payées, et le solde du prêt diminuera de leurs montants contractuels."
+    },
+    "history": {
+      "title": "Historique des paiements",
+      "empty": "Aucun paiement enregistré pour l'instant."
+    },
+    "schedule": {
+      "title": "Échéancier",
+      "empty": "Aucune échéance planifiée.",
+      "paidOn": "Payée le {{date}}",
+      "status": {
+        "open": "En attente",
+        "overdue": "En retard",
+        "paid": "Payée"
       }
+    },
+    "deleteError": "Impossible de supprimer le prêt. Réessayez.",
+    "delete": {
+      "title": "Supprimer le prêt ?",
+      "message": "« {{name}} » comporte {{count}} paiements enregistrés. Voulez-vous les conserver comme des transactions normales, ou les supprimer avec le prêt ?",
+      "messageNoPayments": "Cette action est irréversible. Voulez-vous supprimer « {{name}} » ?",
+      "keepPayments": "Supprimer le prêt, conserver les paiements",
+      "deletePayments": "Supprimer le prêt et ses paiements"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "Cette clé d’accès n’a pas pu être vérifiée.",
       "credential_exists": "Cette clé d’accès est déjà enregistrée.",
       "not_found": "Clé d’accès introuvable."
+    },
+    "loan": {
+      "advance_amount_too_small": "Ce montant total est trop faible pour être réparti entre les échéances sélectionnées.",
+      "advance_count_exceeds_remaining": "Il ne reste pas autant d'échéances en attente.",
+      "installment_count_below_paid": "Le nombre d'échéances ne peut pas être inférieur au nombre déjà payé."
     }
   }
 }

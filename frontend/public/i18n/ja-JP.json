@@ -1042,7 +1042,8 @@
       "edit": "ローンを編集",
       "archive": "ローンをアーカイブ",
       "unarchive": "ローンのアーカイブを解除",
-      "recordPayment": "支払いを記録"
+      "recordPayment": "支払いを記録",
+      "delete": "ローンを削除"
     },
     "empty": {
       "title": "ローンはまだありません",
@@ -1087,11 +1088,17 @@
         "institution": "金融機関",
         "allInstitutions": "すべての金融機関",
         "paymentAccount": "口座",
-        "paymentAccountPlaceholder": "引き落とし口座を選択"
+        "paymentAccountPlaceholder": "引き落とし口座を選択",
+        "contractedInstallmentAmount": "契約上の返済額",
+        "contractedInstallmentAmountHint": "見積もりの返済額を上書きします。金利から計算した金額を使う場合は空欄のままにしてください。",
+        "adjustInterestRate": "金利を調整",
+        "adjustInterestRateHint": "見積もりの返済額が上記の契約額と一致するように金利を再計算します。",
+        "adjustInterestRateHelpLabel": "金利の調整について"
       },
       "errors": {
         "required": "この項目は必須です。",
-        "paymentAccountRequired": "支払いの引き落とし元となる口座を選択してください。"
+        "paymentAccountRequired": "支払いの引き落とし元となる口座を選択してください。",
+        "rateAdjustmentUnavailable": "この返済額を実現する非負の金利がありません。契約上の返済額を上げるか、借入額を下げてください。"
       },
       "actions": {
         "cancel": "キャンセル",
@@ -1107,11 +1114,50 @@
         "dateHint": "先の日付を設定すると、返済を前倒しで支払えます。",
         "account": "口座",
         "noInstitution": "金融機関なし",
-        "description": "説明"
+        "description": "説明",
+        "mode": "支払う返済回",
+        "count": "回数",
+        "totalAmount": "合計金額"
       },
       "actions": {
         "confirm": "支払いを記録"
+      },
+      "modes": {
+        "next": "次回の返済",
+        "last": "直近N回分",
+        "all": "未払いのすべての返済"
+      },
+      "quote": {
+        "installments": "返済回数",
+        "original": "契約上の合計額",
+        "discount": "割引額"
+      },
+      "errors": {
+        "count": "1から{{count}}の間の数値を入力してください。"
+      },
+      "prorateWarning": "合計金額は選択したすべての返済回に比例配分され、それらはすべて支払い済みとしてマークされ、ローン残高はその契約額分減少します。"
+    },
+    "history": {
+      "title": "支払い履歴",
+      "empty": "まだ支払いが記録されていません。"
+    },
+    "schedule": {
+      "title": "返済スケジュール",
+      "empty": "予定されている返済はありません。",
+      "paidOn": "{{date}}に支払い済み",
+      "status": {
+        "open": "未払い",
+        "overdue": "延滞",
+        "paid": "支払い済み"
       }
+    },
+    "deleteError": "ローンを削除できませんでした。もう一度お試しください。",
+    "delete": {
+      "title": "ローンを削除しますか？",
+      "message": "「{{name}}」には{{count}}件の記録された支払いがあります。通常の取引として残しますか、それともローンと一緒に削除しますか？",
+      "messageNoPayments": "この操作は取り消せません。「{{name}}」を削除しますか？",
+      "keepPayments": "ローンを削除し、支払いは残す",
+      "deletePayments": "ローンとその支払いを削除"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "パスキーを検証できませんでした。",
       "credential_exists": "このパスキーはすでに登録されています。",
       "not_found": "パスキーが見つかりません。"
+    },
+    "loan": {
+      "advance_amount_too_small": "この合計金額は、選択した返済回に配分するには少なすぎます。",
+      "advance_count_exceeds_remaining": "そんなに多くの未払いの返済回は残っていません。",
+      "installment_count_below_paid": "返済回数は、すでに支払い済みの回数より少なくできません。"
     }
   }
 }

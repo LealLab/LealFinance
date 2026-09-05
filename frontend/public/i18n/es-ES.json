@@ -1042,7 +1042,8 @@
       "edit": "Editar préstamo",
       "archive": "Archivar préstamo",
       "unarchive": "Desarchivar préstamo",
-      "recordPayment": "Registrar pago"
+      "recordPayment": "Registrar pago",
+      "delete": "Eliminar préstamo"
     },
     "empty": {
       "title": "Aún no hay préstamos",
@@ -1087,11 +1088,17 @@
         "institution": "Entidad",
         "allInstitutions": "Todas las entidades",
         "paymentAccount": "Cuenta",
-        "paymentAccountPlaceholder": "Elige la cuenta de origen"
+        "paymentAccountPlaceholder": "Elige la cuenta de origen",
+        "contractedInstallmentAmount": "Cuota contratada",
+        "contractedInstallmentAmountHint": "Sustituye a la cuota estimada. Déjalo en blanco para usar el importe calculado a partir del tipo de interés.",
+        "adjustInterestRate": "Ajustar tipo de interés",
+        "adjustInterestRateHint": "Recalcula el tipo de interés para que la cuota estimada coincida con el valor contratado indicado arriba.",
+        "adjustInterestRateHelpLabel": "Sobre el ajuste del tipo de interés"
       },
       "errors": {
         "required": "Este campo es obligatorio.",
-        "paymentAccountRequired": "Elige la cuenta desde la que se hacen los pagos."
+        "paymentAccountRequired": "Elige la cuenta desde la que se hacen los pagos.",
+        "rateAdjustmentUnavailable": "Ningún tipo de interés no negativo produce esta cuota. Sube la cuota contratada o baja el importe financiado."
       },
       "actions": {
         "cancel": "Cancelar",
@@ -1107,11 +1114,50 @@
         "dateHint": "Indica una fecha futura para pagar una cuota por adelantado.",
         "account": "Cuenta",
         "noInstitution": "Sin entidad",
-        "description": "Descripción"
+        "description": "Descripción",
+        "mode": "Cuotas a pagar",
+        "count": "Cuántas",
+        "totalAmount": "Importe total"
       },
       "actions": {
         "confirm": "Registrar pago"
+      },
+      "modes": {
+        "next": "Próxima cuota",
+        "last": "Últimas N cuotas",
+        "all": "Todas las cuotas pendientes"
+      },
+      "quote": {
+        "installments": "Cuotas",
+        "original": "Total contratado",
+        "discount": "Descuento"
+      },
+      "errors": {
+        "count": "Introduce un número entre 1 y {{count}}."
+      },
+      "prorateWarning": "El importe total se repartirá proporcionalmente entre todas las cuotas seleccionadas, todas se marcarán como pagadas y el saldo del préstamo bajará según sus importes contratados."
+    },
+    "history": {
+      "title": "Historial de pagos",
+      "empty": "Aún no se han registrado pagos."
+    },
+    "schedule": {
+      "title": "Calendario de cuotas",
+      "empty": "No hay cuotas programadas.",
+      "paidOn": "Pagada el {{date}}",
+      "status": {
+        "open": "Pendiente",
+        "overdue": "Vencida",
+        "paid": "Pagada"
       }
+    },
+    "deleteError": "No se pudo eliminar el préstamo. Inténtalo de nuevo.",
+    "delete": {
+      "title": "¿Eliminar préstamo?",
+      "message": "«{{name}}» tiene {{count}} pagos registrados. ¿Quieres conservarlos como transacciones normales o eliminarlos junto con el préstamo?",
+      "messageNoPayments": "Esta acción no se puede deshacer. ¿Quieres eliminar «{{name}}»?",
+      "keepPayments": "Eliminar préstamo, conservar pagos",
+      "deletePayments": "Eliminar préstamo y sus pagos"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "No se ha podido verificar la clave de acceso.",
       "credential_exists": "Esta clave de acceso ya está registrada.",
       "not_found": "No se ha encontrado la clave de acceso."
+    },
+    "loan": {
+      "advance_amount_too_small": "Ese importe total es demasiado pequeño para repartirlo entre las cuotas seleccionadas.",
+      "advance_count_exceeds_remaining": "No quedan tantas cuotas pendientes.",
+      "installment_count_below_paid": "El número de cuotas no puede ser menor que el número de cuotas ya pagadas."
     }
   }
 }

@@ -1042,7 +1042,8 @@
       "edit": "编辑贷款",
       "archive": "归档贷款",
       "unarchive": "取消归档贷款",
-      "recordPayment": "记录还款"
+      "recordPayment": "记录还款",
+      "delete": "删除贷款"
     },
     "empty": {
       "title": "还没有贷款",
@@ -1087,11 +1088,17 @@
         "institution": "机构",
         "allInstitutions": "所有机构",
         "paymentAccount": "账户",
-        "paymentAccountPlaceholder": "选择来源账户"
+        "paymentAccountPlaceholder": "选择来源账户",
+        "contractedInstallmentAmount": "合同分期金额",
+        "contractedInstallmentAmountHint": "覆盖预估分期金额。留空则使用按利率计算的金额。",
+        "adjustInterestRate": "调整利率",
+        "adjustInterestRateHint": "重新计算利率，使预估分期金额与上方的合同金额一致。",
+        "adjustInterestRateHelpLabel": "关于调整利率"
       },
       "errors": {
         "required": "此字段为必填项。",
-        "paymentAccountRequired": "选择还款所使用的账户。"
+        "paymentAccountRequired": "选择还款所使用的账户。",
+        "rateAdjustmentUnavailable": "没有非负利率能得出此分期金额。请提高合同分期金额或降低借款金额。"
       },
       "actions": {
         "cancel": "取消",
@@ -1107,11 +1114,50 @@
         "dateHint": "设置将来的日期可提前偿还某一期。",
         "account": "账户",
         "noInstitution": "无机构",
-        "description": "描述"
+        "description": "描述",
+        "mode": "要还的分期",
+        "count": "还几期",
+        "totalAmount": "总金额"
       },
       "actions": {
         "confirm": "记录还款"
+      },
+      "modes": {
+        "next": "下一期",
+        "last": "最后N期",
+        "all": "所有未还清的分期"
+      },
+      "quote": {
+        "installments": "期数",
+        "original": "合同总额",
+        "discount": "折扣"
+      },
+      "errors": {
+        "count": "请输入1到{{count}}之间的数字。"
+      },
+      "prorateWarning": "总金额将按比例分摊到所有选中的分期，这些分期都将被标记为已还款，贷款余额将按其合同金额减少。"
+    },
+    "history": {
+      "title": "还款历史",
+      "empty": "尚未记录任何还款。"
+    },
+    "schedule": {
+      "title": "还款计划",
+      "empty": "没有安排任何分期。",
+      "paidOn": "已于{{date}}还款",
+      "status": {
+        "open": "未还款",
+        "overdue": "已逾期",
+        "paid": "已还款"
       }
+    },
+    "deleteError": "无法删除该贷款，请重试。",
+    "delete": {
+      "title": "删除贷款？",
+      "message": "“{{name}}”有{{count}}笔已记录的还款。要将它们保留为普通交易，还是与贷款一起删除？",
+      "messageNoPayments": "此操作无法撤销。要删除“{{name}}”吗？",
+      "keepPayments": "删除贷款，保留还款",
+      "deletePayments": "删除贷款及其还款"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "无法验证该通行密钥。",
       "credential_exists": "该通行密钥已注册。",
       "not_found": "未找到通行密钥。"
+    },
+    "loan": {
+      "advance_amount_too_small": "该总金额太小，无法分摊到所选分期。",
+      "advance_count_exceeds_remaining": "没有那么多未还清的分期了。",
+      "installment_count_below_paid": "分期数不能少于已还款的期数。"
     }
   }
 }

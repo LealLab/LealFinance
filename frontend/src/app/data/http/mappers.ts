@@ -78,6 +78,7 @@ import type {
   GoalWithAccountPatchWire,
   LoanInputWire,
   LoanPatchWire,
+  LoanAdvancePaymentWire,
   LoanPaymentWire,
   LoanWire,
   InvestmentAssetInputWire,
@@ -571,6 +572,7 @@ export const mapLoan = (wire: LoanWire): Loan => ({
   interestRate: wire.interest_rate,
   ratePeriod: wire.rate_period,
   installmentCount: wire.installment_count,
+  contractedInstallmentAmount: wire.contracted_installment_amount ?? undefined,
   installmentAmount: wire.installment_amount,
   firstPaymentDate: wire.first_payment_date,
   autoPost: wire.auto_post,
@@ -590,6 +592,7 @@ export const mapLoanCreate = (
   interest_rate: input.interestRate,
   rate_period: input.ratePeriod,
   installment_count: input.installmentCount,
+  contracted_installment_amount: nullable(input.contractedInstallmentAmount),
   first_payment_date: input.firstPaymentDate,
   auto_post: input.autoPost,
   payment_account_id: nullable(input.paymentAccountId),
@@ -608,6 +611,9 @@ export function mapLoanPatch(
   if (has(input, 'interestRate')) wire.interest_rate = nullable(input.interestRate);
   if (has(input, 'ratePeriod')) wire.rate_period = nullable(input.ratePeriod);
   if (has(input, 'installmentCount')) wire.installment_count = nullable(input.installmentCount);
+  if (has(input, 'contractedInstallmentAmount')) {
+    wire.contracted_installment_amount = nullable(input.contractedInstallmentAmount);
+  }
   if (has(input, 'firstPaymentDate')) wire.first_payment_date = nullable(input.firstPaymentDate);
   if (has(input, 'autoPost')) wire.auto_post = nullable(input.autoPost);
   if (has(input, 'paymentAccountId')) wire.payment_account_id = nullable(input.paymentAccountId);
@@ -620,6 +626,22 @@ export const mapLoanPayment = (input: {
   accountId?: string;
   description?: string;
 }): LoanPaymentWire => ({
+  amount: nullable(input.amount),
+  date: nullable(input.date),
+  account_id: nullable(input.accountId),
+  description: nullable(input.description),
+});
+
+export const mapLoanAdvancePayment = (input: {
+  mode: 'last' | 'all';
+  count?: number;
+  amount?: string;
+  date?: string;
+  accountId?: string;
+  description?: string;
+}): LoanAdvancePaymentWire => ({
+  mode: input.mode,
+  count: nullable(input.count),
   amount: nullable(input.amount),
   date: nullable(input.date),
   account_id: nullable(input.accountId),

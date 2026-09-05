@@ -1042,7 +1042,8 @@
       "edit": "Rediger lån",
       "archive": "Arkivér lån",
       "unarchive": "Fjern lån fra arkiv",
-      "recordPayment": "Registrér betaling"
+      "recordPayment": "Registrér betaling",
+      "delete": "Slet lån"
     },
     "empty": {
       "title": "Ingen lån endnu",
@@ -1087,11 +1088,17 @@
         "institution": "Institut",
         "allInstitutions": "Alle institutter",
         "paymentAccount": "Konto",
-        "paymentAccountPlaceholder": "Vælg kildekontoen"
+        "paymentAccountPlaceholder": "Vælg kildekontoen",
+        "contractedInstallmentAmount": "Aftalt ydelse",
+        "contractedInstallmentAmountHint": "Overskriver den beregnede ydelse. Lad stå tomt for at bruge beløbet beregnet ud fra rentesatsen.",
+        "adjustInterestRate": "Juster rentesats",
+        "adjustInterestRateHint": "Genberegner rentesatsen, så den beregnede ydelse matcher den aftalte værdi ovenfor.",
+        "adjustInterestRateHelpLabel": "Om at justere rentesatsen"
       },
       "errors": {
         "required": "Dette felt er påkrævet.",
-        "paymentAccountRequired": "Vælg den konto, betalingerne kommer fra."
+        "paymentAccountRequired": "Vælg den konto, betalingerne kommer fra.",
+        "rateAdjustmentUnavailable": "Ingen ikke-negativ rentesats giver denne ydelse. Forhøj den aftalte ydelse, eller sænk det finansierede beløb."
       },
       "actions": {
         "cancel": "Annuller",
@@ -1107,11 +1114,50 @@
         "dateHint": "Angiv en fremtidig dato for at betale et afdrag forud.",
         "account": "Konto",
         "noInstitution": "Intet institut",
-        "description": "Beskrivelse"
+        "description": "Beskrivelse",
+        "mode": "Afdrag der skal betales",
+        "count": "Hvor mange",
+        "totalAmount": "Samlet beløb"
       },
       "actions": {
         "confirm": "Registrér betaling"
+      },
+      "modes": {
+        "next": "Næste afdrag",
+        "last": "Sidste N afdrag",
+        "all": "Alle åbne afdrag"
+      },
+      "quote": {
+        "installments": "Afdrag",
+        "original": "Aftalt samlet beløb",
+        "discount": "Rabat"
+      },
+      "errors": {
+        "count": "Indtast et tal mellem 1 og {{count}}."
+      },
+      "prorateWarning": "Beløbet fordeles forholdsmæssigt på alle valgte afdrag, alle markeres som betalt, og lånets saldo falder med deres aftalte beløb."
+    },
+    "history": {
+      "title": "Betalingshistorik",
+      "empty": "Ingen betalinger registreret endnu."
+    },
+    "schedule": {
+      "title": "Afdragsplan",
+      "empty": "Ingen afdrag planlagt.",
+      "paidOn": "Betalt den {{date}}",
+      "status": {
+        "open": "Åben",
+        "overdue": "Forfalden",
+        "paid": "Betalt"
       }
+    },
+    "deleteError": "Lånet kunne ikke slettes. Prøv igen.",
+    "delete": {
+      "title": "Slet lån?",
+      "message": "„{{name}}“ har {{count}} registrerede betalinger. Vil du beholde dem som almindelige transaktioner, eller slette dem sammen med lånet?",
+      "messageNoPayments": "Denne handling kan ikke fortrydes. Vil du slette „{{name}}“?",
+      "keepPayments": "Slet lån, behold betalinger",
+      "deletePayments": "Slet lån og dets betalinger"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "Adgangsnøglen kunne ikke bekræftes.",
       "credential_exists": "Denne adgangsnøgle er allerede registreret.",
       "not_found": "Adgangsnøglen blev ikke fundet."
+    },
+    "loan": {
+      "advance_amount_too_small": "Det beløb er for lille til at fordele på de valgte afdrag.",
+      "advance_count_exceeds_remaining": "Der er ikke så mange åbne afdrag tilbage.",
+      "installment_count_below_paid": "Antallet af afdrag kan ikke være lavere end antallet, der allerede er betalt."
     }
   }
 }

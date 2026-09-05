@@ -2,10 +2,11 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { LoanRepository } from '../../data/loan.repository';
-import { installmentAmount } from '../../domain/calc/loans';
+import { installmentAmount, interestRateForInstallment } from '../../domain/calc/loans';
 import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
@@ -63,6 +64,8 @@ export class LoanFormModal {
     interestRate: ['0', [Validators.required, decimalAmountValidator()]],
     ratePeriod: ['annual' as LoanRatePeriod, Validators.required],
     installmentCount: [12, [Validators.required, Validators.min(1)]],
+    contractedInstallmentAmount: ['', [decimalAmountValidator(), Validators.min(0.0001)]],
+    adjustInterestRate: [false],
     firstPaymentDate: [todayIso(), Validators.required],
     notes: [''],
     autoPost: [false],
@@ -105,10 +108,41 @@ export class LoanFormModal {
     return money(amount, value.currency);
   });
 
+  protected readonly rateAdjustmentUnavailable = computed(() => {
+    const value = this.formValue();
+    return Boolean(
+      value.adjustInterestRate &&
+        value.contractedInstallmentAmount &&
+        this.form.controls.contractedInstallmentAmount.valid &&
+        interestRateForInstallment({
+          amountBorrowed: value.amountBorrowed || '0',
+          fees: value.fees || '0',
+          contractedInstallmentAmount: value.contractedInstallmentAmount,
+          ratePeriod: value.ratePeriod,
+          installmentCount: Number(value.installmentCount) || 0,
+        }) === undefined,
+    );
+  });
+
   constructor() {
     this.form.valueChanges
       .pipe(takeUntilDestroyed())
-      .subscribe(() => this.formValue.set(this.form.getRawValue()));
+      .subscribe(() => {
+        const value = this.form.getRawValue();
+        if (value.adjustInterestRate && value.contractedInstallmentAmount) {
+          const rate = interestRateForInstallment({
+            amountBorrowed: value.amountBorrowed || '0',
+            fees: value.fees || '0',
+            contractedInstallmentAmount: value.contractedInstallmentAmount,
+            ratePeriod: value.ratePeriod,
+            installmentCount: Number(value.installmentCount) || 0,
+          });
+          if (rate !== undefined && rate !== value.interestRate) {
+            this.form.controls.interestRate.setValue(rate, { emitEvent: false });
+          }
+        }
+        this.formValue.set(this.form.getRawValue());
+      });
 
     effect(() => {
       if (!this.open()) return;
@@ -122,6 +156,8 @@ export class LoanFormModal {
         interestRate: loan?.interestRate ?? '0',
         ratePeriod: loan?.ratePeriod ?? 'annual',
         installmentCount: loan?.installmentCount ?? 12,
+        contractedInstallmentAmount: loan?.contractedInstallmentAmount ?? '',
+        adjustInterestRate: false,
         firstPaymentDate: loan?.firstPaymentDate ?? todayIso(),
         notes: loan?.notes ?? '',
         autoPost: loan?.autoPost ?? false,
@@ -138,7 +174,7 @@ export class LoanFormModal {
     if (raw.autoPost && !raw.paymentAccountId) {
       this.form.controls.paymentAccountId.setErrors({ required: true });
     }
-    if (this.form.invalid) {
+    if (this.form.invalid || this.rateAdjustmentUnavailable()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -153,6 +189,7 @@ export class LoanFormModal {
       interestRate: raw.interestRate || '0',
       ratePeriod: raw.ratePeriod,
       installmentCount: Number(raw.installmentCount),
+      contractedInstallmentAmount: raw.contractedInstallmentAmount || undefined,
       firstPaymentDate: raw.firstPaymentDate,
       notes: raw.notes.trim() || undefined,
       autoPost: raw.autoPost,
@@ -169,9 +206,14 @@ export class LoanFormModal {
         this.open.set(false);
         this.saved.emit();
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('loans.form.saveError');
+        const code = error instanceof ApiError ? error.code : undefined;
+        this.saveErrorKey.set(
+          code === 'loan.installment_count_below_paid'
+            ? `errors.${code}`
+            : 'loans.form.saveError',
+        );
       },
     });
   }

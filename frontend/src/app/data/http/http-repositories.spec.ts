@@ -479,6 +479,7 @@ describe('HTTP repositories', () => {
       interest_rate: '1.2000',
       rate_period: 'monthly' as const,
       installment_count: 48,
+      contracted_installment_amount: '1100.0000',
       installment_amount: '1101.1021',
       first_payment_date: '2026-01-10',
       auto_post: true,
@@ -499,6 +500,7 @@ describe('HTTP repositories', () => {
       id: 'l',
       installmentsPaid: 2,
       paymentAccountId: 'a',
+      contractedInstallmentAmount: '1100.0000',
     });
 
     TestBed.inject(HttpLoanRepository)
@@ -511,6 +513,7 @@ describe('HTTP repositories', () => {
         interestRate: '1.2',
         ratePeriod: 'monthly',
         installmentCount: 48,
+        contractedInstallmentAmount: '1100',
         firstPaymentDate: '2026-01-10',
         autoPost: true,
         paymentAccountId: 'a',
@@ -525,6 +528,7 @@ describe('HTTP repositories', () => {
       amount_borrowed: '40000',
       rate_period: 'monthly',
       installment_count: 48,
+      contracted_installment_amount: '1100',
       auto_post: true,
       payment_account_id: 'a',
     });
@@ -571,6 +575,50 @@ describe('HTTP repositories', () => {
       conversion: null,
     });
     expect(payment).toMatchObject({ id: 't', loanId: 'l', type: 'expense' });
+
+    let advances: unknown;
+    TestBed.inject(HttpLoanRepository)
+      .advancePayments('l', {
+        mode: 'last',
+        count: 2,
+        amount: '2000',
+        date: '2026-01-10',
+        accountId: 'a',
+      })
+      .subscribe((result) => (advances = result));
+    const advanceReq = http.expectOne('/api/v1/loans/l/advance-payments');
+    expect(advanceReq.request.method).toBe('POST');
+    expect(advanceReq.request.body).toEqual({
+      mode: 'last',
+      count: 2,
+      amount: '2000',
+      date: '2026-01-10',
+      account_id: 'a',
+      description: null,
+    });
+    advanceReq.flush([
+      {
+        id: 't2',
+        type: 'expense',
+        date: '2026-01-10',
+        amount: '2000.0000',
+        currency: 'BRL',
+        account_id: 'a',
+        to_account_id: null,
+        category_id: 'c',
+        description: 'Car 48/48',
+        notes: null,
+        recurring_rule_id: null,
+        loan_id: 'l',
+        installment_group_id: 'l',
+        installment_number: 48,
+        installment_count: 48,
+        conversion: null,
+      },
+    ]);
+    expect(advances).toEqual([
+      expect.objectContaining({ id: 't2', loanId: 'l', installmentNumber: 48 }),
+    ]);
   });
 
   it('lists and pays card invoices for an account', () => {

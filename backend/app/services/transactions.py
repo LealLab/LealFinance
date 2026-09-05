@@ -271,7 +271,11 @@ async def get_transaction(db: AsyncSession, user_id: UUID, transaction_id: UUID)
 
 
 async def build_transaction(
-    db: AsyncSession, user_id: UUID, data: TransactionCreate
+    db: AsyncSession,
+    user_id: UUID,
+    data: TransactionCreate,
+    *,
+    loan_installment_number: int | None = None,
 ) -> Transaction:
     """Validates and constructs a Transaction, adding it to the session -
     but does not commit. Shared by create_transaction (one row, commits
@@ -287,7 +291,20 @@ async def build_transaction(
         currency=data.currency,
     )
     await ownership.get_owned_or_none(db, RecurringRule, data.recurring_rule_id, user_id)
-    await ownership.get_owned_or_none(db, Loan, data.loan_id, user_id)
+    loan = await ownership.get_owned_or_none(db, Loan, data.loan_id, user_id)
+    if loan is not None:
+        if loan_installment_number is None:
+            raise ValidationAppError(code="transaction.loan_payment_requires_loan_endpoint")
+        if not 1 <= loan_installment_number <= loan.installment_count:
+            raise ValidationAppError(code="loan.installment_number_invalid")
+        if (
+            data.type != TRANSACTION_TYPE_EXPENSE
+            or data.currency != loan.currency
+            or data.category_id != loan.category_id
+        ):
+            raise ValidationAppError(code="loan.payment_shape_invalid")
+    elif loan_installment_number is not None:
+        raise ValidationAppError(code="loan.installment_number_without_loan")
 
     if data.card_invoice_close_date is not None and (
         to_account is None or to_account.type != ACCOUNT_TYPE_CREDIT_CARD
@@ -318,6 +335,9 @@ async def build_transaction(
         loan_id=data.loan_id,
         card_invoice_close_date=data.card_invoice_close_date,
     )
+    if loan is not None:
+        transaction.installment_number = loan_installment_number
+        transaction.installment_count = loan.installment_count
     _apply_conversion(transaction, conversion)
     db.add(transaction)
     return transaction
@@ -415,8 +435,8 @@ async def update_transaction(
         await get_active_currency(db, changes["currency"])
     if "recurring_rule_id" in changes:
         await ownership.get_owned_or_none(db, RecurringRule, changes["recurring_rule_id"], user_id)
-    if "loan_id" in changes:
-        await ownership.get_owned_or_none(db, Loan, changes["loan_id"], user_id)
+    if "loan_id" in changes and changes["loan_id"] != transaction.loan_id:
+        raise ValidationAppError(code="transaction.loan_payment_provenance_immutable")
 
     effective_type = changes.get("type", transaction.type)
     effective_account_id = changes.get("account_id", transaction.account_id)
@@ -425,6 +445,15 @@ async def update_transaction(
     effective_currency = changes.get("currency", transaction.currency)
     effective_amount = changes.get("amount", transaction.amount)
     effective_date = changes.get("date", transaction.date)
+
+    if transaction.loan_id is not None:
+        loan = await ownership.get_owned(db, Loan, transaction.loan_id, user_id)
+        if (
+            effective_type != TRANSACTION_TYPE_EXPENSE
+            or effective_currency != loan.currency
+            or effective_category_id != loan.category_id
+        ):
+            raise ValidationAppError(code="loan.payment_shape_invalid")
 
     account, to_account = await validate_transaction_shape(
         db,

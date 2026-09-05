@@ -9,9 +9,13 @@ import { CategoryGroup } from '../../domain/models/category-group';
 import { Goal } from '../../domain/models/goal';
 import { Institution } from '../../domain/models/institution';
 import { Loan } from '../../domain/models/loan';
-import { installmentAmount as computeInstallmentAmount } from '../../domain/calc/loans';
-import { formatIsoDate } from '../../domain/calc/dates';
-import { LoanPayment } from '../loan.repository';
+import {
+  installmentAmount as computeInstallmentAmount,
+  loanPaymentQuote,
+  openLoanInstallments,
+} from '../../domain/calc/loans';
+import { todayIso } from '../../domain/calc/dates';
+import { LoanAdvancePayment, LoanDeleteMode, LoanPayment } from '../loan.repository';
 import { InstitutionDeleteMode } from '../institution.repository';
 import {
   InvestmentAsset,
@@ -391,12 +395,11 @@ export class MockStore {
 
   // --- Loans ------------------------------------------------------------
 
-  /** Re-derives the two backend-computed fields: `installmentAmount` from
-   * the loan's own inputs, `installmentsPaid` from the linked ledger. */
+  /** Re-derives the two backend-computed fields from the contract and linked ledger. */
   private loanWithDerived(loan: Loan): Loan {
     return {
       ...loan,
-      installmentAmount: computeInstallmentAmount(loan),
+      installmentAmount: loan.contractedInstallmentAmount ?? computeInstallmentAmount(loan),
       installmentsPaid: this.transactionsSignal().filter((tx) => tx.loanId === loan.id).length,
     };
   }
@@ -420,24 +423,86 @@ export class MockStore {
     return this.loanWithDerived(findEntity(this.loansSignal(), id)!);
   }
 
+  deleteLoan(id: string, mode: LoanDeleteMode = 'detach'): void {
+    if (!findEntity(this.loansSignal(), id)) notFound('Loan', id);
+    if (mode === 'cascade') {
+      this.transactionsSignal.update((list) => list.filter((tx) => tx.loanId !== id));
+    } else {
+      this.transactionsSignal.update((list) =>
+        list.map((tx) => (tx.loanId === id ? { ...tx, loanId: undefined } : tx)),
+      );
+    }
+    this.loansSignal.update((list) => removeEntity(list, id));
+  }
+
   recordLoanPayment(id: string, payment: LoanPayment): Transaction {
     const stored = findEntity(this.loansSignal(), id);
     if (!stored) notFound('Loan', id);
     const loan = this.loanWithDerived(stored);
     const accountId = payment.accountId ?? loan.paymentAccountId;
     if (!accountId) throw new Error('A loan payment needs a source account.');
+    const transactions = this.transactionsSignal().filter((transaction) => transaction.loanId === id);
+    const installment = openLoanInstallments(loan, transactions)[0];
+    if (!installment) throw new Error('Loan is fully paid.');
+    const date = payment.date ?? todayIso();
+    const suggested = loanPaymentQuote(loan, transactions, 'next', date).suggestedAmount.amount;
     return this.createTransaction({
       type: 'expense',
-      date: payment.date ?? formatIsoDate(new Date()),
-      amount: payment.amount ?? loan.installmentAmount,
+      date,
+      amount: payment.amount ?? suggested,
       currency: loan.currency,
       accountId,
       categoryId: loan.categoryId,
       description:
         payment.description ??
-        `${loan.name} ${loan.installmentsPaid + 1}/${loan.installmentCount}`,
+        `${loan.name} ${installment.number}/${loan.installmentCount}`,
       loanId: loan.id,
+      installmentNumber: installment.number,
+      installmentCount: loan.installmentCount,
     });
+  }
+
+  advanceLoanPayments(id: string, payment: LoanAdvancePayment): Transaction[] {
+    const stored = findEntity(this.loansSignal(), id);
+    if (!stored) notFound('Loan', id);
+    const loan = this.loanWithDerived(stored);
+    const accountId = payment.accountId ?? loan.paymentAccountId;
+    if (!accountId) throw new Error('A loan payment needs a source account.');
+    const transactions = this.transactionsSignal().filter((transaction) => transaction.loanId === id);
+    const date = payment.date ?? todayIso();
+    const quote = loanPaymentQuote(loan, transactions, payment.mode, date, payment.count);
+    if (quote.installments.length === 0) throw new Error('No installments selected.');
+
+    let amounts = quote.installments.map((installment) => installment.amount.amount);
+    if (payment.amount !== undefined) {
+      const total = Number(payment.amount);
+      const suggestedTotal = Number(quote.suggestedAmount.amount);
+      let allocated = 0;
+      amounts = quote.installments.map((installment, index) => {
+        if (index === quote.installments.length - 1) return (total - allocated).toFixed(4);
+        const amount = Number(
+          ((total * Number(installment.amount.amount)) / suggestedTotal).toFixed(4),
+        );
+        allocated += amount;
+        return amount.toFixed(4);
+      });
+    }
+
+    return quote.installments.map((installment, index) =>
+      this.createTransaction({
+        type: 'expense',
+        date,
+        amount: amounts[index],
+        currency: loan.currency,
+        accountId,
+        categoryId: loan.categoryId,
+        description:
+          payment.description ?? `${loan.name} ${installment.number}/${loan.installmentCount}`,
+        loanId: loan.id,
+        installmentNumber: installment.number,
+        installmentCount: loan.installmentCount,
+      }),
+    );
   }
 
   // --- Investment wallets, assets, and transactions --------------------

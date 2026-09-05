@@ -1042,7 +1042,8 @@
       "edit": "Sửa khoản vay",
       "archive": "Lưu trữ khoản vay",
       "unarchive": "Bỏ lưu trữ khoản vay",
-      "recordPayment": "Ghi nhận thanh toán"
+      "recordPayment": "Ghi nhận thanh toán",
+      "delete": "Xóa khoản vay"
     },
     "empty": {
       "title": "Chưa có khoản vay nào",
@@ -1087,11 +1088,17 @@
         "institution": "Tổ chức",
         "allInstitutions": "Tất cả tổ chức",
         "paymentAccount": "Tài khoản",
-        "paymentAccountPlaceholder": "Chọn tài khoản nguồn"
+        "paymentAccountPlaceholder": "Chọn tài khoản nguồn",
+        "contractedInstallmentAmount": "Kỳ trả góp theo hợp đồng",
+        "contractedInstallmentAmountHint": "Ghi đè lên kỳ trả góp ước tính. Để trống để dùng số tiền tính theo lãi suất.",
+        "adjustInterestRate": "Điều chỉnh lãi suất",
+        "adjustInterestRateHint": "Tính lại lãi suất để kỳ trả góp ước tính khớp với giá trị hợp đồng ở trên.",
+        "adjustInterestRateHelpLabel": "Về việc điều chỉnh lãi suất"
       },
       "errors": {
         "required": "Trường này là bắt buộc.",
-        "paymentAccountRequired": "Chọn tài khoản dùng để thanh toán."
+        "paymentAccountRequired": "Chọn tài khoản dùng để thanh toán.",
+        "rateAdjustmentUnavailable": "Không có lãi suất không âm nào cho ra kỳ trả góp này. Hãy tăng kỳ trả góp theo hợp đồng hoặc giảm số tiền vay."
       },
       "actions": {
         "cancel": "Hủy",
@@ -1107,11 +1114,50 @@
         "dateHint": "Đặt ngày trong tương lai để trả trước một kỳ.",
         "account": "Tài khoản",
         "noInstitution": "Không có tổ chức",
-        "description": "Mô tả"
+        "description": "Mô tả",
+        "mode": "Các kỳ cần thanh toán",
+        "count": "Bao nhiêu kỳ",
+        "totalAmount": "Tổng số tiền"
       },
       "actions": {
         "confirm": "Ghi nhận thanh toán"
+      },
+      "modes": {
+        "next": "Kỳ tiếp theo",
+        "last": "N kỳ cuối cùng",
+        "all": "Tất cả các kỳ chưa thanh toán"
+      },
+      "quote": {
+        "installments": "Số kỳ",
+        "original": "Tổng theo hợp đồng",
+        "discount": "Chiết khấu"
+      },
+      "errors": {
+        "count": "Nhập một số từ 1 đến {{count}}."
+      },
+      "prorateWarning": "Tổng số tiền sẽ được chia theo tỷ lệ cho tất cả các kỳ đã chọn, tất cả sẽ được đánh dấu là đã thanh toán, và số dư khoản vay sẽ giảm theo số tiền hợp đồng của chúng."
+    },
+    "history": {
+      "title": "Lịch sử thanh toán",
+      "empty": "Chưa có khoản thanh toán nào được ghi nhận."
+    },
+    "schedule": {
+      "title": "Lịch trả góp",
+      "empty": "Không có kỳ trả góp nào được lên lịch.",
+      "paidOn": "Đã thanh toán vào {{date}}",
+      "status": {
+        "open": "Chưa thanh toán",
+        "overdue": "Quá hạn",
+        "paid": "Đã thanh toán"
       }
+    },
+    "deleteError": "Không thể xóa khoản vay. Vui lòng thử lại.",
+    "delete": {
+      "title": "Xóa khoản vay?",
+      "message": "\"{{name}}\" có {{count}} khoản thanh toán đã ghi nhận. Bạn muốn giữ chúng như giao dịch thông thường, hay xóa cùng với khoản vay?",
+      "messageNoPayments": "Thao tác này không thể hoàn tác. Bạn có muốn xóa \"{{name}}\" không?",
+      "keepPayments": "Xóa khoản vay, giữ thanh toán",
+      "deletePayments": "Xóa khoản vay và các khoản thanh toán"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "Không thể xác minh passkey này.",
       "credential_exists": "Passkey này đã được đăng ký.",
       "not_found": "Không tìm thấy passkey."
+    },
+    "loan": {
+      "advance_amount_too_small": "Tổng số tiền đó quá nhỏ để chia cho các kỳ đã chọn.",
+      "advance_count_exceeds_remaining": "Không còn nhiều kỳ chưa thanh toán như vậy.",
+      "installment_count_below_paid": "Số kỳ trả góp không thể ít hơn số kỳ đã thanh toán."
     }
   }
 }

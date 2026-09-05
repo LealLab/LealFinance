@@ -126,6 +126,7 @@ async def test_create_loan_computes_installment_amount(
     assert response.status_code == 201, response.text
     body = response.json()
     assert body["installment_amount"] == "1101.1021"
+    assert body["contracted_installment_amount"] is None
     assert body["installments_paid"] == 0
     assert body["archived"] is False
 
@@ -141,6 +142,29 @@ async def test_create_loan_ignores_client_supplied_installment_amount(
     )
     assert response.status_code == 201, response.text
     assert response.json()["installment_amount"] == "1101.1021"
+
+
+async def test_contracted_installment_overrides_estimate_and_can_be_cleared(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-contracted@example.com")
+    category_id = await _expense_category(client)
+
+    created = await client.post(
+        "/api/v1/loans",
+        json=_loan_body(category_id, contracted_installment_amount="1200.00"),
+    )
+    assert created.status_code == 201, created.text
+    loan = created.json()
+    assert loan["contracted_installment_amount"] == "1200.0000"
+    assert loan["installment_amount"] == "1200.0000"
+
+    cleared = await client.patch(
+        f"/api/v1/loans/{loan['id']}", json={"contracted_installment_amount": None}
+    )
+    assert cleared.status_code == 200, cleared.text
+    assert cleared.json()["contracted_installment_amount"] is None
+    assert cleared.json()["installment_amount"] == "1101.1021"
 
 
 async def test_create_loan_rejects_income_category(
@@ -206,6 +230,56 @@ async def test_archive_and_unarchive_loan(client: AsyncClient, db_session: Async
     assert unarchived.json()["archived"] is False
 
 
+async def test_delete_loan_detaches_payments_by_default(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-delete-detach@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    payment = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()
+
+    response = await client.delete(f"/api/v1/loans/{loan_id}")
+    assert response.status_code == 204
+
+    assert (await client.get("/api/v1/loans")).json() == []
+    kept = (await client.get("/api/v1/transactions")).json()
+    assert [row["id"] for row in kept] == [payment["id"]]
+    assert kept[0]["loan_id"] is None
+
+
+async def test_delete_loan_cascade_removes_its_payments(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-delete-cascade@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+
+    response = await client.delete(f"/api/v1/loans/{loan_id}?mode=cascade")
+    assert response.status_code == 204
+
+    assert (await client.get("/api/v1/loans")).json() == []
+    assert (await client.get("/api/v1/transactions")).json() == []
+
+
+async def test_delete_loan_ownership_isolation(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-delete-owner@example.com")
+    await _authed(other_client, db_session, "loan-delete-intruder@example.com")
+    category_id = await _expense_category(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+
+    response = await other_client.delete(f"/api/v1/loans/{loan_id}")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "loan.not_found"
+    assert len((await client.get("/api/v1/loans")).json()) == 1
+
+
 # --- payments -----------------------------------------------------------
 
 
@@ -226,6 +300,9 @@ async def test_record_payment_creates_expense_carrying_category_and_loan_id(
     assert tx["category_id"] == category_id
     assert tx["loan_id"] == loan_id
     assert tx["amount"] == "1101.1021"
+    assert tx["installment_group_id"] is None
+    assert tx["installment_number"] == 1
+    assert tx["installment_count"] == 48
 
     loan = (await client.get("/api/v1/loans")).json()[0]
     assert loan["installments_paid"] == 1
@@ -249,6 +326,37 @@ async def test_record_payment_uses_loan_payment_account_by_default(
     assert response.json()["account_id"] == account_id
 
 
+async def test_record_payment_rejects_an_archived_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-pay-archived-acct@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    await client.post(f"/api/v1/accounts/{account_id}/archive", json={"archived": True})
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.payment_account_archived"
+
+
+async def test_record_payment_rejects_a_currency_mismatched_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-pay-currency-mismatch@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client, currency="USD")
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.account_currency_mismatch"
+
+
 async def test_record_payment_rejected_once_fully_paid(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -269,6 +377,226 @@ async def test_record_payment_rejected_once_fully_paid(
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "loan.fully_paid"
+
+
+async def test_payment_default_is_discounted_by_payment_date_but_override_wins(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-payment-discount@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(
+                category_id,
+                installment_count=3,
+                contracted_installment_amount="15000.00",
+                first_payment_date="2027-01-10",
+            ),
+        )
+    ).json()["id"]
+
+    discounted = await client.post(
+        f"/api/v1/loans/{loan_id}/payments",
+        json={"account_id": account_id, "date": "2026-12-10"},
+    )
+    assert discounted.status_code == 201, discounted.text
+    assert Decimal(discounted.json()["amount"]) < Decimal("15000")
+
+    overridden = await client.post(
+        f"/api/v1/loans/{loan_id}/payments",
+        json={"account_id": account_id, "date": "2026-12-10", "amount": "12345.67"},
+    )
+    assert overridden.status_code == 201, overridden.text
+    assert overridden.json()["amount"] == "12345.6700"
+
+
+async def test_advance_last_keeps_the_next_unpaid_installment_and_discounts(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-advance-last@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(
+                category_id,
+                installment_count=6,
+                contracted_installment_amount="8000.00",
+                first_payment_date="2027-01-10",
+            ),
+        )
+    ).json()["id"]
+
+    advanced = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "last", "count": 2, "account_id": account_id, "date": "2026-10-10"},
+    )
+    assert advanced.status_code == 201, advanced.text
+    assert [row["installment_number"] for row in advanced.json()] == [5, 6]
+    assert all(Decimal(row["amount"]) < Decimal("8000") for row in advanced.json())
+
+    next_payment = await client.post(
+        f"/api/v1/loans/{loan_id}/payments",
+        json={"account_id": account_id, "date": "2027-01-10"},
+    )
+    assert next_payment.status_code == 201, next_payment.text
+    assert next_payment.json()["installment_number"] == 1
+
+
+async def test_advance_all_allocates_an_explicit_total_exactly(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-advance-all@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(category_id, installment_count=3),
+        )
+    ).json()["id"]
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "all", "account_id": account_id, "amount": "2500.01"},
+    )
+    assert response.status_code == 201, response.text
+    rows = response.json()
+    assert [row["installment_number"] for row in rows] == [1, 2, 3]
+    assert sum(Decimal(row["amount"]) for row in rows) == Decimal("2500.0100")
+
+    loan = (await client.get("/api/v1/loans")).json()[0]
+    assert loan["installments_paid"] == 3
+
+
+async def test_advance_validation_rejects_invalid_count_without_writes(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-advance-invalid@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post("/api/v1/loans", json=_loan_body(category_id, installment_count=2))
+    ).json()["id"]
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "last", "count": 3, "account_id": account_id},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.advance_count_exceeds_remaining"
+    assert (await client.get("/api/v1/transactions")).json() == []
+
+
+async def test_advance_amount_too_small_rejects_a_non_positive_installment(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-advance-too-small@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post("/api/v1/loans", json=_loan_body(category_id, installment_count=3))
+    ).json()["id"]
+
+    # Split a near-zero total three ways: rounding leaves the last share at 0.
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "all", "account_id": account_id, "amount": "0.0002"},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.advance_amount_too_small"
+    assert (await client.get("/api/v1/transactions")).json() == []
+
+
+async def test_advance_amount_too_small_when_every_discount_rounds_to_zero(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """A far-future installment at an extreme rate discounts to 0.0000,
+    leaving `_allocate_total` nothing to weight the split by."""
+    await _authed(client, db_session, "loan-advance-zero-weight@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(
+                category_id,
+                amount_borrowed="100.00",
+                fees="0.00",
+                interest_rate="999",
+                installment_count=1,
+                first_payment_date="2032-01-10",
+            ),
+        )
+    ).json()["id"]
+
+    response = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "all", "account_id": account_id, "amount": "1.00", "date": "2026-01-01"},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.advance_amount_too_small"
+    assert (await client.get("/api/v1/transactions")).json() == []
+
+
+async def test_deleting_payment_reopens_its_installment(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-reopen-installment@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post("/api/v1/loans", json=_loan_body(category_id, installment_count=3))
+    ).json()["id"]
+    first = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()
+    await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+
+    assert (await client.delete(f"/api/v1/transactions/{first['id']}")).status_code == 204
+    reopened = await client.post(
+        f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id}
+    )
+    assert reopened.status_code == 201, reopened.text
+    assert reopened.json()["installment_number"] == 1
+
+
+async def test_cannot_detach_a_payment_from_its_loan_through_a_plain_patch(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-payment-immutable-link@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (await client.post("/api/v1/loans", json=_loan_body(category_id))).json()["id"]
+    payment = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()
+
+    response = await client.patch(f"/api/v1/transactions/{payment['id']}", json={"loan_id": None})
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "transaction.loan_payment_provenance_immutable"
+
+
+async def test_cannot_shrink_term_below_a_paid_installment(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-shrink-term@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post("/api/v1/loans", json=_loan_body(category_id, installment_count=6))
+    ).json()["id"]
+    await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "last", "count": 1, "account_id": account_id},
+    )
+
+    response = await client.patch(f"/api/v1/loans/{loan_id}", json={"installment_count": 5})
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.installment_count_below_paid"
 
 
 # --- auto-posting ------------------------------------------------------------
@@ -300,6 +628,37 @@ async def test_auto_post_catches_up_backdated_loan_then_is_idempotent(
 
     loan = (await client.get("/api/v1/loans")).json()[0]
     assert loan["installments_paid"] == 3
+
+
+async def test_auto_post_fills_early_gaps_after_last_installments_were_advanced(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "loan-autopost-gaps@example.com")
+    category_id = await _expense_category(client)
+    account_id = await _account(client)
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json=_loan_body(
+                category_id,
+                auto_post=True,
+                payment_account_id=account_id,
+                first_payment_date="2026-01-10",
+                installment_count=6,
+            ),
+        )
+    ).json()["id"]
+    advanced = await client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments",
+        json={"mode": "last", "count": 2, "date": "2025-12-01"},
+    )
+    assert [row["installment_number"] for row in advanced.json()] == [5, 6]
+
+    assert await post_all_due_installments(db_session, today=date(2026, 3, 15)) == 3
+    rows = (await client.get("/api/v1/transactions")).json()
+    loan_rows = [row for row in rows if row["loan_id"] == loan_id]
+    assert {row["installment_number"] for row in loan_rows} == {1, 2, 3, 5, 6}
+    assert await post_all_due_installments(db_session, today=date(2026, 3, 15)) == 0
 
 
 async def test_auto_post_stops_at_installment_count(
@@ -364,6 +723,12 @@ async def test_loan_ownership_isolation(
     patch = await other_client.patch(f"/api/v1/loans/{loan_id}", json={"name": "Hijacked"})
     assert patch.status_code == 404
     assert patch.json()["error"]["code"] == "loan.not_found"
+
+    advance = await other_client.post(
+        f"/api/v1/loans/{loan_id}/advance-payments", json={"mode": "all"}
+    )
+    assert advance.status_code == 404
+    assert advance.json()["error"]["code"] == "loan.not_found"
 
     listing = await other_client.get("/api/v1/loans")
     assert all(row["id"] != loan_id for row in listing.json())

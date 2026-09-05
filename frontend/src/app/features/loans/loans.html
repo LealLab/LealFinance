@@ -93,6 +93,16 @@
               >
                 <app-icon name="archive" [size]="16" />
               </button>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                (click)="deleteLoan(row.loan)"
+                [attr.aria-label]="t('loans.actions.delete')"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
             </div>
           </div>
 
@@ -185,6 +195,77 @@
               <app-badge tone="positive">{{ t('loans.card.fullyPaid') }}</app-badge>
             }
           </div>
+
+          <details class="mt-4 border-t border-border pt-3">
+            <summary class="cursor-pointer text-xs font-semibold text-content-muted">
+              {{ t('loans.schedule.title') }}
+            </summary>
+            @if (loanSchedule(row.loan).length === 0) {
+              <p class="py-3 text-sm text-content-muted">{{ t('loans.schedule.empty') }}</p>
+            } @else {
+              <ul class="mt-2 max-h-64 divide-y divide-border overflow-y-auto">
+                @for (installment of loanSchedule(row.loan); track installment.number) {
+                  <li class="flex items-center justify-between gap-3 py-2">
+                    <span class="min-w-0 truncate text-sm text-content-primary">
+                      {{ installment.number }}/{{ row.loan.installmentCount }}
+                      <span class="text-xs text-content-muted">
+                        ·
+                        {{
+                          installment.status === 'paid' && installment.paidDate
+                            ? t('loans.schedule.paidOn', { date: installment.paidDate })
+                            : installment.dueDate
+                        }}
+                      </span>
+                    </span>
+                    <span class="flex shrink-0 items-center gap-2">
+                      <app-badge
+                        [tone]="
+                          installment.status === 'paid'
+                            ? 'positive'
+                            : installment.status === 'overdue'
+                              ? 'warning'
+                              : 'neutral'
+                        "
+                      >
+                        {{ t('loans.schedule.status.' + installment.status) }}
+                      </app-badge>
+                      <span class="font-mono text-sm font-semibold tabular-nums">
+                        {{
+                          (installment.paidAmount ?? installment.amount).amount
+                            | money: (installment.paidAmount ?? installment.amount).currency
+                        }}
+                      </span>
+                    </span>
+                  </li>
+                }
+              </ul>
+            }
+          </details>
+
+          <details class="mt-4 border-t border-border pt-3">
+            <summary class="cursor-pointer text-xs font-semibold text-content-muted">
+              {{ t('loans.history.title') }}
+            </summary>
+            @if (loanTransactions(row.loan).length === 0) {
+              <p class="py-3 text-sm text-content-muted">{{ t('loans.history.empty') }}</p>
+            } @else {
+              <ul class="mt-2 divide-y divide-border">
+                @for (tx of loanTransactions(row.loan); track tx.id) {
+                  <li class="flex items-center justify-between gap-3 py-2">
+                    <span class="min-w-0 truncate text-sm text-content-primary">
+                      {{ tx.description }}
+                      <span class="text-xs text-content-muted">· {{ tx.date }}</span>
+                    </span>
+                    <span
+                      class="shrink-0 font-mono text-sm font-semibold tabular-nums text-negative"
+                    >
+                      −{{ tx.amount | money: tx.currency }}
+                    </span>
+                  </li>
+                }
+              </ul>
+            }
+          </details>
         </app-card>
       }
     </div>
@@ -204,6 +285,7 @@
       [loan]="loan"
       [accounts]="accountsResource.value() ?? []"
       [institutions]="institutionsResource.value() ?? []"
+      [transactions]="paymentLoanTransactions()"
       (saved)="onPaymentSaved()"
     />
   }

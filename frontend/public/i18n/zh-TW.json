@@ -1042,7 +1042,8 @@
       "edit": "編輯貸款",
       "archive": "封存貸款",
       "unarchive": "取消封存貸款",
-      "recordPayment": "記錄還款"
+      "recordPayment": "記錄還款",
+      "delete": "刪除貸款"
     },
     "empty": {
       "title": "尚無貸款",
@@ -1087,11 +1088,17 @@
         "institution": "機構",
         "allInstitutions": "所有機構",
         "paymentAccount": "帳戶",
-        "paymentAccountPlaceholder": "選擇來源帳戶"
+        "paymentAccountPlaceholder": "選擇來源帳戶",
+        "contractedInstallmentAmount": "合約分期金額",
+        "contractedInstallmentAmountHint": "覆蓋預估分期金額。留空則使用依利率計算的金額。",
+        "adjustInterestRate": "調整利率",
+        "adjustInterestRateHint": "重新計算利率，使預估分期金額與上方的合約金額一致。",
+        "adjustInterestRateHelpLabel": "關於調整利率"
       },
       "errors": {
         "required": "此欄位為必填。",
-        "paymentAccountRequired": "選擇還款所使用的帳戶。"
+        "paymentAccountRequired": "選擇還款所使用的帳戶。",
+        "rateAdjustmentUnavailable": "沒有非負利率能得出此分期金額。請提高合約分期金額或降低貸款金額。"
       },
       "actions": {
         "cancel": "取消",
@@ -1107,11 +1114,50 @@
         "dateHint": "設定未來日期可提前償還某一期。",
         "account": "帳戶",
         "noInstitution": "無機構",
-        "description": "說明"
+        "description": "說明",
+        "mode": "要還的分期",
+        "count": "還幾期",
+        "totalAmount": "總金額"
       },
       "actions": {
         "confirm": "記錄還款"
+      },
+      "modes": {
+        "next": "下一期",
+        "last": "最後N期",
+        "all": "所有未還清的分期"
+      },
+      "quote": {
+        "installments": "期數",
+        "original": "合約總額",
+        "discount": "折扣"
+      },
+      "errors": {
+        "count": "請輸入1到{{count}}之間的數字。"
+      },
+      "prorateWarning": "總金額將按比例分攤到所有選取的分期，這些分期都將被標記為已還款，貸款餘額將依其合約金額減少。"
+    },
+    "history": {
+      "title": "還款歷史",
+      "empty": "尚未記錄任何還款。"
+    },
+    "schedule": {
+      "title": "還款計畫",
+      "empty": "沒有安排任何分期。",
+      "paidOn": "已於{{date}}還款",
+      "status": {
+        "open": "未還款",
+        "overdue": "已逾期",
+        "paid": "已還款"
       }
+    },
+    "deleteError": "無法刪除該貸款，請重試。",
+    "delete": {
+      "title": "刪除貸款？",
+      "message": "「{{name}}」有{{count}}筆已記錄的還款。要保留為一般交易，還是與貸款一起刪除？",
+      "messageNoPayments": "此操作無法復原。要刪除「{{name}}」嗎？",
+      "keepPayments": "刪除貸款，保留還款",
+      "deletePayments": "刪除貸款及其還款"
     }
   },
   "investments": {
@@ -1767,6 +1813,11 @@
       "verification_failed": "無法驗證此通行密鑰。",
       "credential_exists": "此通行密鑰已註冊。",
       "not_found": "找不到通行密鑰。"
+    },
+    "loan": {
+      "advance_amount_too_small": "該總金額太小，無法分攤到所選分期。",
+      "advance_count_exceeds_remaining": "沒有那麼多未還清的分期了。",
+      "installment_count_below_paid": "分期數不能少於已還款的期數。"
     }
   }
 }

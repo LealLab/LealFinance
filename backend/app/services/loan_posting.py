@@ -44,10 +44,14 @@ async def post_due_installments(db: AsyncSession, loan: Loan, *, today: date_typ
 
     created: list[UUID] = []
     for _ in range(MAX_CATCH_UP_INSTALLMENTS):
-        paid = await loans_service.installments_paid(db, loan.id)
-        if paid >= loan.installment_count:
+        # Serialize the due check with manual/advance payment creation. The
+        # nested lock in record_payment is re-entrant on this transaction.
+        await db.refresh(loan, with_for_update=True)
+        paid = await loans_service.paid_installment_numbers(db, loan.id)
+        installment_number = loans_service.next_unpaid_installment_number(loan, paid)
+        if installment_number is None:
             break
-        due_date = add_months_clamped(loan.first_payment_date, paid)
+        due_date = add_months_clamped(loan.first_payment_date, installment_number - 1)
         if due_date > today:
             break
         transaction = await loans_service.record_payment(

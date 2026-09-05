@@ -1,6 +1,7 @@
 """Loan CRUD plus payment recording. Thin router - all logic and
-ownership scoping live in app/services/loans.py. Archive only, no delete:
-a loan with recorded payments must keep its provenance."""
+ownership scoping live in app/services/loans.py. Deleting a loan always
+detaches or cascade-deletes its payments per `mode`; there is no "guard"
+mode since a loan (unlike an institution) has nothing else referencing it."""
 
 from datetime import date
 from uuid import UUID
@@ -9,8 +10,9 @@ from fastapi import APIRouter, status
 
 from app.api.deps import CurrentUser, DbSession
 from app.models.loan import Loan
+from app.models.transaction import Transaction
 from app.schemas.common import ArchiveRequest
-from app.schemas.loan import LoanCreate, LoanPaymentCreate, LoanRead, LoanUpdate
+from app.schemas.loan import LoanAdvanceCreate, LoanCreate, LoanPaymentCreate, LoanRead, LoanUpdate
 from app.schemas.transaction import TransactionRead
 from app.services import loans as loans_service
 
@@ -32,6 +34,16 @@ async def update_loan(loan_id: UUID, payload: LoanUpdate, user: CurrentUser, db:
     return await loans_service.update_loan(db, user.id, loan_id, payload)
 
 
+@router.delete("/{loan_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_loan(
+    loan_id: UUID,
+    user: CurrentUser,
+    db: DbSession,
+    mode: loans_service.LoanDeleteMode = loans_service.LoanDeleteMode.DETACH,
+) -> None:
+    await loans_service.delete_loan(db, user.id, loan_id, mode=mode)
+
+
 @router.post("/{loan_id}/archive", response_model=LoanRead)
 async def archive_loan(
     loan_id: UUID, payload: ArchiveRequest, user: CurrentUser, db: DbSession
@@ -46,3 +58,14 @@ async def record_payment(
     loan_id: UUID, payload: LoanPaymentCreate, user: CurrentUser, db: DbSession
 ) -> object:
     return await loans_service.record_payment(db, user.id, loan_id, payload, today=date.today())
+
+
+@router.post(
+    "/{loan_id}/advance-payments",
+    response_model=list[TransactionRead],
+    status_code=status.HTTP_201_CREATED,
+)
+async def advance_payments(
+    loan_id: UUID, payload: LoanAdvanceCreate, user: CurrentUser, db: DbSession
+) -> list[Transaction]:
+    return await loans_service.advance_payments(db, user.id, loan_id, payload, today=date.today())

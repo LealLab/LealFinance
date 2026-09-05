@@ -9,6 +9,7 @@ import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testi
 
 class StubLoanRepository {
   readonly payments: unknown[] = [];
+  readonly advances: unknown[] = [];
   list = () => of([]);
   create = () => of({} as never);
   update = () => of({} as never);
@@ -16,6 +17,10 @@ class StubLoanRepository {
   recordPayment = (id: string, payment: unknown) => {
     this.payments.push({ id, payment });
     return of({ id: 't' } as never);
+  };
+  advancePayments = (id: string, payment: unknown) => {
+    this.advances.push({ id, payment });
+    return of([]);
   };
 }
 
@@ -92,6 +97,54 @@ describe('LoanPaymentModal', () => {
           accountId: 'acc-1',
           description: expect.stringContaining('3/12'),
         },
+      },
+    ]);
+  });
+
+  it('recalculates the suggestion when the payment date changes but keeps the field editable', () => {
+    const { component } = setup();
+    component['form'].controls.date.setValue('2026-01-10');
+    const discounted = component['form'].controls.amount.value;
+    expect(Number(discounted)).toBeLessThan(900);
+    expect(component['form'].controls.amount.disabled).toBe(false);
+
+    component['form'].controls.amount.setValue('850');
+    expect(component['form'].controls.amount.value).toBe('850');
+    component['form'].controls.date.setValue('2026-01-09');
+    expect(component['form'].controls.amount.value).not.toBe('850');
+  });
+
+  it('shows the prorate warning only for a batch mode, not for the next installment', () => {
+    const { fixture, component } = setup();
+    const warning = () => fixture.nativeElement.querySelector('.border-warning\\/30');
+    expect(warning()).toBeNull();
+
+    component['form'].controls.mode.setValue('all');
+    fixture.detectChanges();
+    expect(warning()).not.toBeNull();
+
+    component['form'].controls.mode.setValue('next');
+    fixture.detectChanges();
+    expect(warning()).toBeNull();
+  });
+
+  it('records the last N installments as one advance request with an editable total', () => {
+    const { component, repo } = setup();
+    component['form'].controls.mode.setValue('last');
+    component['form'].controls.count.setValue(2);
+    component['form'].controls.date.setValue('2025-12-01');
+    component['form'].controls.amount.setValue('1500');
+    component['submit']();
+
+    expect(repo.advances).toEqual([
+      {
+        id: 'l-1',
+        payment: expect.objectContaining({
+          mode: 'last',
+          count: 2,
+          amount: '1500',
+          date: '2025-12-01',
+        }),
       },
     ]);
   });
