@@ -36,6 +36,7 @@ from app.models.investment import (
 )
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
+from app.models.open_finance import PluggyAccount, PluggyCredential, PluggyItem
 from app.models.recurring import RecurringRule
 from app.models.transaction import Transaction
 from app.models.user import User
@@ -83,6 +84,9 @@ BACKUP_TABLES = (
 EXCLUDED_USER_OWNED_MODELS = {
     AgentCredential: "agent_credentials",
     MarketDataCredential: "market_data_credentials",
+    PluggyCredential: "pluggy_credentials",
+    PluggyItem: "pluggy_items",
+    PluggyAccount: "pluggy_accounts",
     # Chat history is transient and provider-specific, not restorable financial
     # state; it is never exported or reconstructed.
     AgentConversation: "agent_conversations",
@@ -356,7 +360,10 @@ def _validate_payload(
         omissions = _require_list(payload.get("omissions"))
         if not all(isinstance(item, str) for item in omissions):
             raise _IncompatibleBackup
-        if any(item in {"agent_credentials", "market_data_credentials"} for item in omissions):
+        if any(
+            item in {"agent_credentials", "market_data_credentials", "pluggy_credentials"}
+            for item in omissions
+        ):
             warnings.append(BackupWarning(code="credentials_reconnect"))
 
         data = _require_dict(payload.get("data"))

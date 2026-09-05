@@ -205,6 +205,7 @@
       "loans": "대출",
       "reports": "보고서",
       "exchange": "환율",
+      "openFinance": "Open Finance",
       "settings": "설정",
       "investments": "투자",
       "adminUsers": "사용자 및 초대",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}}개의 환율을 업데이트했습니다.",
       "upToDate": "환율이 이미 최신 상태입니다."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Pluggy로 은행을 연결해 계좌 잔액과 거래를 읽기 전용으로 동기화하세요.",
+    "loading": "Open Finance 데이터를 불러오는 중…",
+    "errors": {
+      "action": "Open Finance 작업을 완료하지 못했습니다. 다시 시도하세요."
+    },
+    "credentials": {
+      "title": "Pluggy 자격 증명",
+      "description": "은행을 연결하려면 Pluggy Client ID와 Client Secret을 추가하세요. 자격 증명은 암호화되어 계정에 저장됩니다.",
+      "configured": "구성됨",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "환경"
+      },
+      "sandbox": "샌드박스",
+      "production": "프로덕션",
+      "actions": {
+        "save": "자격 증명 저장",
+        "unlink": "자격 증명 삭제",
+        "saving": "저장 중…"
+      },
+      "saveError": "자격 증명을 저장하지 못했습니다. 값을 확인하고 다시 시도하세요.",
+      "unlinkError": "자격 증명을 삭제하지 못했습니다. 다시 시도하세요."
+    },
+    "items": {
+      "title": "연결된 금융기관",
+      "empty": {
+        "credentialsTitle": "Pluggy 자격 증명 추가",
+        "credentialsDescription": "은행을 연결하기 전에 위의 Pluggy 자격 증명을 저장하세요.",
+        "title": "은행 연결",
+        "description": "Pluggy를 통해 은행을 연결해 계좌와 거래를 원장으로 가져오세요."
+      }
+    },
+    "accounts": {
+      "title": "계좌",
+      "loading": "계좌를 불러오는 중…",
+      "empty": "이 금융기관에서 계좌를 찾을 수 없습니다.",
+      "syncedBalance": "동기화된 잔액",
+      "ledgerBalance": "원장 잔액",
+      "drift": "잔액 차이",
+      "noLedger": "원장 계좌에 연결되지 않음",
+      "holdings": "보유 자산",
+      "loanSchedule": "대출 일정",
+      "detail": "세부 정보",
+      "value": "값",
+      "noData": "데이터 없음",
+      "lastTransaction": "마지막 거래"
+    },
+    "actions": {
+      "connect": "은행 연결",
+      "sync": "지금 동기화",
+      "disconnect": "연결 해제"
+    },
+    "lastSynced": "마지막 동기화",
+    "disconnect": {
+      "title": "이 금융기관의 연결을 해제할까요?",
+      "message": "가져온 원장 데이터를 유지할지, 이 금융기관에 연결된 모든 항목을 삭제할지 선택하세요.",
+      "keep": "내 데이터 유지",
+      "delete": "모두 삭제"
+    },
+    "connect": {
+      "loading": "연결을 불러오는 중…",
+      "scriptError": "은행 연결 창을 불러오지 못했습니다. 다시 시도하세요.",
+      "error": "이 은행을 연결하지 못했습니다. 다시 시도하세요."
     }
   },
   "settings": {

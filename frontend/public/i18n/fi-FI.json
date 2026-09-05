@@ -205,6 +205,7 @@
       "loans": "Lainat",
       "reports": "Raportit",
       "exchange": "Valuuttakurssit",
+      "openFinance": "Open Finance",
       "settings": "Asetukset",
       "investments": "Sijoitukset",
       "adminUsers": "Käyttäjät ja kutsut",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} kurssia päivitetty.",
       "upToDate": "Kurssit ovat jo ajan tasalla."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Yhdistä pankkisi Pluggy-palveluun ja pidä tilien saldot ja tapahtumat synkronoituina vain luku -tilassa.",
+    "loading": "Ladataan Open Finance -tietoja…",
+    "errors": {
+      "action": "Open Finance -toimintoa ei voitu suorittaa loppuun. Yritä uudelleen."
+    },
+    "credentials": {
+      "title": "Pluggy-tunnistetiedot",
+      "description": "Lisää Pluggy Client ID ja Client Secret yhdistääksesi pankkisi. Tunnistetiedot salataan ja tallennetaan tilillesi.",
+      "configured": "Määritetty",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Ympäristö"
+      },
+      "sandbox": "Hiekkalaatikko",
+      "production": "Tuotanto",
+      "actions": {
+        "save": "Tallenna tunnistetiedot",
+        "unlink": "Poista tunnistetiedot",
+        "saving": "Tallennetaan…"
+      },
+      "saveError": "Tunnistetietoja ei voitu tallentaa. Tarkista arvot ja yritä uudelleen.",
+      "unlinkError": "Tunnistetietoja ei voitu poistaa. Yritä uudelleen."
+    },
+    "items": {
+      "title": "Yhdistetyt laitokset",
+      "empty": {
+        "credentialsTitle": "Lisää Pluggy-tunnistetiedot",
+        "credentialsDescription": "Tallenna Pluggy-tunnistetiedot yllä ennen pankin yhdistämistä.",
+        "title": "Yhdistä pankki",
+        "description": "Yhdistä pankki Pluggy-palvelun kautta ja tuo tilit ja tapahtumat kirjanpitoosi."
+      }
+    },
+    "accounts": {
+      "title": "Tilit",
+      "loading": "Ladataan tilejä…",
+      "empty": "Tälle laitokselle ei löytynyt tilejä.",
+      "syncedBalance": "Synkronoitu saldo",
+      "ledgerBalance": "Kirjanpidon saldo",
+      "drift": "Saldon ero",
+      "noLedger": "Ei yhdistetty kirjanpidon tiliin",
+      "holdings": "Omistukset",
+      "loanSchedule": "Lainan aikataulu",
+      "detail": "Tiedot",
+      "value": "Arvo",
+      "noData": "Ei tietoja",
+      "lastTransaction": "Viimeisin tapahtuma"
+    },
+    "actions": {
+      "connect": "Yhdistä pankki",
+      "sync": "Synkronoi nyt",
+      "disconnect": "Katkaise yhteys"
+    },
+    "lastSynced": "Viimeksi synkronoitu",
+    "disconnect": {
+      "title": "Katkaistaanko tämän laitoksen yhteys?",
+      "message": "Valitse, säilytetäänkö tuodut kirjanpitotiedot vai poistetaanko kaikki tähän laitokseen liittyvä.",
+      "keep": "Säilytä tietoni",
+      "delete": "Poista kaikki"
+    },
+    "connect": {
+      "loading": "Ladataan yhteyttä…",
+      "scriptError": "Pankkiyhteysikkunaa ei voitu ladata. Yritä uudelleen.",
+      "error": "Pankkia ei voitu yhdistää. Yritä uudelleen."
     }
   },
   "settings": {

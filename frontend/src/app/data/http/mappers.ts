@@ -29,6 +29,13 @@ import type {
 } from '../../domain/models/investment';
 import type { ManualRate } from '../../domain/models/manual-rate';
 import type { MarketDataCredentialStatus } from '../../domain/models/market-data-credential';
+import type {
+  PluggyAccount,
+  PluggyConnectToken,
+  PluggyCredentialStatus,
+  PluggyItem,
+  PluggySyncResult,
+} from '../../domain/models/open-finance';
 import type { RecurringRule } from '../../domain/models/recurring';
 import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
 import type {
@@ -100,6 +107,11 @@ import type {
   InstitutionWire,
   ManualRateWire,
   MarketDataCredentialStatusWire,
+  PluggyAccountWire,
+  PluggyCredentialStatusWire,
+  PluggyItemWire,
+  PluggySyncResultWire,
+  ConnectTokenWire,
   RecurringRuleInputWire,
   RecurringRulePatchWire,
   RecurringRuleWire,
@@ -785,6 +797,57 @@ export const mapMarketDataCredentialStatus = (
   provider: wire.provider,
   configured: wire.configured,
   source: wire.source,
+});
+
+export const mapPluggyCredentialStatus = (
+  wire: PluggyCredentialStatusWire,
+): PluggyCredentialStatus => ({
+  configured: wire.configured,
+  environment: wire.environment ?? undefined,
+});
+
+export const mapConnectToken = (wire: ConnectTokenWire): PluggyConnectToken => ({
+  accessToken: wire.access_token,
+});
+
+export const mapPluggyItem = (wire: PluggyItemWire): PluggyItem => ({
+  id: wire.id,
+  externalId: wire.external_id,
+  connectorId: wire.connector_id,
+  connectorName: wire.connector_name,
+  connectorImageUrl: wire.connector_image_url ?? undefined,
+  status: wire.status,
+  executionStatus: wire.execution_status ?? undefined,
+  statusDetail: wire.status_detail ?? undefined,
+  institutionId: wire.institution_id ?? undefined,
+  lastSyncedAt: wire.last_synced_at ?? undefined,
+  lastSyncError: wire.last_sync_error ?? undefined,
+  consentExpiresAt: wire.consent_expires_at ?? undefined,
+});
+
+export const mapPluggyAccount = (wire: PluggyAccountWire): PluggyAccount => ({
+  id: wire.id,
+  pluggyItemId: wire.pluggy_item_id,
+  accountId: wire.account_id ?? undefined,
+  externalId: wire.external_id,
+  type: wire.type,
+  subtype: wire.subtype,
+  name: wire.name,
+  number: wire.number ?? undefined,
+  currency: wire.currency,
+  syncedBalance: Number(wire.synced_balance),
+  creditLimit: wire.credit_limit === null ? undefined : Number(wire.credit_limit),
+  availableCreditLimit:
+    wire.available_credit_limit === null ? undefined : Number(wire.available_credit_limit),
+  raw: wire.raw,
+  lastTransactionDate: wire.last_transaction_date ?? undefined,
+  syncEnabled: wire.sync_enabled,
+});
+
+export const mapPluggySyncResult = (wire: PluggySyncResultWire): PluggySyncResult => ({
+  transactionsImported: wire.transactions_imported,
+  accountsSynced: wire.accounts_synced,
+  error: wire.error ?? undefined,
 });
 
 export const mapAgentProviderStatus = (wire: AgentProviderStatusWire): AgentProviderStatus => ({

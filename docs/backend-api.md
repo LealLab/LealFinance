@@ -252,6 +252,15 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/investments/summary` | user | Summary across wallets in the first wallet's currency. |
 | GET | `/market-data/credentials` | user | Provider status only; never returns API keys. |
 | PUT/DELETE | `/market-data/credentials/{provider}` | user | Link or remove a Twelve Data or brapi API key. |
+| GET | `/open-finance/credentials` | user | Per-user Pluggy credential status; never returns secrets. |
+| PUT | `/open-finance/credentials` | user | Body `{client_id, client_secret, environment}`. Stores encrypted per-user credentials. |
+| DELETE | `/open-finance/credentials` | user | Removes the caller's Pluggy credentials. |
+| POST | `/open-finance/connect-token` | user | Optional body `{item_id}` for a new or existing Pluggy Connect session. |
+| GET/POST | `/open-finance/items` | user | List linked items, or register body `{external_id}` after the widget succeeds. |
+| GET | `/open-finance/items/{id}` | user | Read one connected Pluggy item. |
+| POST | `/open-finance/items/{id}/sync` | user | Refresh one item and import its new account transactions. |
+| DELETE | `/open-finance/items/{id}?mode=keep\|delete` | user | Disconnect an item while keeping or deleting its linked ledger data. |
+| GET | `/open-finance/items/{id}/accounts` | user | Read the provider accounts and their sync snapshots for one item. |
 
 ## Investments
 
@@ -311,6 +320,28 @@ unknown providers are rejected.
 | --- | --- |
 | `market_data_credential.not_found` | 404 |
 | `market_data_credential.provider_unknown` | 422 |
+
+## Open Finance
+
+Open Finance uses per-user Pluggy credentials and read-only connected items.
+`POST /open-finance/connect-token` mints the short-lived token used by the
+frontend's Pluggy Connect widget; the widget's returned `external_id` is then
+registered with `POST /open-finance/items`. Item sync imports account balances
+and transactions, while investment and loan snapshots remain raw read-only
+payloads. Celery beat syncs stale items every six hours; the item sync endpoint
+is also available for the page's **Sync now** action.
+
+`DELETE /open-finance/items/{id}` always removes the remote Pluggy item and its
+provider rows. The `mode` query parameter defaults to `keep`: it detaches the
+linked ledger accounts so their data remains. `mode=delete` sends those ledger
+accounts through the normal account deletion cascade.
+
+| Code | Status |
+| --- | --- |
+| `pluggy.not_configured` | 422 |
+| `pluggy.request_failed` | 422 |
+| `pluggy_item.not_found` | 404 |
+| `pluggy_credential.not_found` | 404 |
 
 ## Transactions
 

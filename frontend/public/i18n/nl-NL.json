@@ -205,6 +205,7 @@
       "loans": "Leningen",
       "reports": "Rapporten",
       "exchange": "Wisselkoersen",
+      "openFinance": "Open Finance",
       "settings": "Instellingen",
       "investments": "Beleggingen",
       "adminUsers": "Gebruikers en uitnodigingen",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} koersen bijgewerkt.",
       "upToDate": "De koersen zijn al up-to-date."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Verbind je banken via Pluggy om saldi en transacties van je rekeningen alleen-lezen gesynchroniseerd te houden.",
+    "loading": "Open Finance-gegevens worden geladen…",
+    "errors": {
+      "action": "Deze Open Finance-actie kon niet worden voltooid. Probeer het opnieuw."
+    },
+    "credentials": {
+      "title": "Pluggy-inloggegevens",
+      "description": "Voeg je Pluggy Client ID en Client Secret toe om je banken te verbinden. De inloggegevens worden versleuteld en in je account opgeslagen.",
+      "configured": "Geconfigureerd",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Omgeving"
+      },
+      "sandbox": "Sandbox",
+      "production": "Productie",
+      "actions": {
+        "save": "Inloggegevens opslaan",
+        "unlink": "Inloggegevens verwijderen",
+        "saving": "Opslaan…"
+      },
+      "saveError": "Deze inloggegevens konden niet worden opgeslagen. Controleer de waarden en probeer het opnieuw.",
+      "unlinkError": "Deze inloggegevens konden niet worden verwijderd. Probeer het opnieuw."
+    },
+    "items": {
+      "title": "Verbonden instellingen",
+      "empty": {
+        "credentialsTitle": "Pluggy-inloggegevens toevoegen",
+        "credentialsDescription": "Sla hierboven je Pluggy-inloggegevens op voordat je een bank verbindt.",
+        "title": "Bank verbinden",
+        "description": "Verbind een bank via Pluggy om rekeningen en transacties naar je grootboek te importeren."
+      }
+    },
+    "accounts": {
+      "title": "Rekeningen",
+      "loading": "Rekeningen worden geladen…",
+      "empty": "Geen rekeningen gevonden voor deze instelling.",
+      "syncedBalance": "Gesynchroniseerd saldo",
+      "ledgerBalance": "Grootboeksaldo",
+      "drift": "Saldoverschil",
+      "noLedger": "Niet gekoppeld aan een grootboekrekening",
+      "holdings": "Bezittingen",
+      "loanSchedule": "Aflossingsschema",
+      "detail": "Detail",
+      "value": "Waarde",
+      "noData": "Geen gegevens",
+      "lastTransaction": "Laatste transactie"
+    },
+    "actions": {
+      "connect": "Bank verbinden",
+      "sync": "Nu synchroniseren",
+      "disconnect": "Verbinding verbreken"
+    },
+    "lastSynced": "Laatst gesynchroniseerd",
+    "disconnect": {
+      "title": "Verbinding met deze instelling verbreken?",
+      "message": "Kies of je de geïmporteerde grootboekgegevens wilt behouden of alles wilt verwijderen dat aan deze instelling is gekoppeld.",
+      "keep": "Mijn gegevens behouden",
+      "delete": "Alles verwijderen"
+    },
+    "connect": {
+      "loading": "Verbinding wordt geladen…",
+      "scriptError": "Het venster voor de bankverbinding kon niet worden geladen. Probeer het opnieuw.",
+      "error": "Deze bank kon niet worden verbonden. Probeer het opnieuw."
     }
   },
   "settings": {

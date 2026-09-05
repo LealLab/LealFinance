@@ -205,6 +205,7 @@
       "loans": "Krediler",
       "reports": "Raporlar",
       "exchange": "Döviz",
+      "openFinance": "Open Finance",
       "settings": "Ayarlar",
       "investments": "Yatırımlar",
       "adminUsers": "Kullanıcılar ve davetler",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} kur güncellendi.",
       "upToDate": "Kurlar zaten güncel."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Banka hesap bakiyelerini ve işlemlerini salt okunur olarak senkronize tutmak için bankalarınızı Pluggy üzerinden bağlayın.",
+    "loading": "Open Finance verileri yükleniyor…",
+    "errors": {
+      "action": "Bu Open Finance işlemi tamamlanamadı. Tekrar deneyin."
+    },
+    "credentials": {
+      "title": "Pluggy kimlik bilgileri",
+      "description": "Bankalarınızı bağlamak için Pluggy Client ID ve Client Secret bilgilerinizi ekleyin. Kimlik bilgileri şifrelenir ve hesabınızda saklanır.",
+      "configured": "Yapılandırıldı",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Ortam"
+      },
+      "sandbox": "Sandbox",
+      "production": "Üretim",
+      "actions": {
+        "save": "Kimlik bilgilerini kaydet",
+        "unlink": "Kimlik bilgilerini kaldır",
+        "saving": "Kaydediliyor…"
+      },
+      "saveError": "Bu kimlik bilgileri kaydedilemedi. Değerleri kontrol edip tekrar deneyin.",
+      "unlinkError": "Bu kimlik bilgileri kaldırılamadı. Tekrar deneyin."
+    },
+    "items": {
+      "title": "Bağlı kurumlar",
+      "empty": {
+        "credentialsTitle": "Pluggy kimlik bilgilerinizi ekleyin",
+        "credentialsDescription": "Banka bağlamadan önce yukarıdaki Pluggy kimlik bilgilerinizi kaydedin.",
+        "title": "Banka bağla",
+        "description": "Hesapları ve işlemleri defterinize aktarmak için Pluggy üzerinden bir banka bağlayın."
+      }
+    },
+    "accounts": {
+      "title": "Hesaplar",
+      "loading": "Hesaplar yükleniyor…",
+      "empty": "Bu kurum için hesap bulunamadı.",
+      "syncedBalance": "Senkronize bakiye",
+      "ledgerBalance": "Defter bakiyesi",
+      "drift": "Bakiye farkı",
+      "noLedger": "Bir defter hesabına bağlı değil",
+      "holdings": "Varlıklar",
+      "loanSchedule": "Kredi ödeme planı",
+      "detail": "Ayrıntı",
+      "value": "Değer",
+      "noData": "Veri yok",
+      "lastTransaction": "Son işlem"
+    },
+    "actions": {
+      "connect": "Banka bağla",
+      "sync": "Şimdi senkronize et",
+      "disconnect": "Bağlantıyı kes"
+    },
+    "lastSynced": "Son senkronizasyon",
+    "disconnect": {
+      "title": "Bu kurumun bağlantısı kesilsin mi?",
+      "message": "İçe aktarılan defter verilerini tutmayı veya bu kurumla bağlantılı her şeyi kaldırmayı seçin.",
+      "keep": "Verilerimi tut",
+      "delete": "Her şeyi kaldır"
+    },
+    "connect": {
+      "loading": "Bağlantı yükleniyor…",
+      "scriptError": "Banka bağlantı penceresi yüklenemedi. Tekrar deneyin.",
+      "error": "Bu banka bağlanamadı. Tekrar deneyin."
     }
   },
   "settings": {

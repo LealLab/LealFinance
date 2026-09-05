@@ -91,6 +91,13 @@ class Transaction(UserOwnedModel):
             unique=True,
             postgresql_where=text("recurring_rule_id IS NOT NULL"),
         ),
+        Index(
+            "ux_transactions_pluggy_transaction_id",
+            "user_id",
+            "pluggy_transaction_id",
+            unique=True,
+            postgresql_where=text("pluggy_transaction_id IS NOT NULL"),
+        ),
     )
 
     type: Mapped[str] = mapped_column(String(20), nullable=False)
@@ -141,6 +148,8 @@ class Transaction(UserOwnedModel):
     # payment reopens the invoice on its own. Same provenance pattern as
     # loan_id / recurring_rule_id.
     card_invoice_close_date: Mapped[date_type | None] = mapped_column(Date)
+
+    pluggy_transaction_id: Mapped[str | None] = mapped_column(String(64))
 
     # A purchase split into equal monthly installments on a credit card.
     # `installment_group_id` ties the rows together; `number`/`count`

@@ -205,6 +205,7 @@
       "loans": "Împrumuturi",
       "reports": "Rapoarte",
       "exchange": "Schimb valutar",
+      "openFinance": "Open Finance",
       "settings": "Setări",
       "investments": "Investiții",
       "adminUsers": "Utilizatori și invitații",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} cursuri actualizate.",
       "upToDate": "Cursurile sunt deja actualizate."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Conectează-ți băncile prin Pluggy pentru a păstra sincronizate, doar pentru citire, soldurile și tranzacțiile conturilor.",
+    "loading": "Se încarcă datele Open Finance…",
+    "errors": {
+      "action": "Această acțiune Open Finance nu a putut fi finalizată. Încearcă din nou."
+    },
+    "credentials": {
+      "title": "Date de acces Pluggy",
+      "description": "Adaugă Client ID și Client Secret Pluggy pentru a-ți conecta băncile. Datele de acces sunt criptate și stocate în contul tău.",
+      "configured": "Configurat",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Mediu"
+      },
+      "sandbox": "Sandbox",
+      "production": "Producție",
+      "actions": {
+        "save": "Salvează datele de acces",
+        "unlink": "Elimină datele de acces",
+        "saving": "Se salvează…"
+      },
+      "saveError": "Datele de acces nu au putut fi salvate. Verifică valorile și încearcă din nou.",
+      "unlinkError": "Datele de acces nu au putut fi eliminate. Încearcă din nou."
+    },
+    "items": {
+      "title": "Instituții conectate",
+      "empty": {
+        "credentialsTitle": "Adaugă datele de acces Pluggy",
+        "credentialsDescription": "Salvează mai întâi datele de acces Pluggy de mai sus înainte de a conecta o bancă.",
+        "title": "Conectează o bancă",
+        "description": "Conectează o bancă prin Pluggy pentru a importa conturi și tranzacții în registrul tău."
+      }
+    },
+    "accounts": {
+      "title": "Conturi",
+      "loading": "Se încarcă conturile…",
+      "empty": "Nu au fost găsite conturi pentru această instituție.",
+      "syncedBalance": "Sold sincronizat",
+      "ledgerBalance": "Soldul registrului",
+      "drift": "Diferență de sold",
+      "noLedger": "Nu este asociat unui cont din registru",
+      "holdings": "Dețineri",
+      "loanSchedule": "Planul împrumutului",
+      "detail": "Detalii",
+      "value": "Valoare",
+      "noData": "Nu există date",
+      "lastTransaction": "Ultima tranzacție"
+    },
+    "actions": {
+      "connect": "Conectează o bancă",
+      "sync": "Sincronizează acum",
+      "disconnect": "Deconectează"
+    },
+    "lastSynced": "Ultima sincronizare",
+    "disconnect": {
+      "title": "Deconectezi această instituție?",
+      "message": "Alege dacă păstrezi datele importate în registru sau elimini tot ce este asociat acestei instituții.",
+      "keep": "Păstrează datele mele",
+      "delete": "Elimină tot"
+    },
+    "connect": {
+      "loading": "Se încarcă conexiunea…",
+      "scriptError": "Fereastra de conectare a băncii nu a putut fi încărcată. Încearcă din nou.",
+      "error": "Banca nu a putut fi conectată. Încearcă din nou."
     }
   },
   "settings": {

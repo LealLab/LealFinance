@@ -205,6 +205,7 @@
       "loans": "Půjčky",
       "reports": "Přehledy",
       "exchange": "Směna měn",
+      "openFinance": "Open Finance",
       "settings": "Nastavení",
       "investments": "Investice",
       "adminUsers": "Uživatelé a pozvánky",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "Aktualizováno kurzů: {{count}}.",
       "upToDate": "Kurzy jsou již aktuální."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Připojte své banky přes Pluggy a udržujte zůstatky účtů a transakce synchronizované v režimu pouze pro čtení.",
+    "loading": "Načítání dat Open Finance…",
+    "errors": {
+      "action": "Tuto akci Open Finance se nepodařilo dokončit. Zkuste to znovu."
+    },
+    "credentials": {
+      "title": "Přihlašovací údaje Pluggy",
+      "description": "Přidejte Client ID a Client Secret Pluggy pro připojení bank. Údaje jsou zašifrované a uložené u vašeho účtu.",
+      "configured": "Nastaveno",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Prostředí"
+      },
+      "sandbox": "Testovací",
+      "production": "Produkce",
+      "actions": {
+        "save": "Uložit přihlašovací údaje",
+        "unlink": "Odebrat přihlašovací údaje",
+        "saving": "Ukládání…"
+      },
+      "saveError": "Tyto přihlašovací údaje se nepodařilo uložit. Zkontrolujte hodnoty a zkuste to znovu.",
+      "unlinkError": "Přihlašovací údaje se nepodařilo odebrat. Zkuste to znovu."
+    },
+    "items": {
+      "title": "Připojené instituce",
+      "empty": {
+        "credentialsTitle": "Přidejte přihlašovací údaje Pluggy",
+        "credentialsDescription": "Před připojením banky nejprve uložte výše uvedené údaje Pluggy.",
+        "title": "Připojit banku",
+        "description": "Připojte banku přes Pluggy a importujte účty a transakce do účetní knihy."
+      }
+    },
+    "accounts": {
+      "title": "Účty",
+      "loading": "Načítání účtů…",
+      "empty": "Pro tuto instituci nebyly nalezeny žádné účty.",
+      "syncedBalance": "Synchronizovaný zůstatek",
+      "ledgerBalance": "Zůstatek v účetní knize",
+      "drift": "Rozdíl zůstatku",
+      "noLedger": "Není propojeno s účtem účetní knihy",
+      "holdings": "Držená aktiva",
+      "loanSchedule": "Splátkový kalendář",
+      "detail": "Detail",
+      "value": "Hodnota",
+      "noData": "Žádná data",
+      "lastTransaction": "Poslední transakce"
+    },
+    "actions": {
+      "connect": "Připojit banku",
+      "sync": "Synchronizovat nyní",
+      "disconnect": "Odpojit"
+    },
+    "lastSynced": "Poslední synchronizace",
+    "disconnect": {
+      "title": "Odpojit tuto instituci?",
+      "message": "Zvolte, zda chcete ponechat importovaná data v účetní knize, nebo odstranit vše propojené s touto institucí.",
+      "keep": "Ponechat moje data",
+      "delete": "Odstranit vše"
+    },
+    "connect": {
+      "loading": "Načítání připojení…",
+      "scriptError": "Okno pro připojení banky se nepodařilo načíst. Zkuste to znovu.",
+      "error": "Banku se nepodařilo připojit. Zkuste to znovu."
     }
   },
   "settings": {

@@ -205,6 +205,7 @@
       "loans": "ローン",
       "reports": "レポート",
       "exchange": "為替",
+      "openFinance": "Open Finance",
       "settings": "設定",
       "investments": "投資",
       "adminUsers": "ユーザーと招待",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} 件のレートを更新しました。",
       "upToDate": "レートはすでに最新です。"
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Pluggyを通じて銀行を接続し、口座残高と取引を読み取り専用で同期します。",
+    "loading": "Open Financeのデータを読み込み中…",
+    "errors": {
+      "action": "このOpen Finance操作を完了できませんでした。もう一度お試しください。"
+    },
+    "credentials": {
+      "title": "Pluggyの認証情報",
+      "description": "PluggyのClient IDとClient Secretを追加して銀行を接続します。認証情報は暗号化され、アカウントに保存されます。",
+      "configured": "設定済み",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "環境"
+      },
+      "sandbox": "サンドボックス",
+      "production": "本番",
+      "actions": {
+        "save": "認証情報を保存",
+        "unlink": "認証情報を削除",
+        "saving": "保存中…"
+      },
+      "saveError": "認証情報を保存できませんでした。値を確認してもう一度お試しください。",
+      "unlinkError": "認証情報を削除できませんでした。もう一度お試しください。"
+    },
+    "items": {
+      "title": "接続済みの金融機関",
+      "empty": {
+        "credentialsTitle": "Pluggyの認証情報を追加",
+        "credentialsDescription": "銀行を接続する前に、上のPluggy認証情報を保存してください。",
+        "title": "銀行を接続",
+        "description": "Pluggyを通じて銀行を接続し、口座と取引を台帳に取り込みます。"
+      }
+    },
+    "accounts": {
+      "title": "口座",
+      "loading": "口座を読み込み中…",
+      "empty": "この金融機関の口座が見つかりません。",
+      "syncedBalance": "同期済み残高",
+      "ledgerBalance": "台帳残高",
+      "drift": "残高差",
+      "noLedger": "台帳口座にリンクされていません",
+      "holdings": "保有資産",
+      "loanSchedule": "ローン返済予定",
+      "detail": "詳細",
+      "value": "値",
+      "noData": "データなし",
+      "lastTransaction": "最後の取引"
+    },
+    "actions": {
+      "connect": "銀行を接続",
+      "sync": "今すぐ同期",
+      "disconnect": "接続を解除"
+    },
+    "lastSynced": "最終同期",
+    "disconnect": {
+      "title": "この金融機関の接続を解除しますか？",
+      "message": "取り込んだ台帳データを残すか、この金融機関に関連するすべてを削除するか選択してください。",
+      "keep": "データを残す",
+      "delete": "すべて削除"
+    },
+    "connect": {
+      "loading": "接続を読み込み中…",
+      "scriptError": "銀行接続ウィンドウを読み込めませんでした。もう一度お試しください。",
+      "error": "この銀行を接続できませんでした。もう一度お試しください。"
     }
   },
   "settings": {

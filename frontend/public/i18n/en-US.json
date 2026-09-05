@@ -204,6 +204,7 @@
       "loans": "Loans",
       "reports": "Reports",
       "exchange": "Exchange",
+      "openFinance": "Open Finance",
       "settings": "Settings",
       "chat": "AI chat",
       "investments": "Investments",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "Updated {{count}} live rates.",
       "upToDate": "Rates are already up to date."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Connect your banks through Pluggy to keep read-only account balances and transactions in sync.",
+    "loading": "Loading Open Finance data…",
+    "errors": {
+      "action": "Couldn't complete that Open Finance action. Try again."
+    },
+    "credentials": {
+      "title": "Pluggy credentials",
+      "description": "Add your Pluggy Client ID and Client Secret to connect your banks. Credentials are encrypted and stored for your account.",
+      "configured": "Configured",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "Environment"
+      },
+      "sandbox": "Sandbox",
+      "production": "Production",
+      "actions": {
+        "save": "Save credentials",
+        "unlink": "Remove credentials",
+        "saving": "Saving…"
+      },
+      "saveError": "Couldn't save these credentials. Check the values and try again.",
+      "unlinkError": "Couldn't remove these credentials. Try again."
+    },
+    "items": {
+      "title": "Connected institutions",
+      "empty": {
+        "credentialsTitle": "Add your Pluggy credentials",
+        "credentialsDescription": "Save your Pluggy credentials above before connecting a bank.",
+        "title": "Connect a bank",
+        "description": "Link a bank through Pluggy to import accounts and transactions into your ledger."
+      }
+    },
+    "accounts": {
+      "title": "Accounts",
+      "loading": "Loading accounts…",
+      "empty": "No accounts found for this institution.",
+      "syncedBalance": "Synced balance",
+      "ledgerBalance": "Ledger balance",
+      "drift": "Balance difference",
+      "noLedger": "Not linked to a ledger account",
+      "holdings": "Holdings",
+      "loanSchedule": "Loan schedule",
+      "detail": "Detail",
+      "value": "Value",
+      "noData": "No data",
+      "lastTransaction": "Last transaction"
+    },
+    "actions": {
+      "connect": "Connect a bank",
+      "sync": "Sync now",
+      "disconnect": "Disconnect"
+    },
+    "lastSynced": "Last synced",
+    "disconnect": {
+      "title": "Disconnect this institution?",
+      "message": "Choose whether to keep the imported ledger data or remove everything connected to this institution.",
+      "keep": "Keep my data",
+      "delete": "Remove everything"
+    },
+    "connect": {
+      "loading": "Loading connection…",
+      "scriptError": "Couldn't load the bank connection window. Try again.",
+      "error": "Couldn't connect this bank. Try again."
     }
   },
   "settings": {

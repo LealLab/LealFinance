@@ -205,6 +205,7 @@
       "loans": "הלוואות",
       "reports": "דוחות",
       "exchange": "המרת מטבע",
+      "openFinance": "Open Finance",
       "settings": "הגדרות",
       "investments": "השקעות",
       "adminUsers": "משתמשים והזמנות",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "עודכנו {{count}} שערים.",
       "upToDate": "השערים כבר מעודכנים."
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "חברו את הבנקים שלכם דרך Pluggy כדי לסנכרן את יתרות החשבונות והעסקאות לקריאה בלבד.",
+    "loading": "טוען נתוני Open Finance…",
+    "errors": {
+      "action": "לא ניתן להשלים את פעולת Open Finance הזו. נסו שוב."
+    },
+    "credentials": {
+      "title": "פרטי התחברות ל-Pluggy",
+      "description": "הוסיפו את ה-Client ID ואת ה-Client Secret של Pluggy כדי לחבר את הבנקים שלכם. פרטי ההתחברות מוצפנים ונשמרים בחשבון שלכם.",
+      "configured": "מוגדר",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "סביבה"
+      },
+      "sandbox": "Sandbox",
+      "production": "ייצור",
+      "actions": {
+        "save": "שמירת פרטי התחברות",
+        "unlink": "הסרת פרטי התחברות",
+        "saving": "שומר…"
+      },
+      "saveError": "לא ניתן לשמור את פרטי ההתחברות האלה. בדקו את הערכים ונסו שוב.",
+      "unlinkError": "לא ניתן להסיר את פרטי ההתחברות האלה. נסו שוב."
+    },
+    "items": {
+      "title": "מוסדות מחוברים",
+      "empty": {
+        "credentialsTitle": "הוסיפו פרטי התחברות ל-Pluggy",
+        "credentialsDescription": "שמרו תחילה את פרטי ההתחברות ל-Pluggy למעלה לפני חיבור בנק.",
+        "title": "חיבור בנק",
+        "description": "חברו בנק דרך Pluggy כדי לייבא חשבונות ועסקאות לספר החשבונות שלכם."
+      }
+    },
+    "accounts": {
+      "title": "חשבונות",
+      "loading": "טוען חשבונות…",
+      "empty": "לא נמצאו חשבונות עבור מוסד זה.",
+      "syncedBalance": "יתרה מסונכרנת",
+      "ledgerBalance": "יתרת ספר החשבונות",
+      "drift": "הפרש ביתרה",
+      "noLedger": "לא מקושר לחשבון בספר החשבונות",
+      "holdings": "החזקות",
+      "loanSchedule": "לוח סילוקין להלוואה",
+      "detail": "פרטים",
+      "value": "ערך",
+      "noData": "אין נתונים",
+      "lastTransaction": "עסקה אחרונה"
+    },
+    "actions": {
+      "connect": "חיבור בנק",
+      "sync": "סנכרון עכשיו",
+      "disconnect": "ניתוק"
+    },
+    "lastSynced": "סנכרון אחרון",
+    "disconnect": {
+      "title": "לנתק את המוסד הזה?",
+      "message": "בחרו אם לשמור את נתוני ספר החשבונות שיובאו או להסיר את כל מה שמקושר למוסד הזה.",
+      "keep": "שמירת הנתונים שלי",
+      "delete": "הסרת הכול"
+    },
+    "connect": {
+      "loading": "טוען חיבור…",
+      "scriptError": "לא ניתן לטעון את חלון חיבור הבנק. נסו שוב.",
+      "error": "לא ניתן לחבר את הבנק הזה. נסו שוב."
     }
   },
   "settings": {

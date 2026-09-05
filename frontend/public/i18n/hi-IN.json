@@ -205,6 +205,7 @@
       "loans": "ऋण",
       "reports": "रिपोर्ट",
       "exchange": "मुद्रा विनिमय",
+      "openFinance": "Open Finance",
       "settings": "सेटिंग्स",
       "investments": "निवेश",
       "adminUsers": "उपयोगकर्ता और आमंत्रण",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "{{count}} दरें अपडेट की गईं।",
       "upToDate": "दरें पहले से ही अपडेट हैं।"
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "Pluggy के ज़रिए अपने बैंकों को जोड़ें और खातों के शेष और लेन-देन को केवल-पठन रूप में सिंक रखें।",
+    "loading": "Open Finance डेटा लोड हो रहा है…",
+    "errors": {
+      "action": "यह Open Finance कार्रवाई पूरी नहीं हो सकी। फिर कोशिश करें।"
+    },
+    "credentials": {
+      "title": "Pluggy क्रेडेंशियल",
+      "description": "अपने बैंक जोड़ने के लिए Pluggy Client ID और Client Secret जोड़ें। क्रेडेंशियल एन्क्रिप्ट होकर आपके खाते में सुरक्षित रखे जाते हैं।",
+      "configured": "कॉन्फ़िगर किया गया",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "पर्यावरण"
+      },
+      "sandbox": "सैंडबॉक्स",
+      "production": "प्रोडक्शन",
+      "actions": {
+        "save": "क्रेडेंशियल सहेजें",
+        "unlink": "क्रेडेंशियल हटाएँ",
+        "saving": "सहेजा जा रहा है…"
+      },
+      "saveError": "ये क्रेडेंशियल सहेजे नहीं जा सके। मान जाँचकर फिर कोशिश करें।",
+      "unlinkError": "ये क्रेडेंशियल हटाए नहीं जा सके। फिर कोशिश करें।"
+    },
+    "items": {
+      "title": "जुड़ी हुई संस्थाएँ",
+      "empty": {
+        "credentialsTitle": "अपने Pluggy क्रेडेंशियल जोड़ें",
+        "credentialsDescription": "बैंक जोड़ने से पहले ऊपर दिए गए Pluggy क्रेडेंशियल सहेजें।",
+        "title": "बैंक जोड़ें",
+        "description": "Pluggy के ज़रिए बैंक जोड़कर खातों और लेन-देन को अपने लेज़र में आयात करें।"
+      }
+    },
+    "accounts": {
+      "title": "खाते",
+      "loading": "खाते लोड हो रहे हैं…",
+      "empty": "इस संस्था के लिए कोई खाता नहीं मिला।",
+      "syncedBalance": "सिंक किया गया शेष",
+      "ledgerBalance": "लेज़र शेष",
+      "drift": "शेष का अंतर",
+      "noLedger": "किसी लेज़र खाते से जुड़ा नहीं है",
+      "holdings": "होल्डिंग्स",
+      "loanSchedule": "ऋण अनुसूची",
+      "detail": "विवरण",
+      "value": "मूल्य",
+      "noData": "कोई डेटा नहीं",
+      "lastTransaction": "अंतिम लेन-देन"
+    },
+    "actions": {
+      "connect": "बैंक जोड़ें",
+      "sync": "अभी सिंक करें",
+      "disconnect": "डिस्कनेक्ट करें"
+    },
+    "lastSynced": "अंतिम सिंक",
+    "disconnect": {
+      "title": "इस संस्था को डिस्कनेक्ट करें?",
+      "message": "चुनें कि आयात किए गए लेज़र डेटा को रखना है या इस संस्था से जुड़ी हर चीज़ हटानी है।",
+      "keep": "मेरा डेटा रखें",
+      "delete": "सब कुछ हटाएँ"
+    },
+    "connect": {
+      "loading": "कनेक्शन लोड हो रहा है…",
+      "scriptError": "बैंक कनेक्शन विंडो लोड नहीं हो सकी। फिर कोशिश करें।",
+      "error": "यह बैंक कनेक्ट नहीं हो सका। फिर कोशिश करें।"
     }
   },
   "settings": {

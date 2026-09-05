@@ -20,6 +20,7 @@ celery_app = Celery(
         "app.workers.tasks.recurring",
         "app.workers.tasks.loans",
         "app.workers.tasks.cards",
+        "app.workers.tasks.open_finance",
     ],
 )
 
@@ -55,6 +56,11 @@ celery_app.conf.beat_schedule = {
     "refresh-exchange-rates": {
         "task": "app.workers.tasks.rates.refresh_exchange_rates",
         "schedule": crontab(minute=0, hour="*/6"),
+    },
+    # Offset from exchange-rate refresh to avoid contention.
+    "sync-open-finance-items": {
+        "task": "app.workers.tasks.open_finance.sync_open_finance_items",
+        "schedule": crontab(minute=15, hour="*/6"),
     },
     # Nightly, after the recurring post: re-resolve conversions frozen at
     # the 1:1 fallback from before a provider key existed. Bounded per run.

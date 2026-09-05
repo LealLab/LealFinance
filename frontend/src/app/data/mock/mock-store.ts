@@ -27,8 +27,16 @@ import {
   MarketDataCredentialStatus,
   MarketDataProvider,
 } from '../../domain/models/market-data-credential';
+import {
+  PluggyAccount,
+  PluggyCredentialStatus,
+  PluggyEnvironment,
+  PluggyItem,
+  PluggySyncResult,
+} from '../../domain/models/open-finance';
 import { RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
+import type { OpenFinanceDisconnectMode } from '../open-finance.repository';
 import { createFixtures } from './fixtures';
 import { findEntity, removeEntity, reorderEntities, updateEntity } from './entity-list.utils';
 
@@ -41,6 +49,89 @@ function notFound(entity: string, id: string): never {
 }
 
 const MARKET_DATA_PROVIDERS: MarketDataProvider[] = ['twelve_data', 'brapi'];
+
+const MOCK_OPEN_FINANCE_ITEMS: PluggyItem[] = [
+  {
+    id: 'pluggy-item-aurora',
+    externalId: 'sandbox-aurora',
+    connectorId: 101,
+    connectorName: 'Banco Aurora',
+    status: 'UPDATED',
+    executionStatus: 'SUCCESS',
+    lastSyncedAt: '2026-09-04T12:30:00Z',
+    consentExpiresAt: '2027-09-04T12:30:00Z',
+  },
+  {
+    id: 'pluggy-item-horizonte',
+    externalId: 'sandbox-horizonte',
+    connectorId: 202,
+    connectorName: 'Horizonte Investimentos',
+    status: 'UPDATED',
+    executionStatus: 'SUCCESS',
+    lastSyncedAt: '2026-09-03T16:00:00Z',
+    consentExpiresAt: '2027-09-03T16:00:00Z',
+  },
+];
+
+const MOCK_OPEN_FINANCE_LEDGER_ACCOUNTS: Account[] = [
+  {
+    id: 'pluggy-ledger-checking',
+    name: 'Banco Aurora · Conta corrente',
+    type: 'checking',
+    currency: 'BRL',
+    openingBalance: '5840.25',
+    archived: true,
+  },
+  {
+    id: 'pluggy-ledger-investment',
+    name: 'Horizonte · Investimentos',
+    type: 'investment',
+    currency: 'EUR',
+    openingBalance: '42350.1',
+    archived: true,
+  },
+];
+
+const MOCK_OPEN_FINANCE_ACCOUNTS: PluggyAccount[] = [
+  {
+    id: 'pluggy-account-aurora',
+    pluggyItemId: 'pluggy-item-aurora',
+    accountId: 'pluggy-ledger-checking',
+    externalId: 'sandbox-aurora-checking',
+    type: 'BANK',
+    subtype: 'CHECKING',
+    name: 'Conta corrente',
+    number: '**** 1234',
+    currency: 'BRL',
+    syncedBalance: 5840.25,
+    availableCreditLimit: undefined,
+    raw: {},
+    lastTransactionDate: '2026-09-04',
+    syncEnabled: true,
+  },
+  {
+    id: 'pluggy-account-horizonte',
+    pluggyItemId: 'pluggy-item-horizonte',
+    accountId: 'pluggy-ledger-investment',
+    externalId: 'sandbox-horizonte-investment',
+    type: 'INVESTMENT',
+    subtype: 'BROKERAGE',
+    name: 'Carteira de investimentos',
+    number: '**** 9087',
+    currency: 'EUR',
+    syncedBalance: 42350.1,
+    raw: {
+      investments: {
+        results: [
+          { name: 'Tesouro Selic', quantity: 12, value: 25350.1 },
+          { name: 'ETF Brasil', quantity: 40, value: 17000 },
+        ],
+      },
+    },
+    lastTransactionDate: '2026-09-03',
+    syncEnabled: true,
+  },
+];
 
 /**
  * The single in-memory source of truth behind every Mock*Repository - see
@@ -72,6 +163,12 @@ export class MockStore {
   private readonly institutionsSignal = signal<Institution[]>([]);
   private readonly manualRatesSignal = signal<ManualRate[]>([]);
   private readonly marketDataLinkedProvidersSignal = signal<MarketDataProvider[]>([]);
+  private readonly openFinanceCredentialSignal = signal<PluggyCredentialStatus>({
+    configured: true,
+    environment: 'sandbox',
+  });
+  private readonly openFinanceItemsSignal = signal<PluggyItem[]>([]);
+  private readonly openFinanceAccountsSignal = signal<PluggyAccount[]>([]);
 
   readonly accounts = this.accountsSignal.asReadonly();
   readonly transactions = this.transactionsSignal.asReadonly();
@@ -90,6 +187,9 @@ export class MockStore {
   readonly institutions = this.institutionsSignal.asReadonly();
   readonly manualRates = this.manualRatesSignal.asReadonly();
   readonly marketDataLinkedProviders = this.marketDataLinkedProvidersSignal.asReadonly();
+  readonly openFinanceCredential = this.openFinanceCredentialSignal.asReadonly();
+  readonly openFinanceItemsState = this.openFinanceItemsSignal.asReadonly();
+  readonly openFinanceAccountsState = this.openFinanceAccountsSignal.asReadonly();
 
   constructor() {
     this.reset();
@@ -97,7 +197,7 @@ export class MockStore {
 
   reset(): void {
     const fixtures = createFixtures();
-    this.accountsSignal.set(fixtures.accounts);
+    this.accountsSignal.set([...fixtures.accounts, ...MOCK_OPEN_FINANCE_LEDGER_ACCOUNTS]);
     this.transactionsSignal.set(fixtures.transactions);
     this.categoryGroupsSignal.set(fixtures.categoryGroups);
     this.categoriesSignal.set(fixtures.categories);
@@ -114,6 +214,11 @@ export class MockStore {
     this.institutionsSignal.set(fixtures.institutions);
     this.manualRatesSignal.set(fixtures.manualRates);
     this.marketDataLinkedProvidersSignal.set([]);
+    this.openFinanceCredentialSignal.set({ configured: true, environment: 'sandbox' });
+    this.openFinanceItemsSignal.set(MOCK_OPEN_FINANCE_ITEMS.map((item) => ({ ...item })));
+    this.openFinanceAccountsSignal.set(
+      MOCK_OPEN_FINANCE_ACCOUNTS.map((account) => ({ ...account, raw: { ...account.raw } })),
+    );
   }
 
   // --- Accounts ---------------------------------------------------------
@@ -681,5 +786,93 @@ export class MockStore {
     this.marketDataLinkedProvidersSignal.update((providers) =>
       providers.filter((current) => current !== provider),
     );
+  }
+
+  openFinanceCredentialStatus(): PluggyCredentialStatus {
+    return this.openFinanceCredentialSignal();
+  }
+
+  linkOpenFinanceCredentials(environment: PluggyEnvironment): PluggyCredentialStatus {
+    const status = { configured: true, environment } satisfies PluggyCredentialStatus;
+    this.openFinanceCredentialSignal.set(status);
+    return status;
+  }
+
+  unlinkOpenFinanceCredentials(): void {
+    this.openFinanceCredentialSignal.set({ configured: false });
+  }
+
+  createOpenFinanceConnectToken(itemId?: string): { accessToken: string } {
+    void itemId;
+    return { accessToken: 'mock-connect-token' };
+  }
+
+  openFinanceItems(): PluggyItem[] {
+    return this.openFinanceItemsSignal();
+  }
+
+  registerOpenFinanceItem(externalId: string): PluggyItem {
+    const existing = this.openFinanceItemsSignal().find((item) => item.externalId === externalId);
+    if (existing) return existing;
+    const item: PluggyItem = {
+      id: newId(),
+      externalId,
+      connectorId: 999,
+      connectorName: 'Novo banco conectado',
+      status: 'UPDATED',
+      executionStatus: 'SUCCESS',
+      lastSyncedAt: new Date().toISOString(),
+    };
+    this.openFinanceItemsSignal.update((items) => [...items, item]);
+    return item;
+  }
+
+  openFinanceAccounts(itemId: string): PluggyAccount[] {
+    return this.openFinanceAccountsSignal().filter((account) => account.pluggyItemId === itemId);
+  }
+
+  disconnectOpenFinanceItem(itemId: string, mode: OpenFinanceDisconnectMode): void {
+    if (!this.openFinanceItemsSignal().some((item) => item.id === itemId)) {
+      notFound('Pluggy item', itemId);
+    }
+    const accountIds = new Set(
+      this.openFinanceAccountsSignal()
+        .filter((account) => account.pluggyItemId === itemId)
+        .map((account) => account.accountId)
+        .filter((id): id is string => id !== undefined),
+    );
+    if (mode === 'delete') {
+      this.transactionsSignal.update((transactions) =>
+        transactions.filter(
+          (transaction) =>
+            !accountIds.has(transaction.accountId) &&
+            !accountIds.has(transaction.toAccountId ?? ''),
+          ),
+      );
+      this.accountsSignal.update((accounts) =>
+        accounts.filter((account) => !accountIds.has(account.id)),
+      );
+    }
+    this.openFinanceAccountsSignal.update((accounts) =>
+      accounts.filter((account) => account.pluggyItemId !== itemId),
+    );
+    this.openFinanceItemsSignal.update((items) => items.filter((item) => item.id !== itemId));
+  }
+
+  syncOpenFinanceItem(itemId: string): PluggySyncResult {
+    if (!this.openFinanceItemsSignal().some((item) => item.id === itemId)) {
+      notFound('Pluggy item', itemId);
+    }
+    this.openFinanceItemsSignal.update((items) =>
+      items.map((item) =>
+        item.id === itemId
+          ? { ...item, status: 'UPDATED', executionStatus: 'SUCCESS', lastSyncedAt: new Date().toISOString() }
+          : item,
+      ),
+    );
+    return {
+      transactionsImported: 0,
+      accountsSynced: this.openFinanceAccounts(itemId).length,
+    };
   }
 }

@@ -21,6 +21,7 @@ from app.api.v1 import (
     manual_rates,
     market_data,
     meta,
+    open_finance,
     recurring_rules,
     transactions,
 )
@@ -47,3 +48,4 @@ api_v1_router.include_router(goals.router)
 api_v1_router.include_router(loans.router)
 api_v1_router.include_router(investments.router)
 api_v1_router.include_router(market_data.router)
+api_v1_router.include_router(open_finance.router)

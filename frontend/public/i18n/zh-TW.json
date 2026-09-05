@@ -205,6 +205,7 @@
       "loans": "貸款",
       "reports": "報表",
       "exchange": "匯兌",
+      "openFinance": "Open Finance",
       "settings": "設定",
       "investments": "投資",
       "adminUsers": "使用者與邀請",
@@ -1418,6 +1419,74 @@
     "refresh": {
       "updated": "已更新 {{count}} 個匯率。",
       "upToDate": "匯率已是最新。"
+    }
+  },
+  "openFinance": {
+    "title": "Open Finance",
+    "description": "透過 Pluggy 連接銀行，讓帳戶餘額與交易以唯讀方式保持同步。",
+    "loading": "正在載入開放金融資料…",
+    "errors": {
+      "action": "無法完成這項開放金融操作，請再試一次。"
+    },
+    "credentials": {
+      "title": "Pluggy 憑證",
+      "description": "新增 Pluggy Client ID 與 Client Secret 以連接銀行。憑證會加密後儲存在你的帳戶中。",
+      "configured": "已設定",
+      "fields": {
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "environment": "環境"
+      },
+      "sandbox": "沙盒",
+      "production": "正式環境",
+      "actions": {
+        "save": "儲存憑證",
+        "unlink": "移除憑證",
+        "saving": "儲存中…"
+      },
+      "saveError": "無法儲存這些憑證，請檢查內容後再試一次。",
+      "unlinkError": "無法移除這些憑證，請再試一次。"
+    },
+    "items": {
+      "title": "已連接的機構",
+      "empty": {
+        "credentialsTitle": "新增 Pluggy 憑證",
+        "credentialsDescription": "連接銀行前，請先儲存上方的 Pluggy 憑證。",
+        "title": "連接銀行",
+        "description": "透過 Pluggy 連接銀行，將帳戶與交易匯入你的帳本。"
+      }
+    },
+    "accounts": {
+      "title": "帳戶",
+      "loading": "正在載入帳戶…",
+      "empty": "找不到此機構的帳戶。",
+      "syncedBalance": "已同步餘額",
+      "ledgerBalance": "帳本餘額",
+      "drift": "餘額差異",
+      "noLedger": "未連結至帳本帳戶",
+      "holdings": "持有資產",
+      "loanSchedule": "貸款期程",
+      "detail": "詳細資料",
+      "value": "數值",
+      "noData": "沒有資料",
+      "lastTransaction": "最近交易"
+    },
+    "actions": {
+      "connect": "連接銀行",
+      "sync": "立即同步",
+      "disconnect": "中斷連接"
+    },
+    "lastSynced": "上次同步",
+    "disconnect": {
+      "title": "要中斷此機構的連接嗎？",
+      "message": "選擇保留已匯入的帳本資料，或刪除與此機構相關的所有內容。",
+      "keep": "保留我的資料",
+      "delete": "全部刪除"
+    },
+    "connect": {
+      "loading": "正在載入連接…",
+      "scriptError": "無法載入銀行連接視窗，請再試一次。",
+      "error": "無法連接此銀行，請再試一次。"
     }
   },
   "settings": {
