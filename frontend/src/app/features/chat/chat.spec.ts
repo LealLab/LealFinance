@@ -368,7 +368,7 @@ describe('Chat', () => {
 
     chat['setError'](new ApiError(422, 'agents.not_configured', {}));
     expect(chat['errorKey']()).toBe('chat.errors.notConfigured');
-    chat['setError']({ code: 'agents.loop_exhausted' });
+    chat['setError']({ code: 'agents.tool_loop_exhausted' });
     expect(chat['errorKey']()).toBe('chat.errors.loopExhausted');
   });
 

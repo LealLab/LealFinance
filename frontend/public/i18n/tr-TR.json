@@ -48,6 +48,10 @@
       "saving": "Kaydediliyor…",
       "previousMonth": "Önceki ay",
       "nextMonth": "Sonraki ay"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Renk doygunluğu ve parlaklığı",
+      "hue": "Renk tonu"
     }
   },
   "icons": {
@@ -518,7 +522,7 @@
       "group": "Grupla",
       "date": "Tarih",
       "amount": "Tutar",
-      "amountMin": "Minimum",
+      "amountMin": "En az",
       "amountMax": "Maksimum",
       "any": "Herhangi",
       "back": "Geri",
@@ -1725,7 +1729,7 @@
       }
     },
     "model": {
-      "label": "Model",
+      "label": "Yapay zekâ modeli",
       "recommendedOption": "{{model}} (önerilen)"
     },
     "modelError": "Model değiştirilemedi. Tekrar deneyin.",
@@ -1762,7 +1766,9 @@
       "peer_admin": "Yöneticiler başka bir yöneticinin rolünü veya durumunu değiştiremez.",
       "totp_required": "Kimlik doğrulama uygulamanızdaki kodu girin.",
       "totp_invalid": "Bu kod geçerli değil. Tekrar deneyin.",
-      "totp_locked": "Çok fazla hatalı kod. 15 dakika sonra tekrar deneyin."
+      "totp_locked": "Çok fazla hatalı kod. 15 dakika sonra tekrar deneyin.",
+      "account_locked": "Çok fazla hatalı parola. 15 dakika sonra tekrar deneyin.",
+      "session_invalid": "Oturumunuzun süresi doldu. Tekrar giriş yapın."
     },
     "invitation": {
       "not_found": "Davet geçersiz.",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "Bu kural paketi bulunamadı."
     },
-    "rule_import": {
-      "invalid_format": "Bu dosya geçerli bir LealFinance kural dışa aktarma dosyası değil."
-    },
     "totp": {
       "already_enabled": "İki faktörlü kimlik doğrulama zaten etkin.",
       "not_enabled": "İki faktörlü kimlik doğrulama etkin değil."
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "Bu toplam tutar, seçilen taksitlere dağıtılamayacak kadar küçük.",
       "advance_count_exceeds_remaining": "O kadar açık taksit kalmadı.",
       "installment_count_below_paid": "Taksit sayısı, zaten ödenmiş olan sayıdan az olamaz."
+    },
+    "account": {
+      "currency_in_use": "Bu hesapta zaten işlemler var, bu nedenle para birimi değiştirilemez."
+    },
+    "transaction": {
+      "transfer_same_account": "Bir transfer için iki farklı hesap gerekir.",
+      "transfer_requires_destination": "Bu transferin gönderileceği hesabı seçin.",
+      "category_required": "Bu işlem için bir kategori seçin.",
+      "category_kind_mismatch": "Bu kategori, işlemin türüyle eşleşmiyor.",
+      "conversion_required": "Bu işlem farklı para birimleri içeriyor, bu nedenle dönüştürülmüş bir tutar gerekiyor."
+    },
+    "currency": {
+      "not_found": "Bu para birimi kullanılamıyor.",
+      "inactive": "Bu para birimi artık etkin değil."
     }
   }
 }

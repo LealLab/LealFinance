@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { ManualRateRepository } from '../../data/manual-rate.repository';
 import { todayIso } from '../../domain/calc/dates';
 import { ManualRate } from '../../domain/models/manual-rate';
@@ -111,9 +112,9 @@ export class ManualRateFormModal {
         this.open.set(false);
         this.saved.emit(rate);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('exchange.manualRates.form.saveError');
+        this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'exchange.manualRates.form.saveError');
       },
     });
   }

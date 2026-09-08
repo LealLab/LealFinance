@@ -385,7 +385,7 @@ export class Chat {
       {
         'agents.not_configured': 'chat.errors.notConfigured',
         'agents.provider_unavailable': 'chat.errors.providerUnavailable',
-        'agents.loop_exhausted': 'chat.errors.loopExhausted',
+        'agents.tool_loop_exhausted': 'chat.errors.loopExhausted',
       }[code] ?? 'chat.errors.generic'
     );
   }

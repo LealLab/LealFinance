@@ -48,6 +48,10 @@
       "saving": "Enregistrement…",
       "previousMonth": "Mois précédent",
       "nextMonth": "Mois suivant"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Saturation et luminosité de la couleur",
+      "hue": "Teinte de la couleur"
     }
   },
   "icons": {
@@ -518,8 +522,8 @@
       "group": "Grouper",
       "date": "Date",
       "amount": "Montant",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
+      "amountMin": "Montant minimal",
+      "amountMax": "Montant maximal",
       "any": "Toutes",
       "back": "Retour",
       "dateRange": "Du {{from}} au {{to}}",
@@ -1762,7 +1766,9 @@
       "peer_admin": "Les administrateurs ne peuvent pas modifier le rôle ou le statut d'un autre administrateur.",
       "totp_required": "Saisissez le code de votre application d'authentification.",
       "totp_invalid": "Ce code n'est pas valide. Réessayez.",
-      "totp_locked": "Trop de codes incorrects. Réessayez dans 15 minutes."
+      "totp_locked": "Trop de codes incorrects. Réessayez dans 15 minutes.",
+      "account_locked": "Trop de mots de passe incorrects. Réessayez dans 15 minutes.",
+      "session_invalid": "Votre session a expiré. Connectez-vous à nouveau."
     },
     "invitation": {
       "not_found": "L’invitation est invalide.",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "Ce pack de règles est introuvable."
     },
-    "rule_import": {
-      "invalid_format": "Ce fichier ne constitue pas un export valide de règles LealFinance."
-    },
     "totp": {
       "already_enabled": "L'authentification à deux facteurs est déjà activée.",
       "not_enabled": "L'authentification à deux facteurs n'est pas activée."
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "Ce montant total est trop faible pour être réparti entre les échéances sélectionnées.",
       "advance_count_exceeds_remaining": "Il ne reste pas autant d'échéances en attente.",
       "installment_count_below_paid": "Le nombre d'échéances ne peut pas être inférieur au nombre déjà payé."
+    },
+    "account": {
+      "currency_in_use": "Ce compte contient déjà des transactions ; sa devise ne peut donc pas être modifiée."
+    },
+    "transaction": {
+      "transfer_same_account": "Un transfert nécessite deux comptes différents.",
+      "transfer_requires_destination": "Choisissez le compte destinataire de ce transfert.",
+      "category_required": "Choisissez une catégorie pour cette transaction.",
+      "category_kind_mismatch": "Cette catégorie ne correspond pas au type de cette transaction.",
+      "conversion_required": "Cette transaction utilise plusieurs devises et nécessite donc un montant converti."
+    },
+    "currency": {
+      "not_found": "Cette devise n'est pas disponible.",
+      "inactive": "Cette devise n'est plus active."
     }
   }
 }

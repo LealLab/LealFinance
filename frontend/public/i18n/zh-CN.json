@@ -48,6 +48,10 @@
       "saving": "保存中…",
       "previousMonth": "上个月",
       "nextMonth": "下个月"
+    },
+    "colorPicker": {
+      "saturationBrightness": "颜色的饱和度和亮度",
+      "hue": "颜色色相"
     }
   },
   "icons": {
@@ -1762,7 +1766,9 @@
       "peer_admin": "管理员不能更改其他管理员的角色或状态。",
       "totp_required": "请输入身份验证器应用中的验证码。",
       "totp_invalid": "验证码无效，请重试。",
-      "totp_locked": "错误次数过多，请在 15 分钟后重试。"
+      "totp_locked": "错误次数过多，请在 15 分钟后重试。",
+      "account_locked": "密码错误次数过多。请在 15 分钟后重试。",
+      "session_invalid": "您的会话已过期。请重新登录。"
     },
     "invitation": {
       "not_found": "邀请无效。",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "找不到此规则包。"
     },
-    "rule_import": {
-      "invalid_format": "此文件不是有效的 LealFinance 规则导出文件。"
-    },
     "totp": {
       "already_enabled": "双重验证已经启用。",
       "not_enabled": "尚未启用双重验证。"
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "该总金额太小，无法分摊到所选分期。",
       "advance_count_exceeds_remaining": "没有那么多未还清的分期了。",
       "installment_count_below_paid": "分期数不能少于已还款的期数。"
+    },
+    "account": {
+      "currency_in_use": "此账户已有交易，因此无法更改其货币。"
+    },
+    "transaction": {
+      "transfer_same_account": "转账需要使用两个不同的账户。",
+      "transfer_requires_destination": "请选择此转账的目标账户。",
+      "category_required": "请选择此交易的分类。",
+      "category_kind_mismatch": "该分类与此交易的类型不匹配。",
+      "conversion_required": "此交易涉及不同货币，因此需要填写换算后的金额。"
+    },
+    "currency": {
+      "not_found": "该货币不可用。",
+      "inactive": "该货币已停用。"
     }
   }
 }

@@ -209,11 +209,7 @@ export class LoanFormModal {
       error: (error: unknown) => {
         this.saving.set(false);
         const code = error instanceof ApiError ? error.code : undefined;
-        this.saveErrorKey.set(
-          code === 'loan.installment_count_below_paid'
-            ? `errors.${code}`
-            : 'loans.form.saveError',
-        );
+        this.saveErrorKey.set(code ? `errors.${code}` : 'loans.form.saveError');
       },
     });
   }

@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
@@ -137,9 +138,9 @@ export class RecurringRuleFormModal {
         this.open.set(false);
         this.saved.emit();
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('transactions.recurring.form.saveError');
+        this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'transactions.recurring.form.saveError');
       }
     });
   }

@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { GoalRepository } from '../../data/goal.repository';
@@ -96,9 +97,9 @@ export class GoalFormModal {
         this.open.set(false);
         this.saved.emit(goal);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('goals.form.saveError');
+        this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'goals.form.saveError');
       },
     });
   }

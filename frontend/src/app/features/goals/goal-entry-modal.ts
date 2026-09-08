@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { TransactionRepository } from '../../data/transaction.repository';
 import { todayIso } from '../../domain/calc/dates';
 import { Account } from '../../domain/models/account';
@@ -111,9 +112,9 @@ export class GoalEntryModal {
         this.open.set(false);
         this.saved.emit();
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('goals.entries.saveError');
+        this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'goals.entries.saveError');
       },
     });
   }

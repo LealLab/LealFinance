@@ -115,9 +115,9 @@ export class InstitutionFormModal {
         this.open.set(false);
         this.saved.emit(institution);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('institutions.form.saveError');
+        this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'institutions.form.saveError');
       }
     });
   }
@@ -148,9 +148,11 @@ export class InstitutionFormModal {
       error: (error: unknown) => {
         this.deleting.set(false);
         this.deleteErrorKey.set(
-          error instanceof ApiError && error.code === 'institution.has_accounts'
-            ? 'institutions.form.deleteInUseError'
-            : 'institutions.form.saveError'
+          error instanceof ApiError
+            ? error.code === 'institution.has_accounts'
+              ? 'institutions.form.deleteInUseError'
+              : `errors.${error.code}`
+            : 'institutions.form.saveError',
         );
       },
     });

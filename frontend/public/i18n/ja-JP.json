@@ -48,6 +48,10 @@
       "saving": "保存中…",
       "previousMonth": "前月",
       "nextMonth": "次月"
+    },
+    "colorPicker": {
+      "saturationBrightness": "色の彩度と明度",
+      "hue": "色相"
     }
   },
   "icons": {
@@ -1762,7 +1766,9 @@
       "peer_admin": "管理者は他の管理者のロールやステータスを変更できません。",
       "totp_required": "認証アプリのコードを入力してください。",
       "totp_invalid": "このコードは無効です。もう一度お試しください。",
-      "totp_locked": "コードの誤りが多すぎます。15 分後にお試しください。"
+      "totp_locked": "コードの誤りが多すぎます。15 分後にお試しください。",
+      "account_locked": "パスワードの入力ミスが多すぎます。15 分後にもう一度お試しください。",
+      "session_invalid": "セッションの有効期限が切れました。もう一度サインインしてください。"
     },
     "invitation": {
       "not_found": "招待が無効です。",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "このルールパックが見つかりません。"
     },
-    "rule_import": {
-      "invalid_format": "このファイルは有効なLealFinanceルールのエクスポートではありません。"
-    },
     "totp": {
       "already_enabled": "2 要素認証はすでに有効です。",
       "not_enabled": "2 要素認証は有効になっていません。"
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "この合計金額は、選択した返済回に配分するには少なすぎます。",
       "advance_count_exceeds_remaining": "そんなに多くの未払いの返済回は残っていません。",
       "installment_count_below_paid": "返済回数は、すでに支払い済みの回数より少なくできません。"
+    },
+    "account": {
+      "currency_in_use": "この口座にはすでに取引があるため、通貨を変更できません。"
+    },
+    "transaction": {
+      "transfer_same_account": "振替には異なる 2 つの口座が必要です。",
+      "transfer_requires_destination": "この振替先の口座を選択してください。",
+      "category_required": "この取引のカテゴリを選択してください。",
+      "category_kind_mismatch": "そのカテゴリはこの取引の種類に一致しません。",
+      "conversion_required": "この取引は複数の通貨にまたがるため、換算後の金額が必要です。"
+    },
+    "currency": {
+      "not_found": "その通貨は利用できません。",
+      "inactive": "その通貨は有効ではなくなりました。"
     }
   }
 }

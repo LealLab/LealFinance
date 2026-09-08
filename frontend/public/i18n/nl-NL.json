@@ -48,6 +48,10 @@
       "saving": "Opslaan…",
       "previousMonth": "Vorige maand",
       "nextMonth": "Volgende maand"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Kleurverzadiging en helderheid",
+      "hue": "Kleurtoon"
     }
   },
   "icons": {
@@ -518,8 +522,8 @@
       "group": "Groeperen",
       "date": "Datum",
       "amount": "Bedrag",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
+      "amountMin": "Minimumsbedrag",
+      "amountMax": "Maximumbedrag",
       "any": "Elke",
       "back": "Terug",
       "dateRange": "Van {{from}} t/m {{to}}",
@@ -1725,7 +1729,7 @@
       }
     },
     "model": {
-      "label": "Model",
+      "label": "Taalmodel",
       "recommendedOption": "{{model}} (aanbevolen)"
     },
     "modelError": "Kon het model niet wijzigen. Probeer het opnieuw.",
@@ -1762,7 +1766,9 @@
       "peer_admin": "Beheerders kunnen de rol of status van een andere beheerder niet wijzigen.",
       "totp_required": "Voer de code uit je authenticator-app in.",
       "totp_invalid": "Die code is niet geldig. Probeer het opnieuw.",
-      "totp_locked": "Te veel onjuiste codes. Probeer het over 15 minuten opnieuw."
+      "totp_locked": "Te veel onjuiste codes. Probeer het over 15 minuten opnieuw.",
+      "account_locked": "Te veel onjuiste wachtwoorden. Probeer het over 15 minuten opnieuw.",
+      "session_invalid": "Je sessie is verlopen. Meld je opnieuw aan."
     },
     "invitation": {
       "not_found": "De uitnodiging is ongeldig.",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "Dit regelpakket kon niet worden gevonden."
     },
-    "rule_import": {
-      "invalid_format": "Dit bestand is geen geldige export van LealFinance-regels."
-    },
     "totp": {
       "already_enabled": "Tweefactorauthenticatie is al ingeschakeld.",
       "not_enabled": "Tweefactorauthenticatie is niet ingeschakeld."
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "Dat totaalbedrag is te klein om te verdelen over de geselecteerde termijnen.",
       "advance_count_exceeds_remaining": "Er staan niet zoveel termijnen meer open.",
       "installment_count_below_paid": "Het aantal termijnen kan niet lager zijn dan het aantal dat al is betaald."
+    },
+    "account": {
+      "currency_in_use": "Dit account bevat al transacties, dus de valuta kan niet worden gewijzigd."
+    },
+    "transaction": {
+      "transfer_same_account": "Een overschrijving heeft twee verschillende accounts nodig.",
+      "transfer_requires_destination": "Kies het account waar deze overschrijving naartoe gaat.",
+      "category_required": "Kies een categorie voor deze transactie.",
+      "category_kind_mismatch": "Deze categorie past niet bij het type van deze transactie.",
+      "conversion_required": "Deze transactie gebruikt meerdere valuta's en heeft daarom een omgerekend bedrag nodig."
+    },
+    "currency": {
+      "not_found": "Deze valuta is niet beschikbaar.",
+      "inactive": "Deze valuta is niet meer actief."
     }
   }
 }

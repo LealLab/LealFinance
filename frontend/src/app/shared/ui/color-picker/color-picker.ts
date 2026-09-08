@@ -1,4 +1,5 @@
 import { Component, computed, effect, input, model, output, signal } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { Modal } from '../modal/modal';
 
 type ColorFormat = 'hex' | 'rgb';
@@ -85,7 +86,7 @@ function hsvToHex(hue: number, saturation: number, value: number): string {
 
 @Component({
   selector: 'app-color-picker',
-  imports: [Modal],
+  imports: [Modal, TranslocoDirective],
   templateUrl: './color-picker.html',
   styleUrl: './color-picker.scss',
 })

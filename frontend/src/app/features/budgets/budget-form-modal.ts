@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { BudgetRepository } from '../../data/budget.repository';
 import { Budget } from '../../domain/models/budget';
 import { CategoryGroup } from '../../domain/models/category-group';
@@ -100,9 +101,9 @@ export class BudgetFormModal {
         this.open.set(false);
         this.saved.emit(budget);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('budgets.form.saveError');
+        this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'budgets.form.saveError');
       },
     });
   }

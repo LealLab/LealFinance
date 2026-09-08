@@ -162,12 +162,7 @@ export class LoanPaymentModal {
         error: (error: unknown) => {
           this.saving.set(false);
           const code = error instanceof ApiError ? error.code : undefined;
-          this.saveErrorKey.set(
-            code === 'loan.advance_amount_too_small' ||
-              code === 'loan.advance_count_exceeds_remaining'
-              ? `errors.${code}`
-              : 'loans.payment.saveError',
-          );
+          this.saveErrorKey.set(code ? `errors.${code}` : 'loans.payment.saveError');
         },
       });
   }

@@ -48,6 +48,10 @@
       "saving": "Ukládání…",
       "previousMonth": "Předchozí měsíc",
       "nextMonth": "Následující měsíc"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Sytost a jas barvy",
+      "hue": "Odstín barvy"
     }
   },
   "icons": {
@@ -518,7 +522,7 @@
       "group": "Seskupit",
       "date": "Datum",
       "amount": "Částka",
-      "amountMin": "Minimum",
+      "amountMin": "Minimální částka",
       "amountMax": "Maximum",
       "any": "Libovolné",
       "back": "Zpět",
@@ -1762,7 +1766,9 @@
       "peer_admin": "Administrátoři nemohou měnit roli ani stav jiného administrátora.",
       "totp_required": "Zadejte kód z ověřovací aplikace.",
       "totp_invalid": "Tento kód není platný. Zkuste to znovu.",
-      "totp_locked": "Příliš mnoho nesprávných kódů. Zkuste to za 15 minut."
+      "totp_locked": "Příliš mnoho nesprávných kódů. Zkuste to za 15 minut.",
+      "account_locked": "Příliš mnoho nesprávných hesel. Zkuste to znovu za 15 minut.",
+      "session_invalid": "Platnost relace vypršela. Přihlaste se znovu."
     },
     "invitation": {
       "not_found": "Pozvánka není platná.",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "Tento balíček pravidel nebyl nalezen."
     },
-    "rule_import": {
-      "invalid_format": "Tento soubor není platným exportem pravidel LealFinance."
-    },
     "totp": {
       "already_enabled": "Dvoufaktorové ověření je již zapnuto.",
       "not_enabled": "Dvoufaktorové ověření není zapnuto."
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "Tato celková částka je příliš malá na rozdělení mezi vybrané splátky.",
       "advance_count_exceeds_remaining": "Tolik otevřených splátek už nezbývá.",
       "installment_count_below_paid": "Počet splátek nemůže být nižší, než kolik jich už bylo zaplaceno."
+    },
+    "account": {
+      "currency_in_use": "Tento účet již obsahuje transakce, takže jeho měnu nelze změnit."
+    },
+    "transaction": {
+      "transfer_same_account": "Převod vyžaduje dva různé účty.",
+      "transfer_requires_destination": "Vyberte účet, na který tento převod směřuje.",
+      "category_required": "Vyberte kategorii pro tuto transakci.",
+      "category_kind_mismatch": "Tato kategorie neodpovídá typu této transakce.",
+      "conversion_required": "Tato transakce probíhá v různých měnách, proto vyžaduje převedenou částku."
+    },
+    "currency": {
+      "not_found": "Tato měna není k dispozici.",
+      "inactive": "Tato měna již není aktivní."
     }
   }
 }

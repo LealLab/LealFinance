@@ -147,6 +147,7 @@ tasks:
     cmds:
       - pnpm exec transloco-keys-manager find
       - node scripts/validate-i18n.mjs
+      - node scripts/validate-error-codes.mjs
 
   security:audit:
     desc: Audit backend and frontend dependencies for known vulnerabilities

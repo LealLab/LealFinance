@@ -10,7 +10,7 @@
     "composer": {
       "placeholder": "Spør om økonomien din…"
     },
-    "send": "Send",
+    "send": "Send melding",
     "offTopic": "Jeg kan hjelpe med LealFinance og økonomien din, men ikke med dette temaet.",
     "thinking": "Tenker…",
     "toolRunning": "Kjører",
@@ -48,6 +48,10 @@
       "saving": "Lagrer…",
       "previousMonth": "Forrige måned",
       "nextMonth": "Neste måned"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Fargemetning og lysstyrke",
+      "hue": "Fargetone"
     }
   },
   "icons": {
@@ -518,7 +522,7 @@
       "group": "Grupper",
       "date": "Dato",
       "amount": "Beløp",
-      "amountMin": "Minimum",
+      "amountMin": "Minstebeløp",
       "amountMax": "Maksimum",
       "any": "Alle",
       "back": "Tilbake",
@@ -1641,7 +1645,7 @@
     "description": "Administrer tilgangen til denne LealFinance-instansen.",
     "roles": {
       "member": "Medlem",
-      "admin": "Administrator"
+      "admin": "Admin"
     },
     "users": {
       "aiChat": "AI-chat",
@@ -1762,7 +1766,9 @@
       "peer_admin": "Administratorer kan ikke endre rollen eller statusen til en annen administrator.",
       "totp_required": "Skriv inn koden fra autentiseringsappen din.",
       "totp_invalid": "Koden er ikke gyldig. Prøv igjen.",
-      "totp_locked": "For mange feil koder. Prøv igjen om 15 minutter."
+      "totp_locked": "For mange feil koder. Prøv igjen om 15 minutter.",
+      "account_locked": "For mange feil passord. Prøv igjen om 15 minutter.",
+      "session_invalid": "Økten din har utløpt. Logg inn igjen."
     },
     "invitation": {
       "not_found": "Invitasjonen er ugyldig.",
@@ -1799,9 +1805,6 @@
     "rule_pack": {
       "not_found": "Denne regelpakken ble ikke funnet."
     },
-    "rule_import": {
-      "invalid_format": "Denne filen er ikke en gyldig LealFinance-eksport av regler."
-    },
     "totp": {
       "already_enabled": "Tofaktorautentisering er allerede aktivert.",
       "not_enabled": "Tofaktorautentisering er ikke aktivert."
@@ -1818,6 +1821,20 @@
       "advance_amount_too_small": "Dette totalbeløpet er for lite til å fordeles på de valgte terminene.",
       "advance_count_exceeds_remaining": "Det er ikke så mange åpne terminer igjen.",
       "installment_count_below_paid": "Antall terminer kan ikke være lavere enn antallet som allerede er betalt."
+    },
+    "account": {
+      "currency_in_use": "Denne kontoen har allerede transaksjoner, så valutaen kan ikke endres."
+    },
+    "transaction": {
+      "transfer_same_account": "En overføring krever to forskjellige kontoer.",
+      "transfer_requires_destination": "Velg kontoen denne overføringen skal gå til.",
+      "category_required": "Velg en kategori for denne transaksjonen.",
+      "category_kind_mismatch": "Den kategorien passer ikke til typen transaksjon.",
+      "conversion_required": "Denne transaksjonen går på tvers av valutaer og trenger derfor et omregnet beløp."
+    },
+    "currency": {
+      "not_found": "Den valutaen er ikke tilgjengelig.",
+      "inactive": "Den valutaen er ikke lenger aktiv."
     }
   }
 }
