@@ -1,4 +1,4 @@
-<app-modal [(open)]="open" [titleText]="titleText()">
+<app-modal *transloco="let t" [(open)]="open" [titleText]="titleText()">
   <div class="flex flex-col gap-4">
     <div
       class="h-20 rounded-md border border-border"
@@ -10,7 +10,7 @@
       class="color-saturation"
       role="slider"
       tabindex="0"
-      aria-label="Color saturation and brightness"
+      [attr.aria-label]="t('common.colorPicker.saturationBrightness')"
       aria-orientation="horizontal"
       aria-valuemin="0"
       aria-valuemax="100"
@@ -35,7 +35,7 @@
       class="color-hue"
       role="slider"
       tabindex="0"
-      aria-label="Color hue"
+      [attr.aria-label]="t('common.colorPicker.hue')"
       aria-orientation="horizontal"
       aria-valuemin="0"
       aria-valuemax="360"

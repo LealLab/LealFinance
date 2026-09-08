@@ -35,7 +35,7 @@
         <app-logo [size]="26" class="shrink-0 text-accent" />
         <span
           class="truncate text-sm font-semibold tracking-tight"
-          [class.hidden]="!sidebarExpanded()"
+          [class.sr-only]="!sidebarExpanded()"
         >
           {{ t('app.title') }}
         </span>
@@ -73,7 +73,7 @@
       >
         <span class="flex items-center gap-2">
           <app-icon name="search" [size]="16" />
-          <span [class.hidden]="!sidebarExpanded()">{{ t('layout.search.trigger') }}</span>
+          <span [class.sr-only]="!sidebarExpanded()">{{ t('layout.search.trigger') }}</span>
         </span>
         <span
           class="shrink-0 items-center gap-0.5 rounded border border-border px-1.5 py-0.5 font-mono text-[11px] text-content-subtle"
@@ -101,7 +101,7 @@
         class="mt-2 w-full"
         (click)="session.logout()"
       >
-        <span [class.hidden]="!sidebarExpanded()">{{ t('auth.logout') }}</span>
+        <span [class.sr-only]="!sidebarExpanded()">{{ t('auth.logout') }}</span>
         <app-icon name="arrowDownLeft" [size]="16" />
       </button>
     </div>

@@ -1,7 +1,8 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { of } from 'rxjs';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
@@ -319,7 +320,7 @@ export class TransactionFormModal {
     // "narrowing a filter drops a now-invalid selection" behavior. Any
     // account change also means "this is a different currency pair now",
     // so any prior converted-amount edit no longer applies.
-    this.form.controls.accountId.valueChanges.subscribe((accountId) => {
+    this.form.controls.accountId.valueChanges.pipe(takeUntilDestroyed()).subscribe((accountId) => {
       if (this.applyingReset) return;
       this.convertedTouched.set(false);
       const account = this.accounts().find((a) => a.id === accountId);
@@ -330,28 +331,28 @@ export class TransactionFormModal {
       }
     });
 
-    this.form.controls.toAccountId.valueChanges.subscribe(() => {
+    this.form.controls.toAccountId.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.applyingReset) return;
       this.convertedTouched.set(false);
     });
-    this.form.controls.currency.valueChanges.subscribe(() => {
+    this.form.controls.currency.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.applyingReset) return;
       this.convertedTouched.set(false);
     });
-    this.form.controls.type.valueChanges.subscribe(() => {
+    this.form.controls.type.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.applyingReset) return;
       this.convertedTouched.set(false);
     });
-    this.form.controls.convertedAmount.valueChanges.subscribe(() => {
+    this.form.controls.convertedAmount.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.applyingReset) return;
       this.convertedTouched.set(true);
     });
 
-    this.form.controls.fromInstitutionId.valueChanges.subscribe((institutionId) => {
+    this.form.controls.fromInstitutionId.valueChanges.pipe(takeUntilDestroyed()).subscribe((institutionId) => {
       if (this.applyingReset) return;
       this.clearAccountIfMismatched('accountId', institutionId);
     });
-    this.form.controls.toInstitutionId.valueChanges.subscribe((institutionId) => {
+    this.form.controls.toInstitutionId.valueChanges.pipe(takeUntilDestroyed()).subscribe((institutionId) => {
       if (this.applyingReset) return;
       this.clearAccountIfMismatched('toAccountId', institutionId);
     });
@@ -437,7 +438,7 @@ export class TransactionFormModal {
     if (existing) {
       this.transactions.update(existing.id, basePayload).subscribe({
         next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError()
+        error: (error: unknown) => this.onSaveError(error)
       });
       return;
     }
@@ -462,9 +463,9 @@ export class TransactionFormModal {
           next: (rule) => {
             this.transactions
               .create({ ...basePayload, recurringRuleId: rule.id })
-              .subscribe({ next: () => this.onSaveSuccess(), error: () => this.onSaveError() });
+              .subscribe({ next: () => this.onSaveSuccess(), error: (error: unknown) => this.onSaveError(error) });
           },
-          error: () => this.onSaveError()
+          error: (error: unknown) => this.onSaveError(error)
         });
       return;
     }
@@ -473,7 +474,7 @@ export class TransactionFormModal {
       this.canInstall() && raw.installments && raw.installments >= 2 ? raw.installments : undefined;
     this.transactions.create(installments ? { ...basePayload, installments } : basePayload).subscribe({
       next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError()
+      error: (error: unknown) => this.onSaveError(error)
     });
   }
 
@@ -483,8 +484,8 @@ export class TransactionFormModal {
     this.saved.emit();
   }
 
-  private onSaveError(): void {
+  private onSaveError(error: unknown): void {
     this.saving.set(false);
-    this.saveErrorKey.set('transactions.form.saveError');
+    this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'transactions.form.saveError');
   }
 }

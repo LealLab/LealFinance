@@ -453,7 +453,10 @@ async def test_wallet_without_cash_account_skips_settlement_and_reads_decimal_st
 
     summary = await client.get("/api/v1/investments/summary")
     assert summary.status_code == 200
-    assert isinstance(summary.json()["total_book_value"], str)
+    summary_body = summary.json()
+    assert summary_body["total_book_value"] == position["book_value"]
+    assert summary_body["total_market_value"] == position["market_value"]
+    assert summary_body["total_unrealized_gain"] == position["unrealized_gain"]
 
 
 async def test_buy_amount_is_derived_from_quantity_times_price(

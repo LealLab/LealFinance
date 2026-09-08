@@ -116,6 +116,10 @@ async def test_real_balance_defers_current_cycle_and_counts_overdue(
     response = await client.get("/api/v1/accounts/real-balances")
     assert response.status_code == 200
     assert all(isinstance(row["balance"], str) for row in response.json())
+    assert {row["account_id"]: row["balance"] for row in response.json()} == {
+        str(checking_id): "1000.0000",
+        str(card_id): "-100.0000",
+    }
 
 
 async def test_real_balance_payment_keeps_cash_position_consistent(

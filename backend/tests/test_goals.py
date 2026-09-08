@@ -355,3 +355,25 @@ async def test_goal_ownership_isolation(
 
     list_response = await other_client.get("/api/v1/goals")
     assert all(row["id"] != goal_id for row in list_response.json())
+
+
+async def test_check_account_available_ignores_another_users_goal(
+    db_session: AsyncSession,
+) -> None:
+    owner, _ = await make_user(db_session, email="goal-owner@example.com")
+    other, _ = await make_user(db_session, email="goal-other@example.com")
+    account = Account(user_id=owner.id, name="Goal", type="goal", currency="BRL")
+    db_session.add(account)
+    await db_session.flush()
+    db_session.add(
+        goals_service.Goal(
+            user_id=other.id,
+            account_id=account.id,
+            name="Foreign goal",
+            target_amount=Decimal("100"),
+            currency="BRL",
+        )
+    )
+    await db_session.commit()
+
+    await goals_service._check_account_available(db_session, owner.id, account.id)

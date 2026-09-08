@@ -48,6 +48,10 @@
       "saving": "Saving…",
       "previousMonth": "Previous month",
       "nextMonth": "Next month"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Color saturation and brightness",
+      "hue": "Color hue"
     }
   },
   "icons": {
@@ -710,6 +714,7 @@
       "mixedKinds": "Select transactions of a single kind to assign a category",
       "delete": "Delete selected",
       "clearSelection": "Clear selection",
+      "recategorizeConfirm": "Recategorize {{count}} selected transactions?",
       "deleteConfirm": {
         "title": "Delete transactions",
         "message": "This cannot be undone. Delete {{count}} transactions?"
@@ -743,6 +748,10 @@
       "collapse": "Collapse",
       "expand": "Expand",
       "dragHandle": "Reorder"
+    },
+    "reorder": {
+      "moveUp": "Move up",
+      "moveDown": "Move down"
     },
     "empty": {
       "title": "No categories yet",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "This token and registration link are shown only now. Save them before leaving.",
       "copyLink": "Copy registration link",
       "revoke": "Revoke",
+      "revokeConfirm": "Revoke the invitation for {{email}}?",
       "empty": "No invitations found."
     }
   },
@@ -1762,7 +1772,9 @@
       "peer_admin": "Administrators cannot change another administrator's role or status.",
       "totp_required": "Enter the code from your authenticator app.",
       "totp_invalid": "That code is not valid. Try again.",
-      "totp_locked": "Too many incorrect codes. Try again in 15 minutes."
+      "totp_locked": "Too many incorrect codes. Try again in 15 minutes.",
+      "account_locked": "Too many incorrect passwords. Try again in 15 minutes.",
+      "session_invalid": "Your session has expired. Sign in again."
     },
     "invitation": {
       "not_found": "The invitation is invalid.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "This rule pack could not be found."
     },
-    "rule_import": {
-      "invalid_format": "This file is not a valid LealFinance rules export."
-    },
     "totp": {
       "already_enabled": "Two-factor authentication is already enabled.",
       "not_enabled": "Two-factor authentication is not enabled."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "That total is too small to split across the selected installments.",
       "advance_count_exceeds_remaining": "There aren't that many open installments left.",
       "installment_count_below_paid": "The number of installments can't be lower than how many are already paid."
+    },
+    "account": {
+      "currency_in_use": "This account already has transactions, so its currency can't be changed."
+    },
+    "transaction": {
+      "transfer_same_account": "A transfer needs two different accounts.",
+      "transfer_requires_destination": "Choose the account this transfer goes to.",
+      "category_required": "Choose a category for this transaction.",
+      "category_kind_mismatch": "That category doesn't match this transaction's type.",
+      "conversion_required": "This transaction crosses currencies, so it needs a converted amount."
+    },
+    "currency": {
+      "not_found": "That currency isn't available.",
+      "inactive": "That currency is no longer active."
     }
   }
 }

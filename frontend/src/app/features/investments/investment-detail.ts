@@ -1,5 +1,5 @@
-import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Subscription } from 'rxjs';
@@ -23,6 +23,7 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { InvestmentAssetFormModal } from './investment-asset-form-modal';
 import { InvestmentTransactionFormModal } from './investment-transaction-form-modal';
 import { InvestmentWalletFormModal } from './investment-wallet-form-modal';
@@ -48,6 +49,7 @@ const PAGE_SIZE = 30;
     Icon,
     InfiniteScroll,
     PageHeader,
+    Skeleton,
     InvestmentAssetFormModal,
     InvestmentTransactionFormModal,
     InvestmentWalletFormModal,
@@ -62,6 +64,7 @@ export class InvestmentDetail {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly id = input.required<string>();
 
@@ -117,6 +120,7 @@ export class InvestmentDetail {
     this.loadingMore = true;
     this.loadSubscription = this.transactions
       .list({ walletId: this.id(), limit: PAGE_SIZE, offset: this.offset() })
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (page) => {
           this.rows.update((current) => [...current, ...page]);
@@ -126,6 +130,7 @@ export class InvestmentDetail {
         },
         error: () => {
           this.loadingMore = false;
+          this.mutationErrors.show();
         },
       });
   }

@@ -12,7 +12,7 @@ from datetime import date as date_type
 from decimal import Decimal
 from uuid import UUID
 
-from sqlalchemy import case, delete, exists, func, or_, select, update
+from sqlalchemy import case, delete, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
@@ -163,6 +163,25 @@ async def real_balance_contributions(
     """
     accounts = list(await ownership.list_owned(db, Account, user_id))
     balances = {row.account_id: row for row in await account_balances(db, user_id)}
+    transaction_dates = (
+        select(Transaction.account_id.label("account_id"), Transaction.date.label("date"))
+        .where(Transaction.user_id == user_id)
+        .union_all(
+            select(
+                Transaction.to_account_id.label("account_id"), Transaction.date.label("date")
+            ).where(
+                Transaction.user_id == user_id,
+                Transaction.to_account_id.is_not(None),
+            )
+        )
+        .subquery()
+    )
+    oldest_result = await db.execute(
+        select(transaction_dates.c.account_id, func.min(transaction_dates.c.date)).group_by(
+            transaction_dates.c.account_id
+        )
+    )
+    oldest_by_account = {row.account_id: row[1] for row in oldest_result}
     contributions: list[AccountBalance] = []
 
     for account in accounts:
@@ -175,17 +194,7 @@ async def real_balance_contributions(
             and account.closing_day is not None
             and account.due_day is not None
         ):
-            transaction_scope = (
-                ownership.owned(Transaction, user_id)
-                .where(
-                    or_(
-                        Transaction.account_id == account.id,
-                        Transaction.to_account_id == account.id,
-                    )
-                )
-                .subquery()
-            )
-            oldest = await db.scalar(select(func.min(transaction_scope.c.date)))
+            oldest = oldest_by_account.get(account.id)
             months_back = (
                 max((today.year - oldest.year) * 12 + today.month - oldest.month + 1, 0)
                 if oldest is not None
@@ -240,16 +249,24 @@ async def create_account(db: AsyncSession, user_id: UUID, data: AccountCreate) -
     return account
 
 
-async def account_has_ledger_references(db: AsyncSession, account_id: UUID) -> bool:
+async def account_has_ledger_references(db: AsyncSession, account_id: UUID, user_id: UUID) -> bool:
     """Return whether either a posted or projected ledger leg uses an account."""
-    transaction_ref = exists().where(
-        or_(Transaction.account_id == account_id, Transaction.to_account_id == account_id)
+    transaction_ref = (
+        ownership.owned(Transaction, user_id)
+        .where(or_(Transaction.account_id == account_id, Transaction.to_account_id == account_id))
+        .with_only_columns(Transaction.id)
+        .exists()
     )
-    recurring_ref = exists().where(
-        or_(
-            RecurringRule.template_account_id == account_id,
-            RecurringRule.template_to_account_id == account_id,
+    recurring_ref = (
+        ownership.owned(RecurringRule, user_id)
+        .where(
+            or_(
+                RecurringRule.template_account_id == account_id,
+                RecurringRule.template_to_account_id == account_id,
+            )
         )
+        .with_only_columns(RecurringRule.id)
+        .exists()
     )
     return bool(await db.scalar(select(transaction_ref | recurring_ref)))
 
@@ -261,10 +278,15 @@ async def validate_account_identity_change(
     new_type: str,
     new_currency: str,
 ) -> None:
-    if new_currency != account.currency and await account_has_ledger_references(db, account.id):
+    if new_currency != account.currency and await account_has_ledger_references(
+        db, account.id, account.user_id
+    ):
         raise ValidationAppError(code="account.currency_in_use")
 
-    goal = await db.scalar(select(Goal).where(Goal.account_id == account.id))
+    result = await db.execute(
+        ownership.owned(Goal, account.user_id).where(Goal.account_id == account.id)
+    )
+    goal = result.scalars().first()
     if goal is not None:
         if new_type != ACCOUNT_TYPE_GOAL:
             raise ValidationAppError(code="account.goal_requires_goal_type")

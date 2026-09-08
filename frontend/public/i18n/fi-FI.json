@@ -48,6 +48,10 @@
       "saving": "Tallennetaan…",
       "previousMonth": "Edellinen kuukausi",
       "nextMonth": "Seuraava kuukausi"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Värikylläisyys ja kirkkaus",
+      "hue": "Värisävy"
     }
   },
   "icons": {
@@ -710,6 +714,7 @@
       "mixedKinds": "Valitse yhden tyyppisiä tapahtumia luokan määrittämiseksi",
       "delete": "Poista valitut",
       "clearSelection": "Tyhjennä valinta",
+      "recategorizeConfirm": "Luokitellaanko {{count}} valittua tapahtumaa uudelleen?",
       "deleteConfirm": {
         "title": "Poista tapahtumat",
         "message": "Tätä ei voi kumota. Poistetaanko {{count}} tapahtumaa?"
@@ -743,6 +748,10 @@
       "collapse": "Pienennä",
       "expand": "Laajenna",
       "dragHandle": "Muuta järjestystä"
+    },
+    "reorder": {
+      "moveUp": "Siirrä ylös",
+      "moveDown": "Siirrä alas"
     },
     "empty": {
       "title": "Ei vielä luokkia",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Tämä tunnus ja rekisteröitymislinkki näytetään vain nyt. Tallenna ne ennen poistumista.",
       "copyLink": "Kopioi rekisteröitymislinkki",
       "revoke": "Peruuta kutsu",
+      "revokeConfirm": "Perutaanko käyttäjän {{email}} kutsu?",
       "empty": "Kutsuja ei löytynyt."
     }
   },
@@ -1762,7 +1772,9 @@
       "peer_admin": "Järjestelmänvalvojat eivät voi muuttaa toisen järjestelmänvalvojan roolia tai tilaa.",
       "totp_required": "Anna todennussovelluksesi koodi.",
       "totp_invalid": "Koodi ei kelpaa. Yritä uudelleen.",
-      "totp_locked": "Liian monta väärää koodia. Yritä uudelleen 15 minuutin kuluttua."
+      "totp_locked": "Liian monta väärää koodia. Yritä uudelleen 15 minuutin kuluttua.",
+      "account_locked": "Liian monta väärää salasanaa. Yritä uudelleen 15 minuutin kuluttua.",
+      "session_invalid": "Istuntosi on vanhentunut. Kirjaudu uudelleen."
     },
     "invitation": {
       "not_found": "Kutsu ei ole kelvollinen.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Sääntöpakettia ei löytynyt."
     },
-    "rule_import": {
-      "invalid_format": "Tämä tiedosto ei ole kelvollinen LealFinance-sääntöjen vientitiedosto."
-    },
     "totp": {
       "already_enabled": "Kaksivaiheinen todennus on jo käytössä.",
       "not_enabled": "Kaksivaiheinen todennus ei ole käytössä."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Tämä summa on liian pieni jaettavaksi valittujen erien kesken.",
       "advance_count_exceeds_remaining": "Näin montaa avointa erää ei ole enää jäljellä.",
       "installment_count_below_paid": "Erien määrä ei voi olla pienempi kuin jo maksettujen erien määrä."
+    },
+    "account": {
+      "currency_in_use": "Tällä tilillä on jo tapahtumia, joten sen valuuttaa ei voi vaihtaa."
+    },
+    "transaction": {
+      "transfer_same_account": "Siirto vaatii kaksi eri tiliä.",
+      "transfer_requires_destination": "Valitse tili, jolle tämä siirto menee.",
+      "category_required": "Valitse tälle tapahtumalle luokka.",
+      "category_kind_mismatch": "Luokka ei vastaa tämän tapahtuman tyyppiä.",
+      "conversion_required": "Tämä tapahtuma ylittää valuuttarajat, joten se tarvitsee muunnetun summan."
+    },
+    "currency": {
+      "not_found": "Tämä valuutta ei ole käytettävissä.",
+      "inactive": "Tämä valuutta ei ole enää aktiivinen."
     }
   }
 }

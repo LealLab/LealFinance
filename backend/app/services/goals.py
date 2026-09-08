@@ -5,7 +5,6 @@ linked account's ledger; this service never computes one.
 
 from uuid import UUID
 
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError, ValidationAppError
@@ -32,13 +31,17 @@ async def _validate_account(
 
 
 async def _check_account_available(
-    db: AsyncSession, account_id: UUID, exclude_goal_id: UUID | None = None
+    db: AsyncSession, user_id: UUID, account_id: UUID, exclude_goal_id: UUID | None = None
 ) -> None:
-    query = select(Goal.id).where(Goal.account_id == account_id)
+    query = (
+        ownership.owned(Goal, user_id)
+        .with_only_columns(Goal.id)
+        .where(Goal.account_id == account_id)
+    )
     if exclude_goal_id is not None:
         query = query.where(Goal.id != exclude_goal_id)
     existing = await db.execute(query)
-    if existing.scalar_one_or_none() is not None:
+    if existing.first() is not None:
         raise ConflictError(code="goal.account_already_has_goal")
 
 
@@ -52,7 +55,7 @@ async def create_goal(db: AsyncSession, user_id: UUID, data: GoalCreate) -> Goal
 
     await get_active_currency(db, data.currency)
     await _validate_account(db, user_id, data.account_id, data.currency)
-    await _check_account_available(db, data.account_id)
+    await _check_account_available(db, user_id, data.account_id)
 
     goal = Goal(user_id=user_id, **data.model_dump())
     db.add(goal)
@@ -78,7 +81,7 @@ async def update_goal(db: AsyncSession, user_id: UUID, goal_id: UUID, data: Goal
     if "account_id" in changes or "currency" in changes:
         await _validate_account(db, user_id, effective_account_id, effective_currency)
     if "account_id" in changes and effective_account_id != goal.account_id:
-        await _check_account_available(db, effective_account_id, exclude_goal_id=goal_id)
+        await _check_account_available(db, user_id, effective_account_id, exclude_goal_id=goal_id)
 
     for field, value in changes.items():
         setattr(goal, field, value)
@@ -142,7 +145,7 @@ async def update_goal_with_account(
     if "currency" in changes:
         await get_active_currency(db, currency)
     if currency != account.currency and await accounts_service.account_has_ledger_references(
-        db, account.id
+        db, account.id, account.user_id
     ):
         raise ValidationAppError(code="account.currency_in_use")
     if "name" in changes:

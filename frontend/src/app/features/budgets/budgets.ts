@@ -448,7 +448,12 @@ export class Budgets {
         this.expectedIncomeResource.reload();
         this.budgetsResource.reload();
       },
-      error: () => this.plannerError.set('budgets.planner.errors.save'),
+      error: () => {
+        this.plannerError.set('budgets.planner.errors.save');
+        this.budgetsResource.reload();
+        this.allocationsResource.reload();
+        this.expectedIncomeResource.reload();
+      },
     });
   }
 

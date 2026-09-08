@@ -48,9 +48,6 @@ importers:
       marked:
         specifier: ^18.0.11
         version: 18.0.11
-      playwright:
-        specifier: ^1.62.1
-        version: 1.62.1
       qrcode-generator:
         specifier: ^2.0.4
         version: 2.0.4
@@ -97,6 +94,9 @@ importers:
       jsdom:
         specifier: ^28.0.0
         version: 28.1.0(supports-color@7.2.0)
+      playwright:
+        specifier: ^1.62.1
+        version: 1.62.1
       postcss:
         specifier: ^8.4.0
         version: 8.5.26

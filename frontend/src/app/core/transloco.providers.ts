@@ -1,9 +1,39 @@
-import { EnvironmentProviders, isDevMode } from '@angular/core';
-import { provideTransloco } from '@jsverse/transloco';
+import { EnvironmentProviders, inject, Injectable, Injector, isDevMode } from '@angular/core';
+import {
+  DefaultMissingHandler,
+  provideTransloco,
+  provideTranslocoMissingHandler,
+  TranslocoMissingHandler,
+  TranslocoMissingHandlerData,
+  TranslocoService,
+} from '@jsverse/transloco';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
 
+import locales from '../../../i18n-locales.json';
 import { HttpTranslocoLoader } from './transloco-loader';
+
+const GENERIC_ERROR_FALLBACK = 'Something went wrong. Please try again.';
+
+@Injectable()
+class AppMissingHandler implements TranslocoMissingHandler {
+  private readonly injector = inject(Injector);
+  private readonly defaultHandler = new DefaultMissingHandler();
+
+  handle(
+    key: string,
+    config: TranslocoMissingHandlerData,
+    params?: Record<string, unknown>,
+  ): string {
+    if (key.startsWith('errors.') && key !== 'errors.error.generic') {
+      const generic = this.injector
+        .get(TranslocoService)
+        .translate<string>('errors.error.generic', params, config.activeLang);
+      return generic === 'errors.error.generic' ? GENERIC_ERROR_FALLBACK : generic;
+    }
+    return this.defaultHandler.handle(key, config);
+  }
+}
 
 /**
  * English is the default language. Locale mappings stay together here so
@@ -14,36 +44,7 @@ export function provideAppTransloco(): EnvironmentProviders[] {
   return [
     ...provideTransloco({
       config: {
-        availableLangs: [
-          'en-US',
-          'pt-BR',
-          'es-ES',
-          'fr-FR',
-          'de-DE',
-          'it-IT',
-          'nl-NL',
-          'pl-PL',
-          'ru-RU',
-          'uk-UA',
-          'tr-TR',
-          'ar',
-          'he-IL',
-          'hi-IN',
-          'zh-CN',
-          'zh-TW',
-          'ja-JP',
-          'ko-KR',
-          'id-ID',
-          'vi-VN',
-          'th-TH',
-          'sv-SE',
-          'da-DK',
-          'nb-NO',
-          'fi-FI',
-          'cs-CZ',
-          'ro-RO',
-          'el-GR'
-        ],
+        availableLangs: locales,
         defaultLang: 'en-US',
         fallbackLang: 'en-US',
         reRenderOnLangChange: true,
@@ -51,6 +52,7 @@ export function provideAppTransloco(): EnvironmentProviders[] {
       },
       loader: HttpTranslocoLoader
     }),
+    provideTranslocoMissingHandler(AppMissingHandler),
     ...provideTranslocoLocale({
       langToLocaleMapping: {
         'en-US': 'en-US',

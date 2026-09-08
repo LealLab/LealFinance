@@ -46,6 +46,8 @@ _LAST_ADMIN_LOCK_KEY = 0x4C4641444D494E
 _BOOTSTRAP_LOCK_KEY = 0x4C46424F4F54
 
 _BACKUP_CODE_COUNT = 10
+_PASSWORD_MAX_ATTEMPTS = 5
+_PASSWORD_LOCKOUT = timedelta(minutes=15)
 _TOTP_MAX_ATTEMPTS = 5
 _TOTP_LOCKOUT = timedelta(minutes=15)
 
@@ -119,8 +121,18 @@ async def login(
     if user is None:
         verify_password(password, _DUMMY_PASSWORD_HASH)
         raise UnauthorizedError(code="auth.invalid_credentials")
+    now = datetime.now(UTC)
+    if user.password_locked_until is not None and user.password_locked_until > now:
+        raise UnauthorizedError(code="auth.account_locked")
     if not verify_password(password, user.password_hash):
+        user.password_failed_attempts += 1
+        if user.password_failed_attempts >= _PASSWORD_MAX_ATTEMPTS:
+            user.password_locked_until = now + _PASSWORD_LOCKOUT
+            user.password_failed_attempts = 0
+        await db.commit()
         raise UnauthorizedError(code="auth.invalid_credentials")
+    user.password_failed_attempts = 0
+    user.password_locked_until = None
     if not user.is_active:
         raise UnauthorizedError(code="auth.account_inactive")
 
@@ -129,6 +141,7 @@ async def login(
         db, user=user, token=trust_token
     ):
         if totp_code is None:
+            await db.commit()
             raise UnauthorizedError(code="auth.totp_required")
         await _consume_second_factor(db, user=user, code=totp_code)
         if trust_device:

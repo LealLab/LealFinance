@@ -43,9 +43,11 @@
             inputmode="decimal"
             class="form-input font-mono"
             formControlName="amount"
+            [attr.aria-invalid]="form.controls.amount.invalid && form.controls.amount.touched"
+            [attr.aria-describedby]="form.controls.amount.invalid && form.controls.amount.touched ? 'tx-amount-error' : null"
           />
           @if (form.controls.amount.invalid && form.controls.amount.touched) {
-            <p class="form-error">
+            <p id="tx-amount-error" class="form-error" role="alert">
               {{
                 form.controls.amount.errors?.['required']
                   ? t('transactions.form.errors.fieldRequired')
@@ -82,14 +84,20 @@
           </div>
           <div>
             <label class="form-label" for="tx-account">{{ t('transactions.form.fields.fromAccount') }}</label>
-            <select id="tx-account" class="form-input" formControlName="accountId">
+            <select
+              id="tx-account"
+              class="form-input"
+              formControlName="accountId"
+              [attr.aria-invalid]="form.controls.accountId.invalid && form.controls.accountId.touched"
+              [attr.aria-describedby]="form.controls.accountId.invalid && form.controls.accountId.touched ? 'tx-from-account-error' : null"
+            >
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
               @for (account of fromAccountOptions(); track account.id) {
                 <option [value]="account.id">{{ account.name }}</option>
               }
             </select>
             @if (!form.controls.accountId.value && form.controls.accountId.touched) {
-              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+              <p id="tx-from-account-error" class="form-error" role="alert">{{ t('transactions.form.errors.fieldRequired') }}</p>
             }
           </div>
         </div>
@@ -110,7 +118,13 @@
             <label class="form-label" for="tx-to-account">
               {{ t('transactions.form.fields.toAccount') }}
             </label>
-            <select id="tx-to-account" class="form-input" formControlName="toAccountId">
+            <select
+              id="tx-to-account"
+              class="form-input"
+              formControlName="toAccountId"
+              [attr.aria-invalid]="form.controls.toAccountId.touched && (!form.controls.toAccountId.value || form.controls.toAccountId.value === form.controls.accountId.value)"
+              [attr.aria-describedby]="form.controls.toAccountId.touched && (!form.controls.toAccountId.value || form.controls.toAccountId.value === form.controls.accountId.value) ? 'tx-to-account-error' : null"
+            >
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
               @for (account of toAccountOptions(); track account.id) {
                 <option [value]="account.id">{{ account.name }}</option>
@@ -121,7 +135,7 @@
               (!form.controls.toAccountId.value ||
                 form.controls.toAccountId.value === form.controls.accountId.value)
             ) {
-              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+              <p id="tx-to-account-error" class="form-error" role="alert">{{ t('transactions.form.errors.fieldRequired') }}</p>
             }
           </div>
         </div>
@@ -129,7 +143,13 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="tx-account">{{ t('transactions.form.fields.account') }}</label>
-            <select id="tx-account" class="form-input" formControlName="accountId">
+            <select
+              id="tx-account"
+              class="form-input"
+              formControlName="accountId"
+              [attr.aria-invalid]="form.controls.accountId.invalid && form.controls.accountId.touched"
+              [attr.aria-describedby]="form.controls.accountId.invalid && form.controls.accountId.touched ? 'tx-account-error' : null"
+            >
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
               @for (group of accountGroups(); track group.institution?.id ?? '__none__') {
                 <optgroup [label]="group.institution ? group.institution.name : t('accounts.noInstitution')">
@@ -140,12 +160,18 @@
               }
             </select>
             @if (!form.controls.accountId.value && form.controls.accountId.touched) {
-              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+              <p id="tx-account-error" class="form-error" role="alert">{{ t('transactions.form.errors.fieldRequired') }}</p>
             }
           </div>
           <div>
             <label class="form-label" for="tx-category">{{ t('transactions.form.fields.category') }}</label>
-            <select id="tx-category" class="form-input" formControlName="categoryId">
+            <select
+              id="tx-category"
+              class="form-input"
+              formControlName="categoryId"
+              [attr.aria-invalid]="form.controls.categoryId.invalid && form.controls.categoryId.touched"
+              [attr.aria-describedby]="form.controls.categoryId.invalid && form.controls.categoryId.touched ? 'tx-category-error' : null"
+            >
               <option value="" disabled>{{ t('transactions.form.fields.selectPlaceholder') }}</option>
               @for (group of categoryGroupsOptions(); track group.group.id) {
                 <optgroup [label]="group.group.name">
@@ -156,7 +182,7 @@
               }
             </select>
             @if (!form.controls.categoryId.value && form.controls.categoryId.touched) {
-              <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+              <p id="tx-category-error" class="form-error" role="alert">{{ t('transactions.form.errors.fieldRequired') }}</p>
             }
           </div>
         </div>
@@ -175,9 +201,11 @@
                 inputmode="decimal"
                 class="form-input font-mono"
                 formControlName="convertedAmount"
+                [attr.aria-invalid]="form.controls.convertedAmount.invalid && form.controls.convertedAmount.touched"
+                [attr.aria-describedby]="form.controls.convertedAmount.invalid && form.controls.convertedAmount.touched ? 'tx-converted-amount-error' : null"
               />
               @if (form.controls.convertedAmount.invalid && form.controls.convertedAmount.touched) {
-                <p class="form-error">{{ t('transactions.form.errors.invalid') }}</p>
+                <p id="tx-converted-amount-error" class="form-error" role="alert">{{ t('transactions.form.errors.invalid') }}</p>
               }
             </div>
             <div>
@@ -200,9 +228,16 @@
         <label class="form-label" for="tx-description">
           {{ t('transactions.form.fields.description') }}
         </label>
-        <input id="tx-description" type="text" class="form-input" formControlName="description" />
+        <input
+          id="tx-description"
+          type="text"
+          class="form-input"
+          formControlName="description"
+          [attr.aria-invalid]="form.controls.description.invalid && form.controls.description.touched"
+          [attr.aria-describedby]="form.controls.description.invalid && form.controls.description.touched ? 'tx-description-error' : null"
+        />
         @if (form.controls.description.invalid && form.controls.description.touched) {
-          <p class="form-error">{{ t('transactions.form.errors.fieldRequired') }}</p>
+          <p id="tx-description-error" class="form-error" role="alert">{{ t('transactions.form.errors.fieldRequired') }}</p>
         }
       </div>
 
@@ -274,7 +309,7 @@
       }
 
       @if (saveErrorKey(); as errorKey) {
-        <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        <p id="tx-save-error" class="form-error" role="alert">{{ t(errorKey) }}</p>
       }
 
       <div class="mt-2 flex justify-end gap-2">

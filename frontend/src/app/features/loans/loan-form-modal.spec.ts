@@ -1,10 +1,12 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { LoanRepository } from '../../data/loan.repository';
+import { MetadataService } from '../../core/metadata.service';
+import { PreferenceService } from '../../core/preference.service';
 import { Account } from '../../domain/models/account';
 import { Category } from '../../domain/models/category';
 import { Loan } from '../../domain/models/loan';
@@ -60,6 +62,8 @@ function setup() {
       provideHttpClientTesting(),
       provideTestTranslocoLocale(),
       { provide: LoanRepository, useValue: repo },
+      { provide: MetadataService, useValue: { currencies: signal([{ code: 'BRL' }]) } },
+      { provide: PreferenceService, useValue: { preferences: signal({ baseCurrency: 'BRL' }) } },
     ],
   });
   const fixture = TestBed.createComponent(LoanFormModal);

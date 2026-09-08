@@ -48,6 +48,10 @@
       "saving": "Wird gespeichert…",
       "previousMonth": "Vorheriger Monat",
       "nextMonth": "Nächster Monat"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Farbsättigung und Helligkeit",
+      "hue": "Farbton"
     }
   },
   "icons": {
@@ -518,8 +522,8 @@
       "group": "Gruppieren",
       "date": "Datum",
       "amount": "Betrag",
-      "amountMin": "Minimum",
-      "amountMax": "Maximum",
+      "amountMin": "Mindestbetrag",
+      "amountMax": "Höchstbetrag",
       "any": "Beliebig",
       "back": "Zurück",
       "dateRange": "Von {{from}} bis {{to}}",
@@ -710,6 +714,7 @@
       "mixedKinds": "Wähle Transaktionen derselben Art aus, um eine Kategorie zuzuweisen",
       "delete": "Ausgewählte löschen",
       "clearSelection": "Auswahl aufheben",
+      "recategorizeConfirm": "{{count}} ausgewählte Transaktionen neu kategorisieren?",
       "deleteConfirm": {
         "title": "Transaktionen löschen",
         "message": "Dies kann nicht rückgängig gemacht werden. {{count}} Transaktionen löschen?"
@@ -743,6 +748,10 @@
       "collapse": "Einklappen",
       "expand": "Ausklappen",
       "dragHandle": "Reihenfolge ändern"
+    },
+    "reorder": {
+      "moveUp": "Nach oben verschieben",
+      "moveDown": "Nach unten verschieben"
     },
     "empty": {
       "title": "Noch keine Kategorien",
@@ -1641,7 +1650,7 @@
     "description": "Verwalten Sie den Zugriff auf diese LealFinance-Instanz.",
     "roles": {
       "member": "Mitglied",
-      "admin": "Administrator"
+      "admin": "Admin"
     },
     "users": {
       "aiChat": "KI-Chat",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Dieser Token und der Registrierungslink werden nur jetzt angezeigt. Speichern Sie beides, bevor Sie die Seite verlassen.",
       "copyLink": "Registrierungslink kopieren",
       "revoke": "Widerrufen",
+      "revokeConfirm": "Einladung für {{email}} widerrufen?",
       "empty": "Keine Einladungen gefunden."
     }
   },
@@ -1762,7 +1772,9 @@
       "peer_admin": "Administratoren können die Rolle oder den Status eines anderen Administrators nicht ändern.",
       "totp_required": "Gib den Code aus deiner Authenticator-App ein.",
       "totp_invalid": "Dieser Code ist ungültig. Versuche es erneut.",
-      "totp_locked": "Zu viele falsche Codes. Versuche es in 15 Minuten erneut."
+      "totp_locked": "Zu viele falsche Codes. Versuche es in 15 Minuten erneut.",
+      "account_locked": "Zu viele falsche Passwörter. Versuche es in 15 Minuten erneut.",
+      "session_invalid": "Deine Sitzung ist abgelaufen. Melde dich erneut an."
     },
     "invitation": {
       "not_found": "Die Einladung ist ungültig.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Dieses Regelpaket wurde nicht gefunden."
     },
-    "rule_import": {
-      "invalid_format": "Diese Datei ist kein gültiger LealFinance-Regel-Export."
-    },
     "totp": {
       "already_enabled": "Die Zwei-Faktor-Authentifizierung ist bereits aktiviert.",
       "not_enabled": "Die Zwei-Faktor-Authentifizierung ist nicht aktiviert."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Dieser Gesamtbetrag ist zu klein, um auf die ausgewählten Raten aufgeteilt zu werden.",
       "advance_count_exceeds_remaining": "So viele offene Raten gibt es nicht mehr.",
       "installment_count_below_paid": "Die Anzahl der Raten kann nicht niedriger sein als die Anzahl der bereits bezahlten."
+    },
+    "account": {
+      "currency_in_use": "Dieses Konto enthält bereits Transaktionen. Daher kann seine Währung nicht geändert werden."
+    },
+    "transaction": {
+      "transfer_same_account": "Eine Überweisung benötigt zwei verschiedene Konten.",
+      "transfer_requires_destination": "Wähle das Zielkonto für diese Überweisung aus.",
+      "category_required": "Wähle eine Kategorie für diese Transaktion aus.",
+      "category_kind_mismatch": "Diese Kategorie passt nicht zum Typ dieser Transaktion.",
+      "conversion_required": "Diese Transaktion betrifft mehrere Währungen und benötigt daher einen umgerechneten Betrag."
+    },
+    "currency": {
+      "not_found": "Diese Währung ist nicht verfügbar.",
+      "inactive": "Diese Währung ist nicht mehr aktiv."
     }
   }
 }

@@ -2,36 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const locales = [
-  'en-US',
-  'pt-BR',
-  'es-ES',
-  'fr-FR',
-  'de-DE',
-  'it-IT',
-  'nl-NL',
-  'pl-PL',
-  'ru-RU',
-  'uk-UA',
-  'tr-TR',
-  'ar',
-  'he-IL',
-  'hi-IN',
-  'zh-CN',
-  'zh-TW',
-  'ja-JP',
-  'ko-KR',
-  'id-ID',
-  'vi-VN',
-  'th-TH',
-  'sv-SE',
-  'da-DK',
-  'nb-NO',
-  'fi-FI',
-  'cs-CZ',
-  'ro-RO',
-  'el-GR',
-];
+import locales from '../i18n-locales.json' with { type: 'json' };
 
 const translationsDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

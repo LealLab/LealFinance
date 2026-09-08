@@ -13,16 +13,35 @@
     <form class="mt-6 flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
       <label>
         <span class="form-label">{{ t('auth.fields.displayName') }}</span>
-        <input class="form-input" autocomplete="name" formControlName="displayName" />
+        <input
+          class="form-input"
+          autocomplete="name"
+          formControlName="displayName"
+          [attr.aria-invalid]="form.controls.displayName.invalid && form.controls.displayName.touched"
+          [attr.aria-describedby]="errorCode() ? 'register-error' : null"
+        />
       </label>
       <label>
         <span class="form-label">{{ t('auth.fields.email') }}</span>
-        <input class="form-input" type="email" autocomplete="email" formControlName="email" />
+        <input
+          class="form-input"
+          type="email"
+          autocomplete="email"
+          formControlName="email"
+          [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched"
+          [attr.aria-describedby]="errorCode() ? 'register-error' : null"
+        />
       </label>
       @if (!needsSetup()) {
         <label>
           <span class="form-label">{{ t('auth.fields.invitationToken') }}</span>
-          <input class="form-input" autocomplete="off" formControlName="token" />
+          <input
+            class="form-input"
+            autocomplete="off"
+            formControlName="token"
+            [attr.aria-invalid]="form.controls.token.invalid && form.controls.token.touched"
+            [attr.aria-describedby]="errorCode() ? 'register-error' : null"
+          />
         </label>
       }
       <label>
@@ -32,6 +51,8 @@
           type="password"
           autocomplete="new-password"
           formControlName="password"
+          [attr.aria-invalid]="form.controls.password.invalid && form.controls.password.touched"
+          [attr.aria-describedby]="errorCode() ? 'register-error' : null"
         />
         <span class="mt-1 block text-xs text-content-subtle">{{
           t('auth.register.passwordHint')
@@ -39,14 +60,19 @@
       </label>
       <label>
         <span class="form-label">{{ t('accounts.form.fields.currency') }}</span>
-        <select class="form-input" formControlName="baseCurrency">
+        <select
+          class="form-input"
+          formControlName="baseCurrency"
+          [attr.aria-invalid]="form.controls.baseCurrency.invalid && form.controls.baseCurrency.touched"
+          [attr.aria-describedby]="errorCode() ? 'register-error' : null"
+        >
           @for (currency of currencyOptions(); track currency) {
             <option [value]="currency">{{ currency }}</option>
           }
         </select>
       </label>
       @if (errorCode(); as code) {
-        <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+        <p id="register-error" class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }
       <button appButton type="submit" [disabled]="form.invalid || submitting()">
         {{ submitting() ? t('common.actions.saving') : t('auth.register.action') }}

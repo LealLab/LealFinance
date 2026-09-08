@@ -53,8 +53,11 @@ export class Login {
   constructor() {
     // A fresh instance has no one to log in as yet - send whoever lands
     // here straight to registration, which becomes the admin bootstrap.
-    this.identityApi.setupStatus().subscribe((needed) => {
-      if (needed) void this.router.navigateByUrl('/register');
+    this.identityApi.setupStatus().subscribe({
+      next: (needed) => {
+        if (needed) void this.router.navigateByUrl('/register');
+      },
+      error: (error: unknown) => this.errorCode.set(this.readCode(error)),
     });
   }
 

@@ -89,10 +89,13 @@ async def get_wallet_positions(db: AsyncSession, user_id: UUID, wallet_id: UUID)
     rows = await _rows_for_wallet(db, user_id, wallet_id)
     asset_ids = list(dict.fromkeys(row.asset_id for row in rows if row.asset_id is not None))
     assets = await ownership.get_many_owned(db, InvestmentAsset, asset_ids, user_id)
-    return [
-        _fold(assets[asset_id], [row for row in rows if row.asset_id == asset_id])
-        for asset_id in asset_ids
-    ]
+    try:
+        return [
+            _fold(assets[asset_id], [row for row in rows if row.asset_id == asset_id])
+            for asset_id in asset_ids
+        ]
+    except ValueError:
+        raise ValidationAppError(code="investment_transaction.ledger_invalid") from None
 
 
 async def get_position(
@@ -112,7 +115,10 @@ async def get_position(
         asset_id=asset_id,
         exclude_transaction_id=exclude_transaction_id,
     )
-    return _fold(asset, rows)
+    try:
+        return _fold(asset, rows)
+    except ValueError:
+        raise ValidationAppError(code="investment_transaction.ledger_invalid") from None
 
 
 async def assert_ledger_still_folds(

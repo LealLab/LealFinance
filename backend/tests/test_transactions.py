@@ -898,6 +898,38 @@ async def _post_expense(
     return response.json()["id"]
 
 
+async def test_list_transactions_without_limit_returns_complete_ledger(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "complete-ledger@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client)
+    imported = await client.post(
+        "/api/v1/transactions/import",
+        json={
+            "items": [
+                {
+                    "type": "expense",
+                    "date": "2026-01-05",
+                    "amount": "10.00",
+                    "currency": "BRL",
+                    "account_id": account_id,
+                    "category_id": category_id,
+                    "description": f"Row {i}",
+                }
+                for i in range(101)
+            ]
+        },
+    )
+    assert imported.status_code == 201, imported.text
+
+    response = await client.get("/api/v1/transactions")
+    assert response.status_code == 200
+    assert len(response.json()) == 101
+    assert response.headers["X-Total-Count"] == "101"
+    assert sum(Decimal(row["amount"]) for row in response.json()) == Decimal("1010.00")
+
+
 async def test_list_transactions_total_count_header_reflects_filters(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

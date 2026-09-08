@@ -63,7 +63,7 @@ const SEARCH_DEBOUNCE_MS = 250;
  * The literal keys passed to `confirmService.confirm(...)`/`choose(...)` below are real
  * string literals, invisible to transloco-keys-manager's extractor -
  * declare them so `task i18n:validate` sees them:
- * t(transactions.delete.title, transactions.delete.message, transactions.delete.installment.title, transactions.delete.installment.message, transactions.delete.installment.onlyThis, transactions.delete.installment.thisAndFuture, transactions.delete.installment.allInSeries, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
+ * t(transactions.delete.title, transactions.delete.message, transactions.delete.installment.title, transactions.delete.installment.message, transactions.delete.installment.onlyThis, transactions.delete.installment.thisAndFuture, transactions.delete.installment.allInSeries, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message, transactions.bulk.recategorizeConfirm)
  * The CSV header and column-menu keys are built by concatenation:
  * t(transactions.columns.date, transactions.columns.description, transactions.columns.category, transactions.columns.account, transactions.columns.amount, transactions.columns.title, transactions.export.filename, transactions.type.income, transactions.type.expense, transactions.type.transfer)
  */
@@ -128,6 +128,9 @@ export class Transactions {
   protected readonly selectedIds = signal<ReadonlySet<string>>(new Set());
   protected readonly calendarMonth = signal(monthKey(todayIso()));
   protected readonly selectedDay = signal<string | null>(null);
+  private readonly projectionDateTo = computed(() =>
+    formatIsoDate(addDays(parseIsoDate(todayIso()), PROJECTION_HORIZON_DAYS)),
+  );
 
   protected readonly txFormOpen = signal(false);
   protected readonly editingTx = signal<Transaction | undefined>(undefined);
@@ -170,7 +173,8 @@ export class Transactions {
   // so a projection for an occurrence the backend already posted isn't
   // drawn as a ghost row.
   protected readonly postedOccurrencesResource = rxResource({
-    stream: () => this.transactionRepository.list({ dateFrom: todayIso() }),
+    stream: () =>
+      this.transactionRepository.list({ dateFrom: todayIso(), dateTo: this.projectionDateTo() }),
   });
 
   protected readonly accountsById = computed(
@@ -200,7 +204,7 @@ export class Transactions {
     const filters = this.filters();
     const posted = this.postedOccurrences();
     const from = todayIso();
-    const to = formatIsoDate(addDays(parseIsoDate(from), PROJECTION_HORIZON_DAYS));
+    const to = this.projectionDateTo();
 
     return rules
       .flatMap((rule) => projectOccurrences(rule, from, to))
@@ -209,6 +213,17 @@ export class Transactions {
         matchesFilters(occurrence, filters, this.accountsById(), this.categoriesById()),
       )
       .sort((a, b) => a.date.localeCompare(b.date));
+  });
+
+  protected readonly nextOccurrenceMap = computed(() => {
+    const from = todayIso();
+    const to = formatIsoDate(addDays(parseIsoDate(from), 366));
+    return new Map(
+      (this.recurringRulesResource.value() ?? []).map((rule) => [
+        rule.id,
+        projectOccurrences(rule, from, to)[0]?.date,
+      ]),
+    );
   });
 
   // --- Selection -----------------------------------------------------------
@@ -567,9 +582,16 @@ export class Transactions {
     });
   }
 
-  protected bulkCategorize(categoryId: string): void {
+  protected async bulkCategorize(categoryId: string): Promise<void> {
     const ids = [...this.selectedIds()];
     if (ids.length === 0) return;
+    const confirmed = await this.confirmService.confirm(
+      'common.actions.confirm',
+      'transactions.bulk.recategorizeConfirm',
+      'default',
+      { count: ids.length },
+    );
+    if (!confirmed) return;
     this.transactionRepository.bulkCategorize(ids, categoryId).subscribe({
       next: () => {
         this.selectedIds.set(new Set());
@@ -605,12 +627,6 @@ export class Transactions {
       next: () => this.recurringRulesResource.reload(),
       error: () => this.mutationErrors.show(),
     });
-  }
-
-  protected nextOccurrence(rule: RecurringRule): string | undefined {
-    const from = todayIso();
-    const to = formatIsoDate(addDays(parseIsoDate(from), 366));
-    return projectOccurrences(rule, from, to)[0]?.date;
   }
 
   protected ruleAmountPrefix(rule: RecurringRule): string {

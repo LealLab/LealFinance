@@ -5,8 +5,10 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Query, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import CurrentUser, DbSession
+from app.models.currency import Currency
 from app.models.investment import InvestmentAsset, InvestmentTransaction, InvestmentWallet
 from app.schemas.common import ArchiveRequest
 from app.schemas.investment import (
@@ -25,17 +27,19 @@ from app.schemas.investment import (
 from app.services import asset_quotes, investment_positions
 from app.services import investments as investments_service
 from app.services.currencies import get_active_currency
-from app.services.exchange_rates import get_exchange_rate
+from app.services.exchange_rates import RateResult, get_exchange_rate
 
 router = APIRouter(prefix="/investments", tags=["investments"])
 
 
 async def _position_read(
-    db: DbSession,
+    db: AsyncSession,
     user_id: UUID,
     wallet: InvestmentWallet,
     position: investment_positions.Position,
     price_result: asset_quotes.PriceResult,
+    wallet_currency: Currency | None = None,
+    rate_result: RateResult | None = None,
 ) -> InvestmentPositionRead:
     price = price_result.price
     market_value: Decimal | None = None
@@ -44,12 +48,12 @@ async def _position_read(
     if price is not None:
         market_value = position.quantity * price
         if position.asset.currency != wallet.currency:
-            rate = await get_exchange_rate(
+            rate = rate_result or await get_exchange_rate(
                 db, position.asset.currency, wallet.currency, user_id=user_id
             )
             market_value *= rate.rate
             market_value_is_fallback = rate.is_fallback
-        wallet_currency = await get_active_currency(db, wallet.currency)
+        wallet_currency = wallet_currency or await get_active_currency(db, wallet.currency)
         market_value = market_value.quantize(
             Decimal(1).scaleb(-wallet_currency.decimal_digits), rounding=ROUND_HALF_UP
         )
@@ -93,6 +97,22 @@ async def get_summary(user: CurrentUser, db: DbSession) -> InvestmentSummaryRead
         positions_by_wallet[wallet.id] = wallet_positions
         all_positions.extend(wallet_positions)
     price_map = await _price_map(db, user.id, all_positions)
+    wallet_currency_map: dict[str, Currency] = {}
+    rate_map: dict[tuple[str, str], RateResult] = {}
+    for wallet in wallets:
+        if wallet.currency != total_currency:
+            continue
+        for position in positions_by_wallet[wallet.id]:
+            if price_map[position.asset.id].price is None:
+                continue
+            if wallet.currency not in wallet_currency_map:
+                wallet_currency_map[wallet.currency] = await get_active_currency(
+                    db, wallet.currency
+                )
+            if position.asset.currency != wallet.currency:
+                key = (position.asset.currency, wallet.currency)
+                if key not in rate_map:
+                    rate_map[key] = await get_exchange_rate(db, key[0], key[1], user_id=user.id)
 
     total_book_value = Decimal("0")
     market_values: list[Decimal | None] = []
@@ -101,7 +121,15 @@ async def get_summary(user: CurrentUser, db: DbSession) -> InvestmentSummaryRead
         if wallet.currency != total_currency:
             continue
         for position in positions_by_wallet[wallet.id]:
-            read = await _position_read(db, user.id, wallet, position, price_map[position.asset.id])
+            read = await _position_read(
+                db,
+                user.id,
+                wallet,
+                position,
+                price_map[position.asset.id],
+                wallet_currency=wallet_currency_map.get(wallet.currency),
+                rate_result=rate_map.get((position.asset.currency, wallet.currency)),
+            )
             total_book_value += position.book_value
             market_values.append(read.market_value)
             unrealized_gains.append(read.unrealized_gain)

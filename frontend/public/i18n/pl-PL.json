@@ -48,6 +48,10 @@
       "saving": "Zapisywanie…",
       "previousMonth": "Poprzedni miesiąc",
       "nextMonth": "Następny miesiąc"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Nasycenie i jasność koloru",
+      "hue": "Odcień koloru"
     }
   },
   "icons": {
@@ -518,7 +522,7 @@
       "group": "Grupuj",
       "date": "Data",
       "amount": "Kwota",
-      "amountMin": "Minimum",
+      "amountMin": "Kwota minimalna",
       "amountMax": "Maksimum",
       "any": "Dowolne",
       "back": "Wstecz",
@@ -710,6 +714,7 @@
       "mixedKinds": "Wybierz transakcje jednego rodzaju, aby przypisać kategorię",
       "delete": "Usuń zaznaczone",
       "clearSelection": "Wyczyść zaznaczenie",
+      "recategorizeConfirm": "Ponownie sklasyfikować {{count}} wybranych transakcji?",
       "deleteConfirm": {
         "title": "Usuń transakcje",
         "message": "Tej operacji nie można cofnąć. Usunąć {{count}} transakcji?"
@@ -743,6 +748,10 @@
       "collapse": "Zwiń",
       "expand": "Rozwiń",
       "dragHandle": "Zmień kolejność"
+    },
+    "reorder": {
+      "moveUp": "Przenieś w górę",
+      "moveDown": "Przenieś w dół"
     },
     "empty": {
       "title": "Nie masz jeszcze żadnych kategorii",
@@ -1641,7 +1650,7 @@
     "description": "Zarządzaj dostępem do tej instancji LealFinance.",
     "roles": {
       "member": "Członek",
-      "admin": "Administrator"
+      "admin": "Admin"
     },
     "users": {
       "aiChat": "Czat AI",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Ten token i link rejestracyjny są wyświetlane tylko teraz. Zapisz je przed wyjściem.",
       "copyLink": "Kopiuj link rejestracyjny",
       "revoke": "Cofnij",
+      "revokeConfirm": "Czy cofnąć zaproszenie dla {{email}}?",
       "empty": "Nie znaleziono zaproszeń."
     }
   },
@@ -1725,7 +1735,7 @@
       }
     },
     "model": {
-      "label": "Model",
+      "label": "Model AI",
       "recommendedOption": "{{model}} (zalecany)"
     },
     "modelError": "Nie udało się zmienić modelu. Spróbuj ponownie.",
@@ -1762,7 +1772,9 @@
       "peer_admin": "Administratorzy nie mogą zmieniać roli ani statusu innego administratora.",
       "totp_required": "Wprowadź kod z aplikacji uwierzytelniającej.",
       "totp_invalid": "Ten kod jest nieprawidłowy. Spróbuj ponownie.",
-      "totp_locked": "Zbyt wiele błędnych kodów. Spróbuj ponownie za 15 minut."
+      "totp_locked": "Zbyt wiele błędnych kodów. Spróbuj ponownie za 15 minut.",
+      "account_locked": "Zbyt wiele nieprawidłowych haseł. Spróbuj ponownie za 15 minut.",
+      "session_invalid": "Sesja wygasła. Zaloguj się ponownie."
     },
     "invitation": {
       "not_found": "Zaproszenie jest nieprawidłowe.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Nie znaleziono tego pakietu reguł."
     },
-    "rule_import": {
-      "invalid_format": "Ten plik nie jest prawidłowym eksportem reguł LealFinance."
-    },
     "totp": {
       "already_enabled": "Uwierzytelnianie dwuskładnikowe jest już włączone.",
       "not_enabled": "Uwierzytelnianie dwuskładnikowe nie jest włączone."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Ta kwota całkowita jest zbyt mała, aby rozdzielić ją na wybrane raty.",
       "advance_count_exceeds_remaining": "Nie zostało już tyle otwartych rat.",
       "installment_count_below_paid": "Liczba rat nie może być mniejsza niż liczba już zapłaconych."
+    },
+    "account": {
+      "currency_in_use": "To konto ma już transakcje, więc nie można zmienić jego waluty."
+    },
+    "transaction": {
+      "transfer_same_account": "Przelew wymaga dwóch różnych kont.",
+      "transfer_requires_destination": "Wybierz konto docelowe tego przelewu.",
+      "category_required": "Wybierz kategorię tej transakcji.",
+      "category_kind_mismatch": "Ta kategoria nie pasuje do typu tej transakcji.",
+      "conversion_required": "Ta transakcja obejmuje różne waluty, więc wymaga przeliczonej kwoty."
+    },
+    "currency": {
+      "not_found": "Ta waluta jest niedostępna.",
+      "inactive": "Ta waluta nie jest już aktywna."
     }
   }
 }

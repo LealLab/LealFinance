@@ -623,7 +623,10 @@ async def test_commit_creates_all_reviewed_rows_in_one_request(
     assert response.json() == {"created": 2}
 
     listed = await client.get("/api/v1/transactions")
-    assert len(listed.json()) == 2
+    assert [(row["description"], row["amount"]) for row in listed.json()] == [
+        ("Tea", "6.0000"),
+        ("Coffee", "5.0000"),
+    ]
 
 
 async def test_commit_rolls_back_entirely_when_one_item_is_invalid(

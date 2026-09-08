@@ -29,3 +29,13 @@ def test_production_accepts_replaced_secrets() -> None:
     )
 
     assert settings.environment == "production"
+
+
+def test_production_rejects_wildcard_cors() -> None:
+    with pytest.raises(ValidationError, match="CORS"):
+        Settings(
+            environment="production",
+            api_secret_key="api-secret",
+            postgres_password="database-secret",
+            api_cors_origins="https://example.com, *",
+        )

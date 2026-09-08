@@ -53,7 +53,11 @@ export class SessionService {
     return this.api.login(email, password, secondFactor).pipe(
       tap((user) => this.userState.set(user)),
       switchMap((user) => this.preferences.hydrate().pipe(map(() => user))),
-      tap(() => this.metadata.hydrate().subscribe()),
+      tap(() =>
+        this.metadata.hydrate().subscribe({
+          error: () => console.error('Failed to hydrate session metadata'),
+        }),
+      ),
     );
   }
 
@@ -61,7 +65,11 @@ export class SessionService {
     return this.api.loginWithPasskey(challenge, credential).pipe(
       tap((user) => this.userState.set(user)),
       switchMap((user) => this.preferences.hydrate().pipe(map(() => user))),
-      tap(() => this.metadata.hydrate().subscribe()),
+      tap(() =>
+        this.metadata.hydrate().subscribe({
+          error: () => console.error('Failed to hydrate session metadata'),
+        }),
+      ),
     );
   }
 
@@ -80,7 +88,11 @@ export class SessionService {
         this.preferences.setTheme(theme);
       }),
       switchMap((user) => this.preferences.hydrate().pipe(map(() => user))),
-      tap(() => this.metadata.hydrate().subscribe()),
+      tap(() =>
+        this.metadata.hydrate().subscribe({
+          error: () => console.error('Failed to hydrate session metadata'),
+        }),
+      ),
     );
   }
 

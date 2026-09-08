@@ -21,6 +21,8 @@
             inputmode="numeric"
             autocomplete="one-time-code"
             formControlName="totpCode"
+            [attr.aria-invalid]="form.controls.totpCode.invalid && form.controls.totpCode.touched"
+            [attr.aria-describedby]="errorCode() ? 'login-error' : null"
           />
           <span class="form-hint">{{ t('auth.totp.codeHint') }}</span>
         </label>
@@ -31,7 +33,14 @@
       } @else {
         <label>
           <span class="form-label">{{ t('auth.fields.email') }}</span>
-          <input class="form-input" type="email" autocomplete="email" formControlName="email" />
+          <input
+            class="form-input"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched"
+            [attr.aria-describedby]="errorCode() ? 'login-error' : null"
+          />
         </label>
         <label>
           <span class="form-label">{{ t('auth.fields.password') }}</span>
@@ -40,11 +49,13 @@
             type="password"
             autocomplete="current-password"
             formControlName="password"
+            [attr.aria-invalid]="form.controls.password.invalid && form.controls.password.touched"
+            [attr.aria-describedby]="errorCode() ? 'login-error' : null"
           />
         </label>
       }
       @if (errorCode(); as code) {
-        <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+        <p id="login-error" class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }
       <button appButton type="submit" [disabled]="form.invalid || submitting()">
         {{ submitting() ? t('common.actions.saving') : t('auth.login.action') }}

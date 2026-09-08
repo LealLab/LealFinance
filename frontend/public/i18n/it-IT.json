@@ -48,6 +48,10 @@
       "saving": "Salvataggio…",
       "previousMonth": "Mese precedente",
       "nextMonth": "Mese successivo"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Saturazione e luminosità del colore",
+      "hue": "Tonalità del colore"
     }
   },
   "icons": {
@@ -710,6 +714,7 @@
       "mixedKinds": "Seleziona transazioni di un solo tipo per assegnare una categoria",
       "delete": "Elimina selezionate",
       "clearSelection": "Cancella selezione",
+      "recategorizeConfirm": "Ricategorizzare le {{count}} transazioni selezionate?",
       "deleteConfirm": {
         "title": "Elimina transazioni",
         "message": "Questa operazione non può essere annullata. Eliminare {{count}} transazioni?"
@@ -743,6 +748,10 @@
       "collapse": "Comprimi",
       "expand": "Espandi",
       "dragHandle": "Riordina"
+    },
+    "reorder": {
+      "moveUp": "Sposta su",
+      "moveDown": "Sposta giù"
     },
     "empty": {
       "title": "Nessuna categoria",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Questo token e il link di registrazione vengono mostrati solo ora. Salvali prima di uscire.",
       "copyLink": "Copia il link di registrazione",
       "revoke": "Revoca",
+      "revokeConfirm": "Revocare l’invito per {{email}}?",
       "empty": "Nessun invito trovato."
     }
   },
@@ -1762,7 +1772,9 @@
       "peer_admin": "Gli amministratori non possono modificare il ruolo o lo stato di un altro amministratore.",
       "totp_required": "Inserisci il codice della tua app di autenticazione.",
       "totp_invalid": "Questo codice non è valido. Riprova.",
-      "totp_locked": "Troppi codici errati. Riprova tra 15 minuti."
+      "totp_locked": "Troppi codici errati. Riprova tra 15 minuti.",
+      "account_locked": "Troppe password errate. Riprova tra 15 minuti.",
+      "session_invalid": "La tua sessione è scaduta. Accedi di nuovo."
     },
     "invitation": {
       "not_found": "L'invito non è valido.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Questo pacchetto di regole non è stato trovato."
     },
-    "rule_import": {
-      "invalid_format": "Il file non è un export valido delle regole di LealFinance."
-    },
     "totp": {
       "already_enabled": "L'autenticazione a due fattori è già attiva.",
       "not_enabled": "L'autenticazione a due fattori non è attiva."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Questo importo totale è troppo basso per essere ripartito tra le rate selezionate.",
       "advance_count_exceeds_remaining": "Non ci sono così tante rate aperte rimaste.",
       "installment_count_below_paid": "Il numero di rate non può essere inferiore al numero di rate già pagate."
+    },
+    "account": {
+      "currency_in_use": "Questo conto contiene già transazioni, quindi non è possibile cambiarne la valuta."
+    },
+    "transaction": {
+      "transfer_same_account": "Un trasferimento richiede due conti diversi.",
+      "transfer_requires_destination": "Scegli il conto di destinazione del trasferimento.",
+      "category_required": "Scegli una categoria per questa transazione.",
+      "category_kind_mismatch": "Questa categoria non corrisponde al tipo di transazione.",
+      "conversion_required": "Questa transazione coinvolge più valute, quindi richiede un importo convertito."
+    },
+    "currency": {
+      "not_found": "Questa valuta non è disponibile.",
+      "inactive": "Questa valuta non è più attiva."
     }
   }
 }

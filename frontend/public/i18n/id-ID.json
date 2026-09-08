@@ -48,6 +48,10 @@
       "saving": "Menyimpan…",
       "previousMonth": "Bulan sebelumnya",
       "nextMonth": "Bulan berikutnya"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Saturasi dan kecerahan warna",
+      "hue": "Rona warna"
     }
   },
   "icons": {
@@ -518,7 +522,7 @@
       "group": "Kelompokkan",
       "date": "Tanggal",
       "amount": "Jumlah",
-      "amountMin": "Minimum",
+      "amountMin": "Jumlah minimum",
       "amountMax": "Maksimum",
       "any": "Apa pun",
       "back": "Kembali",
@@ -710,6 +714,7 @@
       "mixedKinds": "Pilih transaksi dengan satu jenis untuk menetapkan kategori",
       "delete": "Hapus yang dipilih",
       "clearSelection": "Hapus pilihan",
+      "recategorizeConfirm": "Ubah kategori {{count}} transaksi yang dipilih?",
       "deleteConfirm": {
         "title": "Hapus transaksi",
         "message": "Tindakan ini tidak dapat dibatalkan. Hapus {{count}} transaksi?"
@@ -743,6 +748,10 @@
       "collapse": "Ciutkan",
       "expand": "Perluas",
       "dragHandle": "Urutkan ulang"
+    },
+    "reorder": {
+      "moveUp": "Pindahkan ke atas",
+      "moveDown": "Pindahkan ke bawah"
     },
     "empty": {
       "title": "Belum ada kategori",
@@ -1641,7 +1650,7 @@
     "description": "Kelola akses ke instans LealFinance ini.",
     "roles": {
       "member": "Anggota",
-      "admin": "Administrator"
+      "admin": "Admin"
     },
     "users": {
       "aiChat": "Chat AI",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Token dan tautan pendaftaran ini hanya ditampilkan sekarang. Simpan sebelum meninggalkan halaman.",
       "copyLink": "Salin tautan pendaftaran",
       "revoke": "Cabut",
+      "revokeConfirm": "Cabut undangan untuk {{email}}?",
       "empty": "Undangan tidak ditemukan."
     }
   },
@@ -1725,7 +1735,7 @@
       }
     },
     "model": {
-      "label": "Model",
+      "label": "Model AI",
       "recommendedOption": "{{model}} (direkomendasikan)"
     },
     "modelError": "Model tidak dapat diubah. Coba lagi.",
@@ -1762,7 +1772,9 @@
       "peer_admin": "Admin tidak dapat mengubah peran atau status admin lain.",
       "totp_required": "Masukkan kode dari aplikasi autentikator Anda.",
       "totp_invalid": "Kode itu tidak valid. Coba lagi.",
-      "totp_locked": "Terlalu banyak kode salah. Coba lagi dalam 15 menit."
+      "totp_locked": "Terlalu banyak kode salah. Coba lagi dalam 15 menit.",
+      "account_locked": "Terlalu banyak kata sandi yang salah. Coba lagi dalam 15 menit.",
+      "session_invalid": "Sesi Anda telah berakhir. Masuk lagi."
     },
     "invitation": {
       "not_found": "Undangan ini tidak valid.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Paket aturan ini tidak ditemukan."
     },
-    "rule_import": {
-      "invalid_format": "File ini bukan ekspor aturan LealFinance yang valid."
-    },
     "totp": {
       "already_enabled": "Autentikasi dua faktor sudah aktif.",
       "not_enabled": "Autentikasi dua faktor tidak aktif."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Jumlah total itu terlalu kecil untuk dibagi ke cicilan yang dipilih.",
       "advance_count_exceeds_remaining": "Tidak ada sebanyak itu cicilan yang belum dibayar.",
       "installment_count_below_paid": "Jumlah cicilan tidak boleh kurang dari jumlah yang sudah dibayar."
+    },
+    "account": {
+      "currency_in_use": "Akun ini sudah memiliki transaksi, jadi mata uangnya tidak dapat diubah."
+    },
+    "transaction": {
+      "transfer_same_account": "Transfer memerlukan dua akun yang berbeda.",
+      "transfer_requires_destination": "Pilih akun tujuan transfer ini.",
+      "category_required": "Pilih kategori untuk transaksi ini.",
+      "category_kind_mismatch": "Kategori tersebut tidak cocok dengan jenis transaksi ini.",
+      "conversion_required": "Transaksi ini melibatkan beberapa mata uang, jadi memerlukan jumlah yang dikonversi."
+    },
+    "currency": {
+      "not_found": "Mata uang tersebut tidak tersedia.",
+      "inactive": "Mata uang tersebut tidak lagi aktif."
     }
   }
 }

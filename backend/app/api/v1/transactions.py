@@ -73,7 +73,7 @@ async def list_transactions(
         limit=limit,
         offset=offset,
     )
-    # Exposed via CORS in app/main.py; only meaningful when a limit was given.
+    # Exposed via CORS in app/main.py for paginated clients.
     response.headers["X-Total-Count"] = str(page.total)
     return page.rows
 

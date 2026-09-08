@@ -69,12 +69,18 @@ export class Register {
         this.form.controls.locale.setValue(locale, { emitEvent: false });
       }
     });
-    this.identityApi.currencies().subscribe((currencies) => this.currencies.set(currencies));
-    this.identityApi.setupStatus().subscribe((needed) => {
-      if (!needed) return;
-      this.needsSetup.set(true);
-      this.form.controls.token.removeValidators(Validators.required);
-      this.form.controls.token.updateValueAndValidity();
+    this.identityApi.currencies().subscribe(
+      (currencies) => this.currencies.set(currencies),
+      (error: unknown) => this.errorCode.set(this.readCode(error)),
+    );
+    this.identityApi.setupStatus().subscribe({
+      next: (needed) => {
+        if (!needed) return;
+        this.needsSetup.set(true);
+        this.form.controls.token.removeValidators(Validators.required);
+        this.form.controls.token.updateValueAndValidity();
+      },
+      error: (error: unknown) => this.errorCode.set(this.readCode(error)),
     });
   }
 
@@ -86,13 +92,15 @@ export class Register {
       await firstValueFrom(this.session.register(this.form.getRawValue()));
       await this.router.navigateByUrl('/');
     } catch (error) {
-      this.errorCode.set(
-        typeof error === 'object' && error !== null && 'code' in error
-          ? String((error as { code: unknown }).code)
-          : 'error.generic',
-      );
+      this.errorCode.set(this.readCode(error));
     } finally {
       this.submitting.set(false);
     }
+  }
+
+  private readCode(error: unknown): string {
+    return typeof error === 'object' && error !== null && 'code' in error
+      ? String((error as { code: unknown }).code)
+      : 'error.generic';
   }
 }

@@ -34,7 +34,7 @@ from datetime import timedelta
 from decimal import Decimal
 from uuid import UUID
 
-from sqlalchemy import or_
+from sqlalchemy import func, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError, ValidationAppError
@@ -166,11 +166,13 @@ async def list_invoices(
     window_start = _add_months(first_close, -1, closing_day) + timedelta(days=1)
 
     # Every transaction that touches the card, bucketed in Python - personal-
-    # finance scale. ponytail: fetches the whole card ledger; add a date
-    # filter if a single card's history ever gets large.
+    # finance scale. ponytail: bucketing stays in Python; batch by cycle only
+    # if this bounded window ever gets large.
     result = await db.execute(
         ownership.owned(Transaction, user_id).where(
-            or_(Transaction.account_id == card_id, Transaction.to_account_id == card_id)
+            or_(Transaction.account_id == card_id, Transaction.to_account_id == card_id),
+            Transaction.date >= window_start,
+            Transaction.date <= last_close,
         )
     )
     transactions = list(result.scalars().all())
@@ -181,10 +183,17 @@ async def list_invoices(
     # opening_balance (negative == pre-existing debt) lands in the card's
     # genuine first cycle; if that predates the returned window it is simply
     # not shown - a windowed view, not a lifetime reconciliation.
-    dated = [tx.date for tx in transactions]
-    first_activity_close = cycle_close_for(min(dated), closing_day) if dated else current_close
-    if account.opening_balance != 0 and first_activity_close in totals:
-        totals[first_activity_close] += -account.opening_balance
+    if account.opening_balance != 0:
+        first_activity = await db.scalar(
+            ownership.owned(Transaction, user_id)
+            .with_only_columns(func.min(Transaction.date))
+            .where(or_(Transaction.account_id == card_id, Transaction.to_account_id == card_id))
+        )
+        first_activity_close = (
+            cycle_close_for(first_activity, closing_day) if first_activity else current_close
+        )
+        if first_activity_close in totals:
+            totals[first_activity_close] += -account.opening_balance
 
     for tx in transactions:
         if tx.date <= window_start - timedelta(days=1) or tx.date > last_close:
@@ -264,6 +273,17 @@ def _months_between(a: date_type, b: date_type) -> int:
     return abs((b.year - a.year) * 12 + (b.month - a.month))
 
 
+async def _get_owned_account_for_update(
+    db: AsyncSession, user_id: UUID, account_id: UUID
+) -> Account:
+    account = await db.scalar(
+        ownership.owned(Account, user_id).where(Account.id == account_id).with_for_update()
+    )
+    if account is None:
+        raise NotFoundError(code="account.not_found", params={"id": str(account_id)})
+    return account
+
+
 async def pay_invoice(
     db: AsyncSession,
     user_id: UUID,
@@ -282,7 +302,7 @@ async def pay_invoice(
     An open (current) invoice may be paid early; a projected (future) one
     may not.
     """
-    account = await ownership.get_owned(db, Account, account_id, user_id)
+    account = await _get_owned_account_for_update(db, user_id, account_id)
     if account.type != ACCOUNT_TYPE_CREDIT_CARD:
         raise ValidationAppError(code="card_invoice.account_not_credit_card")
     if account.closing_day is None or account.due_day is None:

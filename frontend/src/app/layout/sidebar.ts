@@ -135,9 +135,9 @@ export class Sidebar {
     ),
   );
   protected readonly labelClass = computed(() =>
-    this.variant() === 'rail' && !this.expanded() ? 'hidden' : '',
+    this.variant() === 'rail' && !this.expanded() ? 'sr-only' : '',
   );
   protected readonly sectionLabelClass = computed(() =>
-    this.variant() === 'rail' && !this.expanded() ? 'hidden' : 'block',
+    this.variant() === 'rail' && !this.expanded() ? 'sr-only' : 'block',
   );
 }

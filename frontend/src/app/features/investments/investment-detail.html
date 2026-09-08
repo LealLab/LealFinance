@@ -4,7 +4,13 @@
     <app-icon name="chevronRight" [size]="14" class="rotate-180" />{{ t('investments.detail.back') }}
   </button>
 
-  @if (wallet(); as wallet) {
+  @if (walletResource.isLoading() && !walletResource.value()) {
+    <div class="flex flex-col gap-3" aria-busy="true">
+      @for (section of [1, 2, 3]; track section) {
+        <app-skeleton height="4.5rem" />
+      }
+    </div>
+  } @else if (wallet(); as wallet) {
     <app-page-header [title]="wallet.name" [description]="wallet.currency">
       <button appButton variant="primary" type="button" (click)="openCreateTransaction()">
         <app-icon name="plus" [size]="16" />{{ t('investments.actions.newTransaction') }}

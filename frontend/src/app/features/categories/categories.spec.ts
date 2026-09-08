@@ -35,8 +35,16 @@ function findCategoryRow(el: HTMLElement, name: string): HTMLLIElement | null {
 }
 
 function findDeleteButton(row: HTMLLIElement): HTMLButtonElement | null {
-  return row.querySelector<HTMLButtonElement>(
-    ':scope > div > div:last-child > div > button:nth-of-type(3), :scope > div:last-child > button:nth-of-type(2)'
+  // The row's own action buttons only - not the delete buttons of nested
+  // category rows. Group rows nest their actions two divs deep; category
+  // rows keep them in the row's last child.
+  const actionButtons = row.querySelectorAll<HTMLButtonElement>(
+    ':scope > div > div:last-child > div > button, :scope > div:last-child > button',
+  );
+  return (
+    Array.from(actionButtons).find((button) =>
+      button.querySelector('app-icon[name="trash"]'),
+    ) ?? null
   );
 }
 

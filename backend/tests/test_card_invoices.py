@@ -154,6 +154,22 @@ async def test_opening_balance_debt_lands_in_first_cycle(
     assert february.total == __D("0")
 
 
+async def test_opening_debt_before_window_is_not_added_to_recent_invoice(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user_id = await _authed(client, db_session, "old-opening@example.com")
+    card_id = await _card(client, opening_balance="-300.00")
+    category_id = await _category(client)
+    await _expense(client, card_id, category_id, "2024-03-05", "50.00")
+    await _expense(client, card_id, category_id, "2026-03-05", "100.00")
+
+    invoices = await svc.list_invoices(db_session, user_id, card_id, today=date(2026, 3, 21))
+
+    march = next(inv for inv in invoices if inv.close_date == date(2026, 3, 10))
+    assert march.total == __D("100.00")
+    assert sum(inv.total for inv in invoices) == __D("100.00")
+
+
 async def test_total_ignores_payments_and_partial_payment_leaves_remaining(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

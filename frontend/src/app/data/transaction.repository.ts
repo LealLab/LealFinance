@@ -31,7 +31,7 @@ export interface TransactionFilters {
   amountMax?: string;
   sort?: TransactionSort;
   order?: SortOrder;
-  /** Page size. Omitted means "no paging - return everything". */
+  /** Page size. Omitted returns all matching transactions. */
   limit?: number;
   /** Rows to skip; only meaningful alongside limit. */
   offset?: number;

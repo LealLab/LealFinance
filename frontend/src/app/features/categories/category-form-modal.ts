@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { Category, CategoryKind } from '../../domain/models/category';
@@ -131,7 +132,7 @@ export class CategoryFormModal {
         : this.categoryGroups.create(payload);
       request$.subscribe({
         next: (saved) => this.finishSave(saved),
-        error: () => this.failSave()
+        error: (error: unknown) => this.failSave(error)
       });
       return;
     }
@@ -149,7 +150,7 @@ export class CategoryFormModal {
       : this.categories.create(payload);
     request$.subscribe({
       next: (saved) => this.finishSave(saved),
-      error: () => this.failSave()
+      error: (error: unknown) => this.failSave(error)
     });
   }
 
@@ -159,8 +160,8 @@ export class CategoryFormModal {
     this.saved.emit(saved);
   }
 
-  private failSave(): void {
+  private failSave(error: unknown): void {
     this.saving.set(false);
-    this.saveErrorKey.set('categories.form.saveError');
+    this.saveErrorKey.set(error instanceof ApiError ? `errors.${error.code}` : 'categories.form.saveError');
   }
 }

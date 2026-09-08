@@ -1,7 +1,7 @@
 """Celery application and beat schedule.
 
-Workers use the sync engine (app.core.db_sync) rather than the async engine
-FastAPI uses - Celery's worker model isn't async-native.
+Each worker task creates its own short-lived async engine with NullPool (see
+app/workers/tasks/*.py).
 """
 
 from celery import Celery
@@ -16,6 +16,7 @@ celery_app = Celery(
     broker=settings.celery_broker_url,
     backend=settings.celery_broker_url,
     include=[
+        "app.workers.tasks.auth",
         "app.workers.tasks.rates",
         "app.workers.tasks.recurring",
         "app.workers.tasks.loans",
@@ -61,5 +62,9 @@ celery_app.conf.beat_schedule = {
     "backfill-fallback-conversions-daily": {
         "task": "app.workers.tasks.rates.backfill_fallback_conversions",
         "schedule": crontab(hour=2, minute=0),
+    },
+    "prune-expired-auth-daily": {
+        "task": "app.workers.tasks.auth.prune_expired_auth",
+        "schedule": crontab(hour=3, minute=30),
     },
 }

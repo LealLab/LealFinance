@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ApiError } from '../../core/api-error';
 import { AccountRepository } from '../../data/account.repository';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
@@ -65,6 +65,7 @@ export class Chat {
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly conversations = rxResource({ stream: () => this.repo.listConversations() });
   protected readonly conversationList = signal<AgentConversation[]>([]);
@@ -83,6 +84,7 @@ export class Chat {
   protected readonly refused = signal(false);
   protected readonly composer = signal('');
   private refreshDetailAfterConfirmation = false;
+  private streamSubscription?: Subscription;
   /**
    * The conversation id whose persisted messages have already been folded
    * into `liveMessages`. The `detail` resource reloads after every streamed
@@ -114,6 +116,10 @@ export class Chat {
   }
 
   protected selectConversation(id: string): void {
+    this.streamSubscription?.unsubscribe();
+    this.streamSubscription = undefined;
+    this.sending.set(false);
+    this.refreshDetailAfterConfirmation = false;
     this.errorKey.set(null);
     this.refused.set(false);
     this.liveMessages.set([]);
@@ -206,9 +212,10 @@ export class Chat {
   }
 
   private readStream(stream: Observable<AgentStreamEvent>): void {
+    this.streamSubscription?.unsubscribe();
     this.sending.set(true);
     this.errorKey.set(null);
-    stream.subscribe({
+    this.streamSubscription = stream.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (event) => this.applyEvent(event),
       error: (error: unknown) => this.setError(error),
       complete: () => this.sending.set(false),
@@ -378,7 +385,7 @@ export class Chat {
       {
         'agents.not_configured': 'chat.errors.notConfigured',
         'agents.provider_unavailable': 'chat.errors.providerUnavailable',
-        'agents.loop_exhausted': 'chat.errors.loopExhausted',
+        'agents.tool_loop_exhausted': 'chat.errors.loopExhausted',
       }[code] ?? 'chat.errors.generic'
     );
   }

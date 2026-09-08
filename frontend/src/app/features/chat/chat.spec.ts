@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { throwError } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { vi } from 'vitest';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AccountRepository } from '../../data/account.repository';
@@ -16,7 +16,7 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { ConfirmService } from '../../core/confirm.service';
 import { ApiError } from '../../core/api-error';
-import { AgentConversationDetail } from '../../domain/models/agent-chat';
+import { AgentConversationDetail, AgentStreamEvent } from '../../domain/models/agent-chat';
 import { provideTestTransloco } from '../../../testing/transloco';
 import { Chat } from './chat';
 
@@ -73,6 +73,23 @@ describe('Chat', () => {
     expect(fixture.componentInstance['liveMessages']().at(-1)?.text).toBe('Mock: Ola');
     expect(fixture.componentInstance['sending']()).toBe(false);
     expect(fixture.nativeElement.textContent).toContain('Mock: Ola');
+  });
+
+  it('cancels the active stream before switching conversations', () => {
+    const fixture = setup();
+    const chat = fixture.componentInstance;
+    const stream = new Subject<AgentStreamEvent>();
+    chat['repo'].sendMessage = vi.fn().mockReturnValue(stream.asObservable());
+    chat['activeId'].set('c1');
+    chat['liveMessages'].set([{ role: 'assistant', text: '', tools: [] }]);
+
+    chat['send']('hello');
+    chat['selectConversation']('c2');
+    chat['liveMessages'].set([{ role: 'assistant', text: 'new', tools: [] }]);
+    stream.next({ type: 'delta', text: ' stale' });
+
+    expect(chat['sending']()).toBe(false);
+    expect(chat['liveMessages']().at(-1)?.text).toBe('new');
   });
 
   it('applies every stream event onto the last assistant turn', () => {
@@ -351,7 +368,7 @@ describe('Chat', () => {
 
     chat['setError'](new ApiError(422, 'agents.not_configured', {}));
     expect(chat['errorKey']()).toBe('chat.errors.notConfigured');
-    chat['setError']({ code: 'agents.loop_exhausted' });
+    chat['setError']({ code: 'agents.tool_loop_exhausted' });
     expect(chat['errorKey']()).toBe('chat.errors.loopExhausted');
   });
 

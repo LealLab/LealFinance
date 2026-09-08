@@ -48,6 +48,10 @@
       "saving": "Se salvează…",
       "previousMonth": "Luna anterioară",
       "nextMonth": "Luna următoare"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Saturația și luminozitatea culorii",
+      "hue": "Nuanța culorii"
     }
   },
   "icons": {
@@ -710,6 +714,7 @@
       "mixedKinds": "Selectează tranzacții de un singur tip pentru a atribui o categorie",
       "delete": "Șterge selecția",
       "clearSelection": "Golește selecția",
+      "recategorizeConfirm": "Reclasificăm cele {{count}} tranzacții selectate?",
       "deleteConfirm": {
         "title": "Șterge tranzacțiile",
         "message": "Acest lucru nu poate fi anulat. Ștergi {{count}} tranzacții?"
@@ -743,6 +748,10 @@
       "collapse": "Restrânge",
       "expand": "Extinde",
       "dragHandle": "Reordonează"
+    },
+    "reorder": {
+      "moveUp": "Mută în sus",
+      "moveDown": "Mută în jos"
     },
     "empty": {
       "title": "Nu există încă nicio categorie",
@@ -1641,7 +1650,7 @@
     "description": "Gestionează accesul la această instanță LealFinance.",
     "roles": {
       "member": "Membru",
-      "admin": "Administrator"
+      "admin": "Admin"
     },
     "users": {
       "aiChat": "Chat AI",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Acest cod și linkul de înregistrare sunt afișate doar acum. Salvează-le înainte să pleci.",
       "copyLink": "Copiază linkul de înregistrare",
       "revoke": "Revocă",
+      "revokeConfirm": "Revoci invitația pentru {{email}}?",
       "empty": "Nu s-a găsit nicio invitație."
     }
   },
@@ -1725,7 +1735,7 @@
       }
     },
     "model": {
-      "label": "Model",
+      "label": "Model AI",
       "recommendedOption": "{{model}} (recomandat)"
     },
     "modelError": "Modelul nu a putut fi schimbat. Încearcă din nou.",
@@ -1762,7 +1772,9 @@
       "peer_admin": "Administratorii nu pot schimba rolul sau starea unui alt administrator.",
       "totp_required": "Introdu codul din aplicația de autentificare.",
       "totp_invalid": "Codul nu este valid. Încearcă din nou.",
-      "totp_locked": "Prea multe coduri greșite. Încearcă din nou în 15 minute."
+      "totp_locked": "Prea multe coduri greșite. Încearcă din nou în 15 minute.",
+      "account_locked": "Prea multe parole incorecte. Încearcă din nou peste 15 minute.",
+      "session_invalid": "Sesiunea ta a expirat. Conectează-te din nou."
     },
     "invitation": {
       "not_found": "Invitația nu este validă.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Pachetul de reguli nu a fost găsit."
     },
-    "rule_import": {
-      "invalid_format": "Acest fișier nu este un export valid de reguli LealFinance."
-    },
     "totp": {
       "already_enabled": "Autentificarea în doi factori este deja activată.",
       "not_enabled": "Autentificarea în doi factori nu este activată."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Această sumă totală este prea mică pentru a fi împărțită între ratele selectate.",
       "advance_count_exceeds_remaining": "Nu mai rămân atât de multe rate deschise.",
       "installment_count_below_paid": "Numărul de rate nu poate fi mai mic decât numărul celor deja plătite."
+    },
+    "account": {
+      "currency_in_use": "Acest cont are deja tranzacții, deci moneda lui nu poate fi schimbată."
+    },
+    "transaction": {
+      "transfer_same_account": "Un transfer necesită două conturi diferite.",
+      "transfer_requires_destination": "Alege contul către care se face acest transfer.",
+      "category_required": "Alege o categorie pentru această tranzacție.",
+      "category_kind_mismatch": "Această categorie nu corespunde tipului acestei tranzacții.",
+      "conversion_required": "Această tranzacție implică mai multe monede, deci necesită o sumă convertită."
+    },
+    "currency": {
+      "not_found": "Această monedă nu este disponibilă.",
+      "inactive": "Această monedă nu mai este activă."
     }
   }
 }

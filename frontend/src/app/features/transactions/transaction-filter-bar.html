@@ -4,11 +4,11 @@
       <app-icon
         name="search"
         [size]="16"
-        class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-content-subtle"
+        class="pointer-events-none absolute top-1/2 start-3 -translate-y-1/2 text-content-subtle"
       />
       <input
         type="search"
-        class="form-input mt-0 pl-9"
+        class="form-input mt-0 ps-9"
         [placeholder]="t('transactions.filters.searchPlaceholder')"
         [value]="search()"
         (input)="onSearch($any($event.target).value)"
@@ -211,7 +211,7 @@
           <span class="font-medium">{{ chip.value }}</span>
           <button
             type="button"
-            class="ml-0.5 rounded-full p-0.5 hover:bg-surface-raised"
+            class="ms-0.5 rounded-full p-0.5 hover:bg-surface-raised"
             [attr.aria-label]="t('transactions.filters.removeChip', { filter: t(chip.labelKey) })"
             (click)="removeChip(chip.key)"
           >

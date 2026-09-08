@@ -52,7 +52,8 @@ def _make_tool(spec: tools.ToolDef) -> Tool:
 mcp = FastMCP(
     name="LealFinance",
     stateless_http=True,
-    tools=[_make_tool(spec) for spec in tools.SPECS],
+    # External MCP clients must not receive write tools outside the in-app confirmation flow.
+    tools=[_make_tool(spec) for spec in tools.SPECS if not spec.writes],
 )
 
 

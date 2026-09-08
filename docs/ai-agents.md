@@ -97,13 +97,11 @@ The `agents` Compose profile also starts a standalone MCP server
 (`app/mcp/server.py`, port 8001, unpublished) exposing the same tool set to
 external MCP clients such as Claude Desktop. It authenticates with a per-user
 bearer token from `POST /api/v1/agents/mcp-token` - a Fernet value derived from
-`API_SECRET_KEY` carrying only the user id, valid for one year, shown once.
+`API_SECRET_KEY` carrying only the user id, valid for 30 days, shown once.
 
-The MCP server does **not** run the in-app confirmation flow: `spec.writes` is
-not consulted there, so write tools (including the delete tools) execute as soon
-as the client calls them. The confirmation is whatever tool-approval prompt the
-external client shows. Every call still runs through the same user-scoped
-service and is bounded to the token's user.
+The MCP server exposes only read tools; write tools stay behind the in-app
+confirmation flow. Every call still runs through the same user-scoped service
+and is bounded to the token's user.
 Individual tokens cannot be revoked; the levers are clearing `ai_chat_enabled`
 for a member, deactivating the user, or rotating `API_SECRET_KEY`. Publishing
 port 8001 (or adding an nginx location) to reach it from the host is an

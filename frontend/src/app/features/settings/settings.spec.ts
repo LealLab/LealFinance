@@ -329,11 +329,12 @@ describe('Settings', () => {
     expect(fixture.nativeElement.querySelector('p[class*="border-warning"]')).not.toBeNull();
   });
 
-  it('shows the QR code and the manual key when enrollment starts', () => {
+  it('shows the QR code and the manual key when enrollment starts', async () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
     fixture.componentInstance['startTotpEnrollment']();
+    await fixture.whenStable();
     fixture.detectChanges();
 
     const qr = fixture.nativeElement.querySelector('img[src^="data:image/gif"]');

@@ -103,6 +103,25 @@ async def test_pays_a_due_invoice_once(client: AsyncClient, db_session: AsyncSes
     assert payments[0].card_invoice_close_date == date(2026, 3, 10)
 
 
+async def test_auto_pay_does_not_repay_opening_debt_outside_window(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "auto-old-opening@example.com")
+    checking_id = await _account(client)
+    card_id = await _card(client, checking_id, auto_pay=True)
+    card = await db_session.scalar(select(Account).where(Account.id == card_id))
+    card.opening_balance = -300
+    await db_session.flush()
+    category_id = await _category(client)
+    await _charge(client, card_id, category_id, "2024-03-05", "50.00")
+    await _charge(client, card_id, category_id, "2026-03-05", "100.00")
+
+    assert await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21)) == 1
+    payments = await _card_payments(db_session, card_id)
+    assert len(payments) == 1
+    assert payments[0].amount == 100
+
+
 async def test_auto_pay_disabled_is_skipped(client: AsyncClient, db_session: AsyncSession) -> None:
     await _authed(client, db_session, "auto2@example.com")
     checking_id = await _account(client)

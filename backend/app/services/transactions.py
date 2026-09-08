@@ -28,6 +28,7 @@ from app.models._conversion import CONVERSION_SOURCE_FALLBACK, ConversionValue
 from app.models.account import ACCOUNT_TYPE_CREDIT_CARD, Account
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
+from app.models.currency import Currency
 from app.models.loan import Loan
 from app.models.recurring import RecurringRule
 from app.models.transaction import (
@@ -57,8 +58,12 @@ async def validate_transaction_shape(
     to_account_id: UUID | None,
     category_id: UUID | None,
     currency: str,
+    account_map: dict[UUID, Account] | None = None,
+    category_map: dict[UUID, Category] | None = None,
 ) -> tuple[Account, Account | None]:
-    account = await ownership.get_owned(db, Account, account_id, user_id)
+    account = account_map.get(account_id) if account_map is not None else None
+    if account is None:
+        account = await ownership.get_owned(db, Account, account_id, user_id)
 
     if type_ == TRANSACTION_TYPE_TRANSFER:
         if currency != account.currency:
@@ -72,7 +77,9 @@ async def validate_transaction_shape(
             raise ValidationAppError(code="transaction.transfer_same_account")
         if category_id is not None:
             raise ValidationAppError(code="transaction.transfer_has_category")
-        to_account = await ownership.get_owned(db, Account, to_account_id, user_id)
+        to_account = account_map.get(to_account_id) if account_map is not None else None
+        if to_account is None:
+            to_account = await ownership.get_owned(db, Account, to_account_id, user_id)
         return account, to_account
 
     if to_account_id is not None:
@@ -86,7 +93,9 @@ async def validate_transaction_shape(
     # income / expense
     if category_id is None:
         raise ValidationAppError(code="transaction.category_required")
-    category = await ownership.get_owned(db, Category, category_id, user_id)
+    category = category_map.get(category_id) if category_map is not None else None
+    if category is None:
+        category = await ownership.get_owned(db, Category, category_id, user_id)
     expected_kind = (
         TRANSACTION_TYPE_INCOME if type_ == TRANSACTION_TYPE_INCOME else TRANSACTION_TYPE_EXPENSE
     )
@@ -276,11 +285,16 @@ async def build_transaction(
     data: TransactionCreate,
     *,
     loan_installment_number: int | None = None,
+    account_map: dict[UUID, Account] | None = None,
+    category_map: dict[UUID, Category] | None = None,
+    currency_map: dict[str, Currency] | None = None,
 ) -> Transaction:
     """Validates and constructs a Transaction, adding it to the session -
     but does not commit. Shared by create_transaction (one row, commits
     immediately) and import_transactions (many rows, one commit)."""
-    await get_active_currency(db, data.currency)
+    currency = currency_map.get(data.currency) if currency_map is not None else None
+    if currency is None or not currency.is_active:
+        await get_active_currency(db, data.currency)
     account, to_account = await validate_transaction_shape(
         db,
         user_id,
@@ -289,6 +303,8 @@ async def build_transaction(
         to_account_id=data.to_account_id,
         category_id=data.category_id,
         currency=data.currency,
+        account_map=account_map,
+        category_map=category_map,
     )
     await ownership.get_owned_or_none(db, RecurringRule, data.recurring_rule_id, user_id)
     loan = await ownership.get_owned_or_none(db, Loan, data.loan_id, user_id)
@@ -415,8 +431,48 @@ async def import_transactions(
     persisted - the frontend already showed the user a preview, so a
     partial import here would be worse than a retry."""
     try:
+        # Only prefetch references that validate_transaction_shape would
+        # dereference; forbidden fields must keep their shape error first.
+        account_ids = list({item.account_id for item in items})
+        account_ids.extend(
+            {
+                item.to_account_id
+                for item in items
+                if item.type == TRANSACTION_TYPE_TRANSFER
+                and item.to_account_id is not None
+                and item.to_account_id != item.account_id
+            }
+        )
+        category_ids = list(
+            {
+                item.category_id
+                for item in items
+                if item.type in (TRANSACTION_TYPE_INCOME, TRANSACTION_TYPE_EXPENSE)
+                and item.category_id is not None
+            }
+        )
+        account_map = await ownership.get_many_owned(db, Account, account_ids, user_id)
+        category_map = await ownership.get_many_owned(db, Category, category_ids, user_id)
+
+        currency_codes = {item.currency for item in items}
+        currency_result = await db.execute(
+            select(Currency).where(Currency.code.in_(currency_codes))
+        )
+        currency_map = {currency.code: currency for currency in currency_result.scalars().all()}
+        for code in currency_codes:
+            currency = currency_map.get(code)
+            if currency is None or not currency.is_active:
+                await get_active_currency(db, code)
+
         for item in items:
-            await build_transaction(db, user_id, item)
+            await build_transaction(
+                db,
+                user_id,
+                item,
+                account_map=account_map,
+                category_map=category_map,
+                currency_map=currency_map,
+            )
     except Exception:
         await db.rollback()
         raise

@@ -10,7 +10,7 @@
     "composer": {
       "placeholder": "Spørg om din økonomi…"
     },
-    "send": "Send",
+    "send": "Send besked",
     "offTopic": "Jeg kan hjælpe med LealFinance og din økonomi, men ikke med dette emne.",
     "thinking": "Tænker…",
     "toolRunning": "Kører",
@@ -48,6 +48,10 @@
       "saving": "Gemmer…",
       "previousMonth": "Forrige måned",
       "nextMonth": "Næste måned"
+    },
+    "colorPicker": {
+      "saturationBrightness": "Farvemætning og lysstyrke",
+      "hue": "Farvetone"
     }
   },
   "icons": {
@@ -518,7 +522,7 @@
       "group": "Gruppér",
       "date": "Dato",
       "amount": "Beløb",
-      "amountMin": "Minimum",
+      "amountMin": "Mindste beløb",
       "amountMax": "Maksimum",
       "any": "Alle",
       "back": "Tilbage",
@@ -710,6 +714,7 @@
       "mixedKinds": "Vælg transaktioner af samme type for at tildele en kategori",
       "delete": "Slet valgte",
       "clearSelection": "Ryd valg",
+      "recategorizeConfirm": "Kategoriser {{count}} valgte transaktioner på ny?",
       "deleteConfirm": {
         "title": "Slet transaktioner",
         "message": "Dette kan ikke fortrydes. Slet {{count}} transaktioner?"
@@ -743,6 +748,10 @@
       "collapse": "Fold sammen",
       "expand": "Udvid",
       "dragHandle": "Omarranger"
+    },
+    "reorder": {
+      "moveUp": "Flyt op",
+      "moveDown": "Flyt ned"
     },
     "empty": {
       "title": "Ingen kategorier endnu",
@@ -814,7 +823,7 @@
       "priority": "Prioritet",
       "active": "Aktiv",
       "category": "Kategori",
-      "match": "Match",
+      "match": "Overensstemmelse",
       "matchAnd": "OG",
       "matchOr": "ELLER",
       "conditions": "Betingelser",
@@ -922,7 +931,7 @@
       "description": "Læg et budget pr. kategori for at følge dit forbrug."
     },
     "state": {
-      "over": "Over budget",
+      "over": "Budget overskredet",
       "near": "Tæt på grænsen"
     },
     "unbudgeted": {
@@ -1641,7 +1650,7 @@
     "description": "Administrer adgangen til denne LealFinance-installation.",
     "roles": {
       "member": "Medlem",
-      "admin": "Administrator"
+      "admin": "Admin"
     },
     "users": {
       "aiChat": "AI-chat",
@@ -1664,6 +1673,7 @@
       "tokenOnce": "Dette token og registreringslinket vises kun nu. Gem dem, før du forlader siden.",
       "copyLink": "Kopiér registreringslink",
       "revoke": "Tilbagekald",
+      "revokeConfirm": "Tilbagekald invitationen til {{email}}?",
       "empty": "Ingen invitationer fundet."
     }
   },
@@ -1725,7 +1735,7 @@
       }
     },
     "model": {
-      "label": "Model",
+      "label": "Sprogmodel",
       "recommendedOption": "{{model}} (anbefalet)"
     },
     "modelError": "Modellen kunne ikke ændres. Prøv igen.",
@@ -1762,7 +1772,9 @@
       "peer_admin": "Administratorer kan ikke ændre en anden administrators rolle eller status.",
       "totp_required": "Indtast koden fra din godkendelsesapp.",
       "totp_invalid": "Koden er ikke gyldig. Prøv igen.",
-      "totp_locked": "For mange forkerte koder. Prøv igen om 15 minutter."
+      "totp_locked": "For mange forkerte koder. Prøv igen om 15 minutter.",
+      "account_locked": "For mange forkerte adgangskoder. Prøv igen om 15 minutter.",
+      "session_invalid": "Din session er udløbet. Log ind igen."
     },
     "invitation": {
       "not_found": "Invitationen er ugyldig.",
@@ -1799,9 +1811,6 @@
     "rule_pack": {
       "not_found": "Regelpakken blev ikke fundet."
     },
-    "rule_import": {
-      "invalid_format": "Denne fil er ikke en gyldig LealFinance-eksport af regler."
-    },
     "totp": {
       "already_enabled": "Tofaktorgodkendelse er allerede aktiveret.",
       "not_enabled": "Tofaktorgodkendelse er ikke aktiveret."
@@ -1818,6 +1827,20 @@
       "advance_amount_too_small": "Det beløb er for lille til at fordele på de valgte afdrag.",
       "advance_count_exceeds_remaining": "Der er ikke så mange åbne afdrag tilbage.",
       "installment_count_below_paid": "Antallet af afdrag kan ikke være lavere end antallet, der allerede er betalt."
+    },
+    "account": {
+      "currency_in_use": "Denne konto har allerede transaktioner, så valutaen kan ikke ændres."
+    },
+    "transaction": {
+      "transfer_same_account": "En overførsel kræver to forskellige konti.",
+      "transfer_requires_destination": "Vælg den konto, som overførslen skal gå til.",
+      "category_required": "Vælg en kategori for denne transaktion.",
+      "category_kind_mismatch": "Den kategori passer ikke til transaktionens type.",
+      "conversion_required": "Denne transaktion går på tværs af valutaer og kræver derfor et omregnet beløb."
+    },
+    "currency": {
+      "not_found": "Den valuta er ikke tilgængelig.",
+      "inactive": "Den valuta er ikke længere aktiv."
     }
   }
 }

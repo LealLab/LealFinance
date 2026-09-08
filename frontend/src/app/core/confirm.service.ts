@@ -60,6 +60,8 @@ export class ConfirmService {
 
   private ask<T>(request: ConfirmRequest): Promise<T> {
     return new Promise<T>((resolve) => {
+      const pending = this.pending();
+      if (pending) pending.resolve(pending.choices ? null : false);
       this.pending.set({
         ...request,
         resolve: resolve as (value: boolean | string | null) => void,

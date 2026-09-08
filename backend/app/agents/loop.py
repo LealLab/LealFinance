@@ -20,6 +20,7 @@ from app.models.agent_conversation import (
     AgentConversation,
 )
 from app.models.agent_message import AgentMessage
+from app.services import ownership
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,7 +102,12 @@ MAX_ITERATIONS = 8
 # stops being a single-family self-hosted app
 
 
-async def _next_position(db: AsyncSession, conversation_id: UUID) -> int:
+async def _next_position(db: AsyncSession, user_id: UUID, conversation_id: UUID) -> int:
+    await db.scalar(
+        ownership.owned(AgentConversation, user_id)
+        .where(AgentConversation.id == conversation_id)
+        .with_for_update()
+    )
     result = await db.execute(
         select(func.coalesce(func.max(AgentMessage.position), -1) + 1).where(
             AgentMessage.conversation_id == conversation_id
@@ -139,7 +145,7 @@ async def persist_message(
         tool_call_id=tool_call_id,
         tool_name=tool_name,
         is_error=is_error,
-        position=await _next_position(db, conversation.id),
+        position=await _next_position(db, conversation.user_id, conversation.id),
     )
     db.add(message)
     await db.commit()

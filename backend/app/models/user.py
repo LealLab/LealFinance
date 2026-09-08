@@ -64,6 +64,11 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     role: Mapped[str] = mapped_column(String(20), nullable=False, default=ROLE_MEMBER)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
 
+    # Consecutive bad passwords. The lockout is checked before verification so
+    # a locked account cannot spend Argon2 work on further guesses.
+    password_failed_attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    password_locked_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
     # --- Two-factor authentication (optional, off until confirmed) ---
     # Encrypted rather than hashed: verifying a TOTP code requires the secret
     # itself, so this is the same read-back case app/core/crypto.py exists for.
