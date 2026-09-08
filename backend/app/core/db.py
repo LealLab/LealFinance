@@ -1,8 +1,7 @@
 """Async database engine and session factory for the FastAPI app.
 
-Celery workers use the separate sync engine in db_sync.py instead - Celery's
-worker model is not async-native, and mixing event loops across the two
-would be fragile.
+Each worker task creates its own short-lived async engine with NullPool (see
+app/workers/tasks/*.py).
 """
 
 from collections.abc import AsyncGenerator

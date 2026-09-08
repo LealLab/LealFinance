@@ -141,6 +141,12 @@ tasks:
     cmds:
       - pnpm run build
 
+  frontend:e2e:
+    desc: Run the optional frontend Playwright smoke test
+    dir: frontend
+    cmds:
+      - pnpm run e2e
+
   i18n:validate:
     desc: Check for missing/orphaned Transloco translation keys
     dir: frontend

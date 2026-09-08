@@ -10,8 +10,90 @@ permissions:
   packages: write
 
 jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.4-alpine
+        env:
+          POSTGRES_USER: lealfinance
+          POSTGRES_PASSWORD: ci-password
+          POSTGRES_DB: lealfinance
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U lealfinance"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:8.8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://lealfinance:ci-password@localhost:5432/lealfinance
+      REDIS_URL: redis://localhost:6379/0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
+        with:
+          python-version: "3.13"
+          enable-cache: true
+
+      - run: uv sync --locked
+        working-directory: backend
+
+      - name: Lint
+        working-directory: backend
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Type check
+        working-directory: backend
+        run: uv run mypy app
+
+      - name: Test
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql+psycopg://lealfinance:ci-password@localhost:5432/lealfinance_test
+        run: uv run pytest -q
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          package_json_file: frontend/package.json
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: frontend
+
+      - name: Frontend lint
+        working-directory: frontend
+        run: pnpm run lint
+
+      - name: Frontend test
+        working-directory: frontend
+        run: pnpm exec ng test
+
+      - name: Frontend build
+        working-directory: frontend
+        run: pnpm run build
+
   publish:
     name: Build and push images
+    needs: checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

@@ -177,7 +177,7 @@ services:
   # paid API key or subscription. Point OLLAMA_BASE_URL at
   # http://ollama:11434 (the in-container hostname) to use it.
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.33.3
     restart: unless-stopped
     profiles: ["agents"]
     volumes:

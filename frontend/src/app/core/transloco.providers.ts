@@ -10,6 +10,7 @@ import {
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
 
+import locales from '../../../i18n-locales.json';
 import { HttpTranslocoLoader } from './transloco-loader';
 
 const GENERIC_ERROR_FALLBACK = 'Something went wrong. Please try again.';
@@ -43,36 +44,7 @@ export function provideAppTransloco(): EnvironmentProviders[] {
   return [
     ...provideTransloco({
       config: {
-        availableLangs: [
-          'en-US',
-          'pt-BR',
-          'es-ES',
-          'fr-FR',
-          'de-DE',
-          'it-IT',
-          'nl-NL',
-          'pl-PL',
-          'ru-RU',
-          'uk-UA',
-          'tr-TR',
-          'ar',
-          'he-IL',
-          'hi-IN',
-          'zh-CN',
-          'zh-TW',
-          'ja-JP',
-          'ko-KR',
-          'id-ID',
-          'vi-VN',
-          'th-TH',
-          'sv-SE',
-          'da-DK',
-          'nb-NO',
-          'fi-FI',
-          'cs-CZ',
-          'ro-RO',
-          'el-GR'
-        ],
+        availableLangs: locales,
         defaultLang: 'en-US',
         fallbackLang: 'en-US',
         reRenderOnLangChange: true,

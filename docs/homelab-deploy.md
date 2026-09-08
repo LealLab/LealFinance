@@ -26,13 +26,13 @@ Edit `.env`:
 
 - set `ENVIRONMENT=production` - this makes the session and CSRF cookies
   `Secure` and enables the guard that refuses the two placeholder values below;
-- replace `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
+- replace `POSTGRES_PASSWORD` and `API_SECRET_KEY`;
+- set `TAG` to a released version, for example `TAG=v1.2.3`.
 
-Then use the base Compose file explicitly:
+Install the published production images:
 
 ```bash
-docker compose -f docker-compose.yml up -d --build
-docker compose -f docker-compose.yml ps
+task install
 ```
 
 Open `http://localhost:8081` from the same machine, or
@@ -41,6 +41,16 @@ Open `http://localhost:8081` from the same machine, or
 
 The first account created on an empty instance becomes the administrator.
 After that, an administrator must invite other users.
+
+## Develop / customize
+
+To develop or customize the application, build from source with the base
+Compose file explicitly:
+
+```bash
+docker compose -f docker-compose.yml up -d --build
+docker compose -f docker-compose.yml ps
+```
 
 ## Task shortcuts
 

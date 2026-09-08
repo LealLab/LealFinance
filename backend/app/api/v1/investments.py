@@ -5,6 +5,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Query, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import CurrentUser, DbSession
 from app.models.currency import Currency
@@ -32,7 +33,7 @@ router = APIRouter(prefix="/investments", tags=["investments"])
 
 
 async def _position_read(
-    db: DbSession,
+    db: AsyncSession,
     user_id: UUID,
     wallet: InvestmentWallet,
     position: investment_positions.Position,
