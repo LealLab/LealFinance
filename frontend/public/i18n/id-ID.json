@@ -714,6 +714,7 @@
       "mixedKinds": "Pilih transaksi dengan satu jenis untuk menetapkan kategori",
       "delete": "Hapus yang dipilih",
       "clearSelection": "Hapus pilihan",
+      "recategorizeConfirm": "Ubah kategori {{count}} transaksi yang dipilih?",
       "deleteConfirm": {
         "title": "Hapus transaksi",
         "message": "Tindakan ini tidak dapat dibatalkan. Hapus {{count}} transaksi?"
@@ -747,6 +748,10 @@
       "collapse": "Ciutkan",
       "expand": "Perluas",
       "dragHandle": "Urutkan ulang"
+    },
+    "reorder": {
+      "moveUp": "Pindahkan ke atas",
+      "moveDown": "Pindahkan ke bawah"
     },
     "empty": {
       "title": "Belum ada kategori",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Token dan tautan pendaftaran ini hanya ditampilkan sekarang. Simpan sebelum meninggalkan halaman.",
       "copyLink": "Salin tautan pendaftaran",
       "revoke": "Cabut",
+      "revokeConfirm": "Cabut undangan untuk {{email}}?",
       "empty": "Undangan tidak ditemukan."
     }
   },

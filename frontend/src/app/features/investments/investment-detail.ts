@@ -23,6 +23,7 @@ import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { InvestmentAssetFormModal } from './investment-asset-form-modal';
 import { InvestmentTransactionFormModal } from './investment-transaction-form-modal';
 import { InvestmentWalletFormModal } from './investment-wallet-form-modal';
@@ -48,6 +49,7 @@ const PAGE_SIZE = 30;
     Icon,
     InfiniteScroll,
     PageHeader,
+    Skeleton,
     InvestmentAssetFormModal,
     InvestmentTransactionFormModal,
     InvestmentWalletFormModal,

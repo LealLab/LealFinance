@@ -714,6 +714,7 @@
       "mixedKinds": "カテゴリを割り当てるには同じ種類の取引を選択してください",
       "delete": "選択項目を削除",
       "clearSelection": "選択を解除",
+      "recategorizeConfirm": "選択した{{count}}件の取引を再分類しますか？",
       "deleteConfirm": {
         "title": "取引を削除",
         "message": "この操作は元に戻せません。{{count}}件の取引を削除しますか？"
@@ -747,6 +748,10 @@
       "collapse": "折りたたむ",
       "expand": "展開",
       "dragHandle": "並べ替え"
+    },
+    "reorder": {
+      "moveUp": "上へ移動",
+      "moveDown": "下へ移動"
     },
     "empty": {
       "title": "カテゴリはまだありません",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "このトークンと登録リンクは今回のみ表示されます。ページを離れる前に保存してください。",
       "copyLink": "登録リンクをコピー",
       "revoke": "取り消す",
+      "revokeConfirm": "{{email}}への招待を取り消しますか？",
       "empty": "招待が見つかりません。"
     }
   },

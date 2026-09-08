@@ -714,6 +714,7 @@
       "mixedKinds": "Selecciona transacciones de un solo tipo para asignar una categoría",
       "delete": "Eliminar seleccionadas",
       "clearSelection": "Borrar selección",
+      "recategorizeConfirm": "¿Quieres volver a categorizar las {{count}} transacciones seleccionadas?",
       "deleteConfirm": {
         "title": "Eliminar transacciones",
         "message": "Esta acción no se puede deshacer. ¿Eliminar {{count}} transacciones?"
@@ -747,6 +748,10 @@
       "collapse": "Contraer",
       "expand": "Expandir",
       "dragHandle": "Reordenar"
+    },
+    "reorder": {
+      "moveUp": "Mover arriba",
+      "moveDown": "Mover abajo"
     },
     "empty": {
       "title": "Aún no hay categorías",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Este token y el enlace de registro solo se mostrarán ahora. Guárdalos antes de salir.",
       "copyLink": "Copiar enlace de registro",
       "revoke": "Revocar",
+      "revokeConfirm": "¿Revocar la invitación para {{email}}?",
       "empty": "No se han encontrado invitaciones."
     }
   },

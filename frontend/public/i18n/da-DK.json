@@ -714,6 +714,7 @@
       "mixedKinds": "Vælg transaktioner af samme type for at tildele en kategori",
       "delete": "Slet valgte",
       "clearSelection": "Ryd valg",
+      "recategorizeConfirm": "Kategoriser {{count}} valgte transaktioner på ny?",
       "deleteConfirm": {
         "title": "Slet transaktioner",
         "message": "Dette kan ikke fortrydes. Slet {{count}} transaktioner?"
@@ -747,6 +748,10 @@
       "collapse": "Fold sammen",
       "expand": "Udvid",
       "dragHandle": "Omarranger"
+    },
+    "reorder": {
+      "moveUp": "Flyt op",
+      "moveDown": "Flyt ned"
     },
     "empty": {
       "title": "Ingen kategorier endnu",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Dette token og registreringslinket vises kun nu. Gem dem, før du forlader siden.",
       "copyLink": "Kopiér registreringslink",
       "revoke": "Tilbagekald",
+      "revokeConfirm": "Tilbagekald invitationen til {{email}}?",
       "empty": "Ingen invitationer fundet."
     }
   },

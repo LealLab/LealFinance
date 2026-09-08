@@ -714,6 +714,7 @@
       "mixedKinds": "Selecteer transacties van één soort om een categorie toe te wijzen",
       "delete": "Geselecteerde verwijderen",
       "clearSelection": "Selectie wissen",
+      "recategorizeConfirm": "De categorie van {{count}} geselecteerde transacties opnieuw instellen?",
       "deleteConfirm": {
         "title": "Transacties verwijderen",
         "message": "Dit kan niet ongedaan worden gemaakt. {{count}} transacties verwijderen?"
@@ -747,6 +748,10 @@
       "collapse": "Inklappen",
       "expand": "Uitklappen",
       "dragHandle": "Volgorde wijzigen"
+    },
+    "reorder": {
+      "moveUp": "Omhoog verplaatsen",
+      "moveDown": "Omlaag verplaatsen"
     },
     "empty": {
       "title": "Nog geen categorieën",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Dit token en de registratielink worden alleen nu getoond. Sla ze op voordat je weggaat.",
       "copyLink": "Registratielink kopiëren",
       "revoke": "Intrekken",
+      "revokeConfirm": "De uitnodiging voor {{email}} intrekken?",
       "empty": "Geen uitnodigingen gevonden."
     }
   },

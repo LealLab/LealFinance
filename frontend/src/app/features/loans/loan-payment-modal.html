@@ -24,9 +24,11 @@
               [max]="pendingCount()"
               class="form-input"
               formControlName="count"
+              [attr.aria-invalid]="form.controls.count.invalid && form.controls.count.touched"
+              [attr.aria-describedby]="form.controls.count.invalid && form.controls.count.touched ? 'loan-payment-count-error' : null"
             />
             @if (form.controls.count.invalid && form.controls.count.touched) {
-              <p class="form-error">
+              <p id="loan-payment-count-error" class="form-error" role="alert">
                 {{ t('loans.payment.errors.count', { count: pendingCount() }) }}
               </p>
             }
@@ -93,7 +95,13 @@
         <label class="form-label" for="loan-payment-account">{{
           t('loans.payment.fields.account')
         }}</label>
-        <select id="loan-payment-account" class="form-input" formControlName="accountId">
+        <select
+          id="loan-payment-account"
+          class="form-input"
+          formControlName="accountId"
+          [attr.aria-invalid]="form.controls.accountId.invalid && form.controls.accountId.touched"
+          [attr.aria-describedby]="form.controls.accountId.invalid && form.controls.accountId.touched ? 'loan-payment-account-error' : null"
+        >
           @for (group of accountGroups(); track group.institution?.id ?? 'none') {
             <optgroup [label]="group.institution?.name ?? t('loans.payment.fields.noInstitution')">
               @for (account of group.accounts; track account.id) {
@@ -103,7 +111,7 @@
           }
         </select>
         @if (form.controls.accountId.invalid && form.controls.accountId.touched) {
-          <p class="form-error">{{ t('loans.form.errors.required') }}</p>
+          <p id="loan-payment-account-error" class="form-error" role="alert">{{ t('loans.form.errors.required') }}</p>
         }
       </div>
 
@@ -120,7 +128,7 @@
       </div>
 
       @if (saveErrorKey(); as errorKey) {
-        <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+        <p id="loan-payment-save-error" class="form-error" role="alert">{{ t(errorKey) }}</p>
       }
 
       <div class="mt-2 flex justify-end gap-2">

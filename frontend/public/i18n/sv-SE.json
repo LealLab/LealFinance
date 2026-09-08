@@ -714,6 +714,7 @@
       "mixedKinds": "Välj transaktioner av samma typ för att tilldela en kategori",
       "delete": "Ta bort markerade",
       "clearSelection": "Rensa markering",
+      "recategorizeConfirm": "Vill du kategorisera om {{count}} valda transaktioner?",
       "deleteConfirm": {
         "title": "Ta bort transaktioner",
         "message": "Detta kan inte ångras. Ta bort {{count}} transaktioner?"
@@ -747,6 +748,10 @@
       "collapse": "Fäll ihop",
       "expand": "Expandera",
       "dragHandle": "Ändra ordning"
+    },
+    "reorder": {
+      "moveUp": "Flytta upp",
+      "moveDown": "Flytta ned"
     },
     "empty": {
       "title": "Inga kategorier ännu",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Den här tokenen och registreringslänken visas bara nu. Spara dem innan du lämnar sidan.",
       "copyLink": "Kopiera registreringslänk",
       "revoke": "Återkalla",
+      "revokeConfirm": "Återkalla inbjudan för {{email}}?",
       "empty": "Inga inbjudningar hittades."
     }
   },

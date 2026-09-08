@@ -18,7 +18,14 @@
       <form class="mt-6 flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
         <label>
           <span class="form-label">{{ t('auth.fields.email') }}</span>
-          <input class="form-input" type="email" autocomplete="email" formControlName="email" />
+          <input
+            class="form-input"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched"
+            [attr.aria-describedby]="errorCode() ? 'recover-error' : null"
+          />
         </label>
         <label>
           <span class="form-label">{{ t('auth.fields.recoveryCode') }}</span>
@@ -27,6 +34,8 @@
             type="text"
             autocomplete="one-time-code"
             formControlName="code"
+            [attr.aria-invalid]="form.controls.code.invalid && form.controls.code.touched"
+            [attr.aria-describedby]="errorCode() ? 'recover-error' : null"
           />
           <span class="form-hint">{{ t('auth.recover.codeHint') }}</span>
         </label>
@@ -37,11 +46,13 @@
             type="password"
             autocomplete="new-password"
             formControlName="newPassword"
+            [attr.aria-invalid]="form.controls.newPassword.invalid && form.controls.newPassword.touched"
+            [attr.aria-describedby]="errorCode() ? 'recover-error' : null"
           />
           <span class="form-hint">{{ t('auth.register.passwordHint') }}</span>
         </label>
         @if (errorCode(); as code) {
-          <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+          <p id="recover-error" class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
         }
         <button appButton type="submit" [disabled]="form.invalid || submitting()">
           {{ submitting() ? t('common.actions.saving') : t('auth.recover.action') }}

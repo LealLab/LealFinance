@@ -714,6 +714,7 @@
       "mixedKinds": "Select transactions of a single kind to assign a category",
       "delete": "Delete selected",
       "clearSelection": "Clear selection",
+      "recategorizeConfirm": "Recategorize {{count}} selected transactions?",
       "deleteConfirm": {
         "title": "Delete transactions",
         "message": "This cannot be undone. Delete {{count}} transactions?"
@@ -747,6 +748,10 @@
       "collapse": "Collapse",
       "expand": "Expand",
       "dragHandle": "Reorder"
+    },
+    "reorder": {
+      "moveUp": "Move up",
+      "moveDown": "Move down"
     },
     "empty": {
       "title": "No categories yet",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "This token and registration link are shown only now. Save them before leaving.",
       "copyLink": "Copy registration link",
       "revoke": "Revoke",
+      "revokeConfirm": "Revoke the invitation for {{email}}?",
       "empty": "No invitations found."
     }
   },

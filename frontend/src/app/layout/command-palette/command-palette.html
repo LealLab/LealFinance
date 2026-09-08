@@ -16,6 +16,10 @@
       <input
         #searchInput
         type="text"
+        role="combobox"
+        aria-controls="command-palette-results"
+        [attr.aria-expanded]="paletteService.isOpen()"
+        [attr.aria-activedescendant]="highlightedId() ? 'command-palette-option-' + highlightedId() : null"
         [value]="query()"
         (input)="onQueryChange($any($event.target).value)"
         (keydown)="onInputKeydown($event)"
@@ -26,7 +30,11 @@
       />
     </div>
 
-    <div class="max-h-[60vh] overflow-y-auto p-2">
+    <div
+      id="command-palette-results"
+      role="listbox"
+      class="max-h-[60vh] overflow-y-auto p-2"
+    >
       @if (groups().length === 0) {
         <p class="px-3 py-8 text-center text-sm text-content-muted">{{ t('layout.commandPalette.empty') }}</p>
       }
@@ -39,6 +47,9 @@
         @for (item of group.items; track item.id) {
           <button
             type="button"
+            role="option"
+            [id]="'command-palette-option-' + item.id"
+            [attr.aria-selected]="isHighlighted(item)"
             class="flex w-full items-center gap-3 rounded-md px-3 py-2 text-start text-sm text-content-muted hover:bg-surface-sunken hover:text-content-primary"
             [class.bg-surface-sunken]="isHighlighted(item)"
             [class.text-content-primary]="isHighlighted(item)"

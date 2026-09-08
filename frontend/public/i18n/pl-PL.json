@@ -714,6 +714,7 @@
       "mixedKinds": "Wybierz transakcje jednego rodzaju, aby przypisać kategorię",
       "delete": "Usuń zaznaczone",
       "clearSelection": "Wyczyść zaznaczenie",
+      "recategorizeConfirm": "Ponownie sklasyfikować {{count}} wybranych transakcji?",
       "deleteConfirm": {
         "title": "Usuń transakcje",
         "message": "Tej operacji nie można cofnąć. Usunąć {{count}} transakcji?"
@@ -747,6 +748,10 @@
       "collapse": "Zwiń",
       "expand": "Rozwiń",
       "dragHandle": "Zmień kolejność"
+    },
+    "reorder": {
+      "moveUp": "Przenieś w górę",
+      "moveDown": "Przenieś w dół"
     },
     "empty": {
       "title": "Nie masz jeszcze żadnych kategorii",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Ten token i link rejestracyjny są wyświetlane tylko teraz. Zapisz je przed wyjściem.",
       "copyLink": "Kopiuj link rejestracyjny",
       "revoke": "Cofnij",
+      "revokeConfirm": "Czy cofnąć zaproszenie dla {{email}}?",
       "empty": "Nie znaleziono zaproszeń."
     }
   },

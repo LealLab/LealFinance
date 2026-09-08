@@ -79,13 +79,13 @@ describe('TransactionFilterBar', () => {
     fixture.detectChanges();
 
     const accountRow = el.querySelector<HTMLButtonElement>(
-      'app-dropdown > div[role="menu"] > button:first-of-type',
+      'app-dropdown > div > button:first-of-type',
     )!;
     accountRow.click();
     fixture.detectChanges();
 
     const option = el.querySelector<HTMLButtonElement>(
-      'app-dropdown > div[role="menu"] > div > button.filter-option:nth-of-type(2)',
+      'app-dropdown > div > div > button.filter-option:nth-of-type(2)',
     )!;
     option.click();
     fixture.detectChanges();

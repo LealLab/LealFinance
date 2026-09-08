@@ -714,6 +714,7 @@
       "mixedKinds": "请选择同一种类的交易以分配分类",
       "delete": "删除所选交易",
       "clearSelection": "清除选择",
+      "recategorizeConfirm": "要重新分类选中的 {{count}} 笔交易吗？",
       "deleteConfirm": {
         "title": "删除交易",
         "message": "此操作无法撤销。删除 {{count}} 笔交易？"
@@ -747,6 +748,10 @@
       "collapse": "收起",
       "expand": "展开",
       "dragHandle": "调整顺序"
+    },
+    "reorder": {
+      "moveUp": "上移",
+      "moveDown": "下移"
     },
     "empty": {
       "title": "暂无分类",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "此令牌和注册链接仅显示这一次。离开前请保存。",
       "copyLink": "复制注册链接",
       "revoke": "撤销",
+      "revokeConfirm": "要撤销发给 {{email}} 的邀请吗？",
       "empty": "未找到邀请。"
     }
   },

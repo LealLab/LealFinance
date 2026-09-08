@@ -286,10 +286,19 @@ export class Categories {
   }
 
   protected onGroupDrop(kind: CategoryKind, event: CdkDragDrop<GroupRow[]>): void {
-    if (event.previousIndex === event.currentIndex) return;
+    this.reorderGroups(kind, event.previousIndex, event.currentIndex);
+  }
+
+  protected moveGroup(kind: CategoryKind, index: number, delta: -1 | 1): void {
+    this.reorderGroups(kind, index, index + delta);
+  }
+
+  private reorderGroups(kind: CategoryKind, previousIndex: number, currentIndex: number): void {
+    if (previousIndex === currentIndex) return;
     const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
+    if (!rows[previousIndex] || !rows[currentIndex]) return;
     const orderedIds = rows.map((row) => row.group.id);
-    moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
+    moveItemInArray(orderedIds, previousIndex, currentIndex);
     this.categoryGroupRepository.reorder(kind, orderedIds).subscribe({
       next: () => this.categoryGroupsResource.reload(),
       error: () => {
@@ -300,12 +309,26 @@ export class Categories {
   }
 
   protected onCategoryDrop(kind: CategoryKind, groupId: string, event: CdkDragDrop<CategoryRow[]>): void {
-    if (event.previousIndex === event.currentIndex) return;
+    this.reorderCategories(kind, groupId, event.previousIndex, event.currentIndex);
+  }
+
+  protected moveCategory(kind: CategoryKind, groupId: string, index: number, delta: -1 | 1): void {
+    this.reorderCategories(kind, groupId, index, index + delta);
+  }
+
+  private reorderCategories(
+    kind: CategoryKind,
+    groupId: string,
+    previousIndex: number,
+    currentIndex: number,
+  ): void {
+    if (previousIndex === currentIndex) return;
     const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
     const group = rows.find((row) => row.group.id === groupId);
     if (!group) return;
+    if (!group.categories[previousIndex] || !group.categories[currentIndex]) return;
     const orderedIds = group.categories.map((row) => row.category.id);
-    moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
+    moveItemInArray(orderedIds, previousIndex, currentIndex);
     this.categoryRepository.reorder(kind, groupId, orderedIds).subscribe({
       next: () => this.categoriesResource.reload(),
       error: () => {

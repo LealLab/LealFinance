@@ -33,7 +33,7 @@ describe('Dropdown', () => {
       fixture,
       trigger: el.querySelector('[dropdownTrigger]') as HTMLButtonElement,
       outside: el.querySelector('.outside') as HTMLButtonElement,
-      panel: () => el.querySelector('[role="menu"]'),
+      panel: () => el.querySelector('app-dropdown > div'),
     };
   }
 
@@ -44,10 +44,13 @@ describe('Dropdown', () => {
     trigger.click();
     fixture.detectChanges();
     expect(panel()).not.toBeNull();
+    expect(trigger.getAttribute('aria-haspopup')).toBe('true');
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
 
     trigger.click();
     fixture.detectChanges();
     expect(panel()).toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('closes when a click lands outside the host', () => {

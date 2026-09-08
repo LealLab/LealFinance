@@ -12,9 +12,16 @@
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
         <div>
           <label class="form-label" for="institution-name">{{ t('institutions.form.fields.name') }}</label>
-          <input id="institution-name" type="text" class="form-input" formControlName="name" />
+          <input
+            id="institution-name"
+            type="text"
+            class="form-input"
+            formControlName="name"
+            [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+            [attr.aria-describedby]="form.controls.name.invalid && form.controls.name.touched ? 'institution-name-error' : null"
+          />
           @if (form.controls.name.invalid && form.controls.name.touched) {
-            <p class="form-error">{{ t('institutions.form.errors.required') }}</p>
+            <p id="institution-name-error" class="form-error" role="alert">{{ t('institutions.form.errors.required') }}</p>
           }
         </div>
 
@@ -62,10 +69,10 @@
         </div>
 
         @if (saveErrorKey(); as errorKey) {
-          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+          <p id="institution-save-error" class="form-error" role="alert">{{ t(errorKey) }}</p>
         }
         @if (deleteErrorKey(); as errorKey) {
-          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+          <p id="institution-delete-error" class="form-error" role="alert">{{ t(errorKey) }}</p>
         }
 
         <div class="mt-2 flex items-center justify-between gap-2">

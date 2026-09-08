@@ -714,6 +714,7 @@
       "mixedKinds": "Kategori atamak için tek bir türdeki işlemleri seçin",
       "delete": "Seçilenleri sil",
       "clearSelection": "Seçimi temizle",
+      "recategorizeConfirm": "Seçilen {{count}} işlemin kategorisi yeniden belirlensin mi?",
       "deleteConfirm": {
         "title": "İşlemleri sil",
         "message": "Bu işlem geri alınamaz. {{count}} işlem silinsin mi?"
@@ -747,6 +748,10 @@
       "collapse": "Daralt",
       "expand": "Genişlet",
       "dragHandle": "Sıralamayı değiştir"
+    },
+    "reorder": {
+      "moveUp": "Yukarı taşı",
+      "moveDown": "Aşağı taşı"
     },
     "empty": {
       "title": "Henüz kategori yok",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Bu kod ve kayıt bağlantısı yalnızca şimdi gösterilir. Ayrılmadan önce kaydedin.",
       "copyLink": "Kayıt bağlantısını kopyala",
       "revoke": "İptal et",
+      "revokeConfirm": "{{email}} adresine gönderilen davet iptal edilsin mi?",
       "empty": "Davet bulunamadı."
     }
   },

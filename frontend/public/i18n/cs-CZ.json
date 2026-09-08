@@ -714,6 +714,7 @@
       "mixedKinds": "Pro přiřazení kategorie vyberte transakce pouze jednoho typu",
       "delete": "Odstranit vybrané",
       "clearSelection": "Zrušit výběr",
+      "recategorizeConfirm": "Překategorizovat {{count}} vybraných transakcí?",
       "deleteConfirm": {
         "title": "Odstranit transakce",
         "message": "Tuto akci nelze vrátit zpět. Odstranit {{count}} transakcí?"
@@ -747,6 +748,10 @@
       "collapse": "Sbalit",
       "expand": "Rozbalit",
       "dragHandle": "Změnit pořadí"
+    },
+    "reorder": {
+      "moveUp": "Posunout nahoru",
+      "moveDown": "Posunout dolů"
     },
     "empty": {
       "title": "Zatím nemáte žádné kategorie",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Tento token a registrační odkaz se zobrazují pouze nyní. Než odejdete, uložte si je.",
       "copyLink": "Kopírovat registrační odkaz",
       "revoke": "Odvolat",
+      "revokeConfirm": "Odvolat pozvánku pro {{email}}?",
       "empty": "Nebyly nalezeny žádné pozvánky."
     }
   },

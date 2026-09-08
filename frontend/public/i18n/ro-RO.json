@@ -714,6 +714,7 @@
       "mixedKinds": "Selectează tranzacții de un singur tip pentru a atribui o categorie",
       "delete": "Șterge selecția",
       "clearSelection": "Golește selecția",
+      "recategorizeConfirm": "Reclasificăm cele {{count}} tranzacții selectate?",
       "deleteConfirm": {
         "title": "Șterge tranzacțiile",
         "message": "Acest lucru nu poate fi anulat. Ștergi {{count}} tranzacții?"
@@ -747,6 +748,10 @@
       "collapse": "Restrânge",
       "expand": "Extinde",
       "dragHandle": "Reordonează"
+    },
+    "reorder": {
+      "moveUp": "Mută în sus",
+      "moveDown": "Mută în jos"
     },
     "empty": {
       "title": "Nu există încă nicio categorie",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Acest cod și linkul de înregistrare sunt afișate doar acum. Salvează-le înainte să pleci.",
       "copyLink": "Copiază linkul de înregistrare",
       "revoke": "Revocă",
+      "revokeConfirm": "Revoci invitația pentru {{email}}?",
       "empty": "Nu s-a găsit nicio invitație."
     }
   },

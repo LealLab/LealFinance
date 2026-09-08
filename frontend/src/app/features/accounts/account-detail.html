@@ -4,7 +4,13 @@
     {{ t('accounts.detail.back') }}
   </a>
 
-  @if (account(); as account) {
+  @if (accountsResource.isLoading() && !accountsResource.value()) {
+    <div class="flex flex-col gap-3" aria-busy="true">
+      @for (section of [1, 2, 3]; track section) {
+        <app-skeleton height="4.5rem" />
+      }
+    </div>
+  } @else if (account(); as account) {
     <app-page-header [title]="account.name" [description]="institutionName()">
       <button appButton variant="secondary" type="button" (click)="openEdit()">
         <app-icon name="pencil" [size]="16" />

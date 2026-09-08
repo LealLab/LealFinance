@@ -24,6 +24,7 @@ import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll'
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
+import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { AccountFormModal } from './account-form-modal';
 import { accountTypeOption } from './account-type';
 import { CardInvoices } from './card-invoices';
@@ -52,6 +53,7 @@ const PAGE_SIZE = 30;
     InfiniteScroll,
     PageHeader,
     ProgressBar,
+    Skeleton,
     ExchangeRateWarning,
     AccountFormModal,
     CardInvoices

@@ -5,9 +5,16 @@
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
         <div>
           <label class="form-label" for="loan-name">{{ t('loans.form.fields.name') }}</label>
-          <input id="loan-name" type="text" class="form-input" formControlName="name" />
+          <input
+            id="loan-name"
+            type="text"
+            class="form-input"
+            formControlName="name"
+            [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+            [attr.aria-describedby]="form.controls.name.invalid && form.controls.name.touched ? 'loan-name-error' : null"
+          />
           @if (form.controls.name.invalid && form.controls.name.touched) {
-            <p class="form-error">{{ t('loans.form.errors.required') }}</p>
+            <p id="loan-name-error" class="form-error" role="alert">{{ t('loans.form.errors.required') }}</p>
           }
         </div>
 
@@ -132,6 +139,8 @@
             inputmode="decimal"
             class="form-input font-mono"
             formControlName="contractedInstallmentAmount"
+            [attr.aria-invalid]="form.controls.contractedInstallmentAmount.touched && (form.controls.contractedInstallmentAmount.invalid || rateAdjustmentUnavailable())"
+            [attr.aria-describedby]="form.controls.contractedInstallmentAmount.touched && rateAdjustmentUnavailable() ? 'loan-rate-adjustment-error' : null"
           />
           <p class="mt-1 text-xs text-content-muted">
             {{ t('loans.form.fields.contractedInstallmentAmountHint') }}
@@ -161,7 +170,7 @@
             </span>
           </div>
           @if (rateAdjustmentUnavailable()) {
-            <p class="form-error">{{ t('loans.form.errors.rateAdjustmentUnavailable') }}</p>
+            <p id="loan-rate-adjustment-error" class="form-error" role="alert">{{ t('loans.form.errors.rateAdjustmentUnavailable') }}</p>
           }
         </div>
 
@@ -194,7 +203,13 @@
                 <label class="form-label" for="loan-account">{{
                   t('loans.form.fields.paymentAccount')
                 }}</label>
-                <select id="loan-account" class="form-input" formControlName="paymentAccountId">
+                  <select
+                    id="loan-account"
+                    class="form-input"
+                    formControlName="paymentAccountId"
+                    [attr.aria-invalid]="form.controls.paymentAccountId.invalid && form.controls.paymentAccountId.touched"
+                    [attr.aria-describedby]="form.controls.paymentAccountId.invalid && form.controls.paymentAccountId.touched ? 'loan-auto-post-account-error' : null"
+                  >
                   <option value="" disabled>
                     {{ t('loans.form.fields.paymentAccountPlaceholder') }}
                   </option>
@@ -205,7 +220,7 @@
                 @if (
                   form.controls.paymentAccountId.invalid && form.controls.paymentAccountId.touched
                 ) {
-                  <p class="form-error">{{ t('loans.form.errors.paymentAccountRequired') }}</p>
+                  <p id="loan-auto-post-account-error" class="form-error" role="alert">{{ t('loans.form.errors.paymentAccountRequired') }}</p>
                 }
               </div>
             </div>
@@ -213,7 +228,7 @@
         </div>
 
         @if (saveErrorKey(); as errorKey) {
-          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+          <p id="loan-save-error" class="form-error" role="alert">{{ t(errorKey) }}</p>
         }
 
         <div class="mt-2 flex justify-end gap-2">

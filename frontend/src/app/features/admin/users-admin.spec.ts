@@ -124,7 +124,10 @@ describe('UsersAdmin', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    await fixture.componentInstance['revoke'](INVITATIONS[0]);
+    const revokePromise = fixture.componentInstance['revoke'](INVITATIONS[0]);
+    await fixture.whenStable();
+    TestBed.inject(ConfirmService).respond(true);
+    await revokePromise;
 
     expect(api.revokeInvitation).toHaveBeenCalledWith('inv1');
     expect(api.listInvitations).toHaveBeenCalledTimes(2);

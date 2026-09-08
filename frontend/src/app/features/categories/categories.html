@@ -39,7 +39,7 @@
               [id]="'category-groups-' + section.kind"
               (cdkDropListDropped)="onGroupDrop(section.kind, $event)"
             >
-              @for (row of section.rows; track row.group.id) {
+              @for (row of section.rows; track row.group.id; let rowIndex = $index) {
                 <li cdkDrag class="group/row border-b border-border last:border-b-0">
                   <div class="flex items-center justify-between gap-4 px-4 py-3">
                     <div class="flex min-w-0 items-center gap-1">
@@ -88,6 +88,28 @@
                           variant="ghost"
                           size="sm"
                           type="button"
+                          [disabled]="rowIndex === 0"
+                          [attr.aria-label]="t('categories.reorder.moveUp')"
+                          (click)="moveGroup(section.kind, rowIndex, -1)"
+                        >
+                          <app-icon name="chevronDown" [size]="16" class="rotate-180" />
+                        </button>
+                        <button
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          [disabled]="rowIndex === section.rows.length - 1"
+                          [attr.aria-label]="t('categories.reorder.moveDown')"
+                          (click)="moveGroup(section.kind, rowIndex, 1)"
+                        >
+                          <app-icon name="chevronDown" [size]="16" />
+                        </button>
+                        <button
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
                           class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                           (click)="openCreateCategoryIn(row.group)"
                           [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
@@ -130,7 +152,7 @@
                       class="border-t border-border bg-surface-sunken"
                       (cdkDropListDropped)="onCategoryDrop(section.kind, row.group.id, $event)"
                     >
-                      @for (categoryRow of row.categories; track categoryRow.category.id) {
+                      @for (categoryRow of row.categories; track categoryRow.category.id; let categoryIndex = $index) {
                         <li cdkDrag class="group/row flex items-center justify-between gap-4 py-2 pe-4 ps-6">
                           <div class="flex min-w-0 items-center gap-2">
                             <button
@@ -160,6 +182,28 @@
                             </span>
                           </div>
                           <div class="flex shrink-0 items-center gap-1">
+                            <button
+                              appButton
+                              variant="ghost"
+                              size="sm"
+                              type="button"
+                              [disabled]="categoryIndex === 0"
+                              [attr.aria-label]="t('categories.reorder.moveUp')"
+                              (click)="moveCategory(section.kind, row.group.id, categoryIndex, -1)"
+                            >
+                              <app-icon name="chevronDown" [size]="14" class="rotate-180" />
+                            </button>
+                            <button
+                              appButton
+                              variant="ghost"
+                              size="sm"
+                              type="button"
+                              [disabled]="categoryIndex === row.categories.length - 1"
+                              [attr.aria-label]="t('categories.reorder.moveDown')"
+                              (click)="moveCategory(section.kind, row.group.id, categoryIndex, 1)"
+                            >
+                              <app-icon name="chevronDown" [size]="14" />
+                            </button>
                             <button
                               appButton
                               variant="ghost"

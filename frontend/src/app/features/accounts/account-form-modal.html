@@ -11,9 +11,16 @@
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
         <div>
           <label class="form-label" for="account-name">{{ t('accounts.form.fields.name') }}</label>
-          <input id="account-name" type="text" class="form-input" formControlName="name" />
+          <input
+            id="account-name"
+            type="text"
+            class="form-input"
+            formControlName="name"
+            [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+            [attr.aria-describedby]="form.controls.name.invalid && form.controls.name.touched ? 'account-name-error' : null"
+          />
           @if (form.controls.name.invalid && form.controls.name.touched) {
-            <p class="form-error">{{ t('accounts.form.errors.required') }}</p>
+            <p id="account-name-error" class="form-error" role="alert">{{ t('accounts.form.errors.required') }}</p>
           }
         </div>
 
@@ -51,9 +58,11 @@
             inputmode="decimal"
             class="form-input font-mono"
             formControlName="openingBalance"
+            [attr.aria-invalid]="form.controls.openingBalance.invalid && form.controls.openingBalance.touched"
+            [attr.aria-describedby]="form.controls.openingBalance.invalid && form.controls.openingBalance.touched ? 'account-opening-balance-error' : null"
           />
           @if (form.controls.openingBalance.invalid && form.controls.openingBalance.touched) {
-            <p class="form-error">{{ t('accounts.form.errors.decimalAmount') }}</p>
+            <p id="account-opening-balance-error" class="form-error" role="alert">{{ t('accounts.form.errors.decimalAmount') }}</p>
           }
         </div>
 
@@ -145,7 +154,7 @@
         }
 
         @if (saveErrorKey(); as errorKey) {
-          <p class="form-error" role="alert">{{ t(errorKey) }}</p>
+          <p id="account-save-error" class="form-error" role="alert">{{ t(errorKey) }}</p>
         }
 
         <div class="mt-2 flex justify-end gap-2">

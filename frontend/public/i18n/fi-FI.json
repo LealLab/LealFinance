@@ -714,6 +714,7 @@
       "mixedKinds": "Valitse yhden tyyppisiä tapahtumia luokan määrittämiseksi",
       "delete": "Poista valitut",
       "clearSelection": "Tyhjennä valinta",
+      "recategorizeConfirm": "Luokitellaanko {{count}} valittua tapahtumaa uudelleen?",
       "deleteConfirm": {
         "title": "Poista tapahtumat",
         "message": "Tätä ei voi kumota. Poistetaanko {{count}} tapahtumaa?"
@@ -747,6 +748,10 @@
       "collapse": "Pienennä",
       "expand": "Laajenna",
       "dragHandle": "Muuta järjestystä"
+    },
+    "reorder": {
+      "moveUp": "Siirrä ylös",
+      "moveDown": "Siirrä alas"
     },
     "empty": {
       "title": "Ei vielä luokkia",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Tämä tunnus ja rekisteröitymislinkki näytetään vain nyt. Tallenna ne ennen poistumista.",
       "copyLink": "Kopioi rekisteröitymislinkki",
       "revoke": "Peruuta kutsu",
+      "revokeConfirm": "Perutaanko käyttäjän {{email}} kutsu?",
       "empty": "Kutsuja ei löytynyt."
     }
   },

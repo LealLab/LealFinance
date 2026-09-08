@@ -63,7 +63,7 @@ const SEARCH_DEBOUNCE_MS = 250;
  * The literal keys passed to `confirmService.confirm(...)`/`choose(...)` below are real
  * string literals, invisible to transloco-keys-manager's extractor -
  * declare them so `task i18n:validate` sees them:
- * t(transactions.delete.title, transactions.delete.message, transactions.delete.installment.title, transactions.delete.installment.message, transactions.delete.installment.onlyThis, transactions.delete.installment.thisAndFuture, transactions.delete.installment.allInSeries, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message)
+ * t(transactions.delete.title, transactions.delete.message, transactions.delete.installment.title, transactions.delete.installment.message, transactions.delete.installment.onlyThis, transactions.delete.installment.thisAndFuture, transactions.delete.installment.allInSeries, transactions.recurring.delete.title, transactions.recurring.delete.message, transactions.bulk.deleteConfirm.title, transactions.bulk.deleteConfirm.message, transactions.bulk.recategorizeConfirm)
  * The CSV header and column-menu keys are built by concatenation:
  * t(transactions.columns.date, transactions.columns.description, transactions.columns.category, transactions.columns.account, transactions.columns.amount, transactions.columns.title, transactions.export.filename, transactions.type.income, transactions.type.expense, transactions.type.transfer)
  */
@@ -582,9 +582,16 @@ export class Transactions {
     });
   }
 
-  protected bulkCategorize(categoryId: string): void {
+  protected async bulkCategorize(categoryId: string): Promise<void> {
     const ids = [...this.selectedIds()];
     if (ids.length === 0) return;
+    const confirmed = await this.confirmService.confirm(
+      'common.actions.confirm',
+      'transactions.bulk.recategorizeConfirm',
+      'default',
+      { count: ids.length },
+    );
+    if (!confirmed) return;
     this.transactionRepository.bulkCategorize(ids, categoryId).subscribe({
       next: () => {
         this.selectedIds.set(new Set());

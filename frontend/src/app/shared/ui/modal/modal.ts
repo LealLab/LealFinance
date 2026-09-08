@@ -3,6 +3,8 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 
+let nextModalId = 0;
+
 /**
  * A modal built on native `<dialog>` + `showModal()` rather than a
  * hand-rolled overlay: focus trapping, Escape-to-close, backdrop, and
@@ -27,7 +29,8 @@ import { Icon } from '../icon/icon';
 })
 export class Modal {
   readonly open = model.required<boolean>();
-  readonly titleText = input.required<string>();
+  readonly titleText = input('');
+  protected readonly titleId = `modal-title-${nextModalId++}`;
 
   // Not `.required()`: the constructor effect below can run its first pass
   // before the view's own child queries resolve, and a required query

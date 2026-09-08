@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, HostListener, inject, input, model } from '@angular/core';
+import { Component, computed, effect, ElementRef, HostListener, inject, input, model } from '@angular/core';
 
 /**
  * A trigger button plus a panel that opens below it. Handles the plumbing
@@ -33,6 +33,15 @@ export class Dropdown {
   readonly align = input<'start' | 'end'>('end');
   /** Width (and any extra) utility classes for the panel. */
   readonly panelClass = input('w-64');
+
+  constructor() {
+    effect(() => {
+      const trigger = this.host.nativeElement.querySelector<HTMLElement>('[dropdownTrigger]');
+      if (!trigger) return;
+      trigger.setAttribute('aria-haspopup', 'true');
+      trigger.setAttribute('aria-expanded', String(this.open()));
+    });
+  }
 
   protected readonly panelClasses = computed(
     () =>

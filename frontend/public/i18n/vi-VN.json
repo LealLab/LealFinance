@@ -714,6 +714,7 @@
       "mixedKinds": "Chọn các giao dịch cùng một loại để gán danh mục",
       "delete": "Xóa mục đã chọn",
       "clearSelection": "Xóa lựa chọn",
+      "recategorizeConfirm": "Phân loại lại {{count}} giao dịch đã chọn?",
       "deleteConfirm": {
         "title": "Xóa giao dịch",
         "message": "Không thể hoàn tác. Xóa {{count}} giao dịch?"
@@ -747,6 +748,10 @@
       "collapse": "Thu gọn",
       "expand": "Mở rộng",
       "dragHandle": "Sắp xếp lại"
+    },
+    "reorder": {
+      "moveUp": "Di chuyển lên",
+      "moveDown": "Di chuyển xuống"
     },
     "empty": {
       "title": "Chưa có danh mục nào",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "Mã này và liên kết đăng ký chỉ hiển thị lần này. Hãy lưu lại trước khi rời đi.",
       "copyLink": "Sao chép liên kết đăng ký",
       "revoke": "Thu hồi",
+      "revokeConfirm": "Thu hồi lời mời cho {{email}}?",
       "empty": "Không tìm thấy lời mời nào."
     }
   },

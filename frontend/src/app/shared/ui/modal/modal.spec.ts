@@ -12,11 +12,21 @@ class ModalHost {
   readonly open = signal(false);
 }
 
+@Component({
+  selector: 'app-modal-without-title-host',
+  imports: [Modal],
+  template: `<app-modal [(open)]="open">content</app-modal>`
+})
+class ModalWithoutTitleHost {
+  readonly open = signal(false);
+}
+
 describe('Modal', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         ModalHost,
+        ModalWithoutTitleHost,
         provideTestTransloco()
       ],
       providers: [provideZonelessChangeDetection()]
@@ -27,12 +37,22 @@ describe('Modal', () => {
     const fixture = TestBed.createComponent(ModalHost);
     fixture.detectChanges();
     const dialog = fixture.nativeElement.querySelector('dialog') as HTMLDialogElement;
+    const title = fixture.nativeElement.querySelector('h2') as HTMLHeadingElement;
+    expect(dialog.getAttribute('aria-labelledby')).toBe(title.id);
     expect(dialog.open).toBe(false);
 
     fixture.componentInstance.open.set(true);
     fixture.detectChanges();
 
     expect(dialog.open).toBe(true);
+  });
+
+  it('leaves the dialog unnamed when no title is provided', () => {
+    const fixture = TestBed.createComponent(ModalWithoutTitleHost);
+    fixture.detectChanges();
+    const dialog = fixture.nativeElement.querySelector('dialog') as HTMLDialogElement;
+
+    expect(dialog.hasAttribute('aria-labelledby')).toBe(false);
   });
 
   it('closes the dialog and flips the model back to false when the model is set false', () => {

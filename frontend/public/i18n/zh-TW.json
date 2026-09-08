@@ -714,6 +714,7 @@
       "mixedKinds": "請選取相同類型的交易以指派分類",
       "delete": "刪除選取項目",
       "clearSelection": "清除選取項目",
+      "recategorizeConfirm": "要重新分類選取的 {{count}} 筆交易嗎？",
       "deleteConfirm": {
         "title": "刪除交易",
         "message": "此操作無法復原。刪除 {{count}} 筆交易？"
@@ -747,6 +748,10 @@
       "collapse": "收合",
       "expand": "展開",
       "dragHandle": "重新排序"
+    },
+    "reorder": {
+      "moveUp": "上移",
+      "moveDown": "下移"
     },
     "empty": {
       "title": "尚無分類",
@@ -1668,6 +1673,7 @@
       "tokenOnce": "此權杖與註冊連結只會顯示這一次。離開前請先儲存。",
       "copyLink": "複製註冊連結",
       "revoke": "撤銷",
+      "revokeConfirm": "要撤銷寄給 {{email}} 的邀請嗎？",
       "empty": "找不到邀請。"
     }
   },
