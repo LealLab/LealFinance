@@ -292,7 +292,10 @@ export class Categories {
     moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
     this.categoryGroupRepository.reorder(kind, orderedIds).subscribe({
       next: () => this.categoryGroupsResource.reload(),
-      error: () => this.mutationErrors.show()
+      error: () => {
+        this.categoryGroupsResource.reload();
+        this.mutationErrors.show();
+      }
     });
   }
 
@@ -305,7 +308,10 @@ export class Categories {
     moveItemInArray(orderedIds, event.previousIndex, event.currentIndex);
     this.categoryRepository.reorder(kind, groupId, orderedIds).subscribe({
       next: () => this.categoriesResource.reload(),
-      error: () => this.mutationErrors.show()
+      error: () => {
+        this.categoriesResource.reload();
+        this.mutationErrors.show();
+      }
     });
   }
 }

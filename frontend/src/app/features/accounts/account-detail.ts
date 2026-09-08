@@ -1,5 +1,5 @@
-import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Subscription } from 'rxjs';
@@ -66,6 +66,7 @@ export class AccountDetail {
   private readonly confirmService = inject(ConfirmService);
   private readonly transloco = inject(TranslocoService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
 
   readonly id = input.required<string>();
@@ -116,6 +117,7 @@ export class AccountDetail {
     this.loadingMore = true;
     this.loadSubscription = this.transactionRepository
       .list({ accountId: this.id(), limit: PAGE_SIZE, offset: this.offset() })
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (page) => {
           this.rows.update((current) => [...current, ...page]);
@@ -125,6 +127,7 @@ export class AccountDetail {
         },
         error: () => {
           this.loadingMore = false;
+          this.mutationErrors.show();
         },
       });
   }

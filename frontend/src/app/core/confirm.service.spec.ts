@@ -32,6 +32,15 @@ describe('ConfirmService', () => {
     expect(await promise).toBe(false);
   });
 
+  it('resolves the first confirm as false when a second one opens', async () => {
+    const first = service.confirm('first.title', 'first.message');
+    const second = service.confirm('second.title', 'second.message');
+
+    expect(await first).toBe(false);
+    service.respond(true);
+    expect(await second).toBe(true);
+  });
+
   it('defaults tone to "default"', () => {
     void service.confirm('t', 'm');
     expect(service.request()?.tone).toBe('default');

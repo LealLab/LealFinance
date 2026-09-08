@@ -165,7 +165,7 @@ describe('UsersAdmin', () => {
     confirmService.respond(false);
     await savePromise;
 
-    expect(member.role).toBe('member');
+    expect(fixture.componentInstance['users']()[1].role).toBe('member');
     expect(api.updateUser).not.toHaveBeenCalled();
   });
 

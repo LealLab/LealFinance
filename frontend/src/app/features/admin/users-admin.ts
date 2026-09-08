@@ -90,7 +90,9 @@ export class UsersAdmin {
         { name: user.displayName || user.email },
       );
       if (!confirmed) {
-        user.role = savedRole;
+        this.users.update((rows) =>
+          rows.map((row) => (row.id === user.id ? { ...row, role: savedRole } : row)),
+        );
         return;
       }
     }
@@ -118,7 +120,11 @@ export class UsersAdmin {
       const saved = await firstValueFrom(this.api.updateUser(user.id, { aiChatEnabled: enabled }));
       this.users.update((rows) => rows.map((row) => (row.id === saved.id ? saved : row)));
     } catch (error) {
-      user.aiChatEnabled = previous;
+      this.users.update((rows) =>
+        rows.map((row) =>
+          row.id === user.id ? { ...row, aiChatEnabled: previous } : row,
+        ),
+      );
       this.setError(error);
     }
   }
