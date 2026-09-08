@@ -51,7 +51,7 @@ async def list_transactions(
     amount_max: Annotated[Decimal | None, Query(ge=0)] = None,
     sort: TransactionSort = "date",
     order: SortOrder = "desc",
-    limit: Annotated[int | None, Query(ge=1, le=200)] = None,
+    limit: Annotated[int, Query(ge=1, le=200)] = 100,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[Transaction]:
     page = await transactions_service.list_transactions(
@@ -73,7 +73,7 @@ async def list_transactions(
         limit=limit,
         offset=offset,
     )
-    # Exposed via CORS in app/main.py; only meaningful when a limit was given.
+    # Exposed via CORS in app/main.py for paginated clients.
     response.headers["X-Total-Count"] = str(page.total)
     return page.rows
 

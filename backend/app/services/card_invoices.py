@@ -166,11 +166,13 @@ async def list_invoices(
     window_start = _add_months(first_close, -1, closing_day) + timedelta(days=1)
 
     # Every transaction that touches the card, bucketed in Python - personal-
-    # finance scale. ponytail: fetches the whole card ledger; add a date
-    # filter if a single card's history ever gets large.
+    # finance scale. ponytail: bucketing stays in Python; batch by cycle only
+    # if this bounded window ever gets large.
     result = await db.execute(
         ownership.owned(Transaction, user_id).where(
-            or_(Transaction.account_id == card_id, Transaction.to_account_id == card_id)
+            or_(Transaction.account_id == card_id, Transaction.to_account_id == card_id),
+            Transaction.date >= window_start,
+            Transaction.date <= last_close,
         )
     )
     transactions = list(result.scalars().all())

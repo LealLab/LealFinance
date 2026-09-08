@@ -267,7 +267,7 @@
                   }
                   · {{ accountsById().get(rule.template.accountId)?.name }}
                 </span>
-                @if (nextOccurrence(rule); as next) {
+                @if (nextOccurrenceMap().get(rule.id); as next) {
                   <span class="text-xs text-content-subtle">
                     {{ t('transactions.recurring.nextOccurrence') }}: {{ next }}
                   </span>

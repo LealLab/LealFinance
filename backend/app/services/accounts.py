@@ -163,6 +163,25 @@ async def real_balance_contributions(
     """
     accounts = list(await ownership.list_owned(db, Account, user_id))
     balances = {row.account_id: row for row in await account_balances(db, user_id)}
+    transaction_dates = (
+        select(Transaction.account_id.label("account_id"), Transaction.date.label("date"))
+        .where(Transaction.user_id == user_id)
+        .union_all(
+            select(
+                Transaction.to_account_id.label("account_id"), Transaction.date.label("date")
+            ).where(
+                Transaction.user_id == user_id,
+                Transaction.to_account_id.is_not(None),
+            )
+        )
+        .subquery()
+    )
+    oldest_result = await db.execute(
+        select(transaction_dates.c.account_id, func.min(transaction_dates.c.date)).group_by(
+            transaction_dates.c.account_id
+        )
+    )
+    oldest_by_account = {row.account_id: row[1] for row in oldest_result}
     contributions: list[AccountBalance] = []
 
     for account in accounts:
@@ -175,17 +194,7 @@ async def real_balance_contributions(
             and account.closing_day is not None
             and account.due_day is not None
         ):
-            transaction_scope = (
-                ownership.owned(Transaction, user_id)
-                .where(
-                    or_(
-                        Transaction.account_id == account.id,
-                        Transaction.to_account_id == account.id,
-                    )
-                )
-                .subquery()
-            )
-            oldest = await db.scalar(select(func.min(transaction_scope.c.date)))
+            oldest = oldest_by_account.get(account.id)
             months_back = (
                 max((today.year - oldest.year) * 12 + today.month - oldest.month + 1, 0)
                 if oldest is not None

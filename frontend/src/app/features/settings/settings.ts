@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  PendingTasks,
   effect,
   inject,
   signal,
@@ -11,7 +12,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
-import qrcode from 'qrcode-generator';
 import { Observable, catchError, of, switchMap } from 'rxjs';
 import { ApiError } from '../../core/api-error';
 import { BackupArchive, BackupPreview, BackupService } from '../../core/backup.service';
@@ -50,6 +50,7 @@ export class Settings {
   private readonly transloco = inject(TranslocoService);
   private readonly locale = inject(TranslocoLocaleService);
   private readonly route = inject(ActivatedRoute);
+  private readonly pendingTasks = inject(PendingTasks);
   private readonly backups = inject(BackupService);
   private readonly confirm = inject(ConfirmService);
   protected readonly preferences = inject(PreferenceService);
@@ -476,8 +477,12 @@ export class Settings {
   }
 
   protected startTotpEnrollment(): void {
-    this.runTotpAction(this.identityApi.startTotpEnrollment(), (setup) => {
-      this.totpSetup.set({ ...setup, qrDataUrl: this.qrDataUrl(setup.otpauthUri) });
+    this.runTotpAction(this.identityApi.startTotpEnrollment(), async (setup) => {
+      const qrcode = (await import('qrcode-generator')).default;
+      const qr = qrcode(0, 'M');
+      qr.addData(setup.otpauthUri);
+      qr.make();
+      this.totpSetup.set({ ...setup, qrDataUrl: qr.createDataURL(6, 2) });
     });
   }
 
@@ -534,23 +539,20 @@ export class Settings {
     this.backupCodesCopied.set(false);
   }
 
-  /** GIF data URI for an <img>. The QR is drawn client-side so the backend
-   * only ever hands out the otpauth:// URI. */
-  private qrDataUrl(otpauthUri: string): string {
-    const qr = qrcode(0, 'M');
-    qr.addData(otpauthUri);
-    qr.make();
-    return qr.createDataURL(6, 2);
-  }
-
-  private runTotpAction<T>(request: Observable<T>, onSuccess: (value: T) => void): void {
+  private runTotpAction<T>(
+    request: Observable<T>,
+    onSuccess: (value: T) => void | Promise<void>,
+  ): void {
     this.totpBusy.set(true);
     this.totpErrorCode.set(undefined);
     request.subscribe({
       next: (value) => {
         this.totpCode.set('');
-        onSuccess(value);
-        this.totpBusy.set(false);
+        const done = this.pendingTasks.add();
+        Promise.resolve(onSuccess(value)).finally(() => {
+          this.totpBusy.set(false);
+          done();
+        });
       },
       error: (error: unknown) => {
         this.totpErrorCode.set(
