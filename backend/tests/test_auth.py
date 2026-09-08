@@ -18,15 +18,16 @@ from app.core.errors import ConflictError
 from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, User
 from app.models.user import Session as UserSession
-from app.schemas.auth import LoginRequest, RecoverRequest, RegisterRequest
+from app.schemas.auth import RecoverRequest, RegisterRequest
 from app.services import auth as auth_service
 from tests.factories import DEFAULT_PASSWORD, login_as, make_user
 
 
+@pytest.mark.parametrize("password", [DEFAULT_PASSWORD, "x" * 129])
 async def test_login_success_sets_httponly_session_and_readable_csrf_cookie(
-    client: AsyncClient, db_session: AsyncSession
+    client: AsyncClient, db_session: AsyncSession, password: str
 ) -> None:
-    user, password = await make_user(db_session, email="alice@example.com")
+    user, password = await make_user(db_session, email="alice@example.com", password=password)
 
     response = await client.post(
         "/api/v1/auth/login", json={"email": user.email, "password": password}
@@ -82,10 +83,8 @@ async def test_login_password_lockout_after_failed_attempts(
     assert locked.json()["error"]["code"] == "auth.account_locked"
 
 
-def test_auth_password_max_length_is_rejected() -> None:
+def test_new_password_max_length_is_rejected() -> None:
     too_long = "x" * 129
-    with pytest.raises(ValidationError):
-        LoginRequest(email="login@example.com", password=too_long)
     with pytest.raises(ValidationError):
         RegisterRequest(email="register@example.com", password=too_long, display_name="Test")
     with pytest.raises(ValidationError):

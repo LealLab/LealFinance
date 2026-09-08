@@ -19,7 +19,8 @@ class LoginRequest(BaseModel):
     """
 
     email: EmailStr
-    password: str = Field(min_length=1, max_length=128)
+    # Existing passwords may predate the registration/recovery length cap.
+    password: str = Field(min_length=1)
     # Also accepts a backup code, which is longer than six digits.
     totp_code: str | None = Field(default=None, max_length=64)
     trust_device: bool = False

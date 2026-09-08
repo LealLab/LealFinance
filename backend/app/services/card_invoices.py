@@ -34,7 +34,7 @@ from datetime import timedelta
 from decimal import Decimal
 from uuid import UUID
 
-from sqlalchemy import or_
+from sqlalchemy import func, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError, ValidationAppError
@@ -183,10 +183,17 @@ async def list_invoices(
     # opening_balance (negative == pre-existing debt) lands in the card's
     # genuine first cycle; if that predates the returned window it is simply
     # not shown - a windowed view, not a lifetime reconciliation.
-    dated = [tx.date for tx in transactions]
-    first_activity_close = cycle_close_for(min(dated), closing_day) if dated else current_close
-    if account.opening_balance != 0 and first_activity_close in totals:
-        totals[first_activity_close] += -account.opening_balance
+    if account.opening_balance != 0:
+        first_activity = await db.scalar(
+            ownership.owned(Transaction, user_id)
+            .with_only_columns(func.min(Transaction.date))
+            .where(or_(Transaction.account_id == card_id, Transaction.to_account_id == card_id))
+        )
+        first_activity_close = (
+            cycle_close_for(first_activity, closing_day) if first_activity else current_close
+        )
+        if first_activity_close in totals:
+            totals[first_activity_close] += -account.opening_balance
 
     for tx in transactions:
         if tx.date <= window_start - timedelta(days=1) or tx.date > last_close:

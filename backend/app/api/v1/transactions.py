@@ -51,7 +51,7 @@ async def list_transactions(
     amount_max: Annotated[Decimal | None, Query(ge=0)] = None,
     sort: TransactionSort = "date",
     order: SortOrder = "desc",
-    limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    limit: Annotated[int | None, Query(ge=1, le=200)] = None,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[Transaction]:
     page = await transactions_service.list_transactions(
