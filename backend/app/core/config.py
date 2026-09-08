@@ -94,6 +94,8 @@ class Settings(BaseSettings):
             or (self.database_url is not None and "change-me" in self.database_url)
         ):
             raise ValueError("POSTGRES_PASSWORD or DATABASE_URL must be replaced in production")
+        if "*" in self.cors_origins_list:
+            raise ValueError("CORS wildcard is not allowed in production")
         return self
 
     @computed_field  # type: ignore[prop-decorator]

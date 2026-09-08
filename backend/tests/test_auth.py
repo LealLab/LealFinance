@@ -8,7 +8,9 @@ import asyncio
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
+import pytest
 from httpx import AsyncClient
+from pydantic import ValidationError
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
@@ -16,6 +18,7 @@ from app.core.errors import ConflictError
 from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, User
 from app.models.user import Session as UserSession
+from app.schemas.auth import LoginRequest, RecoverRequest, RegisterRequest
 from app.services import auth as auth_service
 from tests.factories import DEFAULT_PASSWORD, login_as, make_user
 
@@ -50,6 +53,54 @@ async def test_login_wrong_password_is_rejected(
 
     response = await client.post(
         "/api/v1/auth/login", json={"email": user.email, "password": "wrong password entirely"}
+    )
+
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "auth.invalid_credentials"
+
+
+async def test_login_password_lockout_after_failed_attempts(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, password = await make_user(db_session, email="password-lockout@example.com")
+
+    for _ in range(auth_service._PASSWORD_MAX_ATTEMPTS):
+        response = await client.post(
+            "/api/v1/auth/login", json={"email": user.email, "password": "wrong-password"}
+        )
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "auth.invalid_credentials"
+
+    await db_session.refresh(user)
+    assert user.password_failed_attempts == 0
+    assert user.password_locked_until is not None
+
+    locked = await client.post(
+        "/api/v1/auth/login", json={"email": user.email, "password": password}
+    )
+    assert locked.status_code == 401
+    assert locked.json()["error"]["code"] == "auth.account_locked"
+
+
+def test_auth_password_max_length_is_rejected() -> None:
+    too_long = "x" * 129
+    with pytest.raises(ValidationError):
+        LoginRequest(email="login@example.com", password=too_long)
+    with pytest.raises(ValidationError):
+        RegisterRequest(email="register@example.com", password=too_long, display_name="Test")
+    with pytest.raises(ValidationError):
+        RecoverRequest(email="recover@example.com", code="123456", new_password=too_long)
+
+
+async def test_login_with_corrupt_password_hash_returns_invalid_credentials(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, _password = await make_user(db_session, email="corrupt-hash@example.com")
+    user.password_hash = "corrupt"
+    await db_session.commit()
+
+    response = await client.post(
+        "/api/v1/auth/login", json={"email": user.email, "password": "anything"}
     )
 
     assert response.status_code == 401

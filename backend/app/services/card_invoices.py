@@ -264,6 +264,17 @@ def _months_between(a: date_type, b: date_type) -> int:
     return abs((b.year - a.year) * 12 + (b.month - a.month))
 
 
+async def _get_owned_account_for_update(
+    db: AsyncSession, user_id: UUID, account_id: UUID
+) -> Account:
+    account = await db.scalar(
+        ownership.owned(Account, user_id).where(Account.id == account_id).with_for_update()
+    )
+    if account is None:
+        raise NotFoundError(code="account.not_found", params={"id": str(account_id)})
+    return account
+
+
 async def pay_invoice(
     db: AsyncSession,
     user_id: UUID,
@@ -282,7 +293,7 @@ async def pay_invoice(
     An open (current) invoice may be paid early; a projected (future) one
     may not.
     """
-    account = await ownership.get_owned(db, Account, account_id, user_id)
+    account = await _get_owned_account_for_update(db, user_id, account_id)
     if account.type != ACCOUNT_TYPE_CREDIT_CARD:
         raise ValidationAppError(code="card_invoice.account_not_credit_card")
     if account.closing_day is None or account.due_day is None:

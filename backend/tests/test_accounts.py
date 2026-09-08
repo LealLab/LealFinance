@@ -1,9 +1,15 @@
 """Account CRUD, credit-card field validation, and ownership isolation."""
 
+from datetime import date
+from decimal import Decimal
+
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.account import Account
+from app.models.transaction import TRANSACTION_TYPE_INCOME, Transaction
+from app.services.accounts import account_has_ledger_references
 from tests.factories import login_as, make_user
 
 
@@ -359,6 +365,30 @@ async def test_account_ownership_isolation(
 
     list_response = await other_client.get("/api/v1/accounts")
     assert list_response.status_code == 200
+
+
+async def test_account_ledger_references_ignore_another_users_transaction(
+    db_session: AsyncSession,
+) -> None:
+    owner, _ = await make_user(db_session, email="ledger-owner@example.com")
+    other, _ = await make_user(db_session, email="ledger-other@example.com")
+    account = Account(user_id=owner.id, name="Cash", type="cash", currency="BRL")
+    db_session.add(account)
+    await db_session.flush()
+    db_session.add(
+        Transaction(
+            user_id=other.id,
+            type=TRANSACTION_TYPE_INCOME,
+            date=date(2026, 1, 1),
+            amount=Decimal("10"),
+            currency="BRL",
+            account_id=account.id,
+            description="Foreign reference",
+        )
+    )
+    await db_session.commit()
+
+    assert await account_has_ledger_references(db_session, account.id, owner.id) is False
 
 
 async def _create_category(

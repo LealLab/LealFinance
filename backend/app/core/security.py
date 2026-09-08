@@ -14,7 +14,7 @@ import secrets
 from hashlib import sha256
 
 from argon2 import PasswordHasher
-from argon2.exceptions import VerificationError
+from argon2.exceptions import InvalidHashError, VerificationError
 
 from app.core.config import get_settings
 
@@ -28,7 +28,7 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, password_hash: str) -> bool:
     try:
         _password_hasher.verify(password_hash, password)
-    except VerificationError:
+    except (InvalidHashError, VerificationError):
         return False
     return True
 

@@ -146,8 +146,8 @@ async def test_mcp_rejects_inactive_admin(db_session) -> None:
 def test_registered_tools_match_registry() -> None:
     registered = {tool.name for tool in mcp_server.mcp._tool_manager.list_tools()}
 
-    assert registered == {spec.name for spec in tools.SPECS}
-    assert "create_transaction" in registered
+    assert registered == {spec.name for spec in tools.SPECS if not spec.writes}
+    assert "create_transaction" not in registered
 
 
 async def test_chat_flag_revokes_existing_token(db_session) -> None:

@@ -98,7 +98,7 @@ async def update_wallet(
 
     currency = changes.get("currency", wallet.currency)
     if currency != account.currency and await accounts_service.account_has_ledger_references(
-        db, account.id
+        db, account.id, account.user_id
     ):
         raise ValidationAppError(code="investment_wallet.currency_in_use")
 

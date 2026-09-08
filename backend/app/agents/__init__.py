@@ -6,4 +6,5 @@ this package costs a handful of dataclasses and httpx calls, nothing that
 needs deferring when the feature is off.
 """
 
-MCP_TOKEN_TTL_SECONDS = 365 * 24 * 3600
+# MCP bearer tokens expire after 30 days; rotate the API secret to invalidate all of them sooner.
+MCP_TOKEN_TTL_SECONDS = 30 * 24 * 3600

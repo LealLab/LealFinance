@@ -19,7 +19,7 @@ class LoginRequest(BaseModel):
     """
 
     email: EmailStr
-    password: str = Field(min_length=1)
+    password: str = Field(min_length=1, max_length=128)
     # Also accepts a backup code, which is longer than six digits.
     totp_code: str | None = Field(default=None, max_length=64)
     trust_device: bool = False
@@ -28,7 +28,7 @@ class LoginRequest(BaseModel):
 class RegisterRequest(BaseModel):
     email: EmailStr
     token: str | None = None
-    password: str = Field(min_length=12)
+    password: str = Field(min_length=12, max_length=128)
     display_name: str = Field(min_length=1, max_length=100)
     base_currency: CurrencyCodeInput = "USD"
     locale: str = Field(default="en-US", min_length=2, max_length=10)
@@ -91,4 +91,4 @@ class RecoverRequest(BaseModel):
     email: EmailStr
     # A TOTP code or an unused backup code.
     code: str = Field(min_length=1, max_length=64)
-    new_password: str = Field(min_length=12)
+    new_password: str = Field(min_length=12, max_length=128)

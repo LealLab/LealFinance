@@ -23,8 +23,9 @@ division. The cache is filled, never as a side effect of a lookup, by:
 
 Without a key, without a refresh yet, or if the provider call fails, lookups
 return a 1:1 fallback, flagged so callers can show a warning rather than
-silently using a wrong number. Provider failures never propagate as an
-error - a broken exchange-rate lookup should never be why a request fails.
+silently using a wrong number. Provider failures never propagate as an error
+through lookup or cache-warm paths; an explicit manual refresh surfaces a
+coded upstream error instead.
 
 Manual rates (steps 2-3) are user-scoped and only consulted when a caller
 passes `user_id` - see app/services/manual_rates.py for the CRUD side.
@@ -42,6 +43,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
+from app.core.errors import BadGatewayError
 from app.models.currency import Currency, ExchangeRate
 from app.models.manual_rate import ManualRate
 
@@ -339,8 +341,11 @@ async def _fetch_usd_rates(app_id: str, as_of: date) -> dict[str, Decimal]:
         if as_of >= date.today()
         else _OXR_HISTORICAL_URL.format(date=as_of.isoformat())
     )
-    async with httpx.AsyncClient(timeout=10) as client:
-        response = await client.get(url, params={"app_id": app_id})
-        response.raise_for_status()
-        payload = response.json()
-    return {code: Decimal(str(value)) for code, value in payload["rates"].items()}
+    try:
+        async with httpx.AsyncClient(timeout=10) as client:
+            response = await client.get(url, params={"app_id": app_id})
+            response.raise_for_status()
+            payload = response.json()
+        return {code: Decimal(str(value)) for code, value in payload["rates"].items()}
+    except (httpx.HTTPError, KeyError, ValueError) as exc:
+        raise BadGatewayError(code="exchange_rate.provider_unavailable") from exc

@@ -132,6 +132,7 @@ Registration is invite-only, except the very first user on an instance.
 | `auth.session_invalid` | 401 | Cookie present but expired, revoked, or unknown. |
 | `auth.invalid_credentials` | 401 | Wrong email/password at login (indistinguishable timing from an unknown email). |
 | `auth.account_inactive` | 401 | Valid credentials/session, but the account is deactivated. |
+| `auth.account_locked` | 401 | Five consecutive bad passwords; further attempts are refused for 15 minutes. |
 | `auth.totp_required` | 401 | Password accepted, but the account has TOTP enabled and this browser isn't trusted. Retry `POST /auth/login` with `totp_code`. |
 | `auth.totp_invalid` | 401 | Wrong, expired, or already-used second factor. |
 | `auth.totp_locked` | 401 | Five consecutive bad codes; further attempts are refused for 15 minutes. |
