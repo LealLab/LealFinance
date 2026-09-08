@@ -9,10 +9,13 @@ the very first user on an instance, who registers with no token at all.
 
 from datetime import UTC, datetime, timedelta
 
+import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import app.api.v1.auth as auth_router
+from app.core.config import get_settings
 from app.models.currency import Currency
 from app.models.user import ROLE_ADMIN, Invitation
 from tests.factories import login_as, make_user
@@ -42,6 +45,28 @@ async def test_admin_can_create_and_list_invitation(
     assert any(row["email"] == "newbie@example.com" for row in listed)
     # The raw token is exposed only from the create response, never again.
     assert all("token" not in row for row in listed)
+
+
+async def test_creating_an_invitation_emails_the_link_when_smtp_is_configured(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(get_settings(), "smtp_host", "smtp.example.com")
+    monkeypatch.setattr(get_settings(), "app_base_url", "https://finance.example.test")
+    sent: list[dict[str, str]] = []
+    monkeypatch.setattr(auth_router, "send_email", lambda **kwargs: sent.append(kwargs))
+
+    await _admin_client(client, db_session)
+    response = await client.post(
+        "/api/v1/auth/invitations", json={"email": "mailme@example.com", "role": "member"}
+    )
+
+    assert response.status_code == 201
+    assert len(sent) == 1
+    assert sent[0]["to"] == "mailme@example.com"
+    assert "mailme%40example.com" in sent[0]["body"]
+    assert response.json()["token"] in sent[0]["body"]
+    assert "Create your account" in sent[0]["html"]
+    assert response.json()["token"] in sent[0]["html"]
 
 
 async def test_inviting_an_email_with_a_pending_invitation_conflicts(

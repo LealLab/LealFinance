@@ -40,6 +40,7 @@ describe('Sidebar', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      emailEnabled: false,
     });
 
     const fixture = TestBed.createComponent(Sidebar);
@@ -66,6 +67,7 @@ describe('Sidebar', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      emailEnabled: false,
     });
 
     const fixture = TestBed.createComponent(Sidebar);

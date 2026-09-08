@@ -1672,6 +1672,7 @@
       "create": "Pozvat",
       "tokenOnce": "Tento token a registrační odkaz se zobrazují pouze nyní. Než odejdete, uložte si je.",
       "copyLink": "Kopírovat registrační odkaz",
+      "emailed": "Na adresu {{email}} jsme odeslali registrační odkaz.",
       "revoke": "Odvolat",
       "revokeConfirm": "Odvolat pozvánku pro {{email}}?",
       "empty": "Nebyly nalezeny žádné pozvánky."

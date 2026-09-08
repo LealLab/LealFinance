@@ -55,7 +55,10 @@ Registration is invite-only, except the very first user on an instance.
    the same code an unknown/wrong token gets.
 2. **Invite everyone else**: an admin calls `POST /auth/invitations`; the
    response includes the raw, one-time invitation token - the only time it
-   is ever exposed. Delivery is out-of-band (no email provider in v1).
+   is ever exposed. When SMTP is configured (`SMTP_HOST` + `APP_BASE_URL`)
+   the registration link is also emailed to the invitee, best-effort and
+   off the request path; otherwise delivery is out-of-band via the copied
+   link. `GET /meta/settings` reports `email_enabled` so the UI knows which.
 3. **Register**: the invitee calls `POST /auth/register` with their email,
    the token, and their own password. Admins never create or see member
    passwords. A successful register also logs the new user in (same cookies
@@ -166,7 +169,7 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/health/live` | public | Process liveness only. |
 | GET | `/health/ready` | public | 503 unless both Postgres and Redis are reachable. |
 | GET | `/meta/currencies` | public | Active currencies only. |
-| GET | `/meta/settings` | public | `default_currency`, `default_locale`, and boolean `agents_enabled`. |
+| GET | `/meta/settings` | public | `default_currency`, `default_locale`, and booleans `agents_enabled`, `email_enabled`. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |
 | POST | `/meta/exchange-rates/refresh` | admin | Force a provider refresh of today's rates; cooldown-gated. See "Exchange rates" below. |
 | GET | `/meta/update-status` | admin | Current/latest version and whether an update is available; see "Updates" below. |

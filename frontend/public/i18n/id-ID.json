@@ -1672,6 +1672,7 @@
       "create": "Undang",
       "tokenOnce": "Token dan tautan pendaftaran ini hanya ditampilkan sekarang. Simpan sebelum meninggalkan halaman.",
       "copyLink": "Salin tautan pendaftaran",
+      "emailed": "Kami mengirim tautan pendaftaran ke {{email}}.",
       "revoke": "Cabut",
       "revokeConfirm": "Cabut undangan untuk {{email}}?",
       "empty": "Undangan tidak ditemukan."

@@ -1672,6 +1672,7 @@
       "create": "Inviter",
       "tokenOnce": "Dette token og registreringslinket vises kun nu. Gem dem, før du forlader siden.",
       "copyLink": "Kopiér registreringslink",
+      "emailed": "Vi har sendt et registreringslink til {{email}}.",
       "revoke": "Tilbagekald",
       "revokeConfirm": "Tilbagekald invitationen til {{email}}?",
       "empty": "Ingen invitationer fundet."

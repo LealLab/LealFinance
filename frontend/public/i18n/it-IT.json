@@ -1672,6 +1672,7 @@
       "create": "Invita",
       "tokenOnce": "Questo token e il link di registrazione vengono mostrati solo ora. Salvali prima di uscire.",
       "copyLink": "Copia il link di registrazione",
+      "emailed": "Abbiamo inviato un link di registrazione a {{email}}.",
       "revoke": "Revoca",
       "revokeConfirm": "Revocare l’invito per {{email}}?",
       "empty": "Nessun invito trovato."

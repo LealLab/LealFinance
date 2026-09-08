@@ -7,7 +7,7 @@ app/services/auth.py for the bootstrap rule.
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Request, Response, status
+from fastapi import APIRouter, BackgroundTasks, Request, Response, status
 
 from app.api.deps import AdminUser, CurrentSession, CurrentUser, DbSession
 from app.core.cookies import (
@@ -37,6 +37,7 @@ from app.schemas.user import PreferencesRead, PreferencesUpdate, UserRead, UserU
 from app.schemas.webauthn import PasskeyLoginRequest, PasskeyRead, PasskeyRegisterRequest
 from app.services import auth as auth_service
 from app.services import webauthn as webauthn_service
+from app.services.email import build_invitation_email, send_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -46,10 +47,17 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/invitations", response_model=InvitationCreated, status_code=status.HTTP_201_CREATED)
 async def create_invitation(
-    payload: InvitationCreate, admin: AdminUser, db: DbSession
+    payload: InvitationCreate, admin: AdminUser, db: DbSession, background: BackgroundTasks
 ) -> InvitationCreated:
     issued = await auth_service.create_invitation(
         db, inviter=admin, email=payload.email, role=payload.role
+    )
+    # Best-effort: send_email is a no-op without SMTP and never raises. Runs
+    # after the response so a slow SMTP host can't delay the admin. The raw
+    # token in the response keeps the copy-link flow working regardless.
+    subject, text, html = build_invitation_email(email=issued.invitation.email, token=issued.token)
+    background.add_task(
+        send_email, to=issued.invitation.email, subject=subject, body=text, html=html
     )
     fields = InvitationRead.model_validate(issued.invitation).model_dump()
     return InvitationCreated(**fields, token=issued.token)

@@ -136,8 +136,10 @@ mis-pointed test run. Override the name with `POSTGRES_TEST_DB` if needed.
 
 On an empty database, register through the frontend without an invitation. The
 first account becomes the administrator. Later users must be invited by an
-administrator; invitations are delivered manually because there is no email
-provider in v1. See [`backend-api.md`](backend-api.md) for the full flow.
+administrator. If `SMTP_HOST` and `APP_BASE_URL` are set the invite is emailed
+to the recipient; otherwise the admin copies the registration link from the
+users screen and shares it out of band. See [`backend-api.md`](backend-api.md)
+for the full flow.
 
 To create local demo data:
 

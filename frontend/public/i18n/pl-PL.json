@@ -1672,6 +1672,7 @@
       "create": "Zaproś",
       "tokenOnce": "Ten token i link rejestracyjny są wyświetlane tylko teraz. Zapisz je przed wyjściem.",
       "copyLink": "Kopiuj link rejestracyjny",
+      "emailed": "Wysłaliśmy link rejestracyjny na adres {{email}}.",
       "revoke": "Cofnij",
       "revokeConfirm": "Czy cofnąć zaproszenie dla {{email}}?",
       "empty": "Nie znaleziono zaproszeń."

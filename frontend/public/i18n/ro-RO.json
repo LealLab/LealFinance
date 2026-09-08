@@ -1672,6 +1672,7 @@
       "create": "Invită",
       "tokenOnce": "Acest cod și linkul de înregistrare sunt afișate doar acum. Salvează-le înainte să pleci.",
       "copyLink": "Copiază linkul de înregistrare",
+      "emailed": "Am trimis un link de înregistrare către {{email}}.",
       "revoke": "Revocă",
       "revokeConfirm": "Revoci invitația pentru {{email}}?",
       "empty": "Nu s-a găsit nicio invitație."

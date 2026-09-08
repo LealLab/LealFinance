@@ -46,6 +46,7 @@ export interface PublicSettings {
   defaultCurrency: string;
   defaultLocale: string;
   agentsEnabled: boolean;
+  emailEnabled: boolean;
 }
 
 export interface TotpStatus {

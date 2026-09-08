@@ -1672,6 +1672,7 @@
       "create": "Invite",
       "tokenOnce": "This token and registration link are shown only now. Save them before leaving.",
       "copyLink": "Copy registration link",
+      "emailed": "We emailed a registration link to {{email}}.",
       "revoke": "Revoke",
       "revokeConfirm": "Revoke the invitation for {{email}}?",
       "empty": "No invitations found."

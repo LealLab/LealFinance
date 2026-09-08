@@ -1672,6 +1672,7 @@
       "create": "Invitar",
       "tokenOnce": "Este token y el enlace de registro solo se mostrarán ahora. Guárdalos antes de salir.",
       "copyLink": "Copiar enlace de registro",
+      "emailed": "Enviamos un enlace de registro a {{email}}.",
       "revoke": "Revocar",
       "revokeConfirm": "¿Revocar la invitación para {{email}}?",
       "empty": "No se han encontrado invitaciones."

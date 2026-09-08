@@ -102,6 +102,7 @@ describe('Settings', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      emailEnabled: false,
     });
 
     const fixture = TestBed.createComponent(Settings);
@@ -141,6 +142,7 @@ describe('Settings', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      emailEnabled: false,
     });
 
     const fixture = TestBed.createComponent(Settings);

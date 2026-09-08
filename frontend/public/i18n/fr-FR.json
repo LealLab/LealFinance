@@ -1672,6 +1672,7 @@
       "create": "Inviter",
       "tokenOnce": "Ce jeton et le lien d’inscription ne seront affichés que maintenant. Enregistrez-les avant de quitter.",
       "copyLink": "Copier le lien d’inscription",
+      "emailed": "Nous avons envoyé un lien d'inscription à {{email}}.",
       "revoke": "Révoquer",
       "revokeConfirm": "Révoquer l’invitation pour {{email}} ?",
       "empty": "Aucune invitation trouvée."

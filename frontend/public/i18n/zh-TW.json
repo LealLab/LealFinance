@@ -1672,6 +1672,7 @@
       "create": "邀請",
       "tokenOnce": "此權杖與註冊連結只會顯示這一次。離開前請先儲存。",
       "copyLink": "複製註冊連結",
+      "emailed": "我們已向 {{email}} 發送註冊連結。",
       "revoke": "撤銷",
       "revokeConfirm": "要撤銷寄給 {{email}} 的邀請嗎？",
       "empty": "找不到邀請。"
