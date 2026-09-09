@@ -45,9 +45,11 @@ import { HttpInvestmentTransactionRepository } from './data/http/http-investment
 import { HttpInvestmentWalletRepository } from './data/http/http-investment-wallet.repository';
 import { HttpManualRateRepository } from './data/http/http-manual-rate.repository';
 import { HttpMarketDataCredentialRepository } from './data/http/http-market-data-credential.repository';
+import { HttpReconciliationRepository } from './data/http/http-reconciliation.repository';
 import { HttpRecurringRuleRepository } from './data/http/http-recurring-rule.repository';
 import { HttpTransactionRepository } from './data/http/http-transaction.repository';
 import { RecurringRuleRepository } from './data/recurring-rule.repository';
+import { ReconciliationRepository } from './data/reconciliation.repository';
 import { TransactionRepository } from './data/transaction.repository';
 
 export const appConfig: ApplicationConfig = {
@@ -65,6 +67,7 @@ export const appConfig: ApplicationConfig = {
     { provide: AgentProviderRepository, useClass: HttpAgentProviderRepository },
     { provide: AgentChatRepository, useClass: HttpAgentChatRepository },
     { provide: TransactionRepository, useClass: HttpTransactionRepository },
+    { provide: ReconciliationRepository, useClass: HttpReconciliationRepository },
     { provide: CategoryGroupRepository, useClass: HttpCategoryGroupRepository },
     { provide: CategoryRepository, useClass: HttpCategoryRepository },
     { provide: BudgetRepository, useClass: HttpBudgetRepository },

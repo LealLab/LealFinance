@@ -1780,7 +1780,29 @@
       "label": "推理强度"
     }
   },
+  "reconciliation": {
+    "nav": "对账",
+    "title": "银行对账",
+    "description": "将账簿与银行对账单进行比较，并标记匹配的交易。",
+    "form": { "account": "账户", "chooseAccount": "选择账户", "statementDate": "对账单日期", "statementBalance": "对账单余额" },
+    "stat": { "statement": "对账单余额", "cleared": "已对账余额", "difference": "差额" },
+    "detail": { "asOf": "截至 {{date}}" },
+    "entries": {
+      "date": "日期", "description": "描述", "legLabel": "交易方向", "amount": "金额", "cleared": "已对账",
+      "mark": "将 {{description}} 标记为已对账", "empty": "对账单日期之前没有交易。",
+      "legType": { "own": "账户交易", "incoming": "转入" }
+    },
+    "actions": { "reconcile": "对账", "start": "开始对账", "complete": "完成", "reopen": "重新打开", "delete": "删除" },
+    "status": { "open": "进行中", "completed": "已完成" },
+    "empty": { "title": "未选择对账", "description": "在上方开始对账，或选择之前的对账。" },
+    "loadError": "无法加载对账记录，请重试。",
+    "confirmDelete": { "title": "删除对账？", "message": "对账记录及其标记将被删除。是否继续？" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "无法对已归档的账户进行对账。", "already_open": "此账户已有进行中的对账。", "completed": "此对账已完成。",
+      "transaction_not_eligible": "此交易不符合本次对账条件。", "leg_locked": "此交易方向已被其他对账锁定。", "difference_not_zero": "完成前差额必须为零。"
+    },
     "backup": {
       "invalid_archive": "这不是有效的 LealFinance 备份。",
       "invalid_file_type": "请选择 JSON 备份文件。",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "请选择此转账的目标账户。",
       "category_required": "请选择此交易的分类。",
       "category_kind_mismatch": "该分类与此交易的类型不匹配。",
-      "conversion_required": "此交易涉及不同货币，因此需要填写换算后的金额。"
+      "conversion_required": "此交易涉及不同货币，因此需要填写换算后的金额。",
+      "reconciled": "已对账的交易不能修改结构或删除。"
     },
     "currency": {
       "not_found": "该货币不可用。",

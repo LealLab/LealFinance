@@ -1780,7 +1780,59 @@
       "label": "Effort de raisonnement"
     }
   },
+  "reconciliation": {
+    "nav": "Rapprocher",
+    "title": "Rapprochement bancaire",
+    "description": "Comparez votre livre avec un relevé bancaire et pointez les transactions correspondantes.",
+    "form": {
+      "account": "Compte",
+      "chooseAccount": "Choisir un compte",
+      "statementDate": "Date du relevé",
+      "statementBalance": "Solde du relevé"
+    },
+    "stat": {
+      "statement": "Solde du relevé",
+      "cleared": "Solde pointé",
+      "difference": "Différence"
+    },
+    "detail": { "asOf": "Jusqu’au {{date}}" },
+    "entries": {
+      "date": "Date",
+      "description": "Description",
+      "legLabel": "Mouvement",
+      "amount": "Montant",
+      "cleared": "Pointé",
+      "mark": "Marquer {{description}} comme pointé",
+      "empty": "Aucune transaction ne se trouve dans la période du relevé.",
+      "legType": { "own": "Transaction du compte", "incoming": "Virement entrant" }
+    },
+    "actions": {
+      "reconcile": "Rapprocher",
+      "start": "Démarrer le rapprochement",
+      "complete": "Terminer",
+      "reopen": "Rouvrir",
+      "delete": "Supprimer"
+    },
+    "status": { "open": "Ouvert", "completed": "Terminé" },
+    "empty": {
+      "title": "Aucun rapprochement sélectionné",
+      "description": "Démarrez un rapprochement ci-dessus ou choisissez-en un précédent."
+    },
+    "loadError": "Impossible de charger les rapprochements. Réessayez.",
+    "confirmDelete": {
+      "title": "Supprimer le rapprochement ?",
+      "message": "Le rapprochement et ses pointages seront supprimés. Continuer ?"
+    }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Les comptes archivés ne peuvent pas être rapprochés.",
+      "already_open": "Ce compte possède déjà un rapprochement ouvert.",
+      "completed": "Ce rapprochement est déjà terminé.",
+      "transaction_not_eligible": "Cette transaction ne peut pas participer à ce rapprochement.",
+      "leg_locked": "Ce mouvement est verrouillé par un autre rapprochement.",
+      "difference_not_zero": "La différence doit être nulle avant de terminer."
+    },
     "backup": {
       "invalid_archive": "Ce fichier n’est pas une sauvegarde LealFinance valide.",
       "invalid_file_type": "Choisissez un fichier de sauvegarde JSON.",
@@ -1880,7 +1932,8 @@
       "transfer_requires_destination": "Choisissez le compte destinataire de ce transfert.",
       "category_required": "Choisissez une catégorie pour cette transaction.",
       "category_kind_mismatch": "Cette catégorie ne correspond pas au type de cette transaction.",
-      "conversion_required": "Cette transaction utilise plusieurs devises et nécessite donc un montant converti."
+      "conversion_required": "Cette transaction utilise plusieurs devises et nécessite donc un montant converti.",
+      "reconciled": "Les transactions rapprochées ne peuvent pas être modifiées structurellement ni supprimées."
     },
     "currency": {
       "not_found": "Cette devise n'est pas disponible.",

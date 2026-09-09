@@ -1780,7 +1780,29 @@
       "label": "Resonneringsinnsats"
     }
   },
+  "reconciliation": {
+    "nav": "Avstem",
+    "title": "Bankavstemming",
+    "description": "Sammenlign regnskapet med en kontoutskrift og marker samsvarende transaksjoner.",
+    "form": { "account": "Konto", "chooseAccount": "Velg konto", "statementDate": "Kontoutskriftsdato", "statementBalance": "Kontoutskriftsaldo" },
+    "stat": { "statement": "Kontoutskriftsaldo", "cleared": "Avstemt saldo", "difference": "Forskjell" },
+    "detail": { "asOf": "Til og med {{date}}" },
+    "entries": {
+      "date": "Dato", "description": "Beskrivelse", "legLabel": "Postering", "amount": "Beløp", "cleared": "Avstemt",
+      "mark": "Marker {{description}} som avstemt", "empty": "Ingen transaksjoner finnes på eller før denne datoen.",
+      "legType": { "own": "Kontotransaksjon", "incoming": "Innkommende overføring" }
+    },
+    "actions": { "reconcile": "Avstem", "start": "Start avstemming", "complete": "Fullfør", "reopen": "Åpne på nytt", "delete": "Slett" },
+    "status": { "open": "Åpen", "completed": "Fullført" },
+    "empty": { "title": "Ingen avstemming valgt", "description": "Start en avstemming ovenfor eller velg en tidligere." },
+    "loadError": "Kunne ikke laste inn avstemmingene. Prøv igjen.",
+    "confirmDelete": { "title": "Slette avstemming?", "message": "Avstemmingen og markeringene slettes. Vil du fortsette?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Arkiverte kontoer kan ikke avstemmes.", "already_open": "Denne kontoen har allerede en åpen avstemming.", "completed": "Denne avstemmingen er allerede fullført.",
+      "transaction_not_eligible": "Denne transaksjonen kan ikke tas med i avstemmingen.", "leg_locked": "Denne posteringen er låst av en annen avstemming.", "difference_not_zero": "Forskjellen må være null før avstemmingen fullføres."
+    },
     "backup": {
       "invalid_archive": "Dette er ikke en gyldig LealFinance-sikkerhetskopi.",
       "invalid_file_type": "Velg en JSON-sikkerhetskopifil.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Velg kontoen denne overføringen skal gå til.",
       "category_required": "Velg en kategori for denne transaksjonen.",
       "category_kind_mismatch": "Den kategorien passer ikke til typen transaksjon.",
-      "conversion_required": "Denne transaksjonen går på tvers av valutaer og trenger derfor et omregnet beløp."
+      "conversion_required": "Denne transaksjonen går på tvers av valutaer og trenger derfor et omregnet beløp.",
+      "reconciled": "Avstemte transaksjoner kan ikke endres strukturelt eller slettes."
     },
     "currency": {
       "not_found": "Den valutaen er ikke tilgjengelig.",

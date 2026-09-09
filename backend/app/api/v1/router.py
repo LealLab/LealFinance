@@ -21,6 +21,7 @@ from app.api.v1 import (
     manual_rates,
     market_data,
     meta,
+    reconciliations,
     recurring_rules,
     transactions,
 )
@@ -40,6 +41,7 @@ api_v1_router.include_router(budgets.router)
 api_v1_router.include_router(budget_plan.allocations_router)
 api_v1_router.include_router(budget_plan.expected_income_router)
 api_v1_router.include_router(transactions.router)
+api_v1_router.include_router(reconciliations.router)
 api_v1_router.include_router(recurring_rules.router)
 api_v1_router.include_router(categorization_rules.router)
 api_v1_router.include_router(manual_rates.router)

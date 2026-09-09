@@ -1780,7 +1780,59 @@
       "label": "Denkaufwand"
     }
   },
+  "reconciliation": {
+    "nav": "Abgleichen",
+    "title": "Bankabgleich",
+    "description": "Vergleichen Sie Ihr Kontobuch mit einem Kontoauszug und markieren Sie passende Transaktionen.",
+    "form": {
+      "account": "Konto",
+      "chooseAccount": "Konto auswählen",
+      "statementDate": "Auszugsdatum",
+      "statementBalance": "Auszugssaldo"
+    },
+    "stat": {
+      "statement": "Auszugssaldo",
+      "cleared": "Abgeglichenes Guthaben",
+      "difference": "Differenz"
+    },
+    "detail": { "asOf": "Bis {{date}}" },
+    "entries": {
+      "date": "Datum",
+      "description": "Beschreibung",
+      "legLabel": "Buchungsseite",
+      "amount": "Betrag",
+      "cleared": "Abgeglichen",
+      "mark": "{{description}} als abgeglichen markieren",
+      "empty": "Für dieses Auszugsdatum gibt es keine Transaktionen.",
+      "legType": { "own": "Kontotransaktion", "incoming": "Eingehende Überweisung" }
+    },
+    "actions": {
+      "reconcile": "Abgleichen",
+      "start": "Abgleich starten",
+      "complete": "Abschließen",
+      "reopen": "Wieder öffnen",
+      "delete": "Löschen"
+    },
+    "status": { "open": "Offen", "completed": "Abgeschlossen" },
+    "empty": {
+      "title": "Kein Abgleich ausgewählt",
+      "description": "Starten Sie oben einen Abgleich oder wählen Sie einen früheren aus."
+    },
+    "loadError": "Abgleiche konnten nicht geladen werden. Versuchen Sie es erneut.",
+    "confirmDelete": {
+      "title": "Abgleich löschen?",
+      "message": "Der Abgleich und seine Markierungen werden gelöscht. Fortfahren?"
+    }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Archivierte Konten können nicht abgeglichen werden.",
+      "already_open": "Für dieses Konto gibt es bereits einen offenen Abgleich.",
+      "completed": "Dieser Abgleich ist bereits abgeschlossen.",
+      "transaction_not_eligible": "Diese Transaktion kann nicht an diesem Abgleich teilnehmen.",
+      "leg_locked": "Diese Buchungsseite ist durch einen anderen Abgleich gesperrt.",
+      "difference_not_zero": "Die Differenz muss vor dem Abschluss null sein."
+    },
     "backup": {
       "invalid_archive": "Dies ist keine gültige LealFinance-Sicherung.",
       "invalid_file_type": "Wählen Sie eine JSON-Sicherungsdatei aus.",
@@ -1880,7 +1932,8 @@
       "transfer_requires_destination": "Wähle das Zielkonto für diese Überweisung aus.",
       "category_required": "Wähle eine Kategorie für diese Transaktion aus.",
       "category_kind_mismatch": "Diese Kategorie passt nicht zum Typ dieser Transaktion.",
-      "conversion_required": "Diese Transaktion betrifft mehrere Währungen und benötigt daher einen umgerechneten Betrag."
+      "conversion_required": "Diese Transaktion betrifft mehrere Währungen und benötigt daher einen umgerechneten Betrag.",
+      "reconciled": "Abgeglichene Transaktionen können strukturell nicht bearbeitet oder gelöscht werden."
     },
     "currency": {
       "not_found": "Diese Währung ist nicht verfügbar.",

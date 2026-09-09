@@ -544,6 +544,13 @@ async def update_transaction(
     before = transaction_history.snapshot(transaction)
     changes = data.model_dump(exclude_unset=True, exclude={"conversion"})
     conversion_provided = "conversion" in data.model_fields_set
+    if conversion_provided or any(
+        field in changes
+        for field in ("amount", "date", "account_id", "to_account_id", "type", "currency")
+    ):
+        from app.services.reconciliations import assert_not_reconciled
+
+        await assert_not_reconciled(db, user_id, (transaction.id,))
 
     if "currency" in changes:
         await get_active_currency(db, changes["currency"])
@@ -643,6 +650,9 @@ async def update_transaction(
 
 async def delete_transaction(db: AsyncSession, user_id: UUID, transaction_id: UUID) -> None:
     transaction = await ownership.get_owned(db, Transaction, transaction_id, user_id)
+    from app.services.reconciliations import assert_not_reconciled
+
+    await assert_not_reconciled(db, user_id, (transaction.id,))
     before = transaction_history.snapshot(transaction)
     await db.delete(transaction)
     transaction_history.record(
@@ -660,6 +670,9 @@ async def bulk_delete_transactions(db: AsyncSession, user_id: UUID, ids: Sequenc
     """All-or-nothing, same contract as import_transactions: one foreign or
     unknown id 404s (via get_many_owned) and nothing is deleted."""
     owned = await ownership.get_many_owned(db, Transaction, ids, user_id)
+    from app.services.reconciliations import assert_not_reconciled
+
+    await assert_not_reconciled(db, user_id, owned.keys())
     snapshots = {
         transaction.id: transaction_history.snapshot(transaction) for transaction in owned.values()
     }

@@ -1780,7 +1780,29 @@
       "label": "Redeneerinspanning"
     }
   },
+  "reconciliation": {
+    "nav": "Afstemmen",
+    "title": "Bankafstemming",
+    "description": "Vergelijk je boekhouding met een bankafschrift en markeer overeenkomende transacties.",
+    "form": { "account": "Rekening", "chooseAccount": "Kies een rekening", "statementDate": "Datum afschrift", "statementBalance": "Saldo afschrift" },
+    "stat": { "statement": "Saldo afschrift", "cleared": "Afgestemd saldo", "difference": "Verschil" },
+    "detail": { "asOf": "Tot en met {{date}}" },
+    "entries": {
+      "date": "Datum", "description": "Omschrijving", "legLabel": "Beweging", "amount": "Bedrag", "cleared": "Afgestemd",
+      "mark": "Markeer {{description}} als afgestemd", "empty": "Er zijn geen transacties op of vóór deze afschrift datum.",
+      "legType": { "own": "Rekeningtransactie", "incoming": "Inkomende overschrijving" }
+    },
+    "actions": { "reconcile": "Afstemmen", "start": "Afstemming starten", "complete": "Voltooien", "reopen": "Heropenen", "delete": "Verwijderen" },
+    "status": { "open": "Open", "completed": "Voltooid" },
+    "empty": { "title": "Geen afstemming geselecteerd", "description": "Start hierboven een afstemming of kies een eerdere." },
+    "loadError": "Afstemmingen konden niet worden geladen. Probeer het opnieuw.",
+    "confirmDelete": { "title": "Afstemming verwijderen?", "message": "De afstemming en gemarkeerde transacties worden verwijderd. Doorgaan?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Gearchiveerde rekeningen kunnen niet worden afgestemd.", "already_open": "Deze rekening heeft al een open afstemming.", "completed": "Deze afstemming is al voltooid.",
+      "transaction_not_eligible": "Deze transactie kan niet aan deze afstemming deelnemen.", "leg_locked": "Deze boeking is vergrendeld door een andere afstemming.", "difference_not_zero": "Het verschil moet nul zijn voordat je voltooit."
+    },
     "backup": {
       "invalid_archive": "Dit is geen geldige LealFinance-back-up.",
       "invalid_file_type": "Kies een JSON-back-upbestand.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Kies het account waar deze overschrijving naartoe gaat.",
       "category_required": "Kies een categorie voor deze transactie.",
       "category_kind_mismatch": "Deze categorie past niet bij het type van deze transactie.",
-      "conversion_required": "Deze transactie gebruikt meerdere valuta's en heeft daarom een omgerekend bedrag nodig."
+      "conversion_required": "Deze transactie gebruikt meerdere valuta's en heeft daarom een omgerekend bedrag nodig.",
+      "reconciled": "Afgestemde transacties kunnen niet structureel worden gewijzigd of verwijderd."
     },
     "currency": {
       "not_found": "Deze valuta is niet beschikbaar.",

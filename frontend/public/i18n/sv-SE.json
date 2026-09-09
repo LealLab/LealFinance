@@ -1780,7 +1780,29 @@
       "label": "Resonemangsnivå"
     }
   },
+  "reconciliation": {
+    "nav": "Avstäm",
+    "title": "Bankavstämning",
+    "description": "Jämför din bokföring med ett kontoutdrag och markera matchande transaktioner.",
+    "form": { "account": "Konto", "chooseAccount": "Välj ett konto", "statementDate": "Kontoutdragsdatum", "statementBalance": "Kontoutdragssaldo" },
+    "stat": { "statement": "Kontoutdragssaldo", "cleared": "Avstämt saldo", "difference": "Skillnad" },
+    "detail": { "asOf": "Till och med {{date}}" },
+    "entries": {
+      "date": "Datum", "description": "Beskrivning", "legLabel": "Bokföringspost", "amount": "Belopp", "cleared": "Avstämd",
+      "mark": "Markera {{description}} som avstämd", "empty": "Inga transaktioner finns på eller före detta kontoutdragsdatum.",
+      "legType": { "own": "Kontotransaktion", "incoming": "Inkommande överföring" }
+    },
+    "actions": { "reconcile": "Avstäm", "start": "Starta avstämning", "complete": "Slutför", "reopen": "Öppna igen", "delete": "Ta bort" },
+    "status": { "open": "Öppen", "completed": "Slutförd" },
+    "empty": { "title": "Ingen avstämning vald", "description": "Starta en avstämning ovan eller välj en tidigare." },
+    "loadError": "Det gick inte att läsa in avstämningar. Försök igen.",
+    "confirmDelete": { "title": "Ta bort avstämning?", "message": "Avstämningen och dess markeringar tas bort. Vill du fortsätta?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Arkiverade konton kan inte stämmas av.", "already_open": "Det här kontot har redan en öppen avstämning.", "completed": "Den här avstämningen är redan slutförd.",
+      "transaction_not_eligible": "Transaktionen kan inte ingå i den här avstämningen.", "leg_locked": "Den här bokföringsposten är låst av en annan avstämning.", "difference_not_zero": "Skillnaden måste vara noll innan avstämningen slutförs."
+    },
     "backup": {
       "invalid_archive": "Detta är inte en giltig säkerhetskopia från LealFinance.",
       "invalid_file_type": "Välj en JSON-säkerhetskopia.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Välj kontot som överföringen ska gå till.",
       "category_required": "Välj en kategori för den här transaktionen.",
       "category_kind_mismatch": "Den kategorin passar inte transaktionens typ.",
-      "conversion_required": "Den här transaktionen använder flera valutor och behöver därför ett omräknat belopp."
+      "conversion_required": "Den här transaktionen använder flera valutor och behöver därför ett omräknat belopp.",
+      "reconciled": "Avstämda transaktioner kan inte ändras strukturellt eller tas bort."
     },
     "currency": {
       "not_found": "Den valutan är inte tillgänglig.",

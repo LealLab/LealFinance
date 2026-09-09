@@ -1780,7 +1780,29 @@
       "label": "추론 노력"
     }
   },
+  "reconciliation": {
+    "nav": "대사",
+    "title": "은행 거래 대사",
+    "description": "장부를 은행 명세서와 비교하고 일치하는 거래를 대사 완료로 표시합니다.",
+    "form": { "account": "계정", "chooseAccount": "계정 선택", "statementDate": "명세서 날짜", "statementBalance": "명세서 잔액" },
+    "stat": { "statement": "명세서 잔액", "cleared": "대사 완료 잔액", "difference": "차액" },
+    "detail": { "asOf": "{{date}} 기준" },
+    "entries": {
+      "date": "날짜", "description": "설명", "legLabel": "거래 유형", "amount": "금액", "cleared": "대사 완료",
+      "mark": "{{description}}을(를) 대사 완료로 표시", "empty": "이 명세서 날짜까지 거래가 없습니다.",
+      "legType": { "own": "계정 거래", "incoming": "입금 이체" }
+    },
+    "actions": { "reconcile": "대사", "start": "대사 시작", "complete": "완료", "reopen": "다시 열기", "delete": "삭제" },
+    "status": { "open": "진행 중", "completed": "완료됨" },
+    "empty": { "title": "선택한 대사가 없습니다", "description": "위에서 대사를 시작하거나 이전 대사를 선택하세요." },
+    "loadError": "대사를 불러오지 못했습니다. 다시 시도하세요.",
+    "confirmDelete": { "title": "대사를 삭제할까요?", "message": "대사와 대사 표시가 삭제됩니다. 계속할까요?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "보관된 계정은 대사할 수 없습니다.", "already_open": "이 계정에는 이미 진행 중인 대사가 있습니다.", "completed": "이 대사는 이미 완료되었습니다.",
+      "transaction_not_eligible": "이 거래는 이 대사의 대상이 아닙니다.", "leg_locked": "이 거래 유형은 다른 대사에서 잠겨 있습니다.", "difference_not_zero": "완료하려면 차액이 0이어야 합니다."
+    },
     "backup": {
       "invalid_archive": "올바른 LealFinance 백업이 아닙니다.",
       "invalid_file_type": "JSON 백업 파일을 선택하세요.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "이체할 대상 계정을 선택하세요.",
       "category_required": "이 거래의 카테고리를 선택하세요.",
       "category_kind_mismatch": "해당 카테고리가 이 거래 유형과 일치하지 않습니다.",
-      "conversion_required": "이 거래는 여러 통화에 걸쳐 있으므로 환산 금액이 필요합니다."
+      "conversion_required": "이 거래는 여러 통화에 걸쳐 있으므로 환산 금액이 필요합니다.",
+      "reconciled": "대사 완료된 거래는 구조를 수정하거나 삭제할 수 없습니다."
     },
     "currency": {
       "not_found": "해당 통화를 사용할 수 없습니다.",

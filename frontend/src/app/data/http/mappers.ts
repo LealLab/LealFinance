@@ -32,10 +32,16 @@ import type { ManualRate } from '../../domain/models/manual-rate';
 import type { MarketDataCredentialStatus } from '../../domain/models/market-data-credential';
 import type { RecurringRule } from '../../domain/models/recurring';
 import type {
+  Reconciliation,
+  ReconciliationDetail,
+  ReconciliationEntry,
+} from '../../domain/models/reconciliation';
+import type {
   TransactionHistoryEntry,
   TransactionSnapshot,
 } from '../../domain/models/transaction-history';
 import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
+import type { ReconciliationCreateInput } from '../reconciliation.repository';
 import type {
   InvestmentWalletCreate,
   InvestmentWalletUpdate,
@@ -110,6 +116,10 @@ import type {
   RecurringRulePatchWire,
   RecurringRuleWire,
   RecurringTemplateWire,
+  ReconciliationDetailWire,
+  ReconciliationEntryWire,
+  ReconciliationInputWire,
+  ReconciliationWire,
   RuleImportItemWire,
   RulePackWire,
   TransactionInputWire,
@@ -171,6 +181,44 @@ export const mapAccountBalance = (wire: AccountBalanceWire): AccountBalance => (
   accountId: wire.account_id,
   currency: wire.currency,
   balance: wire.balance,
+});
+
+export const mapReconciliation = (wire: ReconciliationWire): Reconciliation => ({
+  id: wire.id,
+  accountId: wire.account_id,
+  statementDate: wire.statement_date,
+  statementBalance: wire.statement_balance,
+  currency: wire.currency,
+  status: wire.status,
+  completedAt: wire.completed_at ?? undefined,
+  createdAt: wire.created_at,
+});
+
+export const mapReconciliationEntry = (wire: ReconciliationEntryWire): ReconciliationEntry => ({
+  transactionId: wire.transaction_id,
+  leg: wire.leg,
+  date: wire.date,
+  description: wire.description,
+  amount: wire.amount,
+  cleared: wire.cleared,
+  clearedBy: wire.cleared_by ?? undefined,
+});
+
+export const mapReconciliationDetail = (wire: ReconciliationDetailWire): ReconciliationDetail => ({
+  reconciliation: mapReconciliation(wire.reconciliation),
+  statementBalance: wire.statement_balance,
+  bookBalance: wire.book_balance,
+  clearedBalance: wire.cleared_balance,
+  difference: wire.difference,
+  entries: wire.entries.map(mapReconciliationEntry),
+});
+
+export const mapReconciliationCreate = (
+  input: ReconciliationCreateInput,
+): ReconciliationInputWire => ({
+  account_id: input.accountId,
+  statement_date: input.statementDate,
+  statement_balance: input.statementBalance,
 });
 
 export const mapCardInvoice = (wire: CardInvoiceWire): CardInvoice => ({

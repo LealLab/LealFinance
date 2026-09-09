@@ -1780,7 +1780,29 @@
       "label": "Mức độ suy luận"
     }
   },
+  "reconciliation": {
+    "nav": "Đối soát",
+    "title": "Đối soát ngân hàng",
+    "description": "So sánh sổ sách với sao kê ngân hàng và đánh dấu các giao dịch trùng khớp.",
+    "form": { "account": "Tài khoản", "chooseAccount": "Chọn tài khoản", "statementDate": "Ngày sao kê", "statementBalance": "Số dư sao kê" },
+    "stat": { "statement": "Số dư sao kê", "cleared": "Số dư đã đối soát", "difference": "Chênh lệch" },
+    "detail": { "asOf": "Đến {{date}}" },
+    "entries": {
+      "date": "Ngày", "description": "Mô tả", "legLabel": "Bút toán", "amount": "Số tiền", "cleared": "Đã đối soát",
+      "mark": "Đánh dấu {{description}} đã đối soát", "empty": "Không có giao dịch nào trong ngày sao kê này.",
+      "legType": { "own": "Giao dịch tài khoản", "incoming": "Chuyển tiền vào" }
+    },
+    "actions": { "reconcile": "Đối soát", "start": "Bắt đầu đối soát", "complete": "Hoàn tất", "reopen": "Mở lại", "delete": "Xóa" },
+    "status": { "open": "Đang mở", "completed": "Đã hoàn tất" },
+    "empty": { "title": "Chưa chọn đối soát", "description": "Bắt đầu đối soát ở trên hoặc chọn một lần trước đó." },
+    "loadError": "Không thể tải các lần đối soát. Hãy thử lại.",
+    "confirmDelete": { "title": "Xóa lần đối soát?", "message": "Lần đối soát và các dấu đánh dấu sẽ bị xóa. Tiếp tục?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Không thể đối soát tài khoản đã lưu trữ.", "already_open": "Tài khoản này đã có một lần đối soát đang mở.", "completed": "Lần đối soát này đã hoàn tất.",
+      "transaction_not_eligible": "Giao dịch này không phù hợp với lần đối soát.", "leg_locked": "Bút toán này bị khóa bởi một lần đối soát khác.", "difference_not_zero": "Chênh lệch phải bằng 0 trước khi hoàn tất."
+    },
     "backup": {
       "invalid_archive": "Đây không phải là bản sao lưu LealFinance hợp lệ.",
       "invalid_file_type": "Hãy chọn tệp sao lưu JSON.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Chọn tài khoản đích của giao dịch chuyển khoản này.",
       "category_required": "Chọn danh mục cho giao dịch này.",
       "category_kind_mismatch": "Danh mục đó không phù hợp với loại giao dịch này.",
-      "conversion_required": "Giao dịch này liên quan đến nhiều loại tiền tệ, nên cần có số tiền đã quy đổi."
+      "conversion_required": "Giao dịch này liên quan đến nhiều loại tiền tệ, nên cần có số tiền đã quy đổi.",
+      "reconciled": "Không thể sửa cấu trúc hoặc xóa giao dịch đã đối soát."
     },
     "currency": {
       "not_found": "Loại tiền tệ đó không khả dụng.",

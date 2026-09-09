@@ -1780,7 +1780,59 @@
       "label": "Esforço de raciocínio"
     }
   },
+  "reconciliation": {
+    "nav": "Conciliar",
+    "title": "Conciliação bancária",
+    "description": "Compare seu livro-caixa com o extrato bancário e marque as transações correspondentes.",
+    "form": {
+      "account": "Conta",
+      "chooseAccount": "Escolha uma conta",
+      "statementDate": "Data do extrato",
+      "statementBalance": "Saldo do extrato"
+    },
+    "stat": {
+      "statement": "Saldo do extrato",
+      "cleared": "Saldo conciliado",
+      "difference": "Diferença"
+    },
+    "detail": { "asOf": "Até {{date}}" },
+    "entries": {
+      "date": "Data",
+      "description": "Descrição",
+      "legLabel": "Lançamento",
+      "amount": "Valor",
+      "cleared": "Conciliada",
+      "mark": "Marcar {{description}} como conciliada",
+      "empty": "Nenhuma transação está dentro da data do extrato.",
+      "legType": { "own": "Transação da conta", "incoming": "Transferência recebida" }
+    },
+    "actions": {
+      "reconcile": "Conciliar",
+      "start": "Iniciar conciliação",
+      "complete": "Concluir",
+      "reopen": "Reabrir",
+      "delete": "Excluir"
+    },
+    "status": { "open": "Aberta", "completed": "Concluída" },
+    "empty": {
+      "title": "Nenhuma conciliação selecionada",
+      "description": "Inicie uma conciliação acima ou escolha uma anterior."
+    },
+    "loadError": "Não foi possível carregar as conciliações. Tente novamente.",
+    "confirmDelete": {
+      "title": "Excluir conciliação?",
+      "message": "A conciliação e suas marcações serão excluídas. Continuar?"
+    }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Contas arquivadas não podem ser conciliadas.",
+      "already_open": "Esta conta já tem uma conciliação aberta.",
+      "completed": "Esta conciliação já foi concluída.",
+      "transaction_not_eligible": "Essa transação não pode participar desta conciliação.",
+      "leg_locked": "Este lançamento está bloqueado por outra conciliação.",
+      "difference_not_zero": "A diferença deve ser zero antes de concluir."
+    },
     "backup": {
       "invalid_archive": "Este não é um backup válido do LealFinance.",
       "invalid_file_type": "Escolha um arquivo de backup JSON.",
@@ -1880,7 +1932,8 @@
       "transfer_requires_destination": "Escolha a conta de destino desta transferência.",
       "category_required": "Escolha uma categoria para esta transação.",
       "category_kind_mismatch": "Essa categoria não corresponde ao tipo desta transação.",
-      "conversion_required": "Esta transação envolve moedas diferentes, então precisa de um valor convertido."
+      "conversion_required": "Esta transação envolve moedas diferentes, então precisa de um valor convertido.",
+      "reconciled": "Transações conciliadas não podem ser editadas estruturalmente nem excluídas."
     },
     "currency": {
       "not_found": "Essa moeda não está disponível.",

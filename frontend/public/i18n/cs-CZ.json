@@ -1780,7 +1780,29 @@
       "label": "Úroveň uvažování"
     }
   },
+  "reconciliation": {
+    "nav": "Sladit",
+    "title": "Bankovní odsouhlasení",
+    "description": "Porovnejte účetní knihu s bankovním výpisem a označte odpovídající transakce.",
+    "form": { "account": "Účet", "chooseAccount": "Vyberte účet", "statementDate": "Datum výpisu", "statementBalance": "Zůstatek výpisu" },
+    "stat": { "statement": "Zůstatek výpisu", "cleared": "Odsouhlasený zůstatek", "difference": "Rozdíl" },
+    "detail": { "asOf": "Do {{date}}" },
+    "entries": {
+      "date": "Datum", "description": "Popis", "legLabel": "Pohyb", "amount": "Částka", "cleared": "Odsouhlaseno",
+      "mark": "Označit {{description}} jako odsouhlasené", "empty": "K tomuto datu výpisu nejsou žádné transakce.",
+      "legType": { "own": "Transakce účtu", "incoming": "Příchozí převod" }
+    },
+    "actions": { "reconcile": "Sladit", "start": "Zahájit odsouhlasení", "complete": "Dokončit", "reopen": "Znovu otevřít", "delete": "Smazat" },
+    "status": { "open": "Otevřené", "completed": "Dokončené" },
+    "empty": { "title": "Není vybráno žádné odsouhlasení", "description": "Začněte odsouhlasení výše nebo vyberte dřívější." },
+    "loadError": "Odsouhlasení se nepodařilo načíst. Zkuste to znovu.",
+    "confirmDelete": { "title": "Smazat odsouhlasení?", "message": "Odsouhlasení a jeho označení budou smazána. Pokračovat?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Archivované účty nelze odsouhlasit.", "already_open": "Tento účet už má otevřené odsouhlasení.", "completed": "Toto odsouhlasení je již dokončeno.",
+      "transaction_not_eligible": "Tato transakce se pro toto odsouhlasení nehodí.", "leg_locked": "Tento pohyb je uzamčen jiným odsouhlasením.", "difference_not_zero": "Před dokončením musí být rozdíl nulový."
+    },
     "backup": {
       "invalid_archive": "Toto není platná záloha LealFinance.",
       "invalid_file_type": "Vyberte soubor zálohy JSON.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Vyberte účet, na který tento převod směřuje.",
       "category_required": "Vyberte kategorii pro tuto transakci.",
       "category_kind_mismatch": "Tato kategorie neodpovídá typu této transakce.",
-      "conversion_required": "Tato transakce probíhá v různých měnách, proto vyžaduje převedenou částku."
+      "conversion_required": "Tato transakce probíhá v různých měnách, proto vyžaduje převedenou částku.",
+      "reconciled": "Odsouhlasené transakce nelze strukturálně upravovat ani mazat."
     },
     "currency": {
       "not_found": "Tato měna není k dispozici.",

@@ -89,6 +89,21 @@ Recurring rules are posted by the daily Celery task as real transactions. The
 frontend's recurrence calculation only projects upcoming occurrences for
 display; it is not the posting mechanism.
 
+## Audit history and reconciliation
+
+Every transaction mutation stages an immutable `transaction_history` row in the
+same DB transaction (author, timestamp, `operation`, `source`, optional import
+`batch_id`, `before`/`after` snapshots). It has no foreign key to
+`transactions` so it outlives a delete; it is excluded from user backups as an
+operational log, not restorable state.
+
+Bank reconciliation uses `reconciliations` plus a `reconciliation_entries`
+join table keyed on `(transaction_id, account_id)`. The `account_id` on an
+entry is the *leg* that cleared, so a transfer's two sides are reconciled
+independently in each account's reconciliation and the `transactions` table is
+never modified. The cleared-balance calculation reuses the same leg-delta SQL
+as `account_balances` (`app/services/accounts.py::_account_leg_deltas`).
+
 See [`backend-api.md`](backend-api.md), [`money-and-currency.md`](money-and-currency.md),
    [`i18n.md`](i18n.md), [`ai-agents.md`](ai-agents.md), and [`investments.md`](investments.md) for the detailed
 contracts behind each area.

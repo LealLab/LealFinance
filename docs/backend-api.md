@@ -218,8 +218,19 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/transactions` | user | See "Transactions" below. |
 | POST | `/transactions/bulk-delete` | user | Body `{ids: [...]}` (1–500). Atomic: one foreign/unknown id → 404, nothing deleted. 204. |
 | POST | `/transactions/bulk-categorize` | user | Body `{ids: [...], category_id}`. Atomic: rejects a transfer/interest row or a category-kind mismatch (422), else assigns and returns `{updated}`. |
-| GET/PATCH | `/transactions/{id}` | user | |
-| DELETE | `/transactions/{id}` | user | |
+| GET/PATCH | `/transactions/{id}` | user | A `PATCH` that changes `amount`, `date`, `account_id`, `to_account_id`, `type`, `currency` or `conversion` of a reconciled transaction → 409 `transaction.reconciled`; category/description/notes edits stay allowed. |
+| DELETE | `/transactions/{id}` | user | 409 `transaction.reconciled` if any leg is cleared in a reconciliation. |
+| GET | `/transactions/{id}/history` | user | Ordered audit rows (`operation`, `source`, `batch_id`, `before`/`after` snapshots). Unknown/foreign id → 404 `transaction.not_found`; an owned transaction with no history → `[]`. |
+| GET | `/transactions/import/batches` | user | Import batches, newest first: `{id, created_at, created_count, remaining_count}`. |
+| GET | `/transactions/import/batches/{id}` | user | The still-existing transactions created by that batch. |
+| DELETE | `/transactions/import/batches/{id}` | user | Undo the batch. 204. 409 `import.batch_modified` if a created row was edited after import or settles a loan/invoice; rows the user already deleted are skipped. |
+| GET | `/reconciliations?account_id=` | user | See "Reconciliation" below. |
+| POST | `/reconciliations` | user | Body `{account_id, statement_date, statement_balance}`. 409 `reconciliation.already_open`, 422 `reconciliation.account_archived`. |
+| GET | `/reconciliations/{id}` | user | `{reconciliation, statement_balance, book_balance, cleared_balance, difference, entries[]}`. Entries are the account's legs dated on or before `statement_date`. |
+| POST | `/reconciliations/{id}/entries` | user | Body `{transaction_ids: [...], cleared}`. Marks/unmarks legs; 409 `reconciliation.completed` / `reconciliation.leg_locked`, 422 `reconciliation.transaction_not_eligible`. Returns the detail. |
+| POST | `/reconciliations/{id}/complete` | user | 422 `reconciliation.difference_not_zero` unless the difference is exactly 0. |
+| POST | `/reconciliations/{id}/reopen` | user | 409 `reconciliation.already_open` if another open reconciliation exists for the account. |
+| DELETE | `/reconciliations/{id}` | user | 204. Cascades to its cleared-leg entries. |
 | GET/POST | `/recurring-rules` | user | See "Recurring rules" below. |
 | PATCH | `/recurring-rules/{id}` | user | `template`, if present, replaces the whole template (not deep-merged). |
 | DELETE | `/recurring-rules/{id}` | user | |
@@ -434,10 +445,75 @@ the key with different items returns `import.idempotency_key_reused`.
 | `import.too_many_rows` | 422 |
 | `import.column_required` | 422 |
 | `import.idempotency_key_reused` | 409 |
+| `import.batch_modified` | 409 |
 | `import.row.invalid_date` | (row-level, not raised) |
 | `import.row.invalid_amount` | (row-level, not raised) |
 | `import.row.zero_amount` | (row-level, not raised) |
 | `import.row.missing_description` | (row-level, not raised) |
+
+### Transaction history and import batches
+
+Every create, update and delete of a transaction stages one immutable
+`transaction_history` row in the same DB transaction as the change
+(`app/services/transaction_history.py`), recording the acting user, the
+timestamp, the `operation`, a `source` (`manual`, `import`, `import_undo`,
+`recurring`, `loan`, `card`, `investment`, `bulk`), the originating import
+`batch_id` when applicable, and `before`/`after` JSON snapshots of the
+financial columns. The row has no foreign key to `transactions`, so it
+survives the delete it records. A replayed idempotent import records no new
+history.
+
+`GET /transactions/{id}/history` returns those rows oldest-first.
+`GET /transactions/import/batches` lists each `import_idempotency` row with a
+live `remaining_count` (rows from the batch that still exist).
+`DELETE /transactions/import/batches/{id}` deletes the batch's still-existing
+rows and records a `delete` history row per row with `source="import_undo"`;
+it refuses (`import.batch_modified`) if any batch row has a later `update` or
+settles a loan or card invoice. Deletion recovery beyond reading the `before`
+snapshot is not implemented - rebuilding installment, loan, transfer and
+invoice links on restore is future work.
+
+## Reconciliation
+
+`app/services/reconciliations.py`. A reconciliation confirms one account's
+balance against a bank statement. `POST /reconciliations` opens one for an
+`(account_id, statement_date, statement_balance)`; at most one may be `open`
+per account (partial unique index). The currency is copied from the account.
+
+`GET /reconciliations/{id}` reports three balances, all as-of the statement
+date: `book_balance` (every ledger leg), `cleared_balance`
+(`opening_balance` + the legs marked cleared, cumulative across earlier
+completed reconciliations of the account), and `difference`
+(`statement_balance - cleared_balance`). `entries` lists every candidate leg
+for the account dated on or before the statement date, each with its signed
+`amount` as it hits this account, `leg` (`own` / `incoming`), and whether and
+by which reconciliation it is `cleared`.
+
+Cleared legs live in `reconciliation_entries`, keyed by
+`(transaction_id, account_id)` - the `account_id` is the *leg*, so the two
+sides of a transfer are reconciled independently in their own accounts'
+reconciliations, and `transactions` itself is untouched. The leg-delta SQL is
+the same helper `account_balances` uses
+(`app/services/accounts.py::_account_leg_deltas`).
+
+`POST /reconciliations/{id}/entries` marks or unmarks legs (one reconciliation
+cannot unmark a leg another one locked). `complete` requires an exact-zero
+difference and stamps `completed_at`; `reopen` returns it to `open` if no
+other open reconciliation exists for the account. A balance adjustment is a
+normal transaction the user creates - there is no dedicated adjustment
+endpoint. Marking is manual; there is no automatic statement-to-ledger
+matching.
+
+| Code | Status |
+| --- | --- |
+| `reconciliation.not_found` | 404 |
+| `reconciliation.account_archived` | 422 |
+| `reconciliation.already_open` | 409 |
+| `reconciliation.completed` | 409 |
+| `reconciliation.leg_locked` | 409 |
+| `reconciliation.transaction_not_eligible` | 422 |
+| `reconciliation.difference_not_zero` | 422 |
+| `transaction.reconciled` | 409 |
 
 ## Recurring rules
 

@@ -20,6 +20,13 @@
         <app-icon name="archive" [size]="16" />
         {{ account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive') }}
       </button>
+      <a
+        class="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded border border-border bg-surface-raised px-3.5 py-2 text-sm font-medium text-content-primary transition-colors hover:bg-surface-sunken"
+        [routerLink]="['/reconciliation']"
+        [queryParams]="{ accountId: account.id }"
+      >
+        {{ t('reconciliation.actions.reconcile') }}
+      </a>
     </app-page-header>
 
     @if (hasFallbackRate()) {

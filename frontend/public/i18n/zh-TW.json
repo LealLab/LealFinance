@@ -1780,7 +1780,29 @@
       "label": "推理強度"
     }
   },
+  "reconciliation": {
+    "nav": "對帳",
+    "title": "銀行對帳",
+    "description": "將帳簿與銀行對帳單比較，並標記相符的交易。",
+    "form": { "account": "帳戶", "chooseAccount": "選擇帳戶", "statementDate": "對帳單日期", "statementBalance": "對帳單餘額" },
+    "stat": { "statement": "對帳單餘額", "cleared": "已對帳餘額", "difference": "差額" },
+    "detail": { "asOf": "截至 {{date}}" },
+    "entries": {
+      "date": "日期", "description": "說明", "legLabel": "交易方向", "amount": "金額", "cleared": "已對帳",
+      "mark": "將 {{description}} 標記為已對帳", "empty": "對帳單日期以前沒有交易。",
+      "legType": { "own": "帳戶交易", "incoming": "轉入" }
+    },
+    "actions": { "reconcile": "對帳", "start": "開始對帳", "complete": "完成", "reopen": "重新開啟", "delete": "刪除" },
+    "status": { "open": "進行中", "completed": "已完成" },
+    "empty": { "title": "未選擇對帳", "description": "在上方開始對帳，或選擇之前的對帳。" },
+    "loadError": "無法載入對帳記錄，請再試一次。",
+    "confirmDelete": { "title": "刪除對帳？", "message": "對帳記錄及其標記將被刪除。是否繼續？" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "無法對已封存的帳戶進行對帳。", "already_open": "此帳戶已有進行中的對帳。", "completed": "此對帳已完成。",
+      "transaction_not_eligible": "此交易不符合本次對帳條件。", "leg_locked": "此交易方向已被其他對帳鎖定。", "difference_not_zero": "完成前差額必須為零。"
+    },
     "backup": {
       "invalid_archive": "這不是有效的 LealFinance 備份。",
       "invalid_file_type": "請選擇 JSON 備份檔案。",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "請選擇此轉帳的目的帳戶。",
       "category_required": "請為此交易選擇一個分類。",
       "category_kind_mismatch": "此分類與交易類型不相符。",
-      "conversion_required": "此交易涉及不同貨幣，因此需要換算後的金額。"
+      "conversion_required": "此交易涉及不同貨幣，因此需要換算後的金額。",
+      "reconciled": "已對帳的交易不能修改結構或刪除。"
     },
     "currency": {
       "not_found": "此貨幣無法使用。",

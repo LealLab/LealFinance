@@ -12,8 +12,9 @@ from datetime import date as date_type
 from decimal import Decimal
 from uuid import UUID
 
-from sqlalchemy import case, delete, func, or_, select, update
+from sqlalchemy import case, delete, func, literal, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.selectable import SelectBase
 
 from app.core.errors import ValidationAppError
 from app.models.account import ACCOUNT_TYPE_CREDIT_CARD, ACCOUNT_TYPE_GOAL, Account
@@ -95,6 +96,37 @@ class AccountBalance:
     balance: Decimal
 
 
+def _account_leg_deltas(user_id: UUID, *, as_of: date_type | None = None) -> SelectBase:
+    effective = func.coalesce(Transaction.conversion_amount, Transaction.amount)
+    own_leg_delta = case(
+        (Transaction.type.in_((TRANSACTION_TYPE_INCOME, TRANSACTION_TYPE_INTEREST)), effective),
+        (Transaction.type == TRANSACTION_TYPE_EXPENSE, -effective),
+        (Transaction.type == TRANSACTION_TYPE_TRANSFER, -Transaction.amount),
+        else_=0,
+    )
+    own_leg = select(
+        Transaction.id.label("transaction_id"),
+        Transaction.account_id.label("account_id"),
+        literal("own").label("leg"),
+        Transaction.date.label("date"),
+        own_leg_delta.label("delta"),
+    ).where(Transaction.user_id == user_id)
+    incoming_leg = select(
+        Transaction.id.label("transaction_id"),
+        Transaction.to_account_id.label("account_id"),
+        literal("incoming").label("leg"),
+        Transaction.date.label("date"),
+        effective.label("delta"),
+    ).where(
+        Transaction.user_id == user_id,
+        Transaction.type == TRANSACTION_TYPE_TRANSFER,
+    )
+    if as_of is not None:
+        own_leg = own_leg.where(Transaction.date <= as_of)
+        incoming_leg = incoming_leg.where(Transaction.date <= as_of)
+    return own_leg.union_all(incoming_leg)
+
+
 async def account_balances(
     db: AsyncSession, user_id: UUID, *, as_of: date_type | None = None
 ) -> list[AccountBalance]:
@@ -118,30 +150,7 @@ async def account_balances(
     if not accounts:
         return []
 
-    effective = func.coalesce(Transaction.conversion_amount, Transaction.amount)
-    # The leg posted on Transaction.account_id: full signed delta for
-    # income/expense/interest, and the (always unconverted) outgoing debit
-    # for a transfer's source leg.
-    own_leg_delta = case(
-        (Transaction.type.in_((TRANSACTION_TYPE_INCOME, TRANSACTION_TYPE_INTEREST)), effective),
-        (Transaction.type == TRANSACTION_TYPE_EXPENSE, -effective),
-        (Transaction.type == TRANSACTION_TYPE_TRANSFER, -Transaction.amount),
-        else_=0,
-    )
-    own_leg = select(
-        Transaction.account_id.label("account_id"), own_leg_delta.label("delta")
-    ).where(Transaction.user_id == user_id)
-    # A transfer's incoming leg, credited to to_account_id instead.
-    incoming_leg = select(
-        Transaction.to_account_id.label("account_id"), effective.label("delta")
-    ).where(
-        Transaction.user_id == user_id,
-        Transaction.type == TRANSACTION_TYPE_TRANSFER,
-    )
-    if as_of is not None:
-        own_leg = own_leg.where(Transaction.date <= as_of)
-        incoming_leg = incoming_leg.where(Transaction.date <= as_of)
-    legs = own_leg.union_all(incoming_leg).subquery()
+    legs = _account_leg_deltas(user_id, as_of=as_of).subquery()
     deltas_query = select(legs.c.account_id, func.sum(legs.c.delta).label("delta")).group_by(
         legs.c.account_id
     )

@@ -1780,7 +1780,59 @@
       "label": "Reasoning effort"
     }
   },
+  "reconciliation": {
+    "nav": "Reconcile",
+    "title": "Bank reconciliation",
+    "description": "Compare your ledger with a bank statement and clear matching transactions.",
+    "form": {
+      "account": "Account",
+      "chooseAccount": "Choose an account",
+      "statementDate": "Statement date",
+      "statementBalance": "Statement balance"
+    },
+    "stat": {
+      "statement": "Statement balance",
+      "cleared": "Cleared balance",
+      "difference": "Difference"
+    },
+    "detail": { "asOf": "Through {{date}}" },
+    "entries": {
+      "date": "Date",
+      "description": "Description",
+      "legLabel": "Leg",
+      "amount": "Amount",
+      "cleared": "Cleared",
+      "mark": "Mark {{description}} as cleared",
+      "empty": "No transactions fall within this statement date.",
+      "legType": { "own": "Account transaction", "incoming": "Incoming transfer" }
+    },
+    "actions": {
+      "reconcile": "Reconcile",
+      "start": "Start reconciliation",
+      "complete": "Complete",
+      "reopen": "Reopen",
+      "delete": "Delete"
+    },
+    "status": { "open": "Open", "completed": "Completed" },
+    "empty": {
+      "title": "No reconciliation selected",
+      "description": "Start a reconciliation above or choose an earlier one."
+    },
+    "loadError": "Could not load reconciliations. Try again.",
+    "confirmDelete": {
+      "title": "Delete reconciliation?",
+      "message": "This deletes the reconciliation and its clear marks. Continue?"
+    }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Archived accounts cannot be reconciled.",
+      "already_open": "This account already has an open reconciliation.",
+      "completed": "This reconciliation is already completed.",
+      "transaction_not_eligible": "That transaction is not eligible for this reconciliation.",
+      "leg_locked": "This transaction leg is locked by another reconciliation.",
+      "difference_not_zero": "The difference must be zero before completing."
+    },
     "backup": {
       "invalid_archive": "This is not a valid LealFinance backup.",
       "invalid_file_type": "Choose a JSON backup file.",
@@ -1880,7 +1932,8 @@
       "transfer_requires_destination": "Choose the account this transfer goes to.",
       "category_required": "Choose a category for this transaction.",
       "category_kind_mismatch": "That category doesn't match this transaction's type.",
-      "conversion_required": "This transaction crosses currencies, so it needs a converted amount."
+      "conversion_required": "This transaction crosses currencies, so it needs a converted amount.",
+      "reconciled": "Reconciled transactions cannot be structurally edited or deleted."
     },
     "currency": {
       "not_found": "That currency isn't available.",

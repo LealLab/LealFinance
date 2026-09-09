@@ -1780,7 +1780,29 @@
       "label": "Efort de raționament"
     }
   },
+  "reconciliation": {
+    "nav": "Reconciliere",
+    "title": "Reconciliere bancară",
+    "description": "Compară registrul cu un extras bancar și marchează tranzacțiile corespunzătoare.",
+    "form": { "account": "Cont", "chooseAccount": "Alege un cont", "statementDate": "Data extrasului", "statementBalance": "Soldul extrasului" },
+    "stat": { "statement": "Soldul extrasului", "cleared": "Sold reconciliat", "difference": "Diferență" },
+    "detail": { "asOf": "Până la {{date}}" },
+    "entries": {
+      "date": "Data", "description": "Descriere", "legLabel": "Mișcare", "amount": "Sumă", "cleared": "Reconciliată",
+      "mark": "Marchează {{description}} ca reconciliată", "empty": "Nu există tranzacții până la data extrasului.",
+      "legType": { "own": "Tranzacția contului", "incoming": "Transfer primit" }
+    },
+    "actions": { "reconcile": "Reconciliere", "start": "Începe reconcilierea", "complete": "Finalizează", "reopen": "Redeschide", "delete": "Șterge" },
+    "status": { "open": "Deschisă", "completed": "Finalizată" },
+    "empty": { "title": "Nu este selectată nicio reconciliere", "description": "Începe o reconciliere mai sus sau alege una anterioară." },
+    "loadError": "Reconciliile nu au putut fi încărcate. Încearcă din nou.",
+    "confirmDelete": { "title": "Ștergi reconcilierea?", "message": "Reconcilierea și marcajele sale vor fi șterse. Continui?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Conturile arhivate nu pot fi reconciliate.", "already_open": "Acest cont are deja o reconciliere deschisă.", "completed": "Această reconciliere este deja finalizată.",
+      "transaction_not_eligible": "Tranzacția nu este eligibilă pentru această reconciliere.", "leg_locked": "Această mișcare este blocată de o altă reconciliere.", "difference_not_zero": "Diferența trebuie să fie zero înainte de finalizare."
+    },
     "backup": {
       "invalid_archive": "Aceasta nu este o copie de siguranță LealFinance validă.",
       "invalid_file_type": "Alege un fișier de copie JSON.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Alege contul către care se face acest transfer.",
       "category_required": "Alege o categorie pentru această tranzacție.",
       "category_kind_mismatch": "Această categorie nu corespunde tipului acestei tranzacții.",
-      "conversion_required": "Această tranzacție implică mai multe monede, deci necesită o sumă convertită."
+      "conversion_required": "Această tranzacție implică mai multe monede, deci necesită o sumă convertită.",
+      "reconciled": "Tranzacțiile reconciliate nu pot fi modificate structural sau șterse."
     },
     "currency": {
       "not_found": "Această monedă nu este disponibilă.",

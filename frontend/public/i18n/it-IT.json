@@ -1780,7 +1780,29 @@
       "label": "Livello di ragionamento"
     }
   },
+  "reconciliation": {
+    "nav": "Riconcilia",
+    "title": "Riconciliazione bancaria",
+    "description": "Confronta il tuo registro con un estratto conto e contrassegna le transazioni corrispondenti.",
+    "form": { "account": "Conto", "chooseAccount": "Scegli un conto", "statementDate": "Data dell’estratto", "statementBalance": "Saldo dell’estratto" },
+    "stat": { "statement": "Saldo dell’estratto", "cleared": "Saldo riconciliato", "difference": "Differenza" },
+    "detail": { "asOf": "Fino al {{date}}" },
+    "entries": {
+      "date": "Data", "description": "Descrizione", "legLabel": "Movimento", "amount": "Importo", "cleared": "Riconciliata",
+      "mark": "Contrassegna {{description}} come riconciliata", "empty": "Nessuna transazione rientra nella data dell’estratto.",
+      "legType": { "own": "Transazione del conto", "incoming": "Bonifico in entrata" }
+    },
+    "actions": { "reconcile": "Riconcilia", "start": "Avvia riconciliazione", "complete": "Completa", "reopen": "Riapri", "delete": "Elimina" },
+    "status": { "open": "Aperta", "completed": "Completata" },
+    "empty": { "title": "Nessuna riconciliazione selezionata", "description": "Avvia una riconciliazione sopra o scegline una precedente." },
+    "loadError": "Impossibile caricare le riconciliazioni. Riprova.",
+    "confirmDelete": { "title": "Eliminare la riconciliazione?", "message": "La riconciliazione e le relative marcature verranno eliminate. Continuare?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "I conti archiviati non possono essere riconciliati.", "already_open": "Questo conto ha già una riconciliazione aperta.", "completed": "Questa riconciliazione è già completata.",
+      "transaction_not_eligible": "Questa transazione non può partecipare a questa riconciliazione.", "leg_locked": "Questo movimento è bloccato da un’altra riconciliazione.", "difference_not_zero": "La differenza deve essere zero prima del completamento."
+    },
     "backup": {
       "invalid_archive": "Questo non è un backup LealFinance valido.",
       "invalid_file_type": "Scegli un file di backup JSON.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Scegli il conto di destinazione del trasferimento.",
       "category_required": "Scegli una categoria per questa transazione.",
       "category_kind_mismatch": "Questa categoria non corrisponde al tipo di transazione.",
-      "conversion_required": "Questa transazione coinvolge più valute, quindi richiede un importo convertito."
+      "conversion_required": "Questa transazione coinvolge più valute, quindi richiede un importo convertito.",
+      "reconciled": "Le transazioni riconciliate non possono essere modificate strutturalmente o eliminate."
     },
     "currency": {
       "not_found": "Questa valuta non è disponibile.",

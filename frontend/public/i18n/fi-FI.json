@@ -1780,7 +1780,29 @@
       "label": "Päättelyn taso"
     }
   },
+  "reconciliation": {
+    "nav": "Täsmäytä",
+    "title": "Pankkitilin täsmäytys",
+    "description": "Vertaa kirjanpitoasi tiliotteeseen ja merkitse vastaavat tapahtumat täsmäytetyiksi.",
+    "form": { "account": "Tili", "chooseAccount": "Valitse tili", "statementDate": "Tiliotteen päivä", "statementBalance": "Tiliotteen saldo" },
+    "stat": { "statement": "Tiliotteen saldo", "cleared": "Täsmäytetty saldo", "difference": "Ero" },
+    "detail": { "asOf": "Päivään {{date}} asti" },
+    "entries": {
+      "date": "Päivä", "description": "Kuvaus", "legLabel": "Tapahtuma", "amount": "Summa", "cleared": "Täsmäytetty",
+      "mark": "Merkitse {{description}} täsmäytetyksi", "empty": "Tiliotteen päivään mennessä ei ole tapahtumia.",
+      "legType": { "own": "Tilitapahtuma", "incoming": "Saapuva siirto" }
+    },
+    "actions": { "reconcile": "Täsmäytä", "start": "Aloita täsmäytys", "complete": "Viimeistele", "reopen": "Avaa uudelleen", "delete": "Poista" },
+    "status": { "open": "Avoin", "completed": "Valmis" },
+    "empty": { "title": "Täsmäytystä ei ole valittu", "description": "Aloita täsmäytys ylhäältä tai valitse aiempi täsmäytys." },
+    "loadError": "Täsmäytyksiä ei voitu ladata. Yritä uudelleen.",
+    "confirmDelete": { "title": "Poistetaanko täsmäytys?", "message": "Täsmäytys ja sen merkinnät poistetaan. Jatketaanko?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Arkistoituja tilejä ei voi täsmäyttää.", "already_open": "Tällä tilillä on jo avoin täsmäytys.", "completed": "Täsmäytys on jo valmis.",
+      "transaction_not_eligible": "Tapahtuma ei sovellu tähän täsmäytykseen.", "leg_locked": "Toinen täsmäytys on lukinnut tämän tapahtuman.", "difference_not_zero": "Eron on oltava nolla ennen viimeistelyä."
+    },
     "backup": {
       "invalid_archive": "Tämä ei ole kelvollinen LealFinance-varmuuskopio.",
       "invalid_file_type": "Valitse JSON-varmuuskopiotiedosto.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "Valitse tili, jolle tämä siirto menee.",
       "category_required": "Valitse tälle tapahtumalle luokka.",
       "category_kind_mismatch": "Luokka ei vastaa tämän tapahtuman tyyppiä.",
-      "conversion_required": "Tämä tapahtuma ylittää valuuttarajat, joten se tarvitsee muunnetun summan."
+      "conversion_required": "Tämä tapahtuma ylittää valuuttarajat, joten se tarvitsee muunnetun summan.",
+      "reconciled": "Täsmäytettyjä tapahtumia ei voi muuttaa rakenteellisesti tai poistaa."
     },
     "currency": {
       "not_found": "Tämä valuutta ei ole käytettävissä.",

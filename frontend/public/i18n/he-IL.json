@@ -1780,7 +1780,29 @@
       "label": "רמת חשיבה"
     }
   },
+  "reconciliation": {
+    "nav": "התאמה",
+    "title": "התאמת חשבון בנק",
+    "description": "השוו את ספר החשבונות לדף חשבון בנק וסמנו עסקאות תואמות.",
+    "form": { "account": "חשבון", "chooseAccount": "בחירת חשבון", "statementDate": "תאריך דף החשבון", "statementBalance": "יתרת דף החשבון" },
+    "stat": { "statement": "יתרת דף החשבון", "cleared": "יתרה מותאמת", "difference": "הפרש" },
+    "detail": { "asOf": "עד {{date}}" },
+    "entries": {
+      "date": "תאריך", "description": "תיאור", "legLabel": "תנועה", "amount": "סכום", "cleared": "הותאם",
+      "mark": "סימון {{description}} כהתאמה", "empty": "אין עסקאות עד תאריך דף החשבון.",
+      "legType": { "own": "עסקת חשבון", "incoming": "העברה נכנסת" }
+    },
+    "actions": { "reconcile": "התאמה", "start": "התחלת התאמה", "complete": "השלמה", "reopen": "פתיחה מחדש", "delete": "מחיקה" },
+    "status": { "open": "פתוחה", "completed": "הושלמה" },
+    "empty": { "title": "לא נבחרה התאמה", "description": "התחילו התאמה למעלה או בחרו התאמה קודמת." },
+    "loadError": "לא ניתן לטעון את ההתאמות. נסו שוב.",
+    "confirmDelete": { "title": "למחוק התאמה?", "message": "ההתאמה והסימונים שלה יימחקו. להמשיך?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "אי אפשר להתאים חשבונות שנארכבו.", "already_open": "כבר קיימת התאמה פתוחה לחשבון הזה.", "completed": "ההתאמה הזו כבר הושלמה.",
+      "transaction_not_eligible": "העסקה הזו אינה מתאימה להתאמה הזו.", "leg_locked": "התנועה הזו נעולה על ידי התאמה אחרת.", "difference_not_zero": "ההפרש חייב להיות אפס לפני ההשלמה."
+    },
     "backup": {
       "invalid_archive": "זה אינו גיבוי LealFinance תקין.",
       "invalid_file_type": "יש לבחור קובץ גיבוי JSON.",
@@ -1880,7 +1902,8 @@
       "transfer_requires_destination": "בחר את החשבון שאליו מתבצעת ההעברה.",
       "category_required": "בחר קטגוריה לתנועה הזו.",
       "category_kind_mismatch": "הקטגוריה הזו אינה תואמת לסוג התנועה.",
-      "conversion_required": "התנועה הזו עוברת בין מטבעות, ולכן נדרש סכום מומר."
+      "conversion_required": "התנועה הזו עוברת בין מטבעות, ולכן נדרש סכום מומר.",
+      "reconciled": "אי אפשר לערוך מבנית או למחוק עסקאות שהותאמו."
     },
     "currency": {
       "not_found": "המטבע הזה אינו זמין.",
