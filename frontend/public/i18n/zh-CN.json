@@ -1672,7 +1672,7 @@
       "create": "邀请",
       "tokenOnce": "此令牌和注册链接仅显示这一次。离开前请保存。",
       "copyLink": "复制注册链接",
-      "emailed": "我们已向 {{email}} 发送了注册链接。",
+      "emailed": "我们将尝试向 {{email}} 发送注册链接。如果未收到，请分享下方链接。",
       "revoke": "撤销",
       "revokeConfirm": "要撤销发给 {{email}} 的邀请吗？",
       "empty": "未找到邀请。"

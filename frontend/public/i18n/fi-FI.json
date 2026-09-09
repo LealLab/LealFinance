@@ -1672,7 +1672,7 @@
       "create": "Kutsu",
       "tokenOnce": "Tämä tunnus ja rekisteröitymislinkki näytetään vain nyt. Tallenna ne ennen poistumista.",
       "copyLink": "Kopioi rekisteröitymislinkki",
-      "emailed": "Lähetimme rekisteröitymislinkin osoitteeseen {{email}}.",
+      "emailed": "Yritämme lähettää rekisteröitymislinkin osoitteeseen {{email}}. Jos se ei saavu, jaa alla oleva linkki.",
       "revoke": "Peruuta kutsu",
       "revokeConfirm": "Perutaanko käyttäjän {{email}} kutsu?",
       "empty": "Kutsuja ei löytynyt."

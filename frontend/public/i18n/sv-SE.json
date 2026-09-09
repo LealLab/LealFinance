@@ -1672,7 +1672,7 @@
       "create": "Bjud in",
       "tokenOnce": "Den här tokenen och registreringslänken visas bara nu. Spara dem innan du lämnar sidan.",
       "copyLink": "Kopiera registreringslänk",
-      "emailed": "Vi skickade en registreringslänk till {{email}}.",
+      "emailed": "Vi försöker skicka en registreringslänk till {{email}}. Om den inte kommer fram, dela länken nedan.",
       "revoke": "Återkalla",
       "revokeConfirm": "Återkalla inbjudan för {{email}}?",
       "empty": "Inga inbjudningar hittades."

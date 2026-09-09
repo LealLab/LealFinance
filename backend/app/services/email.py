@@ -12,6 +12,7 @@ Sends are blocking stdlib smtplib. Callers schedule them off the request path
 import html as html_lib
 import logging
 import smtplib
+import ssl
 from email.message import EmailMessage
 from email.utils import formataddr
 from urllib.parse import urlencode
@@ -52,7 +53,7 @@ def send_email(*, to: str, subject: str, body: str, html: str | None = None) -> 
     try:
         with smtplib.SMTP(host, settings.smtp_port, timeout=_SMTP_TIMEOUT_SECONDS) as smtp:
             if settings.smtp_starttls:
-                smtp.starttls()
+                smtp.starttls(context=ssl.create_default_context())
             if settings.smtp_username and settings.smtp_password:
                 smtp.login(settings.smtp_username, settings.smtp_password)
             smtp.send_message(message)

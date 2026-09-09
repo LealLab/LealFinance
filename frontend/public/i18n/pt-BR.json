@@ -1672,7 +1672,7 @@
       "create": "Convidar",
       "tokenOnce": "Este token e link de cadastro são exibidos somente agora. Salve-os antes de sair.",
       "copyLink": "Copiar link de cadastro",
-      "emailed": "Enviamos um link de cadastro para {{email}}.",
+      "emailed": "Tentaremos enviar um link de cadastro para {{email}}. Se ele não chegar, compartilhe o link abaixo.",
       "revoke": "Revogar",
       "revokeConfirm": "Revogar o convite para {{email}}?",
       "empty": "Nenhum convite encontrado."

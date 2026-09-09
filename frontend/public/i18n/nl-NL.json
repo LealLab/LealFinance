@@ -1672,7 +1672,7 @@
       "create": "Uitnodigen",
       "tokenOnce": "Dit token en de registratielink worden alleen nu getoond. Sla ze op voordat je weggaat.",
       "copyLink": "Registratielink kopiëren",
-      "emailed": "We hebben een registratielink naar {{email}} gestuurd.",
+      "emailed": "We proberen een registratielink naar {{email}} te sturen. Als deze niet aankomt, deel dan de onderstaande link.",
       "revoke": "Intrekken",
       "revokeConfirm": "De uitnodiging voor {{email}} intrekken?",
       "empty": "Geen uitnodigingen gevonden."

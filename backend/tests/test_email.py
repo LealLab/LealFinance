@@ -5,6 +5,7 @@ nothing touches the network.
 """
 
 import smtplib
+import ssl
 
 import pytest
 
@@ -32,7 +33,9 @@ class _FakeSMTP:
     def __exit__(self, *exc: object) -> bool:
         return False
 
-    def starttls(self) -> None:
+    def starttls(self, *, context: ssl.SSLContext) -> None:
+        assert context.check_hostname is True
+        assert context.verify_mode == ssl.CERT_REQUIRED
         self.started_tls = True
 
     def login(self, user: str, password: str) -> None:
@@ -91,6 +94,20 @@ def test_send_email_delivers_when_configured(smtp_config: None, fake_smtp: type[
     html_part = message.get_body(preferencelist=("html",))  # type: ignore[attr-defined]
     assert plain is not None and plain.get_content().strip() == "Body text"
     assert html_part is not None and "<b>text</b>" in html_part.get_content()
+
+
+def test_send_email_stops_when_certificate_verification_fails(
+    smtp_config: None, fake_smtp: type[_FakeSMTP], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def reject_certificate(self: _FakeSMTP, *, context: ssl.SSLContext) -> None:
+        raise ssl.SSLCertVerificationError("certificate verify failed")
+
+    monkeypatch.setattr(_FakeSMTP, "starttls", reject_certificate)
+    send_email(to="invitee@example.com", subject="Hello", body="Body")
+
+    assert len(fake_smtp.instances) == 1
+    assert fake_smtp.instances[0].login_args is None
+    assert fake_smtp.instances[0].sent == []
 
 
 def test_send_email_swallows_smtp_errors(
