@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Počet splátek nemůže být nižší, než kolik jich už bylo zaplaceno."
     },
     "account": {
-      "currency_in_use": "Tento účet již obsahuje transakce, takže jeho měnu nelze změnit."
+      "currency_in_use": "Tento účet již obsahuje transakce, takže jeho měnu nelze změnit.",
+      "closing_day_in_use": "Tato karta již má zaznamenané platby faktur vztahující se k aktuálnímu dni uzávěrky, takže jej nelze změnit. Nejprve tyto platby zrušte, nebo ponechte aktuální den uzávěrky.",
+      "card_cycle_incomplete": "Kreditní karta musí mít nastavený den uzávěrky i den splatnosti, nebo ani jeden z nich."
     },
     "transaction": {
       "transfer_same_account": "Převod vyžaduje dva různé účty.",

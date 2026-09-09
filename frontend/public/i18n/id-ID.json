@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Jumlah cicilan tidak boleh kurang dari jumlah yang sudah dibayar."
     },
     "account": {
-      "currency_in_use": "Akun ini sudah memiliki transaksi, jadi mata uangnya tidak dapat diubah."
+      "currency_in_use": "Akun ini sudah memiliki transaksi, jadi mata uangnya tidak dapat diubah.",
+      "closing_day_in_use": "Kartu ini sudah memiliki pembayaran tagihan yang tercatat untuk tanggal penutupan saat ini, jadi tanggal tersebut tidak dapat diubah. Batalkan pembayaran tersebut terlebih dahulu, atau pertahankan tanggal penutupan saat ini.",
+      "card_cycle_incomplete": "Kartu kredit harus memiliki tanggal penutupan dan tanggal jatuh tempo, atau tidak memiliki keduanya."
     },
     "transaction": {
       "transfer_same_account": "Transfer memerlukan dua akun yang berbeda.",

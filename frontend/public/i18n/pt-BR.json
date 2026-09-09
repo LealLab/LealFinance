@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "O número de parcelas não pode ser menor que a quantidade já paga."
     },
     "account": {
-      "currency_in_use": "Esta conta já tem transações, então sua moeda não pode ser alterada."
+      "currency_in_use": "Esta conta já tem transações, então sua moeda não pode ser alterada.",
+      "closing_day_in_use": "Este cartão já tem pagamentos de faturas registrados para o dia de fechamento atual, então ele não pode ser alterado. Desfaça esses pagamentos primeiro ou mantenha o dia de fechamento atual.",
+      "card_cycle_incomplete": "Um cartão de crédito precisa ter tanto um dia de fechamento quanto um dia de vencimento, ou nenhum dos dois."
     },
     "transaction": {
       "transfer_same_account": "Uma transferência precisa de duas contas diferentes.",

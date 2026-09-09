@@ -326,3 +326,56 @@ async def test_pay_invoice_endpoint_marks_paid(
     )
     assert again.status_code == 422
     assert again.json()["error"]["code"] == "card_invoice.already_paid"
+
+
+async def test_closing_day_change_rejected_when_it_would_orphan_a_payment(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user_id = await _authed(client, db_session, "closeday@example.com")
+    checking_id = await _account(client)
+    card_id = await _card(client, closing_day=10, due_day=20, payment_account_id=checking_id)
+    category_id = await _category(client)
+    await _expense(client, card_id, category_id, "2026-05-05", "80.00")
+    pay = await client.post(
+        f"/api/v1/accounts/{card_id}/invoices/2026-05-10/pay", json={"date": "2026-05-18"}
+    )
+    assert pay.status_code == 201, pay.text
+
+    resp = await client.patch(f"/api/v1/accounts/{card_id}", json={"closing_day": 15})
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "account.closing_day_in_use"
+
+    # the payment is still associated and the invoice still reads as paid
+    invoices = await svc.list_invoices(
+        db_session, user_id, card_id, today=date(2026, 6, 1), months_back=2, months_ahead=1
+    )
+    may = next(inv for inv in invoices if inv.close_date == date(2026, 5, 10))
+    assert may.remaining <= 0
+
+
+async def test_closing_day_change_allowed_without_tagged_payments(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "closeday-empty@example.com")
+    card_id = await _card(client, closing_day=10, due_day=20)
+
+    resp = await client.patch(f"/api/v1/accounts/{card_id}", json={"closing_day": 15})
+    assert resp.status_code == 200, resp.text
+
+
+async def test_credit_card_cycle_config_must_be_both_or_neither(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "cycle-config@example.com")
+    card_id = await _account(
+        client,
+        name="C",
+        type="credit_card",
+        closing_day=10,
+        due_day=20,
+        credit_limit="1000.00",
+    )
+
+    resp = await client.patch(f"/api/v1/accounts/{card_id}", json={"due_day": None})
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "account.card_cycle_incomplete"

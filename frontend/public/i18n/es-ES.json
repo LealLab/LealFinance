@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "El número de cuotas no puede ser menor que el número de cuotas ya pagadas."
     },
     "account": {
-      "currency_in_use": "Esta cuenta ya tiene transacciones, por lo que no se puede cambiar su moneda."
+      "currency_in_use": "Esta cuenta ya tiene transacciones, por lo que no se puede cambiar su moneda.",
+      "closing_day_in_use": "Esta tarjeta ya tiene pagos de facturas registrados para el día de cierre actual, por lo que no se puede cambiar. Deshaz esos pagos primero o conserva el día de cierre actual.",
+      "card_cycle_incomplete": "Una tarjeta de crédito necesita tanto un día de cierre como un día de vencimiento, o ninguno de los dos."
     },
     "transaction": {
       "transfer_same_account": "Una transferencia necesita dos cuentas diferentes.",

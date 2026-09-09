@@ -509,6 +509,8 @@ for the friendly error).
 | `institution.has_accounts` | 409 |
 | `account.not_found` | 404 |
 | `account.credit_fields_not_applicable` | 422 |
+| `account.closing_day_in_use` | 422 |
+| `account.card_cycle_incomplete` | 422 |
 
 ## Goals
 

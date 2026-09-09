@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "分期數不能少於已還款的期數。"
     },
     "account": {
-      "currency_in_use": "此帳戶已有交易，因此無法變更其貨幣。"
+      "currency_in_use": "此帳戶已有交易，因此無法變更其貨幣。",
+      "closing_day_in_use": "此卡已記錄針對目前結帳日的帳單付款，因此無法變更。請先撤銷這些付款，或保留目前的結帳日。",
+      "card_cycle_incomplete": "信用卡必須同時設定結帳日和繳款日，或兩者都不設定。"
     },
     "transaction": {
       "transfer_same_account": "轉帳需要兩個不同的帳戶。",

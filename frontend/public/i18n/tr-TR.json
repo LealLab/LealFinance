@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Taksit sayısı, zaten ödenmiş olan sayıdan az olamaz."
     },
     "account": {
-      "currency_in_use": "Bu hesapta zaten işlemler var, bu nedenle para birimi değiştirilemez."
+      "currency_in_use": "Bu hesapta zaten işlemler var, bu nedenle para birimi değiştirilemez.",
+      "closing_day_in_use": "Bu kartta mevcut hesap kesim günü için kaydedilmiş fatura ödemeleri zaten var; bu nedenle gün değiştirilemez. Önce bu ödemeleri geri alın veya mevcut hesap kesim gününü koruyun.",
+      "card_cycle_incomplete": "Bir kredi kartında hem hesap kesim günü hem de son ödeme günü olmalı ya da ikisi de olmamalıdır."
     },
     "transaction": {
       "transfer_same_account": "Bir transfer için iki farklı hesap gerekir.",

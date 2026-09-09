@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Numărul de rate nu poate fi mai mic decât numărul celor deja plătite."
     },
     "account": {
-      "currency_in_use": "Acest cont are deja tranzacții, deci moneda lui nu poate fi schimbată."
+      "currency_in_use": "Acest cont are deja tranzacții, deci moneda lui nu poate fi schimbată.",
+      "closing_day_in_use": "Acest card are deja plăți de facturi înregistrate pentru ziua curentă de închidere, așa că aceasta nu poate fi schimbată. Anulează mai întâi acele plăți sau păstrează ziua curentă de închidere.",
+      "card_cycle_incomplete": "Un card de credit trebuie să aibă atât o zi de închidere, cât și o zi de scadență, sau niciuna dintre ele."
     },
     "transaction": {
       "transfer_same_account": "Un transfer necesită două conturi diferite.",

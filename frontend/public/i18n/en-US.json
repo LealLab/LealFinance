@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "The number of installments can't be lower than how many are already paid."
     },
     "account": {
-      "currency_in_use": "This account already has transactions, so its currency can't be changed."
+      "currency_in_use": "This account already has transactions, so its currency can't be changed.",
+      "closing_day_in_use": "This card already has invoice payments recorded against the current closing day, so it can't be changed. Undo those payments first, or keep the current closing day.",
+      "card_cycle_incomplete": "A credit card needs both a closing day and a due day, or neither."
     },
     "transaction": {
       "transfer_same_account": "A transfer needs two different accounts.",

@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Antallet af afdrag kan ikke være lavere end antallet, der allerede er betalt."
     },
     "account": {
-      "currency_in_use": "Denne konto har allerede transaktioner, så valutaen kan ikke ændres."
+      "currency_in_use": "Denne konto har allerede transaktioner, så valutaen kan ikke ændres.",
+      "closing_day_in_use": "Dette kort har allerede registrerede fakturabetalinger for den nuværende lukkedag, så den kan ikke ændres. Fortryd disse betalinger først, eller behold den nuværende lukkedag.",
+      "card_cycle_incomplete": "Et kreditkort skal have både en lukkedag og en forfaldsdag – eller ingen af delene."
     },
     "transaction": {
       "transfer_same_account": "En overførsel kræver to forskellige konti.",

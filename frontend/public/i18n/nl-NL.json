@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Het aantal termijnen kan niet lager zijn dan het aantal dat al is betaald."
     },
     "account": {
-      "currency_in_use": "Dit account bevat al transacties, dus de valuta kan niet worden gewijzigd."
+      "currency_in_use": "Dit account bevat al transacties, dus de valuta kan niet worden gewijzigd.",
+      "closing_day_in_use": "Voor deze kaart zijn al factuurbetalingen geregistreerd voor de huidige sluitingsdag, dus die kan niet worden gewijzigd. Maak die betalingen eerst ongedaan of behoud de huidige sluitingsdag.",
+      "card_cycle_incomplete": "Een creditcard heeft zowel een sluitingsdag als een vervaldag nodig, of geen van beide."
     },
     "transaction": {
       "transfer_same_account": "Een overschrijving heeft twee verschillende accounts nodig.",

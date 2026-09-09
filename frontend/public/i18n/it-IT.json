@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Il numero di rate non può essere inferiore al numero di rate già pagate."
     },
     "account": {
-      "currency_in_use": "Questo conto contiene già transazioni, quindi non è possibile cambiarne la valuta."
+      "currency_in_use": "Questo conto contiene già transazioni, quindi non è possibile cambiarne la valuta.",
+      "closing_day_in_use": "Questa carta ha già pagamenti di fatture registrati per il giorno di chiusura attuale, quindi non è possibile modificarlo. Annulla prima quei pagamenti oppure mantieni il giorno di chiusura attuale.",
+      "card_cycle_incomplete": "Una carta di credito deve avere sia un giorno di chiusura sia un giorno di scadenza, oppure nessuno dei due."
     },
     "transaction": {
       "transfer_same_account": "Un trasferimento richiede due conti diversi.",

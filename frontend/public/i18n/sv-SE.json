@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Antalet delbetalningar kan inte vara lägre än antalet som redan är betalda."
     },
     "account": {
-      "currency_in_use": "Det här kontot har redan transaktioner, så valutan kan inte ändras."
+      "currency_in_use": "Det här kontot har redan transaktioner, så valutan kan inte ändras.",
+      "closing_day_in_use": "Det här kortet har redan registrerade fakturabetalningar för den aktuella stängningsdagen, så den kan inte ändras. Ångra betalningarna först eller behåll den aktuella stängningsdagen.",
+      "card_cycle_incomplete": "Ett kreditkort måste ha både en stängningsdag och en förfallodag, eller ingen av dem."
     },
     "transaction": {
       "transfer_same_account": "En överföring kräver två olika konton.",

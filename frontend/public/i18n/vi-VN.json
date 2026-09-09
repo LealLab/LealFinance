@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Số kỳ trả góp không thể ít hơn số kỳ đã thanh toán."
     },
     "account": {
-      "currency_in_use": "Tài khoản này đã có giao dịch, nên không thể thay đổi đơn vị tiền tệ."
+      "currency_in_use": "Tài khoản này đã có giao dịch, nên không thể thay đổi đơn vị tiền tệ.",
+      "closing_day_in_use": "Thẻ này đã có các khoản thanh toán hóa đơn được ghi nhận theo ngày chốt hiện tại, nên không thể thay đổi ngày đó. Trước tiên hãy hoàn tác các khoản thanh toán đó hoặc giữ nguyên ngày chốt hiện tại.",
+      "card_cycle_incomplete": "Thẻ tín dụng cần có cả ngày chốt sao kê và ngày đến hạn thanh toán, hoặc không có cả hai."
     },
     "transaction": {
       "transfer_same_account": "Một giao dịch chuyển khoản cần hai tài khoản khác nhau.",

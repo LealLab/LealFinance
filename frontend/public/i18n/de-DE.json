@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Die Anzahl der Raten kann nicht niedriger sein als die Anzahl der bereits bezahlten."
     },
     "account": {
-      "currency_in_use": "Dieses Konto enthält bereits Transaktionen. Daher kann seine Währung nicht geändert werden."
+      "currency_in_use": "Dieses Konto enthält bereits Transaktionen. Daher kann seine Währung nicht geändert werden.",
+      "closing_day_in_use": "Für diese Karte sind bereits Rechnungszahlungen zum aktuellen Abrechnungstag erfasst, daher kann er nicht geändert werden. Mache diese Zahlungen zuerst rückgängig oder behalte den aktuellen Abrechnungstag bei.",
+      "card_cycle_incomplete": "Eine Kreditkarte benötigt sowohl einen Abrechnungstag als auch einen Fälligkeitstag – oder keinen von beiden."
     },
     "transaction": {
       "transfer_same_account": "Eine Überweisung benötigt zwei verschiedene Konten.",

@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Liczba rat nie może być mniejsza niż liczba już zapłaconych."
     },
     "account": {
-      "currency_in_use": "To konto ma już transakcje, więc nie można zmienić jego waluty."
+      "currency_in_use": "To konto ma już transakcje, więc nie można zmienić jego waluty.",
+      "closing_day_in_use": "Ta karta ma już zarejestrowane płatności rachunków przypisane do bieżącego dnia zamknięcia, więc nie można go zmienić. Najpierw cofnij te płatności albo pozostaw bieżący dzień zamknięcia.",
+      "card_cycle_incomplete": "Karta kredytowa musi mieć zarówno dzień zamknięcia, jak i dzień spłaty, albo nie mieć żadnego z nich."
     },
     "transaction": {
       "transfer_same_account": "Przelew wymaga dwóch różnych kont.",

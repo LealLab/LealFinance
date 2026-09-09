@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Erien määrä ei voi olla pienempi kuin jo maksettujen erien määrä."
     },
     "account": {
-      "currency_in_use": "Tällä tilillä on jo tapahtumia, joten sen valuuttaa ei voi vaihtaa."
+      "currency_in_use": "Tällä tilillä on jo tapahtumia, joten sen valuuttaa ei voi vaihtaa.",
+      "closing_day_in_use": "Tälle kortille on jo kirjattu laskumaksuja nykyistä sulkupäivää varten, joten sitä ei voi muuttaa. Kumoa maksut ensin tai säilytä nykyinen sulkupäivä.",
+      "card_cycle_incomplete": "Luottokortilla on oltava sekä sulkupäivä että eräpäivä tai ei kumpaakaan."
     },
     "transaction": {
       "transfer_same_account": "Siirto vaatii kaksi eri tiliä.",

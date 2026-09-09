@@ -1830,7 +1830,9 @@
       "installment_count_below_paid": "Le nombre d'échéances ne peut pas être inférieur au nombre déjà payé."
     },
     "account": {
-      "currency_in_use": "Ce compte contient déjà des transactions ; sa devise ne peut donc pas être modifiée."
+      "currency_in_use": "Ce compte contient déjà des transactions ; sa devise ne peut donc pas être modifiée.",
+      "closing_day_in_use": "Cette carte comporte déjà des paiements de facture enregistrés pour le jour de clôture actuel ; il est donc impossible de le modifier. Annulez d’abord ces paiements ou conservez le jour de clôture actuel.",
+      "card_cycle_incomplete": "Une carte de crédit doit avoir à la fois un jour de clôture et une date d’échéance, ou aucun des deux."
     },
     "transaction": {
       "transfer_same_account": "Un transfert nécessite deux comptes différents.",
