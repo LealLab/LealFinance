@@ -11,15 +11,19 @@ async function requireOk(response, operation) {
   assert.equal(response.ok(), true, `${operation} failed with HTTP ${response.status()}`);
 }
 
-const api = await request.newContext({ baseURL: apiBaseUrl });
+// Playwright resolves an absolute-path URL against the origin, dropping any
+// path on baseURL - so `/api/v1` would be lost when the app is served under a
+// prefix (the Docker stack, any reverse proxy). Build full URLs instead.
+const apiUrl = (path) => `${apiBaseUrl}${path}`;
+const api = await request.newContext();
 const browser = await chromium.launch();
 
 try {
-  const setup = await api.get('/auth/setup-status');
+  const setup = await api.get(apiUrl('/auth/setup-status'));
   await requireOk(setup, 'checking setup status');
 
   if ((await setup.json()).needs_setup) {
-    const register = await api.post('/auth/register', {
+    const register = await api.post(apiUrl('/auth/register'), {
       data: {
         email,
         password,
@@ -33,11 +37,11 @@ try {
       process.env.E2E_EMAIL && process.env.E2E_PASSWORD,
       'Set E2E_EMAIL and E2E_PASSWORD when the backend already has a user',
     );
-    const login = await api.post('/auth/login', { data: { email, password } });
+    const login = await api.post(apiUrl('/auth/login'), { data: { email, password } });
     await requireOk(login, 'logging in API setup session');
   }
 
-  const preferences = await api.get('/auth/preferences');
+  const preferences = await api.get(apiUrl('/auth/preferences'));
   await requireOk(preferences, 'reading preferences');
   const currency = (await preferences.json()).base_currency;
   const csrf = async () => {
@@ -46,7 +50,7 @@ try {
     return decodeURIComponent(cookie.value);
   };
   const mutate = async (path, data) =>
-    api.post(path, { data, headers: { 'X-XSRF-TOKEN': await csrf() } });
+    api.post(apiUrl(path), { data, headers: { 'X-XSRF-TOKEN': await csrf() } });
 
   const account = await mutate('/accounts', {
     name: `Browser Smoke ${suffix}`,
@@ -85,15 +89,22 @@ try {
   await page.waitForURL((url) => url.pathname === '/' || url.pathname === '');
 
   await page.goto(`${appBaseUrl}/transactions`);
-  await page.locator('app-page-header button').first().click();
+  // The primary (bg-accent) button in the header opens the new-transaction
+  // modal; the header also holds secondary view-toggle/columns/export buttons.
+  await page.locator('app-page-header button.bg-accent').first().click();
   await page.locator('#tx-amount').fill('12.34');
   await page.locator('#tx-account').selectOption(accountId);
   await page.locator('#tx-category').selectOption(categoryId);
   await page.locator('#tx-description').fill(`Browser smoke ${suffix}`);
   await page.locator('app-transaction-form-modal form button[type="submit"]').click();
 
+  // The list renders a table and a card layout (one hidden per breakpoint),
+  // so scope to the table to keep the match unambiguous.
   await assert.doesNotReject(() =>
-    page.getByText(`Browser smoke ${suffix}`, { exact: true }).waitFor({ state: 'visible' }),
+    page
+      .getByRole('table')
+      .getByText(`Browser smoke ${suffix}`, { exact: true })
+      .waitFor({ state: 'visible' }),
   );
 
   // Viewport sweep: Vitest/jsdom has no layout engine and cannot catch a

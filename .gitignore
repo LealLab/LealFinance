@@ -30,6 +30,9 @@ node_modules/
 # --- Docker ---
 docker/postgres/data/
 
+# --- Instance backups (scripts/backup.sh) ---
+/backups/
+
 # --- Editors / OS ---
 .vscode/
 !.vscode/extensions.json

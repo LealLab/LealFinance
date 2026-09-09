@@ -142,6 +142,52 @@ jobs:
       - name: Build images
         run: docker compose build
 
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          package_json_file: frontend/package.json
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install smoke-test dependencies
+        working-directory: frontend
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
+
+      - name: Start the homelab stack
+        # Explicit -f: plain `docker compose` also loads the dev override,
+        # which exposes database ports and runs the API with --reload. This
+        # is the shape docs/homelab-deploy.md tells operators to run.
+        #
+        # --wait is scoped to api + web (and their deps): `beat` has no
+        # healthcheck by design, and older compose fails `--wait` on any
+        # service that lacks one. worker/beat aren't exercised by the smoke
+        # test or the backup check.
+        run: docker compose -f docker-compose.yml up -d --wait --wait-timeout 240 api web
+
+      - name: Browser smoke test
+        working-directory: frontend
+        env:
+          E2E_BASE_URL: http://127.0.0.1:8081
+        run: pnpm run e2e
+
+      - name: Verify instance backup and restore
+        run: |
+          sh scripts/backup.sh
+          sh scripts/restore-verify.sh
+
+      - name: Stack logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.yml logs --no-color
+
+      - name: Stop the homelab stack
+        if: always()
+        run: docker compose -f docker-compose.yml down -v
+
       # worker/beat share the api image's Dockerfile/context byte-for-byte
       # (see docker-compose.yml) - scanning api + web covers every distinct
       # image actually built.
