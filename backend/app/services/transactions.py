@@ -53,6 +53,17 @@ from app.services.recurrence import add_months_clamped
 _CENTS = Decimal("0.0001")
 
 
+def _assert_loan_payment_shape(
+    loan: Loan, *, type_: str, currency: str, category_id: UUID | None
+) -> None:
+    if (
+        type_ != TRANSACTION_TYPE_EXPENSE
+        or currency != loan.currency
+        or category_id != loan.category_id
+    ):
+        raise ValidationAppError(code="loan.payment_shape_invalid")
+
+
 async def validate_transaction_shape(
     db: AsyncSession,
     user_id: UUID,
@@ -317,12 +328,9 @@ async def build_transaction(
             raise ValidationAppError(code="transaction.loan_payment_requires_loan_endpoint")
         if not 1 <= loan_installment_number <= loan.installment_count:
             raise ValidationAppError(code="loan.installment_number_invalid")
-        if (
-            data.type != TRANSACTION_TYPE_EXPENSE
-            or data.currency != loan.currency
-            or data.category_id != loan.category_id
-        ):
-            raise ValidationAppError(code="loan.payment_shape_invalid")
+        _assert_loan_payment_shape(
+            loan, type_=data.type, currency=data.currency, category_id=data.category_id
+        )
     elif loan_installment_number is not None:
         raise ValidationAppError(code="loan.installment_number_without_loan")
 
@@ -537,12 +545,12 @@ async def update_transaction(
 
     if transaction.loan_id is not None:
         loan = await ownership.get_owned(db, Loan, transaction.loan_id, user_id)
-        if (
-            effective_type != TRANSACTION_TYPE_EXPENSE
-            or effective_currency != loan.currency
-            or effective_category_id != loan.category_id
-        ):
-            raise ValidationAppError(code="loan.payment_shape_invalid")
+        _assert_loan_payment_shape(
+            loan,
+            type_=effective_type,
+            currency=effective_currency,
+            category_id=effective_category_id,
+        )
 
     account, to_account = await validate_transaction_shape(
         db,
@@ -629,6 +637,8 @@ async def bulk_categorize_transactions(
     the whole batch before any commit."""
     category = await ownership.get_owned(db, Category, category_id, user_id)
     transactions = await ownership.get_many_owned(db, Transaction, ids, user_id)
+    loan_ids = {transaction.loan_id for transaction in transactions.values() if transaction.loan_id}
+    loans = await ownership.get_many_owned(db, Loan, list(loan_ids), user_id) if loan_ids else {}
     for transaction in transactions.values():
         # The DB CHECK ck_transactions_category_absent_for_transfer_interest
         # would abort the whole transaction as an IntegrityError 500 - reject
@@ -644,6 +654,13 @@ async def bulk_categorize_transactions(
         )
         if category.kind != expected_kind:
             raise ValidationAppError(code="transaction.category_kind_mismatch")
+        if transaction.loan_id:
+            _assert_loan_payment_shape(
+                loans[transaction.loan_id],
+                type_=transaction.type,
+                currency=transaction.currency,
+                category_id=category_id,
+            )
         transaction.category_id = category_id
     await db.commit()
     return len(transactions)
