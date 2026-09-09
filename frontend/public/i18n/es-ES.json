@@ -212,6 +212,7 @@
       "settings": "Ajustes",
       "investments": "Inversiones",
       "adminUsers": "Usuarios e invitaciones",
+      "adminAutomations": "Automatizaciones",
       "sections": {
         "accounts": "Cuentas",
         "analysis": "Análisis",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Usuarios e invitaciones",
     "description": "Gestiona el acceso a esta instancia de LealFinance.",
+    "automations": {
+      "title": "Automatizaciones",
+      "description": "Estado de los trabajos en segundo plano programados en esta instancia.",
+      "loading": "Cargando…",
+      "loadError": "No se pudo cargar el estado de las automatizaciones.",
+      "retry": "Reintentar",
+      "runNow": "Ejecutar ahora",
+      "neverRun": "Nunca ejecutado",
+      "lastRun": "Iniciado {{started}}, finalizado {{finished}}",
+      "counts": "{{processed}} procesados, {{failed}} fallidos",
+      "errorType": "Último fallo: {{type}}",
+      "state": {
+        "never_run": "Nunca ejecutado",
+        "stale": "Atrasado",
+        "stuck": "Atascado",
+        "running": "En ejecución",
+        "success": "Correcto",
+        "partial": "Fallo parcial",
+        "failed": "Fallido"
+      },
+      "attention": {
+        "never_run": "Este trabajo aún no se ha ejecutado.",
+        "stale": "Este trabajo está atrasado — comprueba que el programador (beat) y el worker estén funcionando.",
+        "stuck": "Este trabajo empezó pero nunca terminó — comprueba los registros del worker.",
+        "failed": "La última ejecución falló. Soluciona la causa y ejecútalo ahora.",
+        "partial": "Algunos elementos fallaron en la última ejecución. Revisa los registros del worker y ejecútalo ahora."
+      }
+    },
     "roles": {
       "member": "Miembro",
       "admin": "Administrador"

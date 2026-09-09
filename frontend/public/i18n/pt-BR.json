@@ -212,6 +212,7 @@
       "chat": "Chat com IA",
       "investments": "Investimentos",
       "adminUsers": "Usuários e convites",
+      "adminAutomations": "Automações",
       "sections": {
         "accounts": "Contas",
         "analysis": "Análise",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Usuários e convites",
     "description": "Gerencie o acesso a esta instância do LealFinance.",
+    "automations": {
+      "title": "Automações",
+      "description": "Status dos trabalhos em segundo plano agendados nesta instância.",
+      "loading": "Carregando…",
+      "loadError": "Não foi possível carregar o status das automações.",
+      "retry": "Tentar novamente",
+      "runNow": "Executar agora",
+      "neverRun": "Nunca executado",
+      "lastRun": "Iniciado {{started}}, finalizado {{finished}}",
+      "counts": "{{processed}} processados, {{failed}} falharam",
+      "errorType": "Última falha: {{type}}",
+      "state": {
+        "never_run": "Nunca executado",
+        "stale": "Atrasado",
+        "stuck": "Travado",
+        "running": "Em execução",
+        "success": "Saudável",
+        "partial": "Falha parcial",
+        "failed": "Falhou"
+      },
+      "attention": {
+        "never_run": "Este trabalho ainda não foi executado.",
+        "stale": "Este trabalho está atrasado — verifique se o agendador (beat) e o worker estão em execução.",
+        "stuck": "Este trabalho começou, mas nunca terminou — verifique os logs do worker.",
+        "failed": "A última execução falhou. Corrija a causa e execute agora.",
+        "partial": "Alguns itens falharam na última execução. Revise os logs do worker e execute agora."
+      }
+    },
     "roles": {
       "member": "Membro",
       "admin": "Administrador"

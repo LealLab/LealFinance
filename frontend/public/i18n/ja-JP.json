@@ -212,6 +212,7 @@
       "settings": "設定",
       "investments": "投資",
       "adminUsers": "ユーザーと招待",
+      "adminAutomations": "自動化",
       "sections": {
         "accounts": "口座",
         "analysis": "分析",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "ユーザーと招待",
     "description": "このLealFinanceインスタンスへのアクセスを管理します。",
+    "automations": {
+      "title": "自動化",
+      "description": "このインスタンスでスケジュールされたバックグラウンドジョブの状態。",
+      "loading": "読み込み中…",
+      "loadError": "自動化の状態を読み込めませんでした。",
+      "retry": "再試行",
+      "runNow": "今すぐ実行",
+      "neverRun": "未実行",
+      "lastRun": "開始 {{started}}、終了 {{finished}}",
+      "counts": "{{processed}} 件処理済み、{{failed}} 件失敗",
+      "errorType": "最後の失敗: {{type}}",
+      "state": {
+        "never_run": "未実行",
+        "stale": "遅延",
+        "stuck": "停滞",
+        "running": "実行中",
+        "success": "正常",
+        "partial": "部分的な失敗",
+        "failed": "失敗"
+      },
+      "attention": {
+        "never_run": "このジョブはまだ実行されていません。",
+        "stale": "このジョブは遅延しています — スケジューラー（beat）とワーカーが動作しているか確認してください。",
+        "stuck": "このジョブは開始しましたが完了していません — ワーカーのログを確認してください。",
+        "failed": "最後の実行に失敗しました。原因を修正して、今すぐ実行してください。",
+        "partial": "最後の実行で一部の項目に失敗しました。ワーカーのログを確認して、今すぐ実行してください。"
+      }
+    },
     "roles": {
       "member": "メンバー",
       "admin": "管理者"

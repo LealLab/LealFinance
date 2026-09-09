@@ -212,6 +212,7 @@
       "settings": "设置",
       "investments": "投资",
       "adminUsers": "用户与邀请",
+      "adminAutomations": "自动化",
       "sections": {
         "accounts": "账户",
         "analysis": "分析",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "用户与邀请",
     "description": "管理此 LealFinance 实例的访问权限。",
+    "automations": {
+      "title": "自动化",
+      "description": "此实例上已计划的后台任务状态。",
+      "loading": "正在加载…",
+      "loadError": "无法加载自动化状态。",
+      "retry": "重试",
+      "runNow": "立即运行",
+      "neverRun": "从未运行",
+      "lastRun": "开始于 {{started}}，结束于 {{finished}}",
+      "counts": "已处理 {{processed}}，失败 {{failed}}",
+      "errorType": "上次失败：{{type}}",
+      "state": {
+        "never_run": "从未运行",
+        "stale": "已逾期",
+        "stuck": "卡住",
+        "running": "运行中",
+        "success": "正常",
+        "partial": "部分失败",
+        "failed": "失败"
+      },
+      "attention": {
+        "never_run": "此任务尚未运行。",
+        "stale": "此任务已逾期 — 请检查调度器（beat）和 worker 是否正在运行。",
+        "stuck": "此任务已开始但从未完成 — 请检查 worker 日志。",
+        "failed": "上次运行失败。修复原因后立即运行。",
+        "partial": "上次运行中有一些项目失败。查看 worker 日志后立即运行。"
+      }
+    },
     "roles": {
       "member": "成员",
       "admin": "管理员"

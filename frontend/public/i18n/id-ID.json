@@ -212,6 +212,7 @@
       "settings": "Pengaturan",
       "investments": "Investasi",
       "adminUsers": "Pengguna dan undangan",
+      "adminAutomations": "Otomasi",
       "sections": {
         "accounts": "Akun",
         "analysis": "Analisis",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Pengguna dan undangan",
     "description": "Kelola akses ke instans LealFinance ini.",
+    "automations": {
+      "title": "Otomasi",
+      "description": "Kesehatan pekerjaan latar belakang terjadwal pada instance ini.",
+      "loading": "Memuat…",
+      "loadError": "Status otomasi tidak dapat dimuat.",
+      "retry": "Coba lagi",
+      "runNow": "Jalankan sekarang",
+      "neverRun": "Belum pernah dijalankan",
+      "lastRun": "Dimulai {{started}}, selesai {{finished}}",
+      "counts": "{{processed}} diproses, {{failed}} gagal",
+      "errorType": "Kegagalan terakhir: {{type}}",
+      "state": {
+        "never_run": "Belum pernah dijalankan",
+        "stale": "Terlambat",
+        "stuck": "Macet",
+        "running": "Berjalan",
+        "success": "Sehat",
+        "partial": "Kegagalan sebagian",
+        "failed": "Gagal"
+      },
+      "attention": {
+        "never_run": "Pekerjaan ini belum pernah dijalankan.",
+        "stale": "Pekerjaan ini terlambat — periksa apakah scheduler (beat) dan worker sedang berjalan.",
+        "stuck": "Pekerjaan ini dimulai tetapi tidak pernah selesai — periksa log worker.",
+        "failed": "Proses terakhir gagal. Perbaiki penyebabnya, lalu jalankan sekarang.",
+        "partial": "Beberapa item gagal pada proses terakhir. Tinjau log worker, lalu jalankan sekarang."
+      }
+    },
     "roles": {
       "member": "Anggota",
       "admin": "Admin"

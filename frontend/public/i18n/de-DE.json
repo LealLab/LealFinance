@@ -212,6 +212,7 @@
       "settings": "Einstellungen",
       "investments": "Investitionen",
       "adminUsers": "Benutzer und Einladungen",
+      "adminAutomations": "Automatisierungen",
       "sections": {
         "accounts": "Konten",
         "analysis": "Auswertungen",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Benutzer und Einladungen",
     "description": "Verwalten Sie den Zugriff auf diese LealFinance-Instanz.",
+    "automations": {
+      "title": "Automatisierungen",
+      "description": "Status der geplanten Hintergrundjobs auf dieser Instanz.",
+      "loading": "Wird geladen…",
+      "loadError": "Der Status der Automatisierungen konnte nicht geladen werden.",
+      "retry": "Erneut versuchen",
+      "runNow": "Jetzt ausführen",
+      "neverRun": "Nie ausgeführt",
+      "lastRun": "Gestartet {{started}}, beendet {{finished}}",
+      "counts": "{{processed}} verarbeitet, {{failed}} fehlgeschlagen",
+      "errorType": "Letzter Fehler: {{type}}",
+      "state": {
+        "never_run": "Nie ausgeführt",
+        "stale": "Überfällig",
+        "stuck": "Hängt fest",
+        "running": "Läuft",
+        "success": "Gesund",
+        "partial": "Teilfehler",
+        "failed": "Fehlgeschlagen"
+      },
+      "attention": {
+        "never_run": "Dieser Job wurde noch nicht ausgeführt.",
+        "stale": "Dieser Job ist überfällig — prüfen Sie, ob Scheduler (Beat) und Worker laufen.",
+        "stuck": "Dieser Job wurde gestartet, aber nie beendet — prüfen Sie die Worker-Logs.",
+        "failed": "Der letzte Lauf ist fehlgeschlagen. Beheben Sie die Ursache und führen Sie ihn jetzt aus.",
+        "partial": "Beim letzten Lauf sind einige Elemente fehlgeschlagen. Prüfen Sie die Worker-Logs und führen Sie ihn jetzt aus."
+      }
+    },
     "roles": {
       "member": "Mitglied",
       "admin": "Admin"

@@ -212,6 +212,7 @@
       "settings": "Innstillinger",
       "investments": "Investeringer",
       "adminUsers": "Brukere og invitasjoner",
+      "adminAutomations": "Automatiseringer",
       "sections": {
         "accounts": "Kontoer",
         "analysis": "Analyse",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Brukere og invitasjoner",
     "description": "Administrer tilgangen til denne LealFinance-instansen.",
+    "automations": {
+      "title": "Automatiseringer",
+      "description": "Status for planlagte bakgrunnsjobber på denne instansen.",
+      "loading": "Laster inn…",
+      "loadError": "Kunne ikke laste inn automatiseringsstatus.",
+      "retry": "Prøv igjen",
+      "runNow": "Kjør nå",
+      "neverRun": "Aldri kjørt",
+      "lastRun": "Startet {{started}}, fullført {{finished}}",
+      "counts": "{{processed}} behandlet, {{failed}} mislyktes",
+      "errorType": "Siste feil: {{type}}",
+      "state": {
+        "never_run": "Aldri kjørt",
+        "stale": "Forsinket",
+        "stuck": "Fastlåst",
+        "running": "Kjører",
+        "success": "Frisk",
+        "partial": "Delvis feil",
+        "failed": "Mislyktes"
+      },
+      "attention": {
+        "never_run": "Denne jobben har ikke kjørt ennå.",
+        "stale": "Denne jobben er forsinket — sjekk at planleggeren (beat) og worker kjører.",
+        "stuck": "Denne jobben startet, men ble aldri ferdig — sjekk worker-loggene.",
+        "failed": "Siste kjøring mislyktes. Rett årsaken, og kjør den nå.",
+        "partial": "Noen elementer mislyktes ved siste kjøring. Gå gjennom worker-loggene, og kjør den nå."
+      }
+    },
     "roles": {
       "member": "Medlem",
       "admin": "Admin"

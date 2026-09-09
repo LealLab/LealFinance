@@ -212,6 +212,7 @@
       "settings": "Cài đặt",
       "investments": "Đầu tư",
       "adminUsers": "Người dùng và lời mời",
+      "adminAutomations": "Tự động hóa",
       "sections": {
         "accounts": "Tài khoản",
         "analysis": "Phân tích",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Người dùng và lời mời",
     "description": "Quản lý quyền truy cập vào hệ thống LealFinance này.",
+    "automations": {
+      "title": "Tự động hóa",
+      "description": "Tình trạng các tác vụ nền được lập lịch trên phiên bản này.",
+      "loading": "Đang tải…",
+      "loadError": "Không thể tải trạng thái tự động hóa.",
+      "retry": "Thử lại",
+      "runNow": "Chạy ngay",
+      "neverRun": "Chưa từng chạy",
+      "lastRun": "Bắt đầu {{started}}, kết thúc {{finished}}",
+      "counts": "Đã xử lý {{processed}}, thất bại {{failed}}",
+      "errorType": "Lỗi gần nhất: {{type}}",
+      "state": {
+        "never_run": "Chưa từng chạy",
+        "stale": "Quá hạn",
+        "stuck": "Bị treo",
+        "running": "Đang chạy",
+        "success": "Ổn định",
+        "partial": "Lỗi một phần",
+        "failed": "Thất bại"
+      },
+      "attention": {
+        "never_run": "Tác vụ này chưa từng chạy.",
+        "stale": "Tác vụ này đã quá hạn — hãy kiểm tra scheduler (beat) và worker đang chạy.",
+        "stuck": "Tác vụ đã bắt đầu nhưng chưa hoàn tất — hãy kiểm tra nhật ký worker.",
+        "failed": "Lần chạy gần nhất thất bại. Hãy khắc phục nguyên nhân rồi chạy ngay.",
+        "partial": "Một số mục thất bại trong lần chạy gần nhất. Hãy xem nhật ký worker rồi chạy ngay."
+      }
+    },
     "roles": {
       "member": "Thành viên",
       "admin": "Quản trị viên"

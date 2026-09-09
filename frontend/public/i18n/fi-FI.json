@@ -212,6 +212,7 @@
       "settings": "Asetukset",
       "investments": "Sijoitukset",
       "adminUsers": "Käyttäjät ja kutsut",
+      "adminAutomations": "Automatisoinnit",
       "sections": {
         "accounts": "Tilit",
         "analysis": "Analyysit",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Käyttäjät ja kutsut",
     "description": "Hallitse tämän LealFinance-asennuksen käyttöoikeuksia.",
+    "automations": {
+      "title": "Automatisoinnit",
+      "description": "Tämän instanssin ajastettujen taustatöiden tila.",
+      "loading": "Ladataan…",
+      "loadError": "Automatisointien tilaa ei voitu ladata.",
+      "retry": "Yritä uudelleen",
+      "runNow": "Suorita nyt",
+      "neverRun": "Ei koskaan suoritettu",
+      "lastRun": "Aloitettu {{started}}, valmis {{finished}}",
+      "counts": "{{processed}} käsitelty, {{failed}} epäonnistui",
+      "errorType": "Viimeisin virhe: {{type}}",
+      "state": {
+        "never_run": "Ei koskaan suoritettu",
+        "stale": "Myöhässä",
+        "stuck": "Jumiutunut",
+        "running": "Käynnissä",
+        "success": "Toimiva",
+        "partial": "Osittainen virhe",
+        "failed": "Epäonnistui"
+      },
+      "attention": {
+        "never_run": "Tätä tehtävää ei ole vielä suoritettu.",
+        "stale": "Tämä tehtävä on myöhässä — tarkista, että ajastin (beat) ja worker ovat käynnissä.",
+        "stuck": "Tehtävä käynnistyi, mutta ei valmistunut — tarkista workerin lokit.",
+        "failed": "Viimeisin suoritus epäonnistui. Korjaa syy ja suorita se nyt.",
+        "partial": "Jotkin kohteet epäonnistuivat viimeisimmässä suorituksessa. Tarkista workerin lokit ja suorita se nyt."
+      }
+    },
     "roles": {
       "member": "Jäsen",
       "admin": "Järjestelmänvalvoja"

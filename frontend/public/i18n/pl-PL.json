@@ -212,6 +212,7 @@
       "settings": "Ustawienia",
       "investments": "Inwestycje",
       "adminUsers": "Użytkownicy i zaproszenia",
+      "adminAutomations": "Automatyzacje",
       "sections": {
         "accounts": "Konta",
         "analysis": "Analiza",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Użytkownicy i zaproszenia",
     "description": "Zarządzaj dostępem do tej instancji LealFinance.",
+    "automations": {
+      "title": "Automatyzacje",
+      "description": "Stan zaplanowanych zadań w tle tej instancji.",
+      "loading": "Ładowanie…",
+      "loadError": "Nie udało się wczytać stanu automatyzacji.",
+      "retry": "Spróbuj ponownie",
+      "runNow": "Uruchom teraz",
+      "neverRun": "Nigdy nie uruchomiono",
+      "lastRun": "Rozpoczęto {{started}}, zakończono {{finished}}",
+      "counts": "Przetworzono {{processed}}, niepowodzeń: {{failed}}",
+      "errorType": "Ostatni błąd: {{type}}",
+      "state": {
+        "never_run": "Nigdy nie uruchomiono",
+        "stale": "Zaległe",
+        "stuck": "Zawieszone",
+        "running": "Uruchomione",
+        "success": "Sprawne",
+        "partial": "Częściowa awaria",
+        "failed": "Niepowodzenie"
+      },
+      "attention": {
+        "never_run": "To zadanie nie zostało jeszcze uruchomione.",
+        "stale": "To zadanie jest opóźnione — sprawdź, czy harmonogram (beat) i worker działają.",
+        "stuck": "To zadanie się rozpoczęło, ale nigdy nie zakończyło — sprawdź logi workera.",
+        "failed": "Ostatnie uruchomienie zakończyło się niepowodzeniem. Usuń przyczynę i uruchom je teraz.",
+        "partial": "Podczas ostatniego uruchomienia niektóre elementy zakończyły się niepowodzeniem. Sprawdź logi workera i uruchom je teraz."
+      }
+    },
     "roles": {
       "member": "Członek",
       "admin": "Admin"

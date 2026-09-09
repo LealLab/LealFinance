@@ -212,6 +212,7 @@
       "settings": "Nastavení",
       "investments": "Investice",
       "adminUsers": "Uživatelé a pozvánky",
+      "adminAutomations": "Automatizace",
       "sections": {
         "accounts": "Účty",
         "analysis": "Analýza",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Uživatelé a pozvánky",
     "description": "Spravujte přístup k této instanci LealFinance.",
+    "automations": {
+      "title": "Automatizace",
+      "description": "Stav naplánovaných úloh na pozadí v této instanci.",
+      "loading": "Načítání…",
+      "loadError": "Stav automatizací se nepodařilo načíst.",
+      "retry": "Zkusit znovu",
+      "runNow": "Spustit nyní",
+      "neverRun": "Nikdy nespouštěno",
+      "lastRun": "Spuštěno {{started}}, dokončeno {{finished}}",
+      "counts": "{{processed}} zpracováno, {{failed}} selhalo",
+      "errorType": "Poslední chyba: {{type}}",
+      "state": {
+        "never_run": "Nikdy nespouštěno",
+        "stale": "Po termínu",
+        "stuck": "Zaseknuté",
+        "running": "Běží",
+        "success": "V pořádku",
+        "partial": "Částečné selhání",
+        "failed": "Selhalo"
+      },
+      "attention": {
+        "never_run": "Tato úloha ještě nebyla spuštěna.",
+        "stale": "Tato úloha je po termínu — zkontrolujte plánovač (beat) a worker.",
+        "stuck": "Tato úloha se spustila, ale nikdy neskončila — zkontrolujte protokoly workeru.",
+        "failed": "Poslední běh selhal. Opravte příčinu a spusťte ho nyní.",
+        "partial": "Při posledním běhu některé položky selhaly. Zkontrolujte protokoly workeru a spusťte ho nyní."
+      }
+    },
     "roles": {
       "member": "Člen",
       "admin": "Správce"

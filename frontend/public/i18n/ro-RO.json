@@ -212,6 +212,7 @@
       "settings": "Setări",
       "investments": "Investiții",
       "adminUsers": "Utilizatori și invitații",
+      "adminAutomations": "Automatizări",
       "sections": {
         "accounts": "Conturi",
         "analysis": "Analiză",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Utilizatori și invitații",
     "description": "Gestionează accesul la această instanță LealFinance.",
+    "automations": {
+      "title": "Automatizări",
+      "description": "Starea activităților de fundal programate pe această instanță.",
+      "loading": "Se încarcă…",
+      "loadError": "Starea automatizărilor nu a putut fi încărcată.",
+      "retry": "Încearcă din nou",
+      "runNow": "Rulează acum",
+      "neverRun": "Nu a rulat niciodată",
+      "lastRun": "Pornit {{started}}, finalizat {{finished}}",
+      "counts": "{{processed}} procesate, {{failed}} eșuate",
+      "errorType": "Ultima eroare: {{type}}",
+      "state": {
+        "never_run": "Nu a rulat niciodată",
+        "stale": "Întârziat",
+        "stuck": "Blocat",
+        "running": "În execuție",
+        "success": "Sănătos",
+        "partial": "Eșec parțial",
+        "failed": "Eșuat"
+      },
+      "attention": {
+        "never_run": "Această activitate nu a rulat încă.",
+        "stale": "Această activitate este întârziată — verifică dacă schedulerul (beat) și workerul rulează.",
+        "stuck": "Această activitate a început, dar nu s-a terminat — verifică jurnalele workerului.",
+        "failed": "Ultima rulare a eșuat. Remediază cauza, apoi rulează acum.",
+        "partial": "Unele elemente au eșuat la ultima rulare. Verifică jurnalele workerului, apoi rulează acum."
+      }
+    },
     "roles": {
       "member": "Membru",
       "admin": "Admin"

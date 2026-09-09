@@ -212,6 +212,7 @@
       "chat": "AI chat",
       "investments": "Investments",
       "adminUsers": "Users & invitations",
+      "adminAutomations": "Automations",
       "sections": {
         "accounts": "Accounts",
         "analysis": "Analysis",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Users & invitations",
     "description": "Manage access to this LealFinance instance.",
+    "automations": {
+      "title": "Automations",
+      "description": "Health of the scheduled background jobs on this instance.",
+      "loading": "Loading…",
+      "loadError": "Could not load the automation status.",
+      "retry": "Retry",
+      "runNow": "Run now",
+      "neverRun": "Never run",
+      "lastRun": "Started {{started}}, finished {{finished}}",
+      "counts": "{{processed}} processed, {{failed}} failed",
+      "errorType": "Last failure: {{type}}",
+      "state": {
+        "never_run": "Never run",
+        "stale": "Overdue",
+        "stuck": "Stuck",
+        "running": "Running",
+        "success": "Healthy",
+        "partial": "Partial failure",
+        "failed": "Failed"
+      },
+      "attention": {
+        "never_run": "This job has not run yet.",
+        "stale": "This job is overdue — check that the scheduler (beat) and worker are running.",
+        "stuck": "This job started but never finished — check the worker logs.",
+        "failed": "The last run failed. Fix the cause, then run it now.",
+        "partial": "Some items failed on the last run. Review the worker logs, then run it now."
+      }
+    },
     "roles": {
       "member": "Member",
       "admin": "Administrator"

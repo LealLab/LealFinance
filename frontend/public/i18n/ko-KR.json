@@ -212,6 +212,7 @@
       "settings": "설정",
       "investments": "투자",
       "adminUsers": "사용자 및 초대",
+      "adminAutomations": "자동화",
       "sections": {
         "accounts": "계좌",
         "analysis": "분석",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "사용자 및 초대",
     "description": "이 LealFinance 인스턴스의 접근 권한을 관리하세요.",
+    "automations": {
+      "title": "자동화",
+      "description": "이 인스턴스에서 예약된 백그라운드 작업의 상태입니다.",
+      "loading": "로드 중…",
+      "loadError": "자동화 상태를 불러올 수 없습니다.",
+      "retry": "다시 시도",
+      "runNow": "지금 실행",
+      "neverRun": "실행된 적 없음",
+      "lastRun": "시작 {{started}}, 종료 {{finished}}",
+      "counts": "{{processed}}개 처리, {{failed}}개 실패",
+      "errorType": "마지막 실패: {{type}}",
+      "state": {
+        "never_run": "실행된 적 없음",
+        "stale": "지연됨",
+        "stuck": "멈춤",
+        "running": "실행 중",
+        "success": "정상",
+        "partial": "부분 실패",
+        "failed": "실패"
+      },
+      "attention": {
+        "never_run": "이 작업은 아직 실행되지 않았습니다.",
+        "stale": "이 작업이 지연되었습니다 — 스케줄러(beat)와 워커가 실행 중인지 확인하세요.",
+        "stuck": "이 작업은 시작했지만 완료되지 않았습니다 — 워커 로그를 확인하세요.",
+        "failed": "마지막 실행에 실패했습니다. 원인을 해결한 후 지금 실행하세요.",
+        "partial": "마지막 실행에서 일부 항목이 실패했습니다. 워커 로그를 확인한 후 지금 실행하세요."
+      }
+    },
     "roles": {
       "member": "멤버",
       "admin": "관리자"

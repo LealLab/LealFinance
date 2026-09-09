@@ -212,6 +212,7 @@
       "settings": "Inställningar",
       "investments": "Investeringar",
       "adminUsers": "Användare och inbjudningar",
+      "adminAutomations": "Automatiseringar",
       "sections": {
         "accounts": "Konton",
         "analysis": "Analys",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Användare och inbjudningar",
     "description": "Hantera åtkomsten till den här LealFinance-instansen.",
+    "automations": {
+      "title": "Automatiseringar",
+      "description": "Hälsostatus för schemalagda bakgrundsjobb i den här instansen.",
+      "loading": "Läser in…",
+      "loadError": "Det gick inte att läsa in automatiseringsstatusen.",
+      "retry": "Försök igen",
+      "runNow": "Kör nu",
+      "neverRun": "Aldrig körd",
+      "lastRun": "Startad {{started}}, slutförd {{finished}}",
+      "counts": "{{processed}} behandlade, {{failed}} misslyckades",
+      "errorType": "Senaste felet: {{type}}",
+      "state": {
+        "never_run": "Aldrig körd",
+        "stale": "Försenad",
+        "stuck": "Fastnad",
+        "running": "Körs",
+        "success": "Frisk",
+        "partial": "Delvis fel",
+        "failed": "Misslyckad"
+      },
+      "attention": {
+        "never_run": "Det här jobbet har inte körts än.",
+        "stale": "Det här jobbet är försenat — kontrollera att schemaläggaren (beat) och workern körs.",
+        "stuck": "Det här jobbet startade men blev aldrig klart — kontrollera workerloggarna.",
+        "failed": "Den senaste körningen misslyckades. Åtgärda orsaken och kör det nu.",
+        "partial": "Vissa objekt misslyckades vid den senaste körningen. Granska workerloggarna och kör det nu."
+      }
+    },
     "roles": {
       "member": "Medlem",
       "admin": "Administratör"

@@ -212,6 +212,7 @@
       "settings": "Paramètres",
       "investments": "Investissements",
       "adminUsers": "Utilisateurs et invitations",
+      "adminAutomations": "Automatisations",
       "sections": {
         "accounts": "Comptes",
         "analysis": "Analyse",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Utilisateurs et invitations",
     "description": "Gérez l’accès à cette instance de LealFinance.",
+    "automations": {
+      "title": "Automatisations",
+      "description": "État des tâches d’arrière-plan planifiées sur cette instance.",
+      "loading": "Chargement…",
+      "loadError": "Impossible de charger l’état des automatisations.",
+      "retry": "Réessayer",
+      "runNow": "Exécuter maintenant",
+      "neverRun": "Jamais exécuté",
+      "lastRun": "Démarré à {{started}}, terminé à {{finished}}",
+      "counts": "{{processed}} traités, {{failed}} échecs",
+      "errorType": "Dernier échec : {{type}}",
+      "state": {
+        "never_run": "Jamais exécuté",
+        "stale": "En retard",
+        "stuck": "Bloqué",
+        "running": "En cours",
+        "success": "Sain",
+        "partial": "Échec partiel",
+        "failed": "Échec"
+      },
+      "attention": {
+        "never_run": "Cette tâche n’a pas encore été exécutée.",
+        "stale": "Cette tâche est en retard — vérifiez que le planificateur (beat) et le worker fonctionnent.",
+        "stuck": "Cette tâche a démarré mais ne s’est jamais terminée — vérifiez les journaux du worker.",
+        "failed": "La dernière exécution a échoué. Corrigez la cause, puis exécutez-la maintenant.",
+        "partial": "Certains éléments ont échoué lors de la dernière exécution. Consultez les journaux du worker, puis exécutez-la maintenant."
+      }
+    },
     "roles": {
       "member": "Membre",
       "admin": "Administrateur"

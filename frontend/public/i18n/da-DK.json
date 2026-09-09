@@ -212,6 +212,7 @@
       "settings": "Indstillinger",
       "investments": "Investeringer",
       "adminUsers": "Brugere og invitationer",
+      "adminAutomations": "Automatiseringer",
       "sections": {
         "accounts": "Konti",
         "analysis": "Analyse",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Brugere og invitationer",
     "description": "Administrer adgangen til denne LealFinance-installation.",
+    "automations": {
+      "title": "Automatiseringer",
+      "description": "Status for planlagte baggrundsjob på denne instans.",
+      "loading": "Indlæser…",
+      "loadError": "Automatiseringsstatus kunne ikke indlæses.",
+      "retry": "Prøv igen",
+      "runNow": "Kør nu",
+      "neverRun": "Aldrig kørt",
+      "lastRun": "Startet {{started}}, afsluttet {{finished}}",
+      "counts": "{{processed}} behandlet, {{failed}} mislykkedes",
+      "errorType": "Seneste fejl: {{type}}",
+      "state": {
+        "never_run": "Aldrig kørt",
+        "stale": "Forsinket",
+        "stuck": "Fastlåst",
+        "running": "Kører",
+        "success": "Sund",
+        "partial": "Delvis fejl",
+        "failed": "Mislykkedes"
+      },
+      "attention": {
+        "never_run": "Dette job har ikke kørt endnu.",
+        "stale": "Dette job er forsinket — kontrollér, at scheduler (beat) og worker kører.",
+        "stuck": "Dette job startede, men blev aldrig færdigt — kontrollér worker-loggene.",
+        "failed": "Det seneste kørselsforsøg mislykkedes. Ret årsagen, og kør det derefter nu.",
+        "partial": "Nogle elementer mislykkedes ved seneste kørsel. Gennemgå worker-loggene, og kør det derefter nu."
+      }
+    },
     "roles": {
       "member": "Medlem",
       "admin": "Admin"

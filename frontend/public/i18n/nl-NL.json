@@ -212,6 +212,7 @@
       "settings": "Instellingen",
       "investments": "Beleggingen",
       "adminUsers": "Gebruikers en uitnodigingen",
+      "adminAutomations": "Automatiseringen",
       "sections": {
         "accounts": "Rekeningen",
         "analysis": "Analyse",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Gebruikers en uitnodigingen",
     "description": "Beheer de toegang tot deze LealFinance-instantie.",
+    "automations": {
+      "title": "Automatiseringen",
+      "description": "Status van de geplande achtergrondtaken op deze instantie.",
+      "loading": "Laden…",
+      "loadError": "Kan de status van de automatiseringen niet laden.",
+      "retry": "Opnieuw proberen",
+      "runNow": "Nu uitvoeren",
+      "neverRun": "Nooit uitgevoerd",
+      "lastRun": "Gestart op {{started}}, voltooid op {{finished}}",
+      "counts": "{{processed}} verwerkt, {{failed}} mislukt",
+      "errorType": "Laatste fout: {{type}}",
+      "state": {
+        "never_run": "Nooit uitgevoerd",
+        "stale": "Achterstallig",
+        "stuck": "Vastgelopen",
+        "running": "Actief",
+        "success": "Gezond",
+        "partial": "Gedeeltelijke fout",
+        "failed": "Mislukt"
+      },
+      "attention": {
+        "never_run": "Deze taak is nog niet uitgevoerd.",
+        "stale": "Deze taak loopt achter — controleer of de scheduler (beat) en worker actief zijn.",
+        "stuck": "Deze taak is gestart maar nooit voltooid — controleer de workerlogboeken.",
+        "failed": "De laatste uitvoering is mislukt. Los de oorzaak op en voer de taak nu uit.",
+        "partial": "Sommige items zijn bij de laatste uitvoering mislukt. Bekijk de workerlogboeken en voer de taak nu uit."
+      }
+    },
     "roles": {
       "member": "Lid",
       "admin": "Beheerder"

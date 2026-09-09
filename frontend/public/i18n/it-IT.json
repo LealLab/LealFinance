@@ -212,6 +212,7 @@
       "settings": "Impostazioni",
       "investments": "Investimenti",
       "adminUsers": "Utenti e inviti",
+      "adminAutomations": "Automazioni",
       "sections": {
         "accounts": "Conti",
         "analysis": "Analisi",
@@ -1648,6 +1649,34 @@
   "admin": {
     "title": "Utenti e inviti",
     "description": "Gestisci l'accesso a questa istanza di LealFinance.",
+    "automations": {
+      "title": "Automazioni",
+      "description": "Stato dei processi in background pianificati in questa istanza.",
+      "loading": "Caricamento…",
+      "loadError": "Impossibile caricare lo stato delle automazioni.",
+      "retry": "Riprova",
+      "runNow": "Esegui ora",
+      "neverRun": "Mai eseguito",
+      "lastRun": "Avviato {{started}}, terminato {{finished}}",
+      "counts": "{{processed}} elaborati, {{failed}} non riusciti",
+      "errorType": "Ultimo errore: {{type}}",
+      "state": {
+        "never_run": "Mai eseguito",
+        "stale": "In ritardo",
+        "stuck": "Bloccato",
+        "running": "In esecuzione",
+        "success": "Sano",
+        "partial": "Errore parziale",
+        "failed": "Non riuscito"
+      },
+      "attention": {
+        "never_run": "Questo processo non è ancora stato eseguito.",
+        "stale": "Questo processo è in ritardo — verifica che scheduler (beat) e worker siano in esecuzione.",
+        "stuck": "Questo processo è iniziato ma non è mai terminato — controlla i log del worker.",
+        "failed": "L’ultima esecuzione non è riuscita. Risolvi la causa, poi eseguila ora.",
+        "partial": "Alcuni elementi non sono riusciti nell’ultima esecuzione. Controlla i log del worker, poi eseguila ora."
+      }
+    },
     "roles": {
       "member": "Membro",
       "admin": "Amministratore"
