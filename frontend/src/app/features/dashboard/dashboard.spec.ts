@@ -1,7 +1,7 @@
 import { ErrorHandler, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 import { Account, AccountBalance } from '../../domain/models/account';
 import { AccountRepository } from '../../data/account.repository';
 import { Budget } from '../../domain/models/budget';
@@ -278,7 +278,9 @@ class StubTransactionRepository extends TransactionRepository {
   importPreview(): Observable<never> {
     throw new Error('not used by this spec');
   }
-  importCommit(): Observable<number> {
+  importCommit(_items: readonly Omit<Transaction, 'id'>[], _idempotencyKey: string): Observable<number> {
+    void _items;
+    void _idempotencyKey;
     throw new Error('not used by this spec');
   }
 }
@@ -347,6 +349,25 @@ class StubExchangeRateRepository extends ExchangeRateRepository {
   }
 }
 
+class RetryableAccountRepository extends StubAccountRepository {
+  calls = 0;
+
+  override list(): Observable<Account[]> {
+    this.calls++;
+    return this.calls === 1
+      ? throwError(() => new Error('temporary failure'))
+      : super.list();
+  }
+}
+
+class FailingExchangeRateRepository extends StubExchangeRateRepository {
+  override getRate(baseCode: string, quoteCode: string): Observable<ExchangeRate> {
+    void baseCode;
+    void quoteCode;
+    return throwError(() => new Error('rate unavailable'));
+  }
+}
+
 describe('Dashboard - a budget in one currency catching a transaction in another', () => {
   let errorHandler: CapturingErrorHandler;
 
@@ -398,5 +419,80 @@ describe('Dashboard - a budget in one currency catching a transaction in another
     // 100 EUR * 1.1 = 110 USD, matching the budget's own currency (USD) -
     // not the display currency (BRL) and not left unconverted (EUR).
     expect(preview[0].spent).toEqual(money('110', 'USD'));
+  });
+});
+
+describe('Dashboard - load failures', () => {
+  afterEach(() => localStorage.removeItem('lealfinance.displayCurrency'));
+
+  async function flush(fixture: ComponentFixture<Dashboard>, times = 5): Promise<void> {
+    for (let i = 0; i < times; i++) {
+      await Promise.resolve();
+      fixture.detectChanges();
+    }
+  }
+
+  it('shows a data error instead of the empty state and retries the failed resource', async () => {
+    const accountRepository = new RetryableAccountRepository();
+    await TestBed.configureTestingModule({
+      imports: [Dashboard, provideTestTransloco()],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        provideTestTranslocoLocale(),
+        { provide: AccountRepository, useValue: accountRepository },
+        { provide: TransactionRepository, useClass: StubTransactionRepository },
+        { provide: CategoryRepository, useClass: StubCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: StubCategoryGroupRepository },
+        { provide: BudgetRepository, useClass: StubBudgetRepository },
+        { provide: ExchangeRateRepository, useClass: StubExchangeRateRepository },
+        { provide: ErrorHandler, useClass: CapturingErrorHandler }
+      ]
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await flush(fixture);
+
+    const component = fixture.componentInstance;
+    expect(component['dataError']()).toBe(true);
+    expect(fixture.nativeElement.querySelector('app-load-error')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('app-empty-state')).toBeNull();
+
+    (fixture.nativeElement.querySelector('app-load-error button') as HTMLButtonElement).click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(accountRepository.calls).toBe(2);
+    expect(component['dataError']()).toBe(false);
+    expect(fixture.nativeElement.querySelector('app-stat-tile')).not.toBeNull();
+  });
+
+  it('shows an error when exchange rates fail instead of an endless skeleton', async () => {
+    localStorage.setItem('lealfinance.displayCurrency', 'BRL');
+    await TestBed.configureTestingModule({
+      imports: [Dashboard, provideTestTransloco()],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        provideTestTranslocoLocale(),
+        { provide: AccountRepository, useClass: StubAccountRepository },
+        { provide: TransactionRepository, useClass: StubTransactionRepository },
+        { provide: CategoryRepository, useClass: StubCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: StubCategoryGroupRepository },
+        { provide: BudgetRepository, useClass: StubBudgetRepository },
+        { provide: ExchangeRateRepository, useClass: FailingExchangeRateRepository },
+        { provide: ErrorHandler, useClass: CapturingErrorHandler }
+      ]
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['ratesFailed']()).toBe(true);
+    expect(fixture.nativeElement.querySelector('app-load-error')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('app-skeleton')).toBeNull();
   });
 });

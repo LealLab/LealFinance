@@ -30,7 +30,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.chat, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.chat, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.adminAutomations, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -91,6 +91,7 @@ export function navSectionsFor(
       labelKey: 'layout.nav.sections.admin',
       items: [
         { path: '/admin/users', labelKey: 'layout.nav.adminUsers', icon: 'settings' as IconName },
+        { path: '/admin/automations', labelKey: 'layout.nav.adminAutomations', icon: 'zap' as IconName },
         ...(agentsEnabled
           ? [{ path: '/admin/providers', labelKey: 'layout.nav.providers', icon: 'zap' as IconName }]
           : []),

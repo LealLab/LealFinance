@@ -103,7 +103,9 @@ async def preview_import(
 async def commit_import(
     payload: ImportCommitRequest, user: CurrentUser, db: DbSession
 ) -> ImportCommitRead:
-    created = await transactions_service.import_transactions(db, user.id, payload.items)
+    created = await transactions_service.import_transactions(
+        db, user.id, payload.items, idempotency_key=payload.idempotency_key
+    )
     return ImportCommitRead(created=created)
 
 

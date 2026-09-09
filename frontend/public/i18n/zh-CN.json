@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "重试",
       "close": "关闭",
       "cancel": "取消",
       "confirm": "确认",
@@ -49,6 +50,8 @@
       "previousMonth": "上个月",
       "nextMonth": "下个月"
     },
+    "loadError": "加载时出了点问题。请重试。",
+    "retrying": "正在重试…",
     "colorPicker": {
       "saturationBrightness": "颜色的饱和度和亮度",
       "hue": "颜色色相"
@@ -212,6 +215,7 @@
       "settings": "设置",
       "investments": "投资",
       "adminUsers": "用户与邀请",
+      "adminAutomations": "自动化",
       "sections": {
         "accounts": "账户",
         "analysis": "分析",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "部分总额需要使用当前不可用的汇率。",
     "title": "仪表盘",
     "welcome": "欢迎使用 LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "部分数据需要使用当前不可用的汇率。",
     "title": "报表",
     "description": "分析一段时间内的收入、支出和余额。",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "用户与邀请",
     "description": "管理此 LealFinance 实例的访问权限。",
+    "automations": {
+      "title": "自动化",
+      "description": "此实例上已计划的后台任务状态。",
+      "loading": "正在加载…",
+      "loadError": "无法加载自动化状态。",
+      "retry": "重试",
+      "runNow": "立即运行",
+      "neverRun": "从未运行",
+      "lastRun": "开始于 {{started}}，结束于 {{finished}}",
+      "counts": "已处理 {{processed}}，失败 {{failed}}",
+      "errorType": "上次失败：{{type}}",
+      "state": {
+        "never_run": "从未运行",
+        "stale": "已逾期",
+        "stuck": "卡住",
+        "running": "运行中",
+        "success": "正常",
+        "partial": "部分失败",
+        "failed": "失败"
+      },
+      "attention": {
+        "never_run": "此任务尚未运行。",
+        "stale": "此任务已逾期 — 请检查调度器（beat）和 worker 是否正在运行。",
+        "stuck": "此任务已开始但从未完成 — 请检查 worker 日志。",
+        "failed": "上次运行失败。修复原因后立即运行。",
+        "partial": "上次运行中有一些项目失败。查看 worker 日志后立即运行。"
+      }
+    },
     "roles": {
       "member": "成员",
       "admin": "管理员"
@@ -1758,6 +1792,9 @@
       "generic": "出错了。请重试。",
       "validation": "请检查填写的信息后重试。"
     },
+    "job": {
+      "not_found": "该计划任务不存在。"
+    },
     "agents": {
       "instructions_rejected": "这些指令未保存：它们与你的财务或本应用无关。",
       "not_configured": "尚未配置 AI 提供商。",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "该文件过大，无法导入（限制 2MB）。",
+      "idempotency_key_reused": "此导入已使用不同内容提交。请重新加载预览后重试。",
       "no_rows": "文件中没有数据行。",
       "too_many_rows": "文件行数过多，无法一次性导入（限制 2000 行）。",
       "column_required": "请在继续之前匹配日期、描述和金额列。",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "分期数不能少于已还款的期数。"
     },
     "account": {
-      "currency_in_use": "此账户已有交易，因此无法更改其货币。"
+      "currency_in_use": "此账户已有交易，因此无法更改其货币。",
+      "closing_day_in_use": "此卡已记录针对当前账单日的发票付款，因此无法更改。请先撤销这些付款，或保留当前账单日。",
+      "card_cycle_incomplete": "信用卡必须同时设置账单日和还款日，或者两者都不设置。"
     },
     "transaction": {
       "transfer_same_account": "转账需要使用两个不同的账户。",

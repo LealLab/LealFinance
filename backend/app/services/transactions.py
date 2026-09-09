@@ -13,6 +13,8 @@ app/services/recurring_rules.py, since a rule's template is validated
 against the exact same rules as a real transaction.
 """
 
+import hashlib
+import json
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date as date_type
@@ -21,14 +23,16 @@ from typing import Literal
 from uuid import UUID, uuid4
 
 from sqlalchemy import Select, delete, func, or_, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.errors import ValidationAppError
+from app.core.errors import ConflictError, ValidationAppError
 from app.models._conversion import CONVERSION_SOURCE_FALLBACK, ConversionValue
 from app.models.account import ACCOUNT_TYPE_CREDIT_CARD, Account
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
 from app.models.currency import Currency
+from app.models.import_idempotency import ImportIdempotency
 from app.models.loan import Loan
 from app.models.recurring import RecurringRule
 from app.models.transaction import (
@@ -47,6 +51,17 @@ from app.services.exchange_rates import get_exchange_rate, to_conversion_source
 from app.services.recurrence import add_months_clamped
 
 _CENTS = Decimal("0.0001")
+
+
+def _assert_loan_payment_shape(
+    loan: Loan, *, type_: str, currency: str, category_id: UUID | None
+) -> None:
+    if (
+        type_ != TRANSACTION_TYPE_EXPENSE
+        or currency != loan.currency
+        or category_id != loan.category_id
+    ):
+        raise ValidationAppError(code="loan.payment_shape_invalid")
 
 
 async def validate_transaction_shape(
@@ -313,12 +328,9 @@ async def build_transaction(
             raise ValidationAppError(code="transaction.loan_payment_requires_loan_endpoint")
         if not 1 <= loan_installment_number <= loan.installment_count:
             raise ValidationAppError(code="loan.installment_number_invalid")
-        if (
-            data.type != TRANSACTION_TYPE_EXPENSE
-            or data.currency != loan.currency
-            or data.category_id != loan.category_id
-        ):
-            raise ValidationAppError(code="loan.payment_shape_invalid")
+        _assert_loan_payment_shape(
+            loan, type_=data.type, currency=data.currency, category_id=data.category_id
+        )
     elif loan_installment_number is not None:
         raise ValidationAppError(code="loan.installment_number_without_loan")
 
@@ -422,7 +434,7 @@ async def _create_installments(
 
 
 async def import_transactions(
-    db: AsyncSession, user_id: UUID, items: list[TransactionCreate]
+    db: AsyncSession, user_id: UUID, items: list[TransactionCreate], *, idempotency_key: str
 ) -> int:
     """Bulk create for CSV import (app/services/csv_import.py handles
     parsing/preview - this only writes). One commit for the whole batch: if
@@ -430,7 +442,36 @@ async def import_transactions(
     already staged by build_transaction() in this call, so nothing is
     persisted - the frontend already showed the user a preview, so a
     partial import here would be worse than a retry."""
+    payload = json.dumps(
+        [item.model_dump(mode="json") for item in items], sort_keys=True, separators=(",", ":")
+    ).encode()
+    request_hash = hashlib.sha256(payload).hexdigest()
+
     try:
+        db.add(
+            ImportIdempotency(
+                user_id=user_id,
+                key=idempotency_key,
+                request_hash=request_hash,
+                created_count=len(items),
+            )
+        )
+        try:
+            await db.flush()
+        except IntegrityError as exc:
+            await db.rollback()
+            row = await db.scalar(
+                select(ImportIdempotency).where(
+                    ImportIdempotency.user_id == user_id,
+                    ImportIdempotency.key == idempotency_key,
+                )
+            )
+            if row is None:
+                raise exc
+            if row.request_hash == request_hash:
+                return row.created_count
+            raise ConflictError(code="import.idempotency_key_reused") from exc
+
         # Only prefetch references that validate_transaction_shape would
         # dereference; forbidden fields must keep their shape error first.
         account_ids = list({item.account_id for item in items})
@@ -504,12 +545,12 @@ async def update_transaction(
 
     if transaction.loan_id is not None:
         loan = await ownership.get_owned(db, Loan, transaction.loan_id, user_id)
-        if (
-            effective_type != TRANSACTION_TYPE_EXPENSE
-            or effective_currency != loan.currency
-            or effective_category_id != loan.category_id
-        ):
-            raise ValidationAppError(code="loan.payment_shape_invalid")
+        _assert_loan_payment_shape(
+            loan,
+            type_=effective_type,
+            currency=effective_currency,
+            category_id=effective_category_id,
+        )
 
     account, to_account = await validate_transaction_shape(
         db,
@@ -596,6 +637,8 @@ async def bulk_categorize_transactions(
     the whole batch before any commit."""
     category = await ownership.get_owned(db, Category, category_id, user_id)
     transactions = await ownership.get_many_owned(db, Transaction, ids, user_id)
+    loan_ids = {transaction.loan_id for transaction in transactions.values() if transaction.loan_id}
+    loans = await ownership.get_many_owned(db, Loan, list(loan_ids), user_id) if loan_ids else {}
     for transaction in transactions.values():
         # The DB CHECK ck_transactions_category_absent_for_transfer_interest
         # would abort the whole transaction as an IntegrityError 500 - reject
@@ -611,6 +654,13 @@ async def bulk_categorize_transactions(
         )
         if category.kind != expected_kind:
             raise ValidationAppError(code="transaction.category_kind_mismatch")
+        if transaction.loan_id:
+            _assert_loan_payment_shape(
+                loans[transaction.loan_id],
+                type_=transaction.type,
+                currency=transaction.currency,
+                category_id=category_id,
+            )
         transaction.category_id = category_id
     await db.commit()
     return len(transactions)

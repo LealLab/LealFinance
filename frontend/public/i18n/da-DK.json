@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Prøv igen",
       "close": "Luk",
       "cancel": "Annuller",
       "confirm": "Bekræft",
@@ -49,6 +50,8 @@
       "previousMonth": "Forrige måned",
       "nextMonth": "Næste måned"
     },
+    "loadError": "Noget gik galt under indlæsningen. Prøv igen.",
+    "retrying": "Prøver igen…",
     "colorPicker": {
       "saturationBrightness": "Farvemætning og lysstyrke",
       "hue": "Farvetone"
@@ -212,6 +215,7 @@
       "settings": "Indstillinger",
       "investments": "Investeringer",
       "adminUsers": "Brugere og invitationer",
+      "adminAutomations": "Automatiseringer",
       "sections": {
         "accounts": "Konti",
         "analysis": "Analyse",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Nogle totaler kræver en valutakurs, som ikke er tilgængelig lige nu.",
     "title": "Oversigt",
     "welcome": "Velkommen til LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Nogle tal kræver en valutakurs, som ikke er tilgængelig lige nu.",
     "title": "Rapporter",
     "description": "Analysér indtægter, udgifter og saldi over tid.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Brugere og invitationer",
     "description": "Administrer adgangen til denne LealFinance-installation.",
+    "automations": {
+      "title": "Automatiseringer",
+      "description": "Status for planlagte baggrundsjob på denne instans.",
+      "loading": "Indlæser…",
+      "loadError": "Automatiseringsstatus kunne ikke indlæses.",
+      "retry": "Prøv igen",
+      "runNow": "Kør nu",
+      "neverRun": "Aldrig kørt",
+      "lastRun": "Startet {{started}}, afsluttet {{finished}}",
+      "counts": "{{processed}} behandlet, {{failed}} mislykkedes",
+      "errorType": "Seneste fejl: {{type}}",
+      "state": {
+        "never_run": "Aldrig kørt",
+        "stale": "Forsinket",
+        "stuck": "Fastlåst",
+        "running": "Kører",
+        "success": "Sund",
+        "partial": "Delvis fejl",
+        "failed": "Mislykkedes"
+      },
+      "attention": {
+        "never_run": "Dette job har ikke kørt endnu.",
+        "stale": "Dette job er forsinket — kontrollér, at scheduler (beat) og worker kører.",
+        "stuck": "Dette job startede, men blev aldrig færdigt — kontrollér worker-loggene.",
+        "failed": "Det seneste kørselsforsøg mislykkedes. Ret årsagen, og kør det derefter nu.",
+        "partial": "Nogle elementer mislykkedes ved seneste kørsel. Gennemgå worker-loggene, og kør det derefter nu."
+      }
+    },
     "roles": {
       "member": "Medlem",
       "admin": "Admin"
@@ -1758,6 +1792,9 @@
       "generic": "Noget gik galt. Prøv igen.",
       "validation": "Tjek oplysningerne, og prøv igen."
     },
+    "job": {
+      "not_found": "Det planlagte job findes ikke."
+    },
     "agents": {
       "instructions_rejected": "Disse instruktioner blev ikke gemt: de handler ikke om din økonomi eller denne app.",
       "not_configured": "Der er endnu ikke konfigureret nogen AI-udbyder.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Denne fil er for stor til at importere (grænse på 2 MB).",
+      "idempotency_key_reused": "Denne import blev allerede sendt med andet indhold. Genindlæs forhåndsvisningen, og prøv igen.",
       "no_rows": "Filen indeholder ingen datalinjer.",
       "too_many_rows": "Filen indeholder for mange linjer til at importere på én gang (grænse på 2000).",
       "column_required": "Tilknyt kolonnerne dato, beskrivelse og beløb, før du fortsætter.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Antallet af afdrag kan ikke være lavere end antallet, der allerede er betalt."
     },
     "account": {
-      "currency_in_use": "Denne konto har allerede transaktioner, så valutaen kan ikke ændres."
+      "currency_in_use": "Denne konto har allerede transaktioner, så valutaen kan ikke ændres.",
+      "closing_day_in_use": "Dette kort har allerede registrerede fakturabetalinger for den nuværende lukkedag, så den kan ikke ændres. Fortryd disse betalinger først, eller behold den nuværende lukkedag.",
+      "card_cycle_incomplete": "Et kreditkort skal have både en lukkedag og en forfaldsdag – eller ingen af delene."
     },
     "transaction": {
       "transfer_same_account": "En overførsel kræver to forskellige konti.",

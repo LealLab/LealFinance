@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Tekrar dene",
       "close": "Kapat",
       "cancel": "İptal",
       "confirm": "Onayla",
@@ -49,6 +50,8 @@
       "previousMonth": "Önceki ay",
       "nextMonth": "Sonraki ay"
     },
+    "loadError": "Yüklenirken bir sorun oluştu. Tekrar deneyin.",
+    "retrying": "Tekrar deneniyor…",
     "colorPicker": {
       "saturationBrightness": "Renk doygunluğu ve parlaklığı",
       "hue": "Renk tonu"
@@ -212,6 +215,7 @@
       "settings": "Ayarlar",
       "investments": "Yatırımlar",
       "adminUsers": "Kullanıcılar ve davetler",
+      "adminAutomations": "Otomasyonlar",
       "sections": {
         "accounts": "Hesaplar",
         "analysis": "Analiz",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Bazı toplamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
     "title": "Genel bakış",
     "welcome": "LealFinance'a hoş geldiniz",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Bazı rakamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
     "title": "Raporlar",
     "description": "Gelirleri, giderleri ve bakiyeleri zaman içinde analiz edin.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Kullanıcılar ve davetler",
     "description": "Bu LealFinance örneğine erişimi yönetin.",
+    "automations": {
+      "title": "Otomasyonlar",
+      "description": "Bu örnekteki zamanlanmış arka plan işlerinin durumu.",
+      "loading": "Yükleniyor…",
+      "loadError": "Otomasyon durumu yüklenemedi.",
+      "retry": "Tekrar dene",
+      "runNow": "Şimdi çalıştır",
+      "neverRun": "Hiç çalıştırılmadı",
+      "lastRun": "Başlangıç {{started}}, bitiş {{finished}}",
+      "counts": "{{processed}} işlendi, {{failed}} başarısız",
+      "errorType": "Son hata: {{type}}",
+      "state": {
+        "never_run": "Hiç çalıştırılmadı",
+        "stale": "Gecikmiş",
+        "stuck": "Takılmış",
+        "running": "Çalışıyor",
+        "success": "Sağlıklı",
+        "partial": "Kısmi hata",
+        "failed": "Başarısız"
+      },
+      "attention": {
+        "never_run": "Bu iş henüz çalıştırılmadı.",
+        "stale": "Bu iş gecikmiş — zamanlayıcının (beat) ve worker’ın çalıştığını kontrol edin.",
+        "stuck": "Bu iş başladı ancak hiç bitmedi — worker günlüklerini kontrol edin.",
+        "failed": "Son çalıştırma başarısız oldu. Nedeni düzeltin, ardından şimdi çalıştırın.",
+        "partial": "Son çalıştırmada bazı öğeler başarısız oldu. Worker günlüklerini inceleyin, ardından şimdi çalıştırın."
+      }
+    },
     "roles": {
       "member": "Üye",
       "admin": "Yönetici"
@@ -1758,6 +1792,9 @@
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
       "validation": "Girdiğiniz bilgileri kontrol edip tekrar deneyin."
     },
+    "job": {
+      "not_found": "Böyle bir zamanlanmış görev yok."
+    },
     "agents": {
       "instructions_rejected": "Bu talimatlar kaydedilmedi: finanslarınızla ya da bu uygulamayla ilgili değiller.",
       "not_configured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Bu dosya içe aktarılamayacak kadar büyük (2 MB sınırı).",
+      "idempotency_key_reused": "Bu içe aktarma farklı içerikle zaten gönderildi. Önizlemeyi yeniden yükleyip tekrar deneyin.",
       "no_rows": "Dosyada veri satırı yok.",
       "too_many_rows": "Dosyada bir seferde içe aktarılamayacak kadar çok satır var (2000 sınırı).",
       "column_required": "Devam etmeden önce tarih, açıklama ve tutar sütunlarını eşleştir.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Taksit sayısı, zaten ödenmiş olan sayıdan az olamaz."
     },
     "account": {
-      "currency_in_use": "Bu hesapta zaten işlemler var, bu nedenle para birimi değiştirilemez."
+      "currency_in_use": "Bu hesapta zaten işlemler var, bu nedenle para birimi değiştirilemez.",
+      "closing_day_in_use": "Bu kartta mevcut hesap kesim günü için kaydedilmiş fatura ödemeleri zaten var; bu nedenle gün değiştirilemez. Önce bu ödemeleri geri alın veya mevcut hesap kesim gününü koruyun.",
+      "card_cycle_incomplete": "Bir kredi kartında hem hesap kesim günü hem de son ödeme günü olmalı ya da ikisi de olmamalıdır."
     },
     "transaction": {
       "transfer_same_account": "Bir transfer için iki farklı hesap gerekir.",

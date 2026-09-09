@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Reintentar",
       "close": "Cerrar",
       "cancel": "Cancelar",
       "confirm": "Confirmar",
@@ -49,6 +50,8 @@
       "previousMonth": "Mes anterior",
       "nextMonth": "Mes siguiente"
     },
+    "loadError": "Algo salió mal al cargarlo. Inténtalo de nuevo.",
+    "retrying": "Reintentando…",
     "colorPicker": {
       "saturationBrightness": "Saturación y brillo del color",
       "hue": "Matiz del color"
@@ -212,6 +215,7 @@
       "settings": "Ajustes",
       "investments": "Inversiones",
       "adminUsers": "Usuarios e invitaciones",
+      "adminAutomations": "Automatizaciones",
       "sections": {
         "accounts": "Cuentas",
         "analysis": "Análisis",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Algunos totales necesitan un tipo de cambio que no está disponible en este momento.",
     "title": "Panel",
     "welcome": "Te damos la bienvenida a LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Algunas cifras necesitan un tipo de cambio que no está disponible en este momento.",
     "title": "Informes",
     "description": "Analiza ingresos, gastos y saldos a lo largo del tiempo.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Usuarios e invitaciones",
     "description": "Gestiona el acceso a esta instancia de LealFinance.",
+    "automations": {
+      "title": "Automatizaciones",
+      "description": "Estado de los trabajos en segundo plano programados en esta instancia.",
+      "loading": "Cargando…",
+      "loadError": "No se pudo cargar el estado de las automatizaciones.",
+      "retry": "Reintentar",
+      "runNow": "Ejecutar ahora",
+      "neverRun": "Nunca ejecutado",
+      "lastRun": "Iniciado {{started}}, finalizado {{finished}}",
+      "counts": "{{processed}} procesados, {{failed}} fallidos",
+      "errorType": "Último fallo: {{type}}",
+      "state": {
+        "never_run": "Nunca ejecutado",
+        "stale": "Atrasado",
+        "stuck": "Atascado",
+        "running": "En ejecución",
+        "success": "Correcto",
+        "partial": "Fallo parcial",
+        "failed": "Fallido"
+      },
+      "attention": {
+        "never_run": "Este trabajo aún no se ha ejecutado.",
+        "stale": "Este trabajo está atrasado — comprueba que el programador (beat) y el worker estén funcionando.",
+        "stuck": "Este trabajo empezó pero nunca terminó — comprueba los registros del worker.",
+        "failed": "La última ejecución falló. Soluciona la causa y ejecútalo ahora.",
+        "partial": "Algunos elementos fallaron en la última ejecución. Revisa los registros del worker y ejecútalo ahora."
+      }
+    },
     "roles": {
       "member": "Miembro",
       "admin": "Administrador"
@@ -1758,6 +1792,9 @@
       "generic": "Algo ha salido mal. Inténtalo de nuevo.",
       "validation": "Comprueba la información e inténtalo de nuevo."
     },
+    "job": {
+      "not_found": "Esa tarea programada no existe."
+    },
     "agents": {
       "instructions_rejected": "Estas instrucciones no se guardaron: no tratan sobre tus finanzas ni sobre esta aplicación.",
       "not_configured": "Aún no hay ningún proveedor de IA configurado.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Ese archivo es demasiado grande para importar (límite de 2 MB).",
+      "idempotency_key_reused": "Esta importación ya se envió con contenido diferente. Vuelve a cargar la vista previa y inténtalo de nuevo.",
       "no_rows": "El archivo no tiene filas de datos.",
       "too_many_rows": "El archivo tiene demasiadas filas para importar a la vez (límite de 2000).",
       "column_required": "Asocia las columnas de fecha, descripción e importe antes de continuar.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "El número de cuotas no puede ser menor que el número de cuotas ya pagadas."
     },
     "account": {
-      "currency_in_use": "Esta cuenta ya tiene transacciones, por lo que no se puede cambiar su moneda."
+      "currency_in_use": "Esta cuenta ya tiene transacciones, por lo que no se puede cambiar su moneda.",
+      "closing_day_in_use": "Esta tarjeta ya tiene pagos de facturas registrados para el día de cierre actual, por lo que no se puede cambiar. Deshaz esos pagos primero o conserva el día de cierre actual.",
+      "card_cycle_incomplete": "Una tarjeta de crédito necesita tanto un día de cierre como un día de vencimiento, o ninguno de los dos."
     },
     "transaction": {
       "transfer_same_account": "Una transferencia necesita dos cuentas diferentes.",

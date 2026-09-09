@@ -6,20 +6,17 @@ driven by asyncio.run, so the async service layer
 twin.
 """
 
-import asyncio
-import logging
-
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 
 from app.core.config import get_settings
 from app.services.card_invoice_posting import post_all_due_invoice_payments
+from app.services.posting_result import PostingResult
 from app.workers.celery_app import celery_app
+from app.workers.runner import run_job
 
-logger = logging.getLogger(__name__)
 
-
-async def _run() -> int:
+async def _run() -> PostingResult:
     settings = get_settings()
     engine = create_async_engine(settings.sqlalchemy_database_uri, poolclass=NullPool)
     try:
@@ -31,6 +28,4 @@ async def _run() -> int:
 
 @celery_app.task(name="app.workers.tasks.cards.post_card_invoice_payments")
 def post_card_invoice_payments() -> str:
-    posted = asyncio.run(_run())
-    logger.info("post_card_invoice_payments posted %d payment(s)", posted)
-    return f"posted {posted}"
+    return run_job("app.workers.tasks.cards.post_card_invoice_payments", _run)

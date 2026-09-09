@@ -107,8 +107,8 @@ async def test_running_twice_posts_only_once(client: AsyncClient, db_session: As
     posted_first = await post_all_due_occurrences(db_session, today=today)
     posted_second = await post_all_due_occurrences(db_session, today=today)
 
-    assert posted_first == 1
-    assert posted_second == 0
+    assert posted_first.processed == 1
+    assert posted_second.processed == 0
     transactions = await _posted_transactions(db_session, rule_id)
     assert len(transactions) == 1
     assert transactions[0].date == date(2026, 1, 15)
@@ -127,7 +127,7 @@ async def test_catches_up_missed_occurrences_and_advances_cursor(
 
     posted = await post_all_due_occurrences(db_session, today=date(2026, 3, 15))
 
-    assert posted == 3
+    assert posted.processed == 3
     transactions = await _posted_transactions(db_session, rule_id)
     assert [t.date for t in transactions] == [
         date(2026, 1, 15),
@@ -150,7 +150,7 @@ async def test_never_posts_a_future_dated_occurrence(
 
     posted = await post_all_due_occurrences(db_session, today=date(2026, 1, 1))
 
-    assert posted == 0
+    assert posted.processed == 0
     assert await _posted_transactions(db_session, rule_id) == []
 
 
@@ -168,7 +168,7 @@ async def test_respects_end_date(client: AsyncClient, db_session: AsyncSession) 
 
     posted = await post_all_due_occurrences(db_session, today=date(2026, 4, 1))
 
-    assert posted == 1
+    assert posted.processed == 1
     transactions = await _posted_transactions(db_session, rule_id)
     assert [t.date for t in transactions] == [date(2026, 1, 15)]
 
@@ -213,7 +213,7 @@ async def test_cross_currency_uses_the_rate_resolved_for_the_occurrence_date(
 
     posted = await post_all_due_occurrences(db_session, today=date(2026, 1, 15))
 
-    assert posted == 1
+    assert posted.processed == 1
     [transaction] = await _posted_transactions(db_session, rule_id)
     assert transaction.conversion is not None
     # (100 - 0) * 0.25 = 25.00 - the manual rate in effect on the
@@ -257,7 +257,7 @@ async def test_one_failing_rule_does_not_abort_the_run(
 
     posted = await post_all_due_occurrences(db_session, today=date(2026, 1, 15))
 
-    assert posted == 1
+    assert posted.processed == 1
     broken_rule = await _rule_row(db_session, broken_rule_id)
     healthy_rule = await _rule_row(db_session, healthy_rule_id)
     assert broken_rule.last_posted_date is None

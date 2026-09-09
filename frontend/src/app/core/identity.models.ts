@@ -34,6 +34,27 @@ export interface CreatedInvitation extends Invitation {
   token: string;
 }
 
+export type JobState =
+  | 'never_run'
+  | 'stale'
+  | 'stuck'
+  | 'running'
+  | 'success'
+  | 'partial'
+  | 'failed';
+
+export interface JobHealth {
+  name: string;
+  state: JobState;
+  status: 'running' | 'success' | 'partial' | 'failed' | null;
+  startedAt?: string;
+  finishedAt?: string;
+  processed: number;
+  failed: number;
+  errorType?: string;
+  intervalSeconds: number;
+}
+
 export interface CurrencyMetadata {
   code: string;
   name: string;

@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Försök igen",
       "close": "Stäng",
       "cancel": "Avbryt",
       "confirm": "Bekräfta",
@@ -49,6 +50,8 @@
       "previousMonth": "Föregående månad",
       "nextMonth": "Nästa månad"
     },
+    "loadError": "Något gick fel när detta lästes in. Försök igen.",
+    "retrying": "Försöker igen…",
     "colorPicker": {
       "saturationBrightness": "Färgmättnad och ljusstyrka",
       "hue": "Färgton"
@@ -212,6 +215,7 @@
       "settings": "Inställningar",
       "investments": "Investeringar",
       "adminUsers": "Användare och inbjudningar",
+      "adminAutomations": "Automatiseringar",
       "sections": {
         "accounts": "Konton",
         "analysis": "Analys",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Vissa totalsummor behöver en växelkurs som inte är tillgänglig just nu.",
     "title": "Översikt",
     "welcome": "Välkommen till LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Vissa siffror behöver en växelkurs som inte är tillgänglig just nu.",
     "title": "Rapporter",
     "description": "Analysera inkomster, utgifter och saldon över tid.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Användare och inbjudningar",
     "description": "Hantera åtkomsten till den här LealFinance-instansen.",
+    "automations": {
+      "title": "Automatiseringar",
+      "description": "Hälsostatus för schemalagda bakgrundsjobb i den här instansen.",
+      "loading": "Läser in…",
+      "loadError": "Det gick inte att läsa in automatiseringsstatusen.",
+      "retry": "Försök igen",
+      "runNow": "Kör nu",
+      "neverRun": "Aldrig körd",
+      "lastRun": "Startad {{started}}, slutförd {{finished}}",
+      "counts": "{{processed}} behandlade, {{failed}} misslyckades",
+      "errorType": "Senaste felet: {{type}}",
+      "state": {
+        "never_run": "Aldrig körd",
+        "stale": "Försenad",
+        "stuck": "Fastnad",
+        "running": "Körs",
+        "success": "Frisk",
+        "partial": "Delvis fel",
+        "failed": "Misslyckad"
+      },
+      "attention": {
+        "never_run": "Det här jobbet har inte körts än.",
+        "stale": "Det här jobbet är försenat — kontrollera att schemaläggaren (beat) och workern körs.",
+        "stuck": "Det här jobbet startade men blev aldrig klart — kontrollera workerloggarna.",
+        "failed": "Den senaste körningen misslyckades. Åtgärda orsaken och kör det nu.",
+        "partial": "Vissa objekt misslyckades vid den senaste körningen. Granska workerloggarna och kör det nu."
+      }
+    },
     "roles": {
       "member": "Medlem",
       "admin": "Administratör"
@@ -1758,6 +1792,9 @@
       "generic": "Något gick fel. Försök igen.",
       "validation": "Kontrollera uppgifterna och försök igen."
     },
+    "job": {
+      "not_found": "Det schemalagda jobbet finns inte."
+    },
     "agents": {
       "instructions_rejected": "Instruktionerna sparades inte: de handlar inte om din ekonomi eller den här appen.",
       "not_configured": "Ingen AI-leverantör har konfigurerats ännu.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Den här filen är för stor för att importeras (gräns 2 MB).",
+      "idempotency_key_reused": "Den här importen har redan skickats med annat innehåll. Ladda om förhandsvisningen och försök igen.",
       "no_rows": "Filen innehåller inga dataraderrader.",
       "too_many_rows": "Filen innehåller för många rader för att importeras på en gång (gräns 2000).",
       "column_required": "Koppla kolumnerna datum, beskrivning och belopp innan du fortsätter.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Antalet delbetalningar kan inte vara lägre än antalet som redan är betalda."
     },
     "account": {
-      "currency_in_use": "Det här kontot har redan transaktioner, så valutan kan inte ändras."
+      "currency_in_use": "Det här kontot har redan transaktioner, så valutan kan inte ändras.",
+      "closing_day_in_use": "Det här kortet har redan registrerade fakturabetalningar för den aktuella stängningsdagen, så den kan inte ändras. Ångra betalningarna först eller behåll den aktuella stängningsdagen.",
+      "card_cycle_incomplete": "Ett kreditkort måste ha både en stängningsdag och en förfallodag, eller ingen av dem."
     },
     "transaction": {
       "transfer_same_account": "En överföring kräver två olika konton.",

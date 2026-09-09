@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Încearcă din nou",
       "close": "Închide",
       "cancel": "Anulează",
       "confirm": "Confirmă",
@@ -49,6 +50,8 @@
       "previousMonth": "Luna anterioară",
       "nextMonth": "Luna următoare"
     },
+    "loadError": "Ceva nu a mers bine la încărcare. Încearcă din nou.",
+    "retrying": "Se încearcă din nou…",
     "colorPicker": {
       "saturationBrightness": "Saturația și luminozitatea culorii",
       "hue": "Nuanța culorii"
@@ -212,6 +215,7 @@
       "settings": "Setări",
       "investments": "Investiții",
       "adminUsers": "Utilizatori și invitații",
+      "adminAutomations": "Automatizări",
       "sections": {
         "accounts": "Conturi",
         "analysis": "Analiză",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Unele totaluri au nevoie de un curs valutar care nu este disponibil momentan.",
     "title": "Panou de control",
     "welcome": "Bun venit la LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Unele cifre au nevoie de un curs valutar care nu este disponibil momentan.",
     "title": "Rapoarte",
     "description": "Analizează în timp veniturile, cheltuielile și soldurile.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Utilizatori și invitații",
     "description": "Gestionează accesul la această instanță LealFinance.",
+    "automations": {
+      "title": "Automatizări",
+      "description": "Starea activităților de fundal programate pe această instanță.",
+      "loading": "Se încarcă…",
+      "loadError": "Starea automatizărilor nu a putut fi încărcată.",
+      "retry": "Încearcă din nou",
+      "runNow": "Rulează acum",
+      "neverRun": "Nu a rulat niciodată",
+      "lastRun": "Pornit {{started}}, finalizat {{finished}}",
+      "counts": "{{processed}} procesate, {{failed}} eșuate",
+      "errorType": "Ultima eroare: {{type}}",
+      "state": {
+        "never_run": "Nu a rulat niciodată",
+        "stale": "Întârziat",
+        "stuck": "Blocat",
+        "running": "În execuție",
+        "success": "Sănătos",
+        "partial": "Eșec parțial",
+        "failed": "Eșuat"
+      },
+      "attention": {
+        "never_run": "Această activitate nu a rulat încă.",
+        "stale": "Această activitate este întârziată — verifică dacă schedulerul (beat) și workerul rulează.",
+        "stuck": "Această activitate a început, dar nu s-a terminat — verifică jurnalele workerului.",
+        "failed": "Ultima rulare a eșuat. Remediază cauza, apoi rulează acum.",
+        "partial": "Unele elemente au eșuat la ultima rulare. Verifică jurnalele workerului, apoi rulează acum."
+      }
+    },
     "roles": {
       "member": "Membru",
       "admin": "Admin"
@@ -1758,6 +1792,9 @@
       "generic": "Ceva nu a funcționat. Încearcă din nou.",
       "validation": "Verifică informațiile introduse și încearcă din nou."
     },
+    "job": {
+      "not_found": "Această activitate programată nu există."
+    },
     "agents": {
       "instructions_rejected": "Aceste instrucțiuni nu au fost salvate: nu sunt despre finanțele tale sau despre această aplicație.",
       "not_configured": "Nu este configurat încă niciun furnizor AI.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Acest fișier este prea mare pentru a fi importat (limită 2 MB).",
+      "idempotency_key_reused": "Acest import a fost deja trimis cu un conținut diferit. Reîncarcă previzualizarea și încearcă din nou.",
       "no_rows": "Fișierul nu conține rânduri de date.",
       "too_many_rows": "Fișierul conține prea multe rânduri pentru a fi importate deodată (limită 2000).",
       "column_required": "Asociază coloanele dată, descriere și sumă înainte de a continua.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Numărul de rate nu poate fi mai mic decât numărul celor deja plătite."
     },
     "account": {
-      "currency_in_use": "Acest cont are deja tranzacții, deci moneda lui nu poate fi schimbată."
+      "currency_in_use": "Acest cont are deja tranzacții, deci moneda lui nu poate fi schimbată.",
+      "closing_day_in_use": "Acest card are deja plăți de facturi înregistrate pentru ziua curentă de închidere, așa că aceasta nu poate fi schimbată. Anulează mai întâi acele plăți sau păstrează ziua curentă de închidere.",
+      "card_cycle_incomplete": "Un card de credit trebuie să aibă atât o zi de închidere, cât și o zi de scadență, sau niciuna dintre ele."
     },
     "transaction": {
       "transfer_same_account": "Un transfer necesită două conturi diferite.",

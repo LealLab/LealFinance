@@ -170,6 +170,8 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/health/ready` | public | 503 unless both Postgres and Redis are reachable. |
 | GET | `/meta/currencies` | public | Active currencies only. |
 | GET | `/meta/settings` | public | `default_currency`, `default_locale`, and booleans `agents_enabled`, `email_enabled`. |
+| GET | `/meta/jobs` | admin | Latest persisted state for every scheduled Celery routine. |
+| POST | `/meta/jobs/{name}/run` | admin | Queue a registered scheduled routine for immediate execution; returns 202. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |
 | POST | `/meta/exchange-rates/refresh` | admin | Force a provider refresh of today's rates; cooldown-gated. See "Exchange rates" below. |
 | GET | `/meta/update-status` | admin | Current/latest version and whether an update is available; see "Updates" below. |
@@ -393,9 +395,10 @@ case-insensitively matches one of the caller's own categories
 - `error` is one of the codes below when a row can't be parsed - such a row
   is returned (not dropped) so the frontend can show it, but the frontend
   gates its own "reviewed" checkbox on `error` being absent.
-- `duplicate` is `true` when an existing transaction on the same account
-  already matches `(date, amount, description)` case-insensitively - a
-  single query against the CSV's date range, not one query per row.
+- `duplicate` is `true` when an existing transaction on the same account, or
+  an earlier row in this file, matches `(date, amount, description)`
+  case-insensitively - a single query against the CSV's date range, not one
+  query per row.
 
 Transfer counterparties are matched case-insensitively against the user's
 owned account names. Only same-currency transfer counterparties are resolved
@@ -411,7 +414,7 @@ When AI is enabled for the user, the page can also call
 [AI agents](#import-categorization). That call never writes; the frontend applies
 each suggestion on the user's confirmation.
 
-**Commit** (`ImportCommitRequest{items}` → `{created}`) reuses
+**Commit** (`ImportCommitRequest{idempotency_key,items}` → `{created}`) reuses
 `TransactionCreate` verbatim for `items` - the frontend sends exactly the
 rows it marked reviewed, with any edits already applied, through the same
 per-row shape as a normal `POST /transactions`
@@ -419,6 +422,10 @@ per-row shape as a normal `POST /transactions`
 item is validated and staged in one session, then committed together: if
 any item fails, the whole batch is rolled back rather than left partially
 posted (the caller already saw a preview, so a failure here is exceptional).
+`idempotency_key` is required and must be 8-64 characters. It is scoped to
+the authenticated user: resubmitting the same key with the same items returns
+the original `{created}` result without creating more transactions. Reusing
+the key with different items returns `import.idempotency_key_reused`.
 
 | Code | Status |
 | --- | --- |
@@ -426,6 +433,7 @@ posted (the caller already saw a preview, so a failure here is exceptional).
 | `import.no_rows` | 422 |
 | `import.too_many_rows` | 422 |
 | `import.column_required` | 422 |
+| `import.idempotency_key_reused` | 409 |
 | `import.row.invalid_date` | (row-level, not raised) |
 | `import.row.invalid_amount` | (row-level, not raised) |
 | `import.row.zero_amount` | (row-level, not raised) |
@@ -509,6 +517,8 @@ for the friendly error).
 | `institution.has_accounts` | 409 |
 | `account.not_found` | 404 |
 | `account.credit_fields_not_applicable` | 422 |
+| `account.closing_day_in_use` | 422 |
+| `account.card_cycle_incomplete` | 422 |
 
 ## Goals
 
@@ -562,6 +572,22 @@ latest_version, update_available, release_url}`; `latest_version` and
 `release_url` are `null` when there is no newer release, the check is
 disabled (`UPDATE_CHECK_ENABLED=false`), or the GitHub API call failed. The
 endpoint never surfaces a provider outage to the caller.
+
+## Scheduled jobs
+
+`GET /meta/jobs` reports one latest-run row for each scheduled routine. Each
+row includes the routine name, `status` (`running`, `success`, `partial`, or
+`failed`), derived `state`, start/finish timestamps, processed and failed
+counts, the exception class name when the run itself failed, and the expected
+interval in seconds. A missing row is `never_run`; an overdue running row is
+`stuck`; any other overdue row is `stale`.
+
+`POST /meta/jobs/{name}/run` queues a known routine through Celery and returns
+`{"status":"queued"}`. Unknown names return `job.not_found` (404).
+
+| Code | Status |
+| --- | --- |
+| `job.not_found` | 404 |
 
 ## Budgets and budget planning
 

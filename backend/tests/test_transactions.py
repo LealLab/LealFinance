@@ -907,6 +907,7 @@ async def test_list_transactions_without_limit_returns_complete_ledger(
     imported = await client.post(
         "/api/v1/transactions/import",
         json={
+            "idempotency_key": "complete-ledger",
             "items": [
                 {
                     "type": "expense",
@@ -918,7 +919,7 @@ async def test_list_transactions_without_limit_returns_complete_ledger(
                     "description": f"Row {i}",
                 }
                 for i in range(101)
-            ]
+            ],
         },
     )
     assert imported.status_code == 201, imported.text
@@ -1107,6 +1108,91 @@ async def test_bulk_categorize_assigns_category(
     assert response.json()["updated"] == 2
     rows = (await client.get("/api/v1/transactions")).json()
     assert {row["category_id"] for row in rows} == {new_category}
+
+
+async def test_bulk_categorize_rejects_loan_installment_shape_change(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "bulkcatloan@example.com")
+    account_id = await _create_account(client)
+    loan_category = await _create_category(client, name="Loan", kind="expense")
+    other_category = await _create_category(client, name="Other", kind="expense")
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json={
+                "name": "Car loan",
+                "category_id": loan_category,
+                "currency": "BRL",
+                "amount_borrowed": "40000.00",
+                "fees": "0.00",
+                "interest_rate": "1.2",
+                "rate_period": "monthly",
+                "installment_count": 48,
+                "first_payment_date": "2026-01-10",
+            },
+        )
+    ).json()["id"]
+    payment_id = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()["id"]
+
+    # A plain expense in the same batch that would have succeeded on its own.
+    plain_id = await _post_expense(client, account_id, loan_category)
+
+    response = await client.post(
+        "/api/v1/transactions/bulk-categorize",
+        json={"ids": [plain_id, payment_id], "category_id": other_category},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "loan.payment_shape_invalid"
+
+    # All-or-nothing: both rows are untouched.
+    assert (await client.get(f"/api/v1/transactions/{plain_id}")).json()["category_id"] == (
+        loan_category
+    )
+    assert (await client.get(f"/api/v1/transactions/{payment_id}")).json()["category_id"] == (
+        loan_category
+    )
+
+
+async def test_bulk_categorize_then_single_edit_stays_consistent(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "bulkcatloan2@example.com")
+    account_id = await _create_account(client)
+    loan_category = await _create_category(client, name="Loan", kind="expense")
+    loan_id = (
+        await client.post(
+            "/api/v1/loans",
+            json={
+                "name": "Car loan",
+                "category_id": loan_category,
+                "currency": "BRL",
+                "amount_borrowed": "40000.00",
+                "fees": "0.00",
+                "interest_rate": "1.2",
+                "rate_period": "monthly",
+                "installment_count": 48,
+                "first_payment_date": "2026-01-10",
+            },
+        )
+    ).json()["id"]
+    payment_id = (
+        await client.post(f"/api/v1/loans/{loan_id}/payments", json={"account_id": account_id})
+    ).json()["id"]
+
+    # Categorizing the loan payment to its own loan category is a no-op and allowed.
+    ok = await client.post(
+        "/api/v1/transactions/bulk-categorize",
+        json={"ids": [payment_id], "category_id": loan_category},
+    )
+    assert ok.status_code == 200
+
+    edit = await client.patch(
+        f"/api/v1/transactions/{payment_id}", json={"description": "Installment 1"}
+    )
+    assert edit.status_code == 200, edit.text
 
 
 async def test_bulk_categorize_rejects_transfer_and_changes_nothing(

@@ -155,7 +155,7 @@ async def test_real_balance_auto_payment_keeps_cash_position_consistent(
     category_id = await _category(client)
     await _charge(client, card_id, category_id, "2026-03-05", "150.00")
 
-    assert await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21)) == 1
+    assert (await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21))).processed == 1
 
     rows = _by_account(
         await accounts_service.real_balance_contributions(

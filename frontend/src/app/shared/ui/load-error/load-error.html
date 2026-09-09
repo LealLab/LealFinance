@@ -1,0 +1,10 @@
+<div
+  *transloco="let t"
+  class="flex items-center gap-3 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+  role="alert"
+>
+  <span class="flex-1">{{ t(messageKey()) }}</span>
+  <button appButton variant="secondary" size="sm" type="button" (click)="retry.emit()">
+    {{ retrying() ? t('common.retrying') : t('common.actions.retry') }}
+  </button>
+</div>

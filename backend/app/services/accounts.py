@@ -42,6 +42,8 @@ def _check_credit_card_fields(
     due_day: int | None,
     payment_account_id: UUID | None,
     auto_pay: bool,
+    *,
+    enforce_cycle_pair: bool = True,
 ) -> None:
     if account_type != ACCOUNT_TYPE_CREDIT_CARD and (
         credit_limit is not None
@@ -51,6 +53,12 @@ def _check_credit_card_fields(
         or auto_pay
     ):
         raise ValidationAppError(code="account.credit_fields_not_applicable")
+    if (
+        enforce_cycle_pair
+        and account_type == ACCOUNT_TYPE_CREDIT_CARD
+        and (closing_day is None) != (due_day is None)
+    ):
+        raise ValidationAppError(code="account.card_cycle_incomplete")
     if auto_pay and payment_account_id is None:
         raise ValidationAppError(code="account.auto_pay_requires_account")
 
@@ -294,6 +302,23 @@ async def validate_account_identity_change(
             raise ValidationAppError(code="account.goal_currency_mismatch")
 
 
+async def _validate_closing_day_change(
+    db: AsyncSession, account: Account, *, new_closing_day: int
+) -> None:
+    result = await db.execute(
+        ownership.owned(Transaction, account.user_id)
+        .where(
+            Transaction.to_account_id == account.id,
+            Transaction.card_invoice_close_date.is_not(None),
+        )
+        .with_only_columns(Transaction.card_invoice_close_date)
+        .distinct()
+    )
+    for tag in result.scalars():
+        if tag is not None and card_invoices.cycle_close_for(tag, new_closing_day) != tag:
+            raise ValidationAppError(code="account.closing_day_in_use")
+
+
 async def update_account(
     db: AsyncSession, user_id: UUID, account_id: UUID, data: AccountUpdate
 ) -> Account:
@@ -323,7 +348,15 @@ async def update_account(
         changes.get("due_day", account.due_day),
         effective_payment_account_id,
         effective_auto_pay,
+        enforce_cycle_pair="closing_day" in changes or "due_day" in changes,
     )
+    if (
+        "closing_day" in changes
+        and effective_type == ACCOUNT_TYPE_CREDIT_CARD
+        and changes["closing_day"] is not None
+        and changes["closing_day"] != account.closing_day
+    ):
+        await _validate_closing_day_change(db, account, new_closing_day=changes["closing_day"])
     if effective_payment_account_id is not None:
         await _validate_payment_account(
             db, user_id, account.id, effective_payment_account_id, effective_currency

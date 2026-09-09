@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Thử lại",
       "close": "Đóng",
       "cancel": "Hủy",
       "confirm": "Xác nhận",
@@ -49,6 +50,8 @@
       "previousMonth": "Tháng trước",
       "nextMonth": "Tháng sau"
     },
+    "loadError": "Có lỗi xảy ra khi tải nội dung này. Hãy thử lại.",
+    "retrying": "Đang thử lại…",
     "colorPicker": {
       "saturationBrightness": "Độ bão hòa và độ sáng của màu",
       "hue": "Sắc độ màu"
@@ -212,6 +215,7 @@
       "settings": "Cài đặt",
       "investments": "Đầu tư",
       "adminUsers": "Người dùng và lời mời",
+      "adminAutomations": "Tự động hóa",
       "sections": {
         "accounts": "Tài khoản",
         "analysis": "Phân tích",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Một số tổng số cần tỷ giá hiện không khả dụng.",
     "title": "Bảng điều khiển",
     "welcome": "Chào mừng bạn đến với LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Một số số liệu cần tỷ giá hiện không khả dụng.",
     "title": "Báo cáo",
     "description": "Phân tích thu nhập, chi tiêu và số dư theo thời gian.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Người dùng và lời mời",
     "description": "Quản lý quyền truy cập vào hệ thống LealFinance này.",
+    "automations": {
+      "title": "Tự động hóa",
+      "description": "Tình trạng các tác vụ nền được lập lịch trên phiên bản này.",
+      "loading": "Đang tải…",
+      "loadError": "Không thể tải trạng thái tự động hóa.",
+      "retry": "Thử lại",
+      "runNow": "Chạy ngay",
+      "neverRun": "Chưa từng chạy",
+      "lastRun": "Bắt đầu {{started}}, kết thúc {{finished}}",
+      "counts": "Đã xử lý {{processed}}, thất bại {{failed}}",
+      "errorType": "Lỗi gần nhất: {{type}}",
+      "state": {
+        "never_run": "Chưa từng chạy",
+        "stale": "Quá hạn",
+        "stuck": "Bị treo",
+        "running": "Đang chạy",
+        "success": "Ổn định",
+        "partial": "Lỗi một phần",
+        "failed": "Thất bại"
+      },
+      "attention": {
+        "never_run": "Tác vụ này chưa từng chạy.",
+        "stale": "Tác vụ này đã quá hạn — hãy kiểm tra scheduler (beat) và worker đang chạy.",
+        "stuck": "Tác vụ đã bắt đầu nhưng chưa hoàn tất — hãy kiểm tra nhật ký worker.",
+        "failed": "Lần chạy gần nhất thất bại. Hãy khắc phục nguyên nhân rồi chạy ngay.",
+        "partial": "Một số mục thất bại trong lần chạy gần nhất. Hãy xem nhật ký worker rồi chạy ngay."
+      }
+    },
     "roles": {
       "member": "Thành viên",
       "admin": "Quản trị viên"
@@ -1758,6 +1792,9 @@
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
       "validation": "Vui lòng kiểm tra thông tin đã nhập và thử lại."
     },
+    "job": {
+      "not_found": "Tác vụ đã lên lịch đó không tồn tại."
+    },
     "agents": {
       "instructions_rejected": "Hướng dẫn này không được lưu: nội dung không liên quan đến tài chính của bạn hoặc ứng dụng này.",
       "not_configured": "Chưa cấu hình nhà cung cấp AI.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Tệp này quá lớn để nhập (giới hạn 2 MB).",
+      "idempotency_key_reused": "Bản nhập này đã được gửi trước đó với nội dung khác. Tải lại bản xem trước rồi thử lại.",
       "no_rows": "Tệp không có dòng dữ liệu nào.",
       "too_many_rows": "Tệp có quá nhiều dòng để nhập cùng lúc (giới hạn 2.000).",
       "column_required": "Khớp các cột ngày, mô tả và số tiền trước khi tiếp tục.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Số kỳ trả góp không thể ít hơn số kỳ đã thanh toán."
     },
     "account": {
-      "currency_in_use": "Tài khoản này đã có giao dịch, nên không thể thay đổi đơn vị tiền tệ."
+      "currency_in_use": "Tài khoản này đã có giao dịch, nên không thể thay đổi đơn vị tiền tệ.",
+      "closing_day_in_use": "Thẻ này đã có các khoản thanh toán hóa đơn được ghi nhận theo ngày chốt hiện tại, nên không thể thay đổi ngày đó. Trước tiên hãy hoàn tác các khoản thanh toán đó hoặc giữ nguyên ngày chốt hiện tại.",
+      "card_cycle_incomplete": "Thẻ tín dụng cần có cả ngày chốt sao kê và ngày đến hạn thanh toán, hoặc không có cả hai."
     },
     "transaction": {
       "transfer_same_account": "Một giao dịch chuyển khoản cần hai tài khoản khác nhau.",

@@ -17,6 +17,7 @@ from app.models.base import Base, UserOwnedModel
 _GLOBAL_MODELS = {
     "Currency",
     "ExchangeRate",
+    "JobRun",
     "AssetQuote",
     "User",
     "Session",

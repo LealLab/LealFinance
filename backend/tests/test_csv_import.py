@@ -285,6 +285,13 @@ CSV_CONTENT = (
     "2026-01-01,Paycheck,3000.00,Salary\n"
 )
 
+CSV_IN_FILE_DUPLICATE_CONTENT = (
+    "date,description,amount\n"
+    "2026-01-15,Coffee,-5.00\n"
+    "2026-01-16,Tea,-6.00\n"
+    "2026-01-15,Coffee,-5.00\n"
+)
+
 
 async def test_preview_matches_category_by_name(
     client: AsyncClient, db_session: AsyncSession
@@ -468,6 +475,7 @@ async def test_commit_imports_transfer_rows_without_categories(
     response = await client.post(
         "/api/v1/transactions/import",
         json={
+            "idempotency_key": "commit-transfer",
             "items": [
                 {
                     "type": "transfer",
@@ -487,7 +495,7 @@ async def test_commit_imports_transfer_rows_without_categories(
                     "to_account_id": selected_id,
                     "description": "From savings",
                 },
-            ]
+            ],
         },
     )
     assert response.status_code == 201, response.text
@@ -510,6 +518,7 @@ async def test_commit_rejects_cross_currency_transfer_without_conversion(
     response = await client.post(
         "/api/v1/transactions/import",
         json={
+            "idempotency_key": "commit-xcurrency",
             "items": [
                 {
                     "type": "transfer",
@@ -520,7 +529,7 @@ async def test_commit_rejects_cross_currency_transfer_without_conversion(
                     "to_account_id": counterparty_id,
                     "description": "Move",
                 }
-            ]
+            ],
         },
     )
     assert response.status_code == 422, response.text
@@ -555,6 +564,22 @@ async def test_preview_flags_existing_transaction_as_duplicate(
     rows = response.json()["rows"]
     assert rows[0]["duplicate"] is True
     assert rows[1]["duplicate"] is False
+
+
+async def test_preview_flags_in_file_duplicate(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "preview-in-file-dup@example.com")
+    account_id = await _create_account(client)
+
+    response = await client.post(
+        "/api/v1/transactions/import/preview",
+        json={"content": CSV_IN_FILE_DUPLICATE_CONTENT, "account_id": account_id},
+    )
+    assert response.status_code == 200, response.text
+    rows = response.json()["rows"]
+    assert rows[0]["duplicate"] is False
+    assert rows[2]["duplicate"] is True
 
 
 async def test_preview_rejects_missing_required_column(
@@ -597,6 +622,7 @@ async def test_commit_creates_all_reviewed_rows_in_one_request(
     response = await client.post(
         "/api/v1/transactions/import",
         json={
+            "idempotency_key": "commit-all-rows",
             "items": [
                 {
                     "type": "expense",
@@ -616,7 +642,7 @@ async def test_commit_creates_all_reviewed_rows_in_one_request(
                     "category_id": category_id,
                     "description": "Tea",
                 },
-            ]
+            ],
         },
     )
     assert response.status_code == 201, response.text
@@ -629,6 +655,121 @@ async def test_commit_creates_all_reviewed_rows_in_one_request(
     ]
 
 
+async def test_import_same_key_same_batch_is_idempotent(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "import-idempotent@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client, "Groceries", "expense")
+    body = {
+        "idempotency_key": "k-aaaaaaaa",
+        "items": [
+            {
+                "type": "expense",
+                "date": "2026-01-15",
+                "amount": "5.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": "Coffee",
+            },
+            {
+                "type": "expense",
+                "date": "2026-01-16",
+                "amount": "6.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": "Tea",
+            },
+        ],
+    }
+
+    first = await client.post("/api/v1/transactions/import", json=body)
+    second = await client.post("/api/v1/transactions/import", json=body)
+
+    assert first.status_code == second.status_code == 201
+    assert first.json() == second.json() == {"created": 2}
+    assert len((await client.get("/api/v1/transactions")).json()) == 2
+
+
+async def test_import_same_key_different_batch_is_rejected(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "import-reused@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client, "Groceries", "expense")
+    first = {
+        "idempotency_key": "k-bbbbbbbb",
+        "items": [
+            {
+                "type": "expense",
+                "date": "2026-01-15",
+                "amount": "5.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": "Coffee",
+            }
+        ],
+    }
+    second = {
+        **first,
+        "items": [{**first["items"][0], "description": "Tea"}],
+    }
+
+    created = await client.post("/api/v1/transactions/import", json=first)
+    rejected = await client.post("/api/v1/transactions/import", json=second)
+
+    assert created.status_code == 201
+    assert rejected.status_code == 409, rejected.text
+    assert rejected.json()["error"]["code"] == "import.idempotency_key_reused"
+    assert len((await client.get("/api/v1/transactions")).json()) == 1
+
+
+async def test_import_replay_of_same_key_and_body_stays_idempotent(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    # A client that retries after a lost response replays the identical
+    # request; every replay must return the original result, never re-import.
+    # The cross-request race is covered structurally by the
+    # UniqueConstraint(user_id, key) in the migration and behaviourally by
+    # test_import_same_key_different_batch_is_rejected (the row is persisted
+    # and re-checked).
+    await _authed(client, db_session, "import-replay@example.com")
+    account_id = await _create_account(client)
+    category_id = await _create_category(client, "Groceries", "expense")
+    body = {
+        "idempotency_key": "k-dddddddd",
+        "items": [
+            {
+                "type": "expense",
+                "date": "2026-01-15",
+                "amount": "5.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": "Coffee",
+            },
+            {
+                "type": "expense",
+                "date": "2026-01-16",
+                "amount": "6.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": "Tea",
+            },
+        ],
+    }
+
+    for _ in range(4):
+        response = await client.post("/api/v1/transactions/import", json=body)
+        assert response.status_code == 201, response.text
+        assert response.json() == {"created": 2}
+    assert len((await client.get("/api/v1/transactions")).json()) == 2
+
+
 async def test_commit_rolls_back_entirely_when_one_item_is_invalid(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -639,6 +780,7 @@ async def test_commit_rolls_back_entirely_when_one_item_is_invalid(
     response = await client.post(
         "/api/v1/transactions/import",
         json={
+            "idempotency_key": "commit-rollback",
             "items": [
                 {
                     "type": "expense",
@@ -658,7 +800,7 @@ async def test_commit_rolls_back_entirely_when_one_item_is_invalid(
                     "category_id": category_id,
                     "description": "Tea",
                 },
-            ]
+            ],
         },
     )
     assert response.status_code == 404, response.text

@@ -15,6 +15,7 @@ from app.models.category import Category
 from app.models.category_group import CategoryGroup
 from app.models.currency import Currency, ExchangeRate
 from app.models.goal import Goal
+from app.models.import_idempotency import ImportIdempotency
 from app.models.institution import Institution
 from app.models.investment import (
     AssetQuote,
@@ -23,6 +24,7 @@ from app.models.investment import (
     InvestmentWallet,
     MarketDataCredential,
 )
+from app.models.job_run import JobRun
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
 from app.models.recurring import RecurringRule
@@ -46,10 +48,12 @@ __all__ = [
     "ExchangeRate",
     "ExpectedIncome",
     "Goal",
+    "ImportIdempotency",
     "Institution",
     "InvestmentAsset",
     "InvestmentTransaction",
     "InvestmentWallet",
+    "JobRun",
     "Loan",
     "MarketDataCredential",
     "Invitation",

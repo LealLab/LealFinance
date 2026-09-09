@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Prøv igjen",
       "close": "Lukk",
       "cancel": "Avbryt",
       "confirm": "Bekreft",
@@ -49,6 +50,8 @@
       "previousMonth": "Forrige måned",
       "nextMonth": "Neste måned"
     },
+    "loadError": "Noe gikk galt under innlastingen. Prøv igjen.",
+    "retrying": "Prøver igjen…",
     "colorPicker": {
       "saturationBrightness": "Fargemetning og lysstyrke",
       "hue": "Fargetone"
@@ -212,6 +215,7 @@
       "settings": "Innstillinger",
       "investments": "Investeringer",
       "adminUsers": "Brukere og invitasjoner",
+      "adminAutomations": "Automatiseringer",
       "sections": {
         "accounts": "Kontoer",
         "analysis": "Analyse",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Noen totaler trenger en valutakurs som ikke er tilgjengelig akkurat nå.",
     "title": "Oversikt",
     "welcome": "Velkommen til LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Noen tall trenger en valutakurs som ikke er tilgjengelig akkurat nå.",
     "title": "Rapporter",
     "description": "Analyser inntekter, utgifter og saldoer over tid.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Brukere og invitasjoner",
     "description": "Administrer tilgangen til denne LealFinance-instansen.",
+    "automations": {
+      "title": "Automatiseringer",
+      "description": "Status for planlagte bakgrunnsjobber på denne instansen.",
+      "loading": "Laster inn…",
+      "loadError": "Kunne ikke laste inn automatiseringsstatus.",
+      "retry": "Prøv igjen",
+      "runNow": "Kjør nå",
+      "neverRun": "Aldri kjørt",
+      "lastRun": "Startet {{started}}, fullført {{finished}}",
+      "counts": "{{processed}} behandlet, {{failed}} mislyktes",
+      "errorType": "Siste feil: {{type}}",
+      "state": {
+        "never_run": "Aldri kjørt",
+        "stale": "Forsinket",
+        "stuck": "Fastlåst",
+        "running": "Kjører",
+        "success": "Frisk",
+        "partial": "Delvis feil",
+        "failed": "Mislyktes"
+      },
+      "attention": {
+        "never_run": "Denne jobben har ikke kjørt ennå.",
+        "stale": "Denne jobben er forsinket — sjekk at planleggeren (beat) og worker kjører.",
+        "stuck": "Denne jobben startet, men ble aldri ferdig — sjekk worker-loggene.",
+        "failed": "Siste kjøring mislyktes. Rett årsaken, og kjør den nå.",
+        "partial": "Noen elementer mislyktes ved siste kjøring. Gå gjennom worker-loggene, og kjør den nå."
+      }
+    },
     "roles": {
       "member": "Medlem",
       "admin": "Admin"
@@ -1758,6 +1792,9 @@
       "generic": "Noe gikk galt. Prøv igjen.",
       "validation": "Sjekk opplysningene og prøv igjen."
     },
+    "job": {
+      "not_found": "Den planlagte jobben finnes ikke."
+    },
     "agents": {
       "instructions_rejected": "Disse instruksjonene ble ikke lagret: de handler ikke om økonomien din eller denne appen.",
       "not_configured": "Ingen AI-leverandør er konfigurert ennå.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Denne filen er for stor til å importeres (grense på 2 MB).",
+      "idempotency_key_reused": "Denne importen er allerede sendt inn med annet innhold. Last inn forhåndsvisningen på nytt og prøv igjen.",
       "no_rows": "Filen inneholder ingen dataradrader.",
       "too_many_rows": "Filen inneholder for mange rader til å importeres på én gang (grense på 2000).",
       "column_required": "Koble kolonnene dato, beskrivelse og beløp før du fortsetter.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Antall terminer kan ikke være lavere enn antallet som allerede er betalt."
     },
     "account": {
-      "currency_in_use": "Denne kontoen har allerede transaksjoner, så valutaen kan ikke endres."
+      "currency_in_use": "Denne kontoen har allerede transaksjoner, så valutaen kan ikke endres.",
+      "closing_day_in_use": "Dette kortet har allerede registrerte fakturabetalinger knyttet til gjeldende avslutningsdag, så den kan ikke endres. Angre disse betalingene først, eller behold gjeldende avslutningsdag.",
+      "card_cycle_incomplete": "Et kredittkort må ha både en avslutningsdag og en forfallsdag, eller ingen av dem."
     },
     "transaction": {
       "transfer_same_account": "En overføring krever to forskjellige kontoer.",

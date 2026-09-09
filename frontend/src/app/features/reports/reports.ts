@@ -21,6 +21,7 @@ import { Chart, ChartDataset } from '../../shared/charts/chart';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
+import { LoadError } from '../../shared/ui/load-error/load-error';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { MonthBucket, ReportPeriod, resolveMonthBuckets } from './report-period';
@@ -46,6 +47,7 @@ interface CategoryTableRow {
     ExchangeRateWarning,
     Chart,
     Skeleton,
+    LoadError,
   ],
   templateUrl: './reports.html',
 })
@@ -80,6 +82,15 @@ export class Reports {
   protected readonly transactionsResource = rxResource({
     stream: () => this.transactionRepository.list()
   });
+  private readonly dataResources = [
+    this.accountsResource,
+    this.categoriesResource,
+    this.categoryGroupsResource,
+    this.transactionsResource,
+  ];
+  protected readonly dataError = computed(() =>
+    this.dataResources.some((resource) => resource.status() === 'error')
+  );
 
   protected readonly displayCurrency = this.displayCurrencyService.currency;
 
@@ -98,6 +109,7 @@ export class Reports {
   private readonly converter = this.rates.converter;
   protected readonly hasFallbackRate = this.rates.hasFallbackRate;
   protected readonly ratesReady = computed(() => this.converter() !== null);
+  protected readonly ratesFailed = this.rates.ratesFailed;
 
   protected readonly formatMoney = (value: number): string =>
     this.localeService.localizeNumber(String(value), 'currency', undefined, {
@@ -121,8 +133,20 @@ export class Reports {
   });
 
   protected readonly isEmpty = computed(
-    () => !this.transactionsResource.isLoading() && this.transactionsInRange().length === 0
+    () =>
+      !this.transactionsResource.isLoading() &&
+      !this.dataError() &&
+      this.transactionsInRange().length === 0
   );
+
+  protected retryAll(): void {
+    for (const resource of this.dataResources) resource.reload();
+    this.rates.reload();
+  }
+
+  protected retryRates(): void {
+    this.rates.reload();
+  }
 
   protected readonly incomeExpenseChart = computed(() => {
     this.theme.current(); // re-resolve --positive/--negative on toggle

@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Yritä uudelleen",
       "close": "Sulje",
       "cancel": "Peruuta",
       "confirm": "Vahvista",
@@ -49,6 +50,8 @@
       "previousMonth": "Edellinen kuukausi",
       "nextMonth": "Seuraava kuukausi"
     },
+    "loadError": "Jotain meni pieleen tätä ladattaessa. Yritä uudelleen.",
+    "retrying": "Yritetään uudelleen…",
     "colorPicker": {
       "saturationBrightness": "Värikylläisyys ja kirkkaus",
       "hue": "Värisävy"
@@ -212,6 +215,7 @@
       "settings": "Asetukset",
       "investments": "Sijoitukset",
       "adminUsers": "Käyttäjät ja kutsut",
+      "adminAutomations": "Automatisoinnit",
       "sections": {
         "accounts": "Tilit",
         "analysis": "Analyysit",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Jotkin summat tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
     "title": "Yhteenveto",
     "welcome": "Tervetuloa LealFinanceen",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Jotkin luvut tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
     "title": "Raportit",
     "description": "Analysoi tulojen, menojen ja saldojen kehitystä.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Käyttäjät ja kutsut",
     "description": "Hallitse tämän LealFinance-asennuksen käyttöoikeuksia.",
+    "automations": {
+      "title": "Automatisoinnit",
+      "description": "Tämän instanssin ajastettujen taustatöiden tila.",
+      "loading": "Ladataan…",
+      "loadError": "Automatisointien tilaa ei voitu ladata.",
+      "retry": "Yritä uudelleen",
+      "runNow": "Suorita nyt",
+      "neverRun": "Ei koskaan suoritettu",
+      "lastRun": "Aloitettu {{started}}, valmis {{finished}}",
+      "counts": "{{processed}} käsitelty, {{failed}} epäonnistui",
+      "errorType": "Viimeisin virhe: {{type}}",
+      "state": {
+        "never_run": "Ei koskaan suoritettu",
+        "stale": "Myöhässä",
+        "stuck": "Jumiutunut",
+        "running": "Käynnissä",
+        "success": "Toimiva",
+        "partial": "Osittainen virhe",
+        "failed": "Epäonnistui"
+      },
+      "attention": {
+        "never_run": "Tätä tehtävää ei ole vielä suoritettu.",
+        "stale": "Tämä tehtävä on myöhässä — tarkista, että ajastin (beat) ja worker ovat käynnissä.",
+        "stuck": "Tehtävä käynnistyi, mutta ei valmistunut — tarkista workerin lokit.",
+        "failed": "Viimeisin suoritus epäonnistui. Korjaa syy ja suorita se nyt.",
+        "partial": "Jotkin kohteet epäonnistuivat viimeisimmässä suorituksessa. Tarkista workerin lokit ja suorita se nyt."
+      }
+    },
     "roles": {
       "member": "Jäsen",
       "admin": "Järjestelmänvalvoja"
@@ -1758,6 +1792,9 @@
       "generic": "Jokin meni pieleen. Yritä uudelleen.",
       "validation": "Tarkista antamasi tiedot ja yritä uudelleen."
     },
+    "job": {
+      "not_found": "Ajastettua työtä ei ole olemassa."
+    },
     "agents": {
       "instructions_rejected": "Näitä ohjeita ei tallennettu: ne eivät liity talouteesi tai tähän sovellukseen.",
       "not_configured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Tämä tiedosto on liian suuri tuotavaksi (raja 2 Mt).",
+      "idempotency_key_reused": "Tämä tuonti on jo lähetetty eri sisällöllä. Lataa esikatselu uudelleen ja yritä uudelleen.",
       "no_rows": "Tiedostossa ei ole datarivejä.",
       "too_many_rows": "Tiedostossa on liikaa rivejä tuotavaksi kerralla (raja 2000).",
       "column_required": "Yhdistä päivämäärä-, kuvaus- ja summasarakkeet ennen jatkamista.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Erien määrä ei voi olla pienempi kuin jo maksettujen erien määrä."
     },
     "account": {
-      "currency_in_use": "Tällä tilillä on jo tapahtumia, joten sen valuuttaa ei voi vaihtaa."
+      "currency_in_use": "Tällä tilillä on jo tapahtumia, joten sen valuuttaa ei voi vaihtaa.",
+      "closing_day_in_use": "Tälle kortille on jo kirjattu laskumaksuja nykyistä sulkupäivää varten, joten sitä ei voi muuttaa. Kumoa maksut ensin tai säilytä nykyinen sulkupäivä.",
+      "card_cycle_incomplete": "Luottokortilla on oltava sekä sulkupäivä että eräpäivä tai ei kumpaakaan."
     },
     "transaction": {
       "transfer_same_account": "Siirto vaatii kaksi eri tiliä.",

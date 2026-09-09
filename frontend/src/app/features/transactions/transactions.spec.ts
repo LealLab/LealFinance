@@ -264,7 +264,9 @@ describe('Transactions - calendar with a cross-currency month', () => {
     override importPreview(): Observable<ImportPreview> {
       return of({ headers: [], mapping: {}, rows: [] });
     }
-    override importCommit(): Observable<number> {
+    override importCommit(_items: readonly Omit<Transaction, 'id'>[], _idempotencyKey: string): Observable<number> {
+      void _items;
+      void _idempotencyKey;
       return of(0);
     }
   }
@@ -366,7 +368,9 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
     override importPreview(): Observable<ImportPreview> {
       return of({ headers: [], mapping: {}, rows: [] });
     }
-    override importCommit(): Observable<number> {
+    override importCommit(_items: readonly Omit<Transaction, 'id'>[], _idempotencyKey: string): Observable<number> {
+      void _items;
+      void _idempotencyKey;
       return of(0);
     }
   }

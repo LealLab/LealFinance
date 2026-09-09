@@ -31,6 +31,7 @@ from app.schemas.transaction import ConversionInput, TransactionCreate
 from app.services import ownership
 from app.services import transactions as transactions_service
 from app.services.exchange_rates import get_exchange_rate, to_conversion_source
+from app.services.posting_result import PostingResult
 from app.services.recurrence import project_occurrence_dates
 
 logger = logging.getLogger(__name__)
@@ -114,12 +115,14 @@ async def _post_one(db: AsyncSession, rule: RecurringRule, occurrence: date_type
     return await transactions_service.create_transaction(db, rule.user_id, data)
 
 
-async def post_all_due_occurrences(db: AsyncSession, *, today: date_type | None = None) -> int:
+async def post_all_due_occurrences(
+    db: AsyncSession, *, today: date_type | None = None
+) -> PostingResult:
     """One posting pass across every user's recurring rules. Returns the
-    total number of transactions created. A single rule's failure (an
-    archived account, a currency gone inactive, a race on the idempotency
-    index) is logged and rolled back without aborting the rest of the
-    run - see the module docstring."""
+    number of transactions created and the number of failed rules. A single
+    rule's failure (an archived account, a currency gone inactive, a race on
+    the idempotency index) is logged and rolled back without aborting the rest
+    of the run - see the module docstring."""
     # ponytail: "today" is UTC's today - there's no per-user timezone on
     # the users table, so a user far east of UTC can see an occurrence
     # post up to ~13h after their local midnight. Add users.timezone and
@@ -129,12 +132,14 @@ async def post_all_due_occurrences(db: AsyncSession, *, today: date_type | None 
     rules = result.scalars().all()
 
     total_posted = 0
+    failures = 0
     for rule in rules:
         try:
             created = await post_due_occurrences(db, rule, today=today)
             total_posted += len(created)
         except Exception:
+            failures += 1
             logger.exception("Failed to post occurrences for recurring rule %s", rule.id)
             await db.rollback()
 
-    return total_posted
+    return PostingResult(total_posted, failures)

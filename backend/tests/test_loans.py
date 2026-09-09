@@ -621,10 +621,10 @@ async def test_auto_post_catches_up_backdated_loan_then_is_idempotent(
 
     # Three monthly installments are due by this date (Jan/Feb/Mar 10).
     posted = await post_all_due_installments(db_session, today=date(2026, 3, 15))
-    assert posted == 3
+    assert posted.processed == 3
 
     # A second pass on the same day posts nothing more.
-    assert await post_all_due_installments(db_session, today=date(2026, 3, 15)) == 0
+    assert (await post_all_due_installments(db_session, today=date(2026, 3, 15))).processed == 0
 
     loan = (await client.get("/api/v1/loans")).json()[0]
     assert loan["installments_paid"] == 3
@@ -654,11 +654,11 @@ async def test_auto_post_fills_early_gaps_after_last_installments_were_advanced(
     )
     assert [row["installment_number"] for row in advanced.json()] == [5, 6]
 
-    assert await post_all_due_installments(db_session, today=date(2026, 3, 15)) == 3
+    assert (await post_all_due_installments(db_session, today=date(2026, 3, 15))).processed == 3
     rows = (await client.get("/api/v1/transactions")).json()
     loan_rows = [row for row in rows if row["loan_id"] == loan_id]
     assert {row["installment_number"] for row in loan_rows} == {1, 2, 3, 5, 6}
-    assert await post_all_due_installments(db_session, today=date(2026, 3, 15)) == 0
+    assert (await post_all_due_installments(db_session, today=date(2026, 3, 15))).processed == 0
 
 
 async def test_auto_post_stops_at_installment_count(
@@ -679,7 +679,7 @@ async def test_auto_post_stops_at_installment_count(
     )
 
     posted = await post_all_due_installments(db_session, today=date(2030, 1, 1))
-    assert posted == 2
+    assert posted.processed == 2
 
 
 async def test_auto_post_skips_archived_loans(
@@ -702,7 +702,7 @@ async def test_auto_post_skips_archived_loans(
     ).json()["id"]
     await client.post(f"/api/v1/loans/{loan_id}/archive", json={"archived": True})
 
-    assert await post_all_due_installments(db_session, today=date(2026, 6, 15)) == 0
+    assert (await post_all_due_installments(db_session, today=date(2026, 6, 15))).processed == 0
 
 
 # --- auth & ownership ------------------------------------------------------

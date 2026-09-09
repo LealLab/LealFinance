@@ -69,6 +69,7 @@ class ImportPreviewRead(BaseModel):
 
 
 class ImportCommitRequest(BaseModel):
+    idempotency_key: str = Field(min_length=8, max_length=64)
     items: list[TransactionCreate] = Field(min_length=1, max_length=2000)
 
 

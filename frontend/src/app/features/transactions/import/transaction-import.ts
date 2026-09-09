@@ -149,6 +149,7 @@ export class TransactionImport {
 
   protected readonly askBeforeImport = signal(true);
   protected readonly importing = signal(false);
+  private importKey: string | null = null;
   /** Running total posted from this file so far - the page stays open after a
    * commit so the remaining rows can be imported in later batches. */
   protected readonly importedCount = signal(0);
@@ -205,6 +206,11 @@ export class TransactionImport {
       category: '',
       notes: ''
     };
+  }
+
+  private newImportKey(): string {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
   }
 
   protected mappingLabel(field: TargetField): string {
@@ -613,11 +619,13 @@ export class TransactionImport {
     const importable = this.rows().filter(isImportable);
     const importedIndices = new Set(importable.map((row) => row.index));
     const items = importable.map((row) => this.toTransactionInput(row, account.currency));
+    if (this.importKey === null) this.importKey = this.newImportKey();
 
     this.importing.set(true);
-    this.transactionRepository.importCommit(items).subscribe({
+    this.transactionRepository.importCommit(items, this.importKey).subscribe({
       next: () => {
         this.importing.set(false);
+        this.importKey = null;
         this.importedCount.update((total) => total + items.length);
         // Drop only the rows just posted; the rest stay for another batch.
         this.rows.update((rows) => rows.filter((row) => !importedIndices.has(row.index)));

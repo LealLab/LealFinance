@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Retry",
       "close": "Close",
       "cancel": "Cancel",
       "confirm": "Confirm",
@@ -49,6 +50,8 @@
       "previousMonth": "Previous month",
       "nextMonth": "Next month"
     },
+    "loadError": "Something went wrong loading this. Try again.",
+    "retrying": "Retrying…",
     "colorPicker": {
       "saturationBrightness": "Color saturation and brightness",
       "hue": "Color hue"
@@ -212,6 +215,7 @@
       "chat": "AI chat",
       "investments": "Investments",
       "adminUsers": "Users & invitations",
+      "adminAutomations": "Automations",
       "sections": {
         "accounts": "Accounts",
         "analysis": "Analysis",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Some totals need an exchange rate that isn't available right now.",
     "title": "Dashboard",
     "welcome": "Welcome to LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     "archiveError": "Could not update the investment wallet archive state. Try again."
   },
   "reports": {
+    "ratesUnavailable": "Some figures need an exchange rate that isn't available right now.",
     "title": "Reports",
     "description": "Analyze income, expenses, and balances over time.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Users & invitations",
     "description": "Manage access to this LealFinance instance.",
+    "automations": {
+      "title": "Automations",
+      "description": "Health of the scheduled background jobs on this instance.",
+      "loading": "Loading…",
+      "loadError": "Could not load the automation status.",
+      "retry": "Retry",
+      "runNow": "Run now",
+      "neverRun": "Never run",
+      "lastRun": "Started {{started}}, finished {{finished}}",
+      "counts": "{{processed}} processed, {{failed}} failed",
+      "errorType": "Last failure: {{type}}",
+      "state": {
+        "never_run": "Never run",
+        "stale": "Overdue",
+        "stuck": "Stuck",
+        "running": "Running",
+        "success": "Healthy",
+        "partial": "Partial failure",
+        "failed": "Failed"
+      },
+      "attention": {
+        "never_run": "This job has not run yet.",
+        "stale": "This job is overdue — check that the scheduler (beat) and worker are running.",
+        "stuck": "This job started but never finished — check the worker logs.",
+        "failed": "The last run failed. Fix the cause, then run it now.",
+        "partial": "Some items failed on the last run. Review the worker logs, then run it now."
+      }
+    },
     "roles": {
       "member": "Member",
       "admin": "Administrator"
@@ -1758,6 +1792,9 @@
       "generic": "Something went wrong. Please try again.",
       "validation": "Check your information and try again."
     },
+    "job": {
+      "not_found": "That scheduled job does not exist."
+    },
     "agents": {
       "instructions_rejected": "These instructions were not saved: they are not about your finances or this app.",
       "not_configured": "No AI provider is configured yet.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "That file is too large to import (2 MB limit).",
+      "idempotency_key_reused": "This import was already submitted with different contents. Reload the preview and try again.",
       "no_rows": "The file has no data rows.",
       "too_many_rows": "The file has too many rows to import at once (2,000 limit).",
       "column_required": "Map the date, description, and amount columns before continuing.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "The number of installments can't be lower than how many are already paid."
     },
     "account": {
-      "currency_in_use": "This account already has transactions, so its currency can't be changed."
+      "currency_in_use": "This account already has transactions, so its currency can't be changed.",
+      "closing_day_in_use": "This card already has invoice payments recorded against the current closing day, so it can't be changed. Undo those payments first, or keep the current closing day.",
+      "card_cycle_incomplete": "A credit card needs both a closing day and a due day, or neither."
     },
     "transaction": {
       "transfer_same_account": "A transfer needs two different accounts.",

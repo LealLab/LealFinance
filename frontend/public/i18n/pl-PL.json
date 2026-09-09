@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Spróbuj ponownie",
       "close": "Zamknij",
       "cancel": "Anuluj",
       "confirm": "Potwierdź",
@@ -49,6 +50,8 @@
       "previousMonth": "Poprzedni miesiąc",
       "nextMonth": "Następny miesiąc"
     },
+    "loadError": "Coś poszło nie tak podczas ładowania. Spróbuj ponownie.",
+    "retrying": "Ponawianie próby…",
     "colorPicker": {
       "saturationBrightness": "Nasycenie i jasność koloru",
       "hue": "Odcień koloru"
@@ -212,6 +215,7 @@
       "settings": "Ustawienia",
       "investments": "Inwestycje",
       "adminUsers": "Użytkownicy i zaproszenia",
+      "adminAutomations": "Automatyzacje",
       "sections": {
         "accounts": "Konta",
         "analysis": "Analiza",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Niektóre sumy wymagają kursu walutowego, który jest obecnie niedostępny.",
     "title": "Panel",
     "welcome": "Witamy w LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Niektóre dane wymagają kursu walutowego, który jest obecnie niedostępny.",
     "title": "Raporty",
     "description": "Analizuj przychody, wydatki i salda w czasie.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Użytkownicy i zaproszenia",
     "description": "Zarządzaj dostępem do tej instancji LealFinance.",
+    "automations": {
+      "title": "Automatyzacje",
+      "description": "Stan zaplanowanych zadań w tle tej instancji.",
+      "loading": "Ładowanie…",
+      "loadError": "Nie udało się wczytać stanu automatyzacji.",
+      "retry": "Spróbuj ponownie",
+      "runNow": "Uruchom teraz",
+      "neverRun": "Nigdy nie uruchomiono",
+      "lastRun": "Rozpoczęto {{started}}, zakończono {{finished}}",
+      "counts": "Przetworzono {{processed}}, niepowodzeń: {{failed}}",
+      "errorType": "Ostatni błąd: {{type}}",
+      "state": {
+        "never_run": "Nigdy nie uruchomiono",
+        "stale": "Zaległe",
+        "stuck": "Zawieszone",
+        "running": "Uruchomione",
+        "success": "Sprawne",
+        "partial": "Częściowa awaria",
+        "failed": "Niepowodzenie"
+      },
+      "attention": {
+        "never_run": "To zadanie nie zostało jeszcze uruchomione.",
+        "stale": "To zadanie jest opóźnione — sprawdź, czy harmonogram (beat) i worker działają.",
+        "stuck": "To zadanie się rozpoczęło, ale nigdy nie zakończyło — sprawdź logi workera.",
+        "failed": "Ostatnie uruchomienie zakończyło się niepowodzeniem. Usuń przyczynę i uruchom je teraz.",
+        "partial": "Podczas ostatniego uruchomienia niektóre elementy zakończyły się niepowodzeniem. Sprawdź logi workera i uruchom je teraz."
+      }
+    },
     "roles": {
       "member": "Członek",
       "admin": "Admin"
@@ -1758,6 +1792,9 @@
       "generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "validation": "Sprawdź wprowadzone dane i spróbuj ponownie."
     },
+    "job": {
+      "not_found": "To zaplanowane zadanie nie istnieje."
+    },
     "agents": {
       "instructions_rejected": "Te instrukcje nie zostały zapisane: nie dotyczą Twoich finansów ani tej aplikacji.",
       "not_configured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Ten plik jest zbyt duży, aby go zaimportować (limit 2 MB).",
+      "idempotency_key_reused": "Ten import został już przesłany z inną zawartością. Wczytaj ponownie podgląd i spróbuj jeszcze raz.",
       "no_rows": "Plik nie zawiera wierszy danych.",
       "too_many_rows": "Plik zawiera zbyt wiele wierszy do zaimportowania naraz (limit 2000).",
       "column_required": "Dopasuj kolumny daty, opisu i kwoty przed kontynuowaniem.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Liczba rat nie może być mniejsza niż liczba już zapłaconych."
     },
     "account": {
-      "currency_in_use": "To konto ma już transakcje, więc nie można zmienić jego waluty."
+      "currency_in_use": "To konto ma już transakcje, więc nie można zmienić jego waluty.",
+      "closing_day_in_use": "Ta karta ma już zarejestrowane płatności rachunków przypisane do bieżącego dnia zamknięcia, więc nie można go zmienić. Najpierw cofnij te płatności albo pozostaw bieżący dzień zamknięcia.",
+      "card_cycle_incomplete": "Karta kredytowa musi mieć zarówno dzień zamknięcia, jak i dzień spłaty, albo nie mieć żadnego z nich."
     },
     "transaction": {
       "transfer_same_account": "Przelew wymaga dwóch różnych kont.",

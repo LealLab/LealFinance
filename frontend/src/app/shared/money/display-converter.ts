@@ -10,12 +10,13 @@ export interface RatesConverter {
   /**
    * `null` until every pair named by the caller has a fetched rate - see
    * `pairsCovered`. Every screen must treat `null` as "can't aggregate
-   * yet" (skip the computation, show a loading state) rather than falling
-   * back to `converterFromRates([])`'s unconverted passthrough, which is
-   * what threw `Currency mismatch` on the dashboard's first render.
+   * yet" (skip the computation, show a loading state) while
+   * `ratesFailed()` is false. When `ratesFailed()` is true, show a failure
+   * state instead of treating the missing converter as loading.
    */
   readonly converter: Signal<CurrencyConverter | null>;
   readonly hasFallbackRate: Signal<boolean>;
+  readonly ratesFailed: Signal<boolean>;
   /** Re-fetches every rate - call after an action that can change what a rate resolves to (e.g. saving a manual rate), same params or not. */
   readonly reload: () => void;
 }
@@ -42,7 +43,11 @@ export function pairsConverter(pairs: () => readonly (readonly [string, string])
     }
   });
 
-  const rates = computed(() => ratesResource.value() ?? []);
+  const ratesFailed = computed(() => ratesResource.status() === 'error');
+  // `.value()` throws while the resource is in its error state - fall back to
+  // an empty list there so `converter()` stays null and callers branch on
+  // `ratesFailed()` instead of crashing.
+  const rates = computed(() => (ratesFailed() ? [] : ratesResource.value() ?? []));
 
   const converter = computed<CurrencyConverter | null>(() =>
     pairsCovered(rates(), pairs()) ? converterFromRates(rates()) : null
@@ -50,7 +55,7 @@ export function pairsConverter(pairs: () => readonly (readonly [string, string])
 
   const hasFallbackRate = computed(() => rates().some((rate) => rate.isFallback));
 
-  return { converter, hasFallbackRate, reload: () => ratesResource.reload() };
+  return { converter, hasFallbackRate, ratesFailed, reload: () => ratesResource.reload() };
 }
 
 /**

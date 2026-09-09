@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Erneut versuchen",
       "close": "Schließen",
       "cancel": "Abbrechen",
       "confirm": "Bestätigen",
@@ -49,6 +50,8 @@
       "previousMonth": "Vorheriger Monat",
       "nextMonth": "Nächster Monat"
     },
+    "loadError": "Beim Laden ist etwas schiefgelaufen. Bitte versuche es erneut.",
+    "retrying": "Erneuter Versuch…",
     "colorPicker": {
       "saturationBrightness": "Farbsättigung und Helligkeit",
       "hue": "Farbton"
@@ -212,6 +215,7 @@
       "settings": "Einstellungen",
       "investments": "Investitionen",
       "adminUsers": "Benutzer und Einladungen",
+      "adminAutomations": "Automatisierungen",
       "sections": {
         "accounts": "Konten",
         "analysis": "Auswertungen",
@@ -315,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Für einige Summen wird ein Wechselkurs benötigt, der derzeit nicht verfügbar ist.",
     "title": "Übersicht",
     "welcome": "Willkommen bei LealFinance",
     "empty": {
@@ -1323,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Für einige Werte wird ein Wechselkurs benötigt, der derzeit nicht verfügbar ist.",
     "title": "Auswertungen",
     "description": "Analysieren Sie Einnahmen, Ausgaben und Kontostände im Zeitverlauf.",
     "period": {
@@ -1648,6 +1654,34 @@
   "admin": {
     "title": "Benutzer und Einladungen",
     "description": "Verwalten Sie den Zugriff auf diese LealFinance-Instanz.",
+    "automations": {
+      "title": "Automatisierungen",
+      "description": "Status der geplanten Hintergrundjobs auf dieser Instanz.",
+      "loading": "Wird geladen…",
+      "loadError": "Der Status der Automatisierungen konnte nicht geladen werden.",
+      "retry": "Erneut versuchen",
+      "runNow": "Jetzt ausführen",
+      "neverRun": "Nie ausgeführt",
+      "lastRun": "Gestartet {{started}}, beendet {{finished}}",
+      "counts": "{{processed}} verarbeitet, {{failed}} fehlgeschlagen",
+      "errorType": "Letzter Fehler: {{type}}",
+      "state": {
+        "never_run": "Nie ausgeführt",
+        "stale": "Überfällig",
+        "stuck": "Hängt fest",
+        "running": "Läuft",
+        "success": "Gesund",
+        "partial": "Teilfehler",
+        "failed": "Fehlgeschlagen"
+      },
+      "attention": {
+        "never_run": "Dieser Job wurde noch nicht ausgeführt.",
+        "stale": "Dieser Job ist überfällig — prüfen Sie, ob Scheduler (Beat) und Worker laufen.",
+        "stuck": "Dieser Job wurde gestartet, aber nie beendet — prüfen Sie die Worker-Logs.",
+        "failed": "Der letzte Lauf ist fehlgeschlagen. Beheben Sie die Ursache und führen Sie ihn jetzt aus.",
+        "partial": "Beim letzten Lauf sind einige Elemente fehlgeschlagen. Prüfen Sie die Worker-Logs und führen Sie ihn jetzt aus."
+      }
+    },
     "roles": {
       "member": "Mitglied",
       "admin": "Admin"
@@ -1758,6 +1792,9 @@
       "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
       "validation": "Überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
     },
+    "job": {
+      "not_found": "Dieser geplante Job existiert nicht."
+    },
     "agents": {
       "instructions_rejected": "Diese Anweisungen wurden nicht gespeichert: Sie betreffen weder Ihre Finanzen noch diese App.",
       "not_configured": "Noch kein KI-Anbieter konfiguriert.",
@@ -1789,6 +1826,7 @@
     },
     "import": {
       "file_too_large": "Diese Datei ist zu groß zum Importieren (Limit 2 MB).",
+      "idempotency_key_reused": "Dieser Import wurde bereits mit anderem Inhalt übermittelt. Laden Sie die Vorschau neu und versuchen Sie es erneut.",
       "no_rows": "Die Datei enthält keine Datenzeilen.",
       "too_many_rows": "Die Datei enthält zu viele Zeilen für einen einzelnen Import (Limit 2000).",
       "column_required": "Ordnen Sie die Spalten Datum, Beschreibung und Betrag zu, bevor Sie fortfahren.",
@@ -1830,7 +1868,9 @@
       "installment_count_below_paid": "Die Anzahl der Raten kann nicht niedriger sein als die Anzahl der bereits bezahlten."
     },
     "account": {
-      "currency_in_use": "Dieses Konto enthält bereits Transaktionen. Daher kann seine Währung nicht geändert werden."
+      "currency_in_use": "Dieses Konto enthält bereits Transaktionen. Daher kann seine Währung nicht geändert werden.",
+      "closing_day_in_use": "Für diese Karte sind bereits Rechnungszahlungen zum aktuellen Abrechnungstag erfasst, daher kann er nicht geändert werden. Mache diese Zahlungen zuerst rückgängig oder behalte den aktuellen Abrechnungstag bei.",
+      "card_cycle_incomplete": "Eine Kreditkarte benötigt sowohl einen Abrechnungstag als auch einen Fälligkeitstag – oder keinen von beiden."
     },
     "transaction": {
       "transfer_same_account": "Eine Überweisung benötigt zwei verschiedene Konten.",

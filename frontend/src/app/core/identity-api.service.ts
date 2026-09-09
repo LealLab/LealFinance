@@ -6,6 +6,8 @@ import {
   CreatedInvitation,
   CurrencyMetadata,
   Invitation,
+  JobHealth,
+  JobState,
   Preferences,
   Passkey,
   PublicSettings,
@@ -22,7 +24,7 @@ import {
 
 /**
  * Dynamic backend error translations used by auth and administration UI.
- * t(errors.error.generic, errors.error.validation, errors.auth.invalid_credentials, errors.auth.csrf_invalid, errors.auth.last_admin, errors.auth.peer_admin, errors.auth.account_inactive, errors.auth.admin_required, errors.auth.totp_required, errors.auth.totp_invalid, errors.auth.totp_locked, errors.totp.already_enabled, errors.totp.not_enabled, errors.webauthn.origin_invalid, errors.webauthn.insecure_context, errors.webauthn.challenge_invalid, errors.webauthn.verification_failed, errors.webauthn.credential_exists, errors.webauthn.not_found, errors.invitation.not_found, errors.invitation.expired, errors.invitation.revoked, errors.invitation.already_accepted, errors.invitation.already_pending, errors.user.email_taken)
+ * t(errors.error.generic, errors.error.validation, errors.auth.invalid_credentials, errors.auth.csrf_invalid, errors.auth.last_admin, errors.auth.peer_admin, errors.auth.account_inactive, errors.auth.admin_required, errors.auth.totp_required, errors.auth.totp_invalid, errors.auth.totp_locked, errors.totp.already_enabled, errors.totp.not_enabled, errors.webauthn.origin_invalid, errors.webauthn.insecure_context, errors.webauthn.challenge_invalid, errors.webauthn.verification_failed, errors.webauthn.credential_exists, errors.webauthn.not_found, errors.invitation.not_found, errors.invitation.expired, errors.invitation.revoked, errors.invitation.already_accepted, errors.invitation.already_pending, errors.user.email_taken, errors.job.not_found)
  */
 
 /** POST /auth/login answers with this code when the account has TOTP on and
@@ -38,6 +40,18 @@ interface UserWire {
   is_active: boolean;
   ai_chat_enabled: boolean;
   created_at: string;
+}
+
+interface JobHealthWire {
+  name: string;
+  state: string;
+  status: string | null;
+  started_at: string | null;
+  finished_at: string | null;
+  processed: number;
+  failed: number;
+  error_type: string | null;
+  interval_seconds: number;
 }
 
 interface PreferencesWire {
@@ -306,6 +320,28 @@ export class IdentityApiService {
     return this.api
       .get<InvitationWire[]>('/auth/invitations')
       .pipe(map((rows) => rows.map(mapInvitation)));
+  }
+
+  listJobs(): Observable<JobHealth[]> {
+    return this.api.get<JobHealthWire[]>('/meta/jobs').pipe(
+      map((rows) =>
+        rows.map((row) => ({
+          name: row.name,
+          state: row.state as JobState,
+          status: row.status as JobHealth['status'],
+          startedAt: row.started_at ?? undefined,
+          finishedAt: row.finished_at ?? undefined,
+          processed: row.processed,
+          failed: row.failed,
+          errorType: row.error_type ?? undefined,
+          intervalSeconds: row.interval_seconds,
+        })),
+      ),
+    );
+  }
+
+  runJob(name: string): Observable<void> {
+    return this.api.post<void>(`/meta/jobs/${encodeURIComponent(name)}/run`, {});
   }
 
   createInvitation(email: string, role: UserRole): Observable<CreatedInvitation> {

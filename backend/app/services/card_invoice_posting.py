@@ -26,6 +26,7 @@ from app.core.errors import AppError
 from app.models.account import ACCOUNT_TYPE_CREDIT_CARD, Account
 from app.schemas.card_invoice import CardInvoicePaymentCreate
 from app.services import card_invoices as card_invoices_service
+from app.services.posting_result import PostingResult
 
 logger = logging.getLogger(__name__)
 
@@ -69,10 +70,13 @@ async def post_due_invoice_payments(
     return paid
 
 
-async def post_all_due_invoice_payments(db: AsyncSession, *, today: date_type | None = None) -> int:
+async def post_all_due_invoice_payments(
+    db: AsyncSession, *, today: date_type | None = None
+) -> PostingResult:
     """One posting pass over every user's auto-pay cards. A single card's
     failure (archived payment account, currency gone inactive) is logged
-    and rolled back without aborting the run."""
+    and rolled back without aborting the run. Returns the number of payments
+    posted and the number of failed cards."""
     today = today or date_type.today()
     result = await db.execute(
         select(Account).where(
@@ -84,14 +88,17 @@ async def post_all_due_invoice_payments(db: AsyncSession, *, today: date_type | 
     cards = result.scalars().all()
 
     total = 0
+    failures = 0
     for card in cards:
         try:
             total += len(await post_due_invoice_payments(db, card, today=today))
         except AppError:
+            failures += 1
             logger.exception("Failed to auto-pay invoices for card %s", card.id)
             await db.rollback()
         except Exception:
+            failures += 1
             logger.exception("Unexpected error auto-paying invoices for card %s", card.id)
             await db.rollback()
 
-    return total
+    return PostingResult(total, failures)
