@@ -571,7 +571,7 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.4" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydantic-settings", specifier = ">=2.8" },
-    { name = "redis", specifier = ">=5.0.2,<6.5" },
+    { name = "redis", specifier = ">=5.0.2,<8.2" },
     { name = "sqlalchemy", specifier = ">=2.0.52" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.52.1" },
     { name = "webauthn", specifier = ">=3,<4" },
