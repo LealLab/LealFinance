@@ -13,8 +13,6 @@ whichever event loop first ran a query, which asyncio.run tears down at the
 end of every call (same reasoning as app/workers/tasks/recurring.py).
 """
 
-import asyncio
-import logging
 from collections.abc import Awaitable, Callable
 from datetime import date
 
@@ -23,10 +21,10 @@ from sqlalchemy.pool import NullPool
 
 from app.core.config import get_settings
 from app.services.exchange_rates import refresh_rates
+from app.services.posting_result import PostingResult
 from app.services.rate_backfill import backfill_fallback_conversions
 from app.workers.celery_app import celery_app
-
-logger = logging.getLogger(__name__)
+from app.workers.runner import run_job
 
 
 async def _with_session[T](work: Callable[[AsyncSession], Awaitable[T]]) -> T:
@@ -43,15 +41,21 @@ async def _with_session[T](work: Callable[[AsyncSession], Awaitable[T]]) -> T:
         await engine.dispose()
 
 
+async def _run_refresh() -> PostingResult:
+    count = await _with_session(lambda db: refresh_rates(db, date.today()))
+    return PostingResult(count, 0)
+
+
+async def _run_backfill() -> PostingResult:
+    healed = await _with_session(backfill_fallback_conversions)
+    return PostingResult(healed, 0)
+
+
 @celery_app.task(name="app.workers.tasks.rates.refresh_exchange_rates")
 def refresh_exchange_rates() -> str:
-    count = asyncio.run(_with_session(lambda db: refresh_rates(db, date.today())))
-    logger.info("refresh_exchange_rates upserted %d rate(s)", count)
-    return f"refreshed {count}"
+    return run_job("app.workers.tasks.rates.refresh_exchange_rates", _run_refresh)
 
 
 @celery_app.task(name="app.workers.tasks.rates.backfill_fallback_conversions")
 def backfill_fallback_conversions_task() -> str:
-    healed = asyncio.run(_with_session(backfill_fallback_conversions))
-    logger.info("backfill_fallback_conversions healed %d transaction(s)", healed)
-    return f"healed {healed}"
+    return run_job("app.workers.tasks.rates.backfill_fallback_conversions", _run_backfill)

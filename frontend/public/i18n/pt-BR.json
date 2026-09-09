@@ -1758,6 +1758,9 @@
       "generic": "Algo deu errado. Tente novamente.",
       "validation": "Verifique as informações e tente novamente."
     },
+    "job": {
+      "not_found": "Essa tarefa agendada não existe."
+    },
     "agents": {
       "instructions_rejected": "Estas instruções não foram salvas: não são sobre suas finanças nem sobre este aplicativo.",
       "not_configured": "Nenhum provedor de IA foi configurado ainda.",

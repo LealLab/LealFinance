@@ -1758,6 +1758,9 @@
       "generic": "Något gick fel. Försök igen.",
       "validation": "Kontrollera uppgifterna och försök igen."
     },
+    "job": {
+      "not_found": "Det schemalagda jobbet finns inte."
+    },
     "agents": {
       "instructions_rejected": "Instruktionerna sparades inte: de handlar inte om din ekonomi eller den här appen.",
       "not_configured": "Ingen AI-leverantör har konfigurerats ännu.",

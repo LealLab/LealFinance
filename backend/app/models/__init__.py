@@ -24,6 +24,7 @@ from app.models.investment import (
     InvestmentWallet,
     MarketDataCredential,
 )
+from app.models.job_run import JobRun
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
 from app.models.recurring import RecurringRule
@@ -52,6 +53,7 @@ __all__ = [
     "InvestmentAsset",
     "InvestmentTransaction",
     "InvestmentWallet",
+    "JobRun",
     "Loan",
     "MarketDataCredential",
     "Invitation",

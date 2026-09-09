@@ -1758,6 +1758,9 @@
       "generic": "Qualcosa è andato storto. Riprova.",
       "validation": "Controlla i dati inseriti e riprova."
     },
+    "job": {
+      "not_found": "Questa attività pianificata non esiste."
+    },
     "agents": {
       "instructions_rejected": "Queste istruzioni non sono state salvate: non riguardano le tue finanze né questa applicazione.",
       "not_configured": "Non è ancora configurato alcun provider AI.",

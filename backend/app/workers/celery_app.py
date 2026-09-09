@@ -4,6 +4,8 @@ Each worker task creates its own short-lived async engine with NullPool (see
 app/workers/tasks/*.py).
 """
 
+from datetime import timedelta
+
 from celery import Celery
 from celery.schedules import crontab
 
@@ -67,4 +69,15 @@ celery_app.conf.beat_schedule = {
         "task": "app.workers.tasks.auth.prune_expired_auth",
         "schedule": crontab(hour=3, minute=30),
     },
+}
+
+# Expected wall-clock gap between runs of each job, for staleness detection
+# in GET /meta/jobs. Kept beside beat_schedule so the two stay in sync.
+JOB_INTERVALS: dict[str, timedelta] = {
+    "app.workers.tasks.recurring.post_recurring_transactions": timedelta(days=1),
+    "app.workers.tasks.loans.post_loan_installments": timedelta(days=1),
+    "app.workers.tasks.cards.post_card_invoice_payments": timedelta(days=1),
+    "app.workers.tasks.rates.refresh_exchange_rates": timedelta(hours=6),
+    "app.workers.tasks.rates.backfill_fallback_conversions": timedelta(days=1),
+    "app.workers.tasks.auth.prune_expired_auth": timedelta(days=1),
 }

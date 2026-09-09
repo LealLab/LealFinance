@@ -25,6 +25,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.loan import Loan
 from app.schemas.loan import LoanPaymentCreate
 from app.services import loans as loans_service
+from app.services.posting_result import PostingResult
 from app.services.recurrence import add_months_clamped
 
 logger = logging.getLogger(__name__)
@@ -62,10 +63,13 @@ async def post_due_installments(db: AsyncSession, loan: Loan, *, today: date_typ
     return created
 
 
-async def post_all_due_installments(db: AsyncSession, *, today: date_type | None = None) -> int:
+async def post_all_due_installments(
+    db: AsyncSession, *, today: date_type | None = None
+) -> PostingResult:
     """One posting pass over every user's auto-post loans. A single loan's
     failure (an archived payment account, a currency gone inactive) is
-    logged and rolled back without aborting the rest of the run."""
+    logged and rolled back without aborting the rest of the run. Returns the
+    number of installments posted and the number of failed loans."""
     today = today or date_type.today()
     result = await db.execute(
         select(Loan).where(Loan.auto_post.is_(True), Loan.archived.is_(False))
@@ -73,11 +77,13 @@ async def post_all_due_installments(db: AsyncSession, *, today: date_type | None
     loans = result.scalars().all()
 
     total = 0
+    failures = 0
     for loan in loans:
         try:
             total += len(await post_due_installments(db, loan, today=today))
         except Exception:
+            failures += 1
             logger.exception("Failed to post installments for loan %s", loan.id)
             await db.rollback()
 
-    return total
+    return PostingResult(total, failures)

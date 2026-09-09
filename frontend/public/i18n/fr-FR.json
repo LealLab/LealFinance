@@ -1758,6 +1758,9 @@
       "generic": "Une erreur s’est produite. Réessayez.",
       "validation": "Vérifiez les informations saisies et réessayez."
     },
+    "job": {
+      "not_found": "Cette tâche planifiée n’existe pas."
+    },
     "agents": {
       "instructions_rejected": "Ces instructions n'ont pas été enregistrées : elles ne portent pas sur vos finances ni sur cette application.",
       "not_configured": "Aucun fournisseur d’IA n’est encore configuré.",

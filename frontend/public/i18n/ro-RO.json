@@ -1758,6 +1758,9 @@
       "generic": "Ceva nu a funcționat. Încearcă din nou.",
       "validation": "Verifică informațiile introduse și încearcă din nou."
     },
+    "job": {
+      "not_found": "Această activitate programată nu există."
+    },
     "agents": {
       "instructions_rejected": "Aceste instrucțiuni nu au fost salvate: nu sunt despre finanțele tale sau despre această aplicație.",
       "not_configured": "Nu este configurat încă niciun furnizor AI.",

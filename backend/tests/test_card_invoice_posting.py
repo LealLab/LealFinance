@@ -95,8 +95,8 @@ async def test_pays_a_due_invoice_once(client: AsyncClient, db_session: AsyncSes
     first = await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21))
     second = await post_all_due_invoice_payments(db_session, today=date(2026, 3, 22))
 
-    assert first == 1
-    assert second == 0
+    assert first.processed == 1
+    assert second.processed == 0
     payments = await _card_payments(db_session, card_id)
     assert len(payments) == 1
     assert payments[0].amount == 150
@@ -116,7 +116,7 @@ async def test_auto_pay_does_not_repay_opening_debt_outside_window(
     await _charge(client, card_id, category_id, "2024-03-05", "50.00")
     await _charge(client, card_id, category_id, "2026-03-05", "100.00")
 
-    assert await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21)) == 1
+    assert (await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21))).processed == 1
     payments = await _card_payments(db_session, card_id)
     assert len(payments) == 1
     assert payments[0].amount == 100
@@ -131,7 +131,7 @@ async def test_auto_pay_disabled_is_skipped(client: AsyncClient, db_session: Asy
 
     posted = await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21))
 
-    assert posted == 0
+    assert posted.processed == 0
     assert await _card_payments(db_session, card_id) == []
 
 
@@ -147,7 +147,7 @@ async def test_invoice_overdue_beyond_window_is_left_alone(
     # A month later - well past the 7-day catch-up window.
     posted = await post_all_due_invoice_payments(db_session, today=date(2026, 4, 25))
 
-    assert posted == 0
+    assert posted.processed == 0
     assert await _card_payments(db_session, card_id) == []
 
 
@@ -172,6 +172,6 @@ async def test_one_card_failure_does_not_abort_the_run(
 
     posted = await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21))
 
-    assert posted == 1
+    assert posted.processed == 1
     assert len(await _card_payments(db_session, good_card)) == 1
     assert await _card_payments(db_session, broken_card) == []

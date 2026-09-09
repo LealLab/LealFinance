@@ -1758,6 +1758,9 @@
       "generic": "發生錯誤，請再試一次。",
       "validation": "請檢查填寫的資訊後再試一次。"
     },
+    "job": {
+      "not_found": "這個排程工作不存在。"
+    },
     "agents": {
       "instructions_rejected": "這些指令未儲存：與你的財務或本應用程式無關。",
       "not_configured": "尚未設定 AI 提供者。",

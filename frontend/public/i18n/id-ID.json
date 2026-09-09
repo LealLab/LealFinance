@@ -1758,6 +1758,9 @@
       "generic": "Terjadi kesalahan. Silakan coba lagi.",
       "validation": "Periksa informasi yang Anda masukkan dan coba lagi."
     },
+    "job": {
+      "not_found": "Pekerjaan terjadwal tersebut tidak ada."
+    },
     "agents": {
       "instructions_rejected": "Instruksi ini tidak disimpan: tidak berkaitan dengan keuangan Anda atau aplikasi ini.",
       "not_configured": "Belum ada penyedia AI yang dikonfigurasi.",

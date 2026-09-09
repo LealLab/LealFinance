@@ -1758,6 +1758,9 @@
       "generic": "出错了。请重试。",
       "validation": "请检查填写的信息后重试。"
     },
+    "job": {
+      "not_found": "该计划任务不存在。"
+    },
     "agents": {
       "instructions_rejected": "这些指令未保存：它们与你的财务或本应用无关。",
       "not_configured": "尚未配置 AI 提供商。",

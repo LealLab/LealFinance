@@ -1758,6 +1758,9 @@
       "generic": "Algo ha salido mal. Inténtalo de nuevo.",
       "validation": "Comprueba la información e inténtalo de nuevo."
     },
+    "job": {
+      "not_found": "Esa tarea programada no existe."
+    },
     "agents": {
       "instructions_rejected": "Estas instrucciones no se guardaron: no tratan sobre tus finanzas ni sobre esta aplicación.",
       "not_configured": "Aún no hay ningún proveedor de IA configurado.",

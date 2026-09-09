@@ -1758,6 +1758,9 @@
       "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
       "validation": "Überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
     },
+    "job": {
+      "not_found": "Dieser geplante Job existiert nicht."
+    },
     "agents": {
       "instructions_rejected": "Diese Anweisungen wurden nicht gespeichert: Sie betreffen weder Ihre Finanzen noch diese App.",
       "not_configured": "Noch kein KI-Anbieter konfiguriert.",

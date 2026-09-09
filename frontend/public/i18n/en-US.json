@@ -1758,6 +1758,9 @@
       "generic": "Something went wrong. Please try again.",
       "validation": "Check your information and try again."
     },
+    "job": {
+      "not_found": "That scheduled job does not exist."
+    },
     "agents": {
       "instructions_rejected": "These instructions were not saved: they are not about your finances or this app.",
       "not_configured": "No AI provider is configured yet.",

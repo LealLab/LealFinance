@@ -1758,6 +1758,9 @@
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
       "validation": "Vui lòng kiểm tra thông tin đã nhập và thử lại."
     },
+    "job": {
+      "not_found": "Tác vụ đã lên lịch đó không tồn tại."
+    },
     "agents": {
       "instructions_rejected": "Hướng dẫn này không được lưu: nội dung không liên quan đến tài chính của bạn hoặc ứng dụng này.",
       "not_configured": "Chưa cấu hình nhà cung cấp AI.",

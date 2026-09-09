@@ -170,6 +170,8 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/health/ready` | public | 503 unless both Postgres and Redis are reachable. |
 | GET | `/meta/currencies` | public | Active currencies only. |
 | GET | `/meta/settings` | public | `default_currency`, `default_locale`, and booleans `agents_enabled`, `email_enabled`. |
+| GET | `/meta/jobs` | admin | Latest persisted state for every scheduled Celery routine. |
+| POST | `/meta/jobs/{name}/run` | admin | Queue a registered scheduled routine for immediate execution; returns 202. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |
 | POST | `/meta/exchange-rates/refresh` | admin | Force a provider refresh of today's rates; cooldown-gated. See "Exchange rates" below. |
 | GET | `/meta/update-status` | admin | Current/latest version and whether an update is available; see "Updates" below. |
@@ -570,6 +572,22 @@ latest_version, update_available, release_url}`; `latest_version` and
 `release_url` are `null` when there is no newer release, the check is
 disabled (`UPDATE_CHECK_ENABLED=false`), or the GitHub API call failed. The
 endpoint never surfaces a provider outage to the caller.
+
+## Scheduled jobs
+
+`GET /meta/jobs` reports one latest-run row for each scheduled routine. Each
+row includes the routine name, `status` (`running`, `success`, `partial`, or
+`failed`), derived `state`, start/finish timestamps, processed and failed
+counts, the exception class name when the run itself failed, and the expected
+interval in seconds. A missing row is `never_run`; an overdue running row is
+`stuck`; any other overdue row is `stale`.
+
+`POST /meta/jobs/{name}/run` queues a known routine through Celery and returns
+`{"status":"queued"}`. Unknown names return `job.not_found` (404).
+
+| Code | Status |
+| --- | --- |
+| `job.not_found` | 404 |
 
 ## Budgets and budget planning
 

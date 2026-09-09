@@ -1758,6 +1758,9 @@
       "generic": "Coś poszło nie tak. Spróbuj ponownie.",
       "validation": "Sprawdź wprowadzone dane i spróbuj ponownie."
     },
+    "job": {
+      "not_found": "To zaplanowane zadanie nie istnieje."
+    },
     "agents": {
       "instructions_rejected": "Te instrukcje nie zostały zapisane: nie dotyczą Twoich finansów ani tej aplikacji.",
       "not_configured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",

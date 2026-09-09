@@ -3,9 +3,9 @@
 Mostly read-only; the one write is the admin-only exchange-rate refresh.
 """
 
-from datetime import date
+from datetime import UTC, date, datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 from sqlalchemy import select
 
 from app.api.deps import AdminUser, CurrentUser, DbSession
@@ -17,8 +17,11 @@ from app.schemas.currency import (
     ExchangeRateRefreshRead,
     PublicSettingsRead,
 )
+from app.schemas.job import JobHealthRead
 from app.schemas.update import UpdateStatusRead
+from app.services import jobs as jobs_service
 from app.services.exchange_rates import get_exchange_rate, refresh_rates_manual
+from app.services.jobs import JobHealth
 from app.services.updates import get_update_status
 
 router = APIRouter(prefix="/meta", tags=["meta"])
@@ -39,6 +42,17 @@ async def get_public_settings() -> PublicSettingsRead:
         agents_enabled=settings.agents_enabled,
         email_enabled=settings.email_enabled,
     )
+
+
+@router.get("/jobs", response_model=list[JobHealthRead])
+async def list_jobs(_admin: AdminUser, db: DbSession) -> list[JobHealth]:
+    return await jobs_service.list_job_health(db, now=datetime.now(UTC))
+
+
+@router.post("/jobs/{name}/run", status_code=status.HTTP_202_ACCEPTED)
+async def run_job_now(name: str, _admin: AdminUser) -> dict[str, str]:
+    await jobs_service.trigger_job(name)
+    return {"status": "queued"}
 
 
 @router.get("/exchange-rate", response_model=ExchangeRateQuoteRead)

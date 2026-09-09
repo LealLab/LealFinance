@@ -1758,6 +1758,9 @@
       "generic": "Jokin meni pieleen. Yritä uudelleen.",
       "validation": "Tarkista antamasi tiedot ja yritä uudelleen."
     },
+    "job": {
+      "not_found": "Ajastettua työtä ei ole olemassa."
+    },
     "agents": {
       "instructions_rejected": "Näitä ohjeita ei tallennettu: ne eivät liity talouteesi tai tähän sovellukseen.",
       "not_configured": "AI-palveluntarjoajaa ei ole vielä määritetty.",

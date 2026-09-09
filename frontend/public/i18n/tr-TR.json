@@ -1758,6 +1758,9 @@
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
       "validation": "Girdiğiniz bilgileri kontrol edip tekrar deneyin."
     },
+    "job": {
+      "not_found": "Böyle bir zamanlanmış görev yok."
+    },
     "agents": {
       "instructions_rejected": "Bu talimatlar kaydedilmedi: finanslarınızla ya da bu uygulamayla ilgili değiller.",
       "not_configured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",

@@ -1758,6 +1758,9 @@
       "generic": "Noget gik galt. Prøv igen.",
       "validation": "Tjek oplysningerne, og prøv igen."
     },
+    "job": {
+      "not_found": "Det planlagte job findes ikke."
+    },
     "agents": {
       "instructions_rejected": "Disse instruktioner blev ikke gemt: de handler ikke om din økonomi eller denne app.",
       "not_configured": "Der er endnu ikke konfigureret nogen AI-udbyder.",

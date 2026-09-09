@@ -1758,6 +1758,9 @@
       "generic": "Er is iets misgegaan. Probeer het opnieuw.",
       "validation": "Controleer de gegevens en probeer het opnieuw."
     },
+    "job": {
+      "not_found": "Deze geplande taak bestaat niet."
+    },
     "agents": {
       "instructions_rejected": "Deze instructies zijn niet opgeslagen: ze gaan niet over je financiën of deze app.",
       "not_configured": "Er is nog geen AI-provider geconfigureerd.",
