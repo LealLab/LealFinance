@@ -1672,6 +1672,7 @@
       "create": "Mời",
       "tokenOnce": "Mã này và liên kết đăng ký chỉ hiển thị lần này. Hãy lưu lại trước khi rời đi.",
       "copyLink": "Sao chép liên kết đăng ký",
+      "emailed": "Chúng tôi sẽ thử gửi liên kết đăng ký đến {{email}}. Nếu không nhận được, hãy chia sẻ liên kết bên dưới.",
       "revoke": "Thu hồi",
       "revokeConfirm": "Thu hồi lời mời cho {{email}}?",
       "empty": "Không tìm thấy lời mời nào."

@@ -50,6 +50,22 @@ class Settings(BaseSettings):
     # applies to devices the user deliberately marked.
     trusted_device_ttl_days: int = 30
 
+    # --- Email (optional) ---
+    # Without SMTP_HOST + APP_BASE_URL the app sends no mail; invitations are
+    # then delivered by copying the link from the admin screen, as before.
+    # See app/services/email.py.
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    smtp_starttls: bool = True
+    # From address on outgoing mail; falls back to smtp_username.
+    smtp_from: str | None = None
+    # Public URL the app is reached at, e.g. https://finance.example.com - the
+    # backend needs it to put a working link in the invitation email. The
+    # frontend builds its copy-link from the browser origin and never needs it.
+    app_base_url: str | None = None
+
     # --- AI Agents (optional, off by default) ---
     agents_enabled: bool = False
     # Instance-wide provider credentials - a per-user row in
@@ -96,6 +112,8 @@ class Settings(BaseSettings):
             raise ValueError("POSTGRES_PASSWORD or DATABASE_URL must be replaced in production")
         if "*" in self.cors_origins_list:
             raise ValueError("CORS wildcard is not allowed in production")
+        if self.smtp_host and not self.app_base_url:
+            raise ValueError("APP_BASE_URL must be set when SMTP_HOST is configured")
         return self
 
     @computed_field  # type: ignore[prop-decorator]
@@ -119,6 +137,11 @@ class Settings(BaseSettings):
     @property
     def cors_origins_list(self) -> list[str]:
         return [origin.strip() for origin in self.api_cors_origins.split(",") if origin.strip()]
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def email_enabled(self) -> bool:
+        return bool(self.smtp_host and self.app_base_url)
 
 
 @lru_cache

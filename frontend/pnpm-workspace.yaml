@@ -4,8 +4,10 @@ allowBuilds:
   lmdb: true
   msgpackr-extract: true
 
-# Transitive dev-only deps pulled in by @angular-eslint/builder, pinned to
-# the patched versions ahead of the parent packages picking them up.
+# Transitive deps pinned to their patched versions ahead of the parent
+# packages picking them up. fast-uri / qs come via @angular-eslint/builder;
+# js-yaml via @jsverse/transloco-utils > cosmiconfig (GHSA-2883-xcg3-v3hh).
 overrides:
   fast-uri: '^3.1.6'
   qs: '^6.16.0'
+  js-yaml: '^4.3.2'

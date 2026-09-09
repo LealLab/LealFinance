@@ -72,6 +72,7 @@ interface PublicSettingsWire {
   default_currency: string;
   default_locale: string;
   agents_enabled: boolean;
+  email_enabled: boolean;
 }
 
 interface UpdateStatusWire {
@@ -337,6 +338,7 @@ export class IdentityApiService {
         defaultCurrency: row.default_currency,
         defaultLocale: row.default_locale,
         agentsEnabled: row.agents_enabled,
+        emailEnabled: row.email_enabled,
       })),
     );
   }

@@ -97,6 +97,9 @@
 
         @if (issued(); as invitation) {
           <div class="mt-4 rounded-md border border-accent/40 bg-accent/10 p-3">
+            @if (emailEnabled()) {
+              <p class="mb-2 text-sm">{{ t('admin.invitations.emailed', { email: invitation.email }) }}</p>
+            }
             <p class="text-sm font-medium">{{ t('admin.invitations.tokenOnce') }}</p>
             <code class="mt-2 block break-all text-xs">{{ invitation.token }}</code>
             <input class="form-input mt-2" readonly [value]="registrationLink(invitation)" />

@@ -51,11 +51,21 @@ def _no_instance_provider_configuration() -> Iterator[None]:
         settings.openexchangerates_app_id,
         settings.twelve_data_api_key,
         settings.brapi_token,
+        settings.smtp_host,
+        settings.smtp_username,
+        settings.smtp_password,
+        settings.smtp_from,
+        settings.app_base_url,
     )
     settings.agents_enabled = False
     settings.openexchangerates_app_id = None
     settings.twelve_data_api_key = None
     settings.brapi_token = None
+    settings.smtp_host = None
+    settings.smtp_username = None
+    settings.smtp_password = None
+    settings.smtp_from = None
+    settings.app_base_url = None
     try:
         yield
     finally:
@@ -64,6 +74,11 @@ def _no_instance_provider_configuration() -> Iterator[None]:
             settings.openexchangerates_app_id,
             settings.twelve_data_api_key,
             settings.brapi_token,
+            settings.smtp_host,
+            settings.smtp_username,
+            settings.smtp_password,
+            settings.smtp_from,
+            settings.app_base_url,
         ) = original
 
 

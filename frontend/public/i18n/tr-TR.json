@@ -1672,6 +1672,7 @@
       "create": "Davet et",
       "tokenOnce": "Bu kod ve kayıt bağlantısı yalnızca şimdi gösterilir. Ayrılmadan önce kaydedin.",
       "copyLink": "Kayıt bağlantısını kopyala",
+      "emailed": "{{email}} adresine bir kayıt bağlantısı göndermeyi deneyeceğiz. Ulaşmazsa aşağıdaki bağlantıyı paylaşın.",
       "revoke": "İptal et",
       "revokeConfirm": "{{email}} adresine gönderilen davet iptal edilsin mi?",
       "empty": "Davet bulunamadı."

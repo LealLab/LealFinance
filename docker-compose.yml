@@ -61,6 +61,15 @@ services:
       AGENTS_DEFAULT_PROVIDER: ${AGENTS_DEFAULT_PROVIDER:-}
       OPENEXCHANGERATES_APP_ID: ${OPENEXCHANGERATES_APP_ID:-}
       EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES: ${EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES:-15}
+      # Optional SMTP for invitation emails - only the api sends mail. Unset
+      # SMTP_HOST means no mail; the admin copy-link flow still works.
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-true}
+      SMTP_FROM: ${SMTP_FROM:-}
+      APP_BASE_URL: ${APP_BASE_URL:-}
       RUN_MIGRATIONS: "true"
     depends_on:
       postgres:

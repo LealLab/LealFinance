@@ -23,7 +23,7 @@
 - Reports and dashboard charts
 - Recurring rules posted automatically
 - Multi-currency with live and manual rates
-- Invite-only accounts, first-admin bootstrap
+- Invite-only accounts, first-admin bootstrap, optional SMTP invite emails
 - 28 languages including right-to-left layouts
 - Light and dark themes
 - Optional AI providers, including local Ollama (off by default)

@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { CreatedInvitation, Invitation, User, UserRole } from '../../core/identity.models';
+import { MetadataService } from '../../core/metadata.service';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
@@ -27,6 +28,10 @@ export class UsersAdmin {
   private readonly api = inject(IdentityApiService);
   private readonly session = inject(SessionService);
   private readonly confirmService = inject(ConfirmService);
+  private readonly metadata = inject(MetadataService);
+  protected readonly emailEnabled = computed(
+    () => this.metadata.settings()?.emailEnabled ?? false,
+  );
   protected readonly users = signal<User[]>([]);
   protected readonly invitations = signal<Invitation[]>([]);
   protected readonly issued = signal<CreatedInvitation | undefined>(undefined);

@@ -1672,6 +1672,7 @@
       "create": "Einladen",
       "tokenOnce": "Dieser Token und der Registrierungslink werden nur jetzt angezeigt. Speichern Sie beides, bevor Sie die Seite verlassen.",
       "copyLink": "Registrierungslink kopieren",
+      "emailed": "Wir versuchen, einen Registrierungslink an {{email}} zu senden. Falls er nicht ankommt, teile den Link unten.",
       "revoke": "Widerrufen",
       "revokeConfirm": "Einladung für {{email}} widerrufen?",
       "empty": "Keine Einladungen gefunden."
