@@ -505,6 +505,7 @@
       "columns": "Colonne",
       "exportCsv": "Esporta CSV"
     },
+    "history": {"title":"Cronologia delle transazioni","loading":"Caricamento della cronologia…","empty":"Nessuna cronologia.","loadError":"Impossibile caricare la cronologia della transazione.","operation":{"create":"Creata","update":"Aggiornata","delete":"Eliminata"},"source":{"manual":"Manuale","import":"Importazione","import_undo":"Annullamento importazione","recurring":"Ricorrente","loan":"Prestito","card":"Carta","investment":"Investimento","bulk":"Operazione di massa"},"field":{"type":"Tipo","date":"Data","amount":"Importo","currency":"Valuta","account_id":"Conto","to_account_id":"Conto di destinazione","category_id":"Categoria","description":"Descrizione","notes":"Note","recurring_rule_id":"Regola ricorrente","loan_id":"Prestito","card_invoice_close_date":"Data chiusura fattura","installment_group_id":"Gruppo rate","installment_number":"Numero rata","installment_count":"Numero rate","conversion_amount":"Importo convertito","conversion_currency":"Valuta di conversione","conversion_fee":"Commissione di conversione","conversion_rate":"Tasso di conversione","conversion_source":"Origine conversione"}},
     "tabs": {
       "transactions": "Transazioni",
       "recurring": "Ricorrenze"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Lotti di importazione","count":"{{count}} transazioni create","remaining":"{{count}} rimanenti","undo":"Annulla importazione","undoConfirm":"Annullare questo lotto di importazione? Verranno eliminate {{count}} transazioni rimanenti.","undoneEmpty":"Questo lotto non contiene transazioni rimanenti.","empty":"Nessun lotto di importazione.","undoSuccess":"Lotto di importazione annullato."},
       "title": "Importa transazioni",
       "description": "Carica un CSV esportato dalla tua banca, controlla ogni riga e conferma quelle da registrare.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Il file non contiene righe di dati.",
       "too_many_rows": "Il file contiene troppe righe da importare in una volta (limite 2000).",
       "column_required": "Associa le colonne data, descrizione e importo prima di continuare.",
+      "batch_modified": "Questo lotto di importazione è stato modificato dopo l’importazione e non può essere annullato.",
       "row": {
         "invalid_date": "Impossibile leggere questa data.",
         "invalid_amount": "Impossibile leggere questo importo.",

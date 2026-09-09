@@ -505,6 +505,7 @@
       "columns": "欄",
       "exportCsv": "匯出 CSV"
     },
+    "history": {"title":"交易歷史","loading":"正在載入歷史…","empty":"尚無歷史記錄。","loadError":"無法載入交易歷史。","operation":{"create":"已建立","update":"已更新","delete":"已刪除"},"source":{"manual":"手動","import":"匯入","import_undo":"復原匯入","recurring":"週期性","loan":"貸款","card":"卡片","investment":"投資","bulk":"批次"},"field":{"type":"類型","date":"日期","amount":"金額","currency":"貨幣","account_id":"帳戶","to_account_id":"目標帳戶","category_id":"類別","description":"描述","notes":"備註","recurring_rule_id":"週期性規則","loan_id":"貸款","card_invoice_close_date":"帳單結算日","installment_group_id":"分期群組","installment_number":"分期編號","installment_count":"分期數","conversion_amount":"換算金額","conversion_currency":"換算貨幣","conversion_fee":"換算費用","conversion_rate":"換算匯率","conversion_source":"換算來源"}},
     "tabs": {
       "transactions": "交易",
       "recurring": "週期性交易"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"匯入批次","count":"已建立 {{count}} 筆交易","remaining":"剩餘 {{count}} 筆","undo":"復原匯入","undoConfirm":"要復原此匯入批次嗎？將刪除剩餘的 {{count}} 筆交易。","undoneEmpty":"此批次沒有剩餘交易。","empty":"尚無匯入批次。","undoSuccess":"匯入批次已復原。"},
       "title": "匯入交易",
       "description": "上傳從銀行匯出的 CSV 檔案，檢查每一列，並確認要記錄的列。",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "檔案中沒有資料列。",
       "too_many_rows": "檔案列數過多，無法一次匯入（上限 2000 列）。",
       "column_required": "請在繼續之前對應日期、說明和金額欄位。",
+      "batch_modified": "此匯入批次在匯入後已變更，無法復原。",
       "row": {
         "invalid_date": "無法讀取此日期。",
         "invalid_amount": "無法讀取此金額。",

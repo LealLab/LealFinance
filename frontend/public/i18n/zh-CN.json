@@ -505,6 +505,7 @@
       "columns": "列",
       "exportCsv": "导出 CSV"
     },
+    "history": {"title":"交易历史","loading":"正在加载历史…","empty":"暂无历史记录。","loadError":"无法加载交易历史。","operation":{"create":"已创建","update":"已更新","delete":"已删除"},"source":{"manual":"手动","import":"导入","import_undo":"撤销导入","recurring":"重复","loan":"贷款","card":"卡片","investment":"投资","bulk":"批量"},"field":{"type":"类型","date":"日期","amount":"金额","currency":"货币","account_id":"账户","to_account_id":"目标账户","category_id":"分类","description":"描述","notes":"备注","recurring_rule_id":"重复规则","loan_id":"贷款","card_invoice_close_date":"账单结算日","installment_group_id":"分期组","installment_number":"分期编号","installment_count":"分期数","conversion_amount":"换算金额","conversion_currency":"换算货币","conversion_fee":"换算费用","conversion_rate":"换算汇率","conversion_source":"换算来源"}},
     "tabs": {
       "transactions": "交易",
       "recurring": "周期性"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"导入批次","count":"已创建 {{count}} 笔交易","remaining":"剩余 {{count}} 笔","undo":"撤销导入","undoConfirm":"要撤销此导入批次吗？将删除剩余的 {{count}} 笔交易。","undoneEmpty":"此批次没有剩余交易。","empty":"暂无导入批次。","undoSuccess":"导入批次已撤销。"},
       "title": "导入交易",
       "description": "上传从银行导出的 CSV 文件，检查每一行，并确认要记录的行。",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "文件中没有数据行。",
       "too_many_rows": "文件行数过多，无法一次性导入（限制 2000 行）。",
       "column_required": "请在继续之前匹配日期、描述和金额列。",
+      "batch_modified": "此导入批次在导入后发生了更改，无法撤销。",
       "row": {
         "invalid_date": "无法读取此日期。",
         "invalid_amount": "无法读取此金额。",

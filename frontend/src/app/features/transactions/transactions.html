@@ -201,6 +201,7 @@
         (pageChange)="setPage($event)"
         (pageSizeChange)="setPageSize($event)"
         (edit)="openEditTx($event)"
+        (viewHistory)="openHistory($event)"
         (remove)="deleteTx($event)"
         (columnMove)="prefs.moveColumn($event.column, $event.toIndex)"
         (columnResize)="prefs.setWidth($event.column, $event.width)"
@@ -334,6 +335,10 @@
     [categoryGroups]="categoryGroupsResource.value() ?? []"
     [institutions]="institutionsResource.value() ?? []"
     (saved)="onTxSaved()"
+  />
+  <app-transaction-history-modal
+    [(open)]="historyOpen"
+    [transactionId]="historyTx()?.id"
   />
   <app-recurring-rule-form-modal
     [(open)]="ruleFormOpen"

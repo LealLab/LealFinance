@@ -505,6 +505,7 @@
       "columns": "Kolonner",
       "exportCsv": "Eksportér CSV"
     },
+    "history": {"title":"Transaktionshistorik","loading":"Indlæser historik…","empty":"Ingen historik endnu.","loadError":"Transaktionshistorikken kunne ikke indlæses.","operation":{"create":"Oprettet","update":"Opdateret","delete":"Slettet"},"source":{"manual":"Manuel","import":"Import","import_undo":"Fortryd import","recurring":"Gentagelse","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massehandling"},"field":{"type":"Type","date":"Dato","amount":"Beløb","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivelse","notes":"Noter","recurring_rule_id":"Gentagelsesregel","loan_id":"Lån","card_invoice_close_date":"Fakturaperiodens slutdato","installment_group_id":"Afdragsgruppe","installment_number":"Afdragsnummer","installment_count":"Antal afdrag","conversion_amount":"Konverteret beløb","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsgebyr","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskilde"}},
     "tabs": {
       "transactions": "Transaktioner",
       "recurring": "Gentagne"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importpartier","count":"{{count}} transaktioner oprettet","remaining":"{{count}} tilbage","undo":"Fortryd import","undoConfirm":"Fortryd dette importparti? Det sletter {{count}} resterende transaktioner.","undoneEmpty":"Dette parti har ingen resterende transaktioner.","empty":"Ingen importpartier endnu.","undoSuccess":"Importpartiet er fortrudt."},
       "title": "Importér transaktioner",
       "description": "Upload en CSV-eksport fra din bank, gennemgå hver linje, og bekræft dem, du vil bogføre.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Filen indeholder ingen datalinjer.",
       "too_many_rows": "Filen indeholder for mange linjer til at importere på én gang (grænse på 2000).",
       "column_required": "Tilknyt kolonnerne dato, beskrivelse og beløb, før du fortsætter.",
+      "batch_modified": "Dette importparti blev ændret efter importen og kan ikke fortrydes.",
       "row": {
         "invalid_date": "Kunne ikke læse denne dato.",
         "invalid_amount": "Kunne ikke læse dette beløb.",

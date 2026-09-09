@@ -505,6 +505,7 @@
       "columns": "Coloane",
       "exportCsv": "Exportă CSV"
     },
+    "history": {"title":"Istoricul tranzacțiilor","loading":"Se încarcă istoricul…","empty":"Nu există încă istoric.","loadError":"Istoricul tranzacției nu a putut fi încărcat.","operation":{"create":"Creată","update":"Actualizată","delete":"Ștearsă"},"source":{"manual":"Manual","import":"Import","import_undo":"Anulare import","recurring":"Recurent","loan":"Împrumut","card":"Card","investment":"Investiție","bulk":"Operație în bloc"},"field":{"type":"Tip","date":"Data","amount":"Sumă","currency":"Monedă","account_id":"Cont","to_account_id":"Cont destinație","category_id":"Categorie","description":"Descriere","notes":"Note","recurring_rule_id":"Regulă recurentă","loan_id":"Împrumut","card_invoice_close_date":"Data închiderii facturii","installment_group_id":"Grup de rate","installment_number":"Numărul ratei","installment_count":"Număr de rate","conversion_amount":"Sumă convertită","conversion_currency":"Monedă de conversie","conversion_fee":"Comision de conversie","conversion_rate":"Curs de conversie","conversion_source":"Sursă conversie"}},
     "tabs": {
       "transactions": "Tranzacții",
       "recurring": "Recurente"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Loturi de import","count":"{{count}} tranzacții create","remaining":"{{count}} rămase","undo":"Anulează importul","undoConfirm":"Anulezi acest lot de import? Vor fi șterse {{count}} tranzacții rămase.","undoneEmpty":"Acest lot nu mai are tranzacții.","empty":"Nu există încă loturi de import.","undoSuccess":"Lotul de import a fost anulat."},
       "title": "Importă tranzacții",
       "description": "Încarcă un CSV exportat de la banca ta, verifică fiecare rând și confirmă-le pe cele de înregistrat.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Fișierul nu conține rânduri de date.",
       "too_many_rows": "Fișierul conține prea multe rânduri pentru a fi importate deodată (limită 2000).",
       "column_required": "Asociază coloanele dată, descriere și sumă înainte de a continua.",
+      "batch_modified": "Acest lot de import a fost modificat după import și nu poate fi anulat.",
       "row": {
         "invalid_date": "Această dată nu a putut fi citită.",
         "invalid_amount": "Această sumă nu a putut fi citită.",

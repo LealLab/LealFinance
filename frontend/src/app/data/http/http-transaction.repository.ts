@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { ApiClient, ApiQueryParams, Page } from '../../core/api-client';
 import { Transaction } from '../../domain/models/transaction';
+import { ImportBatch } from '../../domain/models/import-batch';
+import { TransactionHistoryEntry } from '../../domain/models/transaction-history';
 import {
   ImportPreview,
   ImportPreviewRequest,
@@ -12,12 +14,20 @@ import {
 import {
   mapImportPreview,
   mapImportPreviewRequest,
+  mapImportBatch,
+  mapTransactionHistory,
   mapTransaction,
   mapTransactionCreate,
   mapTransactionPatch,
 } from './mappers';
 import { notFoundOrThrow } from './repository-errors';
-import { ImportCommitWire, ImportPreviewWire, TransactionWire } from './wire-dtos';
+import {
+  ImportBatchWire,
+  ImportCommitWire,
+  ImportPreviewWire,
+  TransactionHistoryWire,
+  TransactionWire,
+} from './wire-dtos';
 
 @Injectable({ providedIn: 'root' })
 export class HttpTransactionRepository extends TransactionRepository {
@@ -96,5 +106,28 @@ export class HttpTransactionRepository extends TransactionRepository {
         items: items.map(mapTransactionCreate)
       })
       .pipe(map((wire) => wire.created));
+  }
+  history(id: string): Observable<TransactionHistoryEntry[]> {
+    return this.api.get<TransactionHistoryWire[]>(`/transactions/${id}/history`).pipe(
+      map((items) => items.map(mapTransactionHistory)),
+      catchError((e) =>
+        notFoundOrThrow<TransactionHistoryEntry[]>(e, 'transaction.not_found').pipe(
+          map((items) => items ?? []),
+        ),
+      ),
+    );
+  }
+  listImportBatches(): Observable<ImportBatch[]> {
+    return this.api
+      .get<ImportBatchWire[]>('/transactions/import/batches')
+      .pipe(map((items) => items.map(mapImportBatch)));
+  }
+  importBatchTransactions(batchId: string): Observable<Transaction[]> {
+    return this.api
+      .get<TransactionWire[]>(`/transactions/import/batches/${batchId}`)
+      .pipe(map((items) => items.map(mapTransaction)));
+  }
+  undoImportBatch(batchId: string): Observable<void> {
+    return this.api.delete(`/transactions/import/batches/${batchId}`);
   }
 }

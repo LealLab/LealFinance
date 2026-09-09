@@ -582,4 +582,56 @@
       </div>
     </div>
   }
+
+  <section class="import-batches mt-10 pt-6">
+    <div class="mb-3 flex items-center justify-between gap-3">
+      <h2 class="text-sm font-semibold text-content-primary">
+        {{ t('transactions.import.batches.title') }}
+      </h2>
+    </div>
+    @if (batchErrorKey(); as errorKey) {
+      <p class="mb-3 text-sm text-negative" role="alert">{{ t(errorKey) }}</p>
+    }
+    @if (batchesResource.status() === 'error') {
+      <app-load-error (retry)="batchesResource.reload()" [retrying]="batchesResource.isLoading()" />
+    } @else if (batchesResource.isLoading() && !batchesResource.value()) {
+      <p class="text-sm text-content-muted">{{ t('transactions.import.loading') }}</p>
+    } @else if ((batchesResource.value() ?? []).length === 0) {
+      <p class="text-sm text-content-muted">{{ t('transactions.import.batches.empty') }}</p>
+    } @else {
+      <div class="grid gap-3">
+        @for (batch of batchesResource.value() ?? []; track batch.id) {
+          <app-card>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <time class="text-xs text-content-subtle" [dateTime]="batch.createdAt">
+                  {{ batch.createdAt | date: 'medium' }}
+                </time>
+                <p class="mt-1 text-sm text-content-primary">
+                  {{ t('transactions.import.batches.count', { count: batch.createdCount }) }}
+                  ·
+                  {{ t('transactions.import.batches.remaining', { count: batch.remainingCount }) }}
+                </p>
+                @if (batch.remainingCount === 0) {
+                  <p class="mt-1 text-xs text-content-muted">
+                    {{ t('transactions.import.batches.undoneEmpty') }}
+                  </p>
+                }
+              </div>
+              <button
+                appButton
+                variant="secondary"
+                size="sm"
+                type="button"
+                [disabled]="batch.remainingCount === 0 || undoingBatchId() === batch.id"
+                (click)="undoBatch(batch)"
+              >
+                {{ t('transactions.import.batches.undo') }}
+              </button>
+            </div>
+          </app-card>
+        }
+      </div>
+    }
+  </section>
 </div>

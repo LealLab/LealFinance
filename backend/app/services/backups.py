@@ -39,6 +39,7 @@ from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
 from app.models.recurring import RecurringRule
 from app.models.transaction import Transaction
+from app.models.transaction_history import TransactionHistory
 from app.models.user import User
 from app.schemas.backup import (
     BackupExportResponse,
@@ -89,6 +90,8 @@ EXCLUDED_USER_OWNED_MODELS = {
     AgentConversation: "agent_conversations",
     AgentMessage: "agent_messages",
     ImportIdempotency: "import_idempotency",
+    # Audit rows are an append-only operational log, not restorable domain state.
+    TransactionHistory: "transaction_history",
 }
 
 _PREFERENCE_FIELDS = (

@@ -283,6 +283,10 @@ class StubTransactionRepository extends TransactionRepository {
     void _idempotencyKey;
     throw new Error('not used by this spec');
   }
+  history(): Observable<never> { throw new Error('not used by this spec'); }
+  listImportBatches(): Observable<never> { throw new Error('not used by this spec'); }
+  importBatchTransactions(): Observable<never> { throw new Error('not used by this spec'); }
+  undoImportBatch(): Observable<never> { throw new Error('not used by this spec'); }
 }
 
 class StubCategoryRepository extends CategoryRepository {

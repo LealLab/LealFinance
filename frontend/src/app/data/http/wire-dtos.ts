@@ -125,6 +125,24 @@ export interface TransactionWire {
   installment_count: number | null;
   conversion: ConversionWire | null;
 }
+
+export interface TransactionHistoryWire {
+  id: string;
+  transaction_id: string;
+  operation: 'create' | 'update' | 'delete';
+  source: string;
+  batch_id: string | null;
+  before: Record<string, string | number | null> | null;
+  after: Record<string, string | number | null> | null;
+  created_at: string;
+}
+
+export interface ImportBatchWire {
+  id: string;
+  created_at: string;
+  created_count: number;
+  remaining_count: number;
+}
 /** `installments` is create-only - it makes the backend write N rows. The
  * stored installment_* fields are read-only, so they're dropped from the
  * input/patch shapes. */

@@ -44,7 +44,7 @@ from app.models.transaction import (
 )
 from app.schemas.transaction import ConversionInput as ConversionInputSchema
 from app.schemas.transaction import TransactionCreate, TransactionUpdate
-from app.services import ownership
+from app.services import ownership, transaction_history
 from app.services.conversion import ConversionInput, resolve_conversion
 from app.services.currencies import get_active_currency
 from app.services.exchange_rates import get_exchange_rate, to_conversion_source
@@ -303,6 +303,8 @@ async def build_transaction(
     account_map: dict[UUID, Account] | None = None,
     category_map: dict[UUID, Category] | None = None,
     currency_map: dict[str, Currency] | None = None,
+    source: str = transaction_history.HISTORY_SOURCE_MANUAL,
+    batch_id: UUID | None = None,
 ) -> Transaction:
     """Validates and constructs a Transaction, adding it to the session -
     but does not commit. Shared by create_transaction (one row, commits
@@ -368,15 +370,27 @@ async def build_transaction(
         transaction.installment_count = loan.installment_count
     _apply_conversion(transaction, conversion)
     db.add(transaction)
+    transaction_history.record(
+        db,
+        user_id,
+        transaction,
+        operation=transaction_history.HISTORY_OPERATION_CREATE,
+        source=source,
+        batch_id=batch_id,
+    )
     return transaction
 
 
 async def create_transaction(
-    db: AsyncSession, user_id: UUID, data: TransactionCreate
+    db: AsyncSession,
+    user_id: UUID,
+    data: TransactionCreate,
+    *,
+    source: str = transaction_history.HISTORY_SOURCE_MANUAL,
 ) -> Transaction:
     if data.installments is not None:
         return await _create_installments(db, user_id, data)
-    transaction = await build_transaction(db, user_id, data)
+    transaction = await build_transaction(db, user_id, data, source=source)
     await db.commit()
     await db.refresh(transaction)
     return transaction
@@ -420,6 +434,7 @@ async def _create_installments(
                 description=data.description,
                 notes=data.notes,
             ),
+            source=transaction_history.HISTORY_SOURCE_CARD,
         )
         part.installment_group_id = group_id
         part.installment_number = k + 1
@@ -448,14 +463,13 @@ async def import_transactions(
     request_hash = hashlib.sha256(payload).hexdigest()
 
     try:
-        db.add(
-            ImportIdempotency(
-                user_id=user_id,
-                key=idempotency_key,
-                request_hash=request_hash,
-                created_count=len(items),
-            )
+        batch = ImportIdempotency(
+            user_id=user_id,
+            key=idempotency_key,
+            request_hash=request_hash,
+            created_count=len(items),
         )
+        db.add(batch)
         try:
             await db.flush()
         except IntegrityError as exc:
@@ -513,6 +527,8 @@ async def import_transactions(
                 account_map=account_map,
                 category_map=category_map,
                 currency_map=currency_map,
+                source=transaction_history.HISTORY_SOURCE_IMPORT,
+                batch_id=batch.id,
             )
     except Exception:
         await db.rollback()
@@ -525,6 +541,7 @@ async def update_transaction(
     db: AsyncSession, user_id: UUID, transaction_id: UUID, data: TransactionUpdate
 ) -> Transaction:
     transaction = await ownership.get_owned(db, Transaction, transaction_id, user_id)
+    before = transaction_history.snapshot(transaction)
     changes = data.model_dump(exclude_unset=True, exclude={"conversion"})
     conversion_provided = "conversion" in data.model_fields_set
 
@@ -610,6 +627,15 @@ async def update_transaction(
     for field, value in changes.items():
         setattr(transaction, field, value)
 
+    if changes or conversion_provided:
+        transaction_history.record(
+            db,
+            user_id,
+            transaction,
+            operation=transaction_history.HISTORY_OPERATION_UPDATE,
+            source=transaction_history.HISTORY_SOURCE_MANUAL,
+            before=before,
+        )
     await db.commit()
     await db.refresh(transaction)
     return transaction
@@ -617,7 +643,16 @@ async def update_transaction(
 
 async def delete_transaction(db: AsyncSession, user_id: UUID, transaction_id: UUID) -> None:
     transaction = await ownership.get_owned(db, Transaction, transaction_id, user_id)
+    before = transaction_history.snapshot(transaction)
     await db.delete(transaction)
+    transaction_history.record(
+        db,
+        user_id,
+        transaction,
+        operation=transaction_history.HISTORY_OPERATION_DELETE,
+        source=transaction_history.HISTORY_SOURCE_MANUAL,
+        before=before,
+    )
     await db.commit()
 
 
@@ -625,7 +660,19 @@ async def bulk_delete_transactions(db: AsyncSession, user_id: UUID, ids: Sequenc
     """All-or-nothing, same contract as import_transactions: one foreign or
     unknown id 404s (via get_many_owned) and nothing is deleted."""
     owned = await ownership.get_many_owned(db, Transaction, ids, user_id)
+    snapshots = {
+        transaction.id: transaction_history.snapshot(transaction) for transaction in owned.values()
+    }
     await db.execute(delete(Transaction).where(Transaction.id.in_(owned.keys())))
+    for transaction in owned.values():
+        transaction_history.record(
+            db,
+            user_id,
+            transaction,
+            operation=transaction_history.HISTORY_OPERATION_DELETE,
+            source=transaction_history.HISTORY_SOURCE_BULK,
+            before=snapshots[transaction.id],
+        )
     await db.commit()
 
 
@@ -661,6 +708,15 @@ async def bulk_categorize_transactions(
                 currency=transaction.currency,
                 category_id=category_id,
             )
+        before = transaction_history.snapshot(transaction)
         transaction.category_id = category_id
+        transaction_history.record(
+            db,
+            user_id,
+            transaction,
+            operation=transaction_history.HISTORY_OPERATION_UPDATE,
+            source=transaction_history.HISTORY_SOURCE_BULK,
+            before=before,
+        )
     await db.commit()
     return len(transactions)

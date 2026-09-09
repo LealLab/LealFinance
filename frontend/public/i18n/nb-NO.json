@@ -505,6 +505,7 @@
       "columns": "Kolonner",
       "exportCsv": "Eksporter CSV"
     },
+    "history": {"title":"Transaksjonshistorikk","loading":"Laster inn historikk…","empty":"Ingen historikk ennå.","loadError":"Kunne ikke laste inn transaksjonshistorikken.","operation":{"create":"Opprettet","update":"Oppdatert","delete":"Slettet"},"source":{"manual":"Manuell","import":"Import","import_undo":"Angre import","recurring":"Gjentakende","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massehandling"},"field":{"type":"Type","date":"Dato","amount":"Beløp","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivelse","notes":"Notater","recurring_rule_id":"Gjentakelsesregel","loan_id":"Lån","card_invoice_close_date":"Fakturaperiodens sluttdato","installment_group_id":"Avdragsgruppe","installment_number":"Avdragsnummer","installment_count":"Antall avdrag","conversion_amount":"Konvertert beløp","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsgebyr","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskilde"}},
     "tabs": {
       "transactions": "Transaksjoner",
       "recurring": "Gjentakende"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importpartier","count":"{{count}} transaksjoner opprettet","remaining":"{{count}} gjenstår","undo":"Angre import","undoConfirm":"Angre dette importpartiet? {{count}} gjenværende transaksjoner slettes.","undoneEmpty":"Dette partiet har ingen gjenværende transaksjoner.","empty":"Ingen importpartier ennå.","undoSuccess":"Importpartiet er angret."},
       "title": "Importer transaksjoner",
       "description": "Last opp en CSV-eksport fra banken din, gjennomgå hver rad, og bekreft dem du vil bokføre.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Filen inneholder ingen dataradrader.",
       "too_many_rows": "Filen inneholder for mange rader til å importeres på én gang (grense på 2000).",
       "column_required": "Koble kolonnene dato, beskrivelse og beløp før du fortsetter.",
+      "batch_modified": "Dette importpartiet ble endret etter importen og kan ikke angres.",
       "row": {
         "invalid_date": "Kunne ikke lese denne datoen.",
         "invalid_amount": "Kunne ikke lese dette beløpet.",

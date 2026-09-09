@@ -5,6 +5,8 @@ import {
   TransactionInstallmentOptions,
   TransactionType,
 } from '../domain/models/transaction';
+import { ImportBatch } from '../domain/models/import-batch';
+import { TransactionHistoryEntry } from '../domain/models/transaction-history';
 
 /** A create request: a transaction, plus the optional installment split. */
 export type TransactionCreateInput = Omit<Transaction, 'id'> & TransactionInstallmentOptions;
@@ -110,4 +112,8 @@ export abstract class TransactionRepository {
     items: readonly Omit<Transaction, 'id'>[],
     idempotencyKey: string
   ): Observable<number>;
+  abstract history(id: string): Observable<TransactionHistoryEntry[]>;
+  abstract listImportBatches(): Observable<ImportBatch[]>;
+  abstract importBatchTransactions(batchId: string): Observable<Transaction[]>;
+  abstract undoImportBatch(batchId: string): Observable<void>;
 }

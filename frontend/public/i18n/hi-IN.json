@@ -505,6 +505,7 @@
       "columns": "कॉलम",
       "exportCsv": "CSV निर्यात करें"
     },
+    "history": {"title":"लेन-देन का इतिहास","loading":"इतिहास लोड हो रहा है…","empty":"अभी कोई इतिहास नहीं है।","loadError":"लेन-देन का इतिहास लोड नहीं हो सका।","operation":{"create":"बनाया गया","update":"अपडेट किया गया","delete":"हटाया गया"},"source":{"manual":"मैनुअल","import":"आयात","import_undo":"आयात पूर्ववत करें","recurring":"आवर्ती","loan":"ऋण","card":"कार्ड","investment":"निवेश","bulk":"बल्क"},"field":{"type":"प्रकार","date":"तारीख","amount":"राशि","currency":"मुद्रा","account_id":"खाता","to_account_id":"गंतव्य खाता","category_id":"श्रेणी","description":"विवरण","notes":"नोट्स","recurring_rule_id":"आवर्ती नियम","loan_id":"ऋण","card_invoice_close_date":"इनवॉइस बंद होने की तारीख","installment_group_id":"किश्त समूह","installment_number":"किश्त संख्या","installment_count":"किश्तों की संख्या","conversion_amount":"परिवर्तित राशि","conversion_currency":"परिवर्तन मुद्रा","conversion_fee":"परिवर्तन शुल्क","conversion_rate":"परिवर्तन दर","conversion_source":"परिवर्तन स्रोत"}},
     "tabs": {
       "transactions": "लेन-देन",
       "recurring": "आवर्ती"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"आयात बैच","count":"{{count}} लेन-देन बनाए गए","remaining":"{{count}} शेष","undo":"आयात पूर्ववत करें","undoConfirm":"क्या यह आयात बैच पूर्ववत करना है? {{count}} शेष लेन-देन हटाए जाएंगे।","undoneEmpty":"इस बैच में कोई लेन-देन शेष नहीं है।","empty":"अभी कोई आयात बैच नहीं है।","undoSuccess":"आयात बैच पूर्ववत किया गया।"},
       "title": "लेन-देन आयात करें",
       "description": "अपने बैंक से निर्यात की गई CSV फ़ाइल अपलोड करें, हर पंक्ति की जाँच करें, और जिन्हें पोस्ट करना है उन्हें स्वीकृत करें।",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "फ़ाइल में कोई डेटा पंक्ति नहीं है।",
       "too_many_rows": "फ़ाइल में एक साथ आयात करने के लिए बहुत अधिक पंक्तियाँ हैं (2,000 सीमा)।",
       "column_required": "आगे बढ़ने से पहले तारीख़, विवरण और राशि कॉलम मिलाएँ।",
+      "batch_modified": "यह आयात बैच आयात के बाद बदला गया है और इसे पूर्ववत नहीं किया जा सकता।",
       "row": {
         "invalid_date": "यह तारीख़ पढ़ी नहीं जा सकी।",
         "invalid_amount": "यह राशि पढ़ी नहीं जा सकी।",

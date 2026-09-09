@@ -505,6 +505,7 @@
       "columns": "Columns",
       "exportCsv": "Export CSV"
     },
+    "history": {"title":"Transaction history","loading":"Loading history…","empty":"No history yet.","loadError":"Could not load transaction history.","operation":{"create":"Created","update":"Updated","delete":"Deleted"},"source":{"manual":"Manual","import":"Import","import_undo":"Import undo","recurring":"Recurring","loan":"Loan","card":"Card","investment":"Investment","bulk":"Bulk"},"field":{"type":"Type","date":"Date","amount":"Amount","currency":"Currency","account_id":"Account","to_account_id":"Destination account","category_id":"Category","description":"Description","notes":"Notes","recurring_rule_id":"Recurring rule","loan_id":"Loan","card_invoice_close_date":"Invoice close date","installment_group_id":"Installment group","installment_number":"Installment number","installment_count":"Installment count","conversion_amount":"Converted amount","conversion_currency":"Converted currency","conversion_fee":"Conversion fee","conversion_rate":"Conversion rate","conversion_source":"Conversion source"}},
     "tabs": {
       "transactions": "Transactions",
       "recurring": "Recurring"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Import batches","count":"{{count}} transactions","remaining":"{{count}} remaining","undo":"Undo import","undoConfirm":"Undo this import batch? This will remove {{count}} remaining transactions.","undoneEmpty":"This batch has no remaining transactions.","empty":"No import batches yet.","undoSuccess":"Import batch undone."},
       "title": "Import transactions",
       "description": "Upload a CSV export from your bank, review each row, and post the ones you confirm.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "The file has no data rows.",
       "too_many_rows": "The file has too many rows to import at once (2,000 limit).",
       "column_required": "Map the date, description, and amount columns before continuing.",
+      "batch_modified": "This import batch was changed after import and cannot be undone.",
       "row": {
         "invalid_date": "Couldn't read this date.",
         "invalid_amount": "Couldn't read this amount.",

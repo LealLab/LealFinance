@@ -311,7 +311,11 @@ async def record_payment(
         loan_id=loan.id,
     )
     transaction = await transactions_service.build_transaction(
-        db, user_id, payload, loan_installment_number=installment_number
+        db,
+        user_id,
+        payload,
+        loan_installment_number=installment_number,
+        source="loan",
     )
     await db.commit()
     await db.refresh(transaction)
@@ -385,6 +389,7 @@ async def advance_payments(
                 loan_id=loan.id,
             ),
             loan_installment_number=installment_number,
+            source="loan",
         )
         created.append(transaction)
 

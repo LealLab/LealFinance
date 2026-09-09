@@ -505,6 +505,7 @@
       "columns": "Columnas",
       "exportCsv": "Exportar CSV"
     },
+    "history": {"title":"Historial de transacciones","loading":"Cargando historial…","empty":"Aún no hay historial.","loadError":"No se pudo cargar el historial de la transacción.","operation":{"create":"Creada","update":"Actualizada","delete":"Eliminada"},"source":{"manual":"Manual","import":"Importación","import_undo":"Deshacer importación","recurring":"Recurrente","loan":"Préstamo","card":"Tarjeta","investment":"Inversión","bulk":"Masivo"},"field":{"type":"Tipo","date":"Fecha","amount":"Importe","currency":"Moneda","account_id":"Cuenta","to_account_id":"Cuenta de destino","category_id":"Categoría","description":"Descripción","notes":"Notas","recurring_rule_id":"Regla recurrente","loan_id":"Préstamo","card_invoice_close_date":"Fecha de cierre de factura","installment_group_id":"Grupo de cuotas","installment_number":"Número de cuota","installment_count":"Número de cuotas","conversion_amount":"Importe convertido","conversion_currency":"Moneda convertida","conversion_fee":"Comisión de conversión","conversion_rate":"Tipo de cambio","conversion_source":"Origen de conversión"}},
     "tabs": {
       "transactions": "Movimientos",
       "recurring": "Recurrentes"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Lotes de importación","count":"{{count}} transacciones creadas","remaining":"Quedan {{count}}","undo":"Deshacer importación","undoConfirm":"¿Deshacer este lote de importación? Se eliminarán {{count}} transacciones restantes.","undoneEmpty":"Este lote no tiene transacciones restantes.","empty":"Aún no hay lotes de importación.","undoSuccess":"Lote de importación deshecho."},
       "title": "Importar movimientos",
       "description": "Sube un CSV exportado de tu banco, revisa cada fila y confirma las que quieras registrar.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "El archivo no tiene filas de datos.",
       "too_many_rows": "El archivo tiene demasiadas filas para importar a la vez (límite de 2000).",
       "column_required": "Asocia las columnas de fecha, descripción e importe antes de continuar.",
+      "batch_modified": "Este lote de importación cambió después de importarse y no se puede deshacer.",
       "row": {
         "invalid_date": "No se pudo leer esta fecha.",
         "invalid_amount": "No se pudo leer este importe.",

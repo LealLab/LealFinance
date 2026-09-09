@@ -505,6 +505,7 @@
       "columns": "Colonnes",
       "exportCsv": "Exporter en CSV"
     },
+    "history": {"title":"Historique des transactions","loading":"Chargement de l’historique…","empty":"Aucun historique pour le moment.","loadError":"Impossible de charger l’historique de la transaction.","operation":{"create":"Créée","update":"Modifiée","delete":"Supprimée"},"source":{"manual":"Manuelle","import":"Importation","import_undo":"Annulation de l’importation","recurring":"Récurrente","loan":"Prêt","card":"Carte","investment":"Investissement","bulk":"Action groupée"},"field":{"type":"Type","date":"Date","amount":"Montant","currency":"Devise","account_id":"Compte","to_account_id":"Compte destinataire","category_id":"Catégorie","description":"Description","notes":"Notes","recurring_rule_id":"Règle récurrente","loan_id":"Prêt","card_invoice_close_date":"Date de clôture de facture","installment_group_id":"Groupe d’échéances","installment_number":"Numéro d’échéance","installment_count":"Nombre d’échéances","conversion_amount":"Montant converti","conversion_currency":"Devise convertie","conversion_fee":"Frais de conversion","conversion_rate":"Taux de conversion","conversion_source":"Source de conversion"}},
     "tabs": {
       "transactions": "Opérations",
       "recurring": "Récurrences"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Lots d’importation","count":"{{count}} transactions créées","remaining":"{{count}} restantes","undo":"Annuler l’importation","undoConfirm":"Annuler ce lot d’importation ? {{count}} transactions restantes seront supprimées.","undoneEmpty":"Ce lot ne contient plus de transactions.","empty":"Aucun lot d’importation pour le moment.","undoSuccess":"Lot d’importation annulé."},
       "title": "Importer des opérations",
       "description": "Importez un CSV exporté de votre banque, vérifiez chaque ligne et validez celles que vous confirmez.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Le fichier ne contient aucune ligne de données.",
       "too_many_rows": "Le fichier contient trop de lignes pour être importé en une fois (limite de 2000).",
       "column_required": "Associez les colonnes date, description et montant avant de continuer.",
+      "batch_modified": "Ce lot d’importation a été modifié après l’importation et ne peut pas être annulé.",
       "row": {
         "invalid_date": "Impossible de lire cette date.",
         "invalid_amount": "Impossible de lire ce montant.",

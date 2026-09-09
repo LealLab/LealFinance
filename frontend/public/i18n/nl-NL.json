@@ -505,6 +505,7 @@
       "columns": "Kolommen",
       "exportCsv": "CSV exporteren"
     },
+    "history": {"title":"Transactiegeschiedenis","loading":"Geschiedenis laden…","empty":"Nog geen geschiedenis.","loadError":"De transactiegeschiedenis kon niet worden geladen.","operation":{"create":"Aangemaakt","update":"Bijgewerkt","delete":"Verwijderd"},"source":{"manual":"Handmatig","import":"Import","import_undo":"Import ongedaan maken","recurring":"Terugkerend","loan":"Lening","card":"Kaart","investment":"Belegging","bulk":"Bulk"},"field":{"type":"Type","date":"Datum","amount":"Bedrag","currency":"Valuta","account_id":"Rekening","to_account_id":"Doelrekening","category_id":"Categorie","description":"Beschrijving","notes":"Notities","recurring_rule_id":"Terugkerende regel","loan_id":"Lening","card_invoice_close_date":"Sluitingsdatum factuur","installment_group_id":"Termijngroep","installment_number":"Termijnnummer","installment_count":"Aantal termijnen","conversion_amount":"Omgerekend bedrag","conversion_currency":"Conversievaluta","conversion_fee":"Conversiekosten","conversion_rate":"Conversiekoers","conversion_source":"Conversiebron"}},
     "tabs": {
       "transactions": "Transacties",
       "recurring": "Terugkerend"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importbatches","count":"{{count}} transacties aangemaakt","remaining":"{{count}} resterend","undo":"Import ongedaan maken","undoConfirm":"Deze importbatch ongedaan maken? {{count}} resterende transacties worden verwijderd.","undoneEmpty":"Deze batch bevat geen resterende transacties.","empty":"Nog geen importbatches.","undoSuccess":"Importbatch ongedaan gemaakt."},
       "title": "Transacties importeren",
       "description": "Upload een CSV-export van je bank, controleer elke regel en bevestig welke je wilt boeken.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Het bestand bevat geen gegevensregels.",
       "too_many_rows": "Het bestand bevat te veel regels om in één keer te importeren (limiet 2000).",
       "column_required": "Koppel de kolommen datum, omschrijving en bedrag voordat je verdergaat.",
+      "batch_modified": "Deze importbatch is na het importeren gewijzigd en kan niet ongedaan worden gemaakt.",
       "row": {
         "invalid_date": "Deze datum kon niet worden gelezen.",
         "invalid_amount": "Dit bedrag kon niet worden gelezen.",

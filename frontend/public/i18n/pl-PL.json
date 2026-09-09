@@ -505,6 +505,7 @@
       "columns": "Kolumny",
       "exportCsv": "Eksportuj CSV"
     },
+    "history": {"title":"Historia transakcji","loading":"Ładowanie historii…","empty":"Brak historii.","loadError":"Nie udało się wczytać historii transakcji.","operation":{"create":"Utworzono","update":"Zaktualizowano","delete":"Usunięto"},"source":{"manual":"Ręcznie","import":"Import","import_undo":"Cofnięcie importu","recurring":"Cykliczne","loan":"Pożyczka","card":"Karta","investment":"Inwestycja","bulk":"Zbiorcza"},"field":{"type":"Typ","date":"Data","amount":"Kwota","currency":"Waluta","account_id":"Konto","to_account_id":"Konto docelowe","category_id":"Kategoria","description":"Opis","notes":"Notatki","recurring_rule_id":"Reguła cykliczna","loan_id":"Pożyczka","card_invoice_close_date":"Data zamknięcia faktury","installment_group_id":"Grupa rat","installment_number":"Numer raty","installment_count":"Liczba rat","conversion_amount":"Kwota po przeliczeniu","conversion_currency":"Waluta przeliczenia","conversion_fee":"Opłata za przeliczenie","conversion_rate":"Kurs przeliczenia","conversion_source":"Źródło przeliczenia"}},
     "tabs": {
       "transactions": "Transakcje",
       "recurring": "Cykliczne"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Pakiety importu","count":"Utworzono {{count}} transakcji","remaining":"Pozostało {{count}}","undo":"Cofnij import","undoConfirm":"Cofnąć ten pakiet importu? Zostanie usuniętych {{count}} pozostałych transakcji.","undoneEmpty":"W tym pakiecie nie ma pozostałych transakcji.","empty":"Brak pakietów importu.","undoSuccess":"Pakiet importu cofnięty."},
       "title": "Importuj transakcje",
       "description": "Prześlij plik CSV wyeksportowany z banku, sprawdź każdy wiersz i zatwierdź te, które chcesz zaksięgować.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Plik nie zawiera wierszy danych.",
       "too_many_rows": "Plik zawiera zbyt wiele wierszy do zaimportowania naraz (limit 2000).",
       "column_required": "Dopasuj kolumny daty, opisu i kwoty przed kontynuowaniem.",
+      "batch_modified": "Ten pakiet importu został zmieniony po imporcie i nie można go cofnąć.",
       "row": {
         "invalid_date": "Nie udało się odczytać tej daty.",
         "invalid_amount": "Nie udało się odczytać tej kwoty.",

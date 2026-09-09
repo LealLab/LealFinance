@@ -30,6 +30,7 @@ from app.models.manual_rate import ManualRate
 from app.models.recurring import RecurringRule
 from app.models.totp import TotpBackupCode, TrustedDevice
 from app.models.transaction import Transaction
+from app.models.transaction_history import TransactionHistory
 from app.models.user import Invitation, Session, User
 from app.models.webauthn import WebAuthnChallenge, WebAuthnCredential
 
@@ -62,6 +63,7 @@ __all__ = [
     "Session",
     "TotpBackupCode",
     "Transaction",
+    "TransactionHistory",
     "TrustedDevice",
     "User",
     "WebAuthnChallenge",

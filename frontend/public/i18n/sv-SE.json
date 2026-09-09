@@ -505,6 +505,7 @@
       "columns": "Kolumner",
       "exportCsv": "Exportera CSV"
     },
+    "history": {"title":"Transaktionshistorik","loading":"Läser in historik…","empty":"Ingen historik ännu.","loadError":"Det gick inte att läsa in transaktionshistoriken.","operation":{"create":"Skapad","update":"Uppdaterad","delete":"Borttagen"},"source":{"manual":"Manuell","import":"Import","import_undo":"Ångra import","recurring":"Återkommande","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massåtgärd"},"field":{"type":"Typ","date":"Datum","amount":"Belopp","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivning","notes":"Anteckningar","recurring_rule_id":"Återkommande regel","loan_id":"Lån","card_invoice_close_date":"Fakturans stängningsdatum","installment_group_id":"Avbetalningsgrupp","installment_number":"Avbetalningsnummer","installment_count":"Antal avbetalningar","conversion_amount":"Konverterat belopp","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsavgift","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskälla"}},
     "tabs": {
       "transactions": "Transaktioner",
       "recurring": "Återkommande"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importbatcher","count":"{{count}} transaktioner skapade","remaining":"{{count}} återstår","undo":"Ångra import","undoConfirm":"Ångra denna importbatch? {{count}} återstående transaktioner tas bort.","undoneEmpty":"Den här batchen har inga återstående transaktioner.","empty":"Inga importbatcher ännu.","undoSuccess":"Importbatchen har ångrats."},
       "title": "Importera transaktioner",
       "description": "Ladda upp en CSV-export från din bank, granska varje rad och bekräfta de du vill bokföra.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Filen innehåller inga dataraderrader.",
       "too_many_rows": "Filen innehåller för många rader för att importeras på en gång (gräns 2000).",
       "column_required": "Koppla kolumnerna datum, beskrivning och belopp innan du fortsätter.",
+      "batch_modified": "Den här importbatchen ändrades efter importen och kan inte ångras.",
       "row": {
         "invalid_date": "Det gick inte att läsa det här datumet.",
         "invalid_amount": "Det gick inte att läsa det här beloppet.",

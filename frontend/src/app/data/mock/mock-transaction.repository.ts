@@ -8,6 +8,8 @@ import {
 } from '../transaction.repository';
 import { Page } from '../../core/api-client';
 import { Transaction } from '../../domain/models/transaction';
+import { ImportBatch } from '../../domain/models/import-batch';
+import { TransactionHistoryEntry } from '../../domain/models/transaction-history';
 import { addMonthsClamped, formatIsoDate, parseIsoDate } from '../../domain/calc/dates';
 import { compare, money } from '../../shared/money/money';
 import { MOCK_LATENCY_MS } from './mock-latency';
@@ -174,5 +176,24 @@ export class MockTransactionRepository extends TransactionRepository {
       for (const item of items) this.store.createTransaction(item);
       return items.length;
     }, this.latencyMs);
+  }
+
+  history(id: string): Observable<TransactionHistoryEntry[]> {
+    void id;
+    return mockResult(() => [], this.latencyMs);
+  }
+
+  listImportBatches(): Observable<ImportBatch[]> {
+    return mockResult(() => [], this.latencyMs);
+  }
+
+  importBatchTransactions(batchId: string): Observable<Transaction[]> {
+    void batchId;
+    return mockResult(() => [], this.latencyMs);
+  }
+
+  undoImportBatch(batchId: string): Observable<void> {
+    void batchId;
+    return mockResult(() => undefined, this.latencyMs);
   }
 }

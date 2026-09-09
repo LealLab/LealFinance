@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -15,11 +16,13 @@ import { CategoryRepository } from '../../../data/category.repository';
 import { InstitutionRepository } from '../../../data/institution.repository';
 import { ImportOptions, TransactionRepository } from '../../../data/transaction.repository';
 import { Category } from '../../../domain/models/category';
+import { ImportBatch } from '../../../domain/models/import-batch';
 import { Transaction, TransactionType } from '../../../domain/models/transaction';
 import { groupCategoriesByGroup } from '../category-grouping';
 import { Button } from '../../../shared/ui/button/button';
 import { Card } from '../../../shared/ui/card/card';
 import { Icon } from '../../../shared/ui/icon/icon';
+import { LoadError } from '../../../shared/ui/load-error/load-error';
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
 import { DEFAULT_COLOR, DEFAULT_ICON } from '../../categories/category-form-modal';
 import { groupAccountsByInstitution } from '../../accounts/institution-grouping';
@@ -84,8 +87,9 @@ const ROW_TYPES: readonly RowType[] = ['expense', 'income', 'transfer'];
  */
 @Component({
   selector: 'app-transaction-import',
-  imports: [TranslocoDirective, Button, Card, Icon, PageHeader],
+  imports: [TranslocoDirective, DatePipe, Button, Card, Icon, LoadError, PageHeader],
   templateUrl: './transaction-import.html',
+  styleUrl: './transaction-import.scss',
 })
 export class TransactionImport {
   private readonly transactionRepository = inject(TransactionRepository);
@@ -110,6 +114,9 @@ export class TransactionImport {
   protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly institutionsResource = rxResource({
     stream: () => this.institutionRepository.list()
+  });
+  protected readonly batchesResource = rxResource({
+    stream: () => this.transactionRepository.listImportBatches()
   });
 
   /** <optgroup>-per-institution for the account select - same helper the
@@ -153,6 +160,8 @@ export class TransactionImport {
   /** Running total posted from this file so far - the page stays open after a
    * commit so the remaining rows can be imported in later batches. */
   protected readonly importedCount = signal(0);
+  protected readonly batchErrorKey = signal<string | undefined>(undefined);
+  protected readonly undoingBatchId = signal<string | undefined>(undefined);
 
   protected readonly suggesting = signal(false);
   protected readonly creatingCategories = signal(false);
@@ -627,6 +636,7 @@ export class TransactionImport {
         this.importing.set(false);
         this.importKey = null;
         this.importedCount.update((total) => total + items.length);
+        this.batchesResource.reload();
         // Drop only the rows just posted; the rest stay for another batch.
         this.rows.update((rows) => rows.filter((row) => !importedIndices.has(row.index)));
       },
@@ -634,6 +644,33 @@ export class TransactionImport {
         this.importing.set(false);
         this.mutationErrors.show();
       }
+    });
+  }
+
+  protected async undoBatch(batch: ImportBatch): Promise<void> {
+    const confirmed = await this.confirmService.confirm(
+      'transactions.import.batches.undo',
+      'transactions.import.batches.undoConfirm',
+      'danger',
+      { count: batch.remainingCount },
+    );
+    if (!confirmed) return;
+    this.batchErrorKey.set(undefined);
+    this.undoingBatchId.set(batch.id);
+    this.transactionRepository.undoImportBatch(batch.id).subscribe({
+      next: () => {
+        this.undoingBatchId.set(undefined);
+        this.batchesResource.reload();
+        this.batchErrorKey.set('transactions.import.batches.undoSuccess');
+      },
+      error: (error: unknown) => {
+        this.undoingBatchId.set(undefined);
+        if (error instanceof ApiError && error.code === 'import.batch_modified') {
+          this.batchErrorKey.set('errors.import.batch_modified');
+        } else {
+          this.mutationErrors.show();
+        }
+      },
     });
   }
 

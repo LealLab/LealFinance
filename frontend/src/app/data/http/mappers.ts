@@ -19,6 +19,7 @@ import type { CategoryGroup } from '../../domain/models/category-group';
 import type { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
+import type { ImportBatch } from '../../domain/models/import-batch';
 import type { Loan } from '../../domain/models/loan';
 import type {
   InvestmentAsset,
@@ -30,6 +31,10 @@ import type {
 import type { ManualRate } from '../../domain/models/manual-rate';
 import type { MarketDataCredentialStatus } from '../../domain/models/market-data-credential';
 import type { RecurringRule } from '../../domain/models/recurring';
+import type {
+  TransactionHistoryEntry,
+  TransactionSnapshot,
+} from '../../domain/models/transaction-history';
 import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
 import type {
   InvestmentWalletCreate,
@@ -93,6 +98,7 @@ import type {
   InvestmentWalletPatchWire,
   InvestmentWalletWire,
   ImportOptionsWire,
+  ImportBatchWire,
   ImportPreviewRequestWire,
   ImportPreviewWire,
   InstitutionInputWire,
@@ -107,6 +113,7 @@ import type {
   RuleImportItemWire,
   RulePackWire,
   TransactionInputWire,
+  TransactionHistoryWire,
   TransactionPatchWire,
   TransactionWire,
 } from './wire-dtos';
@@ -333,6 +340,33 @@ export const mapTransaction = (wire: TransactionWire): Transaction => ({
   installmentNumber: wire.installment_number ?? undefined,
   installmentCount: wire.installment_count ?? undefined,
   conversion: wire.conversion ? mapConversion(wire.conversion) : undefined,
+});
+
+const mapSnapshot = (
+  snapshot: Record<string, string | number | null> | null,
+): TransactionSnapshot | undefined =>
+  snapshot
+    ? Object.fromEntries(
+        Object.entries(snapshot).map(([key, value]) => [key, value === null ? null : String(value)]),
+      )
+    : undefined;
+
+export const mapTransactionHistory = (wire: TransactionHistoryWire): TransactionHistoryEntry => ({
+  id: wire.id,
+  transactionId: wire.transaction_id,
+  operation: wire.operation,
+  source: wire.source,
+  batchId: wire.batch_id ?? undefined,
+  before: mapSnapshot(wire.before),
+  after: mapSnapshot(wire.after),
+  createdAt: wire.created_at,
+});
+
+export const mapImportBatch = (wire: ImportBatchWire): ImportBatch => ({
+  id: wire.id,
+  createdAt: wire.created_at,
+  createdCount: wire.created_count,
+  remainingCount: wire.remaining_count,
 });
 export const mapTransactionCreate = (
   input: Omit<Transaction, 'id'> & { installments?: number },

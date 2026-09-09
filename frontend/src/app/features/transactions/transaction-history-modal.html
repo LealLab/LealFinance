@@ -1,0 +1,44 @@
+<div *transloco="let t">
+  <app-modal [(open)]="open" [titleText]="t('transactions.history.title')">
+    @if (historyResource.status() === 'error') {
+      <app-load-error
+        messageKey="transactions.history.loadError"
+        (retry)="historyResource.reload()"
+        [retrying]="historyResource.isLoading()"
+      />
+    } @else if (historyResource.isLoading()) {
+      <p class="text-sm text-content-muted">{{ t('transactions.history.loading') }}</p>
+    } @else if (entries().length === 0) {
+      <p class="text-sm text-content-muted">{{ t('transactions.history.empty') }}</p>
+    } @else {
+      <ol class="history-list">
+        @for (entry of entries(); track entry.id) {
+          <li class="history-entry">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-sm font-medium text-content-primary">
+                <!-- Dynamic keys are listed in the component marker above. -->
+                {{ t('transactions.history.operation.' + entry.operation) }}
+                <span class="text-content-muted">· {{ t('transactions.history.source.' + entry.source) }}</span>
+              </span>
+              <time class="text-xs text-content-subtle" [dateTime]="entry.createdAt">
+                {{ entry.createdAt | date: 'medium' }}
+              </time>
+            </div>
+            @if (entry.operation === 'update') {
+              <dl class="mt-3 space-y-2 text-xs">
+                @for (diff of diffFor(entry); track diff.field) {
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto_auto] items-baseline gap-2">
+                    <!-- Dynamic field keys are listed in the component marker above. -->
+                    <dt class="text-content-muted">{{ t('transactions.history.field.' + diff.field) }}</dt>
+                    <dd class="text-content-subtle">{{ diff.before ?? '—' }}</dd>
+                    <dd class="font-medium text-content-primary">{{ diff.after ?? '—' }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+          </li>
+        }
+      </ol>
+    }
+  </app-modal>
+</div>

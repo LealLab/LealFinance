@@ -505,6 +505,7 @@
       "columns": "עמודות",
       "exportCsv": "ייצוא CSV"
     },
+    "history": {"title":"היסטוריית עסקאות","loading":"טוען היסטוריה…","empty":"אין היסטוריה עדיין.","loadError":"לא ניתן לטעון את היסטוריית העסקה.","operation":{"create":"נוצרה","update":"עודכנה","delete":"נמחקה"},"source":{"manual":"ידני","import":"ייבוא","import_undo":"ביטול ייבוא","recurring":"מחזורי","loan":"הלוואה","card":"כרטיס","investment":"השקעה","bulk":"פעולה מרוכזת"},"field":{"type":"סוג","date":"תאריך","amount":"סכום","currency":"מטבע","account_id":"חשבון","to_account_id":"חשבון יעד","category_id":"קטגוריה","description":"תיאור","notes":"הערות","recurring_rule_id":"כלל מחזורי","loan_id":"הלוואה","card_invoice_close_date":"תאריך סגירת חשבונית","installment_group_id":"קבוצת תשלומים","installment_number":"מספר תשלום","installment_count":"מספר תשלומים","conversion_amount":"סכום מומר","conversion_currency":"מטבע המרה","conversion_fee":"עמלת המרה","conversion_rate":"שער המרה","conversion_source":"מקור המרה"}},
     "tabs": {
       "transactions": "תנועות",
       "recurring": "חוזרות"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"אצוות ייבוא","count":"נוצרו {{count}} עסקאות","remaining":"נותרו {{count}}","undo":"ביטול ייבוא","undoConfirm":"לבטל את אצוות הייבוא הזו? {{count}} העסקאות שנותרו יימחקו.","undoneEmpty":"באצווה הזו לא נותרו עסקאות.","empty":"אין אצוות ייבוא עדיין.","undoSuccess":"אצוות הייבוא בוטלה."},
       "title": "ייבוא תנועות",
       "description": "העלה קובץ CSV שיוצא מהבנק שלך, בדוק כל שורה ואשר את אלו שברצונך לרשום.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "הקובץ אינו מכיל שורות נתונים.",
       "too_many_rows": "הקובץ מכיל יותר מדי שורות לייבוא בבת אחת (מגבלה של 2000).",
       "column_required": "התאם את עמודות התאריך, התיאור והסכום לפני שתמשיך.",
+      "batch_modified": "אצוות הייבוא הזו שונתה לאחר הייבוא ולכן אי אפשר לבטל אותה.",
       "row": {
         "invalid_date": "לא ניתן לקרוא את התאריך הזה.",
         "invalid_amount": "לא ניתן לקרוא את הסכום הזה.",

@@ -505,6 +505,7 @@
       "columns": "Cột",
       "exportCsv": "Xuất CSV"
     },
+    "history": {"title":"Lịch sử giao dịch","loading":"Đang tải lịch sử…","empty":"Chưa có lịch sử.","loadError":"Không thể tải lịch sử giao dịch.","operation":{"create":"Đã tạo","update":"Đã cập nhật","delete":"Đã xóa"},"source":{"manual":"Thủ công","import":"Nhập","import_undo":"Hoàn tác nhập","recurring":"Định kỳ","loan":"Khoản vay","card":"Thẻ","investment":"Đầu tư","bulk":"Hàng loạt"},"field":{"type":"Loại","date":"Ngày","amount":"Số tiền","currency":"Tiền tệ","account_id":"Tài khoản","to_account_id":"Tài khoản đích","category_id":"Danh mục","description":"Mô tả","notes":"Ghi chú","recurring_rule_id":"Quy tắc định kỳ","loan_id":"Khoản vay","card_invoice_close_date":"Ngày đóng hóa đơn","installment_group_id":"Nhóm trả góp","installment_number":"Số kỳ","installment_count":"Số kỳ trả góp","conversion_amount":"Số tiền đã quy đổi","conversion_currency":"Tiền tệ quy đổi","conversion_fee":"Phí quy đổi","conversion_rate":"Tỷ giá quy đổi","conversion_source":"Nguồn quy đổi"}},
     "tabs": {
       "transactions": "Giao dịch",
       "recurring": "Giao dịch định kỳ"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Lô nhập","count":"Đã tạo {{count}} giao dịch","remaining":"Còn {{count}}","undo":"Hoàn tác nhập","undoConfirm":"Hoàn tác lô nhập này? {{count}} giao dịch còn lại sẽ bị xóa.","undoneEmpty":"Lô này không còn giao dịch.","empty":"Chưa có lô nhập nào.","undoSuccess":"Đã hoàn tác lô nhập."},
       "title": "Nhập giao dịch",
       "description": "Tải lên tệp CSV xuất từ ngân hàng của bạn, xem lại từng dòng và xác nhận những dòng bạn muốn ghi sổ.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Tệp không có dòng dữ liệu nào.",
       "too_many_rows": "Tệp có quá nhiều dòng để nhập cùng lúc (giới hạn 2.000).",
       "column_required": "Khớp các cột ngày, mô tả và số tiền trước khi tiếp tục.",
+      "batch_modified": "Lô nhập này đã bị thay đổi sau khi nhập nên không thể hoàn tác.",
       "row": {
         "invalid_date": "Không thể đọc ngày này.",
         "invalid_amount": "Không thể đọc số tiền này.",

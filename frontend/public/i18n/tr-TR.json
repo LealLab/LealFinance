@@ -505,6 +505,7 @@
       "columns": "Sütunlar",
       "exportCsv": "CSV'yi dışa aktar"
     },
+    "history": {"title":"İşlem geçmişi","loading":"Geçmiş yükleniyor…","empty":"Henüz geçmiş yok.","loadError":"İşlem geçmişi yüklenemedi.","operation":{"create":"Oluşturuldu","update":"Güncellendi","delete":"Silindi"},"source":{"manual":"Manuel","import":"İçe aktarma","import_undo":"İçe aktarmayı geri al","recurring":"Tekrarlayan","loan":"Kredi","card":"Kart","investment":"Yatırım","bulk":"Toplu"},"field":{"type":"Tür","date":"Tarih","amount":"Tutar","currency":"Para birimi","account_id":"Hesap","to_account_id":"Hedef hesap","category_id":"Kategori","description":"Açıklama","notes":"Notlar","recurring_rule_id":"Tekrarlayan kural","loan_id":"Kredi","card_invoice_close_date":"Fatura kapanış tarihi","installment_group_id":"Taksit grubu","installment_number":"Taksit numarası","installment_count":"Taksit sayısı","conversion_amount":"Dönüştürülen tutar","conversion_currency":"Dönüşüm para birimi","conversion_fee":"Dönüşüm ücreti","conversion_rate":"Dönüşüm kuru","conversion_source":"Dönüşüm kaynağı"}},
     "tabs": {
       "transactions": "İşlemler",
       "recurring": "Tekrarlayan"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"İçe aktarma grupları","count":"{{count}} işlem oluşturuldu","remaining":"{{count}} kaldı","undo":"İçe aktarmayı geri al","undoConfirm":"Bu içe aktarma grubunu geri al? Kalan {{count}} işlem silinecek.","undoneEmpty":"Bu grupta kalan işlem yok.","empty":"Henüz içe aktarma grubu yok.","undoSuccess":"İçe aktarma grubu geri alındı."},
       "title": "İşlemleri içe aktar",
       "description": "Bankandan aldığın CSV dışa aktarımını yükle, her satırı incele ve onayladıklarını kaydet.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Dosyada veri satırı yok.",
       "too_many_rows": "Dosyada bir seferde içe aktarılamayacak kadar çok satır var (2000 sınırı).",
       "column_required": "Devam etmeden önce tarih, açıklama ve tutar sütunlarını eşleştir.",
+      "batch_modified": "Bu içe aktarma grubu içe aktarımdan sonra değiştirildi ve geri alınamaz.",
       "row": {
         "invalid_date": "Bu tarih okunamadı.",
         "invalid_amount": "Bu tutar okunamadı.",

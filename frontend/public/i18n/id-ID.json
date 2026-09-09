@@ -505,6 +505,7 @@
       "columns": "Kolom",
       "exportCsv": "Ekspor CSV"
     },
+    "history": {"title":"Riwayat transaksi","loading":"Memuat riwayat…","empty":"Belum ada riwayat.","loadError":"Riwayat transaksi tidak dapat dimuat.","operation":{"create":"Dibuat","update":"Diperbarui","delete":"Dihapus"},"source":{"manual":"Manual","import":"Impor","import_undo":"Batalkan impor","recurring":"Berulang","loan":"Pinjaman","card":"Kartu","investment":"Investasi","bulk":"Massal"},"field":{"type":"Jenis","date":"Tanggal","amount":"Jumlah","currency":"Mata uang","account_id":"Akun","to_account_id":"Akun tujuan","category_id":"Kategori","description":"Deskripsi","notes":"Catatan","recurring_rule_id":"Aturan berulang","loan_id":"Pinjaman","card_invoice_close_date":"Tanggal penutupan faktur","installment_group_id":"Grup cicilan","installment_number":"Nomor cicilan","installment_count":"Jumlah cicilan","conversion_amount":"Jumlah hasil konversi","conversion_currency":"Mata uang konversi","conversion_fee":"Biaya konversi","conversion_rate":"Nilai tukar","conversion_source":"Sumber konversi"}},
     "tabs": {
       "transactions": "Transaksi",
       "recurring": "Berulang"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Batch impor","count":"{{count}} transaksi dibuat","remaining":"{{count}} tersisa","undo":"Batalkan impor","undoConfirm":"Batalkan batch impor ini? {{count}} transaksi yang tersisa akan dihapus.","undoneEmpty":"Tidak ada transaksi tersisa dalam batch ini.","empty":"Belum ada batch impor.","undoSuccess":"Batch impor dibatalkan."},
       "title": "Impor transaksi",
       "description": "Unggah ekspor CSV dari bank Anda, tinjau setiap baris, dan konfirmasi baris yang ingin Anda catat.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Berkas tidak memiliki baris data.",
       "too_many_rows": "Berkas memiliki terlalu banyak baris untuk diimpor sekaligus (batas 2000).",
       "column_required": "Cocokkan kolom tanggal, deskripsi, dan jumlah sebelum melanjutkan.",
+      "batch_modified": "Batch impor ini diubah setelah impor dan tidak dapat dibatalkan.",
       "row": {
         "invalid_date": "Tanggal ini tidak dapat dibaca.",
         "invalid_amount": "Jumlah ini tidak dapat dibaca.",

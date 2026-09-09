@@ -505,6 +505,7 @@
       "columns": "列",
       "exportCsv": "CSVを書き出す"
     },
+    "history": {"title":"取引履歴","loading":"履歴を読み込み中…","empty":"履歴はまだありません。","loadError":"取引履歴を読み込めませんでした。","operation":{"create":"作成","update":"更新","delete":"削除"},"source":{"manual":"手動","import":"インポート","import_undo":"インポートを取り消し","recurring":"定期","loan":"ローン","card":"カード","investment":"投資","bulk":"一括"},"field":{"type":"種類","date":"日付","amount":"金額","currency":"通貨","account_id":"口座","to_account_id":"移動先口座","category_id":"カテゴリ","description":"説明","notes":"メモ","recurring_rule_id":"定期ルール","loan_id":"ローン","card_invoice_close_date":"請求締め日","installment_group_id":"分割グループ","installment_number":"分割番号","installment_count":"分割回数","conversion_amount":"換算金額","conversion_currency":"換算通貨","conversion_fee":"換算手数料","conversion_rate":"換算レート","conversion_source":"換算元"}},
     "tabs": {
       "transactions": "取引",
       "recurring": "定期取引"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"インポートバッチ","count":"{{count}}件の取引を作成","remaining":"残り{{count}}件","undo":"インポートを取り消す","undoConfirm":"このインポートバッチを取り消しますか？残り{{count}}件の取引を削除します。","undoneEmpty":"このバッチに残っている取引はありません。","empty":"インポートバッチはまだありません。","undoSuccess":"インポートバッチを取り消しました。"},
       "title": "取引のインポート",
       "description": "銀行からエクスポートしたCSVをアップロードし、各行を確認して、記帳する行を確定してください。",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "ファイルにデータ行がありません。",
       "too_many_rows": "一度にインポートするには行数が多すぎます（上限2,000行）。",
       "column_required": "続行する前に、日付・説明・金額の列を対応付けてください。",
+      "batch_modified": "このインポートバッチはインポート後に変更されたため、取り消せません。",
       "row": {
         "invalid_date": "この日付を読み取れませんでした。",
         "invalid_amount": "この金額を読み取れませんでした。",

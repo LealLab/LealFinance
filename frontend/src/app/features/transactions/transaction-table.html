@@ -176,6 +176,16 @@
                   variant="ghost"
                   size="sm"
                   type="button"
+                  (click)="viewHistory.emit(tx)"
+                  [attr.aria-label]="t('transactions.history.title')"
+                >
+                  <app-icon name="eye" [size]="16" />
+                </button>
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
                   (click)="remove.emit(tx)"
                   [attr.aria-label]="t('transactions.actions.delete')"
                 >
@@ -262,6 +272,16 @@
             [attr.aria-label]="t('transactions.actions.edit')"
           >
             <app-icon name="pencil" [size]="16" />
+          </button>
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            (click)="viewHistory.emit(tx)"
+            [attr.aria-label]="t('transactions.history.title')"
+          >
+            <app-icon name="eye" [size]="16" />
           </button>
           <button
             appButton

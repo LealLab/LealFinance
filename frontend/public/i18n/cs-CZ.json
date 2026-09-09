@@ -505,6 +505,7 @@
       "columns": "Sloupce",
       "exportCsv": "Exportovat CSV"
     },
+    "history": {"title":"Historie transakcí","loading":"Načítání historie…","empty":"Zatím žádná historie.","loadError":"Historii transakce se nepodařilo načíst.","operation":{"create":"Vytvořeno","update":"Upraveno","delete":"Smazáno"},"source":{"manual":"Ruční","import":"Import","import_undo":"Zrušení importu","recurring":"Opakované","loan":"Půjčka","card":"Karta","investment":"Investice","bulk":"Hromadné"},"field":{"type":"Typ","date":"Datum","amount":"Částka","currency":"Měna","account_id":"Účet","to_account_id":"Cílový účet","category_id":"Kategorie","description":"Popis","notes":"Poznámky","recurring_rule_id":"Pravidlo opakování","loan_id":"Půjčka","card_invoice_close_date":"Datum uzavření faktury","installment_group_id":"Skupina splátek","installment_number":"Číslo splátky","installment_count":"Počet splátek","conversion_amount":"Převedená částka","conversion_currency":"Měna převodu","conversion_fee":"Poplatek za převod","conversion_rate":"Kurz převodu","conversion_source":"Zdroj převodu"}},
     "tabs": {
       "transactions": "Transakce",
       "recurring": "Opakované"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Dávky importu","count":"{{count}} transakcí vytvořeno","remaining":"{{count}} zbývá","undo":"Vrátit import","undoConfirm":"Vrátit tuto dávku importu? Tím se odstraní {{count}} zbývajících transakcí.","undoneEmpty":"V této dávce nezbývají žádné transakce.","empty":"Zatím žádné dávky importu.","undoSuccess":"Dávka importu byla vrácena."},
       "title": "Import transakcí",
       "description": "Nahrajte export CSV z vaší banky, zkontrolujte každý řádek a potvrďte ty, které chcete zaúčtovat.",
       "fields": {
@@ -1830,6 +1832,7 @@
       "no_rows": "Soubor neobsahuje žádné datové řádky.",
       "too_many_rows": "Soubor obsahuje příliš mnoho řádků na jeden import (limit 2000).",
       "column_required": "Před pokračováním přiřaďte sloupce data, popisu a částky.",
+      "batch_modified": "Tato dávka importu byla po importu změněna a nelze ji vrátit.",
       "row": {
         "invalid_date": "Toto datum se nepodařilo přečíst.",
         "invalid_amount": "Tuto částku se nepodařilo přečíst.",
