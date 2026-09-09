@@ -162,7 +162,12 @@ jobs:
         # Explicit -f: plain `docker compose` also loads the dev override,
         # which exposes database ports and runs the API with --reload. This
         # is the shape docs/homelab-deploy.md tells operators to run.
-        run: docker compose -f docker-compose.yml up -d --wait --wait-timeout 240
+        #
+        # --wait is scoped to api + web (and their deps): `beat` has no
+        # healthcheck by design, and older compose fails `--wait` on any
+        # service that lacks one. worker/beat aren't exercised by the smoke
+        # test or the backup check.
+        run: docker compose -f docker-compose.yml up -d --wait --wait-timeout 240 api web
 
       - name: Browser smoke test
         working-directory: frontend
