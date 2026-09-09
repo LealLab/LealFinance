@@ -21,7 +21,7 @@ dependencies = [
     # (app/models/agent_credential.py) - the only secret in this codebase
     # that must be read back rather than one-way hashed.
     "cryptography>=46.0.3",
-    "mcp>=1.29,<2",
+    "mcp>=1.29,<3",
     # Runtime dep: app/services/webauthn.py verifies passkey (WebAuthn)
     # registration/authentication ceremonies - COSE key parsing, CBOR
     # decoding, and assertion signature verification are not things to
