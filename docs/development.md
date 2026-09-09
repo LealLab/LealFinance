@@ -100,7 +100,10 @@ Use `docker compose down -v` only when you intentionally want a fresh database.
 ## Browser smoke test
 
 The Playwright smoke test covers registration or login, account and category
-creation, and adding a transaction. Run it against a disposable instance:
+creation, adding a transaction through the UI, and a horizontal-overflow sweep
+across the main routes at phone, large-phone, and tablet widths. CI runs it
+against a disposable Compose stack on every change, and a failure blocks the
+merge. Run it locally the same way against a disposable instance:
 
 ```bash
 cd frontend

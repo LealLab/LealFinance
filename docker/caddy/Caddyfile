@@ -1,0 +1,16 @@
+# Reverse proxy and TLS for the LealFinance homelab stack. Used only by
+# docker-compose.tls.yml. LF_SITE_ADDRESS comes from .env.
+#
+# Public hostname (resolvable, port 443 reachable from the internet): Caddy
+# obtains and renews a Let's Encrypt certificate automatically - nothing to
+# add below.
+#
+# LAN-only hostname: add `tls internal` inside the block so Caddy issues a
+# certificate from its own local CA, then trust that CA's root
+# (/data/caddy/pki/authorities/local/root.crt inside the caddy_data volume)
+# on every device that will open the app.
+
+{$LF_SITE_ADDRESS} {
+	# tls internal
+	reverse_proxy web:8080
+}

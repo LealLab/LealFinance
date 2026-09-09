@@ -1,0 +1,33 @@
+# Optional TLS termination for the homelab stack. Layer it last, after the
+# base file (and docker-compose.prod.yml when using published images):
+#
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+#     -f docker-compose.tls.yml up -d
+#
+# Caddy fronts the `web` container and serves HTTPS on 443. Set
+# LF_SITE_ADDRESS in .env to the hostname the app is reached at, and keep the
+# plain-HTTP port on loopback with WEB_PORT=127.0.0.1:8081. See
+# docs/homelab-deploy.md#reverse-proxy-and-tls and docker/caddy/Caddyfile.
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      LF_SITE_ADDRESS: ${LF_SITE_ADDRESS:?LF_SITE_ADDRESS must be set to the app hostname}
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      # Holds the issued certificate and, for `tls internal`, the local CA.
+      # Losing it re-issues; with `tls internal` every device must re-trust
+      # the new root.
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+
+volumes:
+  caddy_data:
+  caddy_config:

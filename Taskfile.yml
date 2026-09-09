@@ -10,6 +10,12 @@ tasks:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
+  install:tls:
+    desc: Install and start the published production stack behind the Caddy TLS proxy
+    cmds:
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml pull
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml up -d
+
   uninstall:
     desc: Stop and remove the production stack, preserving data
     cmds:
@@ -35,6 +41,16 @@ tasks:
     desc: Tail logs for all services
     cmds:
       - docker compose logs -f
+
+  backup:
+    desc: Write a compressed instance backup to ./backups (see docs/homelab-deploy.md#backups)
+    cmds:
+      - sh scripts/backup.sh
+
+  backup:verify:
+    desc: Restore the newest instance backup into a disposable database and check it
+    cmds:
+      - sh scripts/restore-verify.sh
 
   backend:sync:
     desc: Install backend dependencies

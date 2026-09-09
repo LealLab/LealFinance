@@ -25,7 +25,7 @@ Run the checks relevant to your change:
 | Frontend lint | `task frontend:lint` |
 | Frontend tests | `task frontend:test` |
 | Frontend production build | `task frontend:build` |
-| Frontend browser smoke check (optional) | `task frontend:e2e` |
+| Frontend browser smoke check | `task frontend:e2e` |
 | Translation keys | `task i18n:validate` |
 | Dependency security audit | `task security:audit` |
 
