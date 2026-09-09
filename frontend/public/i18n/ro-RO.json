@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Acest fișier este prea mare pentru a fi importat (limită 2 MB).",
+      "idempotency_key_reused": "Acest import a fost deja trimis cu un conținut diferit. Reîncarcă previzualizarea și încearcă din nou.",
       "no_rows": "Fișierul nu conține rânduri de date.",
       "too_many_rows": "Fișierul conține prea multe rânduri pentru a fi importate deodată (limită 2000).",
       "column_required": "Asociază coloanele dată, descriere și sumă înainte de a continua.",

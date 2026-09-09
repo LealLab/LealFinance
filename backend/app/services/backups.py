@@ -27,6 +27,7 @@ from app.models.categorization_rule import CategorizationRule
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
 from app.models.goal import Goal
+from app.models.import_idempotency import ImportIdempotency
 from app.models.institution import Institution
 from app.models.investment import (
     InvestmentAsset,
@@ -87,6 +88,7 @@ EXCLUDED_USER_OWNED_MODELS = {
     # state; it is never exported or reconstructed.
     AgentConversation: "agent_conversations",
     AgentMessage: "agent_messages",
+    ImportIdempotency: "import_idempotency",
 }
 
 _PREFERENCE_FIELDS = (

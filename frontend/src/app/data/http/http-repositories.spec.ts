@@ -278,6 +278,7 @@ describe('HTTP repositories', () => {
 
   it('posts reviewed rows to the import commit endpoint and returns the created count', () => {
     let created: number | undefined;
+    const idempotencyKey = 'import-test-key';
     TestBed.inject(HttpTransactionRepository)
       .importCommit([
         {
@@ -289,11 +290,12 @@ describe('HTTP repositories', () => {
           categoryId: 'c',
           description: 'Coffee',
         },
-      ])
+      ], idempotencyKey)
       .subscribe((result) => (created = result));
     const req = http.expectOne('/api/v1/transactions/import');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({
+      idempotency_key: idempotencyKey,
       items: [
         {
           type: 'expense',
@@ -312,6 +314,8 @@ describe('HTTP repositories', () => {
         },
       ],
     });
+    expect(typeof req.request.body.idempotency_key).toBe('string');
+    expect(req.request.body.idempotency_key.length).toBeGreaterThan(0);
     req.flush({ created: 1 });
     expect(created).toBe(1);
   });

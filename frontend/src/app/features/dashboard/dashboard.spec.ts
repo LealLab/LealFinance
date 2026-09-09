@@ -278,7 +278,9 @@ class StubTransactionRepository extends TransactionRepository {
   importPreview(): Observable<never> {
     throw new Error('not used by this spec');
   }
-  importCommit(): Observable<number> {
+  importCommit(_items: readonly Omit<Transaction, 'id'>[], _idempotencyKey: string): Observable<number> {
+    void _items;
+    void _idempotencyKey;
     throw new Error('not used by this spec');
   }
 }

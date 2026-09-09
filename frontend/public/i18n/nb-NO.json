@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Denne filen er for stor til å importeres (grense på 2 MB).",
+      "idempotency_key_reused": "Denne importen er allerede sendt inn med annet innhold. Last inn forhåndsvisningen på nytt og prøv igjen.",
       "no_rows": "Filen inneholder ingen dataradrader.",
       "too_many_rows": "Filen inneholder for mange rader til å importeres på én gang (grense på 2000).",
       "column_required": "Koble kolonnene dato, beskrivelse og beløp før du fortsetter.",

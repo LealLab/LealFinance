@@ -168,7 +168,8 @@ export class MockTransactionRepository extends TransactionRepository {
   importPreview(): Observable<ImportPreview> {
     return mockResult(() => ({ headers: [], mapping: {}, rows: [] }), this.latencyMs);
   }
-  importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number> {
+  importCommit(items: readonly Omit<Transaction, 'id'>[], _idempotencyKey: string): Observable<number> {
+    void _idempotencyKey;
     return mockResult(() => {
       for (const item of items) this.store.createTransaction(item);
       return items.length;

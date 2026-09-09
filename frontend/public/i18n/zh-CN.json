@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "该文件过大，无法导入（限制 2MB）。",
+      "idempotency_key_reused": "此导入已使用不同内容提交。请重新加载预览后重试。",
       "no_rows": "文件中没有数据行。",
       "too_many_rows": "文件行数过多，无法一次性导入（限制 2000 行）。",
       "column_required": "请在继续之前匹配日期、描述和金额列。",

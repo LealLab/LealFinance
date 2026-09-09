@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Tento soubor je pro import příliš velký (limit 2 MB).",
+      "idempotency_key_reused": "Tento import byl již odeslán s jiným obsahem. Znovu načtěte náhled a zkuste to znovu.",
       "no_rows": "Soubor neobsahuje žádné datové řádky.",
       "too_many_rows": "Soubor obsahuje příliš mnoho řádků na jeden import (limit 2000).",
       "column_required": "Před pokračováním přiřaďte sloupce data, popisu a částky.",

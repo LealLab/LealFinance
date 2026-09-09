@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Tämä tiedosto on liian suuri tuotavaksi (raja 2 Mt).",
+      "idempotency_key_reused": "Tämä tuonti on jo lähetetty eri sisällöllä. Lataa esikatselu uudelleen ja yritä uudelleen.",
       "no_rows": "Tiedostossa ei ole datarivejä.",
       "too_many_rows": "Tiedostossa on liikaa rivejä tuotavaksi kerralla (raja 2000).",
       "column_required": "Yhdistä päivämäärä-, kuvaus- ja summasarakkeet ennen jatkamista.",

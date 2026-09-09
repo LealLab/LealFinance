@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Dit bestand is te groot om te importeren (limiet 2 MB).",
+      "idempotency_key_reused": "Deze import is al ingediend met andere inhoud. Laad de preview opnieuw en probeer het nog eens.",
       "no_rows": "Het bestand bevat geen gegevensregels.",
       "too_many_rows": "Het bestand bevat te veel regels om in één keer te importeren (limiet 2000).",
       "column_required": "Koppel de kolommen datum, omschrijving en bedrag voordat je verdergaat.",

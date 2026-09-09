@@ -89,9 +89,12 @@ export class HttpTransactionRepository extends TransactionRepository {
       .post<ImportPreviewWire>('/transactions/import/preview', mapImportPreviewRequest(request))
       .pipe(map(mapImportPreview));
   }
-  importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number> {
+  importCommit(items: readonly Omit<Transaction, 'id'>[], idempotencyKey: string): Observable<number> {
     return this.api
-      .post<ImportCommitWire>('/transactions/import', { items: items.map(mapTransactionCreate) })
+      .post<ImportCommitWire>('/transactions/import', {
+        idempotency_key: idempotencyKey,
+        items: items.map(mapTransactionCreate)
+      })
       .pipe(map((wire) => wire.created));
   }
 }

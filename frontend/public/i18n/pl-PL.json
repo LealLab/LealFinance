@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Ten plik jest zbyt duży, aby go zaimportować (limit 2 MB).",
+      "idempotency_key_reused": "Ten import został już przesłany z inną zawartością. Wczytaj ponownie podgląd i spróbuj jeszcze raz.",
       "no_rows": "Plik nie zawiera wierszy danych.",
       "too_many_rows": "Plik zawiera zbyt wiele wierszy do zaimportowania naraz (limit 2000).",
       "column_required": "Dopasuj kolumny daty, opisu i kwoty przed kontynuowaniem.",

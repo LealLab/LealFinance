@@ -323,6 +323,7 @@ async def preview_import(
         }
 
     results: list[ImportRowResult] = []
+    seen_in_file: set[tuple[date_type, Decimal, str]] = set()
     for row in parsed:
         matched = (
             first_match(
@@ -355,6 +356,13 @@ async def preview_import(
                 and counterparty.currency == selected_account.currency
             ):
                 counterparty_account_id = counterparty.id
+        if row.error is None and row.date is not None:
+            assert row.amount is not None
+            key = (row.date, row.amount, row.description.strip().casefold())
+            duplicate = key in existing_keys or key in seen_in_file
+            seen_in_file.add(key)
+        else:
+            duplicate = False
         results.append(
             ImportRowResult(
                 index=row.index,
@@ -367,11 +375,7 @@ async def preview_import(
                 rule_name=matched.name if matched else None,
                 notes=row.notes,
                 error=row.error,
-                duplicate=(
-                    row.error is None
-                    and row.date is not None
-                    and (row.date, row.amount, row.description.strip().casefold()) in existing_keys
-                ),
+                duplicate=duplicate,
                 counterparty_account_id=counterparty_account_id,
                 counterparty_account_name=row.counterparty_account_name,
                 transfer_direction=row.transfer_direction,

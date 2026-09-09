@@ -106,5 +106,8 @@ export abstract class TransactionRepository {
   /** Imports every given row as a real transaction in one request; resolves
    * to the number created. All-or-nothing server-side - see
    * app/services/transactions.py::import_transactions. */
-  abstract importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number>;
+  abstract importCommit(
+    items: readonly Omit<Transaction, 'id'>[],
+    idempotencyKey: string
+  ): Observable<number>;
 }

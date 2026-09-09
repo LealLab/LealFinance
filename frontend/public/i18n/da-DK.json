@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Denne fil er for stor til at importere (grænse på 2 MB).",
+      "idempotency_key_reused": "Denne import blev allerede sendt med andet indhold. Genindlæs forhåndsvisningen, og prøv igen.",
       "no_rows": "Filen indeholder ingen datalinjer.",
       "too_many_rows": "Filen indeholder for mange linjer til at importere på én gang (grænse på 2000).",
       "column_required": "Tilknyt kolonnerne dato, beskrivelse og beløb, før du fortsætter.",

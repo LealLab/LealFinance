@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "That file is too large to import (2 MB limit).",
+      "idempotency_key_reused": "This import was already submitted with different contents. Reload the preview and try again.",
       "no_rows": "The file has no data rows.",
       "too_many_rows": "The file has too many rows to import at once (2,000 limit).",
       "column_required": "Map the date, description, and amount columns before continuing.",

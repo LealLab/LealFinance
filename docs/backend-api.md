@@ -393,9 +393,10 @@ case-insensitively matches one of the caller's own categories
 - `error` is one of the codes below when a row can't be parsed - such a row
   is returned (not dropped) so the frontend can show it, but the frontend
   gates its own "reviewed" checkbox on `error` being absent.
-- `duplicate` is `true` when an existing transaction on the same account
-  already matches `(date, amount, description)` case-insensitively - a
-  single query against the CSV's date range, not one query per row.
+- `duplicate` is `true` when an existing transaction on the same account, or
+  an earlier row in this file, matches `(date, amount, description)`
+  case-insensitively - a single query against the CSV's date range, not one
+  query per row.
 
 Transfer counterparties are matched case-insensitively against the user's
 owned account names. Only same-currency transfer counterparties are resolved
@@ -411,7 +412,7 @@ When AI is enabled for the user, the page can also call
 [AI agents](#import-categorization). That call never writes; the frontend applies
 each suggestion on the user's confirmation.
 
-**Commit** (`ImportCommitRequest{items}` → `{created}`) reuses
+**Commit** (`ImportCommitRequest{idempotency_key,items}` → `{created}`) reuses
 `TransactionCreate` verbatim for `items` - the frontend sends exactly the
 rows it marked reviewed, with any edits already applied, through the same
 per-row shape as a normal `POST /transactions`
@@ -419,6 +420,10 @@ per-row shape as a normal `POST /transactions`
 item is validated and staged in one session, then committed together: if
 any item fails, the whole batch is rolled back rather than left partially
 posted (the caller already saw a preview, so a failure here is exceptional).
+`idempotency_key` is required and must be 8-64 characters. It is scoped to
+the authenticated user: resubmitting the same key with the same items returns
+the original `{created}` result without creating more transactions. Reusing
+the key with different items returns `import.idempotency_key_reused`.
 
 | Code | Status |
 | --- | --- |
@@ -426,6 +431,7 @@ posted (the caller already saw a preview, so a failure here is exceptional).
 | `import.no_rows` | 422 |
 | `import.too_many_rows` | 422 |
 | `import.column_required` | 422 |
+| `import.idempotency_key_reused` | 409 |
 | `import.row.invalid_date` | (row-level, not raised) |
 | `import.row.invalid_amount` | (row-level, not raised) |
 | `import.row.zero_amount` | (row-level, not raised) |

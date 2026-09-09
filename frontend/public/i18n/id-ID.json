@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Berkas ini terlalu besar untuk diimpor (batas 2 MB).",
+      "idempotency_key_reused": "Impor ini sudah dikirim dengan isi yang berbeda. Muat ulang pratinjau dan coba lagi.",
       "no_rows": "Berkas tidak memiliki baris data.",
       "too_many_rows": "Berkas memiliki terlalu banyak baris untuk diimpor sekaligus (batas 2000).",
       "column_required": "Cocokkan kolom tanggal, deskripsi, dan jumlah sebelum melanjutkan.",

@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Tệp này quá lớn để nhập (giới hạn 2 MB).",
+      "idempotency_key_reused": "Bản nhập này đã được gửi trước đó với nội dung khác. Tải lại bản xem trước rồi thử lại.",
       "no_rows": "Tệp không có dòng dữ liệu nào.",
       "too_many_rows": "Tệp có quá nhiều dòng để nhập cùng lúc (giới hạn 2.000).",
       "column_required": "Khớp các cột ngày, mô tả và số tiền trước khi tiếp tục.",

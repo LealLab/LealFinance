@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Ese archivo es demasiado grande para importar (límite de 2 MB).",
+      "idempotency_key_reused": "Esta importación ya se envió con contenido diferente. Vuelve a cargar la vista previa y inténtalo de nuevo.",
       "no_rows": "El archivo no tiene filas de datos.",
       "too_many_rows": "El archivo tiene demasiadas filas para importar a la vez (límite de 2000).",
       "column_required": "Asocia las columnas de fecha, descripción e importe antes de continuar.",

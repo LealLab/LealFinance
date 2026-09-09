@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Bu dosya içe aktarılamayacak kadar büyük (2 MB sınırı).",
+      "idempotency_key_reused": "Bu içe aktarma farklı içerikle zaten gönderildi. Önizlemeyi yeniden yükleyip tekrar deneyin.",
       "no_rows": "Dosyada veri satırı yok.",
       "too_many_rows": "Dosyada bir seferde içe aktarılamayacak kadar çok satır var (2000 sınırı).",
       "column_required": "Devam etmeden önce tarih, açıklama ve tutar sütunlarını eşleştir.",

@@ -34,6 +34,7 @@ import { provideTestTransloco, provideTestTranslocoLocale } from '../../../../te
 class StubTransactionRepository extends TransactionRepository {
   lastPreviewRequest?: ImportPreviewRequest;
   lastCommitItems?: readonly Omit<Transaction, 'id'>[];
+  lastCommitKey?: string;
   nextPreview: ImportPreview = { headers: [], mapping: {}, rows: [] };
 
   override list(): Observable<Transaction[]> {
@@ -64,8 +65,11 @@ class StubTransactionRepository extends TransactionRepository {
     this.lastPreviewRequest = request;
     return of(this.nextPreview);
   }
-  override importCommit(items: readonly Omit<Transaction, 'id'>[]): Observable<number> {
+  override importCommit(
+    items: readonly Omit<Transaction, 'id'>[], idempotencyKey: string
+  ): Observable<number> {
     this.lastCommitItems = items;
+    this.lastCommitKey = idempotencyKey;
     return of(items.length);
   }
 }
@@ -277,6 +281,8 @@ describe('TransactionImport', () => {
 
     expect(stubRepo.lastCommitItems?.length).toBe(1);
     expect(stubRepo.lastCommitItems?.[0].description).toBe('Coffee');
+    expect(stubRepo.lastCommitKey).toEqual(expect.any(String));
+    const firstCommitKey = stubRepo.lastCommitKey;
 
     // The page stays open: the posted row is dropped, the rest remain for
     // another batch, and a running total is shown.
@@ -287,6 +293,8 @@ describe('TransactionImport', () => {
     component.toggleReviewed(component.rows()[0]);
     await component.confirmImport();
     expect(stubRepo.lastCommitItems?.[0].description).toBe('Tea');
+    expect(stubRepo.lastCommitKey).toEqual(expect.any(String));
+    expect(stubRepo.lastCommitKey).not.toBe(firstCommitKey);
     expect(component.importedCount()).toBe(2);
     expect(component.rows()).toEqual([]);
   });

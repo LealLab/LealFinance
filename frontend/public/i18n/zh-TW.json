@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "此檔案過大，無法匯入（上限 2MB）。",
+      "idempotency_key_reused": "此匯入已使用不同內容提交。請重新載入預覽後再試一次。",
       "no_rows": "檔案中沒有資料列。",
       "too_many_rows": "檔案列數過多，無法一次匯入（上限 2000 列）。",
       "column_required": "請在繼續之前對應日期、說明和金額欄位。",

@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Ce fichier est trop volumineux pour être importé (limite de 2 Mo).",
+      "idempotency_key_reused": "Cet import a déjà été envoyé avec un contenu différent. Rechargez l’aperçu et réessayez.",
       "no_rows": "Le fichier ne contient aucune ligne de données.",
       "too_many_rows": "Le fichier contient trop de lignes pour être importé en une fois (limite de 2000).",
       "column_required": "Associez les colonnes date, description et montant avant de continuer.",

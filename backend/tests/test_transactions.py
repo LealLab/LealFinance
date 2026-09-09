@@ -907,6 +907,7 @@ async def test_list_transactions_without_limit_returns_complete_ledger(
     imported = await client.post(
         "/api/v1/transactions/import",
         json={
+            "idempotency_key": "complete-ledger",
             "items": [
                 {
                     "type": "expense",
@@ -918,7 +919,7 @@ async def test_list_transactions_without_limit_returns_complete_ledger(
                     "description": f"Row {i}",
                 }
                 for i in range(101)
-            ]
+            ],
         },
     )
     assert imported.status_code == 201, imported.text

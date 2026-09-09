@@ -1789,6 +1789,7 @@
     },
     "import": {
       "file_too_large": "Diese Datei ist zu groß zum Importieren (Limit 2 MB).",
+      "idempotency_key_reused": "Dieser Import wurde bereits mit anderem Inhalt übermittelt. Laden Sie die Vorschau neu und versuchen Sie es erneut.",
       "no_rows": "Die Datei enthält keine Datenzeilen.",
       "too_many_rows": "Die Datei enthält zu viele Zeilen für einen einzelnen Import (Limit 2000).",
       "column_required": "Ordnen Sie die Spalten Datum, Beschreibung und Betrag zu, bevor Sie fortfahren.",
