@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Opnieuw proberen",
       "close": "Sluiten",
       "cancel": "Annuleren",
       "confirm": "Bevestigen",
@@ -49,6 +50,8 @@
       "previousMonth": "Vorige maand",
       "nextMonth": "Volgende maand"
     },
+    "loadError": "Er ging iets mis bij het laden. Probeer het opnieuw.",
+    "retrying": "Opnieuw proberen…",
     "colorPicker": {
       "saturationBrightness": "Kleurverzadiging en helderheid",
       "hue": "Kleurtoon"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Sommige totalen hebben een wisselkoers nodig die momenteel niet beschikbaar is.",
     "title": "Overzicht",
     "welcome": "Welkom bij LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Sommige cijfers hebben een wisselkoers nodig die momenteel niet beschikbaar is.",
     "title": "Rapporten",
     "description": "Analyseer inkomsten, uitgaven en saldi in de loop van de tijd.",
     "period": {

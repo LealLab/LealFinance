@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "重试",
       "close": "关闭",
       "cancel": "取消",
       "confirm": "确认",
@@ -49,6 +50,8 @@
       "previousMonth": "上个月",
       "nextMonth": "下个月"
     },
+    "loadError": "加载时出了点问题。请重试。",
+    "retrying": "正在重试…",
     "colorPicker": {
       "saturationBrightness": "颜色的饱和度和亮度",
       "hue": "颜色色相"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "部分总额需要使用当前不可用的汇率。",
     "title": "仪表盘",
     "welcome": "欢迎使用 LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "部分数据需要使用当前不可用的汇率。",
     "title": "报表",
     "description": "分析一段时间内的收入、支出和余额。",
     "period": {

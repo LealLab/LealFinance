@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Riprova",
       "close": "Chiudi",
       "cancel": "Annulla",
       "confirm": "Conferma",
@@ -49,6 +50,8 @@
       "previousMonth": "Mese precedente",
       "nextMonth": "Mese successivo"
     },
+    "loadError": "Si è verificato un errore durante il caricamento. Riprova.",
+    "retrying": "Nuovo tentativo…",
     "colorPicker": {
       "saturationBrightness": "Saturazione e luminosità del colore",
       "hue": "Tonalità del colore"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Alcuni totali richiedono un tasso di cambio che al momento non è disponibile.",
     "title": "Panoramica",
     "welcome": "Ti diamo il benvenuto in LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Alcuni dati richiedono un tasso di cambio che al momento non è disponibile.",
     "title": "Report",
     "description": "Analizza entrate, uscite e saldi nel tempo.",
     "period": {

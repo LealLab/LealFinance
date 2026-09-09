@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "إعادة المحاولة",
       "close": "إغلاق",
       "cancel": "إلغاء",
       "confirm": "تأكيد",
@@ -49,6 +50,8 @@
       "previousMonth": "الشهر السابق",
       "nextMonth": "الشهر التالي"
     },
+    "loadError": "حدث خطأ أثناء تحميل هذا. حاول مرة أخرى.",
+    "retrying": "جارٍ إعادة المحاولة…",
     "colorPicker": {
       "saturationBrightness": "تشبع اللون وسطوعه",
       "hue": "درجة اللون"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "تحتاج بعض الإجماليات إلى سعر صرف غير متاح حاليًا.",
     "title": "لوحة المعلومات",
     "welcome": "مرحباً بك في LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "تحتاج بعض الأرقام إلى سعر صرف غير متاح حاليًا.",
     "title": "التقارير",
     "description": "حلّل الدخل والمصروفات والأرصدة بمرور الوقت.",
     "period": {

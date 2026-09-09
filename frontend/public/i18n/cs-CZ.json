@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Zkusit znovu",
       "close": "Zavřít",
       "cancel": "Zrušit",
       "confirm": "Potvrdit",
@@ -49,6 +50,8 @@
       "previousMonth": "Předchozí měsíc",
       "nextMonth": "Následující měsíc"
     },
+    "loadError": "Něco se pokazilo při načítání. Zkuste to znovu.",
+    "retrying": "Probíhá opakování…",
     "colorPicker": {
       "saturationBrightness": "Sytost a jas barvy",
       "hue": "Odstín barvy"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "U některých součtů je potřeba směnný kurz, který momentálně není k dispozici.",
     "title": "Přehled",
     "welcome": "Vítejte v LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "U některých údajů je potřeba směnný kurz, který momentálně není k dispozici.",
     "title": "Přehledy",
     "description": "Analyzujte vývoj příjmů, výdajů a zůstatků v čase.",
     "period": {

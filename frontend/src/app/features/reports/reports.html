@@ -33,13 +33,17 @@
     </div>
   }
 
-  @if (isEmpty()) {
+  @if (dataError()) {
+    <app-load-error (retry)="retryAll()" />
+  } @else if (isEmpty()) {
     <app-empty-state icon="chart" [title]="t('reports.empty.title')" [description]="t('reports.empty.description')" />
   } @else {
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.incomeExpense') }}</h2>
-        @if (ratesReady()) {
+        @if (ratesFailed()) {
+          <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
+        } @else if (ratesReady()) {
           <div class="h-48 sm:h-64">
             <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
           </div>
@@ -50,7 +54,9 @@
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.netFlow') }}</h2>
-        @if (ratesReady()) {
+        @if (ratesFailed()) {
+          <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
+        } @else if (ratesReady()) {
           <div class="h-48 sm:h-64">
             <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
           </div>
@@ -61,7 +67,9 @@
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.byCategory') }}</h2>
-        @if (ratesReady()) {
+        @if (ratesFailed()) {
+          <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
+        } @else if (ratesReady()) {
           <div class="mx-auto aspect-square w-full max-w-56">
             <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
           </div>
@@ -90,7 +98,9 @@
 
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.balanceTrend') }}</h2>
-        @if (ratesReady()) {
+        @if (ratesFailed()) {
+          <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
+        } @else if (ratesReady()) {
           <div class="h-48 sm:h-64">
             <app-chart
               kind="line"

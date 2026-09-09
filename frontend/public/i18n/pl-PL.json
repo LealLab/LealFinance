@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Spróbuj ponownie",
       "close": "Zamknij",
       "cancel": "Anuluj",
       "confirm": "Potwierdź",
@@ -49,6 +50,8 @@
       "previousMonth": "Poprzedni miesiąc",
       "nextMonth": "Następny miesiąc"
     },
+    "loadError": "Coś poszło nie tak podczas ładowania. Spróbuj ponownie.",
+    "retrying": "Ponawianie próby…",
     "colorPicker": {
       "saturationBrightness": "Nasycenie i jasność koloru",
       "hue": "Odcień koloru"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Niektóre sumy wymagają kursu walutowego, który jest obecnie niedostępny.",
     "title": "Panel",
     "welcome": "Witamy w LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Niektóre dane wymagają kursu walutowego, który jest obecnie niedostępny.",
     "title": "Raporty",
     "description": "Analizuj przychody, wydatki i salda w czasie.",
     "period": {

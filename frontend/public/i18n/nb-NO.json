@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Prøv igjen",
       "close": "Lukk",
       "cancel": "Avbryt",
       "confirm": "Bekreft",
@@ -49,6 +50,8 @@
       "previousMonth": "Forrige måned",
       "nextMonth": "Neste måned"
     },
+    "loadError": "Noe gikk galt under innlastingen. Prøv igjen.",
+    "retrying": "Prøver igjen…",
     "colorPicker": {
       "saturationBrightness": "Fargemetning og lysstyrke",
       "hue": "Fargetone"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Noen totaler trenger en valutakurs som ikke er tilgjengelig akkurat nå.",
     "title": "Oversikt",
     "welcome": "Velkommen til LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Noen tall trenger en valutakurs som ikke er tilgjengelig akkurat nå.",
     "title": "Rapporter",
     "description": "Analyser inntekter, utgifter og saldoer over tid.",
     "period": {

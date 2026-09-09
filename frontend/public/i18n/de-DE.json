@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Erneut versuchen",
       "close": "Schließen",
       "cancel": "Abbrechen",
       "confirm": "Bestätigen",
@@ -49,6 +50,8 @@
       "previousMonth": "Vorheriger Monat",
       "nextMonth": "Nächster Monat"
     },
+    "loadError": "Beim Laden ist etwas schiefgelaufen. Bitte versuche es erneut.",
+    "retrying": "Erneuter Versuch…",
     "colorPicker": {
       "saturationBrightness": "Farbsättigung und Helligkeit",
       "hue": "Farbton"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Für einige Summen wird ein Wechselkurs benötigt, der derzeit nicht verfügbar ist.",
     "title": "Übersicht",
     "welcome": "Willkommen bei LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Für einige Werte wird ein Wechselkurs benötigt, der derzeit nicht verfügbar ist.",
     "title": "Auswertungen",
     "description": "Analysieren Sie Einnahmen, Ausgaben und Kontostände im Zeitverlauf.",
     "period": {

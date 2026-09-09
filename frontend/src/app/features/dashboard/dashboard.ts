@@ -34,6 +34,7 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
+import { LoadError } from '../../shared/ui/load-error/load-error';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
@@ -55,7 +56,8 @@ const BUDGET_PREVIEW_LIMIT = 4;
     Skeleton,
     StatTile,
     Chart,
-    ExchangeRateWarning
+    ExchangeRateWarning,
+    LoadError
   ],
   templateUrl: './dashboard.html',
 })
@@ -96,6 +98,18 @@ export class Dashboard {
     stream: () => this.categoryGroupRepository.list()
   });
   protected readonly budgetsResource = rxResource({ stream: () => this.budgetRepository.list() });
+  private readonly dataResources = [
+    this.accountsResource,
+    this.balancesResource,
+    this.realBalancesResource,
+    this.transactionsResource,
+    this.categoriesResource,
+    this.categoryGroupsResource,
+    this.budgetsResource,
+  ];
+  protected readonly dataError = computed(() =>
+    this.dataResources.some((resource) => resource.status() === 'error')
+  );
 
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly displayCurrency = this.displayCurrencyService.currency;
@@ -293,8 +307,12 @@ export class Dashboard {
     );
   });
 
-  private readonly budgetConverter = pairsConverter(() => this.budgetConversionPairs()).converter;
+  private readonly budgetRates = pairsConverter(() => this.budgetConversionPairs());
+  private readonly budgetConverter = this.budgetRates.converter;
   protected readonly budgetRatesReady = computed(() => this.budgetConverter() !== null);
+  protected readonly ratesFailed = computed(() =>
+    this.rates.ratesFailed() || this.budgetRates.ratesFailed()
+  );
 
   protected readonly budgetPreview = computed(() => {
     const convert = this.budgetConverter();
@@ -314,8 +332,22 @@ export class Dashboard {
   });
 
   protected readonly isEmpty = computed(
-    () => !this.accountsResource.isLoading() && (this.accountsResource.value() ?? []).length === 0
+    () =>
+      !this.accountsResource.isLoading() &&
+      !this.dataError() &&
+      (this.accountsResource.value() ?? []).length === 0
   );
+
+  protected retryAll(): void {
+    for (const resource of this.dataResources) resource.reload();
+    this.rates.reload();
+    this.budgetRates.reload();
+  }
+
+  protected retryRates(): void {
+    this.rates.reload();
+    this.budgetRates.reload();
+  }
 
   protected goToExchange(): void {
     this.router.navigate(['/exchange']);

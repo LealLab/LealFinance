@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Réessayer",
       "close": "Fermer",
       "cancel": "Annuler",
       "confirm": "Confirmer",
@@ -49,6 +50,8 @@
       "previousMonth": "Mois précédent",
       "nextMonth": "Mois suivant"
     },
+    "loadError": "Un problème est survenu lors du chargement. Réessayez.",
+    "retrying": "Nouvelle tentative…",
     "colorPicker": {
       "saturationBrightness": "Saturation et luminosité de la couleur",
       "hue": "Teinte de la couleur"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Certains totaux nécessitent un taux de change indisponible pour le moment.",
     "title": "Tableau de bord",
     "welcome": "Bienvenue sur LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Certains chiffres nécessitent un taux de change indisponible pour le moment.",
     "title": "Rapports",
     "description": "Analysez vos revenus, vos dépenses et vos soldes au fil du temps.",
     "period": {

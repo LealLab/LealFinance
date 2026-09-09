@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "再試行",
       "close": "閉じる",
       "cancel": "キャンセル",
       "confirm": "確認",
@@ -49,6 +50,8 @@
       "previousMonth": "前月",
       "nextMonth": "次月"
     },
+    "loadError": "読み込み中に問題が発生しました。もう一度お試しください。",
+    "retrying": "再試行中…",
     "colorPicker": {
       "saturationBrightness": "色の彩度と明度",
       "hue": "色相"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "一部の合計には、現在利用できない為替レートが必要です。",
     "title": "ダッシュボード",
     "welcome": "LealFinanceへようこそ",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "一部の数値には、現在利用できない為替レートが必要です。",
     "title": "レポート",
     "description": "収入、支出、残高を時系列で分析します。",
     "period": {

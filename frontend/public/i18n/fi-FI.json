@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Yritä uudelleen",
       "close": "Sulje",
       "cancel": "Peruuta",
       "confirm": "Vahvista",
@@ -49,6 +50,8 @@
       "previousMonth": "Edellinen kuukausi",
       "nextMonth": "Seuraava kuukausi"
     },
+    "loadError": "Jotain meni pieleen tätä ladattaessa. Yritä uudelleen.",
+    "retrying": "Yritetään uudelleen…",
     "colorPicker": {
       "saturationBrightness": "Värikylläisyys ja kirkkaus",
       "hue": "Värisävy"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Jotkin summat tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
     "title": "Yhteenveto",
     "welcome": "Tervetuloa LealFinanceen",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Jotkin luvut tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
     "title": "Raportit",
     "description": "Analysoi tulojen, menojen ja saldojen kehitystä.",
     "period": {

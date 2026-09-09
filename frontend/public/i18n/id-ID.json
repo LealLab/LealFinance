@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Coba lagi",
       "close": "Tutup",
       "cancel": "Batal",
       "confirm": "Konfirmasi",
@@ -49,6 +50,8 @@
       "previousMonth": "Bulan sebelumnya",
       "nextMonth": "Bulan berikutnya"
     },
+    "loadError": "Terjadi kesalahan saat memuat. Coba lagi.",
+    "retrying": "Mencoba lagi…",
     "colorPicker": {
       "saturationBrightness": "Saturasi dan kecerahan warna",
       "hue": "Rona warna"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Beberapa total memerlukan nilai tukar yang saat ini tidak tersedia.",
     "title": "Dasbor",
     "welcome": "Selamat datang di LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Beberapa angka memerlukan nilai tukar yang saat ini tidak tersedia.",
     "title": "Laporan",
     "description": "Analisis pendapatan, pengeluaran, dan saldo dari waktu ke waktu.",
     "period": {

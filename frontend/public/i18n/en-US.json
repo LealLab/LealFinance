@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Retry",
       "close": "Close",
       "cancel": "Cancel",
       "confirm": "Confirm",
@@ -49,6 +50,8 @@
       "previousMonth": "Previous month",
       "nextMonth": "Next month"
     },
+    "loadError": "Something went wrong loading this. Try again.",
+    "retrying": "Retrying…",
     "colorPicker": {
       "saturationBrightness": "Color saturation and brightness",
       "hue": "Color hue"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Some totals need an exchange rate that isn't available right now.",
     "title": "Dashboard",
     "welcome": "Welcome to LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     "archiveError": "Could not update the investment wallet archive state. Try again."
   },
   "reports": {
+    "ratesUnavailable": "Some figures need an exchange rate that isn't available right now.",
     "title": "Reports",
     "description": "Analyze income, expenses, and balances over time.",
     "period": {

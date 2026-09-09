@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Tentar novamente",
       "close": "Fechar",
       "cancel": "Cancelar",
       "confirm": "Confirmar",
@@ -49,6 +50,8 @@
       "previousMonth": "Mês anterior",
       "nextMonth": "Próximo mês"
     },
+    "loadError": "Algo deu errado ao carregar. Tente novamente.",
+    "retrying": "Tentando novamente…",
     "colorPicker": {
       "saturationBrightness": "Saturação e brilho da cor",
       "hue": "Matiz da cor"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Alguns totais precisam de uma taxa de câmbio que não está disponível no momento.",
     "title": "Painel",
     "welcome": "Bem-vindo ao LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Alguns números precisam de uma taxa de câmbio que não está disponível no momento.",
     "title": "Relatórios",
     "description": "Analise receitas, despesas e saldos ao longo do tempo.",
     "period": {

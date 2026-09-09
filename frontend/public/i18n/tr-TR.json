@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Tekrar dene",
       "close": "Kapat",
       "cancel": "İptal",
       "confirm": "Onayla",
@@ -49,6 +50,8 @@
       "previousMonth": "Önceki ay",
       "nextMonth": "Sonraki ay"
     },
+    "loadError": "Yüklenirken bir sorun oluştu. Tekrar deneyin.",
+    "retrying": "Tekrar deneniyor…",
     "colorPicker": {
       "saturationBrightness": "Renk doygunluğu ve parlaklığı",
       "hue": "Renk tonu"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Bazı toplamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
     "title": "Genel bakış",
     "welcome": "LealFinance'a hoş geldiniz",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Bazı rakamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
     "title": "Raporlar",
     "description": "Gelirleri, giderleri ve bakiyeleri zaman içinde analiz edin.",
     "period": {

@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "重試",
       "close": "關閉",
       "cancel": "取消",
       "confirm": "確認",
@@ -49,6 +50,8 @@
       "previousMonth": "上個月",
       "nextMonth": "下個月"
     },
+    "loadError": "載入時發生問題。請再試一次。",
+    "retrying": "正在重試…",
     "colorPicker": {
       "saturationBrightness": "色彩的飽和度與亮度",
       "hue": "色相"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "部分總額需要使用目前無法取得的匯率。",
     "title": "儀表板",
     "welcome": "歡迎使用 LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "部分數據需要使用目前無法取得的匯率。",
     "title": "報表",
     "description": "分析一段時間內的收入、支出與餘額。",
     "period": {

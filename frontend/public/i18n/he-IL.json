@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "נסו שוב",
       "close": "סגירה",
       "cancel": "ביטול",
       "confirm": "אישור",
@@ -49,6 +50,8 @@
       "previousMonth": "החודש הקודם",
       "nextMonth": "החודש הבא"
     },
+    "loadError": "משהו השתבש בטעינת הנתונים. נסו שוב.",
+    "retrying": "מנסה שוב…",
     "colorPicker": {
       "saturationBrightness": "רוויה ובהירות הצבע",
       "hue": "גוון הצבע"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "סכומים מסוימים זקוקים לשער חליפין שאינו זמין כרגע.",
     "title": "לוח בקרה",
     "welcome": "ברוכים הבאים ל־LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "נתונים מסוימים זקוקים לשער חליפין שאינו זמין כרגע.",
     "title": "דוחות",
     "description": "נתחו הכנסות, הוצאות ויתרות לאורך זמן.",
     "period": {

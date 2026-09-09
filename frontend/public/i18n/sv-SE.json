@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Försök igen",
       "close": "Stäng",
       "cancel": "Avbryt",
       "confirm": "Bekräfta",
@@ -49,6 +50,8 @@
       "previousMonth": "Föregående månad",
       "nextMonth": "Nästa månad"
     },
+    "loadError": "Något gick fel när detta lästes in. Försök igen.",
+    "retrying": "Försöker igen…",
     "colorPicker": {
       "saturationBrightness": "Färgmättnad och ljusstyrka",
       "hue": "Färgton"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Vissa totalsummor behöver en växelkurs som inte är tillgänglig just nu.",
     "title": "Översikt",
     "welcome": "Välkommen till LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Vissa siffror behöver en växelkurs som inte är tillgänglig just nu.",
     "title": "Rapporter",
     "description": "Analysera inkomster, utgifter och saldon över tid.",
     "period": {

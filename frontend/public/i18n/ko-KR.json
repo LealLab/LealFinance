@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "다시 시도",
       "close": "닫기",
       "cancel": "취소",
       "confirm": "확인",
@@ -49,6 +50,8 @@
       "previousMonth": "이전 달",
       "nextMonth": "다음 달"
     },
+    "loadError": "로드하는 중 문제가 발생했습니다. 다시 시도해 주세요.",
+    "retrying": "다시 시도하는 중…",
     "colorPicker": {
       "saturationBrightness": "색상 채도 및 밝기",
       "hue": "색상 색조"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "일부 합계에는 현재 사용할 수 없는 환율이 필요합니다.",
     "title": "대시보드",
     "welcome": "LealFinance에 오신 것을 환영합니다",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "일부 수치에는 현재 사용할 수 없는 환율이 필요합니다.",
     "title": "보고서",
     "description": "시간에 따른 수입, 지출 및 잔액을 분석하세요.",
     "period": {

@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Încearcă din nou",
       "close": "Închide",
       "cancel": "Anulează",
       "confirm": "Confirmă",
@@ -49,6 +50,8 @@
       "previousMonth": "Luna anterioară",
       "nextMonth": "Luna următoare"
     },
+    "loadError": "Ceva nu a mers bine la încărcare. Încearcă din nou.",
+    "retrying": "Se încearcă din nou…",
     "colorPicker": {
       "saturationBrightness": "Saturația și luminozitatea culorii",
       "hue": "Nuanța culorii"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Unele totaluri au nevoie de un curs valutar care nu este disponibil momentan.",
     "title": "Panou de control",
     "welcome": "Bun venit la LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Unele cifre au nevoie de un curs valutar care nu este disponibil momentan.",
     "title": "Rapoarte",
     "description": "Analizează în timp veniturile, cheltuielile și soldurile.",
     "period": {

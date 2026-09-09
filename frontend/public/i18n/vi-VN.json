@@ -41,6 +41,7 @@
   },
   "common": {
     "actions": {
+      "retry": "Thử lại",
       "close": "Đóng",
       "cancel": "Hủy",
       "confirm": "Xác nhận",
@@ -49,6 +50,8 @@
       "previousMonth": "Tháng trước",
       "nextMonth": "Tháng sau"
     },
+    "loadError": "Có lỗi xảy ra khi tải nội dung này. Hãy thử lại.",
+    "retrying": "Đang thử lại…",
     "colorPicker": {
       "saturationBrightness": "Độ bão hòa và độ sáng của màu",
       "hue": "Sắc độ màu"
@@ -316,6 +319,7 @@
     }
   },
   "dashboard": {
+    "ratesUnavailable": "Một số tổng số cần tỷ giá hiện không khả dụng.",
     "title": "Bảng điều khiển",
     "welcome": "Chào mừng bạn đến với LealFinance",
     "empty": {
@@ -1324,6 +1328,7 @@
     }
   },
   "reports": {
+    "ratesUnavailable": "Một số số liệu cần tỷ giá hiện không khả dụng.",
     "title": "Báo cáo",
     "description": "Phân tích thu nhập, chi tiêu và số dư theo thời gian.",
     "period": {
