@@ -42,6 +42,8 @@ def _check_credit_card_fields(
     due_day: int | None,
     payment_account_id: UUID | None,
     auto_pay: bool,
+    *,
+    enforce_cycle_pair: bool = True,
 ) -> None:
     if account_type != ACCOUNT_TYPE_CREDIT_CARD and (
         credit_limit is not None
@@ -51,7 +53,11 @@ def _check_credit_card_fields(
         or auto_pay
     ):
         raise ValidationAppError(code="account.credit_fields_not_applicable")
-    if account_type == ACCOUNT_TYPE_CREDIT_CARD and (closing_day is None) != (due_day is None):
+    if (
+        enforce_cycle_pair
+        and account_type == ACCOUNT_TYPE_CREDIT_CARD
+        and (closing_day is None) != (due_day is None)
+    ):
         raise ValidationAppError(code="account.card_cycle_incomplete")
     if auto_pay and payment_account_id is None:
         raise ValidationAppError(code="account.auto_pay_requires_account")
@@ -342,6 +348,7 @@ async def update_account(
         changes.get("due_day", account.due_day),
         effective_payment_account_id,
         effective_auto_pay,
+        enforce_cycle_pair="closing_day" in changes or "due_day" in changes,
     )
     if (
         "closing_day" in changes

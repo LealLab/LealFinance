@@ -281,7 +281,7 @@ describe('TransactionImport', () => {
 
     expect(stubRepo.lastCommitItems?.length).toBe(1);
     expect(stubRepo.lastCommitItems?.[0].description).toBe('Coffee');
-    expect(stubRepo.lastCommitKey).toEqual(expect.any(String));
+    expect(stubRepo.lastCommitKey).toMatch(/^[0-9a-f]{32}$/);
     const firstCommitKey = stubRepo.lastCommitKey;
 
     // The page stays open: the posted row is dropped, the rest remain for

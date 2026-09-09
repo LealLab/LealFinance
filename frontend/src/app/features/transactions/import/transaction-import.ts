@@ -208,6 +208,11 @@ export class TransactionImport {
     };
   }
 
+  private newImportKey(): string {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+  }
+
   protected mappingLabel(field: TargetField): string {
     if (field === 'type') return 'transactions.filters.type';
     if (field === 'counterparty_account') return 'transactions.form.fields.account';
@@ -614,7 +619,7 @@ export class TransactionImport {
     const importable = this.rows().filter(isImportable);
     const importedIndices = new Set(importable.map((row) => row.index));
     const items = importable.map((row) => this.toTransactionInput(row, account.currency));
-    if (this.importKey === null) this.importKey = crypto.randomUUID();
+    if (this.importKey === null) this.importKey = this.newImportKey();
 
     this.importing.set(true);
     this.transactionRepository.importCommit(items, this.importKey).subscribe({

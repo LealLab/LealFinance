@@ -7,11 +7,13 @@ the HTTP layer gets a couple of smoke tests at the end.
 
 from datetime import date
 from decimal import Decimal
+from uuid import UUID
 
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.account import Account
 from app.services import card_invoices as svc
 from app.services.card_invoices import cycle_close_for, due_date_for
 from tests.factories import login_as, make_user
@@ -379,3 +381,28 @@ async def test_credit_card_cycle_config_must_be_both_or_neither(
     resp = await client.patch(f"/api/v1/accounts/{card_id}", json={"due_day": None})
     assert resp.status_code == 422
     assert resp.json()["error"]["code"] == "account.card_cycle_incomplete"
+
+
+async def test_legacy_asymmetric_card_can_be_updated_and_completed(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user_id = await _authed(client, db_session, "legacy-cycle@example.com")
+    card = Account(
+        user_id=UUID(user_id),
+        name="Legacy card",
+        type="credit_card",
+        currency="BRL",
+        credit_limit="1000.00",
+        closing_day=10,
+    )
+    db_session.add(card)
+    await db_session.commit()
+    await db_session.refresh(card)
+
+    rename = await client.patch(f"/api/v1/accounts/{card.id}", json={"name": "x"})
+    assert rename.status_code == 200, rename.text
+
+    complete = await client.patch(f"/api/v1/accounts/{card.id}", json={"due_day": 20})
+    assert complete.status_code == 200, complete.text
+    assert complete.json()["closing_day"] == 10
+    assert complete.json()["due_day"] == 20
