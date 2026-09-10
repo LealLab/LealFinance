@@ -209,6 +209,7 @@
       "budgets": "Budgets",
       "goals": "Goals",
       "loans": "Loans",
+      "agenda": "Agenda",
       "reports": "Reports",
       "exchange": "Exchange",
       "settings": "Settings",
@@ -1355,6 +1356,42 @@
       "expense": "Expenses",
       "netFlow": "Net flow",
       "categories": "Categories"
+    }
+  },
+  "agenda": {
+    "title": "Financial agenda",
+    "description": "View upcoming obligations and expected cash impact over the next 30 days.",
+    "ratesUnavailable": "Some agenda figures need an exchange rate that isn't available right now.",
+    "empty": {
+      "title": "Nothing due in the next 30 days",
+      "description": "Upcoming recurring transactions, card invoices, and loan installments will appear here."
+    },
+    "summary": {
+      "projectedCashImpact": "Projected cash impact",
+      "realizedCashImpact": "Realized cash impact",
+      "projectedOutflow": "Projected outflow",
+      "realizedOutflow": "Realized outflow",
+      "displayCurrency": "In display currency"
+    },
+    "table": {
+      "date": "Date",
+      "item": "Item",
+      "status": "Status",
+      "direction": "Direction",
+      "cashImpact": "Cash impact"
+    },
+    "source": {
+      "recurrence": "Recurrence",
+      "invoice": "Card invoice",
+      "installment": "Loan installment"
+    },
+    "status": {
+      "realized": "Realized",
+      "projected": "Projected"
+    },
+    "direction": {
+      "inflow": "Inflow",
+      "outflow": "Outflow"
     }
   },
   "exchange": {

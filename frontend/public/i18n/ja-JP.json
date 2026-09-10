@@ -210,6 +210,7 @@
       "budgets": "予算",
       "goals": "目標",
       "loans": "ローン",
+      "agenda": "財務予定",
       "reports": "レポート",
       "exchange": "為替",
       "settings": "設定",
@@ -1355,6 +1356,42 @@
       "expense": "支出",
       "netFlow": "純キャッシュフロー",
       "categories": "カテゴリ"
+    }
+  },
+  "agenda": {
+    "title": "財務アジェンダ",
+    "description": "今後30日間の予定された支払いと予想されるキャッシュインパクトを確認できます。",
+    "ratesUnavailable": "一部のアジェンダの金額には、現在利用できない為替レートが必要です。",
+    "empty": {
+      "title": "今後30日間に支払いはありません",
+      "description": "定期取引、カード請求、ローン返済がここに表示されます。"
+    },
+    "summary": {
+      "projectedCashImpact": "予想キャッシュインパクト",
+      "realizedCashImpact": "実績キャッシュインパクト",
+      "projectedOutflow": "予想支出",
+      "realizedOutflow": "実績支出",
+      "displayCurrency": "表示通貨"
+    },
+    "table": {
+      "date": "日付",
+      "item": "項目",
+      "status": "状態",
+      "direction": "方向",
+      "cashImpact": "キャッシュインパクト"
+    },
+    "source": {
+      "recurrence": "定期取引",
+      "invoice": "カード請求",
+      "installment": "ローン返済"
+    },
+    "status": {
+      "realized": "実績",
+      "projected": "予想"
+    },
+    "direction": {
+      "inflow": "入金",
+      "outflow": "出金"
     }
   },
   "exchange": {

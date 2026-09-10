@@ -210,6 +210,7 @@
       "budgets": "Budgetar",
       "goals": "Mål",
       "loans": "Lån",
+      "agenda": "Agenda",
       "reports": "Rapporter",
       "exchange": "Valutaväxling",
       "settings": "Inställningar",
@@ -1355,6 +1356,42 @@
       "expense": "Utgifter",
       "netFlow": "Nettoflöde",
       "categories": "Kategorier"
+    }
+  },
+  "agenda": {
+    "title": "Ekonomisk agenda",
+    "description": "Se kommande åtaganden och den förväntade kassapåverkan under de närmaste 30 dagarna.",
+    "ratesUnavailable": "Vissa belopp i agendan behöver en växelkurs som inte är tillgänglig just nu.",
+    "empty": {
+      "title": "Inget förfaller under de närmaste 30 dagarna",
+      "description": "Återkommande transaktioner, kortfakturor och lånebetalningar visas här."
+    },
+    "summary": {
+      "projectedCashImpact": "Förväntad kassapåverkan",
+      "realizedCashImpact": "Realiserad kassapåverkan",
+      "projectedOutflow": "Förväntat utflöde",
+      "realizedOutflow": "Realiserat utflöde",
+      "displayCurrency": "I visningsvalutan"
+    },
+    "table": {
+      "date": "Datum",
+      "item": "Post",
+      "status": "Status",
+      "direction": "Riktning",
+      "cashImpact": "Kassapåverkan"
+    },
+    "source": {
+      "recurrence": "Återkommande",
+      "invoice": "Kortfaktura",
+      "installment": "Lånebetalning"
+    },
+    "status": {
+      "realized": "Realiserad",
+      "projected": "Prognostiserad"
+    },
+    "direction": {
+      "inflow": "Inflöde",
+      "outflow": "Utflöde"
     }
   },
   "exchange": {

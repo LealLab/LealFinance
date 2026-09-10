@@ -210,6 +210,7 @@
       "budgets": "Bugete",
       "goals": "Obiective",
       "loans": "Împrumuturi",
+      "agenda": "Agendă",
       "reports": "Rapoarte",
       "exchange": "Schimb valutar",
       "settings": "Setări",
@@ -1355,6 +1356,42 @@
       "expense": "Cheltuieli",
       "netFlow": "Flux net",
       "categories": "Categorii"
+    }
+  },
+  "agenda": {
+    "title": "Agendă financiară",
+    "description": "Vezi obligațiile următoare și impactul de numerar estimat pentru următoarele 30 de zile.",
+    "ratesUnavailable": "Unele valori din agendă au nevoie de un curs valutar care nu este disponibil acum.",
+    "empty": {
+      "title": "Nimic scadent în următoarele 30 de zile",
+      "description": "Aici vor apărea tranzacțiile recurente, facturile de card și ratele de împrumut."
+    },
+    "summary": {
+      "projectedCashImpact": "Impact de numerar estimat",
+      "realizedCashImpact": "Impact de numerar realizat",
+      "projectedOutflow": "Ieșire estimată",
+      "realizedOutflow": "Ieșire realizată",
+      "displayCurrency": "În moneda de afișare"
+    },
+    "table": {
+      "date": "Dată",
+      "item": "Element",
+      "status": "Stare",
+      "direction": "Direcție",
+      "cashImpact": "Impact de numerar"
+    },
+    "source": {
+      "recurrence": "Recurență",
+      "invoice": "Factură de card",
+      "installment": "Rată de împrumut"
+    },
+    "status": {
+      "realized": "Realizat",
+      "projected": "Proiectat"
+    },
+    "direction": {
+      "inflow": "Intrare",
+      "outflow": "Ieșire"
     }
   },
   "exchange": {

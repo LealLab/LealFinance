@@ -210,6 +210,7 @@
       "budgets": "Anggaran",
       "goals": "Target",
       "loans": "Pinjaman",
+      "agenda": "Agenda",
       "reports": "Laporan",
       "exchange": "Penukaran",
       "settings": "Pengaturan",
@@ -1355,6 +1356,42 @@
       "expense": "Pengeluaran",
       "netFlow": "Arus bersih",
       "categories": "Kategori"
+    }
+  },
+  "agenda": {
+    "title": "Agenda keuangan",
+    "description": "Lihat kewajiban mendatang dan dampak kas yang diperkirakan dalam 30 hari ke depan.",
+    "ratesUnavailable": "Beberapa angka agenda memerlukan nilai tukar yang saat ini tidak tersedia.",
+    "empty": {
+      "title": "Tidak ada kewajiban jatuh tempo dalam 30 hari ke depan",
+      "description": "Transaksi berulang, tagihan kartu, dan angsuran pinjaman akan muncul di sini."
+    },
+    "summary": {
+      "projectedCashImpact": "Dampak kas yang diproyeksikan",
+      "realizedCashImpact": "Dampak kas terealisasi",
+      "projectedOutflow": "Arus keluar diproyeksikan",
+      "realizedOutflow": "Arus keluar terealisasi",
+      "displayCurrency": "Dalam mata uang tampilan"
+    },
+    "table": {
+      "date": "Tanggal",
+      "item": "Item",
+      "status": "Status",
+      "direction": "Arah",
+      "cashImpact": "Dampak kas"
+    },
+    "source": {
+      "recurrence": "Transaksi berulang",
+      "invoice": "Tagihan kartu",
+      "installment": "Angsuran pinjaman"
+    },
+    "status": {
+      "realized": "Terealisasi",
+      "projected": "Diproyeksikan"
+    },
+    "direction": {
+      "inflow": "Arus masuk",
+      "outflow": "Arus keluar"
     }
   },
   "exchange": {

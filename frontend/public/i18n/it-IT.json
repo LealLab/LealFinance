@@ -210,6 +210,7 @@
       "budgets": "Budget",
       "goals": "Obiettivi",
       "loans": "Prestiti",
+      "agenda": "Agenda",
       "reports": "Report",
       "exchange": "Cambio",
       "settings": "Impostazioni",
@@ -1355,6 +1356,42 @@
       "expense": "Uscite",
       "netFlow": "Flusso netto",
       "categories": "Categorie"
+    }
+  },
+  "agenda": {
+    "title": "Agenda finanziaria",
+    "description": "Visualizza gli obblighi in arrivo e l’impatto di cassa previsto nei prossimi 30 giorni.",
+    "ratesUnavailable": "Alcuni valori dell’agenda richiedono un tasso di cambio non disponibile al momento.",
+    "empty": {
+      "title": "Nessuna scadenza nei prossimi 30 giorni",
+      "description": "Le transazioni ricorrenti, le fatture della carta e le rate del prestito appariranno qui."
+    },
+    "summary": {
+      "projectedCashImpact": "Impatto di cassa previsto",
+      "realizedCashImpact": "Impatto di cassa realizzato",
+      "projectedOutflow": "Uscita prevista",
+      "realizedOutflow": "Uscita realizzata",
+      "displayCurrency": "Nella valuta di visualizzazione"
+    },
+    "table": {
+      "date": "Data",
+      "item": "Voce",
+      "status": "Stato",
+      "direction": "Direzione",
+      "cashImpact": "Impatto di cassa"
+    },
+    "source": {
+      "recurrence": "Ricorrenza",
+      "invoice": "Fattura della carta",
+      "installment": "Rata del prestito"
+    },
+    "status": {
+      "realized": "Realizzato",
+      "projected": "Previsto"
+    },
+    "direction": {
+      "inflow": "Entrata",
+      "outflow": "Uscita"
     }
   },
   "exchange": {

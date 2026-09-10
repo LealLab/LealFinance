@@ -209,6 +209,7 @@
       "budgets": "Orçamentos",
       "goals": "Metas",
       "loans": "Empréstimos",
+      "agenda": "Agenda",
       "reports": "Relatórios",
       "exchange": "Câmbio",
       "settings": "Configurações",
@@ -1355,6 +1356,42 @@
       "expense": "Despesa",
       "netFlow": "Fluxo líquido",
       "categories": "Categorias"
+    }
+  },
+  "agenda": {
+    "title": "Agenda financeira",
+    "description": "Veja as obrigações futuras e o impacto de caixa esperado nos próximos 30 dias.",
+    "ratesUnavailable": "Alguns valores da agenda precisam de uma taxa de câmbio que não está disponível no momento.",
+    "empty": {
+      "title": "Nada vence nos próximos 30 dias",
+      "description": "Transações recorrentes, faturas de cartão e parcelas de empréstimos aparecerão aqui."
+    },
+    "summary": {
+      "projectedCashImpact": "Impacto de caixa projetado",
+      "realizedCashImpact": "Impacto de caixa realizado",
+      "projectedOutflow": "Saída projetada",
+      "realizedOutflow": "Saída realizada",
+      "displayCurrency": "Na moeda de exibição"
+    },
+    "table": {
+      "date": "Data",
+      "item": "Item",
+      "status": "Situação",
+      "direction": "Direção",
+      "cashImpact": "Impacto de caixa"
+    },
+    "source": {
+      "recurrence": "Recorrência",
+      "invoice": "Fatura do cartão",
+      "installment": "Parcela do empréstimo"
+    },
+    "status": {
+      "realized": "Realizado",
+      "projected": "Projetado"
+    },
+    "direction": {
+      "inflow": "Entrada",
+      "outflow": "Saída"
     }
   },
   "exchange": {

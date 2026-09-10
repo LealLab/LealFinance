@@ -210,6 +210,7 @@
       "budgets": "Budgets",
       "goals": "Objectifs",
       "loans": "Prêts",
+      "agenda": "Agenda",
       "reports": "Rapports",
       "exchange": "Change",
       "settings": "Paramètres",
@@ -1355,6 +1356,42 @@
       "expense": "Dépenses",
       "netFlow": "Flux net",
       "categories": "Catégories"
+    }
+  },
+  "agenda": {
+    "title": "Agenda financière",
+    "description": "Consultez les obligations à venir et leur impact de trésorerie prévu pour les 30 prochains jours.",
+    "ratesUnavailable": "Certains chiffres de l’agenda nécessitent un taux de change actuellement indisponible.",
+    "empty": {
+      "title": "Rien à payer dans les 30 prochains jours",
+      "description": "Les transactions récurrentes, les factures de carte et les échéances de prêt apparaîtront ici."
+    },
+    "summary": {
+      "projectedCashImpact": "Impact de trésorerie prévu",
+      "realizedCashImpact": "Impact de trésorerie réalisé",
+      "projectedOutflow": "Sortie prévue",
+      "realizedOutflow": "Sortie réalisée",
+      "displayCurrency": "Dans la devise d’affichage"
+    },
+    "table": {
+      "date": "Date",
+      "item": "Élément",
+      "status": "Statut",
+      "direction": "Direction",
+      "cashImpact": "Impact de trésorerie"
+    },
+    "source": {
+      "recurrence": "Récurrence",
+      "invoice": "Facture de carte",
+      "installment": "Échéance de prêt"
+    },
+    "status": {
+      "realized": "Réalisé",
+      "projected": "Projeté"
+    },
+    "direction": {
+      "inflow": "Entrée",
+      "outflow": "Sortie"
     }
   },
   "exchange": {

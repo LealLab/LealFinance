@@ -210,6 +210,7 @@
       "budgets": "預算",
       "goals": "目標",
       "loans": "貸款",
+      "agenda": "財務行程",
       "reports": "報表",
       "exchange": "匯兌",
       "settings": "設定",
@@ -1355,6 +1356,42 @@
       "expense": "支出",
       "netFlow": "淨現金流",
       "categories": "分類"
+    }
+  },
+  "agenda": {
+    "title": "財務行程",
+    "description": "查看未來30天的待付款項目與預期現金影響。",
+    "ratesUnavailable": "部分行程數據需要目前無法取得的匯率。",
+    "empty": {
+      "title": "未來30天沒有待付款項",
+      "description": "定期交易、信用卡帳單和貸款分期將顯示於此。"
+    },
+    "summary": {
+      "projectedCashImpact": "預期現金影響",
+      "realizedCashImpact": "已實現現金影響",
+      "projectedOutflow": "預期流出",
+      "realizedOutflow": "已實現流出",
+      "displayCurrency": "以顯示貨幣計"
+    },
+    "table": {
+      "date": "日期",
+      "item": "項目",
+      "status": "狀態",
+      "direction": "方向",
+      "cashImpact": "現金影響"
+    },
+    "source": {
+      "recurrence": "定期交易",
+      "invoice": "信用卡帳單",
+      "installment": "貸款分期"
+    },
+    "status": {
+      "realized": "已實現",
+      "projected": "預期"
+    },
+    "direction": {
+      "inflow": "流入",
+      "outflow": "流出"
     }
   },
   "exchange": {

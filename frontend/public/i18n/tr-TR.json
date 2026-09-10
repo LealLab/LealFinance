@@ -210,6 +210,7 @@
       "budgets": "Bütçeler",
       "goals": "Hedefler",
       "loans": "Krediler",
+      "agenda": "Ajanda",
       "reports": "Raporlar",
       "exchange": "Döviz",
       "settings": "Ayarlar",
@@ -1355,6 +1356,42 @@
       "expense": "Giderler",
       "netFlow": "Net akış",
       "categories": "Kategoriler"
+    }
+  },
+  "agenda": {
+    "title": "Finans ajandası",
+    "description": "Önümüzdeki 30 günün yaklaşan yükümlülüklerini ve beklenen nakit etkisini görün.",
+    "ratesUnavailable": "Ajandadaki bazı tutarlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
+    "empty": {
+      "title": "Önümüzdeki 30 günde vadesi gelen yok",
+      "description": "Yinelenen işlemler, kredi kartı ekstreleri ve kredi taksitleri burada görünür."
+    },
+    "summary": {
+      "projectedCashImpact": "Beklenen nakit etkisi",
+      "realizedCashImpact": "Gerçekleşen nakit etkisi",
+      "projectedOutflow": "Beklenen çıkış",
+      "realizedOutflow": "Gerçekleşen çıkış",
+      "displayCurrency": "Görüntüleme para biriminde"
+    },
+    "table": {
+      "date": "Tarih",
+      "item": "Kalem",
+      "status": "Durum",
+      "direction": "Yön",
+      "cashImpact": "Nakit etkisi"
+    },
+    "source": {
+      "recurrence": "Yinelenen işlem",
+      "invoice": "Kredi kartı ekstresi",
+      "installment": "Kredi taksiti"
+    },
+    "status": {
+      "realized": "Gerçekleşen",
+      "projected": "Öngörülen"
+    },
+    "direction": {
+      "inflow": "Giriş",
+      "outflow": "Çıkış"
     }
   },
   "exchange": {

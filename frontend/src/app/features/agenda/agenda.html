@@ -1,0 +1,115 @@
+<div *transloco="let t">
+  <app-page-header [title]="t('agenda.title')" [description]="t('agenda.description')" />
+
+  @if (dataError()) {
+    <app-load-error (retry)="retryAll()" />
+  } @else if (isEmpty()) {
+    <app-empty-state
+      icon="calendar"
+      [title]="t('agenda.empty.title')"
+      [description]="t('agenda.empty.description')"
+    />
+  } @else {
+    @if (hasFallbackRate()) {
+      <div class="mb-6">
+        <app-exchange-rate-warning [isFallback]="true" />
+      </div>
+    }
+
+    @if (ratesFailed()) {
+      <app-load-error messageKey="agenda.ratesUnavailable" (retry)="retryRates()" />
+    } @else if (ratesReady()) {
+      @if (agenda(); as data) {
+        <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <app-stat-tile
+            [label]="t('agenda.summary.projectedCashImpact')"
+            [value]="data.projected.cashImpact.amount | money: data.projected.cashImpact.currency"
+            [hint]="t('agenda.summary.displayCurrency')"
+            tone="negative"
+          />
+          <app-stat-tile
+            [label]="t('agenda.summary.realizedCashImpact')"
+            [value]="data.realized.cashImpact.amount | money: data.realized.cashImpact.currency"
+            [hint]="t('agenda.summary.displayCurrency')"
+          />
+          <app-stat-tile
+            [label]="t('agenda.summary.projectedOutflow')"
+            [value]="data.projected.outflow.amount | money: data.projected.outflow.currency"
+            [hint]="t('agenda.summary.displayCurrency')"
+            tone="negative"
+          />
+          <app-stat-tile
+            [label]="t('agenda.summary.realizedOutflow')"
+            [value]="data.realized.outflow.amount | money: data.realized.outflow.currency"
+            [hint]="t('agenda.summary.displayCurrency')"
+          />
+        </div>
+
+        <app-card [padded]="false">
+          <div class="max-w-full overflow-x-auto">
+            <table class="w-full min-w-[36rem] table-fixed text-sm">
+              <thead>
+                <tr class="border-b border-border text-start text-xs text-content-muted">
+                  <th class="w-28 px-4 py-3 text-start font-medium">
+                    {{ t('agenda.table.date') }}
+                  </th>
+                  <th class="px-4 py-3 text-start font-medium">{{ t('agenda.table.item') }}</th>
+                  <th class="w-28 px-4 py-3 text-start font-medium">
+                    {{ t('agenda.table.status') }}
+                  </th>
+                  <th class="w-24 px-4 py-3 text-start font-medium">
+                    {{ t('agenda.table.direction') }}
+                  </th>
+                  <th class="w-36 px-4 py-3 text-end font-medium">
+                    {{ t('agenda.table.cashImpact') }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (entry of data.entries; track $index) {
+                  <tr class="border-b border-border last:border-b-0">
+                    <td class="whitespace-nowrap px-4 py-3 align-top text-content-muted">
+                      {{ entry.date }}
+                    </td>
+                    <td class="px-4 py-3 align-top">
+                      <p class="break-words font-medium text-content-primary">
+                        {{ entry.description }}
+                      </p>
+                      <p class="mt-0.5 text-xs text-content-muted">
+                        {{ t('agenda.source.' + entry.source) }}
+                      </p>
+                    </td>
+                    <td class="px-4 py-3 align-top">
+                      <app-badge [tone]="entry.realized ? 'positive' : 'accent'">
+                        {{ t('agenda.status.' + (entry.realized ? 'realized' : 'projected')) }}
+                      </app-badge>
+                    </td>
+                    <td class="px-4 py-3 align-top text-content-muted">
+                      {{ t('agenda.direction.' + entry.direction) }}
+                    </td>
+                    <td
+                      class="px-4 py-3 text-end align-top font-mono tabular-nums"
+                      [class.text-negative]="entry.cashImpact.amount.startsWith('-')"
+                      [class.text-positive]="
+                        !entry.cashImpact.amount.startsWith('-') &&
+                        entry.cashImpact.amount !== '0.0000'
+                      "
+                    >
+                      {{ entry.cashImpact.amount | money: entry.cashImpact.currency }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      }
+    } @else {
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true">
+        @for (i of [0, 1, 2, 3]; track i) {
+          <app-skeleton height="4.25rem" />
+        }
+      </div>
+    }
+  }
+</div>

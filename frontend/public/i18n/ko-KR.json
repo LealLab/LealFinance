@@ -210,6 +210,7 @@
       "budgets": "예산",
       "goals": "목표",
       "loans": "대출",
+      "agenda": "재정 일정",
       "reports": "보고서",
       "exchange": "환율",
       "settings": "설정",
@@ -1355,6 +1356,42 @@
       "expense": "지출",
       "netFlow": "순현금 흐름",
       "categories": "카테고리"
+    }
+  },
+  "agenda": {
+    "title": "재정 일정",
+    "description": "앞으로 30일 동안의 예정된 의무와 예상 현금 영향을 확인하세요.",
+    "ratesUnavailable": "일부 일정 금액에는 현재 사용할 수 없는 환율이 필요합니다.",
+    "empty": {
+      "title": "앞으로 30일 동안 예정된 항목이 없습니다",
+      "description": "반복 거래, 카드 청구서, 대출 할부가 여기에 표시됩니다."
+    },
+    "summary": {
+      "projectedCashImpact": "예상 현금 영향",
+      "realizedCashImpact": "실현 현금 영향",
+      "projectedOutflow": "예상 유출",
+      "realizedOutflow": "실현 유출",
+      "displayCurrency": "표시 통화 기준"
+    },
+    "table": {
+      "date": "날짜",
+      "item": "항목",
+      "status": "상태",
+      "direction": "방향",
+      "cashImpact": "현금 영향"
+    },
+    "source": {
+      "recurrence": "반복 거래",
+      "invoice": "카드 청구서",
+      "installment": "대출 할부"
+    },
+    "status": {
+      "realized": "실현됨",
+      "projected": "예상됨"
+    },
+    "direction": {
+      "inflow": "유입",
+      "outflow": "유출"
     }
   },
   "exchange": {

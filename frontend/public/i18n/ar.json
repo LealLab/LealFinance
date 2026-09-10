@@ -210,6 +210,7 @@
       "budgets": "الميزانيات",
       "goals": "الأهداف",
       "loans": "القروض",
+      "agenda": "الأجندة",
       "reports": "التقارير",
       "exchange": "الصرف",
       "settings": "الإعدادات",
@@ -1355,6 +1356,42 @@
       "expense": "المصروفات",
       "netFlow": "صافي التدفق",
       "categories": "الفئات"
+    }
+  },
+  "agenda": {
+    "title": "الأجندة المالية",
+    "description": "اعرض الالتزامات القادمة وتأثيرها النقدي المتوقع خلال الثلاثين يومًا القادمة.",
+    "ratesUnavailable": "تحتاج بعض أرقام الأجندة إلى سعر صرف غير متاح حاليًا.",
+    "empty": {
+      "title": "لا توجد مستحقات خلال الثلاثين يومًا القادمة",
+      "description": "ستظهر هنا المعاملات المتكررة وفواتير البطاقات وأقساط القروض القادمة."
+    },
+    "summary": {
+      "projectedCashImpact": "تأثير نقدي متوقع",
+      "realizedCashImpact": "تأثير نقدي محقق",
+      "projectedOutflow": "تدفق خارج متوقع",
+      "realizedOutflow": "تدفق خارج محقق",
+      "displayCurrency": "بعملة العرض"
+    },
+    "table": {
+      "date": "التاريخ",
+      "item": "البند",
+      "status": "الحالة",
+      "direction": "الاتجاه",
+      "cashImpact": "التأثير النقدي"
+    },
+    "source": {
+      "recurrence": "معاملة متكررة",
+      "invoice": "فاتورة بطاقة ائتمان",
+      "installment": "قسط قرض"
+    },
+    "status": {
+      "realized": "محقق",
+      "projected": "متوقع"
+    },
+    "direction": {
+      "inflow": "تدفق داخل",
+      "outflow": "تدفق خارج"
     }
   },
   "exchange": {

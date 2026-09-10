@@ -30,7 +30,7 @@ export interface NavSection {
  * register as a false usage site - see docs/i18n.md's "one gotcha"),
  * so no separate marker is needed there.
  *
- * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.exchange, layout.nav.settings, layout.nav.chat, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.adminAutomations, reconciliation.nav, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
+ * t(layout.nav.dashboard, layout.nav.accounts, layout.nav.transactions, layout.nav.categories, layout.nav.rules, layout.nav.budgets, layout.nav.goals, layout.nav.loans, layout.nav.reports, layout.nav.agenda, layout.nav.exchange, layout.nav.settings, layout.nav.chat, layout.nav.investments, layout.nav.providers, layout.nav.adminUsers, layout.nav.adminAutomations, reconciliation.nav, layout.nav.sections.accounts, layout.nav.sections.analysis, layout.nav.sections.setup, layout.nav.sections.admin)
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
@@ -44,7 +44,10 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     labelKey: 'layout.nav.sections.analysis',
-    items: [{ path: '/reports', labelKey: 'layout.nav.reports', icon: 'chart' }],
+    items: [
+      { path: '/reports', labelKey: 'layout.nav.reports', icon: 'chart' },
+      { path: '/agenda', labelKey: 'layout.nav.agenda', icon: 'calendar' },
+    ],
   },
   {
     labelKey: 'layout.nav.sections.setup',

@@ -210,6 +210,7 @@
       "budgets": "Budgets",
       "goals": "Sparziele",
       "loans": "Kredite",
+      "agenda": "Agenda",
       "reports": "Auswertungen",
       "exchange": "Wechselkurse",
       "settings": "Einstellungen",
@@ -1355,6 +1356,42 @@
       "expense": "Ausgaben",
       "netFlow": "Netto-Cashflow",
       "categories": "Kategorien"
+    }
+  },
+  "agenda": {
+    "title": "Finanzagenda",
+    "description": "Sehen Sie anstehende Verpflichtungen und ihre erwarteten Auswirkungen auf den Zahlungsbestand in den nächsten 30 Tagen.",
+    "ratesUnavailable": "Einige Werte der Agenda benötigen einen Wechselkurs, der derzeit nicht verfügbar ist.",
+    "empty": {
+      "title": "In den nächsten 30 Tagen nichts fällig",
+      "description": "Wiederkehrende Transaktionen, Kartenrechnungen und Kreditraten werden hier angezeigt."
+    },
+    "summary": {
+      "projectedCashImpact": "Erwartete Auswirkung auf den Zahlungsbestand",
+      "realizedCashImpact": "Realisierte Auswirkung auf den Zahlungsbestand",
+      "projectedOutflow": "Erwarteter Mittelabfluss",
+      "realizedOutflow": "Realisierter Mittelabfluss",
+      "displayCurrency": "In Anzeigewährung"
+    },
+    "table": {
+      "date": "Datum",
+      "item": "Eintrag",
+      "status": "Status",
+      "direction": "Richtung",
+      "cashImpact": "Auswirkung auf den Zahlungsbestand"
+    },
+    "source": {
+      "recurrence": "Wiederkehrend",
+      "invoice": "Kartenrechnung",
+      "installment": "Kreditrate"
+    },
+    "status": {
+      "realized": "Realisiert",
+      "projected": "Prognostiziert"
+    },
+    "direction": {
+      "inflow": "Zufluss",
+      "outflow": "Abfluss"
     }
   },
   "exchange": {
