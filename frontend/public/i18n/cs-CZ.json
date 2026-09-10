@@ -356,6 +356,18 @@
       "empty": "Pro tento měsíc není nastaven žádný rozpočet."
     }
   },
+  "onboarding": {
+    "title": "Průvodce nastavením",
+    "description": "Nastavte LealFinance v několika krocích. Kdykoli můžete nastavení pozastavit a pokračovat později.",
+    "steps": {
+      "currency": { "title": "Potvrďte měnu zobrazení a jazyk", "description": "Zkontrolujte jazyk a měnu zobrazení. Základní měna se nastavuje při registraci a zde ji nelze změnit." },
+      "account": { "title": "Vytvořte svůj první účet", "description": "Přidejte první účet a zadejte jeho počáteční zůstatek." },
+      "transactions": { "title": "Importujte nebo přidejte transakce", "description": "Importujte výpis nebo přidejte první transakce." },
+      "reconcile": { "title": "Slaďte zůstatek", "description": "Porovnejte účet s výpisem. Datum výpisu je časovou referencí počátečního zůstatku." },
+      "plan": { "title": "Nastavte opakovanou platbu nebo rozpočet", "description": "Volitelně automatizujte opakovanou transakci nebo nastavte rozpočet." }
+    },
+    "actions": { "continue": "Pokračovat", "skip": "Přeskočit tento krok", "dismiss": "Zrušit nastavení", "run": "Spustit průvodce nastavením", "import": "Importovat výpis", "transaction": "Přidat první transakci", "recurring": "Nastavit opakovanou platbu", "budget": "Nastavit rozpočet" }
+  },
   "currency": {
     "fallbackRateWarning": "Směnný kurz není k dispozici – jako odhad se používá převod 1:1.",
     "fallbackRateWarningAction": "Nastavit kurz"

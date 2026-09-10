@@ -1,6 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -214,6 +215,49 @@ describe('Transactions', () => {
 
     expect(list).toHaveBeenCalledWith({ installmentGroupId: 'series-1' });
     expect(bulkDelete).toHaveBeenCalledWith(['inst-3', 'inst-4']);
+  });
+});
+
+describe('Transactions - query parameters', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Transactions, provideTestTransloco()],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([{ path: 'transactions', component: Transactions }]),
+        provideTestTranslocoLocale(),
+        { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: AccountRepository, useClass: MockAccountRepository },
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
+        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
+        { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
+      ],
+    }).compileComponents();
+  });
+
+  it('selects the recurring tab from ?tab=recurring', async () => {
+    const harness = await RouterTestingHarness.create();
+    const component = await harness.navigateByUrl('/transactions?tab=recurring', Transactions);
+    await harness.fixture.whenStable();
+
+    expect(component['tab']()).toBe('recurring');
+  });
+
+  it('opens the recurring-rule modal and strips ?new=1 when both params are present', async () => {
+    const harness = await RouterTestingHarness.create();
+    const component = await harness.navigateByUrl(
+      '/transactions?tab=recurring&new=1',
+      Transactions,
+    );
+    await harness.fixture.whenStable();
+
+    expect(component['tab']()).toBe('recurring');
+    expect(component['ruleFormOpen']()).toBe(true);
+    expect(TestBed.inject(Router).url).toBe('/transactions?tab=recurring');
   });
 });
 

@@ -356,6 +356,18 @@
       "empty": "Tälle kuukaudelle ei ole asetettu budjettia."
     }
   },
+  "onboarding": {
+    "title": "Ohjattu käyttöönotto",
+    "description": "Ota LealFinance käyttöön muutamassa vaiheessa. Voit keskeyttää ja jatkaa milloin tahansa.",
+    "steps": {
+      "currency": { "title": "Vahvista näyttövaluutta ja kieli", "description": "Tarkista kieli ja näyttövaluutta. Perusvaluutta määritetään rekisteröityessä, eikä sitä muuteta tässä." },
+      "account": { "title": "Luo ensimmäinen tilisi", "description": "Lisää ensimmäinen tilisi ja syötä sen alkusaldo." },
+      "transactions": { "title": "Tuo tai lisää tapahtumia", "description": "Tuo tiliote tai lisää ensimmäiset tapahtumasi." },
+      "reconcile": { "title": "Täsmäytä saldosi", "description": "Vertaa tiliä tiliotteeseen. Tiliotteen päivä on alkusaldon ajallinen viite." },
+      "plan": { "title": "Määritä toistuva tapahtuma tai budjetti", "description": "Voit halutessasi automatisoida toistuvan tapahtuman tai määrittää budjetin." }
+    },
+    "actions": { "continue": "Jatka", "skip": "Ohita tämä vaihe", "dismiss": "Ohita käyttöönotto", "run": "Käynnistä ohjattu käyttöönotto", "import": "Tuo tiliote", "transaction": "Lisää ensimmäinen tapahtuma", "recurring": "Määritä toistuva tapahtuma", "budget": "Määritä budjetti" }
+  },
   "currency": {
     "fallbackRateWarning": "Valuuttakurssia ei ole saatavilla – arviona käytetään muuntosuhdetta 1:1.",
     "fallbackRateWarningAction": "Aseta kurssi"

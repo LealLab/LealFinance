@@ -356,6 +356,18 @@
       "empty": "Belum ada anggaran untuk bulan ini."
     }
   },
+  "onboarding": {
+    "title": "Penyiapan terpandu",
+    "description": "Siapkan LealFinance dalam beberapa langkah. Anda dapat menjeda dan melanjutkan kapan saja.",
+    "steps": {
+      "currency": { "title": "Konfirmasi mata uang tampilan dan bahasa", "description": "Periksa bahasa dan mata uang tampilan Anda. Mata uang dasar ditetapkan saat pendaftaran dan tidak diubah di sini." },
+      "account": { "title": "Buat akun pertama Anda", "description": "Tambahkan akun pertama dan masukkan saldo awalnya." },
+      "transactions": { "title": "Impor atau tambahkan transaksi", "description": "Impor rekening koran atau tambahkan transaksi pertama Anda." },
+      "reconcile": { "title": "Rekonsiliasi saldo Anda", "description": "Bandingkan akun dengan rekening koran. Tanggal rekening koran adalah referensi waktu untuk saldo awal." },
+      "plan": { "title": "Siapkan transaksi berulang atau anggaran", "description": "Secara opsional, otomatisasi transaksi berulang atau tetapkan anggaran." }
+    },
+    "actions": { "continue": "Lanjutkan", "skip": "Lewati langkah ini", "dismiss": "Abaikan penyiapan", "run": "Jalankan penyiapan terpandu", "import": "Impor rekening koran", "transaction": "Tambahkan transaksi pertama", "recurring": "Siapkan transaksi berulang", "budget": "Siapkan anggaran" }
+  },
   "currency": {
     "fallbackRateWarning": "Kurs tidak tersedia — menggunakan konversi 1:1 sebagai perkiraan.",
     "fallbackRateWarningAction": "Atur kurs"

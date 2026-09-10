@@ -356,6 +356,18 @@
       "empty": "Ingen budget har angetts för den här månaden."
     }
   },
+  "onboarding": {
+    "title": "Guidad konfiguration",
+    "description": "Konfigurera LealFinance i några få steg. Du kan pausa och fortsätta när som helst.",
+    "steps": {
+      "currency": { "title": "Bekräfta visningsvaluta och språk", "description": "Kontrollera språk och visningsvaluta. Basvalutan fastställs vid registreringen och ändras inte här." },
+      "account": { "title": "Skapa ditt första konto", "description": "Lägg till ditt första konto och ange ingående saldo." },
+      "transactions": { "title": "Importera eller lägg till transaktioner", "description": "Importera ett kontoutdrag eller lägg till dina första transaktioner." },
+      "reconcile": { "title": "Stäm av saldot", "description": "Jämför kontot med ett kontoutdrag. Kontoutdragets datum är tidsreferensen för ingående saldo." },
+      "plan": { "title": "Ställ in en återkommande transaktion eller budget", "description": "Du kan valfritt automatisera en återkommande transaktion eller ange en budget." }
+    },
+    "actions": { "continue": "Fortsätt", "skip": "Hoppa över detta steg", "dismiss": "Avfärda konfigurationen", "run": "Kör guidad konfiguration", "import": "Importera kontoutdrag", "transaction": "Lägg till första transaktionen", "recurring": "Ställ in återkommande transaktion", "budget": "Ställ in budget" }
+  },
   "currency": {
     "fallbackRateWarning": "Växelkurs saknas – omräkning 1:1 används som uppskattning.",
     "fallbackRateWarningAction": "Ange kurs"

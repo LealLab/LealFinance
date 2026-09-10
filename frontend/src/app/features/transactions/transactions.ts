@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
@@ -102,6 +102,7 @@ export class Transactions {
   private readonly recurringRuleRepository = inject(RecurringRuleRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly route = inject(ActivatedRoute);
   private readonly transloco = inject(TranslocoService);
   private readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly prefs = inject(TransactionViewPrefsService);
@@ -375,6 +376,12 @@ export class Transactions {
   });
 
   constructor() {
+    const queryParamMap = toSignal(this.route.queryParamMap, {
+      initialValue: this.route.snapshot.queryParamMap,
+    });
+    effect(() => {
+      this.tab.set(queryParamMap().get('tab') === 'recurring' ? 'recurring' : 'transactions');
+    });
     let previousMonth = this.calendarMonth();
     effect(() => {
       const month = this.calendarMonth();
@@ -382,7 +389,9 @@ export class Transactions {
       previousMonth = month;
       this.selectedDay.set(null);
     });
-    openOnNewParam(() => this.openCreateTx());
+    openOnNewParam(() =>
+      queryParamMap().get('tab') === 'recurring' ? this.openCreateRule() : this.openCreateTx(),
+    );
   }
 
   // --- Filter / sort / page mutators ------------------------------------

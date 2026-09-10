@@ -356,6 +356,18 @@
       "empty": "이번 달 예산이 아직 설정되지 않았습니다."
     }
   },
+  "onboarding": {
+    "title": "단계별 설정",
+    "description": "몇 단계로 LealFinance를 설정하세요. 언제든지 일시 중지했다가 다시 시작할 수 있습니다.",
+    "steps": {
+      "currency": { "title": "표시 통화 및 언어 확인", "description": "언어와 표시 통화를 확인하세요. 기본 통화는 가입할 때 고정되며 여기서 변경되지 않습니다." },
+      "account": { "title": "첫 계정 만들기", "description": "첫 계정을 추가하고 기초 잔액을 입력하세요." },
+      "transactions": { "title": "거래 가져오기 또는 추가", "description": "명세서를 가져오거나 첫 거래를 추가하세요." },
+      "reconcile": { "title": "잔액 조정", "description": "계정을 명세서와 비교하세요. 명세서 날짜가 기초 잔액의 시간 기준입니다." },
+      "plan": { "title": "반복 거래 또는 예산 설정", "description": "선택 사항으로 반복 거래를 자동화하거나 예산을 설정하세요." }
+    },
+    "actions": { "continue": "계속", "skip": "이 단계 건너뛰기", "dismiss": "설정 닫기", "run": "단계별 설정 실행", "import": "명세서 가져오기", "transaction": "첫 거래 추가", "recurring": "반복 거래 설정", "budget": "예산 설정" }
+  },
   "currency": {
     "fallbackRateWarning": "환율을 불러올 수 없어 1:1 환산값을 임시로 사용합니다.",
     "fallbackRateWarningAction": "환율 설정"
