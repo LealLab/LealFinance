@@ -210,6 +210,7 @@
       "budgets": "Ngân sách",
       "goals": "Mục tiêu",
       "loans": "Khoản vay",
+      "agenda": "Lịch",
       "reports": "Báo cáo",
       "exchange": "Tỷ giá",
       "settings": "Cài đặt",
@@ -1355,6 +1356,42 @@
       "expense": "Chi tiêu",
       "netFlow": "Dòng tiền ròng",
       "categories": "Danh mục"
+    }
+  },
+  "agenda": {
+    "title": "Lịch tài chính",
+    "description": "Xem các nghĩa vụ sắp tới và tác động tiền mặt dự kiến trong 30 ngày tới.",
+    "ratesUnavailable": "Một số số liệu cần tỷ giá hiện chưa có.",
+    "empty": {
+      "title": "Không có khoản đến hạn trong 30 ngày tới",
+      "description": "Giao dịch định kỳ, hóa đơn thẻ và các kỳ trả khoản vay sẽ xuất hiện tại đây."
+    },
+    "summary": {
+      "projectedCashImpact": "Tác động tiền mặt dự kiến",
+      "realizedCashImpact": "Tác động tiền mặt đã thực hiện",
+      "projectedOutflow": "Khoản chi dự kiến",
+      "realizedOutflow": "Khoản chi đã thực hiện",
+      "displayCurrency": "Theo đơn vị tiền tệ hiển thị"
+    },
+    "table": {
+      "date": "Ngày",
+      "item": "Mục",
+      "status": "Trạng thái",
+      "direction": "Hướng",
+      "cashImpact": "Tác động tiền mặt"
+    },
+    "source": {
+      "recurrence": "Giao dịch định kỳ",
+      "invoice": "Hóa đơn thẻ",
+      "installment": "Kỳ trả khoản vay"
+    },
+    "status": {
+      "realized": "Đã thực hiện",
+      "projected": "Dự kiến"
+    },
+    "direction": {
+      "inflow": "Tiền vào",
+      "outflow": "Tiền ra"
     }
   },
   "exchange": {

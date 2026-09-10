@@ -210,6 +210,7 @@
       "budgets": "Budgetten",
       "goals": "Doelen",
       "loans": "Leningen",
+      "agenda": "Agenda",
       "reports": "Rapporten",
       "exchange": "Wisselkoersen",
       "settings": "Instellingen",
@@ -1355,6 +1356,42 @@
       "expense": "Uitgaven",
       "netFlow": "Netto kasstroom",
       "categories": "Categorieën"
+    }
+  },
+  "agenda": {
+    "title": "Financiële agenda",
+    "description": "Bekijk komende verplichtingen en de verwachte kasimpact voor de komende 30 dagen.",
+    "ratesUnavailable": "Voor sommige bedragen in de agenda is een wisselkoers nodig die nu niet beschikbaar is.",
+    "empty": {
+      "title": "Niets verschuldigd in de komende 30 dagen",
+      "description": "Terugkerende transacties, creditcardfacturen en leningtermijnen worden hier weergegeven."
+    },
+    "summary": {
+      "projectedCashImpact": "Verwachte kasimpact",
+      "realizedCashImpact": "Gerealiseerde kasimpact",
+      "projectedOutflow": "Verwachte uitstroom",
+      "realizedOutflow": "Gerealiseerde uitstroom",
+      "displayCurrency": "In weergavevaluta"
+    },
+    "table": {
+      "date": "Datum",
+      "item": "Item",
+      "status": "Status",
+      "direction": "Richting",
+      "cashImpact": "Kasimpact"
+    },
+    "source": {
+      "recurrence": "Herhaling",
+      "invoice": "Creditcardfactuur",
+      "installment": "Leningtermijn"
+    },
+    "status": {
+      "realized": "Gerealiseerd",
+      "projected": "Geprojecteerd"
+    },
+    "direction": {
+      "inflow": "Inkomend",
+      "outflow": "Uitgaand"
     }
   },
   "exchange": {

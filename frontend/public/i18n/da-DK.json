@@ -210,6 +210,7 @@
       "budgets": "Budgetter",
       "goals": "Mål",
       "loans": "Lån",
+      "agenda": "Agenda",
       "reports": "Rapporter",
       "exchange": "Valutakurser",
       "settings": "Indstillinger",
@@ -1355,6 +1356,42 @@
       "expense": "Udgifter",
       "netFlow": "Netto pengestrøm",
       "categories": "Kategorier"
+    }
+  },
+  "agenda": {
+    "title": "Finansiel agenda",
+    "description": "Se kommende forpligtelser og den forventede likviditetspåvirkning de næste 30 dage.",
+    "ratesUnavailable": "Nogle tal i agendaen kræver en valutakurs, der ikke er tilgængelig lige nu.",
+    "empty": {
+      "title": "Intet forfalder de næste 30 dage",
+      "description": "Gentagne transaktioner, kortregninger og låneafdrag vises her."
+    },
+    "summary": {
+      "projectedCashImpact": "Forventet likviditetspåvirkning",
+      "realizedCashImpact": "Realiseret likviditetspåvirkning",
+      "projectedOutflow": "Forventet udgift",
+      "realizedOutflow": "Realiseret udgift",
+      "displayCurrency": "I visningsvaluta"
+    },
+    "table": {
+      "date": "Dato",
+      "item": "Post",
+      "status": "Status",
+      "direction": "Retning",
+      "cashImpact": "Likviditetspåvirkning"
+    },
+    "source": {
+      "recurrence": "Gentagelse",
+      "invoice": "Kortregning",
+      "installment": "Låneafdrag"
+    },
+    "status": {
+      "realized": "Realiseret",
+      "projected": "Forventet"
+    },
+    "direction": {
+      "inflow": "Indbetaling",
+      "outflow": "Udbetaling"
     }
   },
   "exchange": {

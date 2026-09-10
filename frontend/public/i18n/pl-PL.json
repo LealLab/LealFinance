@@ -210,6 +210,7 @@
       "budgets": "Budżety",
       "goals": "Cele",
       "loans": "Pożyczki",
+      "agenda": "Agenda",
       "reports": "Raporty",
       "exchange": "Wymiana walut",
       "settings": "Ustawienia",
@@ -1355,6 +1356,42 @@
       "expense": "Wydatki",
       "netFlow": "Przepływ netto",
       "categories": "Kategorie"
+    }
+  },
+  "agenda": {
+    "title": "Agenda finansowa",
+    "description": "Zobacz nadchodzące zobowiązania i przewidywany wpływ na gotówkę w ciągu najbliższych 30 dni.",
+    "ratesUnavailable": "Niektóre wartości agendy wymagają kursu walutowego, który jest obecnie niedostępny.",
+    "empty": {
+      "title": "Brak płatności w ciągu najbliższych 30 dni",
+      "description": "W tym miejscu pojawią się transakcje cykliczne, rachunki kart kredytowych i raty kredytów."
+    },
+    "summary": {
+      "projectedCashImpact": "Prognozowany wpływ na gotówkę",
+      "realizedCashImpact": "Rzeczywisty wpływ na gotówkę",
+      "projectedOutflow": "Prognozowany wypływ",
+      "realizedOutflow": "Rzeczywisty wypływ",
+      "displayCurrency": "W walucie wyświetlania"
+    },
+    "table": {
+      "date": "Data",
+      "item": "Pozycja",
+      "status": "Status",
+      "direction": "Kierunek",
+      "cashImpact": "Wpływ na gotówkę"
+    },
+    "source": {
+      "recurrence": "Transakcja cykliczna",
+      "invoice": "Rachunek karty kredytowej",
+      "installment": "Rata kredytu"
+    },
+    "status": {
+      "realized": "Zrealizowane",
+      "projected": "Prognozowane"
+    },
+    "direction": {
+      "inflow": "Wpływ",
+      "outflow": "Wypływ"
     }
   },
   "exchange": {

@@ -210,6 +210,7 @@
       "budgets": "תקציבים",
       "goals": "יעדים",
       "loans": "הלוואות",
+      "agenda": "סדר יום",
       "reports": "דוחות",
       "exchange": "המרת מטבע",
       "settings": "הגדרות",
@@ -1355,6 +1356,42 @@
       "expense": "הוצאות",
       "netFlow": "תזרים נטו",
       "categories": "קטגוריות"
+    }
+  },
+  "agenda": {
+    "title": "סדר יום פיננסי",
+    "description": "הצגת התחייבויות קרובות והשפעת המזומנים הצפויה במהלך 30 הימים הקרובים.",
+    "ratesUnavailable": "חלק מהנתונים בסדר היום זקוקים לשער חליפין שאינו זמין כרגע.",
+    "empty": {
+      "title": "אין תשלומים צפויים ב־30 הימים הקרובים",
+      "description": "עסקאות חוזרות, חשבוניות כרטיס ותשלומי הלוואה יוצגו כאן."
+    },
+    "summary": {
+      "projectedCashImpact": "השפעת מזומנים צפויה",
+      "realizedCashImpact": "השפעת מזומנים שמומשה",
+      "projectedOutflow": "תזרים יוצא צפוי",
+      "realizedOutflow": "תזרים יוצא שמומש",
+      "displayCurrency": "במטבע התצוגה"
+    },
+    "table": {
+      "date": "תאריך",
+      "item": "פריט",
+      "status": "סטטוס",
+      "direction": "כיוון",
+      "cashImpact": "השפעה על המזומן"
+    },
+    "source": {
+      "recurrence": "חיוב חוזר",
+      "invoice": "חשבונית כרטיס אשראי",
+      "installment": "תשלום הלוואה"
+    },
+    "status": {
+      "realized": "מומש",
+      "projected": "חזוי"
+    },
+    "direction": {
+      "inflow": "נכנס",
+      "outflow": "יוצא"
     }
   },
   "exchange": {

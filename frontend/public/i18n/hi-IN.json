@@ -210,6 +210,7 @@
       "budgets": "बजट",
       "goals": "लक्ष्य",
       "loans": "ऋण",
+      "agenda": "वित्तीय एजेंडा",
       "reports": "रिपोर्ट",
       "exchange": "मुद्रा विनिमय",
       "settings": "सेटिंग्स",
@@ -1355,6 +1356,42 @@
       "expense": "खर्च",
       "netFlow": "शुद्ध प्रवाह",
       "categories": "श्रेणियाँ"
+    }
+  },
+  "agenda": {
+    "title": "वित्तीय एजेंडा",
+    "description": "अगले 30 दिनों के आने वाले दायित्व और अपेक्षित नकदी प्रभाव देखें।",
+    "ratesUnavailable": "कुछ एजेंडा आंकड़ों के लिए ऐसी विनिमय दर चाहिए जो अभी उपलब्ध नहीं है।",
+    "empty": {
+      "title": "अगले 30 दिनों में कुछ भी देय नहीं है",
+      "description": "आवर्ती लेन-देन, कार्ड बिल और ऋण किस्तें यहाँ दिखाई देंगी।"
+    },
+    "summary": {
+      "projectedCashImpact": "अनुमानित नकदी प्रभाव",
+      "realizedCashImpact": "वास्तविक नकदी प्रभाव",
+      "projectedOutflow": "अनुमानित बहिर्वाह",
+      "realizedOutflow": "वास्तविक बहिर्वाह",
+      "displayCurrency": "प्रदर्शन मुद्रा में"
+    },
+    "table": {
+      "date": "तारीख",
+      "item": "मद",
+      "status": "स्थिति",
+      "direction": "दिशा",
+      "cashImpact": "नकदी प्रभाव"
+    },
+    "source": {
+      "recurrence": "आवर्ती",
+      "invoice": "कार्ड बिल",
+      "installment": "ऋण किस्त"
+    },
+    "status": {
+      "realized": "वास्तविक",
+      "projected": "अनुमानित"
+    },
+    "direction": {
+      "inflow": "अंतर्प्रवाह",
+      "outflow": "बहिर्प्रवाह"
     }
   },
   "exchange": {

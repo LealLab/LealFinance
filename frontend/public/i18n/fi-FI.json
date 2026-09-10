@@ -210,6 +210,7 @@
       "budgets": "Budjetit",
       "goals": "Tavoitteet",
       "loans": "Lainat",
+      "agenda": "Talousagenda",
       "reports": "Raportit",
       "exchange": "Valuuttakurssit",
       "settings": "Asetukset",
@@ -1355,6 +1356,42 @@
       "expense": "Menot",
       "netFlow": "Nettokassavirta",
       "categories": "Luokat"
+    }
+  },
+  "agenda": {
+    "title": "Talousagenda",
+    "description": "Näe tulevat velvoitteet ja niiden odotettu kassavaikutus seuraavien 30 päivän aikana.",
+    "ratesUnavailable": "Jotkin agendan luvut tarvitsevat valuuttakurssin, joka ei ole tällä hetkellä saatavilla.",
+    "empty": {
+      "title": "Ei erääntyviä maksuja seuraavien 30 päivän aikana",
+      "description": "Toistuvat tapahtumat, luottokorttilaskut ja lainanlyhennykset näkyvät täällä."
+    },
+    "summary": {
+      "projectedCashImpact": "Ennakoitu kassavaikutus",
+      "realizedCashImpact": "Toteutunut kassavaikutus",
+      "projectedOutflow": "Ennakoitu rahameno",
+      "realizedOutflow": "Toteutunut rahameno",
+      "displayCurrency": "Näyttövaluutassa"
+    },
+    "table": {
+      "date": "Päivä",
+      "item": "Nimike",
+      "status": "Tila",
+      "direction": "Suunta",
+      "cashImpact": "Kassavaikutus"
+    },
+    "source": {
+      "recurrence": "Toistuva tapahtuma",
+      "invoice": "Luottokorttilasku",
+      "installment": "Lainanlyhennys"
+    },
+    "status": {
+      "realized": "Toteutunut",
+      "projected": "Ennakoitu"
+    },
+    "direction": {
+      "inflow": "Tulo",
+      "outflow": "Meno"
     }
   },
   "exchange": {

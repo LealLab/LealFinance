@@ -90,6 +90,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/reports/reports').then((m) => m.Reports),
       },
       {
+        path: 'agenda',
+        loadComponent: () => import('./features/agenda/agenda').then((m) => m.Agenda),
+      },
+      {
         path: 'exchange',
         loadComponent: () => import('./features/exchange/exchange').then((m) => m.Exchange),
       },

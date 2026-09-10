@@ -210,6 +210,7 @@
       "budgets": "Rozpočty",
       "goals": "Cíle",
       "loans": "Půjčky",
+      "agenda": "Agenda",
       "reports": "Přehledy",
       "exchange": "Směna měn",
       "settings": "Nastavení",
@@ -1355,6 +1356,42 @@
       "expense": "Výdaje",
       "netFlow": "Čistý peněžní tok",
       "categories": "Kategorie"
+    }
+  },
+  "agenda": {
+    "title": "Finanční agenda",
+    "description": "Prohlédněte si nadcházející závazky a jejich očekávaný dopad na hotovost v příštích 30 dnech.",
+    "ratesUnavailable": "Některé údaje agendy potřebují směnný kurz, který nyní není k dispozici.",
+    "empty": {
+      "title": "V příštích 30 dnech nic nesplatného",
+      "description": "Zde se zobrazí opakované transakce, faktury kreditních karet a splátky úvěrů."
+    },
+    "summary": {
+      "projectedCashImpact": "Předpokládaný dopad na hotovost",
+      "realizedCashImpact": "Skutečný dopad na hotovost",
+      "projectedOutflow": "Předpokládaný odtok",
+      "realizedOutflow": "Skutečný odtok",
+      "displayCurrency": "V zobrazované měně"
+    },
+    "table": {
+      "date": "Datum",
+      "item": "Položka",
+      "status": "Stav",
+      "direction": "Směr",
+      "cashImpact": "Dopad na hotovost"
+    },
+    "source": {
+      "recurrence": "Opakování",
+      "invoice": "Faktura kreditní karty",
+      "installment": "Splátka úvěru"
+    },
+    "status": {
+      "realized": "Realizováno",
+      "projected": "Předpokládáno"
+    },
+    "direction": {
+      "inflow": "Příjem",
+      "outflow": "Výdaj"
     }
   },
   "exchange": {

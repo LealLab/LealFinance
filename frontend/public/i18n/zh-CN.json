@@ -210,6 +210,7 @@
       "budgets": "预算",
       "goals": "目标",
       "loans": "贷款",
+      "agenda": "财务日程",
       "reports": "报表",
       "exchange": "汇率",
       "settings": "设置",
@@ -1355,6 +1356,42 @@
       "expense": "支出",
       "netFlow": "净现金流",
       "categories": "分类"
+    }
+  },
+  "agenda": {
+    "title": "财务日程",
+    "description": "查看未来30天的待付款项及预计现金影响。",
+    "ratesUnavailable": "部分日程数据需要当前不可用的汇率。",
+    "empty": {
+      "title": "未来30天没有待付款项",
+      "description": "定期交易、信用卡账单和贷款分期将在此显示。"
+    },
+    "summary": {
+      "projectedCashImpact": "预计现金影响",
+      "realizedCashImpact": "已实现现金影响",
+      "projectedOutflow": "预计流出",
+      "realizedOutflow": "已实现流出",
+      "displayCurrency": "以显示货币计"
+    },
+    "table": {
+      "date": "日期",
+      "item": "项目",
+      "status": "状态",
+      "direction": "方向",
+      "cashImpact": "现金影响"
+    },
+    "source": {
+      "recurrence": "定期交易",
+      "invoice": "信用卡账单",
+      "installment": "贷款分期"
+    },
+    "status": {
+      "realized": "已实现",
+      "projected": "预计"
+    },
+    "direction": {
+      "inflow": "流入",
+      "outflow": "流出"
     }
   },
   "exchange": {
