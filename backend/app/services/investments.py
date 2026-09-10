@@ -372,6 +372,7 @@ async def _settle_cash_leg(
                 )
             ),
         ),
+        source="investment",
     )
     await db.flush()
     return ledger_transaction

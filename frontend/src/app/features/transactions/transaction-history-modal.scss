@@ -1,0 +1,9 @@
+.history-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.history-entry {
+  border-inline-start: 2px solid var(--color-accent);
+  padding-inline-start: 0.75rem;
+}

@@ -505,6 +505,7 @@
       "columns": "Spalten",
       "exportCsv": "CSV exportieren"
     },
+    "history": {"title":"Transaktionsverlauf","loading":"Verlauf wird geladen…","empty":"Noch kein Verlauf.","loadError":"Der Transaktionsverlauf konnte nicht geladen werden.","operation":{"create":"Erstellt","update":"Aktualisiert","delete":"Gelöscht"},"source":{"manual":"Manuell","import":"Import","import_undo":"Import rückgängig","recurring":"Wiederkehrend","loan":"Darlehen","card":"Karte","investment":"Investment","bulk":"Massenaktion"},"field":{"type":"Typ","date":"Datum","amount":"Betrag","currency":"Währung","account_id":"Konto","to_account_id":"Zielkonto","category_id":"Kategorie","description":"Beschreibung","notes":"Notizen","recurring_rule_id":"Wiederholungsregel","loan_id":"Darlehen","card_invoice_close_date":"Rechnungsabschluss","installment_group_id":"Raten-Gruppe","installment_number":"Raten-Nummer","installment_count":"Anzahl Raten","conversion_amount":"Umgerechneter Betrag","conversion_currency":"Umrechnungswährung","conversion_fee":"Umrechnungsgebühr","conversion_rate":"Umrechnungskurs","conversion_source":"Umrechnungsquelle"}},
     "tabs": {
       "transactions": "Transaktionen",
       "recurring": "Wiederkehrend"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importstapel","count":"{{count}} Transaktionen erstellt","remaining":"{{count}} übrig","undo":"Import rückgängig","undoConfirm":"Diesen Importstapel rückgängig machen? Dadurch werden {{count}} verbleibende Transaktionen gelöscht.","undoneEmpty":"Dieser Stapel enthält keine verbleibenden Transaktionen.","empty":"Noch keine Importstapel.","undoSuccess":"Importstapel rückgängig gemacht."},
       "title": "Transaktionen importieren",
       "description": "Laden Sie einen CSV-Export Ihrer Bank hoch, prüfen Sie jede Zeile und buchen Sie die bestätigten.",
       "fields": {
@@ -1778,7 +1780,59 @@
       "label": "Denkaufwand"
     }
   },
+  "reconciliation": {
+    "nav": "Abgleichen",
+    "title": "Bankabgleich",
+    "description": "Vergleichen Sie Ihr Kontobuch mit einem Kontoauszug und markieren Sie passende Transaktionen.",
+    "form": {
+      "account": "Konto",
+      "chooseAccount": "Konto auswählen",
+      "statementDate": "Auszugsdatum",
+      "statementBalance": "Auszugssaldo"
+    },
+    "stat": {
+      "statement": "Auszugssaldo",
+      "cleared": "Abgeglichenes Guthaben",
+      "difference": "Differenz"
+    },
+    "detail": { "asOf": "Bis {{date}}" },
+    "entries": {
+      "date": "Datum",
+      "description": "Beschreibung",
+      "legLabel": "Buchungsseite",
+      "amount": "Betrag",
+      "cleared": "Abgeglichen",
+      "mark": "{{description}} als abgeglichen markieren",
+      "empty": "Für dieses Auszugsdatum gibt es keine Transaktionen.",
+      "legType": { "own": "Kontotransaktion", "incoming": "Eingehende Überweisung" }
+    },
+    "actions": {
+      "reconcile": "Abgleichen",
+      "start": "Abgleich starten",
+      "complete": "Abschließen",
+      "reopen": "Wieder öffnen",
+      "delete": "Löschen"
+    },
+    "status": { "open": "Offen", "completed": "Abgeschlossen" },
+    "empty": {
+      "title": "Kein Abgleich ausgewählt",
+      "description": "Starten Sie oben einen Abgleich oder wählen Sie einen früheren aus."
+    },
+    "loadError": "Abgleiche konnten nicht geladen werden. Versuchen Sie es erneut.",
+    "confirmDelete": {
+      "title": "Abgleich löschen?",
+      "message": "Der Abgleich und seine Markierungen werden gelöscht. Fortfahren?"
+    }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Archivierte Konten können nicht abgeglichen werden.",
+      "already_open": "Für dieses Konto gibt es bereits einen offenen Abgleich.",
+      "completed": "Dieser Abgleich ist bereits abgeschlossen.",
+      "transaction_not_eligible": "Diese Transaktion kann nicht an diesem Abgleich teilnehmen.",
+      "leg_locked": "Diese Buchungsseite ist durch einen anderen Abgleich gesperrt.",
+      "difference_not_zero": "Die Differenz muss vor dem Abschluss null sein."
+    },
     "backup": {
       "invalid_archive": "Dies ist keine gültige LealFinance-Sicherung.",
       "invalid_file_type": "Wählen Sie eine JSON-Sicherungsdatei aus.",
@@ -1830,6 +1884,7 @@
       "no_rows": "Die Datei enthält keine Datenzeilen.",
       "too_many_rows": "Die Datei enthält zu viele Zeilen für einen einzelnen Import (Limit 2000).",
       "column_required": "Ordnen Sie die Spalten Datum, Beschreibung und Betrag zu, bevor Sie fortfahren.",
+      "batch_modified": "Dieser Importstapel wurde nach dem Import geändert und kann nicht rückgängig gemacht werden.",
       "row": {
         "invalid_date": "Dieses Datum konnte nicht gelesen werden.",
         "invalid_amount": "Dieser Betrag konnte nicht gelesen werden.",
@@ -1877,7 +1932,8 @@
       "transfer_requires_destination": "Wähle das Zielkonto für diese Überweisung aus.",
       "category_required": "Wähle eine Kategorie für diese Transaktion aus.",
       "category_kind_mismatch": "Diese Kategorie passt nicht zum Typ dieser Transaktion.",
-      "conversion_required": "Diese Transaktion betrifft mehrere Währungen und benötigt daher einen umgerechneten Betrag."
+      "conversion_required": "Diese Transaktion betrifft mehrere Währungen und benötigt daher einen umgerechneten Betrag.",
+      "reconciled": "Abgeglichene Transaktionen können strukturell nicht bearbeitet oder gelöscht werden."
     },
     "currency": {
       "not_found": "Diese Währung ist nicht verfügbar.",

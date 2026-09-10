@@ -1,0 +1,159 @@
+<div *transloco="let t">
+  <!-- t(reconciliation.loadError, errors.reconciliation.account_archived, errors.reconciliation.already_open, errors.reconciliation.completed, errors.reconciliation.transaction_not_eligible, errors.reconciliation.leg_locked, errors.reconciliation.difference_not_zero, errors.transaction.reconciled, reconciliation.status.open, reconciliation.status.completed, reconciliation.entries.legType.own, reconciliation.entries.legType.incoming, reconciliation.confirmDelete.title, reconciliation.confirmDelete.message) -->
+  <app-page-header [title]="t('reconciliation.title')" [description]="t('reconciliation.description')" />
+
+  @if (accountsResource.error()) {
+    <app-load-error [messageKey]="'reconciliation.loadError'" (retry)="accountsResource.reload()" />
+  } @else if (accountsResource.value(); as accounts) {
+    <div class="flex flex-col gap-6">
+      <app-card>
+        <form class="grid gap-4 sm:grid-cols-4" [formGroup]="form" (ngSubmit)="submit()">
+          <label class="flex flex-col gap-1 text-sm text-content-muted sm:col-span-2">
+            {{ t('reconciliation.form.account') }}
+            <select class="form-select" formControlName="accountId">
+              <option value="">{{ t('reconciliation.form.chooseAccount') }}</option>
+              @for (account of accounts; track account.id) {
+                @if (!account.archived) {
+                  <option [value]="account.id">{{ account.name }} ({{ account.currency }})</option>
+                }
+              }
+            </select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm text-content-muted">
+            {{ t('reconciliation.form.statementDate') }}
+            <input class="form-input" type="date" formControlName="statementDate" />
+          </label>
+          <label class="flex flex-col gap-1 text-sm text-content-muted">
+            {{ t('reconciliation.form.statementBalance') }}
+            <input class="form-input" type="text" inputmode="decimal" formControlName="statementBalance" />
+          </label>
+          <div class="flex items-end sm:col-span-4">
+            <button appButton variant="primary" type="submit" [disabled]="saving()">
+              {{ t('reconciliation.actions.start') }}
+            </button>
+          </div>
+        </form>
+      </app-card>
+
+      @if (reconciliationsResource.error()) {
+        <app-load-error [messageKey]="'reconciliation.loadError'" (retry)="reconciliationsResource.reload()" />
+      } @else if ((reconciliationsResource.value() ?? []).length > 0) {
+        <div class="flex flex-wrap gap-2">
+          @for (item of reconciliationsResource.value(); track item.id) {
+            <button
+              appButton
+              variant="secondary"
+              type="button"
+              [class.border-accent]="selectedId() === item.id"
+              (click)="select(item.id)"
+            >
+              {{ accountName(item.accountId) }} · {{ item.statementDate }}
+              <app-badge [tone]="item.status === 'completed' ? 'positive' : 'accent'">
+                {{ t(reconciliationStatus(item)) }}
+              </app-badge>
+            </button>
+          }
+        </div>
+      }
+
+      @if (detailResource.error()) {
+        <app-load-error [messageKey]="'reconciliation.loadError'" (retry)="detailResource.reload()" />
+      } @else if (selected(); as detail) {
+        <app-card>
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-semibold text-content-primary">{{ accountName(detail.reconciliation.accountId) }}</h2>
+              <p class="text-sm text-content-muted">
+                {{ t('reconciliation.detail.asOf', { date: detail.reconciliation.statementDate }) }}
+              </p>
+            </div>
+            <app-badge [tone]="detail.reconciliation.status === 'completed' ? 'positive' : 'accent'">
+              {{ t(reconciliationStatus(detail.reconciliation)) }}
+            </app-badge>
+          </div>
+
+          <div class="grid gap-3 sm:grid-cols-3">
+            <app-stat-tile
+              [label]="t('reconciliation.stat.statement')"
+              [value]="detail.statementBalance | money: detail.reconciliation.currency"
+            />
+            <app-stat-tile
+              [label]="t('reconciliation.stat.cleared')"
+              [value]="detail.clearedBalance | money: detail.reconciliation.currency"
+            />
+            <app-stat-tile
+              [label]="t('reconciliation.stat.difference')"
+              [value]="detail.difference | money: detail.reconciliation.currency"
+              [tone]="differenceTone()"
+            />
+          </div>
+
+          @if (mutationErrorKey(); as errorKey) {
+            <p class="mt-4 rounded border border-negative/30 bg-negative/10 p-3 text-sm text-negative" role="alert">
+              {{ t(errorKey) }}
+            </p>
+          }
+
+          <div class="mt-6 overflow-x-auto rounded border border-border">
+            <table class="min-w-[34rem] w-full text-sm">
+              <thead class="border-b border-border text-left text-xs uppercase tracking-wide text-content-muted">
+                <tr>
+                  <th scope="col" class="px-3 py-3">{{ t('reconciliation.entries.date') }}</th>
+                  <th scope="col" class="px-3 py-3">{{ t('reconciliation.entries.description') }}</th>
+                  <th scope="col" class="px-3 py-3">{{ t('reconciliation.entries.legLabel') }}</th>
+                  <th scope="col" class="px-3 py-3 text-right">{{ t('reconciliation.entries.amount') }}</th>
+                  <th scope="col" class="px-3 py-3 text-center">{{ t('reconciliation.entries.cleared') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (entry of detail.entries; track entry.transactionId + entry.leg) {
+                  <tr class="border-b border-border last:border-b-0">
+                    <td class="px-3 py-3 whitespace-nowrap text-content-muted">{{ entry.date }}</td>
+                    <td class="px-3 py-3 text-content-primary">{{ entry.description }}</td>
+                    <td class="px-3 py-3 text-content-muted">{{ t('reconciliation.entries.legType.' + entry.leg) }}</td>
+                    <td class="px-3 py-3 text-right font-mono tabular-nums" [class.text-negative]="entry.amount.startsWith('-')">
+                      {{ entry.amount | money: detail.reconciliation.currency }}
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                      <input
+                        type="checkbox"
+                        class="form-checkbox"
+                        [checked]="entry.cleared"
+                        [disabled]="saving() || detail.reconciliation.status !== 'open'"
+                        [attr.aria-label]="t('reconciliation.entries.mark', { description: entry.description })"
+                        (change)="setEntry(entry, $event)"
+                      />
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr><td class="px-3 py-6 text-center text-content-muted" colspan="5">{{ t('reconciliation.entries.empty') }}</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-5 flex flex-wrap justify-end gap-2">
+            @if (detail.reconciliation.status === 'open') {
+              <button appButton variant="primary" type="button" [disabled]="saving() || !canComplete()" (click)="complete()">
+                {{ t('reconciliation.actions.complete') }}
+              </button>
+            } @else {
+              <button appButton variant="secondary" type="button" [disabled]="saving()" (click)="reopen()">
+                {{ t('reconciliation.actions.reopen') }}
+              </button>
+            }
+            <button appButton variant="danger" type="button" [disabled]="saving()" (click)="remove()">
+              {{ t('reconciliation.actions.delete') }}
+            </button>
+          </div>
+        </app-card>
+      } @else {
+        <app-empty-state
+          icon="check"
+          [title]="t('reconciliation.empty.title')"
+          [description]="t('reconciliation.empty.description')"
+        />
+      }
+    </div>
+  }
+</div>

@@ -505,6 +505,7 @@
       "columns": "Kolom",
       "exportCsv": "Ekspor CSV"
     },
+    "history": {"title":"Riwayat transaksi","loading":"Memuat riwayat…","empty":"Belum ada riwayat.","loadError":"Riwayat transaksi tidak dapat dimuat.","operation":{"create":"Dibuat","update":"Diperbarui","delete":"Dihapus"},"source":{"manual":"Manual","import":"Impor","import_undo":"Batalkan impor","recurring":"Berulang","loan":"Pinjaman","card":"Kartu","investment":"Investasi","bulk":"Massal"},"field":{"type":"Jenis","date":"Tanggal","amount":"Jumlah","currency":"Mata uang","account_id":"Akun","to_account_id":"Akun tujuan","category_id":"Kategori","description":"Deskripsi","notes":"Catatan","recurring_rule_id":"Aturan berulang","loan_id":"Pinjaman","card_invoice_close_date":"Tanggal penutupan faktur","installment_group_id":"Grup cicilan","installment_number":"Nomor cicilan","installment_count":"Jumlah cicilan","conversion_amount":"Jumlah hasil konversi","conversion_currency":"Mata uang konversi","conversion_fee":"Biaya konversi","conversion_rate":"Nilai tukar","conversion_source":"Sumber konversi"}},
     "tabs": {
       "transactions": "Transaksi",
       "recurring": "Berulang"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Batch impor","count":"{{count}} transaksi dibuat","remaining":"{{count}} tersisa","undo":"Batalkan impor","undoConfirm":"Batalkan batch impor ini? {{count}} transaksi yang tersisa akan dihapus.","undoneEmpty":"Tidak ada transaksi tersisa dalam batch ini.","empty":"Belum ada batch impor.","undoSuccess":"Batch impor dibatalkan."},
       "title": "Impor transaksi",
       "description": "Unggah ekspor CSV dari bank Anda, tinjau setiap baris, dan konfirmasi baris yang ingin Anda catat.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Tingkat penalaran"
     }
   },
+  "reconciliation": {
+    "nav": "Rekonsiliasi",
+    "title": "Rekonsiliasi bank",
+    "description": "Bandingkan buku kas dengan rekening koran dan tandai transaksi yang cocok.",
+    "form": { "account": "Rekening", "chooseAccount": "Pilih rekening", "statementDate": "Tanggal rekening koran", "statementBalance": "Saldo rekening koran" },
+    "stat": { "statement": "Saldo rekening koran", "cleared": "Saldo direkonsiliasi", "difference": "Selisih" },
+    "detail": { "asOf": "Sampai {{date}}" },
+    "entries": {
+      "date": "Tanggal", "description": "Deskripsi", "legLabel": "Mutasi", "amount": "Jumlah", "cleared": "Direkonsiliasi",
+      "mark": "Tandai {{description}} sebagai direkonsiliasi", "empty": "Tidak ada transaksi sampai tanggal rekening koran ini.",
+      "legType": { "own": "Transaksi rekening", "incoming": "Transfer masuk" }
+    },
+    "actions": { "reconcile": "Rekonsiliasi", "start": "Mulai rekonsiliasi", "complete": "Selesaikan", "reopen": "Buka kembali", "delete": "Hapus" },
+    "status": { "open": "Terbuka", "completed": "Selesai" },
+    "empty": { "title": "Tidak ada rekonsiliasi yang dipilih", "description": "Mulai rekonsiliasi di atas atau pilih rekonsiliasi sebelumnya." },
+    "loadError": "Rekonsiliasi tidak dapat dimuat. Coba lagi.",
+    "confirmDelete": { "title": "Hapus rekonsiliasi?", "message": "Rekonsiliasi dan penandaannya akan dihapus. Lanjutkan?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Rekening yang diarsipkan tidak dapat direkonsiliasi.", "already_open": "Rekening ini sudah memiliki rekonsiliasi terbuka.", "completed": "Rekonsiliasi ini sudah selesai.",
+      "transaction_not_eligible": "Transaksi ini tidak memenuhi syarat untuk rekonsiliasi ini.", "leg_locked": "Mutasi ini dikunci oleh rekonsiliasi lain.", "difference_not_zero": "Selisih harus nol sebelum diselesaikan."
+    },
     "backup": {
       "invalid_archive": "Ini bukan cadangan LealFinance yang valid.",
       "invalid_file_type": "Pilih file cadangan JSON.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Berkas tidak memiliki baris data.",
       "too_many_rows": "Berkas memiliki terlalu banyak baris untuk diimpor sekaligus (batas 2000).",
       "column_required": "Cocokkan kolom tanggal, deskripsi, dan jumlah sebelum melanjutkan.",
+      "batch_modified": "Batch impor ini diubah setelah impor dan tidak dapat dibatalkan.",
       "row": {
         "invalid_date": "Tanggal ini tidak dapat dibaca.",
         "invalid_amount": "Jumlah ini tidak dapat dibaca.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Pilih akun tujuan transfer ini.",
       "category_required": "Pilih kategori untuk transaksi ini.",
       "category_kind_mismatch": "Kategori tersebut tidak cocok dengan jenis transaksi ini.",
-      "conversion_required": "Transaksi ini melibatkan beberapa mata uang, jadi memerlukan jumlah yang dikonversi."
+      "conversion_required": "Transaksi ini melibatkan beberapa mata uang, jadi memerlukan jumlah yang dikonversi.",
+      "reconciled": "Transaksi yang sudah direkonsiliasi tidak dapat diubah strukturnya atau dihapus."
     },
     "currency": {
       "not_found": "Mata uang tersebut tidak tersedia.",

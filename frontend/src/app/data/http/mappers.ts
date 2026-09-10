@@ -19,6 +19,7 @@ import type { CategoryGroup } from '../../domain/models/category-group';
 import type { ExchangeRate, RateRefresh } from '../../domain/models/exchange-rate';
 import type { Goal } from '../../domain/models/goal';
 import type { Institution } from '../../domain/models/institution';
+import type { ImportBatch } from '../../domain/models/import-batch';
 import type { Loan } from '../../domain/models/loan';
 import type {
   InvestmentAsset,
@@ -30,7 +31,17 @@ import type {
 import type { ManualRate } from '../../domain/models/manual-rate';
 import type { MarketDataCredentialStatus } from '../../domain/models/market-data-credential';
 import type { RecurringRule } from '../../domain/models/recurring';
+import type {
+  Reconciliation,
+  ReconciliationDetail,
+  ReconciliationEntry,
+} from '../../domain/models/reconciliation';
+import type {
+  TransactionHistoryEntry,
+  TransactionSnapshot,
+} from '../../domain/models/transaction-history';
 import type { ImportOptions, ImportPreview, ImportPreviewRequest } from '../transaction.repository';
+import type { ReconciliationCreateInput } from '../reconciliation.repository';
 import type {
   InvestmentWalletCreate,
   InvestmentWalletUpdate,
@@ -93,6 +104,7 @@ import type {
   InvestmentWalletPatchWire,
   InvestmentWalletWire,
   ImportOptionsWire,
+  ImportBatchWire,
   ImportPreviewRequestWire,
   ImportPreviewWire,
   InstitutionInputWire,
@@ -104,9 +116,14 @@ import type {
   RecurringRulePatchWire,
   RecurringRuleWire,
   RecurringTemplateWire,
+  ReconciliationDetailWire,
+  ReconciliationEntryWire,
+  ReconciliationInputWire,
+  ReconciliationWire,
   RuleImportItemWire,
   RulePackWire,
   TransactionInputWire,
+  TransactionHistoryWire,
   TransactionPatchWire,
   TransactionWire,
 } from './wire-dtos';
@@ -164,6 +181,44 @@ export const mapAccountBalance = (wire: AccountBalanceWire): AccountBalance => (
   accountId: wire.account_id,
   currency: wire.currency,
   balance: wire.balance,
+});
+
+export const mapReconciliation = (wire: ReconciliationWire): Reconciliation => ({
+  id: wire.id,
+  accountId: wire.account_id,
+  statementDate: wire.statement_date,
+  statementBalance: wire.statement_balance,
+  currency: wire.currency,
+  status: wire.status,
+  completedAt: wire.completed_at ?? undefined,
+  createdAt: wire.created_at,
+});
+
+export const mapReconciliationEntry = (wire: ReconciliationEntryWire): ReconciliationEntry => ({
+  transactionId: wire.transaction_id,
+  leg: wire.leg,
+  date: wire.date,
+  description: wire.description,
+  amount: wire.amount,
+  cleared: wire.cleared,
+  clearedBy: wire.cleared_by ?? undefined,
+});
+
+export const mapReconciliationDetail = (wire: ReconciliationDetailWire): ReconciliationDetail => ({
+  reconciliation: mapReconciliation(wire.reconciliation),
+  statementBalance: wire.statement_balance,
+  bookBalance: wire.book_balance,
+  clearedBalance: wire.cleared_balance,
+  difference: wire.difference,
+  entries: wire.entries.map(mapReconciliationEntry),
+});
+
+export const mapReconciliationCreate = (
+  input: ReconciliationCreateInput,
+): ReconciliationInputWire => ({
+  account_id: input.accountId,
+  statement_date: input.statementDate,
+  statement_balance: input.statementBalance,
 });
 
 export const mapCardInvoice = (wire: CardInvoiceWire): CardInvoice => ({
@@ -333,6 +388,33 @@ export const mapTransaction = (wire: TransactionWire): Transaction => ({
   installmentNumber: wire.installment_number ?? undefined,
   installmentCount: wire.installment_count ?? undefined,
   conversion: wire.conversion ? mapConversion(wire.conversion) : undefined,
+});
+
+const mapSnapshot = (
+  snapshot: Record<string, string | number | null> | null,
+): TransactionSnapshot | undefined =>
+  snapshot
+    ? Object.fromEntries(
+        Object.entries(snapshot).map(([key, value]) => [key, value === null ? null : String(value)]),
+      )
+    : undefined;
+
+export const mapTransactionHistory = (wire: TransactionHistoryWire): TransactionHistoryEntry => ({
+  id: wire.id,
+  transactionId: wire.transaction_id,
+  operation: wire.operation,
+  source: wire.source,
+  batchId: wire.batch_id ?? undefined,
+  before: mapSnapshot(wire.before),
+  after: mapSnapshot(wire.after),
+  createdAt: wire.created_at,
+});
+
+export const mapImportBatch = (wire: ImportBatchWire): ImportBatch => ({
+  id: wire.id,
+  createdAt: wire.created_at,
+  createdCount: wire.created_count,
+  remainingCount: wire.remaining_count,
 });
 export const mapTransactionCreate = (
   input: Omit<Transaction, 'id'> & { installments?: number },

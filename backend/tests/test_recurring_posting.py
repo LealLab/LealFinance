@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.account import Account
 from app.models.recurring import RecurringRule
 from app.models.transaction import Transaction
+from app.models.transaction_history import TransactionHistory
 from app.services.recurring_posting import post_all_due_occurrences
 from tests.factories import login_as, make_user
 
@@ -113,6 +114,13 @@ async def test_running_twice_posts_only_once(client: AsyncClient, db_session: As
     assert len(transactions) == 1
     assert transactions[0].date == date(2026, 1, 15)
     assert transactions[0].recurring_rule_id is not None
+
+    history = await db_session.execute(
+        select(TransactionHistory).where(TransactionHistory.transaction_id == transactions[0].id)
+    )
+    rows = history.scalars().all()
+    assert [row.operation for row in rows] == ["create"]
+    assert rows[0].source == "recurring"
 
 
 async def test_catches_up_missed_occurrences_and_advances_cursor(

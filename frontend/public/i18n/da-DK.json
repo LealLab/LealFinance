@@ -505,6 +505,7 @@
       "columns": "Kolonner",
       "exportCsv": "Eksportér CSV"
     },
+    "history": {"title":"Transaktionshistorik","loading":"Indlæser historik…","empty":"Ingen historik endnu.","loadError":"Transaktionshistorikken kunne ikke indlæses.","operation":{"create":"Oprettet","update":"Opdateret","delete":"Slettet"},"source":{"manual":"Manuel","import":"Import","import_undo":"Fortryd import","recurring":"Gentagelse","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massehandling"},"field":{"type":"Type","date":"Dato","amount":"Beløb","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivelse","notes":"Noter","recurring_rule_id":"Gentagelsesregel","loan_id":"Lån","card_invoice_close_date":"Fakturaperiodens slutdato","installment_group_id":"Afdragsgruppe","installment_number":"Afdragsnummer","installment_count":"Antal afdrag","conversion_amount":"Konverteret beløb","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsgebyr","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskilde"}},
     "tabs": {
       "transactions": "Transaktioner",
       "recurring": "Gentagne"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importpartier","count":"{{count}} transaktioner oprettet","remaining":"{{count}} tilbage","undo":"Fortryd import","undoConfirm":"Fortryd dette importparti? Det sletter {{count}} resterende transaktioner.","undoneEmpty":"Dette parti har ingen resterende transaktioner.","empty":"Ingen importpartier endnu.","undoSuccess":"Importpartiet er fortrudt."},
       "title": "Importér transaktioner",
       "description": "Upload en CSV-eksport fra din bank, gennemgå hver linje, og bekræft dem, du vil bogføre.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Ræsonneringsindsats"
     }
   },
+  "reconciliation": {
+    "nav": "Afstem",
+    "title": "Bankafstemning",
+    "description": "Sammenlign din bogføring med et kontoudtog, og markér de tilsvarende transaktioner.",
+    "form": { "account": "Konto", "chooseAccount": "Vælg en konto", "statementDate": "Kontoudskriftsdato", "statementBalance": "Kontoudtogssaldo" },
+    "stat": { "statement": "Kontoudtogssaldo", "cleared": "Afstemt saldo", "difference": "Forskel" },
+    "detail": { "asOf": "Til og med {{date}}" },
+    "entries": {
+      "date": "Dato", "description": "Beskrivelse", "legLabel": "Postering", "amount": "Beløb", "cleared": "Afstemt",
+      "mark": "Markér {{description}} som afstemt", "empty": "Ingen transaktioner falder inden for denne kontoudskriftsdato.",
+      "legType": { "own": "Kontotransaktion", "incoming": "Indgående overførsel" }
+    },
+    "actions": { "reconcile": "Afstem", "start": "Start afstemning", "complete": "Gennemfør", "reopen": "Genåbn", "delete": "Slet" },
+    "status": { "open": "Åben", "completed": "Gennemført" },
+    "empty": { "title": "Ingen afstemning valgt", "description": "Start en afstemning ovenfor, eller vælg en tidligere." },
+    "loadError": "Afstemninger kunne ikke indlæses. Prøv igen.",
+    "confirmDelete": { "title": "Slet afstemning?", "message": "Afstemningen og dens markeringer slettes. Vil du fortsætte?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Arkiverede konti kan ikke afstemmes.", "already_open": "Denne konto har allerede en åben afstemning.", "completed": "Denne afstemning er allerede gennemført.",
+      "transaction_not_eligible": "Denne transaktion kan ikke medtages i denne afstemning.", "leg_locked": "Denne postering er låst af en anden afstemning.", "difference_not_zero": "Forskellen skal være nul, før den kan gennemføres."
+    },
     "backup": {
       "invalid_archive": "Dette er ikke en gyldig LealFinance-sikkerhedskopi.",
       "invalid_file_type": "Vælg en JSON-sikkerhedskopifil.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Filen indeholder ingen datalinjer.",
       "too_many_rows": "Filen indeholder for mange linjer til at importere på én gang (grænse på 2000).",
       "column_required": "Tilknyt kolonnerne dato, beskrivelse og beløb, før du fortsætter.",
+      "batch_modified": "Dette importparti blev ændret efter importen og kan ikke fortrydes.",
       "row": {
         "invalid_date": "Kunne ikke læse denne dato.",
         "invalid_amount": "Kunne ikke læse dette beløb.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Vælg den konto, som overførslen skal gå til.",
       "category_required": "Vælg en kategori for denne transaktion.",
       "category_kind_mismatch": "Den kategori passer ikke til transaktionens type.",
-      "conversion_required": "Denne transaktion går på tværs af valutaer og kræver derfor et omregnet beløb."
+      "conversion_required": "Denne transaktion går på tværs af valutaer og kræver derfor et omregnet beløb.",
+      "reconciled": "Afstemte transaktioner kan ikke strukturelt redigeres eller slettes."
     },
     "currency": {
       "not_found": "Den valuta er ikke tilgængelig.",

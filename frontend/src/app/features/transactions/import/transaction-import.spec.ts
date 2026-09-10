@@ -72,6 +72,10 @@ class StubTransactionRepository extends TransactionRepository {
     this.lastCommitKey = idempotencyKey;
     return of(items.length);
   }
+  override history(): Observable<never> { throw new Error('not used by this spec'); }
+  override listImportBatches(): Observable<never> { throw new Error('not used by this spec'); }
+  override importBatchTransactions(): Observable<never> { throw new Error('not used by this spec'); }
+  override undoImportBatch(): Observable<never> { throw new Error('not used by this spec'); }
 }
 
 @Injectable()

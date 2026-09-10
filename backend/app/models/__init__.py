@@ -27,9 +27,11 @@ from app.models.investment import (
 from app.models.job_run import JobRun
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
+from app.models.reconciliation import Reconciliation, ReconciliationEntry
 from app.models.recurring import RecurringRule
 from app.models.totp import TotpBackupCode, TrustedDevice
 from app.models.transaction import Transaction
+from app.models.transaction_history import TransactionHistory
 from app.models.user import Invitation, Session, User
 from app.models.webauthn import WebAuthnChallenge, WebAuthnCredential
 
@@ -59,9 +61,12 @@ __all__ = [
     "Invitation",
     "ManualRate",
     "RecurringRule",
+    "Reconciliation",
+    "ReconciliationEntry",
     "Session",
     "TotpBackupCode",
     "Transaction",
+    "TransactionHistory",
     "TrustedDevice",
     "User",
     "WebAuthnChallenge",

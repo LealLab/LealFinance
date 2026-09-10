@@ -505,6 +505,7 @@
       "columns": "الأعمدة",
       "exportCsv": "تصدير CSV"
     },
+    "history": {"title":"سجل المعاملات","loading":"جارٍ تحميل السجل…","empty":"لا يوجد سجل بعد.","loadError":"تعذر تحميل سجل المعاملات.","operation":{"create":"إنشاء","update":"تحديث","delete":"حذف"},"source":{"manual":"يدوي","import":"استيراد","import_undo":"التراجع عن الاستيراد","recurring":"متكرر","loan":"قرض","card":"بطاقة","investment":"استثمار","bulk":"دفعة"},"field":{"type":"النوع","date":"التاريخ","amount":"المبلغ","currency":"العملة","account_id":"الحساب","to_account_id":"حساب الوجهة","category_id":"الفئة","description":"الوصف","notes":"ملاحظات","recurring_rule_id":"قاعدة متكررة","loan_id":"القرض","card_invoice_close_date":"تاريخ إغلاق الفاتورة","installment_group_id":"مجموعة الأقساط","installment_number":"رقم القسط","installment_count":"عدد الأقساط","conversion_amount":"المبلغ المحول","conversion_currency":"عملة التحويل","conversion_fee":"رسوم التحويل","conversion_rate":"سعر التحويل","conversion_source":"مصدر التحويل"}},
     "tabs": {
       "transactions": "المعاملات",
       "recurring": "المتكررة"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"دفعات الاستيراد","count":"تم إنشاء {{count}} معاملة","remaining":"{{count}} متبقية","undo":"التراجع عن الاستيراد","undoConfirm":"هل تريد التراجع عن دفعة الاستيراد هذه؟ سيؤدي ذلك إلى حذف {{count}} معاملة متبقية.","undoneEmpty":"لا توجد معاملات متبقية في هذه الدفعة.","empty":"لا توجد دفعات استيراد بعد.","undoSuccess":"تم التراجع عن دفعة الاستيراد."},
       "title": "استيراد المعاملات",
       "description": "ارفع ملف CSV مُصدَّرًا من بنكك، راجع كل صف، وأكد الصفوف التي تريد تسجيلها.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "مستوى الاستدلال"
     }
   },
+  "reconciliation": {
+    "nav": "تسوية",
+    "title": "تسوية بنكية",
+    "description": "قارن دفتر حسابك بكشف البنك وحدد المعاملات المتطابقة.",
+    "form": { "account": "الحساب", "chooseAccount": "اختر حسابًا", "statementDate": "تاريخ الكشف", "statementBalance": "رصيد الكشف" },
+    "stat": { "statement": "رصيد الكشف", "cleared": "الرصيد المسوّى", "difference": "الفرق" },
+    "detail": { "asOf": "حتى {{date}}" },
+    "entries": {
+      "date": "التاريخ", "description": "الوصف", "legLabel": "الحركة", "amount": "المبلغ", "cleared": "تمت التسوية",
+      "mark": "تحديد {{description}} كمعاملة مسوّاة", "empty": "لا توجد معاملات ضمن تاريخ هذا الكشف.",
+      "legType": { "own": "معاملة الحساب", "incoming": "تحويل وارد" }
+    },
+    "actions": { "reconcile": "تسوية", "start": "بدء التسوية", "complete": "إكمال", "reopen": "إعادة فتح", "delete": "حذف" },
+    "status": { "open": "مفتوحة", "completed": "مكتملة" },
+    "empty": { "title": "لم يتم تحديد تسوية", "description": "ابدأ تسوية أعلاه أو اختر تسوية سابقة." },
+    "loadError": "تعذر تحميل التسويات. حاول مرة أخرى.",
+    "confirmDelete": { "title": "حذف التسوية؟", "message": "سيتم حذف التسوية وعلاماتها. هل تريد المتابعة؟" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "لا يمكن تسوية الحسابات المؤرشفة.", "already_open": "لدى هذا الحساب تسوية مفتوحة بالفعل.", "completed": "هذه التسوية مكتملة بالفعل.",
+      "transaction_not_eligible": "هذه المعاملة غير مؤهلة لهذه التسوية.", "leg_locked": "هذه الحركة مقفلة بواسطة تسوية أخرى.", "difference_not_zero": "يجب أن يكون الفرق صفرًا قبل الإكمال."
+    },
     "backup": {
       "invalid_archive": "هذه ليست نسخة LealFinance احتياطية صالحة.",
       "invalid_file_type": "اختر ملف نسخة احتياطية بتنسيق JSON.",
@@ -1830,6 +1854,7 @@
       "no_rows": "لا يحتوي الملف على صفوف بيانات.",
       "too_many_rows": "يحتوي الملف على صفوف كثيرة جدًا للاستيراد دفعة واحدة (الحد الأقصى 2000).",
       "column_required": "طابق أعمدة التاريخ والوصف والمبلغ قبل المتابعة.",
+      "batch_modified": "تم تغيير دفعة الاستيراد هذه بعد إنشائها ولا يمكن التراجع عنها.",
       "row": {
         "invalid_date": "تعذّرت قراءة هذا التاريخ.",
         "invalid_amount": "تعذّرت قراءة هذا المبلغ.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "اختر الحساب الذي سيذهب إليه هذا التحويل.",
       "category_required": "اختر فئة لهذه المعاملة.",
       "category_kind_mismatch": "هذه الفئة لا تتوافق مع نوع المعاملة.",
-      "conversion_required": "تتضمن هذه المعاملة عملات مختلفة، لذا تحتاج إلى مبلغ محوّل."
+      "conversion_required": "تتضمن هذه المعاملة عملات مختلفة، لذا تحتاج إلى مبلغ محوّل.",
+      "reconciled": "لا يمكن تعديل المعاملات المسوّاة بنيويًا أو حذفها."
     },
     "currency": {
       "not_found": "هذه العملة غير متاحة.",

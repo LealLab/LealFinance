@@ -49,6 +49,7 @@ export class TransactionTable {
   readonly pageChange = output<number>();
   readonly pageSizeChange = output<number>();
   readonly edit = output<Transaction>();
+  readonly viewHistory = output<Transaction>();
   readonly remove = output<Transaction>();
   readonly columnMove = output<{ column: TransactionColumn; toIndex: number }>();
   readonly columnResize = output<{ column: TransactionColumn; width: number }>();

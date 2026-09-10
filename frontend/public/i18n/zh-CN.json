@@ -505,6 +505,7 @@
       "columns": "列",
       "exportCsv": "导出 CSV"
     },
+    "history": {"title":"交易历史","loading":"正在加载历史…","empty":"暂无历史记录。","loadError":"无法加载交易历史。","operation":{"create":"已创建","update":"已更新","delete":"已删除"},"source":{"manual":"手动","import":"导入","import_undo":"撤销导入","recurring":"重复","loan":"贷款","card":"卡片","investment":"投资","bulk":"批量"},"field":{"type":"类型","date":"日期","amount":"金额","currency":"货币","account_id":"账户","to_account_id":"目标账户","category_id":"分类","description":"描述","notes":"备注","recurring_rule_id":"重复规则","loan_id":"贷款","card_invoice_close_date":"账单结算日","installment_group_id":"分期组","installment_number":"分期编号","installment_count":"分期数","conversion_amount":"换算金额","conversion_currency":"换算货币","conversion_fee":"换算费用","conversion_rate":"换算汇率","conversion_source":"换算来源"}},
     "tabs": {
       "transactions": "交易",
       "recurring": "周期性"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"导入批次","count":"已创建 {{count}} 笔交易","remaining":"剩余 {{count}} 笔","undo":"撤销导入","undoConfirm":"要撤销此导入批次吗？将删除剩余的 {{count}} 笔交易。","undoneEmpty":"此批次没有剩余交易。","empty":"暂无导入批次。","undoSuccess":"导入批次已撤销。"},
       "title": "导入交易",
       "description": "上传从银行导出的 CSV 文件，检查每一行，并确认要记录的行。",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "推理强度"
     }
   },
+  "reconciliation": {
+    "nav": "对账",
+    "title": "银行对账",
+    "description": "将账簿与银行对账单进行比较，并标记匹配的交易。",
+    "form": { "account": "账户", "chooseAccount": "选择账户", "statementDate": "对账单日期", "statementBalance": "对账单余额" },
+    "stat": { "statement": "对账单余额", "cleared": "已对账余额", "difference": "差额" },
+    "detail": { "asOf": "截至 {{date}}" },
+    "entries": {
+      "date": "日期", "description": "描述", "legLabel": "交易方向", "amount": "金额", "cleared": "已对账",
+      "mark": "将 {{description}} 标记为已对账", "empty": "对账单日期之前没有交易。",
+      "legType": { "own": "账户交易", "incoming": "转入" }
+    },
+    "actions": { "reconcile": "对账", "start": "开始对账", "complete": "完成", "reopen": "重新打开", "delete": "删除" },
+    "status": { "open": "进行中", "completed": "已完成" },
+    "empty": { "title": "未选择对账", "description": "在上方开始对账，或选择之前的对账。" },
+    "loadError": "无法加载对账记录，请重试。",
+    "confirmDelete": { "title": "删除对账？", "message": "对账记录及其标记将被删除。是否继续？" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "无法对已归档的账户进行对账。", "already_open": "此账户已有进行中的对账。", "completed": "此对账已完成。",
+      "transaction_not_eligible": "此交易不符合本次对账条件。", "leg_locked": "此交易方向已被其他对账锁定。", "difference_not_zero": "完成前差额必须为零。"
+    },
     "backup": {
       "invalid_archive": "这不是有效的 LealFinance 备份。",
       "invalid_file_type": "请选择 JSON 备份文件。",
@@ -1830,6 +1854,7 @@
       "no_rows": "文件中没有数据行。",
       "too_many_rows": "文件行数过多，无法一次性导入（限制 2000 行）。",
       "column_required": "请在继续之前匹配日期、描述和金额列。",
+      "batch_modified": "此导入批次在导入后发生了更改，无法撤销。",
       "row": {
         "invalid_date": "无法读取此日期。",
         "invalid_amount": "无法读取此金额。",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "请选择此转账的目标账户。",
       "category_required": "请选择此交易的分类。",
       "category_kind_mismatch": "该分类与此交易的类型不匹配。",
-      "conversion_required": "此交易涉及不同货币，因此需要填写换算后的金额。"
+      "conversion_required": "此交易涉及不同货币，因此需要填写换算后的金额。",
+      "reconciled": "已对账的交易不能修改结构或删除。"
     },
     "currency": {
       "not_found": "该货币不可用。",

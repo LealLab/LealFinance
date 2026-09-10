@@ -505,6 +505,7 @@
       "columns": "Cột",
       "exportCsv": "Xuất CSV"
     },
+    "history": {"title":"Lịch sử giao dịch","loading":"Đang tải lịch sử…","empty":"Chưa có lịch sử.","loadError":"Không thể tải lịch sử giao dịch.","operation":{"create":"Đã tạo","update":"Đã cập nhật","delete":"Đã xóa"},"source":{"manual":"Thủ công","import":"Nhập","import_undo":"Hoàn tác nhập","recurring":"Định kỳ","loan":"Khoản vay","card":"Thẻ","investment":"Đầu tư","bulk":"Hàng loạt"},"field":{"type":"Loại","date":"Ngày","amount":"Số tiền","currency":"Tiền tệ","account_id":"Tài khoản","to_account_id":"Tài khoản đích","category_id":"Danh mục","description":"Mô tả","notes":"Ghi chú","recurring_rule_id":"Quy tắc định kỳ","loan_id":"Khoản vay","card_invoice_close_date":"Ngày đóng hóa đơn","installment_group_id":"Nhóm trả góp","installment_number":"Số kỳ","installment_count":"Số kỳ trả góp","conversion_amount":"Số tiền đã quy đổi","conversion_currency":"Tiền tệ quy đổi","conversion_fee":"Phí quy đổi","conversion_rate":"Tỷ giá quy đổi","conversion_source":"Nguồn quy đổi"}},
     "tabs": {
       "transactions": "Giao dịch",
       "recurring": "Giao dịch định kỳ"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Lô nhập","count":"Đã tạo {{count}} giao dịch","remaining":"Còn {{count}}","undo":"Hoàn tác nhập","undoConfirm":"Hoàn tác lô nhập này? {{count}} giao dịch còn lại sẽ bị xóa.","undoneEmpty":"Lô này không còn giao dịch.","empty":"Chưa có lô nhập nào.","undoSuccess":"Đã hoàn tác lô nhập."},
       "title": "Nhập giao dịch",
       "description": "Tải lên tệp CSV xuất từ ngân hàng của bạn, xem lại từng dòng và xác nhận những dòng bạn muốn ghi sổ.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Mức độ suy luận"
     }
   },
+  "reconciliation": {
+    "nav": "Đối soát",
+    "title": "Đối soát ngân hàng",
+    "description": "So sánh sổ sách với sao kê ngân hàng và đánh dấu các giao dịch trùng khớp.",
+    "form": { "account": "Tài khoản", "chooseAccount": "Chọn tài khoản", "statementDate": "Ngày sao kê", "statementBalance": "Số dư sao kê" },
+    "stat": { "statement": "Số dư sao kê", "cleared": "Số dư đã đối soát", "difference": "Chênh lệch" },
+    "detail": { "asOf": "Đến {{date}}" },
+    "entries": {
+      "date": "Ngày", "description": "Mô tả", "legLabel": "Bút toán", "amount": "Số tiền", "cleared": "Đã đối soát",
+      "mark": "Đánh dấu {{description}} đã đối soát", "empty": "Không có giao dịch nào trong ngày sao kê này.",
+      "legType": { "own": "Giao dịch tài khoản", "incoming": "Chuyển tiền vào" }
+    },
+    "actions": { "reconcile": "Đối soát", "start": "Bắt đầu đối soát", "complete": "Hoàn tất", "reopen": "Mở lại", "delete": "Xóa" },
+    "status": { "open": "Đang mở", "completed": "Đã hoàn tất" },
+    "empty": { "title": "Chưa chọn đối soát", "description": "Bắt đầu đối soát ở trên hoặc chọn một lần trước đó." },
+    "loadError": "Không thể tải các lần đối soát. Hãy thử lại.",
+    "confirmDelete": { "title": "Xóa lần đối soát?", "message": "Lần đối soát và các dấu đánh dấu sẽ bị xóa. Tiếp tục?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Không thể đối soát tài khoản đã lưu trữ.", "already_open": "Tài khoản này đã có một lần đối soát đang mở.", "completed": "Lần đối soát này đã hoàn tất.",
+      "transaction_not_eligible": "Giao dịch này không phù hợp với lần đối soát.", "leg_locked": "Bút toán này bị khóa bởi một lần đối soát khác.", "difference_not_zero": "Chênh lệch phải bằng 0 trước khi hoàn tất."
+    },
     "backup": {
       "invalid_archive": "Đây không phải là bản sao lưu LealFinance hợp lệ.",
       "invalid_file_type": "Hãy chọn tệp sao lưu JSON.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Tệp không có dòng dữ liệu nào.",
       "too_many_rows": "Tệp có quá nhiều dòng để nhập cùng lúc (giới hạn 2.000).",
       "column_required": "Khớp các cột ngày, mô tả và số tiền trước khi tiếp tục.",
+      "batch_modified": "Lô nhập này đã bị thay đổi sau khi nhập nên không thể hoàn tác.",
       "row": {
         "invalid_date": "Không thể đọc ngày này.",
         "invalid_amount": "Không thể đọc số tiền này.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Chọn tài khoản đích của giao dịch chuyển khoản này.",
       "category_required": "Chọn danh mục cho giao dịch này.",
       "category_kind_mismatch": "Danh mục đó không phù hợp với loại giao dịch này.",
-      "conversion_required": "Giao dịch này liên quan đến nhiều loại tiền tệ, nên cần có số tiền đã quy đổi."
+      "conversion_required": "Giao dịch này liên quan đến nhiều loại tiền tệ, nên cần có số tiền đã quy đổi.",
+      "reconciled": "Không thể sửa cấu trúc hoặc xóa giao dịch đã đối soát."
     },
     "currency": {
       "not_found": "Loại tiền tệ đó không khả dụng.",

@@ -505,6 +505,7 @@
       "columns": "Sarakkeet",
       "exportCsv": "Vie CSV"
     },
+    "history": {"title":"Tapahtumahistoria","loading":"Ladataan historiaa…","empty":"Historiaa ei vielä ole.","loadError":"Tapahtumahistoriaa ei voitu ladata.","operation":{"create":"Luotu","update":"Päivitetty","delete":"Poistettu"},"source":{"manual":"Manuaalinen","import":"Tuonti","import_undo":"Tuonnin kumoaminen","recurring":"Toistuva","loan":"Laina","card":"Kortti","investment":"Sijoitus","bulk":"Joukkotoiminto"},"field":{"type":"Tyyppi","date":"Päivä","amount":"Summa","currency":"Valuutta","account_id":"Tili","to_account_id":"Kohdetili","category_id":"Luokka","description":"Kuvaus","notes":"Muistiinpanot","recurring_rule_id":"Toistosääntö","loan_id":"Laina","card_invoice_close_date":"Laskutuskauden päättymispäivä","installment_group_id":"Maksueräryhmä","installment_number":"Maksuerän numero","installment_count":"Maksuerien määrä","conversion_amount":"Muunnettu summa","conversion_currency":"Muunnosvaluutta","conversion_fee":"Muunnosmaksu","conversion_rate":"Muuntokurssi","conversion_source":"Muunnoksen lähde"}},
     "tabs": {
       "transactions": "Tapahtumat",
       "recurring": "Toistuvat"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Tuontierät","count":"{{count}} tapahtumaa luotu","remaining":"{{count}} jäljellä","undo":"Kumoa tuonti","undoConfirm":"Kumotaanko tämä tuontierä? {{count}} jäljellä olevaa tapahtumaa poistetaan.","undoneEmpty":"Tässä erässä ei ole tapahtumia jäljellä.","empty":"Tuontieriä ei vielä ole.","undoSuccess":"Tuontierä kumottu."},
       "title": "Tuo tapahtumia",
       "description": "Lataa pankkisi CSV-vienti, tarkista jokainen rivi ja vahvista ne, jotka haluat kirjata.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Päättelyn taso"
     }
   },
+  "reconciliation": {
+    "nav": "Täsmäytä",
+    "title": "Pankkitilin täsmäytys",
+    "description": "Vertaa kirjanpitoasi tiliotteeseen ja merkitse vastaavat tapahtumat täsmäytetyiksi.",
+    "form": { "account": "Tili", "chooseAccount": "Valitse tili", "statementDate": "Tiliotteen päivä", "statementBalance": "Tiliotteen saldo" },
+    "stat": { "statement": "Tiliotteen saldo", "cleared": "Täsmäytetty saldo", "difference": "Ero" },
+    "detail": { "asOf": "Päivään {{date}} asti" },
+    "entries": {
+      "date": "Päivä", "description": "Kuvaus", "legLabel": "Tapahtuma", "amount": "Summa", "cleared": "Täsmäytetty",
+      "mark": "Merkitse {{description}} täsmäytetyksi", "empty": "Tiliotteen päivään mennessä ei ole tapahtumia.",
+      "legType": { "own": "Tilitapahtuma", "incoming": "Saapuva siirto" }
+    },
+    "actions": { "reconcile": "Täsmäytä", "start": "Aloita täsmäytys", "complete": "Viimeistele", "reopen": "Avaa uudelleen", "delete": "Poista" },
+    "status": { "open": "Avoin", "completed": "Valmis" },
+    "empty": { "title": "Täsmäytystä ei ole valittu", "description": "Aloita täsmäytys ylhäältä tai valitse aiempi täsmäytys." },
+    "loadError": "Täsmäytyksiä ei voitu ladata. Yritä uudelleen.",
+    "confirmDelete": { "title": "Poistetaanko täsmäytys?", "message": "Täsmäytys ja sen merkinnät poistetaan. Jatketaanko?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Arkistoituja tilejä ei voi täsmäyttää.", "already_open": "Tällä tilillä on jo avoin täsmäytys.", "completed": "Täsmäytys on jo valmis.",
+      "transaction_not_eligible": "Tapahtuma ei sovellu tähän täsmäytykseen.", "leg_locked": "Toinen täsmäytys on lukinnut tämän tapahtuman.", "difference_not_zero": "Eron on oltava nolla ennen viimeistelyä."
+    },
     "backup": {
       "invalid_archive": "Tämä ei ole kelvollinen LealFinance-varmuuskopio.",
       "invalid_file_type": "Valitse JSON-varmuuskopiotiedosto.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Tiedostossa ei ole datarivejä.",
       "too_many_rows": "Tiedostossa on liikaa rivejä tuotavaksi kerralla (raja 2000).",
       "column_required": "Yhdistä päivämäärä-, kuvaus- ja summasarakkeet ennen jatkamista.",
+      "batch_modified": "Tätä tuontierää muutettiin tuonnin jälkeen, eikä sitä voi kumota.",
       "row": {
         "invalid_date": "Tätä päivämäärää ei voitu lukea.",
         "invalid_amount": "Tätä summaa ei voitu lukea.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Valitse tili, jolle tämä siirto menee.",
       "category_required": "Valitse tälle tapahtumalle luokka.",
       "category_kind_mismatch": "Luokka ei vastaa tämän tapahtuman tyyppiä.",
-      "conversion_required": "Tämä tapahtuma ylittää valuuttarajat, joten se tarvitsee muunnetun summan."
+      "conversion_required": "Tämä tapahtuma ylittää valuuttarajat, joten se tarvitsee muunnetun summan.",
+      "reconciled": "Täsmäytettyjä tapahtumia ei voi muuttaa rakenteellisesti tai poistaa."
     },
     "currency": {
       "not_found": "Tämä valuutta ei ole käytettävissä.",

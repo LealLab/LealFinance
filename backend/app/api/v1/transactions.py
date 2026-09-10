@@ -10,6 +10,7 @@ from fastapi import APIRouter, Query, Response, status
 
 from app.api.deps import CurrentUser, DbSession
 from app.models.transaction import Transaction
+from app.models.transaction_history import TransactionHistory
 from app.schemas.transaction import (
     BulkResultRead,
     TransactionBulkCategorize,
@@ -19,6 +20,7 @@ from app.schemas.transaction import (
     TransactionType,
     TransactionUpdate,
 )
+from app.schemas.transaction_history import ImportBatchRead, TransactionHistoryRead
 from app.schemas.transaction_import import (
     ImportCommitRead,
     ImportCommitRequest,
@@ -26,8 +28,10 @@ from app.schemas.transaction_import import (
     ImportPreviewRequest,
 )
 from app.services import csv_import as csv_import_service
+from app.services import transaction_history as transaction_history_service
 from app.services import transactions as transactions_service
 from app.services.csv_import import ImportPreview
+from app.services.transaction_history import ImportBatchSummary
 from app.services.transactions import SortOrder, TransactionSort
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
@@ -109,6 +113,23 @@ async def commit_import(
     return ImportCommitRead(created=created)
 
 
+@router.get("/import/batches", response_model=list[ImportBatchRead])
+async def list_import_batches(user: CurrentUser, db: DbSession) -> list[ImportBatchSummary]:
+    return await transaction_history_service.list_batches(db, user.id)
+
+
+@router.get("/import/batches/{batch_id}", response_model=list[TransactionRead])
+async def list_import_batch_transactions(
+    batch_id: UUID, user: CurrentUser, db: DbSession
+) -> list[Transaction]:
+    return await transaction_history_service.batch_transactions(db, user.id, batch_id)
+
+
+@router.delete("/import/batches/{batch_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def undo_import_batch(batch_id: UUID, user: CurrentUser, db: DbSession) -> None:
+    await transaction_history_service.undo_batch(db, user.id, batch_id)
+
+
 @router.post("/bulk-delete", status_code=status.HTTP_204_NO_CONTENT)
 async def bulk_delete_transactions(
     payload: TransactionBulkDelete, user: CurrentUser, db: DbSession
@@ -124,6 +145,13 @@ async def bulk_categorize_transactions(
         db, user.id, payload.ids, payload.category_id
     )
     return BulkResultRead(updated=updated)
+
+
+@router.get("/{transaction_id}/history", response_model=list[TransactionHistoryRead])
+async def transaction_history(
+    transaction_id: UUID, user: CurrentUser, db: DbSession
+) -> list[TransactionHistory]:
+    return await transaction_history_service.list_for_transaction(db, user.id, transaction_id)
 
 
 @router.get("/{transaction_id}", response_model=TransactionRead)

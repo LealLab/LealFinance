@@ -269,6 +269,10 @@ describe('Transactions - calendar with a cross-currency month', () => {
       void _idempotencyKey;
       return of(0);
     }
+    override history(): Observable<never> { throw new Error('not used by this spec'); }
+    override listImportBatches(): Observable<never> { throw new Error('not used by this spec'); }
+    override importBatchTransactions(): Observable<never> { throw new Error('not used by this spec'); }
+    override undoImportBatch(): Observable<never> { throw new Error('not used by this spec'); }
   }
 
   beforeEach(async () => {
@@ -373,6 +377,10 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
       void _idempotencyKey;
       return of(0);
     }
+    override history(): Observable<never> { throw new Error('not used by this spec'); }
+    override listImportBatches(): Observable<never> { throw new Error('not used by this spec'); }
+    override importBatchTransactions(): Observable<never> { throw new Error('not used by this spec'); }
+    override undoImportBatch(): Observable<never> { throw new Error('not used by this spec'); }
   }
 
   class StubRecurringRuleRepository extends RecurringRuleRepository {

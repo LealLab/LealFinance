@@ -49,6 +49,11 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'reconciliation',
+        loadComponent: () =>
+          import('./features/reconciliation/reconciliation').then((m) => m.Reconciliation),
+      },
+      {
         path: 'categories',
         loadComponent: () => import('./features/categories/categories').then((m) => m.Categories),
       },

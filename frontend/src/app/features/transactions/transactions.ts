@@ -51,6 +51,7 @@ import { TransactionBulkBar } from './transaction-bulk-bar';
 import { TransactionCalendar } from './transaction-calendar';
 import { TransactionFilterBar } from './transaction-filter-bar';
 import { TransactionFormModal } from './transaction-form-modal';
+import { TransactionHistoryModal } from './transaction-history-modal';
 import { TransactionTable } from './transaction-table';
 import { rowSign, rowToneClass } from './transaction-tone';
 import { TransactionViewPrefsService } from './transaction-view-prefs.service';
@@ -87,6 +88,7 @@ const SEARCH_DEBOUNCE_MS = 250;
     TransactionBulkBar,
     TransactionCalendar,
     TransactionFormModal,
+    TransactionHistoryModal,
     RecurringRuleFormModal,
   ],
   templateUrl: './transactions.html',
@@ -134,6 +136,8 @@ export class Transactions {
 
   protected readonly txFormOpen = signal(false);
   protected readonly editingTx = signal<Transaction | undefined>(undefined);
+  protected readonly historyTx = signal<Transaction | undefined>(undefined);
+  protected readonly historyOpen = signal(false);
   protected readonly ruleFormOpen = signal(false);
   protected readonly editingRule = signal<RecurringRule | undefined>(undefined);
 
@@ -488,6 +492,11 @@ export class Transactions {
   protected openEditTx(tx: Transaction): void {
     this.editingTx.set(tx);
     this.txFormOpen.set(true);
+  }
+
+  protected openHistory(tx: Transaction): void {
+    this.historyTx.set(tx);
+    this.historyOpen.set(true);
   }
 
   protected onTxSaved(): void {

@@ -112,7 +112,7 @@ async def _post_one(db: AsyncSession, rule: RecurringRule, occurrence: date_type
         recurring_rule_id=rule.id,
         conversion=conversion_input,
     )
-    return await transactions_service.create_transaction(db, rule.user_id, data)
+    return await transactions_service.create_transaction(db, rule.user_id, data, source="recurring")
 
 
 async def post_all_due_occurrences(

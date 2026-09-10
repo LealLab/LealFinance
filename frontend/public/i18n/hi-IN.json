@@ -505,6 +505,7 @@
       "columns": "कॉलम",
       "exportCsv": "CSV निर्यात करें"
     },
+    "history": {"title":"लेन-देन का इतिहास","loading":"इतिहास लोड हो रहा है…","empty":"अभी कोई इतिहास नहीं है।","loadError":"लेन-देन का इतिहास लोड नहीं हो सका।","operation":{"create":"बनाया गया","update":"अपडेट किया गया","delete":"हटाया गया"},"source":{"manual":"मैनुअल","import":"आयात","import_undo":"आयात पूर्ववत करें","recurring":"आवर्ती","loan":"ऋण","card":"कार्ड","investment":"निवेश","bulk":"बल्क"},"field":{"type":"प्रकार","date":"तारीख","amount":"राशि","currency":"मुद्रा","account_id":"खाता","to_account_id":"गंतव्य खाता","category_id":"श्रेणी","description":"विवरण","notes":"नोट्स","recurring_rule_id":"आवर्ती नियम","loan_id":"ऋण","card_invoice_close_date":"इनवॉइस बंद होने की तारीख","installment_group_id":"किश्त समूह","installment_number":"किश्त संख्या","installment_count":"किश्तों की संख्या","conversion_amount":"परिवर्तित राशि","conversion_currency":"परिवर्तन मुद्रा","conversion_fee":"परिवर्तन शुल्क","conversion_rate":"परिवर्तन दर","conversion_source":"परिवर्तन स्रोत"}},
     "tabs": {
       "transactions": "लेन-देन",
       "recurring": "आवर्ती"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"आयात बैच","count":"{{count}} लेन-देन बनाए गए","remaining":"{{count}} शेष","undo":"आयात पूर्ववत करें","undoConfirm":"क्या यह आयात बैच पूर्ववत करना है? {{count}} शेष लेन-देन हटाए जाएंगे।","undoneEmpty":"इस बैच में कोई लेन-देन शेष नहीं है।","empty":"अभी कोई आयात बैच नहीं है।","undoSuccess":"आयात बैच पूर्ववत किया गया।"},
       "title": "लेन-देन आयात करें",
       "description": "अपने बैंक से निर्यात की गई CSV फ़ाइल अपलोड करें, हर पंक्ति की जाँच करें, और जिन्हें पोस्ट करना है उन्हें स्वीकृत करें।",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "रीज़निंग प्रयास"
     }
   },
+  "reconciliation": {
+    "nav": "मिलान",
+    "title": "बैंक मिलान",
+    "description": "अपने लेजर की तुलना बैंक स्टेटमेंट से करें और मेल खाने वाले लेन-देन चिह्नित करें।",
+    "form": { "account": "खाता", "chooseAccount": "खाता चुनें", "statementDate": "स्टेटमेंट की तारीख", "statementBalance": "स्टेटमेंट शेष" },
+    "stat": { "statement": "स्टेटमेंट शेष", "cleared": "मिलान किया हुआ शेष", "difference": "अंतर" },
+    "detail": { "asOf": "{{date}} तक" },
+    "entries": {
+      "date": "तारीख", "description": "विवरण", "legLabel": "प्रविष्टि", "amount": "राशि", "cleared": "मिलान किया",
+      "mark": "{{description}} को मिलान किया हुआ चिह्नित करें", "empty": "इस स्टेटमेंट तारीख तक कोई लेन-देन नहीं है।",
+      "legType": { "own": "खाता लेन-देन", "incoming": "आने वाला ट्रांसफर" }
+    },
+    "actions": { "reconcile": "मिलान करें", "start": "मिलान शुरू करें", "complete": "पूरा करें", "reopen": "फिर खोलें", "delete": "हटाएँ" },
+    "status": { "open": "खुला", "completed": "पूरा हुआ" },
+    "empty": { "title": "कोई मिलान चयनित नहीं", "description": "ऊपर मिलान शुरू करें या पिछला मिलान चुनें।" },
+    "loadError": "मिलान लोड नहीं हो सके। फिर कोशिश करें।",
+    "confirmDelete": { "title": "मिलान हटाएँ?", "message": "मिलान और उसके चिह्न हटा दिए जाएँगे। जारी रखें?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "संग्रहीत खातों का मिलान नहीं किया जा सकता।", "already_open": "इस खाते का एक मिलान पहले से खुला है।", "completed": "यह मिलान पहले ही पूरा हो चुका है।",
+      "transaction_not_eligible": "यह लेन-देन इस मिलान के लिए योग्य नहीं है।", "leg_locked": "यह प्रविष्टि किसी अन्य मिलान द्वारा लॉक है।", "difference_not_zero": "पूरा करने से पहले अंतर शून्य होना चाहिए।"
+    },
     "backup": {
       "invalid_archive": "यह मान्य LealFinance बैकअप नहीं है।",
       "invalid_file_type": "JSON बैकअप फ़ाइल चुनें।",
@@ -1830,6 +1854,7 @@
       "no_rows": "फ़ाइल में कोई डेटा पंक्ति नहीं है।",
       "too_many_rows": "फ़ाइल में एक साथ आयात करने के लिए बहुत अधिक पंक्तियाँ हैं (2,000 सीमा)।",
       "column_required": "आगे बढ़ने से पहले तारीख़, विवरण और राशि कॉलम मिलाएँ।",
+      "batch_modified": "यह आयात बैच आयात के बाद बदला गया है और इसे पूर्ववत नहीं किया जा सकता।",
       "row": {
         "invalid_date": "यह तारीख़ पढ़ी नहीं जा सकी।",
         "invalid_amount": "यह राशि पढ़ी नहीं जा सकी।",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "यह हस्तांतरण किस खाते में जाएगा, उसे चुनें।",
       "category_required": "इस लेन-देन के लिए एक श्रेणी चुनें।",
       "category_kind_mismatch": "यह श्रेणी इस लेन-देन के प्रकार से मेल नहीं खाती।",
-      "conversion_required": "यह लेन-देन अलग-अलग मुद्राओं में है, इसलिए परिवर्तित राशि आवश्यक है।"
+      "conversion_required": "यह लेन-देन अलग-अलग मुद्राओं में है, इसलिए परिवर्तित राशि आवश्यक है।",
+      "reconciled": "मिलान किए गए लेन-देन को संरचनात्मक रूप से संपादित या हटाया नहीं जा सकता।"
     },
     "currency": {
       "not_found": "यह मुद्रा उपलब्ध नहीं है।",

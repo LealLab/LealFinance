@@ -505,6 +505,7 @@
       "columns": "Sütunlar",
       "exportCsv": "CSV'yi dışa aktar"
     },
+    "history": {"title":"İşlem geçmişi","loading":"Geçmiş yükleniyor…","empty":"Henüz geçmiş yok.","loadError":"İşlem geçmişi yüklenemedi.","operation":{"create":"Oluşturuldu","update":"Güncellendi","delete":"Silindi"},"source":{"manual":"Manuel","import":"İçe aktarma","import_undo":"İçe aktarmayı geri al","recurring":"Tekrarlayan","loan":"Kredi","card":"Kart","investment":"Yatırım","bulk":"Toplu"},"field":{"type":"Tür","date":"Tarih","amount":"Tutar","currency":"Para birimi","account_id":"Hesap","to_account_id":"Hedef hesap","category_id":"Kategori","description":"Açıklama","notes":"Notlar","recurring_rule_id":"Tekrarlayan kural","loan_id":"Kredi","card_invoice_close_date":"Fatura kapanış tarihi","installment_group_id":"Taksit grubu","installment_number":"Taksit numarası","installment_count":"Taksit sayısı","conversion_amount":"Dönüştürülen tutar","conversion_currency":"Dönüşüm para birimi","conversion_fee":"Dönüşüm ücreti","conversion_rate":"Dönüşüm kuru","conversion_source":"Dönüşüm kaynağı"}},
     "tabs": {
       "transactions": "İşlemler",
       "recurring": "Tekrarlayan"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"İçe aktarma grupları","count":"{{count}} işlem oluşturuldu","remaining":"{{count}} kaldı","undo":"İçe aktarmayı geri al","undoConfirm":"Bu içe aktarma grubunu geri al? Kalan {{count}} işlem silinecek.","undoneEmpty":"Bu grupta kalan işlem yok.","empty":"Henüz içe aktarma grubu yok.","undoSuccess":"İçe aktarma grubu geri alındı."},
       "title": "İşlemleri içe aktar",
       "description": "Bankandan aldığın CSV dışa aktarımını yükle, her satırı incele ve onayladıklarını kaydet.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Akıl yürütme çabası"
     }
   },
+  "reconciliation": {
+    "nav": "Mutabakat",
+    "title": "Banka mutabakatı",
+    "description": "Defterinizi banka ekstresiyle karşılaştırın ve eşleşen işlemleri işaretleyin.",
+    "form": { "account": "Hesap", "chooseAccount": "Hesap seçin", "statementDate": "Ekstre tarihi", "statementBalance": "Ekstre bakiyesi" },
+    "stat": { "statement": "Ekstre bakiyesi", "cleared": "Mutabık bakiye", "difference": "Fark" },
+    "detail": { "asOf": "{{date}} tarihine kadar" },
+    "entries": {
+      "date": "Tarih", "description": "Açıklama", "legLabel": "Hareket", "amount": "Tutar", "cleared": "Mutabık",
+      "mark": "{{description}} işlemini mutabık olarak işaretle", "empty": "Bu ekstre tarihine kadar işlem yok.",
+      "legType": { "own": "Hesap işlemi", "incoming": "Gelen transfer" }
+    },
+    "actions": { "reconcile": "Mutabakat", "start": "Mutabakatı başlat", "complete": "Tamamla", "reopen": "Yeniden aç", "delete": "Sil" },
+    "status": { "open": "Açık", "completed": "Tamamlandı" },
+    "empty": { "title": "Mutabakat seçilmedi", "description": "Yukarıdan bir mutabakat başlatın veya önceki bir mutabakatı seçin." },
+    "loadError": "Mutabakatlar yüklenemedi. Tekrar deneyin.",
+    "confirmDelete": { "title": "Mutabakat silinsin mi?", "message": "Mutabakat ve işaretleri silinecek. Devam edilsin mi?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Arşivlenmiş hesaplar için mutabakat yapılamaz.", "already_open": "Bu hesapta zaten açık bir mutabakat var.", "completed": "Bu mutabakat zaten tamamlandı.",
+      "transaction_not_eligible": "Bu işlem bu mutabakata uygun değil.", "leg_locked": "Bu hareket başka bir mutabakat tarafından kilitlendi.", "difference_not_zero": "Tamamlamadan önce fark sıfır olmalıdır."
+    },
     "backup": {
       "invalid_archive": "Bu geçerli bir LealFinance yedeği değil.",
       "invalid_file_type": "Bir JSON yedek dosyası seçin.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Dosyada veri satırı yok.",
       "too_many_rows": "Dosyada bir seferde içe aktarılamayacak kadar çok satır var (2000 sınırı).",
       "column_required": "Devam etmeden önce tarih, açıklama ve tutar sütunlarını eşleştir.",
+      "batch_modified": "Bu içe aktarma grubu içe aktarımdan sonra değiştirildi ve geri alınamaz.",
       "row": {
         "invalid_date": "Bu tarih okunamadı.",
         "invalid_amount": "Bu tutar okunamadı.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Bu transferin gönderileceği hesabı seçin.",
       "category_required": "Bu işlem için bir kategori seçin.",
       "category_kind_mismatch": "Bu kategori, işlemin türüyle eşleşmiyor.",
-      "conversion_required": "Bu işlem farklı para birimleri içeriyor, bu nedenle dönüştürülmüş bir tutar gerekiyor."
+      "conversion_required": "Bu işlem farklı para birimleri içeriyor, bu nedenle dönüştürülmüş bir tutar gerekiyor.",
+      "reconciled": "Mutabık işlemler yapısal olarak düzenlenemez veya silinemez."
     },
     "currency": {
       "not_found": "Bu para birimi kullanılamıyor.",

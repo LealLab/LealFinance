@@ -505,6 +505,7 @@
       "columns": "Kolumny",
       "exportCsv": "Eksportuj CSV"
     },
+    "history": {"title":"Historia transakcji","loading":"Ładowanie historii…","empty":"Brak historii.","loadError":"Nie udało się wczytać historii transakcji.","operation":{"create":"Utworzono","update":"Zaktualizowano","delete":"Usunięto"},"source":{"manual":"Ręcznie","import":"Import","import_undo":"Cofnięcie importu","recurring":"Cykliczne","loan":"Pożyczka","card":"Karta","investment":"Inwestycja","bulk":"Zbiorcza"},"field":{"type":"Typ","date":"Data","amount":"Kwota","currency":"Waluta","account_id":"Konto","to_account_id":"Konto docelowe","category_id":"Kategoria","description":"Opis","notes":"Notatki","recurring_rule_id":"Reguła cykliczna","loan_id":"Pożyczka","card_invoice_close_date":"Data zamknięcia faktury","installment_group_id":"Grupa rat","installment_number":"Numer raty","installment_count":"Liczba rat","conversion_amount":"Kwota po przeliczeniu","conversion_currency":"Waluta przeliczenia","conversion_fee":"Opłata za przeliczenie","conversion_rate":"Kurs przeliczenia","conversion_source":"Źródło przeliczenia"}},
     "tabs": {
       "transactions": "Transakcje",
       "recurring": "Cykliczne"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Pakiety importu","count":"Utworzono {{count}} transakcji","remaining":"Pozostało {{count}}","undo":"Cofnij import","undoConfirm":"Cofnąć ten pakiet importu? Zostanie usuniętych {{count}} pozostałych transakcji.","undoneEmpty":"W tym pakiecie nie ma pozostałych transakcji.","empty":"Brak pakietów importu.","undoSuccess":"Pakiet importu cofnięty."},
       "title": "Importuj transakcje",
       "description": "Prześlij plik CSV wyeksportowany z banku, sprawdź każdy wiersz i zatwierdź te, które chcesz zaksięgować.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Poziom wnioskowania"
     }
   },
+  "reconciliation": {
+    "nav": "Uzgodnij",
+    "title": "Uzgodnienie bankowe",
+    "description": "Porównaj księgę z wyciągiem bankowym i oznacz pasujące transakcje.",
+    "form": { "account": "Konto", "chooseAccount": "Wybierz konto", "statementDate": "Data wyciągu", "statementBalance": "Saldo wyciągu" },
+    "stat": { "statement": "Saldo wyciągu", "cleared": "Uzgodnione saldo", "difference": "Różnica" },
+    "detail": { "asOf": "Do {{date}}" },
+    "entries": {
+      "date": "Data", "description": "Opis", "legLabel": "Operacja", "amount": "Kwota", "cleared": "Uzgodniona",
+      "mark": "Oznacz {{description}} jako uzgodnioną", "empty": "Brak transakcji do daty wyciągu.",
+      "legType": { "own": "Transakcja na koncie", "incoming": "Przelew przychodzący" }
+    },
+    "actions": { "reconcile": "Uzgodnij", "start": "Rozpocznij uzgodnienie", "complete": "Zakończ", "reopen": "Otwórz ponownie", "delete": "Usuń" },
+    "status": { "open": "Otwarte", "completed": "Zakończone" },
+    "empty": { "title": "Nie wybrano uzgodnienia", "description": "Rozpocznij uzgodnienie powyżej lub wybierz wcześniejsze." },
+    "loadError": "Nie udało się załadować uzgodnień. Spróbuj ponownie.",
+    "confirmDelete": { "title": "Usunąć uzgodnienie?", "message": "Uzgodnienie i jego oznaczenia zostaną usunięte. Kontynuować?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Nie można uzgadniać zarchiwizowanych kont.", "already_open": "To konto ma już otwarte uzgodnienie.", "completed": "To uzgodnienie jest już zakończone.",
+      "transaction_not_eligible": "Ta transakcja nie może należeć do tego uzgodnienia.", "leg_locked": "Ta operacja jest zablokowana przez inne uzgodnienie.", "difference_not_zero": "Różnica musi wynosić zero przed zakończeniem."
+    },
     "backup": {
       "invalid_archive": "To nie jest prawidłowa kopia zapasowa LealFinance.",
       "invalid_file_type": "Wybierz plik kopii zapasowej JSON.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Plik nie zawiera wierszy danych.",
       "too_many_rows": "Plik zawiera zbyt wiele wierszy do zaimportowania naraz (limit 2000).",
       "column_required": "Dopasuj kolumny daty, opisu i kwoty przed kontynuowaniem.",
+      "batch_modified": "Ten pakiet importu został zmieniony po imporcie i nie można go cofnąć.",
       "row": {
         "invalid_date": "Nie udało się odczytać tej daty.",
         "invalid_amount": "Nie udało się odczytać tej kwoty.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Wybierz konto docelowe tego przelewu.",
       "category_required": "Wybierz kategorię tej transakcji.",
       "category_kind_mismatch": "Ta kategoria nie pasuje do typu tej transakcji.",
-      "conversion_required": "Ta transakcja obejmuje różne waluty, więc wymaga przeliczonej kwoty."
+      "conversion_required": "Ta transakcja obejmuje różne waluty, więc wymaga przeliczonej kwoty.",
+      "reconciled": "Uzgodnionych transakcji nie można zmieniać strukturalnie ani usuwać."
     },
     "currency": {
       "not_found": "Ta waluta jest niedostępna.",

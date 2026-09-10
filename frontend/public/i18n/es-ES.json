@@ -505,6 +505,7 @@
       "columns": "Columnas",
       "exportCsv": "Exportar CSV"
     },
+    "history": {"title":"Historial de transacciones","loading":"Cargando historial…","empty":"Aún no hay historial.","loadError":"No se pudo cargar el historial de la transacción.","operation":{"create":"Creada","update":"Actualizada","delete":"Eliminada"},"source":{"manual":"Manual","import":"Importación","import_undo":"Deshacer importación","recurring":"Recurrente","loan":"Préstamo","card":"Tarjeta","investment":"Inversión","bulk":"Masivo"},"field":{"type":"Tipo","date":"Fecha","amount":"Importe","currency":"Moneda","account_id":"Cuenta","to_account_id":"Cuenta de destino","category_id":"Categoría","description":"Descripción","notes":"Notas","recurring_rule_id":"Regla recurrente","loan_id":"Préstamo","card_invoice_close_date":"Fecha de cierre de factura","installment_group_id":"Grupo de cuotas","installment_number":"Número de cuota","installment_count":"Número de cuotas","conversion_amount":"Importe convertido","conversion_currency":"Moneda convertida","conversion_fee":"Comisión de conversión","conversion_rate":"Tipo de cambio","conversion_source":"Origen de conversión"}},
     "tabs": {
       "transactions": "Movimientos",
       "recurring": "Recurrentes"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Lotes de importación","count":"{{count}} transacciones creadas","remaining":"Quedan {{count}}","undo":"Deshacer importación","undoConfirm":"¿Deshacer este lote de importación? Se eliminarán {{count}} transacciones restantes.","undoneEmpty":"Este lote no tiene transacciones restantes.","empty":"Aún no hay lotes de importación.","undoSuccess":"Lote de importación deshecho."},
       "title": "Importar movimientos",
       "description": "Sube un CSV exportado de tu banco, revisa cada fila y confirma las que quieras registrar.",
       "fields": {
@@ -1778,7 +1780,59 @@
       "label": "Esfuerzo de razonamiento"
     }
   },
+  "reconciliation": {
+    "nav": "Conciliar",
+    "title": "Conciliación bancaria",
+    "description": "Compara tu libro contable con un extracto bancario y marca las transacciones coincidentes.",
+    "form": {
+      "account": "Cuenta",
+      "chooseAccount": "Elige una cuenta",
+      "statementDate": "Fecha del extracto",
+      "statementBalance": "Saldo del extracto"
+    },
+    "stat": {
+      "statement": "Saldo del extracto",
+      "cleared": "Saldo conciliado",
+      "difference": "Diferencia"
+    },
+    "detail": { "asOf": "Hasta {{date}}" },
+    "entries": {
+      "date": "Fecha",
+      "description": "Descripción",
+      "legLabel": "Movimiento",
+      "amount": "Importe",
+      "cleared": "Conciliado",
+      "mark": "Marcar {{description}} como conciliado",
+      "empty": "No hay transacciones dentro de la fecha del extracto.",
+      "legType": { "own": "Transacción de la cuenta", "incoming": "Transferencia entrante" }
+    },
+    "actions": {
+      "reconcile": "Conciliar",
+      "start": "Iniciar conciliación",
+      "complete": "Completar",
+      "reopen": "Reabrir",
+      "delete": "Eliminar"
+    },
+    "status": { "open": "Abierta", "completed": "Completada" },
+    "empty": {
+      "title": "No hay ninguna conciliación seleccionada",
+      "description": "Inicia una conciliación arriba o elige una anterior."
+    },
+    "loadError": "No se pudieron cargar las conciliaciones. Inténtalo de nuevo.",
+    "confirmDelete": {
+      "title": "¿Eliminar conciliación?",
+      "message": "Se eliminarán la conciliación y sus marcas. ¿Continuar?"
+    }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Las cuentas archivadas no se pueden conciliar.",
+      "already_open": "Esta cuenta ya tiene una conciliación abierta.",
+      "completed": "Esta conciliación ya está completada.",
+      "transaction_not_eligible": "Esa transacción no puede participar en esta conciliación.",
+      "leg_locked": "Este movimiento está bloqueado por otra conciliación.",
+      "difference_not_zero": "La diferencia debe ser cero antes de completar."
+    },
     "backup": {
       "invalid_archive": "Este archivo no es una copia de seguridad válida de LealFinance.",
       "invalid_file_type": "Elige un archivo de copia JSON.",
@@ -1830,6 +1884,7 @@
       "no_rows": "El archivo no tiene filas de datos.",
       "too_many_rows": "El archivo tiene demasiadas filas para importar a la vez (límite de 2000).",
       "column_required": "Asocia las columnas de fecha, descripción e importe antes de continuar.",
+      "batch_modified": "Este lote de importación cambió después de importarse y no se puede deshacer.",
       "row": {
         "invalid_date": "No se pudo leer esta fecha.",
         "invalid_amount": "No se pudo leer este importe.",
@@ -1877,7 +1932,8 @@
       "transfer_requires_destination": "Elige la cuenta de destino de esta transferencia.",
       "category_required": "Elige una categoría para esta transacción.",
       "category_kind_mismatch": "Esa categoría no coincide con el tipo de esta transacción.",
-      "conversion_required": "Esta transacción usa varias monedas, por lo que necesita un importe convertido."
+      "conversion_required": "Esta transacción usa varias monedas, por lo que necesita un importe convertido.",
+      "reconciled": "Las transacciones conciliadas no se pueden editar estructuralmente ni eliminar."
     },
     "currency": {
       "not_found": "Esa moneda no está disponible.",

@@ -505,6 +505,7 @@
       "columns": "Kolommen",
       "exportCsv": "CSV exporteren"
     },
+    "history": {"title":"Transactiegeschiedenis","loading":"Geschiedenis laden…","empty":"Nog geen geschiedenis.","loadError":"De transactiegeschiedenis kon niet worden geladen.","operation":{"create":"Aangemaakt","update":"Bijgewerkt","delete":"Verwijderd"},"source":{"manual":"Handmatig","import":"Import","import_undo":"Import ongedaan maken","recurring":"Terugkerend","loan":"Lening","card":"Kaart","investment":"Belegging","bulk":"Bulk"},"field":{"type":"Type","date":"Datum","amount":"Bedrag","currency":"Valuta","account_id":"Rekening","to_account_id":"Doelrekening","category_id":"Categorie","description":"Beschrijving","notes":"Notities","recurring_rule_id":"Terugkerende regel","loan_id":"Lening","card_invoice_close_date":"Sluitingsdatum factuur","installment_group_id":"Termijngroep","installment_number":"Termijnnummer","installment_count":"Aantal termijnen","conversion_amount":"Omgerekend bedrag","conversion_currency":"Conversievaluta","conversion_fee":"Conversiekosten","conversion_rate":"Conversiekoers","conversion_source":"Conversiebron"}},
     "tabs": {
       "transactions": "Transacties",
       "recurring": "Terugkerend"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"Importbatches","count":"{{count}} transacties aangemaakt","remaining":"{{count}} resterend","undo":"Import ongedaan maken","undoConfirm":"Deze importbatch ongedaan maken? {{count}} resterende transacties worden verwijderd.","undoneEmpty":"Deze batch bevat geen resterende transacties.","empty":"Nog geen importbatches.","undoSuccess":"Importbatch ongedaan gemaakt."},
       "title": "Transacties importeren",
       "description": "Upload een CSV-export van je bank, controleer elke regel en bevestig welke je wilt boeken.",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "Redeneerinspanning"
     }
   },
+  "reconciliation": {
+    "nav": "Afstemmen",
+    "title": "Bankafstemming",
+    "description": "Vergelijk je boekhouding met een bankafschrift en markeer overeenkomende transacties.",
+    "form": { "account": "Rekening", "chooseAccount": "Kies een rekening", "statementDate": "Datum afschrift", "statementBalance": "Saldo afschrift" },
+    "stat": { "statement": "Saldo afschrift", "cleared": "Afgestemd saldo", "difference": "Verschil" },
+    "detail": { "asOf": "Tot en met {{date}}" },
+    "entries": {
+      "date": "Datum", "description": "Omschrijving", "legLabel": "Beweging", "amount": "Bedrag", "cleared": "Afgestemd",
+      "mark": "Markeer {{description}} als afgestemd", "empty": "Er zijn geen transacties op of vóór deze afschrift datum.",
+      "legType": { "own": "Rekeningtransactie", "incoming": "Inkomende overschrijving" }
+    },
+    "actions": { "reconcile": "Afstemmen", "start": "Afstemming starten", "complete": "Voltooien", "reopen": "Heropenen", "delete": "Verwijderen" },
+    "status": { "open": "Open", "completed": "Voltooid" },
+    "empty": { "title": "Geen afstemming geselecteerd", "description": "Start hierboven een afstemming of kies een eerdere." },
+    "loadError": "Afstemmingen konden niet worden geladen. Probeer het opnieuw.",
+    "confirmDelete": { "title": "Afstemming verwijderen?", "message": "De afstemming en gemarkeerde transacties worden verwijderd. Doorgaan?" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "Gearchiveerde rekeningen kunnen niet worden afgestemd.", "already_open": "Deze rekening heeft al een open afstemming.", "completed": "Deze afstemming is al voltooid.",
+      "transaction_not_eligible": "Deze transactie kan niet aan deze afstemming deelnemen.", "leg_locked": "Deze boeking is vergrendeld door een andere afstemming.", "difference_not_zero": "Het verschil moet nul zijn voordat je voltooit."
+    },
     "backup": {
       "invalid_archive": "Dit is geen geldige LealFinance-back-up.",
       "invalid_file_type": "Kies een JSON-back-upbestand.",
@@ -1830,6 +1854,7 @@
       "no_rows": "Het bestand bevat geen gegevensregels.",
       "too_many_rows": "Het bestand bevat te veel regels om in één keer te importeren (limiet 2000).",
       "column_required": "Koppel de kolommen datum, omschrijving en bedrag voordat je verdergaat.",
+      "batch_modified": "Deze importbatch is na het importeren gewijzigd en kan niet ongedaan worden gemaakt.",
       "row": {
         "invalid_date": "Deze datum kon niet worden gelezen.",
         "invalid_amount": "Dit bedrag kon niet worden gelezen.",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "Kies het account waar deze overschrijving naartoe gaat.",
       "category_required": "Kies een categorie voor deze transactie.",
       "category_kind_mismatch": "Deze categorie past niet bij het type van deze transactie.",
-      "conversion_required": "Deze transactie gebruikt meerdere valuta's en heeft daarom een omgerekend bedrag nodig."
+      "conversion_required": "Deze transactie gebruikt meerdere valuta's en heeft daarom een omgerekend bedrag nodig.",
+      "reconciled": "Afgestemde transacties kunnen niet structureel worden gewijzigd of verwijderd."
     },
     "currency": {
       "not_found": "Deze valuta is niet beschikbaar.",

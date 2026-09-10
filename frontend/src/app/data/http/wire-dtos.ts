@@ -8,6 +8,7 @@ import type {
 } from '../../domain/models/agent-provider';
 import type { CategoryKind } from '../../domain/models/category';
 import type { RecurringFrequency } from '../../domain/models/recurring';
+import type { ReconciliationLeg, ReconciliationStatus } from '../../domain/models/reconciliation';
 import type { ConversionSource, TransactionType } from '../../domain/models/transaction';
 import type {
   InvestmentAssetClass,
@@ -125,6 +126,24 @@ export interface TransactionWire {
   installment_count: number | null;
   conversion: ConversionWire | null;
 }
+
+export interface TransactionHistoryWire {
+  id: string;
+  transaction_id: string;
+  operation: 'create' | 'update' | 'delete';
+  source: string;
+  batch_id: string | null;
+  before: Record<string, string | number | null> | null;
+  after: Record<string, string | number | null> | null;
+  created_at: string;
+}
+
+export interface ImportBatchWire {
+  id: string;
+  created_at: string;
+  created_count: number;
+  remaining_count: number;
+}
 /** `installments` is create-only - it makes the backend write N rows. The
  * stored installment_* fields are read-only, so they're dropped from the
  * input/patch shapes. */
@@ -212,6 +231,42 @@ export interface AccountBalanceWire {
   account_id: string;
   currency: string;
   balance: string;
+}
+
+export interface ReconciliationWire {
+  id: string;
+  account_id: string;
+  statement_date: string;
+  statement_balance: string;
+  currency: string;
+  status: ReconciliationStatus;
+  completed_at: string | null;
+  created_at: string;
+}
+
+export interface ReconciliationInputWire {
+  account_id: string;
+  statement_date: string;
+  statement_balance: string;
+}
+
+export interface ReconciliationEntryWire {
+  transaction_id: string;
+  leg: ReconciliationLeg;
+  date: string;
+  description: string;
+  amount: string;
+  cleared: boolean;
+  cleared_by: string | null;
+}
+
+export interface ReconciliationDetailWire {
+  reconciliation: ReconciliationWire;
+  statement_balance: string;
+  book_balance: string;
+  cleared_balance: string;
+  difference: string;
+  entries: ReconciliationEntryWire[];
 }
 
 export interface CardInvoiceWire {

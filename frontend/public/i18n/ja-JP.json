@@ -505,6 +505,7 @@
       "columns": "列",
       "exportCsv": "CSVを書き出す"
     },
+    "history": {"title":"取引履歴","loading":"履歴を読み込み中…","empty":"履歴はまだありません。","loadError":"取引履歴を読み込めませんでした。","operation":{"create":"作成","update":"更新","delete":"削除"},"source":{"manual":"手動","import":"インポート","import_undo":"インポートを取り消し","recurring":"定期","loan":"ローン","card":"カード","investment":"投資","bulk":"一括"},"field":{"type":"種類","date":"日付","amount":"金額","currency":"通貨","account_id":"口座","to_account_id":"移動先口座","category_id":"カテゴリ","description":"説明","notes":"メモ","recurring_rule_id":"定期ルール","loan_id":"ローン","card_invoice_close_date":"請求締め日","installment_group_id":"分割グループ","installment_number":"分割番号","installment_count":"分割回数","conversion_amount":"換算金額","conversion_currency":"換算通貨","conversion_fee":"換算手数料","conversion_rate":"換算レート","conversion_source":"換算元"}},
     "tabs": {
       "transactions": "取引",
       "recurring": "定期取引"
@@ -624,6 +625,7 @@
       }
     },
     "import": {
+      "batches": {"title":"インポートバッチ","count":"{{count}}件の取引を作成","remaining":"残り{{count}}件","undo":"インポートを取り消す","undoConfirm":"このインポートバッチを取り消しますか？残り{{count}}件の取引を削除します。","undoneEmpty":"このバッチに残っている取引はありません。","empty":"インポートバッチはまだありません。","undoSuccess":"インポートバッチを取り消しました。"},
       "title": "取引のインポート",
       "description": "銀行からエクスポートしたCSVをアップロードし、各行を確認して、記帳する行を確定してください。",
       "fields": {
@@ -1778,7 +1780,29 @@
       "label": "推論の強度"
     }
   },
+  "reconciliation": {
+    "nav": "照合",
+    "title": "銀行口座の照合",
+    "description": "帳簿を銀行明細と比較し、一致する取引を消込済みとしてマークします。",
+    "form": { "account": "口座", "chooseAccount": "口座を選択", "statementDate": "明細日", "statementBalance": "明細残高" },
+    "stat": { "statement": "明細残高", "cleared": "消込済み残高", "difference": "差額" },
+    "detail": { "asOf": "{{date}} まで" },
+    "entries": {
+      "date": "日付", "description": "説明", "legLabel": "明細", "amount": "金額", "cleared": "消込済み",
+      "mark": "{{description}} を消込済みとしてマーク", "empty": "この明細日以前の取引はありません。",
+      "legType": { "own": "口座の取引", "incoming": "入金振替" }
+    },
+    "actions": { "reconcile": "照合", "start": "照合を開始", "complete": "完了", "reopen": "再開", "delete": "削除" },
+    "status": { "open": "未完了", "completed": "完了" },
+    "empty": { "title": "照合が選択されていません", "description": "上で照合を開始するか、以前の照合を選択してください。" },
+    "loadError": "照合を読み込めませんでした。もう一度お試しください。",
+    "confirmDelete": { "title": "照合を削除しますか？", "message": "照合と消込マークが削除されます。続行しますか？" }
+  },
   "errors": {
+    "reconciliation": {
+      "account_archived": "アーカイブ済みの口座は照合できません。", "already_open": "この口座には未完了の照合があります。", "completed": "この照合はすでに完了しています。",
+      "transaction_not_eligible": "この取引は照合の対象外です。", "leg_locked": "この明細は別の照合によってロックされています。", "difference_not_zero": "完了するには差額をゼロにしてください。"
+    },
     "backup": {
       "invalid_archive": "有効な LealFinance バックアップではありません。",
       "invalid_file_type": "JSON バックアップファイルを選択してください。",
@@ -1830,6 +1854,7 @@
       "no_rows": "ファイルにデータ行がありません。",
       "too_many_rows": "一度にインポートするには行数が多すぎます（上限2,000行）。",
       "column_required": "続行する前に、日付・説明・金額の列を対応付けてください。",
+      "batch_modified": "このインポートバッチはインポート後に変更されたため、取り消せません。",
       "row": {
         "invalid_date": "この日付を読み取れませんでした。",
         "invalid_amount": "この金額を読み取れませんでした。",
@@ -1877,7 +1902,8 @@
       "transfer_requires_destination": "この振替先の口座を選択してください。",
       "category_required": "この取引のカテゴリを選択してください。",
       "category_kind_mismatch": "そのカテゴリはこの取引の種類に一致しません。",
-      "conversion_required": "この取引は複数の通貨にまたがるため、換算後の金額が必要です。"
+      "conversion_required": "この取引は複数の通貨にまたがるため、換算後の金額が必要です。",
+      "reconciled": "消込済みの取引は構造を変更したり削除したりできません。"
     },
     "currency": {
       "not_found": "その通貨は利用できません。",

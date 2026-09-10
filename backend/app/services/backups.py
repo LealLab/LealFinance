@@ -37,8 +37,10 @@ from app.models.investment import (
 )
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
+from app.models.reconciliation import Reconciliation, ReconciliationEntry
 from app.models.recurring import RecurringRule
 from app.models.transaction import Transaction
+from app.models.transaction_history import TransactionHistory
 from app.models.user import User
 from app.schemas.backup import (
     BackupExportResponse,
@@ -76,6 +78,8 @@ BACKUP_TABLES = (
     BackupTable("goals", Goal),
     BackupTable("manual_rates", ManualRate),
     BackupTable("transactions", Transaction, version=2),
+    BackupTable("reconciliations", Reconciliation),
+    BackupTable("reconciliation_entries", ReconciliationEntry),
     BackupTable("investment_wallets", InvestmentWallet),
     BackupTable("investment_assets", InvestmentAsset),
     BackupTable("investment_transactions", InvestmentTransaction),
@@ -89,6 +93,8 @@ EXCLUDED_USER_OWNED_MODELS = {
     AgentConversation: "agent_conversations",
     AgentMessage: "agent_messages",
     ImportIdempotency: "import_idempotency",
+    # Audit rows are an append-only operational log, not restorable domain state.
+    TransactionHistory: "transaction_history",
 }
 
 _PREFERENCE_FIELDS = (
