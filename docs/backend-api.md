@@ -220,7 +220,7 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/transactions/bulk-categorize` | user | Body `{ids: [...], category_id}`. Atomic: rejects a transfer/interest row or a category-kind mismatch (422), else assigns and returns `{updated}`. |
 | GET/PATCH | `/transactions/{id}` | user | A `PATCH` that changes `amount`, `date`, `account_id`, `to_account_id`, `type`, `currency` or `conversion` of a reconciled transaction → 409 `transaction.reconciled`; category/description/notes edits stay allowed. |
 | DELETE | `/transactions/{id}` | user | 409 `transaction.reconciled` if any leg is cleared in a reconciliation. |
-| GET | `/transactions/{id}/history` | user | Ordered audit rows (`operation`, `source`, `batch_id`, `before`/`after` snapshots). Unknown/foreign id → 404 `transaction.not_found`; an owned transaction with no history → `[]`. |
+| GET | `/transactions/{id}/history` | user | Ordered audit rows (`operation`, `source`, `batch_id`, `before`/`after` snapshots). Still readable after the transaction is deleted - the `delete` snapshot included. Unknown/foreign id → 404 `transaction.not_found`; an owned transaction with no history → `[]`. |
 | GET | `/transactions/import/batches` | user | Import batches, newest first: `{id, created_at, created_count, remaining_count}`. |
 | GET | `/transactions/import/batches/{id}` | user | The still-existing transactions created by that batch. |
 | DELETE | `/transactions/import/batches/{id}` | user | Undo the batch. 204. 409 `import.batch_modified` if a created row was edited after import or settles a loan/invoice; rows the user already deleted are skipped. |
@@ -463,7 +463,9 @@ financial columns. The row has no foreign key to `transactions`, so it
 survives the delete it records. A replayed idempotent import records no new
 history.
 
-`GET /transactions/{id}/history` returns those rows oldest-first.
+`GET /transactions/{id}/history` returns those rows oldest-first, and keeps
+working after the transaction is deleted so the `delete` snapshot stays
+reachable.
 `GET /transactions/import/batches` lists each `import_idempotency` row with a
 live `remaining_count` (rows from the batch that still exist).
 `DELETE /transactions/import/batches/{id}` deletes the batch's still-existing

@@ -108,7 +108,6 @@ def record(
 async def list_for_transaction(
     db: AsyncSession, user_id: UUID, transaction_id: UUID
 ) -> list[TransactionHistory]:
-    await ownership.get_owned(db, Transaction, transaction_id, user_id)
     result = await db.execute(
         select(TransactionHistory)
         .where(
@@ -117,7 +116,16 @@ async def list_for_transaction(
         )
         .order_by(TransactionHistory.created_at.asc(), TransactionHistory.id.asc())
     )
-    return list(result.scalars().all())
+    rows = list(result.scalars().all())
+    if rows:
+        # A deleted transaction keeps its audit trail (the delete snapshot
+        # included): history rows carry the owner's user_id, so this filter is
+        # already an ownership check.
+        return rows
+    # No history: tell an owned-but-historyless transaction (-> []) apart from
+    # an unknown or foreign id (-> 404).
+    await ownership.get_owned(db, Transaction, transaction_id, user_id)
+    return []
 
 
 async def list_batches(db: AsyncSession, user_id: UUID) -> list[ImportBatchSummary]:

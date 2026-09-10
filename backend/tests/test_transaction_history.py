@@ -98,6 +98,12 @@ async def test_create_update_delete_history_survives_delete(
     assert rows[-1].before["amount"] == "60.0000"
     assert rows[-1].after is None
 
+    # The audit trail stays reachable through the API after the delete.
+    history = await client.get(f"/api/v1/transactions/{transaction_id}/history")
+    assert history.status_code == 200
+    assert [row["operation"] for row in history.json()] == ["create", "update", "delete"]
+    assert history.json()[-1]["before"]["amount"] == "60.0000"
+
 
 async def test_import_history_is_idempotent_and_batch_counts_remaining(
     client: AsyncClient, db_session: AsyncSession
