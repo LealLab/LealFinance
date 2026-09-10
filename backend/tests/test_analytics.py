@@ -23,10 +23,22 @@ async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> 
 
 
 async def _create_account(
-    client: AsyncClient, *, name: str = "Checking", currency: str = "BRL"
+    client: AsyncClient,
+    *,
+    name: str = "Checking",
+    currency: str = "BRL",
+    opening_balance: str = "0",
+    archived: bool = False,
 ) -> str:
     response = await client.post(
-        "/api/v1/accounts", json={"name": name, "type": "checking", "currency": currency}
+        "/api/v1/accounts",
+        json={
+            "name": name,
+            "type": "checking",
+            "currency": currency,
+            "opening_balance": opening_balance,
+            "archived": archived,
+        },
     )
     assert response.status_code == 201, response.text
     return response.json()["id"]
@@ -342,6 +354,154 @@ async def test_monthly_totals_pivots_and_sorts_months(
             "2026-02", "BRL", Decimal("1200.0000"), Decimal("300.0000"), Decimal("900.0000")
         ),
     ]
+
+
+async def test_account_balance_trend_seeds_history_and_keeps_every_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "analytics-balance-trend@example.com")
+    source_id = await _create_account(client, name="Source", opening_balance="100.00")
+    destination_id = await _create_account(
+        client,
+        name="Archived destination",
+        currency="USD",
+        opening_balance="50.00",
+        archived=True,
+    )
+    empty_id = await _create_account(client, name="Empty", opening_balance="7.00")
+    _, income_category = await _create_group(client, "Trend income", kind="income")
+    _, expense_category = await _create_group(client, "Trend expenses")
+
+    await _post_transaction(
+        client,
+        source_id,
+        tx_type="income",
+        transaction_date="2025-12-31",
+        amount="10.00",
+        category_id=income_category,
+    )
+    await _post_transaction(
+        client,
+        source_id,
+        tx_type="transfer",
+        transaction_date="2026-01-15",
+        amount="10.00",
+        currency="BRL",
+        to_account_id=destination_id,
+        conversion={"amount": "2.00", "currency": "USD", "rate": "0.2", "source": "manual"},
+    )
+    await _post_transaction(
+        client,
+        source_id,
+        tx_type="expense",
+        transaction_date="2026-03-15",
+        amount="5.00",
+        category_id=expense_category,
+    )
+
+    rows = await analytics.account_balance_trend(
+        db_session, user.id, months=["2026-01", "2026-02", "2026-03"]
+    )
+    balances = {(str(row.account_id), row.month): row.balance for row in rows}
+
+    assert balances == {
+        (source_id, "2026-01"): Decimal("100.0000"),
+        (source_id, "2026-02"): Decimal("100.0000"),
+        (source_id, "2026-03"): Decimal("95.0000"),
+        (destination_id, "2026-01"): Decimal("52.0000"),
+        (destination_id, "2026-02"): Decimal("52.0000"),
+        (destination_id, "2026-03"): Decimal("52.0000"),
+        (empty_id, "2026-01"): Decimal("7.0000"),
+        (empty_id, "2026-02"): Decimal("7.0000"),
+        (empty_id, "2026-03"): Decimal("7.0000"),
+    }
+
+
+async def test_balance_trend_router_validates_months_and_isolates_users(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "analytics-balance-router@example.com")
+    await _authed(other_client, db_session, "analytics-balance-other@example.com")
+    owner_account = await _create_account(client, name="Owner")
+    other_account = await _create_account(other_client, name="Other")
+
+    too_many = await client.get(
+        "/api/v1/analytics/balance-trend",
+        params=[("months", "2026-01")] * 37,
+    )
+    assert too_many.status_code == 422
+    assert too_many.json()["error"]["code"] == "analytics.too_many_months"
+
+    malformed = await client.get("/api/v1/analytics/balance-trend", params={"months": "2026-13"})
+    assert malformed.status_code == 422
+    assert malformed.json()["error"]["code"] == "analytics.invalid_month"
+
+    empty = await client.get("/api/v1/analytics/balance-trend")
+    assert empty.status_code == 200
+    assert empty.json() == []
+
+    isolated = await client.get("/api/v1/analytics/balance-trend", params={"months": "2026-01"})
+    assert isolated.status_code == 200
+    assert {row["account_id"] for row in isolated.json()} == {owner_account}
+    assert other_account not in {row["account_id"] for row in isolated.json()}
+
+
+async def test_analytics_routes_passthrough_native_service_rows(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    user = await _authed(client, db_session, "analytics-routes@example.com")
+    group_id = UUID("00000000-0000-0000-0000-000000000001")
+
+    async def fake_monthly(
+        db: AsyncSession, user_id: UUID, *, date_from: date, date_to: date
+    ) -> list[analytics.MonthTotals]:
+        assert db is db_session
+        assert user_id == user.id
+        assert date_from == date(2026, 1, 1)
+        assert date_to == date(2026, 1, 31)
+        return [
+            analytics.MonthTotals(
+                "2026-01",
+                "USD",
+                Decimal("2.50"),
+                Decimal("1.25"),
+                Decimal("1.25"),
+            )
+        ]
+
+    async def fake_spend(
+        db: AsyncSession, user_id: UUID, *, date_from: date, date_to: date
+    ) -> list[analytics.GroupSpend]:
+        assert db is db_session
+        assert user_id == user.id
+        assert date_from == date(2026, 1, 1)
+        assert date_to == date(2026, 1, 31)
+        return [analytics.GroupSpend(group_id, "USD", Decimal("1.25"))]
+
+    monkeypatch.setattr(analytics, "monthly_totals", fake_monthly)
+    monkeypatch.setattr(analytics, "spend_by_category_group", fake_spend)
+
+    monthly = await client.get(
+        "/api/v1/analytics/monthly-totals",
+        params={"date_from": "2026-01-01", "date_to": "2026-01-31"},
+    )
+    spend = await client.get(
+        "/api/v1/analytics/category-spend",
+        params={"date_from": "2026-01-01", "date_to": "2026-01-31"},
+    )
+
+    assert monthly.status_code == 200
+    assert monthly.json() == [
+        {
+            "month": "2026-01",
+            "currency": "USD",
+            "income": "2.50",
+            "expense": "1.25",
+            "net": "1.25",
+        }
+    ]
+    assert spend.status_code == 200
+    assert spend.json() == [{"group_id": str(group_id), "currency": "USD", "total": "1.25"}]
 
 
 async def test_budget_status_reports_budget_and_spend_states(

@@ -233,6 +233,27 @@ export interface AccountBalanceWire {
   balance: string;
 }
 
+export interface MonthlyTotalWire {
+  month: string;
+  currency: string;
+  income: string;
+  expense: string;
+  net: string;
+}
+
+export interface CategorySpendWire {
+  group_id: string;
+  currency: string;
+  total: string;
+}
+
+export interface AccountBalancePointWire {
+  month: string;
+  account_id: string;
+  currency: string;
+  balance: string;
+}
+
 export interface ReconciliationWire {
   id: string;
   account_id: string;

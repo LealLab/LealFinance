@@ -57,6 +57,7 @@ import type {
 import type { Transaction, TransactionConversion } from '../../domain/models/transaction';
 import type {
   AccountBalanceWire,
+  AccountBalancePointWire,
   AccountInputWire,
   AccountPatchWire,
   AccountWire,
@@ -79,6 +80,7 @@ import type {
   CategoryInputWire,
   CategoryPatchWire,
   CategoryWire,
+  CategorySpendWire,
   ConversionWire,
   ExchangeRateRefreshWire,
   ExchangeRateWire,
@@ -111,6 +113,7 @@ import type {
   InstitutionPatchWire,
   InstitutionWire,
   ManualRateWire,
+  MonthlyTotalWire,
   MarketDataCredentialStatusWire,
   RecurringRuleInputWire,
   RecurringRulePatchWire,
@@ -178,6 +181,27 @@ export function mapAccountPatch(input: Partial<Omit<Account, 'id'>>): AccountPat
 }
 
 export const mapAccountBalance = (wire: AccountBalanceWire): AccountBalance => ({
+  accountId: wire.account_id,
+  currency: wire.currency,
+  balance: wire.balance,
+});
+
+export const mapMonthlyTotal = (wire: MonthlyTotalWire) => ({
+  month: wire.month,
+  currency: wire.currency,
+  income: wire.income,
+  expense: wire.expense,
+  net: wire.net,
+});
+
+export const mapCategorySpend = (wire: CategorySpendWire) => ({
+  groupId: wire.group_id,
+  currency: wire.currency,
+  total: wire.total,
+});
+
+export const mapAccountBalancePoint = (wire: AccountBalancePointWire) => ({
+  month: wire.month,
   accountId: wire.account_id,
   currency: wire.currency,
   balance: wire.balance,

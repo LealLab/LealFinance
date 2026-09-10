@@ -11,13 +11,14 @@ from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ValidationAppError
+from app.models.account import Account
 from app.models.category import Category
 from app.models.transaction import (
     TRANSACTION_TYPE_EXPENSE,
     TRANSACTION_TYPE_INCOME,
     Transaction,
 )
-from app.services import budgets
+from app.services import accounts, budgets, ownership
 from app.services.exchange_rates import get_exchange_rate
 
 _MONEY_QUANTUM = Decimal("0.0001")
@@ -38,6 +39,14 @@ class MonthTotals:
     income: Decimal
     expense: Decimal
     net: Decimal
+
+
+@dataclass(frozen=True, slots=True)
+class AccountBalancePoint:
+    month: str
+    account_id: UUID
+    currency: str
+    balance: Decimal
 
 
 @dataclass(frozen=True, slots=True)
@@ -200,6 +209,67 @@ async def monthly_totals(
             )
         )
     return output
+
+
+async def account_balance_trend(
+    db: AsyncSession, user_id: UUID, *, months: list[str]
+) -> list[AccountBalancePoint]:
+    if not months:
+        return []
+
+    accounts_owned = list(await ownership.list_owned(db, Account, user_id))
+    if not accounts_owned:
+        return []
+
+    first_month = date.fromisoformat(f"{months[0]}-01")
+    last_month = date.fromisoformat(f"{months[-1]}-01")
+    last_month_end = date(
+        last_month.year,
+        last_month.month,
+        monthrange(last_month.year, last_month.month)[1],
+    )
+    legs = accounts._account_leg_deltas(user_id).subquery()
+
+    history_query = (
+        select(legs.c.account_id, func.sum(legs.c.delta).label("delta"))
+        .where(legs.c.date < first_month)
+        .group_by(legs.c.account_id)
+    )
+    history_result = await db.execute(history_query)
+    history_by_account = {row.account_id: Decimal(row.delta) for row in history_result}
+
+    month_expression = func.to_char(legs.c.date, "YYYY-MM")
+    month_query = (
+        select(
+            legs.c.account_id,
+            month_expression.label("month"),
+            func.sum(legs.c.delta).label("delta"),
+        )
+        .where(legs.c.date.between(first_month, last_month_end))
+        .group_by(legs.c.account_id, month_expression)
+    )
+    month_result = await db.execute(month_query)
+    delta_by_account_month = {
+        (row.account_id, row.month): Decimal(row.delta) for row in month_result
+    }
+
+    running = {
+        account.id: account.opening_balance + history_by_account.get(account.id, Decimal(0))
+        for account in accounts_owned
+    }
+    points: list[AccountBalancePoint] = []
+    for month in months:
+        for account in accounts_owned:
+            running[account.id] += delta_by_account_month.get((account.id, month), Decimal(0))
+            points.append(
+                AccountBalancePoint(
+                    month=month,
+                    account_id=account.id,
+                    currency=account.currency,
+                    balance=running[account.id],
+                )
+            )
+    return points
 
 
 async def budget_status(

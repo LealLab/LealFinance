@@ -5,6 +5,7 @@ from fastapi import APIRouter
 from app.api.v1 import (
     accounts,
     agents,
+    analytics,
     auth,
     backups,
     budget_plan,
@@ -34,6 +35,7 @@ api_v1_router.include_router(backups.router)
 api_v1_router.include_router(agents.router)
 api_v1_router.include_router(institutions.router)
 api_v1_router.include_router(accounts.router)
+api_v1_router.include_router(analytics.router)
 api_v1_router.include_router(card_invoices.router)
 api_v1_router.include_router(category_groups.router)
 api_v1_router.include_router(categories.router)

@@ -5,14 +5,10 @@ import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
+import { AnalyticsRepository } from '../../data/analytics.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
-import { CategoryRepository } from '../../data/category.repository';
-import { TransactionRepository } from '../../data/transaction.repository';
-import { accountBalance } from '../../domain/calc/balances';
-import { categoryBreakdown, totalsFor } from '../../domain/calc/aggregations';
-import { effectiveAmount } from '../../domain/calc/conversion';
 import { Account } from '../../domain/models/account';
-import { compare, Money, toNumber } from '../../shared/money/money';
+import { add, compare, money, Money, toNumber, zero } from '../../shared/money/money';
 import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
@@ -53,9 +49,8 @@ interface CategoryTableRow {
 })
 export class Reports {
   private readonly accountRepository = inject(AccountRepository);
+  private readonly analyticsRepository = inject(AnalyticsRepository);
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
-  private readonly categoryRepository = inject(CategoryRepository);
-  private readonly transactionRepository = inject(TransactionRepository);
   private readonly theme = inject(ThemeService);
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   private readonly localeService = inject(TranslocoLocaleService);
@@ -66,7 +61,7 @@ export class Reports {
   // `.translate()` call, so these computed signals re-run on a language
   // switch instead of only on their other dependencies.
   private readonly lang = toSignal(this.transloco.langChanges$, {
-    initialValue: this.transloco.getActiveLang()
+    initialValue: this.transloco.getActiveLang(),
   });
 
   protected readonly periodOptions = PERIOD_OPTIONS;
@@ -74,34 +69,65 @@ export class Reports {
   protected readonly customFrom = signal('');
   protected readonly customTo = signal('');
 
+  protected readonly buckets = computed<MonthBucket[]>(() =>
+    resolveMonthBuckets(
+      this.period(),
+      this.customFrom(),
+      this.customTo(),
+      this.localeService.getLocale(),
+    ),
+  );
+
   protected readonly accountsResource = rxResource({ stream: () => this.accountRepository.list() });
-  protected readonly categoriesResource = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly categoryGroupsResource = rxResource({
-    stream: () => this.categoryGroupRepository.list()
+    stream: () => this.categoryGroupRepository.list(),
   });
-  protected readonly transactionsResource = rxResource({
-    stream: () => this.transactionRepository.list()
+  protected readonly monthlyTotalsResource = rxResource({
+    params: () => this.buckets(),
+    stream: ({ params }) =>
+      this.analyticsRepository.monthlyTotals(
+        `${params[0].key}-01`,
+        formatIsoDate(params.at(-1)!.end),
+      ),
+  });
+  protected readonly categorySpendResource = rxResource({
+    params: () => this.buckets(),
+    stream: ({ params }) =>
+      this.analyticsRepository.categorySpend(
+        `${params[0].key}-01`,
+        formatIsoDate(params.at(-1)!.end),
+      ),
+  });
+  protected readonly balanceTrendResource = rxResource({
+    params: () => this.buckets(),
+    stream: ({ params }) =>
+      this.analyticsRepository.balanceTrend(params.map((bucket) => bucket.key)),
   });
   private readonly dataResources = [
     this.accountsResource,
-    this.categoriesResource,
     this.categoryGroupsResource,
-    this.transactionsResource,
+    this.monthlyTotalsResource,
+    this.categorySpendResource,
+    this.balanceTrendResource,
   ];
   protected readonly dataError = computed(() =>
-    this.dataResources.some((resource) => resource.status() === 'error')
+    this.dataResources.some((resource) => resource.status() === 'error'),
   );
 
   protected readonly displayCurrency = this.displayCurrencyService.currency;
 
   private readonly foreignCurrencies = computed(() => {
     const display = this.displayCurrency();
-    const accountCurrencies = (this.accountsResource.value() ?? []).map((account) => account.currency);
-    const transactionCurrencies = (this.transactionsResource.value() ?? []).map(
-      (transaction) => effectiveAmount(transaction).currency
+    const accountCurrencies = (this.accountsResource.value() ?? []).map(
+      (account) => account.currency,
     );
-    return Array.from(new Set([...accountCurrencies, ...transactionCurrencies])).filter(
-      (currency) => currency !== display
+    const aggregateCurrencies = [
+      ...(this.monthlyTotalsResource.value() ?? []),
+      ...(this.categorySpendResource.value() ?? []),
+      ...(this.balanceTrendResource.value() ?? []),
+    ].map((row) => row.currency);
+    return Array.from(new Set([...accountCurrencies, ...aggregateCurrencies])).filter(
+      (currency) => currency !== display,
     );
   });
 
@@ -114,30 +140,49 @@ export class Reports {
   protected readonly formatMoney = (value: number): string =>
     this.localeService.localizeNumber(String(value), 'currency', undefined, {
       currency: this.displayCurrency(),
-      currencyDisplay: 'symbol'
+      currencyDisplay: 'symbol',
     });
 
-  protected readonly buckets = computed<MonthBucket[]>(() =>
-    resolveMonthBuckets(this.period(), this.customFrom(), this.customTo(), this.localeService.getLocale())
-  );
+  private readonly monthlyTotals = computed(() => {
+    const convert = this.converter();
+    const display = this.displayCurrency();
+    if (!convert) return [];
 
-  private readonly transactionsInRange = computed(() => {
-    const buckets = this.buckets();
-    if (buckets.length === 0) return [];
-    const from = buckets[0].key;
-    const to = buckets.at(-1)!.key;
-    return (this.transactionsResource.value() ?? []).filter((tx) => {
-      const key = tx.date.slice(0, 7);
-      return key >= from && key <= to;
-    });
+    const byMonth = new Map<string, { income: Money; expense: Money; net: Money }>();
+    for (const row of this.monthlyTotalsResource.value() ?? []) {
+      const current = byMonth.get(row.month) ?? {
+        income: zero(display),
+        expense: zero(display),
+        net: zero(display),
+      };
+      byMonth.set(row.month, {
+        income: add(current.income, convert(money(row.income, row.currency), display)),
+        expense: add(current.expense, convert(money(row.expense, row.currency), display)),
+        net: add(current.net, convert(money(row.net, row.currency), display)),
+      });
+    }
+    return this.buckets().map(
+      (bucket) =>
+        byMonth.get(bucket.key) ?? {
+          income: zero(display),
+          expense: zero(display),
+          net: zero(display),
+        },
+    );
   });
 
-  protected readonly isEmpty = computed(
-    () =>
-      !this.transactionsResource.isLoading() &&
+  protected readonly isEmpty = computed(() => {
+    const aggregates = [
+      this.monthlyTotalsResource,
+      this.categorySpendResource,
+      this.balanceTrendResource,
+    ];
+    return (
       !this.dataError() &&
-      this.transactionsInRange().length === 0
-  );
+      aggregates.every((resource) => !resource.isLoading()) &&
+      aggregates.every((resource) => (resource.value() ?? []).length === 0)
+    );
+  });
 
   protected retryAll(): void {
     for (const resource of this.dataResources) resource.reload();
@@ -154,20 +199,21 @@ export class Reports {
     const convert = this.converter();
     if (!convert) return { labels: [], datasets: [] as ChartDataset[] };
     const buckets = this.buckets();
-    const transactions = this.transactionsResource.value() ?? [];
-    const income: number[] = [];
-    const expense: number[] = [];
-
-    for (const bucket of buckets) {
-      const inBucket = transactions.filter((tx) => tx.date.slice(0, 7) === bucket.key);
-      const totals = totalsFor(inBucket, this.displayCurrency(), convert);
-      income.push(toNumber(totals.income));
-      expense.push(toNumber(totals.expense));
-    }
+    const totals = this.monthlyTotals();
+    const income = totals.map((entry) => toNumber(entry.income));
+    const expense = totals.map((entry) => toNumber(entry.expense));
 
     const datasets: ChartDataset[] = [
-      { label: this.transloco.translate('reports.series.income'), data: income, color: resolveCssColor('--positive') },
-      { label: this.transloco.translate('reports.series.expense'), data: expense, color: resolveCssColor('--negative') }
+      {
+        label: this.transloco.translate('reports.series.income'),
+        data: income,
+        color: resolveCssColor('--positive'),
+      },
+      {
+        label: this.transloco.translate('reports.series.expense'),
+        data: expense,
+        color: resolveCssColor('--negative'),
+      },
     ];
     return { labels: buckets.map((b) => b.label), datasets };
   });
@@ -178,14 +224,14 @@ export class Reports {
     const convert = this.converter();
     if (!convert) return { labels: [], datasets: [] as ChartDataset[] };
     const buckets = this.buckets();
-    const transactions = this.transactionsResource.value() ?? [];
-    const net = buckets.map((bucket) => {
-      const inBucket = transactions.filter((tx) => tx.date.slice(0, 7) === bucket.key);
-      return toNumber(totalsFor(inBucket, this.displayCurrency(), convert).net);
-    });
+    const net = this.monthlyTotals().map((entry) => toNumber(entry.net));
 
     const datasets: ChartDataset[] = [
-      { label: this.transloco.translate('reports.series.netFlow'), data: net, color: resolveCssColor('--accent') }
+      {
+        label: this.transloco.translate('reports.series.netFlow'),
+        data: net,
+        color: resolveCssColor('--accent'),
+      },
     ];
     return { labels: buckets.map((b) => b.label), datasets };
   });
@@ -194,22 +240,23 @@ export class Reports {
     (this.categoryGroupsResource.value() ?? [])
       .filter((group) => group.kind === 'expense')
       .sort((a, b) => a.position - b.position)
-      .map((group) => group.id)
+      .map((group) => group.id),
   );
 
   protected readonly categoryTable = computed<CategoryTableRow[]>(() => {
     const convert = this.converter();
     if (!convert) return [];
-    const categories = this.categoriesResource.value() ?? [];
-    const transactions = this.transactionsInRange();
-    const breakdown = categoryBreakdown(
-      transactions,
-      categories,
-      this.displayCurrency(),
-      convert
-    );
+    const display = this.displayCurrency();
+    const totals = new Map<string, Money>();
+    for (const row of this.categorySpendResource.value() ?? []) {
+      const converted = convert(money(row.total, row.currency), display);
+      totals.set(row.groupId, add(totals.get(row.groupId) ?? zero(display), converted));
+    }
+    const breakdown = Array.from(totals, ([groupId, total]) => ({ groupId, total }));
     const colorMap = categoryColorMap(this.stableExpenseGroupIds(), this.theme.current());
-    const byId = new Map((this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group]));
+    const byId = new Map(
+      (this.categoryGroupsResource.value() ?? []).map((group) => [group.id, group]),
+    );
     const grandTotal = breakdown.reduce((total, entry) => total + toNumber(entry.total), 0);
 
     return breakdown
@@ -218,7 +265,7 @@ export class Reports {
         name: byId.get(entry.groupId)?.name ?? entry.groupId,
         color: colorMap.get(entry.groupId) ?? resolveCssColor('--content-subtle'),
         total: entry.total,
-        percent: grandTotal > 0 ? (toNumber(entry.total) / grandTotal) * 100 : 0
+        percent: grandTotal > 0 ? (toNumber(entry.total) / grandTotal) * 100 : 0,
       }))
       .sort((a, b) => compare(b.total, a.total));
   });
@@ -230,14 +277,14 @@ export class Reports {
       {
         label: this.transloco.translate('reports.series.categories'),
         data: rows.map((row) => toNumber(row.total)),
-        colors: rows.map((row) => row.color)
-      }
+        colors: rows.map((row) => row.color),
+      },
     ];
     return { labels: rows.map((row) => row.name), datasets };
   });
 
   private readonly stableAccountIds = computed(() =>
-    (this.accountsResource.value() ?? []).filter((a) => !a.archived).map((a) => a.id)
+    (this.accountsResource.value() ?? []).filter((a) => !a.archived).map((a) => a.id),
   );
 
   protected readonly balanceTrendChart = computed(() => {
@@ -245,17 +292,26 @@ export class Reports {
     if (!convert) return { labels: [], datasets: [] as ChartDataset[] };
     const buckets = this.buckets();
     const accounts = (this.accountsResource.value() ?? []).filter((a) => !a.archived);
-    const allTransactions = this.transactionsResource.value() ?? [];
+    const points = new Map(
+      (this.balanceTrendResource.value() ?? []).map((point) => [
+        `${point.accountId}:${point.month}`,
+        point,
+      ]),
+    );
     const colorMap = categoryColorMap(this.stableAccountIds(), this.theme.current());
 
     const datasets: ChartDataset[] = accounts.map((account: Account) => ({
       label: account.name,
       color: colorMap.get(account.id),
       data: buckets.map((bucket) => {
-        const bucketEndIso = formatIsoDate(bucket.end);
-        const upToBucketEnd = allTransactions.filter((tx) => tx.date <= bucketEndIso);
-        return toNumber(convert(accountBalance(account, upToBucketEnd), this.displayCurrency()));
-      })
+        const point = points.get(`${account.id}:${bucket.key}`);
+        return toNumber(
+          convert(
+            money(point?.balance ?? '0', point?.currency ?? account.currency),
+            this.displayCurrency(),
+          ),
+        );
+      }),
     }));
 
     return { labels: buckets.map((b) => b.label), datasets };
