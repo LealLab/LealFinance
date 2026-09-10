@@ -26,11 +26,12 @@ import { effectiveAmount, sourceAmount } from './conversion';
  *
  * ponytail: app/services/accounts.py::account_balances ports this exact
  * formula to a SQL aggregate so most pages can fetch a balance without the
- * full ledger (see AccountRepository.balances()) - reports.ts is the one
- * remaining caller of this function, for its net-worth trend over past
- * months. Delete this once that trend also moves server-side; until then
- * both implementations carry their own matching test coverage for every
- * leg type (income/expense/both transfer legs/cross-currency) - see
+ * full ledger (see AccountRepository.balances()) -
+ * mock-account.repository.ts and mock-analytics.repository.ts are the
+ * remaining callers, both test doubles. The production reports trend now
+ * comes from the analytics aggregate. Both implementations carry matching
+ * test coverage for every leg type (income/expense/both transfer
+ * legs/cross-currency) - see
  * balances.spec.ts here and test_accounts.py's
  * test_account_balances_* tests - deliberately not a literal shared
  * fixture file, since no such cross-language harness exists elsewhere in

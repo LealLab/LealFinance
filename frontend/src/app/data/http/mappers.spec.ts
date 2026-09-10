@@ -1,6 +1,7 @@
 import {
   mapAccount,
   mapAccountBalance,
+  mapAccountBalancePoint,
   mapAccountPatch,
   mapCardInvoice,
   mapCardInvoicePayment,
@@ -14,9 +15,11 @@ import {
   mapCategoryGroupCreate,
   mapCategoryGroupPatch,
   mapCategoryPatch,
+  mapCategorySpend,
   mapExchangeRate,
   mapImportPreview,
   mapImportPreviewRequest,
+  mapMonthlyTotal,
   mapRecurringRule,
   mapTransaction,
   mapTransactionCreate,
@@ -283,6 +286,37 @@ describe('HTTP wire mappers', () => {
       currency: 'BRL',
       balance: '300.0000',
     });
+  });
+
+  it('maps analytics aggregate wire rows without changing money strings', () => {
+    expect(
+      mapMonthlyTotal({
+        month: '2026-01',
+        currency: 'BRL',
+        income: '10.0000',
+        expense: '2.0000',
+        net: '8.0000',
+      }),
+    ).toEqual({
+      month: '2026-01',
+      currency: 'BRL',
+      income: '10.0000',
+      expense: '2.0000',
+      net: '8.0000',
+    });
+    expect(mapCategorySpend({ group_id: 'g', currency: 'USD', total: '3.0000' })).toEqual({
+      groupId: 'g',
+      currency: 'USD',
+      total: '3.0000',
+    });
+    expect(
+      mapAccountBalancePoint({
+        month: '2026-02',
+        account_id: 'a',
+        currency: 'EUR',
+        balance: '7.5000',
+      }),
+    ).toEqual({ month: '2026-02', accountId: 'a', currency: 'EUR', balance: '7.5000' });
   });
 
   it('maps an import preview request to snake_case, defaulting an absent mapping to null', () => {

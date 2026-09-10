@@ -4,16 +4,14 @@ import { provideRouter } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
+import { AnalyticsRepository } from '../../data/analytics.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
-import { CategoryRepository } from '../../data/category.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
-import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
+import { MockAnalyticsRepository } from '../../data/mock/mock-analytics.repository';
 import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
-import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
-import { TransactionRepository } from '../../data/transaction.repository';
 import { Account } from '../../domain/models/account';
 import { ExchangeRate } from '../../domain/models/exchange-rate';
 import { Reports } from './reports';
@@ -23,21 +21,17 @@ describe('Reports', () => {
   beforeEach(async () => {
     localStorage.clear();
     await TestBed.configureTestingModule({
-      imports: [
-        Reports,
-        provideTestTransloco()
-      ],
+      imports: [Reports, provideTestTransloco()],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
-        { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: AnalyticsRepository, useClass: MockAnalyticsRepository },
         { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
-        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
-      ]
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
+      ],
     }).compileComponents();
   });
 
@@ -63,10 +57,14 @@ describe('Reports', () => {
     const balanceTrend = component['balanceTrendChart']();
 
     expect(incomeExpense.labels).toHaveLength(6);
-    expect(incomeExpense.datasets.every((dataset) => dataset.data.some((value) => value > 0))).toBe(true);
+    expect(incomeExpense.datasets.every((dataset) => dataset.data.some((value) => value > 0))).toBe(
+      true,
+    );
     expect(netFlow.datasets[0].data.some((value) => value !== 0)).toBe(true);
     expect(balanceTrend.datasets.length).toBeGreaterThan(0);
-    expect(balanceTrend.datasets.every((dataset) => dataset.data.some((value) => value !== 0))).toBe(true);
+    expect(
+      balanceTrend.datasets.every((dataset) => dataset.data.some((value) => value !== 0)),
+    ).toBe(true);
   });
 
   it('switches to a custom period and shows the date inputs', async () => {
@@ -79,6 +77,25 @@ describe('Reports', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('input[type="month"]').length).toBe(2);
+  });
+
+  it('refetches all aggregates when the report period changes', async () => {
+    const repository = TestBed.inject(AnalyticsRepository);
+    const monthlyTotals = vi.spyOn(repository, 'monthlyTotals');
+    const categorySpend = vi.spyOn(repository, 'categorySpend');
+    const balanceTrend = vi.spyOn(repository, 'balanceTrend');
+    const fixture = TestBed.createComponent(Reports);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.componentInstance['period'].set('3m');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(monthlyTotals).toHaveBeenCalledTimes(2);
+    expect(categorySpend).toHaveBeenCalledTimes(2);
+    expect(balanceTrend).toHaveBeenCalledTimes(2);
+    expect(balanceTrend.mock.calls[1][0]).toHaveLength(3);
   });
 
   it('converts report totals when the display currency changes', async () => {
@@ -107,9 +124,7 @@ class RetryableReportsAccountRepository extends MockAccountRepository {
 
   override list(): Observable<Account[]> {
     this.calls++;
-    return this.calls === 1
-      ? throwError(() => new Error('temporary failure'))
-      : super.list();
+    return this.calls === 1 ? throwError(() => new Error('temporary failure')) : super.list();
   }
 }
 
@@ -133,14 +148,15 @@ describe('Reports - load failures', () => {
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: RetryableReportsAccountRepository },
-        { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: AnalyticsRepository, useClass: MockAnalyticsRepository },
         { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
-        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
-      ]
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
+      ],
     }).compileComponents();
 
-    const accountRepository = TestBed.inject(AccountRepository) as RetryableReportsAccountRepository;
+    const accountRepository = TestBed.inject(
+      AccountRepository,
+    ) as RetryableReportsAccountRepository;
     const fixture = TestBed.createComponent(Reports);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -169,11 +185,10 @@ describe('Reports - load failures', () => {
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
-        { provide: TransactionRepository, useClass: MockTransactionRepository },
-        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: AnalyticsRepository, useClass: MockAnalyticsRepository },
         { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
-        { provide: ExchangeRateRepository, useClass: FailingReportsExchangeRateRepository }
-      ]
+        { provide: ExchangeRateRepository, useClass: FailingReportsExchangeRateRepository },
+      ],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(Reports);

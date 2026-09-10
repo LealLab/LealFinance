@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HttpAccountRepository } from './http-account.repository';
+import { HttpAnalyticsRepository } from './http-analytics.repository';
 import { HttpCardInvoiceRepository } from './http-card-invoice.repository';
 import { HttpAgentChatRepository } from './http-agent-chat.repository';
 import { HttpAgentProviderRepository } from './http-agent-provider.repository';
@@ -165,6 +166,42 @@ describe('HTTP repositories', () => {
     expect(req.request.method).toBe('GET');
     req.flush([{ account_id: 'a', currency: 'BRL', balance: '300.0000' }]);
     expect(balances).toEqual([{ accountId: 'a', currency: 'BRL', balance: '300.0000' }]);
+  });
+
+  it('fetches analytics aggregates with date ranges and repeated months', () => {
+    let monthly: unknown;
+    TestBed.inject(HttpAnalyticsRepository)
+      .monthlyTotals('2026-01-01', '2026-03-31')
+      .subscribe((result) => (monthly = result));
+    const monthlyReq = http.expectOne((r) => r.url === '/api/v1/analytics/monthly-totals');
+    expect(monthlyReq.request.method).toBe('GET');
+    expect(monthlyReq.request.params.get('date_from')).toBe('2026-01-01');
+    expect(monthlyReq.request.params.get('date_to')).toBe('2026-03-31');
+    monthlyReq.flush([
+      { month: '2026-01', currency: 'BRL', income: '10.0000', expense: '2.0000', net: '8.0000' },
+    ]);
+    expect(monthly).toEqual([
+      { month: '2026-01', currency: 'BRL', income: '10.0000', expense: '2.0000', net: '8.0000' },
+    ]);
+
+    let spend: unknown;
+    TestBed.inject(HttpAnalyticsRepository)
+      .categorySpend('2026-01-01', '2026-03-31')
+      .subscribe((result) => (spend = result));
+    const spendReq = http.expectOne((r) => r.url === '/api/v1/analytics/category-spend');
+    expect(spendReq.request.params.get('date_from')).toBe('2026-01-01');
+    expect(spendReq.request.params.get('date_to')).toBe('2026-03-31');
+    spendReq.flush([{ group_id: 'g', currency: 'USD', total: '3.0000' }]);
+    expect(spend).toEqual([{ groupId: 'g', currency: 'USD', total: '3.0000' }]);
+
+    let trend: unknown;
+    TestBed.inject(HttpAnalyticsRepository)
+      .balanceTrend(['2026-01', '2026-02'])
+      .subscribe((result) => (trend = result));
+    const trendReq = http.expectOne((r) => r.url === '/api/v1/analytics/balance-trend');
+    expect(trendReq.request.params.getAll('months')).toEqual(['2026-01', '2026-02']);
+    trendReq.flush([{ month: '2026-01', account_id: 'a', currency: 'BRL', balance: '7.0000' }]);
+    expect(trend).toEqual([{ month: '2026-01', accountId: 'a', currency: 'BRL', balance: '7.0000' }]);
   });
 
   it('fetches and maps real account balances', () => {
