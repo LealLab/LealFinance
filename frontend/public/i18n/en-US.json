@@ -356,6 +356,42 @@
       "empty": "No budget set for this month."
     }
   },
+  "onboarding": {
+    "title": "Guided setup",
+    "description": "Set up LealFinance in a few steps. You can pause and resume anytime.",
+    "steps": {
+      "currency": {
+        "title": "Confirm display currency and language",
+        "description": "Check your language and display currency. Your base currency is fixed at registration and is not changed here."
+      },
+      "account": {
+        "title": "Create your first account",
+        "description": "Add your first account and enter its opening balance."
+      },
+      "transactions": {
+        "title": "Import or add transactions",
+        "description": "Import a statement or add your first transactions."
+      },
+      "reconcile": {
+        "title": "Reconcile your balance",
+        "description": "Compare the account with a statement. The statement date is the temporal reference for the opening balance."
+      },
+      "plan": {
+        "title": "Set up a recurrence or budget",
+        "description": "Optionally automate a repeating transaction or set a budget."
+      }
+    },
+    "actions": {
+      "continue": "Continue",
+      "skip": "Skip this step",
+      "dismiss": "Dismiss setup",
+      "run": "Run guided setup",
+      "import": "Import statement",
+      "transaction": "Add first transaction",
+      "recurring": "Set up recurrence",
+      "budget": "Set up a budget"
+    }
+  },
   "currency": {
     "fallbackRateWarning": "Exchange rate unavailable - using a 1:1 conversion as an approximation.",
     "fallbackRateWarningAction": "Set a rate"

@@ -356,6 +356,18 @@
       "empty": "Voor deze maand is nog geen budget ingesteld."
     }
   },
+  "onboarding": {
+    "title": "Begeleide installatie",
+    "description": "Stel LealFinance in een paar stappen in. Je kunt altijd pauzeren en doorgaan.",
+    "steps": {
+      "currency": { "title": "Bevestig weergavevaluta en taal", "description": "Controleer je taal en weergavevaluta. De basisvaluta wordt bij registratie vastgelegd en hier niet gewijzigd." },
+      "account": { "title": "Maak je eerste rekening", "description": "Voeg je eerste rekening toe en voer het beginsaldo in." },
+      "transactions": { "title": "Transacties importeren of toevoegen", "description": "Importeer een afschrift of voeg je eerste transacties toe." },
+      "reconcile": { "title": "Stem je saldo af", "description": "Vergelijk de rekening met een afschrift. De datum van het afschrift is de tijdelijke referentie voor het beginsaldo." },
+      "plan": { "title": "Een terugkerende transactie of budget instellen", "description": "Automatiseer desgewenst een herhaalde transactie of stel een budget in." }
+    },
+    "actions": { "continue": "Doorgaan", "skip": "Deze stap overslaan", "dismiss": "Instelling negeren", "run": "Begeleide installatie starten", "import": "Afschrift importeren", "transaction": "Eerste transactie toevoegen", "recurring": "Terugkerende transactie instellen", "budget": "Budget instellen" }
+  },
   "currency": {
     "fallbackRateWarning": "Wisselkoers niet beschikbaar – er wordt bij benadering een 1-op-1-conversie gebruikt.",
     "fallbackRateWarningAction": "Koers instellen"

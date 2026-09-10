@@ -356,6 +356,18 @@
       "empty": "本月尚未设置预算。"
     }
   },
+  "onboarding": {
+    "title": "引导设置",
+    "description": "用几个步骤完成 LealFinance 设置。你可以随时暂停并继续。",
+    "steps": {
+      "currency": { "title": "确认显示货币和语言", "description": "检查你的语言和显示货币。基础货币在注册时固定，无法在此更改。" },
+      "account": { "title": "创建第一个账户", "description": "添加第一个账户并输入期初余额。" },
+      "transactions": { "title": "导入或添加交易", "description": "导入账单或添加第一笔交易。" },
+      "reconcile": { "title": "对账余额", "description": "将账户与账单进行比较。账单日期是期初余额的时间参考。" },
+      "plan": { "title": "设置定期交易或预算", "description": "你可以选择自动处理重复交易或设置预算。" }
+    },
+    "actions": { "continue": "继续", "skip": "跳过此步骤", "dismiss": "忽略设置", "run": "运行引导设置", "import": "导入账单", "transaction": "添加第一笔交易", "recurring": "设置定期交易", "budget": "设置预算" }
+  },
   "currency": {
     "fallbackRateWarning": "暂无汇率，暂使用 1:1 兑换作为近似值。",
     "fallbackRateWarningAction": "设置汇率"

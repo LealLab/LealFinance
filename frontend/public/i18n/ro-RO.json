@@ -356,6 +356,18 @@
       "empty": "Nu este stabilit niciun buget pentru luna aceasta."
     }
   },
+  "onboarding": {
+    "title": "Configurare ghidată",
+    "description": "Configurează LealFinance în câțiva pași. Poți întrerupe și relua oricând.",
+    "steps": {
+      "currency": { "title": "Confirmă moneda de afișare și limba", "description": "Verifică limba și moneda de afișare. Moneda de bază este stabilită la înregistrare și nu este modificată aici." },
+      "account": { "title": "Creează primul tău cont", "description": "Adaugă primul cont și introdu soldul inițial." },
+      "transactions": { "title": "Importă sau adaugă tranzacții", "description": "Importă un extras sau adaugă primele tranzacții." },
+      "reconcile": { "title": "Reconciliază soldul", "description": "Compară contul cu un extras. Data extrasului este referința temporală pentru soldul inițial." },
+      "plan": { "title": "Configurează o tranzacție recurentă sau un buget", "description": "Opțional, automatizează o tranzacție repetitivă sau stabilește un buget." }
+    },
+    "actions": { "continue": "Continuă", "skip": "Omite acest pas", "dismiss": "Închide configurarea", "run": "Pornește configurarea ghidată", "import": "Importă extrasul", "transaction": "Adaugă prima tranzacție", "recurring": "Configurează o recurență", "budget": "Configurează un buget" }
+  },
   "currency": {
     "fallbackRateWarning": "Cursul de schimb nu este disponibil - se folosește cu aproximație o conversie de 1:1.",
     "fallbackRateWarningAction": "Stabilește un curs"

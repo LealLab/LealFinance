@@ -356,6 +356,18 @@
       "empty": "Ingen budsjett satt for denne måneden."
     }
   },
+  "onboarding": {
+    "title": "Veiledet oppsett",
+    "description": "Konfigurer LealFinance i noen få trinn. Du kan sette på pause og fortsette når som helst.",
+    "steps": {
+      "currency": { "title": "Bekreft visningsvaluta og språk", "description": "Kontroller språk og visningsvaluta. Basisvalutaen fastsettes ved registrering og endres ikke her." },
+      "account": { "title": "Opprett din første konto", "description": "Legg til den første kontoen din og angi inngående saldo." },
+      "transactions": { "title": "Importer eller legg til transaksjoner", "description": "Importer en kontoutskrift eller legg til de første transaksjonene dine." },
+      "reconcile": { "title": "Avstem saldoen", "description": "Sammenlign kontoen med en kontoutskrift. Datoen på kontoutskriften er tidsreferansen for inngående saldo." },
+      "plan": { "title": "Sett opp en gjentakelse eller et budsjett", "description": "Du kan valgfritt automatisere en gjentakende transaksjon eller sette opp et budsjett." }
+    },
+    "actions": { "continue": "Fortsett", "skip": "Hopp over dette trinnet", "dismiss": "Avvis oppsettet", "run": "Kjør veiledet oppsett", "import": "Importer kontoutskrift", "transaction": "Legg til første transaksjon", "recurring": "Sett opp gjentakelse", "budget": "Sett opp budsjett" }
+  },
   "currency": {
     "fallbackRateWarning": "Valutakurs ikke tilgjengelig – bruker en 1:1-omregning som et anslag.",
     "fallbackRateWarningAction": "Angi kurs"

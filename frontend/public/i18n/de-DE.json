@@ -356,6 +356,18 @@
       "empty": "Für diesen Monat ist noch kein Budget festgelegt."
     }
   },
+  "onboarding": {
+    "title": "Geführte Einrichtung",
+    "description": "Richten Sie LealFinance in wenigen Schritten ein. Sie können jederzeit pausieren und fortsetzen.",
+    "steps": {
+      "currency": { "title": "Anzeigewährung und Sprache bestätigen", "description": "Prüfen Sie Ihre Sprache und Anzeigewährung. Ihre Basiswährung wird bei der Registrierung festgelegt und hier nicht geändert." },
+      "account": { "title": "Erstes Konto erstellen", "description": "Fügen Sie Ihr erstes Konto hinzu und geben Sie den Eröffnungssaldo ein." },
+      "transactions": { "title": "Transaktionen importieren oder hinzufügen", "description": "Importieren Sie einen Kontoauszug oder fügen Sie Ihre ersten Transaktionen hinzu." },
+      "reconcile": { "title": "Saldo abstimmen", "description": "Vergleichen Sie das Konto mit einem Kontoauszug. Das Auszugsdatum ist der zeitliche Bezug für den Eröffnungssaldo." },
+      "plan": { "title": "Wiederkehrende Buchung oder Budget einrichten", "description": "Automatisieren Sie optional eine wiederkehrende Buchung oder richten Sie ein Budget ein." }
+    },
+    "actions": { "continue": "Fortfahren", "skip": "Diesen Schritt überspringen", "dismiss": "Einrichtung ausblenden", "run": "Geführte Einrichtung starten", "import": "Kontoauszug importieren", "transaction": "Erste Transaktion hinzufügen", "recurring": "Wiederkehrende Buchung einrichten", "budget": "Budget einrichten" }
+  },
   "currency": {
     "fallbackRateWarning": "Wechselkurs nicht verfügbar – es wird eine 1:1-Umrechnung als Näherung verwendet.",
     "fallbackRateWarningAction": "Wechselkurs festlegen"

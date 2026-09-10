@@ -356,6 +356,18 @@
       "empty": "本月尚未設定預算。"
     }
   },
+  "onboarding": {
+    "title": "引導設定",
+    "description": "用幾個步驟完成 LealFinance 設定。你可以隨時暫停並繼續。",
+    "steps": {
+      "currency": { "title": "確認顯示貨幣和語言", "description": "檢查你的語言和顯示貨幣。基礎貨幣在註冊時固定，無法在此變更。" },
+      "account": { "title": "建立第一個帳戶", "description": "新增第一個帳戶並輸入期初餘額。" },
+      "transactions": { "title": "匯入或新增交易", "description": "匯入帳單或新增第一筆交易。" },
+      "reconcile": { "title": "對帳餘額", "description": "將帳戶與帳單進行比較。帳單日期是期初餘額的時間參考。" },
+      "plan": { "title": "設定定期交易或預算", "description": "你可以選擇自動處理重複交易或設定預算。" }
+    },
+    "actions": { "continue": "繼續", "skip": "跳過此步驟", "dismiss": "略過設定", "run": "執行引導設定", "import": "匯入帳單", "transaction": "新增第一筆交易", "recurring": "設定定期交易", "budget": "設定預算" }
+  },
   "currency": {
     "fallbackRateWarning": "匯率無法取得，將使用 1:1 換算作為估算。",
     "fallbackRateWarningAction": "設定匯率"

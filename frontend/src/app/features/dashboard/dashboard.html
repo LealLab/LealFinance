@@ -8,7 +8,13 @@
       icon="home"
       [title]="t('dashboard.empty.title')"
       [description]="t('dashboard.empty.description')"
-    />
+    >
+      @if (!onboardingProgress.dismissed()) {
+        <button appButton variant="primary" type="button" routerLink="/onboarding">
+          {{ t('onboarding.actions.run') }}
+        </button>
+      }
+    </app-empty-state>
   } @else {
     @if (hasFallbackRate()) {
       <div class="mb-6">

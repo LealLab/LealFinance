@@ -356,6 +356,18 @@
       "empty": "Bu ay için henüz bütçe belirlenmedi."
     }
   },
+  "onboarding": {
+    "title": "Yönlendirmeli kurulum",
+    "description": "LealFinance'i birkaç adımda kurun. İstediğiniz zaman duraklatıp devam edebilirsiniz.",
+    "steps": {
+      "currency": { "title": "Görüntüleme para birimini ve dili onaylayın", "description": "Dilinizi ve görüntüleme para biriminizi kontrol edin. Temel para biriminiz kayıt sırasında belirlenir ve burada değiştirilmez." },
+      "account": { "title": "İlk hesabınızı oluşturun", "description": "İlk hesabınızı ekleyin ve açılış bakiyesini girin." },
+      "transactions": { "title": "İşlemleri içe aktarın veya ekleyin", "description": "Ekstrenizi içe aktarın veya ilk işlemlerinizi ekleyin." },
+      "reconcile": { "title": "Bakiyenizi mutabıklaştırın", "description": "Hesabı bir ekstreyle karşılaştırın. Ekstre tarihi, açılış bakiyesi için zaman referansıdır." },
+      "plan": { "title": "Tekrarlayan işlem veya bütçe ayarlayın", "description": "İsteğe bağlı olarak yinelenen bir işlemi otomatikleştirin veya bütçe belirleyin." }
+    },
+    "actions": { "continue": "Devam et", "skip": "Bu adımı atla", "dismiss": "Kurulumu kapat", "run": "Yönlendirmeli kurulumu başlat", "import": "Ekstreyi içe aktar", "transaction": "İlk işlemi ekle", "recurring": "Tekrarlayan işlem ayarla", "budget": "Bütçe ayarla" }
+  },
   "currency": {
     "fallbackRateWarning": "Döviz kuru kullanılamıyor; yaklaşık olarak 1:1 dönüşüm kullanılıyor.",
     "fallbackRateWarningAction": "Kur belirle"

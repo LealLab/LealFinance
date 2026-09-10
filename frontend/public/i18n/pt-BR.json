@@ -356,6 +356,18 @@
       "empty": "Nenhum orçamento definido neste mês."
     }
   },
+  "onboarding": {
+    "title": "Configuração guiada",
+    "description": "Configure o LealFinance em poucos passos. Você pode pausar e retomar quando quiser.",
+    "steps": {
+      "currency": { "title": "Confirme a moeda de exibição e o idioma", "description": "Confira seu idioma e a moeda de exibição. Sua moeda base é definida no cadastro e não é alterada aqui." },
+      "account": { "title": "Crie sua primeira conta", "description": "Adicione sua primeira conta e informe o saldo inicial." },
+      "transactions": { "title": "Importe ou adicione lançamentos", "description": "Importe um extrato ou adicione seus primeiros lançamentos." },
+      "reconcile": { "title": "Concilie seu saldo", "description": "Compare a conta com um extrato. A data do extrato é a referência temporal do saldo inicial." },
+      "plan": { "title": "Configure uma recorrência ou um orçamento", "description": "Opcionalmente, automatize um lançamento repetido ou defina um orçamento." }
+    },
+    "actions": { "continue": "Continuar", "skip": "Pular esta etapa", "dismiss": "Dispensar configuração", "run": "Executar configuração guiada", "import": "Importar extrato", "transaction": "Adicionar primeiro lançamento", "recurring": "Configurar recorrência", "budget": "Definir orçamento" }
+  },
   "currency": {
     "fallbackRateWarning": "Taxa de câmbio indisponível - usando conversão 1:1 como aproximação.",
     "fallbackRateWarningAction": "Definir taxa"

@@ -356,6 +356,18 @@
       "empty": "今月の予算はまだ設定されていません。"
     }
   },
+  "onboarding": {
+    "title": "ガイド付き設定",
+    "description": "数ステップでLealFinanceを設定できます。いつでも一時停止して再開できます。",
+    "steps": {
+      "currency": { "title": "表示通貨と言語を確認", "description": "言語と表示通貨を確認します。基準通貨は登録時に固定され、ここでは変更されません。" },
+      "account": { "title": "最初の口座を作成", "description": "最初の口座を追加し、開始残高を入力します。" },
+      "transactions": { "title": "取引をインポートまたは追加", "description": "明細をインポートするか、最初の取引を追加します。" },
+      "reconcile": { "title": "残高を照合", "description": "口座と明細を比較します。明細の日付が開始残高の時間的な基準になります。" },
+      "plan": { "title": "定期取引または予算を設定", "description": "必要に応じて繰り返し取引を自動化するか、予算を設定します。" }
+    },
+    "actions": { "continue": "続行", "skip": "このステップをスキップ", "dismiss": "設定を終了", "run": "ガイド付き設定を実行", "import": "明細をインポート", "transaction": "最初の取引を追加", "recurring": "定期取引を設定", "budget": "予算を設定" }
+  },
   "currency": {
     "fallbackRateWarning": "為替レートを取得できないため、1:1換算を近似値として使用しています。",
     "fallbackRateWarningAction": "レートを設定"

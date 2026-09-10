@@ -1,11 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { ThemeService } from '../../core/theme.service';
 import { AccountRepository } from '../../data/account.repository';
+import { OnboardingProgressService } from '../onboarding/onboarding-progress.service';
 import { BudgetRepository } from '../../data/budget.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
@@ -33,6 +34,7 @@ import { displayConverter, pairsConverter } from '../../shared/money/display-con
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { Card } from '../../shared/ui/card/card';
+import { Button } from '../../shared/ui/button/button';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { LoadError } from '../../shared/ui/load-error/load-error';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
@@ -48,6 +50,8 @@ const BUDGET_PREVIEW_LIMIT = 4;
   selector: 'app-dashboard',
   imports: [
     TranslocoDirective,
+    RouterLink,
+    Button,
     MoneyPipe,
     Card,
     EmptyState,
@@ -68,6 +72,7 @@ export class Dashboard {
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly budgetRepository = inject(BudgetRepository);
+  protected readonly onboardingProgress = inject(OnboardingProgressService);
   private readonly theme = inject(ThemeService);
   private readonly transloco = inject(TranslocoService);
   private readonly localeService = inject(TranslocoLocaleService);

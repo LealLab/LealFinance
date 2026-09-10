@@ -24,7 +24,18 @@ import { TransactionFilters, TransactionRepository } from '../../data/transactio
 import { money } from '../../shared/money/money';
 import { monthKey } from '../../domain/calc/dates';
 import { Dashboard } from './dashboard';
+import { OnboardingProgressService } from '../onboarding/onboarding-progress.service';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
+
+class EmptyDashboardAccountRepository extends MockAccountRepository {
+  override list(): Observable<Account[]> {
+    return of([]);
+  }
+
+  override balances(): Observable<AccountBalance[]> {
+    return of([]);
+  }
+}
 
 describe('Dashboard', () => {
   beforeEach(async () => {
@@ -88,6 +99,50 @@ describe('Dashboard', () => {
     button.click();
 
     expect(navigateSpy).toHaveBeenCalledWith(['/exchange']);
+  });
+});
+
+describe('Dashboard - guided setup empty state', () => {
+  beforeEach(async () => {
+    localStorage.removeItem('lealfinance.onboarding.progress');
+    await TestBed.configureTestingModule({
+      imports: [Dashboard, provideTestTransloco()],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        provideTestTranslocoLocale(),
+        { provide: MOCK_LATENCY_MS, useValue: 0 },
+        { provide: AccountRepository, useClass: EmptyDashboardAccountRepository },
+        { provide: TransactionRepository, useClass: MockTransactionRepository },
+        { provide: CategoryRepository, useClass: MockCategoryRepository },
+        { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
+        { provide: BudgetRepository, useClass: MockBudgetRepository },
+        { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
+      ],
+    }).compileComponents();
+  });
+
+  afterEach(() => localStorage.removeItem('lealfinance.onboarding.progress'));
+
+  it('shows the guided-setup CTA when there are no accounts', async () => {
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('button[routerLink="/onboarding"]')).not.toBeNull();
+  });
+
+  it('hides the guided-setup CTA after setup is dismissed', async () => {
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const progress = TestBed.inject(OnboardingProgressService);
+    progress.dismiss();
+    TestBed.tick();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('button[routerLink="/onboarding"]')).toBeNull();
   });
 });
 

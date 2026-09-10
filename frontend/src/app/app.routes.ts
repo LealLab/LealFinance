@@ -102,6 +102,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
       },
       {
+        path: 'onboarding',
+        loadComponent: () => import('./features/onboarding/onboarding').then((m) => m.Onboarding),
+      },
+      {
         path: 'chat',
         canActivate: [aiChatGuard],
         loadComponent: () => import('./features/chat/chat').then((m) => m.Chat),

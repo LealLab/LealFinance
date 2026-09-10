@@ -356,6 +356,18 @@
       "empty": "Chưa đặt ngân sách cho tháng này."
     }
   },
+  "onboarding": {
+    "title": "Thiết lập có hướng dẫn",
+    "description": "Thiết lập LealFinance trong vài bước. Bạn có thể tạm dừng và tiếp tục bất cứ lúc nào.",
+    "steps": {
+      "currency": { "title": "Xác nhận tiền tệ hiển thị và ngôn ngữ", "description": "Kiểm tra ngôn ngữ và tiền tệ hiển thị. Tiền tệ cơ sở được cố định khi đăng ký và không thay đổi ở đây." },
+      "account": { "title": "Tạo tài khoản đầu tiên", "description": "Thêm tài khoản đầu tiên và nhập số dư ban đầu." },
+      "transactions": { "title": "Nhập hoặc thêm giao dịch", "description": "Nhập bảng sao kê hoặc thêm các giao dịch đầu tiên." },
+      "reconcile": { "title": "Đối soát số dư", "description": "So sánh tài khoản với bảng sao kê. Ngày trên bảng sao kê là mốc thời gian tham chiếu cho số dư ban đầu." },
+      "plan": { "title": "Thiết lập giao dịch định kỳ hoặc ngân sách", "description": "Tùy chọn, tự động hóa giao dịch lặp lại hoặc đặt ngân sách." }
+    },
+    "actions": { "continue": "Tiếp tục", "skip": "Bỏ qua bước này", "dismiss": "Bỏ qua thiết lập", "run": "Chạy thiết lập có hướng dẫn", "import": "Nhập bảng sao kê", "transaction": "Thêm giao dịch đầu tiên", "recurring": "Thiết lập giao dịch định kỳ", "budget": "Thiết lập ngân sách" }
+  },
   "currency": {
     "fallbackRateWarning": "Không có tỷ giá - đang dùng quy đổi 1:1 để ước tính.",
     "fallbackRateWarningAction": "Đặt tỷ giá"

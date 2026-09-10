@@ -356,6 +356,18 @@
       "empty": "Brak budżetu na ten miesiąc."
     }
   },
+  "onboarding": {
+    "title": "Konfiguracja z przewodnikiem",
+    "description": "Skonfiguruj LealFinance w kilku krokach. Możesz w każdej chwili przerwać i wrócić do konfiguracji.",
+    "steps": {
+      "currency": { "title": "Potwierdź walutę wyświetlania i język", "description": "Sprawdź język i walutę wyświetlania. Waluta bazowa jest ustalana podczas rejestracji i nie jest tutaj zmieniana." },
+      "account": { "title": "Utwórz pierwsze konto", "description": "Dodaj pierwsze konto i wprowadź jego saldo początkowe." },
+      "transactions": { "title": "Importuj lub dodaj transakcje", "description": "Zaimportuj wyciąg lub dodaj pierwsze transakcje." },
+      "reconcile": { "title": "Uzgodnij saldo", "description": "Porównaj konto z wyciągiem. Data wyciągu jest odniesieniem czasowym dla salda początkowego." },
+      "plan": { "title": "Ustaw cykliczność lub budżet", "description": "Opcjonalnie zautomatyzuj powtarzającą się transakcję albo ustaw budżet." }
+    },
+    "actions": { "continue": "Dalej", "skip": "Pomiń ten krok", "dismiss": "Pomiń konfigurację", "run": "Uruchom konfigurację z przewodnikiem", "import": "Importuj wyciąg", "transaction": "Dodaj pierwszą transakcję", "recurring": "Ustaw cykliczność", "budget": "Ustaw budżet" }
+  },
   "currency": {
     "fallbackRateWarning": "Kurs wymiany jest niedostępny — użyto przybliżenia 1:1.",
     "fallbackRateWarningAction": "Ustaw kurs"

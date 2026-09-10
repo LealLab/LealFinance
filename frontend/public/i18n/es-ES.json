@@ -356,6 +356,18 @@
       "empty": "No hay presupuesto para este mes."
     }
   },
+  "onboarding": {
+    "title": "Configuración guiada",
+    "description": "Configura LealFinance en unos pasos. Puedes pausar y continuar cuando quieras.",
+    "steps": {
+      "currency": { "title": "Confirma la moneda de visualización y el idioma", "description": "Comprueba tu idioma y la moneda de visualización. La moneda base se fija al registrarte y no se cambia aquí." },
+      "account": { "title": "Crea tu primera cuenta", "description": "Añade tu primera cuenta e introduce su saldo inicial." },
+      "transactions": { "title": "Importa o añade transacciones", "description": "Importa un extracto o añade tus primeras transacciones." },
+      "reconcile": { "title": "Concilia tu saldo", "description": "Compara la cuenta con un extracto. La fecha del extracto es la referencia temporal del saldo inicial." },
+      "plan": { "title": "Configura una recurrencia o un presupuesto", "description": "Opcionalmente, automatiza una transacción repetida o establece un presupuesto." }
+    },
+    "actions": { "continue": "Continuar", "skip": "Omitir este paso", "dismiss": "Omitir configuración", "run": "Ejecutar configuración guiada", "import": "Importar extracto", "transaction": "Añadir primera transacción", "recurring": "Configurar recurrencia", "budget": "Configurar un presupuesto" }
+  },
   "currency": {
     "fallbackRateWarning": "No hay ningún tipo de cambio disponible; se usará una conversión aproximada 1:1.",
     "fallbackRateWarningAction": "Establecer un tipo de cambio"

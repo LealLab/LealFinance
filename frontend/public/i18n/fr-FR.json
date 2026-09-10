@@ -356,6 +356,18 @@
       "empty": "Aucun budget défini pour ce mois."
     }
   },
+  "onboarding": {
+    "title": "Configuration guidée",
+    "description": "Configurez LealFinance en quelques étapes. Vous pouvez mettre en pause et reprendre à tout moment.",
+    "steps": {
+      "currency": { "title": "Confirmez la devise d’affichage et la langue", "description": "Vérifiez votre langue et votre devise d’affichage. La devise de base est fixée à l’inscription et n’est pas modifiée ici." },
+      "account": { "title": "Créez votre premier compte", "description": "Ajoutez votre premier compte et saisissez son solde d’ouverture." },
+      "transactions": { "title": "Importez ou ajoutez des transactions", "description": "Importez un relevé ou ajoutez vos premières transactions." },
+      "reconcile": { "title": "Rapprochez votre solde", "description": "Comparez le compte avec un relevé. La date du relevé est la référence temporelle du solde d’ouverture." },
+      "plan": { "title": "Configurez une récurrence ou un budget", "description": "Automatisez éventuellement une transaction répétée ou définissez un budget." }
+    },
+    "actions": { "continue": "Continuer", "skip": "Ignorer cette étape", "dismiss": "Ignorer la configuration", "run": "Lancer la configuration guidée", "import": "Importer un relevé", "transaction": "Ajouter la première transaction", "recurring": "Configurer une récurrence", "budget": "Configurer un budget" }
+  },
   "currency": {
     "fallbackRateWarning": "Taux de change indisponible — conversion 1:1 utilisée à titre approximatif.",
     "fallbackRateWarningAction": "Définir un taux"

@@ -356,6 +356,18 @@
       "empty": "Nessun budget impostato per questo mese."
     }
   },
+  "onboarding": {
+    "title": "Configurazione guidata",
+    "description": "Configura LealFinance in pochi passaggi. Puoi interrompere e riprendere quando vuoi.",
+    "steps": {
+      "currency": { "title": "Conferma valuta di visualizzazione e lingua", "description": "Controlla la lingua e la valuta di visualizzazione. La valuta di base viene fissata durante la registrazione e non viene modificata qui." },
+      "account": { "title": "Crea il tuo primo conto", "description": "Aggiungi il tuo primo conto e inserisci il saldo iniziale." },
+      "transactions": { "title": "Importa o aggiungi transazioni", "description": "Importa un estratto conto o aggiungi le tue prime transazioni." },
+      "reconcile": { "title": "Riconcilia il saldo", "description": "Confronta il conto con un estratto. La data dell’estratto è il riferimento temporale del saldo iniziale." },
+      "plan": { "title": "Configura una ricorrenza o un budget", "description": "Facoltativamente, automatizza una transazione ripetuta o imposta un budget." }
+    },
+    "actions": { "continue": "Continua", "skip": "Salta questo passaggio", "dismiss": "Ignora configurazione", "run": "Avvia configurazione guidata", "import": "Importa estratto conto", "transaction": "Aggiungi prima transazione", "recurring": "Configura ricorrenza", "budget": "Imposta budget" }
+  },
   "currency": {
     "fallbackRateWarning": "Tasso di cambio non disponibile: viene utilizzata un'approssimazione 1:1.",
     "fallbackRateWarningAction": "Imposta un tasso"
