@@ -18,7 +18,15 @@
               {{ item.number }}
             </span>
             <div class="min-w-0 flex-1">
-              <h2 class="text-sm font-semibold text-content-primary">{{ t(item.titleKey) }}</h2>
+              <h2 class="text-sm font-semibold text-content-primary">
+                <button
+                  type="button"
+                  class="cursor-pointer rounded text-left hover:underline"
+                  (click)="progress.setStep(item.number)"
+                >
+                  {{ t(item.titleKey) }}
+                </button>
+              </h2>
               @if (step() === item.number) {
                 <p class="mt-1 text-sm text-content-muted">{{ t(item.descriptionKey) }}</p>
                 <div class="mt-4 flex flex-wrap items-center gap-2">

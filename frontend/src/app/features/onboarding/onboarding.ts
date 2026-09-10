@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AccountRepository } from '../../data/account.repository';
@@ -70,7 +71,7 @@ export class Onboarding {
         this.visit(2, ['/settings'], { fragment: 'settings-display-currency' });
         break;
       case 2:
-        this.visit(3, ['/accounts'], { queryParams: { new: '1' } });
+        void this.router.navigate(['/accounts'], { queryParams: { new: '1' } });
         break;
       case 3:
         this.visit(4, ['/transactions', 'import']);
@@ -117,13 +118,16 @@ export class Onboarding {
   }
 
   private adoptMostRecentAccount(): void {
-    this.accountRepository.list().subscribe({
-      next: (accounts) => {
-        if (this.createdAccountId() || accounts.length === 0) return;
-        this.progress.setCreatedAccountId(accounts[accounts.length - 1].id);
-        if (this.step() === 2) this.progress.setStep(3);
-      },
-      error: () => undefined,
-    });
+    this.accountRepository
+      .list()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (accounts) => {
+          if (this.createdAccountId() || accounts.length === 0) return;
+          this.progress.setCreatedAccountId(accounts[accounts.length - 1].id);
+          if (this.step() === 2) this.progress.setStep(3);
+        },
+        error: () => undefined,
+      });
   }
 }

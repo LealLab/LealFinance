@@ -1,4 +1,5 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, linkedSignal } from '@angular/core';
+import { SessionService } from '../../core/session.service';
 
 const STORAGE_KEY = 'lealfinance.onboarding.progress';
 
@@ -8,10 +9,15 @@ export interface OnboardingProgress {
   dismissed: boolean;
 }
 
-/** Persists the interruptible guided-setup marker per browser. */
+/** Persists the interruptible guided-setup marker per signed-in user. */
 @Injectable({ providedIn: 'root' })
 export class OnboardingProgressService {
-  private readonly state = signal<OnboardingProgress>(this.readInitial());
+  private readonly session = inject(SessionService);
+  private readonly userId = computed(() => this.session.user()?.id);
+  private readonly state = linkedSignal({
+    source: this.userId,
+    computation: (userId) => this.readInitial(userId),
+  });
 
   readonly progress = this.state.asReadonly();
   readonly step = computed(() => this.state().step);
@@ -19,7 +25,7 @@ export class OnboardingProgressService {
   readonly dismissed = computed(() => this.state().dismissed);
 
   constructor() {
-    effect(() => this.persist(this.state()));
+    effect(() => this.persist(this.userId(), this.state()));
   }
 
   setStep(step: number): void {
@@ -37,10 +43,11 @@ export class OnboardingProgressService {
     this.state.update((current) => ({ ...current, dismissed: true }));
   }
 
-  private readInitial(): OnboardingProgress {
+  private readInitial(userId: string | undefined): OnboardingProgress {
     const fallback: OnboardingProgress = { step: 1, createdAccountId: null, dismissed: false };
+    if (!userId) return fallback;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(`${STORAGE_KEY}.${userId}`);
       if (!raw) return fallback;
       const parsed = JSON.parse(raw) as Partial<OnboardingProgress>;
       if (
@@ -61,9 +68,10 @@ export class OnboardingProgressService {
     }
   }
 
-  private persist(progress: OnboardingProgress): void {
+  private persist(userId: string | undefined, progress: OnboardingProgress): void {
+    if (!userId) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      localStorage.setItem(`${STORAGE_KEY}.${userId}`, JSON.stringify(progress));
     } catch {
       // Storage unavailable - progress still applies for the current session.
     }

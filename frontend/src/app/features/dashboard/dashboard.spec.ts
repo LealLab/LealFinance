@@ -24,6 +24,7 @@ import { TransactionFilters, TransactionRepository } from '../../data/transactio
 import { money } from '../../shared/money/money';
 import { monthKey } from '../../domain/calc/dates';
 import { Dashboard } from './dashboard';
+import { SessionService } from '../../core/session.service';
 import { OnboardingProgressService } from '../onboarding/onboarding-progress.service';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
@@ -46,6 +47,7 @@ describe('Dashboard', () => {
       ],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: SessionService, useValue: { user: () => ({ id: 'user-1' }) } },
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
@@ -104,11 +106,12 @@ describe('Dashboard', () => {
 
 describe('Dashboard - guided setup empty state', () => {
   beforeEach(async () => {
-    localStorage.removeItem('lealfinance.onboarding.progress');
+    localStorage.removeItem('lealfinance.onboarding.progress.user-1');
     await TestBed.configureTestingModule({
       imports: [Dashboard, provideTestTransloco()],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: SessionService, useValue: { user: () => ({ id: 'user-1' }) } },
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
@@ -122,7 +125,7 @@ describe('Dashboard - guided setup empty state', () => {
     }).compileComponents();
   });
 
-  afterEach(() => localStorage.removeItem('lealfinance.onboarding.progress'));
+  afterEach(() => localStorage.removeItem('lealfinance.onboarding.progress.user-1'));
 
   it('shows the guided-setup CTA when there are no accounts', async () => {
     const fixture = TestBed.createComponent(Dashboard);
@@ -200,6 +203,7 @@ describe('Dashboard - exchange rates still loading on first render', () => {
       ],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: SessionService, useValue: { user: () => ({ id: 'user-1' }) } },
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
@@ -446,6 +450,7 @@ describe('Dashboard - a budget in one currency catching a transaction in another
       ],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: SessionService, useValue: { user: () => ({ id: 'user-1' }) } },
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: AccountRepository, useClass: StubAccountRepository },
@@ -497,6 +502,7 @@ describe('Dashboard - load failures', () => {
       imports: [Dashboard, provideTestTransloco()],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: SessionService, useValue: { user: () => ({ id: 'user-1' }) } },
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: AccountRepository, useValue: accountRepository },
@@ -533,6 +539,7 @@ describe('Dashboard - load failures', () => {
       imports: [Dashboard, provideTestTransloco()],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: SessionService, useValue: { user: () => ({ id: 'user-1' }) } },
         provideRouter([]),
         provideTestTranslocoLocale(),
         { provide: AccountRepository, useClass: StubAccountRepository },
