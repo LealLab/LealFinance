@@ -76,7 +76,7 @@ export class Agenda {
         : forkJoin(
             params.map((accountId) =>
               this.cardInvoiceRepository
-                .list(accountId, { back: 0, ahead: 2 })
+                .list(accountId, { back: 1, ahead: 2 })
                 .pipe(map((invoices) => invoices.map((invoice) => ({ accountId, invoice })))),
             ),
           ).pipe(map((groups) => groups.flat())),

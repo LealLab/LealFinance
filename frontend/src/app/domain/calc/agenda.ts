@@ -174,9 +174,17 @@ export function buildAgenda(
   const entries: AgendaEntry[] = [];
 
   for (const transaction of transactionsInWindow) {
-    if (!transaction.recurringRuleId || transaction.cardInvoiceCloseDate) continue;
+    if ((!transaction.recurringRuleId && !transaction.loanId) || transaction.cardInvoiceCloseDate)
+      continue;
     if (isCard(transaction.accountId, accountsById)) continue;
-    entries.push(entryFromTransaction(transaction, 'recurrence', true, accountsById));
+    entries.push(
+      entryFromTransaction(
+        transaction,
+        transaction.loanId ? 'installment' : 'recurrence',
+        true,
+        accountsById,
+      ),
+    );
   }
 
   for (const rule of input.recurringRules) {

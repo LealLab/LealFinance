@@ -158,6 +158,35 @@ describe('buildAgenda', () => {
     expect(result.entries).toHaveLength(0);
   });
 
+  it('records a loan payment in the window at its actual date and amount without projecting it again', () => {
+    const result = build({
+      loans: [loan()],
+      transactions: [
+        {
+          id: 'loan-payment',
+          type: 'expense',
+          date: '2026-01-05',
+          amount: '480.00',
+          currency: 'BRL',
+          accountId: checking.id,
+          description: 'Car loan',
+          loanId: 'loan-1',
+          installmentNumber: 1,
+        },
+      ],
+    });
+
+    expect(result.entries).toHaveLength(1);
+    expect(result.entries[0]).toMatchObject({
+      date: '2026-01-05',
+      source: 'installment',
+      realized: true,
+    });
+    expect(result.realized.outflow.amount).toBe('480.0000');
+    expect(result.realized.cashImpact.amount).toBe('-480.0000');
+    expect(result.projected.cashImpact.amount).toBe('0.0000');
+  });
+
   it('keeps realized and projected summaries separate', () => {
     const result = build({
       recurringRules: [

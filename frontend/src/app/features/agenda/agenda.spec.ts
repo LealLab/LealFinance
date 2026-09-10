@@ -161,12 +161,23 @@ describe('Agenda', () => {
     const fixture = await render();
 
     expect(fixture.nativeElement.querySelectorAll('tbody tr')).toHaveLength(3);
-    expect(repos.cardInvoiceRepository.list).toHaveBeenCalledWith('card', { back: 0, ahead: 2 });
+    expect(repos.cardInvoiceRepository.list).toHaveBeenCalledWith('card', { back: 1, ahead: 2 });
     expect(fixture.componentInstance['agenda']()!.entries.map((entry) => entry.source)).toEqual([
       'recurrence',
       'invoice',
       'installment',
     ]);
+  });
+
+  it('includes the previous closed invoice when its payment is still due', async () => {
+    const repos = await setup({ recurringRules: of([]), loans: of([]) });
+    repos.cardInvoiceRepository.list.mockImplementation((...args: unknown[]) =>
+      of((args[1] as { back: number }).back >= 1 ? [invoice()] : []),
+    );
+    const fixture = await render();
+
+    expect(fixture.componentInstance['agenda']()!.entries).toHaveLength(1);
+    expect(fixture.componentInstance['agenda']()!.projected.outflow.amount).toBe('70.0000');
   });
 
   it('shows the empty state when nothing is due', async () => {
