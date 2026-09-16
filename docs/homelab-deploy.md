@@ -19,6 +19,18 @@ or container hostname into another machine's `.env` file.
 ```bash
 git clone https://github.com/LealLab/LealFinance.git
 cd LealFinance
+task install:wizard
+```
+
+The wizard asks for the homelab path, generates `POSTGRES_PASSWORD` and
+`API_SECRET_KEY`, walks through the optional blocks below (SMTP, AI
+providers, exchange rates - skip anything you don't need), writes `.env`,
+and starts the stack. Pass `--env-only` to only write `.env` and stop there,
+or `--yes` to accept every default without prompting.
+
+To configure `.env` by hand instead:
+
+```bash
 cp .env.example .env
 ```
 

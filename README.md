@@ -37,15 +37,17 @@ Install [Docker](https://www.docker.com/) with the Compose plugin and
 ```bash
 git clone https://github.com/LealLab/LealFinance.git
 cd LealFinance
-cp .env.example .env
+task install:wizard
 ```
 
-Edit `.env` and set `POSTGRES_PASSWORD`, `API_SECRET_KEY`, and `TAG` to a
-released version (e.g. `TAG=v1.2.3`). Then pull and start the published images:
+The wizard writes `.env` (generating `POSTGRES_PASSWORD` and `API_SECRET_KEY`,
+letting you skip anything you don't need - SMTP, AI providers, exchange
+rates) and pulls and starts the published images. `task install` also runs it
+automatically the first time, if `.env` doesn't exist yet.
 
-```bash
-task install
-```
+Prefer to configure `.env` by hand? Copy `.env.example` to `.env`, set
+`POSTGRES_PASSWORD`, `API_SECRET_KEY`, and `TAG` to a released version (e.g.
+`TAG=v1.2.3`), then run `task install`.
 
 To stop and remove the application while preserving its data:
 
@@ -74,11 +76,16 @@ Install [Docker](https://www.docker.com/) with the Compose plugin, then:
 ```bash
 git clone https://github.com/LealLab/LealFinance.git
 cd LealFinance
-cp .env.example .env
+task install:wizard
 ```
 
-Edit `.env` and replace at least `POSTGRES_PASSWORD` and `API_SECRET_KEY`.
-Then start the stack:
+Pick the "docker" path to run the whole stack in containers, or "native" to
+run the API and frontend on the host for the fastest edit-and-reload cycle
+(see [`docs/development.md`](docs/development.md)). `task up` also runs the
+wizard automatically the first time, if `.env` doesn't exist yet.
+
+Prefer to configure `.env` by hand? Copy `.env.example` to `.env`, replace at
+least `POSTGRES_PASSWORD` and `API_SECRET_KEY`, then run:
 
 ```bash
 docker compose -f docker-compose.yml up -d --build

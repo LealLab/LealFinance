@@ -11,7 +11,10 @@ the fastest edit-and-reload cycle.
 - Docker with the Compose plugin
 - [Task](https://taskfile.dev/) for the repository shortcuts
 
-Run commands from the repository root. Copy the example environment file once:
+Run commands from the repository root. `task install:wizard` writes `.env`
+interactively - pick the "native" path for the workflow below, or run it
+with `--env-only` to only write `.env` and stop there. To configure it by
+hand instead, copy the example environment file once:
 
 ```bash
 cp .env.example .env
