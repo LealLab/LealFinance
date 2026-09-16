@@ -4,14 +4,34 @@ version: "3"
 dotenv: [".env"]
 
 tasks:
+  install:wizard:
+    desc: Interactive first-time setup - writes .env and starts the stack
+    cmds:
+      - cmd: python scripts/wizard.py {{.CLI_ARGS}}
+        platforms: [windows]
+      - cmd: python3 scripts/wizard.py {{.CLI_ARGS}}
+        platforms: [linux, darwin]
+
+  install:env:
+    internal: true
+    status:
+      - test -f .env
+    cmds:
+      - cmd: python scripts/wizard.py --ensure-env
+        platforms: [windows]
+      - cmd: python3 scripts/wizard.py --ensure-env
+        platforms: [linux, darwin]
+
   install:
     desc: Install and start the published production stack
+    deps: [install:env]
     cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
   install:tls:
     desc: Install and start the published production stack behind the Caddy TLS proxy
+    deps: [install:env]
     cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml up -d
@@ -29,6 +49,7 @@ tasks:
 
   up:
     desc: Start the full stack (build + detached)
+    deps: [install:env]
     cmds:
       - docker compose up -d --build
 
