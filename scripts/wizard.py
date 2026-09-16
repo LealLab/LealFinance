@@ -9,8 +9,8 @@ runs automatically before `task install`/`task install:tls`/`task up` when
     task install:wizard -- --env-only --path docker
 
 Every optional block (SMTP, AI providers, exchange-rate/market-data keys) is
-skipped by default - answering "no" leaves those keys exactly as in
-`.env.example`. `.env.example` stays the source of truth for defaults,
+skipped by default - answering "no" preserves existing values, falling back
+to `.env.example` on a fresh install. `.env.example` is the source of defaults,
 comments, and key order: this script only fills in values, it never
 restructures the file. An existing `.env` is read first (its values become
 the new defaults) and backed up to `.env.bak` before being overwritten.
@@ -22,8 +22,11 @@ Stdlib only, no project dependencies - this has to run before `uv sync` /
 from __future__ import annotations
 
 import argparse
+import getpass
+import os
 import re
 import secrets
+import shlex
 import shutil
 import socket
 import subprocess
@@ -31,6 +34,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import warnings
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -42,14 +46,29 @@ PLACEHOLDER_SECRET = "change-me-to-a-random-64-char-string"  # noqa: S105 - not 
 PLACEHOLDER_PASSWORD = "change-me"  # noqa: S105
 
 _KEY_RE = re.compile(r"^(#\s*)?([A-Z][A-Z0-9_]*)=(.*)$")
+SECRET_KEYS = {
+    "POSTGRES_PASSWORD",
+    "API_SECRET_KEY",
+    "SMTP_PASSWORD",
+    "ANTHROPIC_API_KEY",
+    "OPENAI_API_KEY",
+    "OPENEXCHANGERATES_APP_ID",
+    "TWELVE_DATA_API_KEY",
+    "BRAPI_TOKEN",
+}
 
 # --- Prompting (same pattern as backend/scripts/seed.py) ---------------------
 
 
-def ask(label: str, default: str, use_default: bool) -> str:
+def ask(label: str, default: str, use_default: bool, *, secret: bool = False) -> str:
     if use_default:
         return default
-    raw = input(f"{label} [{default}]: ").strip()
+    if secret:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", getpass.GetPassWarning)
+            raw = getpass.getpass(f"{label} [Enter to keep current/generated value]: ")
+    else:
+        raw = input(f"{label} [{default}]: ").strip()
     return raw or default
 
 
@@ -83,12 +102,15 @@ def render_env(example_text: str, values: dict[str, str]) -> str:
     unchanged.
     """
     lines = []
+    remaining = dict(values)
     for line in example_text.splitlines():
         match = _KEY_RE.match(line)
         if match and match.group(2) in values:
             lines.append(f"{match.group(2)}={values[match.group(2)]}")
+            remaining.pop(match.group(2), None)
         else:
             lines.append(line)
+    lines.extend(f"{key}={value}" for key, value in remaining.items())
     return "\n".join(lines) + "\n"
 
 
@@ -112,7 +134,11 @@ def validate(values: dict[str, str], *, tls: bool = False) -> tuple[list[str], l
         if "*" in origins:
             errors.append("CORS wildcard is not allowed in production")
         app_base_url = values.get("APP_BASE_URL", "")
-        if app_base_url and not app_base_url.startswith("https://") and "localhost" not in app_base_url:
+        if (
+            app_base_url
+            and not app_base_url.startswith("https://")
+            and "localhost" not in app_base_url
+        ):
             warnings.append(
                 "APP_BASE_URL is not https:// on a non-localhost host - "
                 "session/CSRF cookies are Secure in production and login will "
@@ -126,9 +152,13 @@ def validate(values: dict[str, str], *, tls: bool = False) -> tuple[list[str], l
     if tls and not values.get("LF_SITE_ADDRESS", "").strip():
         errors.append("LF_SITE_ADDRESS is required to terminate TLS with Caddy")
 
-    test_db = values.get("POSTGRES_TEST_DB", "").strip()
-    if test_db and not test_db.endswith("_test"):
-        errors.append("POSTGRES_TEST_DB must end in _test")
+    try:
+        test_db = shlex.split(values.get("POSTGRES_TEST_DB", ""), comments=True)
+    except ValueError:
+        errors.append("POSTGRES_TEST_DB has invalid quoting")
+    else:
+        if test_db and (len(test_db) != 1 or not test_db[0].endswith("_test")):
+            errors.append("POSTGRES_TEST_DB must end in _test")
 
     return errors, warnings
 
@@ -202,38 +232,59 @@ def preflight(path_choice: str) -> None:
     for tool in tools:
         print(f"  {'v' if which_ok(tool) else 'x'} {tool}")
     if which_ok("docker"):
-        ok = subprocess.run(["docker", "compose", "version"], capture_output=True, check=False).returncode == 0
+        ok = (
+            subprocess.run(
+                ["docker", "compose", "version"], capture_output=True, check=False
+            ).returncode
+            == 0
+        )
         print(f"  {'v' if ok else 'x'} docker compose")
     print()
 
 
-def gather_values(defaults: dict[str, str], path_choice: str, use_default: bool) -> tuple[dict[str, str], bool]:
+def gather_values(
+    defaults: dict[str, str], path_choice: str, use_default: bool, *, tls: bool | None = None
+) -> tuple[dict[str, str], bool]:
     """Ask the prompt blocks in order. Returns (values, tls_enabled)."""
     values: dict[str, str] = {}
     production = path_choice == "homelab"
     values["ENVIRONMENT"] = "production" if production else "development"
 
     print("-- Basics --")
-    values["DEFAULT_CURRENCY"] = ask("Default currency (ISO 4217)", defaults.get("DEFAULT_CURRENCY", "BRL"), use_default)
-    values["DEFAULT_LOCALE"] = ask("Default locale", defaults.get("DEFAULT_LOCALE", "pt-BR"), use_default)
+    values["DEFAULT_CURRENCY"] = ask(
+        "Default currency (ISO 4217)", defaults.get("DEFAULT_CURRENCY", "BRL"), use_default
+    )
+    values["DEFAULT_LOCALE"] = ask(
+        "Default locale", defaults.get("DEFAULT_LOCALE", "pt-BR"), use_default
+    )
     values["LOG_LEVEL"] = ask("Log level", defaults.get("LOG_LEVEL", "INFO"), use_default)
 
     print("\n-- Database --")
-    values["POSTGRES_USER"] = ask("Postgres user", defaults.get("POSTGRES_USER", "lealfinance"), use_default)
-    values["POSTGRES_DB"] = ask("Postgres database", defaults.get("POSTGRES_DB", "lealfinance"), use_default)
+    values["POSTGRES_USER"] = ask(
+        "Postgres user", defaults.get("POSTGRES_USER", "lealfinance"), use_default
+    )
+    values["POSTGRES_DB"] = ask(
+        "Postgres database", defaults.get("POSTGRES_DB", "lealfinance"), use_default
+    )
     if volume_exists("db_data"):
         print("  A database volume already exists - keeping POSTGRES_PASSWORD as-is")
         print("  (Postgres only reads this on first init; changing it here locks you out.)")
         values["POSTGRES_PASSWORD"] = defaults.get("POSTGRES_PASSWORD", PLACEHOLDER_PASSWORD)
     else:
         existing_pw = defaults.get("POSTGRES_PASSWORD", "")
-        pw_default = existing_pw if existing_pw and existing_pw != PLACEHOLDER_PASSWORD else secrets.token_urlsafe(24)
-        values["POSTGRES_PASSWORD"] = ask("Postgres password", pw_default, use_default)
+        pw_default = (
+            existing_pw
+            if existing_pw and existing_pw != PLACEHOLDER_PASSWORD
+            else secrets.token_urlsafe(24)
+        )
+        values["POSTGRES_PASSWORD"] = ask("Postgres password", pw_default, use_default, secret=True)
     if path_choice != "homelab":
         values["POSTGRES_HOST_PORT"] = ask(
             "Postgres host port", defaults.get("POSTGRES_HOST_PORT", "55433"), use_default
         )
-        values["REDIS_HOST_PORT"] = ask("Redis host port", defaults.get("REDIS_HOST_PORT", "6379"), use_default)
+        values["REDIS_HOST_PORT"] = ask(
+            "Redis host port", defaults.get("REDIS_HOST_PORT", "6379"), use_default
+        )
 
     print("\n-- Security --")
     existing_secret = defaults.get("API_SECRET_KEY", "")
@@ -254,18 +305,32 @@ def gather_values(defaults: dict[str, str], path_choice: str, use_default: bool)
         values["WEB_PORT"] = ask("Web port", defaults.get("WEB_PORT", "8081"), use_default)
         if path_choice == "homelab":
             values["APP_BASE_URL"] = ask(
-                "Public URL (e.g. https://finance.example.com)", defaults.get("APP_BASE_URL", ""), use_default
+                "Public URL (e.g. https://finance.example.com)",
+                defaults.get("APP_BASE_URL", ""),
+                use_default,
             )
             values["TAG"] = ask(
                 "Release tag (v-prefixed, e.g. v1.2.3)", defaults.get("TAG", "latest"), use_default
             )
-            tls_enabled = ask_bool("Terminate TLS with the bundled Caddy proxy?", False, use_default)
+            tls_enabled = (
+                tls
+                if tls is not None
+                else ask_bool(
+                    "Terminate TLS with the bundled Caddy proxy?",
+                    bool(defaults.get("LF_SITE_ADDRESS")),
+                    use_default,
+                )
+            )
             if tls_enabled:
                 values["LF_SITE_ADDRESS"] = ask(
-                    "Site hostname for Caddy (no scheme)", defaults.get("LF_SITE_ADDRESS", ""), use_default
+                    "Site hostname for Caddy (no scheme)",
+                    defaults.get("LF_SITE_ADDRESS", ""),
+                    use_default,
                 )
                 values["WEB_PORT"] = "127.0.0.1:8081"
-            values["API_CORS_ORIGINS"] = values["APP_BASE_URL"] or defaults.get("API_CORS_ORIGINS", "")
+            values["API_CORS_ORIGINS"] = values["APP_BASE_URL"] or defaults.get(
+                "API_CORS_ORIGINS", ""
+            )
         else:
             values["API_CORS_ORIGINS"] = f"http://localhost:{values['WEB_PORT']}"
 
@@ -273,46 +338,71 @@ def gather_values(defaults: dict[str, str], path_choice: str, use_default: bool)
     if ask_bool("Configure outgoing email for invitations?", False, use_default):
         values["SMTP_HOST"] = ask("SMTP host", defaults.get("SMTP_HOST", ""), use_default)
         values["SMTP_PORT"] = ask("SMTP port", defaults.get("SMTP_PORT", "587"), use_default)
-        values["SMTP_USERNAME"] = ask("SMTP username", defaults.get("SMTP_USERNAME", ""), use_default)
-        values["SMTP_PASSWORD"] = ask("SMTP password", defaults.get("SMTP_PASSWORD", ""), use_default)
-        values["SMTP_STARTTLS"] = "true" if ask_bool("Use STARTTLS?", True, use_default) else "false"
+        values["SMTP_USERNAME"] = ask(
+            "SMTP username", defaults.get("SMTP_USERNAME", ""), use_default
+        )
+        values["SMTP_PASSWORD"] = ask(
+            "SMTP password", defaults.get("SMTP_PASSWORD", ""), use_default, secret=True
+        )
+        values["SMTP_STARTTLS"] = (
+            "true" if ask_bool("Use STARTTLS?", True, use_default) else "false"
+        )
         values["SMTP_FROM"] = ask("From address", defaults.get("SMTP_FROM", ""), use_default)
         if not values.get("APP_BASE_URL"):
             values["APP_BASE_URL"] = ask(
-                "Public URL (required for invitation links)", defaults.get("APP_BASE_URL", ""), use_default
+                "Public URL (required for invitation links)",
+                defaults.get("APP_BASE_URL", ""),
+                use_default,
             )
     else:
-        print("  Skipped - invitations are copied by hand from the users screen.")
+        print("  Skipped - keeping existing email settings.")
 
     print("\n-- AI providers --")
     if ask_bool("Enable optional AI chat providers?", False, use_default):
         values["AGENTS_ENABLED"] = "true"
-        values["ANTHROPIC_API_KEY"] = ask("Anthropic API key", defaults.get("ANTHROPIC_API_KEY", ""), use_default)
-        values["OPENAI_API_KEY"] = ask("OpenAI API key", defaults.get("OPENAI_API_KEY", ""), use_default)
-        values["OLLAMA_BASE_URL"] = ask("Ollama base URL", defaults.get("OLLAMA_BASE_URL", ""), use_default)
+        values["ANTHROPIC_API_KEY"] = ask(
+            "Anthropic API key", defaults.get("ANTHROPIC_API_KEY", ""), use_default, secret=True
+        )
+        values["OPENAI_API_KEY"] = ask(
+            "OpenAI API key", defaults.get("OPENAI_API_KEY", ""), use_default, secret=True
+        )
+        values["OLLAMA_BASE_URL"] = ask(
+            "Ollama base URL", defaults.get("OLLAMA_BASE_URL", ""), use_default
+        )
         values["AGENTS_DEFAULT_PROVIDER"] = ask(
             "Default provider", defaults.get("AGENTS_DEFAULT_PROVIDER", ""), use_default
         )
         if ask_bool("Also start the bundled Ollama container?", False, use_default):
             values["COMPOSE_PROFILES"] = "agents"
     else:
-        print("  Skipped - AI chat stays disabled.")
+        print("  Skipped - keeping existing AI settings.")
 
     print("\n-- Exchange rates / market data --")
     if ask_bool("Configure exchange-rate and market-data provider keys?", False, use_default):
         values["OPENEXCHANGERATES_APP_ID"] = ask(
-            "Open Exchange Rates app ID", defaults.get("OPENEXCHANGERATES_APP_ID", ""), use_default
+            "Open Exchange Rates app ID",
+            defaults.get("OPENEXCHANGERATES_APP_ID", ""),
+            use_default,
+            secret=True,
         )
         values["TWELVE_DATA_API_KEY"] = ask(
-            "Twelve Data API key", defaults.get("TWELVE_DATA_API_KEY", ""), use_default
+            "Twelve Data API key", defaults.get("TWELVE_DATA_API_KEY", ""), use_default, secret=True
         )
-        values["BRAPI_TOKEN"] = ask("Brapi token", defaults.get("BRAPI_TOKEN", ""), use_default)
+        values["BRAPI_TOKEN"] = ask(
+            "Brapi token", defaults.get("BRAPI_TOKEN", ""), use_default, secret=True
+        )
     else:
-        print("  Skipped - cross-currency rates use the flagged 1:1 fallback.")
+        print("  Skipped - keeping existing provider settings.")
 
-    values["UPDATE_CHECK_ENABLED"] = "true" if ask_bool(
-        "\nCheck GitHub for newer releases?", True, use_default
-    ) else "false"
+    values["UPDATE_CHECK_ENABLED"] = (
+        "true"
+        if ask_bool(
+            "\nCheck GitHub for newer releases?",
+            defaults.get("UPDATE_CHECK_ENABLED", "true").lower() == "true",
+            use_default,
+        )
+        else "false"
+    )
 
     return values, tls_enabled
 
@@ -322,24 +412,30 @@ def check_ports(values: dict[str, str], path_choice: str, use_default: bool) -> 
     if "WEB_PORT" in values:
         checks.append(("WEB_PORT", parse_port(values["WEB_PORT"], 8081)))
     if path_choice != "homelab":
-        checks.append(("POSTGRES_HOST_PORT", parse_port(values.get("POSTGRES_HOST_PORT", "55433"), 55433)))
+        checks.append(
+            ("POSTGRES_HOST_PORT", parse_port(values.get("POSTGRES_HOST_PORT", "55433"), 55433))
+        )
         checks.append(("REDIS_HOST_PORT", parse_port(values.get("REDIS_HOST_PORT", "6379"), 6379)))
     for label, port in checks:
         if not port_free(port):
-            print(f"  ! port {port} ({label}) looks busy - stop whatever is using it, or re-run and pick another")
+            print(
+                f"  ! port {port} ({label}) looks busy - stop whatever is using it, "
+                "or re-run and pick another"
+            )
 
 
 def summarize(values: dict[str, str]) -> None:
-    masked = {"POSTGRES_PASSWORD", "API_SECRET_KEY", "SMTP_PASSWORD", "ANTHROPIC_API_KEY", "OPENAI_API_KEY"}
     print("\nAbout to write .env:")
     for key, value in sorted(values.items()):
-        shown = "***" if key in masked and value else value
+        shown = "***" if key in SECRET_KEYS and value else value
         print(f"  {key}={shown}")
 
 
 def start_stack(path_choice: str, tls_enabled: bool, values_for_url: dict[str, str]) -> None:
     if path_choice == "native":
-        subprocess.run(["docker", "compose", "up", "-d", "postgres", "redis"], cwd=ROOT, check=False)
+        subprocess.run(
+            ["docker", "compose", "up", "-d", "postgres", "redis"], cwd=ROOT, check=False
+        )
         print("Waiting for postgres/redis to become healthy...")
         deadline = time.monotonic() + 60
         while time.monotonic() < deadline:
@@ -376,20 +472,38 @@ def start_stack(path_choice: str, tls_enabled: bool, values_for_url: dict[str, s
     if wait_for_app(f"{url}/api/v1/auth/setup-status"):
         print(f"Up. Open {url} - the first account you register becomes the administrator.")
     else:
-        print(f"Still not answering after 120s. Check `docker compose logs -f` - the app may be at {url}.")
+        print(
+            "Still not answering after 120s. Check `docker compose logs -f` - "
+            f"the app may be at {url}."
+        )
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Interactive first-run setup: writes .env, then starts the stack.")
-    parser.add_argument("-y", "--yes", action="store_true", help="Accept every default without prompting.")
-    parser.add_argument("--path", choices=["native", "docker", "homelab"], help="Skip the install-path question.")
-    parser.add_argument("--env-only", action="store_true", help="Write .env and stop; do not start anything.")
+    parser = argparse.ArgumentParser(
+        description="Interactive first-run setup: writes .env, then starts the stack."
+    )
+    parser.add_argument(
+        "-y", "--yes", action="store_true", help="Accept every default without prompting."
+    )
+    parser.add_argument(
+        "--path", choices=["native", "docker", "homelab"], help="Skip the install-path question."
+    )
+    parser.add_argument(
+        "--tls",
+        action=argparse.BooleanOptionalAction,
+        help="Set homelab TLS mode without prompting.",
+    )
+    parser.add_argument(
+        "--env-only", action="store_true", help="Write .env and stop; do not start anything."
+    )
     parser.add_argument(
         "--ensure-env",
         action="store_true",
         help="Internal: no-op if .env exists, otherwise run the prompts and stop.",
     )
     args = parser.parse_args()
+    if args.tls and args.path != "homelab":
+        parser.error("--tls requires --path homelab")
 
     if args.ensure_env and ENV_PATH.exists():
         return 0
@@ -412,10 +526,10 @@ def main() -> int:
 
     existing = parse_env_file(ENV_PATH)
     defaults = {**parse_env_file(ENV_EXAMPLE), **existing}
-    values, tls_enabled = gather_values(defaults, path_choice, args.yes)
+    values, tls_enabled = gather_values(defaults, path_choice, args.yes, tls=args.tls)
 
     while True:
-        errors, warnings = validate(values, tls=tls_enabled)
+        errors, warnings = validate({**defaults, **values}, tls=tls_enabled)
         for warning in warnings:
             print(f"\nWarning: {warning}")
         if not errors:
@@ -427,7 +541,9 @@ def main() -> int:
             print("Aborting: --yes cannot fix these without prompting.")
             return 1
         print("\nGoing through the prompts again with your previous answers as defaults.\n")
-        values, tls_enabled = gather_values({**defaults, **values}, path_choice, args.yes)
+        values, tls_enabled = gather_values(
+            {**defaults, **values}, path_choice, args.yes, tls=args.tls
+        )
 
     check_ports(values, path_choice, args.yes)
     summarize(values)
@@ -439,12 +555,19 @@ def main() -> int:
         shutil.copy(ENV_PATH, ENV_BACKUP)
         print(f"Backed up previous .env to {ENV_BACKUP.name}")
 
-    ENV_PATH.write_text(render_env(ENV_EXAMPLE.read_text(encoding="utf-8"), values), encoding="utf-8")
+    ENV_PATH.write_text(
+        render_env(ENV_EXAMPLE.read_text(encoding="utf-8"), {**existing, **values}),
+        encoding="utf-8",
+    )
     print(f"Wrote {ENV_PATH}")
 
     if args.env_only or args.ensure_env:
         return 0
 
+    # Task exported the old .env. Let Compose and nested Task reload the saved file,
+    # including its quoting/interpolation, instead of inheriting stale values.
+    for key in defaults.keys() | values.keys():
+        os.environ.pop(key, None)
     start_stack(path_choice, tls_enabled, values)
     return 0
 

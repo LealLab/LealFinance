@@ -17,21 +17,25 @@ tasks:
     status:
       - test -f .env
     cmds:
-      - cmd: python scripts/wizard.py --ensure-env
+      - cmd: python scripts/wizard.py --ensure-env {{.WIZARD_ARGS}}
         platforms: [windows]
-      - cmd: python3 scripts/wizard.py --ensure-env
+      - cmd: python3 scripts/wizard.py --ensure-env {{.WIZARD_ARGS}}
         platforms: [linux, darwin]
 
   install:
     desc: Install and start the published production stack
-    deps: [install:env]
+    deps:
+      - task: install:env
+        vars: { WIZARD_ARGS: "--path homelab --no-tls" }
     cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
   install:tls:
     desc: Install and start the published production stack behind the Caddy TLS proxy
-    deps: [install:env]
+    deps:
+      - task: install:env
+        vars: { WIZARD_ARGS: "--path homelab --tls" }
     cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml up -d
@@ -49,7 +53,9 @@ tasks:
 
   up:
     desc: Start the full stack (build + detached)
-    deps: [install:env]
+    deps:
+      - task: install:env
+        vars: { WIZARD_ARGS: "--path docker --no-tls" }
     cmds:
       - docker compose up -d --build
 
