@@ -8,7 +8,9 @@
       <p class="max-w-2xl text-sm text-content-muted">{{ description() }}</p>
     }
   </div>
-  <div class="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+  <div
+    class="grid w-full grid-cols-2 gap-2 max-md:[&>*:last-child:nth-child(odd)]:col-span-2 md:flex md:w-auto md:flex-wrap md:items-center"
+  >
     <ng-content />
   </div>
 </div>

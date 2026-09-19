@@ -8,16 +8,17 @@
     @if (tab() === 'transactions') {
       @if (mode() === 'calendar') {
         <app-month-switcher
+          class="max-md:col-span-2"
           [(month)]="calendarMonth"
           [prevLabel]="t('common.actions.previousMonth')"
           [nextLabel]="t('common.actions.nextMonth')"
         />
       }
 
-      <div class="flex items-center gap-1 rounded border border-border p-0.5">
+      <div class="flex items-center gap-1 rounded border border-border p-0.5 max-md:col-span-2">
         <button
           type="button"
-          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
+          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
           [class]="mode() === 'list' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
           [attr.aria-label]="t('transactions.view.list')"
           (click)="setMode('list')"
@@ -27,7 +28,7 @@
         </button>
         <button
           type="button"
-          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
+          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
           [class]="mode() === 'calendar' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
           [attr.aria-label]="t('transactions.view.calendar')"
           (click)="setMode('calendar')"
@@ -41,6 +42,7 @@
         appButton
         variant="secondary"
         type="button"
+        [class.max-md:col-span-2]="mode() === 'calendar'"
         [attr.aria-label]="t('transactions.actions.import')"
         routerLink="/transactions/import"
       >
@@ -96,7 +98,7 @@
         appButton
         variant="primary"
         type="button"
-        class="w-full sm:w-auto"
+        class="max-md:col-span-2"
         [attr.aria-label]="t('transactions.actions.new')"
         (click)="openCreateTx()"
       >
@@ -108,7 +110,6 @@
         appButton
         variant="primary"
         type="button"
-        class="w-full sm:w-auto"
         [attr.aria-label]="t('transactions.recurring.actions.new')"
         (click)="openCreateRule()"
       >

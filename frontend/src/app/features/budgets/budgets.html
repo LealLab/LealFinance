@@ -1,11 +1,12 @@
 <div *transloco="let t">
   <app-page-header [title]="t('budgets.title')" [description]="t('budgets.description')">
     <app-month-switcher
+      class="max-md:col-span-2"
       [(month)]="selectedMonth"
       [prevLabel]="t('common.actions.previousMonth')"
       [nextLabel]="t('common.actions.nextMonth')"
     />
-    <button appButton variant="primary" type="button" (click)="openCreate()">
+    <button appButton variant="primary" type="button" class="max-md:col-span-2" (click)="openCreate()">
       <app-icon name="plus" [size]="16" />
       {{ t('budgets.actions.new') }}
     </button>

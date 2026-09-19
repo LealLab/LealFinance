@@ -1,7 +1,7 @@
 <div *transloco="let t">
   <!-- t(loans.ratePeriod.annual, loans.ratePeriod.monthly) -->
   <app-page-header [title]="t('loans.title')" [description]="t('loans.description')">
-    <label class="flex items-center gap-2 text-sm text-content-muted">
+    <label class="flex items-center gap-2 text-sm text-content-muted max-md:col-span-2">
       <input
         type="checkbox"
         [checked]="showArchived()"
@@ -9,7 +9,7 @@
       />
       {{ t('loans.showArchived') }}
     </label>
-    <button appButton variant="primary" type="button" (click)="openCreate()">
+    <button appButton variant="primary" type="button" class="max-md:col-span-2" (click)="openCreate()">
       <app-icon name="plus" [size]="16" />
       {{ t('loans.actions.new') }}
     </button>
