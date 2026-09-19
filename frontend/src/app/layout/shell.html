@@ -108,26 +108,57 @@
   </aside>
 
   <div class="flex min-w-0 flex-1 flex-col">
-    <header
-      class="flex items-center gap-3 border-b border-border bg-surface-raised px-4 py-3 md:hidden"
-    >
-      <button
-        appButton
-        variant="ghost"
-        size="sm"
-        type="button"
-        (click)="mobileNavOpen.set(true)"
-        [attr.aria-label]="t('layout.sidebar.openMenu')"
-      >
-        <app-icon name="menu" [size]="20" />
-      </button>
-      <a routerLink="/" class="flex items-center gap-2 text-sm font-semibold tracking-tight">
-        <app-logo [size]="22" class="text-accent" />
-        {{ t('app.title') }}
-      </a>
-    </header>
+    <div class="sticky top-0 z-20 md:hidden">
+      <header class="flex items-center gap-1 border-b border-border bg-surface-raised pt-[calc(0.5rem+env(safe-area-inset-top))] pr-[calc(1rem+env(safe-area-inset-right))] pb-2 pl-[calc(1rem+env(safe-area-inset-left))]">
+        <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold tracking-tight">
+          <app-logo [size]="22" class="shrink-0 text-accent" />
+          <span class="truncate">
+            @if (mobileNav.activeTab(); as tab) {
+              {{ t(tab.labelKey) }}
+            } @else {
+              {{ t('app.title') }}
+            }
+          </span>
+        </a>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          (click)="commandPalette.show()"
+          [attr.aria-label]="t('layout.search.trigger')"
+        >
+          <app-icon name="search" [size]="20" />
+        </button>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          (click)="toggleBalances()"
+          [attr.aria-label]="
+            balanceVisibility.hidden()
+              ? t('layout.balanceToggle.show')
+              : t('layout.balanceToggle.hide')
+          "
+        >
+          <app-icon [name]="balanceVisibility.hidden() ? 'eyeOff' : 'eye'" [size]="20" />
+        </button>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          (click)="mobileNavOpen.set(true)"
+          [attr.aria-label]="t('layout.sidebar.openMenu')"
+        >
+          <app-icon name="menu" [size]="20" />
+        </button>
+      </header>
+      <app-section-tabs />
+    </div>
 
-    <main class="flex-1 px-4 py-6 md:px-6 md:py-8">
+    <main class="flex-1 px-4 pt-6 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:px-6 md:py-8">
       @if (mutationErrors.translationKey(); as key) {
         <div class="mb-4 flex items-center justify-between gap-3 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative" role="alert">
           {{ t(key) }}
@@ -137,6 +168,7 @@
       <app-update-banner />
       <router-outlet />
     </main>
+    <app-bottom-nav />
   </div>
 
   <!-- Backdrop-click-to-dismiss is a mouse convenience on top of the

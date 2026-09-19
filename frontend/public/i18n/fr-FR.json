@@ -774,10 +774,6 @@
       "expand": "Développer",
       "dragHandle": "Réordonner"
     },
-    "reorder": {
-      "moveUp": "Déplacer vers le haut",
-      "moveDown": "Déplacer vers le bas"
-    },
     "empty": {
       "title": "Aucune catégorie pour le moment",
       "description": "Créez des groupes et des catégories pour organiser vos opérations."

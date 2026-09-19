@@ -1,7 +1,7 @@
 <div *transloco="let t">
   <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')">
     @if (isAdmin()) {
-      <div class="flex flex-col items-end gap-1">
+      <div class="flex flex-col items-end gap-1 max-md:items-stretch">
         <button
           appButton
           variant="secondary"

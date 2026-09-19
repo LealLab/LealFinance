@@ -44,7 +44,31 @@
             />
           </div>
         } @else {
-          <div class="overflow-x-auto">
+          <div class="divide-y divide-border md:hidden">
+            @for (position of positions(); track position.asset.id) {
+              <div class="px-4 py-3">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="min-w-0">
+                    <div class="font-medium text-content-primary">{{ position.asset.symbol }}</div>
+                    <div class="truncate text-xs text-content-muted">{{ position.asset.name }} · {{ t('investments.assetClass.' + position.asset.assetClass) }}</div>
+                  </div>
+                  <div class="shrink-0 text-end font-mono text-sm font-semibold tabular-nums">
+                    <div>{{ position.marketValue ? (position.marketValue | money: wallet.currency) : '—' }}</div>
+                    <app-exchange-rate-warning [isFallback]="position.marketValueIsFallback" />
+                  </div>
+                </div>
+                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
+                  <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ position.quantity }}</span></span>
+                  <span>{{ t('investments.columns.averageCost') }}: <span class="font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency }}</span></span>
+                  <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ position.price ? (position.price | money: position.asset.currency) : '—' }}</span></span>
+                  <span>{{ t('investments.columns.unrealizedGain') }}: <span class="font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</span></span>
+                  <span>{{ t('investments.columns.allocation') }}: <span class="font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</span></span>
+                  @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
+                </div>
+              </div>
+            }
+          </div>
+          <div class="hidden overflow-x-auto md:block">
             <table class="w-full min-w-[640px] text-left text-sm">
               <thead class="border-b border-border text-xs text-content-muted">
                 <tr>
@@ -104,7 +128,31 @@
             />
           </div>
         } @else {
-          <div class="overflow-x-auto">
+          <div class="divide-y divide-border md:hidden">
+            @for (transaction of rows(); track transaction.id) {
+              <div class="flex items-start gap-3 px-4 py-3">
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="flex min-w-0 items-center gap-2">
+                      <app-badge tone="accent">{{ typeLabel(transaction.type) }}</app-badge>
+                      <span class="text-xs text-content-muted">{{ transaction.date }}</span>
+                    </div>
+                    <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">{{ transaction.amount | money: transaction.currency }}</span>
+                  </div>
+                  <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
+                    <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ transaction.quantity ?? '—' }}</span></span>
+                    <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency) : '—' }}</span></span>
+                    <span>{{ t('investments.columns.fee') }}: <span class="font-mono tabular-nums">{{ transaction.fee | money: transaction.currency }}</span></span>
+                  </div>
+                </div>
+                <div class="flex shrink-0 flex-col gap-1">
+                  <button appButton variant="ghost" size="sm" type="button" (click)="openEditTransaction(transaction)" [attr.aria-label]="t('investments.actions.editTransaction')"><app-icon name="pencil" [size]="16" /></button>
+                  <button appButton variant="ghost" size="sm" type="button" (click)="deleteTransaction(transaction)" [attr.aria-label]="t('investments.actions.deleteTransaction')"><app-icon name="trash" [size]="16" /></button>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="hidden overflow-x-auto md:block">
             <table class="w-full min-w-[640px] text-left text-sm">
               <thead class="border-b border-border text-xs text-content-muted">
                 <tr>

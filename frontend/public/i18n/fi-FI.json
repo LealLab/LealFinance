@@ -774,10 +774,6 @@
       "expand": "Laajenna",
       "dragHandle": "Muuta järjestystä"
     },
-    "reorder": {
-      "moveUp": "Siirrä ylös",
-      "moveDown": "Siirrä alas"
-    },
     "empty": {
       "title": "Ei vielä luokkia",
       "description": "Luo ryhmiä ja luokkia tapahtumiesi järjestämistä varten."

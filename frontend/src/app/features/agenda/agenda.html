@@ -46,7 +46,34 @@
         </div>
 
         <app-card [padded]="false">
-          <div class="max-w-full overflow-x-auto">
+          <div class="divide-y divide-border md:hidden">
+            @for (entry of data.entries; track $index) {
+              <div class="px-4 py-3">
+                <div class="flex items-start justify-between gap-2">
+                  <p class="min-w-0 break-words font-medium text-content-primary">{{ entry.description }}</p>
+                  <span
+                    class="shrink-0 font-mono font-semibold tabular-nums"
+                    [class.text-negative]="entry.cashImpact.amount.startsWith('-')"
+                    [class.text-positive]="
+                      !entry.cashImpact.amount.startsWith('-') &&
+                      entry.cashImpact.amount !== '0.0000'
+                    "
+                  >
+                    {{ entry.cashImpact.amount | money: entry.cashImpact.currency }}
+                  </span>
+                </div>
+                <div class="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-content-muted">
+                  <span>{{ entry.date }}</span>
+                  <span>· {{ t('agenda.source.' + entry.source) }}</span>
+                  <span>· {{ t('agenda.direction.' + entry.direction) }}</span>
+                  <app-badge [tone]="entry.realized ? 'positive' : 'accent'">
+                    {{ t('agenda.status.' + (entry.realized ? 'realized' : 'projected')) }}
+                  </app-badge>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="hidden max-w-full overflow-x-auto md:block">
             <table class="w-full min-w-[36rem] table-fixed text-sm">
               <thead>
                 <tr class="border-b border-border text-start text-xs text-content-muted">

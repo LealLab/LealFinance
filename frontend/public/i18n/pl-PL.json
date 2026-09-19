@@ -774,10 +774,6 @@
       "expand": "Rozwiń",
       "dragHandle": "Zmień kolejność"
     },
-    "reorder": {
-      "moveUp": "Przenieś w górę",
-      "moveDown": "Przenieś w dół"
-    },
     "empty": {
       "title": "Nie masz jeszcze żadnych kategorii",
       "description": "Utwórz grupy i kategorie, aby uporządkować transakcje."

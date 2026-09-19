@@ -289,7 +289,8 @@ export class Categories {
     this.reorderGroups(kind, event.previousIndex, event.currentIndex);
   }
 
-  protected moveGroup(kind: CategoryKind, index: number, delta: -1 | 1): void {
+  protected moveGroup(kind: CategoryKind, index: number, delta: -1 | 1, event: Event): void {
+    event.preventDefault();
     this.reorderGroups(kind, index, index + delta);
   }
 
@@ -312,7 +313,14 @@ export class Categories {
     this.reorderCategories(kind, groupId, event.previousIndex, event.currentIndex);
   }
 
-  protected moveCategory(kind: CategoryKind, groupId: string, index: number, delta: -1 | 1): void {
+  protected moveCategory(
+    kind: CategoryKind,
+    groupId: string,
+    index: number,
+    delta: -1 | 1,
+    event: Event,
+  ): void {
+    event.preventDefault();
     this.reorderCategories(kind, groupId, index, index + delta);
   }
 

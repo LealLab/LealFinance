@@ -774,10 +774,6 @@
       "expand": "Expandera",
       "dragHandle": "Ändra ordning"
     },
-    "reorder": {
-      "moveUp": "Flytta upp",
-      "moveDown": "Flytta ned"
-    },
     "empty": {
       "title": "Inga kategorier ännu",
       "description": "Skapa grupper och kategorier för att organisera dina transaktioner."

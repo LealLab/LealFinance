@@ -774,10 +774,6 @@
       "expand": "Udvid",
       "dragHandle": "Omarranger"
     },
-    "reorder": {
-      "moveUp": "Flyt op",
-      "moveDown": "Flyt ned"
-    },
     "empty": {
       "title": "Ingen kategorier endnu",
       "description": "Opret grupper og kategorier for at organisere dine transaktioner."

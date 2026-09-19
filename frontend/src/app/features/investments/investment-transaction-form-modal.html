@@ -7,7 +7,7 @@
           @for (type of transactionTypes; track type) {
             <button
               type="button"
-              class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              class="min-w-0 truncate rounded px-2 py-1.5 text-sm font-medium transition-colors [@media(pointer:coarse)]:min-h-11"
               [class]="form.controls.type.value === type ? 'bg-surface-raised text-content-primary shadow-sm' : 'text-content-muted hover:text-content-primary'"
               (click)="form.controls.type.setValue(type)"
             >

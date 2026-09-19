@@ -85,7 +85,7 @@
             </label>
             <select
               [id]="'import-map-' + field"
-              class="form-input w-full max-w-56"
+              class="form-input w-full sm:max-w-56"
               [value]="fieldMapping()[field]"
               (change)="onFieldMappingChanged(field, $any($event.target).value)"
             >
@@ -218,7 +218,7 @@
 
     @if (nonTransferRows().length > 0) {
       <app-card class="mb-6" [padded]="false">
-        <div class="overflow-x-auto">
+        <div class="hidden overflow-x-auto md:block">
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b border-border text-start text-xs font-medium text-content-muted">
@@ -269,6 +269,7 @@
                   <td class="p-3 align-middle">
                     <input
                       type="checkbox"
+                      [attr.aria-label]="row.description"
                       [checked]="row.reviewed"
                       [disabled]="!row.reviewed && !isReviewable(row)"
                       (change)="toggleReviewed(row)"
@@ -405,6 +406,184 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Mobile: each row is an editable card bound to the same handlers as the table. -->
+        <div class="md:hidden">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-border px-3 py-1 text-xs font-medium text-content-muted">
+            <label class="flex items-center gap-2 [@media(pointer:coarse)]:min-h-11">
+              <input
+                type="checkbox"
+                (change)="toggleAllReviewed($any($event.target).checked, nonTransferRows())"
+              />
+              {{ t('transactions.import.grid.reviewAll') }}
+            </label>
+            <button type="button" class="inline-flex items-center gap-1 py-2 [@media(pointer:coarse)]:min-h-11" (click)="toggleSort('date')">
+              {{ t('transactions.form.fields.date') }}
+              @if (sortColumn() === 'date') {
+                <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+              }
+            </button>
+            <button type="button" class="inline-flex items-center gap-1 py-2 [@media(pointer:coarse)]:min-h-11" (click)="toggleSort('type')">
+              {{ t('transactions.filters.type') }}
+              @if (sortColumn() === 'type') {
+                <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+              }
+            </button>
+            <button type="button" class="inline-flex items-center gap-1 py-2 [@media(pointer:coarse)]:min-h-11" (click)="toggleSort('amount')">
+              {{ t('transactions.form.fields.amount') }}
+              @if (sortColumn() === 'amount') {
+                <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+              }
+            </button>
+          </div>
+          <div class="divide-y divide-border">
+            @for (row of nonTransferRows(); track row.index) {
+              <div class="flex flex-col gap-3 p-3" [class]="rowBackgroundClass(row)" [class.opacity-50]="row.excluded">
+                <div class="flex items-center justify-between gap-3">
+                  <input
+                    type="checkbox"
+                    [attr.aria-label]="row.description"
+                    [checked]="row.reviewed"
+                    [disabled]="!row.reviewed && !isReviewable(row)"
+                    (change)="toggleReviewed(row)"
+                  />
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    [attr.aria-label]="t('transactions.import.grid.exclude')"
+                    (click)="toggleExcluded(row)"
+                  >
+                    <app-icon [name]="row.excluded ? 'refresh' : 'trash'" [size]="16" />
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <label class="min-w-0">
+                    <span class="form-label">{{ t('transactions.form.fields.date') }}</span>
+                    <input
+                      type="date"
+                      class="form-input"
+                      [value]="row.date ?? ''"
+                      (change)="setRowDate(row, $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="min-w-0">
+                    <span class="form-label">{{ t('transactions.form.fields.amount') }}</span>
+                    <input
+                      type="text"
+                      inputmode="decimal"
+                      class="form-input font-mono tabular-nums"
+                      [value]="row.amount ?? ''"
+                      (change)="setRowAmount(row, $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="min-w-0 sm:col-span-2">
+                    <span class="form-label">{{ t('transactions.form.fields.description') }}</span>
+                    <input
+                      type="text"
+                      class="form-input"
+                      [value]="row.description"
+                      (change)="setRowDescription(row, $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="min-w-0">
+                    <span class="form-label">{{ t('transactions.filters.type') }}</span>
+                    <select
+                      class="form-input"
+                      [value]="row.type ?? ''"
+                      (change)="setRowType(row, $any($event.target).value)"
+                    >
+                      <option value="" [selected]="!row.type">
+                        {{ t('transactions.form.fields.selectPlaceholder') }}
+                      </option>
+                      @for (type of rowTypes; track type) {
+                        <option [value]="type" [selected]="type === row.type">
+                          {{ t('transactions.type.' + type) }}
+                        </option>
+                      }
+                    </select>
+                  </label>
+                  <div class="min-w-0">
+                    <label class="block">
+                      <span class="form-label">{{ t('transactions.form.fields.category') }}</span>
+                      <select
+                        class="form-input"
+                        [disabled]="row.type !== 'income' && row.type !== 'expense'"
+                        (change)="setRowCategory(row, $any($event.target).value)"
+                      >
+                        <option value="" [selected]="!row.categoryId">
+                          {{ t('transactions.import.grid.noCategory') }}
+                        </option>
+                        @for (group of categoryGroupsForType(row.type); track group.group.id) {
+                          <optgroup [label]="group.group.name">
+                            @for (category of group.categories; track category.id) {
+                              <option [value]="category.id" [selected]="category.id === row.categoryId">
+                                {{ category.name }}
+                              </option>
+                            }
+                          </optgroup>
+                        }
+                      </select>
+                    </label>
+                    @if (row.ruleName) {
+                      <span class="mt-1 block text-xs text-accent">
+                        {{ t('rules.import.badgeTitle', { name: row.ruleName }) }}
+                      </span>
+                    }
+                    @if (!row.categoryId && row.suggestion; as suggestion) {
+                      <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                        <span class="inline-flex items-center gap-1 font-medium text-accent">
+                          <app-icon name="sparkles" [size]="12" />
+                          @if (suggestion.categoryId) {
+                            {{ suggestionCategoryLabel(row) }}
+                          } @else {
+                            {{ t('transactions.import.ai.proposedBadge', {
+                              group: suggestion.groupName,
+                              category: suggestion.categoryName
+                            }) }}
+                          }
+                        </span>
+                        <span class="inline-flex items-center gap-2">
+                          @if (suggestion.categoryId) {
+                            <button
+                              type="button"
+                              class="py-2 font-medium text-accent hover:underline [@media(pointer:coarse)]:min-h-11"
+                              (click)="acceptSuggestion(row)"
+                            >
+                              {{ t('transactions.import.ai.accept') }}
+                            </button>
+                          }
+                          <button
+                            type="button"
+                            class="py-2 text-content-muted hover:underline [@media(pointer:coarse)]:min-h-11"
+                            (click)="dismissSuggestion(row)"
+                          >
+                            {{ t('transactions.import.ai.dismiss') }}
+                          </button>
+                        </span>
+                      </div>
+                    }
+                  </div>
+                  <label class="min-w-0 sm:col-span-2">
+                    <span class="form-label">{{ t('transactions.form.fields.notes') }}</span>
+                    <input
+                      type="text"
+                      class="form-input"
+                      [value]="row.notes ?? ''"
+                      (change)="setRowNotes(row, $any($event.target).value)"
+                    />
+                  </label>
+                </div>
+                @if (row.error) {
+                  <p class="text-xs text-negative">{{ t('errors.' + row.error) }}</p>
+                } @else if (row.duplicate) {
+                  <p class="text-xs text-warning">{{ t('transactions.import.grid.duplicate') }}</p>
+                }
+              </div>
+            }
+          </div>
+        </div>
       </app-card>
     }
 
@@ -413,7 +592,7 @@
         <div class="border-b border-border px-3 py-2 text-sm font-semibold text-content-primary">
           {{ t('transactions.type.transfer') }}
         </div>
-        <div class="overflow-x-auto">
+        <div class="hidden overflow-x-auto md:block">
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b border-border text-start text-xs font-medium text-content-muted">
@@ -464,6 +643,7 @@
                   <td class="p-3 align-middle">
                     <input
                       type="checkbox"
+                      [attr.aria-label]="row.description"
                       [checked]="row.reviewed"
                       [disabled]="!row.reviewed && !isReviewable(row)"
                       (change)="toggleReviewed(row)"
@@ -554,6 +734,141 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Mobile: each row is an editable card bound to the same handlers as the table. -->
+        <div class="md:hidden">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-border px-3 py-1 text-xs font-medium text-content-muted">
+            <label class="flex items-center gap-2 [@media(pointer:coarse)]:min-h-11">
+              <input
+                type="checkbox"
+                (change)="toggleAllReviewed($any($event.target).checked, transferRows())"
+              />
+              {{ t('transactions.import.grid.reviewAll') }}
+            </label>
+            <button type="button" class="inline-flex items-center gap-1 py-2 [@media(pointer:coarse)]:min-h-11" (click)="toggleSort('date')">
+              {{ t('transactions.form.fields.date') }}
+              @if (sortColumn() === 'date') {
+                <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+              }
+            </button>
+            <button type="button" class="inline-flex items-center gap-1 py-2 [@media(pointer:coarse)]:min-h-11" (click)="toggleSort('type')">
+              {{ t('transactions.filters.type') }}
+              @if (sortColumn() === 'type') {
+                <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+              }
+            </button>
+            <button type="button" class="inline-flex items-center gap-1 py-2 [@media(pointer:coarse)]:min-h-11" (click)="toggleSort('amount')">
+              {{ t('transactions.form.fields.amount') }}
+              @if (sortColumn() === 'amount') {
+                <app-icon name="chevronDown" [size]="12" [class.rotate-180]="sortDirection() === 'desc'" />
+              }
+            </button>
+          </div>
+          <div class="divide-y divide-border">
+            @for (row of transferRows(); track row.index) {
+              <div class="flex flex-col gap-3 p-3" [class]="rowBackgroundClass(row)" [class.opacity-50]="row.excluded">
+                <div class="flex items-center justify-between gap-3">
+                  <input
+                    type="checkbox"
+                    [attr.aria-label]="row.description"
+                    [checked]="row.reviewed"
+                    [disabled]="!row.reviewed && !isReviewable(row)"
+                    (change)="toggleReviewed(row)"
+                  />
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    [attr.aria-label]="t('transactions.import.grid.exclude')"
+                    (click)="toggleExcluded(row)"
+                  >
+                    <app-icon [name]="row.excluded ? 'refresh' : 'trash'" [size]="16" />
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <label class="min-w-0">
+                    <span class="form-label">{{ t('transactions.form.fields.date') }}</span>
+                    <input
+                      type="date"
+                      class="form-input"
+                      [value]="row.date ?? ''"
+                      (change)="setRowDate(row, $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="min-w-0">
+                    <span class="form-label">{{ t('transactions.form.fields.amount') }}</span>
+                    <input
+                      type="text"
+                      inputmode="decimal"
+                      class="form-input font-mono tabular-nums"
+                      [value]="row.amount ?? ''"
+                      (change)="setRowAmount(row, $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="min-w-0 sm:col-span-2">
+                    <span class="form-label">{{ t('transactions.form.fields.description') }}</span>
+                    <input
+                      type="text"
+                      class="form-input"
+                      [value]="row.description"
+                      (change)="setRowDescription(row, $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="min-w-0">
+                    <span class="form-label">{{ t('transactions.filters.type') }}</span>
+                    <select
+                      class="form-input"
+                      [value]="row.type ?? ''"
+                      (change)="setRowType(row, $any($event.target).value)"
+                    >
+                      <option value="" [selected]="!row.type">
+                        {{ t('transactions.form.fields.selectPlaceholder') }}
+                      </option>
+                      @for (type of rowTypes; track type) {
+                        <option [value]="type" [selected]="type === row.type">
+                          {{ t('transactions.type.' + type) }}
+                        </option>
+                      }
+                    </select>
+                  </label>
+                  <div class="min-w-0">
+                    <label class="block">
+                      <span class="form-label">{{ t('transactions.form.fields.account') }}</span>
+                      <select
+                        class="form-input"
+                        [value]="row.counterpartyAccountId ?? ''"
+                        (change)="setRowCounterparty(row, $any($event.target).value)"
+                      >
+                        <option value="">{{ t('transactions.form.fields.selectPlaceholder') }}</option>
+                        @for (account of counterpartyAccounts(); track account.id) {
+                          <option [value]="account.id">{{ account.name }}</option>
+                        }
+                      </select>
+                    </label>
+                    @if (row.counterpartyAccountName && !row.counterpartyAccountId) {
+                      <span class="mt-1 block text-xs text-warning">{{ row.counterpartyAccountName }}</span>
+                    }
+                  </div>
+                  <label class="min-w-0 sm:col-span-2">
+                    <span class="form-label">{{ t('transactions.form.fields.notes') }}</span>
+                    <input
+                      type="text"
+                      class="form-input"
+                      [value]="row.notes ?? ''"
+                      (change)="setRowNotes(row, $any($event.target).value)"
+                    />
+                  </label>
+                </div>
+                @if (row.error) {
+                  <p class="text-xs text-negative">{{ t('errors.' + row.error) }}</p>
+                } @else if (row.duplicate) {
+                  <p class="text-xs text-warning">{{ t('transactions.import.grid.duplicate') }}</p>
+                }
+              </div>
+            }
+          </div>
+        </div>
       </app-card>
     }
 
@@ -561,7 +876,7 @@
       <p class="text-sm text-content-muted">
         {{ t('transactions.import.grid.reviewedCount', { reviewed: reviewedRowCount(), total: rows().length }) }}
       </p>
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center gap-4">
         <label class="flex items-center gap-2 text-sm text-content-primary">
           <input
             type="checkbox"

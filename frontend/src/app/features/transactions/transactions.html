@@ -8,34 +8,52 @@
     @if (tab() === 'transactions') {
       @if (mode() === 'calendar') {
         <app-month-switcher
+          class="max-md:col-span-2"
           [(month)]="calendarMonth"
           [prevLabel]="t('common.actions.previousMonth')"
           [nextLabel]="t('common.actions.nextMonth')"
         />
       }
 
-      <div class="flex items-center gap-1 rounded border border-border p-0.5">
+      <div class="flex items-center gap-1 rounded border border-border p-0.5 max-md:col-span-2">
         <button
           type="button"
-          class="flex items-center gap-1 rounded px-2 py-1 text-sm"
+          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
           [class]="mode() === 'list' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-label]="t('transactions.view.list')"
           (click)="setMode('list')"
         >
           <app-icon name="menu" [size]="16" />
-          {{ t('transactions.view.list') }}
+          <span>{{ t('transactions.view.list') }}</span>
         </button>
         <button
           type="button"
-          class="flex items-center gap-1 rounded px-2 py-1 text-sm"
+          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
           [class]="mode() === 'calendar' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-label]="t('transactions.view.calendar')"
           (click)="setMode('calendar')"
         >
           <app-icon name="calendar" [size]="16" />
-          {{ t('transactions.view.calendar') }}
+          <span>{{ t('transactions.view.calendar') }}</span>
         </button>
       </div>
 
+      <button
+        appButton
+        variant="secondary"
+        type="button"
+        [class.max-md:col-span-2]="mode() === 'calendar'"
+        [attr.aria-label]="t('transactions.actions.import')"
+        routerLink="/transactions/import"
+      >
+        <app-icon name="arrowUpRight" [size]="16" />
+        <span>{{ t('transactions.actions.import') }}</span>
+      </button>
+
       @if (mode() === 'list') {
+        <!-- The column picker only configures the desktop table, which is
+             hidden below md (phones get the card list instead). -->
+        <div class="hidden md:block">
         <app-dropdown panelClass="w-56">
           <button
             dropdownTrigger
@@ -45,7 +63,7 @@
             [attr.aria-label]="t('transactions.actions.columns')"
           >
             <app-icon name="grip" [size]="16" />
-            <span class="hidden sm:inline">{{ t('transactions.actions.columns') }}</span>
+            <span>{{ t('transactions.actions.columns') }}</span>
           </button>
           <p class="px-2 py-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
             {{ t('transactions.columns.title') }}
@@ -62,6 +80,7 @@
             </label>
           }
         </app-dropdown>
+        </div>
 
         <button
           appButton
@@ -71,29 +90,20 @@
           (click)="exportCsv()"
         >
           <app-icon name="arrowDownLeft" [size]="16" />
-          <span class="hidden sm:inline">{{ t('transactions.actions.exportCsv') }}</span>
+          <span>{{ t('transactions.actions.exportCsv') }}</span>
         </button>
       }
 
       <button
         appButton
-        variant="secondary"
-        type="button"
-        [attr.aria-label]="t('transactions.actions.import')"
-        routerLink="/transactions/import"
-      >
-        <app-icon name="arrowUpRight" [size]="16" />
-        <span class="hidden sm:inline">{{ t('transactions.actions.import') }}</span>
-      </button>
-      <button
-        appButton
         variant="primary"
         type="button"
+        class="max-md:col-span-2"
         [attr.aria-label]="t('transactions.actions.new')"
         (click)="openCreateTx()"
       >
         <app-icon name="plus" [size]="16" />
-        <span class="hidden sm:inline">{{ t('transactions.actions.new') }}</span>
+        <span>{{ t('transactions.actions.new') }}</span>
       </button>
     } @else {
       <button
@@ -104,7 +114,7 @@
         (click)="openCreateRule()"
       >
         <app-icon name="plus" [size]="16" />
-        <span class="hidden sm:inline">{{ t('transactions.recurring.actions.new') }}</span>
+        <span>{{ t('transactions.recurring.actions.new') }}</span>
       </button>
     }
   </app-page-header>
@@ -174,7 +184,7 @@
         [title]="t('transactions.empty.title')"
         [description]="t('transactions.empty.description')"
       >
-        <button appButton variant="primary" type="button" (click)="openCreateTx()">
+        <button appButton variant="primary" type="button" class="max-md:hidden" (click)="openCreateTx()">
           {{ t('transactions.actions.new') }}
         </button>
       </app-empty-state>
@@ -247,7 +257,7 @@
         [title]="t('transactions.recurring.empty.title')"
         [description]="t('transactions.recurring.empty.description')"
       >
-        <button appButton variant="primary" type="button" (click)="openCreateRule()">
+        <button appButton variant="primary" type="button" class="max-md:hidden" (click)="openCreateRule()">
           {{ t('transactions.recurring.actions.new') }}
         </button>
       </app-empty-state>

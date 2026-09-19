@@ -774,10 +774,6 @@
       "expand": "展開",
       "dragHandle": "並べ替え"
     },
-    "reorder": {
-      "moveUp": "上へ移動",
-      "moveDown": "下へ移動"
-    },
     "empty": {
       "title": "カテゴリはまだありません",
       "description": "グループとカテゴリを作成して、取引を整理しましょう。"

@@ -774,10 +774,6 @@
       "expand": "展开",
       "dragHandle": "调整顺序"
     },
-    "reorder": {
-      "moveUp": "上移",
-      "moveDown": "下移"
-    },
     "empty": {
       "title": "暂无分类",
       "description": "创建分组和分类来整理交易。"

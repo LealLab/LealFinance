@@ -774,10 +774,6 @@
       "expand": "Rozbalit",
       "dragHandle": "Změnit pořadí"
     },
-    "reorder": {
-      "moveUp": "Posunout nahoru",
-      "moveDown": "Posunout dolů"
-    },
     "empty": {
       "title": "Zatím nemáte žádné kategorie",
       "description": "Vytvořte skupiny a kategorie a uspořádejte si transakce."

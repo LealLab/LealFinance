@@ -46,8 +46,10 @@
                       <button
                         cdkDragHandle
                         type="button"
-                        class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing"
+                        class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
                         [attr.aria-label]="t('categories.actions.dragHandle')"
+                        (keydown.arrowup)="moveGroup(section.kind, rowIndex, -1, $event)"
+                        (keydown.arrowdown)="moveGroup(section.kind, rowIndex, 1, $event)"
                       >
                         <app-icon name="grip" [size]="14" />
                       </button>
@@ -83,28 +85,6 @@
                     </div>
                     <div class="flex shrink-0 items-center gap-3">
                       <div class="flex shrink-0 items-center gap-1">
-                        <button
-                          appButton
-                          variant="ghost"
-                          size="sm"
-                          type="button"
-                          [disabled]="rowIndex === 0"
-                          [attr.aria-label]="t('categories.reorder.moveUp')"
-                          (click)="moveGroup(section.kind, rowIndex, -1)"
-                        >
-                          <app-icon name="chevronDown" [size]="16" class="rotate-180" />
-                        </button>
-                        <button
-                          appButton
-                          variant="ghost"
-                          size="sm"
-                          type="button"
-                          [disabled]="rowIndex === section.rows.length - 1"
-                          [attr.aria-label]="t('categories.reorder.moveDown')"
-                          (click)="moveGroup(section.kind, rowIndex, 1)"
-                        >
-                          <app-icon name="chevronDown" [size]="16" />
-                        </button>
                         <button
                           appButton
                           variant="ghost"
@@ -158,8 +138,10 @@
                             <button
                               cdkDragHandle
                               type="button"
-                              class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing"
+                              class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
                               [attr.aria-label]="t('categories.actions.dragHandle')"
+                              (keydown.arrowup)="moveCategory(section.kind, row.group.id, categoryIndex, -1, $event)"
+                              (keydown.arrowdown)="moveCategory(section.kind, row.group.id, categoryIndex, 1, $event)"
                             >
                               <app-icon name="grip" [size]="12" />
                             </button>
@@ -182,28 +164,6 @@
                             </span>
                           </div>
                           <div class="flex shrink-0 items-center gap-1">
-                            <button
-                              appButton
-                              variant="ghost"
-                              size="sm"
-                              type="button"
-                              [disabled]="categoryIndex === 0"
-                              [attr.aria-label]="t('categories.reorder.moveUp')"
-                              (click)="moveCategory(section.kind, row.group.id, categoryIndex, -1)"
-                            >
-                              <app-icon name="chevronDown" [size]="14" class="rotate-180" />
-                            </button>
-                            <button
-                              appButton
-                              variant="ghost"
-                              size="sm"
-                              type="button"
-                              [disabled]="categoryIndex === row.categories.length - 1"
-                              [attr.aria-label]="t('categories.reorder.moveDown')"
-                              (click)="moveCategory(section.kind, row.group.id, categoryIndex, 1)"
-                            >
-                              <app-icon name="chevronDown" [size]="14" />
-                            </button>
                             <button
                               appButton
                               variant="ghost"

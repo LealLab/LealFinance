@@ -774,10 +774,6 @@
       "expand": "펼치기",
       "dragHandle": "순서 변경"
     },
-    "reorder": {
-      "moveUp": "위로 이동",
-      "moveDown": "아래로 이동"
-    },
     "empty": {
       "title": "아직 카테고리가 없습니다",
       "description": "그룹과 카테고리를 만들어 거래를 정리하세요."

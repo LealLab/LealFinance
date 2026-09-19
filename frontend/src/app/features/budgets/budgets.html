@@ -1,11 +1,12 @@
 <div *transloco="let t">
   <app-page-header [title]="t('budgets.title')" [description]="t('budgets.description')">
     <app-month-switcher
+      class="max-md:col-span-2"
       [(month)]="selectedMonth"
       [prevLabel]="t('common.actions.previousMonth')"
       [nextLabel]="t('common.actions.nextMonth')"
     />
-    <button appButton variant="primary" type="button" (click)="openCreate()">
+    <button appButton variant="primary" type="button" class="max-md:col-span-2" (click)="openCreate()">
       <app-icon name="plus" [size]="16" />
       {{ t('budgets.actions.new') }}
     </button>
@@ -68,7 +69,7 @@
           </div>
         </div>
 
-        <div class="flex max-h-80 flex-col gap-4 overflow-y-auto pe-2">
+        <div class="flex flex-col gap-4 md:max-h-80 md:overflow-y-auto md:pe-2">
           @for (row of allocationRows(); track row.group.id) {
             <div>
               <div class="mb-1 flex items-center justify-between gap-3">
@@ -84,7 +85,7 @@
                     <app-badge tone="neutral">{{ t('budgets.planner.fixed') }}</app-badge>
                   }
                 </div>
-                <span class="font-mono text-sm font-semibold tabular-nums text-accent"
+                <span class="shrink-0 font-mono text-sm font-semibold tabular-nums text-accent"
                   >{{ row.percentage }}%</span
                 >
               </div>
@@ -94,7 +95,7 @@
                   min="0"
                   max="100"
                   step="0.5"
-                  class="budget-slider flex-1"
+                  class="budget-slider min-w-0 flex-1"
                   [value]="row.percentage"
                   [disabled]="row.fixed"
                   (input)="setAllocation(row.group.id, $any($event.target).value)"
