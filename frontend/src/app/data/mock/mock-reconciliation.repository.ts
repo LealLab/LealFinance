@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiError } from '../../core/api-error';
 import { Account } from '../../domain/models/account';
-import { Reconciliation, ReconciliationDetail, ReconciliationEntry } from '../../domain/models/reconciliation';
+import { Reconciliation, ReconciliationDetail } from '../../domain/models/reconciliation';
 import { Transaction } from '../../domain/models/transaction';
 import { add, isZero, money, subtract, sum } from '../../shared/money/money';
 import { ReconciliationCreateInput, ReconciliationRepository } from '../reconciliation.repository';
@@ -17,20 +17,14 @@ interface Leg {
   amount: string;
 }
 
-interface StoredEntry extends ReconciliationEntry {
-  accountId: string;
-}
-
 @Injectable({ providedIn: 'root' })
 export class MockReconciliationRepository extends ReconciliationRepository {
   private readonly store = inject(MockStore);
   private readonly latencyMs = inject(MOCK_LATENCY_MS);
-  private reconciliations: Reconciliation[] = [];
-  private entries: StoredEntry[] = [];
 
   list(accountId?: string): Observable<Reconciliation[]> {
     return mockResult(
-      () => this.reconciliations.filter((item) => !accountId || item.accountId === accountId),
+      () => this.store.reconciliations().filter((item) => !accountId || item.accountId === accountId),
       this.latencyMs,
     );
   }
@@ -39,7 +33,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
     return mockResult(() => {
       const account = this.account(input.accountId);
       if (account.archived) throw new ApiError(422, 'reconciliation.account_archived', {});
-      if (this.reconciliations.some((item) => item.accountId === account.id && item.status === 'open')) {
+      if (this.store.reconciliations().some((item) => item.accountId === account.id && item.status === 'open')) {
         throw new ApiError(409, 'reconciliation.already_open', {});
       }
       const reconciliation: Reconciliation = {
@@ -51,7 +45,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
         status: 'open',
         createdAt: new Date().toISOString(),
       };
-      this.reconciliations = [...this.reconciliations, reconciliation];
+      this.store.addReconciliation(reconciliation);
       return reconciliation;
     }, this.latencyMs);
   }
@@ -70,28 +64,25 @@ export class MockReconciliationRepository extends ReconciliationRepository {
           throw new ApiError(422, 'reconciliation.transaction_not_eligible', {});
         }
         const leg = legs.find((candidate) => candidate.transaction.id === transactionId)!;
-        const existing = this.entries.find(
+        const existing = this.store.reconciliationEntries().find(
           (entry) => entry.transactionId === transactionId && entry.accountId === reconciliation.accountId,
         );
         if (existing && existing.clearedBy !== id && !cleared) {
           throw new ApiError(409, 'reconciliation.leg_locked', {});
         }
         if (cleared && !existing) {
-          this.entries = [
-            ...this.entries,
-            {
-              transactionId,
-              accountId: reconciliation.accountId,
-              leg: leg.leg,
-              date: leg.transaction.date,
-              description: leg.transaction.description,
-              amount: leg.amount,
-              cleared: true,
-              clearedBy: id,
-            },
-          ];
+          this.store.addReconciliationEntry({
+            transactionId,
+            accountId: reconciliation.accountId,
+            leg: leg.leg,
+            date: leg.transaction.date,
+            description: leg.transaction.description,
+            amount: leg.amount,
+            cleared: true,
+            clearedBy: id,
+          });
         } else if (!cleared && existing) {
-          this.entries = this.entries.filter((entry) => entry !== existing);
+          this.store.deleteReconciliationEntry(transactionId, reconciliation.accountId);
         }
       }
       return this.buildDetail(reconciliation);
@@ -113,7 +104,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
   reopen(id: string): Observable<Reconciliation> {
     return mockResult(() => {
       const reconciliation = this.reconciliation(id);
-      if (this.reconciliations.some((item) => item.id !== id && item.accountId === reconciliation.accountId && item.status === 'open')) {
+      if (this.store.reconciliations().some((item) => item.id !== id && item.accountId === reconciliation.accountId && item.status === 'open')) {
         throw new ApiError(409, 'reconciliation.already_open', {});
       }
       reconciliation.status = 'open';
@@ -125,8 +116,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
   remove(id: string): Observable<void> {
     return mockResult(() => {
       this.reconciliation(id);
-      this.reconciliations = this.reconciliations.filter((item) => item.id !== id);
-      this.entries = this.entries.filter((entry) => entry.clearedBy !== id);
+      this.store.deleteReconciliation(id);
     }, this.latencyMs);
   }
 
@@ -137,7 +127,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
   }
 
   private reconciliation(id: string): Reconciliation {
-    const reconciliation = findEntity(this.reconciliations, id);
+    const reconciliation = findEntity(this.store.reconciliations(), id);
     if (!reconciliation) throw new ApiError(404, 'reconciliation.not_found', { id });
     return reconciliation;
   }
@@ -165,7 +155,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
     const allDeltas = sum(legs.map((leg) => money(leg.amount, reconciliation.currency)), reconciliation.currency);
     const clearedDeltas = sum(
       legs
-        .filter((leg) => this.entries.some(
+        .filter((leg) => this.store.reconciliationEntries().some(
           (entry) => entry.transactionId === leg.transaction.id
             && entry.accountId === reconciliation.accountId,
         ))
@@ -173,7 +163,7 @@ export class MockReconciliationRepository extends ReconciliationRepository {
       reconciliation.currency,
     );
     const entries = legs.map((leg) => {
-      const cleared = this.entries.find(
+      const cleared = this.store.reconciliationEntries().find(
         (entry) => entry.transactionId === leg.transaction.id
           && entry.accountId === reconciliation.accountId,
       );

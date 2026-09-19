@@ -67,4 +67,19 @@ describe('Reconciliation', () => {
     expect(isZero(money('0.0000', 'BRL'))).toBe(true);
     expect(isZero(money('0.0001', 'BRL'))).toBe(false);
   });
+
+  it('removes reconciliations when their account is deleted', async () => {
+    const accounts = TestBed.inject(AccountRepository);
+    const reconciliations = TestBed.inject(ReconciliationRepository);
+    const account = (await firstValueFrom(accounts.list()))[0];
+
+    await firstValueFrom(reconciliations.create({
+      accountId: account.id,
+      statementDate: '2026-12-31',
+      statementBalance: '0',
+    }));
+    await firstValueFrom(accounts.delete(account.id));
+
+    expect(await firstValueFrom(reconciliations.list(account.id))).toEqual([]);
+  });
 });
