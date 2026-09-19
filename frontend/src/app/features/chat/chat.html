@@ -14,6 +14,20 @@
     </button>
   </div>
 
+  <!-- Below md the thread pane is hidden while the list is showing, so an error
+       raised with no open conversation (e.g. no AI provider configured) must
+       live outside it to stay visible. -->
+  @if (errorKey(); as key) {
+    @if (!activeId() || showList()) {
+      <p
+        class="mb-4 shrink-0 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+        role="alert"
+      >
+        {{ t(key) }}
+      </p>
+    }
+  }
+
   <div class="chat-layout grid min-h-0 min-w-0 flex-1 gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
     <div class="chat-conversations flex min-h-0 flex-col" [class.max-md:hidden]="!showList()">
       <app-card [padded]="false" class="chat-conversation-card min-h-0 flex-1 flex-col overflow-hidden">
@@ -62,14 +76,6 @@
           [description]="t('chat.empty.body')"
         >
           <button appButton type="button" (click)="newChat()">{{ t('chat.newChat') }}</button>
-          @if (errorKey(); as key) {
-            <p
-              class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
-              role="alert"
-            >
-              {{ t(key) }}
-            </p>
-          }
         </app-empty-state>
       } @else if (detail.isLoading()) {
         <app-skeleton height="20rem" />

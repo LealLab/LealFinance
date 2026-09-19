@@ -382,6 +382,10 @@ describe('Chat', () => {
     fixture.detectChanges();
 
     expect(chat['errorKey']()).toBe('chat.errors.notConfigured');
-    expect(fixture.nativeElement.querySelector('[role="alert"]')).not.toBeNull();
+    const alert = fixture.nativeElement.querySelector('[role="alert"]');
+    expect(alert).not.toBeNull();
+    // Below md the thread pane is hidden while the list shows; the alert must
+    // not live inside it (or any other max-md:hidden container).
+    expect(alert.closest('.max-md\\:hidden')).toBeNull();
   });
 });
