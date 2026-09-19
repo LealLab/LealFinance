@@ -109,7 +109,7 @@
 
   <div class="flex min-w-0 flex-1 flex-col">
     <div class="sticky top-0 z-20 md:hidden">
-      <header class="flex items-center gap-1 border-b border-border bg-surface-raised px-4 py-2">
+      <header class="flex items-center gap-1 border-b border-border bg-surface-raised pt-[calc(0.5rem+env(safe-area-inset-top))] pr-[calc(1rem+env(safe-area-inset-right))] pb-2 pl-[calc(1rem+env(safe-area-inset-left))]">
         <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold tracking-tight">
           <app-logo [size]="22" class="shrink-0 text-accent" />
           <span class="truncate">

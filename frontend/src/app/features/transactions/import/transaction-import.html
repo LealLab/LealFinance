@@ -269,6 +269,7 @@
                   <td class="p-3 align-middle">
                     <input
                       type="checkbox"
+                      [attr.aria-label]="row.description"
                       [checked]="row.reviewed"
                       [disabled]="!row.reviewed && !isReviewable(row)"
                       (change)="toggleReviewed(row)"
@@ -441,6 +442,7 @@
                 <div class="flex items-center justify-between gap-3">
                   <input
                     type="checkbox"
+                    [attr.aria-label]="row.description"
                     [checked]="row.reviewed"
                     [disabled]="!row.reviewed && !isReviewable(row)"
                     (change)="toggleReviewed(row)"
@@ -641,6 +643,7 @@
                   <td class="p-3 align-middle">
                     <input
                       type="checkbox"
+                      [attr.aria-label]="row.description"
                       [checked]="row.reviewed"
                       [disabled]="!row.reviewed && !isReviewable(row)"
                       (change)="toggleReviewed(row)"
@@ -767,6 +770,7 @@
                 <div class="flex items-center justify-between gap-3">
                   <input
                     type="checkbox"
+                    [attr.aria-label]="row.description"
                     [checked]="row.reviewed"
                     [disabled]="!row.reviewed && !isReviewable(row)"
                     (change)="toggleReviewed(row)"

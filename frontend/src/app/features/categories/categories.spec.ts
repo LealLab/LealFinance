@@ -256,10 +256,9 @@ describe('Categories', () => {
     const groupIdsBefore = fixture.componentInstance['expenseRows']().map((row) => row.group.id);
     expect(groupIdsBefore.slice(0, 2)).toEqual(['group-housing', 'group-food']);
 
-    (fixture.componentInstance as unknown as { onGroupDrop: (kind: 'expense', event: unknown) => void }).onGroupDrop(
-      'expense',
-      { previousIndex: 0, currentIndex: 1 }
-    );
+    const firstGroup = findGroupRow(fixture.nativeElement as HTMLElement, 'Moradia')!;
+    firstGroup.querySelector<HTMLButtonElement>('button[cdkdraghandle]')!
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();

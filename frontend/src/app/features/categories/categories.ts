@@ -289,6 +289,11 @@ export class Categories {
     this.reorderGroups(kind, event.previousIndex, event.currentIndex);
   }
 
+  protected moveGroup(kind: CategoryKind, index: number, delta: -1 | 1, event: Event): void {
+    event.preventDefault();
+    this.reorderGroups(kind, index, index + delta);
+  }
+
   private reorderGroups(kind: CategoryKind, previousIndex: number, currentIndex: number): void {
     if (previousIndex === currentIndex) return;
     const rows = kind === 'income' ? this.incomeRows() : this.expenseRows();
@@ -306,6 +311,17 @@ export class Categories {
 
   protected onCategoryDrop(kind: CategoryKind, groupId: string, event: CdkDragDrop<CategoryRow[]>): void {
     this.reorderCategories(kind, groupId, event.previousIndex, event.currentIndex);
+  }
+
+  protected moveCategory(
+    kind: CategoryKind,
+    groupId: string,
+    index: number,
+    delta: -1 | 1,
+    event: Event,
+  ): void {
+    event.preventDefault();
+    this.reorderCategories(kind, groupId, index, index + delta);
   }
 
   private reorderCategories(

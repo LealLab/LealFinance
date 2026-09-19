@@ -39,7 +39,7 @@
               [id]="'category-groups-' + section.kind"
               (cdkDropListDropped)="onGroupDrop(section.kind, $event)"
             >
-              @for (row of section.rows; track row.group.id) {
+              @for (row of section.rows; track row.group.id; let rowIndex = $index) {
                 <li cdkDrag class="group/row border-b border-border last:border-b-0">
                   <div class="flex items-center justify-between gap-4 px-4 py-3">
                     <div class="flex min-w-0 items-center gap-1">
@@ -48,6 +48,8 @@
                         type="button"
                         class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
                         [attr.aria-label]="t('categories.actions.dragHandle')"
+                        (keydown.arrowup)="moveGroup(section.kind, rowIndex, -1, $event)"
+                        (keydown.arrowdown)="moveGroup(section.kind, rowIndex, 1, $event)"
                       >
                         <app-icon name="grip" [size]="14" />
                       </button>
@@ -130,7 +132,7 @@
                       class="border-t border-border bg-surface-sunken"
                       (cdkDropListDropped)="onCategoryDrop(section.kind, row.group.id, $event)"
                     >
-                      @for (categoryRow of row.categories; track categoryRow.category.id) {
+                      @for (categoryRow of row.categories; track categoryRow.category.id; let categoryIndex = $index) {
                         <li cdkDrag class="group/row flex items-center justify-between gap-4 py-2 pe-4 ps-6">
                           <div class="flex min-w-0 items-center gap-2">
                             <button
@@ -138,6 +140,8 @@
                               type="button"
                               class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
                               [attr.aria-label]="t('categories.actions.dragHandle')"
+                              (keydown.arrowup)="moveCategory(section.kind, row.group.id, categoryIndex, -1, $event)"
+                              (keydown.arrowdown)="moveCategory(section.kind, row.group.id, categoryIndex, 1, $event)"
                             >
                               <app-icon name="grip" [size]="12" />
                             </button>

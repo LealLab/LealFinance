@@ -59,6 +59,8 @@
                 </div>
                 <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
                   <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ position.quantity }}</span></span>
+                  <span>{{ t('investments.columns.averageCost') }}: <span class="font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency }}</span></span>
+                  <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ position.price ? (position.price | money: position.asset.currency) : '—' }}</span></span>
                   <span>{{ t('investments.columns.unrealizedGain') }}: <span class="font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</span></span>
                   <span>{{ t('investments.columns.allocation') }}: <span class="font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</span></span>
                   @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
