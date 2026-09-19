@@ -183,7 +183,7 @@
         [title]="t('transactions.empty.title')"
         [description]="t('transactions.empty.description')"
       >
-        <button appButton variant="primary" type="button" (click)="openCreateTx()">
+        <button appButton variant="primary" type="button" class="max-md:hidden" (click)="openCreateTx()">
           {{ t('transactions.actions.new') }}
         </button>
       </app-empty-state>
@@ -256,7 +256,7 @@
         [title]="t('transactions.recurring.empty.title')"
         [description]="t('transactions.recurring.empty.description')"
       >
-        <button appButton variant="primary" type="button" (click)="openCreateRule()">
+        <button appButton variant="primary" type="button" class="max-md:hidden" (click)="openCreateRule()">
           {{ t('transactions.recurring.actions.new') }}
         </button>
       </app-empty-state>
