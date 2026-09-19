@@ -1,5 +1,5 @@
 <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
-  <div class="flex flex-col gap-1">
+  <div [class]="headingClass()">
     @if (eyebrow()) {
       <p class="text-xs font-medium uppercase tracking-wide text-content-subtle">{{ eyebrow() }}</p>
     }

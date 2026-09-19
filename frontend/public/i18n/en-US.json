@@ -798,10 +798,6 @@
       "expand": "Expand",
       "dragHandle": "Reorder"
     },
-    "reorder": {
-      "moveUp": "Move up",
-      "moveDown": "Move down"
-    },
     "empty": {
       "title": "No categories yet",
       "description": "Create groups and categories to organize your transactions."

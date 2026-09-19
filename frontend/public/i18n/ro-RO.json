@@ -774,10 +774,6 @@
       "expand": "Extinde",
       "dragHandle": "Reordonează"
     },
-    "reorder": {
-      "moveUp": "Mută în sus",
-      "moveDown": "Mută în jos"
-    },
     "empty": {
       "title": "Nu există încă nicio categorie",
       "description": "Creează grupuri și categorii pentru a-ți organiza tranzacțiile."

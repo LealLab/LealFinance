@@ -1,4 +1,4 @@
-import { activePathFor, mobileTabsFor } from './mobile-nav';
+import { activePathFor, isSectionRootUrl, mobileTabsFor } from './mobile-nav';
 import { navSectionsFor } from './sidebar';
 
 const paths = (tabs: ReturnType<typeof mobileTabsFor>, index: number) =>
@@ -57,4 +57,16 @@ describe('activePathFor', () => {
   it('returns undefined for routes with no nav entry', () => {
     expect(activePathFor(tabs, '/onboarding')).toBeUndefined();
   });
+});
+
+describe('isSectionRootUrl', () => {
+  it.each(['/', '/transactions', '/settings?tab=security', '/admin/users'])(
+    'is true for nav root %s',
+    (url) => expect(isSectionRootUrl(url)).toBe(true),
+  );
+
+  it.each(['/accounts/42', '/transactions/import', '/onboarding'])(
+    'is false for %s',
+    (url) => expect(isSectionRootUrl(url)).toBe(false),
+  );
 });

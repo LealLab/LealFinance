@@ -774,10 +774,6 @@
       "expand": "Ausklappen",
       "dragHandle": "Reihenfolge ändern"
     },
-    "reorder": {
-      "moveUp": "Nach oben verschieben",
-      "moveDown": "Nach unten verschieben"
-    },
     "empty": {
       "title": "Noch keine Kategorien",
       "description": "Erstellen Sie Gruppen und Kategorien, um Ihre Transaktionen zu organisieren."

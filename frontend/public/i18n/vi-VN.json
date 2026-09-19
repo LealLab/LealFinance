@@ -774,10 +774,6 @@
       "expand": "Mở rộng",
       "dragHandle": "Sắp xếp lại"
     },
-    "reorder": {
-      "moveUp": "Di chuyển lên",
-      "moveDown": "Di chuyển xuống"
-    },
     "empty": {
       "title": "Chưa có danh mục nào",
       "description": "Tạo nhóm và danh mục để sắp xếp các giao dịch của bạn."

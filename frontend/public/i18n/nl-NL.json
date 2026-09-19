@@ -774,10 +774,6 @@
       "expand": "Uitklappen",
       "dragHandle": "Volgorde wijzigen"
     },
-    "reorder": {
-      "moveUp": "Omhoog verplaatsen",
-      "moveDown": "Omlaag verplaatsen"
-    },
     "empty": {
       "title": "Nog geen categorieën",
       "description": "Maak groepen en categorieën aan om je transacties te ordenen."

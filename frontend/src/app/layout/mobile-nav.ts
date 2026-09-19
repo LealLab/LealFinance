@@ -59,6 +59,18 @@ export function activePathFor(tabs: MobileTab[], url: string): string | undefine
   return best;
 }
 
+const ALL_NAV_PATHS = new Set(
+  navSectionsFor('admin', true, true, true).flatMap((s) => s.items).map((i) => i.path),
+);
+
+/**
+ * True when `url` is a nav item itself, i.e. the mobile top bar and section
+ * strip already name this page and an in-page heading would repeat them.
+ */
+export function isSectionRootUrl(url: string): boolean {
+  return ALL_NAV_PATHS.has(url.split(/[?#]/)[0]);
+}
+
 /** Shared by the bottom bar, the sub-tab strip and the mobile top bar. */
 @Injectable({ providedIn: 'root' })
 export class MobileNav {

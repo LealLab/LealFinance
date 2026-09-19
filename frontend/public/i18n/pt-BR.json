@@ -774,10 +774,6 @@
       "expand": "Expandir",
       "dragHandle": "Reordenar"
     },
-    "reorder": {
-      "moveUp": "Mover para cima",
-      "moveDown": "Mover para baixo"
-    },
     "empty": {
       "title": "Nenhuma categoria cadastrada",
       "description": "Crie grupos e categorias para organizar suas transações."

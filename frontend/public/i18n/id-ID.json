@@ -774,10 +774,6 @@
       "expand": "Perluas",
       "dragHandle": "Urutkan ulang"
     },
-    "reorder": {
-      "moveUp": "Pindahkan ke atas",
-      "moveDown": "Pindahkan ke bawah"
-    },
     "empty": {
       "title": "Belum ada kategori",
       "description": "Buat grup dan kategori untuk mengatur transaksi Anda."

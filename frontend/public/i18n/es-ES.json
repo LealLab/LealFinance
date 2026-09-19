@@ -774,10 +774,6 @@
       "expand": "Expandir",
       "dragHandle": "Reordenar"
     },
-    "reorder": {
-      "moveUp": "Mover arriba",
-      "moveDown": "Mover abajo"
-    },
     "empty": {
       "title": "Aún no hay categorías",
       "description": "Crea grupos y categorías para organizar tus movimientos."
