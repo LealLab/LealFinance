@@ -73,20 +73,20 @@
           <div class="mx-auto aspect-square w-full max-w-56">
             <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
           </div>
-          <table class="mt-4 w-full text-sm">
+          <table class="mt-4 w-full table-fixed text-sm">
             <tbody>
               @for (row of categoryTable(); track row.groupId) {
                 <tr class="border-t border-border">
-                  <td class="py-2 pe-2">
+                  <td class="py-2 pe-2 [overflow-wrap:anywhere]">
                     <span class="inline-flex items-center gap-2">
-                      <span class="size-2.5 rounded-full" [style.background-color]="row.color"></span>
+                      <span class="size-2.5 shrink-0 rounded-full" [style.background-color]="row.color"></span>
                       {{ row.name }}
                     </span>
                   </td>
-                  <td class="py-2 pe-2 text-end font-mono tabular-nums">
+                  <td class="w-28 py-2 pe-2 text-end font-mono tabular-nums sm:w-36">
                     {{ row.total.amount | money: row.total.currency }}
                   </td>
-                  <td class="py-2 text-end text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</td>
+                  <td class="w-14 py-2 text-end text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</td>
                 </tr>
               }
             </tbody>

@@ -29,7 +29,7 @@
     @if (ratesFailed()) {
       <app-load-error messageKey="dashboard.ratesUnavailable" (retry)="retryRates()" />
     } @else if (ratesReady()) {
-      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
         <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
         <app-stat-tile [label]="t('dashboard.stats.realBalance')" [value]="realBalance().amount | money: realBalance().currency" />
         <app-stat-tile
@@ -42,12 +42,12 @@
           [value]="monthTotals().expense.amount | money: monthTotals().expense.currency"
           tone="negative"
         />
-        <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
+        <app-stat-tile class="col-span-2 md:col-span-1" [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
       </div>
     } @else {
-      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5" aria-busy="true">
-        @for (i of [0, 1, 2, 3, 4]; track i) {
-          <app-skeleton height="4.25rem" />
+      <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5" aria-busy="true">
+        @for (i of [0, 1, 2, 3, 4]; track i; let last = $last) {
+          <app-skeleton height="4.25rem" [class]="last ? 'col-span-2 md:col-span-1' : ''" />
         }
       </div>
     }

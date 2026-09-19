@@ -70,6 +70,8 @@ export class Chat {
   protected readonly conversations = rxResource({ stream: () => this.repo.listConversations() });
   protected readonly conversationList = signal<AgentConversation[]>([]);
   protected readonly activeId = signal<string | null>(null);
+  /** Below md only one pane is shown: the conversation list or the thread. */
+  protected readonly showList = signal(true);
   protected readonly detail = rxResource({
     params: () => this.activeId(),
     stream: ({ params }) => (params ? this.repo.getConversation(params) : of(null)),
@@ -125,6 +127,7 @@ export class Chat {
     this.liveMessages.set([]);
     this.seededFor = null;
     this.activeId.set(id);
+    this.showList.set(false);
   }
 
   protected newChat(): void {
@@ -136,6 +139,7 @@ export class Chat {
         this.liveMessages.set([]);
         this.seededFor = conversation.id;
         this.activeId.set(conversation.id);
+        this.showList.set(false);
       },
       error: (error: unknown) => this.setError(error),
     });
@@ -188,7 +192,10 @@ export class Chat {
     this.repo.deleteConversation(id).subscribe({
       next: () => {
         this.conversationList.update((rows) => rows.filter((row) => row.id !== id));
-        if (this.activeId() === id) this.activeId.set(null);
+        if (this.activeId() === id) {
+          this.activeId.set(null);
+          this.showList.set(true);
+        }
         this.conversations.reload();
       },
       error: (error: unknown) => this.setError(error),

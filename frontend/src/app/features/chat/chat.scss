@@ -1,4 +1,6 @@
 // The chat owns the viewport so history can grow without growing the page.
+// md+: main has 2rem vertical padding. Below md: sticky top bar + tabs
+// (~5.75rem), main top padding (1.5rem) and bottom padding (4.5rem + inset).
 :host {
   display: block;
   min-width: 0;
@@ -45,42 +47,8 @@
   overflow-y: auto;
 }
 
-.chat-conversations-toggle {
-  list-style: none;
-}
-
-.chat-conversations-toggle::-webkit-details-marker {
-  display: none;
-}
-
-.chat-chevron {
-  transition: transform 150ms ease;
-}
-
-.chat-conversations[open] .chat-chevron {
-  transform: rotate(180deg);
-}
-
 @media (max-width: 767px) {
   :host {
-    height: calc(100dvh - 6rem);
-  }
-
-  .chat-layout {
-    grid-template-rows: auto minmax(0, 1fr);
-  }
-
-  .chat-conversation-card,
-  .chat-conversation-list {
-    flex: none;
-    height: auto;
-    max-height: 10rem;
+    height: calc(100dvh - 12rem - env(safe-area-inset-bottom));
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .chat-chevron {
-    transition: none;
-  }
-}
-

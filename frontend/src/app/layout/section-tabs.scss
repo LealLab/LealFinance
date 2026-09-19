@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+// The strip is a swipe target, not a scrollable region to look at.
+.section-strip {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

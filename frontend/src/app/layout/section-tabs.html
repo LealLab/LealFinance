@@ -1,0 +1,19 @@
+@if (nav.activeTab(); as tab) {
+  <nav *transloco="let t" class="border-b border-border bg-surface-raised md:hidden">
+    <div #strip class="section-strip flex snap-x overflow-x-auto px-2">
+      @for (item of tab.items; track item.path) {
+        <a
+          [routerLink]="item.path"
+          class="flex min-h-11 shrink-0 snap-start items-center border-b-2 px-3 text-sm font-medium whitespace-nowrap"
+          [class.border-accent]="nav.activePath() === item.path"
+          [class.text-content-primary]="nav.activePath() === item.path"
+          [class.border-transparent]="nav.activePath() !== item.path"
+          [class.text-content-muted]="nav.activePath() !== item.path"
+          [attr.aria-current]="nav.activePath() === item.path ? 'page' : null"
+        >
+          {{ t(item.labelKey) }}
+        </a>
+      }
+    </div>
+  </nav>
+}

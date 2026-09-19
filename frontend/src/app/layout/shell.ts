@@ -23,18 +23,26 @@ import { LanguageSelect } from '../shared/ui/language-select/language-select';
 import { Logo } from '../shared/ui/logo/logo';
 import { ThemeToggle } from '../shared/ui/theme-toggle/theme-toggle';
 import { CommandPalette } from './command-palette/command-palette';
+import { BottomNav } from './bottom-nav';
+import { MobileNav } from './mobile-nav';
+import { SectionTabs } from './section-tabs';
 import { Sidebar } from './sidebar';
 import { UpdateBanner } from './update-banner/update-banner';
 
 /**
  * App shell: a persistent sidebar on `md+` screens (icon rail from `md` to
- * `lg`, full labels from `lg` up - see sidebar.ts), collapsing to a
- * hamburger-triggered off-canvas drawer below `md`. Balance-visibility
- * toggle, the theme toggle, the language switcher, and the command-palette
- * trigger all live in the sidebar/drawer now (not the top `<header>`, which
- * below `md` only carries the hamburger + mobile title). Theme/language
- * controls are `app-theme-toggle`/`app-language-select` (shared/ui) so the
- * auth pages can reuse them too.
+ * `lg`, full labels from `lg` up - see sidebar.ts). Below `md` it behaves like
+ * a phone app instead: a slim top bar (section name, search, balance toggle,
+ * menu), a sub-tab strip for the pages in the active section, and a bottom
+ * tab bar with one tab per section (see mobile-nav.ts). The menu button
+ * still opens the off-canvas drawer, which holds the full nav plus theme,
+ * language and logout. Theme/language controls are
+ * `app-theme-toggle`/`app-language-select` (shared/ui) so the auth pages can
+ * reuse them too.
+ *
+ * Two thresholds are deliberate: CSS switches chrome at `md` (768px), while
+ * the JS media query below (1024px) only decides whether the desktop rail
+ * starts expanded or collapsed.
  */
 @Component({
   selector: 'app-shell',
@@ -46,6 +54,8 @@ import { UpdateBanner } from './update-banner/update-banner';
     Logo,
     Button,
     Sidebar,
+    BottomNav,
+    SectionTabs,
     ConfirmDialog,
     CommandPalette,
     LanguageSelect,
@@ -65,6 +75,7 @@ export class Shell {
   protected readonly preferences = inject(PreferenceService);
   protected readonly session = inject(SessionService);
   protected readonly mutationErrors = inject(MutationErrorService);
+  protected readonly mobileNav = inject(MobileNav);
 
   protected readonly isMac = isMacPlatform();
 

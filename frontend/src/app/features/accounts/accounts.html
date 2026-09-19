@@ -1,8 +1,11 @@
 <div *transloco="let t">
   <app-page-header [title]="t('accounts.title')" [description]="t('accounts.description')">
-    <label class="flex items-center gap-2 text-sm text-content-muted">
+    <label
+      class="flex items-center justify-center gap-2 text-sm text-content-muted [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
+      [attr.title]="t('accounts.showArchived')"
+    >
       <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
-      {{ t('accounts.showArchived') }}
+      <span class="sr-only sm:not-sr-only">{{ t('accounts.showArchived') }}</span>
     </label>
     <button appButton variant="secondary" type="button" (click)="openCreateInstitution()">
       <app-icon name="bank" [size]="16" />
@@ -34,8 +37,8 @@
     <div class="flex flex-col gap-6">
       @for (group of groups(); track group.institution?.id ?? '__none__') {
         <app-card [padded]="false" class="group/card">
-          <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
-            <div class="flex items-center gap-2 text-sm font-semibold text-content-primary">
+          <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-border px-4 py-3">
+            <div class="flex min-w-0 flex-wrap items-center gap-2 text-sm font-semibold text-content-primary">
               @if (group.institution; as institution) {
                 <app-icon [name]="institution.icon" [size]="16" [style.color]="institution.color" />
                 {{ institution.name }}
@@ -88,11 +91,11 @@
               <li
                 tabindex="0"
                 role="button"
-                class="flex cursor-pointer items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-sunken"
+                class="flex cursor-pointer flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-sunken"
                 (click)="openDetail(row.account)"
                 (keydown.enter)="openDetail(row.account)"
               >
-                <div class="flex flex-col gap-0.5">
+                <div class="flex min-w-0 flex-col gap-0.5">
                   <span class="flex items-center gap-2 text-sm font-medium text-content-primary">
                     {{ row.account.name }}
                     @if (row.account.archived) {
@@ -105,7 +108,7 @@
                   </app-badge>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="ms-auto flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
                   <span
                     class="font-mono text-sm font-semibold tabular-nums"
                     [class]="amountClass(row.balance)"

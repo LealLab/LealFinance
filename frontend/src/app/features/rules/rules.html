@@ -6,8 +6,8 @@
   />
 
   <app-card [padded]="false">
-    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
-      <h2 class="text-sm font-semibold text-content-primary">{{ t('rules.card.title') }}</h2>
+    <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-border px-4 py-3">
+      <h2 class="min-w-0 break-words text-sm font-semibold text-content-primary">{{ t('rules.card.title') }}</h2>
       <div class="flex flex-wrap items-center gap-2">
         <button appButton variant="secondary" type="button" [disabled]="rules().length === 0" (click)="exportRules()">
           <app-icon name="arrowDownLeft" [size]="16" />
@@ -97,15 +97,15 @@
             (keydown.enter)="openEdit(rule)"
             (keydown.space)="$event.preventDefault(); openEdit(rule)"
           >
-            <div class="min-w-40 flex-1">
+            <div class="min-w-40 max-w-full flex-1">
               <div class="flex items-center gap-2">
-                <strong class="text-sm text-content-primary">{{ rule.name }}</strong>
-                <app-badge>p:{{ rule.priority }}</app-badge>
+                <strong class="min-w-0 break-words text-sm text-content-primary">{{ rule.name }}</strong>
+                <app-badge class="shrink-0">p:{{ rule.priority }}</app-badge>
               </div>
-              <div class="mt-1 font-mono text-xs text-content-muted">{{ summary(rule) }}</div>
+              <div class="mt-1 break-words font-mono text-xs text-content-muted">{{ summary(rule) }}</div>
             </div>
             <span
-              class="rounded px-2 py-1 text-sm font-medium"
+              class="max-w-full break-words rounded px-2 py-1 text-sm font-medium"
               [style.color]="categoryColor(rule)"
               [style.background-color]="categoryColor(rule) + '1A'"
             >

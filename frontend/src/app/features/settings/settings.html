@@ -51,7 +51,7 @@
         <select
           #languageSelect
           id="settings-language"
-          class="form-input max-w-xs"
+          class="form-input w-full max-w-xs"
           (change)="setLang($any($event.target).value)"
         >
           @for (lang of availableLangs; track lang) {
@@ -73,7 +73,7 @@
       <select
         #displayCurrencySelect
         id="settings-display-currency"
-        class="form-input max-w-xs"
+        class="form-input w-full max-w-xs"
         (change)="setDisplayCurrency($any($event.target).value)"
       >
         @for (currency of currencyOptions(); track currency.code) {
@@ -122,7 +122,7 @@
     </app-card>
 
     <app-card>
-      <div class="flex items-start justify-between gap-4">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h2 class="mb-1 text-sm font-semibold text-content-primary">
             {{ t('settings.investments.title') }}
@@ -131,7 +131,7 @@
             {{ t('settings.investments.description') }}
           </p>
         </div>
-        <label class="flex shrink-0 items-center gap-2 text-sm text-content-muted">
+        <label class="flex items-center gap-2 text-sm text-content-muted sm:shrink-0">
           <input
             type="checkbox"
             [checked]="preferences.preferences()?.investmentsEnabled ?? false"
@@ -151,7 +151,7 @@
         <div class="flex flex-col gap-4">
           @for (provider of marketDataProviders; track provider.id) {
             <div>
-              <div class="mb-1 flex items-center justify-between gap-3">
+              <div class="mb-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                 <label class="form-label" [for]="'market-data-' + provider.id">
                   {{ t('settings.investments.marketData.' + provider.labelKey) }}
                 </label>
@@ -170,11 +170,11 @@
                   }}
                 </span>
               </div>
-              <div class="flex gap-2">
+              <div class="flex flex-wrap gap-2">
                 <input
                   [id]="'market-data-' + provider.id"
                   type="password"
-                  class="form-input min-w-0 flex-1"
+                  class="form-input min-w-0 flex-1 basis-40"
                   [placeholder]="t('settings.investments.marketData.placeholder')"
                   [value]="marketDataKeys[provider.id]()"
                   (input)="setMarketDataKey(provider.id, $any($event.target).value)"
@@ -334,7 +334,7 @@
           <p class="mb-3 text-sm text-content-muted">
             {{ t('settings.twoFactor.backupCodes.warning') }}
           </p>
-          <ul class="mb-3 grid grid-cols-2 gap-1">
+          <ul class="mb-3 grid grid-cols-1 gap-1 sm:grid-cols-2">
             @for (code of codes; track code) {
               <li>
                 <code class="block break-all text-xs">{{ code }}</code>
@@ -368,7 +368,7 @@
           <img
             [src]="setup.qrDataUrl"
             [alt]="t('settings.twoFactor.enroll.qrAlt')"
-            class="w-40 self-start rounded-md border border-border bg-white p-2"
+            class="w-40 max-w-full self-start rounded-md border border-border bg-white p-2"
           />
           <div>
             <span class="form-label">{{ t('settings.twoFactor.enroll.manualEntry') }}</span>
@@ -377,7 +377,7 @@
           <label>
             <span class="form-label">{{ t('settings.twoFactor.enroll.step2') }}</span>
             <input
-              class="form-input max-w-xs"
+              class="form-input w-full max-w-xs"
               type="text"
               inputmode="numeric"
               autocomplete="one-time-code"
@@ -422,7 +422,7 @@
           <label>
             <span class="form-label">{{ t('settings.twoFactor.manage.codeLabel') }}</span>
             <input
-              class="form-input max-w-xs"
+              class="form-input w-full max-w-xs"
               type="text"
               inputmode="numeric"
               autocomplete="one-time-code"
@@ -481,14 +481,14 @@
     </div>
 
     <app-card>
-      <div class="flex items-start justify-between gap-4">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h2 class="mb-1 flex items-center gap-2 text-sm font-semibold text-content-primary">
             {{ t('settings.agents.title') }}
           </h2>
           <p class="max-w-md text-sm text-content-muted">{{ t('settings.agents.description') }}</p>
         </div>
-        <div class="flex shrink-0 items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2 sm:shrink-0">
           <span
             class="rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted"
           >

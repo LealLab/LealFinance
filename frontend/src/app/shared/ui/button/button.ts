@@ -5,7 +5,9 @@ export type ButtonSize = 'sm' | 'md';
 
 const BASE =
   'inline-flex cursor-pointer items-center justify-center gap-1.5 rounded font-medium ' +
-  'transition-colors disabled:cursor-not-allowed disabled:opacity-50';
+  'transition-colors disabled:cursor-not-allowed disabled:opacity-50 ' +
+  // Touch-only ~44px target, same floor as `.form-input` in _components.css.
+  '[@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11';
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: 'bg-accent text-accent-content hover:brightness-110',

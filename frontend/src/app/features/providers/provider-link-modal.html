@@ -4,7 +4,7 @@
       <div class="mb-4 grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
         <button
           type="button"
-          class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+          class="min-w-0 break-words rounded px-2 py-1.5 text-sm font-medium transition-colors"
           [class]="
             mode() === 'api_key'
               ? 'bg-surface-raised text-content-primary shadow-sm'
@@ -16,7 +16,7 @@
         </button>
         <button
           type="button"
-          class="rounded px-2 py-1.5 text-sm font-medium transition-colors"
+          class="min-w-0 break-words rounded px-2 py-1.5 text-sm font-medium transition-colors"
           [class]="
             mode() === 'oauth'
               ? 'bg-surface-raised text-content-primary shadow-sm'

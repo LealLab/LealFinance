@@ -15,17 +15,7 @@
   </div>
 
   <div class="chat-layout grid min-h-0 min-w-0 flex-1 gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
-    <details open class="chat-conversations flex min-h-0 flex-col">
-      <summary
-        class="chat-conversations-toggle flex cursor-pointer items-center justify-between gap-2 rounded-md border border-border bg-surface-raised px-3 py-2 text-sm font-medium text-content-primary md:hidden"
-      >
-        <span class="flex items-center gap-2">
-          <app-icon name="menu" [size]="16" />
-          {{ t('chat.conversations') }}
-        </span>
-        <app-icon name="chevronDown" [size]="16" class="chat-chevron" />
-      </summary>
-
+    <div class="chat-conversations flex min-h-0 flex-col" [class.max-md:hidden]="!showList()">
       <app-card [padded]="false" class="chat-conversation-card min-h-0 flex-1 flex-col overflow-hidden">
         <div class="chat-conversation-list flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2">
           @for (conversation of conversationList(); track conversation.id) {
@@ -62,9 +52,9 @@
           }
         </div>
       </app-card>
-    </details>
+    </div>
 
-    <section class="chat-thread-panel min-h-0 min-w-0">
+    <section class="chat-thread-panel min-h-0 min-w-0" [class.max-md:hidden]="showList()">
       @if (!activeId()) {
         <app-empty-state
           icon="sparkles"
@@ -85,6 +75,17 @@
         <app-skeleton height="20rem" />
       } @else {
         <div class="chat-thread flex h-full min-w-0 flex-col gap-3">
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            class="-ms-2 shrink-0 self-start md:hidden"
+            (click)="showList.set(true)"
+          >
+            <app-icon name="chevronRight" [size]="16" class="-scale-x-100 rtl:scale-x-100" />
+            {{ t('chat.conversations') }}
+          </button>
           <div class="chat-messages min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pe-1">
             @for (turn of liveMessages(); track $index) {
               <div class="mb-3 flex min-w-0 last:mb-0" [class.justify-end]="turn.role === 'user'">

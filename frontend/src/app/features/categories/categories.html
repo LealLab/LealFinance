@@ -46,7 +46,7 @@
                       <button
                         cdkDragHandle
                         type="button"
-                        class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing"
+                        class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
                         [attr.aria-label]="t('categories.actions.dragHandle')"
                       >
                         <app-icon name="grip" [size]="14" />
@@ -158,7 +158,7 @@
                             <button
                               cdkDragHandle
                               type="button"
-                              class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing"
+                              class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
                               [attr.aria-label]="t('categories.actions.dragHandle')"
                             >
                               <app-icon name="grip" [size]="12" />
