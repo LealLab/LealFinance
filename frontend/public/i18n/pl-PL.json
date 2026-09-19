@@ -383,11 +383,16 @@
       "new": "Nowe konto",
       "edit": "Edytuj",
       "archive": "Archiwizuj",
-      "unarchive": "Przywróć z archiwum"
+      "unarchive": "Przywróć z archiwum",
+      "delete": "Usuń konto"
     },
     "archive": {
       "title": "Zarchiwizować konto?",
       "message": "Konto „{{name}}” nie będzie już widoczne w głównych widokach. Czy chcesz kontynuować?"
+    },
+    "delete": {
+      "title": "Usunąć konto?",
+      "message": "Spowoduje to również usunięcie: transakcji, celów, pożyczek, reguł cyklicznych i portfeli inwestycyjnych. Tej operacji nie można cofnąć. Czy chcesz usunąć konto „{{name}}”?"
     },
     "empty": {
       "title": "Nie masz jeszcze żadnych kont",

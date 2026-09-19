@@ -7,7 +7,7 @@ import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { MutationErrorService } from '../../core/mutation-error.service';
 import { openOnNewParam } from '../../core/open-on-new-param';
 import { AccountRepository } from '../../data/account.repository';
-import { InstitutionRepository } from '../../data/institution.repository';
+import { InstitutionDeleteMode, InstitutionRepository } from '../../data/institution.repository';
 import { convertedOrNull } from '../../domain/calc/aggregations';
 import { Account } from '../../domain/models/account';
 import { Institution } from '../../domain/models/institution';
@@ -52,6 +52,11 @@ function trySum(amounts: Money[]): Money | null {
   }
 }
 
+/**
+ * The confirmation keys below are passed dynamically through ConfirmService,
+ * so the i18n extractor needs explicit markers:
+ * t(accounts.archive.title, accounts.archive.message, accounts.delete.title, accounts.delete.message)
+ */
 @Component({
   selector: 'app-accounts',
   imports: [
@@ -188,14 +193,56 @@ export class Accounts {
     });
   }
 
-  protected onSaved(): void {
+  protected async deleteAccount(account: Account, event: Event): Promise<void> {
+    event.stopPropagation();
+    const confirmed = await this.confirmService.confirm(
+      'accounts.delete.title',
+      'accounts.delete.message',
+      'danger',
+      { name: account.name }
+    );
+    if (!confirmed) return;
+
+    this.accountRepository.delete(account.id).subscribe({
+      next: () => this.reloadAll(),
+      error: () => this.mutationErrors.show(),
+    });
+  }
+
+  protected async deleteInstitution(institution: Institution, event: Event): Promise<void> {
+    event.stopPropagation();
+    const choice = await this.confirmService.choose(
+      'institutions.delete.title',
+      'institutions.delete.message',
+      [
+        { labelKey: 'institutions.delete.unlinkAndDelete', value: 'detach' },
+        { labelKey: 'institutions.delete.cascade', value: 'cascade', tone: 'danger' },
+      ],
+      {},
+    );
+    const mode = choice === 'detach' || choice === 'cascade' ? (choice as InstitutionDeleteMode) : null;
+    if (!mode) return;
+
+    this.institutionRepository.delete(institution.id, mode).subscribe({
+      next: () => this.reloadAll(),
+      error: () => this.mutationErrors.show(),
+    });
+  }
+
+  /** Reload every resource this screen draws from - needed after any delete,
+   * since a cascade can touch accounts, balances, and institutions together. */
+  private reloadAll(): void {
     this.accountsResource.reload();
     this.balancesResource.reload();
+    this.institutionsResource.reload();
+  }
+
+  protected onSaved(): void {
     // The account form can create a brand-new institution inline (its own
     // nested InstitutionFormModal) - reload ours too so a just-created
     // institution's group shows up immediately instead of the account
     // landing in "Sem instituição" until the next full reload.
-    this.institutionsResource.reload();
+    this.reloadAll();
   }
 
   protected openDetail(account: Account): void {
@@ -218,6 +265,6 @@ export class Accounts {
   }
 
   protected onInstitutionDeleted(): void {
-    this.institutionsResource.reload();
+    this.reloadAll();
   }
 }

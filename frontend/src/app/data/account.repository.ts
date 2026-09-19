@@ -21,4 +21,6 @@ export abstract class AccountRepository {
   abstract create(input: Omit<Account, 'id'>): Observable<Account>;
   abstract update(id: string, changes: Partial<Omit<Account, 'id'>>): Observable<Account>;
   abstract setArchived(id: string, archived: boolean): Observable<Account>;
+  /** Cascades: also deletes the account's transactions, goals, loans, recurring rules, investment wallets, and reconciliations. */
+  abstract delete(id: string): Observable<void>;
 }

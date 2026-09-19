@@ -383,11 +383,16 @@
       "new": "Ny konto",
       "edit": "Rediger",
       "archive": "Arkivér",
-      "unarchive": "Gendan"
+      "unarchive": "Gendan",
+      "delete": "Slet konto"
     },
     "archive": {
       "title": "Arkivér konto?",
       "message": "Kontoen „{{name}}“ vises ikke længere i de vigtigste oversigter. Vil du fortsætte?"
+    },
+    "delete": {
+      "title": "Slet konto?",
+      "message": "Dette sletter også: transaktioner, mål, lån, tilbagevendende regler og investeringsporteføljer. Denne handling kan ikke fortrydes. Vil du slette kontoen „{{name}}“?"
     },
     "empty": {
       "title": "Ingen konti endnu",

@@ -383,11 +383,16 @@
       "new": "Nieuwe rekening",
       "edit": "Bewerken",
       "archive": "Archiveren",
-      "unarchive": "Uit archief halen"
+      "unarchive": "Uit archief halen",
+      "delete": "Rekening verwijderen"
     },
     "archive": {
       "title": "Rekening archiveren?",
       "message": "Rekening \"{{name}}\" wordt niet meer weergegeven in de hoofdweergaven. Wil je doorgaan?"
+    },
+    "delete": {
+      "title": "Rekening verwijderen?",
+      "message": "Dit verwijdert ook: transacties, doelen, leningen, terugkerende regels en beleggingsportefeuilles. Deze actie kan niet ongedaan worden gemaakt. Wil je rekening \"{{name}}\" verwijderen?"
     },
     "empty": {
       "title": "Nog geen rekeningen",

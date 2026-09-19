@@ -295,6 +295,9 @@ class StubAccountRepository extends AccountRepository {
   setArchived(): Observable<Account> {
     throw new Error('not used by this spec');
   }
+  delete(): Observable<void> {
+    throw new Error('not used by this spec');
+  }
 }
 
 class StubTransactionRepository extends TransactionRepository {

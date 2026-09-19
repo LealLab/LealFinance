@@ -383,11 +383,16 @@
       "new": "Akun baru",
       "edit": "Edit",
       "archive": "Arsipkan",
-      "unarchive": "Pulihkan dari arsip"
+      "unarchive": "Pulihkan dari arsip",
+      "delete": "Hapus akun"
     },
     "archive": {
       "title": "Arsipkan akun?",
       "message": "Akun \"{{name}}\" tidak akan lagi ditampilkan di tampilan utama. Apakah Anda ingin melanjutkan?"
+    },
+    "delete": {
+      "title": "Hapus akun?",
+      "message": "Ini juga akan menghapus: transaksi, sasaran, pinjaman, aturan berulang, dan dompet investasi. Tindakan ini tidak dapat dibatalkan. Apakah Anda ingin menghapus akun \"{{name}}\"?"
     },
     "empty": {
       "title": "Belum ada akun",

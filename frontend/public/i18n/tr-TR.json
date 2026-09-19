@@ -383,11 +383,16 @@
       "new": "Yeni hesap",
       "edit": "Düzenle",
       "archive": "Arşivle",
-      "unarchive": "Arşivden çıkar"
+      "unarchive": "Arşivden çıkar",
+      "delete": "Hesabı sil"
     },
     "archive": {
       "title": "Hesap arşivlensin mi?",
       "message": "\"{{name}}\" hesabı artık ana görünümlerde gösterilmeyecek. Devam etmek istiyor musunuz?"
+    },
+    "delete": {
+      "title": "Hesap silinsin mi?",
+      "message": "Bu işlem işlemleri, hedefleri, kredileri, yinelenen kuralları ve yatırım cüzdanlarını da siler. Bu işlem geri alınamaz. \"{{name}}\" hesabını silmek istiyor musunuz?"
     },
     "empty": {
       "title": "Henüz hesap yok",

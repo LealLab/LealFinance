@@ -1,8 +1,4 @@
-"""Account CRUD and archive/unarchive.
-
-Accounts can be deleted only as part of an institution cascade; there is no
-standalone per-account delete endpoint.
-"""
+"""Account CRUD, archive/unarchive, and cascade delete."""
 
 from datetime import date
 from uuid import UUID
@@ -61,3 +57,8 @@ async def archive_account(
     account_id: UUID, payload: ArchiveRequest, user: CurrentUser, db: DbSession
 ) -> Account:
     return await accounts_service.set_account_archived(db, user.id, account_id, payload.archived)
+
+
+@router.delete("/{account_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_account(account_id: UUID, user: CurrentUser, db: DbSession) -> None:
+    await accounts_service.delete_account(db, user.id, account_id)

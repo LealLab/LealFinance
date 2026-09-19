@@ -383,11 +383,16 @@
       "new": "Nova conta",
       "edit": "Editar",
       "archive": "Arquivar",
-      "unarchive": "Reativar"
+      "unarchive": "Reativar",
+      "delete": "Excluir conta"
     },
     "archive": {
       "title": "Arquivar conta?",
       "message": "A conta \"{{name}}\" deixará de aparecer nas visualizações principais. Deseja continuar?"
+    },
+    "delete": {
+      "title": "Excluir conta?",
+      "message": "Isso também excluirá: transações, metas, empréstimos, regras recorrentes e carteiras de investimentos. Esta ação não pode ser desfeita. Deseja excluir a conta \"{{name}}\"?"
     },
     "empty": {
       "title": "Nenhuma conta cadastrada",

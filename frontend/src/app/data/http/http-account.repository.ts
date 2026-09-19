@@ -42,4 +42,7 @@ export class HttpAccountRepository extends AccountRepository {
       .post<AccountWire>(`/accounts/${id}/archive`, { archived })
       .pipe(map(mapAccount));
   }
+  delete(id: string): Observable<void> {
+    return this.api.delete(`/accounts/${id}`);
+  }
 }

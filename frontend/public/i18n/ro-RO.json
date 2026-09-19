@@ -383,11 +383,16 @@
       "new": "Cont nou",
       "edit": "Editează",
       "archive": "Arhivează",
-      "unarchive": "Restaurează din arhivă"
+      "unarchive": "Restaurează din arhivă",
+      "delete": "Șterge contul"
     },
     "archive": {
       "title": "Arhivezi contul?",
       "message": "Contul „{{name}}” nu va mai apărea în ecranele principale. Vrei să continui?"
+    },
+    "delete": {
+      "title": "Ștergi contul?",
+      "message": "Aceasta va șterge și: tranzacții, obiective, împrumuturi, reguli recurente și portofele de investiții. Această acțiune nu poate fi anulată. Vrei să ștergi contul „{{name}}”?"
     },
     "empty": {
       "title": "Nu există încă niciun cont",
