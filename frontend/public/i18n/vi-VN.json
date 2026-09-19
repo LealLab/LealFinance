@@ -383,11 +383,16 @@
       "new": "Tài khoản mới",
       "edit": "Chỉnh sửa",
       "archive": "Lưu trữ",
-      "unarchive": "Bỏ lưu trữ"
+      "unarchive": "Bỏ lưu trữ",
+      "delete": "Xóa tài khoản"
     },
     "archive": {
       "title": "Lưu trữ tài khoản?",
       "message": "Tài khoản \"{{name}}\" sẽ không còn hiển thị trong các chế độ xem chính. Bạn có muốn tiếp tục không?"
+    },
+    "delete": {
+      "title": "Xóa tài khoản?",
+      "message": "Thao tác này cũng sẽ xóa: giao dịch, mục tiêu, khoản vay, quy tắc định kỳ và ví đầu tư. Thao tác này không thể hoàn tác. Bạn có muốn xóa tài khoản \"{{name}}\" không?"
     },
     "empty": {
       "title": "Chưa có tài khoản nào",

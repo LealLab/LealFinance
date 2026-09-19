@@ -383,11 +383,16 @@
       "new": "Nytt konto",
       "edit": "Redigera",
       "archive": "Arkivera",
-      "unarchive": "Återställ"
+      "unarchive": "Återställ",
+      "delete": "Ta bort konto"
     },
     "archive": {
       "title": "Arkivera konto?",
       "message": "Kontot \"{{name}}\" visas inte längre i huvudvyerna. Vill du fortsätta?"
+    },
+    "delete": {
+      "title": "Ta bort konto?",
+      "message": "Detta tar även bort: transaktioner, mål, lån, återkommande regler och investeringsportföljer. Åtgärden kan inte ångras. Vill du ta bort kontot \"{{name}}\"?"
     },
     "empty": {
       "title": "Inga konton ännu",

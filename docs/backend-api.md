@@ -195,10 +195,11 @@ Registration is invite-only, except the very first user on an instance.
 | GET/PATCH | `/institutions/{id}` | user | |
 | POST | `/institutions/{id}/archive` | user | Body `{archived}`. |
 | DELETE | `/institutions/{id}` | user | Blocked while any account references it (409). |
-| GET/POST | `/accounts` | user | No delete - archive only. |
+| GET/POST | `/accounts` | user | |
 | GET | `/accounts/balances?as_of=` | user | Server-computed balance per owned account. `as_of` (inclusive ISO date) restricts the ledger to on/before that date. |
 | GET/PATCH | `/accounts/{id}` | user | |
 | POST | `/accounts/{id}/archive` | user | Body `{archived}`. |
+| DELETE | `/accounts/{id}` | user | Cascades: deletes the account's transactions, goals, loans, recurring rules, investment wallets, and reconciliations; clears `payment_account_id` on surviving accounts. No guard mode - always cascades. |
 | GET/POST | `/categories` | user | `position` is server-assigned on create. |
 | PATCH | `/categories/{id}` | user | |
 | DELETE | `/categories/{id}` | user | Blocked while referenced by transactions or recurring templates (409). |

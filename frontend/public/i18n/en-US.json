@@ -407,11 +407,16 @@
       "new": "New account",
       "edit": "Edit",
       "archive": "Archive",
-      "unarchive": "Unarchive"
+      "unarchive": "Unarchive",
+      "delete": "Delete account"
     },
     "archive": {
       "title": "Archive account?",
       "message": "The account \"{{name}}\" will no longer appear in the main views. Do you want to continue?"
+    },
+    "delete": {
+      "title": "Delete account?",
+      "message": "This also deletes its transactions, goals, loans, recurring rules, and investment wallets. This action cannot be undone. Do you want to delete the account \"{{name}}\"?"
     },
     "empty": {
       "title": "No accounts yet",

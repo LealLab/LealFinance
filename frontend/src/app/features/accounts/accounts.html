@@ -33,7 +33,7 @@
   } @else {
     <div class="flex flex-col gap-6">
       @for (group of groups(); track group.institution?.id ?? '__none__') {
-        <app-card [padded]="false">
+        <app-card [padded]="false" class="group/card">
           <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
             <div class="flex items-center gap-2 text-sm font-semibold text-content-primary">
               @if (group.institution; as institution) {
@@ -44,10 +44,22 @@
                   variant="ghost"
                   size="sm"
                   type="button"
+                  class="opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                   (click)="openEditInstitution(institution, $event)"
                   [attr.aria-label]="t('institutions.actions.edit')"
                 >
                   <app-icon name="pencil" [size]="14" />
+                </button>
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  class="opacity-0 transition-opacity hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                  (click)="deleteInstitution(institution, $event)"
+                  [attr.aria-label]="t('institutions.actions.delete')"
+                >
+                  <app-icon name="trash" [size]="14" />
                 </button>
               } @else {
                 <app-icon name="wallet" [size]="16" class="text-content-muted" />
@@ -110,7 +122,7 @@
                     variant="ghost"
                     size="sm"
                     type="button"
-                    class="hover:!bg-surface-raised"
+                    class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                     (click)="openEdit(row.account, $event)"
                     [attr.aria-label]="t('accounts.actions.edit')"
                   >
@@ -121,13 +133,24 @@
                     variant="ghost"
                     size="sm"
                     type="button"
-                    class="hover:!bg-surface-raised"
+                    class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                     (click)="toggleArchived(row.account, $event)"
                     [attr.aria-label]="
                       row.account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive')
                     "
                   >
                     <app-icon name="archive" [size]="16" />
+                  </button>
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                    (click)="deleteAccount(row.account, $event)"
+                    [attr.aria-label]="t('accounts.actions.delete')"
+                  >
+                    <app-icon name="trash" [size]="16" />
                   </button>
                 </div>
               </li>

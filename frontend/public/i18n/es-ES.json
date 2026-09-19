@@ -383,11 +383,16 @@
       "new": "Nueva cuenta",
       "edit": "Editar",
       "archive": "Archivar",
-      "unarchive": "Desarchivar"
+      "unarchive": "Desarchivar",
+      "delete": "Eliminar cuenta"
     },
     "archive": {
       "title": "¿Archivar la cuenta?",
       "message": "La cuenta «{{name}}» dejará de aparecer en las vistas principales. ¿Quieres continuar?"
+    },
+    "delete": {
+      "title": "¿Eliminar cuenta?",
+      "message": "Esto también eliminará: transacciones, objetivos, préstamos, reglas periódicas y carteras de inversión. Esta acción no se puede deshacer. ¿Quieres eliminar la cuenta «{{name}}»?"
     },
     "empty": {
       "title": "Aún no hay cuentas",

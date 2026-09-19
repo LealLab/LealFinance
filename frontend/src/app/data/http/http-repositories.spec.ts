@@ -127,6 +127,13 @@ describe('HTTP repositories', () => {
     req.flush(null);
   });
 
+  it('sends an account delete', () => {
+    TestBed.inject(HttpAccountRepository).delete('a').subscribe();
+    const req = http.expectOne('/api/v1/accounts/a');
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
+
   it('sends transaction filters with backend parameter names', () => {
     TestBed.inject(HttpTransactionRepository)
       .list({ accountId: 'a', types: ['expense'], dateFrom: '2026-08-01' })

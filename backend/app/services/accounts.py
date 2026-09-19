@@ -1,5 +1,4 @@
-"""Account CRUD and archive/unarchive - no delete, matching the frontend's
-AccountRepository (accounts are archived, never removed).
+"""Account CRUD, archive/unarchive, and cascade delete.
 
 Balances are always derived from opening_balance plus every transaction
 that touches the account (Phase 5) - deliberately no stored balance column,
@@ -22,6 +21,7 @@ from app.models.goal import Goal
 from app.models.institution import Institution
 from app.models.investment import InvestmentTransaction, InvestmentWallet
 from app.models.loan import Loan
+from app.models.reconciliation import Reconciliation, ReconciliationEntry
 from app.models.recurring import RecurringRule
 from app.models.transaction import (
     TRANSACTION_TYPE_EXPENSE,
@@ -390,6 +390,15 @@ async def set_account_archived(
     return account
 
 
+async def delete_account(db: AsyncSession, user_id: UUID, account_id: UUID) -> None:
+    """Delete one owned account and every record that depends on it.
+
+    A thin wrapper over cascade_delete_accounts, which already 404s
+    (account.not_found) on a missing or foreign id via get_many_owned.
+    """
+    await cascade_delete_accounts(db, user_id, [account_id])
+
+
 async def cascade_delete_accounts(
     db: AsyncSession,
     user_id: UUID,
@@ -448,9 +457,28 @@ async def cascade_delete_accounts(
     )
     # 2. Investment wallets reference accounts through either account leg.
     await db.execute(delete(InvestmentWallet).where(InvestmentWallet.id.in_(target_wallet_ids)))
-    # 3. Transactions reference accounts through either ledger leg.
+    # 3. Reconciliation entries and reconciliations reference accounts directly.
+    await db.execute(
+        delete(ReconciliationEntry).where(
+            ReconciliationEntry.id.in_(
+                ownership.owned(ReconciliationEntry, user_id)
+                .where(ReconciliationEntry.account_id.in_(target_account_ids))
+                .with_only_columns(ReconciliationEntry.id)
+            )
+        )
+    )
+    await db.execute(
+        delete(Reconciliation).where(
+            Reconciliation.id.in_(
+                ownership.owned(Reconciliation, user_id)
+                .where(Reconciliation.account_id.in_(target_account_ids))
+                .with_only_columns(Reconciliation.id)
+            )
+        )
+    )
+    # 4. Transactions reference accounts through either ledger leg.
     await db.execute(delete(Transaction).where(Transaction.id.in_(target_transaction_ids)))
-    # 4. Goals reference their account directly.
+    # 5. Goals reference their account directly.
     await db.execute(
         delete(Goal).where(
             Goal.id.in_(
@@ -460,7 +488,7 @@ async def cascade_delete_accounts(
             )
         )
     )
-    # 5. Loans reference their optional payment account.
+    # 6. Loans reference their optional payment account.
     await db.execute(
         delete(Loan).where(
             Loan.id.in_(
@@ -470,7 +498,7 @@ async def cascade_delete_accounts(
             )
         )
     )
-    # 6. Recurring rules reference one or both template accounts.
+    # 7. Recurring rules reference one or both template accounts.
     await db.execute(
         delete(RecurringRule).where(
             RecurringRule.id.in_(
@@ -485,7 +513,7 @@ async def cascade_delete_accounts(
             )
         )
     )
-    # 7. Clear surviving accounts' self-referential payment links.
+    # 8. Clear surviving accounts' self-referential payment links.
     await db.execute(
         update(Account)
         .where(
@@ -500,7 +528,7 @@ async def cascade_delete_accounts(
         )
         .values(payment_account_id=None)
     )
-    # 8. Delete the accounts themselves.
+    # 9. Delete the accounts themselves.
     await db.execute(delete(Account).where(Account.id.in_(target_account_ids)))
 
     if commit:

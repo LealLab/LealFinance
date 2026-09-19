@@ -383,11 +383,16 @@
       "new": "Neues Konto",
       "edit": "Bearbeiten",
       "archive": "Archivieren",
-      "unarchive": "Archivierung aufheben"
+      "unarchive": "Archivierung aufheben",
+      "delete": "Konto löschen"
     },
     "archive": {
       "title": "Konto archivieren?",
       "message": "Das Konto „{{name}}“ wird nicht mehr in den Hauptansichten angezeigt. Möchten Sie fortfahren?"
+    },
+    "delete": {
+      "title": "Konto löschen?",
+      "message": "Dadurch werden auch gelöscht: Transaktionen, Ziele, Darlehen, wiederkehrende Regeln und Anlageportfolios. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie das Konto „{{name}}“ löschen?"
     },
     "empty": {
       "title": "Noch keine Konten",

@@ -2,12 +2,18 @@
 
 from datetime import date
 from decimal import Decimal
+from uuid import UUID
 
 import pytest
 from httpx import AsyncClient
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.account import Account
+from app.models.investment import InvestmentTransaction, InvestmentWallet
+from app.models.loan import Loan
+from app.models.reconciliation import Reconciliation, ReconciliationEntry
+from app.models.recurring import RecurringRule
 from app.models.transaction import TRANSACTION_TYPE_INCOME, Transaction
 from app.services.accounts import account_has_ledger_references
 from tests.factories import login_as, make_user
@@ -589,3 +595,206 @@ async def test_account_balances_ownership_isolation(
     response = await other_client.get("/api/v1/accounts/balances")
     assert response.status_code == 200
     assert all(row["account_id"] != account_id for row in response.json())
+
+
+async def test_delete_account_succeeds(client: AsyncClient, db_session: AsyncSession) -> None:
+    await _authed(client, db_session, "quinn@example.com")
+    create_response = await client.post(
+        "/api/v1/accounts", json={"name": "Deletable", "type": "cash", "currency": "BRL"}
+    )
+    account_id = create_response.json()["id"]
+
+    delete_response = await client.delete(f"/api/v1/accounts/{account_id}")
+    assert delete_response.status_code == 204
+
+    get_response = await client.get(f"/api/v1/accounts/{account_id}")
+    assert get_response.status_code == 404
+
+
+async def test_delete_unknown_account_is_not_found(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "riley@example.com")
+
+    response = await client.delete("/api/v1/accounts/00000000-0000-0000-0000-000000000000")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "account.not_found"
+
+
+async def test_delete_account_ownership_isolation(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "sam@example.com")
+    await _authed(other_client, db_session, "tina@example.com")
+
+    create_response = await client.post(
+        "/api/v1/accounts", json={"name": "Sam's Cash", "type": "cash", "currency": "BRL"}
+    )
+    account_id = create_response.json()["id"]
+
+    response = await other_client.delete(f"/api/v1/accounts/{account_id}")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "account.not_found"
+    assert (await client.get(f"/api/v1/accounts/{account_id}")).status_code == 200
+
+
+async def test_delete_account_cascade_removes_dependents_and_clears_survivors(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "uma@example.com")
+
+    account_response = await client.post(
+        "/api/v1/accounts", json={"name": "Checking", "type": "checking", "currency": "BRL"}
+    )
+    account_id = account_response.json()["id"]
+
+    survivor_response = await client.post(
+        "/api/v1/accounts",
+        json={
+            "name": "Survivor card",
+            "type": "credit_card",
+            "currency": "BRL",
+            "payment_account_id": account_id,
+        },
+    )
+    survivor_id = survivor_response.json()["id"]
+
+    goal_account_response = await client.post(
+        "/api/v1/accounts", json={"name": "Untouched goal", "type": "goal", "currency": "BRL"}
+    )
+    goal_account_id = goal_account_response.json()["id"]
+    goal_response = await client.post(
+        "/api/v1/goals",
+        json={
+            "account_id": goal_account_id,
+            "name": "Untouched",
+            "target_amount": "1000.00",
+            "currency": "BRL",
+        },
+    )
+    untouched_goal_id = goal_response.json()["id"]
+
+    category_id = await _create_category(client, name="Delete cascade")
+    ledger_response = await client.post(
+        "/api/v1/transactions",
+        json={
+            "type": "expense",
+            "date": "2026-01-01",
+            "amount": "10.00",
+            "currency": "BRL",
+            "account_id": account_id,
+            "category_id": category_id,
+            "description": "Cascade transaction",
+        },
+    )
+    ledger_id = ledger_response.json()["id"]
+
+    loan_response = await client.post(
+        "/api/v1/loans",
+        json={
+            "name": "Cascade loan",
+            "category_id": category_id,
+            "currency": "BRL",
+            "amount_borrowed": "1000.00",
+            "fees": "0.00",
+            "interest_rate": "0.00",
+            "rate_period": "monthly",
+            "installment_count": 10,
+            "first_payment_date": "2026-01-10",
+            "payment_account_id": account_id,
+        },
+    )
+    loan_id = loan_response.json()["id"]
+
+    recurring_response = await client.post(
+        "/api/v1/recurring-rules",
+        json={
+            "frequency": "monthly",
+            "interval": 1,
+            "start_date": "2026-01-01",
+            "template": {
+                "type": "expense",
+                "amount": "25.00",
+                "currency": "BRL",
+                "account_id": account_id,
+                "category_id": category_id,
+                "description": "Cascade recurring",
+            },
+        },
+    )
+    recurring_id = recurring_response.json()["id"]
+
+    wallet_response = await client.post(
+        "/api/v1/investments/wallets",
+        json={"name": "Cascade wallet", "currency": "BRL", "cash_account_id": account_id},
+    )
+    wallet_id = wallet_response.json()["id"]
+    wallet_account_id = wallet_response.json()["account_id"]
+    asset_response = await client.post(
+        "/api/v1/investments/assets",
+        json={
+            "symbol": "CASC",
+            "name": "Cascade asset",
+            "asset_class": "stock",
+            "currency": "BRL",
+            "manual_price": "10.00",
+        },
+    )
+    investment_response = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet_id,
+            "asset_id": asset_response.json()["id"],
+            "type": "buy",
+            "date": "2026-01-02",
+            "quantity": "1",
+            "price": "10",
+            "amount": "10",
+            "currency": "BRL",
+        },
+    )
+    investment_id = investment_response.json()["id"]
+    investment_ledger_id = investment_response.json()["transaction_id"]
+
+    # Covers the reconciliation RESTRICT gap: without cascading these first,
+    # the account delete would 500 on an IntegrityError instead of a clean 204.
+    reconciliation_response = await client.post(
+        "/api/v1/reconciliations",
+        json={"account_id": account_id, "statement_date": "2026-01-01", "statement_balance": "0"},
+    )
+    reconciliation_id = reconciliation_response.json()["id"]
+    await client.post(
+        f"/api/v1/reconciliations/{reconciliation_id}/entries",
+        json={"transaction_ids": [ledger_id], "cleared": True},
+    )
+
+    delete_response = await client.delete(f"/api/v1/accounts/{account_id}")
+
+    assert delete_response.status_code == 204, delete_response.text
+    for model, entity_id in (
+        (Account, account_id),
+        (Transaction, ledger_id),
+        (Transaction, investment_ledger_id),
+        (InvestmentWallet, wallet_id),
+        (InvestmentTransaction, investment_id),
+        (Loan, loan_id),
+        (RecurringRule, recurring_id),
+        (Reconciliation, reconciliation_id),
+    ):
+        assert await db_session.get(model, UUID(entity_id)) is None
+    assert (await db_session.execute(select(ReconciliationEntry))).scalars().first() is None
+
+    # The wallet's own investment account is a separate account from the one
+    # being deleted (only linked via cash_account_id) - it must survive.
+    wallet_account = await client.get(f"/api/v1/accounts/{wallet_account_id}")
+    assert wallet_account.status_code == 200
+
+    survivor = await client.get(f"/api/v1/accounts/{survivor_id}")
+    assert survivor.status_code == 200
+    assert survivor.json()["payment_account_id"] is None
+
+    goals_list = await client.get("/api/v1/goals")
+    assert goals_list.status_code == 200
+    assert any(goal["id"] == untouched_goal_id for goal in goals_list.json())
+    untouched_account = await client.get(f"/api/v1/accounts/{goal_account_id}")
+    assert untouched_account.status_code == 200

@@ -383,11 +383,16 @@
       "new": "Ny konto",
       "edit": "Rediger",
       "archive": "Arkiver",
-      "unarchive": "Gjenopprett"
+      "unarchive": "Gjenopprett",
+      "delete": "Slett konto"
     },
     "archive": {
       "title": "Arkiver konto?",
       "message": "Kontoen «{{name}}» vil ikke lenger vises i hovedoversiktene. Vil du fortsette?"
+    },
+    "delete": {
+      "title": "Slette konto?",
+      "message": "Dette sletter også: transaksjoner, mål, lån, gjentakende regler og investeringsporteføljer. Denne handlingen kan ikke angres. Vil du slette kontoen «{{name}}»?"
     },
     "empty": {
       "title": "Ingen kontoer ennå",

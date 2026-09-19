@@ -167,97 +167,99 @@ export class MockStore {
       );
     }
     if (mode === 'cascade') {
-      const accountIds = new Set(accounts.map((account) => account.id));
-      const walletIds = new Set(
-        this.investmentWalletsSignal()
-          .filter(
-            (wallet) =>
-              wallet.institutionId === id ||
-              accountIds.has(wallet.accountId) ||
-              (wallet.cashAccountId !== undefined && accountIds.has(wallet.cashAccountId)),
-          )
-          .map((wallet) => wallet.id),
-      );
-      const transactionIds = new Set(
-        this.transactionsSignal()
-          .filter(
-            (transaction) =>
-              accountIds.has(transaction.accountId) ||
-              (transaction.toAccountId !== undefined && accountIds.has(transaction.toAccountId)),
-          )
-          .map((transaction) => transaction.id),
-      );
-      const investmentTransactionIds = new Set(
-        this.investmentTransactionsSignal()
-          .filter(
-            (transaction) =>
-              walletIds.has(transaction.walletId) ||
-              (transaction.transactionId !== undefined &&
-                transactionIds.has(transaction.transactionId)),
-          )
-          .map((transaction) => transaction.id),
-      );
-      const goalIds = new Set(
-        this.goalsSignal()
-          .filter((goal) => accountIds.has(goal.accountId))
-          .map((goal) => goal.id),
-      );
-      const loanIds = new Set(
-        this.loansSignal()
-          .filter(
-            (loan) =>
-              loan.paymentAccountId !== undefined && accountIds.has(loan.paymentAccountId),
-          )
-          .map((loan) => loan.id),
-      );
-      const recurringRuleIds = new Set(
-        this.recurringRulesSignal()
-          .filter(
-            (rule) =>
-              accountIds.has(rule.template.accountId) ||
-              (rule.template.toAccountId !== undefined &&
-                accountIds.has(rule.template.toAccountId)),
-          )
-          .map((rule) => rule.id),
-      );
-
-      this.investmentTransactionsSignal.update((list) =>
-        list.filter((transaction) => !investmentTransactionIds.has(transaction.id)),
-      );
-      this.investmentWalletsSignal.update((list) =>
-        list.filter((wallet) => !walletIds.has(wallet.id)),
-      );
-      this.transactionsSignal.update((list) =>
-        list
-          .filter((transaction) => !transactionIds.has(transaction.id))
-          .map((transaction) => {
-            const next = { ...transaction };
-            if (next.loanId !== undefined && loanIds.has(next.loanId)) next.loanId = undefined;
-            if (
-              next.recurringRuleId !== undefined &&
-              recurringRuleIds.has(next.recurringRuleId)
-            ) {
-              next.recurringRuleId = undefined;
-            }
-            return next;
-          }),
-      );
-      this.goalsSignal.update((list) => list.filter((goal) => !goalIds.has(goal.id)));
-      this.loansSignal.update((list) => list.filter((loan) => !loanIds.has(loan.id)));
-      this.recurringRulesSignal.update((list) =>
-        list.filter((rule) => !recurringRuleIds.has(rule.id)),
-      );
-      this.accountsSignal.update((list) =>
-        list
-          .filter((account) => !accountIds.has(account.id))
-          .map((account) =>
-            account.paymentAccountId !== undefined && accountIds.has(account.paymentAccountId)
-              ? { ...account, paymentAccountId: undefined }
-              : account,
-          ),
-      );
+      this.cascadeDeleteAccounts(new Set(accounts.map((account) => account.id)), id);
     }
     this.institutionsSignal.update((list) => removeEntity(list, id));
+  }
+
+  deleteAccount(id: string): void {
+    if (!findEntity(this.accountsSignal(), id)) notFound('Account', id);
+    this.cascadeDeleteAccounts(new Set([id]));
+  }
+
+  /** Delete a set of accounts and everything that depends on them - shared by
+   * a single account delete and an institution's cascade delete. `institutionId`
+   * (institution mode only) also pulls in wallets linked to the institution
+   * directly rather than through one of these accounts. */
+  private cascadeDeleteAccounts(accountIds: Set<string>, institutionId?: string): void {
+    const walletIds = new Set(
+      this.investmentWalletsSignal()
+        .filter(
+          (wallet) =>
+            (institutionId !== undefined && wallet.institutionId === institutionId) ||
+            accountIds.has(wallet.accountId) ||
+            (wallet.cashAccountId !== undefined && accountIds.has(wallet.cashAccountId)),
+        )
+        .map((wallet) => wallet.id),
+    );
+    const transactionIds = new Set(
+      this.transactionsSignal()
+        .filter(
+          (transaction) =>
+            accountIds.has(transaction.accountId) ||
+            (transaction.toAccountId !== undefined && accountIds.has(transaction.toAccountId)),
+        )
+        .map((transaction) => transaction.id),
+    );
+    const investmentTransactionIds = new Set(
+      this.investmentTransactionsSignal()
+        .filter(
+          (transaction) =>
+            walletIds.has(transaction.walletId) ||
+            (transaction.transactionId !== undefined &&
+              transactionIds.has(transaction.transactionId)),
+        )
+        .map((transaction) => transaction.id),
+    );
+    const goalIds = new Set(
+      this.goalsSignal()
+        .filter((goal) => accountIds.has(goal.accountId))
+        .map((goal) => goal.id),
+    );
+    const loanIds = new Set(
+      this.loansSignal()
+        .filter((loan) => loan.paymentAccountId !== undefined && accountIds.has(loan.paymentAccountId))
+        .map((loan) => loan.id),
+    );
+    const recurringRuleIds = new Set(
+      this.recurringRulesSignal()
+        .filter(
+          (rule) =>
+            accountIds.has(rule.template.accountId) ||
+            (rule.template.toAccountId !== undefined &&
+              accountIds.has(rule.template.toAccountId)),
+        )
+        .map((rule) => rule.id),
+    );
+
+    this.investmentTransactionsSignal.update((list) =>
+      list.filter((transaction) => !investmentTransactionIds.has(transaction.id)),
+    );
+    this.investmentWalletsSignal.update((list) => list.filter((wallet) => !walletIds.has(wallet.id)));
+    this.transactionsSignal.update((list) =>
+      list
+        .filter((transaction) => !transactionIds.has(transaction.id))
+        .map((transaction) => {
+          const next = { ...transaction };
+          if (next.loanId !== undefined && loanIds.has(next.loanId)) next.loanId = undefined;
+          if (next.recurringRuleId !== undefined && recurringRuleIds.has(next.recurringRuleId)) {
+            next.recurringRuleId = undefined;
+          }
+          return next;
+        }),
+    );
+    this.goalsSignal.update((list) => list.filter((goal) => !goalIds.has(goal.id)));
+    this.loansSignal.update((list) => list.filter((loan) => !loanIds.has(loan.id)));
+    this.recurringRulesSignal.update((list) => list.filter((rule) => !recurringRuleIds.has(rule.id)));
+    this.accountsSignal.update((list) =>
+      list
+        .filter((account) => !accountIds.has(account.id))
+        .map((account) =>
+          account.paymentAccountId !== undefined && accountIds.has(account.paymentAccountId)
+            ? { ...account, paymentAccountId: undefined }
+            : account,
+        ),
+    );
   }
 
   // --- Transactions -------------------------------------------------------

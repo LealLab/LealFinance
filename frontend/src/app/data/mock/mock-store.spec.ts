@@ -508,6 +508,110 @@ describe('MockStore', () => {
     });
   });
 
+  describe('deleteAccount', () => {
+    it('cascades one account and all of its owned data, leaving siblings untouched', () => {
+      const institution = store.createInstitution({
+        name: 'Instituição',
+        icon: 'bank',
+        archived: false,
+        position: 0,
+      });
+      const account = store.createAccount({
+        name: 'Conta a excluir',
+        type: 'checking',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const sibling = store.createAccount({
+        name: 'Conta irmã',
+        type: 'checking',
+        currency: 'BRL',
+        openingBalance: '0',
+        institutionId: institution.id,
+        archived: false,
+      });
+      const survivor = store.createAccount({
+        name: 'Cartão sobrevivente',
+        type: 'credit_card',
+        currency: 'BRL',
+        openingBalance: '0',
+        paymentAccountId: account.id,
+        archived: false,
+      });
+      const transaction = store.createTransaction({
+        type: 'expense',
+        date: '2026-01-01',
+        amount: '10',
+        currency: 'BRL',
+        accountId: account.id,
+        description: 'Transação a excluir',
+      });
+      const wallet = store.createInvestmentWallet({
+        accountId: account.id,
+        name: 'Carteira a excluir',
+        currency: 'BRL',
+        archived: false,
+      });
+      const investmentTransaction = store.createInvestmentTransaction({
+        walletId: wallet.id,
+        type: 'fee',
+        date: '2026-01-01',
+        amount: '1',
+        fee: '0',
+        currency: 'BRL',
+      });
+      const loan = store.createLoan({
+        name: 'Empréstimo',
+        categoryId: 'category',
+        currency: 'BRL',
+        amountBorrowed: '100',
+        fees: '0',
+        interestRate: '0',
+        ratePeriod: 'monthly',
+        installmentCount: 1,
+        firstPaymentDate: '2026-01-01',
+        autoPost: false,
+        paymentAccountId: account.id,
+        archived: false,
+        notes: undefined,
+      });
+      const recurringRule = store.createRecurringRule({
+        frequency: 'monthly',
+        interval: 1,
+        startDate: '2026-01-01',
+        template: {
+          type: 'expense',
+          amount: '10',
+          currency: 'BRL',
+          accountId: account.id,
+          categoryId: 'category',
+          description: 'Regra a excluir',
+        },
+      });
+
+      store.deleteAccount(account.id);
+
+      expect(store.accounts().find((item) => item.id === account.id)).toBeUndefined();
+      expect(store.transactions().find((item) => item.id === transaction.id)).toBeUndefined();
+      expect(
+        store.investmentTransactions().find((item) => item.id === investmentTransaction.id),
+      ).toBeUndefined();
+      expect(store.investmentWallets().find((item) => item.id === wallet.id)).toBeUndefined();
+      expect(store.loans().find((item) => item.id === loan.id)).toBeUndefined();
+      expect(store.recurringRules().find((item) => item.id === recurringRule.id)).toBeUndefined();
+      expect(store.accounts().find((item) => item.id === survivor.id)?.paymentAccountId).toBeUndefined();
+      // The sibling account shares the same institution but wasn't targeted - it must survive.
+      expect(store.accounts().find((item) => item.id === sibling.id)).toBeDefined();
+      expect(store.institutions().find((item) => item.id === institution.id)).toBeDefined();
+    });
+
+    it('throws when deleting an account that does not exist', () => {
+      expect(() => store.deleteAccount('missing-id')).toThrow();
+    });
+  });
+
   describe('manualRates', () => {
     it('upsert creates a new rate for a pair/date that has none yet', () => {
       const created = store.upsertManualRate({

@@ -383,11 +383,16 @@
       "new": "Nouveau compte",
       "edit": "Modifier",
       "archive": "Archiver",
-      "unarchive": "Restaurer"
+      "unarchive": "Restaurer",
+      "delete": "Supprimer le compte"
     },
     "archive": {
       "title": "Archiver le compte ?",
       "message": "Le compte « {{name}} » n’apparaîtra plus dans les vues principales. Voulez-vous continuer ?"
+    },
+    "delete": {
+      "title": "Supprimer le compte ?",
+      "message": "Cela supprimera aussi : les transactions, les objectifs, les prêts, les règles récurrentes et les portefeuilles d’investissement. Cette action est irréversible. Voulez-vous supprimer le compte « {{name}} » ?"
     },
     "empty": {
       "title": "Aucun compte pour le moment",

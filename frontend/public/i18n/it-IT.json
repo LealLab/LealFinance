@@ -383,11 +383,16 @@
       "new": "Nuovo conto",
       "edit": "Modifica",
       "archive": "Archivia",
-      "unarchive": "Ripristina"
+      "unarchive": "Ripristina",
+      "delete": "Elimina conto"
     },
     "archive": {
       "title": "Archiviare il conto?",
       "message": "Il conto \"{{name}}\" non comparirà più nelle viste principali. Vuoi continuare?"
+    },
+    "delete": {
+      "title": "Eliminare il conto?",
+      "message": "Verranno eliminati anche: transazioni, obiettivi, prestiti, regole ricorrenti e portafogli di investimento. Questa azione non può essere annullata. Vuoi eliminare il conto \"{{name}}\"?"
     },
     "empty": {
       "title": "Nessun conto",

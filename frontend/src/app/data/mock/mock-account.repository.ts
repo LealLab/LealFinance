@@ -50,4 +50,8 @@ export class MockAccountRepository extends AccountRepository {
   setArchived(id: string, archived: boolean): Observable<Account> {
     return mockResult(() => this.store.updateAccount(id, { archived }), this.latencyMs);
   }
+
+  delete(id: string): Observable<void> {
+    return mockResult(() => this.store.deleteAccount(id), this.latencyMs);
+  }
 }

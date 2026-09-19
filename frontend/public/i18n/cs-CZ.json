@@ -383,11 +383,16 @@
       "new": "Nový účet",
       "edit": "Upravit",
       "archive": "Archivovat",
-      "unarchive": "Obnovit z archivu"
+      "unarchive": "Obnovit z archivu",
+      "delete": "Odstranit účet"
     },
     "archive": {
       "title": "Archivovat účet?",
       "message": "Účet „{{name}}“ se již nebude zobrazovat v hlavních přehledech. Chcete pokračovat?"
+    },
+    "delete": {
+      "title": "Odstranit účet?",
+      "message": "Tím se také odstraní: transakce, cíle, půjčky, opakovaná pravidla a investiční peněženky. Tuto akci nelze vrátit zpět. Chcete odstranit účet „{{name}}“?"
     },
     "empty": {
       "title": "Zatím nemáte žádné účty",

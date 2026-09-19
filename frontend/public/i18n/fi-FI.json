@@ -383,11 +383,16 @@
       "new": "Uusi tili",
       "edit": "Muokkaa",
       "archive": "Arkistoi",
-      "unarchive": "Palauta arkistosta"
+      "unarchive": "Palauta arkistosta",
+      "delete": "Poista tili"
     },
     "archive": {
       "title": "Arkistoidaanko tili?",
       "message": "Tili \"{{name}}\" ei enää näy päänäkymissä. Haluatko jatkaa?"
+    },
+    "delete": {
+      "title": "Poistetaanko tili?",
+      "message": "Tämä poistaa myös: tapahtumat, tavoitteet, lainat, toistuvat säännöt ja sijoitussalkut. Tätä toimintoa ei voi kumota. Haluatko poistaa tilin \"{{name}}\"?"
     },
     "empty": {
       "title": "Ei vielä tilejä",
