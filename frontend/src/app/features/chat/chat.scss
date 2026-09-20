@@ -1,6 +1,4 @@
-// The chat owns the viewport so history can grow without growing the page.
-// md+: main has 2rem vertical padding. Below md: sticky top bar + tabs
-// (~5.75rem), main top padding (1.5rem) and bottom padding (4.5rem + inset).
+// The chat owns the viewport so the history scrolls inside the page shell.
 :host {
   display: block;
   min-width: 0;
@@ -20,22 +18,23 @@
 }
 
 .chat-conversations,
-.chat-conversation-card,
 .chat-thread-panel,
 .chat-thread,
 .chat-messages {
   min-height: 0;
 }
 
-.chat-conversation-card {
+.chat-conversations {
   display: flex;
   flex-direction: column;
-  height: auto;
 }
 
-.chat-conversation-list {
-  height: auto;
-  overflow-y: auto;
+.chat-conversation-item {
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background: var(--surface-sunken);
+  }
 }
 
 .chat-thread-panel,
@@ -43,12 +42,135 @@
   height: 100%;
 }
 
+.chat-thread-header,
+.chat-composer {
+  padding-inline: clamp(0rem, 5vw, 5rem);
+}
+
+.chat-thread-header {
+  padding-top: 0.25rem;
+}
+
 .chat-messages {
-  overflow-y: auto;
+  padding-top: clamp(1rem, 3vw, 2rem);
+  padding-bottom: 1rem;
+  scrollbar-gutter: stable;
+}
+
+.chat-message-row {
+  justify-content: flex-start;
+  margin-bottom: 1.25rem;
+
+  &--user {
+    justify-content: flex-end;
+  }
+}
+
+.chat-message-body {
+  border-radius: 0.75rem;
+  line-height: 1.5;
+
+  &--user {
+    padding: 0.7rem 0.9rem;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+}
+
+.chat-activity {
+  margin-top: 0.75rem;
+  color: var(--content-muted);
+  font-size: 0.75rem;
+}
+
+.chat-activity-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::before {
+    content: '›';
+    display: inline-block;
+    color: var(--content-subtle);
+    font-size: 1rem;
+    line-height: 0.75;
+    transition: transform 120ms ease;
+  }
+}
+
+.chat-activity[open] .chat-activity-summary::before {
+  transform: rotate(90deg);
+}
+
+.chat-activity-indicator {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--positive);
+}
+
+.chat-activity-list {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 28rem;
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-inline-start: 1px solid var(--border);
+}
+
+.chat-activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.chat-confirmation {
+  max-width: 34rem;
+}
+
+.chat-composer-surface {
+  box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--content-primary) 6%, transparent);
+}
+
+.chat-composer-input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+
+  &:focus {
+    border-color: transparent;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-conversation-item,
+  .chat-activity-summary::before {
+    transition: none;
+  }
 }
 
 @media (max-width: 767px) {
   :host {
     height: calc(100dvh - 12rem - env(safe-area-inset-bottom));
+  }
+
+  .chat-thread-header,
+  .chat-composer {
+    padding-inline: 0;
+  }
+
+  .chat-message-body {
+    max-width: 92%;
   }
 }

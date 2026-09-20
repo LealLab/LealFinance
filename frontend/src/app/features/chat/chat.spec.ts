@@ -1,6 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
 import { Subject, throwError } from 'rxjs';
 import { vi } from 'vitest';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
@@ -55,8 +56,26 @@ describe('Chat', () => {
 
     fixture.componentInstance['newChat']();
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(fixture.componentInstance['activeId']()).toBe('c1');
+    expect(fixture.componentInstance['showList']()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.chat-conversations').classList).toContain(
+      'max-md:hidden',
+    );
+    expect(fixture.nativeElement.querySelector('.chat-thread-panel').classList).not.toContain(
+      'max-md:hidden',
+    );
+
+    fixture.componentInstance['showList'].set(true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.chat-conversations').classList).not.toContain(
+      'max-md:hidden',
+    );
+    expect(fixture.nativeElement.querySelector('.chat-thread-panel').classList).toContain(
+      'max-md:hidden',
+    );
   });
 
   it('streams mock deltas into a bubble and clears sending on done', async () => {
@@ -75,6 +94,49 @@ describe('Chat', () => {
     expect(fixture.nativeElement.textContent).toContain('Mock: Ola');
   });
 
+  it('keeps tool activity collapsed until the user expands it', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const chat = fixture.componentInstance;
+    const stream = new Subject<AgentStreamEvent>();
+    chat['repo'].sendMessage = vi.fn().mockReturnValue(stream.asObservable());
+
+    chat['send']('How did I spend this month?');
+    chat['applyEvent']({
+      type: 'tool_call',
+      id: 't1',
+      name: 'search_transactions',
+      arguments: {},
+    });
+    fixture.detectChanges();
+
+    const activity = fixture.nativeElement.querySelector(
+      'details.chat-activity',
+    ) as HTMLDetailsElement;
+    const transloco = TestBed.inject(TranslocoService);
+    expect(activity.open).toBe(false);
+    expect(activity.querySelector('summary')?.textContent).toContain(
+      transloco.translate('chat.thinking'),
+    );
+
+    activity.open = true;
+    expect(activity.textContent).toContain('search_transactions');
+    expect(activity.textContent).toContain(transloco.translate('chat.toolRunning'));
+
+    chat['applyEvent']({
+      type: 'tool_result',
+      id: 't1',
+      name: 'search_transactions',
+      ok: true,
+    });
+    chat['applyEvent']({ type: 'done', status: 'idle', messageId: 'm1' });
+    fixture.detectChanges();
+
+    expect(activity.textContent).toContain(transloco.translate('chat.toolDone'));
+  });
+
   it('cancels the active stream before switching conversations', () => {
     const fixture = setup();
     const chat = fixture.componentInstance;
@@ -85,6 +147,7 @@ describe('Chat', () => {
 
     chat['send']('hello');
     chat['selectConversation']('c2');
+    expect(chat['showList']()).toBe(false);
     chat['liveMessages'].set([{ role: 'assistant', text: 'new', tools: [] }]);
     stream.next({ type: 'delta', text: ' stale' });
 
