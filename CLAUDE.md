@@ -93,11 +93,17 @@ See [`docs/i18n.md`](docs/i18n.md).
 - Provider linking is admin-only. Chat is per user, gated by the admin-set
   `users.ai_chat_enabled` flag for members (not a preference; excluded from
   backups); active administrators always have chat access.
-- The tool set lives in `app/agents/tools.py`; the streaming provider adapters
+- The tool set lives in `app/agents/tools.py`; create/update/delete for every user-owned
+  entity is one generic tool set driven by the registry in `app/agents/entities.py`
+  (a new user-owned table needs an entry there); the streaming provider adapters
   in `app/agents/chat.py::stream_turn`; the tool-calling loop, system prompt,
   and off-topic gate in `app/agents/loop.py` / `prompt.py`. Every tool call goes
   through a user-scoped service; no tool schema takes a `user_id`.
-- Write tools never execute without an explicit `/agents/conversations/{id}/confirm`.
+- In-app chat write tools never execute without an explicit
+  `/agents/conversations/{id}/confirm`. The MCP server exposes writes too (the client
+  confirms in its own UI). Every AI write is journaled by a Postgres trigger into
+  `change_journal` and reversed with `undo_changes`; a new journaled table needs a
+  trigger migration.
 - Provider credentials resolve as: user-linked, instance `.env`, then unavailable.
 - Never return provider secrets. They and MCP tokens are Fernet values keyed from
   `API_SECRET_KEY`; rotating that key invalidates sessions, invitations, stored

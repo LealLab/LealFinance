@@ -203,7 +203,7 @@ export class Chat {
   }
 
   protected confirmationEntries(args: Record<string, unknown>): ConfirmationEntry[] {
-    return Object.entries(args).map(([key, value]) => ({
+    return Object.entries(this.flattenRecordFields(args)).map(([key, value]) => ({
       ...(this.isAccountKey(key) ? { labelKey: 'chat.confirm.account' } : {}),
       ...(this.isCategoryKey(key) ? { labelKey: 'chat.confirm.category' } : {}),
       ...(this.isGroupKey(key) ? { labelKey: 'chat.confirm.group' } : {}),
@@ -216,6 +216,24 @@ export class Chat {
         : {}),
       value: this.displayArgument(key, value),
     }));
+  }
+
+  /**
+   * The generic entity tools nest the record's fields under `data` (create) or
+   * `changes` (update). Showing them as their own rows lets the account, category,
+   * group and institution ids among them resolve to names instead of one JSON blob.
+   */
+  private flattenRecordFields(args: Record<string, unknown>): Record<string, unknown> {
+    const flat: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(args)) {
+      const isRecord = typeof value === 'object' && value !== null && !Array.isArray(value);
+      if ((key === 'data' || key === 'changes') && isRecord) {
+        Object.assign(flat, value);
+      } else {
+        flat[key] = value;
+      }
+    }
+    return flat;
   }
 
   private readStream(stream: Observable<AgentStreamEvent>): void {

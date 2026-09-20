@@ -8,27 +8,35 @@ app, so they go through the assembled ``mcp_server.app``.
 """
 
 from contextlib import asynccontextmanager
+from uuid import UUID
 
 import httpx
 import pytest
 from httpx import AsyncClient
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.types import Receive, Scope, Send
 
 import app.mcp.server as mcp_server
 from app.agents import tools
 from app.core import crypto
+from app.core.config import get_settings
+from app.models.category_group import CategoryGroup
+from app.models.change_journal import ChangeJournal
 from app.models.user import ROLE_ADMIN, ROLE_MEMBER, User
 from tests.factories import make_user
 
 
 @pytest.fixture(autouse=True)
-def _shared_session(db_session, monkeypatch):
+def _shared_session(db_session, monkeypatch, _no_instance_provider_configuration):
     @asynccontextmanager
     async def _scope():
         yield db_session
 
     monkeypatch.setattr(mcp_server, "session_scope", _scope)
+    # conftest turns agents off for every test; the server refuses all traffic
+    # then, so these tests opt back in (see test_mcp_refuses_when_agents_disabled).
+    monkeypatch.setattr(get_settings(), "agents_enabled", True)
 
 
 class _SpyApp:
@@ -143,11 +151,46 @@ async def test_mcp_rejects_inactive_admin(db_session) -> None:
     assert spy.called is False
 
 
+async def test_mcp_refuses_when_agents_disabled(db_session, monkeypatch) -> None:
+    _, token = await _user_token(db_session, enabled=True)
+    monkeypatch.setattr(get_settings(), "agents_enabled", False)
+
+    spy = _SpyApp()
+    assert await _call_middleware(spy, token=token) == 404
+    assert spy.called is False
+
+
 def test_registered_tools_match_registry() -> None:
     registered = {tool.name for tool in mcp_server.mcp._tool_manager.list_tools()}
 
-    assert registered == {spec.name for spec in tools.SPECS if not spec.writes}
-    assert "create_transaction" not in registered
+    assert registered == {spec.name for spec in tools.SPECS}
+    assert {"undo_changes", "list_recent_changes"} <= registered
+
+
+async def test_write_tool_runs_journaled_and_can_be_undone(db_session) -> None:
+    user, _ = await _user_token(db_session, enabled=True)
+    group_id = None
+    context = mcp_server._CURRENT_USER.set(user.id)
+    try:
+        create = mcp_server._make_tool(tools.SPEC_BY_NAME["create_category_group"])
+        created = await create.fn(name="Bills", kind="expense")
+        group_id = UUID(created["group"]["id"])
+
+        rows = (await db_session.execute(select(ChangeJournal))).scalars().all()
+        assert [(row.table_name, row.operation) for row in rows] == [("category_groups", "insert")]
+        assert rows[0].agent_call_id.startswith("mcp:")
+        assert rows[0].conversation_id is None
+
+        undo = mcp_server._make_tool(tools.SPEC_BY_NAME["undo_changes"])
+        result = await undo.fn(call_id=rows[0].agent_call_id)
+    finally:
+        mcp_server._CURRENT_USER.reset(context)
+
+    assert result["reverted"] == 1
+    remaining = await db_session.scalar(
+        select(func.count()).select_from(CategoryGroup).where(CategoryGroup.id == group_id)
+    )
+    assert remaining == 0
 
 
 async def test_chat_flag_revokes_existing_token(db_session) -> None:

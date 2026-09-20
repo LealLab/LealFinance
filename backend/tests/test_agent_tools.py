@@ -94,6 +94,30 @@ async def _create_transaction(
     return response.json()
 
 
+async def _create(
+    db: AsyncSession, user_id: UUID, entity: str, **data: object
+) -> dict[str, object]:
+    return await tools.SPEC_BY_NAME["create_entity"].run(
+        db, user_id, {"entity": entity, "data": data}
+    )
+
+
+async def _update(
+    db: AsyncSession, user_id: UUID, entity: str, entity_id: str, **changes: object
+) -> dict[str, object]:
+    return await tools.SPEC_BY_NAME["update_entity"].run(
+        db, user_id, {"entity": entity, "id": entity_id, "changes": changes}
+    )
+
+
+async def _delete(
+    db: AsyncSession, user_id: UUID, entity: str, entity_id: str
+) -> dict[str, object]:
+    return await tools.SPEC_BY_NAME["delete_entity"].run(
+        db, user_id, {"entity": entity, "id": entity_id}
+    )
+
+
 async def test_list_accounts_returns_string_balances_and_filters_archived(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -300,37 +324,35 @@ async def test_create_transaction_writes_and_preserves_service_errors(
     user = await _authed(client, db_session, "agent-create@example.com")
     account_id = await _create_account(client)
     _, category_id = await _create_group(client, "Expenses")
-    spec = tools.SPEC_BY_NAME["create_transaction"]
+    assert tools.SPEC_BY_NAME["create_entity"].writes
 
-    row = await spec.run(
+    row = await _create(
         db_session,
         user.id,
-        {
-            "type": "expense",
-            "date": "2026-01-20",
-            "amount": "19.99",
-            "currency": "BRL",
-            "account_id": account_id,
-            "category_id": category_id,
-            "description": "Created by agent",
-        },
+        "transaction",
+        type="expense",
+        date="2026-01-20",
+        amount="19.99",
+        currency="BRL",
+        account_id=account_id,
+        category_id=category_id,
+        description="Created by agent",
     )
     assert row["type"] == "expense"
     assert row["category_id"] == category_id
     assert row["amount"] == "19.9900"
 
     with pytest.raises(AppError) as error:
-        await spec.run(
+        await _create(
             db_session,
             user.id,
-            {
-                "type": "expense",
-                "date": "2026-01-21",
-                "amount": "10.00",
-                "currency": "BRL",
-                "account_id": account_id,
-                "description": "Missing category",
-            },
+            "transaction",
+            type="expense",
+            date="2026-01-21",
+            amount="10.00",
+            currency="BRL",
+            account_id=account_id,
+            description="Missing category",
         )
     assert error.value.code == "transaction.category_required"
 
@@ -339,17 +361,15 @@ async def test_create_institution_defaults_icon_and_wraps_invalid_icon(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     user = await _authed(client, db_session, "agent-create-institution@example.com")
-    spec = tools.SPEC_BY_NAME["create_institution"]
-    assert spec.writes
 
-    row = await spec.run(db_session, user.id, {"name": "New Bank"})
+    row = await _create(db_session, user.id, "institution", name="New Bank")
 
     assert row["name"] == "New Bank"
     assert row["icon"] == "bank"
     assert len(await institutions_service.list_institutions(db_session, user.id)) == 1
 
     with pytest.raises(AppError) as error:
-        await spec.run(db_session, user.id, {"name": "Bad Bank", "icon": "not-an-icon"})
+        await _create(db_session, user.id, "institution", name="Bad Bank", icon="not-an-icon")
     assert error.value.code == "agents.tool_arguments_invalid"
 
 
@@ -357,18 +377,15 @@ async def test_create_account_writes_and_preserves_service_errors(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
     user = await _authed(client, db_session, "agent-create-account@example.com")
-    spec = tools.SPEC_BY_NAME["create_account"]
-    assert spec.writes
 
-    row = await spec.run(
+    row = await _create(
         db_session,
         user.id,
-        {
-            "name": "New Checking",
-            "type": "checking",
-            "currency": "BRL",
-            "opening_balance": "123.45",
-        },
+        "account",
+        name="New Checking",
+        type="checking",
+        currency="BRL",
+        opening_balance="123.45",
     )
 
     assert row["name"] == "New Checking"
@@ -376,23 +393,20 @@ async def test_create_account_writes_and_preserves_service_errors(
     assert row["currency"] == "BRL"
 
     with pytest.raises(AppError) as error:
-        await spec.run(
+        await _create(
             db_session,
             user.id,
-            {
-                "name": "Invalid Savings",
-                "type": "savings",
-                "currency": "BRL",
-                "credit_limit": "100.00",
-            },
+            "account",
+            name="Invalid Savings",
+            type="savings",
+            currency="BRL",
+            credit_limit="100.00",
         )
     assert error.value.code == "account.credit_fields_not_applicable"
 
     with pytest.raises(AppError) as error:
-        await spec.run(
-            db_session,
-            user.id,
-            {"name": "Unknown Currency", "type": "checking", "currency": "XYZ"},
+        await _create(
+            db_session, user.id, "account", name="Unknown Currency", type="checking", currency="XYZ"
         )
     assert error.value.code == "currency.not_found"
 
@@ -407,15 +421,14 @@ async def test_create_account_rejects_foreign_institution(
     other_user, _ = await make_user(db_session, email="agent-account-other@example.com")
 
     with pytest.raises(AppError) as error:
-        await tools.SPEC_BY_NAME["create_account"].run(
+        await _create(
             db_session,
             other_user.id,
-            {
-                "name": "Foreign Institution Account",
-                "type": "checking",
-                "currency": "BRL",
-                "institution_id": str(institution.id),
-            },
+            "account",
+            name="Foreign Institution Account",
+            type="checking",
+            currency="BRL",
+            institution_id=str(institution.id),
         )
 
     assert error.value.status_code == 404
@@ -430,17 +443,16 @@ async def test_create_transaction_rejects_foreign_account(
     other_user, _ = await make_user(db_session, email="agent-other@example.com")
 
     with pytest.raises(AppError) as error:
-        await tools.SPEC_BY_NAME["create_transaction"].run(
+        await _create(
             db_session,
             other_user.id,
-            {
-                "type": "expense",
-                "date": "2026-01-22",
-                "amount": "10.00",
-                "currency": "BRL",
-                "account_id": account_id,
-                "description": "Foreign account",
-            },
+            "transaction",
+            type="expense",
+            date="2026-01-22",
+            amount="10.00",
+            currency="BRL",
+            account_id=account_id,
+            description="Foreign account",
         )
     assert owner.id != other_user.id
     assert error.value.status_code == 404
@@ -489,15 +501,13 @@ async def test_create_category_derives_kind_from_group_and_rejects_foreign_group
     user = await _authed(client, db_session, "agent-create-category@example.com")
     group_id, _ = await _create_group(client, "Income", kind="income")
 
-    spec = tools.SPEC_BY_NAME["create_category"]
-    assert spec.writes
-    row = await spec.run(db_session, user.id, {"name": "Bonus", "group_id": group_id})
+    row = await _create(db_session, user.id, "category", name="Bonus", group_id=group_id)
     assert row["kind"] == "income"
     assert row["name"] == "Bonus"
 
     other_user, _ = await make_user(db_session, email="agent-create-category-other@example.com")
     with pytest.raises(AppError) as error:
-        await spec.run(db_session, other_user.id, {"name": "Sneaky", "group_id": group_id})
+        await _create(db_session, other_user.id, "category", name="Sneaky", group_id=group_id)
     assert error.value.status_code == 404
     assert error.value.code == "category_group.not_found"
 
@@ -509,10 +519,8 @@ async def test_update_category_renames_and_moves_between_groups(
     _, category_id = await _create_group(client, "Group A")
     group_b, _ = await _create_group(client, "Group B")
 
-    row = await tools.SPEC_BY_NAME["update_category"].run(
-        db_session,
-        user.id,
-        {"category_id": category_id, "name": "Renamed", "group_id": group_b},
+    row = await _update(
+        db_session, user.id, "category", category_id, name="Renamed", group_id=group_b
     )
     assert row["name"] == "Renamed"
     assert row["group_id"] == group_b
@@ -533,9 +541,7 @@ async def test_update_category_rejects_cross_kind_move(
     income_group, _ = await _create_group(client, "Earning", kind="income")
 
     with pytest.raises(AppError) as error:
-        await tools.SPEC_BY_NAME["update_category"].run(
-            db_session, user.id, {"category_id": category_id, "group_id": income_group}
-        )
+        await _update(db_session, user.id, "category", category_id, group_id=income_group)
     assert error.value.code == "category.group_kind_mismatch"
 
 
@@ -546,15 +552,21 @@ async def test_update_and_delete_tools_reject_cross_user_ids(
     group_id, category_id = await _create_group(client, "Owner Group")
     other_user, _ = await make_user(db_session, email="agent-group-intruder@example.com")
 
-    for name, args in (
-        ("update_category_group", {"group_id": group_id, "name": "Hijacked"}),
-        ("delete_category_group", {"group_id": group_id}),
-        ("update_category", {"category_id": category_id, "name": "Hijacked"}),
-        ("delete_category", {"category_id": category_id}),
+    for label, call in (
+        ("update group", _update(db_session, other_user.id, "category_group", group_id, name="X")),
+        ("delete group", _delete(db_session, other_user.id, "category_group", group_id)),
+        ("update category", _update(db_session, other_user.id, "category", category_id, name="X")),
+        ("delete category", _delete(db_session, other_user.id, "category", category_id)),
+        (
+            "get category",
+            tools.SPEC_BY_NAME["get_entity"].run(
+                db_session, other_user.id, {"entity": "category", "id": category_id}
+            ),
+        ),
     ):
         with pytest.raises(AppError) as error:
-            await tools.SPEC_BY_NAME[name].run(db_session, other_user.id, args)
-        assert error.value.status_code == 404, name
+            await call
+        assert error.value.status_code == 404, label
     assert owner.id != other_user.id
 
 
@@ -593,15 +605,11 @@ async def test_delete_tools_surface_in_use_errors(
     )
 
     with pytest.raises(AppError) as category_error:
-        await tools.SPEC_BY_NAME["delete_category"].run(
-            db_session, user.id, {"category_id": category_id}
-        )
+        await _delete(db_session, user.id, "category", category_id)
     assert category_error.value.code == "category.in_use"
 
     with pytest.raises(AppError) as group_error:
-        await tools.SPEC_BY_NAME["delete_category_group"].run(
-            db_session, user.id, {"group_id": group_id}
-        )
+        await _delete(db_session, user.id, "category_group", group_id)
     assert group_error.value.code == "category_group.in_use"
 
 
@@ -734,23 +742,19 @@ async def test_update_tools_ignore_an_unknown_icon_instead_of_overwriting(
 ) -> None:
     user = await _authed(client, db_session, "agent-icon-update@example.com")
     group_id, category_id = await _create_group(client, "Keeps Icon")
-    original = await tools.SPEC_BY_NAME["update_category_group"].run(
-        db_session, user.id, {"group_id": group_id, "icon": "wallet"}
-    )
+    original = await _update(db_session, user.id, "category_group", group_id, icon="wallet")
     assert original["icon"] == "wallet"
 
-    unchanged = await tools.SPEC_BY_NAME["update_category_group"].run(
-        db_session, user.id, {"group_id": group_id, "name": "Keeps Icon 2", "icon": "nope"}
+    unchanged = await _update(
+        db_session, user.id, "category_group", group_id, name="Keeps Icon 2", icon="nope"
     )
     assert unchanged["name"] == "Keeps Icon 2"
     assert unchanged["icon"] == "wallet"
 
-    category = await tools.SPEC_BY_NAME["update_category"].run(
-        db_session, user.id, {"category_id": category_id, "icon": "book"}
-    )
+    category = await _update(db_session, user.id, "category", category_id, icon="book")
     assert category["icon"] == "book"
-    still_book = await tools.SPEC_BY_NAME["update_category"].run(
-        db_session, user.id, {"category_id": category_id, "name": "Kept", "icon": "bogus"}
+    still_book = await _update(
+        db_session, user.id, "category", category_id, name="Kept", icon="bogus"
     )
     assert still_book["icon"] == "book"
 
@@ -777,11 +781,14 @@ def test_registry_has_provider_safe_schemas_and_async_runners() -> None:
 
     write_tools = {spec.name for spec in tools.SPECS if spec.writes}
     assert {
+        "create_entity",
+        "update_entity",
+        "delete_entity",
         "create_category_group",
-        "update_category_group",
-        "delete_category_group",
         "delete_category_structure",
-        "create_category",
-        "update_category",
-        "delete_category",
+        "undo_changes",
     } <= write_tools
+    # Everything that only reads must never be routed through confirmation.
+    assert {"describe_entity", "list_entities", "get_entity", "list_recent_changes"}.isdisjoint(
+        write_tools
+    )

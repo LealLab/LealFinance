@@ -14,8 +14,8 @@
 | `ollama` | Optional local model runner behind the `agents` profile. |
 
 `api`, `worker`, `beat`, and `mcp` use the same backend image with different
-commands. AI chat runs inside `api`; `mcp` re-exposes the same tool set to
-external MCP clients; `ollama` is only the optional local provider.
+commands. AI chat runs inside `api`; `mcp` exposes the same tool set, writes
+included, to external MCP clients; `ollama` is only the optional local provider.
 
 ## Request flow
 
