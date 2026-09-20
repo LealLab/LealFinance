@@ -24,6 +24,7 @@ from app.models.agent_conversation import (
 from app.models.agent_message import AgentMessage
 from app.models.user import User
 from app.schemas.agent import ConversationCreate
+from app.services import change_journal
 from app.services.agent_providers import _require_known_provider
 from app.services.ownership import get_owned, list_owned
 
@@ -233,7 +234,14 @@ async def stream_confirm(
                 content = json.dumps({"error": "agents.tool_unknown", "params": {"name": name}})
                 is_error = True
             else:
-                content, is_error = await loop.execute_tool(db, user_id, spec, call_args)
+                # Provider tool-call ids are only unique within a conversation
+                # (some emit "call_0"), so the undo group id carries both.
+                async with change_journal.journaling(
+                    db,
+                    call_id=f"{conversation.id}:{tool_call_id}",
+                    conversation_id=conversation.id,
+                ):
+                    content, is_error = await loop.execute_tool(db, user_id, spec, call_args)
             await loop.persist_message(
                 db,
                 conversation,

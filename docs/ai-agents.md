@@ -70,15 +70,42 @@ delegating to an existing user-scoped service:
 | `monthly_totals` | income / expense / net per month |
 | `budget_status` | budget vs. actual for a month, per category group (with `group_name`) |
 | `list_card_invoices` | a credit-card account's past, current, and projected invoices |
-| `create_transaction` | **write** - always shown to the user for confirmation first |
-| `create_institution` | **write** - always shown to the user for confirmation first |
-| `create_account` | **write** - always shown to the user for confirmation first |
+| `describe_entity` | what one kind of record supports and the exact fields its create and update accept |
+| `list_entities` | records of one kind, with total and paging |
+| `get_entity` | one record of any kind by id |
+| `create_entity` | **write** - creates one record of any kind |
+| `update_entity` | **write** - changes fields of one record; also how goals, wallets, and assets are archived |
+| `delete_entity` | **write** - deletes one record; safe modes only (see below) |
 | `create_category_group` | **write** - creates a group and, optionally, its categories in one call |
-| `update_category_group` | **write** - rename or restyle a group (kind is fixed) |
-| `delete_category_group` | **write** - fails while the group still has categories |
-| `create_category` | **write** - creates a category in an existing group; kind comes from the group |
-| `update_category` | **write** - rename, restyle, or move a category between groups of the same kind |
-| `delete_category` | **write** - fails while a transaction or recurring rule references it |
+| `delete_category_structure` | **write** - deletes categories and groups together, validating all before deleting any |
+| `list_recent_changes` | what the assistant recently changed, each with the `call_id` needed to undo it |
+| `undo_changes` | **write** - reverses everything one earlier assistant action changed |
+
+`create_entity`, `update_entity`, and `delete_entity` cover every user-owned
+record through one registry (`backend/app/agents/entities.py`): institution,
+account, category and category group, transaction, budget, budget allocation,
+expected income, goal, recurring rule, categorization rule, reconciliation,
+manual rate, loan, and investment wallet, asset, and transaction. Each entry
+binds a name to the service functions and Pydantic schemas the REST API already
+uses, so ownership scoping and every domain rule apply unchanged. Adding an
+entity is one entry in that registry; `tests/test_agent_entities.py` fails if a
+user-owned table is neither in it nor explicitly left out.
+
+The generic tools follow what the application itself offers:
+
+- Goals, investment wallets, and investment assets are archive-only, so
+  `delete_entity` reports `entity.operation_unsupported` and the assistant
+  archives with `update_entity` and `archived: true`.
+- Budgets, budget allocations, expected income, and manual rates are keyed by
+  their natural key, so `create_entity` creates or replaces. Expected income has
+  no delete; a reconciliation is opened and deleted but its entries are set
+  through the reconciliation flow.
+- Deletes use each service's safe default: an institution is refused while
+  accounts use it, and a loan's payments are kept as plain expenses. Cascade
+  modes are never exposed. Deleting an **account** always cascades to its
+  transactions, reconciliations, goal, loans, and recurring rules, which is what
+  makes undo matter.
+- Transactions are found with `search_transactions`, not `list_entities`.
 
 Read tools run automatically inside one turn (bounded at 8 iterations). A write
 tool suspends the turn: the conversation goes to `awaiting_confirmation`, the
@@ -99,13 +126,51 @@ external MCP clients such as Claude Desktop. It authenticates with a per-user
 bearer token from `POST /api/v1/agents/mcp-token` - a Fernet value derived from
 `API_SECRET_KEY` carrying only the user id, valid for 30 days, shown once.
 
-The MCP server exposes only read tools; write tools stay behind the in-app
-confirmation flow. Every call still runs through the same user-scoped service
-and is bounded to the token's user.
+The MCP server exposes the same tools as the in-app chat, writes included.
+The in-app chat asks the user to confirm each write; an MCP client is expected to
+do that in its own host UI, and every MCP call is journaled so it can be undone
+(see below). Every call runs through the same user-scoped service and is bounded
+to the token's user. Like the REST routes, the server answers `404
+agents.disabled` when `AGENTS_ENABLED=false`, so a token minted earlier stops
+working on an instance that has turned the agents off.
 Individual tokens cannot be revoked; the levers are clearing `ai_chat_enabled`
 for a member, deactivating the user, or rotating `API_SECRET_KEY`. Publishing
 port 8001 (or adding an nginx location) to reach it from the host is an
 operator decision.
+
+## Undoing an AI change
+
+Every write the assistant makes - in chat or over MCP - is recorded in
+`change_journal`, so a user who changes their mind can ask it to undo. The
+assistant finds the action with `list_recent_changes` and reverses it with
+`undo_changes`, which goes through the same confirmation card as any write.
+
+The journal is filled by a Postgres trigger on every user-owned domain table,
+not by application code. That is deliberate: `cascade_delete_accounts` and
+`delete_category_structure` issue raw bulk `DELETE`s and several foreign keys
+cascade, and none of those pass through the ORM. The trigger records
+`before`/`after` row images only while the transaction carries a
+`lealfinance.agent_call` setting, so ordinary UI and API writes journal nothing.
+A chat write is grouped as `<conversation_id>:<tool_call_id>`, an MCP write as
+`mcp:<uuid>`. Tables holding secrets (`agent_credentials`,
+`market_data_credentials`) are never journaled.
+
+`undo_changes` replays a group's rows in reverse inside one transaction and is
+all-or-nothing. It refuses with `agents.change_modified` when:
+
+- a row no longer matches what the assistant wrote (someone edited it since),
+  ignoring `updated_at` and the `conversion_*` columns, which the nightly rate
+  backfill rewrites;
+- a row that must be restored has lost a parent, or one that must be removed is
+  still referenced; or
+- reversing would touch anything the assistant's action did not itself write,
+  such as a reconciliation entry created afterwards.
+
+Undoing an already-undone action does nothing. Because it works from row images,
+an undo only succeeds while nobody has touched the affected rows since; undo the
+most recent change first. Undoing a transaction restores or removes the row but
+does not write a `transaction_history` entry. The journal is excluded from
+backups and is not pruned automatically.
 
 ## Enable the feature
 

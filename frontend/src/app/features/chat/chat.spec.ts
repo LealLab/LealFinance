@@ -283,6 +283,41 @@ describe('Chat', () => {
     expect(entries.find((e) => e.label === 'Meta')?.value).toBe('{"a":1}');
   });
 
+  it('shows the fields nested in create and update arguments as their own rows', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const accounts = fixture.componentInstance['accounts'].value() ?? [];
+
+    const created = fixture.componentInstance['confirmationEntries']({
+      entity: 'transaction',
+      data: { account_id: accounts[0]?.id ?? 'x', amount: '10', meta: { a: 1 } },
+    });
+    const updated = fixture.componentInstance['confirmationEntries']({
+      entity: 'goal',
+      id: 'goal-1',
+      changes: { archived: true },
+    });
+
+    expect(created.map((entry) => entry.label ?? entry.labelKey)).toEqual([
+      'Entity',
+      'chat.confirm.account',
+      'Amount',
+      'Meta',
+    ]);
+    expect(created.find((e) => e.labelKey === 'chat.confirm.account')?.value).toBe(
+      accounts[0]?.name ?? 'x',
+    );
+    expect(created.find((e) => e.label === 'Meta')?.value).toBe('{"a":1}');
+    expect(created.some((entry) => entry.label === 'Data')).toBe(false);
+    expect(updated.map((entry) => [entry.label, entry.value])).toEqual([
+      ['Entity', 'goal'],
+      ['Id', 'goal-1'],
+      ['Archived', 'true'],
+    ]);
+  });
+
   it('runs the confirm-tool stream and clears the pending card', async () => {
     const fixture = setup();
     fixture.detectChanges();

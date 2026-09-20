@@ -8,7 +8,7 @@ server; it calls the tool registry in-process.
 import json
 from contextvars import ContextVar
 from typing import Any
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.tools.base import Tool
@@ -20,8 +20,10 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 from app.agents import MCP_TOKEN_TTL_SECONDS, tools
 from app.core import crypto
+from app.core.config import get_settings
 from app.core.db import session_scope
 from app.models.user import ROLE_ADMIN, User
+from app.services import change_journal
 
 _CURRENT_USER: ContextVar[UUID] = ContextVar("mcp_user_id")
 
@@ -36,7 +38,11 @@ class _ToolArguments(ArgModelBase):
 def _make_tool(spec: tools.ToolDef) -> Tool:
     async def run(**arguments: Any) -> Any:
         user_id = _CURRENT_USER.get()
-        async with session_scope() as db:
+        # MCP has no conversation, so each call is its own undo group.
+        async with (
+            session_scope() as db,
+            change_journal.journaling(db, call_id=f"mcp:{uuid4()}"),
+        ):
             return await spec.run(db, user_id, arguments)
 
     return Tool(
@@ -52,8 +58,9 @@ def _make_tool(spec: tools.ToolDef) -> Tool:
 mcp = FastMCP(
     name="LealFinance",
     stateless_http=True,
-    # External MCP clients must not receive write tools outside the in-app confirmation flow.
-    tools=[_make_tool(spec) for spec in tools.SPECS if not spec.writes],
+    # Writes are exposed too: the MCP client confirms them in its own host UI, and
+    # every call is journaled so the assistant can undo it (see change_journal).
+    tools=[_make_tool(spec) for spec in tools.SPECS],
 )
 
 
@@ -80,15 +87,12 @@ async def _chat_allowed(user_id: UUID) -> bool:
     return bool(user and user.is_active and (user.role == ROLE_ADMIN or user.ai_chat_enabled))
 
 
-async def _send_401(send: Send) -> None:
-    body = json.dumps(
-        {"error": {"code": "agents.chat_not_allowed", "params": {}}},
-        separators=(",", ":"),
-    ).encode()
+async def _send_error(send: Send, status: int, code: str) -> None:
+    body = json.dumps({"error": {"code": code, "params": {}}}, separators=(",", ":")).encode()
     await send(
         {
             "type": "http.response.start",
-            "status": 401,
+            "status": status,
             "headers": [
                 (b"content-type", b"application/json"),
                 (b"content-length", str(len(body)).encode()),
@@ -107,10 +111,16 @@ class _BearerAuth:
             await self.app(scope, receive, send)
             return
 
+        # Same switch as the REST router: a token minted earlier must not keep
+        # working against an instance that has turned the agents off.
+        if not get_settings().agents_enabled:
+            await _send_error(send, 404, "agents.disabled")
+            return
+
         token = _bearer_token(scope.get("headers", []))
         user_id = crypto.verify_mcp_token(token, max_age=MCP_TOKEN_TTL_SECONDS) if token else None
         if user_id is None or not await _chat_allowed(user_id):
-            await _send_401(send)
+            await _send_error(send, 401, "agents.chat_not_allowed")
             return
 
         context_token = _CURRENT_USER.set(user_id)

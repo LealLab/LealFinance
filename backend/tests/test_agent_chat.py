@@ -18,6 +18,7 @@ from app.models.agent_conversation import (
     AgentConversation,
 )
 from app.models.agent_message import AgentMessage
+from app.models.change_journal import ChangeJournal
 from app.models.transaction import Transaction
 from app.models.user import ROLE_ADMIN, ROLE_MEMBER
 from tests.factories import login_as, make_user
@@ -209,13 +210,8 @@ async def test_message_stream_uses_client_date_in_system_prompt(
     assert "2031-03-14" in body["system"]
 
 
-async def test_write_tool_confirmation_executes_only_after_approval(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
-    user = await _chat_user(client, db_session, "chat-write@example.com")
-    conversation = await _conversation(client)
-
+async def _lunch_arguments(client: AsyncClient) -> dict[str, object]:
+    """create_entity arguments for a lunch expense, with its account and category made."""
     account = await client.post(
         "/api/v1/accounts",
         json={"name": "Checking", "type": "checking", "currency": "BRL"},
@@ -237,16 +233,28 @@ async def test_write_tool_confirmation_executes_only_after_approval(
         },
     )
     assert category.status_code == 201, category.text
-    arguments = {
-        "type": "expense",
-        "date": "2026-08-31",
-        "amount": "10.00",
-        "currency": "BRL",
-        "account_id": account.json()["id"],
-        "category_id": category.json()["id"],
-        "description": "Lunch",
+    return {
+        "entity": "transaction",
+        "data": {
+            "type": "expense",
+            "date": "2026-08-31",
+            "amount": "10.00",
+            "currency": "BRL",
+            "account_id": account.json()["id"],
+            "category_id": category.json()["id"],
+            "description": "Lunch",
+        },
     }
-    responses = [_tool_body("w1", "create_transaction", arguments), _text_body("Recorded")]
+
+
+async def test_write_tool_confirmation_executes_only_after_approval(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    user = await _chat_user(client, db_session, "chat-write@example.com")
+    conversation = await _conversation(client)
+    arguments = await _lunch_arguments(client)
+    responses = [_tool_body("w1", "create_entity", arguments), _text_body("Recorded")]
 
     def handler(_request: httpx.Request) -> httpx.Response:
         return httpx.Response(
@@ -288,6 +296,62 @@ async def test_write_tool_confirmation_executes_only_after_approval(
     await db_session.refresh(row)
     assert row.status == "idle"
     assert row.pending_call_id is None
+
+    # The approved write is journaled under an id that carries the conversation,
+    # because provider tool-call ids are only unique within one.
+    journal = (await db_session.execute(select(ChangeJournal))).scalars().all()
+    assert {(entry.table_name, entry.operation) for entry in journal} == {
+        ("transactions", "insert")
+    }
+    assert {entry.agent_call_id for entry in journal} == {f"{conversation['id']}:w1"}
+    assert {entry.conversation_id for entry in journal} == {UUID(str(conversation["id"]))}
+
+
+async def test_undo_changes_is_confirmed_then_reverses_the_earlier_write(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    user = await _chat_user(client, db_session, "chat-undo@example.com")
+    conversation = await _conversation(client)
+    arguments = await _lunch_arguments(client)
+    call_id = f"{conversation['id']}:w1"
+    responses = [
+        _tool_body("w1", "create_entity", arguments),
+        _text_body("Recorded"),
+        _tool_body("u1", "undo_changes", {"call_id": call_id}),
+        _text_body("Undone"),
+    ]
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=responses.pop(0), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    base = f"/api/v1/agents/conversations/{conversation['id']}"
+    await client.post(f"{base}/messages", json={"content": "Add lunch expense"})
+    await client.post(
+        f"{base}/confirm", json={"tool_call_id": "w1", "approved": True, "arguments": arguments}
+    )
+    assert await db_session.scalar(select(Transaction).where(Transaction.user_id == user.id))
+
+    asked = await client.post(f"{base}/messages", json={"content": "Undo that"})
+    assert [name for name, _ in _events(asked.text)][-2:] == ["tool_confirm", "done"]
+    # Nothing is reversed until the user approves the undo card.
+    assert await db_session.scalar(select(Transaction).where(Transaction.user_id == user.id))
+
+    confirmed = await client.post(
+        f"{base}/confirm",
+        json={"tool_call_id": "u1", "approved": True, "arguments": {"call_id": call_id}},
+    )
+
+    assert [name for name, _ in _events(confirmed.text)] == ["tool_result", "delta", "done"]
+    assert (
+        await db_session.scalar(select(Transaction).where(Transaction.user_id == user.id)) is None
+    )
+    undone = (await db_session.execute(select(ChangeJournal))).scalars().all()
+    assert {entry.agent_call_id for entry in undone} == {call_id}
+    assert all(entry.undone_at is not None for entry in undone)
 
 
 async def test_stale_confirmation_returns_conflict(

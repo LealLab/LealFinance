@@ -13,6 +13,7 @@ from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
 from app.models.categorization_rule import CategorizationRule
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
+from app.models.change_journal import ChangeJournal
 from app.models.currency import Currency, ExchangeRate
 from app.models.goal import Goal
 from app.models.import_idempotency import ImportIdempotency
@@ -46,6 +47,7 @@ __all__ = [
     "Category",
     "CategoryGroup",
     "CategorizationRule",
+    "ChangeJournal",
     "Currency",
     "ExchangeRate",
     "ExpectedIncome",

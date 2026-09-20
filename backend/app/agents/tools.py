@@ -1,66 +1,54 @@
 """Financial agent tools.
 
-Deferred tools: categorize_transactions, update/delete
-transaction, goals, loans, investments, and recurring rules.
+Reads and analytics are hand-written tools. Create, update, and delete for every
+user-owned entity go through the generic `*_entity` tools, driven by the registry
+in `app/agents/entities.py`. `create_category_group` and `delete_category_structure`
+stay separate because they collapse many calls into one.
 """
 
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Any, Literal, get_args
+from typing import Any, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.agents.entities import ENTITIES, ENTITY_NAMES, EntitySpec, flatten_schema, icon_or
 from app.agents.events import ToolSpec
 from app.core.errors import ConflictError, ValidationAppError
 from app.models.budget import Budget, BudgetAllocation
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
-from app.schemas.account import AccountBalanceRead, AccountCreate, AccountRead
+from app.schemas.account import AccountBalanceRead, AccountRead
 from app.schemas.card_invoice import CardInvoiceRead
-from app.schemas.category import CategoryCreate, CategoryRead, CategoryUpdate
+from app.schemas.category import CategoryCreate, CategoryRead
 from app.schemas.category_group import (
     CategoryGroupCreate,
     CategoryGroupRead,
-    CategoryGroupUpdate,
 )
-from app.schemas.common import IconName
-from app.schemas.institution import InstitutionCreate, InstitutionRead
+from app.schemas.institution import InstitutionRead
 from app.schemas.transaction import (
     MAX_BULK_IDS,
-    TransactionCreate,
     TransactionRead,
     TransactionType,
 )
 from app.services import accounts as accounts_service
-from app.services import analytics, ownership
+from app.services import analytics, change_journal, ownership
 from app.services import card_invoices as card_invoices_service
 from app.services import categories as categories_service
 from app.services import category_groups as category_groups_service
 from app.services import institutions as institutions_service
 from app.services import transactions as transactions_service
 
-_ICON_NAMES = frozenset(get_args(IconName))
 _CATEGORY_ICON_HINT = (
     "Icon name, e.g. tag, home, cart, car, utensils, heart, gift, book, plane, "
     "coffee, phone, briefcase. On create an unknown name becomes tag; on update "
     "it is ignored."
 )
-
-
-def _icon(value: str | None, fallback: str) -> str:
-    """Coerce an unknown icon name to a safe fallback rather than 422ing the call."""
-    return value if value is not None and value in _ICON_NAMES else fallback
-
-
-def _drop_unknown_icon(changes: dict[str, Any]) -> None:
-    """On an update, a typo'd icon name is a no-op, not an overwrite with the fallback."""
-    if "icon" in changes and changes["icon"] not in _ICON_NAMES:
-        del changes["icon"]
 
 
 class _ToolArgs(BaseModel):
@@ -69,23 +57,6 @@ class _ToolArgs(BaseModel):
 
 class _ListAccountsArgs(_ToolArgs):
     include_archived: bool = False
-
-
-class _CreateInstitutionArgs(_ToolArgs):
-    name: str
-    icon: str | None = None
-    color: str | None = None
-
-
-class _CreateAccountArgs(_ToolArgs):
-    name: str
-    type: Literal["checking", "savings", "cash", "credit_card", "investment", "goal"]
-    currency: str
-    opening_balance: Decimal | None = None
-    institution_id: UUID | None = None
-    credit_limit: Decimal | None = None
-    closing_day: int | None = None
-    due_day: int | None = None
 
 
 class _ListCategoriesArgs(_ToolArgs):
@@ -137,36 +108,6 @@ class _CreateCategoryGroupArgs(_ToolArgs):
     icon: str | None = None
     color: str | None = None
     categories: list[_CategoryChildArgs] | None = None
-
-
-class _UpdateCategoryGroupArgs(_ToolArgs):
-    group_id: UUID
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    icon: str | None = None
-    color: str | None = Field(default=None, min_length=1, max_length=9)
-
-
-class _DeleteCategoryGroupArgs(_ToolArgs):
-    group_id: UUID
-
-
-class _CreateCategoryArgs(_ToolArgs):
-    name: str = Field(min_length=1, max_length=100)
-    group_id: UUID
-    icon: str | None = None
-    color: str | None = None
-
-
-class _UpdateCategoryArgs(_ToolArgs):
-    category_id: UUID
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    group_id: UUID | None = None
-    icon: str | None = None
-    color: str | None = Field(default=None, min_length=1, max_length=9)
-
-
-class _DeleteCategoryArgs(_ToolArgs):
-    category_id: UUID
 
 
 class _DeleteCategoryStructureArgs(_ToolArgs):
@@ -349,37 +290,6 @@ async def _budget_status(
     ]
 
 
-async def _create_transaction(
-    db: AsyncSession, user_id: UUID, args: dict[str, Any]
-) -> dict[str, Any]:
-    payload = _validate(TransactionCreate, args)
-    transaction = await transactions_service.create_transaction(db, user_id, payload)
-    return TransactionRead.model_validate(transaction, from_attributes=True).model_dump(mode="json")
-
-
-async def _create_institution(
-    db: AsyncSession, user_id: UUID, args: dict[str, Any]
-) -> dict[str, Any]:
-    parsed = _validate(_CreateInstitutionArgs, args)
-    payload = _validate(
-        InstitutionCreate,
-        {
-            "name": parsed.name,
-            "icon": parsed.icon or "bank",
-            **({"color": parsed.color} if parsed.color is not None else {}),
-        },
-    )
-    institution = await institutions_service.create_institution(db, user_id, payload)
-    return InstitutionRead.model_validate(institution, from_attributes=True).model_dump(mode="json")
-
-
-async def _create_account(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
-    parsed = _validate(_CreateAccountArgs, args)
-    payload = _validate(AccountCreate, parsed.model_dump(exclude_none=True))
-    account = await accounts_service.create_account(db, user_id, payload)
-    return AccountRead.model_validate(account, from_attributes=True).model_dump(mode="json")
-
-
 async def _create_category_group(
     db: AsyncSession, user_id: UUID, args: dict[str, Any]
 ) -> dict[str, Any]:
@@ -394,7 +304,7 @@ async def _create_category_group(
             "name": parsed.name,
             "kind": parsed.kind,
             "color": color,
-            "icon": _icon(parsed.icon, "tag"),
+            "icon": icon_or(parsed.icon, "tag"),
         },
     )
     group = await category_groups_service.create_group(db, user_id, group_payload)
@@ -407,7 +317,7 @@ async def _create_category_group(
             kind=parsed.kind,
             group_id=group.id,
             color=child.color or color,
-            icon=_icon(child.icon, "tag"),
+            icon=icon_or(child.icon, "tag"),
         )
         category = await categories_service.create_category(db, user_id, payload)
         created.append(
@@ -419,59 +329,6 @@ async def _create_category_group(
         ),
         "categories": created,
     }
-
-
-async def _update_category_group(
-    db: AsyncSession, user_id: UUID, args: dict[str, Any]
-) -> dict[str, Any]:
-    parsed = _validate(_UpdateCategoryGroupArgs, args)
-    changes = parsed.model_dump(exclude_none=True)
-    changes.pop("group_id")
-    _drop_unknown_icon(changes)
-    payload = _validate(CategoryGroupUpdate, changes)
-    group = await category_groups_service.update_group(db, user_id, parsed.group_id, payload)
-    return CategoryGroupRead.model_validate(group, from_attributes=True).model_dump(mode="json")
-
-
-async def _delete_category_group(
-    db: AsyncSession, user_id: UUID, args: dict[str, Any]
-) -> dict[str, Any]:
-    parsed = _validate(_DeleteCategoryGroupArgs, args)
-    await category_groups_service.delete_group(db, user_id, parsed.group_id)
-    return {"deleted": True, "id": str(parsed.group_id)}
-
-
-async def _create_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
-    parsed = _validate(_CreateCategoryArgs, args)
-    group = await ownership.get_owned(db, CategoryGroup, parsed.group_id, user_id)
-    payload = _validate(
-        CategoryCreate,
-        {
-            "name": parsed.name,
-            "kind": group.kind,
-            "group_id": str(group.id),
-            "color": parsed.color or group.color,
-            "icon": _icon(parsed.icon, "tag"),
-        },
-    )
-    category = await categories_service.create_category(db, user_id, payload)
-    return CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
-
-
-async def _update_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
-    parsed = _validate(_UpdateCategoryArgs, args)
-    changes = parsed.model_dump(exclude_none=True)
-    changes.pop("category_id")
-    _drop_unknown_icon(changes)
-    payload = _validate(CategoryUpdate, changes)
-    category = await categories_service.update_category(db, user_id, parsed.category_id, payload)
-    return CategoryRead.model_validate(category, from_attributes=True).model_dump(mode="json")
-
-
-async def _delete_category(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
-    parsed = _validate(_DeleteCategoryArgs, args)
-    await categories_service.delete_category(db, user_id, parsed.category_id)
-    return {"deleted": True, "id": str(parsed.category_id)}
 
 
 async def _delete_category_structure(
@@ -573,6 +430,147 @@ async def _list_card_invoices(
     ]
 
 
+class _EntityArgs(_ToolArgs):
+    entity: str
+
+
+class _ListEntitiesArgs(_EntityArgs):
+    limit: int = Field(default=25, ge=1, le=100)
+    offset: int = Field(default=0, ge=0)
+
+
+class _EntityIdArgs(_EntityArgs):
+    id: UUID
+
+
+class _CreateEntityArgs(_EntityArgs):
+    data: dict[str, Any]
+
+
+class _UpdateEntityArgs(_EntityIdArgs):
+    changes: dict[str, Any]
+
+
+def _entity(name: str) -> EntitySpec:
+    spec = ENTITIES.get(name)
+    if spec is None:
+        raise ValidationAppError(
+            code="entity.unknown", params={"entity": name, "known": list(ENTITY_NAMES)}
+        )
+    return spec
+
+
+def _unsupported(spec: EntitySpec, operation: str) -> ValidationAppError:
+    return ValidationAppError(
+        code="entity.operation_unsupported",
+        params={"entity": spec.name, "operation": operation, "hint": spec.hint},
+    )
+
+
+def _dump(spec: EntitySpec, row: Any) -> dict[str, Any]:
+    return spec.read.model_validate(row, from_attributes=True).model_dump(mode="json")
+
+
+async def _describe_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    spec = _entity(_validate(_EntityArgs, args).entity)
+    return {
+        "entity": spec.name,
+        "operations": [
+            operation
+            for operation, supported in (
+                ("list", spec.list_ is not None),
+                ("get", True),
+                ("create", spec.create is not None),
+                ("update", spec.update is not None),
+                ("delete", spec.delete is not None),
+            )
+            if supported
+        ],
+        "fields": list(spec.read.model_fields),
+        "create_schema": flatten_schema(spec.create[0].model_json_schema())
+        if spec.create
+        else None,
+        "update_schema": flatten_schema(spec.update[0].model_json_schema())
+        if spec.update
+        else None,
+        "hint": spec.hint,
+        "notes": (
+            "Money amounts are decimal strings. Ids are UUIDs taken from a list or get call, "
+            "never invented. For update, send only the fields to change."
+        ),
+    }
+
+
+async def _list_entities(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_ListEntitiesArgs, args)
+    spec = _entity(payload.entity)
+    if spec.list_ is None:
+        raise _unsupported(spec, "list")
+    rows = await spec.list_(db, user_id)
+    page = rows[payload.offset : payload.offset + payload.limit]
+    return {"total": len(rows), "items": [_dump(spec, row) for row in page]}
+
+
+async def _get_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_EntityIdArgs, args)
+    spec = _entity(payload.entity)
+    return _dump(spec, await ownership.get_owned(db, spec.model, payload.id, user_id))
+
+
+async def _create_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_CreateEntityArgs, args)
+    spec = _entity(payload.entity)
+    if spec.create is None:
+        raise _unsupported(spec, "create")
+    schema, create = spec.create
+    data = payload.data
+    if spec.prepare_create is not None:
+        data = await spec.prepare_create(db, user_id, data)
+    return _dump(spec, await create(db, user_id, _validate(schema, data)))
+
+
+async def _update_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_UpdateEntityArgs, args)
+    spec = _entity(payload.entity)
+    if spec.update is None:
+        raise _unsupported(spec, "update")
+    schema, update = spec.update
+    changes = payload.changes
+    if spec.prepare_update is not None:
+        changes = spec.prepare_update(changes)
+    return _dump(spec, await update(db, user_id, payload.id, _validate(schema, changes)))
+
+
+async def _delete_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_EntityIdArgs, args)
+    spec = _entity(payload.entity)
+    if spec.delete is None:
+        raise _unsupported(spec, "delete")
+    await spec.delete(db, user_id, payload.id)
+    return {"deleted": True, "entity": spec.name, "id": str(payload.id)}
+
+
+class _ListRecentChangesArgs(_ToolArgs):
+    limit: int = Field(default=10, ge=1, le=50)
+
+
+class _UndoChangesArgs(_ToolArgs):
+    call_id: str = Field(min_length=1, max_length=128)
+
+
+async def _list_recent_changes(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> list[dict[str, Any]]:
+    payload = _validate(_ListRecentChangesArgs, args)
+    return await change_journal.list_recent(db, user_id, limit=payload.limit)
+
+
+async def _undo_changes(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_UndoChangesArgs, args)
+    reverted = await change_journal.undo(db, user_id, payload.call_id)
+    return {"call_id": payload.call_id, "reverted": reverted}
+
+
 @dataclass(frozen=True, slots=True)
 class ToolDef:
     name: str
@@ -584,6 +582,12 @@ class ToolDef:
     def provider_spec(self) -> ToolSpec:
         return ToolSpec(name=self.name, description=self.description, schema=self.schema)
 
+
+_ENTITY_PROPERTY: dict[str, Any] = {
+    "type": "string",
+    "enum": list(ENTITY_NAMES),
+    "description": "The kind of record.",
+}
 
 SPECS: list[ToolDef] = [
     ToolDef(
@@ -721,88 +725,6 @@ SPECS: list[ToolDef] = [
         run=_list_card_invoices,
     ),
     ToolDef(
-        name="create_transaction",
-        description="Create a transaction in the user's ledger.",
-        schema={
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "string",
-                    "enum": ["income", "expense", "transfer", "interest"],
-                },
-                "date": {"type": "string", "format": "date"},
-                "amount": {"type": "string"},
-                "currency": {"type": "string"},
-                "account_id": {"type": "string", "format": "uuid"},
-                "description": {"type": "string"},
-                "category_id": {"type": "string", "format": "uuid"},
-                "to_account_id": {"type": "string", "format": "uuid"},
-                "notes": {"type": "string"},
-            },
-            "required": ["type", "date", "amount", "currency", "account_id", "description"],
-            "additionalProperties": False,
-        },
-        run=_create_transaction,
-        writes=True,
-    ),
-    ToolDef(
-        name="create_institution",
-        description="Create an institution for the user.",
-        schema={
-            "type": "object",
-            "properties": {
-                "name": {"type": "string"},
-                "icon": {
-                    "type": "string",
-                    "description": (
-                        "Icon name, e.g. bank, creditCard, wallet, piggy, building. "
-                        "Defaults to bank."
-                    ),
-                },
-                "color": {"type": "string"},
-            },
-            "required": ["name"],
-            "additionalProperties": False,
-        },
-        run=_create_institution,
-        writes=True,
-    ),
-    ToolDef(
-        name="create_account",
-        description="Create an account for the user.",
-        schema={
-            "type": "object",
-            "properties": {
-                "name": {"type": "string"},
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "checking",
-                        "savings",
-                        "cash",
-                        "credit_card",
-                        "investment",
-                        "goal",
-                    ],
-                    "description": (
-                        "Account type. credit_limit, closing_day, and due_day only apply "
-                        "to credit_card."
-                    ),
-                },
-                "currency": {"type": "string"},
-                "opening_balance": {"type": "string"},
-                "institution_id": {"type": "string", "format": "uuid"},
-                "credit_limit": {"type": "string"},
-                "closing_day": {"type": "integer", "minimum": 1, "maximum": 31},
-                "due_day": {"type": "integer", "minimum": 1, "maximum": 31},
-            },
-            "required": ["name", "type", "currency"],
-            "additionalProperties": False,
-        },
-        run=_create_account,
-        writes=True,
-    ),
-    ToolDef(
         name="create_category_group",
         description=(
             "Create a category group and, optionally, its categories in one call. Prefer "
@@ -840,38 +762,6 @@ SPECS: list[ToolDef] = [
         writes=True,
     ),
     ToolDef(
-        name="update_category_group",
-        description="Rename or restyle a category group. Kind cannot change here.",
-        schema={
-            "type": "object",
-            "properties": {
-                "group_id": {"type": "string", "format": "uuid"},
-                "name": {"type": "string"},
-                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
-                "color": {"type": "string", "description": "Hex like #64748B."},
-            },
-            "required": ["group_id"],
-            "additionalProperties": False,
-        },
-        run=_update_category_group,
-        writes=True,
-    ),
-    ToolDef(
-        name="delete_category_group",
-        description=(
-            "Delete a category group. Fails while it still has categories; move or delete "
-            "those first."
-        ),
-        schema={
-            "type": "object",
-            "properties": {"group_id": {"type": "string", "format": "uuid"}},
-            "required": ["group_id"],
-            "additionalProperties": False,
-        },
-        run=_delete_category_group,
-        writes=True,
-    ),
-    ToolDef(
         name="delete_category_structure",
         description=(
             "Delete a complete set of category structures in one confirmed action. Pass every "
@@ -898,59 +788,134 @@ SPECS: list[ToolDef] = [
         writes=True,
     ),
     ToolDef(
-        name="create_category",
+        name="describe_entity",
         description=(
-            "Create a category inside an existing group. Its kind is the group's kind. "
-            "Call list_category_groups first to reuse a group."
+            "Show what can be done with one kind of record and exactly which fields its "
+            "create and update calls accept. Call this before the first create_entity or "
+            "update_entity on an entity you have not used yet."
+        ),
+        schema={
+            "type": "object",
+            "properties": {"entity": _ENTITY_PROPERTY},
+            "required": ["entity"],
+            "additionalProperties": False,
+        },
+        run=_describe_entity,
+    ),
+    ToolDef(
+        name="list_entities",
+        description=(
+            "List the user's records of one kind, with total and paging. Use it to find real "
+            "ids. Transactions are searched with search_transactions instead."
         ),
         schema={
             "type": "object",
             "properties": {
-                "name": {"type": "string"},
-                "group_id": {"type": "string", "format": "uuid"},
-                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
-                "color": {
-                    "type": "string",
-                    "description": "Hex colour; defaults to the group's colour.",
-                },
+                "entity": _ENTITY_PROPERTY,
+                "limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 25},
+                "offset": {"type": "integer", "minimum": 0, "default": 0},
             },
-            "required": ["name", "group_id"],
+            "required": ["entity"],
             "additionalProperties": False,
         },
-        run=_create_category,
+        run=_list_entities,
+    ),
+    ToolDef(
+        name="get_entity",
+        description="Fetch one record of any kind by its id.",
+        schema={
+            "type": "object",
+            "properties": {"entity": _ENTITY_PROPERTY, "id": {"type": "string", "format": "uuid"}},
+            "required": ["entity", "id"],
+            "additionalProperties": False,
+        },
+        run=_get_entity,
+    ),
+    ToolDef(
+        name="create_entity",
+        description=(
+            "Create one record. `data` holds the fields shown by describe_entity. For budgets, "
+            "budget allocations, expected income and manual rates this creates or replaces the "
+            "record for its key."
+        ),
+        schema={
+            "type": "object",
+            "properties": {"entity": _ENTITY_PROPERTY, "data": {"type": "object"}},
+            "required": ["entity", "data"],
+            "additionalProperties": False,
+        },
+        run=_create_entity,
         writes=True,
     ),
     ToolDef(
-        name="update_category",
+        name="update_entity",
         description=(
-            "Rename, restyle, or move a category to another group of the same kind. Kind "
-            "cannot change here."
+            "Change fields of one existing record. `changes` holds only the fields to change. "
+            "Archive-only records (goals, investment wallets and assets) are archived here "
+            "with archived=true."
         ),
         schema={
             "type": "object",
             "properties": {
-                "category_id": {"type": "string", "format": "uuid"},
-                "name": {"type": "string"},
-                "group_id": {"type": "string", "format": "uuid"},
-                "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
-                "color": {"type": "string", "description": "Hex like #64748B."},
+                "entity": _ENTITY_PROPERTY,
+                "id": {"type": "string", "format": "uuid"},
+                "changes": {"type": "object"},
             },
-            "required": ["category_id"],
+            "required": ["entity", "id", "changes"],
             "additionalProperties": False,
         },
-        run=_update_category,
+        run=_update_entity,
         writes=True,
     ),
     ToolDef(
-        name="delete_category",
-        description="Delete a category. Fails while a transaction or recurring rule uses it.",
+        name="delete_entity",
+        description=(
+            "Delete one record. Some kinds cannot be deleted (goals, investment wallets and "
+            "assets are archived instead) and the call says so. Deleting an account also "
+            "deletes its transactions; prefer archiving it unless the user clearly wants it "
+            "gone."
+        ),
         schema={
             "type": "object",
-            "properties": {"category_id": {"type": "string", "format": "uuid"}},
-            "required": ["category_id"],
+            "properties": {"entity": _ENTITY_PROPERTY, "id": {"type": "string", "format": "uuid"}},
+            "required": ["entity", "id"],
             "additionalProperties": False,
         },
-        run=_delete_category,
+        run=_delete_entity,
+        writes=True,
+    ),
+    ToolDef(
+        name="list_recent_changes",
+        description=(
+            "List the changes the assistant recently made for the user, newest first, each "
+            "with the call_id needed to undo it. Includes other conversations and external "
+            "MCP clients."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 10}
+            },
+            "required": [],
+            "additionalProperties": False,
+        },
+        run=_list_recent_changes,
+    ),
+    ToolDef(
+        name="undo_changes",
+        description=(
+            "Undo everything one earlier assistant action changed, restoring the previous "
+            "state. Get the call_id from list_recent_changes. Fails with "
+            "agents.change_modified when the data was edited since; do not retry, tell the "
+            "user."
+        ),
+        schema={
+            "type": "object",
+            "properties": {"call_id": {"type": "string"}},
+            "required": ["call_id"],
+            "additionalProperties": False,
+        },
+        run=_undo_changes,
         writes=True,
     ),
 ]
