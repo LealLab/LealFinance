@@ -1,0 +1,298 @@
+<div *transloco="let t">
+  <!-- t(profile.title, profile.description, profile.identity.title, profile.identity.description, profile.identity.save, profile.identity.saved, profile.identity.currentPasswordHint, profile.password.title, profile.password.description, profile.password.save, profile.password.saved, profile.password.hint, errors.error.validation, errors.auth.invalid_credentials, errors.user.email_taken) -->
+  <app-page-header [title]="t('profile.title')" [description]="t('profile.description')" />
+
+  <div class="flex max-w-2xl flex-col gap-6">
+    <app-card>
+      <div class="mb-4 flex items-center gap-3">
+        <div
+          class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent"
+          aria-hidden="true"
+        >
+          {{ initials() }}
+        </div>
+        <div class="min-w-0">
+          <h2 class="text-sm font-semibold text-content-primary">
+            {{ t('profile.identity.title') }}
+          </h2>
+          <p class="truncate text-sm text-content-muted">{{ session.user()?.email }}</p>
+        </div>
+      </div>
+      <p class="mb-4 max-w-md text-sm text-content-muted">
+        {{ t('profile.identity.description') }}
+      </p>
+
+      <form class="flex flex-col gap-4" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <label>
+          <span class="form-label">{{ t('auth.fields.displayName') }}</span>
+          <input
+            class="form-input"
+            autocomplete="name"
+            formControlName="displayName"
+            [attr.aria-invalid]="
+              profileForm.controls.displayName.invalid && profileForm.controls.displayName.touched
+            "
+          />
+        </label>
+        <label>
+          <span class="form-label">{{ t('auth.fields.email') }}</span>
+          <input
+            class="form-input"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            [attr.aria-invalid]="
+              profileForm.controls.email.invalid && profileForm.controls.email.touched
+            "
+          />
+        </label>
+        @if (emailChanged()) {
+          <label>
+            <span class="form-label">{{ t('profile.identity.currentPassword') }}</span>
+            <input
+              class="form-input"
+              type="password"
+              autocomplete="current-password"
+              formControlName="currentPassword"
+              [attr.aria-invalid]="
+                profileForm.controls.currentPassword.touched &&
+                !profileForm.controls.currentPassword.value
+              "
+            />
+            <span class="form-hint">{{ t('profile.identity.currentPasswordHint') }}</span>
+          </label>
+        }
+        @if (profileErrorCode(); as code) {
+          <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+        }
+        <div class="flex flex-wrap items-center gap-3">
+          <button
+            appButton
+            type="submit"
+            [disabled]="
+              profileBusy() ||
+              profileForm.invalid ||
+              (emailChanged() && !profileForm.controls.currentPassword.value)
+            "
+          >
+            {{ profileBusy() ? t('common.actions.saving') : t('profile.identity.save') }}
+          </button>
+          @if (profileSaved()) {
+            <span class="text-sm text-positive" role="status">{{
+              t('profile.identity.saved')
+            }}</span>
+          }
+        </div>
+      </form>
+    </app-card>
+
+    <app-card>
+      <h2 class="mb-1 text-sm font-semibold text-content-primary">
+        {{ t('profile.password.title') }}
+      </h2>
+      <p class="mb-4 max-w-md text-sm text-content-muted">
+        {{ t('profile.password.description') }}
+      </p>
+      <form class="flex flex-col gap-4" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <label>
+          <span class="form-label">{{ t('profile.password.currentPassword') }}</span>
+          <input
+            class="form-input"
+            type="password"
+            autocomplete="current-password"
+            formControlName="currentPassword"
+          />
+        </label>
+        <label>
+          <span class="form-label">{{ t('profile.password.newPassword') }}</span>
+          <input
+            class="form-input"
+            type="password"
+            autocomplete="new-password"
+            formControlName="newPassword"
+            [attr.aria-invalid]="
+              passwordForm.controls.newPassword.invalid && passwordForm.controls.newPassword.touched
+            "
+          />
+          <span class="form-hint">{{ t('profile.password.hint') }}</span>
+        </label>
+        @if (passwordErrorCode(); as code) {
+          <p class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+        }
+        <div class="flex flex-wrap items-center gap-3">
+          <button appButton type="submit" [disabled]="passwordBusy() || passwordForm.invalid">
+            {{ passwordBusy() ? t('common.actions.saving') : t('profile.password.save') }}
+          </button>
+          @if (passwordSaved()) {
+            <span class="text-sm text-positive" role="status">{{
+              t('profile.password.saved')
+            }}</span>
+          }
+        </div>
+      </form>
+    </app-card>
+
+    <app-card>
+      <h2
+        #twoFactorSection
+        id="profile-two-factor"
+        tabindex="-1"
+        class="mb-1 text-sm font-semibold text-content-primary"
+      >
+        {{ t('settings.twoFactor.title') }}
+      </h2>
+      <p class="mb-4 max-w-md text-sm text-content-muted">
+        {{ t('settings.twoFactor.description') }}
+      </p>
+
+      @if (backupCodes(); as codes) {
+        <div class="mb-4 rounded-md border border-accent/40 bg-accent/5 p-3">
+          <p class="mb-2 text-sm font-medium text-content-primary">
+            {{ t('settings.twoFactor.backupCodes.title') }}
+          </p>
+          <p class="mb-3 text-sm text-content-muted">
+            {{ t('settings.twoFactor.backupCodes.warning') }}
+          </p>
+          <ul class="mb-3 grid grid-cols-1 gap-1 sm:grid-cols-2">
+            @for (code of codes; track code) {
+              <li>
+                <code class="block break-all text-xs">{{ code }}</code>
+              </li>
+            }
+          </ul>
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              appButton
+              type="button"
+              variant="secondary"
+              size="sm"
+              (click)="copyBackupCodes()"
+            >
+              {{
+                backupCodesCopied()
+                  ? t('settings.twoFactor.backupCodes.copied')
+                  : t('settings.twoFactor.backupCodes.copy')
+              }}
+            </button>
+            <button appButton type="button" size="sm" (click)="dismissBackupCodes()">
+              {{ t('settings.twoFactor.backupCodes.saved') }}
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (totpSetup(); as setup) {
+        <div class="flex flex-col gap-3">
+          <p class="text-sm text-content-muted">{{ t('settings.twoFactor.enroll.step1') }}</p>
+          <img
+            [src]="setup.qrDataUrl"
+            [alt]="t('settings.twoFactor.enroll.qrAlt')"
+            class="w-40 max-w-full self-start rounded-md border border-border bg-white p-2"
+          />
+          <div>
+            <span class="form-label">{{ t('settings.twoFactor.enroll.manualEntry') }}</span>
+            <code class="mt-1 block break-all text-xs">{{ setup.secret }}</code>
+          </div>
+          <label>
+            <span class="form-label">{{ t('settings.twoFactor.enroll.step2') }}</span>
+            <input
+              class="form-input w-full max-w-xs"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              [value]="totpCode()"
+              (input)="setTotpCode($any($event.target).value)"
+            />
+          </label>
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              appButton
+              type="button"
+              [disabled]="!totpCode().trim() || totpBusy()"
+              (click)="confirmTotp()"
+            >
+              {{ totpBusy() ? t('common.actions.saving') : t('settings.twoFactor.enroll.confirm') }}
+            </button>
+            <button
+              appButton
+              type="button"
+              variant="ghost"
+              [disabled]="totpBusy()"
+              (click)="cancelTotpEnrollment()"
+            >
+              {{ t('common.actions.cancel') }}
+            </button>
+          </div>
+        </div>
+      } @else if (totp()?.enabled) {
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span
+              class="rounded-full bg-positive/10 px-2.5 py-1 text-xs font-medium text-positive"
+              >{{ t('settings.twoFactor.enabled') }}</span
+            >
+            <span class="text-sm text-content-muted">{{
+              t('settings.twoFactor.backupCodes.remaining', { count: totp()?.backupCodesRemaining })
+            }}</span>
+          </div>
+          <label>
+            <span class="form-label">{{ t('settings.twoFactor.manage.codeLabel') }}</span>
+            <input
+              class="form-input w-full max-w-xs"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              [value]="totpCode()"
+              (input)="setTotpCode($any($event.target).value)"
+            />
+            <span class="form-hint">{{ t('settings.twoFactor.manage.codeHint') }}</span>
+          </label>
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              appButton
+              type="button"
+              variant="secondary"
+              [disabled]="!totpCode().trim() || totpBusy()"
+              (click)="regenerateBackupCodes()"
+            >
+              {{ t('settings.twoFactor.manage.regenerate') }}
+            </button>
+            <button
+              appButton
+              type="button"
+              variant="danger"
+              [disabled]="!totpCode().trim() || totpBusy()"
+              (click)="disableTotp()"
+            >
+              {{ t('settings.twoFactor.manage.disable') }}
+            </button>
+          </div>
+        </div>
+      } @else {
+        <div class="flex flex-col gap-3">
+          <p
+            class="rounded-md border border-warning/30 bg-warning/10 p-3 text-sm text-content-primary"
+          >
+            {{ t('settings.twoFactor.lockoutWarning') }}
+          </p>
+          <button
+            appButton
+            type="button"
+            class="self-start"
+            [disabled]="totpBusy()"
+            (click)="startTotpEnrollment()"
+          >
+            {{ t('settings.twoFactor.enable') }}
+          </button>
+        </div>
+      }
+      @if (totpErrorCode(); as code) {
+        <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+      }
+    </app-card>
+
+    <div #passkeysSection id="profile-passkeys" tabindex="-1">
+      <app-passkeys-section />
+    </div>
+  </div>
+</div>

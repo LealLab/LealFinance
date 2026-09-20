@@ -1848,6 +1848,27 @@
     "loadError": "Δεν ήταν δυνατή η φόρτωση των συμφωνιών. Δοκιμάστε ξανά.",
     "confirmDelete": { "title": "Διαγραφή συμφωνίας;", "message": "Η συμφωνία και οι επισημάνσεις της θα διαγραφούν. Συνέχεια;" }
   },
+  "profile": {
+    "title": "Profile",
+    "description": "Manage your identity and account security.",
+    "identity": {
+      "title": "Personal information",
+      "description": "Update the name and email address used for your account.",
+      "currentPassword": "Current password",
+      "currentPasswordHint": "Required when changing your email address.",
+      "save": "Save changes",
+      "saved": "Profile updated"
+    },
+    "password": {
+      "title": "Change password",
+      "description": "Changing your password signs out other sessions and trusted devices.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "hint": "Use at least 12 characters.",
+      "save": "Change password",
+      "saved": "Password updated"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Δεν είναι δυνατή η συμφωνία αρχειοθετημένων λογαριασμών.", "already_open": "Αυτός ο λογαριασμός έχει ήδη ανοιχτή συμφωνία.", "completed": "Αυτή η συμφωνία έχει ήδη ολοκληρωθεί.",

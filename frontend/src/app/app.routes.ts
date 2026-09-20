@@ -102,6 +102,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
       },
       {
+        path: 'profile',
+        loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
+      },
+      {
         path: 'onboarding',
         loadComponent: () => import('./features/onboarding/onboarding').then((m) => m.Onboarding),
       },

@@ -612,6 +612,65 @@ async def update_user(
     return user
 
 
+async def update_profile(
+    db: AsyncSession,
+    *,
+    user: User,
+    display_name: str | None,
+    email: str | None,
+    current_password: str | None,
+) -> User:
+    if display_name is not None:
+        display_name = display_name.strip()
+        if not display_name:
+            raise ValidationAppError(code="error.validation")
+        user.display_name = display_name
+
+    if email is not None:
+        normalized = normalize_email(email)
+        if normalized != user.normalized_email:
+            if current_password is None or not verify_password(
+                current_password, user.password_hash
+            ):
+                raise UnauthorizedError(code="auth.invalid_credentials")
+            existing = await db.scalar(select(User).where(User.normalized_email == normalized))
+            if existing is not None and existing.id != user.id:
+                raise ConflictError(code="user.email_taken")
+            user.email = email.strip()
+            user.normalized_email = normalized
+
+    await db.commit()
+    await db.refresh(user)
+    return user
+
+
+async def change_password(
+    db: AsyncSession,
+    *,
+    user: User,
+    current_session: Session,
+    current_password: str,
+    new_password: str,
+) -> None:
+    if not verify_password(current_password, user.password_hash):
+        raise UnauthorizedError(code="auth.invalid_credentials")
+
+    user.password_hash = hash_password(new_password)
+    user.password_failed_attempts = 0
+    user.password_locked_until = None
+    await db.execute(
+        update(Session)
+        .where(
+            Session.user_id == user.id,
+            Session.id != current_session.id,
+            Session.revoked_at.is_(None),
+        )
+        .values(revoked_at=datetime.now(UTC))
+    )
+    await _revoke_all_trusted_devices(db, user_id=user.id)
+    await db.commit()
+
+
 async def update_preferences(
     db: AsyncSession,
     *,

@@ -25,10 +25,7 @@ describe('Shell', () => {
     mockMatchMedia(false);
 
     await TestBed.configureTestingModule({
-      imports: [
-        Shell,
-        provideTestTransloco(['en-US', 'pt-BR']),
-      ],
+      imports: [Shell, provideTestTransloco(['en-US', 'pt-BR'])],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
@@ -93,14 +90,15 @@ describe('Shell', () => {
 
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
     expect(sidebar.classList.contains('is-expanded')).toBe(true);
-    expect(sidebar.querySelector('app-icon[name="globe"]')).not.toBeNull();
+    expect(sidebar.querySelector('a[href="/profile"]')).not.toBeNull();
+    expect(sidebar.querySelector('select')).toBeNull();
 
     toggle.click();
     fixture.detectChanges();
 
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     expect(sidebar.classList.contains('is-collapsed')).toBe(true);
-    expect(sidebar.querySelector('app-icon[name="globe"]')).toBeNull();
+    expect(sidebar.querySelector('a[href="/profile"]')).not.toBeNull();
   });
 
   it('toggles the command palette open on Ctrl+K', () => {

@@ -92,7 +92,25 @@
       [class.p-1]="!sidebarExpanded()"
       [class.p-3]="sidebarExpanded()"
     >
-      <app-language-select [compact]="!sidebarExpanded()" [showIcon]="sidebarExpanded()" />
+      <a
+        routerLink="/profile"
+        class="flex min-w-0 items-center gap-2 rounded-md p-1.5 text-start hover:bg-surface-sunken"
+        [attr.aria-label]="t('profile.title')"
+      >
+        <span
+          class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-semibold text-accent"
+        >
+          {{ profileInitials() }}
+        </span>
+        <span class="min-w-0" [class.sr-only]="!sidebarExpanded()">
+          <span class="block truncate text-sm font-medium text-content-primary">{{
+            profileName()
+          }}</span>
+          <span class="block truncate text-xs text-content-subtle">{{
+            session.user()?.email
+          }}</span>
+        </span>
+      </a>
       <button
         appButton
         variant="ghost"
@@ -109,8 +127,13 @@
 
   <div class="flex min-w-0 flex-1 flex-col">
     <div class="sticky top-0 z-20 md:hidden">
-      <header class="flex items-center gap-1 border-b border-border bg-surface-raised pt-[calc(0.5rem+env(safe-area-inset-top))] pr-[calc(1rem+env(safe-area-inset-right))] pb-2 pl-[calc(1rem+env(safe-area-inset-left))]">
-        <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold tracking-tight">
+      <header
+        class="flex items-center gap-1 border-b border-border bg-surface-raised pt-[calc(0.5rem+env(safe-area-inset-top))] pr-[calc(1rem+env(safe-area-inset-right))] pb-2 pl-[calc(1rem+env(safe-area-inset-left))]"
+      >
+        <a
+          routerLink="/"
+          class="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold tracking-tight"
+        >
           <app-logo [size]="22" class="shrink-0 text-accent" />
           <span class="truncate">
             @if (mobileNav.activeTab(); as tab) {
@@ -160,9 +183,14 @@
 
     <main class="flex-1 px-4 pt-6 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:px-6 md:py-8">
       @if (mutationErrors.translationKey(); as key) {
-        <div class="mb-4 flex items-center justify-between gap-3 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative" role="alert">
+        <div
+          class="mb-4 flex items-center justify-between gap-3 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+          role="alert"
+        >
           {{ t(key) }}
-          <button type="button" class="font-medium" (click)="mutationErrors.clear()">{{ t('common.actions.close') }}</button>
+          <button type="button" class="font-medium" (click)="mutationErrors.clear()">
+            {{ t('common.actions.close') }}
+          </button>
         </div>
       }
       <app-update-banner />
@@ -199,6 +227,29 @@
         >
           <app-icon name="close" [size]="16" />
         </button>
+      </div>
+
+      <div class="border-b border-border px-4 py-2.5">
+        <a
+          routerLink="/profile"
+          class="flex min-w-0 items-center gap-2 rounded-md p-1.5 text-start hover:bg-surface-sunken"
+          (click)="mobileNavOpen.set(false)"
+          [attr.aria-label]="t('profile.title')"
+        >
+          <span
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-semibold text-accent"
+          >
+            {{ profileInitials() }}
+          </span>
+          <span class="min-w-0">
+            <span class="block truncate text-sm font-medium text-content-primary">{{
+              profileName()
+            }}</span>
+            <span class="block truncate text-xs text-content-subtle">{{
+              session.user()?.email
+            }}</span>
+          </span>
+        </a>
       </div>
 
       <div class="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">

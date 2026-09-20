@@ -1848,6 +1848,27 @@
     "loadError": "मिलान लोड नहीं हो सके। फिर कोशिश करें।",
     "confirmDelete": { "title": "मिलान हटाएँ?", "message": "मिलान और उसके चिह्न हटा दिए जाएँगे। जारी रखें?" }
   },
+  "profile": {
+    "title": "Profile",
+    "description": "Manage your identity and account security.",
+    "identity": {
+      "title": "Personal information",
+      "description": "Update the name and email address used for your account.",
+      "currentPassword": "Current password",
+      "currentPasswordHint": "Required when changing your email address.",
+      "save": "Save changes",
+      "saved": "Profile updated"
+    },
+    "password": {
+      "title": "Change password",
+      "description": "Changing your password signs out other sessions and trusted devices.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "hint": "Use at least 12 characters.",
+      "save": "Change password",
+      "saved": "Password updated"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "संग्रहीत खातों का मिलान नहीं किया जा सकता।", "already_open": "इस खाते का एक मिलान पहले से खुला है।", "completed": "यह मिलान पहले ही पूरा हो चुका है।",

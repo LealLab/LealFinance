@@ -23,6 +23,8 @@ describe('SessionService', () => {
     register: ReturnType<typeof vi.fn>;
     getPreferences: ReturnType<typeof vi.fn>;
     updatePreferences: ReturnType<typeof vi.fn>;
+    updateProfile: ReturnType<typeof vi.fn>;
+    changePassword: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
@@ -42,6 +44,8 @@ describe('SessionService', () => {
       ),
       getPreferences: vi.fn().mockReturnValue(of(SERVER_PREFERENCES)),
       updatePreferences: vi.fn().mockReturnValue(of({ ...SERVER_PREFERENCES, theme: 'dark' })),
+      updateProfile: vi.fn(),
+      changePassword: vi.fn().mockReturnValue(of(undefined)),
     };
     TestBed.configureTestingModule({
       providers: [
@@ -75,5 +79,29 @@ describe('SessionService', () => {
     expect(theme.current()).toBe('dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(api.updatePreferences).toHaveBeenCalledWith({ theme: 'dark' });
+  });
+
+  it('updates the live user signal after a profile edit', async () => {
+    const updated = {
+      id: 'u1',
+      email: 'ada.new@example.com',
+      displayName: 'Ada Byron Lovelace',
+      role: 'admin',
+      isActive: true,
+      aiChatEnabled: false,
+      createdAt: '2026-08-31T00:00:00Z',
+    } as const;
+    api.updateProfile.mockReturnValue(of(updated));
+    const session = TestBed.inject(SessionService);
+
+    await firstValueFrom(
+      session.updateProfile({
+        displayName: updated.displayName,
+        email: updated.email,
+        currentPassword: 'old-password',
+      }),
+    );
+
+    expect(session.user()).toEqual(updated);
   });
 });

@@ -1848,6 +1848,27 @@
     "loadError": "Täsmäytyksiä ei voitu ladata. Yritä uudelleen.",
     "confirmDelete": { "title": "Poistetaanko täsmäytys?", "message": "Täsmäytys ja sen merkinnät poistetaan. Jatketaanko?" }
   },
+  "profile": {
+    "title": "Profile",
+    "description": "Manage your identity and account security.",
+    "identity": {
+      "title": "Personal information",
+      "description": "Update the name and email address used for your account.",
+      "currentPassword": "Current password",
+      "currentPasswordHint": "Required when changing your email address.",
+      "save": "Save changes",
+      "saved": "Profile updated"
+    },
+    "password": {
+      "title": "Change password",
+      "description": "Changing your password signs out other sessions and trusted devices.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "hint": "Use at least 12 characters.",
+      "save": "Change password",
+      "saved": "Password updated"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Arkistoituja tilejä ei voi täsmäyttää.", "already_open": "Tällä tilillä on jo avoin täsmäytys.", "completed": "Täsmäytys on jo valmis.",

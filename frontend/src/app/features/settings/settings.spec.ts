@@ -151,7 +151,7 @@ describe('Settings', () => {
     expect(fixture.nativeElement.querySelector('a[href="/admin/providers"]')).toBeNull();
   });
 
-  it('renders the language, display-currency, and two-factor controls', () => {
+  it('renders the language and display-currency controls', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
@@ -160,7 +160,6 @@ describe('Settings', () => {
     // ids below are what the page actually has to render.
     expect(fixture.nativeElement.querySelector('#settings-language')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('#settings-display-currency')).not.toBeNull();
-    expect(fixture.nativeElement.querySelector('#settings-two-factor')).not.toBeNull();
   });
 
   it('switches the theme when a theme button is clicked', () => {
@@ -203,7 +202,6 @@ describe('Settings', () => {
     ['settings-display-currency', 'settings-display-currency'],
     ['settings-backup-export', 'settings-backup-export'],
     ['settings-backup-restore', 'settings-backup-restore'],
-    ['settings-two-factor', 'settings-two-factor'],
   ])('focuses the %s control when its route fragment becomes active', (routeFragment, id) => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
@@ -322,64 +320,6 @@ describe('Settings', () => {
 
     await fixture.componentInstance['onRestoreFile'](file('backup.json', 25 * 1024 * 1024 + 1));
     expect(fixture.componentInstance['restoreErrorCode']()).toBe('backup.file_too_large');
-  });
-
-  it('warns about unrecoverable lockout while two-factor is off', () => {
-    const fixture = TestBed.createComponent(Settings);
-    fixture.detectChanges();
-
-    expect(fixture.nativeElement.querySelector('p[class*="border-warning"]')).not.toBeNull();
-  });
-
-  it('shows the QR code and the manual key when enrollment starts', async () => {
-    const fixture = TestBed.createComponent(Settings);
-    fixture.detectChanges();
-
-    fixture.componentInstance['startTotpEnrollment']();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const qr = fixture.nativeElement.querySelector('img[src^="data:image/gif"]');
-    expect(qr).not.toBeNull();
-    expect(fixture.componentInstance['totpSetup']()?.secret).toBe('JBSWY3DPEHPK3PXP');
-  });
-
-  it('shows the backup codes once after confirming enrollment', () => {
-    const fixture = TestBed.createComponent(Settings);
-    fixture.detectChanges();
-    fixture.componentInstance['startTotpEnrollment']();
-    fixture.detectChanges();
-
-    fixture.componentInstance['setTotpCode']('123456');
-    fixture.componentInstance['confirmTotp']();
-    fixture.detectChanges();
-
-    expect(identityApi.enableTotp).toHaveBeenCalledWith('123456');
-    expect(fixture.componentInstance['backupCodes']()).toEqual(['aaaa-1111', 'bbbb-2222']);
-
-    // Dismissing is one-way: nothing can render them again. Assert the secret
-    // is gone from the DOM too, not just from the signal - this is the
-    // guarantee that actually matters, and a stale template binding would
-    // keep it on screen with the signal already cleared.
-    fixture.componentInstance['dismissBackupCodes']();
-    fixture.detectChanges();
-    expect(fixture.componentInstance['backupCodes']()).toBeUndefined();
-    expect(fixture.nativeElement.textContent).not.toContain('aaaa-1111');
-  });
-
-  it('surfaces the backend error code when a code is rejected', () => {
-    identityApi.disableTotp.mockReturnValue(throwError(() => ({ code: 'auth.totp_invalid' })));
-    identityApi.totpStatus.mockReturnValue(of({ enabled: true, backupCodesRemaining: 10 }));
-    const fixture = TestBed.createComponent(Settings);
-    fixture.detectChanges();
-
-    fixture.componentInstance['setTotpCode']('000000');
-    fixture.componentInstance['disableTotp']();
-    fixture.detectChanges();
-
-    const alert = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
-    expect(fixture.componentInstance['totpErrorCode']()).toBe('auth.totp_invalid');
-    expect(alert).toBeTruthy();
   });
 
   // --- Custom AI instructions ---

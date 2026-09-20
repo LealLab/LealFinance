@@ -332,13 +332,13 @@ export class CommandPalette {
         id: 'quick-export-backup',
         labelKey: 'settings.backup.export.action',
         icon: 'arrowDownLeft',
-        run: () => this.navigateToSetting('settings-backup-export')
+        run: () => this.navigateToSetting('settings-backup-export'),
       },
       {
         id: 'quick-restore-backup',
         labelKey: 'settings.backup.restore.action',
         icon: 'refresh',
-        run: () => this.navigateToSetting('settings-backup-restore')
+        run: () => this.navigateToSetting('settings-backup-restore'),
       },
       {
         id: 'quick-configure-language',
@@ -359,14 +359,14 @@ export class CommandPalette {
         // sublabel: that slot is shrink-0 and would squeeze out the label.
         keywordsKey: 'layout.commandPalette.actions.configureTwoFactorHint',
         icon: 'shield',
-        run: () => this.navigateToSetting('settings-two-factor'),
+        run: () => this.navigateToSetting('profile-two-factor', '/profile'),
       },
       {
         id: 'quick-configure-passkeys',
         labelKey: 'layout.commandPalette.actions.configurePasskeys',
         keywordsKey: 'layout.commandPalette.actions.configurePasskeysHint',
         icon: 'key',
-        run: () => this.navigateToSetting('settings-passkeys'),
+        run: () => this.navigateToSetting('profile-passkeys', '/profile'),
       },
       {
         id: 'quick-toggle-theme',
@@ -389,8 +389,8 @@ export class CommandPalette {
     this.router.navigate([path], { queryParams: { new: 1 } });
   }
 
-  private navigateToSetting(fragment: string): void {
-    this.router.navigate(['/settings'], { fragment });
+  private navigateToSetting(fragment: string, path = '/settings'): void {
+    this.router.navigate([path], { fragment });
   }
 
   private goToItems(): PaletteItem[] {
