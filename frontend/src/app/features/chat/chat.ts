@@ -118,6 +118,11 @@ export class Chat {
   }
 
   protected selectConversation(id: string): void {
+    if (this.activeId() === id) {
+      this.errorKey.set(null);
+      this.showList.set(false);
+      return;
+    }
     this.streamSubscription?.unsubscribe();
     this.streamSubscription = undefined;
     this.sending.set(false);

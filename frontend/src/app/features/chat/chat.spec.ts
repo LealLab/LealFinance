@@ -1,6 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
 import { Subject, throwError } from 'rxjs';
 import { vi } from 'vitest';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
@@ -55,8 +56,26 @@ describe('Chat', () => {
 
     fixture.componentInstance['newChat']();
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(fixture.componentInstance['activeId']()).toBe('c1');
+    expect(fixture.componentInstance['showList']()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.chat-conversations').classList).toContain(
+      'chat-mobile-hidden',
+    );
+    expect(fixture.nativeElement.querySelector('.chat-thread-panel').classList).not.toContain(
+      'chat-mobile-hidden',
+    );
+
+    fixture.componentInstance['showList'].set(true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.chat-conversations').classList).not.toContain(
+      'chat-mobile-hidden',
+    );
+    expect(fixture.nativeElement.querySelector('.chat-thread-panel').classList).toContain(
+      'chat-mobile-hidden',
+    );
   });
 
   it('streams mock deltas into a bubble and clears sending on done', async () => {
@@ -75,6 +94,49 @@ describe('Chat', () => {
     expect(fixture.nativeElement.textContent).toContain('Mock: Ola');
   });
 
+  it('keeps tool activity collapsed until the user expands it', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const chat = fixture.componentInstance;
+    const stream = new Subject<AgentStreamEvent>();
+    chat['repo'].sendMessage = vi.fn().mockReturnValue(stream.asObservable());
+
+    chat['send']('How did I spend this month?');
+    chat['applyEvent']({
+      type: 'tool_call',
+      id: 't1',
+      name: 'search_transactions',
+      arguments: {},
+    });
+    fixture.detectChanges();
+
+    const activity = fixture.nativeElement.querySelector(
+      'details.chat-activity',
+    ) as HTMLDetailsElement;
+    const transloco = TestBed.inject(TranslocoService);
+    expect(activity.open).toBe(false);
+    expect(activity.querySelector('summary')?.textContent).toContain(
+      transloco.translate('chat.thinking'),
+    );
+
+    activity.open = true;
+    expect(activity.textContent).toContain('search_transactions');
+    expect(activity.textContent).toContain(transloco.translate('chat.toolRunning'));
+
+    chat['applyEvent']({
+      type: 'tool_result',
+      id: 't1',
+      name: 'search_transactions',
+      ok: true,
+    });
+    chat['applyEvent']({ type: 'done', status: 'idle', messageId: 'm1' });
+    fixture.detectChanges();
+
+    expect(activity.textContent).toContain(transloco.translate('chat.toolDone'));
+  });
+
   it('cancels the active stream before switching conversations', () => {
     const fixture = setup();
     const chat = fixture.componentInstance;
@@ -85,11 +147,25 @@ describe('Chat', () => {
 
     chat['send']('hello');
     chat['selectConversation']('c2');
+    expect(chat['showList']()).toBe(false);
     chat['liveMessages'].set([{ role: 'assistant', text: 'new', tools: [] }]);
     stream.next({ type: 'delta', text: ' stale' });
 
     expect(chat['sending']()).toBe(false);
     expect(chat['liveMessages']().at(-1)?.text).toBe('new');
+  });
+
+  it('reopens the active conversation without clearing its messages', () => {
+    const fixture = setup();
+    const chat = fixture.componentInstance;
+    chat['activeId'].set('c1');
+    chat['liveMessages'].set([{ role: 'assistant', text: 'loaded', tools: [] }]);
+    chat['showList'].set(true);
+
+    chat['selectConversation']('c1');
+
+    expect(chat['showList']()).toBe(false);
+    expect(chat['liveMessages']().at(-1)?.text).toBe('loaded');
   });
 
   it('applies every stream event onto the last assistant turn', () => {
@@ -420,7 +496,7 @@ describe('Chat', () => {
     const alert = fixture.nativeElement.querySelector('[role="alert"]');
     expect(alert).not.toBeNull();
     // Below md the thread pane is hidden while the list shows; the alert must
-    // not live inside it (or any other max-md:hidden container).
+    // not live inside it (or any other mobile-hidden container).
     expect(alert.closest('.max-md\\:hidden')).toBeNull();
   });
 });
