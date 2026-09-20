@@ -1874,6 +1874,27 @@
       "message": "Der Abgleich und seine Markierungen werden gelöscht. Fortfahren?"
     }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Verwalten Sie Ihre Identität und Kontosicherheit.",
+    "identity": {
+      "title": "Persönliche Informationen",
+      "description": "Aktualisieren Sie den Namen und die E-Mail-Adresse Ihres Kontos.",
+      "currentPassword": "Aktuelles Passwort",
+      "currentPasswordHint": "Beim Ändern Ihrer E-Mail-Adresse erforderlich.",
+      "save": "Änderungen speichern",
+      "saved": "Profil aktualisiert"
+    },
+    "password": {
+      "title": "Passwort ändern",
+      "description": "Wenn Sie Ihr Passwort ändern, werden andere Sitzungen und vertrauenswürdige Geräte abgemeldet.",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "hint": "Verwenden Sie mindestens 12 Zeichen.",
+      "save": "Passwort ändern",
+      "saved": "Passwort aktualisiert"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Archivierte Konten können nicht abgeglichen werden.",

@@ -1848,6 +1848,27 @@
     "loadError": "Odsouhlasení se nepodařilo načíst. Zkuste to znovu.",
     "confirmDelete": { "title": "Smazat odsouhlasení?", "message": "Odsouhlasení a jeho označení budou smazána. Pokračovat?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Spravujte svou identitu a zabezpečení účtu.",
+    "identity": {
+      "title": "Osobní údaje",
+      "description": "Aktualizujte jméno a e-mailovou adresu používané pro váš účet.",
+      "currentPassword": "Aktuální heslo",
+      "currentPasswordHint": "Při změně e-mailové adresy je povinné.",
+      "save": "Uložit změny",
+      "saved": "Profil aktualizován"
+    },
+    "password": {
+      "title": "Změnit heslo",
+      "description": "Změnou hesla odhlásíte ostatní relace a důvěryhodná zařízení.",
+      "currentPassword": "Aktuální heslo",
+      "newPassword": "Nové heslo",
+      "hint": "Použijte alespoň 12 znaků.",
+      "save": "Změnit heslo",
+      "saved": "Heslo aktualizováno"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Archivované účty nelze odsouhlasit.", "already_open": "Tento účet už má otevřené odsouhlasení.", "completed": "Toto odsouhlasení je již dokončeno.",

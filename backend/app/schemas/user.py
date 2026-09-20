@@ -7,7 +7,7 @@ is ever serialized as.
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.schemas.common import CurrencyCodeInput, PatchModel
 
@@ -31,6 +31,19 @@ class UserUpdate(PatchModel):
     is_active: bool | None = None
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     ai_chat_enabled: bool | None = None
+
+
+class ProfileUpdate(PatchModel):
+    non_nullable_fields = frozenset({"display_name", "email"})
+
+    display_name: str | None = Field(default=None, min_length=1, max_length=100)
+    email: EmailStr | None = None
+    current_password: str | None = None
+
+
+class PasswordChange(BaseModel):
+    current_password: str = Field(min_length=1)
+    new_password: str = Field(min_length=12, max_length=128)
 
 
 class PreferencesRead(BaseModel):

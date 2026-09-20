@@ -1848,6 +1848,27 @@
     "loadError": "Afstemninger kunne ikke indlæses. Prøv igen.",
     "confirmDelete": { "title": "Slet afstemning?", "message": "Afstemningen og dens markeringer slettes. Vil du fortsætte?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Administrer din identitet og kontosikkerhed.",
+    "identity": {
+      "title": "Personlige oplysninger",
+      "description": "Opdater det navn og den e-mailadresse, der bruges til din konto.",
+      "currentPassword": "Nuværende adgangskode",
+      "currentPasswordHint": "Påkrævet ved ændring af e-mailadresse.",
+      "save": "Gem ændringer",
+      "saved": "Profil opdateret"
+    },
+    "password": {
+      "title": "Skift adgangskode",
+      "description": "Når du ændrer din adgangskode, logges andre sessioner og betroede enheder ud.",
+      "currentPassword": "Nuværende adgangskode",
+      "newPassword": "Ny adgangskode",
+      "hint": "Brug mindst 12 tegn.",
+      "save": "Skift adgangskode",
+      "saved": "Adgangskode opdateret"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Arkiverede konti kan ikke afstemmes.", "already_open": "Denne konto har allerede en åben afstemning.", "completed": "Denne afstemning er allerede gennemført.",

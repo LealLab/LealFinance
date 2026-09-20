@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, map, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
-import { IdentityApiService } from './identity-api.service';
+import { IdentityApiService, ProfileChanges } from './identity-api.service';
 import { User } from './identity.models';
 import { MetadataService } from './metadata.service';
 import { PreferenceService } from './preference.service';
@@ -71,6 +71,14 @@ export class SessionService {
         }),
       ),
     );
+  }
+
+  updateProfile(changes: ProfileChanges): Observable<User> {
+    return this.api.updateProfile(changes).pipe(tap((user) => this.userState.set(user)));
+  }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<void> {
+    return this.api.changePassword(currentPassword, newPassword);
   }
 
   register(input: {

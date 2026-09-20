@@ -1874,6 +1874,27 @@
       "message": "A conciliação e suas marcações serão excluídas. Continuar?"
     }
   },
+  "profile": {
+    "title": "Perfil",
+    "description": "Gerencie sua identidade e a seguranca da sua conta.",
+    "identity": {
+      "title": "Informacoes pessoais",
+      "description": "Atualize o nome e o email usados na sua conta.",
+      "currentPassword": "Senha atual",
+      "currentPasswordHint": "Obrigatoria ao alterar seu email.",
+      "save": "Salvar alteracoes",
+      "saved": "Perfil atualizado"
+    },
+    "password": {
+      "title": "Alterar senha",
+      "description": "Alterar sua senha encerra outras sessoes e dispositivos confiaveis.",
+      "currentPassword": "Senha atual",
+      "newPassword": "Nova senha",
+      "hint": "Use pelo menos 12 caracteres.",
+      "save": "Alterar senha",
+      "saved": "Senha atualizada"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Contas arquivadas não podem ser conciliadas.",

@@ -1848,6 +1848,27 @@
     "loadError": "Không thể tải các lần đối soát. Hãy thử lại.",
     "confirmDelete": { "title": "Xóa lần đối soát?", "message": "Lần đối soát và các dấu đánh dấu sẽ bị xóa. Tiếp tục?" }
   },
+  "profile": {
+    "title": "Hồ sơ",
+    "description": "Quản lý danh tính và bảo mật tài khoản của bạn.",
+    "identity": {
+      "title": "Thông tin cá nhân",
+      "description": "Cập nhật tên và địa chỉ email được sử dụng cho tài khoản.",
+      "currentPassword": "Mật khẩu hiện tại",
+      "currentPasswordHint": "Bắt buộc khi thay đổi địa chỉ email.",
+      "save": "Lưu thay đổi",
+      "saved": "Đã cập nhật hồ sơ"
+    },
+    "password": {
+      "title": "Đổi mật khẩu",
+      "description": "Việc đổi mật khẩu sẽ đăng xuất các phiên và thiết bị đáng tin cậy khác.",
+      "currentPassword": "Mật khẩu hiện tại",
+      "newPassword": "Mật khẩu mới",
+      "hint": "Sử dụng ít nhất 12 ký tự.",
+      "save": "Đổi mật khẩu",
+      "saved": "Đã cập nhật mật khẩu"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Không thể đối soát tài khoản đã lưu trữ.", "already_open": "Tài khoản này đã có một lần đối soát đang mở.", "completed": "Lần đối soát này đã hoàn tất.",

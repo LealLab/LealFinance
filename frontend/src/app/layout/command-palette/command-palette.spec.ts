@@ -29,10 +29,7 @@ describe('CommandPalette', () => {
     sessionUser = signal<User | undefined>(undefined);
     settings = signal<{ agentsEnabled: boolean } | undefined>(undefined);
     await TestBed.configureTestingModule({
-      imports: [
-        CommandPalette,
-        provideTestTransloco(),
-      ],
+      imports: [CommandPalette, provideTestTransloco()],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
@@ -133,11 +130,11 @@ describe('CommandPalette', () => {
     ['moeda', 'quick-configure-currency', 'settings-display-currency'],
     ['exportar backup', 'quick-export-backup', 'settings-backup-export'],
     ['restaurar backup', 'quick-restore-backup', 'settings-backup-restore'],
-    ['dois fatores', 'quick-configure-two-factor', 'settings-two-factor'],
+    ['dois fatores', 'quick-configure-two-factor', 'profile-two-factor'],
     // Synonyms people actually type reach the same entry, via keywordsKey.
-    ['2FA', 'quick-configure-two-factor', 'settings-two-factor'],
-    ['autenticador', 'quick-configure-two-factor', 'settings-two-factor'],
-    ['recuperação', 'quick-configure-two-factor', 'settings-two-factor'],
+    ['2FA', 'quick-configure-two-factor', 'profile-two-factor'],
+    ['autenticador', 'quick-configure-two-factor', 'profile-two-factor'],
+    ['recuperação', 'quick-configure-two-factor', 'profile-two-factor'],
   ])('finds the %s setting and navigates to its control', (query, id, fragment) => {
     const fixture = TestBed.createComponent(CommandPalette);
     const router = TestBed.inject(Router);
@@ -150,13 +147,14 @@ describe('CommandPalette', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const result = fixture.componentInstance['flatItems']().find(
-      (item) => item.id === id,
-    );
+    const result = fixture.componentInstance['flatItems']().find((item) => item.id === id);
     expect(result).toBeDefined();
 
     fixture.componentInstance['selectItem'](result!);
-    expect(navigate).toHaveBeenCalledWith(['/settings'], { fragment });
+    expect(navigate).toHaveBeenCalledWith(
+      fragment.startsWith('profile-') ? ['/profile'] : ['/settings'],
+      { fragment },
+    );
   });
 
   it('matches on search keywords without rendering them in the row', () => {

@@ -1848,6 +1848,27 @@
     "loadError": "Impossibile caricare le riconciliazioni. Riprova.",
     "confirmDelete": { "title": "Eliminare la riconciliazione?", "message": "La riconciliazione e le relative marcature verranno eliminate. Continuare?" }
   },
+  "profile": {
+    "title": "Profilo",
+    "description": "Gestisci la tua identità e la sicurezza del tuo account.",
+    "identity": {
+      "title": "Informazioni personali",
+      "description": "Aggiorna il nome e l’indirizzo email usati per il tuo account.",
+      "currentPassword": "Password attuale",
+      "currentPasswordHint": "Richiesta quando cambi l’indirizzo email.",
+      "save": "Salva modifiche",
+      "saved": "Profilo aggiornato"
+    },
+    "password": {
+      "title": "Cambia password",
+      "description": "Cambiare la password disconnette le altre sessioni e i dispositivi attendibili.",
+      "currentPassword": "Password attuale",
+      "newPassword": "Nuova password",
+      "hint": "Usa almeno 12 caratteri.",
+      "save": "Cambia password",
+      "saved": "Password aggiornata"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "I conti archiviati non possono essere riconciliati.", "already_open": "Questo conto ha già una riconciliazione aperta.", "completed": "Questa riconciliazione è già completata.",

@@ -1848,6 +1848,27 @@
     "loadError": "Kunne ikke laste inn avstemmingene. Prøv igjen.",
     "confirmDelete": { "title": "Slette avstemming?", "message": "Avstemmingen og markeringene slettes. Vil du fortsette?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Administrer identiteten og kontosikkerheten din.",
+    "identity": {
+      "title": "Personlig informasjon",
+      "description": "Oppdater navnet og e-postadressen som brukes for kontoen din.",
+      "currentPassword": "Gjeldende passord",
+      "currentPasswordHint": "Påkrevd når du endrer e-postadressen.",
+      "save": "Lagre endringer",
+      "saved": "Profil oppdatert"
+    },
+    "password": {
+      "title": "Endre passord",
+      "description": "Når du endrer passordet, logges andre økter og klarerte enheter ut.",
+      "currentPassword": "Gjeldende passord",
+      "newPassword": "Nytt passord",
+      "hint": "Bruk minst 12 tegn.",
+      "save": "Endre passord",
+      "saved": "Passord oppdatert"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Arkiverte kontoer kan ikke avstemmes.", "already_open": "Denne kontoen har allerede en åpen avstemming.", "completed": "Denne avstemmingen er allerede fullført.",

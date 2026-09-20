@@ -42,6 +42,12 @@ interface UserWire {
   created_at: string;
 }
 
+export interface ProfileChanges {
+  displayName?: string;
+  email?: string;
+  currentPassword?: string;
+}
+
 interface JobHealthWire {
   name: string;
   state: string;
@@ -161,6 +167,21 @@ export class IdentityApiService {
     return this.api.get<UserWire>('/auth/me').pipe(map(mapUser));
   }
 
+  updateProfile(changes: ProfileChanges): Observable<User> {
+    const body: Record<string, string> = {};
+    if (changes.displayName !== undefined) body['display_name'] = changes.displayName;
+    if (changes.email !== undefined) body['email'] = changes.email;
+    if (changes.currentPassword !== undefined) body['current_password'] = changes.currentPassword;
+    return this.api.patch<UserWire>('/auth/profile', body).pipe(map(mapUser));
+  }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<void> {
+    return this.api.post<void>('/auth/password', {
+      current_password: currentPassword,
+      new_password: newPassword,
+    });
+  }
+
   login(
     email: string,
     password: string,
@@ -178,7 +199,10 @@ export class IdentityApiService {
   }
 
   passkeyRegisterOptions(): Observable<PublicKeyCredentialCreationOptionsJSON> {
-    return this.api.post<PublicKeyCredentialCreationOptionsJSON>('/auth/passkeys/register/options', {});
+    return this.api.post<PublicKeyCredentialCreationOptionsJSON>(
+      '/auth/passkeys/register/options',
+      {},
+    );
   }
 
   registerPasskey(name: string, challenge: string, credential: unknown): Observable<Passkey> {

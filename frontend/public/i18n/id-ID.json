@@ -1848,6 +1848,27 @@
     "loadError": "Rekonsiliasi tidak dapat dimuat. Coba lagi.",
     "confirmDelete": { "title": "Hapus rekonsiliasi?", "message": "Rekonsiliasi dan penandaannya akan dihapus. Lanjutkan?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Kelola identitas dan keamanan akun Anda.",
+    "identity": {
+      "title": "Informasi pribadi",
+      "description": "Perbarui nama dan alamat email yang digunakan untuk akun Anda.",
+      "currentPassword": "Kata sandi saat ini",
+      "currentPasswordHint": "Diperlukan saat mengubah alamat email.",
+      "save": "Simpan perubahan",
+      "saved": "Profil diperbarui"
+    },
+    "password": {
+      "title": "Ubah kata sandi",
+      "description": "Mengubah kata sandi akan mengeluarkan sesi dan perangkat tepercaya lainnya.",
+      "currentPassword": "Kata sandi saat ini",
+      "newPassword": "Kata sandi baru",
+      "hint": "Gunakan setidaknya 12 karakter.",
+      "save": "Ubah kata sandi",
+      "saved": "Kata sandi diperbarui"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Rekening yang diarsipkan tidak dapat direkonsiliasi.", "already_open": "Rekening ini sudah memiliki rekonsiliasi terbuka.", "completed": "Rekonsiliasi ini sudah selesai.",

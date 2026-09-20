@@ -1848,6 +1848,27 @@
     "loadError": "Mutabakatlar yüklenemedi. Tekrar deneyin.",
     "confirmDelete": { "title": "Mutabakat silinsin mi?", "message": "Mutabakat ve işaretleri silinecek. Devam edilsin mi?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Kimliğinizi ve hesap güvenliğinizi yönetin.",
+    "identity": {
+      "title": "Kişisel bilgiler",
+      "description": "Hesabınızda kullanılan adı ve e-posta adresini güncelleyin.",
+      "currentPassword": "Mevcut parola",
+      "currentPasswordHint": "E-posta adresinizi değiştirirken gereklidir.",
+      "save": "Değişiklikleri kaydet",
+      "saved": "Profil güncellendi"
+    },
+    "password": {
+      "title": "Parolayı değiştir",
+      "description": "Parolanızı değiştirmek diğer oturumları ve güvenilir cihazları kapatır.",
+      "currentPassword": "Mevcut parola",
+      "newPassword": "Yeni parola",
+      "hint": "En az 12 karakter kullanın.",
+      "save": "Parolayı değiştir",
+      "saved": "Parola güncellendi"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Arşivlenmiş hesaplar için mutabakat yapılamaz.", "already_open": "Bu hesapta zaten açık bir mutabakat var.", "completed": "Bu mutabakat zaten tamamlandı.",

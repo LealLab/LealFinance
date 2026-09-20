@@ -1874,6 +1874,27 @@
       "message": "Se eliminarán la conciliación y sus marcas. ¿Continuar?"
     }
   },
+  "profile": {
+    "title": "Perfil",
+    "description": "Gestiona tu identidad y la seguridad de tu cuenta.",
+    "identity": {
+      "title": "Información personal",
+      "description": "Actualiza el nombre y la dirección de correo electrónico que usas para tu cuenta.",
+      "currentPassword": "Contraseña actual",
+      "currentPasswordHint": "Obligatoria al cambiar tu dirección de correo electrónico.",
+      "save": "Guardar cambios",
+      "saved": "Perfil actualizado"
+    },
+    "password": {
+      "title": "Cambiar contraseña",
+      "description": "Cambiar la contraseña cierra las demás sesiones y dispositivos de confianza.",
+      "currentPassword": "Contraseña actual",
+      "newPassword": "Nueva contraseña",
+      "hint": "Usa al menos 12 caracteres.",
+      "save": "Cambiar contraseña",
+      "saved": "Contraseña actualizada"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Las cuentas archivadas no se pueden conciliar.",

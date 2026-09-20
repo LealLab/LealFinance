@@ -1848,6 +1848,27 @@
     "loadError": "Reconciliile nu au putut fi încărcate. Încearcă din nou.",
     "confirmDelete": { "title": "Ștergi reconcilierea?", "message": "Reconcilierea și marcajele sale vor fi șterse. Continui?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Gestionează-ți identitatea și securitatea contului.",
+    "identity": {
+      "title": "Informații personale",
+      "description": "Actualizează numele și adresa de e-mail folosite pentru contul tău.",
+      "currentPassword": "Parola curentă",
+      "currentPasswordHint": "Necesară la schimbarea adresei de e-mail.",
+      "save": "Salvează modificările",
+      "saved": "Profil actualizat"
+    },
+    "password": {
+      "title": "Schimbă parola",
+      "description": "Schimbarea parolei deconectează celelalte sesiuni și dispozitive de încredere.",
+      "currentPassword": "Parola curentă",
+      "newPassword": "Parolă nouă",
+      "hint": "Folosește cel puțin 12 caractere.",
+      "save": "Schimbă parola",
+      "saved": "Parolă actualizată"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Conturile arhivate nu pot fi reconciliate.", "already_open": "Acest cont are deja o reconciliere deschisă.", "completed": "Această reconciliere este deja finalizată.",

@@ -11,6 +11,17 @@ export interface User {
   createdAt: string;
 }
 
+export function userInitials(user: Pick<User, 'displayName' | 'email'> | undefined): string {
+  const value = user?.displayName.trim() || user?.email || '?';
+  const initials = value
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('');
+  return (initials || '?').toUpperCase();
+}
+
 export interface Preferences {
   locale: string;
   theme: UserTheme;
@@ -35,13 +46,7 @@ export interface CreatedInvitation extends Invitation {
 }
 
 export type JobState =
-  | 'never_run'
-  | 'stale'
-  | 'stuck'
-  | 'running'
-  | 'success'
-  | 'partial'
-  | 'failed';
+  'never_run' | 'stale' | 'stuck' | 'running' | 'success' | 'partial' | 'failed';
 
 export interface JobHealth {
   name: string;

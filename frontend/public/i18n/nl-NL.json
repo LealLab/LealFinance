@@ -1848,6 +1848,27 @@
     "loadError": "Afstemmingen konden niet worden geladen. Probeer het opnieuw.",
     "confirmDelete": { "title": "Afstemming verwijderen?", "message": "De afstemming en gemarkeerde transacties worden verwijderd. Doorgaan?" }
   },
+  "profile": {
+    "title": "Profiel",
+    "description": "Beheer je identiteit en accountbeveiliging.",
+    "identity": {
+      "title": "Persoonlijke gegevens",
+      "description": "Werk de naam en het e-mailadres voor je account bij.",
+      "currentPassword": "Huidig wachtwoord",
+      "currentPasswordHint": "Vereist wanneer je je e-mailadres wijzigt.",
+      "save": "Wijzigingen opslaan",
+      "saved": "Profiel bijgewerkt"
+    },
+    "password": {
+      "title": "Wachtwoord wijzigen",
+      "description": "Door je wachtwoord te wijzigen worden andere sessies en vertrouwde apparaten uitgelogd.",
+      "currentPassword": "Huidig wachtwoord",
+      "newPassword": "Nieuw wachtwoord",
+      "hint": "Gebruik minimaal 12 tekens.",
+      "save": "Wachtwoord wijzigen",
+      "saved": "Wachtwoord bijgewerkt"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Gearchiveerde rekeningen kunnen niet worden afgestemd.", "already_open": "Deze rekening heeft al een open afstemming.", "completed": "Deze afstemming is al voltooid.",

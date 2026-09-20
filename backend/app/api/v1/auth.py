@@ -33,7 +33,14 @@ from app.schemas.auth import (
     TotpSetupResponse,
     TotpStatus,
 )
-from app.schemas.user import PreferencesRead, PreferencesUpdate, UserRead, UserUpdate
+from app.schemas.user import (
+    PasswordChange,
+    PreferencesRead,
+    PreferencesUpdate,
+    ProfileUpdate,
+    UserRead,
+    UserUpdate,
+)
 from app.schemas.webauthn import PasskeyLoginRequest, PasskeyRead, PasskeyRegisterRequest
 from app.services import auth as auth_service
 from app.services import webauthn as webauthn_service
@@ -144,6 +151,29 @@ async def logout(pair: CurrentSession, response: Response, db: DbSession) -> Non
 @router.get("/me", response_model=UserRead)
 async def get_me(user: CurrentUser) -> User:
     return user
+
+
+@router.patch("/profile", response_model=UserRead)
+async def update_profile(payload: ProfileUpdate, user: CurrentUser, db: DbSession) -> User:
+    return await auth_service.update_profile(
+        db,
+        user=user,
+        display_name=payload.display_name,
+        email=payload.email,
+        current_password=payload.current_password,
+    )
+
+
+@router.post("/password", status_code=status.HTTP_204_NO_CONTENT)
+async def change_password(payload: PasswordChange, pair: CurrentSession, db: DbSession) -> None:
+    user, session = pair
+    await auth_service.change_password(
+        db,
+        user=user,
+        current_session=session,
+        current_password=payload.current_password,
+        new_password=payload.new_password,
+    )
 
 
 # --- Two-factor authentication (current user) -------------------------------------

@@ -1848,6 +1848,27 @@
     "loadError": "Det gick inte att läsa in avstämningar. Försök igen.",
     "confirmDelete": { "title": "Ta bort avstämning?", "message": "Avstämningen och dess markeringar tas bort. Vill du fortsätta?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Hantera din identitet och kontosäkerhet.",
+    "identity": {
+      "title": "Personuppgifter",
+      "description": "Uppdatera namnet och e-postadressen som används för ditt konto.",
+      "currentPassword": "Nuvarande lösenord",
+      "currentPasswordHint": "Krävs när du ändrar din e-postadress.",
+      "save": "Spara ändringar",
+      "saved": "Profilen har uppdaterats"
+    },
+    "password": {
+      "title": "Byt lösenord",
+      "description": "När du byter lösenord loggas andra sessioner och betrodda enheter ut.",
+      "currentPassword": "Nuvarande lösenord",
+      "newPassword": "Nytt lösenord",
+      "hint": "Använd minst 12 tecken.",
+      "save": "Byt lösenord",
+      "saved": "Lösenordet har uppdaterats"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Arkiverade konton kan inte stämmas av.", "already_open": "Det här kontot har redan en öppen avstämning.", "completed": "Den här avstämningen är redan slutförd.",

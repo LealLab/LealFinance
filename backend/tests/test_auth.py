@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from app.core.errors import ConflictError
 from app.models.currency import Currency
+from app.models.totp import TrustedDevice
 from app.models.user import ROLE_ADMIN, User
 from app.models.user import Session as UserSession
 from app.schemas.auth import RecoverRequest, RegisterRequest
@@ -144,6 +145,167 @@ async def test_me_returns_the_logged_in_user(client: AsyncClient, db_session: As
 
     assert response.status_code == 200
     assert response.json()["email"] == user.email
+
+
+async def test_profile_updates_name_and_email_with_password_proof_for_email(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, password = await make_user(db_session, email="profile@example.com")
+    await make_user(db_session, email="taken@example.com")
+    await login_as(client, email=user.email, password=password)
+
+    name_response = await client.patch(
+        "/api/v1/auth/profile", json={"display_name": "  Updated User  "}
+    )
+    assert name_response.status_code == 200
+    assert name_response.json()["display_name"] == "Updated User"
+
+    missing_password = await client.patch(
+        "/api/v1/auth/profile", json={"email": "new-profile@example.com"}
+    )
+    assert missing_password.status_code == 401
+    assert missing_password.json()["error"]["code"] == "auth.invalid_credentials"
+
+    wrong_password = await client.patch(
+        "/api/v1/auth/profile",
+        json={"email": "new-profile@example.com", "current_password": "wrong"},
+    )
+    assert wrong_password.status_code == 401
+
+    duplicate = await client.patch(
+        "/api/v1/auth/profile",
+        json={"email": "taken@example.com", "current_password": password},
+    )
+    assert duplicate.status_code == 409
+    assert duplicate.json()["error"]["code"] == "user.email_taken"
+
+    email_response = await client.patch(
+        "/api/v1/auth/profile",
+        json={"email": "new-profile@example.com", "current_password": password},
+    )
+    assert email_response.status_code == 200
+    assert email_response.json()["email"] == "new-profile@example.com"
+
+
+async def test_profile_rejects_blank_name_and_short_password(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, password = await make_user(db_session, email="profile-validation@example.com")
+    await login_as(client, email=user.email, password=password)
+
+    blank_name = await client.patch("/api/v1/auth/profile", json={"display_name": "   "})
+    assert blank_name.status_code == 422
+    assert blank_name.json()["error"]["code"] == "error.validation"
+
+    short_password = await client.post(
+        "/api/v1/auth/password",
+        json={"current_password": password, "new_password": "too-short"},
+    )
+    assert short_password.status_code == 422
+    assert short_password.json()["error"]["code"] == "error.validation"
+
+
+async def test_profile_password_proof_honors_lockout_policy(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, password = await make_user(db_session, email="profile-lockout@example.com")
+    await login_as(client, email=user.email, password=password)
+
+    for _ in range(auth_service._PASSWORD_MAX_ATTEMPTS):
+        response = await client.patch(
+            "/api/v1/auth/profile",
+            json={
+                "email": "profile-lockout-updated@example.com",
+                "current_password": "wrong-password",
+            },
+        )
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "auth.invalid_credentials"
+
+    await db_session.refresh(user)
+    assert user.password_failed_attempts == 0
+    assert user.password_locked_until is not None
+
+    locked_email = await client.patch(
+        "/api/v1/auth/profile",
+        json={
+            "email": "profile-lockout-updated@example.com",
+            "current_password": password,
+        },
+    )
+    assert locked_email.status_code == 401
+    assert locked_email.json()["error"]["code"] == "auth.account_locked"
+
+    password_user, password_user_password = await make_user(
+        db_session, email="password-lockout-proof@example.com"
+    )
+    await login_as(client, email=password_user.email, password=password_user_password)
+
+    for _ in range(auth_service._PASSWORD_MAX_ATTEMPTS):
+        response = await client.post(
+            "/api/v1/auth/password",
+            json={
+                "current_password": "wrong-password",
+                "new_password": "new-password-long-enough",
+            },
+        )
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "auth.invalid_credentials"
+
+    locked_password = await client.post(
+        "/api/v1/auth/password",
+        json={
+            "current_password": password_user_password,
+            "new_password": "new-password-long-enough",
+        },
+    )
+    assert locked_password.status_code == 401
+    assert locked_password.json()["error"]["code"] == "auth.account_locked"
+
+
+async def test_password_change_preserves_current_session_and_revokes_others_and_trusted_devices(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, password = await make_user(db_session, email="password-change@example.com")
+    await login_as(client, email=user.email, password=password)
+    await login_as(other_client, email=user.email, password=password)
+    db_session.add(
+        TrustedDevice(
+            user_id=user.id,
+            token_hash="trusted-device-hash",
+            expires_at=datetime.now(UTC) + timedelta(days=1),
+        )
+    )
+    await db_session.commit()
+
+    invalid = await client.post(
+        "/api/v1/auth/password",
+        json={"current_password": "wrong", "new_password": "a-new-password-long-enough"},
+    )
+    assert invalid.status_code == 401
+    assert invalid.json()["error"]["code"] == "auth.invalid_credentials"
+
+    response = await client.post(
+        "/api/v1/auth/password",
+        json={"current_password": password, "new_password": "a-new-password-long-enough"},
+    )
+    assert response.status_code == 204
+
+    current_me = await client.get("/api/v1/auth/me")
+    assert current_me.status_code == 200
+    other_me = await other_client.get("/api/v1/auth/me")
+    assert other_me.status_code == 401
+
+    sessions = (
+        await db_session.scalars(select(UserSession).where(UserSession.user_id == user.id))
+    ).all()
+    assert sum(session.revoked_at is None for session in sessions) == 1
+    devices = (
+        await db_session.scalars(select(TrustedDevice).where(TrustedDevice.user_id == user.id))
+    ).all()
+    assert devices and all(device.revoked_at is not None for device in devices)
+
+    await login_as(other_client, email=user.email, password="a-new-password-long-enough")
 
 
 async def test_mutating_request_without_csrf_header_is_rejected(

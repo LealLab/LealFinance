@@ -1874,6 +1874,27 @@
       "message": "Le rapprochement et ses pointages seront supprimés. Continuer ?"
     }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Gérez votre identité et la sécurité de votre compte.",
+    "identity": {
+      "title": "Informations personnelles",
+      "description": "Mettez à jour le nom et l’adresse e-mail utilisés pour votre compte.",
+      "currentPassword": "Mot de passe actuel",
+      "currentPasswordHint": "Requis pour modifier votre adresse e-mail.",
+      "save": "Enregistrer les modifications",
+      "saved": "Profil mis à jour"
+    },
+    "password": {
+      "title": "Modifier le mot de passe",
+      "description": "La modification du mot de passe déconnecte les autres sessions et appareils de confiance.",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "hint": "Utilisez au moins 12 caractères.",
+      "save": "Modifier le mot de passe",
+      "saved": "Mot de passe mis à jour"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Les comptes archivés ne peuvent pas être rapprochés.",

@@ -1848,6 +1848,27 @@
     "loadError": "Nie udało się załadować uzgodnień. Spróbuj ponownie.",
     "confirmDelete": { "title": "Usunąć uzgodnienie?", "message": "Uzgodnienie i jego oznaczenia zostaną usunięte. Kontynuować?" }
   },
+  "profile": {
+    "title": "Profil",
+    "description": "Zarządzaj swoją tożsamością i bezpieczeństwem konta.",
+    "identity": {
+      "title": "Dane osobowe",
+      "description": "Zaktualizuj nazwę i adres e-mail używane na koncie.",
+      "currentPassword": "Aktualne hasło",
+      "currentPasswordHint": "Wymagane przy zmianie adresu e-mail.",
+      "save": "Zapisz zmiany",
+      "saved": "Profil zaktualizowany"
+    },
+    "password": {
+      "title": "Zmień hasło",
+      "description": "Zmiana hasła wyloguje inne sesje i zaufane urządzenia.",
+      "currentPassword": "Aktualne hasło",
+      "newPassword": "Nowe hasło",
+      "hint": "Użyj co najmniej 12 znaków.",
+      "save": "Zmień hasło",
+      "saved": "Hasło zaktualizowane"
+    }
+  },
   "errors": {
     "reconciliation": {
       "account_archived": "Nie można uzgadniać zarchiwizowanych kont.", "already_open": "To konto ma już otwarte uzgodnienie.", "completed": "To uzgodnienie jest już zakończone.",

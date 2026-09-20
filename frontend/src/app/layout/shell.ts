@@ -15,6 +15,7 @@ import { CommandPaletteService } from '../core/command-palette.service';
 import { isMacPlatform } from '../core/platform';
 import { PreferenceService } from '../core/preference.service';
 import { SessionService } from '../core/session.service';
+import { userInitials } from '../core/identity.models';
 import { MutationErrorService } from '../core/mutation-error.service';
 import { Button } from '../shared/ui/button/button';
 import { ConfirmDialog } from '../shared/ui/confirm-dialog/confirm-dialog';
@@ -76,6 +77,10 @@ export class Shell {
   protected readonly session = inject(SessionService);
   protected readonly mutationErrors = inject(MutationErrorService);
   protected readonly mobileNav = inject(MobileNav);
+  protected readonly profileInitials = computed(() => userInitials(this.session.user()));
+  protected readonly profileName = computed(
+    () => this.session.user()?.displayName || this.session.user()?.email || '',
+  );
 
   protected readonly isMac = isMacPlatform();
 
