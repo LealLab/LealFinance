@@ -61,20 +61,20 @@ describe('Chat', () => {
     expect(fixture.componentInstance['activeId']()).toBe('c1');
     expect(fixture.componentInstance['showList']()).toBe(false);
     expect(fixture.nativeElement.querySelector('.chat-conversations').classList).toContain(
-      'max-md:hidden',
+      'chat-mobile-hidden',
     );
     expect(fixture.nativeElement.querySelector('.chat-thread-panel').classList).not.toContain(
-      'max-md:hidden',
+      'chat-mobile-hidden',
     );
 
     fixture.componentInstance['showList'].set(true);
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.chat-conversations').classList).not.toContain(
-      'max-md:hidden',
+      'chat-mobile-hidden',
     );
     expect(fixture.nativeElement.querySelector('.chat-thread-panel').classList).toContain(
-      'max-md:hidden',
+      'chat-mobile-hidden',
     );
   });
 
@@ -483,7 +483,7 @@ describe('Chat', () => {
     const alert = fixture.nativeElement.querySelector('[role="alert"]');
     expect(alert).not.toBeNull();
     // Below md the thread pane is hidden while the list shows; the alert must
-    // not live inside it (or any other max-md:hidden container).
+    // not live inside it (or any other mobile-hidden container).
     expect(alert.closest('.max-md\\:hidden')).toBeNull();
   });
 });

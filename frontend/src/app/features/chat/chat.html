@@ -14,7 +14,7 @@
   <div class="chat-layout grid min-h-0 min-w-0 flex-1 gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
     <aside
       class="chat-conversations min-h-0 min-w-0 overflow-hidden rounded-md border border-border bg-surface-raised"
-      [class.max-md:hidden]="!showList()"
+      [class.chat-mobile-hidden]="!showList()"
       [attr.aria-label]="t('chat.conversations')"
     >
       <div
@@ -74,7 +74,7 @@
       </div>
     </aside>
 
-    <section class="chat-thread-panel min-h-0 min-w-0" [class.max-md:hidden]="showList()">
+    <section class="chat-thread-panel min-h-0 min-w-0" [class.chat-mobile-hidden]="showList()">
       @if (!activeId()) {
         <app-empty-state
           icon="sparkles"

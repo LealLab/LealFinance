@@ -161,6 +161,10 @@
 }
 
 @media (max-width: 767px) {
+  .chat-mobile-hidden {
+    display: none;
+  }
+
   :host {
     height: calc(100dvh - 12rem - env(safe-area-inset-bottom));
   }
