@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Smazat odsouhlasení?", "message": "Odsouhlasení a jeho označení budou smazána. Pokračovat?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profil",
+    "description": "Spravujte svou identitu a zabezpečení účtu.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Osobní údaje",
+      "description": "Aktualizujte jméno a e-mailovou adresu používané pro váš účet.",
+      "currentPassword": "Aktuální heslo",
+      "currentPasswordHint": "Při změně e-mailové adresy je povinné.",
+      "save": "Uložit změny",
+      "saved": "Profil aktualizován"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Změnit heslo",
+      "description": "Změnou hesla odhlásíte ostatní relace a důvěryhodná zařízení.",
+      "currentPassword": "Aktuální heslo",
+      "newPassword": "Nové heslo",
+      "hint": "Použijte alespoň 12 znaků.",
+      "save": "Změnit heslo",
+      "saved": "Heslo aktualizováno"
     }
   },
   "errors": {

@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Slette avstemming?", "message": "Avstemmingen og markeringene slettes. Vil du fortsette?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profil",
+    "description": "Administrer identiteten og kontosikkerheten din.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Personlig informasjon",
+      "description": "Oppdater navnet og e-postadressen som brukes for kontoen din.",
+      "currentPassword": "Gjeldende passord",
+      "currentPasswordHint": "Påkrevd når du endrer e-postadressen.",
+      "save": "Lagre endringer",
+      "saved": "Profil oppdatert"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Endre passord",
+      "description": "Når du endrer passordet, logges andre økter og klarerte enheter ut.",
+      "currentPassword": "Gjeldende passord",
+      "newPassword": "Nytt passord",
+      "hint": "Bruk minst 12 tegn.",
+      "save": "Endre passord",
+      "saved": "Passord oppdatert"
     }
   },
   "errors": {

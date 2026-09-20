@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Διαγραφή συμφωνίας;", "message": "Η συμφωνία και οι επισημάνσεις της θα διαγραφούν. Συνέχεια;" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Προφίλ",
+    "description": "Διαχειριστείτε την ταυτότητα και την ασφάλεια του λογαριασμού σας.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Προσωπικές πληροφορίες",
+      "description": "Ενημερώστε το όνομα και τη διεύθυνση email που χρησιμοποιούνται για τον λογαριασμό σας.",
+      "currentPassword": "Τρέχων κωδικός πρόσβασης",
+      "currentPasswordHint": "Απαιτείται όταν αλλάζετε τη διεύθυνση email σας.",
+      "save": "Αποθήκευση αλλαγών",
+      "saved": "Το προφίλ ενημερώθηκε"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Αλλαγή κωδικού πρόσβασης",
+      "description": "Η αλλαγή του κωδικού πρόσβασης αποσυνδέει τις άλλες συνεδρίες και τις αξιόπιστες συσκευές.",
+      "currentPassword": "Τρέχων κωδικός πρόσβασης",
+      "newPassword": "Νέος κωδικός πρόσβασης",
+      "hint": "Χρησιμοποιήστε τουλάχιστον 12 χαρακτήρες.",
+      "save": "Αλλαγή κωδικού πρόσβασης",
+      "saved": "Ο κωδικός πρόσβασης ενημερώθηκε"
     }
   },
   "errors": {

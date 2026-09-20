@@ -205,6 +205,64 @@ async def test_profile_rejects_blank_name_and_short_password(
     assert short_password.json()["error"]["code"] == "error.validation"
 
 
+async def test_profile_password_proof_honors_lockout_policy(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, password = await make_user(db_session, email="profile-lockout@example.com")
+    await login_as(client, email=user.email, password=password)
+
+    for _ in range(auth_service._PASSWORD_MAX_ATTEMPTS):
+        response = await client.patch(
+            "/api/v1/auth/profile",
+            json={
+                "email": "profile-lockout-updated@example.com",
+                "current_password": "wrong-password",
+            },
+        )
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "auth.invalid_credentials"
+
+    await db_session.refresh(user)
+    assert user.password_failed_attempts == 0
+    assert user.password_locked_until is not None
+
+    locked_email = await client.patch(
+        "/api/v1/auth/profile",
+        json={
+            "email": "profile-lockout-updated@example.com",
+            "current_password": password,
+        },
+    )
+    assert locked_email.status_code == 401
+    assert locked_email.json()["error"]["code"] == "auth.account_locked"
+
+    password_user, password_user_password = await make_user(
+        db_session, email="password-lockout-proof@example.com"
+    )
+    await login_as(client, email=password_user.email, password=password_user_password)
+
+    for _ in range(auth_service._PASSWORD_MAX_ATTEMPTS):
+        response = await client.post(
+            "/api/v1/auth/password",
+            json={
+                "current_password": "wrong-password",
+                "new_password": "new-password-long-enough",
+            },
+        )
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "auth.invalid_credentials"
+
+    locked_password = await client.post(
+        "/api/v1/auth/password",
+        json={
+            "current_password": password_user_password,
+            "new_password": "new-password-long-enough",
+        },
+    )
+    assert locked_password.status_code == 401
+    assert locked_password.json()["error"]["code"] == "auth.account_locked"
+
+
 async def test_password_change_preserves_current_session_and_revokes_others_and_trusted_devices(
     client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
 ) -> None:

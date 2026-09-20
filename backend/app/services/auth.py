@@ -58,6 +58,26 @@ _TOTP_LOCKOUT = timedelta(minutes=15)
 _DUMMY_PASSWORD_HASH = hash_password("lealfinance-dummy-password-for-timing-safety")
 
 
+async def _verify_password_with_lockout(
+    db: AsyncSession,
+    *,
+    user: User,
+    password: str | None,
+) -> None:
+    now = datetime.now(UTC)
+    if user.password_locked_until is not None and user.password_locked_until > now:
+        raise UnauthorizedError(code="auth.account_locked")
+    if password is None or not verify_password(password, user.password_hash):
+        user.password_failed_attempts += 1
+        if user.password_failed_attempts >= _PASSWORD_MAX_ATTEMPTS:
+            user.password_locked_until = now + _PASSWORD_LOCKOUT
+            user.password_failed_attempts = 0
+        await db.commit()
+        raise UnauthorizedError(code="auth.invalid_credentials")
+    user.password_failed_attempts = 0
+    user.password_locked_until = None
+
+
 @dataclass(frozen=True)
 class IssuedSession:
     session: Session
@@ -121,18 +141,7 @@ async def login(
     if user is None:
         verify_password(password, _DUMMY_PASSWORD_HASH)
         raise UnauthorizedError(code="auth.invalid_credentials")
-    now = datetime.now(UTC)
-    if user.password_locked_until is not None and user.password_locked_until > now:
-        raise UnauthorizedError(code="auth.account_locked")
-    if not verify_password(password, user.password_hash):
-        user.password_failed_attempts += 1
-        if user.password_failed_attempts >= _PASSWORD_MAX_ATTEMPTS:
-            user.password_locked_until = now + _PASSWORD_LOCKOUT
-            user.password_failed_attempts = 0
-        await db.commit()
-        raise UnauthorizedError(code="auth.invalid_credentials")
-    user.password_failed_attempts = 0
-    user.password_locked_until = None
+    await _verify_password_with_lockout(db, user=user, password=password)
     if not user.is_active:
         raise UnauthorizedError(code="auth.account_inactive")
 
@@ -629,10 +638,7 @@ async def update_profile(
     if email is not None:
         normalized = normalize_email(email)
         if normalized != user.normalized_email:
-            if current_password is None or not verify_password(
-                current_password, user.password_hash
-            ):
-                raise UnauthorizedError(code="auth.invalid_credentials")
+            await _verify_password_with_lockout(db, user=user, password=current_password)
             existing = await db.scalar(select(User).where(User.normalized_email == normalized))
             if existing is not None and existing.id != user.id:
                 raise ConflictError(code="user.email_taken")
@@ -652,8 +658,7 @@ async def change_password(
     current_password: str,
     new_password: str,
 ) -> None:
-    if not verify_password(current_password, user.password_hash):
-        raise UnauthorizedError(code="auth.invalid_credentials")
+    await _verify_password_with_lockout(db, user=user, password=current_password)
 
     user.password_hash = hash_password(new_password)
     user.password_failed_attempts = 0

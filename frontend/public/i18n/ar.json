@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "حذف التسوية؟", "message": "سيتم حذف التسوية وعلاماتها. هل تريد المتابعة؟" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "الملف الشخصي",
+    "description": "إدارة هويتك وأمان حسابك.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "المعلومات الشخصية",
+      "description": "حدّث الاسم وعنوان البريد الإلكتروني المستخدمين لحسابك.",
+      "currentPassword": "كلمة المرور الحالية",
+      "currentPasswordHint": "مطلوبة عند تغيير عنوان بريدك الإلكتروني.",
+      "save": "حفظ التغييرات",
+      "saved": "تم تحديث الملف الشخصي"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "تغيير كلمة المرور",
+      "description": "يؤدي تغيير كلمة المرور إلى تسجيل الخروج من الجلسات والأجهزة الموثوقة الأخرى.",
+      "currentPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "hint": "استخدم 12 حرفًا على الأقل.",
+      "save": "تغيير كلمة المرور",
+      "saved": "تم تحديث كلمة المرور"
     }
   },
   "errors": {

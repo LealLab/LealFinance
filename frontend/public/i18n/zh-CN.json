@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "删除对账？", "message": "对账记录及其标记将被删除。是否继续？" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "个人资料",
+    "description": "管理您的身份和账户安全。",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "个人信息",
+      "description": "更新账户使用的姓名和电子邮件地址。",
+      "currentPassword": "当前密码",
+      "currentPasswordHint": "更改电子邮件地址时必填。",
+      "save": "保存更改",
+      "saved": "个人资料已更新"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "修改密码",
+      "description": "修改密码会使其他会话和受信任设备退出登录。",
+      "currentPassword": "当前密码",
+      "newPassword": "新密码",
+      "hint": "至少使用 12 个字符。",
+      "save": "修改密码",
+      "saved": "密码已更新"
     }
   },
   "errors": {

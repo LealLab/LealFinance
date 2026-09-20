@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Xóa lần đối soát?", "message": "Lần đối soát và các dấu đánh dấu sẽ bị xóa. Tiếp tục?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Hồ sơ",
+    "description": "Quản lý danh tính và bảo mật tài khoản của bạn.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Thông tin cá nhân",
+      "description": "Cập nhật tên và địa chỉ email được sử dụng cho tài khoản.",
+      "currentPassword": "Mật khẩu hiện tại",
+      "currentPasswordHint": "Bắt buộc khi thay đổi địa chỉ email.",
+      "save": "Lưu thay đổi",
+      "saved": "Đã cập nhật hồ sơ"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Đổi mật khẩu",
+      "description": "Việc đổi mật khẩu sẽ đăng xuất các phiên và thiết bị đáng tin cậy khác.",
+      "currentPassword": "Mật khẩu hiện tại",
+      "newPassword": "Mật khẩu mới",
+      "hint": "Sử dụng ít nhất 12 ký tự.",
+      "save": "Đổi mật khẩu",
+      "saved": "Đã cập nhật mật khẩu"
     }
   },
   "errors": {

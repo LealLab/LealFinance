@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Удалить сверку?", "message": "Сверка и ее отметки будут удалены. Продолжить?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Профиль",
+    "description": "Управляйте своей личностью и безопасностью аккаунта.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Личная информация",
+      "description": "Обновите имя и адрес электронной почты, используемые для аккаунта.",
+      "currentPassword": "Текущий пароль",
+      "currentPasswordHint": "Требуется при изменении адреса электронной почты.",
+      "save": "Сохранить изменения",
+      "saved": "Профиль обновлён"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Изменить пароль",
+      "description": "После изменения пароля другие сеансы и доверенные устройства будут отключены.",
+      "currentPassword": "Текущий пароль",
+      "newPassword": "Новый пароль",
+      "hint": "Используйте не менее 12 символов.",
+      "save": "Изменить пароль",
+      "saved": "Пароль обновлён"
     }
   },
   "errors": {

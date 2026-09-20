@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Ștergi reconcilierea?", "message": "Reconcilierea și marcajele sale vor fi șterse. Continui?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profil",
+    "description": "Gestionează-ți identitatea și securitatea contului.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Informații personale",
+      "description": "Actualizează numele și adresa de e-mail folosite pentru contul tău.",
+      "currentPassword": "Parola curentă",
+      "currentPasswordHint": "Necesară la schimbarea adresei de e-mail.",
+      "save": "Salvează modificările",
+      "saved": "Profil actualizat"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Schimbă parola",
+      "description": "Schimbarea parolei deconectează celelalte sesiuni și dispozitive de încredere.",
+      "currentPassword": "Parola curentă",
+      "newPassword": "Parolă nouă",
+      "hint": "Folosește cel puțin 12 caractere.",
+      "save": "Schimbă parola",
+      "saved": "Parolă actualizată"
     }
   },
   "errors": {

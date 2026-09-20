@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "मिलान हटाएँ?", "message": "मिलान और उसके चिह्न हटा दिए जाएँगे। जारी रखें?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "प्रोफ़ाइल",
+    "description": "अपनी पहचान और खाते की सुरक्षा प्रबंधित करें।",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "व्यक्तिगत जानकारी",
+      "description": "अपने खाते के लिए उपयोग किया जाने वाला नाम और ईमेल पता अपडेट करें।",
+      "currentPassword": "वर्तमान पासवर्ड",
+      "currentPasswordHint": "ईमेल पता बदलते समय आवश्यक।",
+      "save": "बदलाव सहेजें",
+      "saved": "प्रोफ़ाइल अपडेट की गई"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "पासवर्ड बदलें",
+      "description": "पासवर्ड बदलने से अन्य सत्र और विश्वसनीय डिवाइस साइन आउट हो जाते हैं।",
+      "currentPassword": "वर्तमान पासवर्ड",
+      "newPassword": "नया पासवर्ड",
+      "hint": "कम से कम 12 वर्णों का उपयोग करें।",
+      "save": "पासवर्ड बदलें",
+      "saved": "पासवर्ड अपडेट किया गया"
     }
   },
   "errors": {

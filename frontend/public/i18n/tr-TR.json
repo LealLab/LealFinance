@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Mutabakat silinsin mi?", "message": "Mutabakat ve işaretleri silinecek. Devam edilsin mi?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profil",
+    "description": "Kimliğinizi ve hesap güvenliğinizi yönetin.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Kişisel bilgiler",
+      "description": "Hesabınızda kullanılan adı ve e-posta adresini güncelleyin.",
+      "currentPassword": "Mevcut parola",
+      "currentPasswordHint": "E-posta adresinizi değiştirirken gereklidir.",
+      "save": "Değişiklikleri kaydet",
+      "saved": "Profil güncellendi"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Parolayı değiştir",
+      "description": "Parolanızı değiştirmek diğer oturumları ve güvenilir cihazları kapatır.",
+      "currentPassword": "Mevcut parola",
+      "newPassword": "Yeni parola",
+      "hint": "En az 12 karakter kullanın.",
+      "save": "Parolayı değiştir",
+      "saved": "Parola güncellendi"
     }
   },
   "errors": {

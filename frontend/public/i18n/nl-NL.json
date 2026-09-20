@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Afstemming verwijderen?", "message": "De afstemming en gemarkeerde transacties worden verwijderd. Doorgaan?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profiel",
+    "description": "Beheer je identiteit en accountbeveiliging.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Persoonlijke gegevens",
+      "description": "Werk de naam en het e-mailadres voor je account bij.",
+      "currentPassword": "Huidig wachtwoord",
+      "currentPasswordHint": "Vereist wanneer je je e-mailadres wijzigt.",
+      "save": "Wijzigingen opslaan",
+      "saved": "Profiel bijgewerkt"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Wachtwoord wijzigen",
+      "description": "Door je wachtwoord te wijzigen worden andere sessies en vertrouwde apparaten uitgelogd.",
+      "currentPassword": "Huidig wachtwoord",
+      "newPassword": "Nieuw wachtwoord",
+      "hint": "Gebruik minimaal 12 tekens.",
+      "save": "Wachtwoord wijzigen",
+      "saved": "Wachtwoord bijgewerkt"
     }
   },
   "errors": {

@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Eliminare la riconciliazione?", "message": "La riconciliazione e le relative marcature verranno eliminate. Continuare?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profilo",
+    "description": "Gestisci la tua identità e la sicurezza del tuo account.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Informazioni personali",
+      "description": "Aggiorna il nome e l’indirizzo email usati per il tuo account.",
+      "currentPassword": "Password attuale",
+      "currentPasswordHint": "Richiesta quando cambi l’indirizzo email.",
+      "save": "Salva modifiche",
+      "saved": "Profilo aggiornato"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Cambia password",
+      "description": "Cambiare la password disconnette le altre sessioni e i dispositivi attendibili.",
+      "currentPassword": "Password attuale",
+      "newPassword": "Nuova password",
+      "hint": "Usa almeno 12 caratteri.",
+      "save": "Cambia password",
+      "saved": "Password aggiornata"
     }
   },
   "errors": {

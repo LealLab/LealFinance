@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "照合を削除しますか？", "message": "照合と消込マークが削除されます。続行しますか？" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "プロフィール",
+    "description": "身元とアカウントのセキュリティを管理します。",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "個人情報",
+      "description": "アカウントで使用する名前とメールアドレスを更新します。",
+      "currentPassword": "現在のパスワード",
+      "currentPasswordHint": "メールアドレスを変更する場合に必要です。",
+      "save": "変更を保存",
+      "saved": "プロフィールを更新しました"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "パスワードを変更",
+      "description": "パスワードを変更すると、他のセッションと信頼済みデバイスからサインアウトします。",
+      "currentPassword": "現在のパスワード",
+      "newPassword": "新しいパスワード",
+      "hint": "12文字以上を使用してください。",
+      "save": "パスワードを変更",
+      "saved": "パスワードを更新しました"
     }
   },
   "errors": {

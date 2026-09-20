@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Видалити звірку?", "message": "Звірку та її позначки буде видалено. Продовжити?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Профіль",
+    "description": "Керуйте своєю особою та безпекою облікового запису.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Особиста інформація",
+      "description": "Оновіть ім’я та адресу електронної пошти, які використовуються для облікового запису.",
+      "currentPassword": "Поточний пароль",
+      "currentPasswordHint": "Потрібен під час зміни адреси електронної пошти.",
+      "save": "Зберегти зміни",
+      "saved": "Профіль оновлено"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Змінити пароль",
+      "description": "Зміна пароля вийде з інших сеансів і надійних пристроїв.",
+      "currentPassword": "Поточний пароль",
+      "newPassword": "Новий пароль",
+      "hint": "Використовуйте щонайменше 12 символів.",
+      "save": "Змінити пароль",
+      "saved": "Пароль оновлено"
     }
   },
   "errors": {

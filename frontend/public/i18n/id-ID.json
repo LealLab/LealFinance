@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "Hapus rekonsiliasi?", "message": "Rekonsiliasi dan penandaannya akan dihapus. Lanjutkan?" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profil",
+    "description": "Kelola identitas dan keamanan akun Anda.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Informasi pribadi",
+      "description": "Perbarui nama dan alamat email yang digunakan untuk akun Anda.",
+      "currentPassword": "Kata sandi saat ini",
+      "currentPasswordHint": "Diperlukan saat mengubah alamat email.",
+      "save": "Simpan perubahan",
+      "saved": "Profil diperbarui"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Ubah kata sandi",
+      "description": "Mengubah kata sandi akan mengeluarkan sesi dan perangkat tepercaya lainnya.",
+      "currentPassword": "Kata sandi saat ini",
+      "newPassword": "Kata sandi baru",
+      "hint": "Gunakan setidaknya 12 karakter.",
+      "save": "Ubah kata sandi",
+      "saved": "Kata sandi diperbarui"
     }
   },
   "errors": {

@@ -1849,24 +1849,24 @@
     "confirmDelete": { "title": "刪除對帳？", "message": "對帳記錄及其標記將被刪除。是否繼續？" }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "個人資料",
+    "description": "管理您的身分與帳戶安全性。",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "個人資訊",
+      "description": "更新帳戶使用的姓名與電子郵件地址。",
+      "currentPassword": "目前密碼",
+      "currentPasswordHint": "變更電子郵件地址時必填。",
+      "save": "儲存變更",
+      "saved": "個人資料已更新"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "變更密碼",
+      "description": "變更密碼會讓其他工作階段與受信任的裝置登出。",
+      "currentPassword": "目前密碼",
+      "newPassword": "新密碼",
+      "hint": "請使用至少 12 個字元。",
+      "save": "變更密碼",
+      "saved": "密碼已更新"
     }
   },
   "errors": {

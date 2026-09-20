@@ -1875,24 +1875,24 @@
     }
   },
   "profile": {
-    "title": "Profile",
-    "description": "Manage your identity and account security.",
+    "title": "Profil",
+    "description": "Verwalten Sie Ihre Identität und Kontosicherheit.",
     "identity": {
-      "title": "Personal information",
-      "description": "Update the name and email address used for your account.",
-      "currentPassword": "Current password",
-      "currentPasswordHint": "Required when changing your email address.",
-      "save": "Save changes",
-      "saved": "Profile updated"
+      "title": "Persönliche Informationen",
+      "description": "Aktualisieren Sie den Namen und die E-Mail-Adresse Ihres Kontos.",
+      "currentPassword": "Aktuelles Passwort",
+      "currentPasswordHint": "Beim Ändern Ihrer E-Mail-Adresse erforderlich.",
+      "save": "Änderungen speichern",
+      "saved": "Profil aktualisiert"
     },
     "password": {
-      "title": "Change password",
-      "description": "Changing your password signs out other sessions and trusted devices.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "hint": "Use at least 12 characters.",
-      "save": "Change password",
-      "saved": "Password updated"
+      "title": "Passwort ändern",
+      "description": "Wenn Sie Ihr Passwort ändern, werden andere Sitzungen und vertrauenswürdige Geräte abgemeldet.",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "hint": "Verwenden Sie mindestens 12 Zeichen.",
+      "save": "Passwort ändern",
+      "saved": "Passwort aktualisiert"
     }
   },
   "errors": {
