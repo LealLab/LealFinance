@@ -10,7 +10,7 @@
         <form class="grid grid-cols-1 gap-4 sm:grid-cols-4" [formGroup]="form" (ngSubmit)="submit()">
           <label class="flex flex-col gap-1 text-sm text-content-muted sm:col-span-2">
             {{ t('reconciliation.form.account') }}
-            <select class="form-select" formControlName="accountId">
+            <select class="form-input" formControlName="accountId">
               <option value="">{{ t('reconciliation.form.chooseAccount') }}</option>
               @for (account of accounts; track account.id) {
                 @if (!account.archived) {
