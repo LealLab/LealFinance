@@ -25,6 +25,7 @@ from app.core.errors import ConflictError, NotFoundError
 from app.models.base import Base
 from app.models.change_journal import ChangeJournal, journaled_tables
 from app.services import ownership
+from app.services.reconciliations import assert_not_reconciled
 
 _TAG_KEY = "lealfinance.journal_tag"
 _SET_TAG = text(
@@ -182,6 +183,16 @@ async def _revert(db: AsyncSession, user_id: UUID, row: ChangeJournal) -> None:
         return
 
     before = row.before or {}
+    if table == "transactions" and any(
+        before.get(column) != current.get(column)
+        for column in before
+        if column in {"amount", "date", "account_id", "to_account_id", "type", "currency"}
+        or column.startswith("conversion_")
+    ):
+        try:
+            await assert_not_reconciled(db, user_id, (row.row_id,))
+        except ConflictError as exc:
+            raise _modified(row) from exc
     columns = [
         column.name
         for column in Base.metadata.tables[table].c
@@ -196,6 +207,38 @@ async def _revert(db: AsyncSession, user_id: UUID, row: ChangeJournal) -> None:
         ),
         {"data": json.dumps(before), "id": row.row_id, "uid": user_id},
     )
+
+
+async def _replay(
+    db: AsyncSession, user_id: UUID, rows: list[ChangeJournal], undo_tag: str
+) -> None:
+    # FK cascades can journal a parent before its children. Retry blocked
+    # inverses after their dependencies, keeping each row's own history ordered.
+    # ponytail: repeated passes are quadratic in dependency depth; topologically
+    # order the replay if large, deeply nested cascades become common.
+    pending = rows
+    while pending:
+        deferred: list[ChangeJournal] = []
+        blocked: set[tuple[str, UUID]] = set()
+        for row in pending:
+            key = (row.table_name, row.row_id)
+            if key in blocked:
+                deferred.append(row)
+                continue
+            try:
+                async with db.begin_nested():
+                    # after_begin also runs for savepoints and may reapply the
+                    # enclosing chat/MCP call tag; these writes are undo probes.
+                    await _set_tag(db, undo_tag, "")
+                    await _revert(db, user_id, row)
+            except IntegrityError as exc:
+                if getattr(exc.orig, "sqlstate", None) != "23503":
+                    raise
+                deferred.append(row)
+                blocked.add(key)
+        if len(deferred) == len(pending):
+            raise _modified(deferred[0])
+        pending = deferred
 
 
 async def undo(db: AsyncSession, user_id: UUID, call_id: str) -> int:
@@ -234,8 +277,7 @@ async def undo(db: AsyncSession, user_id: UUID, call_id: str) -> int:
     try:
         async with db.begin_nested():
             await _set_tag(db, undo_tag, "")
-            for row in rows:
-                await _revert(db, user_id, row)
+            await _replay(db, user_id, rows, undo_tag)
             side_effects = (
                 await db.execute(
                     ownership.owned(ChangeJournal, user_id)

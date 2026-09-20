@@ -20,12 +20,13 @@ from app.models.change_journal import (
 )
 from app.models.currency import Currency
 from app.models.institution import Institution
+from app.models.reconciliation import Reconciliation, ReconciliationEntry
 from app.models.transaction import Transaction
 from app.models.user import User
 from app.schemas.account import AccountCreate, AccountUpdate
 from app.schemas.institution import InstitutionCreate
 from app.schemas.reconciliation import ReconciliationCreate
-from app.schemas.transaction import TransactionCreate
+from app.schemas.transaction import TransactionCreate, TransactionUpdate
 from app.services import accounts as accounts_service
 from app.services import change_journal
 from app.services import institutions as institutions_service
@@ -242,6 +243,111 @@ async def test_undo_refuses_a_row_edited_after_the_ai_wrote_it(db_session: Async
     assert await _exists(db_session, Account, account.id)
     (row,) = await _journal(db_session, user, "call-1")
     assert row.undone_at is None
+
+
+@pytest.mark.parametrize("delete_account", [False, True])
+async def test_undo_restores_cascaded_reconciliation_entries(
+    db_session: AsyncSession, delete_account: bool
+) -> None:
+    user, _ = await make_user(db_session)
+    source = await _account(db_session, user, "Source")
+    target = await _account(db_session, user, "Target")
+    transaction = await _transfer(db_session, user, source, target)
+    reconciliation = await reconciliations_service.create(
+        db_session,
+        user.id,
+        ReconciliationCreate(
+            account_id=source.id, statement_date=date(2026, 1, 31), statement_balance=Decimal("90")
+        ),
+    )
+    await reconciliations_service.set_entries(
+        db_session, user.id, reconciliation.id, transaction_ids=[transaction.id], cleared=True
+    )
+    await reconciliations_service.complete(db_session, user.id, reconciliation.id)
+
+    async with change_journal.journaling(db_session, call_id="delete"):
+        if delete_account:
+            await accounts_service.delete_account(db_session, user.id, source.id)
+        else:
+            await reconciliations_service.delete(db_session, user.id, reconciliation.id)
+
+    # Exercise the same enclosing tag used by chat and MCP undo calls.
+    async with change_journal.journaling(db_session, call_id="undo"):
+        assert await change_journal.undo(db_session, user.id, "delete") >= 2
+
+    assert (
+        await db_session.scalar(
+            select(Reconciliation.status).where(Reconciliation.id == reconciliation.id)
+        )
+        == "completed"
+    )
+    assert (
+        await db_session.scalar(
+            select(ReconciliationEntry.transaction_id).where(
+                ReconciliationEntry.reconciliation_id == reconciliation.id
+            )
+        )
+        == transaction.id
+    )
+    detail = await reconciliations_service.detail(db_session, user.id, reconciliation.id)
+    assert detail.difference == 0
+    assert {row.agent_call_id for row in await _all_journal(db_session)} == {"delete"}
+    assert await change_journal.undo(db_session, user.id, "delete") == 0
+
+
+@pytest.mark.parametrize("completed", [False, True])
+@pytest.mark.parametrize("financial_edit", [False, True])
+async def test_undo_respects_reconciled_transaction_fields(
+    db_session: AsyncSession, completed: bool, financial_edit: bool
+) -> None:
+    user, _ = await make_user(db_session)
+    source = await _account(db_session, user, "Source")
+    target = await _account(db_session, user, "Target")
+    transaction = await _transfer(db_session, user, source, target)
+    async with change_journal.journaling(db_session, call_id="edit"):
+        await transactions_service.update_transaction(
+            db_session,
+            user.id,
+            transaction.id,
+            TransactionUpdate(amount=Decimal("20"))
+            if financial_edit
+            else TransactionUpdate(description="Updated"),
+        )
+    reconciliation = await reconciliations_service.create(
+        db_session,
+        user.id,
+        ReconciliationCreate(
+            account_id=source.id,
+            statement_date=date(2026, 1, 31),
+            statement_balance=Decimal("80" if financial_edit else "90"),
+        ),
+    )
+    await reconciliations_service.set_entries(
+        db_session, user.id, reconciliation.id, transaction_ids=[transaction.id], cleared=True
+    )
+    if completed:
+        await reconciliations_service.complete(db_session, user.id, reconciliation.id)
+
+    if financial_edit:
+        with pytest.raises(ConflictError) as raised:
+            await change_journal.undo(db_session, user.id, "edit")
+        assert raised.value.code == "agents.change_modified"
+        (row,) = await _journal(db_session, user, "edit")
+        assert row.undone_at is None
+    else:
+        assert await change_journal.undo(db_session, user.id, "edit") == 1
+
+    assert await db_session.scalar(
+        select(Transaction.amount).where(Transaction.id == transaction.id)
+    ) == Decimal("20" if financial_edit else "10")
+    assert (
+        await db_session.scalar(
+            select(Transaction.description).where(Transaction.id == transaction.id)
+        )
+        == "Move money"
+    )
+    detail = await reconciliations_service.detail(db_session, user.id, reconciliation.id)
+    assert detail.difference == 0
 
 
 async def test_undo_is_all_or_nothing(db_session: AsyncSession) -> None:

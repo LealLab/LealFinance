@@ -199,6 +199,19 @@ async def _create_wallet(
     return wallet
 
 
+async def _update_goal(db: AsyncSession, user_id: UUID, goal_id: UUID, data: GoalUpdate) -> Goal:
+    fields = data.model_dump(exclude_unset=True)
+    archived = fields.pop("archived", None)
+    goal = await ownership.get_owned(db, Goal, goal_id, user_id)
+    if fields:
+        goal = await goals_service.update_goal(db, user_id, goal_id, GoalUpdate(**fields))
+    if archived is not None:
+        goal, _account = await goals_service.set_goal_with_account_archived(
+            db, user_id, goal_id, archived
+        )
+    return goal
+
+
 async def _update_wallet(
     db: AsyncSession, user_id: UUID, wallet_id: UUID, data: InvestmentWalletChanges
 ) -> InvestmentWallet:
@@ -325,7 +338,7 @@ ENTITIES: dict[str, EntitySpec] = {
             GoalRead,
             goals_service.list_goals,
             create=(GoalCreate, goals_service.create_goal),
-            update=(GoalUpdate, goals_service.update_goal),
+            update=(GoalUpdate, _update_goal),
             hint="Goals are archive-only: use update_entity with archived=true.",
         ),
         EntitySpec(

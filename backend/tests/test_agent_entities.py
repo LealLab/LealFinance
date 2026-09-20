@@ -182,10 +182,33 @@ async def test_goal_is_created_read_and_archived_but_never_deleted(
         changes={"archived": True},
     )
     assert archived["archived"] is True
+    await db_session.refresh(goal_account)
+    assert goal_account.archived is True
     fetched = await _run(db_session, user.id, "get_entity", entity="goal", id=goal["id"])
     assert fetched["archived"] is True
     listed = await _run(db_session, user.id, "list_entities", entity="goal")
     assert listed["total"] == 1
+
+    async with change_journal.journaling(db_session, call_id="unarchive-goal"):
+        restored = await _run(
+            db_session,
+            user.id,
+            "update_entity",
+            entity="goal",
+            id=goal["id"],
+            changes={"archived": False, "target_amount": "6000"},
+        )
+    assert restored["archived"] is False
+    assert Decimal(restored["target_amount"]) == Decimal("6000")
+    await db_session.refresh(goal_account)
+    assert goal_account.archived is False
+
+    await change_journal.undo(db_session, user.id, "unarchive-goal")
+    fetched = await _run(db_session, user.id, "get_entity", entity="goal", id=goal["id"])
+    assert fetched["archived"] is True
+    assert Decimal(fetched["target_amount"]) == Decimal("5000")
+    await db_session.refresh(goal_account)
+    assert goal_account.archived is True
 
 
 async def test_budget_create_is_an_upsert_and_can_be_deleted(db_session: AsyncSession) -> None:
