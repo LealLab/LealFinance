@@ -155,6 +155,19 @@ describe('Chat', () => {
     expect(chat['liveMessages']().at(-1)?.text).toBe('new');
   });
 
+  it('reopens the active conversation without clearing its messages', () => {
+    const fixture = setup();
+    const chat = fixture.componentInstance;
+    chat['activeId'].set('c1');
+    chat['liveMessages'].set([{ role: 'assistant', text: 'loaded', tools: [] }]);
+    chat['showList'].set(true);
+
+    chat['selectConversation']('c1');
+
+    expect(chat['showList']()).toBe(false);
+    expect(chat['liveMessages']().at(-1)?.text).toBe('loaded');
+  });
+
   it('applies every stream event onto the last assistant turn', () => {
     const fixture = setup();
     const chat = fixture.componentInstance;

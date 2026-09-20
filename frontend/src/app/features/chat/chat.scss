@@ -94,18 +94,14 @@
   &::-webkit-details-marker {
     display: none;
   }
-
-  &::before {
-    content: '›';
-    display: inline-block;
-    color: var(--content-subtle);
-    font-size: 1rem;
-    line-height: 0.75;
-    transition: transform 120ms ease;
-  }
 }
 
-.chat-activity[open] .chat-activity-summary::before {
+.chat-activity-chevron {
+  color: var(--content-subtle);
+  transition: transform 120ms ease;
+}
+
+.chat-activity[open] .chat-activity-chevron {
   transform: rotate(90deg);
 }
 
@@ -155,7 +151,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .chat-conversation-item,
-  .chat-activity-summary::before {
+  .chat-activity-chevron {
     transition: none;
   }
 }

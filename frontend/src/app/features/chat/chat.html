@@ -133,6 +133,12 @@
                   @if (turn.tools.length) {
                     <details class="chat-activity">
                       <summary class="chat-activity-summary">
+                        <app-icon
+                          name="chevronRight"
+                          [size]="12"
+                          class="chat-activity-chevron"
+                          aria-hidden="true"
+                        />
                         <span class="chat-activity-indicator" aria-hidden="true"></span>
                         {{ sending() && $last ? t('chat.thinking') : t('chat.toolDone') }}
                       </summary>
