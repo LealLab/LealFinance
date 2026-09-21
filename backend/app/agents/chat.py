@@ -118,11 +118,12 @@ async def _stream_anthropic(
             if credential.auth_mode == "oauth"
             else system
         ),
-        "thinking": {"type": "adaptive"},
         "messages": _anthropic_messages(turns),
     }
-    if credential.reasoning_effort:
-        body["output_config"] = {"effort": credential.reasoning_effort}
+    if not credential.model.startswith("claude-haiku-"):
+        body["thinking"] = {"type": "adaptive"}
+        if credential.reasoning_effort:
+            body["output_config"] = {"effort": credential.reasoning_effort}
     if tools:
         body["tools"] = [
             {"name": spec.name, "description": spec.description, "input_schema": spec.schema}

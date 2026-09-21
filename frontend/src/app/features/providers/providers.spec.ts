@@ -1,16 +1,25 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
+import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import { MockAgentProviderRepository } from '../../data/mock/mock-agent-provider.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { AgentProviderStatus } from '../../domain/models/agent-provider';
 import { Providers } from './providers';
-import { provideTestTransloco } from '../../../testing/transloco';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Providers', () => {
+  let agentChatRepo: { mintMcpToken: ReturnType<typeof vi.fn> };
+
   beforeEach(async () => {
+    agentChatRepo = {
+      mintMcpToken: vi
+        .fn()
+        .mockReturnValue(of({ token: 'mcp-secret', expiresAt: '2026-09-01T00:00:00Z' })),
+    };
     await TestBed.configureTestingModule({
       imports: [
         Providers,
@@ -18,9 +27,11 @@ describe('Providers', () => {
       ],
       providers: [
         provideZonelessChangeDetection(),
+        provideTestTranslocoLocale(),
         provideRouter([]),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AgentProviderRepository, useClass: MockAgentProviderRepository },
+        { provide: AgentChatRepository, useValue: agentChatRepo },
       ],
     }).compileComponents();
   });
@@ -37,6 +48,22 @@ describe('Providers', () => {
       { provider: 'openai', configured: false, source: 'none' },
       { provider: 'ollama', configured: false, source: 'none' },
     ]);
+  });
+
+  it('generates and displays an MCP token', async () => {
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    fixture.componentInstance['generateMcpToken']();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(agentChatRepo.mintMcpToken).toHaveBeenCalledTimes(1);
+    expect(
+      (fixture.nativeElement.querySelector('#providers-mcp-token') as HTMLInputElement).value,
+    ).toBe('mcp-secret');
   });
 
   it('marks only Ollama as experimental', async () => {

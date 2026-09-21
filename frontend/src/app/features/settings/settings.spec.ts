@@ -33,7 +33,6 @@ describe('Settings', () => {
     listPasskeys: ReturnType<typeof vi.fn>;
   };
   let agentChatRepo: {
-    mintMcpToken: ReturnType<typeof vi.fn>;
     getInstructions: ReturnType<typeof vi.fn>;
     saveInstructions: ReturnType<typeof vi.fn>;
   };
@@ -43,9 +42,6 @@ describe('Settings', () => {
     sessionUser = signal<User | undefined>(undefined);
     backupService = { export: vi.fn(), preview: vi.fn(), restore: vi.fn() };
     agentChatRepo = {
-      mintMcpToken: vi
-        .fn()
-        .mockReturnValue(of({ token: 'mcp-secret', expiresAt: '2026-09-01T00:00:00Z' })),
       getInstructions: vi.fn().mockReturnValue(of('')),
       saveInstructions: vi.fn().mockReturnValue(of('')),
     };
@@ -111,7 +107,7 @@ describe('Settings', () => {
     expect(fixture.nativeElement.querySelector('a[href="/admin/providers"]')).not.toBeNull();
   });
 
-  it('shows MCP access to administrators regardless of the stored chat flag', () => {
+  it('does not render MCP controls in Settings', () => {
     sessionUser.set({
       id: 'admin-id',
       email: 'admin@example.com',
@@ -125,7 +121,7 @@ describe('Settings', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Token de acesso MCP');
+    expect(fixture.nativeElement.querySelector('#settings-mcp-token')).toBeNull();
   });
 
   it('hides provider management from members', () => {

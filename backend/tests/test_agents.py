@@ -2,6 +2,7 @@
 streaming provider adapters, ownership isolation, and secret handling.
 """
 
+import json
 from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
@@ -654,7 +655,7 @@ def test_mcp_tokens_are_domain_separated_from_credentials() -> None:
     )
 
 
-async def test_create_mcp_token_for_ai_chat_member(
+async def test_create_mcp_token_requires_admin_even_when_chat_enabled(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch)
@@ -665,11 +666,8 @@ async def test_create_mcp_token_for_ai_chat_member(
 
     response = await client.post("/api/v1/agents/mcp-token")
 
-    assert response.status_code == 200, response.text
-    body = response.json()
-    assert body["token"]
-    assert body["expires_at"]
-    assert crypto.verify_mcp_token(body["token"], max_age=MCP_TOKEN_TTL_SECONDS) == user.id
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "auth.admin_required"
 
 
 async def test_create_mcp_token_for_active_admin_without_ai_chat_flag(
@@ -682,18 +680,6 @@ async def test_create_mcp_token_for_active_admin_without_ai_chat_flag(
 
     assert response.status_code == 200, response.text
     assert response.json()["token"]
-
-
-async def test_create_mcp_token_requires_ai_chat_enabled_member(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    _enable_agents(monkeypatch)
-    await _authed(client, db_session, "mcp-disabled-user@example.com", role=ROLE_MEMBER)
-
-    response = await client.post("/api/v1/agents/mcp-token")
-
-    assert response.status_code == 403
-    assert response.json()["error"]["code"] == "agents.chat_not_allowed"
 
 
 async def test_mcp_token_route_is_disabled_with_agents_flag(
@@ -753,6 +739,7 @@ def _credential(
     auth_mode: str = "api_key",
     secret: str | None = "test-secret",
     base_url: str | None = None,
+    model: str | None = None,
     reasoning_effort: str | None = None,
 ) -> ResolvedCredential:
     return ResolvedCredential(
@@ -760,7 +747,7 @@ def _credential(
         auth_mode=auth_mode,
         secret=secret,
         base_url=base_url,
-        model="claude-sonnet-5" if provider == "anthropic" else "gpt-5.6-luna",
+        model=model or ("claude-sonnet-5" if provider == "anthropic" else "gpt-5.6-luna"),
         account_id="acct_1" if auth_mode == "oauth" else None,
         account_label="ChatGPT subscription" if auth_mode == "oauth" else None,
         source="user",
@@ -854,6 +841,28 @@ async def test_stream_turn_anthropic_request_shape_and_oauth_system(
     ]
     assert request.headers["authorization"] == "Bearer test-secret"
     assert request.headers["anthropic-beta"] == "oauth-2025-04-20"
+
+
+async def test_stream_turn_anthropic_haiku_omits_adaptive_options(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        body = b'event: message_stop\ndata: {"type":"message_stop"}\n\n'
+        return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    credential = _credential(
+        "anthropic", model="claude-haiku-4-5-20251001", reasoning_effort="medium"
+    )
+    [event async for event in chat_module.stream_turn(credential, "sys", [], [])]
+
+    body = json.loads(captured["request"].content)
+    assert body["model"] == "claude-haiku-4-5-20251001"
+    assert "thinking" not in body
+    assert "output_config" not in body
 
 
 async def test_stream_turn_codex_text(monkeypatch: pytest.MonkeyPatch) -> None:

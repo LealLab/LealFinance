@@ -119,20 +119,12 @@ async def test_mcp_rejects_expired_token(db_session, monkeypatch: pytest.MonkeyP
     assert spy.called is False
 
 
-async def test_mcp_rejects_disabled_chat(db_session) -> None:
-    _, token = await _user_token(db_session, enabled=False)
+async def test_mcp_rejects_active_member_even_with_chat_enabled(db_session) -> None:
+    _, token = await _user_token(db_session, enabled=True)
 
     spy = _SpyApp()
     assert await _call_middleware(spy, token=token) == 401
     assert spy.called is False
-
-
-async def test_mcp_accepts_active_chat_user(db_session) -> None:
-    _, token = await _user_token(db_session, enabled=True)
-
-    spy = _SpyApp()
-    assert await _call_middleware(spy, token=token) == 200
-    assert spy.called is True
 
 
 async def test_mcp_accepts_active_admin_without_chat_flag(db_session) -> None:
@@ -193,11 +185,12 @@ async def test_write_tool_runs_journaled_and_can_be_undone(db_session) -> None:
     assert remaining == 0
 
 
-async def test_chat_flag_revokes_existing_token(db_session) -> None:
-    user, token = await _user_token(db_session, enabled=True)
+async def test_demoting_admin_revokes_existing_token(db_session) -> None:
+    user, token = await _user_token(db_session, enabled=False, role=ROLE_ADMIN)
     assert await _call_middleware(_SpyApp(), token=token) == 200
 
-    user.ai_chat_enabled = False
+    user.role = ROLE_MEMBER
+    user.ai_chat_enabled = True
     await db_session.commit()
 
     spy = _SpyApp()
