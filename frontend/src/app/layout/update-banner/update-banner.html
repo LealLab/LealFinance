@@ -1,11 +1,24 @@
 <ng-container *transloco="let t">
-  <ng-template #command let-cmd>
+  <ng-template #command let-cmd let-tone="tone">
     <div class="mt-2 flex items-stretch gap-2">
       <pre
-        class="min-w-0 flex-1 overflow-x-auto rounded-md border border-border bg-surface-sunken p-3 font-mono text-xs"
-      ><code>{{ cmd }}</code></pre>
-      <button appButton variant="secondary" size="sm" type="button" (click)="copy(cmd)">
-        {{ copiedCommand() === cmd ? t('layout.update.modal.copied') : t('layout.update.modal.copy') }}
+        class="min-w-0 flex-1 overflow-x-auto rounded-md border p-3 font-mono text-xs"
+        [class]="toneOf(tone).box"
+      ><code><span [class]="toneOf(tone).prompt" aria-hidden="true">$ </span>{{ cmd }}</code></pre>
+      <button
+        appButton
+        variant="secondary"
+        size="sm"
+        type="button"
+        [class]="copiedCommand() === cmd ? 'border-positive/50! bg-positive/10! text-positive!' : ''"
+        (click)="copy(cmd)"
+      >
+        @if (copiedCommand() === cmd) {
+          <app-icon name="check" [size]="14" />
+          {{ t('layout.update.modal.copied') }}
+        } @else {
+          {{ t('layout.update.modal.copy') }}
+        }
       </button>
     </div>
   </ng-template>
@@ -28,37 +41,65 @@
   }
 
   <app-modal [(open)]="modalOpen" [titleText]="t('layout.update.modal.title')">
-    <p class="text-sm">{{ t('layout.update.modal.intro', { version: latestVersion() }) }}</p>
-    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task update' }" />
+    <p class="flex flex-wrap items-center gap-2 text-sm">
+      <app-badge tone="accent">
+        <app-icon name="zap" [size]="12" />
+        {{ latestVersion() }}
+      </app-badge>
+      {{ t('layout.update.modal.intro', { version: latestVersion() }) }}
+    </p>
+    <ng-container
+      *ngTemplateOutlet="command; context: { $implicit: 'task update', tone: 'accent' }"
+    />
     <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.modal.tagNote') }}</p>
-    <p class="mt-3 text-sm">{{ t('layout.update.modal.installNote') }}</p>
-    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task install' }" />
+    <p class="mt-4 flex items-start gap-2 text-sm">
+      <app-icon name="alertTriangle" [size]="16" class="mt-0.5 shrink-0 text-warning" />
+      <span>{{ t('layout.update.modal.installNote') }}</span>
+    </p>
+    <ng-container
+      *ngTemplateOutlet="command; context: { $implicit: 'task install', tone: 'warning' }"
+    />
     <div class="mt-4 flex flex-wrap gap-2">
       <button appButton variant="secondary" size="sm" type="button" (click)="openBackupModal()">
+        <app-icon name="archive" [size]="16" class="text-warning" />
         {{ t('layout.update.modal.backupAction') }}
       </button>
       <button appButton variant="secondary" size="sm" type="button" (click)="openNotesModal()">
+        <app-icon name="book" [size]="16" class="text-accent" />
         {{ t('layout.update.modal.notesAction') }}
       </button>
     </div>
   </app-modal>
 
   <app-modal [(open)]="backupModalOpen" [titleText]="t('layout.update.backup.title')">
-    <p class="text-sm">{{ t('layout.update.backup.why') }}</p>
-    <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.backup.create') }}</p>
-    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task backup' }" />
-    <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.backup.verify') }}</p>
-    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task backup:verify' }" />
-    <p class="mt-3 text-sm">{{ t('layout.update.backup.preserved') }}</p>
+    <p
+      class="flex items-start gap-2 rounded-md border border-warning/40 bg-warning/10 p-3 text-sm"
+    >
+      <app-icon name="alertTriangle" [size]="16" class="mt-0.5 shrink-0 text-warning" />
+      <span>{{ t('layout.update.backup.why') }}</span>
+    </p>
+    <p class="mt-4 text-sm font-medium text-positive">{{ t('layout.update.backup.create') }}</p>
+    <ng-container
+      *ngTemplateOutlet="command; context: { $implicit: 'task backup', tone: 'positive' }"
+    />
+    <p class="mt-4 text-sm font-medium text-accent">{{ t('layout.update.backup.verify') }}</p>
+    <ng-container
+      *ngTemplateOutlet="command; context: { $implicit: 'task backup:verify', tone: 'accent' }"
+    />
+    <p class="mt-4 flex items-start gap-2 rounded-md border border-accent/40 bg-accent/10 p-3 text-sm">
+      <app-icon name="archive" [size]="16" class="mt-0.5 shrink-0 text-accent" />
+      <span>{{ t('layout.update.backup.preserved') }}</span>
+    </p>
     <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.backup.restore') }}</p>
     <div class="mt-4 flex flex-wrap justify-end gap-2">
       <a
         [href]="backupDocsUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center justify-center rounded border border-border bg-surface-raised px-2.5 py-1 text-sm font-medium text-content-primary hover:bg-surface-sunken"
+        class="inline-flex items-center justify-center gap-1.5 rounded border border-accent/50 px-2.5 py-1 text-sm font-medium text-accent hover:bg-accent/10"
       >
         {{ t('layout.update.backup.docsLink') }}
+        <app-icon name="arrowUpRight" [size]="14" />
       </a>
     </div>
   </app-modal>
@@ -68,12 +109,15 @@
     [titleText]="t('layout.update.notes.title', { version: latestVersion() })"
   >
     @if (publishedDate(); as date) {
-      <p class="mb-3 text-xs text-content-muted">
-        {{ t('layout.update.notes.published', { date }) }}
+      <p class="mb-3">
+        <app-badge tone="accent">
+          <app-icon name="calendar" [size]="12" />
+          {{ t('layout.update.notes.published', { date }) }}
+        </app-badge>
       </p>
     }
     @if (releaseNotesHtml()) {
-      <div class="md-content" [innerHTML]="releaseNotesHtml()"></div>
+      <div class="md-content md-release" [innerHTML]="releaseNotesHtml()"></div>
     } @else {
       <p class="text-sm text-content-muted">{{ t('layout.update.notes.empty') }}</p>
     }
@@ -83,9 +127,10 @@
           [href]="url"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded border border-border bg-surface-raised px-2.5 py-1 text-sm font-medium text-content-primary hover:bg-surface-sunken"
+          class="inline-flex items-center justify-center gap-1.5 rounded border border-accent/50 px-2.5 py-1 text-sm font-medium text-accent hover:bg-accent/10"
         >
           {{ t('layout.update.notes.githubLink') }}
+          <app-icon name="arrowUpRight" [size]="14" />
         </a>
       </div>
     }

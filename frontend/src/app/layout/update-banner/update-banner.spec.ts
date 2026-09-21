@@ -159,6 +159,10 @@ describe('UpdateBanner', () => {
     expect(fixture.componentInstance['copiedCommand']()).toBe('task install');
     expect(copyButtons[1].textContent?.trim()).toBe('Copied');
     expect(copyButtons[0].textContent?.trim()).toBe('Copy');
+    // The copied state tints the button green while keeping the button's own classes.
+    expect(copyButtons[1].classList).toContain('text-positive!');
+    expect(copyButtons[1].classList).toContain('rounded');
+    expect(copyButtons[0].classList).not.toContain('text-positive!');
   });
 
   it('opens the backup modal in-app without navigating anywhere', async () => {
@@ -199,6 +203,18 @@ describe('UpdateBanner', () => {
     const link = fixture.nativeElement.querySelector('.md-content a') as HTMLAnchorElement;
     expect(link.target).toBe('_blank');
     expect(link.rel).toContain('noopener');
+  });
+
+  it('colors known release-note sections and leaves other headings alone', async () => {
+    const fixture = await render({
+      ...UPDATE_STATUS,
+      releaseNotes: "## Features\n\n* a\n\n## Bug Fixes\n\n* b\n\n## What's Changed\n\n* c\n",
+    });
+
+    const classes = [...fixture.nativeElement.querySelectorAll('.md-release h2')].map(
+      (h) => (h as HTMLElement).className,
+    );
+    expect(classes).toEqual(['rn-features', 'rn-fixes', '']);
   });
 
   it('links to the full release on GitHub from the notes modal', async () => {

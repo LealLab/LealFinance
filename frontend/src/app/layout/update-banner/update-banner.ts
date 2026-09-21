@@ -6,10 +6,28 @@ import { IdentityApiService } from '../../core/identity-api.service';
 import { UpdateStatus } from '../../core/identity.models';
 import { SessionService } from '../../core/session.service';
 import { MarkdownPipe } from '../../shared/pipes/markdown.pipe';
+import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
+import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const DISMISSED_VERSION_KEY = 'lealfinance.dismissedUpdateVersion';
+// Full class strings so Tailwind can see them. The tone says what a command
+// means: accent = recommended, warning = skips the backup, positive = safe.
+const COMMAND_TONES = {
+  accent: { box: 'border-accent/40 bg-accent/10', prompt: 'text-accent' },
+  warning: { box: 'border-warning/40 bg-warning/10', prompt: 'text-warning' },
+  positive: { box: 'border-positive/40 bg-positive/10', prompt: 'text-positive' },
+} as const;
+
+// Release-note headings (from .github/release.yml) that get a section color.
+const SECTION_CLASSES: Record<string, string> = {
+  features: 'rn-features',
+  'bug fixes': 'rn-fixes',
+  security: 'rn-security',
+  performance: 'rn-performance',
+  documentation: 'rn-docs',
+};
 const BACKUP_DOCS_URL =
   'https://github.com/LealLab/LealFinance/blob/main/docs/homelab-deploy.md#backups';
 
@@ -24,7 +42,7 @@ const BACKUP_DOCS_URL =
  */
 @Component({
   selector: 'app-update-banner',
-  imports: [NgTemplateOutlet, TranslocoDirective, Button, Modal],
+  imports: [NgTemplateOutlet, TranslocoDirective, Badge, Button, Icon, Modal],
   templateUrl: './update-banner.html',
   styleUrls: ['./update-banner.scss', '../../shared/styles/markdown.scss'],
 })
@@ -51,7 +69,11 @@ export class UpdateBanner {
   protected readonly releaseNotesHtml = computed(() =>
     new MarkdownPipe()
       .transform(this.status()?.releaseNotes)
-      .replaceAll('<a ', '<a target="_blank" rel="noopener noreferrer" '),
+      .replaceAll('<a ', '<a target="_blank" rel="noopener noreferrer" ')
+      .replace(/<h2>([^<]*)<\/h2>/g, (heading, title: string) => {
+        const cls = SECTION_CLASSES[title.trim().toLowerCase()];
+        return cls ? `<h2 class="${cls}">${title}</h2>` : heading;
+      }),
   );
   protected readonly publishedDate = computed(() => {
     const value = this.status()?.publishedAt;
@@ -73,6 +95,11 @@ export class UpdateBanner {
     const version = this.latestVersion();
     if (version) localStorage.setItem(DISMISSED_VERSION_KEY, version);
     this.dismissedVersion.set(version ?? null);
+  }
+
+  // Template variables of an <ng-template> are untyped, so the lookup is here.
+  protected toneOf(tone: keyof typeof COMMAND_TONES): (typeof COMMAND_TONES)[keyof typeof COMMAND_TONES] {
+    return COMMAND_TONES[tone];
   }
 
   protected copy(command: string): void {
