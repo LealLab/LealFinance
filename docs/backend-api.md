@@ -258,6 +258,8 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/mcp-token` | admin | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Only active administrators can mint it. |
 | GET | `/agents/instructions` | user | → `{instructions}`, the caller's stored custom instructions, or `null`. |
 | PUT | `/agents/instructions` | user | Body `{instructions}` (max 2000 chars). Classified before it is stored; off-topic text is refused with `agents.instructions_rejected` and never saved. An empty value clears the field without contacting a provider. |
+| GET | `/agents/memories` | user | → `[{id, content, created_at}]`, the facts the assistant saved about the caller, newest first. Created by the assistant's `remember` tool, not by an endpoint. |
+| DELETE | `/agents/memories/{id}` | user | 204. Removes one memory; a foreign or unknown id is `agent_memory.not_found` (404). |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
 | GET/PATCH | `/investments/wallets/{id}` | user | |
 | POST | `/investments/wallets/{id}/archive` | user | Body `{archived}`. |

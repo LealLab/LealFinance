@@ -1531,6 +1531,17 @@
       "saved": "Saved",
       "loadError": "We couldn't load your saved instructions. Reload the page before editing so you don't overwrite them."
     },
+    "memories": {
+      "title": "Assistant memories",
+      "description": "Facts the assistant saved from your chats so it can remember them in later conversations. Remove any you don't want it to keep.",
+      "empty": "The assistant hasn't saved any memories yet.",
+      "added": "Saved on {{date}}",
+      "remove": "Remove",
+      "removeConfirm": {
+        "title": "Remove this memory?",
+        "message": "The assistant will no longer remember this in future conversations."
+      }
+    },
     "backup": {
       "title": "Backup and restore",
       "description": "Download a portable copy of your data or replace your current data from a backup.",
@@ -1949,6 +1960,9 @@
       "not_configured": "No AI provider is configured yet.",
       "provider_unavailable": "The AI provider is currently unavailable.",
       "suggest_unreadable": "The AI response could not be read. Try again."
+    },
+    "agent_memory": {
+      "not_found": "That memory no longer exists."
     },
     "auth": {
       "invalid_credentials": "The email or password is incorrect.",

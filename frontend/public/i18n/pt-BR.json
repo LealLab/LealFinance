@@ -1507,6 +1507,17 @@
       "saved": "Salvo",
       "loadError": "Não foi possível carregar suas instruções salvas. Recarregue a página antes de editá-las para não sobrescrevê-las."
     },
+    "memories": {
+      "title": "Memórias do assistente",
+      "description": "Fatos que o assistente salvou das suas conversas para lembrar deles em conversas futuras. Remova os que você não quer que ele guarde.",
+      "empty": "O assistente ainda não salvou nenhuma memória.",
+      "added": "Salva em {{date}}",
+      "remove": "Remover",
+      "removeConfirm": {
+        "title": "Remover esta memória?",
+        "message": "O assistente deixará de se lembrar disso em conversas futuras."
+      }
+    },
     "backup": {
       "title": "Backup e restauração",
       "description": "Baixe uma cópia portátil dos seus dados ou substitua os dados atuais por um backup.",
@@ -1925,6 +1936,9 @@
       "not_configured": "Nenhum provedor de IA foi configurado ainda.",
       "provider_unavailable": "O provedor de IA está indisponível no momento.",
       "suggest_unreadable": "Não foi possível ler a resposta da IA. Tente novamente."
+    },
+    "agent_memory": {
+      "not_found": "Essa memória não existe mais."
     },
     "auth": {
       "invalid_credentials": "O e-mail ou a senha está incorreto.",

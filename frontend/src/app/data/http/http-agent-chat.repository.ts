@@ -5,6 +5,7 @@ import { ApiClient } from '../../core/api-client';
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentMemory,
   AgentMessage,
   AgentStreamEvent,
   AgentToolCall,
@@ -44,6 +45,11 @@ interface ConversationDetailWire extends ConversationWire {
 interface InstructionsWire {
   instructions: string | null;
 }
+interface MemoryWire {
+  id: string;
+  content: string;
+  created_at: string;
+}
 interface McpTokenWire {
   token: string;
   expires_at: string;
@@ -75,6 +81,11 @@ const mapMessage = (value: MessageWire): AgentMessage => ({
   toolName: value.tool_name,
   isError: value.is_error,
   position: value.position,
+  createdAt: value.created_at,
+});
+const mapMemory = (value: MemoryWire): AgentMemory => ({
+  id: value.id,
+  content: value.content,
   createdAt: value.created_at,
 });
 const mapDetail = (value: ConversationDetailWire): AgentConversationDetail => ({
@@ -157,6 +168,14 @@ export class HttpAgentChatRepository extends AgentChatRepository {
     return this.api
       .put<InstructionsWire>('/agents/instructions', { instructions })
       .pipe(map((value) => value.instructions ?? ''));
+  }
+  listMemories(): Observable<AgentMemory[]> {
+    return this.api
+      .get<MemoryWire[]>('/agents/memories')
+      .pipe(map((rows) => rows.map(mapMemory)));
+  }
+  deleteMemory(id: string): Observable<void> {
+    return this.api.delete<void>(`/agents/memories/${id}`);
   }
   mintMcpToken(): Observable<McpToken> {
     return this.api

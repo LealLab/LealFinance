@@ -1507,6 +1507,17 @@
       "saved": "Đã lưu",
       "loadError": "Không thể tải hướng dẫn đã lưu của bạn. Hãy tải lại trang trước khi chỉnh sửa để không ghi đè lên chúng."
     },
+    "memories": {
+      "title": "Bộ nhớ của trợ lý",
+      "description": "Những thông tin trợ lý đã lưu từ các cuộc trò chuyện của bạn để nhớ trong những lần trò chuyện sau. Hãy xóa những gì bạn không muốn trợ lý giữ lại.",
+      "empty": "Trợ lý chưa lưu mục nào trong bộ nhớ.",
+      "added": "Đã lưu vào {{date}}",
+      "remove": "Xóa",
+      "removeConfirm": {
+        "title": "Xóa mục này khỏi bộ nhớ?",
+        "message": "Trợ lý sẽ không còn nhớ điều này trong các cuộc trò chuyện sau."
+      }
+    },
     "backup": {
       "title": "Sao lưu và khôi phục",
       "description": "Tải xuống bản sao dữ liệu có thể di chuyển hoặc thay thế dữ liệu hiện tại từ bản sao lưu.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Chưa cấu hình nhà cung cấp AI.",
       "provider_unavailable": "Nhà cung cấp AI hiện không khả dụng.",
       "suggest_unreadable": "Không thể đọc phản hồi của AI. Hãy thử lại."
+    },
+    "agent_memory": {
+      "not_found": "Mục này không còn tồn tại."
     },
     "auth": {
       "invalid_credentials": "Email hoặc mật khẩu không chính xác.",

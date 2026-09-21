@@ -47,3 +47,10 @@ export interface McpToken {
   token: string;
   expiresAt: string;
 }
+
+/** A durable fact the assistant saved about the user, injected into later chats. */
+export interface AgentMemory {
+  id: string;
+  content: string;
+  createdAt: string;
+}

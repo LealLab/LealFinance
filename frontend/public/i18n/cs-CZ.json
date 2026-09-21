@@ -1507,6 +1507,17 @@
       "saved": "Uloženo",
       "loadError": "Nepodařilo se načíst vaše uložené pokyny. Před úpravou znovu načtěte stránku, abyste je nepřepsali."
     },
+    "memories": {
+      "title": "Paměť asistenta",
+      "description": "Informace, které si asistent uložil z vašich chatů, aby si je pamatoval v pozdějších konverzacích. Odeberte ty, které nechcete, aby uchovával.",
+      "empty": "Asistent si zatím nic neuložil.",
+      "added": "Uloženo {{date}}",
+      "remove": "Odebrat",
+      "removeConfirm": {
+        "title": "Odebrat tuto položku z paměti?",
+        "message": "Asistent si to v budoucích konverzacích už nebude pamatovat."
+      }
+    },
     "backup": {
       "title": "Záloha a obnovení",
       "description": "Stáhněte si přenositelnou kopii dat nebo nahraďte aktuální data ze zálohy.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Zatím není nastaven žádný poskytovatel AI.",
       "provider_unavailable": "Poskytovatel AI je momentálně nedostupný.",
       "suggest_unreadable": "Odpověď AI se nepodařilo přečíst. Zkuste to znovu."
+    },
+    "agent_memory": {
+      "not_found": "Tato položka v paměti už neexistuje."
     },
     "auth": {
       "invalid_credentials": "E-mail nebo heslo nejsou správné.",

@@ -1507,6 +1507,17 @@
       "saved": "Tallennettu",
       "loadError": "Tallennettujen ohjeidesi lataaminen ei onnistunut. Lataa sivu uudelleen ennen muokkaamista, jotta et korvaa niitä."
     },
+    "memories": {
+      "title": "Avustajan muisti",
+      "description": "Tiedot, jotka avustaja on tallentanut keskusteluistasi muistaakseen ne myöhemmissä keskusteluissa. Poista ne, joita et halua sen säilyttävän.",
+      "empty": "Avustaja ei ole vielä tallentanut mitään muistiin.",
+      "added": "Tallennettu {{date}}",
+      "remove": "Poista",
+      "removeConfirm": {
+        "title": "Poistetaanko tämä muistista?",
+        "message": "Avustaja ei enää muista tätä tulevissa keskusteluissa."
+      }
+    },
     "backup": {
       "title": "Varmuuskopiointi ja palautus",
       "description": "Lataa siirrettävä kopio tiedoistasi tai korvaa nykyiset tiedot varmuuskopiosta.",
@@ -1895,6 +1906,9 @@
       "not_configured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
       "provider_unavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä.",
       "suggest_unreadable": "Tekoälyn vastausta ei voitu lukea. Yritä uudelleen."
+    },
+    "agent_memory": {
+      "not_found": "Tätä muistimerkintää ei enää ole."
     },
     "auth": {
       "invalid_credentials": "Sähköpostiosoite tai salasana on väärä.",

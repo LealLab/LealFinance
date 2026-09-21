@@ -1507,6 +1507,17 @@
       "saved": "Kaydedildi",
       "loadError": "Kayıtlı talimatlarınız yüklenemedi. Üzerine yazmamak için düzenlemeden önce sayfayı yenileyin."
     },
+    "memories": {
+      "title": "Asistan hafızası",
+      "description": "Asistanın sonraki sohbetlerde hatırlayabilmesi için konuşmalarınızdan kaydettiği bilgiler. Saklamasını istemediklerinizi kaldırın.",
+      "empty": "Asistan henüz hiçbir şey kaydetmedi.",
+      "added": "{{date}} tarihinde kaydedildi",
+      "remove": "Kaldır",
+      "removeConfirm": {
+        "title": "Bu kayıt kaldırılsın mı?",
+        "message": "Asistan bunu gelecekteki sohbetlerde artık hatırlamayacak."
+      }
+    },
     "backup": {
       "title": "Yedekleme ve geri yükleme",
       "description": "Verilerinizin taşınabilir bir kopyasını indirin veya mevcut verilerinizi bir yedekten değiştirin.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
       "provider_unavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor.",
       "suggest_unreadable": "Yapay zekâ yanıtı okunamadı. Yeniden deneyin."
+    },
+    "agent_memory": {
+      "not_found": "Bu kayıt artık mevcut değil."
     },
     "auth": {
       "invalid_credentials": "E-posta veya parola yanlış.",

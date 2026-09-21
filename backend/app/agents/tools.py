@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.agents.entities import ENTITIES, ENTITY_NAMES, EntitySpec, flatten_schema, icon_or
 from app.agents.events import ToolSpec
 from app.core.errors import ConflictError, ValidationAppError
+from app.models.agent_memory import AGENT_MEMORY_MAX_LENGTH
 from app.models.budget import Budget, BudgetAllocation
 from app.models.category import Category
 from app.models.category_group import CategoryGroup
@@ -37,6 +38,7 @@ from app.schemas.transaction import (
     TransactionType,
 )
 from app.services import accounts as accounts_service
+from app.services import agent_memories as agent_memories_service
 from app.services import analytics, change_journal, ownership
 from app.services import card_invoices as card_invoices_service
 from app.services import categories as categories_service
@@ -571,6 +573,18 @@ async def _undo_changes(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -
     return {"call_id": payload.call_id, "reverted": reverted}
 
 
+class _RememberArgs(_ToolArgs):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    fact: str = Field(min_length=1, max_length=AGENT_MEMORY_MAX_LENGTH)
+
+
+async def _remember(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_RememberArgs, args)
+    memory = await agent_memories_service.remember(db, user_id, payload.fact)
+    return {"remembered": memory.content}
+
+
 @dataclass(frozen=True, slots=True)
 class ToolDef:
     name: str
@@ -917,6 +931,23 @@ SPECS: list[ToolDef] = [
         },
         run=_undo_changes,
         writes=True,
+    ),
+    ToolDef(
+        name="remember",
+        description=(
+            "Save one durable fact about the user for future conversations: a habit, a "
+            "preference, a recurring commitment. Write one short self-contained sentence. "
+            "Do not save one-off questions, values you can read with a list tool, or "
+            "anything the user asked you to keep private. Facts you have already saved are "
+            "listed in the system prompt; do not save those again."
+        ),
+        schema={
+            "type": "object",
+            "properties": {"fact": {"type": "string", "maxLength": AGENT_MEMORY_MAX_LENGTH}},
+            "required": ["fact"],
+            "additionalProperties": False,
+        },
+        run=_remember,
     ),
 ]
 

@@ -1507,6 +1507,17 @@
       "saved": "已儲存",
       "loadError": "無法載入已儲存的指令。請在編輯前重新載入頁面，以免覆蓋原有指令。"
     },
+    "memories": {
+      "title": "助理的記憶",
+      "description": "助理從你的聊天中儲存的資訊，以便在之後的對話中記住。請移除你不希望它保留的內容。",
+      "empty": "助理還沒有儲存任何記憶。",
+      "added": "儲存於 {{date}}",
+      "remove": "移除",
+      "removeConfirm": {
+        "title": "移除這則記憶？",
+        "message": "助理在之後的對話中將不再記得這件事。"
+      }
+    },
     "backup": {
       "title": "備份與還原",
       "description": "下載可攜式資料副本，或使用備份取代目前的資料。",
@@ -1895,6 +1906,9 @@
       "not_configured": "尚未設定 AI 提供者。",
       "provider_unavailable": "AI 提供者目前無法使用。",
       "suggest_unreadable": "無法讀取 AI 回應。請再試一次。"
+    },
+    "agent_memory": {
+      "not_found": "這則記憶已不存在。"
     },
     "auth": {
       "invalid_credentials": "電子郵件或密碼不正確。",

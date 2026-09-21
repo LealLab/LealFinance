@@ -31,12 +31,13 @@ import { Card } from '../../shared/ui/card/card';
 import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { MemoriesSection } from './memories-section';
 
 const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
 
 @Component({
   selector: 'app-settings',
-  imports: [TranslocoDirective, Button, Card, Icon, Modal, PageHeader, RouterLink],
+  imports: [TranslocoDirective, Button, Card, Icon, MemoriesSection, Modal, PageHeader, RouterLink],
   templateUrl: './settings.html',
 })
 export class Settings {

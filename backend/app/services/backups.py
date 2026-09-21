@@ -20,6 +20,7 @@ from app.core.errors import AppError, ValidationAppError
 from app.models.account import Account
 from app.models.agent_conversation import AgentConversation
 from app.models.agent_credential import AgentCredential
+from app.models.agent_memory import AgentMemory
 from app.models.agent_message import AgentMessage
 from app.models.base import UserOwnedModel
 from app.models.budget import Budget, BudgetAllocation, ExpectedIncome
@@ -93,6 +94,9 @@ EXCLUDED_USER_OWNED_MODELS = {
     # state; it is never exported or reconstructed.
     AgentConversation: "agent_conversations",
     AgentMessage: "agent_messages",
+    # Learned from chat; adding it to BACKUP_TABLES would also make every existing
+    # archive fail the exact table-set check on import.
+    AgentMemory: "agent_memories",
     ImportIdempotency: "import_idempotency",
     # Audit rows are an append-only operational log, not restorable domain state.
     TransactionHistory: "transaction_history",

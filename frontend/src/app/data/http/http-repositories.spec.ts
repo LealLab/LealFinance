@@ -813,6 +813,29 @@ describe('HTTP repositories', () => {
     expect(token).toEqual({ token: 'abc', expiresAt: '2027-01-01' });
   });
 
+  it('lists the assistant memories, mapping the wire format, and deletes one by id', () => {
+    let listed: unknown;
+    let deleted = false;
+
+    TestBed.inject(HttpAgentChatRepository)
+      .listMemories()
+      .subscribe((result) => (listed = result));
+    const listReq = http.expectOne('/api/v1/agents/memories');
+    expect(listReq.request.method).toBe('GET');
+    listReq.flush([{ id: 'm1', content: 'Gets paid on the 5th', created_at: '2026-09-20T10:00:00Z' }]);
+    expect(listed).toEqual([
+      { id: 'm1', content: 'Gets paid on the 5th', createdAt: '2026-09-20T10:00:00Z' },
+    ]);
+
+    TestBed.inject(HttpAgentChatRepository)
+      .deleteMemory('m1')
+      .subscribe(() => (deleted = true));
+    const deleteReq = http.expectOne('/api/v1/agents/memories/m1');
+    expect(deleteReq.request.method).toBe('DELETE');
+    deleteReq.flush(null);
+    expect(deleted).toBe(true);
+  });
+
   it('reads and writes the custom AI instructions, mapping a null to an empty string', () => {
     let loaded: unknown;
     let saved: unknown;

@@ -1507,6 +1507,17 @@
       "saved": "Guardado",
       "loadError": "No se han podido cargar tus instrucciones guardadas. Recarga la página antes de editarlas para no sobrescribirlas."
     },
+    "memories": {
+      "title": "Recuerdos del asistente",
+      "description": "Datos que el asistente guardó de tus chats para recordarlos en conversaciones posteriores. Elimina los que no quieras que conserve.",
+      "empty": "El asistente aún no ha guardado ningún recuerdo.",
+      "added": "Guardado el {{date}}",
+      "remove": "Eliminar",
+      "removeConfirm": {
+        "title": "¿Eliminar este recuerdo?",
+        "message": "El asistente dejará de recordar esto en futuras conversaciones."
+      }
+    },
     "backup": {
       "title": "Copia de seguridad y restauración",
       "description": "Descarga una copia portátil de tus datos o sustituye los datos actuales desde una copia de seguridad.",
@@ -1925,6 +1936,9 @@
       "not_configured": "Aún no hay ningún proveedor de IA configurado.",
       "provider_unavailable": "El proveedor de IA no está disponible en este momento.",
       "suggest_unreadable": "No se pudo leer la respuesta de la IA. Inténtalo de nuevo."
+    },
+    "agent_memory": {
+      "not_found": "Ese recuerdo ya no existe."
     },
     "auth": {
       "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",

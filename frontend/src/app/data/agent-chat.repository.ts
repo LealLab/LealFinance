@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentMemory,
   AgentStreamEvent,
   McpToken,
 } from '../domain/models/agent-chat';
@@ -47,4 +48,7 @@ export abstract class AgentChatRepository {
   abstract getInstructions(): Observable<string>;
   /** Rejected text is refused by the backend and never stored. */
   abstract saveInstructions(instructions: string): Observable<string>;
+  /** Facts the assistant saved on its own, newest first. */
+  abstract listMemories(): Observable<AgentMemory[]>;
+  abstract deleteMemory(id: string): Observable<void>;
 }

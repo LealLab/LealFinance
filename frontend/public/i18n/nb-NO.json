@@ -1507,6 +1507,17 @@
       "saved": "Lagret",
       "loadError": "Vi kunne ikke laste inn de lagrede instruksjonene dine. Last inn siden på nytt før du redigerer, slik at du ikke overskriver dem."
     },
+    "memories": {
+      "title": "Assistentens minne",
+      "description": "Fakta som assistenten har lagret fra chattene dine, slik at den kan huske dem i senere samtaler. Fjern det du ikke vil at den skal beholde.",
+      "empty": "Assistenten har ikke lagret noe i minnet ennå.",
+      "added": "Lagret {{date}}",
+      "remove": "Fjern",
+      "removeConfirm": {
+        "title": "Fjerne dette fra minnet?",
+        "message": "Assistenten vil ikke lenger huske dette i fremtidige samtaler."
+      }
+    },
     "backup": {
       "title": "Sikkerhetskopiering og gjenoppretting",
       "description": "Last ned en flyttbar kopi av dataene dine, eller erstatt gjeldende data fra en sikkerhetskopi.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Ingen AI-leverandør er konfigurert ennå.",
       "provider_unavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå.",
       "suggest_unreadable": "AI-svaret kunne ikke leses. Prøv igjen."
+    },
+    "agent_memory": {
+      "not_found": "Dette minnet finnes ikke lenger."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller passordet er feil.",

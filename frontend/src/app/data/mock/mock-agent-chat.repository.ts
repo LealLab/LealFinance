@@ -8,6 +8,7 @@ import {
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentMemory,
   AgentMessage,
   AgentStreamEvent,
   McpToken,
@@ -26,6 +27,7 @@ export class MockAgentChatRepository extends AgentChatRepository {
   >();
   private nextId = 1;
   private instructions = '';
+  private memories: AgentMemory[] = [];
 
   listConversations(): Observable<AgentConversation[]> {
     return mockResult(
@@ -97,6 +99,16 @@ export class MockAgentChatRepository extends AgentChatRepository {
         });
       this.instructions = cleaned;
       return cleaned;
+    }, this.latencyMs);
+  }
+  listMemories(): Observable<AgentMemory[]> {
+    return mockResult(() => [...this.memories], this.latencyMs);
+  }
+  deleteMemory(id: string): Observable<void> {
+    return mockResult(() => {
+      if (!this.memories.some((memory) => memory.id === id))
+        throw new ApiError(404, 'agent_memory.not_found', { id });
+      this.memories = this.memories.filter((memory) => memory.id !== id);
     }, this.latencyMs);
   }
   suggestImportCategories(items: readonly ImportSuggestItem[]): Observable<ImportSuggestion[]> {
