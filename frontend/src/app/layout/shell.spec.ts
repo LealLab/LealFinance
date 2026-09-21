@@ -13,7 +13,7 @@ import { MockCategoryRepository } from '../data/mock/mock-category.repository';
 import { MOCK_LATENCY_MS } from '../data/mock/mock-latency';
 import { MockTransactionRepository } from '../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../data/transaction.repository';
-import { provideTestTransloco } from '../../testing/transloco';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../testing/transloco';
 import { Shell } from './shell';
 
 function mockMatchMedia(matches: boolean): void {
@@ -27,6 +27,7 @@ describe('Shell', () => {
     await TestBed.configureTestingModule({
       imports: [Shell, provideTestTransloco(['en-US', 'pt-BR'])],
       providers: [
+        provideTestTranslocoLocale(),
         provideZonelessChangeDetection(),
         provideRouter([]),
         // Shell mounts <app-command-palette />, which injects the four

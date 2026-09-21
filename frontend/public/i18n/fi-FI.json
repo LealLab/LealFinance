@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "Päivitä LealFinance",
-        "intro": "Uudempi versio on saatavilla. Päivitä homelab-käyttöönotto komennoilla:",
-        "pinStep": "Aseta ensin TAG uuteen versioon .env-tiedostossasi.",
-        "backupWarning": "Varmuuskopioi tietokantasi ennen päivitystä.",
-        "notesLink": "Näytä julkaisutiedot"
+        "intro": "Versio {{version}} on saatavilla. Suorita LealFinance-kansiossa:",
+        "tagNote": "task update varmuuskopioi ensin tietokantasi. Kun .env-tiedostossa on TAG=latest, se asentaa uusimman julkaisun; jos TAG on lukittu tiettyyn versioon, tämä tunniste määrittää, mikä versio noudetaan.",
+        "backupAction": "Varmuuskopio-ohjeet",
+        "notesAction": "Julkaisutiedot"
+      },
+      "backup": {
+        "title": "Varmuuskopio-ohjeet",
+        "why": "Varmuuskopioi ennen jokaista päivitystä. Jos migraatio epäonnistuu kesken, tietokanta jää muuttuneeksi, eikä vanhaan versioon palaaminen kumoa sitä – varmuuskopio kumoaa.",
+        "create": "Luo varmuuskopio:",
+        "verify": "Tarkista, että uusin varmuuskopio palautuu ongelmitta:",
+        "preserved": "Varmuuskopio on pakattu vedos PostgreSQL-tietokannastasi – kaikki tilit, tapahtumat, budjetit ja asetukset – tallennettuna kansioon ./backups. Se ei sisällä .env-tiedostoa: säilytä siitä kopio, erityisesti API_SECRET_KEY, tai palautetut istunnot ja tallennetut tunnistetiedot eivät toimi.",
+        "restore": "Palautusvaiheet ovat täydessä varmuuskopio-ohjeistuksessa.",
+        "docsLink": "Näytä täydet varmuuskopio-ohjeet GitHubissa"
+      },
+      "notes": {
+        "title": "Julkaisutiedot {{version}}",
+        "published": "Julkaistu {{date}}",
+        "empty": "Tälle versiolle ei ole julkaistu julkaisutietoja.",
+        "githubLink": "Näytä koko julkaisu GitHubissa"
       }
     }
   },

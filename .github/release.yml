@@ -1,0 +1,33 @@
+# Groups the notes that `gh release create --generate-notes` writes (see
+# .github/workflows/release.yml). PRs are labelled from their title prefix by
+# .github/workflows/label-pr.yml. GitHub omits categories with no PRs, and the
+# in-app Release Notes dialog renders this same body.
+changelog:
+  exclude:
+    labels:
+      - release
+  categories:
+    - title: Features
+      labels:
+        - enhancement
+    - title: Bug Fixes
+      labels:
+        - bug
+    - title: Documentation
+      labels:
+        - documentation
+    - title: Performance
+      labels:
+        - performance
+    - title: Security
+      labels:
+        - security
+    - title: Dependencies
+      labels:
+        - dependencies
+    - title: CI/CD
+      labels:
+        - ci
+    - title: Maintenance
+      labels:
+        - "*"

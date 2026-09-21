@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "更新 LealFinance",
-        "intro": "有新版本可用。使用以下指令更新家庭實驗室部署：",
-        "pinStep": "請先在 .env 檔案中將 TAG 設為新版本。",
-        "backupWarning": "更新前請備份資料庫。",
-        "notesLink": "查看發行說明"
+        "intro": "版本 {{version}} 已可使用。請在 LealFinance 資料夾中執行:",
+        "tagNote": "task update 會先備份您的資料庫。如果 .env 中是 TAG=latest,它會安裝最新版本;如果 TAG 固定為某個版本,則由該標籤決定拉取哪個版本。",
+        "backupAction": "備份說明",
+        "notesAction": "發行說明"
+      },
+      "backup": {
+        "title": "備份說明",
+        "why": "每次升級前都請先備份。如果遷移中途失敗,資料庫會維持已變更的狀態,切換回舊版本並不能復原——備份可以。",
+        "create": "建立備份:",
+        "verify": "檢查最新的備份能否正常還原:",
+        "preserved": "備份是您 PostgreSQL 資料庫的壓縮傾印(所有帳戶、交易、預算和設定),儲存在 ./backups 中。它不包含 .env 檔案:請另外保留一份副本,尤其是 API_SECRET_KEY,否則還原後的工作階段和已儲存的憑證將無法使用。",
+        "restore": "還原步驟請參閱完整的備份文件。",
+        "docsLink": "在 GitHub 上查看完整備份文件"
+      },
+      "notes": {
+        "title": "發行說明 {{version}}",
+        "published": "發布於 {{date}}",
+        "empty": "此版本沒有發布發行說明。",
+        "githubLink": "在 GitHub 上查看完整發行版"
       }
     }
   },

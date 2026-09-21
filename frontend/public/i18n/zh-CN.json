@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "更新 LealFinance",
-        "intro": "有新版本可用。使用以下命令更新家庭实验室部署：",
-        "pinStep": "请先在 .env 文件中将 TAG 设置为新版本。",
-        "backupWarning": "更新前请备份数据库。",
-        "notesLink": "查看发行说明"
+        "intro": "版本 {{version}} 已可用。请在 LealFinance 文件夹中运行:",
+        "tagNote": "task update 会先备份您的数据库。如果 .env 中是 TAG=latest,它会安装最新版本;如果 TAG 固定为某个版本,则由该标签决定拉取哪个版本。",
+        "backupAction": "备份说明",
+        "notesAction": "发行说明"
+      },
+      "backup": {
+        "title": "备份说明",
+        "why": "每次升级前都请先备份。如果迁移中途失败,数据库会保持已更改的状态,切换回旧版本并不能撤销——备份可以。",
+        "create": "创建备份:",
+        "verify": "检查最新的备份能否正常恢复:",
+        "preserved": "备份是您 PostgreSQL 数据库的压缩转储(所有账户、交易、预算和设置),保存在 ./backups 中。它不包含 .env 文件:请另外保留一份副本,尤其是 API_SECRET_KEY,否则恢复后的会话和已保存的凭据将无法使用。",
+        "restore": "恢复步骤请参阅完整的备份文档。",
+        "docsLink": "在 GitHub 上查看完整备份文档"
+      },
+      "notes": {
+        "title": "发行说明 {{version}}",
+        "published": "发布于 {{date}}",
+        "empty": "此版本没有发布发行说明。",
+        "githubLink": "在 GitHub 上查看完整发行版"
       }
     }
   },

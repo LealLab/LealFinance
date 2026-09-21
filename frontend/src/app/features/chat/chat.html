@@ -122,7 +122,7 @@
                     {{ t('chat.offTopic') }}
                   } @else if (turn.text) {
                     @if (turn.role === 'assistant') {
-                      <div class="chat-md" [innerHTML]="turn.text | markdown"></div>
+                      <div class="md-content" [innerHTML]="turn.text | markdown"></div>
                     } @else {
                       <span class="whitespace-pre-wrap">{{ turn.text }}</span>
                     }

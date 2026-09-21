@@ -1,8 +1,9 @@
-// The HTML that the markdown pipe renders into `[innerHTML]` on assistant
-// bubbles - Angular's style scoping does not reach that content, so the
-// rules are bounded with `::ng-deep` under `.chat-md` rather than left global.
-.chat-md {
-  // The bubble sets `whitespace-pre-wrap` for plain-text turns; the rendered
+// The HTML that the markdown pipe renders into `[innerHTML]` (chat assistant
+// bubbles, release notes) - Angular's style scoping does not reach that
+// content, so the rules are bounded with `::ng-deep` under `.md-content`
+// rather than left global. Add it to a component's `styleUrls`.
+.md-content {
+  // The chat bubble sets `whitespace-pre-wrap` for plain-text turns; the rendered
   // markdown must not inherit it, or the newlines marked emits between tags
   // show up as blank lines.
   white-space: normal;

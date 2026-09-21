@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { UpdateStatus, User } from '../../core/identity.models';
 import { SessionService } from '../../core/session.service';
-import { provideTestTransloco } from '../../../testing/transloco';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 import { UpdateBanner } from './update-banner';
 
 const ADMIN: User = {
@@ -29,6 +29,9 @@ const UPDATE_STATUS: UpdateStatus = {
   latestVersion: 'v1.2.0',
   updateAvailable: true,
   releaseUrl: 'https://github.com/LealLab/LealFinance/releases/tag/v1.2.0',
+  releaseNotes:
+    '## Features\n\n* feat: new thing by @ada in https://github.com/LealLab/LealFinance/pull/1\n',
+  publishedAt: '2026-09-01T12:00:00Z',
 };
 
 describe('UpdateBanner', () => {
@@ -41,6 +44,7 @@ describe('UpdateBanner', () => {
         provideTestTransloco('en-US'),
       ],
       providers: [
+        provideTestTranslocoLocale('en-US'),
         provideZonelessChangeDetection(),
         { provide: IdentityApiService, useValue: api },
         { provide: SessionService, useValue: { user: signal(user) } },
@@ -113,5 +117,79 @@ describe('UpdateBanner', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance['modalOpen']()).toBe(true);
+  });
+
+  async function render(status: UpdateStatus = UPDATE_STATUS) {
+    api.updateStatus.mockReturnValue(of(status));
+    await setup(ADMIN);
+    const fixture = TestBed.createComponent(UpdateBanner);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('recommends `task update` in the update modal instead of raw compose commands', async () => {
+    const fixture = await render();
+    const text = fixture.nativeElement.textContent as string;
+
+    expect(text).toContain('task update');
+    expect(text).not.toContain('docker compose');
+  });
+
+  it('opens the backup modal in-app without navigating anywhere', async () => {
+    const fixture = await render();
+
+    fixture.componentInstance['openBackupModal']();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['backupModalOpen']()).toBe(true);
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('task backup');
+    expect(text).toContain('task backup:verify');
+    // The only outbound link is the explicit docs button.
+    const external = [...fixture.nativeElement.querySelectorAll('a[href]')].map(
+      (a) => (a as HTMLAnchorElement).href,
+    );
+    expect(external).toContain(
+      'https://github.com/LealLab/LealFinance/blob/main/docs/homelab-deploy.md#backups',
+    );
+  });
+
+  it('shows release notes, the version and the date in the notes modal', async () => {
+    const fixture = await render();
+
+    fixture.componentInstance['openNotesModal']();
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(fixture.componentInstance['notesModalOpen']()).toBe(true);
+    expect(text).toContain('Release notes v1.2.0');
+    expect(text).toContain('Sep 1, 2026');
+    expect(fixture.nativeElement.querySelector('.md-content h2')?.textContent).toBe('Features');
+  });
+
+  it('opens links inside the release notes in a new tab', async () => {
+    const fixture = await render();
+
+    const link = fixture.nativeElement.querySelector('.md-content a') as HTMLAnchorElement;
+    expect(link.target).toBe('_blank');
+    expect(link.rel).toContain('noopener');
+  });
+
+  it('links to the full release on GitHub from the notes modal', async () => {
+    const fixture = await render();
+
+    const hrefs = [...fixture.nativeElement.querySelectorAll('a[href]')].map(
+      (a) => (a as HTMLAnchorElement).href,
+    );
+    expect(hrefs).toContain('https://github.com/LealLab/LealFinance/releases/tag/v1.2.0');
+  });
+
+  it('shows a fallback when the release has no notes', async () => {
+    const fixture = await render({ ...UPDATE_STATUS, releaseNotes: undefined });
+
+    expect(fixture.nativeElement.querySelector('.md-content')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('No release notes were published');
   });
 });

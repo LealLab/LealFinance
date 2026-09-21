@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "Atualizar o LealFinance",
-        "intro": "Uma versão mais recente está disponível. Atualize uma instalação homelab com:",
-        "pinStep": "Defina TAG para a nova versão no seu arquivo .env primeiro.",
-        "backupWarning": "Faça backup do seu banco de dados antes de atualizar.",
-        "notesLink": "Ver notas da versão"
+        "intro": "A versão {{version}} está disponível. Na pasta do LealFinance, execute:",
+        "tagNote": "O task update faz backup do banco de dados primeiro. Com TAG=latest no seu .env, ele instala a versão mais recente; se TAG estiver fixada em uma versão, essa tag define qual versão será baixada.",
+        "backupAction": "Instruções de backup",
+        "notesAction": "Notas da versão"
+      },
+      "backup": {
+        "title": "Instruções de backup",
+        "why": "Faça backup antes de cada atualização. Se uma migração falhar no meio, o banco de dados fica alterado e voltar para a versão antiga não desfaz isso - o backup desfaz.",
+        "create": "Crie um backup:",
+        "verify": "Verifique se o backup mais recente é restaurado corretamente:",
+        "preserved": "O backup é um dump compactado do seu banco PostgreSQL - todas as contas, transações, orçamentos e configurações - salvo em ./backups. Ele não inclui o arquivo .env: guarde uma cópia, principalmente de API_SECRET_KEY, ou as sessões e credenciais armazenadas não funcionarão após a restauração.",
+        "restore": "Os passos de restauração estão na documentação completa de backup.",
+        "docsLink": "Ver a documentação completa de backup no GitHub"
+      },
+      "notes": {
+        "title": "Notas da versão {{version}}",
+        "published": "Lançada em {{date}}",
+        "empty": "Nenhuma nota de versão foi publicada para esta versão.",
+        "githubLink": "Ver a versão completa no GitHub"
       }
     }
   },

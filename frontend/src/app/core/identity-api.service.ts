@@ -100,6 +100,8 @@ interface UpdateStatusWire {
   latest_version: string | null;
   update_available: boolean;
   release_url: string | null;
+  release_notes: string | null;
+  published_at: string | null;
 }
 
 interface TotpStatusWire {
@@ -410,6 +412,8 @@ export class IdentityApiService {
         latestVersion: row.latest_version ?? undefined,
         updateAvailable: row.update_available,
         releaseUrl: row.release_url ?? undefined,
+        releaseNotes: row.release_notes ?? undefined,
+        publishedAt: row.published_at ?? undefined,
       })),
     );
   }

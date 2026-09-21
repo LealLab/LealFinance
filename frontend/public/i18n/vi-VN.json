@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "Cập nhật LealFinance",
-        "intro": "Đã có phiên bản mới hơn. Cập nhật triển khai homelab bằng:",
-        "pinStep": "Trước tiên, hãy đặt TAG thành phiên bản mới trong tệp .env của bạn.",
-        "backupWarning": "Sao lưu cơ sở dữ liệu của bạn trước khi cập nhật.",
-        "notesLink": "Xem ghi chú phát hành"
+        "intro": "Đã có phiên bản {{version}}. Trong thư mục LealFinance, hãy chạy:",
+        "tagNote": "task update sẽ sao lưu cơ sở dữ liệu của bạn trước. Với TAG=latest trong .env, nó cài bản phát hành mới nhất; nếu TAG được cố định vào một phiên bản, thẻ đó quyết định phiên bản nào được tải về.",
+        "backupAction": "Hướng dẫn sao lưu",
+        "notesAction": "Ghi chú phát hành"
+      },
+      "backup": {
+        "title": "Hướng dẫn sao lưu",
+        "why": "Hãy sao lưu trước mỗi lần nâng cấp. Nếu quá trình di chuyển dữ liệu thất bại giữa chừng, cơ sở dữ liệu vẫn bị thay đổi và quay lại phiên bản cũ không hoàn tác được điều đó - bản sao lưu thì có.",
+        "create": "Tạo bản sao lưu:",
+        "verify": "Kiểm tra xem bản sao lưu mới nhất có khôi phục được suôn sẻ không:",
+        "preserved": "Bản sao lưu là bản dump nén của cơ sở dữ liệu PostgreSQL - mọi tài khoản, giao dịch, ngân sách và cài đặt - được lưu trong ./backups. Bản này không gồm tệp .env: hãy giữ một bản sao, đặc biệt là API_SECRET_KEY, nếu không các phiên và thông tin xác thực đã lưu sau khi khôi phục sẽ không hoạt động.",
+        "restore": "Các bước khôi phục có trong tài liệu sao lưu đầy đủ.",
+        "docsLink": "Xem tài liệu sao lưu đầy đủ trên GitHub"
+      },
+      "notes": {
+        "title": "Ghi chú phát hành {{version}}",
+        "published": "Phát hành {{date}}",
+        "empty": "Chưa có ghi chú phát hành nào cho phiên bản này.",
+        "githubLink": "Xem bản phát hành đầy đủ trên GitHub"
       }
     }
   },

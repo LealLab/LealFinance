@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "LealFinance aktualisieren",
-        "intro": "Eine neuere Version ist verfügbar. Aktualisieren Sie ein Homelab-Deployment mit:",
-        "pinStep": "Setzen Sie TAG zuerst in Ihrer .env-Datei auf die neue Version.",
-        "backupWarning": "Sichern Sie Ihre Datenbank, bevor Sie aktualisieren.",
-        "notesLink": "Versionshinweise anzeigen"
+        "intro": "Version {{version}} ist verfügbar. Führen Sie im LealFinance-Ordner Folgendes aus:",
+        "tagNote": "task update sichert zuerst Ihre Datenbank. Mit TAG=latest in Ihrer .env wird die neueste Version installiert; ist TAG auf eine Version festgelegt, bestimmt dieses Tag, welche Version geladen wird.",
+        "backupAction": "Anleitung zur Sicherung",
+        "notesAction": "Versionshinweise"
+      },
+      "backup": {
+        "title": "Anleitung zur Sicherung",
+        "why": "Sichern Sie vor jedem Update. Schlägt eine Migration mittendrin fehl, bleibt die Datenbank verändert, und der Wechsel zur alten Version macht das nicht rückgängig – eine Sicherung schon.",
+        "create": "Sicherung erstellen:",
+        "verify": "Prüfen, ob sich die neueste Sicherung sauber wiederherstellen lässt:",
+        "preserved": "Die Sicherung ist ein komprimierter Dump Ihrer PostgreSQL-Datenbank – alle Konten, Transaktionen, Budgets und Einstellungen – und wird in ./backups gespeichert. Ihre .env-Datei ist nicht enthalten: Bewahren Sie eine Kopie auf, vor allem von API_SECRET_KEY, sonst funktionieren wiederhergestellte Sitzungen und gespeicherte Zugangsdaten nicht.",
+        "restore": "Die Schritte zur Wiederherstellung stehen in der vollständigen Dokumentation zur Sicherung.",
+        "docsLink": "Vollständige Dokumentation zur Sicherung auf GitHub ansehen"
+      },
+      "notes": {
+        "title": "Versionshinweise {{version}}",
+        "published": "Veröffentlicht am {{date}}",
+        "empty": "Für diese Version wurden keine Versionshinweise veröffentlicht.",
+        "githubLink": "Vollständige Version auf GitHub ansehen"
       }
     }
   },

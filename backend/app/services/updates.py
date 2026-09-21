@@ -83,4 +83,6 @@ async def get_update_status() -> UpdateStatusRead:
         latest_version=latest,
         update_available=update_available,
         release_url=release_url,
+        release_notes=release.get("body") or None,
+        published_at=release.get("published_at"),
     )

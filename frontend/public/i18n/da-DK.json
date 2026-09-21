@@ -312,10 +312,25 @@
       },
       "modal": {
         "title": "Opdater LealFinance",
-        "intro": "En nyere version er tilgængelig. Opdater en homelab-installation med:",
-        "pinStep": "Sæt først TAG til den nye version i din .env-fil.",
-        "backupWarning": "Sikkerhedskopiér din database, før du opdaterer.",
-        "notesLink": "Se udgivelsesnoter"
+        "intro": "Version {{version}} er tilgængelig. Kør følgende i LealFinance-mappen:",
+        "tagNote": "task update tager først en sikkerhedskopi af din database. Med TAG=latest i din .env installeres den nyeste version; hvis TAG er låst til en version, afgør det tag, hvilken version der hentes.",
+        "backupAction": "Vejledning til sikkerhedskopi",
+        "notesAction": "Udgivelsesnoter"
+      },
+      "backup": {
+        "title": "Vejledning til sikkerhedskopi",
+        "why": "Tag en sikkerhedskopi før hver opgradering. Hvis en migrering fejler halvvejs, er databasen ændret, og et skift tilbage til den gamle version fortryder det ikke – en sikkerhedskopi gør.",
+        "create": "Opret en sikkerhedskopi:",
+        "verify": "Kontroller, at den nyeste sikkerhedskopi kan gendannes uden problemer:",
+        "preserved": "Sikkerhedskopien er et komprimeret dump af din PostgreSQL-database – alle konti, transaktioner, budgetter og indstillinger – gemt i ./backups. Den indeholder ikke din .env-fil: behold en kopi, især af API_SECRET_KEY, ellers virker gendannede sessioner og gemte legitimationsoplysninger ikke.",
+        "restore": "Trinene til gendannelse findes i den fulde dokumentation om sikkerhedskopiering.",
+        "docsLink": "Se den fulde dokumentation om sikkerhedskopiering på GitHub"
+      },
+      "notes": {
+        "title": "Udgivelsesnoter {{version}}",
+        "published": "Udgivet {{date}}",
+        "empty": "Der er ikke udgivet nogen udgivelsesnoter for denne version.",
+        "githubLink": "Se hele udgivelsen på GitHub"
       }
     }
   },
