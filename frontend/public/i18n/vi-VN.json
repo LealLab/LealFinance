@@ -314,6 +314,7 @@
         "title": "Cập nhật LealFinance",
         "intro": "Đã có phiên bản {{version}}. Trong thư mục LealFinance, hãy chạy:",
         "tagNote": "task update sẽ sao lưu cơ sở dữ liệu của bạn trước. Với TAG=latest trong .env, nó cài bản phát hành mới nhất; nếu TAG được cố định vào một phiên bản, thẻ đó quyết định phiên bản nào được tải về.",
+        "checkoutNote": "Nếu bản sao cục bộ cũ không có lệnh task update, trước tiên hãy chạy git pull --ff-only trên nhánh main của bản sao đó. Nếu Git báo lỗi, hãy khắc phục trước khi tiếp tục.",
         "installNote": "Để cập nhật mà không sao lưu trước, hãy chạy lệnh này (dùng task install:tls khi có proxy TLS Caddy):",
         "backupAction": "Hướng dẫn sao lưu",
         "notesAction": "Ghi chú phát hành",

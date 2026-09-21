@@ -314,6 +314,7 @@
         "title": "עדכון LealFinance",
         "intro": "גרסה {{version}} זמינה. בתיקיית LealFinance, הפעל:",
         "tagNote": "task update מגבה קודם את מסד הנתונים שלך. כש-TAG=latest בקובץ ה-.env, הוא מתקין את הגרסה החדשה ביותר; אם TAG נעוץ לגרסה מסוימת, התגית הזו קובעת איזו גרסה תימשך.",
+        "checkoutNote": "אם בעותק מקומי ישן אין פקודת task update, יש להריץ תחילה git pull --ff-only בענף main שלו. אם Git מדווח על שגיאה, יש לפתור אותה לפני שממשיכים.",
         "installNote": "כדי לעדכן בלי גיבוי קודם, הפעל את הפקודה הזו (השתמש ב-task install:tls מאחורי פרוקסי ה-TLS של Caddy):",
         "backupAction": "הוראות גיבוי",
         "notesAction": "הערות גרסה",

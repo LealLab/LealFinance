@@ -242,6 +242,23 @@ dump into an empty database, then start the previous image.
 
 ## Updates
 
+If your checkout predates `task update`, refresh it before using the command
+for the first time. Pulling container images does not update the host's
+`Taskfile.yml`, scripts, or Compose files.
+
+For a checkout on `main` tracking the upstream repository, run:
+
+```bash
+git pull --ff-only
+```
+
+Preserve local changes to deployment files. If Git refuses the update, resolve
+the reported issue before continuing; do not discard those changes. If you
+use a release-tag checkout or another branch, update it to the intended
+release containing `task update` instead. Keep your existing `.env`.
+
+Once the checkout includes the command, normal image updates use:
+
 ```bash
 task update
 ```

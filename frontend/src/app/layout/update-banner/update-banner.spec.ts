@@ -136,6 +136,8 @@ describe('UpdateBanner', () => {
     expect(text).toContain('task update');
     expect(text).toContain('task install');
     expect(text).not.toContain('docker compose');
+    expect(text).toContain('git pull --ff-only');
+    expect(text).toContain('If Git reports an error, resolve it before continuing.');
   });
 
   it('copies a command to the clipboard and confirms it', async () => {

@@ -314,6 +314,7 @@
         "title": "LealFinance'i güncelle",
         "intro": "{{version}} sürümü kullanılabilir. LealFinance klasöründe şunu çalıştırın:",
         "tagNote": "task update önce veritabanınızı yedekler. .env dosyanızda TAG=latest varsa en yeni sürümü kurar; TAG belirli bir sürüme sabitlenmişse hangi sürümün çekileceğini bu etiket belirler.",
+        "checkoutNote": "Eski bir yerel kopyada task update komutu yoksa önce kopyanın main dalında git pull --ff-only komutunu çalıştırın. Git bir hata bildirirse devam etmeden önce hatayı giderin.",
         "installNote": "Önce yedek almadan güncellemek için bunu çalıştırın (Caddy TLS proxy'si kullanıyorsanız task install:tls kullanın):",
         "backupAction": "Yedekleme talimatları",
         "notesAction": "Sürüm notları",

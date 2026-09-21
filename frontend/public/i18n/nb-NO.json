@@ -314,6 +314,7 @@
         "title": "Oppdater LealFinance",
         "intro": "Versjon {{version}} er tilgjengelig. Kjør følgende i LealFinance-mappen:",
         "tagNote": "task update tar først sikkerhetskopi av databasen din. Med TAG=latest i .env installeres den nyeste versjonen; hvis TAG er låst til en versjon, avgjør den taggen hvilken versjon som hentes.",
+        "checkoutNote": "Hvis en eldre lokal kopi mangler kommandoen task update, kjør først git pull --ff-only på main-grenen. Hvis Git melder en feil, må du løse den før du fortsetter.",
         "installNote": "Hvis du vil oppdatere uten å ta sikkerhetskopi først, kjører du dette (bruk task install:tls bak Caddy TLS-proxyen):",
         "backupAction": "Instruksjoner for sikkerhetskopi",
         "notesAction": "Utgivelsesnotater",

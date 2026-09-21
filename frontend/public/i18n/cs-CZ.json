@@ -314,6 +314,7 @@
         "title": "Aktualizovat LealFinance",
         "intro": "Je k dispozici verze {{version}}. Ve složce LealFinance spusťte:",
         "tagNote": "task update nejprve zálohuje vaši databázi. S TAG=latest v souboru .env nainstaluje nejnovější vydání; pokud je TAG pevně nastaven na verzi, určuje tato značka, která verze se stáhne.",
+        "checkoutNote": "Pokud starší kopie repozitáře nemá příkaz task update, nejprve spusťte git pull --ff-only na její větvi main. Pokud Git nahlásí chybu, vyřešte ji před pokračováním.",
         "installNote": "Chcete-li aktualizovat bez předchozí zálohy, spusťte toto (za proxy TLS Caddy použijte task install:tls):",
         "backupAction": "Pokyny k zálohování",
         "notesAction": "Poznámky k verzi",

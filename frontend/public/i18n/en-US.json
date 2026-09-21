@@ -314,6 +314,7 @@
         "title": "Update LealFinance",
         "intro": "Version {{version}} is available. From your LealFinance folder, run:",
         "tagNote": "task update backs up your database first. With TAG=latest in your .env it installs the newest release; if TAG is pinned to a version, that tag decides which version is pulled.",
+        "checkoutNote": "If an older checkout has no task update command, first run git pull --ff-only on its main branch. If Git reports an error, resolve it before continuing.",
         "installNote": "To update without backing up first, run this instead (use task install:tls behind the Caddy TLS proxy):",
         "backupAction": "Backup instructions",
         "notesAction": "Release notes",

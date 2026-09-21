@@ -63,9 +63,9 @@ created on an empty instance becomes the administrator; after that, an
 administrator invites everyone else.
 
 To update, run `task update`. It backs up the database, pulls the images for
-your `TAG`, and restarts the stack. Administrators also see an in-app banner
-when a newer release is published - see
-[`docs/homelab-deploy.md#updates`](docs/homelab-deploy.md#updates).
+your `TAG`, and restarts the stack. Older checkouts without this command need
+a one-time checkout refresh first; see [Updates](docs/homelab-deploy.md#updates).
+Administrators also see an in-app banner when a newer release is published.
 
 See [`docs/homelab-deploy.md`](docs/homelab-deploy.md) for full requirements,
 backups, and exposing the app safely.

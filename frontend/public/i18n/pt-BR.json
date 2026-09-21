@@ -314,6 +314,7 @@
         "title": "Atualizar o LealFinance",
         "intro": "A versão {{version}} está disponível. Na pasta do LealFinance, execute:",
         "tagNote": "O task update faz backup do banco de dados primeiro. Com TAG=latest no seu .env, ele instala a versão mais recente; se TAG estiver fixada em uma versão, essa tag define qual versão será baixada.",
+        "checkoutNote": "Se uma cópia local antiga não tiver o comando task update, execute primeiro git pull --ff-only na branch main dela. Se o Git informar um erro, resolva-o antes de continuar.",
         "installNote": "Para atualizar sem fazer backup antes, execute isto (use task install:tls com o proxy TLS Caddy):",
         "backupAction": "Instruções de backup",
         "notesAction": "Notas da versão",
