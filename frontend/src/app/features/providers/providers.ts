@@ -1,13 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { ConfirmService } from '../../core/confirm.service';
+import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import {
   AgentProviderId,
   AgentProviderStatus,
   AgentReasoningEffort,
 } from '../../domain/models/agent-provider';
+import { McpToken } from '../../domain/models/agent-chat';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
@@ -31,7 +34,9 @@ import { ProviderLinkModal } from './provider-link-modal';
 })
 export class Providers {
   private readonly repository = inject(AgentProviderRepository);
+  private readonly agentChatRepo = inject(AgentChatRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly locale = inject(TranslocoLocaleService);
 
   protected readonly providersResource = rxResource({ stream: () => this.repository.list() });
 
@@ -41,6 +46,10 @@ export class Providers {
   protected readonly testResult = signal<{ provider: AgentProviderId; ok: boolean } | undefined>(
     undefined,
   );
+  protected readonly mcpToken = signal<McpToken | undefined>(undefined);
+  protected readonly mcpBusy = signal(false);
+  protected readonly mcpCopied = signal(false);
+  protected readonly mcpError = signal(false);
 
   protected openLink(provider: AgentProviderStatus): void {
     this.linkModalProvider.set(provider);
@@ -97,4 +106,30 @@ export class Providers {
     });
   }
 
+  protected generateMcpToken(): void {
+    this.mcpBusy.set(true);
+    this.mcpToken.set(undefined);
+    this.mcpCopied.set(false);
+    this.mcpError.set(false);
+    this.agentChatRepo.mintMcpToken().subscribe({
+      next: (token) => {
+        this.mcpToken.set(token);
+        this.mcpBusy.set(false);
+      },
+      error: () => {
+        this.mcpBusy.set(false);
+        this.mcpError.set(true);
+      },
+    });
+  }
+
+  protected copyMcpToken(): void {
+    const token = this.mcpToken()?.token;
+    if (!token) return;
+    void globalThis.navigator.clipboard?.writeText(token).then(() => this.mcpCopied.set(true));
+  }
+
+  protected formatMcpExpiresAt(value: string): string {
+    return this.locale.localizeDate(value, undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  }
 }

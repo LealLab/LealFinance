@@ -81,10 +81,10 @@ def _bearer_token(headers: list[tuple[bytes, bytes]]) -> str | None:
     return None
 
 
-async def _chat_allowed(user_id: UUID) -> bool:
+async def _admin_allowed(user_id: UUID) -> bool:
     async with session_scope() as db:
         user = await db.get(User, user_id)
-    return bool(user and user.is_active and (user.role == ROLE_ADMIN or user.ai_chat_enabled))
+    return bool(user and user.is_active and user.role == ROLE_ADMIN)
 
 
 async def _send_error(send: Send, status: int, code: str) -> None:
@@ -119,7 +119,7 @@ class _BearerAuth:
 
         token = _bearer_token(scope.get("headers", []))
         user_id = crypto.verify_mcp_token(token, max_age=MCP_TOKEN_TTL_SECONDS) if token else None
-        if user_id is None or not await _chat_allowed(user_id):
+        if user_id is None or not await _admin_allowed(user_id):
             await _send_error(send, 401, "agents.chat_not_allowed")
             return
 

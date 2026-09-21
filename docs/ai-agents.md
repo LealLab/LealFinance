@@ -13,13 +13,13 @@ and never call a provider.
 
 ## Access
 
-Provider linking (`/agents/providers/*`) stays administrator-only. Active
-administrators always have chat access. Members are gated by `ai_chat_enabled`,
-a flag an administrator sets from Administration -> Users
-(`PATCH /auth/users/{id}`), off by default. The same rule governs the MCP
-server, so clearing the flag revokes a member's access immediately - including
-outstanding MCP tokens. An administrator's stored flag is preserved if they
-are later demoted, at which point it governs their member access.
+Provider linking (`/agents/providers/*`) and MCP token issuance stay
+administrator-only. Active administrators always have chat access. Members are
+gated by `ai_chat_enabled`, a flag an administrator sets from Administration ->
+Users (`PATCH /auth/users/{id}`), off by default. That flag grants members
+in-app chat only; the standalone MCP server accepts active administrators only.
+Demoting or deactivating an administrator revokes their existing MCP tokens
+immediately.
 
 ## Custom instructions
 
@@ -122,9 +122,11 @@ included in backup export/restore.
 
 The `agents` Compose profile also starts a standalone MCP server
 (`app/mcp/server.py`, port 8001, unpublished) exposing the same tool set to
-external MCP clients such as Claude Desktop. It authenticates with a per-user
+external MCP clients such as Claude Desktop. It authenticates with a per-admin
 bearer token from `POST /api/v1/agents/mcp-token` - a Fernet value derived from
 `API_SECRET_KEY` carrying only the user id, valid for 30 days, shown once.
+Only active administrators can mint or use the token; member-issued tokens no
+longer work.
 
 The MCP server exposes the same tools as the in-app chat, writes included.
 The in-app chat asks the user to confirm each write; an MCP client is expected to
@@ -133,10 +135,9 @@ do that in its own host UI, and every MCP call is journaled so it can be undone
 to the token's user. Like the REST routes, the server answers `404
 agents.disabled` when `AGENTS_ENABLED=false`, so a token minted earlier stops
 working on an instance that has turned the agents off.
-Individual tokens cannot be revoked; the levers are clearing `ai_chat_enabled`
-for a member, deactivating the user, or rotating `API_SECRET_KEY`. Publishing
-port 8001 (or adding an nginx location) to reach it from the host is an
-operator decision.
+Individual tokens cannot be revoked; the levers are demoting or deactivating
+the administrator, or rotating `API_SECRET_KEY`. Publishing port 8001 (or
+adding an nginx location) to reach it from the host is an operator decision.
 
 ## Undoing an AI change
 

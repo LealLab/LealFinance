@@ -22,7 +22,6 @@ import { SessionService } from '../../core/session.service';
 import { Theme, ThemeService } from '../../core/theme.service';
 import { MarketDataCredentialRepository } from '../../data/market-data-credential.repository';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
-import { McpToken } from '../../domain/models/agent-chat';
 import {
   MarketDataCredentialStatus,
   MarketDataProvider,
@@ -82,10 +81,6 @@ export class Settings {
   protected readonly restoreLoading = signal(false);
   protected readonly restoreErrorCode = signal<string | undefined>(undefined);
   protected readonly backupStatus = signal<'exported' | 'restored' | undefined>(undefined);
-  protected readonly mcpToken = signal<McpToken | undefined>(undefined);
-  protected readonly mcpBusy = signal(false);
-  protected readonly mcpCopied = signal(false);
-  protected readonly mcpError = signal(false);
 
   // --- Custom AI instructions ---
   protected readonly aiInstructions = signal('');
@@ -153,23 +148,6 @@ export class Settings {
     this.preferences.setInvestmentsEnabled(value);
   }
 
-  protected generateMcpToken(): void {
-    this.mcpBusy.set(true);
-    this.mcpToken.set(undefined);
-    this.mcpCopied.set(false);
-    this.mcpError.set(false);
-    this.agentChatRepo.mintMcpToken().subscribe({
-      next: (token) => {
-        this.mcpToken.set(token);
-        this.mcpBusy.set(false);
-      },
-      error: () => {
-        this.mcpBusy.set(false);
-        this.mcpError.set(true);
-      },
-    });
-  }
-
   private loadAiInstructions(): void {
     const user = this.session.user();
     if (user?.role !== 'admin' && !user?.aiChatEnabled) return;
@@ -212,16 +190,6 @@ export class Settings {
         this.aiInstructionsReason.set(typeof reason === 'string' ? reason : undefined);
       },
     });
-  }
-
-  protected copyMcpToken(): void {
-    const token = this.mcpToken()?.token;
-    if (!token) return;
-    void globalThis.navigator.clipboard?.writeText(token).then(() => this.mcpCopied.set(true));
-  }
-
-  protected formatMcpExpiresAt(value: string): string {
-    return this.locale.localizeDate(value, undefined, { dateStyle: 'medium', timeStyle: 'short' });
   }
 
   protected openExport(): void {

@@ -255,7 +255,7 @@ Registration is invite-only, except the very first user on an instance.
 | DELETE | `/agents/conversations/{id}` | user | Deletes the conversation and its messages. |
 | POST | `/agents/conversations/{id}/messages` | user | Body `{content}`. Streams the assistant response as `text/event-stream`. Members need `ai_chat_enabled`. |
 | POST | `/agents/conversations/{id}/confirm` | user | Body `{tool_call_id, approved, arguments?}`. Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
-| POST | `/agents/mcp-token` | user | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Members need `ai_chat_enabled`. |
+| POST | `/agents/mcp-token` | admin | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Only active administrators can mint it. |
 | GET | `/agents/instructions` | user | → `{instructions}`, the caller's stored custom instructions, or `null`. |
 | PUT | `/agents/instructions` | user | Body `{instructions}` (max 2000 chars). Classified before it is stored; off-topic text is refused with `agents.instructions_rejected` and never saved. An empty value clears the field without contacting a provider. |
 | GET/POST | `/investments/wallets` | user | Investment wallets, each with a linked investment account. |
@@ -696,9 +696,10 @@ See [`ai-agents.md`](ai-agents.md) for provider setup, credential
 precedence, the OAuth linking flow, the tool set, and the MCP server.
 `provider` is one of `anthropic`, `openai`, `ollama`.
 
-Provider linking is administrator-only. Active administrators always have chat
-access; members are gated by the admin-set `ai_chat_enabled` flag on the user
-(see `PATCH /auth/users/{id}`).
+Provider linking and MCP token issuance are administrator-only. Active
+administrators always have chat access; members are gated by the admin-set
+`ai_chat_enabled` flag on the user (see `PATCH /auth/users/{id}`) for in-app
+chat. The standalone MCP server accepts active administrator tokens only.
 
 ### Custom instructions
 

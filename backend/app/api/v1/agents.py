@@ -81,8 +81,8 @@ async def test_provider(provider: str, admin: AdminUser, db: DbSession) -> Provi
 
 
 @router.post("/mcp-token", response_model=McpTokenRead)
-async def create_mcp_token(user: AiChatUser) -> McpTokenRead:
-    token = crypto.mint_mcp_token(user.id)
+async def create_mcp_token(admin: AdminUser) -> McpTokenRead:
+    token = crypto.mint_mcp_token(admin.id)
     expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
     return McpTokenRead(token=token, expires_at=expires_at)
 
