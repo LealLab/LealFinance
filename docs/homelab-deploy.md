@@ -257,6 +257,10 @@ your checkout it:
 
 It never edits `.env`.
 
+To update without taking a backup first, run `task install` instead (or
+`task install:tls` behind the TLS proxy). It pulls and restarts the same way but
+skips the backup, so only use it when you already have a recent one.
+
 ### Choosing a `TAG`
 
 - `TAG=latest` (recommended): `task update` moves you to the newest published

@@ -314,8 +314,11 @@
         "title": "LealFinance aktualisieren",
         "intro": "Version {{version}} ist verfügbar. Führen Sie im LealFinance-Ordner Folgendes aus:",
         "tagNote": "task update sichert zuerst Ihre Datenbank. Mit TAG=latest in Ihrer .env wird die neueste Version installiert; ist TAG auf eine Version festgelegt, bestimmt dieses Tag, welche Version geladen wird.",
+        "installNote": "Um ohne vorherige Sicherung zu aktualisieren, führen Sie stattdessen Folgendes aus (task install:tls hinter dem Caddy-TLS-Proxy):",
         "backupAction": "Anleitung zur Sicherung",
-        "notesAction": "Versionshinweise"
+        "notesAction": "Versionshinweise",
+        "copy": "Kopieren",
+        "copied": "Kopiert"
       },
       "backup": {
         "title": "Anleitung zur Sicherung",

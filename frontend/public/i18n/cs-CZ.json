@@ -314,8 +314,11 @@
         "title": "Aktualizovat LealFinance",
         "intro": "Je k dispozici verze {{version}}. Ve složce LealFinance spusťte:",
         "tagNote": "task update nejprve zálohuje vaši databázi. S TAG=latest v souboru .env nainstaluje nejnovější vydání; pokud je TAG pevně nastaven na verzi, určuje tato značka, která verze se stáhne.",
+        "installNote": "Chcete-li aktualizovat bez předchozí zálohy, spusťte toto (za proxy TLS Caddy použijte task install:tls):",
         "backupAction": "Pokyny k zálohování",
-        "notesAction": "Poznámky k verzi"
+        "notesAction": "Poznámky k verzi",
+        "copy": "Kopírovat",
+        "copied": "Zkopírováno"
       },
       "backup": {
         "title": "Pokyny k zálohování",

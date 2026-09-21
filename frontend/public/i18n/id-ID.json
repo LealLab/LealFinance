@@ -314,8 +314,11 @@
         "title": "Perbarui LealFinance",
         "intro": "Versi {{version}} tersedia. Dari folder LealFinance, jalankan:",
         "tagNote": "task update mencadangkan basis data Anda terlebih dahulu. Dengan TAG=latest di .env, versi terbaru akan dipasang; jika TAG disematkan ke suatu versi, tag itulah yang menentukan versi yang diunduh.",
+        "installNote": "Untuk memperbarui tanpa mencadangkan terlebih dahulu, jalankan ini (gunakan task install:tls di balik proxy TLS Caddy):",
         "backupAction": "Petunjuk pencadangan",
-        "notesAction": "Catatan rilis"
+        "notesAction": "Catatan rilis",
+        "copy": "Salin",
+        "copied": "Tersalin"
       },
       "backup": {
         "title": "Petunjuk pencadangan",

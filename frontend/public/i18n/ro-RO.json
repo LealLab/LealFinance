@@ -314,8 +314,11 @@
         "title": "Actualizează LealFinance",
         "intro": "Versiunea {{version}} este disponibilă. Din folderul LealFinance, rulează:",
         "tagNote": "task update face mai întâi o copie de rezervă a bazei de date. Cu TAG=latest în .env instalează ultima versiune; dacă TAG este fixat la o versiune, acea etichetă decide ce versiune se descarcă.",
+        "installNote": "Pentru a actualiza fără copie de rezervă prealabilă, rulează aceasta (folosește task install:tls în spatele proxy-ului TLS Caddy):",
         "backupAction": "Instrucțiuni pentru copia de rezervă",
-        "notesAction": "Note de lansare"
+        "notesAction": "Note de lansare",
+        "copy": "Copiază",
+        "copied": "Copiat"
       },
       "backup": {
         "title": "Instrucțiuni pentru copia de rezervă",

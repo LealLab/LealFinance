@@ -314,8 +314,11 @@
         "title": "Cập nhật LealFinance",
         "intro": "Đã có phiên bản {{version}}. Trong thư mục LealFinance, hãy chạy:",
         "tagNote": "task update sẽ sao lưu cơ sở dữ liệu của bạn trước. Với TAG=latest trong .env, nó cài bản phát hành mới nhất; nếu TAG được cố định vào một phiên bản, thẻ đó quyết định phiên bản nào được tải về.",
+        "installNote": "Để cập nhật mà không sao lưu trước, hãy chạy lệnh này (dùng task install:tls khi có proxy TLS Caddy):",
         "backupAction": "Hướng dẫn sao lưu",
-        "notesAction": "Ghi chú phát hành"
+        "notesAction": "Ghi chú phát hành",
+        "copy": "Sao chép",
+        "copied": "Đã sao chép"
       },
       "backup": {
         "title": "Hướng dẫn sao lưu",

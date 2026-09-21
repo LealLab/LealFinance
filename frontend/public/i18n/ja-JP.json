@@ -314,8 +314,11 @@
         "title": "LealFinance を更新",
         "intro": "バージョン {{version}} が利用可能です。LealFinance のフォルダーで次を実行してください:",
         "tagNote": "task update は最初にデータベースをバックアップします。.env に TAG=latest がある場合は最新リリースをインストールし、TAG が特定のバージョンに固定されている場合は、そのタグが取得するバージョンを決めます。",
+        "installNote": "事前にバックアップせずに更新するには、代わりに次を実行します(Caddy の TLS プロキシを使う場合は task install:tls):",
         "backupAction": "バックアップの手順",
-        "notesAction": "リリースノート"
+        "notesAction": "リリースノート",
+        "copy": "コピー",
+        "copied": "コピーしました"
       },
       "backup": {
         "title": "バックアップの手順",

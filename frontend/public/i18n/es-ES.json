@@ -314,8 +314,11 @@
         "title": "Actualizar LealFinance",
         "intro": "La versión {{version}} está disponible. Desde la carpeta de LealFinance, ejecuta:",
         "tagNote": "task update primero hace una copia de seguridad de tu base de datos. Con TAG=latest en tu .env instala la versión más reciente; si TAG está fijada a una versión, esa etiqueta decide qué versión se descarga.",
+        "installNote": "Para actualizar sin hacer antes una copia de seguridad, ejecuta esto (usa task install:tls con el proxy TLS de Caddy):",
         "backupAction": "Instrucciones de copia de seguridad",
-        "notesAction": "Notas de la versión"
+        "notesAction": "Notas de la versión",
+        "copy": "Copiar",
+        "copied": "Copiado"
       },
       "backup": {
         "title": "Instrucciones de copia de seguridad",

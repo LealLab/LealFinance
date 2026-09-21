@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
@@ -23,7 +24,7 @@ const BACKUP_DOCS_URL =
  */
 @Component({
   selector: 'app-update-banner',
-  imports: [TranslocoDirective, Button, Modal],
+  imports: [NgTemplateOutlet, TranslocoDirective, Button, Modal],
   templateUrl: './update-banner.html',
   styleUrls: ['./update-banner.scss', '../../shared/styles/markdown.scss'],
 })
@@ -38,6 +39,8 @@ export class UpdateBanner {
   );
 
   protected readonly modalOpen = signal(false);
+  /** The command whose copy button was last used, for the "Copied" label. */
+  protected readonly copiedCommand = signal<string | null>(null);
   protected readonly backupModalOpen = signal(false);
   protected readonly notesModalOpen = signal(false);
   protected readonly backupDocsUrl = BACKUP_DOCS_URL;
@@ -70,6 +73,18 @@ export class UpdateBanner {
     const version = this.latestVersion();
     if (version) localStorage.setItem(DISMISSED_VERSION_KEY, version);
     this.dismissedVersion.set(version ?? null);
+  }
+
+  protected copy(command: string): void {
+    const clipboard = globalThis.navigator.clipboard;
+    if (!clipboard) return;
+    void clipboard
+      .writeText(command)
+      .then(() => {
+        this.copiedCommand.set(command);
+        setTimeout(() => this.copiedCommand.set(null), 2000);
+      })
+      .catch(() => undefined);
   }
 
   protected openModal(): void {

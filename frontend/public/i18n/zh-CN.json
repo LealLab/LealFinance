@@ -314,8 +314,11 @@
         "title": "更新 LealFinance",
         "intro": "版本 {{version}} 已可用。请在 LealFinance 文件夹中运行:",
         "tagNote": "task update 会先备份您的数据库。如果 .env 中是 TAG=latest,它会安装最新版本;如果 TAG 固定为某个版本,则由该标签决定拉取哪个版本。",
+        "installNote": "如需在不先备份的情况下更新,请改为运行以下命令(使用 Caddy TLS 代理时请用 task install:tls):",
         "backupAction": "备份说明",
-        "notesAction": "发行说明"
+        "notesAction": "发行说明",
+        "copy": "复制",
+        "copied": "已复制"
       },
       "backup": {
         "title": "备份说明",

@@ -314,8 +314,11 @@
         "title": "Päivitä LealFinance",
         "intro": "Versio {{version}} on saatavilla. Suorita LealFinance-kansiossa:",
         "tagNote": "task update varmuuskopioi ensin tietokantasi. Kun .env-tiedostossa on TAG=latest, se asentaa uusimman julkaisun; jos TAG on lukittu tiettyyn versioon, tämä tunniste määrittää, mikä versio noudetaan.",
+        "installNote": "Jos haluat päivittää ilman varmuuskopiota, suorita tämä (käytä task install:tls Caddy TLS -välityspalvelimen takana):",
         "backupAction": "Varmuuskopio-ohjeet",
-        "notesAction": "Julkaisutiedot"
+        "notesAction": "Julkaisutiedot",
+        "copy": "Kopioi",
+        "copied": "Kopioitu"
       },
       "backup": {
         "title": "Varmuuskopio-ohjeet",

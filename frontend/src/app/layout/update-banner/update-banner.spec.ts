@@ -134,7 +134,31 @@ describe('UpdateBanner', () => {
     const text = fixture.nativeElement.textContent as string;
 
     expect(text).toContain('task update');
+    expect(text).toContain('task install');
     expect(text).not.toContain('docker compose');
+  });
+
+  it('copies a command to the clipboard and confirms it', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(globalThis.navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    });
+    const fixture = await render();
+
+    const buttons = [...fixture.nativeElement.querySelectorAll('button')] as HTMLButtonElement[];
+    const copyButtons = buttons.filter((b) => b.textContent?.trim() === 'Copy');
+    // task update + task install (update modal), task backup + task backup:verify.
+    expect(copyButtons).toHaveLength(4);
+
+    copyButtons[1].click();
+    await Promise.resolve();
+    fixture.detectChanges();
+
+    expect(writeText).toHaveBeenCalledWith('task install');
+    expect(fixture.componentInstance['copiedCommand']()).toBe('task install');
+    expect(copyButtons[1].textContent?.trim()).toBe('Copied');
+    expect(copyButtons[0].textContent?.trim()).toBe('Copy');
   });
 
   it('opens the backup modal in-app without navigating anywhere', async () => {

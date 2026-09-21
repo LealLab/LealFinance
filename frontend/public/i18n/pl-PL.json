@@ -314,8 +314,11 @@
         "title": "Zaktualizuj LealFinance",
         "intro": "Dostępna jest wersja {{version}}. W folderze LealFinance uruchom:",
         "tagNote": "task update najpierw tworzy kopię zapasową bazy danych. Z TAG=latest w pliku .env instaluje najnowsze wydanie; jeśli TAG jest przypięty do wersji, to ten tag decyduje, która wersja zostanie pobrana.",
+        "installNote": "Aby zaktualizować bez wcześniejszej kopii zapasowej, uruchom to (za proxy TLS Caddy użyj task install:tls):",
         "backupAction": "Instrukcja kopii zapasowej",
-        "notesAction": "Informacje o wydaniu"
+        "notesAction": "Informacje o wydaniu",
+        "copy": "Kopiuj",
+        "copied": "Skopiowano"
       },
       "backup": {
         "title": "Instrukcja kopii zapasowej",

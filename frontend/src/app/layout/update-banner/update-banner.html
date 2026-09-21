@@ -1,4 +1,15 @@
 <ng-container *transloco="let t">
+  <ng-template #command let-cmd>
+    <div class="mt-2 flex items-stretch gap-2">
+      <pre
+        class="min-w-0 flex-1 overflow-x-auto rounded-md border border-border bg-surface-sunken p-3 font-mono text-xs"
+      ><code>{{ cmd }}</code></pre>
+      <button appButton variant="secondary" size="sm" type="button" (click)="copy(cmd)">
+        {{ copiedCommand() === cmd ? t('layout.update.modal.copied') : t('layout.update.modal.copy') }}
+      </button>
+    </div>
+  </ng-template>
+
   @if (visible()) {
     <div
       class="mb-4 flex items-center justify-between gap-3 rounded-md border border-accent/40 bg-accent/10 p-3 text-sm text-content-primary"
@@ -18,10 +29,10 @@
 
   <app-modal [(open)]="modalOpen" [titleText]="t('layout.update.modal.title')">
     <p class="text-sm">{{ t('layout.update.modal.intro', { version: latestVersion() }) }}</p>
-    <pre
-      class="mt-2 overflow-x-auto rounded-md border border-border bg-surface-sunken p-3 font-mono text-xs"
-    ><code>task update</code></pre>
+    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task update' }" />
     <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.modal.tagNote') }}</p>
+    <p class="mt-3 text-sm">{{ t('layout.update.modal.installNote') }}</p>
+    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task install' }" />
     <div class="mt-4 flex flex-wrap gap-2">
       <button appButton variant="secondary" size="sm" type="button" (click)="openBackupModal()">
         {{ t('layout.update.modal.backupAction') }}
@@ -35,13 +46,9 @@
   <app-modal [(open)]="backupModalOpen" [titleText]="t('layout.update.backup.title')">
     <p class="text-sm">{{ t('layout.update.backup.why') }}</p>
     <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.backup.create') }}</p>
-    <pre
-      class="mt-1 overflow-x-auto rounded-md border border-border bg-surface-sunken p-3 font-mono text-xs"
-    ><code>task backup</code></pre>
+    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task backup' }" />
     <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.backup.verify') }}</p>
-    <pre
-      class="mt-1 overflow-x-auto rounded-md border border-border bg-surface-sunken p-3 font-mono text-xs"
-    ><code>task backup:verify</code></pre>
+    <ng-container *ngTemplateOutlet="command; context: { $implicit: 'task backup:verify' }" />
     <p class="mt-3 text-sm">{{ t('layout.update.backup.preserved') }}</p>
     <p class="mt-3 text-sm text-content-muted">{{ t('layout.update.backup.restore') }}</p>
     <div class="mt-4 flex flex-wrap justify-end gap-2">
