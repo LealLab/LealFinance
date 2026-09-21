@@ -7,6 +7,7 @@ so it is capped: past `MAX_MEMORIES` the oldest rows are dropped.
 from uuid import UUID
 
 from sqlalchemy import delete, func, select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.agent_memory import AgentMemory
@@ -23,15 +24,17 @@ async def list_memories(db: AsyncSession, user_id: UUID) -> list[AgentMemory]:
 
 async def remember(db: AsyncSession, user_id: UUID, content: str) -> AgentMemory:
     """Store a fact; saving one the user already has returns the existing row."""
-    existing = await db.scalar(owned(AgentMemory, user_id).where(AgentMemory.content == content))
-    if existing is not None:
-        return existing
-
     # clock_timestamp() rather than the column's now(): now() is frozen for the whole
     # transaction, which would make "oldest" ambiguous for rows saved within one.
-    memory = AgentMemory(user_id=user_id, content=content, created_at=func.clock_timestamp())
-    db.add(memory)
-    await db.flush()
+    memory = await db.scalar(
+        insert(AgentMemory)
+        .values(user_id=user_id, content=content, created_at=func.clock_timestamp())
+        .on_conflict_do_nothing(constraint="uq_agent_memories_user_id_content")
+        .returning(AgentMemory)
+    )
+    if memory is None:
+        result = await db.execute(owned(AgentMemory, user_id).where(AgentMemory.content == content))
+        return result.scalar_one()
 
     keep = (
         select(AgentMemory.id)
