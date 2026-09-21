@@ -135,6 +135,14 @@ class ImportSuggestRead(BaseModel):
     suggestions: list[ImportSuggestionRead]
 
 
+class MemoryRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    content: str
+    created_at: datetime
+
+
 class InstructionsRead(BaseModel):
     instructions: str | None
 

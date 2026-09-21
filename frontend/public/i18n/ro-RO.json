@@ -1507,6 +1507,17 @@
       "saved": "Salvat",
       "loadError": "Instrucțiunile salvate nu au putut fi încărcate. Reîncarcă pagina înainte de a le edita, pentru a nu le suprascrie."
     },
+    "memories": {
+      "title": "Memoria asistentului",
+      "description": "Informații pe care asistentul le-a salvat din conversațiile tale pentru a le ține minte în discuțiile următoare. Elimină-le pe cele pe care nu vrei să le păstreze.",
+      "empty": "Asistentul nu a salvat încă nimic în memorie.",
+      "added": "Salvat la {{date}}",
+      "remove": "Elimină",
+      "removeConfirm": {
+        "title": "Elimini această informație din memorie?",
+        "message": "Asistentul nu va mai ține minte acest lucru în conversațiile viitoare."
+      }
+    },
     "backup": {
       "title": "Copiere de siguranță și restaurare",
       "description": "Descarcă o copie portabilă a datelor sau înlocuiește datele curente dintr-o copie de siguranță.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Nu este configurat încă niciun furnizor AI.",
       "provider_unavailable": "Furnizorul AI nu este disponibil momentan.",
       "suggest_unreadable": "Răspunsul AI nu a putut fi citit. Încearcă din nou."
+    },
+    "agent_memory": {
+      "not_found": "Această informație nu mai există în memorie."
     },
     "auth": {
       "invalid_credentials": "Adresa de e-mail sau parola este incorectă.",

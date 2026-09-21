@@ -38,6 +38,28 @@ the user's language. Saving needs a reachable provider; clearing the field
 does not. The value is excluded from backup export/restore, so a restore
 cannot reinstate text without re-running the check.
 
+## Memories
+
+The assistant remembers durable facts about a user across conversations ("I get
+paid on the 5th"). It saves them itself with the `remember` tool
+(`app/agents/tools.py`), which is not confirmation-gated: a memory is a note the
+assistant keeps, not ledger data, so nothing needs approving or undoing. Each
+memory is one short sentence in `agent_memories`, scoped to the user, unique per
+user, and capped at 100 (the oldest are dropped) because the whole list is
+folded into every system prompt (`prompt.build`).
+
+Memory text comes from what the user said, so it is treated as untrusted: it is
+placed in a `<user_memories>` block behind a preface saying it is background
+data only, angle brackets are stripped so a fact cannot close the block, and it
+sits before the custom instructions so the rules keep the last word.
+
+Users see and delete individual memories under **Settings -> Assistant
+memories** (`GET /agents/memories`, `DELETE /agents/memories/{id}`); deleting one
+takes effect on the next message. There is no in-chat "forget" tool. Memories
+are not journaled (`UNJOURNALED_TABLES`) and, like chat history, are excluded
+from backup export/restore. `remember` is part of the shared tool set, so
+external MCP clients can call it too.
+
 ## Import categorization
 
 The transaction import page (`/transactions/import`) has an opt-in **AI Assist**

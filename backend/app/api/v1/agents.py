@@ -15,6 +15,7 @@ from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import ConflictError, NotFoundError
 from app.models.agent_conversation import AGENT_CONVERSATION_STATUS_AWAITING, AgentConversation
+from app.models.agent_memory import AgentMemory
 from app.schemas.agent import (
     AgentMessageRead,
     ConfirmCreate,
@@ -26,6 +27,7 @@ from app.schemas.agent import (
     InstructionsRead,
     InstructionsUpdate,
     McpTokenRead,
+    MemoryRead,
     MessageCreate,
     OAuthCompleteCreate,
     OAuthStartRead,
@@ -33,7 +35,13 @@ from app.schemas.agent import (
     ProviderStatusRead,
     ProviderTestRead,
 )
-from app.services import agent_chat, agent_instructions, agent_providers, import_suggest
+from app.services import (
+    agent_chat,
+    agent_instructions,
+    agent_memories,
+    agent_providers,
+    import_suggest,
+)
 
 
 def _require_agents_enabled() -> None:
@@ -106,6 +114,16 @@ async def update_instructions(
 ) -> InstructionsRead:
     stored = await agent_instructions.save(db, user, payload.instructions)
     return InstructionsRead(instructions=stored)
+
+
+@router.get("/memories", response_model=list[MemoryRead])
+async def list_memories(user: AiChatUser, db: DbSession) -> list[AgentMemory]:
+    return await agent_memories.list_memories(db, user.id)
+
+
+@router.delete("/memories/{memory_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_memory(memory_id: UUID, user: AiChatUser, db: DbSession) -> None:
+    await agent_memories.delete_memory(db, user.id, memory_id)
 
 
 @router.get("/conversations", response_model=list[ConversationRead])

@@ -35,6 +35,7 @@ describe('Settings', () => {
   let agentChatRepo: {
     getInstructions: ReturnType<typeof vi.fn>;
     saveInstructions: ReturnType<typeof vi.fn>;
+    listMemories: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(async () => {
@@ -44,6 +45,7 @@ describe('Settings', () => {
     agentChatRepo = {
       getInstructions: vi.fn().mockReturnValue(of('')),
       saveInstructions: vi.fn().mockReturnValue(of('')),
+      listMemories: vi.fn().mockReturnValue(of([])),
     };
     // Stubbed rather than injected `{ optional: true }`: IdentityApiService is
     // providedIn:'root', so it would always resolve and then fail on HttpClient.

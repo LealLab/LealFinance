@@ -24,7 +24,7 @@ from app.models.agent_conversation import (
 from app.models.agent_message import AgentMessage
 from app.models.user import User
 from app.schemas.agent import ConversationCreate
-from app.services import change_journal
+from app.services import agent_memories, change_journal
 from app.services.agent_providers import _require_known_provider
 from app.services.ownership import get_owned, list_owned
 
@@ -154,6 +154,11 @@ async def _heartbeat(events: AsyncIterator[bytes], interval: float = 15.0) -> As
             await producer
 
 
+async def _system_prompt(db: AsyncSession, user: User, today: date | None) -> str:
+    memories = await agent_memories.list_memories(db, user.id)
+    return prompt.build(user, today or date.today(), [memory.content for memory in memories])
+
+
 async def stream_message(
     user_id: UUID, conversation_id: UUID, content: str, today: date | None = None
 ) -> AsyncIterator[bytes]:
@@ -177,7 +182,7 @@ async def stream_message(
             yield _sse_frame("error", {"code": "agents.not_configured", "params": {}})
             return
 
-        system = prompt.build(user, today or date.today())
+        system = await _system_prompt(db, user, today)
         async for event in loop.run_turn(db, conversation, turns, credential, system):
             yield _serialize(event)
 
@@ -274,6 +279,6 @@ async def stream_confirm(
             return
 
         turns = loop.rehydrate_turns(await _messages(db, conversation.id))
-        system = prompt.build(user, today or date.today())
+        system = await _system_prompt(db, user, today)
         async for event in loop.run_turn(db, conversation, turns, credential, system):
             yield _serialize(event)

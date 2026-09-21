@@ -41,6 +41,7 @@ UNJOURNALED_TABLES = frozenset(
     {
         "agent_conversations",
         "agent_credentials",
+        "agent_memories",
         "agent_messages",
         "change_journal",
         "import_idempotency",

@@ -1507,6 +1507,17 @@
       "saved": "Opgeslagen",
       "loadError": "We konden je opgeslagen instructies niet laden. Laad de pagina opnieuw voordat je ze bewerkt, zodat je ze niet overschrijft."
     },
+    "memories": {
+      "title": "Herinneringen van de assistent",
+      "description": "Feiten die de assistent uit je chats heeft opgeslagen om ze te onthouden in latere gesprekken. Verwijder wat je niet wilt dat hij bewaart.",
+      "empty": "De assistent heeft nog geen herinneringen opgeslagen.",
+      "added": "Opgeslagen op {{date}}",
+      "remove": "Verwijderen",
+      "removeConfirm": {
+        "title": "Deze herinnering verwijderen?",
+        "message": "De assistent onthoudt dit niet meer in toekomstige gesprekken."
+      }
+    },
     "backup": {
       "title": "Back-up en herstel",
       "description": "Download een overdraagbare kopie van je gegevens of vervang je huidige gegevens vanuit een back-up.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Er is nog geen AI-provider geconfigureerd.",
       "provider_unavailable": "De AI-provider is momenteel niet beschikbaar.",
       "suggest_unreadable": "Het AI-antwoord kon niet worden gelezen. Probeer het opnieuw."
+    },
+    "agent_memory": {
+      "not_found": "Deze herinnering bestaat niet meer."
     },
     "auth": {
       "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",

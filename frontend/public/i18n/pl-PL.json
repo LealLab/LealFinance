@@ -1507,6 +1507,17 @@
       "saved": "Zapisano",
       "loadError": "Nie udało się wczytać zapisanych instrukcji. Odśwież stronę przed ich edycją, aby ich nie nadpisać."
     },
+    "memories": {
+      "title": "Pamięć asystenta",
+      "description": "Fakty, które asystent zapisał z Twoich rozmów, aby pamiętać je w kolejnych konwersacjach. Usuń te, których nie chcesz, aby przechowywał.",
+      "empty": "Asystent nie zapisał jeszcze niczego w pamięci.",
+      "added": "Zapisano: {{date}}",
+      "remove": "Usuń",
+      "removeConfirm": {
+        "title": "Usunąć ten wpis z pamięci?",
+        "message": "Asystent nie będzie już tego pamiętać w przyszłych rozmowach."
+      }
+    },
     "backup": {
       "title": "Kopia zapasowa i przywracanie",
       "description": "Pobierz przenośną kopię swoich danych lub zastąp bieżące dane danymi z kopii zapasowej.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
       "provider_unavailable": "Dostawca AI jest obecnie niedostępny.",
       "suggest_unreadable": "Nie udało się odczytać odpowiedzi AI. Spróbuj ponownie."
+    },
+    "agent_memory": {
+      "not_found": "Tego wpisu w pamięci już nie ma."
     },
     "auth": {
       "invalid_credentials": "Podany adres e-mail lub hasło są nieprawidłowe.",

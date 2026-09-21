@@ -1507,6 +1507,17 @@
       "saved": "Tersimpan",
       "loadError": "Instruksi tersimpan Anda tidak dapat dimuat. Muat ulang halaman sebelum mengedit agar tidak menimpanya."
     },
+    "memories": {
+      "title": "Memori asisten",
+      "description": "Fakta yang disimpan asisten dari obrolan Anda agar dapat diingatnya di percakapan berikutnya. Hapus yang tidak ingin Anda biarkan disimpan.",
+      "empty": "Asisten belum menyimpan memori apa pun.",
+      "added": "Disimpan pada {{date}}",
+      "remove": "Hapus",
+      "removeConfirm": {
+        "title": "Hapus memori ini?",
+        "message": "Asisten tidak akan lagi mengingat hal ini di percakapan mendatang."
+      }
+    },
     "backup": {
       "title": "Pencadangan dan pemulihan",
       "description": "Unduh salinan portabel data Anda atau ganti data saat ini dari cadangan.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Belum ada penyedia AI yang dikonfigurasi.",
       "provider_unavailable": "Penyedia AI sedang tidak tersedia.",
       "suggest_unreadable": "Respons AI tidak dapat dibaca. Coba lagi."
+    },
+    "agent_memory": {
+      "not_found": "Memori ini sudah tidak ada."
     },
     "auth": {
       "invalid_credentials": "Email atau kata sandi salah.",

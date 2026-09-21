@@ -1507,6 +1507,17 @@
       "saved": "Enregistré",
       "loadError": "Impossible de charger vos instructions enregistrées. Rechargez la page avant de les modifier pour ne pas les écraser."
     },
+    "memories": {
+      "title": "Mémoire de l'assistant",
+      "description": "Informations que l'assistant a retenues de vos discussions pour s'en souvenir lors de conversations ultérieures. Supprimez celles que vous ne souhaitez pas qu'il conserve.",
+      "empty": "L'assistant n'a encore rien mémorisé.",
+      "added": "Enregistré le {{date}}",
+      "remove": "Supprimer",
+      "removeConfirm": {
+        "title": "Supprimer cette information de la mémoire ?",
+        "message": "L'assistant ne s'en souviendra plus lors des prochaines conversations."
+      }
+    },
     "backup": {
       "title": "Sauvegarde et restauration",
       "description": "Téléchargez une copie portable de vos données ou remplacez vos données actuelles à partir d’une sauvegarde.",
@@ -1925,6 +1936,9 @@
       "not_configured": "Aucun fournisseur d’IA n’est encore configuré.",
       "provider_unavailable": "Le fournisseur d’IA est actuellement indisponible.",
       "suggest_unreadable": "La réponse de l’IA n’a pas pu être lue. Réessayez."
+    },
+    "agent_memory": {
+      "not_found": "Cette information n'existe plus."
     },
     "auth": {
       "invalid_credentials": "L’adresse e-mail ou le mot de passe est incorrect.",

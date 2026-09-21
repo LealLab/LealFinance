@@ -1507,6 +1507,17 @@
       "saved": "Sparat",
       "loadError": "Det gick inte att läsa in dina sparade instruktioner. Ladda om sidan innan du redigerar dem så att du inte skriver över dem."
     },
+    "memories": {
+      "title": "Assistentens minnen",
+      "description": "Fakta som assistenten har sparat från dina chattar så att den kan minnas dem i senare samtal. Ta bort sådant du inte vill att den ska behålla.",
+      "empty": "Assistenten har inte sparat några minnen ännu.",
+      "added": "Sparad {{date}}",
+      "remove": "Ta bort",
+      "removeConfirm": {
+        "title": "Ta bort det här minnet?",
+        "message": "Assistenten kommer inte längre att minnas detta i framtida samtal."
+      }
+    },
     "backup": {
       "title": "Säkerhetskopiering och återställning",
       "description": "Hämta en portabel kopia av dina data eller ersätt aktuella data från en säkerhetskopia.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Ingen AI-leverantör har konfigurerats ännu.",
       "provider_unavailable": "AI-leverantören är inte tillgänglig just nu.",
       "suggest_unreadable": "AI-svaret kunde inte läsas. Försök igen."
+    },
+    "agent_memory": {
+      "not_found": "Det minnet finns inte längre."
     },
     "auth": {
       "invalid_credentials": "E-postadressen eller lösenordet är felaktigt.",

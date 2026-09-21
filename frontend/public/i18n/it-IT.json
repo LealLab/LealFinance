@@ -1507,6 +1507,17 @@
       "saved": "Salvato",
       "loadError": "Non è stato possibile caricare le tue istruzioni salvate. Ricarica la pagina prima di modificarle per non sovrascriverle."
     },
+    "memories": {
+      "title": "Ricordi dell'assistente",
+      "description": "Informazioni che l'assistente ha salvato dalle tue chat per ricordarle nelle conversazioni successive. Rimuovi quelle che non vuoi che conservi.",
+      "empty": "L'assistente non ha ancora salvato nessun ricordo.",
+      "added": "Salvato il {{date}}",
+      "remove": "Rimuovi",
+      "removeConfirm": {
+        "title": "Rimuovere questo ricordo?",
+        "message": "L'assistente non lo ricorderà più nelle conversazioni future."
+      }
+    },
     "backup": {
       "title": "Backup e ripristino",
       "description": "Scarica una copia portatile dei tuoi dati o sostituisci i dati attuali da un backup.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Non è ancora configurato alcun provider AI.",
       "provider_unavailable": "Il provider AI non è al momento disponibile.",
       "suggest_unreadable": "Impossibile leggere la risposta dell’IA. Riprova."
+    },
+    "agent_memory": {
+      "not_found": "Questo ricordo non esiste più."
     },
     "auth": {
       "invalid_credentials": "Email o password non valide.",

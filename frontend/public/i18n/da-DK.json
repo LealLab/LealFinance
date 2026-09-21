@@ -1507,6 +1507,17 @@
       "saved": "Gemt",
       "loadError": "Vi kunne ikke indlæse dine gemte instruktioner. Genindlæs siden, før du redigerer, så du ikke overskriver dem."
     },
+    "memories": {
+      "title": "Assistentens hukommelse",
+      "description": "Fakta, som assistenten har gemt fra dine chats, så den kan huske dem i senere samtaler. Fjern det, du ikke vil have, at den beholder.",
+      "empty": "Assistenten har ikke gemt noget i hukommelsen endnu.",
+      "added": "Gemt {{date}}",
+      "remove": "Fjern",
+      "removeConfirm": {
+        "title": "Fjern dette punkt fra hukommelsen?",
+        "message": "Assistenten husker ikke længere dette i fremtidige samtaler."
+      }
+    },
     "backup": {
       "title": "Sikkerhedskopiering og gendannelse",
       "description": "Download en flytbar kopi af dine data, eller erstat dine nuværende data fra en sikkerhedskopi.",
@@ -1895,6 +1906,9 @@
       "not_configured": "Der er endnu ikke konfigureret nogen AI-udbyder.",
       "provider_unavailable": "AI-udbyderen er ikke tilgængelig lige nu.",
       "suggest_unreadable": "AI-svaret kunne ikke læses. Prøv igen."
+    },
+    "agent_memory": {
+      "not_found": "Det punkt findes ikke længere."
     },
     "auth": {
       "invalid_credentials": "E-mailadressen eller adgangskoden er forkert.",

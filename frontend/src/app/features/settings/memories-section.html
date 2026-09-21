@@ -1,0 +1,40 @@
+<app-card *transloco="let t">
+  <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.memories.title') }}</h2>
+  <p class="mb-4 max-w-md text-sm text-content-muted">{{ t('settings.memories.description') }}</p>
+
+  @if (loadError()) {
+    <p class="mb-3 text-sm text-negative" role="alert">{{ t('errors.error.generic') }}</p>
+  }
+
+  @if (memories().length) {
+    <ul class="flex flex-col gap-3">
+      @for (memory of memories(); track memory.id) {
+        <li class="flex items-start justify-between gap-3 rounded-md border border-border p-3">
+          <div class="min-w-0">
+            <p class="break-words text-sm text-content-primary">{{ memory.content }}</p>
+            <p class="mt-1 text-xs text-content-muted">
+              {{ t('settings.memories.added', { date: formatDate(memory.createdAt) }) }}
+            </p>
+          </div>
+          <button
+            appButton
+            type="button"
+            variant="danger"
+            size="sm"
+            class="shrink-0"
+            [disabled]="busy()"
+            (click)="remove(memory)"
+          >
+            {{ t('settings.memories.remove') }}
+          </button>
+        </li>
+      }
+    </ul>
+  } @else if (loaded()) {
+    <p class="text-sm text-content-muted">{{ t('settings.memories.empty') }}</p>
+  }
+
+  @if (errorCode(); as code) {
+    <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
+  }
+</app-card>

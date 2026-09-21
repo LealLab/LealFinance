@@ -1507,6 +1507,17 @@
       "saved": "已保存",
       "loadError": "无法加载已保存的指令。请在编辑前重新加载页面，以免覆盖原有指令。"
     },
+    "memories": {
+      "title": "助手的记忆",
+      "description": "助手从你的聊天中保存的信息，以便在之后的对话中记住。请移除你不希望它保留的内容。",
+      "empty": "助手还没有保存任何记忆。",
+      "added": "保存于 {{date}}",
+      "remove": "移除",
+      "removeConfirm": {
+        "title": "移除这条记忆？",
+        "message": "助手在今后的对话中将不再记得这件事。"
+      }
+    },
     "backup": {
       "title": "备份与恢复",
       "description": "下载可移植的数据副本，或使用备份替换当前数据。",
@@ -1895,6 +1906,9 @@
       "not_configured": "尚未配置 AI 提供商。",
       "provider_unavailable": "AI 提供商当前不可用。",
       "suggest_unreadable": "无法读取 AI 响应。请重试。"
+    },
+    "agent_memory": {
+      "not_found": "这条记忆已不存在。"
     },
     "auth": {
       "invalid_credentials": "邮箱或密码不正确。",
