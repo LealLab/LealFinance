@@ -1,0 +1,48 @@
+name: Label PR
+
+# Maps the conventional-commit prefix of a PR title to a label, which
+# .github/release.yml turns into a release-notes section. Uses
+# pull_request_target so fork PRs get a write token; it never checks out or
+# runs PR code, and the title only ever reaches the script through an env var.
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  label:
+    name: Label from title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          label=""
+          if [[ "$PR_TITLE" =~ ^chore:\ prepare\ v[0-9.]+\ release ]]; then
+            label="release"
+          elif [[ "$PR_TITLE" =~ ^(chore|build|ci)\(deps(-dev)?\)!?: ]]; then
+            label="dependencies"
+          elif [[ "$PR_TITLE" =~ ^([a-z]+)(\([^\)]*\))?!?: ]]; then
+            case "${BASH_REMATCH[1]}" in
+              feat) label="enhancement" ;;
+              fix) label="bug" ;;
+              docs) label="documentation" ;;
+              perf) label="performance" ;;
+              ci) label="ci" ;;
+            esac
+          fi
+
+          # No label: the PR falls into the Maintenance catch-all.
+          [ -n "$label" ] || exit 0
+
+          # Adds only; a label set by hand is never removed.
+          gh label create "$label" > /dev/null 2>&1 || true
+          gh pr edit "$PR_NUMBER" --add-label "$label"

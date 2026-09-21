@@ -1,5 +1,36 @@
-// Utility classes in update-banner.html cover all styling; this file only
-// exists to satisfy the sibling styleUrl convention (see sidebar.scss).
+// Utility classes in update-banner.html cover most styling; the release notes
+// are rendered HTML (`[innerHTML]`), so their section colors live here under
+// `::ng-deep`. This file also satisfies the sibling styleUrl convention (see
+// sidebar.scss).
 :host {
   display: block;
+}
+
+.md-release ::ng-deep {
+  h2 {
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid color-mix(in srgb, var(--section, var(--border-strong)) 45%, transparent);
+    color: var(--section, var(--content-primary));
+  }
+
+  h2.rn-features {
+    --section: var(--accent);
+  }
+
+  h2.rn-fixes,
+  h2.rn-security {
+    --section: var(--negative);
+  }
+
+  h2.rn-performance {
+    --section: var(--warning);
+  }
+
+  h2.rn-docs {
+    --section: var(--positive);
+  }
+
+  li::marker {
+    color: var(--accent);
+  }
 }

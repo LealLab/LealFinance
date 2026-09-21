@@ -28,6 +28,7 @@ Prefer these Taskfile targets over raw `uv`, `pnpm`, or Compose commands.
 | Frontend build | `task frontend:build` |
 | Translation keys | `task i18n:validate` |
 | Full stack up | `task up` |
+| Update a published-image install | `task update` |
 
 Migration changes must pass upgrade -> downgrade -> upgrade. `task backend:test`
 uses its own `lealfinance_test` database (auto-created) and refuses to run

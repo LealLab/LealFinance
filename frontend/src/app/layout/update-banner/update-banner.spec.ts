@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { UpdateStatus, User } from '../../core/identity.models';
 import { SessionService } from '../../core/session.service';
-import { provideTestTransloco } from '../../../testing/transloco';
+import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 import { UpdateBanner } from './update-banner';
 
 const ADMIN: User = {
@@ -29,6 +29,9 @@ const UPDATE_STATUS: UpdateStatus = {
   latestVersion: 'v1.2.0',
   updateAvailable: true,
   releaseUrl: 'https://github.com/LealLab/LealFinance/releases/tag/v1.2.0',
+  releaseNotes:
+    '## Features\n\n* feat: new thing by @ada in https://github.com/LealLab/LealFinance/pull/1\n',
+  publishedAt: '2026-09-01T12:00:00Z',
 };
 
 describe('UpdateBanner', () => {
@@ -41,6 +44,7 @@ describe('UpdateBanner', () => {
         provideTestTransloco('en-US'),
       ],
       providers: [
+        provideTestTranslocoLocale('en-US'),
         provideZonelessChangeDetection(),
         { provide: IdentityApiService, useValue: api },
         { provide: SessionService, useValue: { user: signal(user) } },
@@ -113,5 +117,121 @@ describe('UpdateBanner', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance['modalOpen']()).toBe(true);
+  });
+
+  async function render(status: UpdateStatus = UPDATE_STATUS) {
+    api.updateStatus.mockReturnValue(of(status));
+    await setup(ADMIN);
+    const fixture = TestBed.createComponent(UpdateBanner);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('recommends `task update` in the update modal instead of raw compose commands', async () => {
+    const fixture = await render();
+    const text = fixture.nativeElement.textContent as string;
+
+    expect(text).toContain('task update');
+    expect(text).toContain('task install');
+    expect(text).not.toContain('docker compose');
+    expect(text).toContain('git pull --ff-only');
+    expect(text).toContain('If Git reports an error, resolve it before continuing.');
+  });
+
+  it('copies a command to the clipboard and confirms it', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(globalThis.navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    });
+    const fixture = await render();
+
+    const buttons = [...fixture.nativeElement.querySelectorAll('button')] as HTMLButtonElement[];
+    const copyButtons = buttons.filter((b) => b.textContent?.trim() === 'Copy');
+    // task update + task install (update modal), task backup + task backup:verify.
+    expect(copyButtons).toHaveLength(4);
+
+    copyButtons[1].click();
+    await Promise.resolve();
+    fixture.detectChanges();
+
+    expect(writeText).toHaveBeenCalledWith('task install');
+    expect(fixture.componentInstance['copiedCommand']()).toBe('task install');
+    expect(copyButtons[1].textContent?.trim()).toBe('Copied');
+    expect(copyButtons[0].textContent?.trim()).toBe('Copy');
+    // The copied state tints the button green while keeping the button's own classes.
+    expect(copyButtons[1].classList).toContain('text-positive!');
+    expect(copyButtons[1].classList).toContain('rounded');
+    expect(copyButtons[0].classList).not.toContain('text-positive!');
+  });
+
+  it('opens the backup modal in-app without navigating anywhere', async () => {
+    const fixture = await render();
+
+    fixture.componentInstance['openBackupModal']();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['backupModalOpen']()).toBe(true);
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('task backup');
+    expect(text).toContain('task backup:verify');
+    // The only outbound link is the explicit docs button.
+    const external = [...fixture.nativeElement.querySelectorAll('a[href]')].map(
+      (a) => (a as HTMLAnchorElement).href,
+    );
+    expect(external).toContain(
+      'https://github.com/LealLab/LealFinance/blob/main/docs/homelab-deploy.md#backups',
+    );
+  });
+
+  it('shows release notes, the version and the date in the notes modal', async () => {
+    const fixture = await render();
+
+    fixture.componentInstance['openNotesModal']();
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(fixture.componentInstance['notesModalOpen']()).toBe(true);
+    expect(text).toContain('Release notes v1.2.0');
+    expect(text).toContain('Sep 1, 2026');
+    expect(fixture.nativeElement.querySelector('.md-content h2')?.textContent).toBe('Features');
+  });
+
+  it('opens links inside the release notes in a new tab', async () => {
+    const fixture = await render();
+
+    const link = fixture.nativeElement.querySelector('.md-content a') as HTMLAnchorElement;
+    expect(link.target).toBe('_blank');
+    expect(link.rel).toContain('noopener');
+  });
+
+  it('colors known release-note sections and leaves other headings alone', async () => {
+    const fixture = await render({
+      ...UPDATE_STATUS,
+      releaseNotes: "## Features\n\n* a\n\n## Bug Fixes\n\n* b\n\n## What's Changed\n\n* c\n",
+    });
+
+    const classes = [...fixture.nativeElement.querySelectorAll('.md-release h2')].map(
+      (h) => (h as HTMLElement).className,
+    );
+    expect(classes).toEqual(['rn-features', 'rn-fixes', '']);
+  });
+
+  it('links to the full release on GitHub from the notes modal', async () => {
+    const fixture = await render();
+
+    const hrefs = [...fixture.nativeElement.querySelectorAll('a[href]')].map(
+      (a) => (a as HTMLAnchorElement).href,
+    );
+    expect(hrefs).toContain('https://github.com/LealLab/LealFinance/releases/tag/v1.2.0');
+  });
+
+  it('shows a fallback when the release has no notes', async () => {
+    const fixture = await render({ ...UPDATE_STATUS, releaseNotes: undefined });
+
+    expect(fixture.nativeElement.querySelector('.md-content')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('No release notes were published');
   });
 });

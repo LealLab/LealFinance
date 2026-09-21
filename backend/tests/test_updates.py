@@ -85,6 +85,8 @@ async def test_tagged_build_behind_latest_reports_update_available(
         return {
             "tag_name": "v1.2.0",
             "html_url": "https://github.com/LealLab/LealFinance/releases/tag/v1.2.0",
+            "body": "## Features\n\n* feat: something new",
+            "published_at": "2026-09-01T12:00:00Z",
         }
 
     monkeypatch.setattr(updates_module, "_fetch_latest_release", _fake_fetch)
@@ -96,3 +98,27 @@ async def test_tagged_build_behind_latest_reports_update_available(
     assert body["latest_version"] == "v1.2.0"
     assert body["update_available"] is True
     assert body["release_url"] == "https://github.com/LealLab/LealFinance/releases/tag/v1.2.0"
+    assert body["release_notes"] == "## Features\n\n* feat: something new"
+    assert body["published_at"] == "2026-09-01T12:00:00Z"
+
+
+async def test_release_without_body_reports_no_notes(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(get_settings(), "update_check_enabled", True)
+    monkeypatch.setattr(get_settings(), "app_version", "v1.0.0")
+    await _authed(client, db_session, "no-notes@example.com")
+
+    async def _fake_fetch() -> dict | None:
+        return {
+            "tag_name": "v1.2.0",
+            "html_url": "https://github.com/LealLab/LealFinance/releases/tag/v1.2.0",
+            "body": None,
+        }
+
+    monkeypatch.setattr(updates_module, "_fetch_latest_release", _fake_fetch)
+
+    body = (await client.get("/api/v1/meta/update-status")).json()
+    assert body["update_available"] is True
+    assert body["release_notes"] is None
+    assert body["published_at"] is None

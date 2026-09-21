@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Oppdater LealFinance",
-        "intro": "En nyere versjon er tilgjengelig. Oppdater en homelab-installasjon med:",
-        "pinStep": "Sett først TAG til den nye versjonen i .env-filen din.",
-        "backupWarning": "Ta sikkerhetskopi av databasen din før du oppdaterer.",
-        "notesLink": "Se utgivelsesnotater"
+        "intro": "Versjon {{version}} er tilgjengelig. Kjør følgende i LealFinance-mappen:",
+        "tagNote": "task update tar først sikkerhetskopi av databasen din. Med TAG=latest i .env installeres den nyeste versjonen; hvis TAG er låst til en versjon, avgjør den taggen hvilken versjon som hentes.",
+        "checkoutNote": "Hvis en eldre lokal kopi mangler kommandoen task update, kjør først git pull --ff-only på main-grenen. Hvis Git melder en feil, må du løse den før du fortsetter.",
+        "installNote": "Hvis du vil oppdatere uten å ta sikkerhetskopi først, kjører du dette (bruk task install:tls bak Caddy TLS-proxyen):",
+        "backupAction": "Instruksjoner for sikkerhetskopi",
+        "notesAction": "Utgivelsesnotater",
+        "copy": "Kopier",
+        "copied": "Kopiert"
+      },
+      "backup": {
+        "title": "Instruksjoner for sikkerhetskopi",
+        "why": "Ta sikkerhetskopi før hver oppgradering. Hvis en migrering feiler halvveis, står databasen igjen endret, og å bytte tilbake til den gamle versjonen angrer ikke det – en sikkerhetskopi gjør det.",
+        "create": "Opprett en sikkerhetskopi:",
+        "verify": "Kontroller at den nyeste sikkerhetskopien kan gjenopprettes uten problemer:",
+        "preserved": "Sikkerhetskopien er en komprimert dump av PostgreSQL-databasen din – alle kontoer, transaksjoner, budsjetter og innstillinger – lagret i ./backups. Den inkluderer ikke .env-filen: ta vare på en kopi, særlig av API_SECRET_KEY, ellers fungerer ikke gjenopprettede økter og lagrede påloggingsopplysninger.",
+        "restore": "Trinnene for gjenoppretting står i den fullstendige dokumentasjonen om sikkerhetskopi.",
+        "docsLink": "Se full dokumentasjon om sikkerhetskopi på GitHub"
+      },
+      "notes": {
+        "title": "Utgivelsesnotater {{version}}",
+        "published": "Utgitt {{date}}",
+        "empty": "Det er ikke publisert utgivelsesnotater for denne versjonen.",
+        "githubLink": "Se hele utgivelsen på GitHub"
       }
     }
   },

@@ -99,4 +99,7 @@ export interface UpdateStatus {
   latestVersion?: string;
   updateAvailable: boolean;
   releaseUrl?: string;
+  /** Markdown release body, grouped into sections by .github/release.yml. */
+  releaseNotes?: string;
+  publishedAt?: string;
 }

@@ -4,6 +4,9 @@
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 #
+# `task install` / `task update` run these. TAG selects the image: `latest`
+# (the default) follows the newest release, `vX.Y.Z` pins one.
+#
 # See docs/homelab-deploy.md#updates. Images are only
 # published via the Release workflow (.github/workflows/release.yml),
 # triggered by pushing a `v*.*.*` git tag - there is no image for a commit

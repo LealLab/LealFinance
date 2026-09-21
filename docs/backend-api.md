@@ -649,10 +649,13 @@ quote_code, as_of)`; `{pair}` is two 3-letter codes joined by `_`
 
 `GET /meta/update-status` compares the running instance's version against the
 latest published release on GitHub. The response is `{current_version,
-latest_version, update_available, release_url}`; `latest_version` and
-`release_url` are `null` when there is no newer release, the check is
-disabled (`UPDATE_CHECK_ENABLED=false`), or the GitHub API call failed. The
-endpoint never surfaces a provider outage to the caller.
+latest_version, update_available, release_url, release_notes, published_at}`.
+`release_notes` is the release body (markdown, categorized by
+`.github/release.yml`) and `published_at` its ISO timestamp. `latest_version`,
+`release_url`, `release_notes` and `published_at` are `null` when the check is
+disabled (`UPDATE_CHECK_ENABLED=false`) or the GitHub API call failed;
+`release_notes` is also `null` for a release with no body. The endpoint never
+surfaces a provider outage to the caller.
 
 ## Scheduled jobs
 

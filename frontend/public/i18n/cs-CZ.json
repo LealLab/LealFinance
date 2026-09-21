@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Aktualizovat LealFinance",
-        "intro": "Je k dispozici novější verze. Aktualizujte nasazení homelab pomocí:",
-        "pinStep": "Nejprve nastavte TAG na novou verzi v souboru .env.",
-        "backupWarning": "Před aktualizací zálohujte svou databázi.",
-        "notesLink": "Zobrazit poznámky k verzi"
+        "intro": "Je k dispozici verze {{version}}. Ve složce LealFinance spusťte:",
+        "tagNote": "task update nejprve zálohuje vaši databázi. S TAG=latest v souboru .env nainstaluje nejnovější vydání; pokud je TAG pevně nastaven na verzi, určuje tato značka, která verze se stáhne.",
+        "checkoutNote": "Pokud starší kopie repozitáře nemá příkaz task update, nejprve spusťte git pull --ff-only na její větvi main. Pokud Git nahlásí chybu, vyřešte ji před pokračováním.",
+        "installNote": "Chcete-li aktualizovat bez předchozí zálohy, spusťte toto (za proxy TLS Caddy použijte task install:tls):",
+        "backupAction": "Pokyny k zálohování",
+        "notesAction": "Poznámky k verzi",
+        "copy": "Kopírovat",
+        "copied": "Zkopírováno"
+      },
+      "backup": {
+        "title": "Pokyny k zálohování",
+        "why": "Zálohujte před každou aktualizací. Pokud migrace selže uprostřed, databáze zůstane změněná a návrat ke staré verzi to nevrátí zpět – záloha ano.",
+        "create": "Vytvořte zálohu:",
+        "verify": "Ověřte, že se nejnovější záloha správně obnoví:",
+        "preserved": "Záloha je komprimovaný výpis vaší databáze PostgreSQL – všechny účty, transakce, rozpočty a nastavení – uložený v ./backups. Neobsahuje soubor .env: uschovejte si jeho kopii, zejména API_SECRET_KEY, jinak obnovené relace a uložené přihlašovací údaje nebudou fungovat.",
+        "restore": "Postup obnovy najdete v úplné dokumentaci k zálohování.",
+        "docsLink": "Zobrazit úplnou dokumentaci k zálohování na GitHubu"
+      },
+      "notes": {
+        "title": "Poznámky k verzi {{version}}",
+        "published": "Vydáno {{date}}",
+        "empty": "Pro tuto verzi nebyly zveřejněny žádné poznámky.",
+        "githubLink": "Zobrazit celé vydání na GitHubu"
       }
     }
   },

@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Zaktualizuj LealFinance",
-        "intro": "Dostępna jest nowsza wersja. Zaktualizuj wdrożenie homelab za pomocą:",
-        "pinStep": "Najpierw ustaw TAG na nową wersję w pliku .env.",
-        "backupWarning": "Przed aktualizacją wykonaj kopię zapasową bazy danych.",
-        "notesLink": "Zobacz informacje o wydaniu"
+        "intro": "Dostępna jest wersja {{version}}. W folderze LealFinance uruchom:",
+        "tagNote": "task update najpierw tworzy kopię zapasową bazy danych. Z TAG=latest w pliku .env instaluje najnowsze wydanie; jeśli TAG jest przypięty do wersji, to ten tag decyduje, która wersja zostanie pobrana.",
+        "checkoutNote": "Jeśli starsza lokalna kopia repozytorium nie ma polecenia task update, najpierw uruchom git pull --ff-only na jej gałęzi main. Jeśli Git zgłosi błąd, rozwiąż go przed kontynuowaniem.",
+        "installNote": "Aby zaktualizować bez wcześniejszej kopii zapasowej, uruchom to (za proxy TLS Caddy użyj task install:tls):",
+        "backupAction": "Instrukcja kopii zapasowej",
+        "notesAction": "Informacje o wydaniu",
+        "copy": "Kopiuj",
+        "copied": "Skopiowano"
+      },
+      "backup": {
+        "title": "Instrukcja kopii zapasowej",
+        "why": "Twórz kopię zapasową przed każdą aktualizacją. Jeśli migracja zawiedzie w połowie, baza danych pozostanie zmieniona, a powrót do starej wersji tego nie cofnie – kopia zapasowa tak.",
+        "create": "Utwórz kopię zapasową:",
+        "verify": "Sprawdź, czy najnowsza kopia zapasowa poprawnie się przywraca:",
+        "preserved": "Kopia zapasowa to skompresowany zrzut bazy PostgreSQL – wszystkie konta, transakcje, budżety i ustawienia – zapisany w ./backups. Nie zawiera pliku .env: zachowaj jego kopię, zwłaszcza API_SECRET_KEY, inaczej przywrócone sesje i zapisane dane uwierzytelniające nie będą działać.",
+        "restore": "Kroki przywracania znajdziesz w pełnej dokumentacji kopii zapasowych.",
+        "docsLink": "Zobacz pełną dokumentację kopii zapasowych na GitHubie"
+      },
+      "notes": {
+        "title": "Informacje o wydaniu {{version}}",
+        "published": "Wydano {{date}}",
+        "empty": "Dla tej wersji nie opublikowano informacji o wydaniu.",
+        "githubLink": "Zobacz pełne wydanie na GitHubie"
       }
     }
   },

@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "LealFinance bijwerken",
-        "intro": "Er is een nieuwere versie beschikbaar. Werk een homelab-implementatie bij met:",
-        "pinStep": "Stel TAG eerst in op de nieuwe versie in je .env-bestand.",
-        "backupWarning": "Maak een back-up van je database voordat je bijwerkt.",
-        "notesLink": "Releasenotities bekijken"
+        "intro": "Versie {{version}} is beschikbaar. Voer in de LealFinance-map uit:",
+        "tagNote": "task update maakt eerst een back-up van je database. Met TAG=latest in je .env installeert het de nieuwste release; als TAG op een versie is vastgezet, bepaalt die tag welke versie wordt opgehaald.",
+        "checkoutNote": "Als een oudere lokale kopie geen opdracht task update heeft, voer dan eerst git pull --ff-only uit op de main-branch ervan. Als Git een fout meldt, los die dan op voordat je verdergaat.",
+        "installNote": "Om te updaten zonder eerst een back-up te maken, voer je dit uit (gebruik task install:tls achter de Caddy TLS-proxy):",
+        "backupAction": "Back-upinstructies",
+        "notesAction": "Releasenotities",
+        "copy": "Kopiëren",
+        "copied": "Gekopieerd"
+      },
+      "backup": {
+        "title": "Back-upinstructies",
+        "why": "Maak een back-up vóór elke upgrade. Als een migratie halverwege mislukt, blijft de database gewijzigd en maakt terugschakelen naar de oude versie dat niet ongedaan; een back-up wel.",
+        "create": "Maak een back-up:",
+        "verify": "Controleer of de nieuwste back-up zonder problemen wordt hersteld:",
+        "preserved": "De back-up is een gecomprimeerde dump van je PostgreSQL-database (alle rekeningen, transacties, budgetten en instellingen) die wordt opgeslagen in ./backups. Je .env-bestand zit er niet in: bewaar een kopie, vooral van API_SECRET_KEY, anders werken herstelde sessies en opgeslagen inloggegevens niet.",
+        "restore": "De herstelstappen staan in de volledige back-updocumentatie.",
+        "docsLink": "Volledige back-updocumentatie bekijken op GitHub"
+      },
+      "notes": {
+        "title": "Releasenotities {{version}}",
+        "published": "Uitgebracht op {{date}}",
+        "empty": "Voor deze versie zijn geen releasenotities gepubliceerd.",
+        "githubLink": "Volledige release bekijken op GitHub"
       }
     }
   },

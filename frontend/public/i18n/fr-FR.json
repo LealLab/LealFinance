@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Mettre à jour LealFinance",
-        "intro": "Une version plus récente est disponible. Mettez à jour un déploiement homelab avec :",
-        "pinStep": "Définissez d'abord TAG sur la nouvelle version dans votre fichier .env.",
-        "backupWarning": "Sauvegardez votre base de données avant de mettre à jour.",
-        "notesLink": "Voir les notes de version"
+        "intro": "La version {{version}} est disponible. Depuis le dossier LealFinance, exécutez :",
+        "tagNote": "task update sauvegarde d'abord votre base de données. Avec TAG=latest dans votre .env, il installe la version la plus récente ; si TAG est figé sur une version, cette étiquette détermine la version récupérée.",
+        "checkoutNote": "Si une ancienne copie locale ne dispose pas de la commande task update, exécutez d'abord git pull --ff-only sur sa branche main. Si Git signale une erreur, corrigez-la avant de continuer.",
+        "installNote": "Pour mettre à jour sans sauvegarde préalable, exécutez ceci (utilisez task install:tls derrière le proxy TLS Caddy) :",
+        "backupAction": "Instructions de sauvegarde",
+        "notesAction": "Notes de version",
+        "copy": "Copier",
+        "copied": "Copié"
+      },
+      "backup": {
+        "title": "Instructions de sauvegarde",
+        "why": "Sauvegardez avant chaque mise à jour. Si une migration échoue en cours de route, la base de données reste modifiée et revenir à l'ancienne version n'annule rien ; une sauvegarde, si.",
+        "create": "Créez une sauvegarde :",
+        "verify": "Vérifiez que la sauvegarde la plus récente se restaure correctement :",
+        "preserved": "La sauvegarde est un dump compressé de votre base PostgreSQL (tous les comptes, transactions, budgets et paramètres) enregistré dans ./backups. Elle n'inclut pas votre fichier .env : conservez-en une copie, surtout API_SECRET_KEY, sinon les sessions et identifiants stockés ne fonctionneront plus après la restauration.",
+        "restore": "Les étapes de restauration figurent dans la documentation complète sur la sauvegarde.",
+        "docsLink": "Voir la documentation complète sur la sauvegarde sur GitHub"
+      },
+      "notes": {
+        "title": "Notes de version {{version}}",
+        "published": "Publiée le {{date}}",
+        "empty": "Aucune note de version n'a été publiée pour cette version.",
+        "githubLink": "Voir la version complète sur GitHub"
       }
     }
   },

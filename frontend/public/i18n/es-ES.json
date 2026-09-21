@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Actualizar LealFinance",
-        "intro": "Hay una versión más reciente disponible. Actualiza una instalación homelab con:",
-        "pinStep": "Primero, establece TAG con la nueva versión en tu archivo .env.",
-        "backupWarning": "Haz una copia de seguridad de tu base de datos antes de actualizar.",
-        "notesLink": "Ver notas de la versión"
+        "intro": "La versión {{version}} está disponible. Desde la carpeta de LealFinance, ejecuta:",
+        "tagNote": "task update primero hace una copia de seguridad de tu base de datos. Con TAG=latest en tu .env instala la versión más reciente; si TAG está fijada a una versión, esa etiqueta decide qué versión se descarga.",
+        "checkoutNote": "Si una copia local antigua no tiene el comando task update, ejecuta primero git pull --ff-only en su rama main. Si Git informa de un error, resuélvelo antes de continuar.",
+        "installNote": "Para actualizar sin hacer antes una copia de seguridad, ejecuta esto (usa task install:tls con el proxy TLS de Caddy):",
+        "backupAction": "Instrucciones de copia de seguridad",
+        "notesAction": "Notas de la versión",
+        "copy": "Copiar",
+        "copied": "Copiado"
+      },
+      "backup": {
+        "title": "Instrucciones de copia de seguridad",
+        "why": "Haz una copia de seguridad antes de cada actualización. Si una migración falla a medias, la base de datos queda modificada y volver a la versión anterior no lo deshace; la copia de seguridad sí.",
+        "create": "Crea una copia de seguridad:",
+        "verify": "Comprueba que la copia más reciente se restaura correctamente:",
+        "preserved": "La copia es un volcado comprimido de tu base de datos PostgreSQL (todas las cuentas, transacciones, presupuestos y ajustes) guardado en ./backups. No incluye tu archivo .env: conserva una copia, sobre todo de API_SECRET_KEY, o las sesiones y credenciales almacenadas no funcionarán tras restaurar.",
+        "restore": "Los pasos para restaurar están en la documentación completa de copias de seguridad.",
+        "docsLink": "Ver la documentación completa de copias de seguridad en GitHub"
+      },
+      "notes": {
+        "title": "Notas de la versión {{version}}",
+        "published": "Publicada el {{date}}",
+        "empty": "No se publicaron notas para esta versión.",
+        "githubLink": "Ver la versión completa en GitHub"
       }
     }
   },

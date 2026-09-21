@@ -46,8 +46,8 @@ rates) and pulls and starts the published images. `task install` also runs it
 automatically the first time, if `.env` doesn't exist yet.
 
 Prefer to configure `.env` by hand? Copy `.env.example` to `.env`, set
-`POSTGRES_PASSWORD`, `API_SECRET_KEY`, and `TAG` to a released version (e.g.
-`TAG=v1.2.3`), then run `task install`.
+`POSTGRES_PASSWORD` and `API_SECRET_KEY`, then run `task install`. `TAG=latest`
+follows the newest release; pin `TAG=v1.2.3` to control upgrades yourself.
 
 To stop and remove the application while preserving its data:
 
@@ -62,9 +62,10 @@ Open `http://localhost:8081` (or the value of `WEB_PORT`). The first account
 created on an empty instance becomes the administrator; after that, an
 administrator invites everyone else.
 
-Administrators see an in-app banner when a newer release is published, with
-a link to the exact update commands - see
-[`docs/homelab-deploy.md#updates`](docs/homelab-deploy.md#updates).
+To update, run `task update`. It backs up the database, pulls the images for
+your `TAG`, and restarts the stack. Older checkouts without this command need
+a one-time checkout refresh first; see [Updates](docs/homelab-deploy.md#updates).
+Administrators also see an in-app banner when a newer release is published.
 
 See [`docs/homelab-deploy.md`](docs/homelab-deploy.md) for full requirements,
 backups, and exposing the app safely.

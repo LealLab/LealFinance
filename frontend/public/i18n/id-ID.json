@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Perbarui LealFinance",
-        "intro": "Versi yang lebih baru tersedia. Perbarui deployment homelab dengan:",
-        "pinStep": "Atur TAG ke versi baru di file .env Anda terlebih dahulu.",
-        "backupWarning": "Cadangkan basis data Anda sebelum memperbarui.",
-        "notesLink": "Lihat catatan rilis"
+        "intro": "Versi {{version}} tersedia. Dari folder LealFinance, jalankan:",
+        "tagNote": "task update mencadangkan basis data Anda terlebih dahulu. Dengan TAG=latest di .env, versi terbaru akan dipasang; jika TAG disematkan ke suatu versi, tag itulah yang menentukan versi yang diunduh.",
+        "checkoutNote": "Jika salinan lokal lama tidak memiliki perintah task update, jalankan git pull --ff-only terlebih dahulu pada cabang main-nya. Jika Git melaporkan kesalahan, selesaikan sebelum melanjutkan.",
+        "installNote": "Untuk memperbarui tanpa mencadangkan terlebih dahulu, jalankan ini (gunakan task install:tls di balik proxy TLS Caddy):",
+        "backupAction": "Petunjuk pencadangan",
+        "notesAction": "Catatan rilis",
+        "copy": "Salin",
+        "copied": "Tersalin"
+      },
+      "backup": {
+        "title": "Petunjuk pencadangan",
+        "why": "Cadangkan sebelum setiap peningkatan. Jika migrasi gagal di tengah jalan, basis data tetap berubah dan kembali ke versi lama tidak membatalkannya - cadangan bisa.",
+        "create": "Buat cadangan:",
+        "verify": "Pastikan cadangan terbaru dapat dipulihkan dengan baik:",
+        "preserved": "Cadangan adalah dump terkompresi dari basis data PostgreSQL Anda - semua akun, transaksi, anggaran, dan pengaturan - yang disimpan di ./backups. Cadangan tidak menyertakan file .env: simpan salinannya, terutama API_SECRET_KEY, atau sesi dan kredensial tersimpan yang dipulihkan tidak akan berfungsi.",
+        "restore": "Langkah pemulihan ada di dokumentasi pencadangan lengkap.",
+        "docsLink": "Lihat dokumentasi pencadangan lengkap di GitHub"
+      },
+      "notes": {
+        "title": "Catatan rilis {{version}}",
+        "published": "Dirilis {{date}}",
+        "empty": "Tidak ada catatan rilis yang dipublikasikan untuk versi ini.",
+        "githubLink": "Lihat rilis lengkap di GitHub"
       }
     }
   },

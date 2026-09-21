@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Actualizează LealFinance",
-        "intro": "Este disponibilă o versiune mai nouă. Actualizează o implementare homelab cu:",
-        "pinStep": "Setează mai întâi TAG la noua versiune în fișierul .env.",
-        "backupWarning": "Fă o copie de rezervă a bazei de date înainte de actualizare.",
-        "notesLink": "Vezi notele de lansare"
+        "intro": "Versiunea {{version}} este disponibilă. Din folderul LealFinance, rulează:",
+        "tagNote": "task update face mai întâi o copie de rezervă a bazei de date. Cu TAG=latest în .env instalează ultima versiune; dacă TAG este fixat la o versiune, acea etichetă decide ce versiune se descarcă.",
+        "checkoutNote": "Dacă o copie locală mai veche nu are comanda task update, rulați mai întâi git pull --ff-only pe ramura main a acesteia. Dacă Git raportează o eroare, rezolvați-o înainte de a continua.",
+        "installNote": "Pentru a actualiza fără copie de rezervă prealabilă, rulează aceasta (folosește task install:tls în spatele proxy-ului TLS Caddy):",
+        "backupAction": "Instrucțiuni pentru copia de rezervă",
+        "notesAction": "Note de lansare",
+        "copy": "Copiază",
+        "copied": "Copiat"
+      },
+      "backup": {
+        "title": "Instrucțiuni pentru copia de rezervă",
+        "why": "Fă o copie de rezervă înainte de fiecare actualizare. Dacă o migrare eșuează la mijloc, baza de date rămâne modificată, iar revenirea la versiunea veche nu anulează asta – copia de rezervă da.",
+        "create": "Creează o copie de rezervă:",
+        "verify": "Verifică dacă cea mai recentă copie de rezervă se restaurează corect:",
+        "preserved": "Copia de rezervă este un dump comprimat al bazei tale PostgreSQL – toate conturile, tranzacțiile, bugetele și setările – salvat în ./backups. Nu include fișierul .env: păstrează o copie, mai ales pentru API_SECRET_KEY, altfel sesiunile restaurate și credențialele stocate nu vor funcționa.",
+        "restore": "Pașii de restaurare se găsesc în documentația completă despre copiile de rezervă.",
+        "docsLink": "Vezi documentația completă despre copiile de rezervă pe GitHub"
+      },
+      "notes": {
+        "title": "Note de lansare {{version}}",
+        "published": "Lansată pe {{date}}",
+        "empty": "Nu au fost publicate note de lansare pentru această versiune.",
+        "githubLink": "Vezi lansarea completă pe GitHub"
       }
     }
   },

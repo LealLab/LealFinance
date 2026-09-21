@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Uppdatera LealFinance",
-        "intro": "En nyare version är tillgänglig. Uppdatera en homelab-installation med:",
-        "pinStep": "Ställ först in TAG till den nya versionen i din .env-fil.",
-        "backupWarning": "Säkerhetskopiera din databas innan du uppdaterar.",
-        "notesLink": "Visa versionsnoteringar"
+        "intro": "Version {{version}} är tillgänglig. Kör följande i LealFinance-mappen:",
+        "tagNote": "task update säkerhetskopierar först din databas. Med TAG=latest i din .env installeras den senaste versionen; om TAG är låst till en version avgör den taggen vilken version som hämtas.",
+        "checkoutNote": "Om en äldre lokal kopia saknar kommandot task update, kör först git pull --ff-only på dess main-gren. Om Git rapporterar ett fel, åtgärda det innan du fortsätter.",
+        "installNote": "Om du vill uppdatera utan att säkerhetskopiera först kör du detta (använd task install:tls bakom Caddy TLS-proxyn):",
+        "backupAction": "Instruktioner för säkerhetskopiering",
+        "notesAction": "Versionsnoteringar",
+        "copy": "Kopiera",
+        "copied": "Kopierad"
+      },
+      "backup": {
+        "title": "Instruktioner för säkerhetskopiering",
+        "why": "Säkerhetskopiera före varje uppgradering. Om en migrering misslyckas halvvägs förblir databasen ändrad, och att byta tillbaka till den gamla versionen ångrar inte det – en säkerhetskopia gör det.",
+        "create": "Skapa en säkerhetskopia:",
+        "verify": "Kontrollera att den senaste säkerhetskopian kan återställas utan problem:",
+        "preserved": "Säkerhetskopian är en komprimerad dump av din PostgreSQL-databas – alla konton, transaktioner, budgetar och inställningar – sparad i ./backups. Den innehåller inte din .env-fil: behåll en kopia, särskilt av API_SECRET_KEY, annars fungerar inte återställda sessioner och sparade inloggningsuppgifter.",
+        "restore": "Stegen för återställning finns i den fullständiga dokumentationen om säkerhetskopiering.",
+        "docsLink": "Visa fullständig dokumentation om säkerhetskopiering på GitHub"
+      },
+      "notes": {
+        "title": "Versionsnoteringar {{version}}",
+        "published": "Släppt {{date}}",
+        "empty": "Inga versionsnoteringar har publicerats för den här versionen.",
+        "githubLink": "Visa hela releasen på GitHub"
       }
     }
   },

@@ -310,7 +310,9 @@ def gather_values(
                 use_default,
             )
             values["TAG"] = ask(
-                "Release tag (v-prefixed, e.g. v1.2.3)", defaults.get("TAG", "latest"), use_default
+                "Release tag (latest follows new releases; or pin e.g. v1.2.3)",
+                defaults.get("TAG", "latest"),
+                use_default,
             )
             tls_enabled = (
                 tls

@@ -8,3 +8,5 @@ class UpdateStatusRead(BaseModel):
     latest_version: str | None
     update_available: bool
     release_url: str | None
+    release_notes: str | None = None
+    published_at: str | None = None

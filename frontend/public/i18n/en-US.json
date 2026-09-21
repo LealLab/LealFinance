@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "Update LealFinance",
-        "intro": "A newer version is available. Update from a homelab deployment with:",
-        "pinStep": "Set TAG to the new version in your .env file first.",
-        "backupWarning": "Back up your database before updating.",
-        "notesLink": "View release notes"
+        "intro": "Version {{version}} is available. From your LealFinance folder, run:",
+        "tagNote": "task update backs up your database first. With TAG=latest in your .env it installs the newest release; if TAG is pinned to a version, that tag decides which version is pulled.",
+        "checkoutNote": "If an older checkout has no task update command, first run git pull --ff-only on its main branch. If Git reports an error, resolve it before continuing.",
+        "installNote": "To update without backing up first, run this instead (use task install:tls behind the Caddy TLS proxy):",
+        "backupAction": "Backup instructions",
+        "notesAction": "Release notes",
+        "copy": "Copy",
+        "copied": "Copied"
+      },
+      "backup": {
+        "title": "Backup instructions",
+        "why": "Back up before every upgrade. If a migration fails part-way, the database is left changed and switching back to the old version does not undo it - a backup does.",
+        "create": "Create a backup:",
+        "verify": "Check that the newest backup restores cleanly:",
+        "preserved": "The backup is a compressed dump of your PostgreSQL database - every account, transaction, budget and setting - saved in ./backups. It does not include your .env file: keep a copy, especially API_SECRET_KEY, or restored sessions and stored credentials will not work.",
+        "restore": "Restore steps are in the full backup documentation.",
+        "docsLink": "View full backup documentation on GitHub"
+      },
+      "notes": {
+        "title": "Release notes {{version}}",
+        "published": "Released {{date}}",
+        "empty": "No release notes were published for this version.",
+        "githubLink": "View full release on GitHub"
       }
     }
   },

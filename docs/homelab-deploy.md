@@ -38,7 +38,9 @@ Edit `.env`:
 
 - set `ENVIRONMENT=production`;
 - replace `POSTGRES_PASSWORD` and `API_SECRET_KEY` with strong random values;
-- set `TAG` to a released version, for example `TAG=v1.2.3`;
+- leave `TAG=latest` to follow the newest release (recommended), or pin a
+  version such as `TAG=v1.2.3` to control upgrades yourself (see
+  [Updates](#updates));
 - set `LF_SITE_ADDRESS` and `APP_BASE_URL` to the HTTPS URL the app will be
   reached at (see [HTTPS](#https) below);
 - set `WEB_PORT=127.0.0.1:8081` so the plain-HTTP port stays on the host and
@@ -110,7 +112,8 @@ docker compose -f docker-compose.yml ps
 
 From a checkout with a configured `.env`, `task install` pulls and starts the
 published production images using the `TAG` value; `task install:tls` does the
-same with the Caddy TLS proxy in front (see [HTTPS](#https)). To stop and
+same with the Caddy TLS proxy in front (see [HTTPS](#https)). To upgrade an
+existing deployment, use `task update` (see [Updates](#updates)). To stop and
 remove the containers while preserving data, run:
 
 ```bash
@@ -232,34 +235,73 @@ you deployed with.
 
 ### Before an update
 
-Take a backup before pulling new images. A migration that fails part-way
-leaves the database changed; setting `TAG` back to the previous version does
-not undo it. Recovery is: restore the pre-update dump into an empty database,
-then start the previous image.
+Take a backup before pulling new images. `task update` does this for you. A
+migration that fails part-way leaves the database changed; setting `TAG` back
+to the previous version does not undo it. Recovery is: restore the pre-update
+dump into an empty database, then start the previous image.
 
 ## Updates
 
-Release tags are `v`-prefixed (`v1.2.3`, ...). Pinning an explicit tag in
-`.env` is preferred over `TAG=latest` for a homelab that wants predictable,
-deliberate updates.
+If your checkout predates `task update`, refresh it before using the command
+for the first time. Pulling container images does not update the host's
+`Taskfile.yml`, scripts, or Compose files.
 
-Administrators see an in-app banner when a newer release than the running
-instance is available, with a link to the exact update commands below - there
-is no need to watch the repository for new tags. The check can be disabled
-entirely, including for air-gapped or otherwise offline deployments that
-don't want any outbound network calls, by setting `UPDATE_CHECK_ENABLED=false`
-in `.env`.
-
-Published images, once a release is available:
+For a checkout on `main` tracking the upstream repository, run:
 
 ```bash
-# Set TAG=<release>, e.g. TAG=v1.2.3, in .env first.
+git pull --ff-only
+```
+
+Preserve local changes to deployment files. If Git refuses the update, resolve
+the reported issue before continuing; do not discard those changes. If you
+use a release-tag checkout or another branch, update it to the intended
+release containing `task update` instead. Keep your existing `.env`.
+
+Once the checkout includes the command, normal image updates use:
+
+```bash
+task update
+```
+
+`task update` is the supported way to upgrade a published-image deployment. From
+your checkout it:
+
+1. checks that `.env` and `docker-compose.prod.yml` are present;
+2. runs `task backup`, and stops if the backup fails;
+3. pulls the images for the `TAG` in `.env` and recreates the containers
+   (`task install`, or `task install:tls` when `LF_SITE_ADDRESS` is set);
+4. lets the API apply pending Alembic migrations on startup.
+
+It never edits `.env`.
+
+To update without taking a backup first, run `task install` instead (or
+`task install:tls` behind the TLS proxy). It pulls and restarts the same way but
+skips the backup, so only use it when you already have a recent one.
+
+### Choosing a `TAG`
+
+- `TAG=latest` (recommended): `task update` moves you to the newest published
+  release.
+- `TAG=vX.Y.Z`: `task update` pulls exactly that version. Change the value in
+  `.env` when you decide to upgrade. Release tags are `v`-prefixed.
+
+Administrators see an in-app banner when a newer release than the running
+instance is available. It shows `task update`, backup instructions, and the
+release notes, so there is no need to watch the repository for new tags. The
+check can be disabled entirely, including for air-gapped or otherwise offline
+deployments that don't want any outbound network calls, by setting
+`UPDATE_CHECK_ENABLED=false` in `.env`.
+
+To run the steps by hand, `task update` is equivalent to:
+
+```bash
+task backup
 docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
 If you deployed behind the TLS proxy, add `-f docker-compose.tls.yml` to both
-commands, or just run `task install:tls`.
+compose commands.
 
 The published-image workflow requires access to the project's container
 registry. If it requires authentication, log in with a token that can read

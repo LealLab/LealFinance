@@ -312,10 +312,29 @@
       },
       "modal": {
         "title": "LealFinance'i güncelle",
-        "intro": "Daha yeni bir sürüm mevcut. Homelab dağıtımını şununla güncelleyin:",
-        "pinStep": "Önce .env dosyanızda TAG'i yeni sürüme ayarlayın.",
-        "backupWarning": "Güncellemeden önce veritabanınızı yedekleyin.",
-        "notesLink": "Sürüm notlarını görüntüle"
+        "intro": "{{version}} sürümü kullanılabilir. LealFinance klasöründe şunu çalıştırın:",
+        "tagNote": "task update önce veritabanınızı yedekler. .env dosyanızda TAG=latest varsa en yeni sürümü kurar; TAG belirli bir sürüme sabitlenmişse hangi sürümün çekileceğini bu etiket belirler.",
+        "checkoutNote": "Eski bir yerel kopyada task update komutu yoksa önce kopyanın main dalında git pull --ff-only komutunu çalıştırın. Git bir hata bildirirse devam etmeden önce hatayı giderin.",
+        "installNote": "Önce yedek almadan güncellemek için bunu çalıştırın (Caddy TLS proxy'si kullanıyorsanız task install:tls kullanın):",
+        "backupAction": "Yedekleme talimatları",
+        "notesAction": "Sürüm notları",
+        "copy": "Kopyala",
+        "copied": "Kopyalandı"
+      },
+      "backup": {
+        "title": "Yedekleme talimatları",
+        "why": "Her yükseltmeden önce yedek alın. Bir geçiş yarıda başarısız olursa veritabanı değişmiş halde kalır ve eski sürüme dönmek bunu geri almaz; yedek geri alır.",
+        "create": "Yedek oluşturun:",
+        "verify": "En yeni yedeğin sorunsuz geri yüklendiğini doğrulayın:",
+        "preserved": "Yedek, PostgreSQL veritabanınızın sıkıştırılmış dökümüdür (tüm hesaplar, işlemler, bütçeler ve ayarlar) ve ./backups içine kaydedilir. .env dosyanızı içermez: özellikle API_SECRET_KEY olmak üzere bir kopyasını saklayın, aksi halde geri yüklenen oturumlar ve saklanan kimlik bilgileri çalışmaz.",
+        "restore": "Geri yükleme adımları tam yedekleme belgelerinde yer alır.",
+        "docsLink": "Tam yedekleme belgelerini GitHub'da görüntüle"
+      },
+      "notes": {
+        "title": "Sürüm notları {{version}}",
+        "published": "Yayın tarihi: {{date}}",
+        "empty": "Bu sürüm için sürüm notu yayımlanmadı.",
+        "githubLink": "Tam sürümü GitHub'da görüntüle"
       }
     }
   },

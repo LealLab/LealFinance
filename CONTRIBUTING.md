@@ -41,6 +41,15 @@ use Transloco and pass `task i18n:validate`.
 4. Run the relevant checks and record them in the pull request description.
 5. Include screenshots for user-interface changes when useful.
 
+### PR titles
+
+Use a conventional-commit title: `feat:`, `fix:`, `docs:`, `perf:`, `ci:`,
+`chore:`, `refactor:`, `test:`, optionally scoped (`feat(agents): ...`) and
+`chore(deps): ...` for dependency bumps. A workflow turns the prefix into a
+label, and the label decides which section of the release notes the PR lands
+in (see [Releases](#releases)). A title without a recognized prefix is listed
+under Maintenance.
+
 Never include credentials, tokens, private data, or environment-specific
 secrets in commits, issues, or pull requests. Report vulnerabilities through
 [`SECURITY.md`](SECURITY.md), not public issues.
@@ -62,3 +71,10 @@ The tag push triggers [`.github/workflows/release.yml`](.github/workflows/releas
 which builds and publishes both GHCR images (`lealfinance-api`,
 `lealfinance-web`) tagged with the version and `latest`, and creates the
 matching GitHub Release with auto-generated notes. One push does both.
+
+The notes are grouped into Features, Bug Fixes, Documentation, Performance,
+Security, Dependencies, CI/CD and Maintenance by
+[`.github/release.yml`](.github/release.yml), which maps PR labels to sections
+(empty sections are omitted). The release-bookkeeping PR
+(`chore: prepare vX.Y.Z release`) is labelled `release` automatically and kept
+out of the notes. The same body is shown in the app's Release Notes dialog.

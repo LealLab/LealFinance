@@ -40,6 +40,18 @@ tasks:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml up -d
 
+  update:
+    desc: Back up, then pull and restart the published stack at the configured TAG
+    preconditions:
+      - sh: test -f .env
+        msg: "No .env found. Run `task install:wizard` from your LealFinance checkout first."
+      - sh: test -f docker-compose.prod.yml
+        msg: "docker-compose.prod.yml not found. Run this from your LealFinance checkout."
+    cmds:
+      - task: backup
+      - task: '{{if .LF_SITE_ADDRESS}}install:tls{{else}}install{{end}}'
+      - echo "Update complete. Running the images for TAG=${TAG:-latest}."
+
   uninstall:
     desc: Stop and remove the production stack, preserving data
     cmds:
