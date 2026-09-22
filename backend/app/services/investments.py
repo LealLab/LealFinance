@@ -485,6 +485,18 @@ async def update_investment_transaction(
     transaction = await get_investment_transaction(db, user_id, transaction_id)
     changes = data.model_dump(exclude_unset=True)
     effective = _effective_transaction(transaction, changes)
+    # On a buy, `amount` is always derived from quantity * price, so a patch
+    # that sets `amount` without touching quantity/price can only mean
+    # "reprice from this gross amount" - the same amount-spent entry the
+    # create endpoint accepts. Without this, `amount` was silently kept as
+    # sent while the cash leg re-derived from the untouched quantity,
+    # letting the two disagree.
+    if (
+        effective.type == INVESTMENT_TRANSACTION_TYPE_BUY
+        and "amount" in changes
+        and not ({"quantity", "price"} & changes.keys())
+    ):
+        effective = effective.model_copy(update={"quantity": None, "price": None})
     currency = await get_active_currency(db, effective.currency)
     await _validate_transaction(
         db,
@@ -505,7 +517,7 @@ async def update_investment_transaction(
     if amount_mode and effective.quantity is not None and effective.price is not None:
         changes["quantity"] = effective.quantity
         changes["price"] = effective.price
-    if effective.amount != transaction.amount:
+    if "amount" in changes or effective.amount != transaction.amount:
         changes["amount"] = effective.amount
 
     settlement_changed = transaction.transaction_id is not None and bool(

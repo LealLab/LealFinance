@@ -20,6 +20,14 @@ dividends and fees are tracked separately. The server derives a buy or sell's
 amount from `quantity * price`, and edits or deletes are checked by re-folding
 the affected ledger so a later sale cannot leave the position invalid.
 
+A buy may instead be entered by amount spent: omit `quantity` and `price` and
+send `amount` as the gross amount paid, fee included. The server resolves the
+quantity from the asset's price on that date, subtracts the fee first, and
+stores `amount` as `quantity * price` like any other buy. Updating a stored
+buy with `amount` alone (no `quantity` or `price` in the same patch) reprices
+it the same way; sending `amount` together with `quantity` or `price` has no
+effect, since `amount` is always re-derived from them.
+
 When a wallet has a cash account, buy and sell events create these optional
 ledger transfers:
 

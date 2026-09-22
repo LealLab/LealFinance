@@ -757,3 +757,131 @@ async def test_asset_manual_price_is_a_json_string(
     await _authed(client, db_session, "investment-price-string@example.com")
     asset = await _create_asset(client)
     assert isinstance(asset["manual_price"], str)
+
+
+async def test_patching_buy_amount_alone_reprices_instead_of_disagreeing(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """Regression for a real chat session: the AI first recorded a buy in
+    amount-spent mode with the net amount instead of the gross (double-
+    deducting the fee), then tried to fix it with `PATCH {"amount": ...}`
+    alone. Before this fix, that patch kept the client's raw `amount` while
+    the cash leg re-derived from the untouched (wrong) quantity, so the
+    stored amount and quantity*price silently disagreed."""
+    await _authed(client, db_session, "investment-patch-amount-reprice@example.com")
+    cash = await _create_account(client)
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client, "REPRICE")
+
+    created = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "amount": "99.60",
+            "fee": "0.40",
+            "currency": "BRL",
+        },
+    )
+    assert created.status_code == 201, created.text
+    body = created.json()
+    # Reproduces the bug as originally entered: the fee was double-deducted,
+    # so amount is 99.20, not the intended 99.60.
+    assert body["amount"] == "99.2000"
+
+    updated = await client.patch(
+        f"/api/v1/investments/transactions/{body['id']}",
+        json={"amount": "100.00"},
+    )
+    assert updated.status_code == 200, updated.text
+    updated_body = updated.json()
+    assert updated_body["quantity"] == "9.7170731707"
+    assert updated_body["price"] == "10.2500000000"
+    assert updated_body["amount"] == "99.6000"
+
+    ledger = await db_session.get(Transaction, updated_body["transaction_id"])
+    assert ledger is not None
+    assert ledger.amount == Decimal("100.0000")
+
+
+async def test_patching_sell_amount_alone_is_still_ignored(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """The amount-alone reprice only applies to buys - a sell always carries
+    quantity and price, so `amount` stays derived from quantity * price."""
+    await _authed(client, db_session, "investment-patch-sell-amount@example.com")
+    wallet = await _create_wallet(client)
+    asset = await _create_asset(client)
+    buy = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "quantity": "10",
+            "price": "10",
+            "amount": "100",
+            "currency": "BRL",
+        },
+    )
+    assert buy.status_code == 201, buy.text
+    sell = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "sell",
+            "date": "2026-01-02",
+            "quantity": "2",
+            "price": "20",
+            "amount": "40",
+            "currency": "BRL",
+        },
+    )
+    assert sell.status_code == 201, sell.text
+    assert sell.json()["amount"] == "40.0000"
+
+    updated = await client.patch(
+        f"/api/v1/investments/transactions/{sell.json()['id']}",
+        json={"amount": "999"},
+    )
+    assert updated.status_code == 200, updated.text
+    assert updated.json()["amount"] == "40.0000"
+
+
+async def test_patching_notes_leaves_amount_and_settlement_untouched(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-patch-notes-only@example.com")
+    cash = await _create_account(client)
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client)
+    created = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "quantity": "1",
+            "price": "10",
+            "amount": "10",
+            "currency": "BRL",
+        },
+    )
+    assert created.status_code == 201, created.text
+    body = created.json()
+
+    updated = await client.patch(
+        f"/api/v1/investments/transactions/{body['id']}",
+        json={"notes": "just a note"},
+    )
+    assert updated.status_code == 200, updated.text
+    updated_body = updated.json()
+    assert updated_body["notes"] == "just a note"
+    assert updated_body["amount"] == body["amount"]
+    assert updated_body["quantity"] == body["quantity"]
+    assert updated_body["transaction_id"] == body["transaction_id"]

@@ -413,6 +413,19 @@ ENTITIES: dict[str, EntitySpec] = {
             create=(InvestmentTransactionCreate, investments_service.create_investment_transaction),
             update=(InvestmentTransactionUpdate, investments_service.update_investment_transaction),
             delete=investments_service.delete_investment_transaction,
+            hint=(
+                "For buy/sell, `amount` is always derived from quantity * price - "
+                "sending it alongside quantity and price has no effect. For a buy, "
+                "you may instead omit quantity and price and send `amount` as the "
+                "gross amount paid, fee included; the server resolves the quantity "
+                "from the asset's price on that date. On update, sending `amount` "
+                "alone (without quantity or price) reprices the buy the same way. "
+                "`fee` is always separate: it adds to a buy's cost and reduces a "
+                "sell's proceeds - never subtract it from `amount` yourself. If the "
+                "wallet has a cash account, the matching transfer is created, "
+                "updated, and deleted automatically - never create or edit it "
+                "by hand."
+            ),
         ),
     )
 }
