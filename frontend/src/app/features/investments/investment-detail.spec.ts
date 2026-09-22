@@ -96,6 +96,38 @@ describe('InvestmentDetail', () => {
     expect(modal.saveErrorKey()).toBeNull();
   });
 
+  it('shows required-field errors instead of silently doing nothing when the asset form is submitted empty', async () => {
+    // Regression test: symbol and name are Validators.required, and submit()
+    // already calls markAllAsTouched() on an invalid form, but the template
+    // never rendered the resulting invalid state - so an empty submit
+    // neither saved anything nor told the user why.
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as { openCreateAsset: () => void };
+    component.openCreateAsset();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modalDebug = fixture.debugElement.query(By.directive(InvestmentAssetFormModal));
+    const modal = modalDebug.componentInstance as InvestmentAssetFormModal & {
+      form: { invalid: boolean };
+      submit: () => void;
+    };
+    modal.submit();
+    fixture.detectChanges();
+
+    expect(modal.form.invalid).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('#investment-asset-symbol-error'),
+    ).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('#investment-asset-name-error')).not.toBeNull();
+  });
+
   it('shows a newly created asset even before it has any transaction', async () => {
     // Regression test: positions are derived server-side from the
     // transaction ledger, so an asset with no transactions never appeared
