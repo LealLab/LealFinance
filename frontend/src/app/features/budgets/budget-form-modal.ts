@@ -5,10 +5,10 @@ import { ApiError } from '../../core/api-error';
 import { BudgetRepository } from '../../data/budget.repository';
 import { Budget } from '../../domain/models/budget';
 import { CategoryGroup } from '../../domain/models/category-group';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Modal } from '../../shared/ui/modal/modal';
 
 /**
@@ -19,13 +19,12 @@ import { Modal } from '../../shared/ui/modal/modal';
  */
 @Component({
   selector: 'app-budget-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, CurrencySelect],
   templateUrl: './budget-form-modal.html',
 })
 export class BudgetFormModal {
   private readonly budgets = inject(BudgetRepository);
   private readonly fb = inject(FormBuilder);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
 
   readonly open = model.required<boolean>();
@@ -38,9 +37,6 @@ export class BudgetFormModal {
   readonly allGroups = input.required<CategoryGroup[]>();
   readonly saved = output<Budget>();
 
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

@@ -36,12 +36,17 @@ ASSET_CLASSES = (
 
 QUOTE_PROVIDER_TWELVE_DATA = "twelve_data"
 QUOTE_PROVIDER_BRAPI = "brapi"
+QUOTE_PROVIDER_COINGECKO = "coingecko"
 QUOTE_PROVIDER_MANUAL = "manual"
 QUOTE_PROVIDERS = (
     QUOTE_PROVIDER_TWELVE_DATA,
     QUOTE_PROVIDER_BRAPI,
+    QUOTE_PROVIDER_COINGECKO,
     QUOTE_PROVIDER_MANUAL,
 )
+# Providers that quote without any API key - CoinGecko's public endpoint is
+# free and unauthenticated; a key only raises the rate limit.
+KEYLESS_QUOTE_PROVIDERS = (QUOTE_PROVIDER_COINGECKO,)
 
 INVESTMENT_TRANSACTION_TYPE_BUY = "buy"
 INVESTMENT_TRANSACTION_TYPE_SELL = "sell"
@@ -197,7 +202,15 @@ class InvestmentTransaction(UserOwnedModel):
 
 class AssetQuote(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     __tablename__ = "asset_quotes"
-    __table_args__ = (UniqueConstraint("symbol", "as_of", name="uq_asset_quotes_symbol_as_of"),)
+    __table_args__ = (
+        UniqueConstraint(
+            "symbol",
+            "currency",
+            "source",
+            "as_of",
+            name="uq_asset_quotes_symbol_currency_source_as_of",
+        ),
+    )
 
     symbol: Mapped[str] = mapped_column(String(32), nullable=False)
     currency: Mapped[CurrencyCode] = mapped_column(
@@ -208,7 +221,7 @@ class AssetQuote(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     source: Mapped[str] = mapped_column(String(50), nullable=False)
 
 
-MARKET_DATA_PROVIDERS = (QUOTE_PROVIDER_TWELVE_DATA, QUOTE_PROVIDER_BRAPI)
+MARKET_DATA_PROVIDERS = (QUOTE_PROVIDER_TWELVE_DATA, QUOTE_PROVIDER_BRAPI, QUOTE_PROVIDER_COINGECKO)
 
 
 class MarketDataCredential(UserOwnedModel):

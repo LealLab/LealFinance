@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Döviz kuru kullanılamıyor; yaklaşık olarak 1:1 dönüşüm kullanılıyor.",
-    "fallbackRateWarningAction": "Kur belirle"
+    "fallbackRateWarningAction": "Kur belirle",
+    "invalid": "Geçerli, aktif bir para birimi kodu girin."
   },
   "accounts": {
     "title": "Hesaplar",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuel"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "İsteğe bağlı API anahtarları, uygulamanın güncel varlık fiyatlarını almasını sağlar. Önce kendi anahtarınız, ardından örnek yedek anahtarı kullanılır.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "API anahtarı gerekmez - kripto varlıklar otomatik olarak fiyatlandırılır.",
         "configured": "Yapılandırıldı",
         "notConfigured": "Yapılandırılmadı",
         "placeholder": "API anahtarı",

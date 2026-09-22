@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Курс обмена недоступен — используется приблизительная конвертация по курсу 1:1.",
-    "fallbackRateWarningAction": "Задать курс"
+    "fallbackRateWarningAction": "Задать курс",
+    "invalid": "Введите действительный активный код валюты."
   },
   "accounts": {
     "title": "Счета",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Вручную"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Необязательные API-ключи позволяют приложению получать актуальные цены активов. Сначала используется ваш ключ, затем резервный ключ экземпляра.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "API-ключ не требуется - цены на криптоактивы определяются автоматически.",
         "configured": "Настроено",
         "notConfigured": "Не настроено",
         "placeholder": "API-ключ",

@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "تعذّر الحصول على سعر الصرف — سيُستخدم تحويل تقريبي بنسبة 1:1.",
-    "fallbackRateWarningAction": "تعيين سعر"
+    "fallbackRateWarningAction": "تعيين سعر",
+    "invalid": "أدخل رمز عملة صالحًا ونشطًا."
   },
   "accounts": {
     "title": "الحسابات",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "يدوي"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "تتيح مفاتيح API الاختيارية للتطبيق جلب أسعار الأصول الحالية. يُستخدم مفتاحك أولًا قبل مفتاح النسخة الاحتياطية للمثيل.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "لا حاجة إلى مفتاح API - يتم تسعير أصول العملات الرقمية تلقائيًا.",
         "configured": "مُكوّن",
         "notConfigured": "غير مُكوّن",
         "placeholder": "مفتاح API",

@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Không có tỷ giá - đang dùng quy đổi 1:1 để ước tính.",
-    "fallbackRateWarningAction": "Đặt tỷ giá"
+    "fallbackRateWarningAction": "Đặt tỷ giá",
+    "invalid": "Nhập mã tiền tệ hợp lệ và đang hoạt động."
   },
   "accounts": {
     "title": "Tài khoản",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Thủ công"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Các khóa API tùy chọn cho phép ứng dụng lấy giá tài sản hiện tại. Khóa của bạn được dùng trước khóa dự phòng của phiên bản.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Không cần khóa API - tài sản tiền mã hóa được định giá tự động.",
         "configured": "Đã cấu hình",
         "notConfigured": "Chưa cấu hình",
         "placeholder": "Khóa API",

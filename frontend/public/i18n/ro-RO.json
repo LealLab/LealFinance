@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Cursul de schimb nu este disponibil - se folosește cu aproximație o conversie de 1:1.",
-    "fallbackRateWarningAction": "Stabilește un curs"
+    "fallbackRateWarningAction": "Stabilește un curs",
+    "invalid": "Introduceți un cod de monedă valid și activ."
   },
   "accounts": {
     "title": "Conturi",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manual"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Cheile API opționale permit aplicației să preia prețurile curente ale activelor. Cheia ta este folosită înaintea celei de rezervă a instanței.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Nu este necesară o cheie API - activele cripto sunt evaluate automat.",
         "configured": "Configurat",
         "notConfigured": "Neconfigurat",
         "placeholder": "Cheie API",

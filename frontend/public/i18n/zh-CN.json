@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "暂无汇率，暂使用 1:1 兑换作为近似值。",
-    "fallbackRateWarningAction": "设置汇率"
+    "fallbackRateWarningAction": "设置汇率",
+    "invalid": "请输入有效且已启用的货币代码。"
   },
   "accounts": {
     "title": "账户",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "手动"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "可选的 API 密钥让应用获取资产的当前价格。应用会优先使用你的密钥，然后使用实例级备用密钥。",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "无需 API 密钥 - 加密资产会自动定价。",
         "configured": "已配置",
         "notConfigured": "未配置",
         "placeholder": "API 密钥",

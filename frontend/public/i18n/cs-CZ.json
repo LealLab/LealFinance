@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Směnný kurz není k dispozici – jako odhad se používá převod 1:1.",
-    "fallbackRateWarningAction": "Nastavit kurz"
+    "fallbackRateWarningAction": "Nastavit kurz",
+    "invalid": "Zadejte platný, aktivní kód měny."
   },
   "accounts": {
     "title": "Účty",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Ručně"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Volitelné klíče API umožní aplikaci načítat aktuální ceny aktiv. Váš klíč má přednost před záložním klíčem instance.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Není potřeba žádný API klíč – kryptoaktiva se oceňují automaticky.",
         "configured": "Nastaveno",
         "notConfigured": "Nenastaveno",
         "placeholder": "API klíč",

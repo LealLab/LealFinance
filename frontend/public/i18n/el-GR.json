@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Η συναλλαγματική ισοτιμία δεν είναι διαθέσιμη — χρησιμοποιείται κατά προσέγγιση μετατροπή 1:1.",
-    "fallbackRateWarningAction": "Ορισμός ισοτιμίας"
+    "fallbackRateWarningAction": "Ορισμός ισοτιμίας",
+    "invalid": "Εισαγάγετε έναν έγκυρο, ενεργό κωδικό νομίσματος."
   },
   "accounts": {
     "title": "Λογαριασμοί",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Χειροκίνητα"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Με προαιρετικά API keys, η εφαρμογή μπορεί να ανακτά τρέχουσες τιμές στοιχείων. Το δικό σας key χρησιμοποιείται πριν από το εφεδρικό του instance.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Δεν απαιτείται κλειδί API - τα κρυπτο-περιουσιακά στοιχεία τιμολογούνται αυτόματα.",
         "configured": "Ρυθμισμένο",
         "notConfigured": "Δεν έχει ρυθμιστεί",
         "placeholder": "API key",

@@ -42,9 +42,16 @@ Each position resolves a price with this precedence:
 4. The newest cached quote for the symbol, marked stale.
 5. No price, also marked stale.
 
-Live quotes use Twelve Data's quote endpoint or brapi's quote endpoint. A
-provider failure is logged and swallowed, so the positions and summary pages
-continue with the cache, a stale quote, or a null market value.
+Live quotes use Twelve Data's quote endpoint, brapi's quote endpoint, or
+CoinGecko's `/coins/markets` endpoint. A crypto asset created with the default
+`manual` provider is switched to `coingecko` automatically, the same way a B3
+ticker (e.g. `PETR4`) is switched to `brapi`. A provider failure is logged and
+swallowed, so the positions and summary pages continue with the cache, a
+stale quote, or a null market value. The quote cache is keyed by provider,
+symbol, currency, and date, keeping crypto and equity tickers separate.
+The same symbol held in two different wallet
+currencies (e.g. BTC priced in both USD and BRL) is cached and served
+independently per currency.
 
 ## Credentials
 
@@ -53,6 +60,9 @@ clear their own API keys in Settings; the stored value is encrypted with the
 same `API_SECRET_KEY`-derived encryption used for other readable secrets, and
 status responses never include the key itself. Instance administrators can
 provide optional fallbacks with `TWELVE_DATA_API_KEY` and `BRAPI_TOKEN`.
+CoinGecko is the exception: its public API needs no key at all, so crypto
+assets price automatically even with nothing configured. An optional
+`COINGECKO_API_KEY` only raises the provider's rate limit.
 
 Manual prices remain fully supported when neither a user key nor an instance
 fallback is configured.

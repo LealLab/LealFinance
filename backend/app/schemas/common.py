@@ -172,6 +172,14 @@ def serialize_decimal(value: Decimal | None) -> str | None:
     return None if value is None else str(value)
 
 
+def serialize_quantity(value: Decimal | None) -> str | None:
+    """Asset quantities (NUMERIC(28,10)) trim trailing zeros for display -
+    unlike money, a unit count has no fixed scale to preserve. `normalize()`
+    alone can switch to exponent notation (Decimal("100") -> "1E+2"), so the
+    result is always rendered with the plain "f" format instead."""
+    return None if value is None else format(value.normalize(), "f")
+
+
 class ArchiveRequest(BaseModel):
     """Body for every `POST /{resource}/{id}/archive` endpoint - archive
     state is set explicitly (matching the frontend's

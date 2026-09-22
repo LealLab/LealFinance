@@ -2,7 +2,7 @@
 export type InvestmentAssetClass = 'stock' | 'etf' | 'fund' | 'crypto' | 'bond' | 'other';
 
 /** Quote providers recognized by the backend, including manual prices. */
-export type InvestmentQuoteProvider = 'twelve_data' | 'brapi' | 'manual';
+export type InvestmentQuoteProvider = 'twelve_data' | 'brapi' | 'coingecko' | 'manual';
 
 /** Ledger events that change an investment position or its income. */
 export type InvestmentTransactionType = 'buy' | 'sell' | 'dividend' | 'fee';

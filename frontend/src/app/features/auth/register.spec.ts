@@ -59,7 +59,9 @@ describe('Register', () => {
     fixture.detectChanges();
 
     const options = Array.from(
-      fixture.nativeElement.querySelectorAll('select[formcontrolname="baseCurrency"] option'),
+      fixture.nativeElement.querySelectorAll(
+        'app-currency-select[formcontrolname="baseCurrency"] datalist option',
+      ),
     ) as HTMLOptionElement[];
     expect(options.map((o) => o.value)).toEqual(['USD', 'BRL']);
   });

@@ -28,6 +28,7 @@ import {
 } from '../../domain/models/market-data-credential';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
@@ -37,7 +38,17 @@ const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
 
 @Component({
   selector: 'app-settings',
-  imports: [TranslocoDirective, Button, Card, Icon, MemoriesSection, Modal, PageHeader, RouterLink],
+  imports: [
+    TranslocoDirective,
+    Button,
+    Card,
+    CurrencySelect,
+    Icon,
+    MemoriesSection,
+    Modal,
+    PageHeader,
+    RouterLink,
+  ],
   templateUrl: './settings.html',
 })
 export class Settings {
@@ -59,6 +70,7 @@ export class Settings {
   protected readonly marketDataProviders = [
     { id: 'twelve_data', labelKey: 'twelveData' },
     { id: 'brapi', labelKey: 'brapi' },
+    { id: 'coingecko', labelKey: 'coinGecko' },
   ] as const satisfies readonly { id: MarketDataProvider; labelKey: string }[];
   protected readonly marketDataStatuses = signal<MarketDataCredentialStatus[]>([]);
   protected readonly marketDataSaving = signal<MarketDataProvider | null>(null);
@@ -66,6 +78,7 @@ export class Settings {
   protected readonly marketDataKeys: Record<MarketDataProvider, WritableSignal<string>> = {
     twelve_data: signal(''),
     brapi: signal(''),
+    coingecko: signal(''),
   };
   protected readonly exportOpen = signal(false);
   protected readonly exportEncrypted = signal(false);
@@ -95,7 +108,6 @@ export class Settings {
   // Mirrors the backend INSTRUCTIONS_MAX_LENGTH cap; keep the two in sync.
   protected readonly aiInstructionsMaxLength = 2000;
 
-  protected readonly currencyOptions = this.metadata.currencies;
   protected readonly availableLangs = this.transloco.getAvailableLangs() as string[];
   protected readonly activeLang = toSignal(this.transloco.langChanges$, {
     initialValue: this.transloco.getActiveLang(),
@@ -104,8 +116,12 @@ export class Settings {
     initialValue: this.route.snapshot.fragment,
   });
   private readonly languageSelect = viewChild<ElementRef<HTMLSelectElement>>('languageSelect');
-  private readonly displayCurrencySelect =
-    viewChild<ElementRef<HTMLSelectElement>>('displayCurrencySelect');
+  // app-currency-select is a component, not a form element - `read:
+  // ElementRef` gets its host element so the effect below can reach into
+  // it for the actual focusable `<input>`.
+  private readonly displayCurrencySelect = viewChild('displayCurrencySelect', {
+    read: ElementRef,
+  });
   private readonly backupActions = viewChild<ElementRef<HTMLDivElement>>('backupActions');
 
   constructor() {
@@ -116,7 +132,9 @@ export class Settings {
         this.fragment() === 'settings-language'
           ? this.languageSelect()?.nativeElement
           : this.fragment() === 'settings-display-currency'
-            ? this.displayCurrencySelect()?.nativeElement
+            ? (this.displayCurrencySelect() as ElementRef<HTMLElement> | undefined)?.nativeElement.querySelector<HTMLInputElement>(
+                'input',
+              )
             : this.fragment() === 'settings-backup-export'
               ? this.backupActions()?.nativeElement.querySelector<HTMLButtonElement>(
                   '#settings-backup-export',
@@ -142,6 +160,7 @@ export class Settings {
   }
 
   protected setDisplayCurrency(currency: string): void {
+    if (!this.metadata.currencies().some((row) => row.code === currency && row.isActive)) return;
     this.preferences.setDisplayCurrency(currency);
   }
 

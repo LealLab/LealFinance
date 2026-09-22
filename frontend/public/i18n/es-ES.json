@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "No hay ningún tipo de cambio disponible; se usará una conversión aproximada 1:1.",
-    "fallbackRateWarningAction": "Establecer un tipo de cambio"
+    "fallbackRateWarningAction": "Establecer un tipo de cambio",
+    "invalid": "Introduce un código de moneda válido y activo."
   },
   "accounts": {
     "title": "Cuentas",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manual"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Las claves de API opcionales permiten obtener precios actuales de los activos. Tu clave se usa antes que la alternativa de la instancia.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "No se necesita clave API: los activos cripto se cotizan automáticamente.",
         "configured": "Configurado",
         "notConfigured": "No configurado",
         "placeholder": "Clave de API",

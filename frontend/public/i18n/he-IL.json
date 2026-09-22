@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "שער חליפין אינו זמין – נעשה שימוש בהמרה משוערת ביחס של 1:1.",
-    "fallbackRateWarningAction": "הגדרת שער"
+    "fallbackRateWarningAction": "הגדרת שער",
+    "invalid": "הזן קוד מטבע תקין ופעיל."
   },
   "accounts": {
     "title": "חשבונות",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "ידני"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "מפתחות API אופציונליים מאפשרים לאפליקציה לקבל מחירי נכסים עדכניים. המפתח שלך ישמש לפני מפתח הגיבוי של המופע.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "אין צורך במפתח API - נכסי קריפטו מתומחרים אוטומטית.",
         "configured": "מוגדר",
         "notConfigured": "לא מוגדר",
         "placeholder": "מפתח API",

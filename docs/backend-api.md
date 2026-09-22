@@ -271,7 +271,7 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/investments/wallets/{id}/positions` | user | Average-cost positions with manual, cached, or live prices. |
 | GET | `/investments/summary` | user | Summary across wallets in the first wallet's currency. |
 | GET | `/market-data/credentials` | user | Provider status only; never returns API keys. |
-| PUT/DELETE | `/market-data/credentials/{provider}` | user | Link or remove a Twelve Data or brapi API key. |
+| PUT/DELETE | `/market-data/credentials/{provider}` | user | Link or remove a Twelve Data, brapi, or CoinGecko API key. |
 
 ## Investments
 
@@ -300,7 +300,9 @@ provider request per provider in use, the newest cached quote marked stale,
 then no price. A provider outage or missing credential therefore leaves the
 position readable; market value and unrealized gain are null when no price is
 available. Cross-currency market values use the normal exchange-rate service
-and retain its fallback warning flag.
+and retain its fallback warning flag. A crypto asset defaults to the
+`coingecko` provider (no key required); it is only ever overridden by an
+explicit `manual` price.
 
 | Code | Status |
 | --- | --- |
@@ -323,9 +325,11 @@ Market-data credentials are user-owned, encrypted API-key rows in their own
 table, separate from administrator AI-provider credentials. Status responses
 only say whether a provider is configured and where it came from. Resolution
 uses a user's decrypted row first, then the instance `.env` fallback
-(`TWELVE_DATA_API_KEY` for Twelve Data or `BRAPI_TOKEN` for brapi), then no
-credential. Linking and unlinking are available to every authenticated user;
-unknown providers are rejected.
+(`TWELVE_DATA_API_KEY` for Twelve Data, `BRAPI_TOKEN` for brapi, or
+`COINGECKO_API_KEY` for CoinGecko), then no credential. CoinGecko's public API
+works with no credential at all - the key only raises its rate limit. Linking
+and unlinking are available to every authenticated user; unknown providers
+are rejected.
 
 | Code | Status |
 | --- | --- |

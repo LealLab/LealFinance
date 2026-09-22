@@ -139,6 +139,35 @@ async def test_asset_provider_heuristic_and_duplicate_conflict(
     assert duplicate.json()["error"]["code"] == "investment_asset.symbol_already_exists"
 
 
+async def test_crypto_asset_defaults_to_coingecko_provider(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-crypto-provider@example.com")
+    btc = await client.post(
+        "/api/v1/investments/assets",
+        json={"symbol": "BTC", "name": "Bitcoin", "asset_class": "crypto", "currency": "USD"},
+    )
+    assert btc.status_code == 201, btc.text
+    assert btc.json()["quote_provider"] == "coingecko"
+
+    # Manual pricing still resolves at read time (see test_asset_quotes.py) -
+    # the auto-selected provider field is orthogonal to a manual_price value,
+    # same as the existing PETR4/brapi heuristic above.
+    eth = await client.post(
+        "/api/v1/investments/assets",
+        json={
+            "symbol": "ETH",
+            "name": "Ethereum",
+            "asset_class": "crypto",
+            "currency": "USD",
+            "quote_provider": "manual",
+            "manual_price": "2000",
+        },
+    )
+    assert eth.status_code == 201, eth.text
+    assert eth.json()["quote_provider"] == "coingecko"
+
+
 async def test_buy_and_sell_settle_same_currency_cash_account(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -386,7 +415,7 @@ async def test_deleting_a_buy_a_later_sell_depends_on_is_rejected(
     # Rejected - the buy must still be there, and positions must still compute.
     positions = await client.get(f"/api/v1/investments/wallets/{wallet['id']}/positions")
     assert positions.status_code == 200
-    assert positions.json()[0]["quantity"] == "7.0000000000"
+    assert positions.json()[0]["quantity"] == "7"
 
 
 async def test_fee_without_asset_is_allowed_but_dividend_requires_asset(

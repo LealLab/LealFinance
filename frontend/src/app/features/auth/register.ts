@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -8,6 +8,7 @@ import { IdentityApiService } from '../../core/identity-api.service';
 import { CurrencyMetadata } from '../../core/identity.models';
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { LanguageSelect } from '../../shared/ui/language-select/language-select';
 import { Logo } from '../../shared/ui/logo/logo';
 import { ThemeToggle } from '../../shared/ui/theme-toggle/theme-toggle';
@@ -19,6 +20,7 @@ import { ThemeToggle } from '../../shared/ui/theme-toggle/theme-toggle';
     RouterLink,
     TranslocoDirective,
     Button,
+    CurrencySelect,
     Logo,
     LanguageSelect,
     ThemeToggle,
@@ -36,8 +38,11 @@ export class Register {
   /** True while this instance has no users yet - the first registration
    * becomes the administrator and needs no invitation token. */
   protected readonly needsSetup = signal(false);
+  /** Fetched directly rather than through MetadataService - there is no
+   * session yet on this page, so SessionService.ensureLoaded (the only
+   * caller of MetadataService.hydrate()) never runs here. Passed to
+   * app-currency-select's `currencies` override input below. */
   protected readonly currencies = signal<CurrencyMetadata[]>([]);
-  protected readonly currencyOptions = computed(() => this.currencies().map((row) => row.code));
   private readonly activeLang = toSignal(this.transloco.langChanges$, {
     initialValue: this.transloco.getActiveLang(),
   });

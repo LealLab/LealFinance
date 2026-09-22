@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Växelkurs saknas – omräkning 1:1 används som uppskattning.",
-    "fallbackRateWarningAction": "Ange kurs"
+    "fallbackRateWarningAction": "Ange kurs",
+    "invalid": "Ange en giltig, aktiv valutakod."
   },
   "accounts": {
     "title": "Konton",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuell"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Med valfria API-nycklar kan appen hämta aktuella tillgångspriser. Din egen nyckel används före instansens reservnyckel.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Ingen API-nyckel behövs - kryptotillgångar prissätts automatiskt.",
         "configured": "Konfigurerad",
         "notConfigured": "Inte konfigurerad",
         "placeholder": "API-nyckel",

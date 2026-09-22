@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Taux de change indisponible — conversion 1:1 utilisée à titre approximatif.",
-    "fallbackRateWarningAction": "Définir un taux"
+    "fallbackRateWarningAction": "Définir un taux",
+    "invalid": "Saisissez un code de devise valide et actif."
   },
   "accounts": {
     "title": "Comptes",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuel"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Des clés API facultatives permettent de récupérer les cours actuels des actifs. Votre clé est utilisée avant celle de secours de l’instance.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Aucune clé API requise - les actifs crypto sont valorisés automatiquement.",
         "configured": "Configuré",
         "notConfigured": "Non configuré",
         "placeholder": "Clé API",

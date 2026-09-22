@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Курс обміну недоступний — використовується приблизне співвідношення 1:1.",
-    "fallbackRateWarningAction": "Встановити курс"
+    "fallbackRateWarningAction": "Встановити курс",
+    "invalid": "Введіть дійсний активний код валюти."
   },
   "accounts": {
     "title": "Рахунки",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Вручну"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Необов’язкові ключі API дають змогу отримувати актуальні ціни активів. Спочатку використовується ваш ключ, а потім резервний ключ екземпляра.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Ключ API не потрібен - ціни на криптоактиви визначаються автоматично.",
         "configured": "Налаштовано",
         "notConfigured": "Не налаштовано",
         "placeholder": "Ключ API",

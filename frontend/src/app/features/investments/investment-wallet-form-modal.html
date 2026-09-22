@@ -19,16 +19,14 @@
 
         <div>
           <label class="form-label" for="investment-wallet-currency">{{ t('investments.form.fields.currency') }}</label>
-          <select
-            id="investment-wallet-currency"
-            class="form-input"
+          <app-currency-select
+            [id]="'investment-wallet-currency'"
             formControlName="currency"
-            [attr.disabled]="isEditing() ? '' : null"
-          >
-            @for (currency of currencyOptions(); track currency) {
-              <option [value]="currency">{{ currency }}</option>
-            }
-          </select>
+            [disabled]="isEditing()"
+          />
+          @if (form.controls.currency.invalid && form.controls.currency.touched) {
+            <p id="investment-wallet-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
+          }
         </div>
 
         <div>

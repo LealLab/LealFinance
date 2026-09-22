@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "विनिमय दर उपलब्ध नहीं है - अनुमान के तौर पर 1:1 रूपांतरण का उपयोग किया जा रहा है।",
-    "fallbackRateWarningAction": "दर निर्धारित करें"
+    "fallbackRateWarningAction": "दर निर्धारित करें",
+    "invalid": "एक मान्य, सक्रिय मुद्रा कोड दर्ज करें।"
   },
   "accounts": {
     "title": "खाते",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "हाथ से"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "वैकल्पिक API कुंजियों से ऐप मौजूदा एसेट कीमतें ला सकता है। आपकी कुंजी का उपयोग इंस्टेंस की फ़ॉलबैक कुंजी से पहले किया जाता है।",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "किसी API कुंजी की आवश्यकता नहीं है - क्रिप्टो एसेट्स की कीमत अपने आप मिल जाती है।",
         "configured": "कॉन्फ़िगर किया गया",
         "notConfigured": "कॉन्फ़िगर नहीं किया गया",
         "placeholder": "API कुंजी",

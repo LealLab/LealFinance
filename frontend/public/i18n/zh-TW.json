@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "匯率無法取得，將使用 1:1 換算作為估算。",
-    "fallbackRateWarningAction": "設定匯率"
+    "fallbackRateWarningAction": "設定匯率",
+    "invalid": "請輸入有效且已啟用的貨幣代碼。"
   },
   "accounts": {
     "title": "帳戶",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "手動"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "選用的 API 金鑰可讓應用程式取得資產目前價格。系統會優先使用你的金鑰，再使用執行個體的備用金鑰。",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "不需要 API 金鑰 - 加密資產會自動定價。",
         "configured": "已設定",
         "notConfigured": "未設定",
         "placeholder": "API 金鑰",

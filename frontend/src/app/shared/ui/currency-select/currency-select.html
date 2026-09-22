@@ -1,0 +1,16 @@
+<input
+  type="text"
+  class="form-input"
+  [id]="id()"
+  [attr.list]="listId()"
+  [value]="value()"
+  [disabled]="isDisabled()"
+  autocomplete="off"
+  (input)="onInput($any($event.target).value)"
+  (blur)="onBlur()"
+/>
+<datalist [id]="listId()">
+  @for (currency of orderedCurrencies(); track currency.code) {
+    <option [value]="currency.code">{{ currency.code }} — {{ currency.name }}</option>
+  }
+</datalist>

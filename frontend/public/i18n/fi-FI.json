@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Valuuttakurssia ei ole saatavilla – arviona käytetään muuntosuhdetta 1:1.",
-    "fallbackRateWarningAction": "Aseta kurssi"
+    "fallbackRateWarningAction": "Aseta kurssi",
+    "invalid": "Anna kelvollinen, aktiivinen valuuttakoodi."
   },
   "accounts": {
     "title": "Tilit",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuaalinen"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Valinnaisten API-avainten avulla sovellus voi hakea omaisuuserien nykyiset hinnat. Oma avaimesi on etusijalla instanssin varavaihtoehtoon nähden.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "API-avainta ei tarvita - kryptovarojen hinnat päivittyvät automaattisesti.",
         "configured": "Määritetty",
         "notConfigured": "Ei määritetty",
         "placeholder": "API-avain",

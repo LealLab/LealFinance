@@ -98,8 +98,8 @@ describe('Exchange', () => {
       fixture.nativeElement.querySelectorAll('dialog') as NodeListOf<HTMLDialogElement>
     ).find((d) => d.open)!;
     expect(dialog).toBeTruthy();
-    expect((dialog.querySelector('#manual-rate-base') as HTMLSelectElement).value).toBe('EUR');
-    expect((dialog.querySelector('#manual-rate-quote') as HTMLSelectElement).value).toBe('USD');
+    expect((dialog.querySelector('#manual-rate-base') as HTMLInputElement).value).toBe('EUR');
+    expect((dialog.querySelector('#manual-rate-quote') as HTMLInputElement).value).toBe('USD');
   });
 
   it('lists the live provider rate converting a foreign account to the display currency', async () => {

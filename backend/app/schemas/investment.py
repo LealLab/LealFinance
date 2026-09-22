@@ -7,12 +7,12 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
-from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal
+from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal, serialize_quantity
 
 InvestmentAssetClass = Literal["stock", "etf", "fund", "crypto", "bond", "other"]
-InvestmentQuoteProvider = Literal["twelve_data", "brapi", "manual"]
+InvestmentQuoteProvider = Literal["twelve_data", "brapi", "coingecko", "manual"]
 InvestmentTransactionType = Literal["buy", "sell", "dividend", "fee"]
-MarketDataProvider = Literal["twelve_data", "brapi"]
+MarketDataProvider = Literal["twelve_data", "brapi", "coingecko"]
 CredentialSource = Literal["user", "env", "none"]
 
 
@@ -110,9 +110,13 @@ class InvestmentTransactionRead(BaseModel):
     transaction_id: UUID | None
     notes: str | None
 
-    @field_serializer("quantity", "price", "amount", "fee")
+    @field_serializer("price", "amount", "fee")
     def _serialize_decimal(self, value: Decimal | None) -> str | None:
         return serialize_decimal(value)
+
+    @field_serializer("quantity")
+    def _serialize_quantity(self, value: Decimal | None) -> str | None:
+        return serialize_quantity(value)
 
 
 class InvestmentTransactionCreate(BaseModel):
@@ -159,7 +163,6 @@ class InvestmentPositionRead(BaseModel):
     market_value_is_fallback: bool
 
     @field_serializer(
-        "quantity",
         "average_cost",
         "book_value",
         "price",
@@ -171,6 +174,10 @@ class InvestmentPositionRead(BaseModel):
     )
     def _serialize_decimal(self, value: Decimal | None) -> str | None:
         return serialize_decimal(value)
+
+    @field_serializer("quantity")
+    def _serialize_quantity(self, value: Decimal) -> str:
+        return format(value.normalize(), "f")
 
 
 class InvestmentSummaryRead(BaseModel):

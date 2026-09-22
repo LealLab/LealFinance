@@ -40,11 +40,10 @@
             <label class="form-label" for="account-currency">{{
               t('accounts.form.fields.currency')
             }}</label>
-            <select id="account-currency" class="form-input" formControlName="currency">
-              @for (currency of currencyOptions(); track currency) {
-                <option [value]="currency">{{ currency }}</option>
-              }
-            </select>
+            <app-currency-select [id]="'account-currency'" formControlName="currency" />
+            @if (form.controls.currency.invalid && form.controls.currency.touched) {
+              <p id="account-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
+            }
           </div>
         </div>
 

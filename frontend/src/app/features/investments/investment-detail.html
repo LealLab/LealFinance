@@ -59,8 +59,8 @@
                 </div>
                 <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
                   <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ position.quantity }}</span></span>
-                  <span>{{ t('investments.columns.averageCost') }}: <span class="font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency }}</span></span>
-                  <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ position.price ? (position.price | money: position.asset.currency) : '—' }}</span></span>
+                  <span>{{ t('investments.columns.averageCost') }}: <span class="font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency : 'precise' }}</span></span>
+                  <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ position.price ? (position.price | money: position.asset.currency : 'precise') : '—' }}</span></span>
                   <span>{{ t('investments.columns.unrealizedGain') }}: <span class="font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</span></span>
                   <span>{{ t('investments.columns.allocation') }}: <span class="font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</span></span>
                   @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
@@ -89,10 +89,10 @@
                       <div class="text-xs text-content-muted">{{ position.asset.name }} · {{ t('investments.assetClass.' + position.asset.assetClass) }}</div>
                     </td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums">{{ position.quantity }}</td>
-                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency : 'precise' }}</td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums">
                       @if (position.price) {
-                        {{ position.price | money: position.asset.currency }}
+                        {{ position.price | money: position.asset.currency : 'precise' }}
                         @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
                       } @else {
                         <span class="text-content-muted">—</span>
@@ -141,7 +141,7 @@
                   </div>
                   <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
                     <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ transaction.quantity ?? '—' }}</span></span>
-                    <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency) : '—' }}</span></span>
+                    <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency : 'precise') : '—' }}</span></span>
                     <span>{{ t('investments.columns.fee') }}: <span class="font-mono tabular-nums">{{ transaction.fee | money: transaction.currency }}</span></span>
                   </div>
                 </div>
@@ -171,7 +171,7 @@
                     <td class="px-4 py-3"><app-badge tone="accent">{{ typeLabel(transaction.type) }}</app-badge></td>
                     <td class="px-4 py-3 text-content-muted">{{ transaction.date }}</td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.quantity ?? '—' }}</td>
-                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency) : '—' }}</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency : 'precise') : '—' }}</td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.amount | money: transaction.currency }}</td>
                     <td class="px-4 py-3 text-right font-mono tabular-nums">{{ transaction.fee | money: transaction.currency }}</td>
                     <td class="px-4 py-3">

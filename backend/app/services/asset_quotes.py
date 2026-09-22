@@ -25,6 +25,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.investment import (
+    KEYLESS_QUOTE_PROVIDERS,
+    QUOTE_PROVIDER_COINGECKO,
     QUOTE_PROVIDER_MANUAL,
     QUOTE_PROVIDER_TWELVE_DATA,
     AssetQuote,
@@ -36,6 +38,7 @@ logger = logging.getLogger(__name__)
 
 _TWELVE_DATA_URL = "https://api.twelvedata.com/quote"
 _BRAPI_URL = "https://brapi.dev/api/quote"
+_COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
 
 
 @dataclass(frozen=True)
@@ -67,57 +70,89 @@ async def get_asset_prices(
     today = date.today()
     for provider, provider_assets in groups.items():
         symbols = list(dict.fromkeys(asset.symbol for asset in provider_assets))
+        currencies = list(dict.fromkeys(asset.currency for asset in provider_assets))
         cached_result = await db.execute(
-            select(AssetQuote).where(AssetQuote.symbol.in_(symbols), AssetQuote.as_of == today)
+            select(AssetQuote).where(
+                AssetQuote.symbol.in_(symbols),
+                AssetQuote.currency.in_(currencies),
+                AssetQuote.source == provider,
+                AssetQuote.as_of == today,
+            )
         )
-        cached = {row.symbol: row for row in cached_result.scalars().all()}
-        missing_symbols: list[str] = []
+        cached = {(row.symbol, row.currency): row for row in cached_result.scalars().all()}
+        missing: list[InvestmentAsset] = []
         for asset in provider_assets:
-            row = cached.get(asset.symbol)
+            row = cached.get((asset.symbol, asset.currency))
             if row is None:
-                if asset.symbol not in missing_symbols:
-                    missing_symbols.append(asset.symbol)
+                missing.append(asset)
                 continue
             prices[asset.id] = PriceResult(
                 price=row.price, is_stale=False, as_of=row.as_of, source=row.source
             )
 
-        if missing_symbols:
+        if missing:
             user_row = await market_data_credentials.get_user_row(db, user_id, provider)
             api_key, _source = await market_data_credentials.resolve_api_key(user_row, provider)
-            if api_key:
-                try:
-                    fetched = (
-                        await _fetch_twelve_data(api_key, missing_symbols)
-                        if provider == QUOTE_PROVIDER_TWELVE_DATA
-                        else await _fetch_brapi(api_key, missing_symbols)
-                    )
-                except Exception:
-                    logger.warning(
-                        "Failed to fetch asset quotes from %s; using cached or stale prices",
-                        provider,
-                        exc_info=True,
-                    )
-                else:
-                    successful: list[tuple[InvestmentAsset, Decimal]] = []
-                    for asset in provider_assets:
-                        if asset.symbol not in missing_symbols:
+            if api_key or provider in KEYLESS_QUOTE_PROVIDERS:
+                successful: list[tuple[InvestmentAsset, Decimal]] = []
+                if provider == QUOTE_PROVIDER_COINGECKO:
+                    by_currency: dict[str, list[InvestmentAsset]] = {}
+                    for asset in missing:
+                        by_currency.setdefault(asset.currency, []).append(asset)
+                    for currency, currency_assets in by_currency.items():
+                        currency_symbols = list(dict.fromkeys(a.symbol for a in currency_assets))
+                        try:
+                            fetched = await _fetch_coingecko(api_key, currency_symbols, currency)
+                        except Exception:
+                            logger.warning(
+                                "Failed to fetch asset quotes from %s; using cached or"
+                                " stale prices",
+                                provider,
+                                exc_info=True,
+                            )
                             continue
-                        price = _find_price(fetched, asset.symbol)
-                        if price is None:
-                            continue
-                        prices[asset.id] = PriceResult(
-                            price=price, is_stale=False, as_of=today, source=provider
+                        for asset in currency_assets:
+                            price = _find_price(fetched, asset.symbol)
+                            if price is None:
+                                continue
+                            prices[asset.id] = PriceResult(
+                                price=price, is_stale=False, as_of=today, source=provider
+                            )
+                            successful.append((asset, price))
+                elif api_key:
+                    try:
+                        fetched = (
+                            await _fetch_twelve_data(api_key, symbols)
+                            if provider == QUOTE_PROVIDER_TWELVE_DATA
+                            else await _fetch_brapi(api_key, symbols)
                         )
-                        successful.append((asset, price))
-                    await _cache_quotes(db, successful, provider, today)
+                    except Exception:
+                        logger.warning(
+                            "Failed to fetch asset quotes from %s; using cached or stale prices",
+                            provider,
+                            exc_info=True,
+                        )
+                    else:
+                        for asset in missing:
+                            price = _find_price(fetched, asset.symbol)
+                            if price is None:
+                                continue
+                            prices[asset.id] = PriceResult(
+                                price=price, is_stale=False, as_of=today, source=provider
+                            )
+                            successful.append((asset, price))
+                await _cache_quotes(db, successful, provider, today)
 
         for asset in provider_assets:
             if asset.id in prices:
                 continue
             stale_result = await db.execute(
                 select(AssetQuote)
-                .where(AssetQuote.symbol == asset.symbol)
+                .where(
+                    AssetQuote.symbol == asset.symbol,
+                    AssetQuote.currency == asset.currency,
+                    AssetQuote.source == provider,
+                )
                 .order_by(AssetQuote.as_of.desc())
                 .limit(1)
             )
@@ -224,4 +259,40 @@ async def _fetch_brapi(token: str, symbols: list[str]) -> dict[str, Decimal]:
         if symbol.upper() not in requested:
             continue
         prices[symbol] = Decimal(str(item["regularMarketPrice"]))
+    return prices
+
+
+async def _fetch_coingecko(
+    api_key: str | None, symbols: list[str], vs_currency: str
+) -> dict[str, Decimal]:
+    params: dict[str, str | int] = {
+        "vs_currency": vs_currency.lower(),
+        "symbols": ",".join(symbol.lower() for symbol in symbols),
+        "per_page": 250,
+    }
+    headers = {"x-cg-demo-api-key": api_key} if api_key else {}
+    async with httpx.AsyncClient(timeout=10) as client:
+        response = await client.get(_COINGECKO_URL, params=params, headers=headers)
+        response.raise_for_status()
+        payload = response.json()
+
+    if not isinstance(payload, list):
+        raise ValueError("CoinGecko response is not a list")
+
+    requested = {symbol.upper() for symbol in symbols}
+    prices: dict[str, Decimal] = {}
+    for item in payload:
+        if not isinstance(item, dict) or "symbol" not in item or "current_price" not in item:
+            raise ValueError("CoinGecko quote entry has an unexpected shape")
+        symbol = str(item["symbol"]).upper()
+        # ponytail: first match wins when several coins share a ticker.
+        # CoinGecko's default order is market-cap descending, so this keeps
+        # the larger coin; add an explicit coin-id field on InvestmentAsset
+        # if a user needs the smaller one instead.
+        if symbol not in requested or symbol in prices:
+            continue
+        price = item["current_price"]
+        if price is None:
+            continue
+        prices[symbol] = Decimal(str(price))
     return prices

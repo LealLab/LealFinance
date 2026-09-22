@@ -51,6 +51,7 @@ def _no_instance_provider_configuration() -> Iterator[None]:
         settings.openexchangerates_app_id,
         settings.twelve_data_api_key,
         settings.brapi_token,
+        settings.coingecko_api_key,
         settings.smtp_host,
         settings.smtp_username,
         settings.smtp_password,
@@ -61,6 +62,7 @@ def _no_instance_provider_configuration() -> Iterator[None]:
     settings.openexchangerates_app_id = None
     settings.twelve_data_api_key = None
     settings.brapi_token = None
+    settings.coingecko_api_key = None
     settings.smtp_host = None
     settings.smtp_username = None
     settings.smtp_password = None
@@ -74,6 +76,7 @@ def _no_instance_provider_configuration() -> Iterator[None]:
             settings.openexchangerates_app_id,
             settings.twelve_data_api_key,
             settings.brapi_token,
+            settings.coingecko_api_key,
             settings.smtp_host,
             settings.smtp_username,
             settings.smtp_password,

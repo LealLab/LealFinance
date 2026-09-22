@@ -32,6 +32,13 @@ const MASK = '••••';
  * ({{ '23150' | money: 'BRL' : 'compact' }} → "R$ 23 mil"), used by the
  * transactions calendar where every day cell shows a running balance.
  *
+ * Pass `'precise'` for a sub-cent asset price ({{ '0.0000089' | money:
+ * 'USD' : 'precise' }} → "$0.0000089") - the default `standard` notation
+ * rounds to the currency's normal digit count, which flattens a fractional
+ * crypto-unit price to "$0.00". `minimumFractionDigits` still comes from
+ * the currency (so a whole-dollar price stays "$95,000.00", not
+ * "$95,000"); only the maximum is raised.
+ *
  * `pure: false`: this pipe also reads BalanceVisibilityService.hidden() to
  * mask the amount when the sidebar's eye toggle is off. A *pure* pipe only
  * re-invokes `transform` when its own bound arguments (`amount`,
@@ -51,7 +58,7 @@ export class MoneyPipe implements PipeTransform {
   transform(
     amount: string,
     currencyCode: string,
-    notation: 'standard' | 'compact' = 'standard'
+    notation: 'standard' | 'compact' | 'precise' = 'standard'
   ): string {
     if (this.balanceVisibility.hidden()) {
       return MASK;
@@ -59,8 +66,9 @@ export class MoneyPipe implements PipeTransform {
     return this.localeService.localizeNumber(amount, 'currency', undefined, {
       currency: currencyCode,
       currencyDisplay: 'symbol',
-      notation,
-      ...(notation === 'compact' ? { maximumFractionDigits: 1 } : {})
+      notation: notation === 'precise' ? 'standard' : notation,
+      ...(notation === 'compact' ? { maximumFractionDigits: 1 } : {}),
+      ...(notation === 'precise' ? { maximumFractionDigits: 10 } : {})
     });
   }
 }

@@ -2,13 +2,13 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ApiError } from '../../core/api-error';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { GoalRepository } from '../../data/goal.repository';
 import { Goal } from '../../domain/models/goal';
 import { RecurringFrequency } from '../../domain/models/recurring';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly'];
@@ -17,13 +17,12 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
 
 @Component({
   selector: 'app-goal-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Button, Modal],
+  imports: [ReactiveFormsModule, TranslocoDirective, Button, CurrencySelect, Modal],
   templateUrl: './goal-form-modal.html',
   styleUrl: './goal-form-modal.scss',
 })
 export class GoalFormModal {
   private readonly goals = inject(GoalRepository);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
   private readonly fb = inject(FormBuilder);
 
@@ -31,9 +30,6 @@ export class GoalFormModal {
   readonly goal = input<Goal | undefined>(undefined);
   readonly saved = output<Goal>();
 
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

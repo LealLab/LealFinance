@@ -6,11 +6,11 @@ import { ApiError } from '../../core/api-error';
 import { ManualRateRepository } from '../../data/manual-rate.repository';
 import { todayIso } from '../../domain/calc/dates';
 import { ManualRate } from '../../domain/models/manual-rate';
-import { MetadataService } from '../../core/metadata.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { money } from '../../shared/money/money';
 import { convertByRate } from '../../shared/money/rate';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const positiveRateValidator: ValidatorFn = (control) => {
@@ -29,13 +29,12 @@ const positiveRateValidator: ValidatorFn = (control) => {
  */
 @Component({
   selector: 'app-manual-rate-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, CurrencySelect],
   templateUrl: './manual-rate-form-modal.html',
 })
 export class ManualRateFormModal {
   private readonly manualRates = inject(ManualRateRepository);
   private readonly fb = inject(FormBuilder);
-  private readonly metadata = inject(MetadataService);
 
   readonly open = model.required<boolean>();
   readonly rate = input<ManualRate | undefined>(undefined);
@@ -44,9 +43,6 @@ export class ManualRateFormModal {
   readonly prefillQuoteCode = input<string | undefined>(undefined);
   readonly saved = output<ManualRate>();
 
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   protected readonly saving = signal(false);
   protected readonly saveErrorKey = signal<string | null>(null);
 

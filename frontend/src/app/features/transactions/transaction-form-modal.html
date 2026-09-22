@@ -61,11 +61,10 @@
       @if (!isTransfer()) {
         <div>
           <label class="form-label" for="tx-currency">{{ t('transactions.form.fields.currency') }}</label>
-          <select id="tx-currency" class="form-input" formControlName="currency">
-            @for (currency of currencyOptions(); track currency) {
-              <option [value]="currency">{{ currency }}</option>
-            }
-          </select>
+          <app-currency-select [id]="'tx-currency'" formControlName="currency" />
+          @if (form.controls.currency.invalid && form.controls.currency.touched) {
+            <p id="tx-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
+          }
         </div>
       }
 

@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Valutakurs ikke tilgængelig – bruger en 1:1-omregning som tilnærmelse.",
-    "fallbackRateWarningAction": "Angiv en kurs"
+    "fallbackRateWarningAction": "Angiv en kurs",
+    "invalid": "Angiv en gyldig, aktiv valutakode."
   },
   "accounts": {
     "title": "Konti",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuel"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Med valgfrie API-nøgler kan appen hente aktuelle aktivpriser. Din egen nøgle bruges før instansens reservekonfiguration.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Ingen API-nøgle nødvendig - kryptoaktiver prissættes automatisk.",
         "configured": "Konfigureret",
         "notConfigured": "Ikke konfigureret",
         "placeholder": "API-nøgle",
