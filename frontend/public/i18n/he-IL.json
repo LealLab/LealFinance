@@ -1319,6 +1319,10 @@
           "price": "מחיר",
           "amount": "סכום",
           "derivedAmount": "מחושב לפי כמות × מחיר",
+          "entryModeQuantityPrice": "כמות × מחיר",
+          "entryModeAmountSpent": "סכום שהוצא",
+          "amountSpent": "סכום שהוצא",
+          "amountSpentHint": "הזינו את הסכום הכולל ששולם; העמלה מופחתת לפני חישוב הכמות.",
           "fee": "עמלה",
           "currency": "מטבע",
           "notes": "הערות"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "ספק ציטוטים",
           "manualPrice": "מחיר ידני",
           "manualPriceHint": "בשימוש עד שיהיו זמינים מחירים בזמן אמת.",
+          "cryptoCurrencyHint": "המטבע שבו הנכס מתומחר (למשל USD), לא הסמל של הנכס עצמו.",
           "manualPriceOverridesProvider": "מחיר ידני תמיד גובר על הציטוטים של הספק שנבחר, גם לאחר שהם יהיו זמינים."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "מטבע התנועה חייב להתאים למטבע הארנק.",
       "insufficient_quantity": "אי אפשר למכור יותר ממה שיש ברשותך כרגע.",
       "settlement_amount_not_positive": "סכום הסליקה חייב להיות גדול מאפס.",
+      "price_unavailable": "אין מחיר זמין לתאריך שנבחר.",
+      "future_date": "לא ניתן להשתמש בתאריך עתידי לעסקה זו.",
       "ledger_invalid": "השינוי הזה יהפוך תנועה מאוחרת יותר ללא תקינה. בטל או ערוך אותה קודם."
     },
     "market_data_credential": {

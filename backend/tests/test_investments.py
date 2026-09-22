@@ -1,6 +1,6 @@
 """Investment CRUD, ownership, settlement, and wire-format coverage."""
 
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from httpx import AsyncClient
@@ -521,6 +521,99 @@ async def test_buy_amount_is_derived_from_quantity_times_price(
     ledger = await db_session.get(Transaction, body["transaction_id"])
     assert ledger is not None
     assert ledger.amount == Decimal("21.0000")
+
+
+async def test_buy_amount_mode_derives_quantity_and_settles_gross_amount(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-amount-mode@example.com")
+    cash = await _create_account(client)
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client, "AMOUNT")
+
+    response = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "amount": "100",
+            "fee": "0.40",
+            "currency": "BRL",
+        },
+    )
+    assert response.status_code == 201, response.text
+    body = response.json()
+    assert body["quantity"] == "9.7170731707"
+    assert body["price"] == "10.2500000000"
+    assert body["amount"] == "99.6000"
+
+    ledger = await db_session.get(Transaction, body["transaction_id"])
+    assert ledger is not None
+    assert ledger.amount == Decimal("100.0000")
+
+
+async def test_buy_amount_mode_rejects_missing_historical_price(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-amount-price-missing@example.com")
+    wallet = await _create_wallet(client)
+    asset_response = await client.post(
+        "/api/v1/investments/assets",
+        json={
+            "symbol": "NOPRICE",
+            "name": "No Price",
+            "asset_class": "stock",
+            "currency": "BRL",
+            "quote_provider": "manual",
+        },
+    )
+    assert asset_response.status_code == 201, asset_response.text
+
+    response = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset_response.json()["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "amount": "100",
+            "currency": "BRL",
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "investment_transaction.price_unavailable"
+
+
+async def test_buy_amount_mode_rejects_non_positive_net_and_future_dates(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-amount-validation@example.com")
+    wallet = await _create_wallet(client)
+    asset = await _create_asset(client, "VALIDATE")
+
+    for payload, code in (
+        ({"amount": "10", "fee": "10"}, "investment_transaction.settlement_amount_not_positive"),
+        (
+            {"amount": "10", "date": (date.today() + timedelta(days=1)).isoformat()},
+            "investment_transaction.future_date",
+        ),
+    ):
+        response = await client.post(
+            "/api/v1/investments/transactions",
+            json={
+                "wallet_id": wallet["id"],
+                "asset_id": asset["id"],
+                "type": "buy",
+                "date": payload.get("date", "2026-01-01"),
+                "amount": payload["amount"],
+                "fee": payload.get("fee", "0"),
+                "currency": "BRL",
+            },
+        )
+        assert response.status_code == 422, response.text
+        assert response.json()["error"]["code"] == code
 
 
 async def test_transaction_currency_must_match_wallet_currency(

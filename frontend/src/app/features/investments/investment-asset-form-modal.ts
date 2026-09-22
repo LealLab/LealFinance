@@ -35,6 +35,7 @@ export class InvestmentAssetFormModal {
 
   readonly open = model.required<boolean>();
   readonly asset = input<InvestmentAsset | undefined>(undefined);
+  readonly walletCurrency = input<string | undefined>(undefined);
   readonly saved = output<InvestmentAsset>();
 
   protected readonly assetClasses = ASSET_CLASSES;
@@ -61,6 +62,10 @@ export class InvestmentAssetFormModal {
   });
   /** A manual price always wins over a live quote once set (see asset_quotes.py). */
   protected readonly showManualPriceOverrideHint = computed(() => this.selectedProvider() !== 'manual');
+  private readonly selectedAssetClass = toSignal(this.form.controls.assetClass.valueChanges, {
+    initialValue: this.form.controls.assetClass.value,
+  });
+  protected readonly showCryptoCurrencyHint = computed(() => this.selectedAssetClass() === 'crypto');
 
   constructor() {
     effect(() => {
@@ -70,7 +75,7 @@ export class InvestmentAssetFormModal {
         symbol: asset?.symbol ?? '',
         name: asset?.name ?? '',
         assetClass: asset?.assetClass ?? 'stock',
-        currency: asset?.currency ?? this.baseCurrency(),
+        currency: asset?.currency ?? this.walletCurrency() ?? this.baseCurrency(),
         quoteProvider: asset?.quoteProvider ?? 'manual',
         manualPrice: asset?.manualPrice ?? '',
       });

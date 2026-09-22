@@ -1319,6 +1319,10 @@
           "price": "Pris",
           "amount": "Beløb",
           "derivedAmount": "Beregnet ud fra antal × pris",
+          "entryModeQuantityPrice": "Antal × pris",
+          "entryModeAmountSpent": "Brugt beløb",
+          "amountSpent": "Brugt beløb",
+          "amountSpentHint": "Indtast det samlede betalte beløb; gebyret trækkes fra før beregning af antallet.",
           "fee": "Gebyr",
           "currency": "Valuta",
           "notes": "Noter"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Kursudbyder",
           "manualPrice": "Manuel pris",
           "manualPriceHint": "Bruges, indtil livekurser er tilgængelige.",
+          "cryptoCurrencyHint": "Den valuta, som dette aktiv er prissat i (f.eks. USD) — ikke aktivets eget symbol.",
           "manualPriceOverridesProvider": "En manuel pris tilsidesætter altid den valgte udbyders kurser, også når de bliver tilgængelige."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Transaktionens valuta skal være den samme som kontoens valuta.",
       "insufficient_quantity": "Du kan ikke sælge mere, end du har.",
       "settlement_amount_not_positive": "Afviklingsbeløbet skal være større end nul.",
+      "price_unavailable": "Der er ingen pris tilgængelig for den valgte dato.",
+      "future_date": "En fremtidig dato kan ikke bruges til denne transaktion.",
       "ledger_invalid": "Denne ændring ville gøre en senere transaktion ugyldig. Fortryd eller rediger den først."
     },
     "market_data_credential": {

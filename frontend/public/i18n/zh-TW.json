@@ -1319,6 +1319,10 @@
           "price": "價格",
           "amount": "金額",
           "derivedAmount": "根據數量 × 價格計算",
+          "entryModeQuantityPrice": "數量 × 價格",
+          "entryModeAmountSpent": "花費金額",
+          "amountSpent": "花費金額",
+          "amountSpentHint": "輸入實際支付的總金額；計算數量前會扣除手續費。",
           "fee": "費用",
           "currency": "貨幣",
           "notes": "備註"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "報價提供者",
           "manualPrice": "手動價格",
           "manualPriceHint": "在即時報價可用前使用。",
+          "cryptoCurrencyHint": "此資產的計價貨幣（例如 USD），不是資產本身的代碼。",
           "manualPriceOverridesProvider": "手動價格一律會覆蓋所選提供者的報價，即使報價已可用。"
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "交易貨幣必須與錢包貨幣一致。",
       "insufficient_quantity": "不能賣出超過目前持有的數量。",
       "settlement_amount_not_positive": "結算金額必須大於零。",
+      "price_unavailable": "所選日期沒有可用價格。",
+      "future_date": "此交易不能使用未來日期。",
       "ledger_invalid": "此變更會使後續交易無效。請先撤銷或編輯該交易。"
     },
     "market_data_credential": {

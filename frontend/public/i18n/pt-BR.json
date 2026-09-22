@@ -1319,6 +1319,10 @@
           "price": "Preço",
           "amount": "Valor",
           "derivedAmount": "Calculado a partir da quantidade × do preço",
+          "entryModeQuantityPrice": "Quantidade × preço",
+          "entryModeAmountSpent": "Valor gasto",
+          "amountSpent": "Valor gasto",
+          "amountSpentHint": "Informe o valor bruto pago; a taxa é descontada antes do cálculo da quantidade.",
           "fee": "Taxa",
           "currency": "Moeda",
           "notes": "Notas"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Provedor de cotações",
           "manualPrice": "Preço manual",
           "manualPriceHint": "Usado até que as cotações em tempo real estejam disponíveis.",
+          "cryptoCurrencyHint": "Moeda em que este ativo é cotado (por exemplo, USD) — não o símbolo do próprio ativo.",
           "manualPriceOverridesProvider": "Um preço manual sempre substitui as cotações do provedor selecionado, mesmo depois que elas ficam disponíveis."
         },
         "actions": {
@@ -2072,6 +2077,8 @@
       "currency_must_match_wallet": "A moeda da transação deve corresponder à moeda da carteira.",
       "insufficient_quantity": "Você não pode vender mais do que tem atualmente.",
       "settlement_amount_not_positive": "O valor de liquidação deve ser maior que zero.",
+      "price_unavailable": "Não há preço disponível para a data selecionada.",
+      "future_date": "Não é possível usar uma data futura nesta transação.",
       "ledger_invalid": "Essa alteração deixaria uma transação posterior inválida. Desfaça ou edite essa transação primeiro."
     },
     "market_data_credential": {

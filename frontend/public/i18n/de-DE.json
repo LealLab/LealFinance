@@ -1319,6 +1319,10 @@
           "price": "Preis",
           "amount": "Betrag",
           "derivedAmount": "Aus Menge × Preis berechnet",
+          "entryModeQuantityPrice": "Menge × Preis",
+          "entryModeAmountSpent": "Ausgegebener Betrag",
+          "amountSpent": "Ausgegebener Betrag",
+          "amountSpentHint": "Geben Sie den insgesamt gezahlten Betrag ein; die Gebühr wird vor der Mengenberechnung abgezogen.",
           "fee": "Gebühr",
           "currency": "Währung",
           "notes": "Notizen"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Kursanbieter",
           "manualPrice": "Manueller Preis",
           "manualPriceHint": "Wird verwendet, bis Live-Kurse verfügbar sind.",
+          "cryptoCurrencyHint": "Währung, in der dieser Vermögenswert bewertet wird (z. B. USD) — nicht sein eigenes Symbol.",
           "manualPriceOverridesProvider": "Ein manueller Preis überschreibt immer die Kurse des ausgewählten Anbieters, auch wenn diese verfügbar werden."
         },
         "actions": {
@@ -2072,6 +2077,8 @@
       "currency_must_match_wallet": "Die Transaktionswährung muss der Währung des Wallets entsprechen.",
       "insufficient_quantity": "Du kannst nicht mehr verkaufen, als du derzeit hältst.",
       "settlement_amount_not_positive": "Der Abrechnungsbetrag muss größer als null sein.",
+      "price_unavailable": "Für das ausgewählte Datum ist kein Preis verfügbar.",
+      "future_date": "Für diese Transaktion kann kein zukünftiges Datum verwendet werden.",
       "ledger_invalid": "Diese Änderung würde eine spätere Transaktion ungültig machen. Mache sie zuerst rückgängig oder bearbeite sie."
     },
     "market_data_credential": {

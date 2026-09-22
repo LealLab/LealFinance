@@ -1319,6 +1319,10 @@
           "price": "Fiyat",
           "amount": "Tutar",
           "derivedAmount": "Miktar × fiyattan hesaplandı",
+          "entryModeQuantityPrice": "Miktar × fiyat",
+          "entryModeAmountSpent": "Harcanan tutar",
+          "amountSpent": "Harcanan tutar",
+          "amountSpentHint": "Ödenen brüt nakit tutarını girin; miktar hesaplanmadan önce ücret düşülür.",
           "fee": "Ücret",
           "currency": "Para birimi",
           "notes": "Notlar"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Fiyat sağlayıcısı",
           "manualPrice": "Manuel fiyat",
           "manualPriceHint": "Canlı fiyatlar kullanılabilir olana kadar kullanılır.",
+          "cryptoCurrencyHint": "Bu varlığın fiyatlandırıldığı para birimi (ör. USD); varlığın kendi sembolü değildir.",
           "manualPriceOverridesProvider": "Manuel fiyat, seçilen sağlayıcının fiyatlarını, bunlar kullanılabilir hale geldikten sonra bile her zaman geçersiz kılar."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "İşlemin para birimi cüzdanın para birimiyle eşleşmelidir.",
       "insufficient_quantity": "Şu anda sahip olduğunuzdan fazlasını satamazsınız.",
       "settlement_amount_not_positive": "Takas tutarı sıfırdan büyük olmalıdır.",
+      "price_unavailable": "Seçilen tarih için fiyat bulunamadı.",
+      "future_date": "Bu işlem için gelecek bir tarih kullanılamaz.",
       "ledger_invalid": "Bu değişiklik daha sonraki bir işlemi geçersiz kılacak. Önce o işlemi geri alın veya düzenleyin."
     },
     "market_data_credential": {

@@ -1319,6 +1319,10 @@
           "price": "Preț",
           "amount": "Sumă",
           "derivedAmount": "Calculată pe baza cantității × prețului",
+          "entryModeQuantityPrice": "Cantitate × preț",
+          "entryModeAmountSpent": "Sumă cheltuită",
+          "amountSpent": "Sumă cheltuită",
+          "amountSpentHint": "Introduceți suma brută plătită; comisionul se scade înainte de calcularea cantității.",
           "fee": "Comision",
           "currency": "Monedă",
           "notes": "Note"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Furnizor de cotații",
           "manualPrice": "Preț manual",
           "manualPriceHint": "Folosit până când sunt disponibile cotațiile live.",
+          "cryptoCurrencyHint": "Moneda în care este evaluat acest activ (de ex. USD), nu simbolul activului în sine.",
           "manualPriceOverridesProvider": "Un preț manual înlocuiește întotdeauna cotațiile furnizorului selectat, chiar și după ce acestea devin disponibile."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Moneda tranzacției trebuie să corespundă monedei portofelului.",
       "insufficient_quantity": "Nu poți vinde mai mult decât deții în prezent.",
       "settlement_amount_not_positive": "Valoarea decontării trebuie să fie mai mare decât zero.",
+      "price_unavailable": "Nu există un preț disponibil pentru data selectată.",
+      "future_date": "Nu se poate folosi o dată viitoare pentru această tranzacție.",
       "ledger_invalid": "Această modificare ar face invalidă o tranzacție ulterioară. Anuleaz-o sau editeaz-o mai întâi."
     },
     "market_data_credential": {

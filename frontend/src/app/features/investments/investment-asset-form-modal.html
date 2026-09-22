@@ -46,6 +46,9 @@
           <div>
             <label class="form-label" for="investment-asset-currency">{{ t('investments.assets.form.fields.currency') }}</label>
             <app-currency-select [id]="'investment-asset-currency'" formControlName="currency" />
+            @if (showCryptoCurrencyHint()) {
+              <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.cryptoCurrencyHint') }}</p>
+            }
             @if (form.controls.currency.invalid && form.controls.currency.touched) {
               <p id="investment-asset-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
             }

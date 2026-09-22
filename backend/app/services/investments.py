@@ -1,6 +1,7 @@
 """Investment wallet, asset, and transaction CRUD with optional cash legs."""
 
 import re
+from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
 
@@ -31,7 +32,7 @@ from app.schemas.investment import (
 from app.schemas.transaction import ConversionInput as ConversionInputSchema
 from app.schemas.transaction import TransactionCreate
 from app.services import accounts as accounts_service
-from app.services import investment_positions, ownership
+from app.services import asset_quotes, investment_positions, ownership
 from app.services.conversion import ConversionInput
 from app.services.currencies import get_active_currency
 from app.services.exchange_rates import (
@@ -232,9 +233,11 @@ async def get_investment_transaction(
 def _validate_shape(
     type_: str, asset_id: UUID | None, quantity: Decimal | None, price: Decimal | None
 ) -> None:
-    if type_ in (INVESTMENT_TRANSACTION_TYPE_BUY, INVESTMENT_TRANSACTION_TYPE_SELL) and (
+    if type_ == INVESTMENT_TRANSACTION_TYPE_SELL and (
         asset_id is None or quantity is None or price is None
     ):
+        raise ValidationAppError(code="investment_transaction.quantity_price_required")
+    if type_ == INVESTMENT_TRANSACTION_TYPE_BUY and ((quantity is None) != (price is None)):
         raise ValidationAppError(code="investment_transaction.quantity_price_required")
     if type_ in (INVESTMENT_TRANSACTION_TYPE_DIVIDEND, INVESTMENT_TRANSACTION_TYPE_FEE) and (
         quantity is not None or price is not None
@@ -258,6 +261,31 @@ def _with_derived_amount(
     quantum = Decimal(1).scaleb(-decimal_digits)
     derived = (data.quantity * data.price).quantize(quantum, rounding=ROUND_HALF_UP)
     return data.model_copy(update={"amount": derived})
+
+
+async def _resolve_amount_mode(
+    db: AsyncSession,
+    user_id: UUID,
+    data: InvestmentTransactionCreate,
+) -> InvestmentTransactionCreate:
+    if data.type != INVESTMENT_TRANSACTION_TYPE_BUY or (
+        data.quantity is not None or data.price is not None
+    ):
+        return data
+    if data.date > date.today():
+        raise ValidationAppError(code="investment_transaction.future_date")
+    net_amount = data.amount - data.fee
+    if net_amount <= 0:
+        raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
+    assert data.asset_id is not None
+    asset = await ownership.get_owned(db, InvestmentAsset, data.asset_id, user_id)
+    quote = await asset_quotes.get_asset_price(db, user_id, asset, data.date)
+    if quote.price is None or quote.price <= 0:
+        raise ValidationAppError(code="investment_transaction.price_unavailable")
+    quantity = (net_amount / quote.price).quantize(Decimal(1).scaleb(-10), rounding=ROUND_HALF_UP)
+    if quantity <= 0:
+        raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
+    return data.model_copy(update={"quantity": quantity, "price": quote.price})
 
 
 async def _validate_transaction(
@@ -395,6 +423,7 @@ async def create_investment_transaction(
         data.price,
         data.currency,
     )
+    data = await _resolve_amount_mode(db, user_id, data)
     data = _with_derived_amount(data, currency.decimal_digits)
     cash_account = await ownership.get_owned_or_none(db, Account, wallet.cash_account_id, user_id)
     transaction = InvestmentTransaction(user_id=user_id, **data.model_dump())
@@ -456,7 +485,14 @@ async def update_investment_transaction(
         effective.currency,
         exclude_transaction_id=transaction.id,
     )
+    amount_mode = effective.type == INVESTMENT_TRANSACTION_TYPE_BUY and (
+        effective.quantity is None and effective.price is None
+    )
+    effective = await _resolve_amount_mode(db, user_id, effective)
     effective = _with_derived_amount(effective, currency.decimal_digits)
+    if amount_mode and effective.quantity is not None and effective.price is not None:
+        changes["quantity"] = effective.quantity
+        changes["price"] = effective.price
     if effective.amount != transaction.amount:
         changes["amount"] = effective.amount
 

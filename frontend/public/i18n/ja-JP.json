@@ -1319,6 +1319,10 @@
           "price": "価格",
           "amount": "金額",
           "derivedAmount": "数量 × 価格から計算",
+          "entryModeQuantityPrice": "数量 × 価格",
+          "entryModeAmountSpent": "支出額",
+          "amountSpent": "支出額",
+          "amountSpentHint": "支払った総額を入力してください。数量の計算前に手数料が差し引かれます。",
           "fee": "手数料",
           "currency": "通貨",
           "notes": "メモ"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "株価提供元",
           "manualPrice": "手動価格",
           "manualPriceHint": "リアルタイム価格が利用可能になるまで使用されます。",
+          "cryptoCurrencyHint": "この資産の価格に使う通貨（例：USD）であり、資産自体のシンボルではありません。",
           "manualPriceOverridesProvider": "手動価格は、選択したプロバイダーの価格が利用可能になった後も、常にその価格を上書きします。"
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "取引の通貨はウォレットの通貨と一致している必要があります。",
       "insufficient_quantity": "現在保有している数量を超えて売却することはできません。",
       "settlement_amount_not_positive": "決済額は 0 より大きくする必要があります。",
+      "price_unavailable": "選択した日付の価格は利用できません。",
+      "future_date": "この取引には未来の日付を使用できません。",
       "ledger_invalid": "この変更を行うと、後の取引が無効になります。先にその取引を取り消すか編集してください。"
     },
     "market_data_credential": {

@@ -1345,6 +1345,10 @@
           "price": "Price",
           "amount": "Amount",
           "derivedAmount": "Calculated from quantity × price",
+          "entryModeQuantityPrice": "Quantity × price",
+          "entryModeAmountSpent": "Amount spent",
+          "amountSpent": "Amount spent",
+          "amountSpentHint": "Enter the gross cash paid; the fee is subtracted before quantity is calculated.",
           "fee": "Fee",
           "currency": "Currency",
           "notes": "Notes"
@@ -1380,6 +1384,7 @@
           "quoteProvider": "Quote provider",
           "manualPrice": "Manual price",
           "manualPriceHint": "Used until live quotes are available.",
+          "cryptoCurrencyHint": "Currency this asset is priced in (e.g. USD) — not the asset's own symbol.",
           "manualPriceOverridesProvider": "A manual price always overrides the selected provider's quotes, even once they become available."
         },
         "actions": {
@@ -2096,6 +2101,8 @@
       "currency_must_match_wallet": "The transaction currency must match the wallet's currency.",
       "insufficient_quantity": "You can't sell more than you currently hold.",
       "settlement_amount_not_positive": "The settlement amount must be greater than zero.",
+      "price_unavailable": "No price is available for the selected date.",
+      "future_date": "A future date cannot be used for this transaction.",
       "ledger_invalid": "This change would leave a later transaction invalid. Undo or edit that one first."
     },
     "market_data_credential": {

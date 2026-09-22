@@ -1319,6 +1319,10 @@
           "price": "Pris",
           "amount": "Beløp",
           "derivedAmount": "Beregnet fra antall × pris",
+          "entryModeQuantityPrice": "Antall × pris",
+          "entryModeAmountSpent": "Brukt beløp",
+          "amountSpent": "Brukt beløp",
+          "amountSpentHint": "Skriv inn brutto betalt beløp; gebyret trekkes fra før antallet beregnes.",
           "fee": "Gebyr",
           "currency": "Valuta",
           "notes": "Notater"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Kursleverandør",
           "manualPrice": "Manuell pris",
           "manualPriceHint": "Brukes til kurser i sanntid er tilgjengelige.",
+          "cryptoCurrencyHint": "Valutaen dette aktivet prises i (f.eks. USD) — ikke aktivets eget symbol.",
           "manualPriceOverridesProvider": "En manuell pris overstyrer alltid kursene fra den valgte leverandøren, også når de blir tilgjengelige."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Transaksjonens valuta må samsvare med lommebokens valuta.",
       "insufficient_quantity": "Du kan ikke selge mer enn du eier nå.",
       "settlement_amount_not_positive": "Oppgjørsbeløpet må være større enn null.",
+      "price_unavailable": "Det finnes ingen pris for den valgte datoen.",
+      "future_date": "En fremtidig dato kan ikke brukes for denne transaksjonen.",
       "ledger_invalid": "Denne endringen ville gjort en senere transaksjon ugyldig. Angre eller rediger den først."
     },
     "market_data_credential": {

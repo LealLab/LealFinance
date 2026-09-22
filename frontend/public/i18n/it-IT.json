@@ -1319,6 +1319,10 @@
           "price": "Prezzo",
           "amount": "Importo",
           "derivedAmount": "Calcolato dalla quantità × prezzo",
+          "entryModeQuantityPrice": "Quantità × prezzo",
+          "entryModeAmountSpent": "Importo speso",
+          "amountSpent": "Importo speso",
+          "amountSpentHint": "Inserisci l'importo lordo pagato; la commissione viene sottratta prima di calcolare la quantità.",
           "fee": "Commissione",
           "currency": "Valuta",
           "notes": "Note"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Fornitore delle quotazioni",
           "manualPrice": "Prezzo manuale",
           "manualPriceHint": "Usato finché le quotazioni in tempo reale non saranno disponibili.",
+          "cryptoCurrencyHint": "Valuta in cui è quotato questo asset (ad es. USD), non il simbolo dell'asset.",
           "manualPriceOverridesProvider": "Un prezzo manuale sostituisce sempre le quotazioni del fornitore selezionato, anche quando diventano disponibili."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "La valuta della transazione deve corrispondere a quella del portafoglio.",
       "insufficient_quantity": "Non puoi vendere più di quanto possiedi attualmente.",
       "settlement_amount_not_positive": "L'importo di regolamento deve essere maggiore di zero.",
+      "price_unavailable": "Non è disponibile alcun prezzo per la data selezionata.",
+      "future_date": "Non è possibile usare una data futura per questa transazione.",
       "ledger_invalid": "Questa modifica renderebbe non valida una transazione successiva. Annullala o modificala prima."
     },
     "market_data_credential": {

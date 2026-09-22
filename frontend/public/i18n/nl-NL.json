@@ -1319,6 +1319,10 @@
           "price": "Prijs",
           "amount": "Bedrag",
           "derivedAmount": "Berekend op basis van hoeveelheid × prijs",
+          "entryModeQuantityPrice": "Hoeveelheid × prijs",
+          "entryModeAmountSpent": "Besteed bedrag",
+          "amountSpent": "Besteed bedrag",
+          "amountSpentHint": "Voer het bruto betaalde bedrag in; de kosten worden afgetrokken voordat de hoeveelheid wordt berekend.",
           "fee": "Kosten",
           "currency": "Valuta",
           "notes": "Notities"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Koersaanbieder",
           "manualPrice": "Handmatige prijs",
           "manualPriceHint": "Wordt gebruikt totdat live koersen beschikbaar zijn.",
+          "cryptoCurrencyHint": "De valuta waarin dit activum wordt geprijsd (bijv. USD), niet het symbool van het activum zelf.",
           "manualPriceOverridesProvider": "Een handmatige prijs overschrijft altijd de koersen van de geselecteerde aanbieder, ook zodra die beschikbaar zijn."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "De valuta van de transactie moet overeenkomen met de valuta van de wallet.",
       "insufficient_quantity": "Je kunt niet meer verkopen dan je momenteel bezit.",
       "settlement_amount_not_positive": "Het afwikkelingsbedrag moet groter zijn dan nul.",
+      "price_unavailable": "Er is geen prijs beschikbaar voor de geselecteerde datum.",
+      "future_date": "Een toekomstige datum kan niet voor deze transactie worden gebruikt.",
       "ledger_invalid": "Door deze wijziging wordt een latere transactie ongeldig. Maak die eerst ongedaan of bewerk die."
     },
     "market_data_credential": {

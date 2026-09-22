@@ -206,7 +206,7 @@
 
     <app-investment-wallet-form-modal [(open)]="walletFormOpen" [wallet]="wallet" (saved)="onWalletSaved()" />
     <app-investment-transaction-form-modal [(open)]="transactionFormOpen" [walletId]="id()" [transaction]="editingTransaction()" [assets]="assetsResource.value() ?? []" (saved)="onTransactionSaved()" />
-    <app-investment-asset-form-modal [(open)]="assetFormOpen" [asset]="editingAsset()" (saved)="onAssetSaved()" />
+    <app-investment-asset-form-modal [(open)]="assetFormOpen" [asset]="editingAsset()" [walletCurrency]="wallet.currency" (saved)="onAssetSaved()" />
   } @else {
     <app-empty-state icon="wallet" [title]="t('investments.detail.notFound')" />
   }

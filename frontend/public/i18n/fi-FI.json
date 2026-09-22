@@ -1319,6 +1319,10 @@
           "price": "Hinta",
           "amount": "Summa",
           "derivedAmount": "Laskettu määrän × hinnan perusteella",
+          "entryModeQuantityPrice": "Määrä × hinta",
+          "entryModeAmountSpent": "Käytetty summa",
+          "amountSpent": "Käytetty summa",
+          "amountSpentHint": "Syötä maksettu bruttosumma; maksu vähennetään ennen määrän laskemista.",
           "fee": "Kulu",
           "currency": "Valuutta",
           "notes": "Muistiinpanot"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Hintatietojen tarjoaja",
           "manualPrice": "Manuaalinen hinta",
           "manualPriceHint": "Käytetään, kunnes reaaliaikaiset hinnat ovat saatavilla.",
+          "cryptoCurrencyHint": "Valuutta, jossa tämä omaisuus hinnoitellaan (esim. USD), ei omaisuuden oma tunnus.",
           "manualPriceOverridesProvider": "Manuaalinen hinta ohittaa aina valitun tarjoajan kurssit, vaikka ne tulisivat saataville."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Tapahtuman valuutan on oltava sama kuin lompakon valuutta.",
       "insufficient_quantity": "Et voi myydä enempää kuin omistat tällä hetkellä.",
       "settlement_amount_not_positive": "Selvityssumman on oltava suurempi kuin nolla.",
+      "price_unavailable": "Valitulle päivälle ei ole hintaa saatavilla.",
+      "future_date": "Tulevaa päivämäärää ei voi käyttää tässä tapahtumassa.",
       "ledger_invalid": "Tämä muutos tekisi myöhemmästä tapahtumasta virheellisen. Kumoa tai muokkaa sitä ensin."
     },
     "market_data_credential": {

@@ -1319,6 +1319,10 @@
           "price": "Cena",
           "amount": "Částka",
           "derivedAmount": "Vypočteno z množství × ceny",
+          "entryModeQuantityPrice": "Množství × cena",
+          "entryModeAmountSpent": "Utracená částka",
+          "amountSpent": "Utracená částka",
+          "amountSpentHint": "Zadejte celkovou zaplacenou částku; poplatek se odečte před výpočtem množství.",
           "fee": "Poplatek",
           "currency": "Měna",
           "notes": "Poznámky"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Poskytovatel kotací",
           "manualPrice": "Ruční cena",
           "manualPriceHint": "Použije se, dokud nebudou k dispozici aktuální kotace.",
+          "cryptoCurrencyHint": "Měna, ve které je toto aktivum oceněno (např. USD), nikoli jeho vlastní symbol.",
           "manualPriceOverridesProvider": "Ruční cena vždy přepíše kotace vybraného poskytovatele, i když budou později k dispozici."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Měna transakce se musí shodovat s měnou peněženky.",
       "insufficient_quantity": "Nemůžete prodat více, než kolik aktuálně držíte.",
       "settlement_amount_not_positive": "Částka vypořádání musí být větší než nula.",
+      "price_unavailable": "Pro vybrané datum není k dispozici žádná cena.",
+      "future_date": "Pro tuto transakci nelze použít budoucí datum.",
       "ledger_invalid": "Tato změna by zneplatnila pozdější transakci. Nejprve ji vraťte zpět nebo upravte."
     },
     "market_data_credential": {

@@ -1319,6 +1319,10 @@
           "price": "Giá",
           "amount": "Số tiền",
           "derivedAmount": "Được tính từ số lượng × giá",
+          "entryModeQuantityPrice": "Số lượng × giá",
+          "entryModeAmountSpent": "Số tiền đã chi",
+          "amountSpent": "Số tiền đã chi",
+          "amountSpentHint": "Nhập tổng số tiền đã trả; phí được trừ trước khi tính số lượng.",
           "fee": "Phí",
           "currency": "Tiền tệ",
           "notes": "Ghi chú"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Nhà cung cấp báo giá",
           "manualPrice": "Giá thủ công",
           "manualPriceHint": "Được sử dụng cho đến khi có báo giá trực tiếp.",
+          "cryptoCurrencyHint": "Loại tiền dùng để định giá tài sản này (ví dụ USD), không phải ký hiệu của chính tài sản.",
           "manualPriceOverridesProvider": "Giá thủ công luôn ghi đè báo giá của nhà cung cấp đã chọn, ngay cả khi báo giá đã có sẵn."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Loại tiền tệ của giao dịch phải khớp với loại tiền tệ của ví.",
       "insufficient_quantity": "Bạn không thể bán nhiều hơn số lượng đang nắm giữ.",
       "settlement_amount_not_positive": "Số tiền quyết toán phải lớn hơn 0.",
+      "price_unavailable": "Không có giá cho ngày đã chọn.",
+      "future_date": "Không thể dùng ngày trong tương lai cho giao dịch này.",
       "ledger_invalid": "Thay đổi này sẽ khiến một giao dịch sau đó không hợp lệ. Trước tiên hãy hoàn tác hoặc chỉnh sửa giao dịch đó."
     },
     "market_data_credential": {

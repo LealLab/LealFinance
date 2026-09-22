@@ -1319,6 +1319,10 @@
           "price": "Pris",
           "amount": "Belopp",
           "derivedAmount": "Beräknat från antal × pris",
+          "entryModeQuantityPrice": "Antal × pris",
+          "entryModeAmountSpent": "Spenderat belopp",
+          "amountSpent": "Spenderat belopp",
+          "amountSpentHint": "Ange det brutto betalda beloppet; avgiften dras av innan antalet beräknas.",
           "fee": "Avgift",
           "currency": "Valuta",
           "notes": "Anteckningar"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Kursleverantör",
           "manualPrice": "Manuellt pris",
           "manualPriceHint": "Används tills realtidskurser är tillgängliga.",
+          "cryptoCurrencyHint": "Valutan som denna tillgång prissätts i (t.ex. USD) — inte tillgångens egen symbol.",
           "manualPriceOverridesProvider": "Ett manuellt pris ersätter alltid kurserna från den valda leverantören, även när de blir tillgängliga."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Transaktionens valuta måste stämma överens med portföljens valuta.",
       "insufficient_quantity": "Du kan inte sälja mer än du har just nu.",
       "settlement_amount_not_positive": "Avräkningsbeloppet måste vara större än noll.",
+      "price_unavailable": "Det finns inget pris för det valda datumet.",
+      "future_date": "Ett framtida datum kan inte användas för denna transaktion.",
       "ledger_invalid": "Den här ändringen skulle göra en senare transaktion ogiltig. Ångra eller redigera den först."
     },
     "market_data_credential": {

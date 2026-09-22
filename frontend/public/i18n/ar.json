@@ -1319,6 +1319,10 @@
           "price": "السعر",
           "amount": "المبلغ",
           "derivedAmount": "تم الحساب من الكمية × السعر",
+          "entryModeQuantityPrice": "الكمية × السعر",
+          "entryModeAmountSpent": "المبلغ المنفق",
+          "amountSpent": "المبلغ المنفق",
+          "amountSpentHint": "أدخل إجمالي المبلغ المدفوع؛ تُخصم الرسوم قبل حساب الكمية.",
           "fee": "الرسوم",
           "currency": "العملة",
           "notes": "ملاحظات"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "مزود الأسعار",
           "manualPrice": "السعر اليدوي",
           "manualPriceHint": "يُستخدم إلى أن تتوفر الأسعار المباشرة.",
+          "cryptoCurrencyHint": "العملة التي يُسعّر بها هذا الأصل (مثل USD)، وليست رمز الأصل نفسه.",
           "manualPriceOverridesProvider": "يتجاوز السعر اليدوي دائمًا أسعار مزود الأسعار المحدد، حتى بعد توفرها."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "يجب أن تتطابق عملة المعاملة مع عملة المحفظة.",
       "insufficient_quantity": "لا يمكنك بيع كمية أكبر مما تملك حاليًا.",
       "settlement_amount_not_positive": "يجب أن يكون مبلغ التسوية أكبر من صفر.",
+      "price_unavailable": "لا يتوفر سعر للتاريخ المحدد.",
+      "future_date": "لا يمكن استخدام تاريخ مستقبلي لهذه العملية.",
       "ledger_invalid": "سيؤدي هذا التغيير إلى جعل معاملة لاحقة غير صالحة. تراجع عن تلك المعاملة أو عدّلها أولًا."
     },
     "market_data_credential": {

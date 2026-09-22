@@ -1319,6 +1319,10 @@
           "price": "Harga",
           "amount": "Jumlah",
           "derivedAmount": "Dihitung dari kuantitas × harga",
+          "entryModeQuantityPrice": "Kuantitas × harga",
+          "entryModeAmountSpent": "Jumlah yang dibelanjakan",
+          "amountSpent": "Jumlah yang dibelanjakan",
+          "amountSpentHint": "Masukkan total pembayaran; biaya akan dikurangi sebelum kuantitas dihitung.",
           "fee": "Biaya",
           "currency": "Mata uang",
           "notes": "Catatan"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Penyedia kuotasi",
           "manualPrice": "Harga manual",
           "manualPriceHint": "Digunakan sampai harga langsung tersedia.",
+          "cryptoCurrencyHint": "Mata uang yang digunakan untuk menentukan harga aset ini (mis. USD), bukan simbol asetnya.",
           "manualPriceOverridesProvider": "Harga manual selalu menggantikan kuotasi penyedia yang dipilih, bahkan setelah kuotasi tersebut tersedia."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Mata uang transaksi harus sama dengan mata uang dompet.",
       "insufficient_quantity": "Anda tidak dapat menjual lebih banyak daripada yang saat ini Anda miliki.",
       "settlement_amount_not_positive": "Jumlah penyelesaian harus lebih besar dari nol.",
+      "price_unavailable": "Tidak ada harga yang tersedia untuk tanggal yang dipilih.",
+      "future_date": "Tanggal mendatang tidak dapat digunakan untuk transaksi ini.",
       "ledger_invalid": "Perubahan ini akan membuat transaksi berikutnya tidak valid. Batalkan atau edit transaksi tersebut terlebih dahulu."
     },
     "market_data_credential": {

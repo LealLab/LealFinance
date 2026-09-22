@@ -1319,6 +1319,10 @@
           "price": "Cena",
           "amount": "Kwota",
           "derivedAmount": "Obliczono na podstawie ilości × ceny",
+          "entryModeQuantityPrice": "Ilość × cena",
+          "entryModeAmountSpent": "Wydana kwota",
+          "amountSpent": "Wydana kwota",
+          "amountSpentHint": "Wpisz łączną zapłaconą kwotę; opłata zostanie odjęta przed obliczeniem ilości.",
           "fee": "Opłata",
           "currency": "Waluta",
           "notes": "Notatki"
@@ -1354,6 +1358,7 @@
           "quoteProvider": "Dostawca notowań",
           "manualPrice": "Cena ręczna",
           "manualPriceHint": "Używana do czasu udostępnienia notowań na żywo.",
+          "cryptoCurrencyHint": "Waluta, w której wyceniany jest ten aktyw (np. USD), a nie jego własny symbol.",
           "manualPriceOverridesProvider": "Cena ręczna zawsze zastępuje notowania wybranego dostawcy, nawet gdy staną się dostępne."
         },
         "actions": {
@@ -2042,6 +2047,8 @@
       "currency_must_match_wallet": "Waluta transakcji musi odpowiadać walucie portfela.",
       "insufficient_quantity": "Nie możesz sprzedać więcej, niż obecnie posiadasz.",
       "settlement_amount_not_positive": "Kwota rozliczenia musi być większa od zera.",
+      "price_unavailable": "Dla wybranej daty nie ma dostępnej ceny.",
+      "future_date": "Nie można użyć przyszłej daty dla tej transakcji.",
       "ledger_invalid": "Ta zmiana unieważniłaby późniejszą transakcję. Najpierw cofnij ją lub edytuj."
     },
     "market_data_credential": {
