@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Informações sobre a moeda",
+    "currencyHint": "Novas carteiras e ativos sempre usam sua moeda base. A carteira também define a moeda da conta vinculada; o ativo usa essa moeda nos preços e valores.",
     "actions": {
       "newWallet": "Nova carteira de investimentos",
       "editWallet": "Editar carteira de investimentos",

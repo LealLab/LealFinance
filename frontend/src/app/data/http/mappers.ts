@@ -767,7 +767,6 @@ export const mapInvestmentWalletCreate = (
   input: InvestmentWalletCreate,
 ): InvestmentWalletInputWire => ({
   name: input.name,
-  currency: input.currency,
   cash_account_id: nullable(input.cashAccountId),
   institution_id: nullable(input.institutionId),
   archived: input.archived ?? false,
@@ -799,7 +798,6 @@ export const mapInvestmentAssetCreate = (
   symbol: input.symbol,
   name: input.name,
   asset_class: input.assetClass,
-  currency: input.currency,
   quote_provider: input.quoteProvider,
   manual_price: nullable(input.manualPrice),
   archived: input.archived ?? false,

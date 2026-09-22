@@ -12,8 +12,16 @@ from app.models.transaction import Transaction
 from tests.factories import login_as, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
+async def _authed(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    email: str,
+    *,
+    base_currency: str = "BRL",
+) -> None:
     user, password = await make_user(db_session, email=email)
+    user.base_currency = base_currency
+    await db_session.commit()
     await login_as(client, email=user.email, password=password)
 
 
@@ -64,11 +72,12 @@ async def test_wallet_creates_and_updates_linked_investment_account(
 ) -> None:
     await _authed(client, db_session, "investment-wallet@example.com")
 
-    wallet = await _create_wallet(client)
+    wallet = await _create_wallet(client, currency="USD")
     account = await db_session.get(Account, wallet["account_id"])
     assert account is not None
     assert account.type == "investment"
     assert account.currency == "BRL"
+    assert wallet["currency"] == "BRL"
 
     response = await client.patch(
         f"/api/v1/investments/wallets/{wallet['id']}", json={"currency": "USD"}
@@ -130,6 +139,11 @@ async def test_asset_provider_heuristic_and_duplicate_conflict(
     other = await _create_asset(client, "AAPL")
     assert b3["quote_provider"] == "brapi"
     assert other["quote_provider"] == "manual"
+    assert b3["currency"] == "BRL"
+
+    edited = await client.patch(f"/api/v1/investments/assets/{b3['id']}", json={"currency": "USD"})
+    assert edited.status_code == 200, edited.text
+    assert edited.json()["currency"] == "USD"
 
     duplicate = await client.post(
         "/api/v1/investments/assets",
@@ -142,7 +156,7 @@ async def test_asset_provider_heuristic_and_duplicate_conflict(
 async def test_crypto_asset_defaults_to_coingecko_provider(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
-    await _authed(client, db_session, "investment-crypto-provider@example.com")
+    await _authed(client, db_session, "investment-crypto-provider@example.com", base_currency="USD")
     btc = await client.post(
         "/api/v1/investments/assets",
         json={"symbol": "BTC", "name": "Bitcoin", "asset_class": "crypto", "currency": "USD"},

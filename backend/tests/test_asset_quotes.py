@@ -16,8 +16,16 @@ from app.models.investment import AssetQuote, InvestmentAsset
 from tests.factories import login_as, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
+async def _authed(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    email: str,
+    *,
+    base_currency: str = "BRL",
+) -> None:
     user, password = await make_user(db_session, email=email)
+    user.base_currency = base_currency
+    await db_session.commit()
     await login_as(client, email=user.email, password=password)
 
 
@@ -237,8 +245,18 @@ async def test_same_symbol_prices_independently_per_wallet_currency(
     symbol must not be served to a different user's wallet holding the same
     symbol in BRL. (One user can't hold the same symbol twice - see
     uq_investment_assets_user_id_symbol - so this needs two users.)"""
-    await _authed(client, db_session, "asset-quotes-currency-cache-usd@example.com")
-    await _authed(other_client, db_session, "asset-quotes-currency-cache-brl@example.com")
+    await _authed(
+        client,
+        db_session,
+        "asset-quotes-currency-cache-usd@example.com",
+        base_currency="USD",
+    )
+    await _authed(
+        other_client,
+        db_session,
+        "asset-quotes-currency-cache-brl@example.com",
+        base_currency="BRL",
+    )
     db_session.add_all(
         [
             AssetQuote(
@@ -571,6 +589,8 @@ async def test_exact_date_quote_cache_does_not_use_stale_rows(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     user, password = await make_user(db_session, email="asset-quotes-exact-date@example.com")
+    user.base_currency = "BRL"
+    await db_session.commit()
     await login_as(client, email=user.email, password=password)
     asset_response = await client.post(
         "/api/v1/investments/assets",

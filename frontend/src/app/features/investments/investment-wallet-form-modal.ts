@@ -86,14 +86,16 @@ export class InvestmentWalletFormModal {
     const raw = this.form.getRawValue();
     const payload: InvestmentWalletCreate = {
       name: raw.name.trim(),
-      currency: raw.currency,
       cashAccountId: raw.cashAccountId || undefined,
       institutionId: raw.institutionId || undefined,
       archived: false,
     };
     const wallet = this.wallet();
     this.saving.set(true);
-    (wallet ? this.wallets.update(wallet.id, payload) : this.wallets.create(payload)).subscribe({
+    (wallet
+      ? this.wallets.update(wallet.id, { ...payload, currency: raw.currency })
+      : this.wallets.create(payload)
+    ).subscribe({
       next: (saved) => {
         this.saving.set(false);
         this.open.set(false);

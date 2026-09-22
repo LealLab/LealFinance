@@ -5,6 +5,7 @@ from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError, ValidationAppError
@@ -21,6 +22,7 @@ from app.models.investment import (
     InvestmentWallet,
 )
 from app.models.transaction import TRANSACTION_TYPE_TRANSFER, Transaction
+from app.models.user import User
 from app.schemas.investment import (
     InvestmentAssetCreate,
     InvestmentAssetUpdate,
@@ -45,6 +47,13 @@ from app.services.transactions import build_transaction
 _B3_SYMBOL = re.compile(r"^[A-Z]{4}\d{1,2}$")
 
 
+async def _base_currency(db: AsyncSession, user_id: UUID) -> str:
+    currency = await db.scalar(select(User.base_currency).where(User.id == user_id))
+    assert currency is not None
+    await get_active_currency(db, currency)
+    return currency
+
+
 async def list_wallets(db: AsyncSession, user_id: UUID) -> list[InvestmentWallet]:
     return list(await ownership.list_owned(db, InvestmentWallet, user_id))
 
@@ -56,7 +65,7 @@ async def get_wallet(db: AsyncSession, user_id: UUID, wallet_id: UUID) -> Invest
 async def create_wallet(
     db: AsyncSession, user_id: UUID, data: InvestmentWalletCreate
 ) -> tuple[InvestmentWallet, Account]:
-    await get_active_currency(db, data.currency)
+    currency = await _base_currency(db, user_id)
     await ownership.get_owned_or_none(db, Account, data.cash_account_id, user_id)
     await ownership.get_owned_or_none(db, Institution, data.institution_id, user_id)
 
@@ -64,7 +73,7 @@ async def create_wallet(
         user_id=user_id,
         name=data.name,
         type=ACCOUNT_TYPE_INVESTMENT,
-        currency=data.currency,
+        currency=currency,
         opening_balance=0,
         institution_id=data.institution_id,
         archived=data.archived,
@@ -72,7 +81,9 @@ async def create_wallet(
     db.add(account)
     try:
         await db.flush()
-        wallet = InvestmentWallet(user_id=user_id, account_id=account.id, **data.model_dump())
+        wallet = InvestmentWallet(
+            user_id=user_id, account_id=account.id, currency=currency, **data.model_dump()
+        )
         db.add(wallet)
         await ensure_rates_cached(db)
         await db.commit()
@@ -160,7 +171,7 @@ async def _check_asset_available(
 async def create_asset(
     db: AsyncSession, user_id: UUID, data: InvestmentAssetCreate
 ) -> InvestmentAsset:
-    await get_active_currency(db, data.currency)
+    currency = await _base_currency(db, user_id)
     await _check_asset_available(db, user_id, data.symbol)
     quote_provider = data.quote_provider
     if quote_provider == "manual":
@@ -171,6 +182,7 @@ async def create_asset(
     asset = InvestmentAsset(
         user_id=user_id,
         **data.model_dump(exclude={"quote_provider"}),
+        currency=currency,
         quote_provider=quote_provider,
     )
     db.add(asset)

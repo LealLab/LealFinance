@@ -6,7 +6,7 @@ import {
 } from '../domain/models/investment';
 
 export type InvestmentWalletCreate =
-  Omit<InvestmentWallet, 'id' | 'accountId' | 'archived'> & { archived?: boolean };
+  Omit<InvestmentWallet, 'id' | 'accountId' | 'archived' | 'currency'> & { archived?: boolean };
 export type InvestmentWalletUpdate = Partial<
   Omit<InvestmentWallet, 'id' | 'accountId' | 'archived'>
 >;

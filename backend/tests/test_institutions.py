@@ -16,8 +16,16 @@ from app.models.user import User
 from tests.factories import login_as, make_investment_wallet, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> User:
+async def _authed(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    email: str,
+    *,
+    base_currency: str = "BRL",
+) -> User:
     user, password = await make_user(db_session, email=email)
+    user.base_currency = base_currency
+    await db_session.commit()
     await login_as(client, email=user.email, password=password)
     return user
 

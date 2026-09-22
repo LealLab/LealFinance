@@ -1235,6 +1235,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "title": "Investments",
     "description": "Track the shares, funds, and crypto you hold.",
     "actions": {

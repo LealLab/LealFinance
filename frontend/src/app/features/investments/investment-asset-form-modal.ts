@@ -35,7 +35,6 @@ export class InvestmentAssetFormModal {
 
   readonly open = model.required<boolean>();
   readonly asset = input<InvestmentAsset | undefined>(undefined);
-  readonly walletCurrency = input<string | undefined>(undefined);
   readonly saved = output<InvestmentAsset>();
 
   protected readonly assetClasses = ASSET_CLASSES;
@@ -75,7 +74,7 @@ export class InvestmentAssetFormModal {
         symbol: asset?.symbol ?? '',
         name: asset?.name ?? '',
         assetClass: asset?.assetClass ?? 'stock',
-        currency: asset?.currency ?? this.walletCurrency() ?? this.baseCurrency(),
+        currency: asset?.currency ?? this.baseCurrency(),
         quoteProvider: asset?.quoteProvider ?? 'manual',
         manualPrice: asset?.manualPrice ?? '',
       });
@@ -94,14 +93,16 @@ export class InvestmentAssetFormModal {
       symbol: raw.symbol.trim(),
       name: raw.name.trim(),
       assetClass: raw.assetClass,
-      currency: raw.currency,
       quoteProvider: raw.quoteProvider,
       manualPrice: raw.manualPrice || undefined,
       archived: false,
     };
     const asset = this.asset();
     this.saving.set(true);
-    (asset ? this.assets.update(asset.id, payload) : this.assets.create(payload)).subscribe({
+    (asset
+      ? this.assets.update(asset.id, { ...payload, currency: raw.currency })
+      : this.assets.create(payload)
+    ).subscribe({
       next: (saved) => {
         this.saving.set(false);
         this.open.set(false);

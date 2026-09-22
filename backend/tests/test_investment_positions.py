@@ -10,6 +10,8 @@ from tests.factories import login_as, make_user
 
 async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
     user, password = await make_user(db_session, email=email)
+    user.base_currency = "BRL"
+    await db_session.commit()
     await login_as(client, email=user.email, password=password)
 
 

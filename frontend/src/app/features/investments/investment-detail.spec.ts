@@ -129,7 +129,7 @@ describe('InvestmentDetail', () => {
     expect(fixture.nativeElement.querySelector('#investment-asset-name-error')).not.toBeNull();
   });
 
-  it('defaults new assets to the wallet currency and explains crypto pricing currency', async () => {
+  it('defaults new assets to the base currency and explains crypto pricing currency', async () => {
     const fixture = TestBed.createComponent(InvestmentDetail);
     fixture.componentRef.setInput('id', 'investment-wallet-europe');
     fixture.detectChanges();
@@ -146,7 +146,12 @@ describe('InvestmentDetail', () => {
     const modal = modalDebug.componentInstance as InvestmentAssetFormModal & {
       form: { getRawValue: () => { currency: string }; patchValue: (value: object) => void };
     };
-    expect(modal.form.getRawValue().currency).toBe('EUR');
+    expect(modal.form.getRawValue().currency).toBe('USD');
+    expect(
+      fixture.nativeElement.querySelector(
+        'button[aria-describedby="investment-asset-currency-tooltip"]',
+      ),
+    ).not.toBeNull();
     modal.form.patchValue({ assetClass: 'crypto' });
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Moeda em que este ativo');
