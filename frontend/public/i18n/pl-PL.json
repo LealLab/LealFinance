@@ -1220,14 +1220,18 @@
       "newTransaction": "Zarejestruj transakcję",
       "editTransaction": "Edytuj transakcję",
       "deleteTransaction": "Usuń transakcję",
-      "newAsset": "Nowy składnik aktywów"
+      "newAsset": "Nowy składnik aktywów",
+      "editAsset": "Edytuj aktywo",
+      "archiveAsset": "Zarchiwizuj aktywo",
+      "unarchiveAsset": "Przywróć aktywo z archiwum"
     },
     "wallet": "Portfel inwestycyjny",
     "archived": "Zarchiwizowany",
     "summary": {
       "bookValue": "Wartość księgowa",
       "marketValue": "Wartość rynkowa",
-      "unrealizedGain": "Niezrealizowany zysk"
+      "unrealizedGain": "Niezrealizowany zysk",
+      "multiCurrencyHint": "Portfele w innych walutach nie są uwzględniane w tych sumach."
     },
     "empty": {
       "title": "Nie ma jeszcze portfeli inwestycyjnych",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Aktywa",
+      "empty": {
+        "title": "Nie ma jeszcze aktywów",
+        "description": "Dodaj aktywo, aby rozpocząć rejestrowanie związanych z nim transakcji."
+      },
       "form": {
         "newTitle": "Nowy składnik aktywów inwestycyjnych",
         "editTitle": "Edytuj składnik aktywów inwestycyjnych",
@@ -1344,25 +1353,25 @@
           "currency": "Waluta",
           "quoteProvider": "Dostawca notowań",
           "manualPrice": "Cena ręczna",
-          "manualPriceHint": "Używana do czasu udostępnienia notowań na żywo."
+          "manualPriceHint": "Używana do czasu udostępnienia notowań na żywo.",
+          "manualPriceOverridesProvider": "Cena ręczna zawsze zastępuje notowania wybranego dostawcy, nawet gdy staną się dostępne."
         },
         "actions": {
           "cancel": "Anuluj",
           "save": "Zapisz"
         }
+      },
+      "archive": {
+        "title": "Zarchiwizować {{symbol}}?",
+        "message": "Zarchiwizować {{symbol}}? Jego historia pozostanie dostępna."
       }
     },
     "archive": {
       "title": "Zarchiwizować portfel inwestycyjny?",
       "message": "Zarchiwizować {{name}}? Jego historia pozostanie dostępna."
     },
-    "archiveError": "Nie udało się zaktualizować stanu archiwizacji portfela inwestycyjnego. Spróbuj ponownie.",
     "title": "Inwestycje",
-    "description": "Śledź posiadane akcje, fundusze i kryptowaluty.",
-    "placeholder": {
-      "title": "Już wkrótce",
-      "description": "Portfele, pozycje i notowania są w drodze."
-    }
+    "description": "Śledź posiadane akcje, fundusze i kryptowaluty."
   },
   "reports": {
     "ratesUnavailable": "Niektóre dane wymagają kursu walutowego, który jest obecnie niedostępny.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Ta waluta jest niedostępna.",
       "inactive": "Ta waluta nie jest już aktywna."
+    },
+    "investment_wallet": {
+      "not_found": "Ten portfel inwestycyjny już nie istnieje.",
+      "currency_in_use": "Ten portfel ma już transakcje, więc nie można zmienić jego waluty."
+    },
+    "investment_asset": {
+      "not_found": "Ten instrument inwestycyjny już nie istnieje.",
+      "symbol_already_exists": "Masz już aktywo o tym symbolu."
+    },
+    "investment_transaction": {
+      "not_found": "Ta transakcja już nie istnieje.",
+      "quantity_price_required": "Zakupy i sprzedaż wymagają podania ilości i ceny.",
+      "quantity_price_not_allowed": "Dywidendy i opłaty wymagają kwoty, a nie ilości i ceny.",
+      "asset_required": "Wybierz aktywo dla tej transakcji.",
+      "currency_must_match_wallet": "Waluta transakcji musi odpowiadać walucie portfela.",
+      "insufficient_quantity": "Nie możesz sprzedać więcej, niż obecnie posiadasz.",
+      "settlement_amount_not_positive": "Kwota rozliczenia musi być większa od zera.",
+      "ledger_invalid": "Ta zmiana unieważniłaby późniejszą transakcję. Najpierw cofnij ją lub edytuj."
+    },
+    "market_data_credential": {
+      "not_found": "Dla tego dostawcy nie zapisano klucza API.",
+      "provider_unknown": "Ten dostawca notowań nie jest rozpoznawany."
     }
   }
 }

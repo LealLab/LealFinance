@@ -1220,14 +1220,18 @@
       "newTransaction": "Catat transaksi",
       "editTransaction": "Edit transaksi",
       "deleteTransaction": "Hapus transaksi",
-      "newAsset": "Aset investasi baru"
+      "newAsset": "Aset investasi baru",
+      "editAsset": "Edit aset",
+      "archiveAsset": "Arsipkan aset",
+      "unarchiveAsset": "Batalkan arsip aset"
     },
     "wallet": "Portofolio investasi",
     "archived": "Diarsipkan",
     "summary": {
       "bookValue": "Nilai buku",
       "marketValue": "Nilai pasar",
-      "unrealizedGain": "Keuntungan belum terealisasi"
+      "unrealizedGain": "Keuntungan belum terealisasi",
+      "multiCurrencyHint": "Portofolio dalam mata uang lain tidak termasuk dalam total ini."
     },
     "empty": {
       "title": "Belum ada portofolio investasi",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Aset",
+      "empty": {
+        "title": "Belum ada aset",
+        "description": "Tambahkan aset untuk mulai mencatat transaksi untuk aset tersebut."
+      },
       "form": {
         "newTitle": "Aset investasi baru",
         "editTitle": "Edit aset investasi",
@@ -1344,25 +1353,25 @@
           "currency": "Mata uang",
           "quoteProvider": "Penyedia kuotasi",
           "manualPrice": "Harga manual",
-          "manualPriceHint": "Digunakan sampai harga langsung tersedia."
+          "manualPriceHint": "Digunakan sampai harga langsung tersedia.",
+          "manualPriceOverridesProvider": "Harga manual selalu menggantikan kuotasi penyedia yang dipilih, bahkan setelah kuotasi tersebut tersedia."
         },
         "actions": {
           "cancel": "Batal",
           "save": "Simpan"
         }
+      },
+      "archive": {
+        "title": "Arsipkan {{symbol}}?",
+        "message": "Arsipkan {{symbol}}? Riwayatnya akan tetap tersedia."
       }
     },
     "archive": {
       "title": "Arsipkan portofolio investasi?",
       "message": "Arsipkan {{name}}? Riwayatnya akan tetap tersedia."
     },
-    "archiveError": "Status arsip portofolio investasi tidak dapat diperbarui. Coba lagi.",
     "title": "Investasi",
-    "description": "Lacak saham, reksa dana, dan kripto yang Anda miliki.",
-    "placeholder": {
-      "title": "Segera hadir",
-      "description": "Portofolio, posisi, dan kuotasi akan segera tersedia."
-    }
+    "description": "Lacak saham, reksa dana, dan kripto yang Anda miliki."
   },
   "reports": {
     "ratesUnavailable": "Beberapa angka memerlukan nilai tukar yang saat ini tidak tersedia.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Mata uang tersebut tidak tersedia.",
       "inactive": "Mata uang tersebut tidak lagi aktif."
+    },
+    "investment_wallet": {
+      "not_found": "Dompet investasi tersebut sudah tidak ada.",
+      "currency_in_use": "Dompet ini sudah memiliki transaksi, jadi mata uangnya tidak dapat diubah."
+    },
+    "investment_asset": {
+      "not_found": "Aset investasi tersebut sudah tidak ada.",
+      "symbol_already_exists": "Anda sudah memiliki aset dengan simbol ini."
+    },
+    "investment_transaction": {
+      "not_found": "Transaksi tersebut sudah tidak ada.",
+      "quantity_price_required": "Pembelian dan penjualan memerlukan kuantitas dan harga.",
+      "quantity_price_not_allowed": "Dividen dan biaya menggunakan jumlah, bukan kuantitas dan harga.",
+      "asset_required": "Pilih aset untuk transaksi ini.",
+      "currency_must_match_wallet": "Mata uang transaksi harus sama dengan mata uang dompet.",
+      "insufficient_quantity": "Anda tidak dapat menjual lebih banyak daripada yang saat ini Anda miliki.",
+      "settlement_amount_not_positive": "Jumlah penyelesaian harus lebih besar dari nol.",
+      "ledger_invalid": "Perubahan ini akan membuat transaksi berikutnya tidak valid. Batalkan atau edit transaksi tersebut terlebih dahulu."
+    },
+    "market_data_credential": {
+      "not_found": "Tidak ada kunci API yang tersimpan untuk penyedia tersebut.",
+      "provider_unknown": "Penyedia kuotasi tersebut tidak dikenali."
     }
   }
 }

@@ -1220,14 +1220,18 @@
       "newTransaction": "Registrera transaktion",
       "editTransaction": "Redigera transaktion",
       "deleteTransaction": "Ta bort transaktion",
-      "newAsset": "Ny investeringstillgång"
+      "newAsset": "Ny investeringstillgång",
+      "editAsset": "Redigera tillgång",
+      "archiveAsset": "Arkivera tillgång",
+      "unarchiveAsset": "Ta bort tillgången från arkivet"
     },
     "wallet": "Investeringsportfölj",
     "archived": "Arkiverad",
     "summary": {
       "bookValue": "Bokfört värde",
       "marketValue": "Marknadsvärde",
-      "unrealizedGain": "Orealiserad vinst"
+      "unrealizedGain": "Orealiserad vinst",
+      "multiCurrencyHint": "Portföljer i andra valutor ingår inte i dessa totaler."
     },
     "empty": {
       "title": "Inga investeringsportföljer ännu",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Tillgångar",
+      "empty": {
+        "title": "Inga tillgångar ännu",
+        "description": "Lägg till en tillgång för att börja registrera transaktioner för den."
+      },
       "form": {
         "newTitle": "Ny investeringstillgång",
         "editTitle": "Redigera investeringstillgång",
@@ -1344,25 +1353,25 @@
           "currency": "Valuta",
           "quoteProvider": "Kursleverantör",
           "manualPrice": "Manuellt pris",
-          "manualPriceHint": "Används tills realtidskurser är tillgängliga."
+          "manualPriceHint": "Används tills realtidskurser är tillgängliga.",
+          "manualPriceOverridesProvider": "Ett manuellt pris ersätter alltid kurserna från den valda leverantören, även när de blir tillgängliga."
         },
         "actions": {
           "cancel": "Avbryt",
           "save": "Spara"
         }
+      },
+      "archive": {
+        "title": "Arkivera {{symbol}}?",
+        "message": "Arkivera {{symbol}}? Historiken förblir tillgänglig."
       }
     },
     "archive": {
       "title": "Arkivera investeringsportföljen?",
       "message": "Arkivera {{name}}? Historiken är fortfarande tillgänglig."
     },
-    "archiveError": "Det gick inte att uppdatera investeringsportföljens arkivstatus. Försök igen.",
     "title": "Investeringar",
-    "description": "Följ de aktier, fonder och kryptovalutor du äger.",
-    "placeholder": {
-      "title": "Kommer snart",
-      "description": "Portföljer, innehav och kurser är på väg."
-    }
+    "description": "Följ de aktier, fonder och kryptovalutor du äger."
   },
   "reports": {
     "ratesUnavailable": "Vissa siffror behöver en växelkurs som inte är tillgänglig just nu.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Den valutan är inte tillgänglig.",
       "inactive": "Den valutan är inte längre aktiv."
+    },
+    "investment_wallet": {
+      "not_found": "Den här investeringsportföljen finns inte längre.",
+      "currency_in_use": "Den här portföljen har redan transaktioner, så valutan kan inte ändras."
+    },
+    "investment_asset": {
+      "not_found": "Den här investeringstillgången finns inte längre.",
+      "symbol_already_exists": "Du har redan en tillgång med den här symbolen."
+    },
+    "investment_transaction": {
+      "not_found": "Den transaktionen finns inte längre.",
+      "quantity_price_required": "Köp och försäljningar kräver en kvantitet och ett pris.",
+      "quantity_price_not_allowed": "Utdelningar och avgifter använder ett belopp, inte en kvantitet och ett pris.",
+      "asset_required": "Välj en tillgång för den här transaktionen.",
+      "currency_must_match_wallet": "Transaktionens valuta måste stämma överens med portföljens valuta.",
+      "insufficient_quantity": "Du kan inte sälja mer än du har just nu.",
+      "settlement_amount_not_positive": "Avräkningsbeloppet måste vara större än noll.",
+      "ledger_invalid": "Den här ändringen skulle göra en senare transaktion ogiltig. Ångra eller redigera den först."
+    },
+    "market_data_credential": {
+      "not_found": "Det finns ingen sparad API-nyckel för den leverantören.",
+      "provider_unknown": "Den kursleverantören känns inte igen."
     }
   }
 }

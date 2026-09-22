@@ -1220,14 +1220,18 @@
       "newTransaction": "거래 기록",
       "editTransaction": "거래 수정",
       "deleteTransaction": "거래 삭제",
-      "newAsset": "새 자산"
+      "newAsset": "새 자산",
+      "editAsset": "자산 수정",
+      "archiveAsset": "자산 보관",
+      "unarchiveAsset": "자산 보관 해제"
     },
     "wallet": "투자 포트폴리오",
     "archived": "보관됨",
     "summary": {
       "bookValue": "장부가",
       "marketValue": "시장가",
-      "unrealizedGain": "미실현 수익"
+      "unrealizedGain": "미실현 수익",
+      "multiCurrencyHint": "다른 통화의 포트폴리오는 이 합계에 포함되지 않습니다."
     },
     "empty": {
       "title": "아직 투자 포트폴리오가 없습니다",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "자산",
+      "empty": {
+        "title": "아직 자산이 없습니다",
+        "description": "자산을 추가하여 거래 기록을 시작하세요."
+      },
       "form": {
         "newTitle": "새 투자 자산",
         "editTitle": "투자 자산 수정",
@@ -1344,25 +1353,25 @@
           "currency": "통화",
           "quoteProvider": "시세 제공업체",
           "manualPrice": "수동 가격",
-          "manualPriceHint": "실시간 시세를 사용할 수 있을 때까지 사용됩니다."
+          "manualPriceHint": "실시간 시세를 사용할 수 있을 때까지 사용됩니다.",
+          "manualPriceOverridesProvider": "수동 가격은 선택한 제공업체의 시세가 나중에 제공되더라도 항상 이를 우선합니다."
         },
         "actions": {
           "cancel": "취소",
           "save": "저장"
         }
+      },
+      "archive": {
+        "title": "{{symbol}}을(를) 보관할까요?",
+        "message": "{{symbol}}을(를) 보관할까요? 내역은 계속 이용할 수 있습니다."
       }
     },
     "archive": {
       "title": "투자 포트폴리오를 보관할까요?",
       "message": "{{name}}을(를) 보관할까요? 기록은 계속 사용할 수 있습니다."
     },
-    "archiveError": "투자 포트폴리오 보관 상태를 업데이트할 수 없습니다. 다시 시도하세요.",
     "title": "투자",
-    "description": "보유한 주식, 펀드, 암호화폐를 추적하세요.",
-    "placeholder": {
-      "title": "곧 출시됩니다",
-      "description": "포트폴리오, 포지션, 시세 기능을 준비하고 있습니다."
-    }
+    "description": "보유한 주식, 펀드, 암호화폐를 추적하세요."
   },
   "reports": {
     "ratesUnavailable": "일부 수치에는 현재 사용할 수 없는 환율이 필요합니다.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "해당 통화를 사용할 수 없습니다.",
       "inactive": "해당 통화는 더 이상 활성 상태가 아닙니다."
+    },
+    "investment_wallet": {
+      "not_found": "해당 투자 지갑은 더 이상 존재하지 않습니다.",
+      "currency_in_use": "이 지갑에는 이미 거래가 있어 통화를 변경할 수 없습니다."
+    },
+    "investment_asset": {
+      "not_found": "해당 투자 자산은 더 이상 존재하지 않습니다.",
+      "symbol_already_exists": "이 기호의 자산을 이미 보유하고 있습니다."
+    },
+    "investment_transaction": {
+      "not_found": "해당 거래는 더 이상 존재하지 않습니다.",
+      "quantity_price_required": "매수와 매도에는 수량과 가격이 필요합니다.",
+      "quantity_price_not_allowed": "배당금과 수수료에는 수량과 가격이 아닌 금액을 사용합니다.",
+      "asset_required": "이 거래의 자산을 선택하세요.",
+      "currency_must_match_wallet": "거래 통화는 지갑 통화와 일치해야 합니다.",
+      "insufficient_quantity": "현재 보유한 수량보다 많이 매도할 수 없습니다.",
+      "settlement_amount_not_positive": "결제 금액은 0보다 커야 합니다.",
+      "ledger_invalid": "이 변경으로 이후 거래가 유효하지 않게 됩니다. 먼저 해당 거래를 되돌리거나 수정하세요."
+    },
+    "market_data_credential": {
+      "not_found": "해당 제공업체의 API 키가 저장되어 있지 않습니다.",
+      "provider_unknown": "해당 시세 제공업체를 인식할 수 없습니다."
     }
   }
 }

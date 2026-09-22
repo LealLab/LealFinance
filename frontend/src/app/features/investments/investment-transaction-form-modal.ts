@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { InvestmentTransactionRepository } from '../../data/investment-transaction.repository';
 import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
 import { todayIso } from '../../domain/calc/dates';
@@ -170,9 +171,13 @@ export class InvestmentTransactionFormModal {
         this.open.set(false);
         this.saved.emit(saved);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('investments.transactions.form.saveError');
+        this.saveErrorKey.set(
+          error instanceof ApiError
+            ? `errors.${error.code}`
+            : 'investments.transactions.form.saveError',
+        );
       },
     });
   }

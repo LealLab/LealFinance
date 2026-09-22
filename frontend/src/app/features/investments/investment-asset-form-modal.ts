@@ -1,6 +1,8 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { PreferenceService } from '../../core/preference.service';
 import {
   InvestmentAssetCreate,
@@ -54,6 +56,12 @@ export class InvestmentAssetFormModal {
     manualPrice: ['', decimalAmountValidator(10)],
   });
 
+  private readonly selectedProvider = toSignal(this.form.controls.quoteProvider.valueChanges, {
+    initialValue: this.form.controls.quoteProvider.value,
+  });
+  /** A manual price always wins over a live quote once set (see asset_quotes.py). */
+  protected readonly showManualPriceOverrideHint = computed(() => this.selectedProvider() !== 'manual');
+
   constructor() {
     effect(() => {
       if (!this.open()) return;
@@ -94,9 +102,11 @@ export class InvestmentAssetFormModal {
         this.open.set(false);
         this.saved.emit(saved);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('investments.assets.form.saveError');
+        this.saveErrorKey.set(
+          error instanceof ApiError ? `errors.${error.code}` : 'investments.assets.form.saveError',
+        );
       },
     });
   }

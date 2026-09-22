@@ -1220,14 +1220,18 @@
       "newTransaction": "İşlem kaydet",
       "editTransaction": "İşlemi düzenle",
       "deleteTransaction": "İşlemi sil",
-      "newAsset": "Yeni varlık"
+      "newAsset": "Yeni varlık",
+      "editAsset": "Varlığı düzenle",
+      "archiveAsset": "Varlığı arşivle",
+      "unarchiveAsset": "Varlığın arşivini kaldır"
     },
     "wallet": "Yatırım portföyü",
     "archived": "Arşivlendi",
     "summary": {
       "bookValue": "Defter değeri",
       "marketValue": "Piyasa değeri",
-      "unrealizedGain": "Gerçekleşmemiş kazanç"
+      "unrealizedGain": "Gerçekleşmemiş kazanç",
+      "multiCurrencyHint": "Diğer para birimlerindeki portföyler bu toplamlara dahil değildir."
     },
     "empty": {
       "title": "Henüz yatırım portföyü yok",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Varlıklar",
+      "empty": {
+        "title": "Henüz varlık yok",
+        "description": "İşlemleri kaydetmeye başlamak için bir varlık ekleyin."
+      },
       "form": {
         "newTitle": "Yeni yatırım varlığı",
         "editTitle": "Yatırım varlığını düzenle",
@@ -1344,25 +1353,25 @@
           "currency": "Para birimi",
           "quoteProvider": "Fiyat sağlayıcısı",
           "manualPrice": "Manuel fiyat",
-          "manualPriceHint": "Canlı fiyatlar kullanılabilir olana kadar kullanılır."
+          "manualPriceHint": "Canlı fiyatlar kullanılabilir olana kadar kullanılır.",
+          "manualPriceOverridesProvider": "Manuel fiyat, seçilen sağlayıcının fiyatlarını, bunlar kullanılabilir hale geldikten sonra bile her zaman geçersiz kılar."
         },
         "actions": {
           "cancel": "İptal",
           "save": "Kaydet"
         }
+      },
+      "archive": {
+        "title": "{{symbol}} arşivlensin mi?",
+        "message": "{{symbol}} arşivlensin mi? Geçmişi kullanılabilir olmaya devam eder."
       }
     },
     "archive": {
       "title": "Yatırım portföyü arşivlensin mi?",
       "message": "{{name}} arşivlensin mi? Geçmişi kullanılabilir olmaya devam eder."
     },
-    "archiveError": "Yatırım portföyünün arşiv durumu güncellenemedi. Tekrar deneyin.",
     "title": "Yatırımlar",
-    "description": "Sahip olduğunuz hisse senetlerini, fonları ve kripto varlıkları takip edin.",
-    "placeholder": {
-      "title": "Çok yakında",
-      "description": "Portföyler, pozisyonlar ve fiyatlar yolda."
-    }
+    "description": "Sahip olduğunuz hisse senetlerini, fonları ve kripto varlıkları takip edin."
   },
   "reports": {
     "ratesUnavailable": "Bazı rakamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Bu para birimi kullanılamıyor.",
       "inactive": "Bu para birimi artık etkin değil."
+    },
+    "investment_wallet": {
+      "not_found": "Bu yatırım cüzdanı artık mevcut değil.",
+      "currency_in_use": "Bu cüzdanda zaten işlemler var, bu nedenle para birimi değiştirilemez."
+    },
+    "investment_asset": {
+      "not_found": "Bu yatırım varlığı artık mevcut değil.",
+      "symbol_already_exists": "Bu sembole sahip bir varlığınız zaten var."
+    },
+    "investment_transaction": {
+      "not_found": "Bu işlem artık mevcut değil.",
+      "quantity_price_required": "Alım ve satım için miktar ve fiyat gerekir.",
+      "quantity_price_not_allowed": "Temettüler ve ücretlerde miktar ve fiyat yerine tutar kullanılır.",
+      "asset_required": "Bu işlem için bir varlık seçin.",
+      "currency_must_match_wallet": "İşlemin para birimi cüzdanın para birimiyle eşleşmelidir.",
+      "insufficient_quantity": "Şu anda sahip olduğunuzdan fazlasını satamazsınız.",
+      "settlement_amount_not_positive": "Takas tutarı sıfırdan büyük olmalıdır.",
+      "ledger_invalid": "Bu değişiklik daha sonraki bir işlemi geçersiz kılacak. Önce o işlemi geri alın veya düzenleyin."
+    },
+    "market_data_credential": {
+      "not_found": "Bu sağlayıcı için kayıtlı bir API anahtarı yok.",
+      "provider_unknown": "Bu fiyat sağlayıcısı tanınmıyor."
     }
   }
 }

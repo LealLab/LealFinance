@@ -10,6 +10,7 @@ import { InvestmentAssetRepository } from '../../data/investment-asset.repositor
 import { InvestmentTransactionRepository } from '../../data/investment-transaction.repository';
 import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
 import {
+  InvestmentAsset,
   InvestmentPosition,
   InvestmentTransaction,
 } from '../../domain/models/investment';
@@ -25,6 +26,7 @@ import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll'
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { InvestmentAssetFormModal } from './investment-asset-form-modal';
+import { InvestmentAssetsCard } from './investment-assets-card';
 import { InvestmentTransactionFormModal } from './investment-transaction-form-modal';
 import { InvestmentWalletFormModal } from './investment-wallet-form-modal';
 
@@ -33,7 +35,7 @@ const PAGE_SIZE = 30;
 /**
  * Confirmation and error keys are dynamic values, so keep them marked for
  * transloco-keys-manager:
- * t(investments.archive.title, investments.archive.message, investments.archiveError, investments.transactions.delete.title, investments.transactions.delete.message)
+ * t(investments.archive.title, investments.archive.message, investments.transactions.delete.title, investments.transactions.delete.message, investments.assets.archive.title, investments.assets.archive.message)
  */
 
 @Component({
@@ -51,6 +53,7 @@ const PAGE_SIZE = 30;
     PageHeader,
     Skeleton,
     InvestmentAssetFormModal,
+    InvestmentAssetsCard,
     InvestmentTransactionFormModal,
     InvestmentWalletFormModal,
   ],
@@ -87,6 +90,7 @@ export class InvestmentDetail {
   protected readonly transactionFormOpen = signal(false);
   protected readonly editingTransaction = signal<InvestmentTransaction | undefined>(undefined);
   protected readonly assetFormOpen = signal(false);
+  protected readonly editingAsset = signal<InvestmentAsset | undefined>(undefined);
   protected readonly walletFormOpen = signal(false);
 
   protected readonly wallet = computed(() => this.walletResource.value());
@@ -128,9 +132,9 @@ export class InvestmentDetail {
           if (page.length < PAGE_SIZE) this.exhausted.set(true);
           this.loadingMore = false;
         },
-        error: () => {
+        error: (error: unknown) => {
           this.loadingMore = false;
-          this.mutationErrors.show();
+          this.mutationErrors.show(error);
         },
       });
   }
@@ -163,6 +167,12 @@ export class InvestmentDetail {
   }
 
   protected openCreateAsset(): void {
+    this.editingAsset.set(undefined);
+    this.assetFormOpen.set(true);
+  }
+
+  protected openEditAsset(asset: InvestmentAsset): void {
+    this.editingAsset.set(asset);
     this.assetFormOpen.set(true);
   }
 
@@ -177,6 +187,23 @@ export class InvestmentDetail {
 
   protected onAssetSaved(): void {
     this.assetsResource.reload();
+    this.positionsResource.reload();
+  }
+
+  protected async archiveAsset(asset: InvestmentAsset): Promise<void> {
+    if (!asset.archived) {
+      const confirmed = await this.confirmService.confirm(
+        'investments.assets.archive.title',
+        'investments.assets.archive.message',
+        'default',
+        { symbol: asset.symbol },
+      );
+      if (!confirmed) return;
+    }
+    this.assets.setArchived(asset.id, !asset.archived).subscribe({
+      next: () => this.onAssetSaved(),
+      error: (error: unknown) => this.mutationErrors.show(error),
+    });
   }
 
   protected onWalletSaved(): void {
@@ -194,7 +221,7 @@ export class InvestmentDetail {
     if (!confirmed) return;
     this.transactions.delete(transaction.id).subscribe({
       next: () => this.onTransactionSaved(),
-      error: () => this.mutationErrors.show(),
+      error: (error: unknown) => this.mutationErrors.show(error),
     });
   }
 
@@ -212,7 +239,7 @@ export class InvestmentDetail {
     }
     this.wallets.setArchived(wallet.id, !wallet.archived).subscribe({
       next: () => this.onWalletSaved(),
-      error: () => this.mutationErrors.show(),
+      error: (error: unknown) => this.mutationErrors.show(error),
     });
   }
 

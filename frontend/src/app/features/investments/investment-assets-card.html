@@ -1,0 +1,108 @@
+<!-- t(investments.assetClass.stock, investments.assetClass.etf, investments.assetClass.fund, investments.assetClass.crypto, investments.assetClass.bond, investments.assetClass.other) t(investments.quoteProvider.twelve_data, investments.quoteProvider.brapi, investments.quoteProvider.coingecko, investments.quoteProvider.manual) -->
+<app-card [padded]="false">
+  <div *transloco="let t">
+    <div class="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+      <span class="text-sm font-semibold text-content-primary">{{ t('investments.assets.title') }}</span>
+      <button appButton variant="secondary" size="sm" type="button" (click)="create.emit()">
+        <app-icon name="plus" [size]="14" />{{ t('investments.actions.newAsset') }}
+      </button>
+    </div>
+    @if (sortedAssets().length === 0) {
+      <div class="p-4">
+        <app-empty-state
+          icon="coins"
+          [title]="t('investments.assets.empty.title')"
+          [description]="t('investments.assets.empty.description')"
+        >
+          <button appButton variant="primary" type="button" (click)="create.emit()">
+            {{ t('investments.actions.newAsset') }}
+          </button>
+        </app-empty-state>
+      </div>
+    } @else {
+      <div class="divide-y divide-border md:hidden">
+        @for (asset of sortedAssets(); track asset.id) {
+          <div class="flex items-start justify-between gap-2 px-4 py-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="font-medium text-content-primary">{{ asset.symbol }}</span>
+                @if (asset.archived) { <app-badge tone="neutral">{{ t('investments.archived') }}</app-badge> }
+              </div>
+              <div class="truncate text-xs text-content-muted">{{ asset.name }} · {{ t('investments.assetClass.' + asset.assetClass) }}</div>
+              <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
+                <span>{{ asset.currency }}</span>
+                <span>{{ t('investments.quoteProvider.' + asset.quoteProvider) }}</span>
+              </div>
+            </div>
+            <div class="flex shrink-0 flex-col items-end gap-2">
+              <span class="font-mono text-sm tabular-nums">
+                @if (positionFor(asset); as position) {
+                  @if (position.price) {
+                    {{ position.price | money: asset.currency : 'precise' }}
+                  } @else {
+                    <span class="text-content-muted">{{ t('investments.detail.stale') }}</span>
+                  }
+                } @else if (asset.manualPrice) {
+                  {{ asset.manualPrice | money: asset.currency : 'precise' }}
+                } @else {
+                  <span class="text-content-muted">—</span>
+                }
+              </span>
+              <div class="flex gap-1">
+                <button appButton variant="ghost" size="sm" type="button" (click)="edit.emit(asset)" [attr.aria-label]="t('investments.actions.editAsset')"><app-icon name="pencil" [size]="16" /></button>
+                <button appButton variant="ghost" size="sm" type="button" (click)="archiveToggle.emit(asset)" [attr.aria-label]="asset.archived ? t('investments.actions.unarchiveAsset') : t('investments.actions.archiveAsset')"><app-icon name="archive" [size]="16" /></button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="hidden overflow-x-auto md:block">
+        <table class="w-full min-w-[640px] text-left text-sm">
+          <thead class="border-b border-border text-xs text-content-muted">
+            <tr>
+              <th class="px-4 py-3 font-medium">{{ t('investments.assets.form.fields.symbol') }}</th>
+              <th class="px-4 py-3 font-medium">{{ t('investments.assets.form.fields.currency') }}</th>
+              <th class="px-4 py-3 font-medium">{{ t('investments.assets.form.fields.quoteProvider') }}</th>
+              <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.price') }}</th>
+              <th class="px-4 py-3 text-right font-medium">{{ t('investments.columns.actions') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (asset of sortedAssets(); track asset.id) {
+              <tr class="border-b border-border last:border-b-0">
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium text-content-primary">{{ asset.symbol }}</span>
+                    @if (asset.archived) { <app-badge tone="neutral">{{ t('investments.archived') }}</app-badge> }
+                  </div>
+                  <div class="text-xs text-content-muted">{{ asset.name }} · {{ t('investments.assetClass.' + asset.assetClass) }}</div>
+                </td>
+                <td class="px-4 py-3 text-content-muted">{{ asset.currency }}</td>
+                <td class="px-4 py-3 text-content-muted">{{ t('investments.quoteProvider.' + asset.quoteProvider) }}</td>
+                <td class="px-4 py-3 text-right font-mono tabular-nums">
+                  @if (positionFor(asset); as position) {
+                    @if (position.price) {
+                      {{ position.price | money: asset.currency : 'precise' }}
+                    } @else {
+                      <span class="text-content-muted">{{ t('investments.detail.stale') }}</span>
+                    }
+                  } @else if (asset.manualPrice) {
+                    {{ asset.manualPrice | money: asset.currency : 'precise' }}
+                  } @else {
+                    <span class="text-content-muted">—</span>
+                  }
+                </td>
+                <td class="px-4 py-3">
+                  <div class="flex justify-end gap-1">
+                    <button appButton variant="ghost" size="sm" type="button" (click)="edit.emit(asset)" [attr.aria-label]="t('investments.actions.editAsset')"><app-icon name="pencil" [size]="16" /></button>
+                    <button appButton variant="ghost" size="sm" type="button" (click)="archiveToggle.emit(asset)" [attr.aria-label]="asset.archived ? t('investments.actions.unarchiveAsset') : t('investments.actions.archiveAsset')"><app-icon name="archive" [size]="16" /></button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</app-card>

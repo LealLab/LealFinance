@@ -1220,14 +1220,18 @@
       "newTransaction": "Zaznamenat transakci",
       "editTransaction": "Upravit transakci",
       "deleteTransaction": "Odstranit transakci",
-      "newAsset": "Nové aktivum"
+      "newAsset": "Nové aktivum",
+      "editAsset": "Upravit aktivum",
+      "archiveAsset": "Archivovat aktivum",
+      "unarchiveAsset": "Zrušit archivaci aktiva"
     },
     "wallet": "Investiční portfolio",
     "archived": "Archivováno",
     "summary": {
       "bookValue": "Účetní hodnota",
       "marketValue": "Tržní hodnota",
-      "unrealizedGain": "Nerealizovaný zisk"
+      "unrealizedGain": "Nerealizovaný zisk",
+      "multiCurrencyHint": "Peněženky v jiných měnách nejsou do těchto součtů zahrnuty."
     },
     "empty": {
       "title": "Zatím žádná investiční portfolia",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Aktiva",
+      "empty": {
+        "title": "Zatím žádná aktiva",
+        "description": "Přidejte aktivum a začněte k němu zaznamenávat transakce."
+      },
       "form": {
         "newTitle": "Nové investiční aktivum",
         "editTitle": "Upravit investiční aktivum",
@@ -1344,25 +1353,25 @@
           "currency": "Měna",
           "quoteProvider": "Poskytovatel kotací",
           "manualPrice": "Ruční cena",
-          "manualPriceHint": "Použije se, dokud nebudou k dispozici aktuální kotace."
+          "manualPriceHint": "Použije se, dokud nebudou k dispozici aktuální kotace.",
+          "manualPriceOverridesProvider": "Ruční cena vždy přepíše kotace vybraného poskytovatele, i když budou později k dispozici."
         },
         "actions": {
           "cancel": "Zrušit",
           "save": "Uložit"
         }
+      },
+      "archive": {
+        "title": "Archivovat {{symbol}}?",
+        "message": "Archivovat {{symbol}}? Jeho historie zůstane k dispozici."
       }
     },
     "archive": {
       "title": "Archivovat investiční portfolio?",
       "message": "Archivovat {{name}}? Jeho historie zůstane dostupná."
     },
-    "archiveError": "Stav archivu investičního portfolia se nepodařilo aktualizovat. Zkuste to znovu.",
     "title": "Investice",
-    "description": "Sledujte akcie, fondy a kryptoměny, které vlastníte.",
-    "placeholder": {
-      "title": "Již brzy",
-      "description": "Portfolia, pozice a kurzy jsou na cestě."
-    }
+    "description": "Sledujte akcie, fondy a kryptoměny, které vlastníte."
   },
   "reports": {
     "ratesUnavailable": "U některých údajů je potřeba směnný kurz, který momentálně není k dispozici.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Tato měna není k dispozici.",
       "inactive": "Tato měna již není aktivní."
+    },
+    "investment_wallet": {
+      "not_found": "Investiční peněženka již neexistuje.",
+      "currency_in_use": "V této peněžence už jsou transakce, takže její měnu nelze změnit."
+    },
+    "investment_asset": {
+      "not_found": "Investiční aktivum již neexistuje.",
+      "symbol_already_exists": "Aktivum s tímto symbolem již máte."
+    },
+    "investment_transaction": {
+      "not_found": "Tato transakce již neexistuje.",
+      "quantity_price_required": "Nákupy a prodeje vyžadují množství a cenu.",
+      "quantity_price_not_allowed": "Dividendy a poplatky používají částku, nikoli množství a cenu.",
+      "asset_required": "Vyberte pro tuto transakci aktivum.",
+      "currency_must_match_wallet": "Měna transakce se musí shodovat s měnou peněženky.",
+      "insufficient_quantity": "Nemůžete prodat více, než kolik aktuálně držíte.",
+      "settlement_amount_not_positive": "Částka vypořádání musí být větší než nula.",
+      "ledger_invalid": "Tato změna by zneplatnila pozdější transakci. Nejprve ji vraťte zpět nebo upravte."
+    },
+    "market_data_credential": {
+      "not_found": "Pro tohoto poskytovatele není uložen žádný klíč API.",
+      "provider_unknown": "Tento poskytovatel cenových kotací není rozpoznán."
     }
   }
 }

@@ -1220,14 +1220,18 @@
       "newTransaction": "Enregistrer une opération",
       "editTransaction": "Modifier l’opération",
       "deleteTransaction": "Supprimer l’opération",
-      "newAsset": "Nouvel actif"
+      "newAsset": "Nouvel actif",
+      "editAsset": "Modifier l’actif",
+      "archiveAsset": "Archiver l’actif",
+      "unarchiveAsset": "Désarchiver l’actif"
     },
     "wallet": "Portefeuille d’investissement",
     "archived": "Archivé",
     "summary": {
       "bookValue": "Valeur comptable",
       "marketValue": "Valeur de marché",
-      "unrealizedGain": "Plus-value latente"
+      "unrealizedGain": "Plus-value latente",
+      "multiCurrencyHint": "Les portefeuilles dans d’autres devises ne sont pas inclus dans ces totaux."
     },
     "empty": {
       "title": "Aucun portefeuille d’investissement pour le moment",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Actifs",
+      "empty": {
+        "title": "Aucun actif pour le moment",
+        "description": "Ajoutez un actif pour commencer à enregistrer des opérations à son sujet."
+      },
       "form": {
         "newTitle": "Nouvel actif d’investissement",
         "editTitle": "Modifier l’actif d’investissement",
@@ -1344,25 +1353,25 @@
           "currency": "Devise",
           "quoteProvider": "Fournisseur de cours",
           "manualPrice": "Prix manuel",
-          "manualPriceHint": "Utilisé jusqu’à ce que les cours en direct soient disponibles."
+          "manualPriceHint": "Utilisé jusqu’à ce que les cours en direct soient disponibles.",
+          "manualPriceOverridesProvider": "Un prix manuel remplace toujours les cours du fournisseur sélectionné, même lorsqu’ils deviennent disponibles."
         },
         "actions": {
           "cancel": "Annuler",
           "save": "Enregistrer"
         }
+      },
+      "archive": {
+        "title": "Archiver {{symbol}} ?",
+        "message": "Archiver {{symbol}} ? Son historique restera disponible."
       }
     },
     "archive": {
       "title": "Archiver le portefeuille d’investissement ?",
       "message": "Archiver {{name}} ? Son historique restera disponible."
     },
-    "archiveError": "Impossible de mettre à jour l’état d’archivage du portefeuille d’investissement. Réessayez.",
     "title": "Investissements",
-    "description": "Suivez les actions, fonds et cryptomonnaies que vous détenez.",
-    "placeholder": {
-      "title": "Bientôt disponible",
-      "description": "Les portefeuilles, positions et cotations arrivent bientôt."
-    }
+    "description": "Suivez les actions, fonds et cryptomonnaies que vous détenez."
   },
   "reports": {
     "ratesUnavailable": "Certains chiffres nécessitent un taux de change indisponible pour le moment.",
@@ -2046,6 +2055,28 @@
     "currency": {
       "not_found": "Cette devise n'est pas disponible.",
       "inactive": "Cette devise n'est plus active."
+    },
+    "investment_wallet": {
+      "not_found": "Ce portefeuille d’investissement n’existe plus.",
+      "currency_in_use": "Ce portefeuille contient déjà des transactions ; sa devise ne peut donc pas être modifiée."
+    },
+    "investment_asset": {
+      "not_found": "Cet actif d’investissement n’existe plus.",
+      "symbol_already_exists": "Vous avez déjà un actif avec ce symbole."
+    },
+    "investment_transaction": {
+      "not_found": "Cette transaction n’existe plus.",
+      "quantity_price_required": "Les achats et les ventes nécessitent une quantité et un prix.",
+      "quantity_price_not_allowed": "Les dividendes et les frais utilisent un montant, pas une quantité et un prix.",
+      "asset_required": "Choisissez un actif pour cette transaction.",
+      "currency_must_match_wallet": "La devise de la transaction doit correspondre à celle du portefeuille.",
+      "insufficient_quantity": "Vous ne pouvez pas vendre plus que ce que vous détenez actuellement.",
+      "settlement_amount_not_positive": "Le montant du règlement doit être supérieur à zéro.",
+      "ledger_invalid": "Cette modification rendrait une transaction ultérieure invalide. Annulez-la ou modifiez-la d’abord."
+    },
+    "market_data_credential": {
+      "not_found": "Aucune clé API n’est enregistrée pour ce fournisseur.",
+      "provider_unknown": "Ce fournisseur de cotations n’est pas reconnu."
     }
   }
 }

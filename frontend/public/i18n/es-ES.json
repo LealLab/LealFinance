@@ -1220,14 +1220,18 @@
       "newTransaction": "Registrar movimiento",
       "editTransaction": "Editar movimiento",
       "deleteTransaction": "Eliminar movimiento",
-      "newAsset": "Nuevo activo"
+      "newAsset": "Nuevo activo",
+      "editAsset": "Editar activo",
+      "archiveAsset": "Archivar activo",
+      "unarchiveAsset": "Desarchivar activo"
     },
     "wallet": "Cartera de inversión",
     "archived": "Archivada",
     "summary": {
       "bookValue": "Valor contable",
       "marketValue": "Valor de mercado",
-      "unrealizedGain": "Ganancia no realizada"
+      "unrealizedGain": "Ganancia no realizada",
+      "multiCurrencyHint": "Las carteras en otras monedas no se incluyen en estos totales."
     },
     "empty": {
       "title": "Aún no hay carteras de inversión",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Activos",
+      "empty": {
+        "title": "Aún no hay activos",
+        "description": "Añade un activo para empezar a registrar movimientos asociados."
+      },
       "form": {
         "newTitle": "Nuevo activo de inversión",
         "editTitle": "Editar activo de inversión",
@@ -1344,25 +1353,25 @@
           "currency": "Moneda",
           "quoteProvider": "Proveedor de cotizaciones",
           "manualPrice": "Precio manual",
-          "manualPriceHint": "Se usa hasta que haya cotizaciones en tiempo real."
+          "manualPriceHint": "Se usa hasta que haya cotizaciones en tiempo real.",
+          "manualPriceOverridesProvider": "El precio manual siempre prevalece sobre las cotizaciones del proveedor seleccionado, incluso cuando vuelvan a estar disponibles."
         },
         "actions": {
           "cancel": "Cancelar",
           "save": "Guardar"
         }
+      },
+      "archive": {
+        "title": "¿Archivar {{symbol}}?",
+        "message": "¿Archivar {{symbol}}? Su historial seguirá disponible."
       }
     },
     "archive": {
       "title": "¿Archivar la cartera de inversión?",
       "message": "¿Archivar {{name}}? Su historial seguirá disponible."
     },
-    "archiveError": "No se ha podido actualizar el estado de archivo de la cartera de inversión. Inténtalo de nuevo.",
     "title": "Inversiones",
-    "description": "Controla las acciones, fondos y criptomonedas que tienes.",
-    "placeholder": {
-      "title": "Próximamente",
-      "description": "Las carteras, posiciones y cotizaciones están en camino."
-    }
+    "description": "Controla las acciones, fondos y criptomonedas que tienes."
   },
   "reports": {
     "ratesUnavailable": "Algunas cifras necesitan un tipo de cambio que no está disponible en este momento.",
@@ -2046,6 +2055,28 @@
     "currency": {
       "not_found": "Esa moneda no está disponible.",
       "inactive": "Esa moneda ya no está activa."
+    },
+    "investment_wallet": {
+      "not_found": "Esa cartera de inversión ya no existe.",
+      "currency_in_use": "Esa cartera ya tiene transacciones, por lo que no se puede cambiar su moneda."
+    },
+    "investment_asset": {
+      "not_found": "Ese activo de inversión ya no existe.",
+      "symbol_already_exists": "Ya tienes un activo con este símbolo."
+    },
+    "investment_transaction": {
+      "not_found": "Esa transacción ya no existe.",
+      "quantity_price_required": "Las compras y las ventas necesitan una cantidad y un precio.",
+      "quantity_price_not_allowed": "Los dividendos y las comisiones usan un importe, no una cantidad y un precio.",
+      "asset_required": "Elige un activo para esta transacción.",
+      "currency_must_match_wallet": "La moneda de la transacción debe coincidir con la moneda de la cartera.",
+      "insufficient_quantity": "No puedes vender más de lo que tienes actualmente.",
+      "settlement_amount_not_positive": "El importe de liquidación debe ser mayor que cero.",
+      "ledger_invalid": "Este cambio dejaría inválida una transacción posterior. Deshazla o edítala primero."
+    },
+    "market_data_credential": {
+      "not_found": "No hay ninguna clave de API guardada para ese proveedor.",
+      "provider_unknown": "Ese proveedor de cotizaciones no se reconoce."
     }
   }
 }

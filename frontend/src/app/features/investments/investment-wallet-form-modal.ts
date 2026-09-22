@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { PreferenceService } from '../../core/preference.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -98,9 +99,11 @@ export class InvestmentWalletFormModal {
         this.open.set(false);
         this.saved.emit(saved);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('investments.form.saveError');
+        this.saveErrorKey.set(
+          error instanceof ApiError ? `errors.${error.code}` : 'investments.form.saveError',
+        );
       },
     });
   }

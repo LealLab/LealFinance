@@ -45,6 +45,9 @@
           <label class="form-label" for="investment-asset-manual-price">{{ t('investments.assets.form.fields.manualPrice') }}</label>
           <input id="investment-asset-manual-price" type="text" inputmode="decimal" class="form-input font-mono" formControlName="manualPrice" />
           <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.manualPriceHint') }}</p>
+          @if (showManualPriceOverrideHint()) {
+            <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.manualPriceOverridesProvider') }}</p>
+          }
         </div>
 
         @if (saveErrorKey(); as errorKey) {

@@ -1220,14 +1220,18 @@
       "newTransaction": "Kirjaa tapahtuma",
       "editTransaction": "Muokkaa tapahtumaa",
       "deleteTransaction": "Poista tapahtuma",
-      "newAsset": "Uusi omaisuuserä"
+      "newAsset": "Uusi omaisuuserä",
+      "editAsset": "Muokkaa omaisuuserää",
+      "archiveAsset": "Arkistoi omaisuuserä",
+      "unarchiveAsset": "Poista omaisuuserä arkistosta"
     },
     "wallet": "Sijoitussalkku",
     "archived": "Arkistoitu",
     "summary": {
       "bookValue": "Hankinta-arvo",
       "marketValue": "Markkina-arvo",
-      "unrealizedGain": "Realisoitumaton voitto"
+      "unrealizedGain": "Realisoitumaton voitto",
+      "multiCurrencyHint": "Muissa valuutoissa olevia sijoitussalkkuja ei sisällytetä näihin summiin."
     },
     "empty": {
       "title": "Sijoitussalkkuja ei ole vielä",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Omaisuuserät",
+      "empty": {
+        "title": "Omaisuuseriä ei ole vielä",
+        "description": "Lisää omaisuuserä aloittaaksesi siihen liittyvien tapahtumien kirjaamisen."
+      },
       "form": {
         "newTitle": "Uusi sijoitusomaisuuserä",
         "editTitle": "Muokkaa sijoitusomaisuuserää",
@@ -1344,25 +1353,25 @@
           "currency": "Valuutta",
           "quoteProvider": "Hintatietojen tarjoaja",
           "manualPrice": "Manuaalinen hinta",
-          "manualPriceHint": "Käytetään, kunnes reaaliaikaiset hinnat ovat saatavilla."
+          "manualPriceHint": "Käytetään, kunnes reaaliaikaiset hinnat ovat saatavilla.",
+          "manualPriceOverridesProvider": "Manuaalinen hinta ohittaa aina valitun tarjoajan kurssit, vaikka ne tulisivat saataville."
         },
         "actions": {
           "cancel": "Peruuta",
           "save": "Tallenna"
         }
+      },
+      "archive": {
+        "title": "Arkistoidaanko {{symbol}}?",
+        "message": "Arkistoidaanko {{symbol}}? Sen historia on edelleen käytettävissä."
       }
     },
     "archive": {
       "title": "Arkistoidaanko sijoitussalkku?",
       "message": "Arkistoidaanko {{name}}? Sen historia säilyy saatavilla."
     },
-    "archiveError": "Sijoitussalkun arkistotilan päivitys epäonnistui. Yritä uudelleen.",
     "title": "Sijoitukset",
-    "description": "Seuraa omistamiasi osakkeita, rahastoja ja kryptovaluuttoja.",
-    "placeholder": {
-      "title": "Tulossa pian",
-      "description": "Salkut, omistukset ja kurssit ovat tulossa."
-    }
+    "description": "Seuraa omistamiasi osakkeita, rahastoja ja kryptovaluuttoja."
   },
   "reports": {
     "ratesUnavailable": "Jotkin luvut tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Tämä valuutta ei ole käytettävissä.",
       "inactive": "Tämä valuutta ei ole enää aktiivinen."
+    },
+    "investment_wallet": {
+      "not_found": "Tätä sijoituslompakkoa ei ole enää olemassa.",
+      "currency_in_use": "Tällä lompakolla on jo tapahtumia, joten sen valuuttaa ei voi vaihtaa."
+    },
+    "investment_asset": {
+      "not_found": "Tätä sijoitusomaisuutta ei ole enää olemassa.",
+      "symbol_already_exists": "Sinulla on jo omaisuuserä tällä tunnuksella."
+    },
+    "investment_transaction": {
+      "not_found": "Tuota tapahtumaa ei ole enää olemassa.",
+      "quantity_price_required": "Ostot ja myynnit vaativat määrän ja hinnan.",
+      "quantity_price_not_allowed": "Osingoissa ja kuluissa käytetään summaa, ei määrää ja hintaa.",
+      "asset_required": "Valitse tälle tapahtumalle omaisuuserä.",
+      "currency_must_match_wallet": "Tapahtuman valuutan on oltava sama kuin lompakon valuutta.",
+      "insufficient_quantity": "Et voi myydä enempää kuin omistat tällä hetkellä.",
+      "settlement_amount_not_positive": "Selvityssumman on oltava suurempi kuin nolla.",
+      "ledger_invalid": "Tämä muutos tekisi myöhemmästä tapahtumasta virheellisen. Kumoa tai muokkaa sitä ensin."
+    },
+    "market_data_credential": {
+      "not_found": "Tälle palveluntarjoajalle ei ole tallennettu API-avainta.",
+      "provider_unknown": "Tätä kurssipalveluntarjoajaa ei tunnisteta."
     }
   }
 }

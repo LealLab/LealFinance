@@ -1220,14 +1220,18 @@
       "newTransaction": "记录交易",
       "editTransaction": "编辑交易",
       "deleteTransaction": "删除交易",
-      "newAsset": "新资产"
+      "newAsset": "新资产",
+      "editAsset": "编辑资产",
+      "archiveAsset": "归档资产",
+      "unarchiveAsset": "取消归档资产"
     },
     "wallet": "投资组合",
     "archived": "已归档",
     "summary": {
       "bookValue": "账面价值",
       "marketValue": "市场价值",
-      "unrealizedGain": "未实现收益"
+      "unrealizedGain": "未实现收益",
+      "multiCurrencyHint": "其他货币的投资组合不包含在这些合计中。"
     },
     "empty": {
       "title": "暂无投资组合",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "资产",
+      "empty": {
+        "title": "暂无资产",
+        "description": "添加资产以开始记录与其相关的交易。"
+      },
       "form": {
         "newTitle": "新投资资产",
         "editTitle": "编辑投资资产",
@@ -1344,25 +1353,25 @@
           "currency": "货币",
           "quoteProvider": "行情提供商",
           "manualPrice": "手动价格",
-          "manualPriceHint": "在实时行情可用前使用。"
+          "manualPriceHint": "在实时行情可用前使用。",
+          "manualPriceOverridesProvider": "手动价格始终会覆盖所选提供商的行情，即使行情已可用。"
         },
         "actions": {
           "cancel": "取消",
           "save": "保存"
         }
+      },
+      "archive": {
+        "title": "归档 {{symbol}}？",
+        "message": "归档 {{symbol}}？其历史记录仍可查看。"
       }
     },
     "archive": {
       "title": "归档投资组合？",
       "message": "归档 {{name}}？其历史记录仍会保留。"
     },
-    "archiveError": "无法更新投资组合的归档状态，请重试。",
     "title": "投资",
-    "description": "您持有的股票、基金和加密货币一目了然。",
-    "placeholder": {
-      "title": "即将推出",
-      "description": "投资组合、持仓和报价功能即将上线。"
-    }
+    "description": "您持有的股票、基金和加密货币一目了然。"
   },
   "reports": {
     "ratesUnavailable": "部分数据需要使用当前不可用的汇率。",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "该货币不可用。",
       "inactive": "该货币已停用。"
+    },
+    "investment_wallet": {
+      "not_found": "该投资钱包已不存在。",
+      "currency_in_use": "此钱包已有交易，因此无法更改其货币。"
+    },
+    "investment_asset": {
+      "not_found": "该投资资产已不存在。",
+      "symbol_already_exists": "你已有使用此代码的资产。"
+    },
+    "investment_transaction": {
+      "not_found": "该交易已不存在。",
+      "quantity_price_required": "买入和卖出需要填写数量和价格。",
+      "quantity_price_not_allowed": "股息和费用使用金额，而不是数量和价格。",
+      "asset_required": "请选择此交易的资产。",
+      "currency_must_match_wallet": "交易货币必须与钱包货币一致。",
+      "insufficient_quantity": "不能卖出超过当前持有的数量。",
+      "settlement_amount_not_positive": "结算金额必须大于零。",
+      "ledger_invalid": "此更改会使后续交易无效。请先撤销或编辑该交易。"
+    },
+    "market_data_credential": {
+      "not_found": "该提供商未存储 API 密钥。",
+      "provider_unknown": "无法识别该报价提供商。"
     }
   }
 }

@@ -1220,14 +1220,18 @@
       "newTransaction": "Ghi nhận giao dịch",
       "editTransaction": "Chỉnh sửa giao dịch",
       "deleteTransaction": "Xóa giao dịch",
-      "newAsset": "Tài sản mới"
+      "newAsset": "Tài sản mới",
+      "editAsset": "Chỉnh sửa tài sản",
+      "archiveAsset": "Lưu trữ tài sản",
+      "unarchiveAsset": "Bỏ lưu trữ tài sản"
     },
     "wallet": "Danh mục đầu tư",
     "archived": "Đã lưu trữ",
     "summary": {
       "bookValue": "Giá trị sổ sách",
       "marketValue": "Giá trị thị trường",
-      "unrealizedGain": "Lãi chưa thực hiện"
+      "unrealizedGain": "Lãi chưa thực hiện",
+      "multiCurrencyHint": "Các danh mục đầu tư bằng loại tiền tệ khác không được tính vào các tổng này."
     },
     "empty": {
       "title": "Chưa có danh mục đầu tư",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Tài sản",
+      "empty": {
+        "title": "Chưa có tài sản nào",
+        "description": "Thêm tài sản để bắt đầu ghi nhận các giao dịch cho tài sản đó."
+      },
       "form": {
         "newTitle": "Tài sản đầu tư mới",
         "editTitle": "Chỉnh sửa tài sản đầu tư",
@@ -1344,25 +1353,25 @@
           "currency": "Tiền tệ",
           "quoteProvider": "Nhà cung cấp báo giá",
           "manualPrice": "Giá thủ công",
-          "manualPriceHint": "Được sử dụng cho đến khi có báo giá trực tiếp."
+          "manualPriceHint": "Được sử dụng cho đến khi có báo giá trực tiếp.",
+          "manualPriceOverridesProvider": "Giá thủ công luôn ghi đè báo giá của nhà cung cấp đã chọn, ngay cả khi báo giá đã có sẵn."
         },
         "actions": {
           "cancel": "Hủy",
           "save": "Lưu"
         }
+      },
+      "archive": {
+        "title": "Lưu trữ {{symbol}}?",
+        "message": "Lưu trữ {{symbol}}? Lịch sử của tài sản vẫn sẽ được giữ lại."
       }
     },
     "archive": {
       "title": "Lưu trữ danh mục đầu tư?",
       "message": "Lưu trữ {{name}}? Lịch sử của danh mục vẫn sẽ được giữ."
     },
-    "archiveError": "Không thể cập nhật trạng thái lưu trữ danh mục đầu tư. Vui lòng thử lại.",
     "title": "Đầu tư",
-    "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa bạn đang nắm giữ.",
-    "placeholder": {
-      "title": "Sắp ra mắt",
-      "description": "Danh mục, vị thế và báo giá đang được phát triển."
-    }
+    "description": "Theo dõi cổ phiếu, quỹ và tiền mã hóa bạn đang nắm giữ."
   },
   "reports": {
     "ratesUnavailable": "Một số số liệu cần tỷ giá hiện không khả dụng.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Loại tiền tệ đó không khả dụng.",
       "inactive": "Loại tiền tệ đó không còn hoạt động."
+    },
+    "investment_wallet": {
+      "not_found": "Ví đầu tư đó không còn tồn tại.",
+      "currency_in_use": "Ví này đã có giao dịch, nên không thể thay đổi loại tiền tệ."
+    },
+    "investment_asset": {
+      "not_found": "Tài sản đầu tư đó không còn tồn tại.",
+      "symbol_already_exists": "Bạn đã có một tài sản với mã này."
+    },
+    "investment_transaction": {
+      "not_found": "Giao dịch đó không còn tồn tại.",
+      "quantity_price_required": "Mua và bán cần có số lượng và giá.",
+      "quantity_price_not_allowed": "Cổ tức và phí sử dụng số tiền, không sử dụng số lượng và giá.",
+      "asset_required": "Chọn tài sản cho giao dịch này.",
+      "currency_must_match_wallet": "Loại tiền tệ của giao dịch phải khớp với loại tiền tệ của ví.",
+      "insufficient_quantity": "Bạn không thể bán nhiều hơn số lượng đang nắm giữ.",
+      "settlement_amount_not_positive": "Số tiền quyết toán phải lớn hơn 0.",
+      "ledger_invalid": "Thay đổi này sẽ khiến một giao dịch sau đó không hợp lệ. Trước tiên hãy hoàn tác hoặc chỉnh sửa giao dịch đó."
+    },
+    "market_data_credential": {
+      "not_found": "Chưa lưu khóa API cho nhà cung cấp đó.",
+      "provider_unknown": "Không nhận diện được nhà cung cấp báo giá đó."
     }
   }
 }

@@ -1220,14 +1220,18 @@
       "newTransaction": "Registrer transaktion",
       "editTransaction": "Redigér transaktion",
       "deleteTransaction": "Slet transaktion",
-      "newAsset": "Nyt investeringsaktiv"
+      "newAsset": "Nyt investeringsaktiv",
+      "editAsset": "Redigér aktiv",
+      "archiveAsset": "Arkivér aktiv",
+      "unarchiveAsset": "Fjern aktiv fra arkivet"
     },
     "wallet": "Investeringsportefølje",
     "archived": "Arkiveret",
     "summary": {
       "bookValue": "Bogført værdi",
       "marketValue": "Markedsværdi",
-      "unrealizedGain": "Urealiseret gevinst"
+      "unrealizedGain": "Urealiseret gevinst",
+      "multiCurrencyHint": "Porteføljer i andre valutaer er ikke medtaget i disse totaler."
     },
     "empty": {
       "title": "Ingen investeringsporteføljer endnu",
@@ -1333,6 +1337,11 @@
       }
     },
     "assets": {
+      "title": "Aktiver",
+      "empty": {
+        "title": "Ingen aktiver endnu",
+        "description": "Tilføj et aktiv for at begynde at registrere transaktioner for det."
+      },
       "form": {
         "newTitle": "Nyt investeringsaktiv",
         "editTitle": "Redigér investeringsaktiv",
@@ -1344,25 +1353,25 @@
           "currency": "Valuta",
           "quoteProvider": "Kursudbyder",
           "manualPrice": "Manuel pris",
-          "manualPriceHint": "Bruges, indtil livekurser er tilgængelige."
+          "manualPriceHint": "Bruges, indtil livekurser er tilgængelige.",
+          "manualPriceOverridesProvider": "En manuel pris tilsidesætter altid den valgte udbyders kurser, også når de bliver tilgængelige."
         },
         "actions": {
           "cancel": "Annuller",
           "save": "Gem"
         }
+      },
+      "archive": {
+        "title": "Arkivér {{symbol}}?",
+        "message": "Arkivér {{symbol}}? Dets historik vil fortsat være tilgængelig."
       }
     },
     "archive": {
       "title": "Arkivér investeringsporteføljen?",
       "message": "Arkivér {{name}}? Historikken vil stadig være tilgængelig."
     },
-    "archiveError": "Kunne ikke opdatere arkivstatussen for investeringsporteføljen. Prøv igen.",
     "title": "Investeringer",
-    "description": "Følg de aktier, fonde og kryptovalutaer, du ejer.",
-    "placeholder": {
-      "title": "Kommer snart",
-      "description": "Porteføljer, positioner og kurser er på vej."
-    }
+    "description": "Følg de aktier, fonde og kryptovalutaer, du ejer."
   },
   "reports": {
     "ratesUnavailable": "Nogle tal kræver en valutakurs, som ikke er tilgængelig lige nu.",
@@ -2016,6 +2025,28 @@
     "currency": {
       "not_found": "Den valuta er ikke tilgængelig.",
       "inactive": "Den valuta er ikke længere aktiv."
+    },
+    "investment_wallet": {
+      "not_found": "Denne investeringskonto findes ikke længere.",
+      "currency_in_use": "Denne konto har allerede transaktioner, så valutaen kan ikke ændres."
+    },
+    "investment_asset": {
+      "not_found": "Dette investeringsaktiv findes ikke længere.",
+      "symbol_already_exists": "Du har allerede et aktiv med dette symbol."
+    },
+    "investment_transaction": {
+      "not_found": "Den transaktion findes ikke længere.",
+      "quantity_price_required": "Køb og salg kræver en mængde og en pris.",
+      "quantity_price_not_allowed": "Udbytte og gebyrer bruger et beløb, ikke en mængde og en pris.",
+      "asset_required": "Vælg et aktiv til denne transaktion.",
+      "currency_must_match_wallet": "Transaktionens valuta skal være den samme som kontoens valuta.",
+      "insufficient_quantity": "Du kan ikke sælge mere, end du har.",
+      "settlement_amount_not_positive": "Afviklingsbeløbet skal være større end nul.",
+      "ledger_invalid": "Denne ændring ville gøre en senere transaktion ugyldig. Fortryd eller rediger den først."
+    },
+    "market_data_credential": {
+      "not_found": "Der er ikke gemt nogen API-nøgle for denne udbyder.",
+      "provider_unknown": "Denne kursudbyder genkendes ikke."
     }
   }
 }
