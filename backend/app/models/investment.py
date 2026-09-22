@@ -204,7 +204,11 @@ class AssetQuote(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     __tablename__ = "asset_quotes"
     __table_args__ = (
         UniqueConstraint(
-            "symbol", "currency", "as_of", name="uq_asset_quotes_symbol_currency_as_of"
+            "symbol",
+            "currency",
+            "source",
+            "as_of",
+            name="uq_asset_quotes_symbol_currency_source_as_of",
         ),
     )
 

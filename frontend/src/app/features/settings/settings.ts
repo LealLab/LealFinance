@@ -160,6 +160,7 @@ export class Settings {
   }
 
   protected setDisplayCurrency(currency: string): void {
+    if (!this.metadata.currencies().some((row) => row.code === currency && row.isActive)) return;
     this.preferences.setDisplayCurrency(currency);
   }
 

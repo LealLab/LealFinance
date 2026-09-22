@@ -195,6 +195,39 @@ describe('Settings', () => {
     expect(input.value).toBe('BRL');
   });
 
+  it('keeps currency drafts local and saves only a known active code', () => {
+    const displayCurrency = TestBed.inject(DisplayCurrencyService);
+    displayCurrency.setCurrency('USD');
+    const save = vi.spyOn(TestBed.inject(PreferenceService), 'setDisplayCurrency');
+    TestBed.inject(MetadataService).currencies.update((currencies) => [
+      ...currencies,
+      { code: 'EUR', name: 'Euro', symbol: '€', decimalDigits: 2, isActive: false },
+    ]);
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      '#settings-display-currency',
+    ) as HTMLInputElement;
+
+    for (const draft of ['', 'B', 'BR', 'ZZZ', 'EUR']) {
+      input.value = draft;
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+
+      expect(input.value).toBe(draft);
+      expect(displayCurrency.currency()).toBe('USD');
+      expect(save).not.toHaveBeenCalled();
+    }
+
+    input.value = 'brl';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(save).toHaveBeenCalledExactlyOnceWith('BRL');
+    expect(displayCurrency.currency()).toBe('BRL');
+    expect(input.value).toBe('BRL');
+  });
+
   it.each([
     ['settings-language', 'settings-language'],
     ['settings-display-currency', 'settings-display-currency'],

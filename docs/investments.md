@@ -47,8 +47,9 @@ CoinGecko's `/coins/markets` endpoint. A crypto asset created with the default
 `manual` provider is switched to `coingecko` automatically, the same way a B3
 ticker (e.g. `PETR4`) is switched to `brapi`. A provider failure is logged and
 swallowed, so the positions and summary pages continue with the cache, a
-stale quote, or a null market value. The quote cache is keyed by symbol,
-currency, and date, so the same symbol held in two different wallet
+stale quote, or a null market value. The quote cache is keyed by provider,
+symbol, currency, and date, keeping crypto and equity tickers separate.
+The same symbol held in two different wallet
 currencies (e.g. BTC priced in both USD and BRL) is cached and served
 independently per currency.
 

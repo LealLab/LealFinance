@@ -75,6 +75,7 @@ async def get_asset_prices(
             select(AssetQuote).where(
                 AssetQuote.symbol.in_(symbols),
                 AssetQuote.currency.in_(currencies),
+                AssetQuote.source == provider,
                 AssetQuote.as_of == today,
             )
         )
@@ -147,7 +148,11 @@ async def get_asset_prices(
                 continue
             stale_result = await db.execute(
                 select(AssetQuote)
-                .where(AssetQuote.symbol == asset.symbol, AssetQuote.currency == asset.currency)
+                .where(
+                    AssetQuote.symbol == asset.symbol,
+                    AssetQuote.currency == asset.currency,
+                    AssetQuote.source == provider,
+                )
                 .order_by(AssetQuote.as_of.desc())
                 .limit(1)
             )

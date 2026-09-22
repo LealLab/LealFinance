@@ -296,6 +296,80 @@ async def test_same_symbol_prices_independently_per_wallet_currency(
         assert Decimal(positions.json()[0]["price"]) == expected_price
 
 
+@pytest.mark.parametrize("age", [0, 1])
+async def test_cached_quotes_are_isolated_by_provider(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+    age: int,
+) -> None:
+    await _authed(client, db_session, "provider-cache@example.com")
+    wallet_id, _ = await _wallet_asset(client, provider="coingecko", symbol="BTC")
+    as_of = date.today() - timedelta(days=age)
+    db_session.add_all(
+        [
+            AssetQuote(
+                symbol="BTC", currency="BRL", price=Decimal(price), as_of=as_of, source=provider
+            )
+            for provider, price in (("coingecko", "330000"), ("twelve_data", "150"))
+        ]
+    )
+    await db_session.commit()
+
+    async def unavailable(*_args: object) -> dict[str, Decimal]:
+        raise httpx.ReadTimeout("provider unavailable")
+
+    monkeypatch.setattr(quotes_service, "_fetch_coingecko", unavailable)
+    response = await client.get(f"/api/v1/investments/wallets/{wallet_id}/positions")
+    assert response.status_code == 200
+    position = response.json()[0]
+    assert Decimal(position["price"]) == Decimal("330000")
+    assert position["price_is_stale"] is bool(age)
+    assert position["price_as_of"] == as_of.isoformat()
+
+
+async def test_foreign_provider_quote_does_not_replace_live_or_stale_prices(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    await _authed(client, db_session, "provider-live@example.com")
+    wallet_id, _ = await _wallet_asset(client, provider="coingecko", symbol="BTC")
+    db_session.add(
+        AssetQuote(
+            symbol="BTC",
+            currency="BRL",
+            price=Decimal("150"),
+            as_of=date.today(),
+            source="twelve_data",
+        )
+    )
+    await db_session.commit()
+
+    async def unavailable(*_args: object) -> dict[str, Decimal]:
+        raise httpx.ReadTimeout("provider unavailable")
+
+    monkeypatch.setattr(quotes_service, "_fetch_coingecko", unavailable)
+    response = await client.get(f"/api/v1/investments/wallets/{wallet_id}/positions")
+    assert response.status_code == 200
+    assert response.json()[0]["price"] is None
+
+    calls = 0
+
+    async def fetch(*_args: object) -> dict[str, Decimal]:
+        nonlocal calls
+        calls += 1
+        return {"BTC": Decimal("330000")}
+
+    monkeypatch.setattr(quotes_service, "_fetch_coingecko", fetch)
+    for _ in range(2):
+        response = await client.get(f"/api/v1/investments/wallets/{wallet_id}/positions")
+        assert response.status_code == 200
+        assert Decimal(response.json()[0]["price"]) == Decimal("330000")
+        assert response.json()[0]["price_is_stale"] is False
+    assert calls == 1
+
+
 async def test_provider_failure_degrades_to_stale_quote(
     client: AsyncClient,
     db_session: AsyncSession,
