@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Taxa de câmbio indisponível - usando conversão 1:1 como aproximação.",
-    "fallbackRateWarningAction": "Definir taxa"
+    "fallbackRateWarningAction": "Definir taxa",
+    "invalid": "Informe um código de moeda válido e ativo."
   },
   "accounts": {
     "title": "Contas",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manual"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Chaves de API opcionais permitem que o app busque os preços atuais dos ativos. Sua chave é usada antes da alternativa da instância.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Não é necessária chave de API - os ativos cripto são precificados automaticamente.",
         "configured": "Configurado",
         "notConfigured": "Não configurado",
         "placeholder": "Chave de API",

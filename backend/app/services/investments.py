@@ -10,6 +10,7 @@ from app.core.errors import ConflictError, ValidationAppError
 from app.models.account import ACCOUNT_TYPE_INVESTMENT, Account
 from app.models.institution import Institution
 from app.models.investment import (
+    ASSET_CLASS_CRYPTO,
     INVESTMENT_TRANSACTION_TYPE_BUY,
     INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
     INVESTMENT_TRANSACTION_TYPE_FEE,
@@ -160,11 +161,12 @@ async def create_asset(
 ) -> InvestmentAsset:
     await get_active_currency(db, data.currency)
     await _check_asset_available(db, user_id, data.symbol)
-    quote_provider = (
-        "brapi"
-        if data.quote_provider == "manual" and _B3_SYMBOL.match(data.symbol.upper())
-        else data.quote_provider
-    )
+    quote_provider = data.quote_provider
+    if quote_provider == "manual":
+        if data.asset_class == ASSET_CLASS_CRYPTO:
+            quote_provider = "coingecko"
+        elif _B3_SYMBOL.match(data.symbol.upper()):
+            quote_provider = "brapi"
     asset = InvestmentAsset(
         user_id=user_id,
         **data.model_dump(exclude={"quote_provider"}),

@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "為替レートを取得できないため、1:1換算を近似値として使用しています。",
-    "fallbackRateWarningAction": "レートを設定"
+    "fallbackRateWarningAction": "レートを設定",
+    "invalid": "有効かつ有効化された通貨コードを入力してください。"
   },
   "accounts": {
     "title": "口座",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "手動"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "任意の API キーを設定すると、アプリで資産の現在価格を取得できます。インスタンスのフォールバックより先に、自分のキーが使用されます。",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "APIキーは不要です - 暗号資産の価格は自動的に取得されます。",
         "configured": "設定済み",
         "notConfigured": "未設定",
         "placeholder": "API キー",

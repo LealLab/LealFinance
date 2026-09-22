@@ -2,7 +2,6 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -13,20 +12,20 @@ import {
 import { InvestmentWallet } from '../../domain/models/investment';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Modal } from '../../shared/ui/modal/modal';
 
 /** t(investments.form.newTitle, investments.form.editTitle, investments.form.saveError) */
 
 @Component({
   selector: 'app-investment-wallet-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Button, Modal],
+  imports: [ReactiveFormsModule, TranslocoDirective, Button, CurrencySelect, Modal],
   templateUrl: './investment-wallet-form-modal.html',
 })
 export class InvestmentWalletFormModal {
   private readonly wallets = inject(InvestmentWalletRepository);
   private readonly accounts = inject(AccountRepository);
   private readonly institutions = inject(InstitutionRepository);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
   private readonly fb = inject(FormBuilder);
 
@@ -34,9 +33,6 @@ export class InvestmentWalletFormModal {
   readonly wallet = input<InvestmentWallet | undefined>(undefined);
   readonly saved = output<InvestmentWallet>();
 
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

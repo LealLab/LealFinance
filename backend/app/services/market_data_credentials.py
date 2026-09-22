@@ -45,6 +45,7 @@ async def resolve_api_key(
     env_key = {
         "twelve_data": settings.twelve_data_api_key,
         "brapi": settings.brapi_token,
+        "coingecko": settings.coingecko_api_key,
     }.get(provider)
     if env_key:
         return env_key, "env"

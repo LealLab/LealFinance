@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ApiError } from '../../core/api-error';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { LoanRepository } from '../../data/loan.repository';
 import { installmentAmount, interestRateForInstallment } from '../../domain/calc/loans';
@@ -16,6 +15,7 @@ import { decimalAmountValidator } from '../../shared/money/decimal-amount.valida
 import { money } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const RATE_PERIODS: readonly LoanRatePeriod[] = ['annual', 'monthly'];
@@ -24,13 +24,12 @@ const RATE_PERIODS: readonly LoanRatePeriod[] = ['annual', 'monthly'];
 
 @Component({
   selector: 'app-loan-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, MoneyPipe, Button, Modal],
+  imports: [ReactiveFormsModule, TranslocoDirective, MoneyPipe, Button, CurrencySelect, Modal],
   templateUrl: './loan-form-modal.html',
   styleUrl: './loan-form-modal.scss',
 })
 export class LoanFormModal {
   private readonly loans = inject(LoanRepository);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
   private readonly fb = inject(FormBuilder);
 
@@ -42,9 +41,6 @@ export class LoanFormModal {
   readonly saved = output<void>();
 
   protected readonly ratePeriods = RATE_PERIODS;
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

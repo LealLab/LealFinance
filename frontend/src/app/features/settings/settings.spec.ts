@@ -182,17 +182,17 @@ describe('Settings', () => {
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
 
-    const select = fixture.nativeElement.querySelector(
+    const input = fixture.nativeElement.querySelector(
       '#settings-display-currency',
-    ) as HTMLSelectElement;
-    expect(select.value).toBe('USD');
+    ) as HTMLInputElement;
+    expect(input.value).toBe('USD');
 
-    select.value = 'BRL';
-    select.dispatchEvent(new Event('change'));
+    input.value = 'BRL';
+    input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
     expect(displayCurrency.currency()).toBe('BRL');
-    expect(select.value).toBe('BRL');
+    expect(input.value).toBe('BRL');
   });
 
   it.each([

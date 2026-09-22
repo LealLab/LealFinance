@@ -17,12 +17,12 @@ import { Transaction, TransactionType } from '../../domain/models/transaction';
 import { groupAccountsByInstitution } from '../accounts/institution-grouping';
 import { groupCategoriesByGroup } from './category-grouping';
 import { buildTransactionConversion, prefillConvertedAmount } from './conversion-form';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { money, subtract, zero } from '../../shared/money/money';
 import { effectiveRate } from '../../shared/money/rate';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { Modal } from '../../shared/ui/modal/modal';
 
@@ -57,7 +57,7 @@ const FREQUENCIES: readonly RecurringFrequency[] = ['weekly', 'monthly', 'yearly
  */
 @Component({
   selector: 'app-transaction-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, ExchangeRateWarning],
+  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, CurrencySelect, ExchangeRateWarning],
   templateUrl: './transaction-form-modal.html',
 })
 export class TransactionFormModal {
@@ -65,7 +65,6 @@ export class TransactionFormModal {
   private readonly recurringRules = inject(RecurringRuleRepository);
   private readonly exchangeRates = inject(ExchangeRateRepository);
   private readonly fb = inject(FormBuilder);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
 
   readonly open = model.required<boolean>();
@@ -81,9 +80,6 @@ export class TransactionFormModal {
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
   protected readonly frequencies = FREQUENCIES;
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code)
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

@@ -58,6 +58,14 @@ describe('MoneyPipe', () => {
 
     expect(pipe.transform('23150', 'BRL', 'compact')).toBe('••••');
   });
+
+  it('renders a sub-cent price in full instead of rounding it to zero', () => {
+    expect(pipe.transform('0.0000089', 'BRL', 'precise')).toBe(`R$${NBSP}0,0000089`);
+  });
+
+  it("keeps the currency's minimum digits in precise notation for a whole amount", () => {
+    expect(pipe.transform('95000', 'BRL', 'precise')).toBe(`R$${NBSP}95.000,00`);
+  });
 });
 
 @Component({

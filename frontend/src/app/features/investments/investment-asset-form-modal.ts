@@ -1,7 +1,6 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import {
   InvestmentAssetCreate,
@@ -14,21 +13,21 @@ import {
 } from '../../domain/models/investment';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const ASSET_CLASSES: readonly InvestmentAssetClass[] = ['stock', 'etf', 'fund', 'crypto', 'bond', 'other'];
-const QUOTE_PROVIDERS: readonly InvestmentQuoteProvider[] = ['twelve_data', 'brapi', 'manual'];
+const QUOTE_PROVIDERS: readonly InvestmentQuoteProvider[] = ['twelve_data', 'brapi', 'coingecko', 'manual'];
 
 /** t(investments.assets.form.newTitle, investments.assets.form.editTitle, investments.assets.form.saveError) */
 
 @Component({
   selector: 'app-investment-asset-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Button, Modal],
+  imports: [ReactiveFormsModule, TranslocoDirective, Button, CurrencySelect, Modal],
   templateUrl: './investment-asset-form-modal.html',
 })
 export class InvestmentAssetFormModal {
   private readonly assets = inject(InvestmentAssetRepository);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
   private readonly fb = inject(FormBuilder);
 
@@ -38,9 +37,6 @@ export class InvestmentAssetFormModal {
 
   protected readonly assetClasses = ASSET_CLASSES;
   protected readonly quoteProviders = QUOTE_PROVIDERS;
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

@@ -190,6 +190,112 @@ async def test_live_fetch_is_cached_and_reused(
     assert calls == 1
 
 
+async def test_crypto_asset_prices_without_any_api_key(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    await _authed(client, db_session, "asset-quotes-crypto-keyless@example.com")
+    wallet_id, _asset_id = await _wallet_asset(client, provider="coingecko", symbol="BTC")
+
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> list[dict[str, object]]:
+            return [{"symbol": "btc", "current_price": 65000.5}]
+
+    class Client:
+        def __init__(self, **_kwargs: object) -> None:
+            pass
+
+        async def __aenter__(self) -> "Client":
+            return self
+
+        async def __aexit__(self, *_args: object) -> None:
+            return None
+
+        async def get(self, url: str, **kwargs: object) -> Response:
+            assert "x-cg-demo-api-key" not in kwargs.get("headers", {})
+            return Response()
+
+    monkeypatch.setattr(quotes_service.httpx, "AsyncClient", Client)
+    response = await client.get(f"/api/v1/investments/wallets/{wallet_id}/positions")
+    assert response.status_code == 200
+    position = response.json()[0]
+    assert Decimal(position["price"]) == Decimal("65000.5")
+    assert position["price_is_stale"] is False
+
+
+async def test_same_symbol_prices_independently_per_wallet_currency(
+    client: AsyncClient,
+    other_client: AsyncClient,
+    db_session: AsyncSession,
+) -> None:
+    """asset_quotes is a global cache, not scoped to a user - a USD row for a
+    symbol must not be served to a different user's wallet holding the same
+    symbol in BRL. (One user can't hold the same symbol twice - see
+    uq_investment_assets_user_id_symbol - so this needs two users.)"""
+    await _authed(client, db_session, "asset-quotes-currency-cache-usd@example.com")
+    await _authed(other_client, db_session, "asset-quotes-currency-cache-brl@example.com")
+    db_session.add_all(
+        [
+            AssetQuote(
+                symbol="BTC",
+                currency="USD",
+                price=Decimal("65000"),
+                as_of=date.today(),
+                source="coingecko",
+            ),
+            AssetQuote(
+                symbol="BTC",
+                currency="BRL",
+                price=Decimal("330000"),
+                as_of=date.today(),
+                source="coingecko",
+            ),
+        ]
+    )
+    await db_session.commit()
+
+    for user_client, currency, expected_price in (
+        (client, "USD", Decimal("65000")),
+        (other_client, "BRL", Decimal("330000")),
+    ):
+        wallet = await user_client.post(
+            "/api/v1/investments/wallets", json={"name": "Portfolio", "currency": currency}
+        )
+        asset = await user_client.post(
+            "/api/v1/investments/assets",
+            json={
+                "symbol": "BTC",
+                "name": "Bitcoin",
+                "asset_class": "crypto",
+                "currency": currency,
+            },
+        )
+        transaction = await user_client.post(
+            "/api/v1/investments/transactions",
+            json={
+                "wallet_id": wallet.json()["id"],
+                "asset_id": asset.json()["id"],
+                "type": "buy",
+                "date": "2026-01-01",
+                "quantity": "1",
+                "price": "1",
+                "amount": "1",
+                "fee": "0",
+                "currency": currency,
+            },
+        )
+        assert transaction.status_code == 201, transaction.text
+
+        positions = await user_client.get(
+            f"/api/v1/investments/wallets/{wallet.json()['id']}/positions"
+        )
+        assert Decimal(positions.json()[0]["price"]) == expected_price
+
+
 async def test_provider_failure_degrades_to_stale_quote(
     client: AsyncClient,
     db_session: AsyncSession,
@@ -232,5 +338,48 @@ async def test_provider_failure_degrades_to_stale_quote(
     assert response.status_code == 200
     position = response.json()[0]
     assert position["price"] == "19.2500000000"
+    assert position["price_as_of"] == old_date.isoformat()
+    assert position["price_is_stale"] is True
+
+
+async def test_coingecko_failure_degrades_to_stale_quote_without_a_key(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The keyless provider still degrades gracefully - a broken lookup must
+    not fail the request even when there is no credential to blame."""
+    await _authed(client, db_session, "asset-quotes-crypto-stale@example.com")
+    wallet_id, _asset_id = await _wallet_asset(client, provider="coingecko", symbol="BTC")
+    old_date = date.today() - timedelta(days=1)
+    db_session.add(
+        AssetQuote(
+            symbol="BTC",
+            currency="BRL",
+            price=Decimal("300000"),
+            as_of=old_date,
+            source="coingecko",
+        )
+    )
+    await db_session.commit()
+
+    class Client:
+        def __init__(self, **_kwargs: object) -> None:
+            pass
+
+        async def __aenter__(self) -> "Client":
+            return self
+
+        async def __aexit__(self, *_args: object) -> None:
+            return None
+
+        async def get(self, *_args: object, **_kwargs: object) -> object:
+            raise httpx.ReadTimeout("provider unavailable")
+
+    monkeypatch.setattr(quotes_service.httpx, "AsyncClient", Client)
+    response = await client.get(f"/api/v1/investments/wallets/{wallet_id}/positions")
+    assert response.status_code == 200
+    position = response.json()[0]
+    assert position["price"] == "300000.0000000000"
     assert position["price_as_of"] == old_date.isoformat()
     assert position["price_is_stale"] is True

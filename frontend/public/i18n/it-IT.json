@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Tasso di cambio non disponibile: viene utilizzata un'approssimazione 1:1.",
-    "fallbackRateWarningAction": "Imposta un tasso"
+    "fallbackRateWarningAction": "Imposta un tasso",
+    "invalid": "Inserisci un codice valuta valido e attivo."
   },
   "accounts": {
     "title": "Conti",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuale"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Le chiavi API opzionali consentono all'app di recuperare i prezzi correnti degli asset. La tua chiave viene usata prima del fallback dell'istanza.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Non è necessaria alcuna chiave API: gli asset crypto vengono quotati automaticamente.",
         "configured": "Configurato",
         "notConfigured": "Non configurato",
         "placeholder": "Chiave API",

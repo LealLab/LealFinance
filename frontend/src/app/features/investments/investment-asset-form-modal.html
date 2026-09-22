@@ -1,5 +1,5 @@
 <div *transloco="let t">
-  <!-- t(investments.assetClass.stock, investments.assetClass.etf, investments.assetClass.fund, investments.assetClass.crypto, investments.assetClass.bond, investments.assetClass.other) t(investments.quoteProvider.twelve_data, investments.quoteProvider.brapi, investments.quoteProvider.manual) -->
+  <!-- t(investments.assetClass.stock, investments.assetClass.etf, investments.assetClass.fund, investments.assetClass.crypto, investments.assetClass.bond, investments.assetClass.other) t(investments.quoteProvider.twelve_data, investments.quoteProvider.brapi, investments.quoteProvider.coingecko, investments.quoteProvider.manual) -->
   @if (titleKey(); as title) {
     <app-modal [(open)]="open" [titleText]="t(title)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
@@ -25,11 +25,10 @@
           </div>
           <div>
             <label class="form-label" for="investment-asset-currency">{{ t('investments.assets.form.fields.currency') }}</label>
-            <select id="investment-asset-currency" class="form-input" formControlName="currency">
-              @for (currency of currencyOptions(); track currency) {
-                <option [value]="currency">{{ currency }}</option>
-              }
-            </select>
+            <app-currency-select [id]="'investment-asset-currency'" formControlName="currency" />
+            @if (form.controls.currency.invalid && form.controls.currency.touched) {
+              <p id="investment-asset-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
+            }
           </div>
         </div>
 

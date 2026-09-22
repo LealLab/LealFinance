@@ -58,19 +58,14 @@
           t('auth.register.passwordHint')
         }}</span>
       </label>
-      <label>
-        <span class="form-label">{{ t('accounts.form.fields.currency') }}</span>
-        <select
-          class="form-input"
+      <div>
+        <label class="form-label" for="register-base-currency">{{ t('accounts.form.fields.currency') }}</label>
+        <app-currency-select
+          [id]="'register-base-currency'"
           formControlName="baseCurrency"
-          [attr.aria-invalid]="form.controls.baseCurrency.invalid && form.controls.baseCurrency.touched"
-          [attr.aria-describedby]="errorCode() ? 'register-error' : null"
-        >
-          @for (currency of currencyOptions(); track currency) {
-            <option [value]="currency">{{ currency }}</option>
-          }
-        </select>
-      </label>
+          [currencies]="currencies()"
+        />
+      </div>
       @if (errorCode(); as code) {
         <p id="register-error" class="text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
       }

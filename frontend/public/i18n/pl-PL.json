@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Kurs wymiany jest niedostępny — użyto przybliżenia 1:1.",
-    "fallbackRateWarningAction": "Ustaw kurs"
+    "fallbackRateWarningAction": "Ustaw kurs",
+    "invalid": "Wprowadź prawidłowy, aktywny kod waluty."
   },
   "accounts": {
     "title": "Konta",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Ręcznie"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Opcjonalne klucze API pozwalają aplikacji pobierać aktualne ceny aktywów. Twój klucz ma pierwszeństwo przed kluczem zapasowym instancji.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Klucz API nie jest wymagany - ceny aktywów kryptowalutowych są ustalane automatycznie.",
         "configured": "Skonfigurowano",
         "notConfigured": "Nie skonfigurowano",
         "placeholder": "Klucz API",

@@ -7,21 +7,19 @@
             <label class="form-label" for="manual-rate-base">
               {{ t('exchange.manualRates.form.fields.baseCode') }}
             </label>
-            <select id="manual-rate-base" class="form-input" formControlName="baseCode">
-              @for (currency of currencyOptions(); track currency) {
-                <option [value]="currency">{{ currency }}</option>
-              }
-            </select>
+            <app-currency-select [id]="'manual-rate-base'" formControlName="baseCode" />
+            @if (form.controls.baseCode.invalid && form.controls.baseCode.touched) {
+              <p id="manual-rate-base-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
+            }
           </div>
           <div>
             <label class="form-label" for="manual-rate-quote">
               {{ t('exchange.manualRates.form.fields.quoteCode') }}
             </label>
-            <select id="manual-rate-quote" class="form-input" formControlName="quoteCode">
-              @for (currency of currencyOptions(); track currency) {
-                <option [value]="currency">{{ currency }}</option>
-              }
-            </select>
+            <app-currency-select [id]="'manual-rate-quote'" formControlName="quoteCode" />
+            @if (form.controls.quoteCode.invalid && form.controls.quoteCode.touched) {
+              <p id="manual-rate-quote-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
+            }
           </div>
         </div>
 

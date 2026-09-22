@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Wechselkurs nicht verfügbar – es wird eine 1:1-Umrechnung als Näherung verwendet.",
-    "fallbackRateWarningAction": "Wechselkurs festlegen"
+    "fallbackRateWarningAction": "Wechselkurs festlegen",
+    "invalid": "Geben Sie einen gültigen, aktiven Währungscode ein."
   },
   "accounts": {
     "title": "Konten",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manuell"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Mit optionalen API-Schlüsseln kann die App aktuelle Kurse abrufen. Ihr eigener Schlüssel wird vor dem Fallback der Instanz verwendet.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Kein API-Schlüssel erforderlich – Krypto-Assets werden automatisch bepreist.",
         "configured": "Konfiguriert",
         "notConfigured": "Nicht konfiguriert",
         "placeholder": "API-Schlüssel",

@@ -413,7 +413,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Exchange rate unavailable - using a 1:1 conversion as an approximation.",
-    "fallbackRateWarningAction": "Set a rate"
+    "fallbackRateWarningAction": "Set a rate",
+    "invalid": "Enter a valid, active currency code."
   },
   "accounts": {
     "title": "Accounts",
@@ -1308,6 +1309,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manual"
     },
     "form": {
@@ -1649,6 +1651,8 @@
         "description": "Optional API keys let the app fetch current asset prices. Your key is used before the instance fallback.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "No API key needed - crypto assets price automatically.",
         "configured": "Configured",
         "notConfigured": "Not configured",
         "placeholder": "API key",

@@ -87,6 +87,9 @@ class Settings(BaseSettings):
     # Optional live quote-provider keys; per-user credentials take precedence.
     twelve_data_api_key: str | None = None
     brapi_token: str | None = None
+    # CoinGecko's public API needs no key; a demo key only raises the rate
+    # limit - see app/services/asset_quotes.py::KEYLESS_QUOTE_PROVIDERS.
+    coingecko_api_key: str | None = None
 
     # --- Update check (optional) ---
     # Baked into the image by the release workflow; "dev" for source builds,

@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Kurs tidak tersedia — menggunakan konversi 1:1 sebagai perkiraan.",
-    "fallbackRateWarningAction": "Atur kurs"
+    "fallbackRateWarningAction": "Atur kurs",
+    "invalid": "Masukkan kode mata uang yang valid dan aktif."
   },
   "accounts": {
     "title": "Akun",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Manual"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Kunci API opsional memungkinkan aplikasi mengambil harga aset terkini. Kunci Anda digunakan sebelum kunci cadangan instance.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Tidak perlu kunci API - aset kripto diberi harga secara otomatis.",
         "configured": "Dikonfigurasi",
         "notConfigured": "Belum dikonfigurasi",
         "placeholder": "Kunci API",

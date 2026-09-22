@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "ไม่พบอัตราแลกเปลี่ยน - ใช้อัตรา 1:1 เป็นค่าประมาณ",
-    "fallbackRateWarningAction": "กำหนดอัตรา"
+    "fallbackRateWarningAction": "กำหนดอัตรา",
+    "invalid": "ป้อนรหัสสกุลเงินที่ถูกต้องและใช้งานได้"
   },
   "accounts": {
     "title": "บัญชี",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "ด้วยตนเอง"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "คีย์ API ที่เป็นตัวเลือกช่วยให้แอปดึงราคาสินทรัพย์ปัจจุบันได้ ระบบจะใช้คีย์ของคุณก่อนคีย์สำรองของอินสแตนซ์",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "ไม่ต้องใช้ API key - สินทรัพย์คริปโตจะกำหนดราคาโดยอัตโนมัติ",
         "configured": "กำหนดค่าแล้ว",
         "notConfigured": "ยังไม่ได้กำหนดค่า",
         "placeholder": "คีย์ API",

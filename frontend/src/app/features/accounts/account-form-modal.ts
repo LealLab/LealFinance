@@ -7,10 +7,10 @@ import { Account, AccountType } from '../../domain/models/account';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
 import { Institution } from '../../domain/models/institution';
-import { MetadataService } from '../../core/metadata.service';
 import { PreferenceService } from '../../core/preference.service';
 import { decimalAmountValidator } from '../../shared/money/decimal-amount.validator';
 import { Button } from '../../shared/ui/button/button';
+import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
 import { Icon } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 import { ACCOUNT_TYPE_OPTIONS } from './account-type';
@@ -34,14 +34,21 @@ import { InstitutionFormModal } from './institution-form-modal';
  */
 @Component({
   selector: 'app-account-form-modal',
-  imports: [ReactiveFormsModule, TranslocoDirective, Modal, Button, Icon, InstitutionFormModal],
+  imports: [
+    ReactiveFormsModule,
+    TranslocoDirective,
+    Modal,
+    Button,
+    CurrencySelect,
+    Icon,
+    InstitutionFormModal,
+  ],
   templateUrl: './account-form-modal.html',
 })
 export class AccountFormModal {
   private readonly accounts = inject(AccountRepository);
   private readonly institutions = inject(InstitutionRepository);
   private readonly fb = inject(FormBuilder);
-  private readonly metadata = inject(MetadataService);
   private readonly preferences = inject(PreferenceService);
 
   readonly open = model.required<boolean>();
@@ -49,9 +56,6 @@ export class AccountFormModal {
   readonly saved = output<Account>();
 
   protected readonly accountTypeOptions = ACCOUNT_TYPE_OPTIONS;
-  protected readonly currencyOptions = computed(() =>
-    this.metadata.currencies().map((row) => row.code),
-  );
   private readonly baseCurrency = computed(
     () => this.preferences.preferences()?.baseCurrency ?? 'USD',
   );

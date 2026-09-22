@@ -18,6 +18,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped
 
 from app.models.base import UUIDPrimaryKeyMixin
 from app.models.types import CurrencyCode, MoneyAmount
+from app.schemas.common import serialize_quantity
 
 # A value with 15 integer digits and 4 decimal places - the full width
 # NUMERIC(19, 4) is meant to hold, chosen specifically to break float64
@@ -94,3 +95,15 @@ async def test_money_amount_round_trips_without_precision_loss(
         # Rolling back here releases it before we drop.
         await db_session.rollback()
         await conn.run_sync(_ScratchBase.metadata.drop_all)
+
+
+def test_serialize_quantity_trims_trailing_zeros_without_exponent_notation() -> None:
+    """Unlike money (fixed scale), an asset quantity has no display scale to
+    preserve - trailing zeros from the NUMERIC(28,10) column are noise, but
+    Decimal.normalize() alone would switch a round number to exponent
+    notation (Decimal("100") -> "1E+2"), which this must not leak onto the
+    wire."""
+    assert serialize_quantity(Decimal("0.0045300000")) == "0.00453"
+    assert serialize_quantity(Decimal("100.0000000000")) == "100"
+    assert serialize_quantity(Decimal("1.2300000000")) == "1.23"
+    assert serialize_quantity(None) is None

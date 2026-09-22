@@ -77,21 +77,13 @@
         {{ t('settings.currency.title') }}
       </h2>
       <p class="mb-3 text-sm text-content-muted">{{ t('settings.currency.description') }}</p>
-      <select
+      <app-currency-select
         #displayCurrencySelect
-        id="settings-display-currency"
-        class="form-input w-full max-w-xs"
-        (change)="setDisplayCurrency($any($event.target).value)"
-      >
-        @for (currency of currencyOptions(); track currency.code) {
-          <option
-            [value]="currency.code"
-            [selected]="currency.code === displayCurrencyService.currency()"
-          >
-            {{ currency.code }} — {{ currency.name }}
-          </option>
-        }
-      </select>
+        [id]="'settings-display-currency'"
+        class="max-w-xs"
+        [value]="displayCurrencyService.currency()"
+        (valueChange)="setDisplayCurrency($event)"
+      />
     </app-card>
 
     <app-card>
@@ -162,6 +154,9 @@
                 <label class="form-label" [for]="'market-data-' + provider.id">
                   {{ t('settings.investments.marketData.' + provider.labelKey) }}
                 </label>
+                @if (provider.id === 'coingecko') {
+                  <span class="text-xs text-content-muted">{{ t('settings.investments.marketData.coinGeckoNoKeyHint') }}</span>
+                }
                 <span
                   class="rounded-full px-2.5 py-1 text-xs font-medium"
                   [class]="

@@ -389,7 +389,8 @@
   },
   "currency": {
     "fallbackRateWarning": "Wisselkoers niet beschikbaar – er wordt bij benadering een 1-op-1-conversie gebruikt.",
-    "fallbackRateWarningAction": "Koers instellen"
+    "fallbackRateWarningAction": "Koers instellen",
+    "invalid": "Voer een geldige, actieve valutacode in."
   },
   "accounts": {
     "title": "Rekeningen",
@@ -1278,6 +1279,7 @@
     "quoteProvider": {
       "twelve_data": "Twelve Data",
       "brapi": "Brapi",
+      "coingecko": "CoinGecko",
       "manual": "Handmatig"
     },
     "form": {
@@ -1625,6 +1627,8 @@
         "description": "Met optionele API-sleutels kan de app actuele activaprijzen ophalen. Je eigen sleutel wordt gebruikt vóór de fallback van de instantie.",
         "twelveData": "Twelve Data",
         "brapi": "brapi",
+        "coinGecko": "CoinGecko",
+        "coinGeckoNoKeyHint": "Geen API-sleutel nodig - crypto-activa worden automatisch geprijsd.",
         "configured": "Geconfigureerd",
         "notConfigured": "Niet geconfigureerd",
         "placeholder": "API-sleutel",
