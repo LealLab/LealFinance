@@ -164,7 +164,10 @@
                         {{ t('chat.confirm.body', { name: confirmation.name }) }}
                       </p>
                       <dl class="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-xs">
-                        @for (entry of confirmationEntries(confirmation.arguments); track $index) {
+                        @for (
+                          entry of confirmationEntries(confirmation.arguments, confirmation.preview);
+                          track $index
+                        ) {
                           <dt class="text-content-muted">
                             {{ entry.labelKey ? t(entry.labelKey) : entry.label }}
                           </dt>

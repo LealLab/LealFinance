@@ -5,6 +5,7 @@ export interface AgentToolCall {
   id: string;
   name: string;
   arguments: Record<string, unknown>;
+  preview?: Record<string, unknown>;
 }
 
 export interface AgentConversation {
@@ -38,7 +39,13 @@ export type AgentStreamEvent =
   | { type: 'delta'; text: string }
   | { type: 'tool_call'; id: string; name: string; arguments: Record<string, unknown> }
   | { type: 'tool_result'; id: string; name: string; ok: boolean }
-  | { type: 'tool_confirm'; id: string; name: string; arguments: Record<string, unknown> }
+  | {
+      type: 'tool_confirm';
+      id: string;
+      name: string;
+      arguments: Record<string, unknown>;
+      preview?: Record<string, unknown>;
+    }
   | { type: 'refusal'; code: string }
   | { type: 'error'; code: string; params: Record<string, unknown> }
   | { type: 'done'; status: AgentConversationStatus; messageId: string | null };

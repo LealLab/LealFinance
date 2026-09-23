@@ -26,6 +26,7 @@ from app.models.user import User
 from app.schemas.agent import ConversationCreate
 from app.services import agent_memories, change_journal
 from app.services.agent_providers import _require_known_provider
+from app.services.investments import InvestmentPreviewChanged
 from app.services.ownership import get_owned, list_owned
 
 
@@ -112,7 +113,12 @@ def _serialize(event: loop.StreamEvent) -> bytes:
     if isinstance(event, loop.ToolAwaitingConfirmation):
         return _sse_frame(
             "tool_confirm",
-            {"id": event.id, "name": event.name, "arguments": event.arguments},
+            {
+                "id": event.id,
+                "name": event.name,
+                "arguments": event.arguments,
+                "preview": event.preview,
+            },
         )
     if isinstance(event, loop.Refusal):
         return _sse_frame("refusal", {"code": event.code})
@@ -192,7 +198,7 @@ async def stream_confirm(
     conversation_id: UUID,
     tool_call_id: str,
     approved: bool,
-    arguments: dict[str, Any] | None,
+    _arguments: dict[str, Any] | None,
     today: date | None = None,
 ) -> AsyncIterator[bytes]:
     async with session_scope() as db:
@@ -222,13 +228,7 @@ async def stream_confirm(
         name = str(pending["name"])
         pending_arguments = pending.get("arguments", {})
         call_args = (
-            arguments
-            if arguments is not None
-            else (
-                cast(dict[str, Any], pending_arguments)
-                if isinstance(pending_arguments, dict)
-                else {}
-            )
+            cast(dict[str, Any], pending_arguments) if isinstance(pending_arguments, dict) else {}
         )
         user = await db.get(User, user_id)
         assert user is not None
@@ -241,12 +241,40 @@ async def stream_confirm(
             else:
                 # Provider tool-call ids are only unique within a conversation
                 # (some emit "call_0"), so the undo group id carries both.
-                async with change_journal.journaling(
-                    db,
-                    call_id=f"{conversation.id}:{tool_call_id}",
-                    conversation_id=conversation.id,
-                ):
-                    content, is_error = await loop.execute_tool(db, user_id, spec, call_args)
+                expected_preview = pending.get("preview")
+                try:
+                    async with change_journal.journaling(
+                        db,
+                        call_id=f"{conversation.id}:{tool_call_id}",
+                        conversation_id=conversation.id,
+                    ):
+                        content, is_error = await loop.execute_tool(
+                            db,
+                            user_id,
+                            spec,
+                            call_args,
+                            expected_preview if isinstance(expected_preview, dict) else None,
+                        )
+                except InvestmentPreviewChanged as changed:
+                    message.tool_calls = [
+                        {**call, "preview": changed.preview}
+                        if str(call.get("id")) == tool_call_id
+                        else call
+                        for call in message.tool_calls or []
+                    ]
+                    await db.commit()
+                    yield _serialize(
+                        loop.ToolAwaitingConfirmation(
+                            tool_call_id, name, call_args, changed.preview
+                        )
+                    )
+                    yield _serialize(
+                        loop.Done(
+                            status=AGENT_CONVERSATION_STATUS_AWAITING,
+                            message_id=str(message.id),
+                        )
+                    )
+                    return
             await loop.persist_message(
                 db,
                 conversation,

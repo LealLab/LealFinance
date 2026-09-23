@@ -9,6 +9,8 @@ import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
+import { InvestmentAssetRepository } from '../../data/investment-asset.repository';
+import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
 import {
   AgentConversation,
   AgentConversationDetail,
@@ -34,6 +36,7 @@ interface PendingConfirm {
   id: string;
   name: string;
   arguments: Record<string, unknown>;
+  preview?: Record<string, unknown>;
 }
 
 interface ChatTurn {
@@ -64,6 +67,8 @@ export class Chat {
   private readonly categoryRepository = inject(CategoryRepository);
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly institutionRepository = inject(InstitutionRepository);
+  private readonly investmentAssetRepository = inject(InvestmentAssetRepository);
+  private readonly investmentWalletRepository = inject(InvestmentWalletRepository);
   private readonly confirmService = inject(ConfirmService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -80,6 +85,12 @@ export class Chat {
   protected readonly categories = rxResource({ stream: () => this.categoryRepository.list() });
   protected readonly groups = rxResource({ stream: () => this.categoryGroupRepository.list() });
   protected readonly institutions = rxResource({ stream: () => this.institutionRepository.list() });
+  protected readonly investmentAssets = rxResource({
+    stream: () => this.investmentAssetRepository.list(),
+  });
+  protected readonly investmentWallets = rxResource({
+    stream: () => this.investmentWalletRepository.list(),
+  });
   protected readonly liveMessages = signal<ChatTurn[]>([]);
   protected readonly sending = signal(false);
   protected readonly errorKey = signal<string | null>(null);
@@ -207,16 +218,25 @@ export class Chat {
     });
   }
 
-  protected confirmationEntries(args: Record<string, unknown>): ConfirmationEntry[] {
-    return Object.entries(this.flattenRecordFields(args)).map(([key, value]) => ({
+  protected confirmationEntries(
+    args: Record<string, unknown>,
+    preview?: Record<string, unknown>,
+  ): ConfirmationEntry[] {
+    const fields = this.flattenRecordFields(args);
+    this.overlayInvestmentPreview(fields, args, preview);
+    return Object.entries(fields).map(([key, value]) => ({
       ...(this.isAccountKey(key) ? { labelKey: 'chat.confirm.account' } : {}),
       ...(this.isCategoryKey(key) ? { labelKey: 'chat.confirm.category' } : {}),
       ...(this.isGroupKey(key) ? { labelKey: 'chat.confirm.group' } : {}),
       ...(this.isInstitutionKey(key) ? { labelKey: 'chat.confirm.institution' } : {}),
+      ...(this.isWalletKey(key) ? { label: 'Wallet' } : {}),
+      ...(this.isAssetKey(key) ? { label: 'Asset' } : {}),
       ...(!this.isAccountKey(key) &&
       !this.isCategoryKey(key) &&
       !this.isGroupKey(key) &&
-      !this.isInstitutionKey(key)
+      !this.isInstitutionKey(key) &&
+      !this.isWalletKey(key) &&
+      !this.isAssetKey(key)
         ? { label: key.replaceAll('_', ' ').replace(/^./, (letter) => letter.toUpperCase()) }
         : {}),
       value: this.displayArgument(key, value),
@@ -239,6 +259,25 @@ export class Chat {
       }
     }
     return flat;
+  }
+
+  private overlayInvestmentPreview(
+    fields: Record<string, unknown>,
+    args: Record<string, unknown>,
+    preview: Record<string, unknown> | undefined,
+  ): void {
+    if (args['entity'] !== 'investment_transaction' || !preview) return;
+    for (const key of ['amount', 'quantity', 'price']) {
+      if (preview[key] !== null && preview[key] !== undefined) fields[key] = preview[key];
+    }
+    const settlement = preview['settlement'];
+    if (!settlement || typeof settlement !== 'object' || Array.isArray(settlement)) return;
+    const values = settlement as Record<string, unknown>;
+    fields['settlement_amount'] = values['amount'];
+    fields['settlement_currency'] = values['currency'];
+    fields['settlement_source_account_id'] = values['source_account_id'];
+    fields['settlement_destination_account_id'] = values['destination_account_id'];
+    if (values['conversion']) fields['settlement_conversion'] = values['conversion'];
   }
 
   private readStream(stream: Observable<AgentStreamEvent>): void {
@@ -274,7 +313,12 @@ export class Chat {
       case 'tool_confirm':
         this.updateLastAssistant((turn) => ({
           ...turn,
-          pendingConfirm: { id: event.id, name: event.name, arguments: event.arguments },
+          pendingConfirm: {
+            id: event.id,
+            name: event.name,
+            arguments: event.arguments,
+            preview: event.preview,
+          },
         }));
         break;
       case 'refusal':
@@ -339,6 +383,7 @@ export class Chat {
                 id: pendingCall.id,
                 name: pendingCall.name,
                 arguments: pendingCall.arguments,
+                preview: pendingCall.preview,
               },
             }
           : {}),
@@ -348,7 +393,20 @@ export class Chat {
   }
 
   private isAccountKey(key: string): boolean {
-    return key === 'account' || key === 'account_id' || key === 'accountId';
+    return (
+      key === 'account' ||
+      key === 'account_id' ||
+      key === 'accountId' ||
+      key.endsWith('_account_id')
+    );
+  }
+
+  private isWalletKey(key: string): boolean {
+    return key === 'wallet' || key === 'wallet_id' || key === 'investment_wallet_id';
+  }
+
+  private isAssetKey(key: string): boolean {
+    return key === 'asset' || key === 'asset_id' || key === 'investment_asset_id';
   }
 
   private isCategoryKey(key: string): boolean {
@@ -387,6 +445,12 @@ export class Chat {
     }
     if (this.isInstitutionKey(key)) {
       return this.displayEntityArgument(value, this.institutions.value());
+    }
+    if (this.isWalletKey(key)) {
+      return this.displayEntityArgument(value, this.investmentWallets.value());
+    }
+    if (this.isAssetKey(key)) {
+      return this.displayEntityArgument(value, this.investmentAssets.value());
     }
     if (Array.isArray(value)) {
       const named = value

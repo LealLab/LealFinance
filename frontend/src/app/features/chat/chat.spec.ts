@@ -9,11 +9,15 @@ import { AccountRepository } from '../../data/account.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
+import { InvestmentAssetRepository } from '../../data/investment-asset.repository';
+import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
 import { MockAgentChatRepository } from '../../data/mock/mock-agent-chat.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
 import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
+import { MockInvestmentAssetRepository } from '../../data/mock/mock-investment-asset.repository';
+import { MockInvestmentWalletRepository } from '../../data/mock/mock-investment-wallet.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { ConfirmService } from '../../core/confirm.service';
 import { ApiError } from '../../core/api-error';
@@ -34,6 +38,8 @@ function setup(confirmResult = true) {
       { provide: CategoryRepository, useClass: MockCategoryRepository },
       { provide: CategoryGroupRepository, useClass: MockCategoryGroupRepository },
       { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+      { provide: InvestmentAssetRepository, useClass: MockInvestmentAssetRepository },
+      { provide: InvestmentWalletRepository, useClass: MockInvestmentWalletRepository },
       { provide: ConfirmService, useValue: confirmService },
     ],
   });
@@ -190,8 +196,10 @@ describe('Chat', () => {
       id: 'w1',
       name: 'create_transaction',
       arguments: { amount: '10' },
+      preview: { amount: '9.99' },
     });
     expect(chat['liveMessages']().at(-1)?.pendingConfirm?.id).toBe('w1');
+    expect(chat['liveMessages']().at(-1)?.pendingConfirm?.preview).toEqual({ amount: '9.99' });
 
     chat['applyEvent']({ type: 'refusal', code: 'agents.off_topic' });
     expect(chat['refused']()).toBe(true);
@@ -357,6 +365,55 @@ describe('Chat', () => {
     );
     expect(entries.find((e) => e.label === 'Amount')?.value).toBe('10');
     expect(entries.find((e) => e.label === 'Meta')?.value).toBe('{"a":1}');
+  });
+
+  it('overlays investment preview values and resolves wallet, asset, and settlement accounts', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const chat = fixture.componentInstance;
+    const account = chat['accounts'].value()?.[0];
+    const wallet = chat['investmentWallets'].value()?.[0];
+    const asset = chat['investmentAssets'].value()?.[0];
+    expect(account && wallet && asset).toBeTruthy();
+
+    const entries = chat['confirmationEntries'](
+      {
+        entity: 'investment_transaction',
+        data: {
+          wallet_id: wallet!.id,
+          asset_id: asset!.id,
+          type: 'buy',
+          amount: '105',
+          fee: '5',
+        },
+      },
+      {
+        amount: '100',
+        quantity: '10',
+        price: '10',
+        settlement: {
+          amount: '105',
+          currency: 'BRL',
+          source_account_id: account!.id,
+          destination_account_id: account!.id,
+          conversion: null,
+        },
+      },
+    );
+
+    expect(entries.find((entry) => entry.label === 'Wallet')?.value).toBe(wallet!.name);
+    expect(entries.find((entry) => entry.label === 'Asset')?.value).toBe(asset!.name);
+    expect(entries.find((entry) => entry.label === 'Amount')?.value).toBe('100');
+    expect(entries.find((entry) => entry.label === 'Quantity')?.value).toBe('10');
+    expect(entries.find((entry) => entry.label === 'Price')?.value).toBe('10');
+    expect(entries.filter((entry) => entry.labelKey === 'chat.confirm.account')).toHaveLength(2);
+    expect(
+      entries
+        .filter((entry) => entry.labelKey === 'chat.confirm.account')
+        .every((entry) => entry.value === account!.name),
+    ).toBe(true);
   });
 
   it('shows the fields nested in create and update arguments as their own rows', async () => {

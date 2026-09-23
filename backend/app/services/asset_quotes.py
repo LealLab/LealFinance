@@ -172,7 +172,12 @@ async def get_asset_prices(
 
 
 async def get_asset_price(
-    db: AsyncSession, user_id: UUID, asset: InvestmentAsset, as_of: date
+    db: AsyncSession,
+    user_id: UUID,
+    asset: InvestmentAsset,
+    as_of: date,
+    *,
+    cache: bool = True,
 ) -> PriceResult:
     """Resolve one exact-date quote without falling back to another date."""
     if asset.quote_provider == QUOTE_PROVIDER_MANUAL or asset.manual_price is not None:
@@ -229,7 +234,8 @@ async def get_asset_price(
 
     if price is None:
         return PriceResult(price=None, is_stale=True, as_of=None, source="none")
-    await _cache_quotes(db, [(asset, price)], asset.quote_provider, as_of)
+    if cache:
+        await _cache_quotes(db, [(asset, price)], asset.quote_provider, as_of)
     return PriceResult(price=price, is_stale=False, as_of=as_of, source=asset.quote_provider)
 
 
