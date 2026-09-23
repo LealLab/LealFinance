@@ -52,6 +52,10 @@
     },
     "loadError": "Coś poszło nie tak podczas ładowania. Spróbuj ponownie.",
     "retrying": "Ponawianie próby…",
+    "file": {
+      "choose": "Wybierz plik",
+      "none": "Nie wybrano pliku"
+    },
     "colorPicker": {
       "saturationBrightness": "Nasycenie i jasność koloru",
       "hue": "Odcień koloru"

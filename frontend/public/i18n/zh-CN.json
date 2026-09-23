@@ -52,6 +52,10 @@
     },
     "loadError": "加载时出了点问题。请重试。",
     "retrying": "正在重试…",
+    "file": {
+      "choose": "选择文件",
+      "none": "未选择文件"
+    },
     "colorPicker": {
       "saturationBrightness": "颜色的饱和度和亮度",
       "hue": "颜色色相"

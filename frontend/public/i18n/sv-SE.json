@@ -52,6 +52,10 @@
     },
     "loadError": "Något gick fel när detta lästes in. Försök igen.",
     "retrying": "Försöker igen…",
+    "file": {
+      "choose": "Välj fil",
+      "none": "Ingen fil vald"
+    },
     "colorPicker": {
       "saturationBrightness": "Färgmättnad och ljusstyrka",
       "hue": "Färgton"

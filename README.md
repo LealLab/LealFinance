@@ -122,6 +122,11 @@ contributing.
 - [`SUPPORT.md`](SUPPORT.md) - questions, bugs, and feature requests
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) - community expectations
 
+## Acknowledgements
+
+LealFinance is inspired by [Securo](https://github.com/securo-finance/securo).
+It is an independent project and is not based on Securo's code.
+
 ## LICENSE
 
 GNU Affero General Public License, version 3.

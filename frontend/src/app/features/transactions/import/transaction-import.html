@@ -6,15 +6,27 @@
       <div>
         <label class="form-label" for="import-file">{{ t('transactions.import.fields.file') }}</label>
         <input
-          id="import-file"
+          #fileInput
           type="file"
           accept=".csv,text/csv"
-          class="form-input"
+          hidden
           (change)="onFileSelected($event)"
         />
-        @if (fileName()) {
-          <p class="mt-1 text-xs text-content-muted">{{ fileName() }}</p>
-        }
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <button
+            id="import-file"
+            appButton
+            variant="secondary"
+            type="button"
+            class="whitespace-nowrap"
+            (click)="fileInput.click()"
+          >
+            {{ t('common.file.choose') }}
+          </button>
+          <span class="min-w-0 break-all text-xs text-content-muted" dir="auto">
+            {{ fileName() || t('common.file.none') }}
+          </span>
+        </div>
       </div>
       <div>
         <label class="form-label" for="import-account">{{ t('transactions.filters.account') }}</label>

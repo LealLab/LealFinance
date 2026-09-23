@@ -52,6 +52,10 @@
     },
     "loadError": "로드하는 중 문제가 발생했습니다. 다시 시도해 주세요.",
     "retrying": "다시 시도하는 중…",
+    "file": {
+      "choose": "파일 선택",
+      "none": "선택된 파일 없음"
+    },
     "colorPicker": {
       "saturationBrightness": "색상 채도 및 밝기",
       "hue": "색상 색조"

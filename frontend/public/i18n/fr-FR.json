@@ -52,6 +52,10 @@
     },
     "loadError": "Un problème est survenu lors du chargement. Réessayez.",
     "retrying": "Nouvelle tentative…",
+    "file": {
+      "choose": "Choisir un fichier",
+      "none": "Aucun fichier choisi"
+    },
     "colorPicker": {
       "saturationBrightness": "Saturation et luminosité de la couleur",
       "hue": "Teinte de la couleur"

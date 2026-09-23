@@ -52,6 +52,10 @@
     },
     "loadError": "Noe gikk galt under innlastingen. Prøv igjen.",
     "retrying": "Prøver igjen…",
+    "file": {
+      "choose": "Velg fil",
+      "none": "Ingen fil valgt"
+    },
     "colorPicker": {
       "saturationBrightness": "Fargemetning og lysstyrke",
       "hue": "Fargetone"
