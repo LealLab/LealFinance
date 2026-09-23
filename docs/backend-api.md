@@ -169,7 +169,7 @@ Registration is invite-only, except the very first user on an instance.
 | GET | `/health/live` | public | Process liveness only. |
 | GET | `/health/ready` | public | 503 unless both Postgres and Redis are reachable. |
 | GET | `/meta/currencies` | public | Active currencies only. |
-| GET | `/meta/settings` | public | `default_currency`, `default_locale`, and booleans `agents_enabled`, `email_enabled`. |
+| GET | `/meta/settings` | public | `default_currency`, `default_locale`, `app_version`, and booleans `agents_enabled`, `email_enabled`. |
 | GET | `/meta/jobs` | admin | Latest persisted state for every scheduled Celery routine. |
 | POST | `/meta/jobs/{name}/run` | admin | Queue a registered scheduled routine for immediate execution; returns 202. |
 | GET | `/meta/exchange-rate?base=&quote=&as_of=` | user | See "Exchange rates" below. |

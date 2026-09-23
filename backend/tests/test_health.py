@@ -1,5 +1,7 @@
 from httpx import AsyncClient
 
+from app.core.config import get_settings
+
 
 async def test_liveness_ok(client: AsyncClient) -> None:
     response = await client.get("/api/v1/health/live")
@@ -73,4 +75,5 @@ async def test_public_settings_has_typed_agents_flag(client: AsyncClient) -> Non
     assert isinstance(body["default_currency"], str)
     assert isinstance(body["default_locale"], str)
     assert isinstance(body["agents_enabled"], bool)
+    assert body["app_version"] == get_settings().app_version
     assert isinstance(body["email_enabled"], bool)

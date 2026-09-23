@@ -91,6 +91,7 @@
       class="border-t border-border"
       [class.p-1]="!sidebarExpanded()"
       [class.p-3]="sidebarExpanded()"
+      [class.pb-1]="sidebarExpanded()"
     >
       <a
         routerLink="/profile"
@@ -111,17 +112,30 @@
           }}</span>
         </span>
       </a>
-      <button
-        appButton
-        variant="ghost"
-        size="sm"
-        type="button"
-        class="mt-2 w-full"
-        (click)="session.logout()"
-      >
-        <span [class.sr-only]="!sidebarExpanded()">{{ t('auth.logout') }}</span>
-        <app-icon name="arrowDownLeft" [size]="16" />
-      </button>
+      <div class="mt-2 flex flex-col items-center gap-0">
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          class="w-full"
+          (click)="session.logout()"
+        >
+          <span [class.sr-only]="!sidebarExpanded()">{{ t('auth.logout') }}</span>
+          <app-icon name="arrowDownLeft" [size]="16" />
+        </button>
+        @if (metadata.settings()?.appVersion; as version) {
+          <span
+            class="app-version block w-full truncate font-mono text-[10px] leading-none text-content-subtle"
+            [class.text-center]="!sidebarExpanded()"
+            [class.text-left]="sidebarExpanded()"
+            [attr.title]="version"
+            dir="ltr"
+          >
+            {{ version }}
+          </span>
+        }
+      </div>
     </div>
   </aside>
 
@@ -135,13 +149,22 @@
           class="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold tracking-tight"
         >
           <app-logo [size]="22" class="shrink-0 text-accent" />
-          <span class="truncate">
+          <span class="min-w-0 flex-1 truncate">
             @if (mobileNav.activeTab(); as tab) {
               {{ t(tab.labelKey) }}
             } @else {
               {{ t('app.title') }}
             }
           </span>
+          @if (metadata.settings()?.appVersion; as version) {
+            <span
+              class="app-version shrink-0 whitespace-nowrap font-mono text-[10px] leading-none text-content-subtle"
+              [attr.title]="version"
+              dir="ltr"
+            >
+              {{ version }}
+            </span>
+          }
         </a>
         <button
           appButton

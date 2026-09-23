@@ -12,6 +12,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { BalanceVisibilityService } from '../core/balance-visibility.service';
 import { CommandPaletteService } from '../core/command-palette.service';
+import { MetadataService } from '../core/metadata.service';
 import { isMacPlatform } from '../core/platform';
 import { PreferenceService } from '../core/preference.service';
 import { SessionService } from '../core/session.service';
@@ -75,6 +76,7 @@ export class Shell {
   protected readonly commandPalette = inject(CommandPaletteService);
   protected readonly preferences = inject(PreferenceService);
   protected readonly session = inject(SessionService);
+  protected readonly metadata = inject(MetadataService);
   protected readonly mutationErrors = inject(MutationErrorService);
   protected readonly mobileNav = inject(MobileNav);
   protected readonly profileInitials = computed(() => userInitials(this.session.user()));
