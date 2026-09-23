@@ -61,6 +61,11 @@
   justify-content: flex-start;
   margin-bottom: 1.25rem;
 
+  &--assistant {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   &--user {
     justify-content: flex-end;
   }
@@ -78,7 +83,7 @@
 }
 
 .chat-activity {
-  margin-top: 0.75rem;
+  margin-top: 0.4rem;
   color: var(--content-muted);
   font-size: 0.75rem;
 }

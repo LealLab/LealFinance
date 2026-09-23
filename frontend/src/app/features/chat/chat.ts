@@ -358,9 +358,10 @@ export class Chat {
     const pendingCallId =
       conversation.status === 'awaiting_confirmation' ? conversation.pendingCallId : null;
     for (const message of [...conversation.messages].sort((a, b) => a.position - b.position)) {
+      const last = turns.at(-1);
       if (message.role === 'tool') {
-        const assistant = [...turns].reverse().find((turn) => turn.role === 'assistant');
-        if (!assistant) continue;
+        if (last?.role !== 'assistant') continue;
+        const assistant = last;
         const tool = assistant.tools.find((item) => item.id === message.toolCallId);
         if (tool) tool.ok = !message.isError;
         else if (message.toolCallId && message.toolName) {
@@ -373,6 +374,21 @@ export class Chat {
         continue;
       }
       const pendingCall = message.toolCalls?.find((tool) => tool.id === pendingCallId);
+      if (message.role === 'assistant' && last?.role === 'assistant') {
+        last.text += message.content;
+        last.tools.push(
+          ...(message.toolCalls?.map((tool) => ({ id: tool.id, name: tool.name })) ?? []),
+        );
+        if (pendingCall) {
+          last.pendingConfirm = {
+            id: pendingCall.id,
+            name: pendingCall.name,
+            arguments: pendingCall.arguments,
+            preview: pendingCall.preview,
+          };
+        }
+        continue;
+      }
       turns.push({
         role: message.role === 'user' ? 'user' : 'assistant',
         text: message.content,
