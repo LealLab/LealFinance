@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "Nieuwe beleggingsportefeuille",
       "editWallet": "Beleggingsportefeuille bewerken",
@@ -1220,14 +1222,18 @@
       "newTransaction": "Transactie registreren",
       "editTransaction": "Transactie bewerken",
       "deleteTransaction": "Transactie verwijderen",
-      "newAsset": "Nieuw beleggingsactivum"
+      "newAsset": "Nieuw beleggingsactivum",
+      "editAsset": "Beleggingsactivum bewerken",
+      "archiveAsset": "Beleggingsactivum archiveren",
+      "unarchiveAsset": "Beleggingsactivum uit het archief halen"
     },
     "wallet": "Beleggingsportefeuille",
     "archived": "Gearchiveerd",
     "summary": {
       "bookValue": "Boekwaarde",
       "marketValue": "Marktwaarde",
-      "unrealizedGain": "Ongerealiseerde winst"
+      "unrealizedGain": "Ongerealiseerde winst",
+      "multiCurrencyHint": "Portefeuilles in andere valuta's zijn niet opgenomen in deze totalen."
     },
     "empty": {
       "title": "Nog geen beleggingsportefeuilles",
@@ -1315,6 +1321,10 @@
           "price": "Prijs",
           "amount": "Bedrag",
           "derivedAmount": "Berekend op basis van hoeveelheid × prijs",
+          "entryModeQuantityPrice": "Hoeveelheid × prijs",
+          "entryModeAmountSpent": "Besteed bedrag",
+          "amountSpent": "Besteed bedrag",
+          "amountSpentHint": "Voer het bruto betaalde bedrag in; de kosten worden afgetrokken voordat de hoeveelheid wordt berekend.",
           "fee": "Kosten",
           "currency": "Valuta",
           "notes": "Notities"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "Activa",
+      "empty": {
+        "title": "Nog geen activa",
+        "description": "Voeg een activum toe om transacties ervoor te registreren."
+      },
       "form": {
         "newTitle": "Nieuw beleggingsactivum",
         "editTitle": "Beleggingsactivum bewerken",
@@ -1344,25 +1359,26 @@
           "currency": "Valuta",
           "quoteProvider": "Koersaanbieder",
           "manualPrice": "Handmatige prijs",
-          "manualPriceHint": "Wordt gebruikt totdat live koersen beschikbaar zijn."
+          "manualPriceHint": "Wordt gebruikt totdat live koersen beschikbaar zijn.",
+          "cryptoCurrencyHint": "De valuta waarin dit activum wordt geprijsd (bijv. USD), niet het symbool van het activum zelf.",
+          "manualPriceOverridesProvider": "Een handmatige prijs overschrijft altijd de koersen van de geselecteerde aanbieder, ook zodra die beschikbaar zijn."
         },
         "actions": {
           "cancel": "Annuleren",
           "save": "Opslaan"
         }
+      },
+      "archive": {
+        "title": "Activum {{symbol}} archiveren?",
+        "message": "Activum {{symbol}} archiveren? De geschiedenis blijft beschikbaar."
       }
     },
     "archive": {
       "title": "Beleggingsportefeuille archiveren?",
       "message": "{{name}} archiveren? De geschiedenis blijft beschikbaar."
     },
-    "archiveError": "De archiefstatus van de beleggingsportefeuille kon niet worden bijgewerkt. Probeer het opnieuw.",
     "title": "Beleggingen",
-    "description": "Volg de aandelen, fondsen en crypto die je bezit.",
-    "placeholder": {
-      "title": "Binnenkort beschikbaar",
-      "description": "Portefeuilles, posities en koersen komen eraan."
-    }
+    "description": "Volg de aandelen, fondsen en crypto die je bezit."
   },
   "reports": {
     "ratesUnavailable": "Sommige cijfers hebben een wisselkoers nodig die momenteel niet beschikbaar is.",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "Deze valuta is niet beschikbaar.",
       "inactive": "Deze valuta is niet meer actief."
+    },
+    "investment_wallet": {
+      "not_found": "Deze beleggingswallet bestaat niet meer.",
+      "currency_in_use": "Deze wallet bevat al transacties, dus de valuta kan niet worden gewijzigd."
+    },
+    "investment_asset": {
+      "not_found": "Dit beleggingsactief bestaat niet meer.",
+      "symbol_already_exists": "Je hebt al een actief met dit symbool."
+    },
+    "investment_transaction": {
+      "not_found": "Die transactie bestaat niet meer.",
+      "quantity_price_required": "Aankopen en verkopen vereisen een hoeveelheid en een prijs.",
+      "quantity_price_not_allowed": "Voor dividenden en kosten gebruik je een bedrag, geen hoeveelheid en prijs.",
+      "asset_required": "Kies een actief voor deze transactie.",
+      "currency_must_match_wallet": "De valuta van de transactie moet overeenkomen met de valuta van de wallet.",
+      "insufficient_quantity": "Je kunt niet meer verkopen dan je momenteel bezit.",
+      "settlement_amount_not_positive": "Het afwikkelingsbedrag moet groter zijn dan nul.",
+      "price_unavailable": "Er is geen prijs beschikbaar voor de geselecteerde datum.",
+      "future_date": "Een toekomstige datum kan niet voor deze transactie worden gebruikt.",
+      "ledger_invalid": "Door deze wijziging wordt een latere transactie ongeldig. Maak die eerst ongedaan of bewerk die."
+    },
+    "market_data_credential": {
+      "not_found": "Er is geen API-sleutel voor die provider opgeslagen.",
+      "provider_unknown": "Die koersprovider wordt niet herkend."
     }
   }
 }

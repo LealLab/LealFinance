@@ -6,11 +6,31 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="investment-asset-symbol">{{ t('investments.assets.form.fields.symbol') }}</label>
-            <input id="investment-asset-symbol" type="text" class="form-input" formControlName="symbol" />
+            <input
+              id="investment-asset-symbol"
+              type="text"
+              class="form-input"
+              formControlName="symbol"
+              [attr.aria-invalid]="form.controls.symbol.invalid && form.controls.symbol.touched"
+              [attr.aria-describedby]="form.controls.symbol.invalid && form.controls.symbol.touched ? 'investment-asset-symbol-error' : null"
+            />
+            @if (form.controls.symbol.invalid && form.controls.symbol.touched) {
+              <p id="investment-asset-symbol-error" class="form-error" role="alert">{{ t('investments.form.errors.required') }}</p>
+            }
           </div>
           <div>
             <label class="form-label" for="investment-asset-name">{{ t('investments.assets.form.fields.name') }}</label>
-            <input id="investment-asset-name" type="text" class="form-input" formControlName="name" />
+            <input
+              id="investment-asset-name"
+              type="text"
+              class="form-input"
+              formControlName="name"
+              [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+              [attr.aria-describedby]="form.controls.name.invalid && form.controls.name.touched ? 'investment-asset-name-error' : null"
+            />
+            @if (form.controls.name.invalid && form.controls.name.touched) {
+              <p id="investment-asset-name-error" class="form-error" role="alert">{{ t('investments.form.errors.required') }}</p>
+            }
           </div>
         </div>
 
@@ -26,6 +46,9 @@
           <div>
             <label class="form-label" for="investment-asset-currency">{{ t('investments.assets.form.fields.currency') }}</label>
             <app-currency-select [id]="'investment-asset-currency'" formControlName="currency" />
+            @if (showCryptoCurrencyHint()) {
+              <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.cryptoCurrencyHint') }}</p>
+            }
             @if (form.controls.currency.invalid && form.controls.currency.touched) {
               <p id="investment-asset-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
             }
@@ -45,6 +68,9 @@
           <label class="form-label" for="investment-asset-manual-price">{{ t('investments.assets.form.fields.manualPrice') }}</label>
           <input id="investment-asset-manual-price" type="text" inputmode="decimal" class="form-input font-mono" formControlName="manualPrice" />
           <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.manualPriceHint') }}</p>
+          @if (showManualPriceOverrideHint()) {
+            <p class="mt-1 text-xs text-content-muted">{{ t('investments.assets.form.fields.manualPriceOverridesProvider') }}</p>
+          }
         </div>
 
         @if (saveErrorKey(); as errorKey) {

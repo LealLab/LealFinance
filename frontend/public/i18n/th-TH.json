@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "พอร์ตการลงทุนใหม่",
       "editWallet": "แก้ไขพอร์ตการลงทุน",
@@ -1220,14 +1222,18 @@
       "newTransaction": "บันทึกธุรกรรม",
       "editTransaction": "แก้ไขธุรกรรม",
       "deleteTransaction": "ลบธุรกรรม",
-      "newAsset": "สินทรัพย์ใหม่"
+      "newAsset": "สินทรัพย์ใหม่",
+      "editAsset": "แก้ไขสินทรัพย์",
+      "archiveAsset": "เก็บสินทรัพย์ถาวร",
+      "unarchiveAsset": "ยกเลิกการเก็บสินทรัพย์ถาวร"
     },
     "wallet": "พอร์ตการลงทุน",
     "archived": "เก็บถาวรแล้ว",
     "summary": {
       "bookValue": "มูลค่าตามบัญชี",
       "marketValue": "มูลค่าตลาด",
-      "unrealizedGain": "กำไรที่ยังไม่เกิดขึ้นจริง"
+      "unrealizedGain": "กำไรที่ยังไม่เกิดขึ้นจริง",
+      "multiCurrencyHint": "พอร์ตในสกุลเงินอื่นไม่รวมอยู่ในยอดรวมเหล่านี้"
     },
     "empty": {
       "title": "ยังไม่มีพอร์ตการลงทุน",
@@ -1315,6 +1321,10 @@
           "price": "ราคา",
           "amount": "จำนวนเงิน",
           "derivedAmount": "คำนวณจากปริมาณ × ราคา",
+          "entryModeQuantityPrice": "ปริมาณ × ราคา",
+          "entryModeAmountSpent": "จำนวนเงินที่ใช้จ่าย",
+          "amountSpent": "จำนวนเงินที่ใช้จ่าย",
+          "amountSpentHint": "ป้อนยอดเงินที่จ่ายทั้งหมด ระบบจะหักค่าธรรมเนียมก่อนคำนวณปริมาณ",
           "fee": "ค่าธรรมเนียม",
           "currency": "สกุลเงิน",
           "notes": "หมายเหตุ"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "สินทรัพย์",
+      "empty": {
+        "title": "ยังไม่มีสินทรัพย์",
+        "description": "เพิ่มสินทรัพย์เพื่อเริ่มบันทึกธุรกรรมสำหรับสินทรัพย์นั้น"
+      },
       "form": {
         "newTitle": "สินทรัพย์การลงทุนใหม่",
         "editTitle": "แก้ไขสินทรัพย์การลงทุน",
@@ -1344,25 +1359,26 @@
           "currency": "สกุลเงิน",
           "quoteProvider": "ผู้ให้บริการราคา",
           "manualPrice": "ราคาที่กรอกเอง",
-          "manualPriceHint": "ใช้จนกว่าจะมีราคาสด"
+          "manualPriceHint": "ใช้จนกว่าจะมีราคาสด",
+          "cryptoCurrencyHint": "สกุลเงินที่ใช้กำหนดราคาสินทรัพย์นี้ (เช่น USD) ไม่ใช่สัญลักษณ์ของสินทรัพย์เอง",
+          "manualPriceOverridesProvider": "ราคาที่กรอกเองจะแทนที่ราคาจากผู้ให้บริการที่เลือกเสมอ แม้หลังจากที่ราคาดังกล่าวพร้อมใช้งานแล้ว"
         },
         "actions": {
           "cancel": "ยกเลิก",
           "save": "บันทึก"
         }
+      },
+      "archive": {
+        "title": "เก็บ {{symbol}} ถาวรหรือไม่",
+        "message": "เก็บ {{symbol}} ถาวรหรือไม่ ประวัติจะยังคงใช้งานได้"
       }
     },
     "archive": {
       "title": "เก็บพอร์ตการลงทุนถาวรหรือไม่",
       "message": "เก็บ {{name}} ถาวรหรือไม่ ประวัติจะยังคงใช้งานได้"
     },
-    "archiveError": "ไม่สามารถอัปเดตสถานะการเก็บพอร์ตการลงทุนถาวรได้ ลองอีกครั้ง",
     "title": "การลงทุน",
-    "description": "ติดตามหุ้น กองทุน และคริปโตที่คุณถือครอง",
-    "placeholder": {
-      "title": "เร็ว ๆ นี้",
-      "description": "พอร์ตการลงทุน รายการถือครอง และราคาจะพร้อมใช้งานเร็ว ๆ นี้"
-    }
+    "description": "ติดตามหุ้น กองทุน และคริปโตที่คุณถือครอง"
   },
   "reports": {
     "ratesUnavailable": "ตัวเลขบางรายการต้องใช้อัตราแลกเปลี่ยนที่ไม่พร้อมใช้งานในขณะนี้",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "ไม่มีสกุลเงินนี้ให้ใช้งาน",
       "inactive": "สกุลเงินนี้ไม่เปิดใช้งานแล้ว"
+    },
+    "investment_wallet": {
+      "not_found": "ไม่มีกระเป๋าลงทุนนี้แล้ว",
+      "currency_in_use": "กระเป๋านี้มีธุรกรรมอยู่แล้ว จึงไม่สามารถเปลี่ยนสกุลเงินได้"
+    },
+    "investment_asset": {
+      "not_found": "ไม่มีสินทรัพย์ลงทุนนี้แล้ว",
+      "symbol_already_exists": "คุณมีสินทรัพย์ที่ใช้สัญลักษณ์นี้อยู่แล้ว"
+    },
+    "investment_transaction": {
+      "not_found": "ไม่มีธุรกรรมนี้แล้ว",
+      "quantity_price_required": "การซื้อและการขายต้องระบุจำนวนและราคา",
+      "quantity_price_not_allowed": "เงินปันผลและค่าธรรมเนียมใช้จำนวนเงิน ไม่ใช่จำนวนหน่วยและราคา",
+      "asset_required": "เลือกสินทรัพย์สำหรับธุรกรรมนี้",
+      "currency_must_match_wallet": "สกุลเงินของธุรกรรมต้องตรงกับสกุลเงินของกระเป๋า",
+      "insufficient_quantity": "คุณไม่สามารถขายมากกว่าจำนวนที่ถืออยู่ในขณะนี้ได้",
+      "settlement_amount_not_positive": "ยอดชำระต้องมากกว่าศูนย์",
+      "price_unavailable": "ไม่มีราคาสำหรับวันที่เลือก",
+      "future_date": "ไม่สามารถใช้วันที่ในอนาคตสำหรับธุรกรรมนี้ได้",
+      "ledger_invalid": "การเปลี่ยนแปลงนี้จะทำให้ธุรกรรมภายหลังไม่ถูกต้อง ยกเลิกหรือแก้ไขธุรกรรมนั้นก่อน"
+    },
+    "market_data_credential": {
+      "not_found": "ไม่มีการบันทึกคีย์ API สำหรับผู้ให้บริการรายนี้",
+      "provider_unknown": "ไม่รู้จักผู้ให้บริการข้อมูลราคานี้"
     }
   }
 }

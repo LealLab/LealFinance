@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PreferenceService } from '../../core/preference.service';
 import {
   InvestmentAsset,
   InvestmentPosition,
@@ -106,6 +107,7 @@ function positionsFor(
 export class MockInvestmentWalletRepository extends InvestmentWalletRepository {
   private readonly store = inject(MockStore);
   private readonly latencyMs = inject(MOCK_LATENCY_MS);
+  private readonly preferences = inject(PreferenceService);
 
   list(): Observable<InvestmentWallet[]> {
     return mockResult(() => this.store.investmentWallets(), this.latencyMs);
@@ -121,15 +123,16 @@ export class MockInvestmentWalletRepository extends InvestmentWalletRepository {
   create(input: InvestmentWalletCreate): Observable<InvestmentWallet> {
     return mockResult(() => {
       const archived = input.archived ?? false;
+      const currency = this.preferences.preferences()?.baseCurrency ?? 'USD';
       const account = this.store.createAccount({
         name: input.name,
         type: 'investment',
-        currency: input.currency,
+        currency,
         openingBalance: '0',
         institutionId: input.institutionId,
         archived,
       });
-      return this.store.createInvestmentWallet({ ...input, accountId: account.id, archived });
+      return this.store.createInvestmentWallet({ ...input, accountId: account.id, currency, archived });
     }, this.latencyMs);
   }
 

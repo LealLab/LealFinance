@@ -1235,12 +1235,10 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "title": "Investments",
     "description": "Track the shares, funds, and crypto you hold.",
-    "placeholder": {
-      "title": "Coming soon",
-      "description": "Wallets, positions, and quotes are on the way."
-    },
     "actions": {
       "newWallet": "New wallet",
       "editWallet": "Edit wallet",
@@ -1250,14 +1248,18 @@
       "newTransaction": "Record transaction",
       "editTransaction": "Edit transaction",
       "deleteTransaction": "Delete transaction",
-      "newAsset": "New asset"
+      "newAsset": "New asset",
+      "editAsset": "Edit asset",
+      "archiveAsset": "Archive asset",
+      "unarchiveAsset": "Unarchive asset"
     },
     "wallet": "Wallet",
     "archived": "Archived",
     "summary": {
       "bookValue": "Book value",
       "marketValue": "Market value",
-      "unrealizedGain": "Unrealized gain"
+      "unrealizedGain": "Unrealized gain",
+      "multiCurrencyHint": "Wallets in other currencies aren't included in these totals."
     },
     "empty": {
       "title": "No investment wallets yet",
@@ -1345,6 +1347,10 @@
           "price": "Price",
           "amount": "Amount",
           "derivedAmount": "Calculated from quantity × price",
+          "entryModeQuantityPrice": "Quantity × price",
+          "entryModeAmountSpent": "Amount spent",
+          "amountSpent": "Amount spent",
+          "amountSpentHint": "Enter the gross cash paid; the fee is subtracted before quantity is calculated.",
           "fee": "Fee",
           "currency": "Currency",
           "notes": "Notes"
@@ -1363,6 +1369,11 @@
       }
     },
     "assets": {
+      "title": "Assets",
+      "empty": {
+        "title": "No assets yet",
+        "description": "Add an asset to start recording transactions against it."
+      },
       "form": {
         "newTitle": "New investment asset",
         "editTitle": "Edit investment asset",
@@ -1374,19 +1385,24 @@
           "currency": "Currency",
           "quoteProvider": "Quote provider",
           "manualPrice": "Manual price",
-          "manualPriceHint": "Used until live quotes are available."
+          "manualPriceHint": "Used until live quotes are available.",
+          "cryptoCurrencyHint": "Currency this asset is priced in (e.g. USD) — not the asset's own symbol.",
+          "manualPriceOverridesProvider": "A manual price always overrides the selected provider's quotes, even once they become available."
         },
         "actions": {
           "cancel": "Cancel",
           "save": "Save"
         }
+      },
+      "archive": {
+        "title": "Archive {{symbol}}?",
+        "message": "Archive {{symbol}}? Its history will remain available."
       }
     },
     "archive": {
       "title": "Archive investment wallet?",
       "message": "Archive {{name}}? Its history will remain available."
-    },
-    "archiveError": "Could not update the investment wallet archive state. Try again."
+    }
   },
   "reports": {
     "ratesUnavailable": "Some figures need an exchange rate that isn't available right now.",
@@ -2070,6 +2086,30 @@
     "currency": {
       "not_found": "That currency isn't available.",
       "inactive": "That currency is no longer active."
+    },
+    "investment_wallet": {
+      "not_found": "That investment wallet no longer exists.",
+      "currency_in_use": "This wallet already has transactions, so its currency can't be changed."
+    },
+    "investment_asset": {
+      "not_found": "That investment asset no longer exists.",
+      "symbol_already_exists": "You already have an asset with this symbol."
+    },
+    "investment_transaction": {
+      "not_found": "That transaction no longer exists.",
+      "quantity_price_required": "Buys and sells need a quantity and a price.",
+      "quantity_price_not_allowed": "Dividends and fees use an amount, not a quantity and price.",
+      "asset_required": "Choose an asset for this transaction.",
+      "currency_must_match_wallet": "The transaction currency must match the wallet's currency.",
+      "insufficient_quantity": "You can't sell more than you currently hold.",
+      "settlement_amount_not_positive": "The settlement amount must be greater than zero.",
+      "price_unavailable": "No price is available for the selected date.",
+      "future_date": "A future date cannot be used for this transaction.",
+      "ledger_invalid": "This change would leave a later transaction invalid. Undo or edit that one first."
+    },
+    "market_data_credential": {
+      "not_found": "No API key is stored for that provider.",
+      "provider_unknown": "That quote provider isn't recognized."
     }
   }
 }

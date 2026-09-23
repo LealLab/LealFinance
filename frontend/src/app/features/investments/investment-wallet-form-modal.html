@@ -18,12 +18,35 @@
         </div>
 
         <div>
-          <label class="form-label" for="investment-wallet-currency">{{ t('investments.form.fields.currency') }}</label>
-          <app-currency-select
-            [id]="'investment-wallet-currency'"
-            formControlName="currency"
-            [disabled]="isEditing()"
-          />
+          <div class="flex items-center gap-2">
+            <label class="form-label" for="investment-wallet-currency">{{ t('investments.form.fields.currency') }}</label>
+            <span class="group relative inline-flex">
+              <button
+                type="button"
+                class="flex size-5 items-center justify-center rounded-full border border-border text-xs font-semibold text-content-muted"
+                [attr.aria-label]="t('investments.currencyHelpLabel')"
+                aria-describedby="investment-wallet-currency-tooltip"
+              >
+                ?
+              </button>
+              <span
+                id="investment-wallet-currency-tooltip"
+                role="tooltip"
+                class="pointer-events-none absolute left-0 top-full z-10 mt-2 w-64 max-w-[calc(100vw-2rem)] rounded-md border border-border bg-surface-raised p-2 text-xs text-content-primary opacity-0 shadow-lg transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
+              >
+                {{ t('investments.currencyHint') }}
+              </span>
+            </span>
+          </div>
+          @if (isEditing()) {
+            <app-currency-select
+              [id]="'investment-wallet-currency'"
+              formControlName="currency"
+              [disabled]="true"
+            />
+          } @else {
+            <input id="investment-wallet-currency" type="text" class="form-input read-only:bg-surface-sunken read-only:text-content-muted" formControlName="currency" readonly />
+          }
           @if (form.controls.currency.invalid && form.controls.currency.touched) {
             <p id="investment-wallet-currency-error" class="form-error" role="alert">{{ t('currency.invalid') }}</p>
           }

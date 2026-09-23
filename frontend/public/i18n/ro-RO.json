@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "Portofoliu de investiții nou",
       "editWallet": "Editează portofoliul de investiții",
@@ -1220,14 +1222,18 @@
       "newTransaction": "Înregistrează tranzacția",
       "editTransaction": "Editează tranzacția",
       "deleteTransaction": "Șterge tranzacția",
-      "newAsset": "Activ nou"
+      "newAsset": "Activ nou",
+      "editAsset": "Editează activul",
+      "archiveAsset": "Arhivează activul",
+      "unarchiveAsset": "Scoate activul din arhivă"
     },
     "wallet": "Portofoliu de investiții",
     "archived": "Arhivat",
     "summary": {
       "bookValue": "Valoare contabilă",
       "marketValue": "Valoare de piață",
-      "unrealizedGain": "Câștig nerealizat"
+      "unrealizedGain": "Câștig nerealizat",
+      "multiCurrencyHint": "Portofoliile în alte monede nu sunt incluse în aceste totaluri."
     },
     "empty": {
       "title": "Nu există încă portofolii de investiții",
@@ -1315,6 +1321,10 @@
           "price": "Preț",
           "amount": "Sumă",
           "derivedAmount": "Calculată pe baza cantității × prețului",
+          "entryModeQuantityPrice": "Cantitate × preț",
+          "entryModeAmountSpent": "Sumă cheltuită",
+          "amountSpent": "Sumă cheltuită",
+          "amountSpentHint": "Introduceți suma brută plătită; comisionul se scade înainte de calcularea cantității.",
           "fee": "Comision",
           "currency": "Monedă",
           "notes": "Note"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "Active",
+      "empty": {
+        "title": "Nu există încă active",
+        "description": "Adaugă un activ pentru a începe să înregistrezi tranzacții pentru el."
+      },
       "form": {
         "newTitle": "Activ de investiții nou",
         "editTitle": "Editează activul de investiții",
@@ -1344,25 +1359,26 @@
           "currency": "Monedă",
           "quoteProvider": "Furnizor de cotații",
           "manualPrice": "Preț manual",
-          "manualPriceHint": "Folosit până când sunt disponibile cotațiile live."
+          "manualPriceHint": "Folosit până când sunt disponibile cotațiile live.",
+          "cryptoCurrencyHint": "Moneda în care este evaluat acest activ (de ex. USD), nu simbolul activului în sine.",
+          "manualPriceOverridesProvider": "Un preț manual înlocuiește întotdeauna cotațiile furnizorului selectat, chiar și după ce acestea devin disponibile."
         },
         "actions": {
           "cancel": "Anulează",
           "save": "Salvează"
         }
+      },
+      "archive": {
+        "title": "Arhivezi {{symbol}}?",
+        "message": "Arhivezi {{symbol}}? Istoricul său va rămâne disponibil."
       }
     },
     "archive": {
       "title": "Arhivezi portofoliul de investiții?",
       "message": "Arhivezi {{name}}? Istoricul va rămâne disponibil."
     },
-    "archiveError": "Starea arhivei portofoliului de investiții nu a putut fi actualizată. Încearcă din nou.",
     "title": "Investiții",
-    "description": "Urmărește acțiunile, fondurile și criptomonedele pe care le deții.",
-    "placeholder": {
-      "title": "În curând",
-      "description": "Portofoliile, pozițiile și cotațiile sunt pe drum."
-    }
+    "description": "Urmărește acțiunile, fondurile și criptomonedele pe care le deții."
   },
   "reports": {
     "ratesUnavailable": "Unele cifre au nevoie de un curs valutar care nu este disponibil momentan.",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "Această monedă nu este disponibilă.",
       "inactive": "Această monedă nu mai este activă."
+    },
+    "investment_wallet": {
+      "not_found": "Acest portofel de investiții nu mai există.",
+      "currency_in_use": "Acest portofel are deja tranzacții, deci moneda lui nu poate fi schimbată."
+    },
+    "investment_asset": {
+      "not_found": "Acest activ de investiții nu mai există.",
+      "symbol_already_exists": "Ai deja un activ cu acest simbol."
+    },
+    "investment_transaction": {
+      "not_found": "Această tranzacție nu mai există.",
+      "quantity_price_required": "Cumpărările și vânzările necesită o cantitate și un preț.",
+      "quantity_price_not_allowed": "Dividendele și comisioanele folosesc o sumă, nu o cantitate și un preț.",
+      "asset_required": "Alege un activ pentru această tranzacție.",
+      "currency_must_match_wallet": "Moneda tranzacției trebuie să corespundă monedei portofelului.",
+      "insufficient_quantity": "Nu poți vinde mai mult decât deții în prezent.",
+      "settlement_amount_not_positive": "Valoarea decontării trebuie să fie mai mare decât zero.",
+      "price_unavailable": "Nu există un preț disponibil pentru data selectată.",
+      "future_date": "Nu se poate folosi o dată viitoare pentru această tranzacție.",
+      "ledger_invalid": "Această modificare ar face invalidă o tranzacție ulterioară. Anuleaz-o sau editeaz-o mai întâi."
+    },
+    "market_data_credential": {
+      "not_found": "Nu este stocată nicio cheie API pentru acel furnizor.",
+      "provider_unknown": "Furnizorul respectiv de cotații nu este recunoscut."
     }
   }
 }

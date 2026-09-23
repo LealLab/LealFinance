@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "Neues Investmentdepot",
       "editWallet": "Investmentdepot bearbeiten",
@@ -1220,14 +1222,18 @@
       "newTransaction": "Transaktion erfassen",
       "editTransaction": "Transaktion bearbeiten",
       "deleteTransaction": "Transaktion löschen",
-      "newAsset": "Neue Anlage"
+      "newAsset": "Neue Anlage",
+      "editAsset": "Anlage bearbeiten",
+      "archiveAsset": "Anlage archivieren",
+      "unarchiveAsset": "Anlage aus dem Archiv holen"
     },
     "wallet": "Investmentdepot",
     "archived": "Archiviert",
     "summary": {
       "bookValue": "Buchwert",
       "marketValue": "Marktwert",
-      "unrealizedGain": "Nicht realisierter Gewinn"
+      "unrealizedGain": "Nicht realisierter Gewinn",
+      "multiCurrencyHint": "Depots in anderen Währungen sind in diesen Summen nicht enthalten."
     },
     "empty": {
       "title": "Noch keine Investmentdepots",
@@ -1315,6 +1321,10 @@
           "price": "Preis",
           "amount": "Betrag",
           "derivedAmount": "Aus Menge × Preis berechnet",
+          "entryModeQuantityPrice": "Menge × Preis",
+          "entryModeAmountSpent": "Ausgegebener Betrag",
+          "amountSpent": "Ausgegebener Betrag",
+          "amountSpentHint": "Geben Sie den insgesamt gezahlten Betrag ein; die Gebühr wird vor der Mengenberechnung abgezogen.",
           "fee": "Gebühr",
           "currency": "Währung",
           "notes": "Notizen"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "Anlagen",
+      "empty": {
+        "title": "Noch keine Anlagen",
+        "description": "Füge eine Anlage hinzu, um Transaktionen dafür zu erfassen."
+      },
       "form": {
         "newTitle": "Neue Investmentanlage",
         "editTitle": "Investmentanlage bearbeiten",
@@ -1344,25 +1359,26 @@
           "currency": "Währung",
           "quoteProvider": "Kursanbieter",
           "manualPrice": "Manueller Preis",
-          "manualPriceHint": "Wird verwendet, bis Live-Kurse verfügbar sind."
+          "manualPriceHint": "Wird verwendet, bis Live-Kurse verfügbar sind.",
+          "cryptoCurrencyHint": "Währung, in der dieser Vermögenswert bewertet wird (z. B. USD) — nicht sein eigenes Symbol.",
+          "manualPriceOverridesProvider": "Ein manueller Preis überschreibt immer die Kurse des ausgewählten Anbieters, auch wenn diese verfügbar werden."
         },
         "actions": {
           "cancel": "Abbrechen",
           "save": "Speichern"
         }
+      },
+      "archive": {
+        "title": "Anlage {{symbol}} archivieren?",
+        "message": "Anlage {{symbol}} archivieren? Der Verlauf bleibt verfügbar."
       }
     },
     "archive": {
       "title": "Investmentdepot archivieren?",
       "message": "{{name}} archivieren? Der Verlauf bleibt verfügbar."
     },
-    "archiveError": "Der Archivstatus des Investmentdepots konnte nicht aktualisiert werden. Versuchen Sie es erneut.",
     "title": "Investitionen",
-    "description": "Verfolge die Aktien, Fonds und Kryptowährungen, die du besitzt.",
-    "placeholder": {
-      "title": "Demnächst verfügbar",
-      "description": "Depots, Positionen und Kurse kommen bald."
-    }
+    "description": "Verfolge die Aktien, Fonds und Kryptowährungen, die du besitzt."
   },
   "reports": {
     "ratesUnavailable": "Für einige Werte wird ein Wechselkurs benötigt, der derzeit nicht verfügbar ist.",
@@ -2046,6 +2062,30 @@
     "currency": {
       "not_found": "Diese Währung ist nicht verfügbar.",
       "inactive": "Diese Währung ist nicht mehr aktiv."
+    },
+    "investment_wallet": {
+      "not_found": "Dieses Anlage-Wallet existiert nicht mehr.",
+      "currency_in_use": "Dieses Wallet enthält bereits Transaktionen. Daher kann seine Währung nicht geändert werden."
+    },
+    "investment_asset": {
+      "not_found": "Dieses Anlageobjekt existiert nicht mehr.",
+      "symbol_already_exists": "Du hast bereits ein Anlageobjekt mit diesem Symbol."
+    },
+    "investment_transaction": {
+      "not_found": "Diese Transaktion existiert nicht mehr.",
+      "quantity_price_required": "Käufe und Verkäufe benötigen eine Menge und einen Preis.",
+      "quantity_price_not_allowed": "Dividenden und Gebühren verwenden einen Betrag, keine Menge und keinen Preis.",
+      "asset_required": "Wähle ein Anlageobjekt für diese Transaktion aus.",
+      "currency_must_match_wallet": "Die Transaktionswährung muss der Währung des Wallets entsprechen.",
+      "insufficient_quantity": "Du kannst nicht mehr verkaufen, als du derzeit hältst.",
+      "settlement_amount_not_positive": "Der Abrechnungsbetrag muss größer als null sein.",
+      "price_unavailable": "Für das ausgewählte Datum ist kein Preis verfügbar.",
+      "future_date": "Für diese Transaktion kann kein zukünftiges Datum verwendet werden.",
+      "ledger_invalid": "Diese Änderung würde eine spätere Transaktion ungültig machen. Mache sie zuerst rückgängig oder bearbeite sie."
+    },
+    "market_data_credential": {
+      "not_found": "Für diesen Anbieter ist kein API-Schlüssel gespeichert.",
+      "provider_unknown": "Dieser Kursanbieter wird nicht erkannt."
     }
   }
 }

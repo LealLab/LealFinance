@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "محفظة جديدة",
       "editWallet": "تعديل المحفظة",
@@ -1220,14 +1222,18 @@
       "newTransaction": "تسجيل معاملة",
       "editTransaction": "تعديل المعاملة",
       "deleteTransaction": "حذف المعاملة",
-      "newAsset": "أصل جديد"
+      "newAsset": "أصل جديد",
+      "editAsset": "تعديل الأصل",
+      "archiveAsset": "أرشفة الأصل",
+      "unarchiveAsset": "إلغاء أرشفة الأصل"
     },
     "wallet": "محفظة",
     "archived": "مؤرشف",
     "summary": {
       "bookValue": "القيمة الدفترية",
       "marketValue": "القيمة السوقية",
-      "unrealizedGain": "المكسب غير المحقق"
+      "unrealizedGain": "المكسب غير المحقق",
+      "multiCurrencyHint": "لا تُدرج المحافظ بالعملات الأخرى ضمن هذه الإجماليات."
     },
     "empty": {
       "title": "لا توجد محافظ استثمارية بعد",
@@ -1315,6 +1321,10 @@
           "price": "السعر",
           "amount": "المبلغ",
           "derivedAmount": "تم الحساب من الكمية × السعر",
+          "entryModeQuantityPrice": "الكمية × السعر",
+          "entryModeAmountSpent": "المبلغ المنفق",
+          "amountSpent": "المبلغ المنفق",
+          "amountSpentHint": "أدخل إجمالي المبلغ المدفوع؛ تُخصم الرسوم قبل حساب الكمية.",
           "fee": "الرسوم",
           "currency": "العملة",
           "notes": "ملاحظات"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "الأصول",
+      "empty": {
+        "title": "لا توجد أصول بعد",
+        "description": "أضف أصلًا لبدء تسجيل المعاملات عليه."
+      },
       "form": {
         "newTitle": "أصل استثماري جديد",
         "editTitle": "تعديل الأصل الاستثماري",
@@ -1344,25 +1359,26 @@
           "currency": "العملة",
           "quoteProvider": "مزود الأسعار",
           "manualPrice": "السعر اليدوي",
-          "manualPriceHint": "يُستخدم إلى أن تتوفر الأسعار المباشرة."
+          "manualPriceHint": "يُستخدم إلى أن تتوفر الأسعار المباشرة.",
+          "cryptoCurrencyHint": "العملة التي يُسعّر بها هذا الأصل (مثل USD)، وليست رمز الأصل نفسه.",
+          "manualPriceOverridesProvider": "يتجاوز السعر اليدوي دائمًا أسعار مزود الأسعار المحدد، حتى بعد توفرها."
         },
         "actions": {
           "cancel": "إلغاء",
           "save": "حفظ"
         }
+      },
+      "archive": {
+        "title": "أرشفة {{symbol}}؟",
+        "message": "أرشفة {{symbol}}؟ سيظل سجله متاحًا."
       }
     },
     "archive": {
       "title": "هل تريد أرشفة محفظة الاستثمار؟",
       "message": "أرشفة {{name}}؟ سيظل سجلها متاحًا."
     },
-    "archiveError": "تعذّر تحديث حالة أرشفة محفظة الاستثمار. حاول مرة أخرى.",
     "title": "الاستثمارات",
-    "description": "تتبّع الأسهم والصناديق والعملات المشفرة التي تملكها.",
-    "placeholder": {
-      "title": "قريبًا",
-      "description": "المحافظ والمراكز والأسعار في الطريق."
-    }
+    "description": "تتبّع الأسهم والصناديق والعملات المشفرة التي تملكها."
   },
   "reports": {
     "ratesUnavailable": "تحتاج بعض الأرقام إلى سعر صرف غير متاح حاليًا.",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "هذه العملة غير متاحة.",
       "inactive": "لم تعد هذه العملة نشطة."
+    },
+    "investment_wallet": {
+      "not_found": "محفظة الاستثمار هذه لم تعد موجودة.",
+      "currency_in_use": "تحتوي هذه المحفظة على معاملات بالفعل، لذلك لا يمكن تغيير عملتها."
+    },
+    "investment_asset": {
+      "not_found": "أصل الاستثمار هذا لم يعد موجودًا.",
+      "symbol_already_exists": "لديك أصل بهذا الرمز بالفعل."
+    },
+    "investment_transaction": {
+      "not_found": "هذه المعاملة لم تعد موجودة.",
+      "quantity_price_required": "تحتاج عمليات الشراء والبيع إلى كمية وسعر.",
+      "quantity_price_not_allowed": "تستخدم توزيعات الأرباح والرسوم مبلغًا، وليس كمية وسعرًا.",
+      "asset_required": "اختر أصلًا لهذه المعاملة.",
+      "currency_must_match_wallet": "يجب أن تتطابق عملة المعاملة مع عملة المحفظة.",
+      "insufficient_quantity": "لا يمكنك بيع كمية أكبر مما تملك حاليًا.",
+      "settlement_amount_not_positive": "يجب أن يكون مبلغ التسوية أكبر من صفر.",
+      "price_unavailable": "لا يتوفر سعر للتاريخ المحدد.",
+      "future_date": "لا يمكن استخدام تاريخ مستقبلي لهذه العملية.",
+      "ledger_invalid": "سيؤدي هذا التغيير إلى جعل معاملة لاحقة غير صالحة. تراجع عن تلك المعاملة أو عدّلها أولًا."
+    },
+    "market_data_credential": {
+      "not_found": "لا يوجد مفتاح API محفوظ لمزود الخدمة هذا.",
+      "provider_unknown": "مزود الأسعار هذا غير معروف."
     }
   }
 }

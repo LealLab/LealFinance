@@ -42,4 +42,30 @@ describe('Investments', () => {
       ])
     );
   });
+
+  it('derives a wallet card\'s figures from its positions, not just its name and currency', async () => {
+    const fixture = TestBed.createComponent(Investments);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    // The positions fetch is a second, wallet-id-keyed resource - let it settle too.
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      walletsResource: { value: () => { id: string; currency: string }[] | undefined };
+      walletStats: (wallet: { id: string; currency: string }) => {
+        positionCount: number;
+        marketValue: { amount: string } | null;
+      };
+    };
+    const wallet = component.walletsResource
+      .value()
+      ?.find((current) => current.id === 'investment-wallet-europe');
+    expect(wallet).toBeDefined();
+
+    const stats = component.walletStats(wallet!);
+    expect(stats.positionCount).toBe(3);
+    expect(stats.marketValue).not.toBeNull();
+  });
 });

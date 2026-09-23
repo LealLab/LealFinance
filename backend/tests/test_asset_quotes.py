@@ -6,17 +6,26 @@ from decimal import Decimal
 import httpx
 import pytest
 from httpx import AsyncClient
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import app.services.asset_quotes as quotes_service
 import app.services.market_data_credentials as credentials_service
 from app.core.config import get_settings
-from app.models.investment import AssetQuote
+from app.models.investment import AssetQuote, InvestmentAsset
 from tests.factories import login_as, make_user
 
 
-async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> None:
+async def _authed(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    email: str,
+    *,
+    base_currency: str = "BRL",
+) -> None:
     user, password = await make_user(db_session, email=email)
+    user.base_currency = base_currency
+    await db_session.commit()
     await login_as(client, email=user.email, password=password)
 
 
@@ -236,8 +245,18 @@ async def test_same_symbol_prices_independently_per_wallet_currency(
     symbol must not be served to a different user's wallet holding the same
     symbol in BRL. (One user can't hold the same symbol twice - see
     uq_investment_assets_user_id_symbol - so this needs two users.)"""
-    await _authed(client, db_session, "asset-quotes-currency-cache-usd@example.com")
-    await _authed(other_client, db_session, "asset-quotes-currency-cache-brl@example.com")
+    await _authed(
+        client,
+        db_session,
+        "asset-quotes-currency-cache-usd@example.com",
+        base_currency="USD",
+    )
+    await _authed(
+        other_client,
+        db_session,
+        "asset-quotes-currency-cache-brl@example.com",
+        base_currency="BRL",
+    )
     db_session.add_all(
         [
             AssetQuote(
@@ -457,3 +476,166 @@ async def test_coingecko_failure_degrades_to_stale_quote_without_a_key(
     assert position["price"] == "300000.0000000000"
     assert position["price_as_of"] == old_date.isoformat()
     assert position["price_is_stale"] is True
+
+
+async def test_historical_twelve_data_parser_uses_exact_date(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, object]:
+            return {"values": [{"datetime": "2026-01-15", "close": "123.45"}]}
+
+    class Client:
+        def __init__(self, **_kwargs: object) -> None:
+            pass
+
+        async def __aenter__(self) -> "Client":
+            return self
+
+        async def __aexit__(self, *_args: object) -> None:
+            return None
+
+        async def get(self, _url: str, **kwargs: object) -> Response:
+            assert kwargs["params"] == {
+                "symbol": "ACME",
+                "interval": "1day",
+                "start_date": "2026-01-15",
+                "end_date": "2026-01-15",
+                "apikey": "key",
+            }
+            return Response()
+
+    monkeypatch.setattr(quotes_service.httpx, "AsyncClient", Client)
+    price = await quotes_service._fetch_twelve_data_historical("key", "ACME", date(2026, 1, 15))
+    assert price == Decimal("123.45")
+
+
+async def test_historical_brapi_parser_reads_daily_close(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, object]:
+            return {
+                "results": [
+                    {
+                        "symbol": "PETR4",
+                        "data": {"historicalDataPrice": [{"date": "2026-01-15", "close": 37.5}]},
+                    }
+                ]
+            }
+
+    class Client:
+        def __init__(self, **_kwargs: object) -> None:
+            pass
+
+        async def __aenter__(self) -> "Client":
+            return self
+
+        async def __aexit__(self, *_args: object) -> None:
+            return None
+
+        async def get(self, _url: str, **kwargs: object) -> Response:
+            assert kwargs["params"]["startDate"] == "2026-01-15"
+            assert kwargs["params"]["endDate"] == "2026-01-15"
+            return Response()
+
+    monkeypatch.setattr(quotes_service.httpx, "AsyncClient", Client)
+    price = await quotes_service._fetch_brapi_historical("key", "PETR4", date(2026, 1, 15))
+    assert price == Decimal("37.5")
+
+
+async def test_historical_coingecko_parser_resolves_symbol_to_coin_id(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class Response:
+        def __init__(self, payload: object) -> None:
+            self.payload = payload
+
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> object:
+            return self.payload
+
+    class Client:
+        def __init__(self, **_kwargs: object) -> None:
+            pass
+
+        async def __aenter__(self) -> "Client":
+            return self
+
+        async def __aexit__(self, *_args: object) -> None:
+            return None
+
+        async def get(self, url: str, **kwargs: object) -> Response:
+            if url.endswith("/markets"):
+                return Response([{"id": "bitcoin", "symbol": "btc"}])
+            assert url.endswith("/bitcoin/history")
+            assert kwargs["params"] == {"date": "15-01-2026", "localization": "false"}
+            return Response({"market_data": {"current_price": {"brl": "330000"}}})
+
+    monkeypatch.setattr(quotes_service.httpx, "AsyncClient", Client)
+    price = await quotes_service._fetch_coingecko_historical(None, "BTC", "BRL", date(2026, 1, 15))
+    assert price == Decimal("330000")
+
+
+async def test_exact_date_quote_cache_does_not_use_stale_rows(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    user, password = await make_user(db_session, email="asset-quotes-exact-date@example.com")
+    user.base_currency = "BRL"
+    await db_session.commit()
+    await login_as(client, email=user.email, password=password)
+    asset_response = await client.post(
+        "/api/v1/investments/assets",
+        json={
+            "symbol": "EXACT",
+            "name": "Exact",
+            "asset_class": "stock",
+            "currency": "BRL",
+            "quote_provider": "twelve_data",
+        },
+    )
+    assert asset_response.status_code == 201, asset_response.text
+    asset = await db_session.scalar(
+        select(InvestmentAsset).where(InvestmentAsset.symbol == "EXACT")
+    )
+    assert asset is not None
+    target = date(2026, 1, 15)
+    db_session.add(
+        AssetQuote(
+            symbol="EXACT",
+            currency="BRL",
+            price=Decimal("10"),
+            as_of=target - timedelta(days=1),
+            source="twelve_data",
+        )
+    )
+    await db_session.commit()
+
+    async def fail_fetch(*_args: object) -> Decimal:
+        raise AssertionError("historical provider should not be needed")
+
+    monkeypatch.setattr(quotes_service, "_fetch_twelve_data_historical", fail_fetch)
+    missing = await quotes_service.get_asset_price(db_session, user.id, asset, target)
+    assert missing.price is None
+
+    db_session.add(
+        AssetQuote(
+            symbol="EXACT",
+            currency="BRL",
+            price=Decimal("12"),
+            as_of=target,
+            source="twelve_data",
+        )
+    )
+    await db_session.commit()
+    cached = await quotes_service.get_asset_price(db_session, user.id, asset, target)
+    assert cached.price == Decimal("12")
+    assert cached.is_stale is False

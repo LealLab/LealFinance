@@ -40,7 +40,6 @@ class InvestmentWalletRead(BaseModel):
 
 class InvestmentWalletCreate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
-    currency: CurrencyCodeInput
     cash_account_id: UUID | None = None
     institution_id: UUID | None = None
     archived: bool = False

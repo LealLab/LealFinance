@@ -767,7 +767,6 @@ export const mapInvestmentWalletCreate = (
   input: InvestmentWalletCreate,
 ): InvestmentWalletInputWire => ({
   name: input.name,
-  currency: input.currency,
   cash_account_id: nullable(input.cashAccountId),
   institution_id: nullable(input.institutionId),
   archived: input.archived ?? false,

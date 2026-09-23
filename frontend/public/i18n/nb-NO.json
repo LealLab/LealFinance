@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "Ny investeringsportefølje",
       "editWallet": "Rediger investeringsporteføljen",
@@ -1220,14 +1222,18 @@
       "newTransaction": "Registrer transaksjon",
       "editTransaction": "Rediger transaksjon",
       "deleteTransaction": "Slett transaksjon",
-      "newAsset": "Nytt investeringsaktivum"
+      "newAsset": "Nytt investeringsaktivum",
+      "editAsset": "Rediger eiendel",
+      "archiveAsset": "Arkiver eiendel",
+      "unarchiveAsset": "Gjenopprett eiendel fra arkivet"
     },
     "wallet": "Investeringsportefølje",
     "archived": "Arkivert",
     "summary": {
       "bookValue": "Bokført verdi",
       "marketValue": "Markedsverdi",
-      "unrealizedGain": "Urealisert gevinst"
+      "unrealizedGain": "Urealisert gevinst",
+      "multiCurrencyHint": "Porteføljer i andre valutaer er ikke inkludert i disse totalene."
     },
     "empty": {
       "title": "Ingen investeringsporteføljer ennå",
@@ -1315,6 +1321,10 @@
           "price": "Pris",
           "amount": "Beløp",
           "derivedAmount": "Beregnet fra antall × pris",
+          "entryModeQuantityPrice": "Antall × pris",
+          "entryModeAmountSpent": "Brukt beløp",
+          "amountSpent": "Brukt beløp",
+          "amountSpentHint": "Skriv inn brutto betalt beløp; gebyret trekkes fra før antallet beregnes.",
           "fee": "Gebyr",
           "currency": "Valuta",
           "notes": "Notater"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "Eiendeler",
+      "empty": {
+        "title": "Ingen eiendeler ennå",
+        "description": "Legg til en eiendel for å begynne å registrere transaksjoner for den."
+      },
       "form": {
         "newTitle": "Nytt investeringsaktivum",
         "editTitle": "Rediger investeringsaktivum",
@@ -1344,25 +1359,26 @@
           "currency": "Valuta",
           "quoteProvider": "Kursleverandør",
           "manualPrice": "Manuell pris",
-          "manualPriceHint": "Brukes til kurser i sanntid er tilgjengelige."
+          "manualPriceHint": "Brukes til kurser i sanntid er tilgjengelige.",
+          "cryptoCurrencyHint": "Valutaen dette aktivet prises i (f.eks. USD) — ikke aktivets eget symbol.",
+          "manualPriceOverridesProvider": "En manuell pris overstyrer alltid kursene fra den valgte leverandøren, også når de blir tilgjengelige."
         },
         "actions": {
           "cancel": "Avbryt",
           "save": "Lagre"
         }
+      },
+      "archive": {
+        "title": "Arkiver {{symbol}}?",
+        "message": "Arkiver {{symbol}}? Historikken vil fortsatt være tilgjengelig."
       }
     },
     "archive": {
       "title": "Arkiver investeringsporteføljen?",
       "message": "Arkiver {{name}}? Historikken vil fortsatt være tilgjengelig."
     },
-    "archiveError": "Kunne ikke oppdatere arkivstatusen for investeringsporteføljen. Prøv igjen.",
     "title": "Investeringer",
-    "description": "Følg aksjene, fondene og kryptovalutaene du eier.",
-    "placeholder": {
-      "title": "Kommer snart",
-      "description": "Porteføljer, posisjoner og kurser er på vei."
-    }
+    "description": "Følg aksjene, fondene og kryptovalutaene du eier."
   },
   "reports": {
     "ratesUnavailable": "Noen tall trenger en valutakurs som ikke er tilgjengelig akkurat nå.",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "Den valutaen er ikke tilgjengelig.",
       "inactive": "Den valutaen er ikke lenger aktiv."
+    },
+    "investment_wallet": {
+      "not_found": "Denne investeringslommeboken finnes ikke lenger.",
+      "currency_in_use": "Denne lommeboken har allerede transaksjoner, så valutaen kan ikke endres."
+    },
+    "investment_asset": {
+      "not_found": "Dette investeringsaktivet finnes ikke lenger.",
+      "symbol_already_exists": "Du har allerede et aktivum med dette symbolet."
+    },
+    "investment_transaction": {
+      "not_found": "Den transaksjonen finnes ikke lenger.",
+      "quantity_price_required": "Kjøp og salg krever en mengde og en pris.",
+      "quantity_price_not_allowed": "Utbytte og gebyrer bruker et beløp, ikke en mengde og pris.",
+      "asset_required": "Velg et aktivum for denne transaksjonen.",
+      "currency_must_match_wallet": "Transaksjonens valuta må samsvare med lommebokens valuta.",
+      "insufficient_quantity": "Du kan ikke selge mer enn du eier nå.",
+      "settlement_amount_not_positive": "Oppgjørsbeløpet må være større enn null.",
+      "price_unavailable": "Det finnes ingen pris for den valgte datoen.",
+      "future_date": "En fremtidig dato kan ikke brukes for denne transaksjonen.",
+      "ledger_invalid": "Denne endringen ville gjort en senere transaksjon ugyldig. Angre eller rediger den først."
+    },
+    "market_data_credential": {
+      "not_found": "Det er ikke lagret noen API-nøkkel for denne leverandøren.",
+      "provider_unknown": "Denne kursleverandøren gjenkjennes ikke."
     }
   }
 }

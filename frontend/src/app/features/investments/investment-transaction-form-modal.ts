@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { InvestmentTransactionRepository } from '../../data/investment-transaction.repository';
 import { InvestmentWalletRepository } from '../../data/investment-wallet.repository';
 import { todayIso } from '../../domain/calc/dates';
@@ -17,6 +18,7 @@ import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
 
 const TRANSACTION_TYPES: readonly InvestmentTransactionType[] = ['buy', 'sell', 'dividend', 'fee'];
+type BuyEntryMode = 'quantity_price' | 'amount_spent';
 
 /** t(investments.transactions.form.newTitle, investments.transactions.form.editTitle, investments.transactions.form.saveError, investments.transactions.form.errors.invalid) */
 
@@ -50,6 +52,7 @@ export class InvestmentTransactionFormModal {
   );
   protected readonly form = this.fb.nonNullable.group({
     type: ['buy' as InvestmentTransactionType, Validators.required],
+    entryMode: ['quantity_price' as BuyEntryMode],
     assetId: [''],
     date: [todayIso(), Validators.required],
     quantity: ['', decimalAmountValidator(10)],
@@ -69,10 +72,14 @@ export class InvestmentTransactionFormModal {
   private readonly selectedType = toSignal(this.form.controls.type.valueChanges, {
     initialValue: this.form.controls.type.value,
   });
+  private readonly selectedEntryMode = toSignal(this.form.controls.entryMode.valueChanges, {
+    initialValue: this.form.controls.entryMode.value,
+  });
   protected readonly isTrade = computed(() => this.selectedType() === 'buy' || this.selectedType() === 'sell');
+  protected readonly isBuy = computed(() => this.selectedType() === 'buy');
   protected readonly needsAsset = computed(() => this.selectedType() !== 'fee');
-  protected readonly isAmountEntry = computed(
-    () => this.selectedType() === 'dividend' || this.selectedType() === 'fee',
+  protected readonly isAmountSpent = computed(
+    () => this.isBuy() && this.selectedEntryMode() === 'amount_spent',
   );
   protected readonly currency = computed(
     () => this.walletResource.value()?.currency ?? this.transaction()?.currency ?? 'USD',
@@ -97,6 +104,7 @@ export class InvestmentTransactionFormModal {
       this.applyingReset = true;
       this.form.reset({
         type: transaction?.type ?? 'buy',
+        entryMode: 'quantity_price',
         assetId: transaction?.assetId ?? '',
         date: transaction?.date ?? todayIso(),
         quantity: transaction?.quantity ?? '',
@@ -116,16 +124,28 @@ export class InvestmentTransactionFormModal {
         this.form.controls.assetId.setValue('');
         this.form.controls.quantity.setValue('');
         this.form.controls.price.setValue('');
+        this.form.controls.entryMode.setValue('quantity_price');
       } else if (type === 'dividend') {
         this.form.controls.quantity.setValue('');
         this.form.controls.price.setValue('');
+        this.form.controls.entryMode.setValue('quantity_price');
+      } else if (type === 'sell') {
+        this.form.controls.entryMode.setValue('quantity_price');
       }
     });
+  }
+
+  protected setBuyEntryMode(mode: BuyEntryMode): void {
+    this.form.controls.entryMode.setValue(mode);
+    this.form.controls.quantity.setValue('');
+    this.form.controls.price.setValue('');
+    this.form.controls.amount.setValue('');
   }
 
   protected submit(): void {
     const raw = this.form.getRawValue();
     const trade = raw.type === 'buy' || raw.type === 'sell';
+    const amountSpent = raw.type === 'buy' && raw.entryMode === 'amount_spent';
     const amountEntry = raw.type === 'dividend' || raw.type === 'fee';
     const valid =
       this.form.controls.type.valid &&
@@ -137,10 +157,10 @@ export class InvestmentTransactionFormModal {
       // checked here via the raw value instead of `.valid`.
       Boolean(raw.currency) &&
       (!this.needsAsset() || Boolean(raw.assetId)) &&
-      (!trade || (Boolean(raw.quantity) && Boolean(raw.price) && this.form.controls.quantity.valid && this.form.controls.price.valid)) &&
-      (!amountEntry || (Boolean(raw.amount) && this.form.controls.amount.valid));
+      (!trade || amountSpent || (Boolean(raw.quantity) && Boolean(raw.price) && this.form.controls.quantity.valid && this.form.controls.price.valid)) &&
+      (!(amountEntry || amountSpent) || (Boolean(raw.amount) && this.form.controls.amount.valid));
     const preview = this.quantityTimesPrice();
-    if (!valid || (trade && !preview)) {
+    if (!valid || (trade && !amountSpent && !preview)) {
       this.form.markAllAsTouched();
       this.saveErrorKey.set('investments.transactions.form.errors.invalid');
       return;
@@ -151,9 +171,9 @@ export class InvestmentTransactionFormModal {
       assetId: this.needsAsset() ? raw.assetId || undefined : undefined,
       type: raw.type,
       date: raw.date,
-      quantity: trade ? raw.quantity || undefined : undefined,
-      price: trade ? raw.price || undefined : undefined,
-      amount: trade ? preview!.amount : raw.amount,
+      quantity: trade && !amountSpent ? raw.quantity || undefined : undefined,
+      price: trade && !amountSpent ? raw.price || undefined : undefined,
+      amount: amountSpent ? raw.amount : trade ? preview!.amount : raw.amount,
       fee: raw.fee || '0',
       currency: this.currency(),
       notes: raw.notes.trim() || undefined,
@@ -170,9 +190,13 @@ export class InvestmentTransactionFormModal {
         this.open.set(false);
         this.saved.emit(saved);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('investments.transactions.form.saveError');
+        this.saveErrorKey.set(
+          error instanceof ApiError
+            ? `errors.${error.code}`
+            : 'investments.transactions.form.saveError',
+        );
       },
     });
   }

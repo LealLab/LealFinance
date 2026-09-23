@@ -1,9 +1,11 @@
 """Investment wallet, asset, and transaction CRUD with optional cash legs."""
 
 import re
+from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError, ValidationAppError
@@ -20,6 +22,7 @@ from app.models.investment import (
     InvestmentWallet,
 )
 from app.models.transaction import TRANSACTION_TYPE_TRANSFER, Transaction
+from app.models.user import User
 from app.schemas.investment import (
     InvestmentAssetCreate,
     InvestmentAssetUpdate,
@@ -31,7 +34,7 @@ from app.schemas.investment import (
 from app.schemas.transaction import ConversionInput as ConversionInputSchema
 from app.schemas.transaction import TransactionCreate
 from app.services import accounts as accounts_service
-from app.services import investment_positions, ownership
+from app.services import asset_quotes, investment_positions, ownership
 from app.services.conversion import ConversionInput
 from app.services.currencies import get_active_currency
 from app.services.exchange_rates import (
@@ -42,6 +45,13 @@ from app.services.exchange_rates import (
 from app.services.transactions import build_transaction
 
 _B3_SYMBOL = re.compile(r"^[A-Z]{4}\d{1,2}$")
+
+
+async def _base_currency(db: AsyncSession, user_id: UUID) -> str:
+    currency = await db.scalar(select(User.base_currency).where(User.id == user_id))
+    assert currency is not None
+    await get_active_currency(db, currency)
+    return currency
 
 
 async def list_wallets(db: AsyncSession, user_id: UUID) -> list[InvestmentWallet]:
@@ -55,7 +65,7 @@ async def get_wallet(db: AsyncSession, user_id: UUID, wallet_id: UUID) -> Invest
 async def create_wallet(
     db: AsyncSession, user_id: UUID, data: InvestmentWalletCreate
 ) -> tuple[InvestmentWallet, Account]:
-    await get_active_currency(db, data.currency)
+    currency = await _base_currency(db, user_id)
     await ownership.get_owned_or_none(db, Account, data.cash_account_id, user_id)
     await ownership.get_owned_or_none(db, Institution, data.institution_id, user_id)
 
@@ -63,7 +73,7 @@ async def create_wallet(
         user_id=user_id,
         name=data.name,
         type=ACCOUNT_TYPE_INVESTMENT,
-        currency=data.currency,
+        currency=currency,
         opening_balance=0,
         institution_id=data.institution_id,
         archived=data.archived,
@@ -71,7 +81,9 @@ async def create_wallet(
     db.add(account)
     try:
         await db.flush()
-        wallet = InvestmentWallet(user_id=user_id, account_id=account.id, **data.model_dump())
+        wallet = InvestmentWallet(
+            user_id=user_id, account_id=account.id, currency=currency, **data.model_dump()
+        )
         db.add(wallet)
         await ensure_rates_cached(db)
         await db.commit()
@@ -232,9 +244,11 @@ async def get_investment_transaction(
 def _validate_shape(
     type_: str, asset_id: UUID | None, quantity: Decimal | None, price: Decimal | None
 ) -> None:
-    if type_ in (INVESTMENT_TRANSACTION_TYPE_BUY, INVESTMENT_TRANSACTION_TYPE_SELL) and (
+    if type_ == INVESTMENT_TRANSACTION_TYPE_SELL and (
         asset_id is None or quantity is None or price is None
     ):
+        raise ValidationAppError(code="investment_transaction.quantity_price_required")
+    if type_ == INVESTMENT_TRANSACTION_TYPE_BUY and ((quantity is None) != (price is None)):
         raise ValidationAppError(code="investment_transaction.quantity_price_required")
     if type_ in (INVESTMENT_TRANSACTION_TYPE_DIVIDEND, INVESTMENT_TRANSACTION_TYPE_FEE) and (
         quantity is not None or price is not None
@@ -258,6 +272,40 @@ def _with_derived_amount(
     quantum = Decimal(1).scaleb(-decimal_digits)
     derived = (data.quantity * data.price).quantize(quantum, rounding=ROUND_HALF_UP)
     return data.model_copy(update={"amount": derived})
+
+
+async def _resolve_amount_mode(
+    db: AsyncSession,
+    user_id: UUID,
+    data: InvestmentTransactionCreate,
+) -> InvestmentTransactionCreate:
+    if data.type != INVESTMENT_TRANSACTION_TYPE_BUY or (
+        data.quantity is not None or data.price is not None
+    ):
+        return data
+    if data.date > date.today():
+        raise ValidationAppError(code="investment_transaction.future_date")
+    net_amount = data.amount - data.fee
+    if net_amount <= 0:
+        raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
+    assert data.asset_id is not None
+    asset = await ownership.get_owned(db, InvestmentAsset, data.asset_id, user_id)
+    quote = await asset_quotes.get_asset_price(db, user_id, asset, data.date)
+    if quote.price is None or quote.price <= 0:
+        raise ValidationAppError(code="investment_transaction.price_unavailable")
+    # quote.price is denominated in asset.currency; net_amount (and the price
+    # stored on the transaction) must be in the wallet's currency, same as
+    # the quantity/price entry mode.
+    price = quote.price
+    if asset.currency != data.currency:
+        rate_result = await get_exchange_rate(
+            db, asset.currency, data.currency, user_id=user_id, as_of=data.date
+        )
+        price = price * rate_result.rate
+    quantity = (net_amount / price).quantize(Decimal(1).scaleb(-10), rounding=ROUND_HALF_UP)
+    if quantity <= 0:
+        raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
+    return data.model_copy(update={"quantity": quantity, "price": price})
 
 
 async def _validate_transaction(
@@ -395,6 +443,7 @@ async def create_investment_transaction(
         data.price,
         data.currency,
     )
+    data = await _resolve_amount_mode(db, user_id, data)
     data = _with_derived_amount(data, currency.decimal_digits)
     cash_account = await ownership.get_owned_or_none(db, Account, wallet.cash_account_id, user_id)
     transaction = InvestmentTransaction(user_id=user_id, **data.model_dump())
@@ -444,6 +493,18 @@ async def update_investment_transaction(
     transaction = await get_investment_transaction(db, user_id, transaction_id)
     changes = data.model_dump(exclude_unset=True)
     effective = _effective_transaction(transaction, changes)
+    # On a buy, `amount` is always derived from quantity * price, so a patch
+    # that sets `amount` without touching quantity/price can only mean
+    # "reprice from this gross amount" - the same amount-spent entry the
+    # create endpoint accepts. Without this, `amount` was silently kept as
+    # sent while the cash leg re-derived from the untouched quantity,
+    # letting the two disagree.
+    if (
+        effective.type == INVESTMENT_TRANSACTION_TYPE_BUY
+        and "amount" in changes
+        and not ({"quantity", "price"} & changes.keys())
+    ):
+        effective = effective.model_copy(update={"quantity": None, "price": None})
     currency = await get_active_currency(db, effective.currency)
     await _validate_transaction(
         db,
@@ -456,8 +517,15 @@ async def update_investment_transaction(
         effective.currency,
         exclude_transaction_id=transaction.id,
     )
+    amount_mode = effective.type == INVESTMENT_TRANSACTION_TYPE_BUY and (
+        effective.quantity is None and effective.price is None
+    )
+    effective = await _resolve_amount_mode(db, user_id, effective)
     effective = _with_derived_amount(effective, currency.decimal_digits)
-    if effective.amount != transaction.amount:
+    if amount_mode and effective.quantity is not None and effective.price is not None:
+        changes["quantity"] = effective.quantity
+        changes["price"] = effective.price
+    if "amount" in changes or effective.amount != transaction.amount:
         changes["amount"] = effective.amount
 
     settlement_changed = transaction.transaction_id is not None and bool(

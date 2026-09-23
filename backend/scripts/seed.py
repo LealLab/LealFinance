@@ -45,7 +45,6 @@ from sqlalchemy.ext.asyncio import AsyncSession  # noqa: E402
 
 from app.core.db import session_scope  # noqa: E402
 from app.core.security import hash_password, normalize_email  # noqa: E402
-from app.models._conversion import CONVERSION_SOURCE_MANUAL  # noqa: E402
 from app.models.account import (  # noqa: E402
     ACCOUNT_TYPE_CASH,
     ACCOUNT_TYPE_CHECKING,
@@ -91,7 +90,7 @@ from app.schemas.investment import (  # noqa: E402
     InvestmentWalletCreate,
 )
 from app.schemas.recurring import RecurringRuleCreate, RecurringTemplateInput  # noqa: E402
-from app.schemas.transaction import ConversionInput, TransactionCreate  # noqa: E402
+from app.schemas.transaction import TransactionCreate  # noqa: E402
 from app.services import category_groups as category_groups_service  # noqa: E402
 from app.services import investments as investments_service  # noqa: E402
 from app.services.accounts import account_balances, create_account  # noqa: E402
@@ -463,7 +462,6 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
         user.id,
         InvestmentWalletCreate(
             name="Investments",
-            currency=cfg.secondary_currency,
             cash_account_id=primary_checking.id,
             institution_id=institutions[-1].id,
         ),
@@ -529,9 +527,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
     # Investment domain: two manual-priced assets and a small buy/sell/
     # dividend/fee history in the wallet created above. The wallet's cash
     # account is the primary checking account, so buys and sells also
-    # exercise cash settlement (including the cross-currency conversion
-    # path, since the wallet's currency is cfg.secondary_currency while
-    # checking is cfg.base_currency) - see app/services/investments.py.
+    # exercise cash settlement - see app/services/investments.py.
     # quote_provider is manual for both assets so seeding never makes a
     # live network call.
     def investment_date(months_after_start: int, day: int) -> date:
@@ -546,7 +542,6 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             symbol="ACME",
             name="Acme Industries",
             asset_class=ASSET_CLASS_STOCK,
-            currency=cfg.secondary_currency,
             quote_provider=QUOTE_PROVIDER_MANUAL,
             manual_price=Decimal("45.00"),
         ),
@@ -558,7 +553,6 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             symbol="GLOBE",
             name="Global Equity ETF",
             asset_class=ASSET_CLASS_ETF,
-            currency=cfg.secondary_currency,
             quote_provider=QUOTE_PROVIDER_MANUAL,
             manual_price=Decimal("118.00"),
         ),
@@ -575,7 +569,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             price=Decimal("40.00"),
             amount=Decimal("320.00"),
             fee=Decimal("2.50"),
-            currency=cfg.secondary_currency,
+            currency=cfg.base_currency,
         ),
     )
     tx_count += 1  # settled as a cash transfer against primary_checking
@@ -591,7 +585,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             price=Decimal("115.00"),
             amount=Decimal("460.00"),
             fee=Decimal("3.00"),
-            currency=cfg.secondary_currency,
+            currency=cfg.base_currency,
         ),
     )
     tx_count += 1
@@ -604,7 +598,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             type=INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
             date=investment_date(3, 20),
             amount=Decimal("12.50"),
-            currency=cfg.secondary_currency,
+            currency=cfg.base_currency,
         ),
     )
     await investments_service.create_investment_transaction(
@@ -619,7 +613,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             price=Decimal("48.00"),
             amount=Decimal("144.00"),
             fee=Decimal("1.50"),
-            currency=cfg.secondary_currency,
+            currency=cfg.base_currency,
         ),
     )
     tx_count += 1
@@ -632,7 +626,7 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             type=INVESTMENT_TRANSACTION_TYPE_FEE,
             date=investment_date(5, 1),
             amount=Decimal("5.00"),
-            currency=cfg.secondary_currency,
+            currency=cfg.base_currency,
         ),
     )
 
@@ -768,20 +762,8 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
             tx_date = rng.choice(weekend_days if use_weekend else all_days)
 
             roll = rng.random()
-            conversion: ConversionInput | None = None
             if roll < 0.08:
                 account = investment_account
-                fee = (
-                    random_amount(rng, Decimal(0), amount * Decimal("0.02"))
-                    if rng.random() < 0.3
-                    else None
-                )
-                conversion = ConversionInput(
-                    currency=cfg.secondary_currency,
-                    rate=secondary_rate,
-                    fee=fee,
-                    source=CONVERSION_SOURCE_MANUAL,
-                )
             elif roll < 0.32:
                 account = credit_card_account
             else:
@@ -798,7 +780,6 @@ async def seed(db: AsyncSession, cfg: Config, rng: random.Random) -> tuple[UUID,
                     account_id=account.id,
                     category_id=categories_by_name[leaf_name].id,
                     description=merchant,
-                    conversion=conversion,
                 ),
             )
             tx_count += 1

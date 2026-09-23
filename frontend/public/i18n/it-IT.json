@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "Nuovo portafoglio di investimenti",
       "editWallet": "Modifica il portafoglio di investimenti",
@@ -1220,14 +1222,18 @@
       "newTransaction": "Registra transazione",
       "editTransaction": "Modifica transazione",
       "deleteTransaction": "Elimina transazione",
-      "newAsset": "Nuovo asset"
+      "newAsset": "Nuovo asset",
+      "editAsset": "Modifica asset",
+      "archiveAsset": "Archivia asset",
+      "unarchiveAsset": "Rimuovi asset dall’archivio"
     },
     "wallet": "Portafoglio di investimenti",
     "archived": "Archiviato",
     "summary": {
       "bookValue": "Valore contabile",
       "marketValue": "Valore di mercato",
-      "unrealizedGain": "Guadagno non realizzato"
+      "unrealizedGain": "Guadagno non realizzato",
+      "multiCurrencyHint": "I portafogli in altre valute non sono inclusi in questi totali."
     },
     "empty": {
       "title": "Nessun portafoglio di investimenti",
@@ -1315,6 +1321,10 @@
           "price": "Prezzo",
           "amount": "Importo",
           "derivedAmount": "Calcolato dalla quantità × prezzo",
+          "entryModeQuantityPrice": "Quantità × prezzo",
+          "entryModeAmountSpent": "Importo speso",
+          "amountSpent": "Importo speso",
+          "amountSpentHint": "Inserisci l'importo lordo pagato; la commissione viene sottratta prima di calcolare la quantità.",
           "fee": "Commissione",
           "currency": "Valuta",
           "notes": "Note"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "Asset",
+      "empty": {
+        "title": "Nessun asset ancora",
+        "description": "Aggiungi un asset per iniziare a registrare le transazioni associate."
+      },
       "form": {
         "newTitle": "Nuovo asset di investimento",
         "editTitle": "Modifica asset di investimento",
@@ -1344,25 +1359,26 @@
           "currency": "Valuta",
           "quoteProvider": "Fornitore delle quotazioni",
           "manualPrice": "Prezzo manuale",
-          "manualPriceHint": "Usato finché le quotazioni in tempo reale non saranno disponibili."
+          "manualPriceHint": "Usato finché le quotazioni in tempo reale non saranno disponibili.",
+          "cryptoCurrencyHint": "Valuta in cui è quotato questo asset (ad es. USD), non il simbolo dell'asset.",
+          "manualPriceOverridesProvider": "Un prezzo manuale sostituisce sempre le quotazioni del fornitore selezionato, anche quando diventano disponibili."
         },
         "actions": {
           "cancel": "Annulla",
           "save": "Salva"
         }
+      },
+      "archive": {
+        "title": "Archiviare {{symbol}}?",
+        "message": "Archiviare {{symbol}}? La sua cronologia resterà disponibile."
       }
     },
     "archive": {
       "title": "Archiviare il portafoglio di investimenti?",
       "message": "Archiviare {{name}}? La sua cronologia resterà disponibile."
     },
-    "archiveError": "Impossibile aggiornare lo stato di archiviazione del portafoglio di investimenti. Riprova.",
     "title": "Investimenti",
-    "description": "Tieni traccia delle azioni, dei fondi e delle criptovalute che possiedi.",
-    "placeholder": {
-      "title": "In arrivo",
-      "description": "Portafogli, posizioni e quotazioni sono in arrivo."
-    }
+    "description": "Tieni traccia delle azioni, dei fondi e delle criptovalute che possiedi."
   },
   "reports": {
     "ratesUnavailable": "Alcuni dati richiedono un tasso di cambio che al momento non è disponibile.",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "Questa valuta non è disponibile.",
       "inactive": "Questa valuta non è più attiva."
+    },
+    "investment_wallet": {
+      "not_found": "Questo portafoglio di investimenti non esiste più.",
+      "currency_in_use": "Questo portafoglio contiene già transazioni, quindi non è possibile cambiarne la valuta."
+    },
+    "investment_asset": {
+      "not_found": "Questo asset di investimento non esiste più.",
+      "symbol_already_exists": "Hai già un asset con questo simbolo."
+    },
+    "investment_transaction": {
+      "not_found": "Questa transazione non esiste più.",
+      "quantity_price_required": "Acquisti e vendite richiedono una quantità e un prezzo.",
+      "quantity_price_not_allowed": "Dividendi e commissioni utilizzano un importo, non una quantità e un prezzo.",
+      "asset_required": "Scegli un asset per questa transazione.",
+      "currency_must_match_wallet": "La valuta della transazione deve corrispondere a quella del portafoglio.",
+      "insufficient_quantity": "Non puoi vendere più di quanto possiedi attualmente.",
+      "settlement_amount_not_positive": "L'importo di regolamento deve essere maggiore di zero.",
+      "price_unavailable": "Non è disponibile alcun prezzo per la data selezionata.",
+      "future_date": "Non è possibile usare una data futura per questa transazione.",
+      "ledger_invalid": "Questa modifica renderebbe non valida una transazione successiva. Annullala o modificala prima."
+    },
+    "market_data_credential": {
+      "not_found": "Non è memorizzata alcuna chiave API per questo provider.",
+      "provider_unknown": "Questo provider di quotazioni non è riconosciuto."
     }
   }
 }

@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "新投資組合",
       "editWallet": "編輯投資組合",
@@ -1220,14 +1222,18 @@
       "newTransaction": "記錄交易",
       "editTransaction": "編輯交易",
       "deleteTransaction": "刪除交易",
-      "newAsset": "新增資產"
+      "newAsset": "新增資產",
+      "editAsset": "編輯資產",
+      "archiveAsset": "封存資產",
+      "unarchiveAsset": "取消封存資產"
     },
     "wallet": "投資組合",
     "archived": "已封存",
     "summary": {
       "bookValue": "帳面價值",
       "marketValue": "市值",
-      "unrealizedGain": "未實現收益"
+      "unrealizedGain": "未實現收益",
+      "multiCurrencyHint": "其他貨幣的投資組合不包含在這些總計中。"
     },
     "empty": {
       "title": "尚無投資組合",
@@ -1315,6 +1321,10 @@
           "price": "價格",
           "amount": "金額",
           "derivedAmount": "根據數量 × 價格計算",
+          "entryModeQuantityPrice": "數量 × 價格",
+          "entryModeAmountSpent": "花費金額",
+          "amountSpent": "花費金額",
+          "amountSpentHint": "輸入實際支付的總金額；計算數量前會扣除手續費。",
           "fee": "費用",
           "currency": "貨幣",
           "notes": "備註"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "資產",
+      "empty": {
+        "title": "尚無資產",
+        "description": "新增資產以開始記錄與其相關的交易。"
+      },
       "form": {
         "newTitle": "新增投資資產",
         "editTitle": "編輯投資資產",
@@ -1344,25 +1359,26 @@
           "currency": "貨幣",
           "quoteProvider": "報價提供者",
           "manualPrice": "手動價格",
-          "manualPriceHint": "在即時報價可用前使用。"
+          "manualPriceHint": "在即時報價可用前使用。",
+          "cryptoCurrencyHint": "此資產的計價貨幣（例如 USD），不是資產本身的代碼。",
+          "manualPriceOverridesProvider": "手動價格一律會覆蓋所選提供者的報價，即使報價已可用。"
         },
         "actions": {
           "cancel": "取消",
           "save": "儲存"
         }
+      },
+      "archive": {
+        "title": "封存 {{symbol}}？",
+        "message": "封存 {{symbol}}？其歷史紀錄仍可查看。"
       }
     },
     "archive": {
       "title": "封存投資組合？",
       "message": "封存 {{name}}？其歷史記錄仍可使用。"
     },
-    "archiveError": "無法更新投資組合的封存狀態，請再試一次。",
     "title": "投資",
-    "description": "追蹤您持有的股票、基金和加密貨幣。",
-    "placeholder": {
-      "title": "即將推出",
-      "description": "投資組合、持倉與報價功能即將推出。"
-    }
+    "description": "追蹤您持有的股票、基金和加密貨幣。"
   },
   "reports": {
     "ratesUnavailable": "部分數據需要使用目前無法取得的匯率。",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "此貨幣無法使用。",
       "inactive": "此貨幣已不再啟用。"
+    },
+    "investment_wallet": {
+      "not_found": "此投資錢包已不存在。",
+      "currency_in_use": "此錢包已有交易，因此無法變更其貨幣。"
+    },
+    "investment_asset": {
+      "not_found": "此投資資產已不存在。",
+      "symbol_already_exists": "你已有使用此代號的資產。"
+    },
+    "investment_transaction": {
+      "not_found": "此交易已不存在。",
+      "quantity_price_required": "買入和賣出需要填寫數量和價格。",
+      "quantity_price_not_allowed": "股息和費用使用金額，而不是數量和價格。",
+      "asset_required": "請為此交易選擇資產。",
+      "currency_must_match_wallet": "交易貨幣必須與錢包貨幣一致。",
+      "insufficient_quantity": "不能賣出超過目前持有的數量。",
+      "settlement_amount_not_positive": "結算金額必須大於零。",
+      "price_unavailable": "所選日期沒有可用價格。",
+      "future_date": "此交易不能使用未來日期。",
+      "ledger_invalid": "此變更會使後續交易無效。請先撤銷或編輯該交易。"
+    },
+    "market_data_credential": {
+      "not_found": "此提供者未儲存 API 金鑰。",
+      "provider_unknown": "無法識別此報價提供者。"
     }
   }
 }

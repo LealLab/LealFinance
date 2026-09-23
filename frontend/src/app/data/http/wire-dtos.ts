@@ -428,9 +428,9 @@ export interface InvestmentWalletWire {
   institution_id: string | null;
   archived: boolean;
 }
-export type InvestmentWalletInputWire = Omit<InvestmentWalletWire, 'id' | 'account_id'>;
+export type InvestmentWalletInputWire = Omit<InvestmentWalletWire, 'id' | 'account_id' | 'currency'>;
 export type InvestmentWalletPatchWire = NullablePatch<
-  Omit<InvestmentWalletInputWire, 'archived'>
+  Omit<InvestmentWalletWire, 'id' | 'account_id' | 'archived'>
 >;
 
 export interface InvestmentAssetWire {

@@ -13,7 +13,10 @@ import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockInvestmentAssetRepository } from '../../data/mock/mock-investment-asset.repository';
 import { MockInvestmentTransactionRepository } from '../../data/mock/mock-investment-transaction.repository';
 import { MockInvestmentWalletRepository } from '../../data/mock/mock-investment-wallet.repository';
+import { MockStore } from '../../data/mock/mock-store';
+import { ConfirmService } from '../../core/confirm.service';
 import { InvestmentDetail } from './investment-detail';
+import { InvestmentAssetFormModal } from './investment-asset-form-modal';
 import { InvestmentTransactionFormModal } from './investment-transaction-form-modal';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
@@ -92,5 +95,203 @@ describe('InvestmentDetail', () => {
     fixture.detectChanges();
 
     expect(modal.saveErrorKey()).toBeNull();
+  });
+
+  it('shows required-field errors instead of silently doing nothing when the asset form is submitted empty', async () => {
+    // Regression test: symbol and name are Validators.required, and submit()
+    // already calls markAllAsTouched() on an invalid form, but the template
+    // never rendered the resulting invalid state - so an empty submit
+    // neither saved anything nor told the user why.
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as { openCreateAsset: () => void };
+    component.openCreateAsset();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modalDebug = fixture.debugElement.query(By.directive(InvestmentAssetFormModal));
+    const modal = modalDebug.componentInstance as InvestmentAssetFormModal & {
+      form: { invalid: boolean };
+      submit: () => void;
+    };
+    modal.submit();
+    fixture.detectChanges();
+
+    expect(modal.form.invalid).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('#investment-asset-symbol-error'),
+    ).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('#investment-asset-name-error')).not.toBeNull();
+  });
+
+  it('defaults new assets to the base currency and explains crypto pricing currency', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as { openCreateAsset: () => void };
+    component.openCreateAsset();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modalDebug = fixture.debugElement.query(By.directive(InvestmentAssetFormModal));
+    const modal = modalDebug.componentInstance as InvestmentAssetFormModal & {
+      form: { getRawValue: () => { currency: string }; patchValue: (value: object) => void };
+    };
+    expect(modal.form.getRawValue().currency).toBe('USD');
+    modal.form.patchValue({ assetClass: 'crypto' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Moeda em que este ativo');
+  });
+
+  it('submits amount-spent buys without quantity or price', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      openCreateTransaction: () => void;
+      assetsResource: { value: () => { id: string }[] | undefined };
+    };
+    const assetId = component.assetsResource.value()?.[0]?.id;
+    expect(assetId).toBeDefined();
+    component.openCreateTransaction();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modalDebug = fixture.debugElement.query(By.directive(InvestmentTransactionFormModal));
+    const modal = modalDebug.componentInstance as InvestmentTransactionFormModal & {
+      form: { patchValue: (value: object) => void };
+      setBuyEntryMode: (mode: 'amount_spent') => void;
+      submit: () => void;
+      saveErrorKey: () => string | null;
+    };
+    modal.setBuyEntryMode('amount_spent');
+    modal.form.patchValue({ assetId, amount: '100', fee: '0.40' });
+    modal.submit();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const created = TestBed.inject(MockStore).investmentTransactions().at(-1);
+    expect(modal.saveErrorKey()).toBeNull();
+    expect(created).toEqual(expect.objectContaining({ amount: '100', fee: '0.40' }));
+    expect(created?.quantity).toBeUndefined();
+    expect(created?.price).toBeUndefined();
+  });
+
+  it('shows a newly created asset even before it has any transaction', async () => {
+    // Regression test: positions are derived server-side from the
+    // transaction ledger, so an asset with no transactions never appeared
+    // anywhere in the old UI. The assets card reads straight from
+    // `assetsResource`, not from positions, so a brand-new asset must show
+    // up immediately.
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      openCreateAsset: () => void;
+      assetsResource: { value: () => { id: string; symbol: string }[] | undefined };
+      positions: () => { asset: { symbol: string } }[];
+    };
+
+    component.openCreateAsset();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modalDebug = fixture.debugElement.query(By.directive(InvestmentAssetFormModal));
+    const modal = modalDebug.componentInstance as InvestmentAssetFormModal & {
+      form: { patchValue: (value: Record<string, unknown>) => void };
+      saveErrorKey: () => string | null;
+      submit: () => void;
+    };
+    modal.form.patchValue({ symbol: 'NEWCO', name: 'New Co' });
+    modal.submit();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(modal.saveErrorKey()).toBeNull();
+    expect(component.assetsResource.value()).toEqual(
+      expect.arrayContaining([expect.objectContaining({ symbol: 'NEWCO' })]),
+    );
+    expect(component.positions().some((position) => position.asset.symbol === 'NEWCO')).toBe(
+      false,
+    );
+    expect(fixture.nativeElement.textContent).toContain('NEWCO');
+  });
+
+  it('opens the asset form prefilled when editing from the assets card', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      openEditAsset: (asset: { id: string; symbol: string }) => void;
+      assetsResource: { value: () => { id: string; symbol: string }[] | undefined };
+    };
+    const asset = component.assetsResource.value()?.[0];
+    expect(asset).toBeDefined();
+
+    component.openEditAsset(asset!);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modalDebug = fixture.debugElement.query(By.directive(InvestmentAssetFormModal));
+    const modal = modalDebug.componentInstance as InvestmentAssetFormModal & {
+      form: { getRawValue: () => { symbol: string } };
+    };
+    expect(modal.form.getRawValue().symbol).toBe(asset!.symbol);
+  });
+
+  it('confirms before archiving an asset from the assets card', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      archiveAsset: (asset: { id: string; symbol: string; archived: boolean }) => Promise<void>;
+      assetsResource: { value: () => { id: string; symbol: string; archived: boolean }[] | undefined; reload: () => void };
+    };
+    const asset = component.assetsResource.value()?.[0];
+    expect(asset).toBeDefined();
+
+    const pending = component.archiveAsset(asset!);
+    await Promise.resolve();
+
+    const request = TestBed.inject(ConfirmService).request();
+    expect(request?.titleKey).toBe('investments.assets.archive.title');
+    expect(request?.messageKey).toBe('investments.assets.archive.message');
+    expect(request?.params?.['symbol']).toBe(asset!.symbol);
+
+    TestBed.inject(ConfirmService).respond(true);
+    await pending;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(
+      component.assetsResource.value()?.find((current) => current.id === asset!.id)?.archived,
+    ).toBe(true);
   });
 });

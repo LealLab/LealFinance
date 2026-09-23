@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "תיק השקעות חדש",
       "editWallet": "עריכת תיק השקעות",
@@ -1220,14 +1222,18 @@
       "newTransaction": "רישום תנועה",
       "editTransaction": "עריכת תנועה",
       "deleteTransaction": "מחיקת תנועה",
-      "newAsset": "נכס חדש"
+      "newAsset": "נכס חדש",
+      "editAsset": "עריכת הנכס",
+      "archiveAsset": "העברת הנכס לארכיון",
+      "unarchiveAsset": "הוצאת הנכס מהארכיון"
     },
     "wallet": "תיק השקעות",
     "archived": "בארכיון",
     "summary": {
       "bookValue": "ערך בספרים",
       "marketValue": "שווי שוק",
-      "unrealizedGain": "רווח לא ממומש"
+      "unrealizedGain": "רווח לא ממומש",
+      "multiCurrencyHint": "תיקים במטבעות אחרים אינם נכללים בסיכומים האלה."
     },
     "empty": {
       "title": "אין עדיין תיקי השקעות",
@@ -1315,6 +1321,10 @@
           "price": "מחיר",
           "amount": "סכום",
           "derivedAmount": "מחושב לפי כמות × מחיר",
+          "entryModeQuantityPrice": "כמות × מחיר",
+          "entryModeAmountSpent": "סכום שהוצא",
+          "amountSpent": "סכום שהוצא",
+          "amountSpentHint": "הזינו את הסכום הכולל ששולם; העמלה מופחתת לפני חישוב הכמות.",
           "fee": "עמלה",
           "currency": "מטבע",
           "notes": "הערות"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "נכסים",
+      "empty": {
+        "title": "עדיין אין נכסים",
+        "description": "הוסיפו נכס כדי להתחיל לתעד תנועות עבורו."
+      },
       "form": {
         "newTitle": "נכס השקעה חדש",
         "editTitle": "עריכת נכס השקעה",
@@ -1344,25 +1359,26 @@
           "currency": "מטבע",
           "quoteProvider": "ספק ציטוטים",
           "manualPrice": "מחיר ידני",
-          "manualPriceHint": "בשימוש עד שיהיו זמינים מחירים בזמן אמת."
+          "manualPriceHint": "בשימוש עד שיהיו זמינים מחירים בזמן אמת.",
+          "cryptoCurrencyHint": "המטבע שבו הנכס מתומחר (למשל USD), לא הסמל של הנכס עצמו.",
+          "manualPriceOverridesProvider": "מחיר ידני תמיד גובר על הציטוטים של הספק שנבחר, גם לאחר שהם יהיו זמינים."
         },
         "actions": {
           "cancel": "ביטול",
           "save": "שמירה"
         }
+      },
+      "archive": {
+        "title": "להעביר את {{symbol}} לארכיון?",
+        "message": "להעביר את {{symbol}} לארכיון? ההיסטוריה שלו תישאר זמינה."
       }
     },
     "archive": {
       "title": "להעביר את תיק ההשקעות לארכיון?",
       "message": "להעביר את {{name}} לארכיון? ההיסטוריה שלו תישאר זמינה."
     },
-    "archiveError": "לא ניתן לעדכן את מצב הארכיון של תיק ההשקעות. נסו שוב.",
     "title": "השקעות",
-    "description": "עקבו אחר המניות, הקרנות והמטבעות הקריפטוגרפיים שבבעלותכם.",
-    "placeholder": {
-      "title": "בקרוב",
-      "description": "תיקים, פוזיציות ושערים בדרך."
-    }
+    "description": "עקבו אחר המניות, הקרנות והמטבעות הקריפטוגרפיים שבבעלותכם."
   },
   "reports": {
     "ratesUnavailable": "נתונים מסוימים זקוקים לשער חליפין שאינו זמין כרגע.",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "המטבע הזה אינו זמין.",
       "inactive": "המטבע הזה כבר אינו פעיל."
+    },
+    "investment_wallet": {
+      "not_found": "ארנק ההשקעות הזה כבר לא קיים.",
+      "currency_in_use": "לארנק הזה כבר יש תנועות, ולכן אי אפשר לשנות את המטבע שלו."
+    },
+    "investment_asset": {
+      "not_found": "נכס ההשקעה הזה כבר לא קיים.",
+      "symbol_already_exists": "כבר יש לך נכס עם הסמל הזה."
+    },
+    "investment_transaction": {
+      "not_found": "התנועה הזו כבר לא קיימת.",
+      "quantity_price_required": "לקנייה ולמכירה נדרשים כמות ומחיר.",
+      "quantity_price_not_allowed": "בדיבידנדים ובעמלות משתמשים בסכום, לא בכמות ובמחיר.",
+      "asset_required": "בחר נכס לתנועה הזו.",
+      "currency_must_match_wallet": "מטבע התנועה חייב להתאים למטבע הארנק.",
+      "insufficient_quantity": "אי אפשר למכור יותר ממה שיש ברשותך כרגע.",
+      "settlement_amount_not_positive": "סכום הסליקה חייב להיות גדול מאפס.",
+      "price_unavailable": "אין מחיר זמין לתאריך שנבחר.",
+      "future_date": "לא ניתן להשתמש בתאריך עתידי לעסקה זו.",
+      "ledger_invalid": "השינוי הזה יהפוך תנועה מאוחרת יותר ללא תקינה. בטל או ערוך אותה קודם."
+    },
+    "market_data_credential": {
+      "not_found": "לא נשמר מפתח API עבור הספק הזה.",
+      "provider_unknown": "ספק הציטוטים הזה אינו מזוהה."
     }
   }
 }

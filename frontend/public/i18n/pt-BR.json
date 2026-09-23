@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Informações sobre a moeda",
+    "currencyHint": "Novas carteiras e ativos sempre usam sua moeda base. A carteira também define a moeda da conta vinculada; o ativo usa essa moeda nos preços e valores.",
     "actions": {
       "newWallet": "Nova carteira de investimentos",
       "editWallet": "Editar carteira de investimentos",
@@ -1220,14 +1222,18 @@
       "newTransaction": "Registrar transação",
       "editTransaction": "Editar transação",
       "deleteTransaction": "Excluir transação",
-      "newAsset": "Novo ativo"
+      "newAsset": "Novo ativo",
+      "editAsset": "Editar ativo",
+      "archiveAsset": "Arquivar ativo",
+      "unarchiveAsset": "Desarquivar ativo"
     },
     "wallet": "Carteira de investimentos",
     "archived": "Arquivada",
     "summary": {
       "bookValue": "Valor contábil",
       "marketValue": "Valor de mercado",
-      "unrealizedGain": "Ganho não realizado"
+      "unrealizedGain": "Ganho não realizado",
+      "multiCurrencyHint": "Carteiras em outras moedas não são incluídas nestes totais."
     },
     "empty": {
       "title": "Nenhuma carteira de investimentos ainda",
@@ -1315,6 +1321,10 @@
           "price": "Preço",
           "amount": "Valor",
           "derivedAmount": "Calculado a partir da quantidade × do preço",
+          "entryModeQuantityPrice": "Quantidade × preço",
+          "entryModeAmountSpent": "Valor gasto",
+          "amountSpent": "Valor gasto",
+          "amountSpentHint": "Informe o valor bruto pago; a taxa é descontada antes do cálculo da quantidade.",
           "fee": "Taxa",
           "currency": "Moeda",
           "notes": "Notas"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "Ativos",
+      "empty": {
+        "title": "Ainda não há ativos",
+        "description": "Adicione um ativo para começar a registrar transações relacionadas a ele."
+      },
       "form": {
         "newTitle": "Novo ativo de investimento",
         "editTitle": "Editar ativo de investimento",
@@ -1344,25 +1359,26 @@
           "currency": "Moeda",
           "quoteProvider": "Provedor de cotações",
           "manualPrice": "Preço manual",
-          "manualPriceHint": "Usado até que as cotações em tempo real estejam disponíveis."
+          "manualPriceHint": "Usado até que as cotações em tempo real estejam disponíveis.",
+          "cryptoCurrencyHint": "Moeda em que este ativo é cotado (por exemplo, USD) — não o símbolo do próprio ativo.",
+          "manualPriceOverridesProvider": "Um preço manual sempre substitui as cotações do provedor selecionado, mesmo depois que elas ficam disponíveis."
         },
         "actions": {
           "cancel": "Cancelar",
           "save": "Salvar"
         }
+      },
+      "archive": {
+        "title": "Arquivar {{symbol}}?",
+        "message": "Arquivar {{symbol}}? O histórico continuará disponível."
       }
     },
     "archive": {
       "title": "Arquivar carteira de investimentos?",
       "message": "Arquivar {{name}}? O histórico continuará disponível."
     },
-    "archiveError": "Não foi possível atualizar o estado de arquivamento da carteira de investimentos. Tente novamente.",
     "title": "Investimentos",
-    "description": "Acompanhe as ações, os fundos e as criptomoedas que você possui.",
-    "placeholder": {
-      "title": "Em breve",
-      "description": "Carteiras, posições e cotações estão a caminho."
-    }
+    "description": "Acompanhe as ações, os fundos e as criptomoedas que você possui."
   },
   "reports": {
     "ratesUnavailable": "Alguns números precisam de uma taxa de câmbio que não está disponível no momento.",
@@ -2046,6 +2062,30 @@
     "currency": {
       "not_found": "Essa moeda não está disponível.",
       "inactive": "Essa moeda não está mais ativa."
+    },
+    "investment_wallet": {
+      "not_found": "Essa carteira de investimentos não existe mais.",
+      "currency_in_use": "Essa carteira já tem transações, então sua moeda não pode ser alterada."
+    },
+    "investment_asset": {
+      "not_found": "Esse ativo de investimento não existe mais.",
+      "symbol_already_exists": "Você já tem um ativo com este símbolo."
+    },
+    "investment_transaction": {
+      "not_found": "Essa transação não existe mais.",
+      "quantity_price_required": "Compras e vendas precisam de uma quantidade e um preço.",
+      "quantity_price_not_allowed": "Dividendos e taxas usam um valor, não uma quantidade e um preço.",
+      "asset_required": "Escolha um ativo para esta transação.",
+      "currency_must_match_wallet": "A moeda da transação deve corresponder à moeda da carteira.",
+      "insufficient_quantity": "Você não pode vender mais do que tem atualmente.",
+      "settlement_amount_not_positive": "O valor de liquidação deve ser maior que zero.",
+      "price_unavailable": "Não há preço disponível para a data selecionada.",
+      "future_date": "Não é possível usar uma data futura nesta transação.",
+      "ledger_invalid": "Essa alteração deixaria uma transação posterior inválida. Desfaça ou edite essa transação primeiro."
+    },
+    "market_data_credential": {
+      "not_found": "Nenhuma chave de API está armazenada para esse provedor.",
+      "provider_unknown": "Esse provedor de cotações não é reconhecido."
     }
   }
 }

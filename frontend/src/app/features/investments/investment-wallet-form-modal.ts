@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, model, output, signal } fro
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { PreferenceService } from '../../core/preference.service';
 import { AccountRepository } from '../../data/account.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
@@ -85,22 +86,26 @@ export class InvestmentWalletFormModal {
     const raw = this.form.getRawValue();
     const payload: InvestmentWalletCreate = {
       name: raw.name.trim(),
-      currency: raw.currency,
       cashAccountId: raw.cashAccountId || undefined,
       institutionId: raw.institutionId || undefined,
       archived: false,
     };
     const wallet = this.wallet();
     this.saving.set(true);
-    (wallet ? this.wallets.update(wallet.id, payload) : this.wallets.create(payload)).subscribe({
+    (wallet
+      ? this.wallets.update(wallet.id, { ...payload, currency: raw.currency })
+      : this.wallets.create(payload)
+    ).subscribe({
       next: (saved) => {
         this.saving.set(false);
         this.open.set(false);
         this.saved.emit(saved);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.saveErrorKey.set('investments.form.saveError');
+        this.saveErrorKey.set(
+          error instanceof ApiError ? `errors.${error.code}` : 'investments.form.saveError',
+        );
       },
     });
   }

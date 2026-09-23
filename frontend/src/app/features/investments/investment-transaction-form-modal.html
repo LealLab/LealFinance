@@ -40,6 +40,17 @@
         }
 
         @if (isTrade()) {
+          @if (isBuy()) {
+            <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+              <button type="button" class="rounded px-2 py-1.5 text-sm font-medium" [class]="!isAmountSpent() ? 'bg-surface-raised text-content-primary shadow-sm' : 'text-content-muted'" (click)="setBuyEntryMode('quantity_price')">
+                {{ t('investments.transactions.form.fields.entryModeQuantityPrice') }}
+              </button>
+              <button type="button" class="rounded px-2 py-1.5 text-sm font-medium" [class]="isAmountSpent() ? 'bg-surface-raised text-content-primary shadow-sm' : 'text-content-muted'" (click)="setBuyEntryMode('amount_spent')">
+                {{ t('investments.transactions.form.fields.entryModeAmountSpent') }}
+              </button>
+            </div>
+          }
+          @if (!isAmountSpent()) {
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label class="form-label" for="investment-tx-quantity">{{ t('investments.transactions.form.fields.quantity') }}</label>
@@ -57,8 +68,15 @@
             } @else {
               <p class="mt-1 text-content-muted">—</p>
             }
-            <p class="mt-1 text-xs text-content-muted">{{ t('investments.transactions.form.fields.derivedAmount') }}</p>
-          </div>
+              <p class="mt-1 text-xs text-content-muted">{{ t('investments.transactions.form.fields.derivedAmount') }}</p>
+            </div>
+          } @else {
+            <div>
+              <label class="form-label" for="investment-tx-amount">{{ t('investments.transactions.form.fields.amountSpent') }}</label>
+              <input id="investment-tx-amount" type="text" inputmode="decimal" class="form-input font-mono" formControlName="amount" />
+              <p class="mt-1 text-xs text-content-muted">{{ t('investments.transactions.form.fields.amountSpentHint') }}</p>
+            </div>
+          }
         } @else {
           <div>
             <label class="form-label" for="investment-tx-amount">{{ t('investments.transactions.form.fields.amount') }}</label>

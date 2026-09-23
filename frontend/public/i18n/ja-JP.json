@@ -1211,6 +1211,8 @@
     }
   },
   "investments": {
+    "currencyHelpLabel": "Currency information",
+    "currencyHint": "New wallets and assets always use your base currency. A wallet also sets the currency of its linked account; an asset uses it for prices and values.",
     "actions": {
       "newWallet": "新しい投資ポートフォリオ",
       "editWallet": "投資ポートフォリオを編集",
@@ -1220,14 +1222,18 @@
       "newTransaction": "取引を記録",
       "editTransaction": "取引を編集",
       "deleteTransaction": "取引を削除",
-      "newAsset": "新しい資産"
+      "newAsset": "新しい資産",
+      "editAsset": "資産を編集",
+      "archiveAsset": "資産をアーカイブ",
+      "unarchiveAsset": "資産のアーカイブを解除"
     },
     "wallet": "投資ポートフォリオ",
     "archived": "アーカイブ済み",
     "summary": {
       "bookValue": "簿価",
       "marketValue": "時価",
-      "unrealizedGain": "未実現利益"
+      "unrealizedGain": "未実現利益",
+      "multiCurrencyHint": "他の通貨のポートフォリオはこれらの合計に含まれません。"
     },
     "empty": {
       "title": "投資ポートフォリオはまだありません",
@@ -1315,6 +1321,10 @@
           "price": "価格",
           "amount": "金額",
           "derivedAmount": "数量 × 価格から計算",
+          "entryModeQuantityPrice": "数量 × 価格",
+          "entryModeAmountSpent": "支出額",
+          "amountSpent": "支出額",
+          "amountSpentHint": "支払った総額を入力してください。数量の計算前に手数料が差し引かれます。",
           "fee": "手数料",
           "currency": "通貨",
           "notes": "メモ"
@@ -1333,6 +1343,11 @@
       }
     },
     "assets": {
+      "title": "資産",
+      "empty": {
+        "title": "資産はまだありません",
+        "description": "資産を追加して、取引の記録を始めましょう。"
+      },
       "form": {
         "newTitle": "新しい投資資産",
         "editTitle": "投資資産を編集",
@@ -1344,25 +1359,26 @@
           "currency": "通貨",
           "quoteProvider": "株価提供元",
           "manualPrice": "手動価格",
-          "manualPriceHint": "リアルタイム価格が利用可能になるまで使用されます。"
+          "manualPriceHint": "リアルタイム価格が利用可能になるまで使用されます。",
+          "cryptoCurrencyHint": "この資産の価格に使う通貨（例：USD）であり、資産自体のシンボルではありません。",
+          "manualPriceOverridesProvider": "手動価格は、選択したプロバイダーの価格が利用可能になった後も、常にその価格を上書きします。"
         },
         "actions": {
           "cancel": "キャンセル",
           "save": "保存"
         }
+      },
+      "archive": {
+        "title": "{{symbol}}をアーカイブしますか？",
+        "message": "{{symbol}}をアーカイブしますか？履歴は引き続き利用できます。"
       }
     },
     "archive": {
       "title": "投資ポートフォリオをアーカイブしますか？",
       "message": "{{name}}をアーカイブしますか？履歴は引き続き利用できます。"
     },
-    "archiveError": "投資ポートフォリオのアーカイブ状態を更新できませんでした。もう一度お試しください。",
     "title": "投資",
-    "description": "保有している株式、ファンド、暗号資産を追跡します。",
-    "placeholder": {
-      "title": "近日公開",
-      "description": "ポートフォリオ、ポジション、相場情報を準備中です。"
-    }
+    "description": "保有している株式、ファンド、暗号資産を追跡します。"
   },
   "reports": {
     "ratesUnavailable": "一部の数値には、現在利用できない為替レートが必要です。",
@@ -2016,6 +2032,30 @@
     "currency": {
       "not_found": "その通貨は利用できません。",
       "inactive": "その通貨は有効ではなくなりました。"
+    },
+    "investment_wallet": {
+      "not_found": "この投資ウォレットは存在しなくなりました。",
+      "currency_in_use": "このウォレットにはすでに取引があるため、通貨を変更できません。"
+    },
+    "investment_asset": {
+      "not_found": "この投資資産は存在しなくなりました。",
+      "symbol_already_exists": "このシンボルの資産はすでに保有しています。"
+    },
+    "investment_transaction": {
+      "not_found": "その取引は存在しなくなりました。",
+      "quantity_price_required": "買いと売りには数量と価格が必要です。",
+      "quantity_price_not_allowed": "配当と手数料では、数量と価格ではなく金額を使います。",
+      "asset_required": "この取引の資産を選択してください。",
+      "currency_must_match_wallet": "取引の通貨はウォレットの通貨と一致している必要があります。",
+      "insufficient_quantity": "現在保有している数量を超えて売却することはできません。",
+      "settlement_amount_not_positive": "決済額は 0 より大きくする必要があります。",
+      "price_unavailable": "選択した日付の価格は利用できません。",
+      "future_date": "この取引には未来の日付を使用できません。",
+      "ledger_invalid": "この変更を行うと、後の取引が無効になります。先にその取引を取り消すか編集してください。"
+    },
+    "market_data_credential": {
+      "not_found": "そのプロバイダーの API キーは保存されていません。",
+      "provider_unknown": "そのレート提供元は認識されません。"
     }
   }
 }

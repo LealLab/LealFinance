@@ -15,7 +15,7 @@ must not be why a positions request fails.
 
 import logging
 from dataclasses import dataclass
-from datetime import date
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import UUID
 
@@ -26,6 +26,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.investment import (
     KEYLESS_QUOTE_PROVIDERS,
+    QUOTE_PROVIDER_BRAPI,
     QUOTE_PROVIDER_COINGECKO,
     QUOTE_PROVIDER_MANUAL,
     QUOTE_PROVIDER_TWELVE_DATA,
@@ -37,8 +38,11 @@ from app.services import market_data_credentials
 logger = logging.getLogger(__name__)
 
 _TWELVE_DATA_URL = "https://api.twelvedata.com/quote"
+_TWELVE_DATA_TIME_SERIES_URL = "https://api.twelvedata.com/time_series"
 _BRAPI_URL = "https://brapi.dev/api/quote"
+_BRAPI_HISTORICAL_URL = "https://brapi.dev/api/v2/stocks/historical"
 _COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
+_COINGECKO_HISTORY_URL = "https://api.coingecko.com/api/v3/coins"
 
 
 @dataclass(frozen=True)
@@ -167,6 +171,68 @@ async def get_asset_prices(
     return prices
 
 
+async def get_asset_price(
+    db: AsyncSession, user_id: UUID, asset: InvestmentAsset, as_of: date
+) -> PriceResult:
+    """Resolve one exact-date quote without falling back to another date."""
+    if asset.quote_provider == QUOTE_PROVIDER_MANUAL or asset.manual_price is not None:
+        return PriceResult(
+            price=asset.manual_price,
+            is_stale=asset.manual_price is None,
+            as_of=None,
+            source="manual" if asset.manual_price is not None else "none",
+        )
+
+    cached_result = await db.execute(
+        select(AssetQuote).where(
+            AssetQuote.symbol == asset.symbol,
+            AssetQuote.currency == asset.currency,
+            AssetQuote.source == asset.quote_provider,
+            AssetQuote.as_of == as_of,
+        )
+    )
+    cached = cached_result.scalars().first()
+    if cached is not None:
+        return PriceResult(
+            price=cached.price, is_stale=False, as_of=cached.as_of, source=cached.source
+        )
+
+    user_row = await market_data_credentials.get_user_row(db, user_id, asset.quote_provider)
+    api_key, _source = await market_data_credentials.resolve_api_key(user_row, asset.quote_provider)
+    if not api_key and asset.quote_provider not in KEYLESS_QUOTE_PROVIDERS:
+        return PriceResult(price=None, is_stale=True, as_of=None, source="none")
+
+    try:
+        if as_of == date.today():
+            if asset.quote_provider == QUOTE_PROVIDER_COINGECKO:
+                fetched = await _fetch_coingecko(api_key, [asset.symbol], asset.currency)
+            elif asset.quote_provider == QUOTE_PROVIDER_TWELVE_DATA:
+                fetched = await _fetch_twelve_data(api_key or "", [asset.symbol])
+            else:
+                fetched = await _fetch_brapi(api_key or "", [asset.symbol])
+            price = _find_price(fetched, asset.symbol)
+        elif asset.quote_provider == QUOTE_PROVIDER_TWELVE_DATA:
+            price = await _fetch_twelve_data_historical(api_key or "", asset.symbol, as_of)
+        elif asset.quote_provider == QUOTE_PROVIDER_BRAPI:
+            price = await _fetch_brapi_historical(api_key or "", asset.symbol, as_of)
+        elif asset.quote_provider == QUOTE_PROVIDER_COINGECKO:
+            price = await _fetch_coingecko_historical(api_key, asset.symbol, asset.currency, as_of)
+        else:
+            price = None
+    except Exception:
+        logger.warning(
+            "Failed to fetch exact asset quote from %s",
+            asset.quote_provider,
+            exc_info=True,
+        )
+        price = None
+
+    if price is None:
+        return PriceResult(price=None, is_stale=True, as_of=None, source="none")
+    await _cache_quotes(db, [(asset, price)], asset.quote_provider, as_of)
+    return PriceResult(price=price, is_stale=False, as_of=as_of, source=asset.quote_provider)
+
+
 def _find_price(prices: dict[str, Decimal], symbol: str) -> Decimal | None:
     for key in (symbol, symbol.upper()):
         if key in prices:
@@ -238,6 +304,31 @@ async def _fetch_twelve_data(api_key: str, symbols: list[str]) -> dict[str, Deci
     return prices
 
 
+async def _fetch_twelve_data_historical(api_key: str, symbol: str, as_of: date) -> Decimal | None:
+    async with httpx.AsyncClient(timeout=10) as client:
+        response = await client.get(
+            _TWELVE_DATA_TIME_SERIES_URL,
+            params={
+                "symbol": symbol,
+                "interval": "1day",
+                "start_date": as_of.isoformat(),
+                "end_date": as_of.isoformat(),
+                "apikey": api_key,
+            },
+        )
+        response.raise_for_status()
+        payload = response.json()
+
+    if not isinstance(payload, dict) or not isinstance(payload.get("values"), list):
+        return None
+    for item in payload["values"]:
+        if not isinstance(item, dict) or "datetime" not in item or "close" not in item:
+            continue
+        if str(item["datetime"])[:10] == as_of.isoformat():
+            return Decimal(str(item["close"]))
+    return None
+
+
 async def _fetch_brapi(token: str, symbols: list[str]) -> dict[str, Decimal]:
     async with httpx.AsyncClient(timeout=10) as client:
         response = await client.get(
@@ -260,6 +351,38 @@ async def _fetch_brapi(token: str, symbols: list[str]) -> dict[str, Decimal]:
             continue
         prices[symbol] = Decimal(str(item["regularMarketPrice"]))
     return prices
+
+
+async def _fetch_brapi_historical(token: str, symbol: str, as_of: date) -> Decimal | None:
+    async with httpx.AsyncClient(timeout=10) as client:
+        response = await client.get(
+            _BRAPI_HISTORICAL_URL,
+            params={
+                "symbols": symbol,
+                "interval": "1d",
+                "startDate": as_of.isoformat(),
+                "endDate": as_of.isoformat(),
+                "sortOrder": "asc",
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        response.raise_for_status()
+        payload = response.json()
+
+    if not isinstance(payload, dict) or not isinstance(payload.get("results"), list):
+        return None
+    for result in payload["results"]:
+        if not isinstance(result, dict) or str(result.get("symbol", "")).upper() != symbol.upper():
+            continue
+        data = result.get("data")
+        if not isinstance(data, dict) or not isinstance(data.get("historicalDataPrice"), list):
+            continue
+        for item in data["historicalDataPrice"]:
+            if not isinstance(item, dict) or "close" not in item:
+                continue
+            if _quote_date(item.get("date")) == as_of:
+                return Decimal(str(item["close"]))
+    return None
 
 
 async def _fetch_coingecko(
@@ -296,3 +419,60 @@ async def _fetch_coingecko(
             continue
         prices[symbol] = Decimal(str(price))
     return prices
+
+
+async def _fetch_coingecko_historical(
+    api_key: str | None, symbol: str, vs_currency: str, as_of: date
+) -> Decimal | None:
+    params: dict[str, str | int] = {
+        "vs_currency": vs_currency.lower(),
+        "symbols": symbol.lower(),
+        "per_page": 250,
+    }
+    headers = {"x-cg-demo-api-key": api_key} if api_key else {}
+    async with httpx.AsyncClient(timeout=10) as client:
+        response = await client.get(_COINGECKO_URL, params=params, headers=headers)
+        response.raise_for_status()
+        payload = response.json()
+
+        if not isinstance(payload, list):
+            return None
+        coin_id: str | None = None
+        for item in payload:
+            if not isinstance(item, dict) or "symbol" not in item or "id" not in item:
+                continue
+            if str(item["symbol"]).upper() == symbol.upper():
+                coin_id = str(item["id"])
+                break
+        if coin_id is None:
+            return None
+
+        history = await client.get(
+            f"{_COINGECKO_HISTORY_URL}/{coin_id}/history",
+            params={"date": as_of.strftime("%d-%m-%Y"), "localization": "false"},
+            headers=headers,
+        )
+        history.raise_for_status()
+        history_payload = history.json()
+
+    if not isinstance(history_payload, dict):
+        return None
+    market_data = history_payload.get("market_data")
+    if not isinstance(market_data, dict):
+        return None
+    current_price = market_data.get("current_price")
+    if not isinstance(current_price, dict):
+        return None
+    price = current_price.get(vs_currency.lower())
+    return None if price is None else Decimal(str(price))
+
+
+def _quote_date(value: object) -> date | None:
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value, tz=UTC).date()
+    if isinstance(value, str):
+        try:
+            return date.fromisoformat(value[:10])
+        except ValueError:
+            return None
+    return None
