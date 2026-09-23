@@ -1,6 +1,7 @@
 """Investment wallet, asset, and transaction CRUD with optional cash legs."""
 
 import re
+from dataclasses import dataclass
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
@@ -278,6 +279,8 @@ async def _resolve_amount_mode(
     db: AsyncSession,
     user_id: UUID,
     data: InvestmentTransactionCreate,
+    *,
+    cache_quote: bool = True,
 ) -> InvestmentTransactionCreate:
     if data.type != INVESTMENT_TRANSACTION_TYPE_BUY or (
         data.quantity is not None or data.price is not None
@@ -290,7 +293,7 @@ async def _resolve_amount_mode(
         raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
     assert data.asset_id is not None
     asset = await ownership.get_owned(db, InvestmentAsset, data.asset_id, user_id)
-    quote = await asset_quotes.get_asset_price(db, user_id, asset, data.date)
+    quote = await asset_quotes.get_asset_price(db, user_id, asset, data.date, cache=cache_quote)
     if quote.price is None or quote.price <= 0:
         raise ValidationAppError(code="investment_transaction.price_unavailable")
     # quote.price is denominated in asset.currency; net_amount (and the price
@@ -318,7 +321,7 @@ async def _validate_transaction(
     price: Decimal | None,
     currency: str,
     exclude_transaction_id: UUID | None = None,
-) -> None:
+) -> tuple[InvestmentWallet, InvestmentAsset | None]:
     wallet = await get_wallet(db, user_id, wallet_id)
     asset = await ownership.get_owned_or_none(db, InvestmentAsset, asset_id, user_id)
     _validate_shape(type_, asset_id, quantity, price)
@@ -342,23 +345,43 @@ async def _validate_transaction(
         )
         if quantity > position.quantity:
             raise ValidationAppError(code="investment_transaction.insufficient_quantity")
+    return wallet, asset
 
 
-async def _settle_cash_leg(
+@dataclass(frozen=True, slots=True)
+class _CashSettlement:
+    amount: Decimal
+    currency: str
+    source_account_id: UUID
+    destination_account_id: UUID
+    conversion: ConversionInput | None
+    conversion_amount: Decimal | None
+
+
+@dataclass(frozen=True, slots=True)
+class _PreparedInvestmentTransaction:
+    data: InvestmentTransactionCreate
+    wallet: InvestmentWallet
+    cash_account: Account | None
+    settlement: _CashSettlement | None
+
+
+async def _calculate_cash_settlement(
     db: AsyncSession,
     user_id: UUID,
     wallet: InvestmentWallet,
     cash_account: Account,
     data: InvestmentTransactionCreate,
-) -> Transaction:
+) -> _CashSettlement:
     if data.type == INVESTMENT_TRANSACTION_TYPE_BUY:
-        source_account = cash_account
-        destination_account = wallet.account_id
+        source_account_id = cash_account.id
+        destination_account_id = wallet.account_id
         total = data.amount + data.fee
         transfer_currency = cash_account.currency
         if cash_account.currency == wallet.currency:
             transfer_amount = total
             conversion = None
+            conversion_amount = None
         else:
             rate_result = await get_exchange_rate(
                 db, cash_account.currency, wallet.currency, user_id=user_id, as_of=data.date
@@ -367,8 +390,6 @@ async def _settle_cash_leg(
             transfer_amount = (total / rate_result.rate).quantize(
                 Decimal(1).scaleb(-cash_currency.decimal_digits), rounding=ROUND_HALF_UP
             )
-            # ponytail: accepting sub-cent inverse-rate drift; use a persisted
-            # trade conversion when exact cash settlement becomes important.
             conversion = ConversionInput(
                 amount=None,
                 currency=wallet.currency,
@@ -376,15 +397,21 @@ async def _settle_cash_leg(
                 rate=rate_result.rate,
                 source=to_conversion_source(rate_result),
             )
+            destination_currency = await get_active_currency(db, wallet.currency)
+            conversion_amount = (transfer_amount * rate_result.rate).quantize(
+                Decimal(1).scaleb(-destination_currency.decimal_digits), rounding=ROUND_HALF_UP
+            )
     else:
-        source_account = await ownership.get_owned(db, Account, wallet.account_id, user_id)
-        destination_account = cash_account.id
+        await ownership.get_owned(db, Account, wallet.account_id, user_id)
+        source_account_id = wallet.account_id
+        destination_account_id = cash_account.id
         transfer_amount = data.amount - data.fee
         if transfer_amount <= 0:
             raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
         transfer_currency = wallet.currency
         if wallet.currency == cash_account.currency:
             conversion = None
+            conversion_amount = None
         else:
             rate_result = await get_exchange_rate(
                 db, wallet.currency, cash_account.currency, user_id=user_id, as_of=data.date
@@ -396,29 +423,116 @@ async def _settle_cash_leg(
                 rate=rate_result.rate,
                 source=to_conversion_source(rate_result),
             )
+            destination_currency = await get_active_currency(db, cash_account.currency)
+            conversion_amount = (transfer_amount * rate_result.rate).quantize(
+                Decimal(1).scaleb(-destination_currency.decimal_digits), rounding=ROUND_HALF_UP
+            )
 
     if transfer_amount <= 0:
         raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
+    return _CashSettlement(
+        amount=transfer_amount,
+        currency=transfer_currency,
+        source_account_id=source_account_id,
+        destination_account_id=destination_account_id,
+        conversion=conversion,
+        conversion_amount=conversion_amount,
+    )
+
+
+async def _prepare_investment_transaction(
+    db: AsyncSession,
+    user_id: UUID,
+    data: InvestmentTransactionCreate,
+    *,
+    exclude_transaction_id: UUID | None = None,
+    cache_quote: bool = True,
+) -> _PreparedInvestmentTransaction:
+    currency = await get_active_currency(db, data.currency)
+    wallet, _asset = await _validate_transaction(
+        db,
+        user_id,
+        data.wallet_id,
+        data.asset_id,
+        data.type,
+        data.quantity,
+        data.price,
+        data.currency,
+        exclude_transaction_id=exclude_transaction_id,
+    )
+    data = await _resolve_amount_mode(db, user_id, data, cache_quote=cache_quote)
+    data = _with_derived_amount(data, currency.decimal_digits)
+    cash_account = await ownership.get_owned_or_none(db, Account, wallet.cash_account_id, user_id)
+    settlement = None
+    if cash_account is not None and data.type in (
+        INVESTMENT_TRANSACTION_TYPE_BUY,
+        INVESTMENT_TRANSACTION_TYPE_SELL,
+    ):
+        settlement = await _calculate_cash_settlement(db, user_id, wallet, cash_account, data)
+    return _PreparedInvestmentTransaction(data, wallet, cash_account, settlement)
+
+
+def _investment_preview(prepared: _PreparedInvestmentTransaction) -> dict[str, object]:
+    data = prepared.data
+    settlement = prepared.settlement
+    conversion = None
+    if settlement is not None and settlement.conversion is not None:
+        conversion = {
+            "amount": str(settlement.conversion_amount),
+            "currency": settlement.conversion.currency,
+            "fee": None,
+            "rate": str(settlement.conversion.rate),
+            "source": settlement.conversion.source,
+        }
+    return {
+        "amount": str(data.amount),
+        "quantity": None if data.quantity is None else format(data.quantity.normalize(), "f"),
+        "price": None if data.price is None else str(data.price),
+        "settlement": (
+            None
+            if settlement is None
+            else {
+                "amount": str(settlement.amount),
+                "currency": settlement.currency,
+                "source_account_id": str(settlement.source_account_id),
+                "destination_account_id": str(settlement.destination_account_id),
+                "conversion": conversion,
+            }
+        ),
+    }
+
+
+async def _settle_cash_leg(
+    db: AsyncSession,
+    user_id: UUID,
+    wallet: InvestmentWallet,
+    cash_account: Account,
+    data: InvestmentTransactionCreate,
+    settlement: _CashSettlement | None = None,
+) -> Transaction:
+    settlement = settlement or await _calculate_cash_settlement(
+        db, user_id, wallet, cash_account, data
+    )
     ledger_transaction = await build_transaction(
         db,
         user_id,
         TransactionCreate(
             type=TRANSACTION_TYPE_TRANSFER,
             date=data.date,
-            amount=transfer_amount,
-            currency=transfer_currency,
-            account_id=source_account.id,
-            to_account_id=destination_account,
+            amount=settlement.amount,
+            currency=settlement.currency,
+            account_id=settlement.source_account_id,
+            to_account_id=settlement.destination_account_id,
             description=f"Investment {data.type}",
             conversion=(
                 None
-                if conversion is None
+                if settlement.conversion is None
                 else ConversionInputSchema(
-                    amount=conversion.amount,
-                    currency=conversion.currency,
-                    fee=conversion.fee,
-                    rate=conversion.rate,
-                    source=conversion.source,
+                    amount=settlement.conversion.amount,
+                    currency=settlement.conversion.currency,
+                    fee=settlement.conversion.fee,
+                    rate=settlement.conversion.rate,
+                    source=settlement.conversion.source,
                 )
             ),
         ),
@@ -431,30 +545,21 @@ async def _settle_cash_leg(
 async def create_investment_transaction(
     db: AsyncSession, user_id: UUID, data: InvestmentTransactionCreate
 ) -> InvestmentTransaction:
-    currency = await get_active_currency(db, data.currency)
-    wallet = await get_wallet(db, user_id, data.wallet_id)
-    await _validate_transaction(
-        db,
-        user_id,
-        data.wallet_id,
-        data.asset_id,
-        data.type,
-        data.quantity,
-        data.price,
-        data.currency,
-    )
-    data = await _resolve_amount_mode(db, user_id, data)
-    data = _with_derived_amount(data, currency.decimal_digits)
-    cash_account = await ownership.get_owned_or_none(db, Account, wallet.cash_account_id, user_id)
+    prepared = await _prepare_investment_transaction(db, user_id, data)
+    data = prepared.data
     transaction = InvestmentTransaction(user_id=user_id, **data.model_dump())
     db.add(transaction)
     try:
         await db.flush()
-        if cash_account is not None and data.type in (
-            INVESTMENT_TRANSACTION_TYPE_BUY,
-            INVESTMENT_TRANSACTION_TYPE_SELL,
-        ):
-            posted = await _settle_cash_leg(db, user_id, wallet, cash_account, data)
+        if prepared.cash_account is not None and prepared.settlement is not None:
+            posted = await _settle_cash_leg(
+                db,
+                user_id,
+                prepared.wallet,
+                prepared.cash_account,
+                data,
+                prepared.settlement,
+            )
             transaction.transaction_id = posted.id
         # ponytail: dividends and fees are not auto-settled in v1; add a
         # user-selected investment income/expense category when one exists.
@@ -484,6 +589,50 @@ def _effective_transaction(
     return InvestmentTransactionCreate.model_validate(values)
 
 
+def _update_effective_transaction(
+    transaction: InvestmentTransaction, data: InvestmentTransactionUpdate
+) -> tuple[InvestmentTransactionCreate, dict[str, object], bool]:
+    changes = data.model_dump(exclude_unset=True)
+    effective = _effective_transaction(transaction, changes)
+    if (
+        effective.type == INVESTMENT_TRANSACTION_TYPE_BUY
+        and "amount" in changes
+        and not ({"quantity", "price"} & changes.keys())
+    ):
+        effective = effective.model_copy(update={"quantity": None, "price": None})
+    amount_mode = effective.type == INVESTMENT_TRANSACTION_TYPE_BUY and (
+        effective.quantity is None and effective.price is None
+    )
+    return effective, changes, amount_mode
+
+
+async def preview_create_investment_transaction(
+    db: AsyncSession, user_id: UUID, data: InvestmentTransactionCreate
+) -> dict[str, object]:
+    return _investment_preview(
+        await _prepare_investment_transaction(db, user_id, data, cache_quote=False)
+    )
+
+
+async def preview_update_investment_transaction(
+    db: AsyncSession,
+    user_id: UUID,
+    transaction_id: UUID,
+    data: InvestmentTransactionUpdate,
+) -> dict[str, object]:
+    transaction = await get_investment_transaction(db, user_id, transaction_id)
+    effective, _changes, _amount_mode = _update_effective_transaction(transaction, data)
+    return _investment_preview(
+        await _prepare_investment_transaction(
+            db,
+            user_id,
+            effective,
+            exclude_transaction_id=transaction.id,
+            cache_quote=False,
+        )
+    )
+
+
 async def update_investment_transaction(
     db: AsyncSession,
     user_id: UUID,
@@ -491,37 +640,14 @@ async def update_investment_transaction(
     data: InvestmentTransactionUpdate,
 ) -> InvestmentTransaction:
     transaction = await get_investment_transaction(db, user_id, transaction_id)
-    changes = data.model_dump(exclude_unset=True)
-    effective = _effective_transaction(transaction, changes)
-    # On a buy, `amount` is always derived from quantity * price, so a patch
-    # that sets `amount` without touching quantity/price can only mean
-    # "reprice from this gross amount" - the same amount-spent entry the
-    # create endpoint accepts. Without this, `amount` was silently kept as
-    # sent while the cash leg re-derived from the untouched quantity,
-    # letting the two disagree.
-    if (
-        effective.type == INVESTMENT_TRANSACTION_TYPE_BUY
-        and "amount" in changes
-        and not ({"quantity", "price"} & changes.keys())
-    ):
-        effective = effective.model_copy(update={"quantity": None, "price": None})
-    currency = await get_active_currency(db, effective.currency)
-    await _validate_transaction(
+    effective, changes, amount_mode = _update_effective_transaction(transaction, data)
+    prepared = await _prepare_investment_transaction(
         db,
         user_id,
-        effective.wallet_id,
-        effective.asset_id,
-        effective.type,
-        effective.quantity,
-        effective.price,
-        effective.currency,
+        effective,
         exclude_transaction_id=transaction.id,
     )
-    amount_mode = effective.type == INVESTMENT_TRANSACTION_TYPE_BUY and (
-        effective.quantity is None and effective.price is None
-    )
-    effective = await _resolve_amount_mode(db, user_id, effective)
-    effective = _with_derived_amount(effective, currency.decimal_digits)
+    effective = prepared.data
     if amount_mode and effective.quantity is not None and effective.price is not None:
         changes["quantity"] = effective.quantity
         changes["price"] = effective.price
@@ -541,15 +667,15 @@ async def update_investment_transaction(
             )
             await db.delete(old_ledger)
             transaction.transaction_id = None
-            wallet = await get_wallet(db, user_id, effective.wallet_id)
-            cash_account = await ownership.get_owned_or_none(
-                db, Account, wallet.cash_account_id, user_id
-            )
-            if cash_account is not None and effective.type in (
-                INVESTMENT_TRANSACTION_TYPE_BUY,
-                INVESTMENT_TRANSACTION_TYPE_SELL,
-            ):
-                posted = await _settle_cash_leg(db, user_id, wallet, cash_account, effective)
+            if prepared.cash_account is not None and prepared.settlement is not None:
+                posted = await _settle_cash_leg(
+                    db,
+                    user_id,
+                    prepared.wallet,
+                    prepared.cash_account,
+                    effective,
+                    prepared.settlement,
+                )
                 transaction.transaction_id = posted.id
         original_wallet_id = transaction.wallet_id
         original_asset_id = transaction.asset_id

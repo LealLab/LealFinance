@@ -4,11 +4,16 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from httpx import AsyncClient
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.account import Account
 from app.models.currency import ExchangeRate
+from app.models.investment import AssetQuote, InvestmentTransaction
 from app.models.transaction import Transaction
+from app.models.user import User
+from app.schemas.investment import InvestmentTransactionCreate, InvestmentTransactionUpdate
+from app.services import investments as investments_service
 from tests.factories import login_as, make_user
 
 
@@ -822,6 +827,109 @@ async def test_asset_manual_price_is_a_json_string(
     await _authed(client, db_session, "investment-price-string@example.com")
     asset = await _create_asset(client)
     assert isinstance(asset["manual_price"], str)
+
+
+async def test_investment_preview_uses_effective_values_without_writing(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    email = "investment-preview@example.com"
+    await _authed(client, db_session, email)
+    cash = await _create_account(client, opening_balance="1000")
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client, "PREVIEW")
+    user = await db_session.scalar(select(User).where(User.email == email))
+    assert user is not None
+
+    preview = await investments_service.preview_create_investment_transaction(
+        db_session,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=wallet["id"],
+            asset_id=asset["id"],
+            type="buy",
+            date=date(2026, 1, 1),
+            amount=Decimal("105"),
+            fee=Decimal("5"),
+            currency="BRL",
+        ),
+    )
+
+    assert preview["amount"] == "100.00"
+    assert preview["quantity"] == "9.756097561"
+    assert preview["price"] == "10.2500000000"
+    assert preview["settlement"] == {
+        "amount": "105.00",
+        "currency": "BRL",
+        "source_account_id": cash["id"],
+        "destination_account_id": wallet["account_id"],
+        "conversion": None,
+    }
+    assert (
+        await db_session.scalar(
+            select(InvestmentTransaction).where(InvestmentTransaction.user_id == user.id)
+        )
+        is None
+    )
+    assert await db_session.scalar(select(AssetQuote.id)) is None
+
+
+async def test_investment_preview_handles_update_amount_and_cross_currency_settlement(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    email = "investment-preview-update@example.com"
+    await _authed(client, db_session, email)
+    db_session.add(
+        ExchangeRate(
+            base_code="USD",
+            quote_code="BRL",
+            as_of=date(2026, 1, 1),
+            source="openexchangerates",
+            rate=Decimal("5.0000000000"),
+        )
+    )
+    await db_session.flush()
+    cash = await _create_account(client, currency="USD")
+    wallet = await _create_wallet(client, currency="BRL", cash_account_id=cash["id"])
+    asset = await _create_asset(client, "PREVIEW2")
+    created = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "quantity": "1",
+            "price": "10",
+            "amount": "10",
+            "currency": "BRL",
+        },
+    )
+    assert created.status_code == 201, created.text
+    user = await db_session.scalar(select(User).where(User.email == email))
+    assert user is not None
+
+    preview = await investments_service.preview_update_investment_transaction(
+        db_session,
+        user.id,
+        created.json()["id"],
+        InvestmentTransactionUpdate(amount=Decimal("105"), fee=Decimal("5")),
+    )
+
+    assert preview["amount"] == "100.00"
+    assert preview["quantity"] == "9.756097561"
+    settlement = preview["settlement"]
+    assert isinstance(settlement, dict)
+    assert settlement["amount"] == "21.00"
+    assert settlement["currency"] == "USD"
+    assert settlement["source_account_id"] == cash["id"]
+    assert settlement["destination_account_id"] == wallet["account_id"]
+    assert settlement["conversion"] == {
+        "amount": "105.00",
+        "currency": "BRL",
+        "fee": None,
+        "rate": "5.0000000000",
+        "source": "quote",
+    }
 
 
 async def test_patching_buy_amount_alone_reprices_instead_of_disagreeing(

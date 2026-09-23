@@ -47,6 +47,7 @@ class ToolAwaitingConfirmation:
     id: str
     name: str
     arguments: dict[str, Any]
+    preview: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -245,10 +246,45 @@ async def run_turn(
             continue
 
         if spec.writes:
+            preview: dict[str, Any] | None = None
+            if spec.preview is not None:
+                try:
+                    preview = await spec.preview(db, user_id, call.arguments)
+                except AppError as err:
+                    content = json.dumps({"error": err.code, "params": err.params})
+                    await persist_message(
+                        db,
+                        conversation,
+                        role="tool",
+                        content=content,
+                        tool_call_id=call.id,
+                        tool_name=call.name,
+                        is_error=True,
+                    )
+                    yield ToolFinished(call.id, call.name, ok=False)
+                    turns.extend(
+                        [
+                            Turn(role="assistant", text=full_text, tool_calls=tuple(calls)),
+                            Turn(
+                                role="user",
+                                tool_results=(ToolResultInput(call.id, call.name, content, True),),
+                            ),
+                        ]
+                    )
+                    continue
+            if preview is not None:
+                assistant_message.tool_calls = [
+                    {
+                        **tool_call,
+                        **({"preview": preview} if tool_call.get("id") == call.id else {}),
+                    }
+                    for tool_call in assistant_message.tool_calls or []
+                ]
+                await db.commit()
             conversation.status = AGENT_CONVERSATION_STATUS_AWAITING
             conversation.pending_call_id = call.id
             await db.commit()
-            yield ToolAwaitingConfirmation(call.id, call.name, call.arguments)
+            yield ToolAwaitingConfirmation(call.id, call.name, call.arguments, preview)
             yield Done(
                 status=AGENT_CONVERSATION_STATUS_AWAITING,
                 message_id=str(assistant_message.id),

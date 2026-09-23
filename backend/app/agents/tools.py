@@ -32,6 +32,7 @@ from app.schemas.category_group import (
     CategoryGroupRead,
 )
 from app.schemas.institution import InstitutionRead
+from app.schemas.investment import InvestmentTransactionCreate, InvestmentTransactionUpdate
 from app.schemas.transaction import (
     MAX_BULK_IDS,
     TransactionRead,
@@ -44,6 +45,7 @@ from app.services import card_invoices as card_invoices_service
 from app.services import categories as categories_service
 from app.services import category_groups as category_groups_service
 from app.services import institutions as institutions_service
+from app.services import investments as investments_service
 from app.services import transactions as transactions_service
 
 _CATEGORY_ICON_HINT = (
@@ -531,6 +533,17 @@ async def _create_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) 
     return _dump(spec, await create(db, user_id, _validate(schema, data)))
 
 
+async def _preview_create_entity(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any] | None:
+    payload = _validate(_CreateEntityArgs, args)
+    if payload.entity != "investment_transaction":
+        return None
+    _entity(payload.entity)
+    data = _validate(InvestmentTransactionCreate, payload.data)
+    return await investments_service.preview_create_investment_transaction(db, user_id, data)
+
+
 async def _update_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
     payload = _validate(_UpdateEntityArgs, args)
     spec = _entity(payload.entity)
@@ -541,6 +554,19 @@ async def _update_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) 
     if spec.prepare_update is not None:
         changes = spec.prepare_update(changes)
     return _dump(spec, await update(db, user_id, payload.id, _validate(schema, changes)))
+
+
+async def _preview_update_entity(
+    db: AsyncSession, user_id: UUID, args: dict[str, Any]
+) -> dict[str, Any] | None:
+    payload = _validate(_UpdateEntityArgs, args)
+    if payload.entity != "investment_transaction":
+        return None
+    _entity(payload.entity)
+    changes = payload.changes
+    return await investments_service.preview_update_investment_transaction(
+        db, user_id, payload.id, _validate(InvestmentTransactionUpdate, changes)
+    )
 
 
 async def _delete_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
@@ -592,6 +618,9 @@ class ToolDef:
     schema: dict[str, Any]
     run: Callable[[AsyncSession, UUID, dict[str, Any]], Awaitable[Any]]
     writes: bool = False
+    preview: (
+        Callable[[AsyncSession, UUID, dict[str, Any]], Awaitable[dict[str, Any] | None]] | None
+    ) = None
 
     def provider_spec(self) -> ToolSpec:
         return ToolSpec(name=self.name, description=self.description, schema=self.schema)
@@ -860,6 +889,7 @@ SPECS: list[ToolDef] = [
         },
         run=_create_entity,
         writes=True,
+        preview=_preview_create_entity,
     ),
     ToolDef(
         name="update_entity",
@@ -880,6 +910,7 @@ SPECS: list[ToolDef] = [
         },
         run=_update_entity,
         writes=True,
+        preview=_preview_update_entity,
     ),
     ToolDef(
         name="delete_entity",

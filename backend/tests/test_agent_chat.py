@@ -2,6 +2,7 @@
 
 import json
 from contextlib import asynccontextmanager
+from decimal import Decimal
 from uuid import UUID, uuid4
 
 import httpx
@@ -19,6 +20,7 @@ from app.models.agent_conversation import (
 )
 from app.models.agent_message import AgentMessage
 from app.models.change_journal import ChangeJournal
+from app.models.investment import InvestmentTransaction
 from app.models.transaction import Transaction
 from app.models.user import ROLE_ADMIN, ROLE_MEMBER
 from tests.factories import login_as, make_user
@@ -305,6 +307,77 @@ async def test_write_tool_confirmation_executes_only_after_approval(
     }
     assert {entry.agent_call_id for entry in journal} == {f"{conversation['id']}:w1"}
     assert {entry.conversation_id for entry in journal} == {UUID(str(conversation["id"]))}
+
+
+async def test_investment_confirmation_streams_and_persists_preview_but_executes_raw_arguments(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    user = await _chat_user(client, db_session, "chat-investment-preview@example.com")
+    user.base_currency = "BRL"
+    await db_session.commit()
+    wallet_response = await client.post("/api/v1/investments/wallets", json={"name": "Brokerage"})
+    assert wallet_response.status_code == 201, wallet_response.text
+    asset_response = await client.post(
+        "/api/v1/investments/assets",
+        json={
+            "symbol": "CHATPREVIEW",
+            "name": "Chat Preview",
+            "asset_class": "stock",
+            "currency": "BRL",
+            "manual_price": "10.25",
+        },
+    )
+    assert asset_response.status_code == 201, asset_response.text
+    arguments = {
+        "entity": "investment_transaction",
+        "data": {
+            "wallet_id": wallet_response.json()["id"],
+            "asset_id": asset_response.json()["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "amount": "105",
+            "fee": "5",
+            "currency": "BRL",
+        },
+    }
+    conversation = await _conversation(client)
+    responses = [_tool_body("w1", "create_entity", arguments), _text_body("Recorded")]
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=responses.pop(0), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    first = await client.post(
+        f"/api/v1/agents/conversations/{conversation['id']}/messages",
+        json={"content": "Buy shares"},
+    )
+    first_events = _events(first.text)
+    assert first_events[-2][0] == "tool_confirm", first_events
+    preview = first_events[-2][1]["preview"]
+    assert preview["amount"] == "100.00"
+    assert preview["quantity"] == "9.756097561"
+    assert preview["price"] == "10.2500000000"
+
+    detail = await client.get(f"/api/v1/agents/conversations/{conversation['id']}")
+    stored_call = detail.json()["messages"][1]["tool_calls"][0]
+    assert stored_call["arguments"] == arguments
+    assert stored_call["preview"] == preview
+
+    tampered = {**arguments, "data": {**arguments["data"], "amount": "999"}}
+    confirmed = await client.post(
+        f"/api/v1/agents/conversations/{conversation['id']}/confirm",
+        json={"tool_call_id": "w1", "approved": True, "arguments": tampered},
+    )
+    assert [name for name, _ in _events(confirmed.text)] == ["tool_result", "delta", "done"]
+    transaction = (
+        await db_session.execute(
+            select(InvestmentTransaction).where(InvestmentTransaction.user_id == user.id)
+        )
+    ).scalar_one()
+    assert transaction.amount == Decimal("100.0000")
 
 
 async def test_undo_changes_is_confirmed_then_reverses_the_earlier_write(

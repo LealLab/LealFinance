@@ -48,6 +48,7 @@ export const parseFrame = (block: string): AgentStreamEvent | undefined => {
         id: String(value['id']),
         name: String(value['name']),
         arguments: record(value['arguments']),
+        ...(value['preview'] ? { preview: record(value['preview']) } : {}),
       };
     case 'refusal':
       return { type: 'refusal', code: String(value['code'] ?? '') };
