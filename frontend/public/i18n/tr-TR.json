@@ -52,6 +52,10 @@
     },
     "loadError": "Yüklenirken bir sorun oluştu. Tekrar deneyin.",
     "retrying": "Tekrar deneniyor…",
+    "file": {
+      "choose": "Dosya seç",
+      "none": "Dosya seçilmedi"
+    },
     "colorPicker": {
       "saturationBrightness": "Renk doygunluğu ve parlaklığı",
       "hue": "Renk tonu"

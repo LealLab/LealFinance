@@ -52,6 +52,10 @@
     },
     "loadError": "Terjadi kesalahan saat memuat. Coba lagi.",
     "retrying": "Mencoba lagi…",
+    "file": {
+      "choose": "Pilih file",
+      "none": "Tidak ada file yang dipilih"
+    },
     "colorPicker": {
       "saturationBrightness": "Saturasi dan kecerahan warna",
       "hue": "Rona warna"

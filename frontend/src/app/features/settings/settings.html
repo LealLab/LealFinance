@@ -433,13 +433,28 @@
       </p>
       <label class="form-label" for="backup-file">{{ t('settings.backup.restore.file') }}</label>
       <input
-        id="backup-file"
-        class="form-input"
+        #backupInput
         type="file"
         accept="application/json,.json"
-        [disabled]="restoreLoading()"
+        hidden
         (change)="onRestoreFile($event)"
       />
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <button
+          id="backup-file"
+          appButton
+          variant="secondary"
+          type="button"
+          class="whitespace-nowrap"
+          [disabled]="restoreLoading()"
+          (click)="backupInput.click()"
+        >
+          {{ t('common.file.choose') }}
+        </button>
+        @if (!restoreFilename()) {
+          <span class="text-sm text-content-muted">{{ t('common.file.none') }}</span>
+        }
+      </div>
       @if (restoreFilename(); as filename) {
         <p class="mt-2 text-sm text-content-muted" role="status">
           {{ t('settings.backup.restore.selected', { filename }) }}

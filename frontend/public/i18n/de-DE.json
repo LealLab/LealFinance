@@ -52,6 +52,10 @@
     },
     "loadError": "Beim Laden ist etwas schiefgelaufen. Bitte versuche es erneut.",
     "retrying": "Erneuter Versuch…",
+    "file": {
+      "choose": "Datei auswählen",
+      "none": "Keine Datei ausgewählt"
+    },
     "colorPicker": {
       "saturationBrightness": "Farbsättigung und Helligkeit",
       "hue": "Farbton"

@@ -52,6 +52,10 @@
     },
     "loadError": "Jotain meni pieleen tätä ladattaessa. Yritä uudelleen.",
     "retrying": "Yritetään uudelleen…",
+    "file": {
+      "choose": "Valitse tiedosto",
+      "none": "Ei valittua tiedostoa"
+    },
     "colorPicker": {
       "saturationBrightness": "Värikylläisyys ja kirkkaus",
       "hue": "Värisävy"

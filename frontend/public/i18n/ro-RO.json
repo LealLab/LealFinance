@@ -52,6 +52,10 @@
     },
     "loadError": "Ceva nu a mers bine la încărcare. Încearcă din nou.",
     "retrying": "Se încearcă din nou…",
+    "file": {
+      "choose": "Alege fișier",
+      "none": "Niciun fișier ales"
+    },
     "colorPicker": {
       "saturationBrightness": "Saturația și luminozitatea culorii",
       "hue": "Nuanța culorii"

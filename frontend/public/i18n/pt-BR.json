@@ -52,6 +52,10 @@
     },
     "loadError": "Algo deu errado ao carregar. Tente novamente.",
     "retrying": "Tentando novamente…",
+    "file": {
+      "choose": "Escolher arquivo",
+      "none": "Nenhum arquivo escolhido"
+    },
     "colorPicker": {
       "saturationBrightness": "Saturação e brilho da cor",
       "hue": "Matiz da cor"

@@ -52,6 +52,10 @@
     },
     "loadError": "Er ging iets mis bij het laden. Probeer het opnieuw.",
     "retrying": "Opnieuw proberen…",
+    "file": {
+      "choose": "Bestand kiezen",
+      "none": "Geen bestand gekozen"
+    },
     "colorPicker": {
       "saturationBrightness": "Kleurverzadiging en helderheid",
       "hue": "Kleurtoon"

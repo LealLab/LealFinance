@@ -52,6 +52,10 @@
     },
     "loadError": "Něco se pokazilo při načítání. Zkuste to znovu.",
     "retrying": "Probíhá opakování…",
+    "file": {
+      "choose": "Vybrat soubor",
+      "none": "Nebyl vybrán žádný soubor"
+    },
     "colorPicker": {
       "saturationBrightness": "Sytost a jas barvy",
       "hue": "Odstín barvy"

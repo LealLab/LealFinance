@@ -52,6 +52,10 @@
     },
     "loadError": "Có lỗi xảy ra khi tải nội dung này. Hãy thử lại.",
     "retrying": "Đang thử lại…",
+    "file": {
+      "choose": "Chọn tệp",
+      "none": "Chưa chọn tệp nào"
+    },
     "colorPicker": {
       "saturationBrightness": "Độ bão hòa và độ sáng của màu",
       "hue": "Sắc độ màu"

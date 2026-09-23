@@ -52,6 +52,10 @@
     },
     "loadError": "משהו השתבש בטעינת הנתונים. נסו שוב.",
     "retrying": "מנסה שוב…",
+    "file": {
+      "choose": "בחירת קובץ",
+      "none": "לא נבחר קובץ"
+    },
     "colorPicker": {
       "saturationBrightness": "רוויה ובהירות הצבע",
       "hue": "גוון הצבע"

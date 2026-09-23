@@ -52,6 +52,10 @@
     },
     "loadError": "読み込み中に問題が発生しました。もう一度お試しください。",
     "retrying": "再試行中…",
+    "file": {
+      "choose": "ファイルを選択",
+      "none": "ファイルが選択されていません"
+    },
     "colorPicker": {
       "saturationBrightness": "色の彩度と明度",
       "hue": "色相"

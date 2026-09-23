@@ -52,6 +52,10 @@
     },
     "loadError": "載入時發生問題。請再試一次。",
     "retrying": "正在重試…",
+    "file": {
+      "choose": "選擇檔案",
+      "none": "未選擇檔案"
+    },
     "colorPicker": {
       "saturationBrightness": "色彩的飽和度與亮度",
       "hue": "色相"

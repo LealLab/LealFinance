@@ -52,6 +52,10 @@
     },
     "loadError": "Something went wrong loading this. Try again.",
     "retrying": "Retrying…",
+    "file": {
+      "choose": "Choose file",
+      "none": "No file chosen"
+    },
     "colorPicker": {
       "saturationBrightness": "Color saturation and brightness",
       "hue": "Color hue"
