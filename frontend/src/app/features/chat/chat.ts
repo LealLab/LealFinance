@@ -1,5 +1,15 @@
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, effect, HostListener, inject, signal } from '@angular/core';
+import {
+  afterRenderEffect,
+  Component,
+  DestroyRef,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Observable, of, Subscription } from 'rxjs';
@@ -97,6 +107,9 @@ export class Chat {
   protected readonly errorKey = signal<string | null>(null);
   protected readonly refused = signal(false);
   protected readonly composer = signal('');
+  private readonly messagesEl = viewChild<ElementRef<HTMLElement>>('messages');
+  /** Follow the newest message unless the user scrolled up to read history. */
+  private stickToBottom = true;
   private refreshDetailAfterConfirmation = false;
   private streamSubscription?: Subscription;
   /**
@@ -125,8 +138,19 @@ export class Chat {
         this.liveMessages.set(turns);
         this.refused.set(turns.some((turn) => turn.text === OFF_TOPIC));
         this.seededFor = id;
+        this.stickToBottom = true;
       }
     });
+    afterRenderEffect(() => {
+      this.liveMessages();
+      const el = this.messagesEl()?.nativeElement;
+      if (el && this.stickToBottom) el.scrollTop = el.scrollHeight;
+    });
+  }
+
+  protected onMessagesScroll(event: Event): void {
+    const el = event.target as HTMLElement;
+    this.stickToBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
   }
 
   protected selectConversation(id: string): void {
@@ -177,6 +201,7 @@ export class Chat {
     this.composer.set('');
     this.errorKey.set(null);
     this.refused.set(false);
+    this.stickToBottom = true;
     this.liveMessages.update((turns) => [
       ...turns,
       { role: 'user', text: content, tools: [] },
@@ -222,6 +247,7 @@ export class Chat {
   protected confirmTool(confirm: PendingConfirm, approved: boolean): void {
     const id = this.activeId();
     if (!id || this.sending()) return;
+    this.stickToBottom = true;
     this.updateLastAssistant((turn) => ({ ...turn, pendingConfirm: undefined }));
     this.refreshDetailAfterConfirmation = true;
     this.readStream(this.repo.confirm(id, confirm.id, approved));

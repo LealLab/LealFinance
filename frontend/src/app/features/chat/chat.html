@@ -81,7 +81,7 @@
           [title]="t('chat.empty.title')"
           [description]="t('chat.empty.body')"
         />
-      } @else if (detail.isLoading()) {
+      } @else if (detail.status() === 'loading') {
         <app-skeleton height="20rem" />
       } @else {
         <div class="chat-thread flex h-full min-w-0 flex-col">
@@ -108,7 +108,11 @@
             </div>
           </header>
 
-          <div class="chat-messages min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pe-1">
+          <div
+            #messages
+            class="chat-messages min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pe-1"
+            (scroll)="onMessagesScroll($event)"
+          >
             @for (turn of liveMessages(); track $index) {
               <div
                 class="chat-message-row flex min-w-0"
