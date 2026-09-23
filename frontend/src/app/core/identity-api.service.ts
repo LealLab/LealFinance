@@ -92,6 +92,7 @@ interface PublicSettingsWire {
   default_currency: string;
   default_locale: string;
   agents_enabled: boolean;
+  app_version: string;
   email_enabled: boolean;
 }
 
@@ -400,6 +401,7 @@ export class IdentityApiService {
         defaultCurrency: row.default_currency,
         defaultLocale: row.default_locale,
         agentsEnabled: row.agents_enabled,
+        appVersion: row.app_version,
         emailEnabled: row.email_enabled,
       })),
     );

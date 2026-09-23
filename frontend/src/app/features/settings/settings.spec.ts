@@ -100,6 +100,7 @@ describe('Settings', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      appVersion: 'dev',
       emailEnabled: false,
     });
 
@@ -140,6 +141,7 @@ describe('Settings', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      appVersion: 'dev',
       emailEnabled: false,
     });
 

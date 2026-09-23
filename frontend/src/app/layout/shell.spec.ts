@@ -2,6 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
+import { MetadataService } from '../core/metadata.service';
 import { AccountRepository } from '../data/account.repository';
 import { BudgetRepository } from '../data/budget.repository';
 import { CategoryGroupRepository } from '../data/category-group.repository';
@@ -100,6 +101,45 @@ describe('Shell', () => {
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     expect(sidebar.classList.contains('is-collapsed')).toBe(true);
     expect(sidebar.querySelector('a[href="/profile"]')).not.toBeNull();
+  });
+
+  it('aligns the sidebar version and shows it beside the mobile title', () => {
+    mockMatchMedia(true);
+    TestBed.inject(MetadataService).settings.set({
+      defaultCurrency: 'BRL',
+      defaultLocale: 'pt-BR',
+      agentsEnabled: false,
+      appVersion: 'v1.2.3',
+      emailEnabled: false,
+    });
+
+    const fixture = TestBed.createComponent(Shell);
+    fixture.detectChanges();
+
+    const versions = [...fixture.nativeElement.querySelectorAll('.app-version')].map(
+      (node) => (node as HTMLElement).textContent?.trim(),
+    );
+    expect(versions).toEqual(['v1.2.3', 'v1.2.3']);
+
+    const sidebar = fixture.nativeElement.querySelector('#desktop-sidebar') as HTMLElement;
+    const sidebarVersion = sidebar.querySelector('.app-version') as HTMLElement;
+    expect(sidebarVersion.classList.contains('text-left')).toBe(true);
+
+    const toggle = sidebar.querySelector(
+      'button[aria-controls="desktop-sidebar"]',
+    ) as HTMLButtonElement;
+    toggle.click();
+    fixture.detectChanges();
+
+    expect(sidebarVersion.classList.contains('text-center')).toBe(true);
+    expect(sidebarVersion?.parentElement?.firstElementChild?.tagName).toBe('BUTTON');
+    expect(sidebarVersion?.parentElement?.lastElementChild).toBe(sidebarVersion);
+
+    const headerVersion = fixture.nativeElement.querySelector('header .app-version') as HTMLElement;
+    expect(headerVersion.textContent?.trim()).toBe('v1.2.3');
+    expect(headerVersion.dir).toBe('ltr');
+    expect(headerVersion.previousElementSibling?.classList.contains('truncate')).toBe(true);
+    expect(fixture.nativeElement.querySelector('dialog .app-version')).toBeNull();
   });
 
   it('toggles the command palette open on Ctrl+K', () => {

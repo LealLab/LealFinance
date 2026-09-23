@@ -40,6 +40,7 @@ async def get_public_settings() -> PublicSettingsRead:
         default_currency=settings.default_currency,
         default_locale=settings.default_locale,
         agents_enabled=settings.agents_enabled,
+        app_version=settings.app_version,
         email_enabled=settings.email_enabled,
     )
 

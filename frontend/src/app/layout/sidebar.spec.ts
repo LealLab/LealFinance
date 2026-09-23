@@ -40,6 +40,7 @@ describe('Sidebar', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      appVersion: 'dev',
       emailEnabled: false,
     });
 
@@ -67,6 +68,7 @@ describe('Sidebar', () => {
       defaultCurrency: 'BRL',
       defaultLocale: 'pt-BR',
       agentsEnabled: true,
+      appVersion: 'dev',
       emailEnabled: false,
     });
 

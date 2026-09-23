@@ -72,6 +72,7 @@ export interface PublicSettings {
   defaultCurrency: string;
   defaultLocale: string;
   agentsEnabled: boolean;
+  appVersion: string;
   emailEnabled: boolean;
 }
 

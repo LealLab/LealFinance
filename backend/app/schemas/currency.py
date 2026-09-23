@@ -24,6 +24,7 @@ class PublicSettingsRead(BaseModel):
     default_currency: str
     default_locale: str
     agents_enabled: bool
+    app_version: str
     # True when invitations are emailed; the admin screen shows this so it can
     # tell the inviter whether the copy-link step is still needed.
     email_enabled: bool
