@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, HostListener, inject, signal } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Observable, of, Subscription } from 'rxjs';
 import { ApiError } from '../../core/api-error';
 import { AccountRepository } from '../../data/account.repository';
@@ -70,6 +70,7 @@ export class Chat {
   private readonly investmentAssetRepository = inject(InvestmentAssetRepository);
   private readonly investmentWalletRepository = inject(InvestmentWalletRepository);
   private readonly confirmService = inject(ConfirmService);
+  private readonly transloco = inject(TranslocoService);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly conversations = rxResource({ stream: () => this.repo.listConversations() });
@@ -188,6 +189,34 @@ export class Chat {
     if (event.key !== 'Enter' || event.shiftKey) return;
     event.preventDefault();
     this.send((event.target as HTMLTextAreaElement).value);
+  }
+
+  @HostListener('click', ['$event'])
+  protected async copyCode(event: Event): Promise<void> {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const copyControl = target.closest<HTMLElement>('.md-code-copy');
+    const code = copyControl?.nextElementSibling;
+    if (!copyControl || !code || !navigator.clipboard) return;
+
+    try {
+      await navigator.clipboard.writeText(code.textContent ?? '');
+      const copiedLabel = this.transloco.translate('layout.update.modal.copied');
+      copyControl.setAttribute('aria-label', copiedLabel);
+      copyControl.setAttribute('title', copiedLabel);
+      copyControl.classList.add('md-code-copy--copied');
+    } catch {
+      // Clipboard access can be denied by the browser or the current context.
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  protected onCodeCopyKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const target = event.target;
+    if (!(target instanceof Element) || !target.closest('.md-code-copy')) return;
+    event.preventDefault();
+    void this.copyCode(event);
   }
 
   protected confirmTool(confirm: PendingConfirm, approved: boolean): void {

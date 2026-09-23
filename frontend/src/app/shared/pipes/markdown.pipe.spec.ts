@@ -15,6 +15,16 @@ describe('MarkdownPipe', () => {
     expect(pipe.transform('line one\nline two')).toContain('<br>');
   });
 
+  it('adds a copy button to code blocks when a label is provided', () => {
+    const html = pipe.transform('```text\nhello\n```', 'Copy');
+
+    expect(html).toContain(
+      'role="button" tabindex="0" class="md-code-copy" aria-label="Copy" title="Copy"></span>',
+    );
+    expect(html).toContain('<code class="language-text">hello');
+    expect(pipe.transform('```text\nhello\n```')).not.toContain('md-code-copy');
+  });
+
   it('returns an empty string for empty input', () => {
     expect(pipe.transform('')).toBe('');
     expect(pipe.transform(null)).toBe('');

@@ -100,6 +100,38 @@ describe('Chat', () => {
     expect(fixture.nativeElement.textContent).toContain('Mock: Ola');
   });
 
+  it('copies the plain text from an assistant code block', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const codeText = '# Orçamento\n\n- Moradia\n- Alimentação\n';
+    fixture.componentInstance['liveMessages'].set([
+      { role: 'assistant', text: `\`\`\`markdown\n${codeText}\`\`\``, tools: [] },
+    ]);
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+    fixture.detectChanges();
+
+    try {
+      const copyControl = fixture.nativeElement.querySelector('.md-code-copy') as HTMLElement;
+      copyControl.click();
+      await fixture.whenStable();
+
+      expect(writeText).toHaveBeenCalledWith(codeText);
+      const copiedLabel = TestBed.inject(TranslocoService).translate('layout.update.modal.copied');
+      expect(copyControl.getAttribute('aria-label')).toBe(copiedLabel);
+      expect(copyControl.classList).toContain('md-code-copy--copied');
+    } finally {
+      if (originalClipboard) Object.defineProperty(navigator, 'clipboard', originalClipboard);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
   it('keeps tool activity collapsed until the user expands it', async () => {
     const fixture = setup();
     fixture.detectChanges();
