@@ -100,6 +100,38 @@ describe('Chat', () => {
     expect(fixture.nativeElement.textContent).toContain('Mock: Ola');
   });
 
+  it('copies the plain text from an assistant code block', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const codeText = '# Orçamento\n\n- Moradia\n- Alimentação\n';
+    fixture.componentInstance['liveMessages'].set([
+      { role: 'assistant', text: `\`\`\`markdown\n${codeText}\`\`\``, tools: [] },
+    ]);
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+    fixture.detectChanges();
+
+    try {
+      const copyControl = fixture.nativeElement.querySelector('.md-code-copy') as HTMLElement;
+      copyControl.click();
+      await fixture.whenStable();
+
+      expect(writeText).toHaveBeenCalledWith(codeText);
+      const copiedLabel = TestBed.inject(TranslocoService).translate('layout.update.modal.copied');
+      expect(copyControl.getAttribute('aria-label')).toBe(copiedLabel);
+      expect(copyControl.classList).toContain('md-code-copy--copied');
+    } finally {
+      if (originalClipboard) Object.defineProperty(navigator, 'clipboard', originalClipboard);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
   it('keeps tool activity collapsed until the user expands it', async () => {
     const fixture = setup();
     fixture.detectChanges();
@@ -123,6 +155,7 @@ describe('Chat', () => {
     ) as HTMLDetailsElement;
     const transloco = TestBed.inject(TranslocoService);
     expect(activity.open).toBe(false);
+    expect(activity.closest('.chat-message-body')).toBeNull();
     expect(activity.querySelector('summary')?.textContent).toContain(
       transloco.translate('chat.thinking'),
     );
@@ -210,7 +243,11 @@ describe('Chat', () => {
     expect(chat['sending']()).toBe(false);
   });
 
-  it('folds persisted tool messages onto their assistant turn', () => {
+  it.each([
+    ['', '[[LF_OFF_TOPIC]]', '[[LF_OFF_TOPIC]]'],
+    ['Checking accounts.', '# Balance\n100', 'Checking accounts.\n\n# Balance\n100'],
+    ['Checking accounts.', '[[LF_OFF_TOPIC]]', '[[LF_OFF_TOPIC]]'],
+  ])('folds persisted tool rounds with preamble %j and response %j', (preamble, response, expected) => {
     const fixture = setup();
     const detail: AgentConversationDetail = {
       id: 'c9',
@@ -236,7 +273,7 @@ describe('Chat', () => {
         {
           id: 'm1',
           role: 'assistant',
-          content: '',
+          content: preamble,
           toolCalls: [{ id: 'c1', name: 'spend_by_category', arguments: {} }],
           toolCallId: null,
           toolName: null,
@@ -258,12 +295,56 @@ describe('Chat', () => {
         {
           id: 'm3',
           role: 'assistant',
-          content: '[[LF_OFF_TOPIC]]',
-          toolCalls: null,
+          content: '',
+          toolCalls: [{ id: 'c2', name: 'monthly_totals', arguments: {} }],
           toolCallId: null,
           toolName: null,
           isError: false,
           position: 3,
+          createdAt: '',
+        },
+        {
+          id: 'm4',
+          role: 'tool',
+          content: '{}',
+          toolCalls: null,
+          toolCallId: 'c2',
+          toolName: 'monthly_totals',
+          isError: false,
+          position: 4,
+          createdAt: '',
+        },
+        {
+          id: 'm5',
+          role: 'assistant',
+          content: response,
+          toolCalls: null,
+          toolCallId: null,
+          toolName: null,
+          isError: false,
+          position: 5,
+          createdAt: '',
+        },
+        {
+          id: 'm6',
+          role: 'user',
+          content: 'next question',
+          toolCalls: null,
+          toolCallId: null,
+          toolName: null,
+          isError: false,
+          position: 6,
+          createdAt: '',
+        },
+        {
+          id: 'm7',
+          role: 'assistant',
+          content: 'Separate answer',
+          toolCalls: null,
+          toolCallId: null,
+          toolName: null,
+          isError: false,
+          position: 7,
           createdAt: '',
         },
       ],
@@ -271,9 +352,13 @@ describe('Chat', () => {
 
     const turns = fixture.componentInstance['toChatTurns'](detail);
 
-    expect(turns).toHaveLength(3);
-    expect(turns[1].tools).toEqual([{ id: 'c1', name: 'spend_by_category', ok: true }]);
-    expect(turns[2].text).toBe('[[LF_OFF_TOPIC]]');
+    expect(turns).toHaveLength(4);
+    expect(turns[1].tools).toEqual([
+      { id: 'c1', name: 'spend_by_category', ok: true },
+      { id: 'c2', name: 'monthly_totals', ok: true },
+    ]);
+    expect(turns[1].text).toBe(expected);
+    expect(turns[3].text).toBe('Separate answer');
   });
 
   it('rehydrates the exact pending persisted tool call', () => {
@@ -322,8 +407,8 @@ describe('Chat', () => {
       ],
     });
 
+    expect(turns).toHaveLength(1);
     expect(turns[0].pendingConfirm?.id).toBe('w1');
-    expect(turns[1].pendingConfirm).toBeUndefined();
   });
 
   it('labels confirmation entries and resolves account and category ids', async () => {

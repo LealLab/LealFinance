@@ -113,6 +113,7 @@
               <div
                 class="chat-message-row flex min-w-0"
                 [class.chat-message-row--user]="turn.role === 'user'"
+                [class.chat-message-row--assistant]="turn.role === 'assistant'"
               >
                 <div
                   class="chat-message-body min-w-0 max-w-[min(84%,48rem)] break-words text-sm"
@@ -122,37 +123,15 @@
                     {{ t('chat.offTopic') }}
                   } @else if (turn.text) {
                     @if (turn.role === 'assistant') {
-                      <div class="md-content" [innerHTML]="turn.text | markdown"></div>
+                      <div
+                        class="md-content"
+                        [innerHTML]="turn.text | markdown: t('layout.update.modal.copy')"
+                      ></div>
                     } @else {
                       <span class="whitespace-pre-wrap">{{ turn.text }}</span>
                     }
                   } @else if (turn.role === 'assistant' && sending() && $last) {
                     <span class="chat-thinking text-content-muted">{{ t('chat.thinking') }}</span>
-                  }
-
-                  @if (turn.tools.length) {
-                    <details class="chat-activity">
-                      <summary class="chat-activity-summary">
-                        <app-icon
-                          name="chevronRight"
-                          [size]="12"
-                          class="chat-activity-chevron"
-                          aria-hidden="true"
-                        />
-                        <span class="chat-activity-indicator" aria-hidden="true"></span>
-                        {{ sending() && $last ? t('chat.thinking') : t('chat.toolDone') }}
-                      </summary>
-                      <div class="chat-activity-list" role="list">
-                        @for (tool of turn.tools; track tool.id) {
-                          <div class="chat-activity-item" role="listitem">
-                            <span class="min-w-0 truncate">{{ tool.name }}</span>
-                            <span class="shrink-0 text-content-muted">{{
-                              tool.ok === undefined ? t('chat.toolRunning') : t('chat.toolDone')
-                            }}</span>
-                          </div>
-                        }
-                      </div>
-                    </details>
                   }
 
                   @if (turn.pendingConfirm; as confirmation) {
@@ -201,6 +180,30 @@
                     </app-card>
                   }
                 </div>
+                @if (turn.tools.length) {
+                  <details class="chat-activity">
+                    <summary class="chat-activity-summary">
+                      <app-icon
+                        name="chevronRight"
+                        [size]="12"
+                        class="chat-activity-chevron"
+                        aria-hidden="true"
+                      />
+                      <span class="chat-activity-indicator" aria-hidden="true"></span>
+                      {{ sending() && $last ? t('chat.thinking') : t('chat.toolDone') }}
+                    </summary>
+                    <div class="chat-activity-list" role="list">
+                      @for (tool of turn.tools; track tool.id) {
+                        <div class="chat-activity-item" role="listitem">
+                          <span class="min-w-0 truncate">{{ tool.name }}</span>
+                          <span class="shrink-0 text-content-muted">{{
+                            tool.ok === undefined ? t('chat.toolRunning') : t('chat.toolDone')
+                          }}</span>
+                        </div>
+                      }
+                    </div>
+                  </details>
+                }
               </div>
             } @empty {
               <p class="text-sm text-content-muted">{{ t('chat.empty.body') }}</p>

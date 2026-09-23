@@ -14,8 +14,18 @@ import { marked } from 'marked';
  */
 @Pipe({ name: 'markdown' })
 export class MarkdownPipe implements PipeTransform {
-  transform(value: string | null | undefined): string {
+  transform(value: string | null | undefined, copyCodeLabel?: string): string {
     if (!value) return '';
-    return marked.parse(value, { async: false, gfm: true, breaks: true }) as string;
+    const html = marked.parse(value, { async: false, gfm: true, breaks: true }) as string;
+    if (!copyCodeLabel) return html;
+
+    const label = copyCodeLabel
+      .replaceAll('&', '&amp;')
+      .replaceAll('"', '&quot;')
+      .replaceAll('<', '&lt;');
+    return html.replace(
+      /<pre><code\b/g,
+      `<pre><span role="button" tabindex="0" class="md-code-copy" aria-label="${label}" title="${label}"></span><code`,
+    );
   }
 }
