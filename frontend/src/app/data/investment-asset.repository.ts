@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs';
 import { InvestmentAsset } from '../domain/models/investment';
 
-export type InvestmentAssetCreate =
-  Omit<InvestmentAsset, 'id' | 'archived' | 'currency'> & { archived?: boolean };
+export type InvestmentAssetCreate = Omit<InvestmentAsset, 'id' | 'archived'> & { archived?: boolean };
 export type InvestmentAssetUpdate = Partial<Omit<InvestmentAsset, 'id' | 'archived'>>;
 
 export abstract class InvestmentAssetRepository {

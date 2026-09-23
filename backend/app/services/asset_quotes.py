@@ -449,7 +449,7 @@ async def _fetch_coingecko_historical(
 
         history = await client.get(
             f"{_COINGECKO_HISTORY_URL}/{coin_id}/history",
-            params={"date": as_of.isoformat(), "localization": "false"},
+            params={"date": as_of.strftime("%d-%m-%Y"), "localization": "false"},
             headers=headers,
         )
         history.raise_for_status()

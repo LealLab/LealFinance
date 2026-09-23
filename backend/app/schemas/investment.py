@@ -75,6 +75,7 @@ class InvestmentAssetCreate(BaseModel):
     symbol: str = Field(min_length=1, max_length=32)
     name: str = Field(min_length=1, max_length=100)
     asset_class: InvestmentAssetClass
+    currency: CurrencyCodeInput
     quote_provider: InvestmentQuoteProvider = "manual"
     manual_price: Decimal | None = Field(default=None, ge=0)
     archived: bool = False

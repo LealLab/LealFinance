@@ -84,7 +84,7 @@
               <div>
                 <div class="text-xs text-content-muted">{{ t('investments.columns.marketValue') }}</div>
                 <div class="font-mono tabular-nums">
-                  {{ stats.marketValue ? (stats.marketValue.amount | money: wallet.currency) : (stats.bookValue.amount | money: wallet.currency) }}
+                  {{ stats.marketValue ? (stats.marketValue.amount | money: wallet.currency) : '—' }}
                 </div>
               </div>
               <div>

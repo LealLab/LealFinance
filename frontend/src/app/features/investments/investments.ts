@@ -69,7 +69,10 @@ export class Investments {
           ),
   });
   protected readonly dataError = computed(
-    () => this.walletsResource.status() === 'error' || this.summaryResource.status() === 'error',
+    () =>
+      this.walletsResource.status() === 'error' ||
+      this.summaryResource.status() === 'error' ||
+      this.positionsResource.status() === 'error',
   );
   protected readonly formOpen = signal(false);
   protected readonly editingWallet = signal<InvestmentWallet | undefined>(undefined);
@@ -122,6 +125,7 @@ export class Investments {
   protected retryAll(): void {
     this.walletsResource.reload();
     this.summaryResource.reload();
+    this.positionsResource.reload();
   }
 
   protected openCreate(): void {

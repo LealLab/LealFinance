@@ -139,7 +139,7 @@ export class InvestmentTransactionFormModal {
     this.form.controls.entryMode.setValue(mode);
     this.form.controls.quantity.setValue('');
     this.form.controls.price.setValue('');
-    if (mode === 'quantity_price') this.form.controls.amount.setValue('');
+    this.form.controls.amount.setValue('');
   }
 
   protected submit(): void {

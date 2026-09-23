@@ -443,10 +443,8 @@ export interface InvestmentAssetWire {
   manual_price: string | null;
   archived: boolean;
 }
-export type InvestmentAssetInputWire = Omit<InvestmentAssetWire, 'id' | 'currency'>;
-export type InvestmentAssetPatchWire = NullablePatch<
-  Omit<InvestmentAssetWire, 'id' | 'archived'>
->;
+export type InvestmentAssetInputWire = Omit<InvestmentAssetWire, 'id'>;
+export type InvestmentAssetPatchWire = NullablePatch<InvestmentAssetInputWire>;
 
 export interface InvestmentTransactionWire {
   id: string;

@@ -577,7 +577,7 @@ async def test_historical_coingecko_parser_resolves_symbol_to_coin_id(
             if url.endswith("/markets"):
                 return Response([{"id": "bitcoin", "symbol": "btc"}])
             assert url.endswith("/bitcoin/history")
-            assert kwargs["params"] == {"date": "2026-01-15", "localization": "false"}
+            assert kwargs["params"] == {"date": "15-01-2026", "localization": "false"}
             return Response({"market_data": {"current_price": {"brl": "330000"}}})
 
     monkeypatch.setattr(quotes_service.httpx, "AsyncClient", Client)

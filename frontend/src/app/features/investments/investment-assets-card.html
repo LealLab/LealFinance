@@ -39,6 +39,7 @@
                 @if (positionFor(asset); as position) {
                   @if (position.price) {
                     {{ position.price | money: asset.currency : 'precise' }}
+                    @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
                   } @else {
                     <span class="text-content-muted">{{ t('investments.detail.stale') }}</span>
                   }
@@ -83,6 +84,7 @@
                   @if (positionFor(asset); as position) {
                     @if (position.price) {
                       {{ position.price | money: asset.currency : 'precise' }}
+                      @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
                     } @else {
                       <span class="text-content-muted">{{ t('investments.detail.stale') }}</span>
                     }

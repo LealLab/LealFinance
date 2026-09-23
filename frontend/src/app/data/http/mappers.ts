@@ -798,6 +798,7 @@ export const mapInvestmentAssetCreate = (
   symbol: input.symbol,
   name: input.name,
   asset_class: input.assetClass,
+  currency: input.currency,
   quote_provider: input.quoteProvider,
   manual_price: nullable(input.manualPrice),
   archived: input.archived ?? false,

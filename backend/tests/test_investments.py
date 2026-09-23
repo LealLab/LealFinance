@@ -153,6 +153,21 @@ async def test_asset_provider_heuristic_and_duplicate_conflict(
     assert duplicate.json()["error"]["code"] == "investment_asset.symbol_already_exists"
 
 
+async def test_create_asset_currency_is_independent_of_base_currency(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """A B3 ticker is always priced in BRL by brapi regardless of the user's
+    own base currency - forcing the asset's currency to base currency would
+    mislabel every cached quote."""
+    await _authed(client, db_session, "investment-asset-currency@example.com", base_currency="USD")
+    response = await client.post(
+        "/api/v1/investments/assets",
+        json={"symbol": "PETR4", "name": "Petrobras", "asset_class": "stock", "currency": "BRL"},
+    )
+    assert response.status_code == 201, response.text
+    assert response.json()["currency"] == "BRL"
+
+
 async def test_crypto_asset_defaults_to_coingecko_provider(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -628,6 +643,56 @@ async def test_buy_amount_mode_rejects_non_positive_net_and_future_dates(
         )
         assert response.status_code == 422, response.text
         assert response.json()["error"]["code"] == code
+
+
+async def test_buy_amount_mode_converts_price_from_asset_currency_to_wallet_currency(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """quote.price is denominated in the asset's own currency; amount-spent
+    mode must convert it into the wallet's currency before deriving
+    quantity, the same as a manually entered quantity/price pair."""
+    await _authed(client, db_session, "investment-amount-mode-fx@example.com")
+    db_session.add(
+        ExchangeRate(
+            base_code="USD",
+            quote_code="BRL",
+            as_of=date(2026, 1, 1),
+            source="openexchangerates",
+            rate=Decimal("5.0000000000"),
+        )
+    )
+    await db_session.flush()
+
+    wallet = await _create_wallet(client, currency="BRL")
+    asset_response = await client.post(
+        "/api/v1/investments/assets",
+        json={
+            "symbol": "USDASSET",
+            "name": "USD Asset",
+            "asset_class": "stock",
+            "currency": "USD",
+            "manual_price": "10",
+        },
+    )
+    assert asset_response.status_code == 201, asset_response.text
+
+    response = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset_response.json()["id"],
+            "type": "buy",
+            "date": "2026-01-01",
+            "amount": "505",
+            "fee": "5",
+            "currency": "BRL",
+        },
+    )
+    assert response.status_code == 201, response.text
+    body = response.json()
+    assert body["price"] == "50.0000000000"
+    assert body["quantity"] == "10"
+    assert body["amount"] == "500.0000"
 
 
 async def test_transaction_currency_must_match_wallet_currency(

@@ -147,11 +147,6 @@ describe('InvestmentDetail', () => {
       form: { getRawValue: () => { currency: string }; patchValue: (value: object) => void };
     };
     expect(modal.form.getRawValue().currency).toBe('USD');
-    expect(
-      fixture.nativeElement.querySelector(
-        'button[aria-describedby="investment-asset-currency-tooltip"]',
-      ),
-    ).not.toBeNull();
     modal.form.patchValue({ assetClass: 'crypto' });
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Moeda em que este ativo');

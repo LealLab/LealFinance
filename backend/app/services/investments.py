@@ -171,7 +171,7 @@ async def _check_asset_available(
 async def create_asset(
     db: AsyncSession, user_id: UUID, data: InvestmentAssetCreate
 ) -> InvestmentAsset:
-    currency = await _base_currency(db, user_id)
+    await get_active_currency(db, data.currency)
     await _check_asset_available(db, user_id, data.symbol)
     quote_provider = data.quote_provider
     if quote_provider == "manual":
@@ -182,7 +182,6 @@ async def create_asset(
     asset = InvestmentAsset(
         user_id=user_id,
         **data.model_dump(exclude={"quote_provider"}),
-        currency=currency,
         quote_provider=quote_provider,
     )
     db.add(asset)
@@ -294,10 +293,19 @@ async def _resolve_amount_mode(
     quote = await asset_quotes.get_asset_price(db, user_id, asset, data.date)
     if quote.price is None or quote.price <= 0:
         raise ValidationAppError(code="investment_transaction.price_unavailable")
-    quantity = (net_amount / quote.price).quantize(Decimal(1).scaleb(-10), rounding=ROUND_HALF_UP)
+    # quote.price is denominated in asset.currency; net_amount (and the price
+    # stored on the transaction) must be in the wallet's currency, same as
+    # the quantity/price entry mode.
+    price = quote.price
+    if asset.currency != data.currency:
+        rate_result = await get_exchange_rate(
+            db, asset.currency, data.currency, user_id=user_id, as_of=data.date
+        )
+        price = price * rate_result.rate
+    quantity = (net_amount / price).quantize(Decimal(1).scaleb(-10), rounding=ROUND_HALF_UP)
     if quantity <= 0:
         raise ValidationAppError(code="investment_transaction.settlement_amount_not_positive")
-    return data.model_copy(update={"quantity": quantity, "price": quote.price})
+    return data.model_copy(update={"quantity": quantity, "price": price})
 
 
 async def _validate_transaction(
