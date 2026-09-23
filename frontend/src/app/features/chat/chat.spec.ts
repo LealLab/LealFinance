@@ -559,6 +559,51 @@ describe('Chat', () => {
     expect(reload).toHaveBeenCalledTimes(1);
   });
 
+  it('keeps the message list mounted while the conversation reloads', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const list = fixture.nativeElement.querySelector('.chat-messages');
+    expect(list).not.toBeNull();
+
+    const pending = new Subject<AgentConversationDetail>();
+    fixture.componentInstance['repo'].getConversation = vi.fn().mockReturnValue(pending);
+    fixture.componentInstance['detail'].reload();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['detail'].status()).toBe('reloading');
+    expect(fixture.nativeElement.querySelector('app-skeleton')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.chat-messages')).toBe(list);
+  });
+
+  it('follows new messages to the bottom unless the user scrolled up', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const list = fixture.nativeElement.querySelector('.chat-messages') as HTMLElement;
+    Object.defineProperty(list, 'scrollHeight', { configurable: true, value: 900 });
+    Object.defineProperty(list, 'clientHeight', { configurable: true, value: 300 });
+    const turns = (text: string) => [{ role: 'assistant' as const, text, tools: [] }];
+
+    fixture.componentInstance['liveMessages'].set(turns('one'));
+    fixture.detectChanges();
+    expect(list.scrollTop).toBe(900);
+
+    list.scrollTop = 100;
+    list.dispatchEvent(new Event('scroll'));
+    fixture.componentInstance['liveMessages'].set(turns('two'));
+    fixture.detectChanges();
+    expect(list.scrollTop).toBe(100);
+
+    fixture.componentInstance['send']('hi');
+    fixture.detectChanges();
+    expect(list.scrollTop).toBe(900);
+  });
+
   it('deletes a conversation after confirmation', async () => {
     const fixture = setup(true);
     fixture.detectChanges();

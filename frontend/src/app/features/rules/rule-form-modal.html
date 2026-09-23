@@ -12,10 +12,12 @@
           <label class="form-label" for="rule-priority">{{ t('rules.form.priority') }}</label>
           <input id="rule-priority" type="number" min="0" class="form-input" formControlName="priority" />
         </div>
-        <label class="flex items-end gap-2 pb-2 text-sm text-content-primary">
-          <input type="checkbox" formControlName="isActive" />
-          {{ t('rules.form.active') }}
-        </label>
+        <div class="flex items-end pb-2">
+          <label class="inline-flex items-center gap-2 text-sm text-content-primary">
+            <input type="checkbox" class="form-checkbox" formControlName="isActive" />
+            {{ t('rules.form.active') }}
+          </label>
+        </div>
       </div>
 
       <div>
