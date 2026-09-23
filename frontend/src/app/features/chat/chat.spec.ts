@@ -243,7 +243,11 @@ describe('Chat', () => {
     expect(chat['sending']()).toBe(false);
   });
 
-  it('folds persisted assistant tool rounds into one turn per user message', () => {
+  it.each([
+    ['', '[[LF_OFF_TOPIC]]', '[[LF_OFF_TOPIC]]'],
+    ['Checking accounts.', '# Balance\n100', 'Checking accounts.\n\n# Balance\n100'],
+    ['Checking accounts.', '[[LF_OFF_TOPIC]]', '[[LF_OFF_TOPIC]]'],
+  ])('folds persisted tool rounds with preamble %j and response %j', (preamble, response, expected) => {
     const fixture = setup();
     const detail: AgentConversationDetail = {
       id: 'c9',
@@ -269,7 +273,7 @@ describe('Chat', () => {
         {
           id: 'm1',
           role: 'assistant',
-          content: '',
+          content: preamble,
           toolCalls: [{ id: 'c1', name: 'spend_by_category', arguments: {} }],
           toolCallId: null,
           toolName: null,
@@ -313,7 +317,7 @@ describe('Chat', () => {
         {
           id: 'm5',
           role: 'assistant',
-          content: '[[LF_OFF_TOPIC]]',
+          content: response,
           toolCalls: null,
           toolCallId: null,
           toolName: null,
@@ -353,7 +357,7 @@ describe('Chat', () => {
       { id: 'c1', name: 'spend_by_category', ok: true },
       { id: 'c2', name: 'monthly_totals', ok: true },
     ]);
-    expect(turns[1].text).toBe('[[LF_OFF_TOPIC]]');
+    expect(turns[1].text).toBe(expected);
     expect(turns[3].text).toBe('Separate answer');
   });
 

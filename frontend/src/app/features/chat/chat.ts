@@ -404,7 +404,10 @@ export class Chat {
       }
       const pendingCall = message.toolCalls?.find((tool) => tool.id === pendingCallId);
       if (message.role === 'assistant' && last?.role === 'assistant') {
-        last.text += message.content;
+        last.text =
+          message.content === OFF_TOPIC
+            ? OFF_TOPIC
+            : [last.text, message.content].filter(Boolean).join('\n\n');
         last.tools.push(
           ...(message.toolCalls?.map((tool) => ({ id: tool.id, name: tool.name })) ?? []),
         );
