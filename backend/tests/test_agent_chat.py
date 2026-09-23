@@ -2,7 +2,9 @@
 
 import json
 from contextlib import asynccontextmanager
+from datetime import date
 from decimal import Decimal
+from unittest.mock import AsyncMock
 from uuid import UUID, uuid4
 
 import httpx
@@ -20,9 +22,11 @@ from app.models.agent_conversation import (
 )
 from app.models.agent_message import AgentMessage
 from app.models.change_journal import ChangeJournal
+from app.models.currency import ExchangeRate
 from app.models.investment import InvestmentTransaction
 from app.models.transaction import Transaction
 from app.models.user import ROLE_ADMIN, ROLE_MEMBER
+from app.services.asset_quotes import PriceResult
 from tests.factories import login_as, make_user
 
 
@@ -309,14 +313,36 @@ async def test_write_tool_confirmation_executes_only_after_approval(
     assert {entry.conversation_id for entry in journal} == {UUID(str(conversation["id"]))}
 
 
-async def test_investment_confirmation_streams_and_persists_preview_but_executes_raw_arguments(
-    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+@pytest.mark.parametrize("operation", ["create", "update"])
+@pytest.mark.parametrize("drift", ["none", "quote", "fx"])
+async def test_investment_confirmation_reconfirms_changed_values_and_ignores_client_arguments(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+    operation: str,
+    drift: str,
 ) -> None:
     _enable_agents(monkeypatch, anthropic_api_key="sk-env")
     user = await _chat_user(client, db_session, "chat-investment-preview@example.com")
     user.base_currency = "BRL"
     await db_session.commit()
-    wallet_response = await client.post("/api/v1/investments/wallets", json={"name": "Brokerage"})
+    cash_response = await client.post(
+        "/api/v1/accounts", json={"name": "Cash", "type": "checking", "currency": "USD"}
+    )
+    assert cash_response.status_code == 201, cash_response.text
+    rate = ExchangeRate(
+        base_code="USD",
+        quote_code="BRL",
+        as_of=date(2026, 1, 1),
+        source="openexchangerates",
+        rate=Decimal("5"),
+    )
+    db_session.add(rate)
+    await db_session.commit()
+    wallet_response = await client.post(
+        "/api/v1/investments/wallets",
+        json={"name": "Brokerage", "cash_account_id": cash_response.json()["id"]},
+    )
     assert wallet_response.status_code == 201, wallet_response.text
     asset_response = await client.post(
         "/api/v1/investments/assets",
@@ -341,8 +367,28 @@ async def test_investment_confirmation_streams_and_persists_preview_but_executes
             "currency": "BRL",
         },
     }
+    if operation == "update":
+        created = await client.post(
+            "/api/v1/investments/transactions",
+            json={**arguments["data"], "quantity": "1", "price": "10", "fee": "0"},
+        )
+        assert created.status_code == 201, created.text
+        arguments = {
+            "entity": "investment_transaction",
+            "id": created.json()["id"],
+            "changes": {"amount": "105", "fee": "5"},
+        }
+    quote = AsyncMock(
+        side_effect=[
+            PriceResult(
+                price=Decimal(value), is_stale=False, as_of=date(2026, 1, 1), source="manual"
+            )
+            for value in (["10.25", "20", "20"] if drift == "quote" else ["10.25"] * 3)
+        ]
+    )
+    monkeypatch.setattr("app.services.asset_quotes.get_asset_price", quote)
     conversation = await _conversation(client)
-    responses = [_tool_body("w1", "create_entity", arguments), _text_body("Recorded")]
+    responses = [_tool_body("w1", f"{operation}_entity", arguments), _text_body("Recorded")]
 
     def handler(_request: httpx.Request) -> httpx.Response:
         return httpx.Response(
@@ -359,18 +405,45 @@ async def test_investment_confirmation_streams_and_persists_preview_but_executes
     preview = first_events[-2][1]["preview"]
     assert preview["amount"] == "100.00"
     assert preview["quantity"] == "9.756097561"
-    assert preview["price"] == "10.2500000000"
+    assert Decimal(preview["price"]) == Decimal("10.25")
+    assert preview["settlement"]["amount"] == "21.00"
 
     detail = await client.get(f"/api/v1/agents/conversations/{conversation['id']}")
     stored_call = detail.json()["messages"][1]["tool_calls"][0]
     assert stored_call["arguments"] == arguments
     assert stored_call["preview"] == preview
 
-    tampered = {**arguments, "data": {**arguments["data"], "amount": "999"}}
+    if drift == "fx":
+        rate.rate = Decimal("10")
+        await db_session.commit()
+    field = "data" if operation == "create" else "changes"
+    tampered = {**arguments, field: {**arguments[field], "amount": "999"}}
     confirmed = await client.post(
         f"/api/v1/agents/conversations/{conversation['id']}/confirm",
         json={"tool_call_id": "w1", "approved": True, "arguments": tampered},
     )
+    if drift != "none":
+        refreshed = _events(confirmed.text)
+        assert [name for name, _ in refreshed] == ["tool_confirm", "done"]
+        assert refreshed[-1][1]["status"] == AGENT_CONVERSATION_STATUS_AWAITING
+        new_preview = refreshed[0][1]["preview"]
+        assert new_preview != preview
+        detail = (await client.get(f"/api/v1/agents/conversations/{conversation['id']}")).json()
+        assert detail["messages"][1]["tool_calls"][0]["preview"] == new_preview
+        assert detail["pending_call_id"] == "w1"
+        rows = (
+            await db_session.scalars(
+                select(InvestmentTransaction).where(InvestmentTransaction.user_id == user.id)
+            )
+        ).all()
+        assert len(rows) == (1 if operation == "update" else 0)
+        if rows:
+            assert rows[0].amount == Decimal("10")
+        assert await db_session.scalar(select(ChangeJournal.id)) is None
+        confirmed = await client.post(
+            f"/api/v1/agents/conversations/{conversation['id']}/confirm",
+            json={"tool_call_id": "w1", "approved": True, "arguments": tampered},
+        )
     assert [name for name, _ in _events(confirmed.text)] == ["tool_result", "delta", "done"]
     transaction = (
         await db_session.execute(
@@ -378,6 +451,12 @@ async def test_investment_confirmation_streams_and_persists_preview_but_executes
         )
     ).scalar_one()
     assert transaction.amount == Decimal("100.0000")
+    assert transaction.quantity == (Decimal("5") if drift == "quote" else Decimal("9.756097561"))
+    settlement = await db_session.get(Transaction, transaction.transaction_id)
+    assert settlement is not None
+    assert settlement.amount == (Decimal("10.5") if drift == "fx" else Decimal("21"))
+    # Each approval resolves only once, then writes exactly those checked values.
+    assert quote.await_count == (2 if drift == "none" else 3)
 
 
 async def test_undo_changes_is_confirmed_then_reverses_the_earlier_write(

@@ -521,7 +521,12 @@ async def _get_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> 
     return _dump(spec, await ownership.get_owned(db, spec.model, payload.id, user_id))
 
 
-async def _create_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+async def _create_entity(
+    db: AsyncSession,
+    user_id: UUID,
+    args: dict[str, Any],
+    expected_preview: dict[str, object] | None = None,
+) -> dict[str, Any]:
     payload = _validate(_CreateEntityArgs, args)
     spec = _entity(payload.entity)
     if spec.create is None:
@@ -530,6 +535,16 @@ async def _create_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) 
     data = payload.data
     if spec.prepare_create is not None:
         data = await spec.prepare_create(db, user_id, data)
+    if payload.entity == "investment_transaction" and expected_preview is not None:
+        return _dump(
+            spec,
+            await investments_service.create_investment_transaction(
+                db,
+                user_id,
+                _validate(InvestmentTransactionCreate, data),
+                expected_preview=expected_preview,
+            ),
+        )
     return _dump(spec, await create(db, user_id, _validate(schema, data)))
 
 
@@ -544,7 +559,12 @@ async def _preview_create_entity(
     return await investments_service.preview_create_investment_transaction(db, user_id, data)
 
 
-async def _update_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+async def _update_entity(
+    db: AsyncSession,
+    user_id: UUID,
+    args: dict[str, Any],
+    expected_preview: dict[str, object] | None = None,
+) -> dict[str, Any]:
     payload = _validate(_UpdateEntityArgs, args)
     spec = _entity(payload.entity)
     if spec.update is None:
@@ -553,6 +573,17 @@ async def _update_entity(db: AsyncSession, user_id: UUID, args: dict[str, Any]) 
     changes = payload.changes
     if spec.prepare_update is not None:
         changes = spec.prepare_update(changes)
+    if payload.entity == "investment_transaction" and expected_preview is not None:
+        return _dump(
+            spec,
+            await investments_service.update_investment_transaction(
+                db,
+                user_id,
+                payload.id,
+                _validate(InvestmentTransactionUpdate, changes),
+                expected_preview=expected_preview,
+            ),
+        )
     return _dump(spec, await update(db, user_id, payload.id, _validate(schema, changes)))
 
 
@@ -620,6 +651,9 @@ class ToolDef:
     writes: bool = False
     preview: (
         Callable[[AsyncSession, UUID, dict[str, Any]], Awaitable[dict[str, Any] | None]] | None
+    ) = None
+    run_confirmed: (
+        Callable[[AsyncSession, UUID, dict[str, Any], dict[str, object]], Awaitable[Any]] | None
     ) = None
 
     def provider_spec(self) -> ToolSpec:
@@ -890,6 +924,7 @@ SPECS: list[ToolDef] = [
         run=_create_entity,
         writes=True,
         preview=_preview_create_entity,
+        run_confirmed=_create_entity,
     ),
     ToolDef(
         name="update_entity",
@@ -911,6 +946,7 @@ SPECS: list[ToolDef] = [
         run=_update_entity,
         writes=True,
         preview=_preview_update_entity,
+        run_confirmed=_update_entity,
     ),
     ToolDef(
         name="delete_entity",

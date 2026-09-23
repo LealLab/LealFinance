@@ -1,7 +1,7 @@
 """Investment wallet, asset, and transaction CRUD with optional cash legs."""
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
@@ -46,6 +46,12 @@ from app.services.exchange_rates import (
 from app.services.transactions import build_transaction
 
 _B3_SYMBOL = re.compile(r"^[A-Z]{4}\d{1,2}$")
+
+
+class InvestmentPreviewChanged(Exception):
+    def __init__(self, preview: dict[str, object]) -> None:
+        super().__init__("Investment values changed since approval was requested")
+        self.preview = preview
 
 
 async def _base_currency(db: AsyncSession, user_id: UUID) -> str:
@@ -447,6 +453,7 @@ async def _prepare_investment_transaction(
     *,
     exclude_transaction_id: UUID | None = None,
     cache_quote: bool = True,
+    settle_cash: bool = True,
 ) -> _PreparedInvestmentTransaction:
     currency = await get_active_currency(db, data.currency)
     wallet, _asset = await _validate_transaction(
@@ -464,9 +471,14 @@ async def _prepare_investment_transaction(
     data = _with_derived_amount(data, currency.decimal_digits)
     cash_account = await ownership.get_owned_or_none(db, Account, wallet.cash_account_id, user_id)
     settlement = None
-    if cash_account is not None and data.type in (
-        INVESTMENT_TRANSACTION_TYPE_BUY,
-        INVESTMENT_TRANSACTION_TYPE_SELL,
+    if (
+        settle_cash
+        and cash_account is not None
+        and data.type
+        in (
+            INVESTMENT_TRANSACTION_TYPE_BUY,
+            INVESTMENT_TRANSACTION_TYPE_SELL,
+        )
     ):
         settlement = await _calculate_cash_settlement(db, user_id, wallet, cash_account, data)
     return _PreparedInvestmentTransaction(data, wallet, cash_account, settlement)
@@ -543,9 +555,20 @@ async def _settle_cash_leg(
 
 
 async def create_investment_transaction(
-    db: AsyncSession, user_id: UUID, data: InvestmentTransactionCreate
+    db: AsyncSession,
+    user_id: UUID,
+    data: InvestmentTransactionCreate,
+    *,
+    expected_preview: dict[str, object] | None = None,
 ) -> InvestmentTransaction:
-    prepared = await _prepare_investment_transaction(db, user_id, data)
+    prepared = await _prepare_investment_transaction(
+        db, user_id, data, cache_quote=expected_preview is None
+    )
+    if (
+        expected_preview is not None
+        and (preview := _investment_preview(prepared)) != expected_preview
+    ):
+        raise InvestmentPreviewChanged(preview)
     data = prepared.data
     transaction = InvestmentTransaction(user_id=user_id, **data.model_dump())
     db.add(transaction)
@@ -621,31 +644,28 @@ async def preview_update_investment_transaction(
     data: InvestmentTransactionUpdate,
 ) -> dict[str, object]:
     transaction = await get_investment_transaction(db, user_id, transaction_id)
-    effective, _changes, _amount_mode = _update_effective_transaction(transaction, data)
-    return _investment_preview(
-        await _prepare_investment_transaction(
-            db,
-            user_id,
-            effective,
-            exclude_transaction_id=transaction.id,
-            cache_quote=False,
-        )
+    prepared, _changes, _settlement_changed = await _prepare_investment_update(
+        db, user_id, transaction, data, cache_quote=False
     )
+    return _investment_preview(prepared)
 
 
-async def update_investment_transaction(
+async def _prepare_investment_update(
     db: AsyncSession,
     user_id: UUID,
-    transaction_id: UUID,
+    transaction: InvestmentTransaction,
     data: InvestmentTransactionUpdate,
-) -> InvestmentTransaction:
-    transaction = await get_investment_transaction(db, user_id, transaction_id)
+    *,
+    cache_quote: bool,
+) -> tuple[_PreparedInvestmentTransaction, dict[str, object], bool]:
     effective, changes, amount_mode = _update_effective_transaction(transaction, data)
     prepared = await _prepare_investment_transaction(
         db,
         user_id,
         effective,
         exclude_transaction_id=transaction.id,
+        cache_quote=cache_quote,
+        settle_cash=False,
     )
     effective = prepared.data
     if amount_mode and effective.quantity is not None and effective.price is not None:
@@ -659,6 +679,42 @@ async def update_investment_transaction(
             {"wallet_id", "type", "date", "quantity", "price", "amount", "fee", "currency"}
         )
     )
+    if (
+        settlement_changed
+        and prepared.cash_account is not None
+        and effective.type
+        in (
+            INVESTMENT_TRANSACTION_TYPE_BUY,
+            INVESTMENT_TRANSACTION_TYPE_SELL,
+        )
+    ):
+        prepared = replace(
+            prepared,
+            settlement=await _calculate_cash_settlement(
+                db, user_id, prepared.wallet, prepared.cash_account, effective
+            ),
+        )
+    return prepared, changes, settlement_changed
+
+
+async def update_investment_transaction(
+    db: AsyncSession,
+    user_id: UUID,
+    transaction_id: UUID,
+    data: InvestmentTransactionUpdate,
+    *,
+    expected_preview: dict[str, object] | None = None,
+) -> InvestmentTransaction:
+    transaction = await get_investment_transaction(db, user_id, transaction_id)
+    prepared, changes, settlement_changed = await _prepare_investment_update(
+        db, user_id, transaction, data, cache_quote=expected_preview is None
+    )
+    if (
+        expected_preview is not None
+        and (preview := _investment_preview(prepared)) != expected_preview
+    ):
+        raise InvestmentPreviewChanged(preview)
+    effective = prepared.data
     try:
         if settlement_changed:
             assert transaction.transaction_id is not None

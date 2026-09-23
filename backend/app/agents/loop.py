@@ -118,9 +118,17 @@ async def _next_position(db: AsyncSession, user_id: UUID, conversation_id: UUID)
 
 
 async def execute_tool(
-    db: AsyncSession, user_id: UUID, spec: tools.ToolDef, arguments: dict[str, Any]
+    db: AsyncSession,
+    user_id: UUID,
+    spec: tools.ToolDef,
+    arguments: dict[str, Any],
+    expected_preview: dict[str, object] | None = None,
 ) -> tuple[str, bool]:
     try:
+        if expected_preview is not None and spec.run_confirmed is not None:
+            return json.dumps(
+                await spec.run_confirmed(db, user_id, arguments, expected_preview)
+            ), False
         return json.dumps(await spec.run(db, user_id, arguments)), False
     except AppError as err:
         return json.dumps({"error": err.code, "params": err.params}), True

@@ -26,6 +26,7 @@ from app.models.user import User
 from app.schemas.agent import ConversationCreate
 from app.services import agent_memories, change_journal
 from app.services.agent_providers import _require_known_provider
+from app.services.investments import InvestmentPreviewChanged
 from app.services.ownership import get_owned, list_owned
 
 
@@ -240,12 +241,40 @@ async def stream_confirm(
             else:
                 # Provider tool-call ids are only unique within a conversation
                 # (some emit "call_0"), so the undo group id carries both.
-                async with change_journal.journaling(
-                    db,
-                    call_id=f"{conversation.id}:{tool_call_id}",
-                    conversation_id=conversation.id,
-                ):
-                    content, is_error = await loop.execute_tool(db, user_id, spec, call_args)
+                expected_preview = pending.get("preview")
+                try:
+                    async with change_journal.journaling(
+                        db,
+                        call_id=f"{conversation.id}:{tool_call_id}",
+                        conversation_id=conversation.id,
+                    ):
+                        content, is_error = await loop.execute_tool(
+                            db,
+                            user_id,
+                            spec,
+                            call_args,
+                            expected_preview if isinstance(expected_preview, dict) else None,
+                        )
+                except InvestmentPreviewChanged as changed:
+                    message.tool_calls = [
+                        {**call, "preview": changed.preview}
+                        if str(call.get("id")) == tool_call_id
+                        else call
+                        for call in message.tool_calls or []
+                    ]
+                    await db.commit()
+                    yield _serialize(
+                        loop.ToolAwaitingConfirmation(
+                            tool_call_id, name, call_args, changed.preview
+                        )
+                    )
+                    yield _serialize(
+                        loop.Done(
+                            status=AGENT_CONVERSATION_STATUS_AWAITING,
+                            message_id=str(message.id),
+                        )
+                    )
+                    return
             await loop.persist_message(
                 db,
                 conversation,
