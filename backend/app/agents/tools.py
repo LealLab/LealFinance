@@ -1,8 +1,8 @@
 """Financial agent tools.
 
 Reads and analytics are hand-written tools. Create, update, and delete for every
-user-owned entity go through the generic `*_entity` tools, driven by the registry
-in `app/agents/entities.py`. `create_category_group` and `delete_category_structure`
+user-owned entity go through the generic entity tools, driven by the registry in
+`app/agents/entities.py`. `create_category_group` and `delete_category_structure`
 stay separate because they collapse many calls into one.
 """
 
@@ -451,6 +451,10 @@ class _CreateEntityArgs(_EntityArgs):
     data: dict[str, Any]
 
 
+class _CreateEntitiesArgs(_EntityArgs):
+    records: list[dict[str, Any]] = Field(min_length=1, max_length=MAX_BULK_IDS)
+
+
 class _UpdateEntityArgs(_EntityIdArgs):
     changes: dict[str, Any]
 
@@ -546,6 +550,26 @@ async def _create_entity(
             ),
         )
     return _dump(spec, await create(db, user_id, _validate(schema, data)))
+
+
+async def _create_entities(db: AsyncSession, user_id: UUID, args: dict[str, Any]) -> dict[str, Any]:
+    payload = _validate(_CreateEntitiesArgs, args)
+    spec = _entity(payload.entity)
+    if payload.entity == "investment_transaction" or spec.create is None:
+        raise _unsupported(spec, "create")
+    schema, create = spec.create
+    records: list[BaseModel] = []
+    for data in payload.records:
+        if spec.prepare_create is not None:
+            data = await spec.prepare_create(db, user_id, data)
+        records.append(_validate(schema, data))
+
+    # ponytail: one commit per record (services commit); wrap in a single
+    # transaction if partial batches show up
+    created = []
+    for record in records:
+        created.append(_dump(spec, await create(db, user_id, record)))
+    return {"entity": spec.name, "created": created}
 
 
 async def _preview_create_entity(
@@ -804,8 +828,8 @@ SPECS: list[ToolDef] = [
     ToolDef(
         name="create_category_group",
         description=(
-            "Create a category group and, optionally, its categories in one call. Prefer "
-            "this over one create_category call per category when setting up a structure."
+            "Create a category group and, optionally, its categories in one call when setting up "
+            "a new structure."
         ),
         schema={
             "type": "object",
@@ -925,6 +949,30 @@ SPECS: list[ToolDef] = [
         writes=True,
         preview=_preview_create_entity,
         run_confirmed=_create_entity,
+    ),
+    ToolDef(
+        name="create_entities",
+        description=(
+            "Create several records of one kind in one confirmed action. Each item in `records` "
+            "holds fields shown by describe_entity. Investment transactions must use "
+            "create_entity for their preview and reconfirm flow."
+        ),
+        schema={
+            "type": "object",
+            "properties": {
+                "entity": _ENTITY_PROPERTY,
+                "records": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": MAX_BULK_IDS,
+                    "items": {"type": "object"},
+                },
+            },
+            "required": ["entity", "records"],
+            "additionalProperties": False,
+        },
+        run=_create_entities,
+        writes=True,
     ),
     ToolDef(
         name="update_entity",
