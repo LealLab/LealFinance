@@ -44,7 +44,8 @@ use Transloco and pass `task i18n:validate`.
 ### PR titles
 
 Use a conventional-commit title: `feat:`, `fix:`, `docs:`, `perf:`, `ci:`,
-`chore:`, `refactor:`, `test:`, optionally scoped (`feat(agents): ...`) and
+`security:`, `chore:`, `refactor:`, `test:`, optionally scoped
+(`feat(agents): ...`). Use `fix(security): ...` for a security fix and
 `chore(deps): ...` for dependency bumps. A workflow turns the prefix into a
 label, and the label decides which section of the release notes the PR lands
 in (see [Releases](#releases)). A title without a recognized prefix is listed

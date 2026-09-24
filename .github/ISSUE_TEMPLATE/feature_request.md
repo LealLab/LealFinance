@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an improvement to LealFinance
 title: ""
-labels: ""
+labels: "feature request"
 assignees: ""
 ---
 

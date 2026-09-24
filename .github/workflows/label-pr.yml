@@ -1,24 +1,23 @@
-name: Label PR
+name: Triage PR
 
-# Maps the conventional-commit prefix of a PR title to a label, which
-# .github/release.yml turns into a release-notes section. Uses
-# pull_request_target so fork PRs get a write token; it never checks out or
-# runs PR code, and the title only ever reaches the script through an env var.
+# Maps PR titles to release-note labels and assigns eligible authors.
+# pull_request_target gives fork PRs a write token. No PR code is checked out,
+# and untrusted title and author values only reach the script through env vars.
 
 on:
   pull_request_target:
     types: [opened, edited, reopened]
 
 permissions:
-  issues: write
   pull-requests: write
 
 jobs:
-  label:
-    name: Label from title
+  triage:
+    name: Label and assign PR
     runs-on: ubuntu-latest
     steps:
-      - name: Apply label
+      - name: Label from title
+        if: github.event.action != 'edited' || github.event.changes.title
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -30,19 +29,38 @@ jobs:
             label="release"
           elif [[ "$PR_TITLE" =~ ^(chore|build|ci)\(deps(-dev)?\)!?: ]]; then
             label="dependencies"
+          elif [[ "$PR_TITLE" =~ ^fix\(security\)!?: ]]; then
+            label="security"
           elif [[ "$PR_TITLE" =~ ^([a-z]+)(\([^\)]*\))?!?: ]]; then
             case "${BASH_REMATCH[1]}" in
-              feat) label="enhancement" ;;
-              fix) label="bug" ;;
+              feat) label="feature" ;;
+              fix) label="bugfix" ;;
               docs) label="documentation" ;;
               perf) label="performance" ;;
+              security) label="security" ;;
               ci) label="ci" ;;
             esac
           fi
 
-          # No label: the PR falls into the Maintenance catch-all.
-          [ -n "$label" ] || exit 0
+          current_labels=$(gh api --paginate "repos/$GH_REPO/issues/$PR_NUMBER/labels" --jq '.[].name')
+          for managed in feature bugfix documentation performance security dependencies ci release; do
+            if [[ "$managed" != "$label" ]] && grep -Fxq "$managed" <<< "$current_labels"; then
+              gh api -X DELETE "repos/$GH_REPO/issues/$PR_NUMBER/labels/$managed" --silent
+            fi
+          done
+          if [[ -n "$label" ]] && ! grep -Fxq "$label" <<< "$current_labels"; then
+            gh api -X POST "repos/$GH_REPO/issues/$PR_NUMBER/labels" -f "labels[]=$label" --silent
+          fi
 
-          # Adds only; a label set by hand is never removed.
-          gh label create "$label" > /dev/null 2>&1 || true
-          gh pr edit "$PR_NUMBER" --add-label "$label"
+      - name: Assign eligible author
+        if: github.event.action == 'opened' && github.event.pull_request.user.type == 'User'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          assignable=$(gh api --paginate "repos/$GH_REPO/assignees" --jq '.[].login')
+          if grep -Fxq "$PR_AUTHOR" <<< "$assignable"; then
+            gh api -X POST "repos/$GH_REPO/issues/$PR_NUMBER/assignees" -f "assignees[]=$PR_AUTHOR" --silent
+          fi

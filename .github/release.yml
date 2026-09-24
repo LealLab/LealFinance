@@ -9,10 +9,10 @@ changelog:
   categories:
     - title: Features
       labels:
-        - enhancement
+        - feature
     - title: Bug Fixes
       labels:
-        - bug
+        - bugfix
     - title: Documentation
       labels:
         - documentation
