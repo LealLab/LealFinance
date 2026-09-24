@@ -66,6 +66,22 @@ describe('Providers', () => {
     ).toBe('mcp-secret');
   });
 
+  it('opens MCP setup help from the question mark button', async () => {
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const helpButton = [...fixture.nativeElement.querySelectorAll('button')].find(
+      (button) => button.textContent.trim() === '?',
+    ) as HTMLButtonElement;
+    helpButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['mcpHelpOpen']()).toBe(true);
+    expect((fixture.nativeElement.querySelector('dialog') as HTMLDialogElement).open).toBe(true);
+  });
+
   it('marks only Ollama as experimental', async () => {
     const fixture = TestBed.createComponent(Providers);
     fixture.detectChanges();
@@ -103,8 +119,8 @@ describe('Providers', () => {
       configured: false,
       source: 'none',
       authModes: ['api_key', 'oauth'],
-      model: 'gpt-5.6-luna',
-      defaultModel: 'gpt-5.6-luna',
+      model: 'gpt-6-luna',
+      defaultModel: 'gpt-6-luna',
       models: [],
       reasoningEfforts: [],
     };
@@ -173,7 +189,7 @@ describe('Providers', () => {
     fixture.detectChanges();
 
     const select: HTMLSelectElement = fixture.nativeElement.querySelector('#provider-model-anthropic');
-    select.value = 'claude-opus-5';
+    select.value = 'claude-opus-5-5';
     select.dispatchEvent(new Event('change'));
     await fixture.whenStable();
     fixture.detectChanges();
@@ -181,8 +197,47 @@ describe('Providers', () => {
     const updated = fixture.componentInstance['providersResource']
       .value()
       ?.find((row) => row.provider === 'anthropic');
-    expect(updated?.model).toBe('claude-opus-5');
+    expect(updated?.model).toBe('claude-opus-5-5');
     expect(updated?.configured).toBe(true);
+  });
+
+  it('links a trimmed custom model id', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('openai', { apiKey: 'sk-test' }).subscribe(() => resolve()),
+    );
+    const link = vi.spyOn(repository, 'link');
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const select = fixture.nativeElement.querySelector(
+      '#provider-model-openai',
+    ) as HTMLSelectElement;
+    select.value = '__custom__';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector(
+      '#provider-model-custom-openai',
+    ) as HTMLInputElement;
+    input.value = '  ';
+    input.dispatchEvent(new Event('change'));
+    expect(link).not.toHaveBeenCalled();
+
+    input.value = '  custom-model-id  ';
+    input.dispatchEvent(new Event('change'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(link).toHaveBeenCalledWith('openai', { model: 'custom-model-id' });
+    expect(
+      fixture.componentInstance['providersResource']
+        .value()
+        ?.find((row) => row.provider === 'openai')?.model,
+    ).toBe('custom-model-id');
   });
 
   it('shows a reasoning effort select for a user-linked OpenAI provider', async () => {

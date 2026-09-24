@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Malli",
-      "recommendedOption": "{{model}} (suositeltu)"
+      "recommendedOption": "{{model}} (suositeltu)",
+      "customOption": "Mukautettu…",
+      "customPlaceholder": "Anna mallin tunnus"
     },
     "modelError": "Mallia ei voitu vaihtaa. Yritä uudelleen.",
     "effort": {
       "label": "Päättelyn taso"
+    },
+    "mcpHelpLabel": "MCP-yhteyden ohje",
+    "mcpHelp": {
+      "title": "Yhdistä MCP-asiakas",
+      "steps": {
+        "enableAgents": "Ota agentit käyttöön määrittämällä AGENTS_ENABLED=true ja COMPOSE_PROFILES=agents tiedostossa .env ja käynnistämällä pino sitten uudelleen.",
+        "exposeServer": "Aseta MCP-palvelin käytettäväksi. Se kuuntelee portissa 8001, jota ei julkaista oletusarvoisesti. Julkaise 8001:8001 mcp-palvelussa tai lisää nginxiin sijainti /mcp, joka välittää pyynnöt osoitteeseen http://mcp:8001/mcp.",
+        "generateToken": "Ylläpitäjät voivat napsauttaa tämän kortin ‘Luo tunnus’ -painiketta. Tunnus näytetään vain kerran, ja se on voimassa 30 päivää.",
+        "configureClient": "Määritä Streamable HTTP -asiakkaan päätepisteeksi http://<host>:8001/mcp ja otsakkeeksi Authorization: Bearer <token>.",
+        "stdioBridge": "Käytä vain stdio-protokollaa tukeville asiakkaille välitysohjelmaa npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Asiakas pyytää sinua vahvistamaan kirjoitustyökalut, ja jokainen muutos kirjataan, jotta sen voi kumota."
+      }
     }
   },
   "reconciliation": {

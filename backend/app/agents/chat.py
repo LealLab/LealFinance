@@ -247,7 +247,7 @@ async def _stream_openai_responses(
     turns: list[Turn],
     tools: list[ToolSpec],
 ) -> AsyncIterator[ProviderEvent]:
-    if credential.auth_mode != "oauth":
+    if credential.base_url:
         async for event in _stream_openai_compatible(credential, system, turns, tools):
             yield event
         return
@@ -256,11 +256,18 @@ async def _stream_openai_responses(
         "authorization": f"Bearer {credential.secret}",
         "content-type": "application/json",
         "accept": "text/event-stream",
-        "openai-beta": "responses=experimental",
-        "originator": "codex_cli_rs",
-        "session_id": str(uuid.uuid4()),
     }
-    if credential.account_id:
+    url = "https://api.openai.com/v1/responses"
+    if credential.auth_mode == "oauth":
+        headers.update(
+            {
+                "openai-beta": "responses=experimental",
+                "originator": "codex_cli_rs",
+                "session_id": str(uuid.uuid4()),
+            }
+        )
+        url = "https://chatgpt.com/backend-api/codex/responses"
+    if credential.auth_mode == "oauth" and credential.account_id:
         headers["chatgpt-account-id"] = credential.account_id
     body: dict[str, Any] = {
         "model": credential.model,
@@ -287,9 +294,7 @@ async def _stream_openai_responses(
     emitted_tool_call = False
     async with (
         httpx.AsyncClient(timeout=_TIMEOUT) as client,
-        client.stream(
-            "POST", "https://chatgpt.com/backend-api/codex/responses", headers=headers, json=body
-        ) as response,
+        client.stream("POST", url, headers=headers, json=body) as response,
     ):
         await _raise_for_status(response)
         async for line in response.aiter_lines():

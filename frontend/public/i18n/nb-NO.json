@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Modell",
-      "recommendedOption": "{{model}} (anbefalt)"
+      "recommendedOption": "{{model}} (anbefalt)",
+      "customOption": "Egendefinert…",
+      "customPlaceholder": "Skriv inn modell-ID"
     },
     "modelError": "Kunne ikke endre modellen. Prøv igjen.",
     "effort": {
       "label": "Resonneringsinnsats"
+    },
+    "mcpHelpLabel": "Hjelp for MCP-tilkobling",
+    "mcpHelp": {
+      "title": "Koble til en MCP-klient",
+      "steps": {
+        "enableAgents": "Aktiver agenter ved å angi AGENTS_ENABLED=true og COMPOSE_PROFILES=agents i .env, og start deretter stakken på nytt.",
+        "exposeServer": "Gjør MCP-serveren tilgjengelig. Den lytter på port 8001, som ikke publiseres som standard. Publiser 8001:8001 på tjenesten mcp, eller legg til en nginx-plassering /mcp som videresender til http://mcp:8001/mcp.",
+        "generateToken": "Administratorer kan klikke på ‘Generer token’ på dette kortet. Tokenet vises bare én gang og er gyldig i 30 dager.",
+        "configureClient": "Konfigurer en Streamable HTTP-klient med endepunktet http://<host>:8001/mcp og headeren Authorization: Bearer <token>.",
+        "stdioBridge": "For klienter som bare støtter stdio, bruk broen npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Klienten ber deg bekrefte skriveverktøy, og hver endring loggføres slik at den kan angres."
+      }
     }
   },
   "reconciliation": {

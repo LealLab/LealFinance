@@ -23,8 +23,8 @@ const OPENAI_STATUS: AgentProviderStatus = {
   configured: false,
   source: 'none',
   authModes: ['api_key', 'oauth'],
-  model: 'gpt-5.6-luna',
-  defaultModel: 'gpt-5.6-luna',
+  model: 'gpt-6-luna',
+  defaultModel: 'gpt-6-luna',
   models: [],
   reasoningEfforts: [],
 };

@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Yapay zekâ modeli",
-      "recommendedOption": "{{model}} (önerilen)"
+      "recommendedOption": "{{model}} (önerilen)",
+      "customOption": "Özel…",
+      "customPlaceholder": "Model kimliğini girin"
     },
     "modelError": "Model değiştirilemedi. Tekrar deneyin.",
     "effort": {
       "label": "Akıl yürütme çabası"
+    },
+    "mcpHelpLabel": "MCP bağlantı yardımı",
+    "mcpHelp": {
+      "title": "Bir MCP istemcisi bağlayın",
+      "steps": {
+        "enableAgents": "AGENTS_ENABLED=true ve COMPOSE_PROFILES=agents değerlerini .env dosyasında ayarlayıp yığını yeniden başlatarak aracıları etkinleştirin.",
+        "exposeServer": "MCP sunucusunu erişime açın. Sunucu, varsayılan olarak yayımlanmayan 8001 numaralı bağlantı noktasını dinler. mcp hizmetinde 8001:8001 eşlemesini yayımlayın veya nginx'e http://mcp:8001/mcp adresine yönlendiren /mcp konumu ekleyin.",
+        "generateToken": "Yöneticiler bu karttaki ‘Token oluştur’ düğmesine tıklayabilir. Token yalnızca bir kez gösterilir ve 30 gün geçerlidir.",
+        "configureClient": "Streamable HTTP istemcisini http://<host>:8001/mcp uç noktası ve Authorization: Bearer <token> başlığıyla yapılandırın.",
+        "stdioBridge": "Yalnızca stdio destekleyen istemciler için npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\" köprüsünü kullanın.",
+        "writeSafety": "İstemci yazma araçlarını onaylamanızı ister ve her değişikliği geri alınabilmesi için günlüğe kaydeder."
+      }
     }
   },
   "reconciliation": {

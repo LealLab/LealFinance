@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Μοντέλο",
-      "recommendedOption": "{{model}} (προτεινόμενο)"
+      "recommendedOption": "{{model}} (προτεινόμενο)",
+      "customOption": "Προσαρμοσμένο…",
+      "customPlaceholder": "Πληκτρολογήστε το αναγνωριστικό μοντέλου"
     },
     "modelError": "Δεν ήταν δυνατή η αλλαγή του μοντέλου. Δοκιμάστε ξανά.",
     "effort": {
       "label": "Επίπεδο συλλογισμού"
+    },
+    "mcpHelpLabel": "Βοήθεια σύνδεσης MCP",
+    "mcpHelp": {
+      "title": "Σύνδεση πελάτη MCP",
+      "steps": {
+        "enableAgents": "Ενεργοποιήστε τους agents ορίζοντας AGENTS_ENABLED=true και COMPOSE_PROFILES=agents στο .env και έπειτα επανεκκινήστε τη στοίβα.",
+        "exposeServer": "Κάντε τον διακομιστή MCP προσβάσιμο. Ακούει στη θύρα 8001, η οποία δεν δημοσιεύεται από προεπιλογή. Δημοσιεύστε την αντιστοίχιση 8001:8001 στην υπηρεσία mcp ή προσθέστε στο nginx τοποθεσία /mcp που προωθεί στο http://mcp:8001/mcp.",
+        "generateToken": "Οι διαχειριστές μπορούν να πατήσουν ‘Δημιουργία token’ σε αυτήν την κάρτα. Το token εμφανίζεται μία φορά και ισχύει για 30 ημέρες.",
+        "configureClient": "Ρυθμίστε πελάτη Streamable HTTP με τελικό σημείο http://<host>:8001/mcp και κεφαλίδα Authorization: Bearer <token>.",
+        "stdioBridge": "Για πελάτες που υποστηρίζουν μόνο stdio, χρησιμοποιήστε τη γέφυρα npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Ο πελάτης ζητά επιβεβαίωση για τα εργαλεία εγγραφής και καταγράφει κάθε αλλαγή ώστε να μπορεί να αναιρεθεί."
+      }
     }
   },
   "reconciliation": {

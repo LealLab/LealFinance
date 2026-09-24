@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Model AI",
-      "recommendedOption": "{{model}} (recomandat)"
+      "recommendedOption": "{{model}} (recomandat)",
+      "customOption": "Personalizat…",
+      "customPlaceholder": "Introdu ID-ul modelului"
     },
     "modelError": "Modelul nu a putut fi schimbat. Încearcă din nou.",
     "effort": {
       "label": "Efort de raționament"
+    },
+    "mcpHelpLabel": "Ajutor pentru conectarea MCP",
+    "mcpHelp": {
+      "title": "Conectează un client MCP",
+      "steps": {
+        "enableAgents": "Activează agenții setând AGENTS_ENABLED=true și COMPOSE_PROFILES=agents în .env, apoi repornește stiva.",
+        "exposeServer": "Expune serverul MCP. Acesta ascultă pe portul 8001, care nu este publicat implicit. Publică 8001:8001 pentru serviciul mcp sau adaugă în nginx o locație /mcp care redirecționează către http://mcp:8001/mcp.",
+        "generateToken": "Administratorii pot da clic pe ‘Generează token’ în acest card. Tokenul este afișat o singură dată și rămâne valabil 30 de zile.",
+        "configureClient": "Configurează un client Streamable HTTP cu endpointul http://<host>:8001/mcp și antetul Authorization: Bearer <token>.",
+        "stdioBridge": "Pentru clienții care acceptă doar stdio, folosește puntea npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Clientul îți cere să confirmi instrumentele de scriere, iar fiecare modificare este înregistrată pentru a putea fi anulată."
+      }
     }
   },
   "reconciliation": {

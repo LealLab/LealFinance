@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "โมเดล",
-      "recommendedOption": "{{model}} (แนะนำ)"
+      "recommendedOption": "{{model}} (แนะนำ)",
+      "customOption": "กำหนดเอง…",
+      "customPlaceholder": "ป้อนรหัสโมเดล"
     },
     "modelError": "ไม่สามารถเปลี่ยนโมเดลได้ ลองใหม่อีกครั้ง",
     "effort": {
       "label": "ระดับการให้เหตุผล"
+    },
+    "mcpHelpLabel": "วิธีเชื่อมต่อ MCP",
+    "mcpHelp": {
+      "title": "เชื่อมต่อไคลเอนต์ MCP",
+      "steps": {
+        "enableAgents": "เปิดใช้เอเจนต์โดยกำหนด AGENTS_ENABLED=true และ COMPOSE_PROFILES=agents ใน .env จากนั้นเริ่มสแตกใหม่",
+        "exposeServer": "เปิดให้เข้าถึงเซิร์ฟเวอร์ MCP ซึ่งรอรับการเชื่อมต่อที่พอร์ต 8001 และไม่ได้เผยแพร่พอร์ตนี้ไว้ตามค่าเริ่มต้น ให้เผยแพร่ 8001:8001 บนบริการ mcp หรือเพิ่มตำแหน่ง /mcp ใน nginx เพื่อส่งต่อไปยัง http://mcp:8001/mcp",
+        "generateToken": "ผู้ดูแลระบบคลิก ‘สร้างโทเค็น’ ในการ์ดนี้ได้ โทเค็นจะแสดงเพียงครั้งเดียวและใช้ได้ 30 วัน",
+        "configureClient": "ตั้งค่าไคลเอนต์ Streamable HTTP โดยใช้ปลายทาง http://<host>:8001/mcp และส่วนหัว Authorization: Bearer <token>",
+        "stdioBridge": "สำหรับไคลเอนต์ที่รองรับเฉพาะ stdio ให้ใช้ตัวเชื่อม npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\"",
+        "writeSafety": "ไคลเอนต์จะขอให้คุณยืนยันเครื่องมือเขียนข้อมูล และบันทึกทุกการเปลี่ยนแปลงไว้เพื่อให้ย้อนกลับได้"
+      }
     }
   },
   "reconciliation": {

@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Modelo",
-      "recommendedOption": "{{model}} (recomendado)"
+      "recommendedOption": "{{model}} (recomendado)",
+      "customOption": "Personalizado…",
+      "customPlaceholder": "Digite o ID do modelo"
     },
     "modelError": "Não foi possível alterar o modelo. Tente novamente.",
     "effort": {
       "label": "Esforço de raciocínio"
+    },
+    "mcpHelpLabel": "Ajuda de conexão MCP",
+    "mcpHelp": {
+      "title": "Conectar um cliente MCP",
+      "steps": {
+        "enableAgents": "Ative os agentes definindo AGENTS_ENABLED=true e COMPOSE_PROFILES=agents no arquivo .env e reinicie a pilha.",
+        "exposeServer": "Exponha o servidor MCP. Ele escuta na porta 8001, que não é publicada por padrão. Publique 8001:8001 no serviço mcp ou adicione uma localização /mcp no nginx que encaminhe para http://mcp:8001/mcp.",
+        "generateToken": "Administradores podem clicar em ‘Gerar token’ neste cartão. O token é exibido uma única vez e permanece válido por 30 dias.",
+        "configureClient": "Configure um cliente Streamable HTTP com o endpoint http://<host>:8001/mcp e o cabeçalho Authorization: Bearer <token>.",
+        "stdioBridge": "Para clientes que aceitam apenas stdio, use a ponte npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "O cliente pede sua confirmação para usar ferramentas de escrita, e cada alteração é registrada para que possa ser desfeita."
+      }
     }
   },
   "reconciliation": {

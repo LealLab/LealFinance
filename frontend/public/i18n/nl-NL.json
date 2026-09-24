@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Taalmodel",
-      "recommendedOption": "{{model}} (aanbevolen)"
+      "recommendedOption": "{{model}} (aanbevolen)",
+      "customOption": "Aangepast…",
+      "customPlaceholder": "Voer de model-ID in"
     },
     "modelError": "Kon het model niet wijzigen. Probeer het opnieuw.",
     "effort": {
       "label": "Redeneerinspanning"
+    },
+    "mcpHelpLabel": "Hulp bij MCP-verbinding",
+    "mcpHelp": {
+      "title": "Een MCP-client verbinden",
+      "steps": {
+        "enableAgents": "Schakel agents in door AGENTS_ENABLED=true en COMPOSE_PROFILES=agents in .env in te stellen en start daarna de stack opnieuw.",
+        "exposeServer": "Maak de MCP-server bereikbaar. Deze luistert op poort 8001, die standaard niet wordt gepubliceerd. Publiceer 8001:8001 op de mcp-service of voeg in nginx een locatie /mcp toe die doorstuurt naar http://mcp:8001/mcp.",
+        "generateToken": "Beheerders kunnen in deze kaart op ‘Token genereren’ klikken. De token wordt eenmalig getoond en is 30 dagen geldig.",
+        "configureClient": "Stel een Streamable HTTP-client in met endpoint http://<host>:8001/mcp en header Authorization: Bearer <token>.",
+        "stdioBridge": "Gebruik voor clients die alleen stdio ondersteunen de brug npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "De client vraagt je schrijfgereedschappen te bevestigen en legt elke wijziging vast, zodat je die ongedaan kunt maken."
+      }
     }
   },
   "reconciliation": {

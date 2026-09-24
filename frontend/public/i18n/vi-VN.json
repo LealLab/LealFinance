@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Mô hình",
-      "recommendedOption": "{{model}} (đề xuất)"
+      "recommendedOption": "{{model}} (đề xuất)",
+      "customOption": "Tùy chỉnh…",
+      "customPlaceholder": "Nhập mã định danh mô hình"
     },
     "modelError": "Không thể thay đổi mô hình. Vui lòng thử lại.",
     "effort": {
       "label": "Mức độ suy luận"
+    },
+    "mcpHelpLabel": "Trợ giúp kết nối MCP",
+    "mcpHelp": {
+      "title": "Kết nối ứng dụng MCP",
+      "steps": {
+        "enableAgents": "Bật tác tử bằng cách đặt AGENTS_ENABLED=true và COMPOSE_PROFILES=agents trong .env, sau đó khởi động lại stack.",
+        "exposeServer": "Mở cổng truy cập máy chủ MCP. Máy chủ lắng nghe trên cổng 8001, vốn không được công khai theo mặc định. Công khai 8001:8001 trên dịch vụ mcp hoặc thêm vị trí /mcp trong nginx để chuyển tiếp đến http://mcp:8001/mcp.",
+        "generateToken": "Quản trị viên có thể nhấp vào ‘Tạo token’ trong thẻ này. Token chỉ hiện một lần và có hiệu lực trong 30 ngày.",
+        "configureClient": "Cấu hình ứng dụng Streamable HTTP với điểm cuối http://<host>:8001/mcp và tiêu đề Authorization: Bearer <token>.",
+        "stdioBridge": "Với ứng dụng chỉ hỗ trợ stdio, hãy dùng cầu nối npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Ứng dụng yêu cầu bạn xác nhận các công cụ ghi dữ liệu và lưu nhật ký mọi thay đổi để có thể hoàn tác."
+      }
     }
   },
   "reconciliation": {

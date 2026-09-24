@@ -44,15 +44,30 @@
               <select
                 [id]="'provider-model-' + provider.provider"
                 class="form-input max-w-xs"
-                [value]="provider.model"
-                (change)="setModel(provider, $any($event.target).value)"
+                [value]="
+                  customModelProvider() === provider.provider ? '__custom__' : provider.model
+                "
+                (change)="chooseModel(provider, $any($event.target).value)"
               >
                 @for (m of modelOptions(provider); track m) {
                   <option [value]="m" [selected]="m === provider.model">
                     {{ m === provider.defaultModel ? t('providers.model.recommendedOption', { model: m }) : m }}
                   </option>
                 }
+                <option value="__custom__">{{ t('providers.model.customOption') }}</option>
               </select>
+              @if (customModelProvider() === provider.provider) {
+                <input
+                  [id]="'provider-model-custom-' + provider.provider"
+                  type="text"
+                  class="form-input mt-2 max-w-xs"
+                  [placeholder]="t('providers.model.customPlaceholder')"
+                  (change)="setCustomModel(provider, $any($event.target).value)"
+                  (keydown.enter)="
+                    $event.preventDefault(); setCustomModel(provider, $any($event.target).value)
+                  "
+                />
+              }
             } @else {
               <input
                 [id]="'provider-model-' + provider.provider"
@@ -124,7 +139,17 @@
     }
 
     <app-card>
-      <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.mcp.title') }}</h2>
+      <div class="mb-1 flex items-center gap-2">
+        <h2 class="text-sm font-semibold text-content-primary">{{ t('settings.mcp.title') }}</h2>
+        <button
+          type="button"
+          class="flex size-5 items-center justify-center rounded-full border border-border text-xs font-semibold text-content-muted"
+          [attr.aria-label]="t('providers.mcpHelpLabel')"
+          (click)="mcpHelpOpen.set(true)"
+        >
+          ?
+        </button>
+      </div>
       <p class="mb-4 max-w-md text-sm text-content-muted">{{ t('settings.mcp.body') }}</p>
       @if (mcpToken(); as token) {
         <label class="form-label" for="providers-mcp-token">{{ t('settings.mcp.title') }}</label>
@@ -153,6 +178,20 @@
       }
     </app-card>
   </div>
+
+  <app-modal [(open)]="mcpHelpOpen" [titleText]="t('providers.mcpHelp.title')">
+    <ol class="list-decimal space-y-3 pl-5 text-sm text-content-primary [overflow-wrap:anywhere]">
+      <li>{{ t('providers.mcpHelp.steps.enableAgents') }}</li>
+      <li>{{ t('providers.mcpHelp.steps.exposeServer') }}</li>
+      <li>{{ t('providers.mcpHelp.steps.generateToken') }}</li>
+      <li>{{ t('providers.mcpHelp.steps.configureClient') }}</li>
+      <li>{{ t('providers.mcpHelp.steps.stdioBridge') }}</li>
+      <li>{{ t('providers.mcpHelp.steps.writeSafety') }}</li>
+    </ol>
+    <pre
+      class="mt-4 min-w-0 max-w-full overflow-x-auto whitespace-pre rounded-md bg-surface-sunken p-3 text-xs leading-relaxed"
+    ><code>{{ mcpClientConfig }}</code></pre>
+  </app-modal>
 
   @if (linkModalProvider(); as provider) {
     <app-provider-link-modal

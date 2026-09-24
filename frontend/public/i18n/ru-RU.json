@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "Модель",
-      "recommendedOption": "{{model}} (рекомендуется)"
+      "recommendedOption": "{{model}} (рекомендуется)",
+      "customOption": "Пользовательская…",
+      "customPlaceholder": "Введите идентификатор модели"
     },
     "modelError": "Не удалось изменить модель. Попробуйте снова.",
     "effort": {
       "label": "Уровень рассуждений"
+    },
+    "mcpHelpLabel": "Справка по подключению MCP",
+    "mcpHelp": {
+      "title": "Подключить клиент MCP",
+      "steps": {
+        "enableAgents": "Включите агентов: задайте AGENTS_ENABLED=true и COMPOSE_PROFILES=agents в файле .env, затем перезапустите стек.",
+        "exposeServer": "Откройте доступ к серверу MCP. Он слушает порт 8001, который по умолчанию не публикуется. Опубликуйте 8001:8001 для службы mcp или добавьте в nginx location /mcp с перенаправлением на http://mcp:8001/mcp.",
+        "generateToken": "Администраторы могут нажать ‘Создать токен’ в этой карточке. Токен показывается только один раз и действует 30 дней.",
+        "configureClient": "Настройте клиент Streamable HTTP, указав адрес http://<host>:8001/mcp и заголовок Authorization: Bearer <token>.",
+        "stdioBridge": "Для клиентов, поддерживающих только stdio, используйте мост npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Клиент запросит подтверждение операций записи, а каждое изменение будет записано в журнал, чтобы его можно было отменить."
+      }
     }
   },
   "reconciliation": {

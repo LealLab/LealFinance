@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "מודל",
-      "recommendedOption": "{{model}} (מומלץ)"
+      "recommendedOption": "{{model}} (מומלץ)",
+      "customOption": "מותאם אישית…",
+      "customPlaceholder": "יש להזין מזהה מודל"
     },
     "modelError": "לא ניתן היה לשנות את המודל. נסה שוב.",
     "effort": {
       "label": "רמת חשיבה"
+    },
+    "mcpHelpLabel": "עזרה בחיבור MCP",
+    "mcpHelp": {
+      "title": "חיבור לקוח MCP",
+      "steps": {
+        "enableAgents": "יש להפעיל סוכנים על ידי הגדרת AGENTS_ENABLED=true ו־COMPOSE_PROFILES=agents בקובץ .env ולאחר מכן להפעיל מחדש את המערך.",
+        "exposeServer": "יש לחשוף את שרת MCP. הוא מאזין ביציאה 8001, שאינה מפורסמת כברירת מחדל. יש לפרסם 8001:8001 בשירות mcp או להוסיף ב־nginx מיקום /mcp שמעביר אל http://mcp:8001/mcp.",
+        "generateToken": "מנהלי מערכת יכולים ללחוץ על ‘יצירת אסימון’ בכרטיס הזה. האסימון מוצג פעם אחת בלבד ותקף למשך 30 יום.",
+        "configureClient": "יש להגדיר לקוח Streamable HTTP עם נקודת הקצה http://<host>:8001/mcp ועם הכותרת Authorization: Bearer <token>.",
+        "stdioBridge": "ללקוחות שתומכים ב־stdio בלבד, יש להשתמש בגשר npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "הלקוח מבקש ממך לאשר כלי כתיבה, וכל שינוי נרשם ביומן כדי שאפשר יהיה לבטל אותו."
+      }
     }
   },
   "reconciliation": {

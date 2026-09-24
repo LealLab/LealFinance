@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "模型",
-      "recommendedOption": "{{model}}（建議）"
+      "recommendedOption": "{{model}}（建議）",
+      "customOption": "自訂…",
+      "customPlaceholder": "輸入模型 ID"
     },
     "modelError": "無法變更模型，請再試一次。",
     "effort": {
       "label": "推理強度"
+    },
+    "mcpHelpLabel": "MCP 連線說明",
+    "mcpHelp": {
+      "title": "連線 MCP 用戶端",
+      "steps": {
+        "enableAgents": "在 .env 中設定 AGENTS_ENABLED=true 和 COMPOSE_PROFILES=agents 以啟用代理程式，然後重新啟動服務堆疊。",
+        "exposeServer": "公開 MCP 伺服器。伺服器在 8001 連接埠接聽，預設不會發布此連接埠。請在 mcp 服務上發布 8001:8001，或在 nginx 中新增 /mcp 位置並將要求轉送至 http://mcp:8001/mcp。",
+        "generateToken": "管理員可以按一下此卡片中的「產生權杖」。權杖只會顯示一次，並在 30 天內有效。",
+        "configureClient": "將 Streamable HTTP 用戶端設為使用端點 http://<host>:8001/mcp 與標頭 Authorization: Bearer <token>。",
+        "stdioBridge": "對於僅支援 stdio 的用戶端，請使用橋接命令 npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\"。",
+        "writeSafety": "用戶端會要求你確認寫入工具，每項變更都會記錄下來，以便復原。"
+      }
     }
   },
   "reconciliation": {

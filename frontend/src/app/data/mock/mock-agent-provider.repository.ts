@@ -32,7 +32,8 @@ const PROVIDER_SPECS: Record<AgentProviderId, ProviderSpec> = {
     authModes: ['api_key', 'oauth'],
     defaultModel: 'claude-sonnet-5',
     models: [
-      { id: 'claude-opus-5' },
+      { id: 'claude-fable-5-1' },
+      { id: 'claude-opus-5-5' },
       { id: 'claude-sonnet-5' },
       { id: 'claude-haiku-4-5-20251001' },
     ],
@@ -40,12 +41,11 @@ const PROVIDER_SPECS: Record<AgentProviderId, ProviderSpec> = {
   },
   openai: {
     authModes: ['api_key', 'oauth'],
-    defaultModel: 'gpt-5.6-luna',
+    defaultModel: 'gpt-6-luna',
     models: [
-      { id: 'gpt-5.6-luna', defaultEffort: 'high' },
-      { id: 'gpt-5.6-sol', defaultEffort: 'medium' },
-      { id: 'gpt-5.6-terra', defaultEffort: 'medium' },
-      { id: 'gpt-5.5', defaultEffort: 'medium' },
+      { id: 'gpt-6-luna', defaultEffort: 'high' },
+      { id: 'gpt-6-sol', defaultEffort: 'medium' },
+      { id: 'gpt-6-astra', defaultEffort: 'medium' },
     ],
     reasoningEfforts: REASONING_EFFORTS,
   },

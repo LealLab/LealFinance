@@ -1877,11 +1877,25 @@
     },
     "model": {
       "label": "النموذج",
-      "recommendedOption": "{{model}} (موصى به)"
+      "recommendedOption": "{{model}} (موصى به)",
+      "customOption": "مخصص…",
+      "customPlaceholder": "أدخل معرّف النموذج"
     },
     "modelError": "تعذّر تغيير النموذج. حاول مرة أخرى.",
     "effort": {
       "label": "مستوى الاستدلال"
+    },
+    "mcpHelpLabel": "مساعدة اتصال MCP",
+    "mcpHelp": {
+      "title": "اتصل بعميل MCP",
+      "steps": {
+        "enableAgents": "فعّل الوكلاء بتعيين AGENTS_ENABLED=true وCOMPOSE_PROFILES=agents في ملف .env، ثم أعد تشغيل المجموعة.",
+        "exposeServer": "أتِح الوصول إلى خادم MCP. يستمع على المنفذ 8001، وهو غير منشور افتراضيًا. انشر 8001:8001 على خدمة mcp، أو أضف موقع /mcp في nginx يوجّه الطلبات إلى http://mcp:8001/mcp.",
+        "generateToken": "يمكن للمسؤولين النقر على ‘إنشاء رمز’ في هذه البطاقة. يظهر الرمز مرة واحدة ويظل صالحًا لمدة 30 يومًا.",
+        "configureClient": "اضبط عميل Streamable HTTP باستخدام نقطة النهاية http://<host>:8001/mcp والترويسة Authorization: Bearer <token>.",
+        "stdioBridge": "للعملاء الذين يدعمون stdio فقط، استخدم الجسر npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "يطلب منك العميل تأكيد أدوات الكتابة، ويتم تسجيل كل تغيير كي تتمكن من التراجع عنه."
+      }
     }
   },
   "reconciliation": {

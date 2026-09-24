@@ -161,6 +161,22 @@ Individual tokens cannot be revoked; the levers are demoting or deactivating
 the administrator, or rotating `API_SECRET_KEY`. Publishing port 8001 (or
 adding an nginx location) to reach it from the host is an operator decision.
 
+Example Streamable HTTP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "lealfinance": {
+      "type": "http",
+      "url": "http://<host>:8001/mcp",
+      "headers": {
+        "Authorization": "Bearer <token>"
+      }
+    }
+  }
+}
+```
+
 ## Undoing an AI change
 
 Every write the assistant makes - in chat or over MCP - is recorded in

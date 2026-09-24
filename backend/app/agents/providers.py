@@ -48,7 +48,8 @@ PROVIDERS: dict[str, ProviderSpec] = {
         auth_modes=(AUTH_MODE_API_KEY, AUTH_MODE_OAUTH),
         default_model="claude-sonnet-5",
         models=(
-            ModelSpec("claude-opus-5"),
+            ModelSpec("claude-fable-5-1"),
+            ModelSpec("claude-opus-5-5"),
             ModelSpec("claude-sonnet-5"),
             ModelSpec("claude-haiku-4-5-20251001"),
         ),
@@ -57,12 +58,11 @@ PROVIDERS: dict[str, ProviderSpec] = {
     PROVIDER_OPENAI: ProviderSpec(
         id=PROVIDER_OPENAI,
         auth_modes=(AUTH_MODE_API_KEY, AUTH_MODE_OAUTH),
-        default_model="gpt-5.6-luna",
+        default_model="gpt-6-luna",
         models=(
-            ModelSpec("gpt-5.6-luna", default_effort="high"),
-            ModelSpec("gpt-5.6-sol", default_effort="medium"),
-            ModelSpec("gpt-5.6-terra", default_effort="medium"),
-            ModelSpec("gpt-5.5", default_effort="medium"),
+            ModelSpec("gpt-6-luna", default_effort="high"),
+            ModelSpec("gpt-6-sol", default_effort="medium"),
+            ModelSpec("gpt-6-astra", default_effort="medium"),
         ),
         reasoning_efforts=REASONING_EFFORTS,
     ),
