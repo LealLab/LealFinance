@@ -2,7 +2,7 @@
 name: Bug report
 about: Report a reproducible problem in LealFinance
 title: ""
-labels: ""
+labels: "bugfix"
 assignees: ""
 ---
 
