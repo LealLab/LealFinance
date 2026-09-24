@@ -61,6 +61,9 @@ services:
       AGENTS_DEFAULT_PROVIDER: ${AGENTS_DEFAULT_PROVIDER:-}
       OPENEXCHANGERATES_APP_ID: ${OPENEXCHANGERATES_APP_ID:-}
       EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES: ${EXCHANGE_RATE_REFRESH_COOLDOWN_MINUTES:-15}
+      TWELVE_DATA_API_KEY: ${TWELVE_DATA_API_KEY:-}
+      BRAPI_TOKEN: ${BRAPI_TOKEN:-}
+      COINGECKO_API_KEY: ${COINGECKO_API_KEY:-}
       # Optional SMTP for invitation emails - only the api sends mail. Unset
       # SMTP_HOST means no mail; the admin copy-link flow still works.
       SMTP_HOST: ${SMTP_HOST:-}
