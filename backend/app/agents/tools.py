@@ -19,7 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.entities import ENTITIES, ENTITY_NAMES, EntitySpec, flatten_schema, icon_or
 from app.agents.events import ToolSpec
-from app.core.errors import ConflictError, ValidationAppError
+from app.core.errors import AppError, ConflictError, ValidationAppError
 from app.models.agent_memory import AGENT_MEMORY_MAX_LENGTH
 from app.models.budget import Budget, BudgetAllocation
 from app.models.category import Category
@@ -565,10 +565,23 @@ async def _create_entities(db: AsyncSession, user_id: UUID, args: dict[str, Any]
         records.append(_validate(schema, data))
 
     # ponytail: one commit per record (services commit); wrap in a single
-    # transaction if partial batches show up
-    created = []
-    for record in records:
-        created.append(_dump(spec, await create(db, user_id, record)))
+    # transaction if partial batches need to be all-or-nothing
+    created: list[dict[str, Any]] = []
+    for index, record in enumerate(records):
+        try:
+            created.append(_dump(spec, await create(db, user_id, record)))
+        except AppError as err:
+            if not created:
+                raise
+            # Earlier records are already committed: report them so the model
+            # neither retries them nor tells the user nothing was saved.
+            return {
+                "entity": spec.name,
+                "created": created,
+                "failed_index": index,
+                "error": err.code,
+                "params": err.params,
+            }
     return {"entity": spec.name, "created": created}
 
 

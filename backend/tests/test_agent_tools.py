@@ -571,6 +571,44 @@ async def test_create_entities_rejects_oversized_batches_and_investment_transact
     assert investment_transaction.value.params["operation"] == "create"
 
 
+async def test_create_entities_reports_records_saved_before_a_service_failure(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user_id = (await _authed(client, db_session, "agent-create-entities-partial@example.com")).id
+    _, category_id = await _create_group(client, "Existing")
+    spec = tools.SPEC_BY_NAME["create_entities"]
+    rule = {
+        "match_op": "and",
+        "conditions": [{"field": "description", "op": "contains", "value": "rent"}],
+        "category_id": category_id,
+    }
+
+    result = await spec.run(
+        db_session,
+        user_id,
+        {
+            "entity": "categorization_rule",
+            "records": [
+                {"name": "Rent", **rule},
+                {"name": "Rent", **rule},
+                {"name": "Other", **rule},
+            ],
+        },
+    )
+
+    assert [row["name"] for row in result["created"]] == ["Rent"]
+    assert result["failed_index"] == 1
+    assert result["error"] == "categorization_rule.duplicate_name"
+
+    with pytest.raises(AppError) as first_fails:
+        await spec.run(
+            db_session,
+            user_id,
+            {"entity": "categorization_rule", "records": [{"name": "Rent", **rule}]},
+        )
+    assert first_fails.value.code == "categorization_rule.duplicate_name"
+
+
 async def test_create_entities_are_reverted_as_one_journal_group(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
