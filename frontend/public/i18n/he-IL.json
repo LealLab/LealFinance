@@ -1895,7 +1895,8 @@
         "configureClient": "יש להגדיר לקוח Streamable HTTP עם נקודת הקצה http://<host>:8001/mcp ועם הכותרת Authorization: Bearer <token>.",
         "stdioBridge": "ללקוחות שתומכים ב־stdio בלבד, יש להשתמש בגשר npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "הלקוח מבקש ממך לאשר כלי כתיבה, וכל שינוי נרשם ביומן כדי שאפשר יהיה לבטל אותו."
-      }
+      },
+      "httpsNote": "מחוץ לרשת מהימנה, השתמשו ב-HTTPS (לדוגמה מאחורי פרוקסי הפוך): ב-HTTP רגיל האסימון עובר ללא הצפנה ומעניק גישת מנהל למשך 30 יום."
     }
   },
   "reconciliation": {

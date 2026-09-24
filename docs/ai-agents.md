@@ -177,6 +177,10 @@ Example Streamable HTTP client configuration:
 }
 ```
 
+The token is sent in a header and grants administrator access for 30 days, so
+outside a trusted network put the MCP endpoint behind an HTTPS reverse proxy and
+use an `https://` URL instead of plain HTTP.
+
 ## Undoing an AI change
 
 Every write the assistant makes - in chat or over MCP - is recorded in

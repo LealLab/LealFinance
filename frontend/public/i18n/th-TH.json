@@ -1895,7 +1895,8 @@
         "configureClient": "ตั้งค่าไคลเอนต์ Streamable HTTP โดยใช้ปลายทาง http://<host>:8001/mcp และส่วนหัว Authorization: Bearer <token>",
         "stdioBridge": "สำหรับไคลเอนต์ที่รองรับเฉพาะ stdio ให้ใช้ตัวเชื่อม npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\"",
         "writeSafety": "ไคลเอนต์จะขอให้คุณยืนยันเครื่องมือเขียนข้อมูล และบันทึกทุกการเปลี่ยนแปลงไว้เพื่อให้ย้อนกลับได้"
-      }
+      },
+      "httpsNote": "นอกเครือข่ายที่เชื่อถือได้ ให้ใช้ HTTPS (เช่น หลังรีเวิร์สพร็อกซี): ผ่าน HTTP ธรรมดา โทเค็นจะถูกส่งโดยไม่เข้ารหัสและให้สิทธิ์ผู้ดูแลระบบเป็นเวลา 30 วัน"
     }
   },
   "reconciliation": {

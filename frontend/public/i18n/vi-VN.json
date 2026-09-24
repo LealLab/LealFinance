@@ -1895,7 +1895,8 @@
         "configureClient": "Cấu hình ứng dụng Streamable HTTP với điểm cuối http://<host>:8001/mcp và tiêu đề Authorization: Bearer <token>.",
         "stdioBridge": "Với ứng dụng chỉ hỗ trợ stdio, hãy dùng cầu nối npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "Ứng dụng yêu cầu bạn xác nhận các công cụ ghi dữ liệu và lưu nhật ký mọi thay đổi để có thể hoàn tác."
-      }
+      },
+      "httpsNote": "Bên ngoài mạng đáng tin cậy, hãy dùng HTTPS (ví dụ phía sau reverse proxy): qua HTTP thường, token được gửi không mã hóa và cấp quyền quản trị trong 30 ngày."
     }
   },
   "reconciliation": {

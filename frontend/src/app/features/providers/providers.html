@@ -61,6 +61,7 @@
                   [id]="'provider-model-custom-' + provider.provider"
                   type="text"
                   class="form-input mt-2 max-w-xs"
+                  [attr.aria-label]="t('providers.model.label')"
                   [placeholder]="t('providers.model.customPlaceholder')"
                   (change)="setCustomModel(provider, $any($event.target).value)"
                   (keydown.enter)="
@@ -191,6 +192,9 @@
     <pre
       class="mt-4 min-w-0 max-w-full overflow-x-auto whitespace-pre rounded-md bg-surface-sunken p-3 text-xs leading-relaxed"
     ><code>{{ mcpClientConfig }}</code></pre>
+    <p class="mt-3 text-sm text-content-muted [overflow-wrap:anywhere]">
+      {{ t('providers.mcpHelp.httpsNote') }}
+    </p>
   </app-modal>
 
   @if (linkModalProvider(); as provider) {

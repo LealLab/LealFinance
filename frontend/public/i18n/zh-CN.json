@@ -1895,7 +1895,8 @@
         "configureClient": "将 Streamable HTTP 客户端配置为使用端点 http://<host>:8001/mcp 和请求头 Authorization: Bearer <token>。",
         "stdioBridge": "对于仅支持 stdio 的客户端，可使用桥接命令 npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\"。",
         "writeSafety": "客户端会要求你确认写入工具，每项更改都会记录下来，以便撤销。"
-      }
+      },
+      "httpsNote": "在受信任的网络之外，请使用 HTTPS（例如放在反向代理之后）：通过普通 HTTP 传输时，令牌不会加密，并且会授予 30 天的管理员访问权限。"
     }
   },
   "reconciliation": {

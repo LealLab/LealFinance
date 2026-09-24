@@ -1895,7 +1895,8 @@
         "configureClient": "Streamable HTTP クライアントを、エンドポイント http://<host>:8001/mcp とヘッダー Authorization: Bearer <token> で設定します。",
         "stdioBridge": "stdio のみ対応するクライアントには、ブリッジ npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\" を使用します。",
         "writeSafety": "書き込みツールを使う際はクライアントが確認を求めます。変更はすべて記録され、取り消すことができます。"
-      }
+      },
+      "httpsNote": "信頼できるネットワークの外では HTTPS を使用してください（たとえばリバースプロキシの背後）。通常の HTTP ではトークンが暗号化されずに送信され、30 日間管理者アクセスが付与されます。"
     }
   },
   "reconciliation": {

@@ -1895,7 +1895,8 @@
         "configureClient": "Streamable HTTP istemcisini http://<host>:8001/mcp uç noktası ve Authorization: Bearer <token> başlığıyla yapılandırın.",
         "stdioBridge": "Yalnızca stdio destekleyen istemciler için npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\" köprüsünü kullanın.",
         "writeSafety": "İstemci yazma araçlarını onaylamanızı ister ve her değişikliği geri alınabilmesi için günlüğe kaydeder."
-      }
+      },
+      "httpsNote": "Güvenilir bir ağın dışında HTTPS kullanın (örneğin bir ters proxy arkasında): düz HTTP üzerinden belirteç şifrelenmeden iletilir ve 30 gün boyunca yönetici erişimi sağlar."
     }
   },
   "reconciliation": {

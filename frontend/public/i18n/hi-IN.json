@@ -1895,7 +1895,8 @@
         "configureClient": "Streamable HTTP क्लाइंट को endpoint http://<host>:8001/mcp और header Authorization: Bearer <token> के साथ कॉन्फ़िगर करें।",
         "stdioBridge": "केवल stdio समर्थित करने वाले क्लाइंट के लिए npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\" ब्रिज का उपयोग करें।",
         "writeSafety": "क्लाइंट आपसे लेखन टूल की पुष्टि माँगता है और हर बदलाव दर्ज करता है, ताकि उसे वापस लिया जा सके।"
-      }
+      },
+      "httpsNote": "भरोसेमंद नेटवर्क के बाहर HTTPS का उपयोग करें (उदाहरण के लिए रिवर्स प्रॉक्सी के पीछे): सादे HTTP पर टोकन बिना एन्क्रिप्शन के जाता है और 30 दिनों तक एडमिन एक्सेस देता है।"
     }
   },
   "reconciliation": {

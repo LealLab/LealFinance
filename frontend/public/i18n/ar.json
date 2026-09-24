@@ -1895,7 +1895,8 @@
         "configureClient": "اضبط عميل Streamable HTTP باستخدام نقطة النهاية http://<host>:8001/mcp والترويسة Authorization: Bearer <token>.",
         "stdioBridge": "للعملاء الذين يدعمون stdio فقط، استخدم الجسر npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "يطلب منك العميل تأكيد أدوات الكتابة، ويتم تسجيل كل تغيير كي تتمكن من التراجع عنه."
-      }
+      },
+      "httpsNote": "خارج الشبكة الموثوقة، استخدم HTTPS (مثلًا خلف وكيل عكسي): عبر HTTP العادي يُرسل الرمز دون تشفير ويمنح صلاحية المسؤول لمدة 30 يومًا."
     }
   },
   "reconciliation": {

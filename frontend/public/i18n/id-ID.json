@@ -1895,7 +1895,8 @@
         "configureClient": "Atur klien Streamable HTTP dengan endpoint http://<host>:8001/mcp dan header Authorization: Bearer <token>.",
         "stdioBridge": "Untuk klien yang hanya mendukung stdio, gunakan jembatan npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "Klien meminta konfirmasi untuk alat tulis, dan setiap perubahan dicatat agar dapat dibatalkan."
-      }
+      },
+      "httpsNote": "Di luar jaringan tepercaya, gunakan HTTPS (misalnya di belakang reverse proxy): melalui HTTP biasa, token dikirim tanpa enkripsi dan memberi akses administrator selama 30 hari."
     }
   },
   "reconciliation": {

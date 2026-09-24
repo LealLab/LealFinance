@@ -1919,7 +1919,8 @@
         "configureClient": "Configure a Streamable HTTP client with endpoint http://<host>:8001/mcp and header Authorization: Bearer <token>.",
         "stdioBridge": "For stdio-only clients, bridge with npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "The client asks you to confirm write tools, and each change is journaled so it can be undone."
-      }
+      },
+      "httpsNote": "Outside a trusted network, use HTTPS (for example behind a reverse proxy): over plain HTTP the token travels unencrypted and grants administrator access for 30 days."
     }
   },
   "reconciliation": {

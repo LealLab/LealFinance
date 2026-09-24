@@ -1895,7 +1895,8 @@
         "configureClient": "Nakonfigurujte klienta Streamable HTTP s koncovým bodem http://<host>:8001/mcp a hlavičkou Authorization: Bearer <token>.",
         "stdioBridge": "Pro klienty podporující pouze stdio použijte most npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "Klient vás požádá o potvrzení nástrojů pro zápis a každá změna se zaznamená, aby ji bylo možné vrátit zpět."
-      }
+      },
+      "httpsNote": "Mimo důvěryhodnou síť používejte HTTPS (například za reverzní proxy): přes obyčejné HTTP se token přenáší nešifrovaně a na 30 dní poskytuje přístup správce."
     }
   },
   "reconciliation": {

@@ -19,7 +19,7 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProviderLinkModal } from './provider-link-modal';
 
 /**
- * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.model.label, providers.model.recommendedOption, providers.model.customOption, providers.model.customPlaceholder, providers.modelError, providers.effort.label, providers.mcpHelpLabel, providers.mcpHelp.title, providers.mcpHelp.steps.enableAgents, providers.mcpHelp.steps.exposeServer, providers.mcpHelp.steps.generateToken, providers.mcpHelp.steps.configureClient, providers.mcpHelp.steps.stdioBridge, providers.mcpHelp.steps.writeSafety)
+ * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.model.label, providers.model.recommendedOption, providers.model.customOption, providers.model.customPlaceholder, providers.modelError, providers.effort.label, providers.mcpHelpLabel, providers.mcpHelp.title, providers.mcpHelp.steps.enableAgents, providers.mcpHelp.steps.exposeServer, providers.mcpHelp.steps.generateToken, providers.mcpHelp.steps.configureClient, providers.mcpHelp.steps.stdioBridge, providers.mcpHelp.steps.writeSafety, providers.mcpHelp.httpsNote)
  *
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals but aren't calls to the `t` marker function, so
@@ -95,13 +95,16 @@ export class Providers {
   protected setCustomModel(provider: AgentProviderStatus, model: string): void {
     const trimmed = model.trim();
     if (!trimmed) return;
-    this.setModel(provider, trimmed);
-    this.customModelProvider.set(undefined);
+    // Keep the input open until the save succeeds so a failed attempt can be retried.
+    this.setModel(provider, trimmed, () => this.customModelProvider.set(undefined));
   }
 
-  protected setModel(provider: AgentProviderStatus, model: string): void {
+  protected setModel(provider: AgentProviderStatus, model: string, onSaved?: () => void): void {
     this.repository.link(provider.provider, { model }).subscribe({
-      next: () => this.providersResource.reload(),
+      next: () => {
+        onSaved?.();
+        this.providersResource.reload();
+      },
       error: () => this.actionErrorKey.set('providers.modelError'),
     });
   }

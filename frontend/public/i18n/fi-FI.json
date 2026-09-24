@@ -1895,7 +1895,8 @@
         "configureClient": "Määritä Streamable HTTP -asiakkaan päätepisteeksi http://<host>:8001/mcp ja otsakkeeksi Authorization: Bearer <token>.",
         "stdioBridge": "Käytä vain stdio-protokollaa tukeville asiakkaille välitysohjelmaa npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "Asiakas pyytää sinua vahvistamaan kirjoitustyökalut, ja jokainen muutos kirjataan, jotta sen voi kumota."
-      }
+      },
+      "httpsNote": "Käytä luotetun verkon ulkopuolella HTTPS-yhteyttä (esimerkiksi käänteisen välityspalvelimen takana): tavallisella HTTP:llä tunnus kulkee salaamattomana ja antaa järjestelmänvalvojan oikeudet 30 päiväksi."
     }
   },
   "reconciliation": {

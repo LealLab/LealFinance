@@ -1895,7 +1895,8 @@
         "configureClient": "Konfigurera en Streamable HTTP-klient med slutpunkten http://<host>:8001/mcp och rubriken Authorization: Bearer <token>.",
         "stdioBridge": "För klienter som bara stöder stdio kan du använda bryggan npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "Klienten ber dig bekräfta skrivverktyg och varje ändring loggas så att den kan ångras."
-      }
+      },
+      "httpsNote": "Använd HTTPS utanför ett betrott nätverk (till exempel bakom en omvänd proxy): över vanlig HTTP skickas token okrypterad och ger administratörsåtkomst i 30 dagar."
     }
   },
   "reconciliation": {

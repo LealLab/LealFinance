@@ -1895,7 +1895,8 @@
         "configureClient": "Configurează un client Streamable HTTP cu endpointul http://<host>:8001/mcp și antetul Authorization: Bearer <token>.",
         "stdioBridge": "Pentru clienții care acceptă doar stdio, folosește puntea npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
         "writeSafety": "Clientul îți cere să confirmi instrumentele de scriere, iar fiecare modificare este înregistrată pentru a putea fi anulată."
-      }
+      },
+      "httpsNote": "În afara unei rețele de încredere, folosește HTTPS (de exemplu, în spatele unui proxy invers): prin HTTP simplu, tokenul circulă necriptat și oferă acces de administrator timp de 30 de zile."
     }
   },
   "reconciliation": {

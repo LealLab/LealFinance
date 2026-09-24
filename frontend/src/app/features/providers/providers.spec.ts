@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { AgentChatRepository } from '../../data/agent-chat.repository';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
@@ -238,6 +238,44 @@ describe('Providers', () => {
         .value()
         ?.find((row) => row.provider === 'openai')?.model,
     ).toBe('custom-model-id');
+  });
+
+  it('keeps the custom model input open when saving fails', async () => {
+    const repository = TestBed.inject(AgentProviderRepository);
+    await new Promise<void>((resolve) =>
+      repository.link('openai', { apiKey: 'sk-test' }).subscribe(() => resolve()),
+    );
+    vi.spyOn(repository, 'link').mockReturnValue(throwError(() => new Error('nope')));
+
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const select = fixture.nativeElement.querySelector(
+      '#provider-model-openai',
+    ) as HTMLSelectElement;
+    select.value = '__custom__';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector(
+      '#provider-model-custom-openai',
+    ) as HTMLInputElement;
+    const modelLabel = fixture.nativeElement
+      .querySelector('label[for="provider-model-openai"]')
+      ?.textContent?.trim();
+    expect(modelLabel).toBeTruthy();
+    expect(input.getAttribute('aria-label')).toBe(modelLabel);
+    input.value = 'custom-model-id';
+    input.dispatchEvent(new Event('change'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const kept = fixture.nativeElement.querySelector(
+      '#provider-model-custom-openai',
+    ) as HTMLInputElement | null;
+    expect(kept?.value).toBe('custom-model-id');
   });
 
   it('shows a reasoning effort select for a user-linked OpenAI provider', async () => {
