@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "मॉडल",
-      "recommendedOption": "{{model}} (अनुशंसित)"
+      "recommendedOption": "{{model}} (अनुशंसित)",
+      "customOption": "कस्टम…",
+      "customPlaceholder": "मॉडल आईडी दर्ज करें"
     },
     "modelError": "मॉडल बदला नहीं जा सका। पुन: प्रयास करें।",
     "effort": {
       "label": "रीज़निंग प्रयास"
+    },
+    "mcpHelpLabel": "MCP कनेक्शन सहायता",
+    "mcpHelp": {
+      "title": "MCP क्लाइंट कनेक्ट करें",
+      "steps": {
+        "enableAgents": "एजेंट चालू करने के लिए .env में AGENTS_ENABLED=true और COMPOSE_PROFILES=agents सेट करें, फिर स्टैक को रीस्टार्ट करें।",
+        "exposeServer": "MCP सर्वर को उपलब्ध कराएँ। यह पोर्ट 8001 पर सुनता है, जो डिफ़ॉल्ट रूप से प्रकाशित नहीं होता। mcp सेवा पर 8001:8001 प्रकाशित करें या nginx में /mcp स्थान जोड़ें, जो http://mcp:8001/mcp पर प्रॉक्सी करे।",
+        "generateToken": "व्यवस्थापक इस कार्ड में ‘टोकन बनाएँ’ पर क्लिक कर सकते हैं। टोकन केवल एक बार दिखता है और 30 दिनों तक मान्य रहता है।",
+        "configureClient": "Streamable HTTP क्लाइंट को endpoint http://<host>:8001/mcp और header Authorization: Bearer <token> के साथ कॉन्फ़िगर करें।",
+        "stdioBridge": "केवल stdio समर्थित करने वाले क्लाइंट के लिए npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\" ब्रिज का उपयोग करें।",
+        "writeSafety": "क्लाइंट आपसे लेखन टूल की पुष्टि माँगता है और हर बदलाव दर्ज करता है, ताकि उसे वापस लिया जा सके।"
+      },
+      "httpsNote": "भरोसेमंद नेटवर्क के बाहर HTTPS का उपयोग करें (उदाहरण के लिए रिवर्स प्रॉक्सी के पीछे): सादे HTTP पर टोकन बिना एन्क्रिप्शन के जाता है और 30 दिनों तक एडमिन एक्सेस देता है।"
     }
   },
   "reconciliation": {

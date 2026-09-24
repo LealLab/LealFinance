@@ -381,7 +381,12 @@ describe('HTTP repositories', () => {
         account_label: null,
         model: 'claude-sonnet-5',
         default_model: 'claude-sonnet-5',
-        models: ['claude-opus-5', 'claude-sonnet-5'],
+        models: [
+          'claude-fable-5-1',
+          'claude-opus-5-5',
+          'claude-sonnet-5',
+          'claude-haiku-4-5-20251001',
+        ],
         reasoning_effort: null,
         reasoning_efforts: ['low', 'medium', 'high', 'xhigh'],
       },
@@ -396,7 +401,12 @@ describe('HTTP repositories', () => {
         accountLabel: undefined,
         model: 'claude-sonnet-5',
         defaultModel: 'claude-sonnet-5',
-        models: ['claude-opus-5', 'claude-sonnet-5'],
+        models: [
+          'claude-fable-5-1',
+          'claude-opus-5-5',
+          'claude-sonnet-5',
+          'claude-haiku-4-5-20251001',
+        ],
         reasoningEffort: undefined,
         reasoningEfforts: ['low', 'medium', 'high', 'xhigh'],
       },
@@ -427,11 +437,11 @@ describe('HTTP repositories', () => {
 
   it('links a provider with only a model, for changing the model on an already-linked provider', () => {
     TestBed.inject(HttpAgentProviderRepository)
-      .link('anthropic', { model: 'claude-opus-5' })
+      .link('anthropic', { model: 'claude-opus-5-5' })
       .subscribe();
     const req = http.expectOne('/api/v1/agents/providers/anthropic');
     expect(req.request.method).toBe('PUT');
-    expect(req.request.body).toEqual({ model: 'claude-opus-5' });
+    expect(req.request.body).toEqual({ model: 'claude-opus-5-5' });
     req.flush({
       provider: 'anthropic',
       configured: true,
@@ -439,7 +449,7 @@ describe('HTTP repositories', () => {
       auth_mode: 'oauth',
       auth_modes: ['api_key', 'oauth'],
       account_label: 'Claude subscription',
-      model: 'claude-opus-5',
+      model: 'claude-opus-5-5',
       default_model: 'claude-sonnet-5',
       models: [],
       reasoning_effort: null,
@@ -461,8 +471,8 @@ describe('HTTP repositories', () => {
       auth_mode: 'oauth',
       auth_modes: ['api_key', 'oauth'],
       account_label: 'ChatGPT subscription',
-      model: 'gpt-5.6-luna',
-      default_model: 'gpt-5.6-luna',
+      model: 'gpt-6-luna',
+      default_model: 'gpt-6-luna',
       models: [],
       reasoning_effort: 'low',
       reasoning_efforts: ['low', 'medium', 'high', 'xhigh'],

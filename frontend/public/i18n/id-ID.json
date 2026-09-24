@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "Model AI",
-      "recommendedOption": "{{model}} (direkomendasikan)"
+      "recommendedOption": "{{model}} (direkomendasikan)",
+      "customOption": "Kustom…",
+      "customPlaceholder": "Masukkan ID model"
     },
     "modelError": "Model tidak dapat diubah. Coba lagi.",
     "effort": {
       "label": "Tingkat penalaran"
+    },
+    "mcpHelpLabel": "Bantuan koneksi MCP",
+    "mcpHelp": {
+      "title": "Hubungkan klien MCP",
+      "steps": {
+        "enableAgents": "Aktifkan agen dengan menetapkan AGENTS_ENABLED=true dan COMPOSE_PROFILES=agents di .env, lalu mulai ulang stack.",
+        "exposeServer": "Buka akses ke server MCP. Server mendengarkan di port 8001, yang tidak dipublikasikan secara default. Publikasikan 8001:8001 pada layanan mcp atau tambahkan lokasi /mcp di nginx yang meneruskan permintaan ke http://mcp:8001/mcp.",
+        "generateToken": "Administrator dapat mengeklik ‘Buat token’ di kartu ini. Token hanya ditampilkan sekali dan berlaku selama 30 hari.",
+        "configureClient": "Atur klien Streamable HTTP dengan endpoint http://<host>:8001/mcp dan header Authorization: Bearer <token>.",
+        "stdioBridge": "Untuk klien yang hanya mendukung stdio, gunakan jembatan npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Klien meminta konfirmasi untuk alat tulis, dan setiap perubahan dicatat agar dapat dibatalkan."
+      },
+      "httpsNote": "Di luar jaringan tepercaya, gunakan HTTPS (misalnya di belakang reverse proxy): melalui HTTP biasa, token dikirim tanpa enkripsi dan memberi akses administrator selama 30 hari."
     }
   },
   "reconciliation": {

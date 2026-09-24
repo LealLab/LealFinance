@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "Modelo",
-      "recommendedOption": "{{model}} (recomendado)"
+      "recommendedOption": "{{model}} (recomendado)",
+      "customOption": "Personalizado…",
+      "customPlaceholder": "Introduce el ID del modelo"
     },
     "modelError": "No se pudo cambiar el modelo. Inténtalo de nuevo.",
     "effort": {
       "label": "Esfuerzo de razonamiento"
+    },
+    "mcpHelpLabel": "Ayuda para conectar MCP",
+    "mcpHelp": {
+      "title": "Conectar un cliente MCP",
+      "steps": {
+        "enableAgents": "Activa los agentes estableciendo AGENTS_ENABLED=true y COMPOSE_PROFILES=agents en .env y reinicia el conjunto de servicios.",
+        "exposeServer": "Expón el servidor MCP. Escucha en el puerto 8001, que no se publica de forma predeterminada. Publica 8001:8001 en el servicio mcp o añade una ubicación /mcp en nginx que redirija a http://mcp:8001/mcp.",
+        "generateToken": "Los administradores pueden hacer clic en ‘Generar token’ en esta tarjeta. El token se muestra una sola vez y es válido durante 30 días.",
+        "configureClient": "Configura un cliente Streamable HTTP con el endpoint http://<host>:8001/mcp y la cabecera Authorization: Bearer <token>.",
+        "stdioBridge": "Para clientes que solo admiten stdio, usa el puente npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "El cliente te pide confirmar las herramientas de escritura y cada cambio queda registrado para poder deshacerlo."
+      },
+      "httpsNote": "Fuera de una red de confianza, usa HTTPS (por ejemplo, detrás de un proxy inverso): con HTTP simple el token viaja sin cifrar y concede acceso de administrador durante 30 días."
     }
   },
   "reconciliation": {

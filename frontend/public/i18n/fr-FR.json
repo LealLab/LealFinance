@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "Modèle",
-      "recommendedOption": "{{model}} (recommandé)"
+      "recommendedOption": "{{model}} (recommandé)",
+      "customOption": "Personnalisé…",
+      "customPlaceholder": "Saisissez l’identifiant du modèle"
     },
     "modelError": "Impossible de changer le modèle. Réessayez.",
     "effort": {
       "label": "Effort de raisonnement"
+    },
+    "mcpHelpLabel": "Aide à la connexion MCP",
+    "mcpHelp": {
+      "title": "Connecter un client MCP",
+      "steps": {
+        "enableAgents": "Activez les agents en définissant AGENTS_ENABLED=true et COMPOSE_PROFILES=agents dans .env, puis redémarrez la pile.",
+        "exposeServer": "Rendez le serveur MCP accessible. Il écoute sur le port 8001, qui n’est pas publié par défaut. Publiez 8001:8001 sur le service mcp ou ajoutez dans nginx un emplacement /mcp redirigé vers http://mcp:8001/mcp.",
+        "generateToken": "Les administrateurs peuvent cliquer sur ‘Générer un jeton’ dans cette carte. Le jeton ne s’affiche qu’une fois et reste valide 30 jours.",
+        "configureClient": "Configurez un client Streamable HTTP avec le point de terminaison http://<host>:8001/mcp et l’en-tête Authorization: Bearer <token>.",
+        "stdioBridge": "Pour les clients compatibles uniquement avec stdio, utilisez le relais npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Le client vous demande de confirmer les outils d’écriture et chaque modification est journalisée afin de pouvoir être annulée."
+      },
+      "httpsNote": "En dehors d’un réseau de confiance, utilisez HTTPS (par exemple derrière un proxy inverse) : en HTTP simple, le jeton circule sans chiffrement et donne un accès administrateur pendant 30 jours."
     }
   },
   "reconciliation": {

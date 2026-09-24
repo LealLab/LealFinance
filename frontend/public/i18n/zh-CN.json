@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "模型",
-      "recommendedOption": "{{model}}（推荐）"
+      "recommendedOption": "{{model}}（推荐）",
+      "customOption": "自定义…",
+      "customPlaceholder": "输入模型 ID"
     },
     "modelError": "无法更改模型，请重试。",
     "effort": {
       "label": "推理强度"
+    },
+    "mcpHelpLabel": "MCP 连接帮助",
+    "mcpHelp": {
+      "title": "连接 MCP 客户端",
+      "steps": {
+        "enableAgents": "在 .env 中设置 AGENTS_ENABLED=true 和 COMPOSE_PROFILES=agents 以启用代理，然后重启服务栈。",
+        "exposeServer": "公开 MCP 服务器。它监听 8001 端口，该端口默认不会发布。在 mcp 服务上发布 8001:8001，或在 nginx 中添加 /mcp 位置并将请求代理到 http://mcp:8001/mcp。",
+        "generateToken": "管理员可以点击此卡片中的‘生成令牌’。令牌只显示一次，有效期为 30 天。",
+        "configureClient": "将 Streamable HTTP 客户端配置为使用端点 http://<host>:8001/mcp 和请求头 Authorization: Bearer <token>。",
+        "stdioBridge": "对于仅支持 stdio 的客户端，可使用桥接命令 npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\"。",
+        "writeSafety": "客户端会要求你确认写入工具，每项更改都会记录下来，以便撤销。"
+      },
+      "httpsNote": "在受信任的网络之外，请使用 HTTPS（例如放在反向代理之后）：通过普通 HTTP 传输时，令牌不会加密，并且会授予 30 天的管理员访问权限。"
     }
   },
   "reconciliation": {

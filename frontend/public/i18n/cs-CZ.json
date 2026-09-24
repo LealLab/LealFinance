@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "Model",
-      "recommendedOption": "{{model}} (doporučeno)"
+      "recommendedOption": "{{model}} (doporučeno)",
+      "customOption": "Vlastní…",
+      "customPlaceholder": "Zadejte ID modelu"
     },
     "modelError": "Model se nepodařilo změnit. Zkuste to znovu.",
     "effort": {
       "label": "Úroveň uvažování"
+    },
+    "mcpHelpLabel": "Nápověda k připojení MCP",
+    "mcpHelp": {
+      "title": "Připojit klienta MCP",
+      "steps": {
+        "enableAgents": "Povolte agenty nastavením AGENTS_ENABLED=true a COMPOSE_PROFILES=agents v souboru .env a potom restartujte stack.",
+        "exposeServer": "Zpřístupněte server MCP. Naslouchá na portu 8001, který se ve výchozím nastavení nepublikuje. Publikujte 8001:8001 u služby mcp nebo přidejte v nginx lokaci /mcp přesměrovanou na http://mcp:8001/mcp.",
+        "generateToken": "Správci mohou v této kartě kliknout na ‘Vygenerovat token’. Token se zobrazí pouze jednou a platí 30 dní.",
+        "configureClient": "Nakonfigurujte klienta Streamable HTTP s koncovým bodem http://<host>:8001/mcp a hlavičkou Authorization: Bearer <token>.",
+        "stdioBridge": "Pro klienty podporující pouze stdio použijte most npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\".",
+        "writeSafety": "Klient vás požádá o potvrzení nástrojů pro zápis a každá změna se zaznamená, aby ji bylo možné vrátit zpět."
+      },
+      "httpsNote": "Mimo důvěryhodnou síť používejte HTTPS (například za reverzní proxy): přes obyčejné HTTP se token přenáší nešifrovaně a na 30 dní poskytuje přístup správce."
     }
   },
   "reconciliation": {

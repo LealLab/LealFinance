@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "モデル",
-      "recommendedOption": "{{model}}（推奨）"
+      "recommendedOption": "{{model}}（推奨）",
+      "customOption": "カスタム…",
+      "customPlaceholder": "モデル ID を入力"
     },
     "modelError": "モデルを変更できませんでした。もう一度お試しください。",
     "effort": {
       "label": "推論の強度"
+    },
+    "mcpHelpLabel": "MCP 接続のヘルプ",
+    "mcpHelp": {
+      "title": "MCP クライアントを接続",
+      "steps": {
+        "enableAgents": ".env に AGENTS_ENABLED=true と COMPOSE_PROFILES=agents を設定してエージェントを有効にし、スタックを再起動します。",
+        "exposeServer": "MCP サーバーを公開します。サーバーはポート 8001 で待ち受けますが、既定では公開されていません。mcp サービスで 8001:8001 を公開するか、nginx に http://mcp:8001/mcp へ転送する /mcp の location を追加します。",
+        "generateToken": "管理者はこのカードの ‘トークンを生成’ をクリックできます。トークンは一度だけ表示され、30 日間有効です。",
+        "configureClient": "Streamable HTTP クライアントを、エンドポイント http://<host>:8001/mcp とヘッダー Authorization: Bearer <token> で設定します。",
+        "stdioBridge": "stdio のみ対応するクライアントには、ブリッジ npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\" を使用します。",
+        "writeSafety": "書き込みツールを使う際はクライアントが確認を求めます。変更はすべて記録され、取り消すことができます。"
+      },
+      "httpsNote": "信頼できるネットワークの外では HTTPS を使用してください（たとえばリバースプロキシの背後）。通常の HTTP ではトークンが暗号化されずに送信され、30 日間管理者アクセスが付与されます。"
     }
   },
   "reconciliation": {

@@ -1877,11 +1877,26 @@
     },
     "model": {
       "label": "모델",
-      "recommendedOption": "{{model}}(권장)"
+      "recommendedOption": "{{model}}(권장)",
+      "customOption": "사용자 지정…",
+      "customPlaceholder": "모델 ID 입력"
     },
     "modelError": "모델을 변경할 수 없습니다. 다시 시도하세요.",
     "effort": {
       "label": "추론 노력"
+    },
+    "mcpHelpLabel": "MCP 연결 도움말",
+    "mcpHelp": {
+      "title": "MCP 클라이언트 연결",
+      "steps": {
+        "enableAgents": ".env에서 AGENTS_ENABLED=true와 COMPOSE_PROFILES=agents를 설정해 에이전트를 활성화한 다음 스택을 다시 시작하세요.",
+        "exposeServer": "MCP 서버를 외부에 공개하세요. 서버는 기본적으로 공개되지 않는 8001 포트에서 수신 대기합니다. mcp 서비스에 8001:8001을 게시하거나 nginx에 http://mcp:8001/mcp로 프록시하는 /mcp 위치를 추가하세요.",
+        "generateToken": "관리자는 이 카드에서 ‘토큰 생성’을 클릭할 수 있습니다. 토큰은 한 번만 표시되며 30일 동안 유효합니다.",
+        "configureClient": "엔드포인트 http://<host>:8001/mcp와 헤더 Authorization: Bearer <token>을 사용하도록 Streamable HTTP 클라이언트를 구성하세요.",
+        "stdioBridge": "stdio만 지원하는 클라이언트에는 브리지 npx mcp-remote http://<host>:8001/mcp --header \"Authorization: Bearer <token>\"을 사용하세요.",
+        "writeSafety": "클라이언트가 쓰기 도구 사용을 확인하며, 각 변경 사항은 기록되어 되돌릴 수 있습니다."
+      },
+      "httpsNote": "신뢰할 수 있는 네트워크 밖에서는 HTTPS를 사용하세요(예: 리버스 프록시 뒤). 일반 HTTP에서는 토큰이 암호화되지 않은 채 전송되며 30일 동안 관리자 권한을 부여합니다."
     }
   },
   "reconciliation": {

@@ -124,11 +124,11 @@ async def test_link_model_only_update_preserves_api_key_auth(
     assert linked.status_code == 200, linked.text
 
     changed = await client.put(
-        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5"}
+        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5-5"}
     )
     assert changed.status_code == 200, changed.text
     assert changed.json()["auth_mode"] == "api_key"
-    assert changed.json()["model"] == "claude-opus-5"
+    assert changed.json()["model"] == "claude-opus-5-5"
     assert "sk-user-key" not in changed.text
 
 
@@ -158,13 +158,13 @@ async def test_link_model_only_update_preserves_oauth_tokens(
     await db_session.commit()
 
     response = await client.put(
-        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5"}
+        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5-5"}
     )
     assert response.status_code == 200, response.text
     body = response.json()
     assert body["auth_mode"] == "oauth"
     assert body["account_label"] == row.account_label
-    assert body["model"] == "claude-opus-5"
+    assert body["model"] == "claude-opus-5-5"
 
     await db_session.refresh(row)
     assert row.refresh_ciphertext is not None
@@ -178,7 +178,7 @@ async def test_link_model_only_update_without_existing_row_requires_api_key(
     await _authed(client, db_session, "model-only-no-row@example.com")
 
     response = await client.put(
-        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5"}
+        "/api/v1/agents/providers/anthropic", json={"model": "claude-opus-5-5"}
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "agents.api_key_required"
@@ -194,9 +194,18 @@ async def test_list_providers_exposes_openai_catalog_and_reasoning_efforts(
     assert response.status_code == 200
     by_provider = {row["provider"]: row for row in response.json()}
 
+    anthropic = by_provider["anthropic"]
+    assert anthropic["default_model"] == "claude-sonnet-5"
+    assert anthropic["models"] == [
+        "claude-fable-5-1",
+        "claude-opus-5-5",
+        "claude-sonnet-5",
+        "claude-haiku-4-5-20251001",
+    ]
+
     openai = by_provider["openai"]
-    assert openai["default_model"] == "gpt-5.6-luna"
-    assert openai["models"] == ["gpt-5.6-luna", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.5"]
+    assert openai["default_model"] == "gpt-6-luna"
+    assert openai["models"] == ["gpt-6-luna", "gpt-6-sol", "gpt-6-astra"]
     assert openai["reasoning_efforts"] == ["low", "medium", "high", "xhigh"]
 
     ollama = by_provider["ollama"]
@@ -221,7 +230,7 @@ async def test_link_effort_only_update_preserves_oauth_tokens(
         auth_mode="oauth",
         secret_ciphertext=crypto.encrypt_secret("access-token"),
         refresh_ciphertext=crypto.encrypt_secret("refresh-token"),
-        model="gpt-5.6-luna",
+        model="gpt-6-luna",
         account_id="acct_123",
         account_label="ChatGPT subscription",
         expires_at=datetime.now(UTC) + timedelta(hours=1),
@@ -233,7 +242,7 @@ async def test_link_effort_only_update_preserves_oauth_tokens(
     assert response.status_code == 200, response.text
     body = response.json()
     assert body["auth_mode"] == "oauth"
-    assert body["model"] == "gpt-5.6-luna"
+    assert body["model"] == "gpt-6-luna"
     assert body["reasoning_effort"] == "low"
 
     await db_session.refresh(row)
@@ -249,14 +258,14 @@ async def test_link_model_change_resets_reasoning_effort_to_new_default(
 
     linked = await client.put(
         "/api/v1/agents/providers/openai",
-        json={"api_key": "sk-user-key", "model": "gpt-5.6-luna", "reasoning_effort": "xhigh"},
+        json={"api_key": "sk-user-key", "model": "gpt-6-luna", "reasoning_effort": "xhigh"},
     )
     assert linked.status_code == 200, linked.text
     assert linked.json()["reasoning_effort"] == "xhigh"
 
-    switched = await client.put("/api/v1/agents/providers/openai", json={"model": "gpt-5.6-sol"})
+    switched = await client.put("/api/v1/agents/providers/openai", json={"model": "gpt-6-sol"})
     assert switched.status_code == 200, switched.text
-    assert switched.json()["model"] == "gpt-5.6-sol"
+    assert switched.json()["model"] == "gpt-6-sol"
     # sol's own default (medium), not luna's leftover xhigh.
     assert switched.json()["reasoning_effort"] == "medium"
 
@@ -747,7 +756,7 @@ def _credential(
         auth_mode=auth_mode,
         secret=secret,
         base_url=base_url,
-        model=model or ("claude-sonnet-5" if provider == "anthropic" else "gpt-5.6-luna"),
+        model=model or ("claude-sonnet-5" if provider == "anthropic" else "gpt-6-luna"),
         account_id="acct_1" if auth_mode == "oauth" else None,
         account_label="ChatGPT subscription" if auth_mode == "oauth" else None,
         source="user",
@@ -882,6 +891,42 @@ async def test_stream_turn_codex_text(monkeypatch: pytest.MonkeyPatch) -> None:
         )
     ]
     assert events == [TextDelta("He"), TextDelta("llo"), TurnEnd("end_turn")]
+
+
+async def test_stream_turn_openai_api_key_uses_responses_api(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, httpx.Request] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["request"] = request
+        return httpx.Response(
+            200,
+            content=b'data: {"type":"response.completed"}\n\n',
+            headers={"content-type": "text/event-stream"},
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    events = [
+        event
+        async for event in chat_module.stream_turn(
+            _credential("openai", model="gpt-6-astra"),
+            "sys",
+            [Turn(role="user", text="hi")],
+            [],
+        )
+    ]
+
+    request = captured["request"]
+    assert str(request.url) == "https://api.openai.com/v1/responses"
+    assert request.headers["authorization"] == "Bearer test-secret"
+    assert request.headers["content-type"] == "application/json"
+    assert request.headers["accept"] == "text/event-stream"
+    assert not {"openai-beta", "originator", "session_id", "chatgpt-account-id"}.intersection(
+        request.headers
+    )
+    assert json.loads(request.content)["model"] == "gpt-6-astra"
+    assert events == [TurnEnd("end_turn")]
 
 
 async def test_stream_turn_codex_tool_call(monkeypatch: pytest.MonkeyPatch) -> None:
