@@ -15,6 +15,7 @@ from app.schemas.institution import InstitutionCreate
 from app.services import budgets as budgets_service
 from app.services import categories as categories_service
 from app.services import category_groups as category_groups_service
+from app.services import change_journal
 from app.services import institutions as institutions_service
 from tests.factories import login_as, make_user
 
@@ -495,6 +496,153 @@ async def test_create_category_group_with_children_inherits_color_and_kind(
     assert {category.name for category in stored} == {"Food", "Vet", "Grooming"}
 
 
+async def test_create_entities_creates_categories_in_an_existing_group(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-create-categories@example.com")
+    group_id, _ = await _create_group(client, "Existing")
+    spec = tools.SPEC_BY_NAME["create_entities"]
+    assert spec.writes
+
+    result = await spec.run(
+        db_session,
+        user.id,
+        {
+            "entity": "category",
+            "records": [
+                {"name": "Food", "group_id": group_id},
+                {"name": "Rent", "group_id": group_id},
+                {"name": "Travel", "group_id": group_id},
+            ],
+        },
+    )
+
+    assert result["entity"] == "category"
+    assert [row["name"] for row in result["created"]] == ["Food", "Rent", "Travel"]
+    assert {row["group_id"] for row in result["created"]} == {group_id}
+
+
+async def test_create_entities_validates_every_record_before_writing(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-create-categories-invalid@example.com")
+    group_id, _ = await _create_group(client, "Existing")
+
+    with pytest.raises(AppError) as error:
+        await tools.SPEC_BY_NAME["create_entities"].run(
+            db_session,
+            user.id,
+            {
+                "entity": "category",
+                "records": [
+                    {"name": "Would be first", "group_id": group_id},
+                    {"name": "Invalid color", "group_id": group_id, "color": "#" + "0" * 20},
+                ],
+            },
+        )
+
+    assert error.value.code == "agents.tool_arguments_invalid"
+    assert {row.name for row in await categories_service.list_categories(db_session, user.id)} == {
+        "Existing category"
+    }
+
+
+async def test_create_entities_rejects_oversized_batches_and_investment_transactions(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-create-entities-limits@example.com")
+    spec = tools.SPEC_BY_NAME["create_entities"]
+
+    with pytest.raises(AppError) as too_many:
+        await spec.run(
+            db_session,
+            user.id,
+            {"entity": "category", "records": [{}] * (tools.MAX_BULK_IDS + 1)},
+        )
+    assert too_many.value.code == "agents.tool_arguments_invalid"
+
+    with pytest.raises(AppError) as investment_transaction:
+        await spec.run(
+            db_session,
+            user.id,
+            {"entity": "investment_transaction", "records": [{}]},
+        )
+    assert investment_transaction.value.code == "entity.operation_unsupported"
+    assert investment_transaction.value.params["operation"] == "create"
+
+
+async def test_create_entities_reports_records_saved_before_a_service_failure(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user_id = (await _authed(client, db_session, "agent-create-entities-partial@example.com")).id
+    _, category_id = await _create_group(client, "Existing")
+    spec = tools.SPEC_BY_NAME["create_entities"]
+    rule = {
+        "match_op": "and",
+        "conditions": [{"field": "description", "op": "contains", "value": "rent"}],
+        "category_id": category_id,
+    }
+
+    result = await spec.run(
+        db_session,
+        user_id,
+        {
+            "entity": "categorization_rule",
+            "records": [
+                {"name": "Rent", **rule},
+                {"name": "Rent", **rule},
+                {"name": "Other", **rule},
+            ],
+        },
+    )
+
+    assert [row["name"] for row in result["created"]] == ["Rent"]
+    assert result["failed_index"] == 1
+    assert result["error"] == "categorization_rule.duplicate_name"
+
+    with pytest.raises(AppError) as first_fails:
+        await spec.run(
+            db_session,
+            user_id,
+            {"entity": "categorization_rule", "records": [{"name": "Rent", **rule}]},
+        )
+    assert first_fails.value.code == "categorization_rule.duplicate_name"
+
+
+async def test_create_entities_are_reverted_as_one_journal_group(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user = await _authed(client, db_session, "agent-create-entities-undo@example.com")
+    group_id, _ = await _create_group(client, "Existing")
+    call_id = "batch-create"
+
+    async with change_journal.journaling(db_session, call_id=call_id):
+        result = await tools.SPEC_BY_NAME["create_entities"].run(
+            db_session,
+            user.id,
+            {
+                "entity": "category",
+                "records": [
+                    {"name": "Food", "group_id": group_id},
+                    {"name": "Rent", "group_id": group_id},
+                ],
+            },
+        )
+
+    assert len(result["created"]) == 2
+    recent = await tools.SPEC_BY_NAME["list_recent_changes"].run(db_session, user.id, {})
+    assert [change["call_id"] for change in recent] == [call_id]
+
+    undone = await tools.SPEC_BY_NAME["undo_changes"].run(db_session, user.id, {"call_id": call_id})
+
+    assert undone["reverted"] == 2
+    assert {row.name for row in await categories_service.list_categories(db_session, user.id)} == {
+        "Existing category"
+    }
+    recent = await tools.SPEC_BY_NAME["list_recent_changes"].run(db_session, user.id, {})
+    assert recent[0]["undone"] is True
+
+
 async def test_create_category_derives_kind_from_group_and_rejects_foreign_group(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:
@@ -782,6 +930,7 @@ def test_registry_has_provider_safe_schemas_and_async_runners() -> None:
     write_tools = {spec.name for spec in tools.SPECS if spec.writes}
     assert {
         "create_entity",
+        "create_entities",
         "update_entity",
         "delete_entity",
         "create_category_group",
