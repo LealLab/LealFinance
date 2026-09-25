@@ -1,9 +1,15 @@
 # Cross-platform task runner. Install: https://taskfile.dev
-# Usage: task <name>   (e.g. `task backend:test`, `task up`)
+# Usage: task <name>   (e.g. `task backend:test`, `task up`); `task` lists tasks
 version: "3"
 dotenv: [".env"]
 
 tasks:
+  default:
+    silent: true
+    cmds:
+      - task --list --sort none
+
+  # Setup and production deployment
   install:wizard:
     desc: Interactive first-time setup - writes .env and starts the stack
     cmds:
@@ -22,11 +28,26 @@ tasks:
       - cmd: python3 scripts/wizard.py --ensure-env {{.WIZARD_ARGS}}
         platforms: [linux, darwin]
 
+  task-banner:
+    internal: true
+    cmds:
+      - cmd: python scripts/task_banner.py {{.BANNER}}
+        platforms: [windows]
+      - cmd: python3 scripts/task_banner.py {{.BANNER}}
+        platforms: [linux, darwin]
+
   install:
     desc: Install and start the published production stack
     deps:
       - task: install:env
         vars: { WIZARD_ARGS: "--path homelab --no-tls" }
+    cmds:
+      - task: task-banner
+        vars: { BANNER: production }
+      - task: install:run
+
+  install:run:
+    internal: true
     cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
@@ -37,8 +58,26 @@ tasks:
       - task: install:env
         vars: { WIZARD_ARGS: "--path homelab --tls" }
     cmds:
+      - task: task-banner
+        vars: { BANNER: production }
+      - task: install:tls:run
+
+  install:tls:run:
+    internal: true
+    cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml pull
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.tls.yml up -d
+
+  # Backups and production updates
+  backup:
+    desc: Write a compressed instance backup to ./backups (see docs/homelab-deploy.md#backups)
+    cmds:
+      - sh scripts/backup.sh
+
+  backup:verify:
+    desc: Restore the newest instance backup into a disposable database and check it
+    cmds:
+      - sh scripts/restore-verify.sh
 
   update:
     desc: Back up, then pull and restart the published stack at the configured TAG
@@ -48,8 +87,10 @@ tasks:
       - sh: test -f docker-compose.prod.yml
         msg: "docker-compose.prod.yml not found. Run this from your LealFinance checkout."
     cmds:
+      - task: task-banner
+        vars: { BANNER: production }
       - task: backup
-      - task: '{{if .LF_SITE_ADDRESS}}install:tls{{else}}install{{end}}'
+      - task: '{{if .LF_SITE_ADDRESS}}install:tls:run{{else}}install:run{{end}}'
       - echo "Update complete. Running the images for TAG=${TAG:-latest}."
 
   uninstall:
@@ -63,34 +104,28 @@ tasks:
     cmds:
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml down --volumes
 
+  # Local development stack
   up:
-    desc: Start the full stack (build + detached)
-    deps:
+    desc: Start the local development stack (build + detached)
+    prompt: "DEVELOPMENT MODE ONLY: task up builds local Docker images from this checkout; it does not build release images. Continue?"
+    cmds:
       - task: install:env
         vars: { WIZARD_ARGS: "--path docker --no-tls" }
-    cmds:
+      - task: task-banner
+        vars: { BANNER: development }
       - docker compose up -d --build
 
   down:
-    desc: Stop the full stack
+    desc: Stop the local development stack
     cmds:
       - docker compose down
 
   logs:
-    desc: Tail logs for all services
+    desc: Tail logs for the local development stack
     cmds:
       - docker compose logs -f
 
-  backup:
-    desc: Write a compressed instance backup to ./backups (see docs/homelab-deploy.md#backups)
-    cmds:
-      - sh scripts/backup.sh
-
-  backup:verify:
-    desc: Restore the newest instance backup into a disposable database and check it
-    cmds:
-      - sh scripts/restore-verify.sh
-
+  # Backend development
   backend:sync:
     desc: Install backend dependencies
     dir: backend
@@ -166,6 +201,7 @@ tasks:
     cmds:
       - uv run python -m scripts.seed
 
+  # Frontend development
   frontend:install:
     desc: Install frontend dependencies
     dir: frontend
@@ -202,6 +238,7 @@ tasks:
     cmds:
       - pnpm run e2e
 
+  # Validation
   i18n:validate:
     desc: Check for missing/orphaned Transloco translation keys
     dir: frontend
