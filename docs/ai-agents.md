@@ -24,13 +24,11 @@ immediately.
 ## Custom instructions
 
 Each user can write their own instructions for the assistant from Settings.
-The text is folded into the system prompt after the assistant's own rules,
-which are restated around it: instructions refine tone, format, and level of
-detail, and cannot grant abilities, change a tool, skip a write confirmation,
-or lift the off-topic rule.
+The text is sent as JSON data in a lower-priority conversation turn. It can
+refine tone, format, and level of detail, but cannot grant abilities, change a
+tool, skip a write confirmation, or lift the off-topic rule.
 
-Because the text reaches the system prompt, it is classified before it is
-stored. The user's own provider is asked to judge the candidate as data - not
+Before storage, the user's own provider is asked to judge the candidate as data - not
 as a message to answer - and only a bare `ALLOW` verdict saves it. Anything
 else, including an unparseable answer, is refused as
 `agents.instructions_rejected` and never written, with a one-line reason in
@@ -46,12 +44,11 @@ paid on the 5th"). It saves them itself with the `remember` tool
 assistant keeps, not ledger data, so nothing needs approving or undoing. Each
 memory is one short sentence in `agent_memories`, scoped to the user, unique per
 user, and capped at 100 (the oldest are dropped) because the whole list is
-folded into every system prompt (`prompt.build`).
+included in each chat request's context turn.
 
-Memory text comes from what the user said, so it is treated as untrusted: it is
-placed in a `<user_memories>` block behind a preface saying it is background
-data only, angle brackets are stripped so a fact cannot close the block, and it
-sits before the custom instructions so the rules keep the last word.
+Memory text comes from what the user said, so it is treated as untrusted JSON
+data alongside limited profile fields and custom preferences. The system rules
+remain separate from this context.
 
 Users see and delete individual memories under **Settings -> Assistant
 memories** (`GET /agents/memories`, `DELETE /agents/memories/{id}`); deleting one

@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents import credentials, loop, prompt, tools
 from app.agents.credentials import ResolvedCredential
+from app.agents.events import Turn
 from app.agents.providers import PROVIDERS
 from app.core.db import session_scope
 from app.core.errors import ValidationAppError
@@ -160,9 +161,16 @@ async def _heartbeat(events: AsyncIterator[bytes], interval: float = 15.0) -> As
             await producer
 
 
-async def _system_prompt(db: AsyncSession, user: User, today: date | None) -> str:
+def _system_prompt(today: date | None) -> str:
+    return prompt.build(today or date.today())
+
+
+async def _context_turn(db: AsyncSession, user: User) -> Turn:
     memories = await agent_memories.list_memories(db, user.id)
-    return prompt.build(user, today or date.today(), [memory.content for memory in memories])
+    return Turn(
+        role="user",
+        text=prompt.build_context(user, [memory.content for memory in memories]),
+    )
 
 
 async def stream_message(
@@ -188,7 +196,8 @@ async def stream_message(
             yield _sse_frame("error", {"code": "agents.not_configured", "params": {}})
             return
 
-        system = await _system_prompt(db, user, today)
+        system = _system_prompt(today)
+        turns.insert(0, await _context_turn(db, user))
         async for event in loop.run_turn(db, conversation, turns, credential, system):
             yield _serialize(event)
 
@@ -307,6 +316,7 @@ async def stream_confirm(
             return
 
         turns = loop.rehydrate_turns(await _messages(db, conversation.id))
-        system = await _system_prompt(db, user, today)
+        system = _system_prompt(today)
+        turns.insert(0, await _context_turn(db, user))
         async for event in loop.run_turn(db, conversation, turns, credential, system):
             yield _serialize(event)
