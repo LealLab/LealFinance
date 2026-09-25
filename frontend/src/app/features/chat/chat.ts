@@ -349,7 +349,11 @@ export class Chat {
   private applyEvent(event: AgentStreamEvent): void {
     switch (event.type) {
       case 'delta':
-        this.updateLastAssistant((turn) => ({ ...turn, text: turn.text + event.text }));
+        if (!event.text) break;
+        this.updateLastAssistant((turn) => ({
+          ...turn,
+          text: (turn.text === OFF_TOPIC ? '' : turn.text) + event.text,
+        }));
         break;
       case 'tool_call':
         this.updateLastAssistant((turn) => ({
@@ -431,8 +435,8 @@ export class Chat {
       const pendingCall = message.toolCalls?.find((tool) => tool.id === pendingCallId);
       if (message.role === 'assistant' && last?.role === 'assistant') {
         last.text =
-          message.content === OFF_TOPIC
-            ? OFF_TOPIC
+          message.content === OFF_TOPIC || last.text === OFF_TOPIC
+            ? message.content || last.text
             : [last.text, message.content].filter(Boolean).join('\n\n');
         last.tools.push(
           ...(message.toolCalls?.map((tool) => ({ id: tool.id, name: tool.name })) ?? []),

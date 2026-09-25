@@ -95,14 +95,13 @@ async def test_save_rejects_over_the_length_cap(db_session: AsyncSession) -> Non
     assert excinfo.value.code == "agents.instructions_rejected"
 
 
-async def test_allow_verdict_tolerates_surrounding_whitespace(db_session: AsyncSession) -> None:
+@pytest.mark.parametrize("verdict", ["\n  allow \n", "ALLOW\nREJECT", "ALLOW more"])
+async def test_only_exact_allow_verdict_is_accepted(db_session: AsyncSession, verdict: str) -> None:
     user = await _user_with_provider(db_session, "allow-ws@example.com")
 
-    stored = await agent_instructions.save(
-        db_session, user, ON_TOPIC, streamer=_Verdict("\n  allow \n")
-    )
-
-    assert stored == ON_TOPIC
+    with pytest.raises(ValidationAppError):
+        await agent_instructions.save(db_session, user, ON_TOPIC, streamer=_Verdict(verdict))
+    assert user.ai_custom_instructions is None
 
 
 async def test_candidate_is_sent_as_data_not_as_the_system_prompt(

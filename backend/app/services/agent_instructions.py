@@ -1,6 +1,6 @@
 """Storage and admission control for the user's own assistant instructions.
 
-The text is folded into the system prompt (`app/agents/prompt.py::build`), so it
+The text is sent as lower-priority context, and it
 is classified by the user's own provider before it is stored: anything outside
 personal finance and the use of this application is refused and never saved.
 """
@@ -43,12 +43,10 @@ async def _classify(
 
     # Fail closed: only a bare ALLOW verdict passes. A refusal, an empty stream,
     # or a model that ignored the format all read as "not approved".
-    # ponytail: a candidate that talks the classifier into emitting ALLOW gets
-    # through. The blast radius is the author's own account - tools stay
-    # user-scoped and writes still need confirmation - so this is accepted.
-    lines = [line.strip() for line in "".join(parts).strip().splitlines() if line.strip()]
-    if lines and lines[0].upper() == prompt.VALIDATION_ALLOW:
+    verdict = "".join(parts)
+    if verdict == prompt.VALIDATION_ALLOW:
         return True, ""
+    lines = [line.strip() for line in verdict.strip().splitlines() if line.strip()]
     reason = lines[1] if len(lines) > 1 else ""
     return False, reason[:MAX_REASON_LENGTH]
 

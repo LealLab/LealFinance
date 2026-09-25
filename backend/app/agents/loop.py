@@ -98,6 +98,36 @@ class _OffTopicGate:
         return False, "" if self._flushed else self._buffer
 
 
+class _CodeFenceGate:
+    def __init__(self) -> None:
+        self._pending = ""
+        self.blocked = False
+
+    def feed(self, text: str) -> str:
+        if self.blocked:
+            return ""
+        combined = self._pending + text
+        positions = [
+            position for fence in ("```", "~~~") if (position := combined.find(fence)) >= 0
+        ]
+        if positions:
+            self.blocked = True
+            self._pending = ""
+            return combined[: min(positions)]
+        hold = 0
+        while (
+            hold < min(2, len(combined))
+            and combined[-hold - 1] == combined[-1]
+            and combined[-1] in "`~"
+        ):
+            hold += 1
+        self._pending = combined[-hold:] if hold else ""
+        return combined[:-hold] if hold else combined
+
+    def finish(self) -> str:
+        return "" if self.blocked else self._pending
+
+
 MAX_ITERATIONS = 8
 # ponytail: no per-user rate limit or daily message cap; add one if this
 # stops being a single-family self-hosted app
@@ -179,13 +209,15 @@ async def run_turn(
 
     for _ in range(MAX_ITERATIONS):
         gate = _OffTopicGate()
+        code_gate = _CodeFenceGate()
         text_parts: list[str] = []
         calls: list[ToolCall] = []
         try:
             async for event in streamer(credential, system, turns, provider_tools):
                 if isinstance(event, TextDelta):
-                    text_parts.append(event.text)
-                    for chunk in gate.feed(event.text):
+                    safe = code_gate.feed(event.text)
+                    text_parts.append(safe)
+                    for chunk in gate.feed(safe):
                         yield Delta(chunk)
                 elif isinstance(event, ToolCall):
                     calls.append(event)
@@ -198,13 +230,18 @@ async def run_turn(
             yield StreamError(exc.code, exc.params)
             return
 
+        ending = code_gate.finish()
+        text_parts.append(ending)
+        for chunk in gate.feed(ending):
+            yield Delta(chunk)
         is_refusal, leftover = gate.finish()
         full_text = "".join(text_parts)
-        if is_refusal:
+        if is_refusal or code_gate.blocked:
+            yield Refusal(OFF_TOPIC_CODE)
+        if (is_refusal or code_gate.blocked) and not calls:
             message = await persist_message(
                 db, conversation, role="assistant", content=OFF_TOPIC_MARKER
             )
-            yield Refusal(OFF_TOPIC_CODE)
             yield Done(status=AGENT_CONVERSATION_STATUS_IDLE, message_id=str(message.id))
             return
 
