@@ -238,11 +238,13 @@ async def test_mixed_category_request_keeps_confirmation_without_streaming_scrip
     await _chat_user(client, db_session, "chat-mixed@example.com")
     conversation = await _conversation(client)
     arguments = {"name": "Essentials", "kind": "expense", "categories": [{"name": "Groceries"}]}
+
     def script_delta(text: str) -> bytes:
         return _frame(
             "content_block_delta",
             {"type": "content_block_delta", "delta": {"type": "text_delta", "text": text}},
         )
+
     body = (
         script_delta("Creating the category.\n" + chr(96) * 2)
         + script_delta(chr(96) + "python\nprint('bad')")

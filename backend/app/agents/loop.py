@@ -108,9 +108,7 @@ class _CodeFenceGate:
             return ""
         combined = self._pending + text
         positions = [
-            position
-            for fence in ("```", "~~~")
-            if (position := combined.find(fence)) >= 0
+            position for fence in ("```", "~~~") if (position := combined.find(fence)) >= 0
         ]
         if positions:
             self.blocked = True

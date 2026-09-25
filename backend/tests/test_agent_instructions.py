@@ -96,9 +96,7 @@ async def test_save_rejects_over_the_length_cap(db_session: AsyncSession) -> Non
 
 
 @pytest.mark.parametrize("verdict", ["\n  allow \n", "ALLOW\nREJECT", "ALLOW more"])
-async def test_only_exact_allow_verdict_is_accepted(
-    db_session: AsyncSession, verdict: str
-) -> None:
+async def test_only_exact_allow_verdict_is_accepted(db_session: AsyncSession, verdict: str) -> None:
     user = await _user_with_provider(db_session, "allow-ws@example.com")
 
     with pytest.raises(ValidationAppError):

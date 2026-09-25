@@ -243,123 +243,146 @@ describe('Chat', () => {
     expect(chat['sending']()).toBe(false);
   });
 
+  it('resumes text after a refusal and read tool without exposing the marker', () => {
+    const chat = setup().componentInstance;
+    chat['liveMessages'].set([{ role: 'assistant', text: '', tools: [] }]);
+
+    chat['applyEvent']({ type: 'refusal', code: 'agents.off_topic' });
+    chat['applyEvent']({ type: 'delta', text: '' });
+    expect(chat['liveMessages']().at(-1)?.text).toBe('[[LF_OFF_TOPIC]]');
+    chat['applyEvent']({ type: 'tool_call', id: 'r1', name: 'list_accounts', arguments: {} });
+    chat['applyEvent']({ type: 'tool_result', id: 'r1', name: 'list_accounts', ok: true });
+    chat['applyEvent']({ type: 'delta', text: 'Balance: ' });
+    chat['applyEvent']({ type: 'delta', text: '100' });
+
+    expect(chat['liveMessages']().at(-1)?.text).toBe('Balance: 100');
+    expect(chat['liveMessages']().at(-1)?.tools).toEqual([
+      { id: 'r1', name: 'list_accounts', ok: true },
+    ]);
+  });
+
   it.each([
     ['', '[[LF_OFF_TOPIC]]', '[[LF_OFF_TOPIC]]'],
+    ['[[LF_OFF_TOPIC]]', 'Balance: 100', 'Balance: 100'],
+    ['[[LF_OFF_TOPIC]]', '', '[[LF_OFF_TOPIC]]'],
     ['Checking accounts.', '# Balance\n100', 'Checking accounts.\n\n# Balance\n100'],
     ['Checking accounts.', '[[LF_OFF_TOPIC]]', '[[LF_OFF_TOPIC]]'],
-  ])('folds persisted tool rounds with preamble %j and response %j', (preamble, response, expected) => {
-    const fixture = setup();
-    const detail: AgentConversationDetail = {
-      id: 'c9',
-      title: 't',
-      provider: 'anthropic',
-      model: 'm',
-      status: 'idle',
-      pendingCallId: null,
-      createdAt: '',
-      updatedAt: '',
-      messages: [
-        {
-          id: 'm0',
-          role: 'user',
-          content: 'spend?',
-          toolCalls: null,
-          toolCallId: null,
-          toolName: null,
-          isError: false,
-          position: 0,
-          createdAt: '',
-        },
-        {
-          id: 'm1',
-          role: 'assistant',
-          content: preamble,
-          toolCalls: [{ id: 'c1', name: 'spend_by_category', arguments: {} }],
-          toolCallId: null,
-          toolName: null,
-          isError: false,
-          position: 1,
-          createdAt: '',
-        },
-        {
-          id: 'm2',
-          role: 'tool',
-          content: '[]',
-          toolCalls: null,
-          toolCallId: 'c1',
-          toolName: 'spend_by_category',
-          isError: false,
-          position: 2,
-          createdAt: '',
-        },
-        {
-          id: 'm3',
-          role: 'assistant',
-          content: '',
-          toolCalls: [{ id: 'c2', name: 'monthly_totals', arguments: {} }],
-          toolCallId: null,
-          toolName: null,
-          isError: false,
-          position: 3,
-          createdAt: '',
-        },
-        {
-          id: 'm4',
-          role: 'tool',
-          content: '{}',
-          toolCalls: null,
-          toolCallId: 'c2',
-          toolName: 'monthly_totals',
-          isError: false,
-          position: 4,
-          createdAt: '',
-        },
-        {
-          id: 'm5',
-          role: 'assistant',
-          content: response,
-          toolCalls: null,
-          toolCallId: null,
-          toolName: null,
-          isError: false,
-          position: 5,
-          createdAt: '',
-        },
-        {
-          id: 'm6',
-          role: 'user',
-          content: 'next question',
-          toolCalls: null,
-          toolCallId: null,
-          toolName: null,
-          isError: false,
-          position: 6,
-          createdAt: '',
-        },
-        {
-          id: 'm7',
-          role: 'assistant',
-          content: 'Separate answer',
-          toolCalls: null,
-          toolCallId: null,
-          toolName: null,
-          isError: false,
-          position: 7,
-          createdAt: '',
-        },
-      ],
-    };
+  ])(
+    'folds persisted tool rounds with preamble %j and response %j',
+    (preamble, response, expected) => {
+      const fixture = setup();
+      const detail: AgentConversationDetail = {
+        id: 'c9',
+        title: 't',
+        provider: 'anthropic',
+        model: 'm',
+        status: 'idle',
+        pendingCallId: null,
+        createdAt: '',
+        updatedAt: '',
+        messages: [
+          {
+            id: 'm0',
+            role: 'user',
+            content: 'spend?',
+            toolCalls: null,
+            toolCallId: null,
+            toolName: null,
+            isError: false,
+            position: 0,
+            createdAt: '',
+          },
+          {
+            id: 'm1',
+            role: 'assistant',
+            content: preamble,
+            toolCalls: [{ id: 'c1', name: 'spend_by_category', arguments: {} }],
+            toolCallId: null,
+            toolName: null,
+            isError: false,
+            position: 1,
+            createdAt: '',
+          },
+          {
+            id: 'm2',
+            role: 'tool',
+            content: '[]',
+            toolCalls: null,
+            toolCallId: 'c1',
+            toolName: 'spend_by_category',
+            isError: false,
+            position: 2,
+            createdAt: '',
+          },
+          {
+            id: 'm3',
+            role: 'assistant',
+            content: '',
+            toolCalls: [{ id: 'c2', name: 'monthly_totals', arguments: {} }],
+            toolCallId: null,
+            toolName: null,
+            isError: false,
+            position: 3,
+            createdAt: '',
+          },
+          {
+            id: 'm4',
+            role: 'tool',
+            content: '{}',
+            toolCalls: null,
+            toolCallId: 'c2',
+            toolName: 'monthly_totals',
+            isError: false,
+            position: 4,
+            createdAt: '',
+          },
+          {
+            id: 'm5',
+            role: 'assistant',
+            content: response,
+            toolCalls: null,
+            toolCallId: null,
+            toolName: null,
+            isError: false,
+            position: 5,
+            createdAt: '',
+          },
+          {
+            id: 'm6',
+            role: 'user',
+            content: 'next question',
+            toolCalls: null,
+            toolCallId: null,
+            toolName: null,
+            isError: false,
+            position: 6,
+            createdAt: '',
+          },
+          {
+            id: 'm7',
+            role: 'assistant',
+            content: 'Separate answer',
+            toolCalls: null,
+            toolCallId: null,
+            toolName: null,
+            isError: false,
+            position: 7,
+            createdAt: '',
+          },
+        ],
+      };
 
-    const turns = fixture.componentInstance['toChatTurns'](detail);
+      const turns = fixture.componentInstance['toChatTurns'](detail);
 
-    expect(turns).toHaveLength(4);
-    expect(turns[1].tools).toEqual([
-      { id: 'c1', name: 'spend_by_category', ok: true },
-      { id: 'c2', name: 'monthly_totals', ok: true },
-    ]);
-    expect(turns[1].text).toBe(expected);
-    expect(turns[3].text).toBe('Separate answer');
-  });
+      expect(turns).toHaveLength(4);
+      expect(turns[1].tools).toEqual([
+        { id: 'c1', name: 'spend_by_category', ok: true },
+        { id: 'c2', name: 'monthly_totals', ok: true },
+      ]);
+      expect(turns[1].text).toBe(expected);
+      expect(turns[3].text).toBe('Separate answer');
+    },
+  );
 
   it('rehydrates the exact pending persisted tool call', () => {
     const fixture = setup();

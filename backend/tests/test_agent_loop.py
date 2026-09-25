@@ -226,12 +226,14 @@ async def test_code_fence_keeps_write_confirmation(db_session: AsyncSession) -> 
             _credential(),
             "system",
             streamer=_scripted(
-                [[
-                    TextDelta("I'll create Food.\n" + chr(96) * 2),
-                    TextDelta(chr(96) + "python\nprint('bad')"),
-                    ToolCall("w1", "create_entity", arguments),
-                    TurnEnd("tool_use"),
-                ]]
+                [
+                    [
+                        TextDelta("I'll create Food.\n" + chr(96) * 2),
+                        TextDelta(chr(96) + "python\nprint('bad')"),
+                        ToolCall("w1", "create_entity", arguments),
+                        TurnEnd("tool_use"),
+                    ]
+                ]
             ),
             tool_defs=[_tool("create_entity", _peek, writes=True)],
         )
