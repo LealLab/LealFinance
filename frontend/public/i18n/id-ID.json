@@ -312,6 +312,8 @@
     "update": {
       "banner": {
         "message": "Versi baru, {{version}}, tersedia.",
+        "skipVersion": "Lewati versi ini",
+        "hideForNow": "Sembunyikan untuk sekarang",
         "action": "Cara memperbarui"
       },
       "modal": {

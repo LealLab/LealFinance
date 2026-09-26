@@ -29,12 +29,15 @@
       role="status"
     >
       {{ t('layout.update.banner.message', { version: latestVersion() }) }}
-      <div class="flex shrink-0 items-center gap-3">
+      <div class="flex flex-wrap items-center justify-end gap-2">
         <button appButton variant="secondary" size="sm" type="button" (click)="openModal()">
           {{ t('layout.update.banner.action') }}
         </button>
-        <button type="button" class="font-medium" (click)="dismiss()">
-          {{ t('common.actions.close') }}
+        <button appButton variant="secondary" size="sm" type="button" (click)="skipVersion()">
+          {{ t('layout.update.banner.skipVersion') }}
+        </button>
+        <button type="button" class="font-medium" (click)="hideForNow()">
+          {{ t('layout.update.banner.hideForNow') }}
         </button>
       </div>
     </div>

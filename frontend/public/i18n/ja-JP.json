@@ -312,6 +312,8 @@
     "update": {
       "banner": {
         "message": "新しいバージョン {{version}} が利用可能です。",
+        "skipVersion": "このバージョンをスキップ",
+        "hideForNow": "一時的に非表示",
         "action": "更新方法"
       },
       "modal": {

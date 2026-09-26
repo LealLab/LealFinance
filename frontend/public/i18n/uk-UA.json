@@ -312,6 +312,8 @@
     "update": {
       "banner": {
         "message": "Доступна нова версія {{version}}.",
+        "skipVersion": "Пропустити цю версію",
+        "hideForNow": "Поки приховати",
         "action": "Як оновити"
       },
       "modal": {

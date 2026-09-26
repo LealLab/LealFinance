@@ -55,6 +55,7 @@ export class UpdateBanner {
   private readonly dismissedVersion = signal(
     typeof localStorage !== 'undefined' ? localStorage.getItem(DISMISSED_VERSION_KEY) : null,
   );
+  private readonly hiddenForNow = signal(false);
 
   protected readonly modalOpen = signal(false);
   /** The command whose copy button was last used, for the "Copied" label. */
@@ -80,7 +81,10 @@ export class UpdateBanner {
     return value ? this.locale.localizeDate(value, undefined, { dateStyle: 'medium' }) : undefined;
   });
   protected readonly visible = computed(
-    () => !!this.status()?.updateAvailable && this.dismissedVersion() !== this.latestVersion(),
+    () =>
+      !!this.status()?.updateAvailable &&
+      this.dismissedVersion() !== this.latestVersion() &&
+      !this.hiddenForNow(),
   );
 
   constructor() {
@@ -91,10 +95,14 @@ export class UpdateBanner {
     });
   }
 
-  protected dismiss(): void {
+  protected skipVersion(): void {
     const version = this.latestVersion();
     if (version) localStorage.setItem(DISMISSED_VERSION_KEY, version);
     this.dismissedVersion.set(version ?? null);
+  }
+
+  protected hideForNow(): void {
+    this.hiddenForNow.set(true);
   }
 
   // Template variables of an <ng-template> are untyped, so the lookup is here.

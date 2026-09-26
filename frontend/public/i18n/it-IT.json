@@ -312,6 +312,8 @@
     "update": {
       "banner": {
         "message": "È disponibile una nuova versione, {{version}}.",
+        "skipVersion": "Salta questa versione",
+        "hideForNow": "Nascondi per ora",
         "action": "Come aggiornare"
       },
       "modal": {

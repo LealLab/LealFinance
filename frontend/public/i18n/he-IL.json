@@ -312,6 +312,8 @@
     "update": {
       "banner": {
         "message": "גרסה חדשה, {{version}}, זמינה.",
+        "skipVersion": "דלג על גרסה זו",
+        "hideForNow": "הסתר לעת עתה",
         "action": "כיצד לעדכן"
       },
       "modal": {
