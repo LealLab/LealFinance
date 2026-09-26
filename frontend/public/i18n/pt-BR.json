@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Uma nova versão, {{version}}, está disponível.",
+        "skipVersion": "Ignorar esta versão",
         "action": "Como atualizar"
       },
       "modal": {

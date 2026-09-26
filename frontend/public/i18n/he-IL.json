@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "גרסה חדשה, {{version}}, זמינה.",
+        "skipVersion": "דלג על גרסה זו",
         "action": "כיצד לעדכן"
       },
       "modal": {

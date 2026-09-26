@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Je k dispozici nová verze {{version}}.",
+        "skipVersion": "Přeskočit tuto verzi",
         "action": "Jak aktualizovat"
       },
       "modal": {

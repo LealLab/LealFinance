@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "新版本 {{version}} 已發布。",
+        "skipVersion": "略過此版本",
         "action": "如何更新"
       },
       "modal": {

@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Доступна новая версия {{version}}.",
+        "skipVersion": "Пропустить эту версию",
         "action": "Как обновить"
       },
       "modal": {

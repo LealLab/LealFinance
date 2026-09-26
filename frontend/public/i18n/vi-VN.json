@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Phiên bản mới, {{version}}, đã có sẵn.",
+        "skipVersion": "Bỏ qua phiên bản này",
         "action": "Cách cập nhật"
       },
       "modal": {

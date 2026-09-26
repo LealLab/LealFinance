@@ -70,6 +70,13 @@ describe('UpdateBanner', () => {
 
     expect(api.updateStatus).toHaveBeenCalled();
     expect(fixture.componentInstance['latestVersion']()).toBe('v1.2.0');
+    const actions = [
+      ...fixture.nativeElement.querySelectorAll('[role="status"] button'),
+    ] as HTMLButtonElement[];
+    expect(actions[0].classList).toContain('bg-accent');
+    expect(actions[1].classList).toContain('border');
+    expect(actions[2].getAttribute('aria-label')).toBe('Close');
+    expect(actions[2].classList).toContain('hover:text-negative');
   });
 
   it('never calls the endpoint and never renders the banner for a member', async () => {
@@ -83,7 +90,7 @@ describe('UpdateBanner', () => {
     expect(fixture.nativeElement.querySelector('[role="status"]')).toBeNull();
   });
 
-  it('dismissing the banner hides it and persists across a fresh component instance', async () => {
+  it('hides the banner for now until a fresh component instance is created', async () => {
     await setup(ADMIN);
     const fixture = TestBed.createComponent(UpdateBanner);
     fixture.detectChanges();
@@ -92,7 +99,33 @@ describe('UpdateBanner', () => {
 
     expect(fixture.nativeElement.querySelector('[role="status"]')).not.toBeNull();
 
-    fixture.componentInstance['dismiss']();
+    const closeButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Close"]',
+    ) as HTMLButtonElement;
+    expect(closeButton).not.toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain('Hide for now');
+    closeButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[role="status"]')).toBeNull();
+    expect(localStorage.getItem('lealfinance.dismissedUpdateVersion')).toBeNull();
+
+    const secondFixture = TestBed.createComponent(UpdateBanner);
+    secondFixture.detectChanges();
+    await secondFixture.whenStable();
+    secondFixture.detectChanges();
+
+    expect(secondFixture.nativeElement.querySelector('[role="status"]')).not.toBeNull();
+  });
+
+  it('skips the current version across refreshes and shows a newer version', async () => {
+    await setup(ADMIN);
+    const fixture = TestBed.createComponent(UpdateBanner);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    fixture.componentInstance['skipVersion']();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('[role="status"]')).toBeNull();
@@ -102,8 +135,14 @@ describe('UpdateBanner', () => {
     secondFixture.detectChanges();
     await secondFixture.whenStable();
     secondFixture.detectChanges();
-
     expect(secondFixture.nativeElement.querySelector('[role="status"]')).toBeNull();
+
+    api.updateStatus.mockReturnValue(of({ ...UPDATE_STATUS, latestVersion: 'v1.3.0' }));
+    const thirdFixture = TestBed.createComponent(UpdateBanner);
+    thirdFixture.detectChanges();
+    await thirdFixture.whenStable();
+    thirdFixture.detectChanges();
+    expect(thirdFixture.nativeElement.querySelector('[role="status"]')).not.toBeNull();
   });
 
   it('opens the update modal when requested', async () => {

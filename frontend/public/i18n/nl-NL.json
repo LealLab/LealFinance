@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Er is een nieuwe versie, {{version}}, beschikbaar.",
+        "skipVersion": "Deze versie overslaan",
         "action": "Hoe te updaten"
       },
       "modal": {

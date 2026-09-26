@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Yeni bir sürüm, {{version}}, kullanılabilir.",
+        "skipVersion": "Bu sürümü atla",
         "action": "Nasıl güncellenir"
       },
       "modal": {

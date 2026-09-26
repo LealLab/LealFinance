@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Versi baru, {{version}}, tersedia.",
+        "skipVersion": "Lewati versi ini",
         "action": "Cara memperbarui"
       },
       "modal": {

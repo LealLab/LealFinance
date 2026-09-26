@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "Uusi versio, {{version}}, on saatavilla.",
+        "skipVersion": "Ohita tämä versio",
         "action": "Kuinka päivittää"
       },
       "modal": {

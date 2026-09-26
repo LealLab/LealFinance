@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "एक नया संस्करण, {{version}}, उपलब्ध है।",
+        "skipVersion": "इस संस्करण को छोड़ें",
         "action": "अपडेट कैसे करें"
       },
       "modal": {

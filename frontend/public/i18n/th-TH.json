@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "มีเวอร์ชันใหม่ {{version}} พร้อมใช้งาน",
+        "skipVersion": "ข้ามเวอร์ชันนี้",
         "action": "วิธีอัปเดต"
       },
       "modal": {

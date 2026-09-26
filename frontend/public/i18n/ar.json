@@ -312,6 +312,7 @@
     "update": {
       "banner": {
         "message": "تتوفر نسخة جديدة، {{version}}.",
+        "skipVersion": "تخطي هذا الإصدار",
         "action": "كيفية التحديث"
       },
       "modal": {
