@@ -17,6 +17,7 @@ Prefer these Taskfile targets over raw `uv`, `pnpm`, or Compose commands.
 
 | Task | Command |
 | --- | --- |
+| List all tasks available | `task` |
 | Backend lint + format | `task backend:lint` |
 | Backend type check | `task backend:typecheck` |
 | Backend tests | `task backend:test` |
@@ -125,3 +126,16 @@ See [`docs/ai-agents.md`](docs/ai-agents.md).
 
 See [`docs/architecture.md`](docs/architecture.md) and
 [`docs/backend-api.md`](docs/backend-api.md).
+
+## LealFinance Localization
+
+We currently support 28 languages, including right-to-left layouts. The
+frontend uses Transloco for internationalization. All user-facing text must be
+translatable, and new keys must be added to the translation catalogs. The
+backend error codes are machine-readable and never translated strings.
+
+You must invoke subagents for translation tasks. This is useful to ensure context saving.
+
+## After Implementations
+
+After implementing something, make sure to update the relevant documentation, including the README, architecture, and API docs. Also, ensure that all new features are covered by tests and that the translation keys are validated.

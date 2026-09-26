@@ -73,10 +73,10 @@ backups, and exposing the app safely.
 
 ## Development
 
-### Requirements
+### Dev Requirements
 
 - [Docker](https://www.docker.com/) with the Compose plugin
-- [Task](https://taskfile.dev/)
+- [Task](https://taskfile.dev/) for running the install and update scripts;
 - [Python](https://www.python.org/) 3.13 and [uv](https://docs.astral.sh/uv/)
 - [Node.js](https://nodejs.org/) 24 and [pnpm](https://pnpm.io/) 11.22.0
 
