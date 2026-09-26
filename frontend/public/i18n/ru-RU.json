@@ -313,7 +313,6 @@
       "banner": {
         "message": "Доступна новая версия {{version}}.",
         "skipVersion": "Пропустить эту версию",
-        "hideForNow": "Скрыть пока",
         "action": "Как обновить"
       },
       "modal": {

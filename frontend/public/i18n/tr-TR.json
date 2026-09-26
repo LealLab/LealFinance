@@ -313,7 +313,6 @@
       "banner": {
         "message": "Yeni bir sürüm, {{version}}, kullanılabilir.",
         "skipVersion": "Bu sürümü atla",
-        "hideForNow": "Şimdilik gizle",
         "action": "Nasıl güncellenir"
       },
       "modal": {

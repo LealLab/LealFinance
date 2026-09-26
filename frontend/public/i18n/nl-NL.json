@@ -313,7 +313,6 @@
       "banner": {
         "message": "Er is een nieuwe versie, {{version}}, beschikbaar.",
         "skipVersion": "Deze versie overslaan",
-        "hideForNow": "Voor nu verbergen",
         "action": "Hoe te updaten"
       },
       "modal": {

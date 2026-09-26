@@ -313,7 +313,6 @@
       "banner": {
         "message": "Uusi versio, {{version}}, on saatavilla.",
         "skipVersion": "Ohita tämä versio",
-        "hideForNow": "Piilota toistaiseksi",
         "action": "Kuinka päivittää"
       },
       "modal": {

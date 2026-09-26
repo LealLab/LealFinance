@@ -313,7 +313,6 @@
       "banner": {
         "message": "Dostępna jest nowa wersja {{version}}.",
         "skipVersion": "Pomiń tę wersję",
-        "hideForNow": "Ukryj na razie",
         "action": "Jak zaktualizować"
       },
       "modal": {

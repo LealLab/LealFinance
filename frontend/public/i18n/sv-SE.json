@@ -313,7 +313,6 @@
       "banner": {
         "message": "En ny version, {{version}}, är tillgänglig.",
         "skipVersion": "Hoppa över den här versionen",
-        "hideForNow": "Dölj tills vidare",
         "action": "Hur man uppdaterar"
       },
       "modal": {

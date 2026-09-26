@@ -313,7 +313,6 @@
       "banner": {
         "message": "O nouă versiune, {{version}}, este disponibilă.",
         "skipVersion": "Omite această versiune",
-        "hideForNow": "Ascunde pentru moment",
         "action": "Cum să actualizezi"
       },
       "modal": {

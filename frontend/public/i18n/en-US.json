@@ -313,7 +313,6 @@
       "banner": {
         "message": "A new version, {{version}}, is available.",
         "skipVersion": "Skip this version",
-        "hideForNow": "Hide for now",
         "action": "How to update"
       },
       "modal": {

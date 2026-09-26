@@ -70,6 +70,13 @@ describe('UpdateBanner', () => {
 
     expect(api.updateStatus).toHaveBeenCalled();
     expect(fixture.componentInstance['latestVersion']()).toBe('v1.2.0');
+    const actions = [
+      ...fixture.nativeElement.querySelectorAll('[role="status"] button'),
+    ] as HTMLButtonElement[];
+    expect(actions[0].classList).toContain('bg-accent');
+    expect(actions[1].classList).toContain('border');
+    expect(actions[2].getAttribute('aria-label')).toBe('Close');
+    expect(actions[2].classList).toContain('hover:text-negative');
   });
 
   it('never calls the endpoint and never renders the banner for a member', async () => {
@@ -92,7 +99,12 @@ describe('UpdateBanner', () => {
 
     expect(fixture.nativeElement.querySelector('[role="status"]')).not.toBeNull();
 
-    fixture.componentInstance['hideForNow']();
+    const closeButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Close"]',
+    ) as HTMLButtonElement;
+    expect(closeButton).not.toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain('Hide for now');
+    closeButton.click();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('[role="status"]')).toBeNull();

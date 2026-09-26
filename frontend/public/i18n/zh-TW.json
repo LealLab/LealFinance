@@ -313,7 +313,6 @@
       "banner": {
         "message": "新版本 {{version}} 已發布。",
         "skipVersion": "略過此版本",
-        "hideForNow": "暫時隱藏",
         "action": "如何更新"
       },
       "modal": {

@@ -313,7 +313,6 @@
       "banner": {
         "message": "새 버전 {{version}}을(를) 사용할 수 있습니다.",
         "skipVersion": "이 버전 건너뛰기",
-        "hideForNow": "이번만 숨기기",
         "action": "업데이트 방법"
       },
       "modal": {
