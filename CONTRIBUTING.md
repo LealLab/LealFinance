@@ -41,15 +41,34 @@ use Transloco and pass `task i18n:validate`.
 4. Run the relevant checks and record them in the pull request description.
 5. Include screenshots for user-interface changes when useful.
 
-### PR titles
+### Commit messages and PR titles
 
-Use a conventional-commit title: `feat:`, `fix:`, `docs:`, `perf:`, `ci:`,
-`security:`, `chore:`, `refactor:`, `test:`, optionally scoped
-(`feat(agents): ...`). Use `fix(security): ...` for a security fix and
-`chore(deps): ...` for dependency bumps. A workflow turns the prefix into a
-label, and the label decides which section of the release notes the PR lands
-in (see [Releases](#releases)). A title without a recognized prefix is listed
-under Maintenance.
+Every commit subject and every PR title must start with a conventional-commit
+prefix: `<type>(<optional-scope>): <summary>`. Use a lowercase type, an
+imperative lowercase summary, and no trailing period. Add `!` before the colon
+for a breaking change (`feat!: ...`).
+
+- Good: `feat: add task banners`, `fix(chat): keep pinned to newest message`
+- Bad: `Add task banners`, `Fixed the chat`, `Update stuff`
+
+PRs are squash-merged, so the PR title becomes the commit on `main`. It must
+carry the prefix even when the individual commits do.
+
+| Type | Use for | Release-notes section |
+| --- | --- | --- |
+| `feat` | New user-visible behavior | Features |
+| `fix` | Bug fixes | Bug Fixes |
+| `docs` | Documentation only | Documentation |
+| `perf` | Performance improvements | Performance |
+| `security`, `fix(security)` | Security fixes | Security |
+| `chore(deps)`, `ci(deps)`, `build(deps)` | Dependency bumps | Dependencies |
+| `ci` | Workflows and CI config | CI/CD |
+| `refactor`, `test`, `chore`, `build` | Everything else | Maintenance |
+
+A workflow turns the prefix into a label, and the label decides which section
+of the release notes the PR lands in (see [Releases](#releases)). A title
+without a recognized prefix is listed under Maintenance, so a missing prefix
+hides a feature or fix from the notes.
 
 Never include credentials, tokens, private data, or environment-specific
 secrets in commits, issues, or pull requests. Report vulnerabilities through

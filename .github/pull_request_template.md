@@ -1,3 +1,5 @@
+<!-- PR title must be `type(scope): summary`, e.g. `fix: ...`. See CONTRIBUTING.md. -->
+
 ## Summary
 
 <!-- What changed and why? -->
