@@ -35,6 +35,16 @@ Migration changes must pass upgrade -> downgrade -> upgrade. `task backend:test`
 uses its own `lealfinance_test` database (auto-created) and refuses to run
 against any database not named `*_test`, so it never touches dev data.
 
+## Commits and PRs
+
+- Every commit subject and PR title starts with `type(scope): summary`, using
+  `feat`, `fix`, `docs`, `perf`, `security`, `ci`, `refactor`, `test`, or
+  `chore` (for example `fix: keep chat pinned to newest message`).
+- PRs are squash-merged and the title drives the release-note label, so an
+  unprefixed title is misfiled under Maintenance.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md#commit-messages-and-pr-titles).
+
 ## Where code goes
 
 - `backend/app/api/v1/` - thin routers: validate, delegate, return.
