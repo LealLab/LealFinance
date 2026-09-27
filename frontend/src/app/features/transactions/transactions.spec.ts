@@ -119,7 +119,8 @@ describe('Transactions', () => {
     newButton!.click();
     fixture.detectChanges();
 
-    const dialog = el.querySelector('dialog') as HTMLDialogElement;
+    // The filter sheet is also a <dialog> and precedes the form in the DOM.
+    const dialog = el.querySelector('#tx-account')!.closest('dialog') as HTMLDialogElement;
     expect(dialog.open).toBe(true);
 
     const accountSelect = dialog.querySelector('#tx-account') as HTMLSelectElement;
@@ -369,7 +370,7 @@ describe('Transactions - calendar with a cross-currency month', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    fixture.componentInstance['setMode']('calendar');
+    fixture.componentInstance['setView']('calendar');
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
