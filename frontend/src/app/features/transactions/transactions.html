@@ -6,52 +6,59 @@
     [title]="t('transactions.title')"
     [description]="t('transactions.description')"
   >
-    <div
-      class="flex items-center gap-1 rounded border border-border p-0.5 max-md:col-span-2"
-      role="group"
-      [attr.aria-label]="t('transactions.title')"
-    >
-      <button
-        type="button"
-        class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
-        [class]="view() === 'list' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
-        [attr.aria-pressed]="view() === 'list'"
-        (click)="setView('list')"
+    <!-- Grouped so the view switcher and (in calendar mode) the month
+         switcher always count as a single page-header child - otherwise the
+         extra month-switcher child flips the odd/even parity that decides
+         whether the last action ("More") spans the full row, see
+         shared/ui/page-header. -->
+    <div class="flex flex-col gap-2 max-md:col-span-2 md:contents">
+      <div
+        class="flex items-center gap-1 rounded border border-border p-0.5"
+        role="group"
+        [attr.aria-label]="t('transactions.title')"
       >
-        <app-icon name="menu" [size]="16" />
-        <span>{{ t('transactions.view.list') }}</span>
-      </button>
-      <button
-        type="button"
-        class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
-        [class]="view() === 'calendar' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
-        [attr.aria-pressed]="view() === 'calendar'"
-        (click)="setView('calendar')"
-      >
-        <app-icon name="calendar" [size]="16" />
-        <span>{{ t('transactions.view.calendar') }}</span>
-      </button>
-      <button
-        type="button"
-        class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
-        [class]="view() === 'recurring' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
-        [attr.aria-pressed]="view() === 'recurring'"
-        (click)="setView('recurring')"
-      >
-        <app-icon name="repeat" [size]="16" />
-        <span>{{ t('transactions.tabs.recurring') }}</span>
-      </button>
-    </div>
+        <button
+          type="button"
+          class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+          [class]="view() === 'list' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-pressed]="view() === 'list'"
+          (click)="setView('list')"
+        >
+          <app-icon name="menu" [size]="16" />
+          <span>{{ t('transactions.view.list') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+          [class]="view() === 'calendar' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-pressed]="view() === 'calendar'"
+          (click)="setView('calendar')"
+        >
+          <app-icon name="calendar" [size]="16" />
+          <span>{{ t('transactions.view.calendar') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+          [class]="view() === 'recurring' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-pressed]="view() === 'recurring'"
+          (click)="setView('recurring')"
+        >
+          <app-icon name="repeat" [size]="16" />
+          <span>{{ t('transactions.tabs.recurring') }}</span>
+        </button>
+      </div>
 
-    @if (tab() === 'transactions') {
-      @if (mode() === 'calendar') {
+      @if (tab() === 'transactions' && mode() === 'calendar') {
         <app-month-switcher
-          class="max-md:col-span-2"
           [(month)]="calendarMonth"
           [prevLabel]="t('common.actions.previousMonth')"
           [nextLabel]="t('common.actions.nextMonth')"
         />
       }
+    </div>
+
+    @if (tab() === 'transactions') {
 
       <!-- From md up the secondary actions sit beside the primary one; on
            phones they fold into the "More" menu below so the page opens on

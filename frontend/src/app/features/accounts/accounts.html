@@ -17,29 +17,35 @@
       </button>
     </div>
 
-    <button appButton variant="primary" type="button" (click)="openCreate()">
-      <app-icon name="plus" [size]="16" />
-      {{ t('accounts.actions.new') }}
-    </button>
+    <!-- Grouped into one page-header child so the "hidden md:contents" group
+         above doesn't flip the odd/even parity that decides whether the last
+         action spans the full row on mobile - see the same fix in
+         features/transactions/transactions.html. -->
+    <div class="contents">
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        <app-icon name="plus" [size]="16" />
+        {{ t('accounts.actions.new') }}
+      </button>
 
-    <app-dropdown class="md:hidden" [(open)]="moreOpen" panelClass="w-56">
-      <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
-        <app-icon name="grip" [size]="16" />
-        <span>{{ t('accounts.actions.more') }}</span>
-      </button>
-      <button
-        type="button"
-        class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
-        (click)="moreOpen.set(false); openCreateInstitution()"
-      >
-        <app-icon name="bank" [size]="16" />
-        {{ t('institutions.actions.new') }}
-      </button>
-      <label class="flex w-full items-center gap-2 rounded px-2 py-2 text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11">
-        <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
-        <span>{{ t('accounts.showArchived') }}</span>
-      </label>
-    </app-dropdown>
+      <app-dropdown class="md:hidden" [(open)]="moreOpen" panelClass="w-56">
+        <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+          <app-icon name="grip" [size]="16" />
+          <span>{{ t('accounts.actions.more') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="moreOpen.set(false); openCreateInstitution()"
+        >
+          <app-icon name="bank" [size]="16" />
+          {{ t('institutions.actions.new') }}
+        </button>
+        <label class="flex w-full items-center gap-2 rounded px-2 py-2 text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11">
+          <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
+          <span>{{ t('accounts.showArchived') }}</span>
+        </label>
+      </app-dropdown>
+    </div>
   </app-page-header>
 
   @if (hasFallbackRate()) {
@@ -72,7 +78,7 @@
                   variant="ghost"
                   size="sm"
                   type="button"
-                  class="opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                  class="max-md:opacity-100 opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                   (click)="openEditInstitution(institution, $event)"
                   [attr.aria-label]="t('institutions.actions.edit')"
                 >
@@ -83,7 +89,7 @@
                   variant="ghost"
                   size="sm"
                   type="button"
-                  class="opacity-0 transition-opacity hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                  class="max-md:opacity-100 opacity-0 transition-opacity hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                   (click)="deleteInstitution(institution, $event)"
                   [attr.aria-label]="t('institutions.actions.delete')"
                 >
@@ -149,43 +155,6 @@
                       </span>
                     }
                   </span>
-                  <!-- Row edit/archive/delete stay desktop-only - on mobile the
-                       row just opens the detail page, which has these actions. -->
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    class="max-md:hidden opacity-0 transition-opacity hover:!bg-surface-raised group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                    (click)="openEdit(row.account, $event)"
-                    [attr.aria-label]="t('accounts.actions.edit')"
-                  >
-                    <app-icon name="pencil" [size]="16" />
-                  </button>
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    class="max-md:hidden opacity-0 transition-opacity hover:!bg-surface-raised group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                    (click)="toggleArchived(row.account, $event)"
-                    [attr.aria-label]="
-                      row.account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive')
-                    "
-                  >
-                    <app-icon name="archive" [size]="16" />
-                  </button>
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    class="max-md:hidden opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                    (click)="deleteAccount(row.account, $event)"
-                    [attr.aria-label]="t('accounts.actions.delete')"
-                  >
-                    <app-icon name="trash" [size]="16" />
-                  </button>
                 </div>
               </li>
             }
@@ -197,7 +166,6 @@
 
   <app-account-form-modal
     [(open)]="formOpen"
-    [account]="editingAccount()"
     (saved)="onSaved()"
   />
   <app-institution-form-modal

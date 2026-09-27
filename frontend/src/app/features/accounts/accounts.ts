@@ -56,7 +56,7 @@ function trySum(amounts: Money[]): Money | null {
 /**
  * The confirmation keys below are passed dynamically through ConfirmService,
  * so the i18n extractor needs explicit markers:
- * t(accounts.archive.title, accounts.archive.message, accounts.delete.title, accounts.delete.message)
+ * t(institutions.delete.title, institutions.delete.message)
  */
 @Component({
   selector: 'app-accounts',
@@ -100,7 +100,6 @@ export class Accounts {
   protected readonly showArchived = signal(false);
   protected readonly moreOpen = signal(false);
   protected readonly formOpen = signal(false);
-  protected readonly editingAccount = signal<Account | undefined>(undefined);
   protected readonly institutionFormOpen = signal(false);
   protected readonly editingInstitution = signal<Institution | undefined>(undefined);
 
@@ -168,48 +167,7 @@ export class Accounts {
   }
 
   protected openCreate(): void {
-    this.editingAccount.set(undefined);
     this.formOpen.set(true);
-  }
-
-  protected openEdit(account: Account, event: Event): void {
-    event.stopPropagation();
-    this.editingAccount.set(account);
-    this.formOpen.set(true);
-  }
-
-  protected async toggleArchived(account: Account, event: Event): Promise<void> {
-    event.stopPropagation();
-    if (!account.archived) {
-      const confirmed = await this.confirmService.confirm(
-        'accounts.archive.title',
-        'accounts.archive.message',
-        'default',
-        { name: account.name }
-      );
-      if (!confirmed) return;
-    }
-
-    this.accountRepository.setArchived(account.id, !account.archived).subscribe({
-      next: () => this.accountsResource.reload(),
-      error: () => this.mutationErrors.show(),
-    });
-  }
-
-  protected async deleteAccount(account: Account, event: Event): Promise<void> {
-    event.stopPropagation();
-    const confirmed = await this.confirmService.confirm(
-      'accounts.delete.title',
-      'accounts.delete.message',
-      'danger',
-      { name: account.name }
-    );
-    if (!confirmed) return;
-
-    this.accountRepository.delete(account.id).subscribe({
-      next: () => this.reloadAll(),
-      error: () => this.mutationErrors.show(),
-    });
   }
 
   protected async deleteInstitution(institution: Institution, event: Event): Promise<void> {

@@ -1,4 +1,5 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { Account } from '../../domain/models/account';
@@ -10,6 +11,7 @@ import { Transaction } from '../../domain/models/transaction';
 import { add, toNumber, zero } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Icon } from '../../shared/ui/icon/icon';
+import { Modal } from '../../shared/ui/modal/modal';
 import { CalendarDay, portfolioDelta } from './calendar-month';
 import { rowSign, rowToneClass } from './transaction-tone';
 
@@ -20,7 +22,7 @@ import { rowSign, rowToneClass } from './transaction-tone';
  */
 @Component({
   selector: 'app-transaction-calendar',
-  imports: [TranslocoDirective, MoneyPipe, Icon],
+  imports: [TranslocoDirective, MoneyPipe, Icon, Modal, NgTemplateOutlet],
   templateUrl: './transaction-calendar.html',
 })
 export class TransactionCalendar {
@@ -42,6 +44,8 @@ export class TransactionCalendar {
 
   protected readonly rowToneClass = rowToneClass;
   protected readonly rowSign = rowSign;
+  /** Below `md` there's no room for the side panel, so a day tap opens it as a bottom sheet instead. */
+  protected readonly dayOpen = signal(false);
 
   protected readonly weekdayLabels = computed(() => {
     // 2024-01-07 is a Sunday (getUTCDay() === 0); offset to each weekday.
@@ -129,5 +133,14 @@ export class TransactionCalendar {
   protected categoryColor(tx: Transaction): string | null {
     if (tx.type === 'transfer') return null;
     return tx.categoryId ? (this.categoriesById().get(tx.categoryId)?.color ?? null) : null;
+  }
+
+  protected onDayClick(date: string): void {
+    this.daySelected.emit(date);
+    const isMobile =
+      typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+        ? !window.matchMedia('(min-width: 768px)').matches
+        : false;
+    if (isMobile) this.dayOpen.set(true);
   }
 }

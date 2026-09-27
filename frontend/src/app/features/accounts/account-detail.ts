@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
@@ -43,6 +44,7 @@ const PAGE_SIZE = 30;
 @Component({
   selector: 'app-account-detail',
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     TranslocoDirective,
     MoneyPipe,

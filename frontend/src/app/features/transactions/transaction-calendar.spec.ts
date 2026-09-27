@@ -64,6 +64,10 @@ class CalendarHost {
   picked?: string;
 }
 
+function mockMatchMedia(matches: boolean): void {
+  window.matchMedia = vi.fn().mockReturnValue({ matches } as MediaQueryList);
+}
+
 describe('TransactionCalendar', () => {
   function setup() {
     TestBed.configureTestingModule({
@@ -91,6 +95,24 @@ describe('TransactionCalendar', () => {
     const cells = [...el.querySelectorAll('.grid-cols-7 > button')] as HTMLButtonElement[];
     cells[10].click();
     expect(fixture.componentInstance.picked).toBeTruthy();
+  });
+
+  it('opens the day as a bottom sheet below md, not at/above it', () => {
+    const { fixture, el } = setup();
+    const calendar = fixture.debugElement.query(By.directive(TransactionCalendar)).componentInstance;
+    const cells = [...el.querySelectorAll('.grid-cols-7 > button')] as HTMLButtonElement[];
+    const index = fixture.componentInstance.days().findIndex((day) => day.date === '2026-03-10');
+
+    mockMatchMedia(false);
+    cells[index].click();
+    fixture.detectChanges();
+    expect(calendar.dayOpen()).toBe(true);
+
+    calendar.dayOpen.set(false);
+    mockMatchMedia(true);
+    cells[index].click();
+    fixture.detectChanges();
+    expect(calendar.dayOpen()).toBe(false);
   });
 
   it('fills the selected-day panel with that day\'s transactions', () => {

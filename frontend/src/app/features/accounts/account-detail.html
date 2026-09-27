@@ -11,7 +11,30 @@
       }
     </div>
   } @else if (account(); as account) {
+    <ng-template #balanceCard>
+      @if (balance(); as balance) {
+        <div class="flex flex-col md:items-end">
+          <span class="font-mono text-3xl font-semibold tabular-nums">
+            {{ balance.amount | money: balance.currency }}
+          </span>
+          @if (convertedBalance(); as converted) {
+            <span class="font-mono text-sm text-content-muted">
+              {{ converted.amount | money: converted.currency }}
+            </span>
+          }
+        </div>
+      }
+    </ng-template>
+
     <app-page-header [title]="account.name" [description]="institutionName()">
+      <!-- Mobile: balance comes before the action buttons, same card shown
+           again (md:hidden here, max-md:hidden in the balance app-card
+           below) since the page-header/card markup differ too much to share
+           a single DOM position across breakpoints. -->
+      <div class="max-md:col-span-2 md:hidden">
+        <ng-container [ngTemplateOutlet]="balanceCard" />
+      </div>
+
       <button appButton variant="secondary" type="button" (click)="openEdit()">
         <app-icon name="pencil" [size]="16" />
         {{ t('accounts.actions.edit') }}
@@ -97,18 +120,9 @@
               <app-badge tone="neutral">{{ t('accounts.archivedBadge') }}</app-badge>
             }
           </div>
-          @if (balance(); as balance) {
-            <div class="flex flex-col md:items-end">
-              <span class="font-mono text-3xl font-semibold tabular-nums">
-                {{ balance.amount | money: balance.currency }}
-              </span>
-              @if (convertedBalance(); as converted) {
-                <span class="font-mono text-sm text-content-muted">
-                  {{ converted.amount | money: converted.currency }}
-                </span>
-              }
-            </div>
-          }
+          <div class="max-md:hidden">
+            <ng-container [ngTemplateOutlet]="balanceCard" />
+          </div>
         </div>
       </app-card>
 

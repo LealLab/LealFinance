@@ -8,6 +8,7 @@ import { SortOrder, TransactionSort } from '../../data/transaction.repository';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { Icon } from '../../shared/ui/icon/icon';
 import { MIN_COLUMN_WIDTH, TransactionColumn } from './transaction-columns';
 import { rowSign, rowToneClass } from './transaction-tone';
@@ -22,7 +23,7 @@ type PageToken = number | '…';
  */
 @Component({
   selector: 'app-transaction-table',
-  imports: [TranslocoDirective, MoneyPipe, Badge, Button, Icon],
+  imports: [TranslocoDirective, MoneyPipe, Badge, Button, Dropdown, Icon],
   templateUrl: './transaction-table.html',
   styleUrl: './transaction-table.scss',
 })
@@ -169,5 +170,12 @@ export class TransactionTable {
 
   protected onToggleAll(event: Event): void {
     this.toggleAll.emit((event.target as HTMLInputElement).checked);
+  }
+
+  /** Mobile card: tapping the row opens edit, but not when the tap landed on
+   * the checkbox or the "more" menu (trigger or one of its items). */
+  protected onRowClick(tx: Transaction, event: Event): void {
+    if ((event.target as HTMLElement).closest('input, app-dropdown')) return;
+    this.edit.emit(tx);
   }
 }
