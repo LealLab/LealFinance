@@ -86,6 +86,28 @@ describe('Transactions', () => {
     expect(fixture.componentInstance['tab']()).toBe('recurring');
   });
 
+  it('drives the list, calendar and recurring views from one control', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+
+    expect(component['view']()).toBe('list');
+
+    component['setView']('calendar');
+    expect(component['tab']()).toBe('transactions');
+    expect(component['mode']()).toBe('calendar');
+    expect(component['view']()).toBe('calendar');
+
+    component['setView']('recurring');
+    expect(component['tab']()).toBe('recurring');
+    expect(component['view']()).toBe('recurring');
+
+    component['setView']('list');
+    expect(component['tab']()).toBe('transactions');
+    expect(component['view']()).toBe('list');
+  });
+
   it('creates a new expense transaction end-to-end through the modal', async () => {
     const fixture = TestBed.createComponent(Transactions);
     fixture.detectChanges();

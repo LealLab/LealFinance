@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Lihat semua",
+    "charts": {
+      "label": "Grafik"
+    },
     "ratesUnavailable": "Beberapa total memerlukan nilai tukar yang saat ini tidak tersedia.",
     "title": "Dasbor",
     "welcome": "Selamat datang di LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Tingkat tabungan"
     },
     "cashFlow": {
+      "tab": "Arus kas",
       "title": "Arus kas (6 bulan)",
       "income": "Pendapatan",
       "expense": "Pengeluaran"
@@ -541,6 +546,7 @@
     "title": "Transaksi",
     "description": "Pendapatan, pengeluaran, dan transfer.",
     "actions": {
+      "more": "Lainnya",
       "new": "Transaksi baru",
       "edit": "Sunting",
       "delete": "Hapus",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Riwayat transaksi","loading":"Memuat riwayat…","empty":"Belum ada riwayat.","loadError":"Riwayat transaksi tidak dapat dimuat.","operation":{"create":"Dibuat","update":"Diperbarui","delete":"Dihapus"},"source":{"manual":"Manual","import":"Impor","import_undo":"Batalkan impor","recurring":"Berulang","loan":"Pinjaman","card":"Kartu","investment":"Investasi","bulk":"Massal"},"field":{"type":"Jenis","date":"Tanggal","amount":"Jumlah","currency":"Mata uang","account_id":"Akun","to_account_id":"Akun tujuan","category_id":"Kategori","description":"Deskripsi","notes":"Catatan","recurring_rule_id":"Aturan berulang","loan_id":"Pinjaman","card_invoice_close_date":"Tanggal penutupan faktur","installment_group_id":"Grup cicilan","installment_number":"Nomor cicilan","installment_count":"Jumlah cicilan","conversion_amount":"Jumlah hasil konversi","conversion_currency":"Mata uang konversi","conversion_fee":"Biaya konversi","conversion_rate":"Nilai tukar","conversion_source":"Sumber konversi"}},
     "tabs": {
-      "transactions": "Transaksi",
       "recurring": "Berulang"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Transfer"
     },
     "filters": {
+      "apply": "Tampilkan hasil",
       "type": "Jenis",
       "account": "Akun",
       "category": "Kategori",
@@ -574,7 +580,6 @@
       "amountMin": "Jumlah minimum",
       "amountMax": "Maksimum",
       "any": "Apa pun",
-      "back": "Kembali",
       "dateRange": "{{from}} sampai {{to}}",
       "amountRange": "{{min}} sampai {{max}}",
       "removeChip": "Hapus filter {{filter}}"

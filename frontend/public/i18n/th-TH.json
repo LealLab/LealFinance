@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "ดูทั้งหมด",
+    "charts": {
+      "label": "แผนภูมิ"
+    },
     "ratesUnavailable": "ยอดรวมบางรายการต้องใช้อัตราแลกเปลี่ยนที่ไม่พร้อมใช้งานในขณะนี้",
     "title": "แดชบอร์ด",
     "welcome": "ยินดีต้อนรับสู่ LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "อัตราการออม"
     },
     "cashFlow": {
+      "tab": "กระแสเงินสด",
       "title": "กระแสเงินสด (6 เดือน)",
       "income": "รายรับ",
       "expense": "รายจ่าย"
@@ -541,6 +546,7 @@
     "title": "ธุรกรรม",
     "description": "รายรับ รายจ่าย และการโอนเงิน",
     "actions": {
+      "more": "เพิ่มเติม",
       "new": "เพิ่มธุรกรรมใหม่",
       "edit": "แก้ไข",
       "delete": "ลบ",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"ประวัติธุรกรรม","loading":"กำลังโหลดประวัติ…","empty":"ยังไม่มีประวัติ","loadError":"ไม่สามารถโหลดประวัติธุรกรรมได้","operation":{"create":"สร้าง","update":"อัปเดต","delete":"ลบ"},"source":{"manual":"ทำเอง","import":"นำเข้า","import_undo":"ยกเลิกการนำเข้า","recurring":"เกิดซ้ำ","loan":"เงินกู้","card":"บัตร","investment":"การลงทุน","bulk":"ดำเนินการเป็นชุด"},"field":{"type":"ประเภท","date":"วันที่","amount":"จำนวนเงิน","currency":"สกุลเงิน","account_id":"บัญชี","to_account_id":"บัญชีปลายทาง","category_id":"หมวดหมู่","description":"คำอธิบาย","notes":"หมายเหตุ","recurring_rule_id":"กฎที่เกิดซ้ำ","loan_id":"เงินกู้","card_invoice_close_date":"วันที่ปิดใบแจ้งหนี้","installment_group_id":"กลุ่มงวด","installment_number":"หมายเลขงวด","installment_count":"จำนวนงวด","conversion_amount":"จำนวนเงินหลังแปลง","conversion_currency":"สกุลเงินที่แปลง","conversion_fee":"ค่าธรรมเนียมการแปลง","conversion_rate":"อัตราแปลง","conversion_source":"แหล่งที่มา"}},
     "tabs": {
-      "transactions": "ธุรกรรม",
       "recurring": "รายการประจำ"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "โอนเงิน"
     },
     "filters": {
+      "apply": "แสดงผลลัพธ์",
       "type": "ประเภท",
       "account": "บัญชี",
       "category": "หมวดหมู่",
@@ -574,7 +580,6 @@
       "amountMin": "ต่ำสุด",
       "amountMax": "สูงสุด",
       "any": "ใดๆ",
-      "back": "ย้อนกลับ",
       "dateRange": "ตั้งแต่ {{from}} ถึง {{to}}",
       "amountRange": "ตั้งแต่ {{min}} ถึง {{max}}",
       "removeChip": "ลบตัวกรอง {{filter}}"

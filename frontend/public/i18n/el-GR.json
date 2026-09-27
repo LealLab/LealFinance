@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Προβολή όλων",
+    "charts": {
+      "label": "Γράφημα"
+    },
     "ratesUnavailable": "Ορισμένα σύνολα χρειάζονται μια συναλλαγματική ισοτιμία που δεν είναι διαθέσιμη αυτή τη στιγμή.",
     "title": "Επισκόπηση",
     "welcome": "Καλώς ήρθατε στο LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Ποσοστό αποταμίευσης"
     },
     "cashFlow": {
+      "tab": "Ταμειακή ροή",
       "title": "Ταμειακή ροή (6 μήνες)",
       "income": "Έσοδα",
       "expense": "Έξοδα"
@@ -541,6 +546,7 @@
     "title": "Συναλλαγές",
     "description": "Έσοδα, έξοδα και μεταφορές.",
     "actions": {
+      "more": "Περισσότερα",
       "new": "Νέα συναλλαγή",
       "edit": "Επεξεργασία",
       "delete": "Διαγραφή",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Ιστορικό συναλλαγών","loading":"Φόρτωση ιστορικού…","empty":"Δεν υπάρχει ακόμη ιστορικό.","loadError":"Δεν ήταν δυνατή η φόρτωση του ιστορικού.","operation":{"create":"Δημιουργήθηκε","update":"Ενημερώθηκε","delete":"Διαγράφηκε"},"source":{"manual":"Χειροκίνητο","import":"Εισαγωγή","import_undo":"Αναίρεση εισαγωγής","recurring":"Επαναλαμβανόμενο","loan":"Δάνειο","card":"Κάρτα","investment":"Επένδυση","bulk":"Μαζική ενέργεια"},"field":{"type":"Τύπος","date":"Ημερομηνία","amount":"Ποσό","currency":"Νόμισμα","account_id":"Λογαριασμός","to_account_id":"Λογαριασμός προορισμού","category_id":"Κατηγορία","description":"Περιγραφή","notes":"Σημειώσεις","recurring_rule_id":"Κανόνας επανάληψης","loan_id":"Δάνειο","card_invoice_close_date":"Ημερομηνία κλεισίματος τιμολογίου","installment_group_id":"Ομάδα δόσεων","installment_number":"Αριθμός δόσης","installment_count":"Πλήθος δόσεων","conversion_amount":"Μετατρεπόμενο ποσό","conversion_currency":"Νόμισμα μετατροπής","conversion_fee":"Χρέωση μετατροπής","conversion_rate":"Ισοτιμία μετατροπής","conversion_source":"Πηγή μετατροπής"}},
     "tabs": {
-      "transactions": "Συναλλαγές",
       "recurring": "Επαναλαμβανόμενες"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Μεταφορά"
     },
     "filters": {
+      "apply": "Εμφάνιση αποτελεσμάτων",
       "type": "Τύπος",
       "account": "Λογαριασμός",
       "category": "Κατηγορία",
@@ -574,7 +580,6 @@
       "amountMin": "Ελάχιστο",
       "amountMax": "Μέγιστο",
       "any": "Οποιοδήποτε",
-      "back": "Πίσω",
       "dateRange": "Από {{from}} έως {{to}}",
       "amountRange": "Από {{min}} έως {{max}}",
       "removeChip": "Αφαίρεση φίλτρου {{filter}}"

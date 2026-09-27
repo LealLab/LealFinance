@@ -23,6 +23,8 @@ export class StatTile {
   readonly value = input.required<string>();
   readonly hint = input<string>();
   readonly tone = input<StatTone>('default');
+  /** Larger figure for the one number a screen is about; steps back down on wide screens. */
+  readonly prominent = input(false);
 
   protected readonly toneClass = TONE_CLASSES;
 }

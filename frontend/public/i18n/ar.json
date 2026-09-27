@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "عرض الكل",
+    "charts": {
+      "label": "مخطط"
+    },
     "ratesUnavailable": "تحتاج بعض الإجماليات إلى سعر صرف غير متاح حاليًا.",
     "title": "لوحة المعلومات",
     "welcome": "مرحباً بك في LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "معدل الادخار"
     },
     "cashFlow": {
+      "tab": "التدفق النقدي",
       "title": "التدفق النقدي (6 أشهر)",
       "income": "الدخل",
       "expense": "المصروفات"
@@ -541,6 +546,7 @@
     "title": "المعاملات",
     "description": "الدخل والمصروفات والتحويلات.",
     "actions": {
+      "more": "المزيد",
       "new": "معاملة جديدة",
       "edit": "تعديل",
       "delete": "حذف",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"سجل المعاملات","loading":"جارٍ تحميل السجل…","empty":"لا يوجد سجل بعد.","loadError":"تعذر تحميل سجل المعاملات.","operation":{"create":"إنشاء","update":"تحديث","delete":"حذف"},"source":{"manual":"يدوي","import":"استيراد","import_undo":"التراجع عن الاستيراد","recurring":"متكرر","loan":"قرض","card":"بطاقة","investment":"استثمار","bulk":"دفعة"},"field":{"type":"النوع","date":"التاريخ","amount":"المبلغ","currency":"العملة","account_id":"الحساب","to_account_id":"حساب الوجهة","category_id":"الفئة","description":"الوصف","notes":"ملاحظات","recurring_rule_id":"قاعدة متكررة","loan_id":"القرض","card_invoice_close_date":"تاريخ إغلاق الفاتورة","installment_group_id":"مجموعة الأقساط","installment_number":"رقم القسط","installment_count":"عدد الأقساط","conversion_amount":"المبلغ المحول","conversion_currency":"عملة التحويل","conversion_fee":"رسوم التحويل","conversion_rate":"سعر التحويل","conversion_source":"مصدر التحويل"}},
     "tabs": {
-      "transactions": "المعاملات",
       "recurring": "المتكررة"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "تحويل"
     },
     "filters": {
+      "apply": "عرض النتائج",
       "type": "النوع",
       "account": "الحساب",
       "category": "الفئة",
@@ -574,7 +580,6 @@
       "amountMin": "الحد الأدنى",
       "amountMax": "الحد الأقصى",
       "any": "أي",
-      "back": "رجوع",
       "dateRange": "من {{from}} إلى {{to}}",
       "amountRange": "من {{min}} إلى {{max}}",
       "removeChip": "إزالة عامل التصفية {{filter}}"

@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Ver todo",
+    "charts": {
+      "label": "Gráfico"
+    },
     "ratesUnavailable": "Algunos totales necesitan un tipo de cambio que no está disponible en este momento.",
     "title": "Panel",
     "welcome": "Te damos la bienvenida a LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Porcentaje de ahorro"
     },
     "cashFlow": {
+      "tab": "Flujo de caja",
       "title": "Flujo de caja (6 meses)",
       "income": "Ingresos",
       "expense": "Gastos"
@@ -541,6 +546,7 @@
     "title": "Movimientos",
     "description": "Ingresos, gastos y transferencias.",
     "actions": {
+      "more": "Más",
       "new": "Nuevo movimiento",
       "edit": "Editar",
       "delete": "Eliminar",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Historial de transacciones","loading":"Cargando historial…","empty":"Aún no hay historial.","loadError":"No se pudo cargar el historial de la transacción.","operation":{"create":"Creada","update":"Actualizada","delete":"Eliminada"},"source":{"manual":"Manual","import":"Importación","import_undo":"Deshacer importación","recurring":"Recurrente","loan":"Préstamo","card":"Tarjeta","investment":"Inversión","bulk":"Masivo"},"field":{"type":"Tipo","date":"Fecha","amount":"Importe","currency":"Moneda","account_id":"Cuenta","to_account_id":"Cuenta de destino","category_id":"Categoría","description":"Descripción","notes":"Notas","recurring_rule_id":"Regla recurrente","loan_id":"Préstamo","card_invoice_close_date":"Fecha de cierre de factura","installment_group_id":"Grupo de cuotas","installment_number":"Número de cuota","installment_count":"Número de cuotas","conversion_amount":"Importe convertido","conversion_currency":"Moneda convertida","conversion_fee":"Comisión de conversión","conversion_rate":"Tipo de cambio","conversion_source":"Origen de conversión"}},
     "tabs": {
-      "transactions": "Movimientos",
       "recurring": "Recurrentes"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Transferencia"
     },
     "filters": {
+      "apply": "Mostrar resultados",
       "type": "Tipo",
       "account": "Cuenta",
       "category": "Categoría",
@@ -574,7 +580,6 @@
       "amountMin": "Mínimo",
       "amountMax": "Máximo",
       "any": "Cualquiera",
-      "back": "Atrás",
       "dateRange": "De {{from}} a {{to}}",
       "amountRange": "De {{min}} a {{max}}",
       "removeChip": "Quitar el filtro {{filter}}"

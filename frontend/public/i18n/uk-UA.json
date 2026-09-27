@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Переглянути все",
+    "charts": {
+      "label": "Графік"
+    },
     "ratesUnavailable": "Для деяких підсумків потрібен курс валют, який зараз недоступний.",
     "title": "Панель керування",
     "welcome": "Ласкаво просимо до LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Норма заощаджень"
     },
     "cashFlow": {
+      "tab": "Грошовий потік",
       "title": "Грошовий потік (6 місяців)",
       "income": "Доходи",
       "expense": "Витрати"
@@ -541,6 +546,7 @@
     "title": "Транзакції",
     "description": "Доходи, витрати та перекази.",
     "actions": {
+      "more": "Ще",
       "new": "Нова транзакція",
       "edit": "Редагувати",
       "delete": "Видалити",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Історія транзакцій","loading":"Завантаження історії…","empty":"Історії ще немає.","loadError":"Не вдалося завантажити історію транзакції.","operation":{"create":"Створено","update":"Оновлено","delete":"Видалено"},"source":{"manual":"Вручну","import":"Імпорт","import_undo":"Скасування імпорту","recurring":"Повторювана","loan":"Позика","card":"Картка","investment":"Інвестиція","bulk":"Масова операція"},"field":{"type":"Тип","date":"Дата","amount":"Сума","currency":"Валюта","account_id":"Рахунок","to_account_id":"Рахунок призначення","category_id":"Категорія","description":"Опис","notes":"Нотатки","recurring_rule_id":"Правило повторення","loan_id":"Позика","card_invoice_close_date":"Дата закриття рахунку","installment_group_id":"Група платежів","installment_number":"Номер платежу","installment_count":"Кількість платежів","conversion_amount":"Конвертована сума","conversion_currency":"Валюта конвертації","conversion_fee":"Комісія конвертації","conversion_rate":"Курс конвертації","conversion_source":"Джерело конвертації"}},
     "tabs": {
-      "transactions": "Транзакції",
       "recurring": "Регулярні"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Переказ"
     },
     "filters": {
+      "apply": "Показати результати",
       "type": "Тип",
       "account": "Рахунок",
       "category": "Категорія",
@@ -574,7 +580,6 @@
       "amountMin": "Мінімум",
       "amountMax": "Максимум",
       "any": "Будь-які",
-      "back": "Назад",
       "dateRange": "від {{from}} до {{to}}",
       "amountRange": "від {{min}} до {{max}}",
       "removeChip": "Видалити фільтр {{filter}}"

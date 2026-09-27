@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Alles bekijken",
+    "charts": {
+      "label": "Grafiek"
+    },
     "ratesUnavailable": "Sommige totalen hebben een wisselkoers nodig die momenteel niet beschikbaar is.",
     "title": "Overzicht",
     "welcome": "Welkom bij LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Spaarpercentage"
     },
     "cashFlow": {
+      "tab": "Kasstroom",
       "title": "Kasstroom (6 maanden)",
       "income": "Inkomsten",
       "expense": "Uitgaven"
@@ -541,6 +546,7 @@
     "title": "Transacties",
     "description": "Inkomsten, uitgaven en overboekingen.",
     "actions": {
+      "more": "Meer",
       "new": "Nieuwe transactie",
       "edit": "Bewerken",
       "delete": "Verwijderen",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Transactiegeschiedenis","loading":"Geschiedenis laden…","empty":"Nog geen geschiedenis.","loadError":"De transactiegeschiedenis kon niet worden geladen.","operation":{"create":"Aangemaakt","update":"Bijgewerkt","delete":"Verwijderd"},"source":{"manual":"Handmatig","import":"Import","import_undo":"Import ongedaan maken","recurring":"Terugkerend","loan":"Lening","card":"Kaart","investment":"Belegging","bulk":"Bulk"},"field":{"type":"Type","date":"Datum","amount":"Bedrag","currency":"Valuta","account_id":"Rekening","to_account_id":"Doelrekening","category_id":"Categorie","description":"Beschrijving","notes":"Notities","recurring_rule_id":"Terugkerende regel","loan_id":"Lening","card_invoice_close_date":"Sluitingsdatum factuur","installment_group_id":"Termijngroep","installment_number":"Termijnnummer","installment_count":"Aantal termijnen","conversion_amount":"Omgerekend bedrag","conversion_currency":"Conversievaluta","conversion_fee":"Conversiekosten","conversion_rate":"Conversiekoers","conversion_source":"Conversiebron"}},
     "tabs": {
-      "transactions": "Transacties",
       "recurring": "Terugkerend"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Overboeking"
     },
     "filters": {
+      "apply": "Toon resultaten",
       "type": "Type",
       "account": "Rekening",
       "category": "Categorie",
@@ -574,7 +580,6 @@
       "amountMin": "Minimumsbedrag",
       "amountMax": "Maximumbedrag",
       "any": "Elke",
-      "back": "Terug",
       "dateRange": "Van {{from}} t/m {{to}}",
       "amountRange": "Van {{min}} t/m {{max}}",
       "removeChip": "Filter {{filter}} verwijderen"

@@ -74,6 +74,36 @@ describe('Dashboard', () => {
     expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
   });
 
+  it('switches the shared chart slot between cash flow and categories', async () => {
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(fixture.componentInstance['chartView']()).toBe('cashFlow');
+
+    const buttons = el.querySelectorAll<HTMLButtonElement>('[role="group"] button');
+    buttons[1].click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['chartView']()).toBe('categories');
+    expect(buttons[1].getAttribute('aria-pressed')).toBe('true');
+    expect(buttons[0].getAttribute('aria-pressed')).toBe('false');
+  });
+
+  it('links each list card to its full page', async () => {
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    for (const path of ['/accounts', '/transactions', '/budgets']) {
+      expect(el.querySelector(`a[href="${path}"]`)).not.toBeNull();
+    }
+  });
+
   it('colors balances by sign and transfers blue', () => {
     const fixture = TestBed.createComponent(Dashboard);
     const component = fixture.componentInstance;

@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Zobacz wszystko",
+    "charts": {
+      "label": "Wykres"
+    },
     "ratesUnavailable": "Niektóre sumy wymagają kursu walutowego, który jest obecnie niedostępny.",
     "title": "Panel",
     "welcome": "Witamy w LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Stopa oszczędności"
     },
     "cashFlow": {
+      "tab": "Przepływy",
       "title": "Przepływy pieniężne (6 miesięcy)",
       "income": "Przychody",
       "expense": "Wydatki"
@@ -541,6 +546,7 @@
     "title": "Transakcje",
     "description": "Przychody, wydatki i transfery.",
     "actions": {
+      "more": "Więcej",
       "new": "Nowa transakcja",
       "edit": "Edytuj",
       "delete": "Usuń",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Historia transakcji","loading":"Ładowanie historii…","empty":"Brak historii.","loadError":"Nie udało się wczytać historii transakcji.","operation":{"create":"Utworzono","update":"Zaktualizowano","delete":"Usunięto"},"source":{"manual":"Ręcznie","import":"Import","import_undo":"Cofnięcie importu","recurring":"Cykliczne","loan":"Pożyczka","card":"Karta","investment":"Inwestycja","bulk":"Zbiorcza"},"field":{"type":"Typ","date":"Data","amount":"Kwota","currency":"Waluta","account_id":"Konto","to_account_id":"Konto docelowe","category_id":"Kategoria","description":"Opis","notes":"Notatki","recurring_rule_id":"Reguła cykliczna","loan_id":"Pożyczka","card_invoice_close_date":"Data zamknięcia faktury","installment_group_id":"Grupa rat","installment_number":"Numer raty","installment_count":"Liczba rat","conversion_amount":"Kwota po przeliczeniu","conversion_currency":"Waluta przeliczenia","conversion_fee":"Opłata za przeliczenie","conversion_rate":"Kurs przeliczenia","conversion_source":"Źródło przeliczenia"}},
     "tabs": {
-      "transactions": "Transakcje",
       "recurring": "Cykliczne"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Przelew"
     },
     "filters": {
+      "apply": "Pokaż wyniki",
       "type": "Typ",
       "account": "Konto",
       "category": "Kategoria",
@@ -574,7 +580,6 @@
       "amountMin": "Kwota minimalna",
       "amountMax": "Maksimum",
       "any": "Dowolne",
-      "back": "Wstecz",
       "dateRange": "Od {{from}} do {{to}}",
       "amountRange": "Od {{min}} do {{max}}",
       "removeChip": "Usuń filtr {{filter}}"

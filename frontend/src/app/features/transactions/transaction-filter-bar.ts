@@ -7,31 +7,32 @@ import { CategoryGroup } from '../../domain/models/category-group';
 import { Institution } from '../../domain/models/institution';
 import { TransactionType } from '../../domain/models/transaction';
 import { Button } from '../../shared/ui/button/button';
-import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { Icon } from '../../shared/ui/icon/icon';
+import { Modal } from '../../shared/ui/modal/modal';
 import { groupCategoriesByGroup } from './category-grouping';
 import { activeChips, clearChip, FilterChip, TransactionFilters } from './transaction-filters';
-
-type FilterKey = 'account' | 'category' | 'group' | 'institution' | 'type' | 'date' | 'amount';
 
 const TRANSACTION_TYPES: readonly TransactionType[] = ['income', 'expense', 'transfer'];
 
 /**
- * The collapsed filter bar: a search box, a row of removable chips for the
- * active filters, and a two-level "Filters" dropdown (a list of filter
- * names; picking one drills into its control).
+ * The filter bar: a search box, the everyday filters (type, account,
+ * category) inline from `md` up, and a "Filters" button that opens every
+ * filter in one sheet (bottom sheet on phones, where the inline selects are
+ * hidden and the sheet also carries type/account/category). Active filters
+ * show as removable chips - a horizontal rail on phones, wrapped on wider
+ * screens.
  *
  * All filter state is owned by the parent - this component only emits
  * `filtersChange` / `searchChange`. Search is debounced by the parent, so
  * this fires `searchChange` on every keystroke.
  *
- * The filter-row labels and chip values are looked up through `row.labelKey`
- * / `activeChips`, so transloco-keys-manager can't see them statically:
+ * Chip labels and values are looked up through `chip.labelKey` /
+ * `activeChips`, so transloco-keys-manager can't see them statically:
  * t(transactions.filters.account, transactions.filters.category, transactions.filters.group, transactions.filters.institution, transactions.filters.type, transactions.filters.date, transactions.filters.amount, transactions.filters.dateRange, transactions.filters.amountRange, transactions.filters.removeChip)
  */
 @Component({
   selector: 'app-transaction-filter-bar',
-  imports: [TranslocoDirective, Button, Dropdown, Icon],
+  imports: [TranslocoDirective, Button, Icon, Modal],
   templateUrl: './transaction-filter-bar.html',
   styleUrl: './transaction-filter-bar.scss',
 })
@@ -50,9 +51,7 @@ export class TransactionFilterBar {
   readonly searchChange = output<string>();
   readonly clearAll = output<void>();
 
-  protected readonly menuOpen = signal(false);
-  /** Which filter's control is expanded in the dropdown; null = the list. */
-  protected readonly submenu = signal<FilterKey | null>(null);
+  protected readonly sheetOpen = signal(false);
 
   protected readonly transactionTypes = TRANSACTION_TYPES;
 
@@ -71,9 +70,7 @@ export class TransactionFilterBar {
     }),
   );
 
-  protected openMenu(): void {
-    this.submenu.set(null);
-  }
+  protected readonly hasActive = computed(() => this.chips().length > 0 || this.search() !== '');
 
   protected patch<K extends keyof TransactionFilters>(
     key: K,
@@ -91,7 +88,7 @@ export class TransactionFilterBar {
   }
 
   protected clear(): void {
-    this.menuOpen.set(false);
+    this.sheetOpen.set(false);
     this.clearAll.emit();
   }
 }

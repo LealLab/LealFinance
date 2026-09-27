@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Vedi tutto",
+    "charts": {
+      "label": "Grafico"
+    },
     "ratesUnavailable": "Alcuni totali richiedono un tasso di cambio che al momento non è disponibile.",
     "title": "Panoramica",
     "welcome": "Ti diamo il benvenuto in LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Tasso di risparmio"
     },
     "cashFlow": {
+      "tab": "Flusso di cassa",
       "title": "Flusso di cassa (6 mesi)",
       "income": "Entrate",
       "expense": "Uscite"
@@ -541,6 +546,7 @@
     "title": "Transazioni",
     "description": "Entrate, uscite e trasferimenti.",
     "actions": {
+      "more": "Altro",
       "new": "Nuova transazione",
       "edit": "Modifica",
       "delete": "Elimina",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Cronologia delle transazioni","loading":"Caricamento della cronologia…","empty":"Nessuna cronologia.","loadError":"Impossibile caricare la cronologia della transazione.","operation":{"create":"Creata","update":"Aggiornata","delete":"Eliminata"},"source":{"manual":"Manuale","import":"Importazione","import_undo":"Annullamento importazione","recurring":"Ricorrente","loan":"Prestito","card":"Carta","investment":"Investimento","bulk":"Operazione di massa"},"field":{"type":"Tipo","date":"Data","amount":"Importo","currency":"Valuta","account_id":"Conto","to_account_id":"Conto di destinazione","category_id":"Categoria","description":"Descrizione","notes":"Note","recurring_rule_id":"Regola ricorrente","loan_id":"Prestito","card_invoice_close_date":"Data chiusura fattura","installment_group_id":"Gruppo rate","installment_number":"Numero rata","installment_count":"Numero rate","conversion_amount":"Importo convertito","conversion_currency":"Valuta di conversione","conversion_fee":"Commissione di conversione","conversion_rate":"Tasso di conversione","conversion_source":"Origine conversione"}},
     "tabs": {
-      "transactions": "Transazioni",
       "recurring": "Ricorrenze"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Trasferimento"
     },
     "filters": {
+      "apply": "Mostra risultati",
       "type": "Tipo",
       "account": "Conto",
       "category": "Categoria",
@@ -574,7 +580,6 @@
       "amountMin": "Minimo",
       "amountMax": "Massimo",
       "any": "Qualsiasi",
-      "back": "Indietro",
       "dateRange": "Da {{from}} a {{to}}",
       "amountRange": "Da {{min}} a {{max}}",
       "removeChip": "Rimuovi filtro {{filter}}"

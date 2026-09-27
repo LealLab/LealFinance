@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Voir tout",
+    "charts": {
+      "label": "Graphique"
+    },
     "ratesUnavailable": "Certains totaux nécessitent un taux de change indisponible pour le moment.",
     "title": "Tableau de bord",
     "welcome": "Bienvenue sur LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Taux d’épargne"
     },
     "cashFlow": {
+      "tab": "Trésorerie",
       "title": "Flux de trésorerie (6 mois)",
       "income": "Revenus",
       "expense": "Dépenses"
@@ -541,6 +546,7 @@
     "title": "Opérations",
     "description": "Revenus, dépenses et virements.",
     "actions": {
+      "more": "Plus",
       "new": "Nouvelle opération",
       "edit": "Modifier",
       "delete": "Supprimer",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Historique des transactions","loading":"Chargement de l’historique…","empty":"Aucun historique pour le moment.","loadError":"Impossible de charger l’historique de la transaction.","operation":{"create":"Créée","update":"Modifiée","delete":"Supprimée"},"source":{"manual":"Manuelle","import":"Importation","import_undo":"Annulation de l’importation","recurring":"Récurrente","loan":"Prêt","card":"Carte","investment":"Investissement","bulk":"Action groupée"},"field":{"type":"Type","date":"Date","amount":"Montant","currency":"Devise","account_id":"Compte","to_account_id":"Compte destinataire","category_id":"Catégorie","description":"Description","notes":"Notes","recurring_rule_id":"Règle récurrente","loan_id":"Prêt","card_invoice_close_date":"Date de clôture de facture","installment_group_id":"Groupe d’échéances","installment_number":"Numéro d’échéance","installment_count":"Nombre d’échéances","conversion_amount":"Montant converti","conversion_currency":"Devise convertie","conversion_fee":"Frais de conversion","conversion_rate":"Taux de conversion","conversion_source":"Source de conversion"}},
     "tabs": {
-      "transactions": "Opérations",
       "recurring": "Récurrences"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Virement"
     },
     "filters": {
+      "apply": "Afficher les résultats",
       "type": "Type",
       "account": "Compte",
       "category": "Catégorie",
@@ -574,7 +580,6 @@
       "amountMin": "Montant minimal",
       "amountMax": "Montant maximal",
       "any": "Toutes",
-      "back": "Retour",
       "dateRange": "Du {{from}} au {{to}}",
       "amountRange": "De {{min}} à {{max}}",
       "removeChip": "Supprimer le filtre {{filter}}"

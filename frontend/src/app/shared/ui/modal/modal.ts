@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, input, model, viewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, input, model, viewChild } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
@@ -30,7 +30,17 @@ let nextModalId = 0;
 export class Modal {
   readonly open = model.required<boolean>();
   readonly titleText = input('');
+  /** On phones (below `md`) dock the dialog to the bottom edge as a sheet. */
+  readonly sheet = input(false);
   protected readonly titleId = `modal-title-${nextModalId++}`;
+
+  protected readonly dialogClass = computed(
+    () =>
+      'm-auto w-[min(32rem,calc(100vw-2rem))] rounded-md border border-border bg-surface-raised p-0 text-content-primary backdrop:bg-black/40' +
+      (this.sheet()
+        ? ' max-md:mx-0 max-md:mb-0 max-md:w-full max-md:max-w-full max-md:rounded-t-xl max-md:rounded-b-none'
+        : ''),
+  );
 
   // Not `.required()`: the constructor effect below can run its first pass
   // before the view's own child queries resolve, and a required query

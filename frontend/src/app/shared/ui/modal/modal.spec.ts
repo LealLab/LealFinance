@@ -13,6 +13,15 @@ class ModalHost {
 }
 
 @Component({
+  selector: 'app-modal-sheet-host',
+  imports: [Modal],
+  template: `<app-modal [(open)]="open" [sheet]="true" titleText="Sheet">content</app-modal>`
+})
+class SheetModalHost {
+  readonly open = signal(false);
+}
+
+@Component({
   selector: 'app-modal-without-title-host',
   imports: [Modal],
   template: `<app-modal [(open)]="open">content</app-modal>`
@@ -26,6 +35,7 @@ describe('Modal', () => {
     TestBed.configureTestingModule({
       imports: [
         ModalHost,
+        SheetModalHost,
         ModalWithoutTitleHost,
         provideTestTransloco()
       ],
@@ -45,6 +55,16 @@ describe('Modal', () => {
     fixture.detectChanges();
 
     expect(dialog.open).toBe(true);
+  });
+
+  it('docks to the bottom on phones only when the sheet input is set', () => {
+    const plain = TestBed.createComponent(ModalHost);
+    plain.detectChanges();
+    expect(plain.nativeElement.querySelector('dialog').className).not.toContain('max-md:w-full');
+
+    const sheet = TestBed.createComponent(SheetModalHost);
+    sheet.detectChanges();
+    expect(sheet.nativeElement.querySelector('dialog').className).toContain('max-md:w-full');
   });
 
   it('leaves the dialog unnamed when no title is provided', () => {

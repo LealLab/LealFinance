@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "전체 보기",
+    "charts": {
+      "label": "차트"
+    },
     "ratesUnavailable": "일부 합계에는 현재 사용할 수 없는 환율이 필요합니다.",
     "title": "대시보드",
     "welcome": "LealFinance에 오신 것을 환영합니다",
@@ -359,6 +363,7 @@
       "savingsRate": "저축률"
     },
     "cashFlow": {
+      "tab": "현금 흐름",
       "title": "현금 흐름(최근 6개월)",
       "income": "수입",
       "expense": "지출"
@@ -541,6 +546,7 @@
     "title": "거래내역",
     "description": "수입, 지출 및 이체를 관리하세요.",
     "actions": {
+      "more": "더보기",
       "new": "거래 추가",
       "edit": "수정",
       "delete": "삭제",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"거래 기록","loading":"기록을 불러오는 중…","empty":"아직 기록이 없습니다.","loadError":"거래 기록을 불러올 수 없습니다.","operation":{"create":"생성됨","update":"수정됨","delete":"삭제됨"},"source":{"manual":"수동","import":"가져오기","import_undo":"가져오기 취소","recurring":"반복","loan":"대출","card":"카드","investment":"투자","bulk":"일괄"},"field":{"type":"유형","date":"날짜","amount":"금액","currency":"통화","account_id":"계좌","to_account_id":"대상 계좌","category_id":"카테고리","description":"설명","notes":"메모","recurring_rule_id":"반복 규칙","loan_id":"대출","card_invoice_close_date":"청구서 마감일","installment_group_id":"할부 그룹","installment_number":"할부 번호","installment_count":"할부 횟수","conversion_amount":"환산 금액","conversion_currency":"환산 통화","conversion_fee":"환산 수수료","conversion_rate":"환율","conversion_source":"환산 출처"}},
     "tabs": {
-      "transactions": "거래내역",
       "recurring": "반복 거래"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "이체"
     },
     "filters": {
+      "apply": "결과 보기",
       "type": "유형",
       "account": "계좌",
       "category": "카테고리",
@@ -574,7 +580,6 @@
       "amountMin": "최소",
       "amountMax": "최대",
       "any": "모두",
-      "back": "뒤로",
       "dateRange": "{{from}}부터 {{to}}까지",
       "amountRange": "{{min}}부터 {{max}}까지",
       "removeChip": "{{filter}} 필터 제거"

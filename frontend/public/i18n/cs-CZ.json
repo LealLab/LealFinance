@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Zobrazit vše",
+    "charts": {
+      "label": "Graf"
+    },
     "ratesUnavailable": "U některých součtů je potřeba směnný kurz, který momentálně není k dispozici.",
     "title": "Přehled",
     "welcome": "Vítejte v LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Míra úspor"
     },
     "cashFlow": {
+      "tab": "Peněžní tok",
       "title": "Peněžní tok (6 měsíců)",
       "income": "Příjmy",
       "expense": "Výdaje"
@@ -541,6 +546,7 @@
     "title": "Transakce",
     "description": "Příjmy, výdaje a převody.",
     "actions": {
+      "more": "Více",
       "new": "Nová transakce",
       "edit": "Upravit",
       "delete": "Odstranit",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Historie transakcí","loading":"Načítání historie…","empty":"Zatím žádná historie.","loadError":"Historii transakce se nepodařilo načíst.","operation":{"create":"Vytvořeno","update":"Upraveno","delete":"Smazáno"},"source":{"manual":"Ruční","import":"Import","import_undo":"Zrušení importu","recurring":"Opakované","loan":"Půjčka","card":"Karta","investment":"Investice","bulk":"Hromadné"},"field":{"type":"Typ","date":"Datum","amount":"Částka","currency":"Měna","account_id":"Účet","to_account_id":"Cílový účet","category_id":"Kategorie","description":"Popis","notes":"Poznámky","recurring_rule_id":"Pravidlo opakování","loan_id":"Půjčka","card_invoice_close_date":"Datum uzavření faktury","installment_group_id":"Skupina splátek","installment_number":"Číslo splátky","installment_count":"Počet splátek","conversion_amount":"Převedená částka","conversion_currency":"Měna převodu","conversion_fee":"Poplatek za převod","conversion_rate":"Kurz převodu","conversion_source":"Zdroj převodu"}},
     "tabs": {
-      "transactions": "Transakce",
       "recurring": "Opakované"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Převod"
     },
     "filters": {
+      "apply": "Zobrazit výsledky",
       "type": "Typ",
       "account": "Účet",
       "category": "Kategorie",
@@ -574,7 +580,6 @@
       "amountMin": "Minimální částka",
       "amountMax": "Maximum",
       "any": "Libovolné",
-      "back": "Zpět",
       "dateRange": "Od {{from}} do {{to}}",
       "amountRange": "Od {{min}} do {{max}}",
       "removeChip": "Odebrat filtr {{filter}}"

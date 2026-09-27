@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "הצגת הכול",
+    "charts": {
+      "label": "תרשים"
+    },
     "ratesUnavailable": "סכומים מסוימים זקוקים לשער חליפין שאינו זמין כרגע.",
     "title": "לוח בקרה",
     "welcome": "ברוכים הבאים ל־LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "שיעור החיסכון"
     },
     "cashFlow": {
+      "tab": "תזרים מזומנים",
       "title": "תזרים מזומנים (6 חודשים)",
       "income": "הכנסות",
       "expense": "הוצאות"
@@ -541,6 +546,7 @@
     "title": "תנועות",
     "description": "הכנסות, הוצאות והעברות.",
     "actions": {
+      "more": "עוד",
       "new": "תנועה חדשה",
       "edit": "עריכה",
       "delete": "מחיקה",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"היסטוריית עסקאות","loading":"טוען היסטוריה…","empty":"אין היסטוריה עדיין.","loadError":"לא ניתן לטעון את היסטוריית העסקה.","operation":{"create":"נוצרה","update":"עודכנה","delete":"נמחקה"},"source":{"manual":"ידני","import":"ייבוא","import_undo":"ביטול ייבוא","recurring":"מחזורי","loan":"הלוואה","card":"כרטיס","investment":"השקעה","bulk":"פעולה מרוכזת"},"field":{"type":"סוג","date":"תאריך","amount":"סכום","currency":"מטבע","account_id":"חשבון","to_account_id":"חשבון יעד","category_id":"קטגוריה","description":"תיאור","notes":"הערות","recurring_rule_id":"כלל מחזורי","loan_id":"הלוואה","card_invoice_close_date":"תאריך סגירת חשבונית","installment_group_id":"קבוצת תשלומים","installment_number":"מספר תשלום","installment_count":"מספר תשלומים","conversion_amount":"סכום מומר","conversion_currency":"מטבע המרה","conversion_fee":"עמלת המרה","conversion_rate":"שער המרה","conversion_source":"מקור המרה"}},
     "tabs": {
-      "transactions": "תנועות",
       "recurring": "חוזרות"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "העברה"
     },
     "filters": {
+      "apply": "הצגת תוצאות",
       "type": "סוג",
       "account": "חשבון",
       "category": "קטגוריה",
@@ -574,7 +580,6 @@
       "amountMin": "מינימום",
       "amountMax": "מקסימום",
       "any": "הכול",
-      "back": "חזרה",
       "dateRange": "מ־{{from}} עד {{to}}",
       "amountRange": "מ־{{min}} עד {{max}}",
       "removeChip": "הסרת מסנן {{filter}}"

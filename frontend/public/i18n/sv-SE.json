@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Visa alla",
+    "charts": {
+      "label": "Diagram"
+    },
     "ratesUnavailable": "Vissa totalsummor behöver en växelkurs som inte är tillgänglig just nu.",
     "title": "Översikt",
     "welcome": "Välkommen till LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Sparandegrad"
     },
     "cashFlow": {
+      "tab": "Kassaflöde",
       "title": "Kassaflöde (6 månader)",
       "income": "Inkomster",
       "expense": "Utgifter"
@@ -541,6 +546,7 @@
     "title": "Transaktioner",
     "description": "Inkomster, utgifter och överföringar.",
     "actions": {
+      "more": "Mer",
       "new": "Ny transaktion",
       "edit": "Redigera",
       "delete": "Ta bort",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Transaktionshistorik","loading":"Läser in historik…","empty":"Ingen historik ännu.","loadError":"Det gick inte att läsa in transaktionshistoriken.","operation":{"create":"Skapad","update":"Uppdaterad","delete":"Borttagen"},"source":{"manual":"Manuell","import":"Import","import_undo":"Ångra import","recurring":"Återkommande","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massåtgärd"},"field":{"type":"Typ","date":"Datum","amount":"Belopp","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivning","notes":"Anteckningar","recurring_rule_id":"Återkommande regel","loan_id":"Lån","card_invoice_close_date":"Fakturans stängningsdatum","installment_group_id":"Avbetalningsgrupp","installment_number":"Avbetalningsnummer","installment_count":"Antal avbetalningar","conversion_amount":"Konverterat belopp","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsavgift","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskälla"}},
     "tabs": {
-      "transactions": "Transaktioner",
       "recurring": "Återkommande"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Överföring"
     },
     "filters": {
+      "apply": "Visa resultat",
       "type": "Typ",
       "account": "Konto",
       "category": "Kategori",
@@ -574,7 +580,6 @@
       "amountMin": "Lägsta belopp",
       "amountMax": "Högsta belopp",
       "any": "Alla",
-      "back": "Tillbaka",
       "dateRange": "Från {{from}} till {{to}}",
       "amountRange": "Från {{min}} till {{max}}",
       "removeChip": "Ta bort filtret {{filter}}"

@@ -1,10 +1,48 @@
 <div *transloco="let t">
   <!-- t(transactions.type.income) t(transactions.type.expense) t(transactions.type.transfer) -->
   <app-page-header
+    [compact]="true"
     [eyebrow]="t('transactions.eyebrow')"
     [title]="t('transactions.title')"
     [description]="t('transactions.description')"
   >
+    <div
+      class="flex items-center gap-1 rounded border border-border p-0.5 max-md:col-span-2"
+      role="group"
+      [attr.aria-label]="t('transactions.title')"
+    >
+      <button
+        type="button"
+        class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === 'list' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === 'list'"
+        (click)="setView('list')"
+      >
+        <app-icon name="menu" [size]="16" />
+        <span>{{ t('transactions.view.list') }}</span>
+      </button>
+      <button
+        type="button"
+        class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === 'calendar' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === 'calendar'"
+        (click)="setView('calendar')"
+      >
+        <app-icon name="calendar" [size]="16" />
+        <span>{{ t('transactions.view.calendar') }}</span>
+      </button>
+      <button
+        type="button"
+        class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === 'recurring' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === 'recurring'"
+        (click)="setView('recurring')"
+      >
+        <app-icon name="repeat" [size]="16" />
+        <span>{{ t('transactions.tabs.recurring') }}</span>
+      </button>
+    </div>
+
     @if (tab() === 'transactions') {
       @if (mode() === 'calendar') {
         <app-month-switcher
@@ -15,101 +53,104 @@
         />
       }
 
-      <div class="flex items-center gap-1 rounded border border-border p-0.5 max-md:col-span-2">
-        <button
-          type="button"
-          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
-          [class]="mode() === 'list' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
-          [attr.aria-label]="t('transactions.view.list')"
-          (click)="setMode('list')"
-        >
-          <app-icon name="menu" [size]="16" />
-          <span>{{ t('transactions.view.list') }}</span>
-        </button>
-        <button
-          type="button"
-          class="flex items-center justify-center gap-1 rounded px-2 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10 [@media(pointer:coarse)]:min-w-10"
-          [class]="mode() === 'calendar' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
-          [attr.aria-label]="t('transactions.view.calendar')"
-          (click)="setMode('calendar')"
-        >
-          <app-icon name="calendar" [size]="16" />
-          <span>{{ t('transactions.view.calendar') }}</span>
-        </button>
-      </div>
-
-      <button
-        appButton
-        variant="secondary"
-        type="button"
-        [class.max-md:col-span-2]="mode() === 'calendar'"
-        [attr.aria-label]="t('transactions.actions.import')"
-        routerLink="/transactions/import"
-      >
-        <app-icon name="arrowUpRight" [size]="16" />
-        <span>{{ t('transactions.actions.import') }}</span>
-      </button>
-
-      @if (mode() === 'list') {
-        <!-- The column picker only configures the desktop table, which is
-             hidden below md (phones get the card list instead). -->
-        <div class="hidden md:block">
-        <app-dropdown panelClass="w-56">
-          <button
-            dropdownTrigger
-            appButton
-            variant="secondary"
-            type="button"
-            [attr.aria-label]="t('transactions.actions.columns')"
-          >
-            <app-icon name="grip" [size]="16" />
-            <span>{{ t('transactions.actions.columns') }}</span>
-          </button>
-          <p class="px-2 py-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
-            {{ t('transactions.columns.title') }}
-          </p>
-          @for (column of allColumns; track column) {
-            <label class="flex items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-surface-sunken">
-              <input
-                type="checkbox"
-                class="form-checkbox"
-                [checked]="prefs.isVisible(column)"
-                (change)="prefs.toggleColumn(column)"
-              />
-              {{ t('transactions.columns.' + column) }}
-            </label>
-          }
-        </app-dropdown>
-        </div>
-
+      <!-- From md up the secondary actions sit beside the primary one; on
+           phones they fold into the "More" menu below so the page opens on
+           its content. -->
+      <div class="hidden md:contents">
         <button
           appButton
           variant="secondary"
           type="button"
-          [attr.aria-label]="t('transactions.actions.exportCsv')"
-          (click)="exportCsv()"
+          [attr.aria-label]="t('transactions.actions.import')"
+          routerLink="/transactions/import"
         >
-          <app-icon name="arrowDownLeft" [size]="16" />
-          <span>{{ t('transactions.actions.exportCsv') }}</span>
+          <app-icon name="arrowUpRight" [size]="16" />
+          <span>{{ t('transactions.actions.import') }}</span>
         </button>
-      }
+
+        @if (mode() === 'list') {
+          <!-- The column picker only configures the desktop table. -->
+          <app-dropdown panelClass="w-56">
+            <button
+              dropdownTrigger
+              appButton
+              variant="secondary"
+              type="button"
+              [attr.aria-label]="t('transactions.actions.columns')"
+            >
+              <app-icon name="grip" [size]="16" />
+              <span>{{ t('transactions.actions.columns') }}</span>
+            </button>
+            <p class="px-2 py-1 text-xs font-semibold tracking-wide text-content-subtle uppercase">
+              {{ t('transactions.columns.title') }}
+            </p>
+            @for (column of allColumns; track column) {
+              <label class="flex items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-surface-sunken">
+                <input
+                  type="checkbox"
+                  class="form-checkbox"
+                  [checked]="prefs.isVisible(column)"
+                  (change)="prefs.toggleColumn(column)"
+                />
+                {{ t('transactions.columns.' + column) }}
+              </label>
+            }
+          </app-dropdown>
+
+          <button
+            appButton
+            variant="secondary"
+            type="button"
+            [attr.aria-label]="t('transactions.actions.exportCsv')"
+            (click)="exportCsv()"
+          >
+            <app-icon name="arrowDownLeft" [size]="16" />
+            <span>{{ t('transactions.actions.exportCsv') }}</span>
+          </button>
+        }
+      </div>
 
       <button
         appButton
         variant="primary"
         type="button"
-        class="max-md:col-span-2"
         [attr.aria-label]="t('transactions.actions.new')"
         (click)="openCreateTx()"
       >
         <app-icon name="plus" [size]="16" />
         <span>{{ t('transactions.actions.new') }}</span>
       </button>
+
+      <app-dropdown class="md:hidden" [(open)]="moreOpen" panelClass="w-56">
+        <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+          <app-icon name="grip" [size]="16" />
+          <span>{{ t('transactions.actions.more') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          routerLink="/transactions/import"
+        >
+          <app-icon name="arrowUpRight" [size]="16" />
+          {{ t('transactions.actions.import') }}
+        </button>
+        @if (mode() === 'list') {
+          <button
+            type="button"
+            class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+            (click)="moreOpen.set(false); exportCsv()"
+          >
+            <app-icon name="arrowDownLeft" [size]="16" />
+            {{ t('transactions.actions.exportCsv') }}
+          </button>
+        }
+      </app-dropdown>
     } @else {
       <button
         appButton
         variant="primary"
         type="button"
+        class="max-md:col-span-2"
         [attr.aria-label]="t('transactions.recurring.actions.new')"
         (click)="openCreateRule()"
       >
@@ -124,33 +165,6 @@
       <app-exchange-rate-warning [isFallback]="true" />
     </div>
   }
-
-  <div class="mb-6 flex gap-1 border-b border-border">
-    <button
-      type="button"
-      class="border-b-2 px-3 py-2 text-sm font-medium"
-      [class]="
-        tab() === 'transactions'
-          ? 'border-accent text-content-primary'
-          : 'border-transparent text-content-muted hover:text-content-primary'
-      "
-      (click)="tab.set('transactions')"
-    >
-      {{ t('transactions.tabs.transactions') }}
-    </button>
-    <button
-      type="button"
-      class="border-b-2 px-3 py-2 text-sm font-medium"
-      [class]="
-        tab() === 'recurring'
-          ? 'border-accent text-content-primary'
-          : 'border-transparent text-content-muted hover:text-content-primary'
-      "
-      (click)="tab.set('recurring')"
-    >
-      {{ t('transactions.tabs.recurring') }}
-    </button>
-  </div>
 
   @if (tab() === 'transactions') {
     <app-transaction-filter-bar

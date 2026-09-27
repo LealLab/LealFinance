@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Tümünü gör",
+    "charts": {
+      "label": "Grafik"
+    },
     "ratesUnavailable": "Bazı toplamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
     "title": "Genel bakış",
     "welcome": "LealFinance'a hoş geldiniz",
@@ -359,6 +363,7 @@
       "savingsRate": "Tasarruf oranı"
     },
     "cashFlow": {
+      "tab": "Nakit akışı",
       "title": "Nakit akışı (6 ay)",
       "income": "Gelir",
       "expense": "Giderler"
@@ -541,6 +546,7 @@
     "title": "İşlemler",
     "description": "Gelirler, giderler ve transferler.",
     "actions": {
+      "more": "Daha fazla",
       "new": "Yeni işlem",
       "edit": "Düzenle",
       "delete": "Sil",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"İşlem geçmişi","loading":"Geçmiş yükleniyor…","empty":"Henüz geçmiş yok.","loadError":"İşlem geçmişi yüklenemedi.","operation":{"create":"Oluşturuldu","update":"Güncellendi","delete":"Silindi"},"source":{"manual":"Manuel","import":"İçe aktarma","import_undo":"İçe aktarmayı geri al","recurring":"Tekrarlayan","loan":"Kredi","card":"Kart","investment":"Yatırım","bulk":"Toplu"},"field":{"type":"Tür","date":"Tarih","amount":"Tutar","currency":"Para birimi","account_id":"Hesap","to_account_id":"Hedef hesap","category_id":"Kategori","description":"Açıklama","notes":"Notlar","recurring_rule_id":"Tekrarlayan kural","loan_id":"Kredi","card_invoice_close_date":"Fatura kapanış tarihi","installment_group_id":"Taksit grubu","installment_number":"Taksit numarası","installment_count":"Taksit sayısı","conversion_amount":"Dönüştürülen tutar","conversion_currency":"Dönüşüm para birimi","conversion_fee":"Dönüşüm ücreti","conversion_rate":"Dönüşüm kuru","conversion_source":"Dönüşüm kaynağı"}},
     "tabs": {
-      "transactions": "İşlemler",
       "recurring": "Tekrarlayan"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Transfer"
     },
     "filters": {
+      "apply": "Sonuçları göster",
       "type": "Tür",
       "account": "Hesap",
       "category": "Kategori",
@@ -574,7 +580,6 @@
       "amountMin": "En az",
       "amountMax": "Maksimum",
       "any": "Herhangi",
-      "back": "Geri",
       "dateRange": "{{from}} ile {{to}} arası",
       "amountRange": "{{min}} ile {{max}} arası",
       "removeChip": "{{filter}} filtresini kaldır"

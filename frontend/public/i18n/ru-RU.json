@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Смотреть все",
+    "charts": {
+      "label": "График"
+    },
     "ratesUnavailable": "Для некоторых итогов нужен обменный курс, который сейчас недоступен.",
     "title": "Обзор",
     "welcome": "Добро пожаловать в LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Норма сбережений"
     },
     "cashFlow": {
+      "tab": "Денежный поток",
       "title": "Денежный поток (6 месяцев)",
       "income": "Доходы",
       "expense": "Расходы"
@@ -541,6 +546,7 @@
     "title": "Операции",
     "description": "Доходы, расходы и переводы.",
     "actions": {
+      "more": "Ещё",
       "new": "Новая операция",
       "edit": "Изменить",
       "delete": "Удалить",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"История транзакций","loading":"Загрузка истории…","empty":"Истории пока нет.","loadError":"Не удалось загрузить историю транзакции.","operation":{"create":"Создано","update":"Изменено","delete":"Удалено"},"source":{"manual":"Вручную","import":"Импорт","import_undo":"Отмена импорта","recurring":"Повторяющееся","loan":"Заем","card":"Карта","investment":"Инвестиция","bulk":"Массовая операция"},"field":{"type":"Тип","date":"Дата","amount":"Сумма","currency":"Валюта","account_id":"Счет","to_account_id":"Счет назначения","category_id":"Категория","description":"Описание","notes":"Заметки","recurring_rule_id":"Правило повтора","loan_id":"Заем","card_invoice_close_date":"Дата закрытия счета","installment_group_id":"Группа платежей","installment_number":"Номер платежа","installment_count":"Количество платежей","conversion_amount":"Сумма после конвертации","conversion_currency":"Валюта конвертации","conversion_fee":"Комиссия за конвертацию","conversion_rate":"Курс конвертации","conversion_source":"Источник конвертации"}},
     "tabs": {
-      "transactions": "Операции",
       "recurring": "Повторяющиеся"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Перевод"
     },
     "filters": {
+      "apply": "Показать результаты",
       "type": "Тип",
       "account": "Счёт",
       "category": "Категория",
@@ -574,7 +580,6 @@
       "amountMin": "Минимум",
       "amountMax": "Максимум",
       "any": "Любые",
-      "back": "Назад",
       "dateRange": "с {{from}} по {{to}}",
       "amountRange": "от {{min}} до {{max}}",
       "removeChip": "Удалить фильтр {{filter}}"

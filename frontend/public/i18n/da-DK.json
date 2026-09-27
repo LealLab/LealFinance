@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Vis alle",
+    "charts": {
+      "label": "Diagram"
+    },
     "ratesUnavailable": "Nogle totaler kræver en valutakurs, som ikke er tilgængelig lige nu.",
     "title": "Oversigt",
     "welcome": "Velkommen til LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Opsparingsprocent"
     },
     "cashFlow": {
+      "tab": "Pengestrøm",
       "title": "Pengestrøm (6 måneder)",
       "income": "Indtægter",
       "expense": "Udgifter"
@@ -541,6 +546,7 @@
     "title": "Transaktioner",
     "description": "Indtægter, udgifter og overførsler.",
     "actions": {
+      "more": "Mere",
       "new": "Ny transaktion",
       "edit": "Rediger",
       "delete": "Slet",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Transaktionshistorik","loading":"Indlæser historik…","empty":"Ingen historik endnu.","loadError":"Transaktionshistorikken kunne ikke indlæses.","operation":{"create":"Oprettet","update":"Opdateret","delete":"Slettet"},"source":{"manual":"Manuel","import":"Import","import_undo":"Fortryd import","recurring":"Gentagelse","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massehandling"},"field":{"type":"Type","date":"Dato","amount":"Beløb","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivelse","notes":"Noter","recurring_rule_id":"Gentagelsesregel","loan_id":"Lån","card_invoice_close_date":"Fakturaperiodens slutdato","installment_group_id":"Afdragsgruppe","installment_number":"Afdragsnummer","installment_count":"Antal afdrag","conversion_amount":"Konverteret beløb","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsgebyr","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskilde"}},
     "tabs": {
-      "transactions": "Transaktioner",
       "recurring": "Gentagne"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Overførsel"
     },
     "filters": {
+      "apply": "Vis resultater",
       "type": "Type",
       "account": "Konto",
       "category": "Kategori",
@@ -574,7 +580,6 @@
       "amountMin": "Mindste beløb",
       "amountMax": "Maksimum",
       "any": "Alle",
-      "back": "Tilbage",
       "dateRange": "Fra {{from}} til {{to}}",
       "amountRange": "Fra {{min}} til {{max}}",
       "removeChip": "Fjern filteret {{filter}}"

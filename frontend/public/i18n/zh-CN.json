@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "查看全部",
+    "charts": {
+      "label": "图表"
+    },
     "ratesUnavailable": "部分总额需要使用当前不可用的汇率。",
     "title": "仪表盘",
     "welcome": "欢迎使用 LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "储蓄率"
     },
     "cashFlow": {
+      "tab": "现金流",
       "title": "现金流（近 6 个月）",
       "income": "收入",
       "expense": "支出"
@@ -541,6 +546,7 @@
     "title": "交易",
     "description": "收入、支出和转账。",
     "actions": {
+      "more": "更多",
       "new": "新建交易",
       "edit": "编辑",
       "delete": "删除",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"交易历史","loading":"正在加载历史…","empty":"暂无历史记录。","loadError":"无法加载交易历史。","operation":{"create":"已创建","update":"已更新","delete":"已删除"},"source":{"manual":"手动","import":"导入","import_undo":"撤销导入","recurring":"重复","loan":"贷款","card":"卡片","investment":"投资","bulk":"批量"},"field":{"type":"类型","date":"日期","amount":"金额","currency":"货币","account_id":"账户","to_account_id":"目标账户","category_id":"分类","description":"描述","notes":"备注","recurring_rule_id":"重复规则","loan_id":"贷款","card_invoice_close_date":"账单结算日","installment_group_id":"分期组","installment_number":"分期编号","installment_count":"分期数","conversion_amount":"换算金额","conversion_currency":"换算货币","conversion_fee":"换算费用","conversion_rate":"换算汇率","conversion_source":"换算来源"}},
     "tabs": {
-      "transactions": "交易",
       "recurring": "周期性"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "转账"
     },
     "filters": {
+      "apply": "显示结果",
       "type": "类型",
       "account": "账户",
       "category": "分类",
@@ -574,7 +580,6 @@
       "amountMin": "最小值",
       "amountMax": "最大值",
       "any": "任意",
-      "back": "返回",
       "dateRange": "{{from}} 至 {{to}}",
       "amountRange": "{{min}} 至 {{max}}",
       "removeChip": "移除 {{filter}} 筛选条件"

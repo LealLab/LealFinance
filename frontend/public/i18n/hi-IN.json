@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "सभी देखें",
+    "charts": {
+      "label": "चार्ट"
+    },
     "ratesUnavailable": "कुछ योगों के लिए ऐसी विनिमय दर चाहिए जो अभी उपलब्ध नहीं है।",
     "title": "डैशबोर्ड",
     "welcome": "LealFinance में आपका स्वागत है",
@@ -359,6 +363,7 @@
       "savingsRate": "बचत दर"
     },
     "cashFlow": {
+      "tab": "नकदी प्रवाह",
       "title": "नकदी प्रवाह (6 महीने)",
       "income": "आय",
       "expense": "खर्च"
@@ -541,6 +546,7 @@
     "title": "लेन-देन",
     "description": "आय, खर्च और स्थानांतरण।",
     "actions": {
+      "more": "और",
       "new": "नया लेन-देन",
       "edit": "संपादित करें",
       "delete": "हटाएँ",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"लेन-देन का इतिहास","loading":"इतिहास लोड हो रहा है…","empty":"अभी कोई इतिहास नहीं है।","loadError":"लेन-देन का इतिहास लोड नहीं हो सका।","operation":{"create":"बनाया गया","update":"अपडेट किया गया","delete":"हटाया गया"},"source":{"manual":"मैनुअल","import":"आयात","import_undo":"आयात पूर्ववत करें","recurring":"आवर्ती","loan":"ऋण","card":"कार्ड","investment":"निवेश","bulk":"बल्क"},"field":{"type":"प्रकार","date":"तारीख","amount":"राशि","currency":"मुद्रा","account_id":"खाता","to_account_id":"गंतव्य खाता","category_id":"श्रेणी","description":"विवरण","notes":"नोट्स","recurring_rule_id":"आवर्ती नियम","loan_id":"ऋण","card_invoice_close_date":"इनवॉइस बंद होने की तारीख","installment_group_id":"किश्त समूह","installment_number":"किश्त संख्या","installment_count":"किश्तों की संख्या","conversion_amount":"परिवर्तित राशि","conversion_currency":"परिवर्तन मुद्रा","conversion_fee":"परिवर्तन शुल्क","conversion_rate":"परिवर्तन दर","conversion_source":"परिवर्तन स्रोत"}},
     "tabs": {
-      "transactions": "लेन-देन",
       "recurring": "आवर्ती"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "स्थानांतरण"
     },
     "filters": {
+      "apply": "परिणाम दिखाएँ",
       "type": "प्रकार",
       "account": "खाता",
       "category": "श्रेणी",
@@ -574,7 +580,6 @@
       "amountMin": "न्यूनतम",
       "amountMax": "अधिकतम",
       "any": "कोई भी",
-      "back": "वापस",
       "dateRange": "{{from}} से {{to}} तक",
       "amountRange": "{{min}} से {{max}} तक",
       "removeChip": "फ़िल्टर {{filter}} हटाएँ"

@@ -124,6 +124,11 @@ export class Transactions {
 
   protected readonly tab = signal<'transactions' | 'recurring'>('transactions');
   protected readonly mode = signal<'list' | 'calendar'>('list');
+  /** The single Lista / Calendário / Recorrentes control reads and writes both signals above. */
+  protected readonly view = computed<'list' | 'calendar' | 'recurring'>(() =>
+    this.tab() === 'recurring' ? 'recurring' : this.mode(),
+  );
+  protected readonly moreOpen = signal(false);
   protected readonly filters = signal<TransactionFilters>(EMPTY_FILTERS);
   protected readonly page = signal(1);
   protected readonly sort = signal<TransactionSort>('date');
@@ -455,8 +460,13 @@ export class Transactions {
     this.selectedDay.set(date);
   }
 
-  protected setMode(mode: 'list' | 'calendar'): void {
-    this.mode.set(mode);
+  protected setView(view: 'list' | 'calendar' | 'recurring'): void {
+    if (view === 'recurring') {
+      this.tab.set('recurring');
+      return;
+    }
+    this.tab.set('transactions');
+    this.mode.set(view);
   }
 
   // --- CSV ------------------------------------------------------------

@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Xem tất cả",
+    "charts": {
+      "label": "Biểu đồ"
+    },
     "ratesUnavailable": "Một số tổng số cần tỷ giá hiện không khả dụng.",
     "title": "Bảng điều khiển",
     "welcome": "Chào mừng bạn đến với LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Tỷ lệ tiết kiệm"
     },
     "cashFlow": {
+      "tab": "Dòng tiền",
       "title": "Dòng tiền (6 tháng)",
       "income": "Thu nhập",
       "expense": "Chi tiêu"
@@ -541,6 +546,7 @@
     "title": "Giao dịch",
     "description": "Thu nhập, chi tiêu và các khoản chuyển tiền.",
     "actions": {
+      "more": "Thêm",
       "new": "Giao dịch mới",
       "edit": "Chỉnh sửa",
       "delete": "Xóa",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Lịch sử giao dịch","loading":"Đang tải lịch sử…","empty":"Chưa có lịch sử.","loadError":"Không thể tải lịch sử giao dịch.","operation":{"create":"Đã tạo","update":"Đã cập nhật","delete":"Đã xóa"},"source":{"manual":"Thủ công","import":"Nhập","import_undo":"Hoàn tác nhập","recurring":"Định kỳ","loan":"Khoản vay","card":"Thẻ","investment":"Đầu tư","bulk":"Hàng loạt"},"field":{"type":"Loại","date":"Ngày","amount":"Số tiền","currency":"Tiền tệ","account_id":"Tài khoản","to_account_id":"Tài khoản đích","category_id":"Danh mục","description":"Mô tả","notes":"Ghi chú","recurring_rule_id":"Quy tắc định kỳ","loan_id":"Khoản vay","card_invoice_close_date":"Ngày đóng hóa đơn","installment_group_id":"Nhóm trả góp","installment_number":"Số kỳ","installment_count":"Số kỳ trả góp","conversion_amount":"Số tiền đã quy đổi","conversion_currency":"Tiền tệ quy đổi","conversion_fee":"Phí quy đổi","conversion_rate":"Tỷ giá quy đổi","conversion_source":"Nguồn quy đổi"}},
     "tabs": {
-      "transactions": "Giao dịch",
       "recurring": "Giao dịch định kỳ"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Chuyển tiền"
     },
     "filters": {
+      "apply": "Xem kết quả",
       "type": "Loại",
       "account": "Tài khoản",
       "category": "Danh mục",
@@ -574,7 +580,6 @@
       "amountMin": "Tối thiểu",
       "amountMax": "Tối đa",
       "any": "Bất kỳ",
-      "back": "Quay lại",
       "dateRange": "{{from}} đến {{to}}",
       "amountRange": "{{min}} đến {{max}}",
       "removeChip": "Xóa bộ lọc {{filter}}"

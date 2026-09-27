@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Näytä kaikki",
+    "charts": {
+      "label": "Kaavio"
+    },
     "ratesUnavailable": "Jotkin summat tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
     "title": "Yhteenveto",
     "welcome": "Tervetuloa LealFinanceen",
@@ -359,6 +363,7 @@
       "savingsRate": "Säästöaste"
     },
     "cashFlow": {
+      "tab": "Kassavirta",
       "title": "Kassavirta (6 kuukautta)",
       "income": "Tulot",
       "expense": "Menot"
@@ -541,6 +546,7 @@
     "title": "Tapahtumat",
     "description": "Tulot, menot ja tilisiirrot.",
     "actions": {
+      "more": "Lisää",
       "new": "Uusi tapahtuma",
       "edit": "Muokkaa",
       "delete": "Poista",
@@ -550,7 +556,6 @@
     },
     "history": {"title":"Tapahtumahistoria","loading":"Ladataan historiaa…","empty":"Historiaa ei vielä ole.","loadError":"Tapahtumahistoriaa ei voitu ladata.","operation":{"create":"Luotu","update":"Päivitetty","delete":"Poistettu"},"source":{"manual":"Manuaalinen","import":"Tuonti","import_undo":"Tuonnin kumoaminen","recurring":"Toistuva","loan":"Laina","card":"Kortti","investment":"Sijoitus","bulk":"Joukkotoiminto"},"field":{"type":"Tyyppi","date":"Päivä","amount":"Summa","currency":"Valuutta","account_id":"Tili","to_account_id":"Kohdetili","category_id":"Luokka","description":"Kuvaus","notes":"Muistiinpanot","recurring_rule_id":"Toistosääntö","loan_id":"Laina","card_invoice_close_date":"Laskutuskauden päättymispäivä","installment_group_id":"Maksueräryhmä","installment_number":"Maksuerän numero","installment_count":"Maksuerien määrä","conversion_amount":"Muunnettu summa","conversion_currency":"Muunnosvaluutta","conversion_fee":"Muunnosmaksu","conversion_rate":"Muuntokurssi","conversion_source":"Muunnoksen lähde"}},
     "tabs": {
-      "transactions": "Tapahtumat",
       "recurring": "Toistuvat"
     },
     "type": {
@@ -559,6 +564,7 @@
       "transfer": "Tilisiirto"
     },
     "filters": {
+      "apply": "Näytä tulokset",
       "type": "Tyyppi",
       "account": "Tili",
       "category": "Luokka",
@@ -574,7 +580,6 @@
       "amountMin": "Vähintään",
       "amountMax": "Enintään",
       "any": "Mikä tahansa",
-      "back": "Takaisin",
       "dateRange": "{{from}} – {{to}}",
       "amountRange": "{{min}} – {{max}}",
       "removeChip": "Poista {{filter}}-suodatin"
