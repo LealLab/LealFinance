@@ -414,7 +414,8 @@
       "edit": "수정",
       "archive": "보관",
       "unarchive": "보관 해제",
-      "delete": "계좌 삭제"
+      "delete": "계좌 삭제",
+      "more": "더보기"
     },
     "archive": {
       "title": "계좌를 보관할까요?",

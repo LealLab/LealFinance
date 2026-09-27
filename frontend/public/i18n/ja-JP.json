@@ -414,7 +414,8 @@
       "edit": "編集",
       "archive": "アーカイブ",
       "unarchive": "アーカイブ解除",
-      "delete": "口座を削除"
+      "delete": "口座を削除",
+      "more": "その他"
     },
     "archive": {
       "title": "口座をアーカイブしますか？",

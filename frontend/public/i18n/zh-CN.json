@@ -414,7 +414,8 @@
       "edit": "编辑",
       "archive": "归档",
       "unarchive": "取消归档",
-      "delete": "删除账户"
+      "delete": "删除账户",
+      "more": "更多"
     },
     "archive": {
       "title": "确认归档账户？",

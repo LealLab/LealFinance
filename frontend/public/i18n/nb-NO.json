@@ -414,7 +414,8 @@
       "edit": "Rediger",
       "archive": "Arkiver",
       "unarchive": "Gjenopprett",
-      "delete": "Slett konto"
+      "delete": "Slett konto",
+      "more": "Mer"
     },
     "archive": {
       "title": "Arkiver konto?",

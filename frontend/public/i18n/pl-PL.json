@@ -414,7 +414,8 @@
       "edit": "Edytuj",
       "archive": "Archiwizuj",
       "unarchive": "Przywróć z archiwum",
-      "delete": "Usuń konto"
+      "delete": "Usuń konto",
+      "more": "Więcej"
     },
     "archive": {
       "title": "Zarchiwizować konto?",

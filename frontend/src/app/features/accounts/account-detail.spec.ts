@@ -1,6 +1,7 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
 import { ConfirmService } from '../../core/confirm.service';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
 import { AccountRepository } from '../../data/account.repository';
@@ -19,6 +20,11 @@ import { money } from '../../shared/money/money';
 import { AccountDetail } from './account-detail';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
+// Route target for the post-delete navigation test below - deleteAccount()
+// only needs somewhere for Router.navigate(['/accounts']) to resolve to.
+@Component({ selector: 'app-accounts-list-stub', template: '' })
+class AccountsListStub {}
+
 describe('AccountDetail', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,7 +34,7 @@ describe('AccountDetail', () => {
       ],
       providers: [
         provideZonelessChangeDetection(),
-        provideRouter([]),
+        provideRouter([{ path: 'accounts', component: AccountsListStub }]),
         provideTestTranslocoLocale(),
         { provide: MOCK_LATENCY_MS, useValue: 0 },
         { provide: AccountRepository, useClass: MockAccountRepository },
@@ -95,9 +101,12 @@ describe('AccountDetail', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const archiveButton = fixture.nativeElement.querySelector(
-      'app-page-header button:last-of-type'
-    ) as HTMLButtonElement;
+    // No stable hook for the desktop-only archive button - queried by its
+    // Transloco-resolved label, not hardcoded copy.
+    const archiveLabel = TestBed.inject(TranslocoService).translate('accounts.actions.archive');
+    const archiveButton = Array.from(
+      fixture.nativeElement.querySelectorAll('app-page-header button') as NodeListOf<HTMLButtonElement>
+    ).find((button) => button.textContent?.includes(archiveLabel))!;
     archiveButton.click();
     fixture.detectChanges();
 
@@ -106,5 +115,36 @@ describe('AccountDetail', () => {
     expect(request?.params).toEqual({ name: account.name });
 
     TestBed.inject(ConfirmService).respond(false);
+  });
+
+  it('asks for confirmation before deleting from the detail page, then navigates to the list on confirm', async () => {
+    const repository = TestBed.inject(AccountRepository);
+    const account = await new Promise<Account>((resolve) => {
+      repository.list().subscribe((accounts) => resolve(accounts[0]));
+    });
+
+    const fixture = TestBed.createComponent(AccountDetail);
+    fixture.componentRef.setInput('id', account.id);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const deleteLabel = TestBed.inject(TranslocoService).translate('accounts.actions.delete');
+    const deleteButton = Array.from(
+      fixture.nativeElement.querySelectorAll('app-page-header button') as NodeListOf<HTMLButtonElement>
+    ).find((button) => button.textContent?.includes(deleteLabel))!;
+    deleteButton.click();
+    fixture.detectChanges();
+
+    const request = TestBed.inject(ConfirmService).request();
+    expect(request?.titleKey).toBe('accounts.delete.title');
+    expect(request?.params).toEqual({ name: account.name });
+
+    TestBed.inject(ConfirmService).respond(true);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(TestBed.inject(Router).url).toBe('/accounts');
   });
 });

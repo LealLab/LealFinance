@@ -414,7 +414,8 @@
       "edit": "Upravit",
       "archive": "Archivovat",
       "unarchive": "Obnovit z archivu",
-      "delete": "Odstranit účet"
+      "delete": "Odstranit účet",
+      "more": "Více"
     },
     "archive": {
       "title": "Archivovat účet?",

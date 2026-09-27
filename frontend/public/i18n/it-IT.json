@@ -414,7 +414,8 @@
       "edit": "Modifica",
       "archive": "Archivia",
       "unarchive": "Ripristina",
-      "delete": "Elimina conto"
+      "delete": "Elimina conto",
+      "more": "Altro"
     },
     "archive": {
       "title": "Archiviare il conto?",

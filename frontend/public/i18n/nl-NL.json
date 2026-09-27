@@ -414,7 +414,8 @@
       "edit": "Bewerken",
       "archive": "Archiveren",
       "unarchive": "Uit archief halen",
-      "delete": "Rekening verwijderen"
+      "delete": "Rekening verwijderen",
+      "more": "Meer"
     },
     "archive": {
       "title": "Rekening archiveren?",

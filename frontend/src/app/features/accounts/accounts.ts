@@ -17,6 +17,7 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
@@ -65,6 +66,7 @@ function trySum(amounts: Money[]): Money | null {
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
     PageHeader,
@@ -96,6 +98,7 @@ export class Accounts {
   });
 
   protected readonly showArchived = signal(false);
+  protected readonly moreOpen = signal(false);
   protected readonly formOpen = signal(false);
   protected readonly editingAccount = signal<Account | undefined>(undefined);
   protected readonly institutionFormOpen = signal(false);

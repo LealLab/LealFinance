@@ -63,7 +63,7 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    const newButton = el.querySelector('app-page-header button:last-of-type') as HTMLButtonElement;
+    const newButton = el.querySelector('app-page-header button[variant="primary"]') as HTMLButtonElement;
     newButton!.click();
     fixture.detectChanges();
 
@@ -128,7 +128,7 @@ describe('Accounts', () => {
 
     expect(dialog.open).toBe(false);
 
-    const newAccountButton = el.querySelector('app-page-header button:last-of-type') as HTMLButtonElement;
+    const newAccountButton = el.querySelector('app-page-header button[variant="primary"]') as HTMLButtonElement;
     newAccountButton.click();
     fixture.detectChanges();
     await fixture.whenStable();

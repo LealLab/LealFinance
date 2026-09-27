@@ -414,7 +414,8 @@
       "edit": "Rediger",
       "archive": "Arkivér",
       "unarchive": "Gendan",
-      "delete": "Slet konto"
+      "delete": "Slet konto",
+      "more": "Mere"
     },
     "archive": {
       "title": "Arkivér konto?",

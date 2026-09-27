@@ -414,7 +414,8 @@
       "edit": "Bearbeiten",
       "archive": "Archivieren",
       "unarchive": "Archivierung aufheben",
-      "delete": "Konto löschen"
+      "delete": "Konto löschen",
+      "more": "Mehr"
     },
     "archive": {
       "title": "Konto archivieren?",

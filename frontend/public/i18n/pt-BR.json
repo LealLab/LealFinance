@@ -414,7 +414,8 @@
       "edit": "Editar",
       "archive": "Arquivar",
       "unarchive": "Reativar",
-      "delete": "Excluir conta"
+      "delete": "Excluir conta",
+      "more": "Mais"
     },
     "archive": {
       "title": "Arquivar conta?",

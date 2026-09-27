@@ -414,7 +414,8 @@
       "edit": "Edit",
       "archive": "Arsipkan",
       "unarchive": "Pulihkan dari arsip",
-      "delete": "Hapus akun"
+      "delete": "Hapus akun",
+      "more": "Lainnya"
     },
     "archive": {
       "title": "Arsipkan akun?",

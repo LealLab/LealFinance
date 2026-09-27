@@ -414,7 +414,8 @@
       "edit": "Editează",
       "archive": "Arhivează",
       "unarchive": "Restaurează din arhivă",
-      "delete": "Șterge contul"
+      "delete": "Șterge contul",
+      "more": "Mai mult"
     },
     "archive": {
       "title": "Arhivezi contul?",

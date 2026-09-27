@@ -438,7 +438,8 @@
       "edit": "Edit",
       "archive": "Archive",
       "unarchive": "Unarchive",
-      "delete": "Delete account"
+      "delete": "Delete account",
+      "more": "More"
     },
     "archive": {
       "title": "Archive account?",

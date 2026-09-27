@@ -16,17 +16,65 @@
         <app-icon name="pencil" [size]="16" />
         {{ t('accounts.actions.edit') }}
       </button>
-      <button appButton variant="secondary" type="button" (click)="toggleArchived()">
-        <app-icon name="archive" [size]="16" />
-        {{ account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive') }}
-      </button>
-      <a
-        class="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded border border-border bg-surface-raised px-3.5 py-2 text-sm font-medium text-content-primary transition-colors hover:bg-surface-sunken"
-        [routerLink]="['/reconciliation']"
-        [queryParams]="{ accountId: account.id }"
-      >
-        {{ t('reconciliation.actions.reconcile') }}
-      </a>
+
+      <!-- From md up the secondary actions sit beside the primary one; on
+           phones they fold into the "More" menu below so the page opens on
+           its content, same pattern as features/transactions. -->
+      <div class="hidden md:contents">
+        <button appButton variant="secondary" type="button" (click)="toggleArchived()">
+          <app-icon name="archive" [size]="16" />
+          {{ account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive') }}
+        </button>
+        <a
+          class="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded border border-border bg-surface-raised px-3.5 py-2 text-sm font-medium text-content-primary transition-colors hover:bg-surface-sunken"
+          [routerLink]="['/reconciliation']"
+          [queryParams]="{ accountId: account.id }"
+        >
+          {{ t('reconciliation.actions.reconcile') }}
+        </a>
+        <button
+          appButton
+          variant="secondary"
+          type="button"
+          class="hover:!border-negative hover:!text-negative"
+          (click)="deleteAccount()"
+        >
+          <app-icon name="trash" [size]="16" />
+          {{ t('accounts.actions.delete') }}
+        </button>
+      </div>
+
+      <app-dropdown class="md:hidden" [(open)]="moreOpen" panelClass="w-56">
+        <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+          <app-icon name="grip" [size]="16" />
+          <span>{{ t('accounts.actions.more') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="moreOpen.set(false); toggleArchived()"
+        >
+          <app-icon name="archive" [size]="16" />
+          {{ account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive') }}
+        </button>
+        <a
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="moreOpen.set(false)"
+          [routerLink]="['/reconciliation']"
+          [queryParams]="{ accountId: account.id }"
+        >
+          <app-icon name="check" [size]="16" />
+          {{ t('reconciliation.actions.reconcile') }}
+        </a>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="moreOpen.set(false); deleteAccount()"
+        >
+          <app-icon name="trash" [size]="16" />
+          {{ t('accounts.actions.delete') }}
+        </button>
+      </app-dropdown>
     </app-page-header>
 
     @if (hasFallbackRate()) {
@@ -37,7 +85,7 @@
 
     <div class="flex flex-col gap-6">
       <app-card>
-        <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-4">
           <div class="flex items-center gap-2">
             @if (typeOption(); as typeOption) {
               <app-badge tone="accent">
@@ -50,14 +98,16 @@
             }
           </div>
           @if (balance(); as balance) {
-            <span class="font-mono text-3xl font-semibold tabular-nums">
-              {{ balance.amount | money: balance.currency }}
+            <div class="flex flex-col md:items-end">
+              <span class="font-mono text-3xl font-semibold tabular-nums">
+                {{ balance.amount | money: balance.currency }}
+              </span>
               @if (convertedBalance(); as converted) {
-                <span class="text-lg font-normal text-content-muted"
-                  >({{ converted.amount | money: converted.currency }})</span
-                >
+                <span class="font-mono text-sm text-content-muted">
+                  {{ converted.amount | money: converted.currency }}
+                </span>
               }
-            </span>
+            </div>
           }
         </div>
       </app-card>
@@ -66,7 +116,7 @@
         <app-card>
           <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('accounts.detail.creditCard.title') }}</h2>
           <app-progress-bar [ratio]="creditCardRatio()" [label]="t('accounts.detail.creditCard.used')" />
-          <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-4">
+          <div class="mt-3 grid grid-cols-2 gap-4 md:grid-cols-4">
             <div>
               <p class="text-xs text-content-muted">{{ t('accounts.detail.creditCard.owed') }}</p>
               <p class="font-mono text-sm font-semibold tabular-nums">
@@ -115,12 +165,12 @@
           <ul>
             @for (tx of rows(); track tx.id) {
               <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
-                <div class="flex flex-col gap-0.5">
-                  <span class="text-sm font-medium text-content-primary">{{ tx.description }}</span>
+                <div class="flex min-w-0 flex-col gap-0.5">
+                  <span class="truncate text-sm font-medium text-content-primary">{{ tx.description }}</span>
                   <span class="text-xs text-content-muted">{{ tx.date }}</span>
                 </div>
                 <span
-                  class="font-mono text-sm font-semibold tabular-nums"
+                  class="shrink-0 font-mono text-sm font-semibold tabular-nums"
                   [class]="transactionSign(id(), tx) === 'out' ? 'text-negative' : 'text-positive'"
                 >
                   {{ transactionSign(id(), tx) === 'out' ? '−' : '+' }}{{ tx.amount | money: tx.currency }}

@@ -414,7 +414,8 @@
       "edit": "Düzenle",
       "archive": "Arşivle",
       "unarchive": "Arşivden çıkar",
-      "delete": "Hesabı sil"
+      "delete": "Hesabı sil",
+      "more": "Daha fazla"
     },
     "archive": {
       "title": "Hesap arşivlensin mi?",

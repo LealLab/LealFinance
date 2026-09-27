@@ -414,7 +414,8 @@
       "edit": "Muokkaa",
       "archive": "Arkistoi",
       "unarchive": "Palauta arkistosta",
-      "delete": "Poista tili"
+      "delete": "Poista tili",
+      "more": "Lisää"
     },
     "archive": {
       "title": "Arkistoidaanko tili?",

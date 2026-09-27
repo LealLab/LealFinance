@@ -414,7 +414,8 @@
       "edit": "編輯",
       "archive": "封存",
       "unarchive": "取消封存",
-      "delete": "刪除帳戶"
+      "delete": "刪除帳戶",
+      "more": "更多"
     },
     "archive": {
       "title": "要封存帳戶嗎？",

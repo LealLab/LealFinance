@@ -414,7 +414,8 @@
       "edit": "Redigera",
       "archive": "Arkivera",
       "unarchive": "Återställ",
-      "delete": "Ta bort konto"
+      "delete": "Ta bort konto",
+      "more": "Mer"
     },
     "archive": {
       "title": "Arkivera konto?",

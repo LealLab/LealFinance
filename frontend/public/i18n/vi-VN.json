@@ -414,7 +414,8 @@
       "edit": "Chỉnh sửa",
       "archive": "Lưu trữ",
       "unarchive": "Bỏ lưu trữ",
-      "delete": "Xóa tài khoản"
+      "delete": "Xóa tài khoản",
+      "more": "Thêm"
     },
     "archive": {
       "title": "Lưu trữ tài khoản?",
