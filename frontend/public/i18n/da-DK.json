@@ -953,6 +953,10 @@
     "list": {
       "title": "Månedlige grænser"
     },
+    "view": {
+      "chart": "Diagram",
+      "values": "Beløb"
+    },
     "planner": {
       "title": "Indkomstbaseret budget",
       "description": "Fordel din forventede indkomst på kategorier.",

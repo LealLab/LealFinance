@@ -953,6 +953,10 @@
     "list": {
       "title": "Monatslimits"
     },
+    "view": {
+      "chart": "Diagramm",
+      "values": "Beträge"
+    },
     "planner": {
       "title": "Einkommensbasiertes Budget",
       "description": "Verteilen Sie Ihre erwarteten Einnahmen auf die Kategorien.",

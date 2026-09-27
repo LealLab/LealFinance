@@ -953,6 +953,10 @@
     "list": {
       "title": "Månadsgränser"
     },
+    "view": {
+      "chart": "Diagram",
+      "values": "Belopp"
+    },
     "planner": {
       "title": "Inkomstbaserad budget",
       "description": "Fördela din förväntade inkomst mellan kategorier.",

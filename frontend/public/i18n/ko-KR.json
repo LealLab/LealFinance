@@ -953,6 +953,10 @@
     "list": {
       "title": "월별 한도"
     },
+    "view": {
+      "chart": "차트",
+      "values": "금액"
+    },
     "planner": {
       "title": "수입 기반 예산",
       "description": "예상 수입을 카테고리별로 배분하세요.",

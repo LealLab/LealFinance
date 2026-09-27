@@ -953,6 +953,10 @@
     "list": {
       "title": "Limiti mensili"
     },
+    "view": {
+      "chart": "Grafico",
+      "values": "Importi"
+    },
     "planner": {
       "title": "Budget basato sulle entrate",
       "description": "Distribuisci le entrate previste tra le categorie.",

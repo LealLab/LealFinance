@@ -953,6 +953,10 @@
     "list": {
       "title": "每月限额"
     },
+    "view": {
+      "chart": "图表",
+      "values": "金额"
+    },
     "planner": {
       "title": "基于收入的预算",
       "description": "将预计收入分配到各个分类。",

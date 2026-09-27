@@ -953,6 +953,10 @@
     "list": {
       "title": "Limite lunare"
     },
+    "view": {
+      "chart": "Grafic",
+      "values": "Sume"
+    },
     "planner": {
       "title": "Buget bazat pe venituri",
       "description": "Distribuie veniturile estimate între categorii.",

@@ -953,6 +953,10 @@
     "list": {
       "title": "Limites do mês"
     },
+    "view": {
+      "chart": "Gráfico",
+      "values": "Valores"
+    },
     "planner": {
       "title": "Orçamento baseado na renda",
       "description": "Distribua sua renda esperada entre as categorias.",

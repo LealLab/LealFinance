@@ -953,6 +953,10 @@
     "list": {
       "title": "Aylık limitler"
     },
+    "view": {
+      "chart": "Grafik",
+      "values": "Tutarlar"
+    },
     "planner": {
       "title": "Gelir bazlı bütçe",
       "description": "Beklenen gelirinizi kategorilere dağıtın.",

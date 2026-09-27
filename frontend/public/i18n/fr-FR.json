@@ -953,6 +953,10 @@
     "list": {
       "title": "Limites mensuelles"
     },
+    "view": {
+      "chart": "Graphique",
+      "values": "Montants"
+    },
     "planner": {
       "title": "Budget fondé sur les revenus",
       "description": "Répartissez vos revenus prévus entre les catégories.",

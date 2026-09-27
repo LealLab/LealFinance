@@ -1,5 +1,5 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('budgets.title')" [description]="t('budgets.description')">
+  <app-page-header [title]="t('budgets.title')" [description]="t('budgets.description')" [compact]="true">
     <app-month-switcher
       class="max-md:col-span-2"
       [(month)]="selectedMonth"
@@ -18,266 +18,319 @@
     </div>
   }
 
-  <app-card class="mb-6">
-    <div class="grid gap-6 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,1.5fr)]">
-      <div
-        class="flex min-h-64 flex-col items-center justify-center rounded-lg bg-surface-sunken p-4"
-      >
-        <h2
-          class="mb-3 text-lg font-semibold text-content-primary"
-          [class.text-negative]="totalPercentage() > 100"
-          [attr.aria-invalid]="totalPercentage() > 100"
+  <!-- Same segmented control as transactions' view switcher. -->
+  <div
+    class="mb-6 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+    role="group"
+    [attr.aria-label]="t('budgets.title')"
+  >
+    <button
+      type="button"
+      class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+      [class]="view() === 'chart' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+      [attr.aria-pressed]="view() === 'chart'"
+      (click)="view.set('chart')"
+    >
+      <app-icon name="piggy" [size]="16" />
+      <span>{{ t('budgets.view.chart') }}</span>
+    </button>
+    <button
+      type="button"
+      class="flex items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+      [class]="view() === 'values' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+      [attr.aria-pressed]="view() === 'values'"
+      (click)="view.set('values')"
+    >
+      <app-icon name="menu" [size]="16" />
+      <span>{{ t('budgets.view.values') }}</span>
+    </button>
+  </div>
+
+  @if (view() === 'chart') {
+    <app-card class="mb-6">
+      <div class="grid gap-6 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,1.5fr)]">
+        <div
+          class="flex min-h-64 flex-col items-center justify-center rounded-lg bg-surface-sunken p-4"
         >
-          {{ t('budgets.planner.total') }}: {{ totalPercentage() }}%
-        </h2>
-        @if (plannerChart().labels.length > 0) {
-          <div class="h-44 w-full sm:h-52">
-            <app-chart
-              kind="doughnut"
-              [labels]="plannerChart().labels"
-              [datasets]="plannerChart().datasets"
-            />
-          </div>
-        } @else {
-          <app-icon name="piggy" [size]="48" class="text-content-subtle" />
-          <p class="mt-3 text-center text-sm text-content-muted">
-            {{ t('budgets.planner.empty') }}
-          </p>
-        }
-      </div>
-
-      <div>
-        <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 class="text-lg font-semibold text-content-primary">
-              {{ t('budgets.planner.title') }}
-            </h2>
-            <p class="mt-1 text-sm text-content-muted">{{ t('budgets.planner.description') }}</p>
-          </div>
-          <div class="w-full sm:w-52">
-            <label class="form-label" for="expected-income">{{
-              t('budgets.planner.expectedIncome')
-            }}</label>
-            <input
-              id="expected-income"
-              type="text"
-              inputmode="decimal"
-              class="form-input font-mono"
-              [value]="incomeValue()"
-              (input)="incomeDraft.set($any($event.target).value)"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-4 md:max-h-80 md:overflow-y-auto md:pe-2">
-          @for (row of allocationRows(); track row.group.id) {
-            <div>
-              <div class="mb-1 flex items-center justify-between gap-3">
-                <div class="flex min-w-0 items-center gap-2">
-                  <span
-                    class="size-2 shrink-0 rounded-full"
-                    [style.background-color]="row.group.color"
-                  ></span>
-                  <span class="truncate text-sm font-semibold text-content-primary">{{
-                    row.group.name
-                  }}</span>
-                  @if (row.fixed) {
-                    <app-badge tone="neutral">{{ t('budgets.planner.fixed') }}</app-badge>
-                  }
-                </div>
-                <span class="shrink-0 font-mono text-sm font-semibold tabular-nums text-accent"
-                  >{{ row.percentage }}%</span
-                >
-              </div>
-              <div class="flex items-center gap-3">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="0.5"
-                  class="budget-slider min-w-0 flex-1"
-                  [value]="row.percentage"
-                  [disabled]="row.fixed"
-                  (input)="setAllocation(row.group.id, $any($event.target).value)"
-                />
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  step="0.5"
-                  class="form-input w-20 shrink-0 text-end font-mono"
-                  [value]="row.percentage"
-                  [disabled]="row.fixed"
-                  (input)="setAllocation(row.group.id, $any($event.target).value)"
-                />
-              </div>
+          <h2
+            class="mb-3 text-lg font-semibold text-content-primary"
+            [class.text-negative]="totalPercentage() > 100"
+            [attr.aria-invalid]="totalPercentage() > 100"
+          >
+            {{ t('budgets.planner.total') }}: {{ totalPercentage() }}%
+          </h2>
+          @if (plannerChart().labels.length > 0) {
+            <div class="h-44 w-full sm:h-52">
+              <app-chart
+                kind="doughnut"
+                [labels]="plannerChart().labels"
+                [datasets]="plannerChart().datasets"
+              />
             </div>
+          } @else {
+            <app-icon name="piggy" [size]="48" class="text-content-subtle" />
+            <p class="mt-3 text-center text-sm text-content-muted">
+              {{ t('budgets.planner.empty') }}
+            </p>
           }
         </div>
 
-        @if (plannerError(); as errorKey) {
-          <p class="mt-3 form-error" role="alert">{{ t(errorKey) }}</p>
-        }
-        <div class="mt-4 flex justify-end">
-          <button appButton variant="primary" type="button" (click)="savePlanner()">
-            {{ t('budgets.planner.save') }}
-          </button>
+        <div>
+          <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-semibold text-content-primary">
+                {{ t('budgets.planner.title') }}
+              </h2>
+              <p class="mt-1 text-sm text-content-muted">{{ t('budgets.planner.description') }}</p>
+            </div>
+            <div class="w-full sm:w-52">
+              <label class="form-label" for="expected-income">{{
+                t('budgets.planner.expectedIncome')
+              }}</label>
+              <input
+                id="expected-income"
+                type="text"
+                inputmode="decimal"
+                class="form-input font-mono"
+                [value]="incomeValue()"
+                (input)="incomeDraft.set($any($event.target).value)"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            @for (row of allocationRows(); track row.group.id) {
+              <div>
+                <div class="mb-1 flex items-center justify-between gap-3">
+                  <div class="flex min-w-0 items-center gap-2">
+                    <span
+                      class="size-2 shrink-0 rounded-full"
+                      [style.background-color]="row.group.color"
+                    ></span>
+                    <span class="truncate text-sm font-semibold text-content-primary">{{
+                      row.group.name
+                    }}</span>
+                    @if (row.fixed) {
+                      <app-badge tone="neutral">{{ t('budgets.planner.fixed') }}</app-badge>
+                    }
+                  </div>
+                  <span class="shrink-0 font-mono text-sm font-semibold tabular-nums text-accent"
+                    >{{ row.percentage }}%</span
+                  >
+                </div>
+                <div class="flex items-center gap-3">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.5"
+                    class="budget-slider min-w-0 flex-1"
+                    [value]="row.percentage"
+                    [disabled]="row.fixed"
+                    (input)="setAllocation(row.group.id, $any($event.target).value)"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.5"
+                    class="form-input w-20 shrink-0 text-end font-mono"
+                    [value]="row.percentage"
+                    [disabled]="row.fixed"
+                    (input)="setAllocation(row.group.id, $any($event.target).value)"
+                  />
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (plannerError(); as errorKey) {
+            <p class="mt-3 form-error" role="alert">{{ t(errorKey) }}</p>
+          }
+          <div class="mt-4 flex justify-end">
+            <button appButton variant="primary" type="button" (click)="savePlanner()">
+              {{ t('budgets.planner.save') }}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </app-card>
-
-  @if (!ratesReady()) {
-    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3" aria-busy="true">
-      @for (i of [0, 1, 2]; track i) {
-        <app-skeleton height="4.25rem" />
-      }
-    </div>
-  } @else if (!isEmpty()) {
-    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <app-stat-tile
-        [label]="t('budgets.totals.budgeted')"
-        [value]="totals().budgeted.amount | money: totals().budgeted.currency"
-        [tone]="valueTone(totals().budgeted)"
-      />
-      <app-stat-tile
-        [label]="t('budgets.totals.spent')"
-        [value]="totals().spent.amount | money: totals().spent.currency"
-        [tone]="valueTone(totals().spent, true)"
-      />
-      <app-stat-tile
-        [label]="t('budgets.totals.remaining')"
-        [value]="totals().remaining.amount | money: totals().remaining.currency"
-        [tone]="valueTone(totals().remaining)"
-      />
-    </div>
-  }
-
-  @if (isEmpty()) {
-    <app-empty-state
-      icon="piggy"
-      [title]="t('budgets.empty.title')"
-      [description]="t('budgets.empty.description')"
-    >
-      <button appButton variant="primary" type="button" (click)="openCreate()">
-        {{ t('budgets.actions.new') }}
-      </button>
-    </app-empty-state>
+    </app-card>
   } @else {
-    <div class="flex flex-col gap-6">
-      @if (budgetRows().length > 0) {
-        <app-card [padded]="false">
-          <div class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
-            {{ t('budgets.list.title') }}
-          </div>
-          <ul>
-            @for (row of budgetRows(); track row.budget.id) {
-              <li class="flex flex-col gap-2 border-b border-border px-4 py-4 last:border-b-0">
-                <div class="flex items-center justify-between gap-4">
-                  <div class="flex items-center gap-2">
-                    @if (row.group; as group) {
-                      <span
-                        class="flex size-7 items-center justify-center rounded-full"
-                        [style.background-color]="group.color + '1A'"
-                        [style.color]="group.color"
-                      >
-                        <app-icon [name]="group.icon" [size]="14" />
-                      </span>
-                      <span class="text-sm font-medium text-content-primary">{{
-                        group.name
-                      }}</span>
-                    }
-                    @if (row.state === 'over') {
-                      <app-badge tone="negative">{{ t('budgets.state.over') }}</app-badge>
-                    } @else if (row.state === 'near') {
-                      <app-badge tone="warning">{{ t('budgets.state.near') }}</app-badge>
-                    }
-                    @if (row.isPercentage) {
-                      <app-badge tone="accent">{{ row.percentage }}%</app-badge>
-                    }
-                  </div>
-                  <div class="flex items-center gap-3">
-                    <span class="font-mono text-sm font-semibold tabular-nums">
-                      {{ row.spent.amount | money: row.spent.currency }} /
-                      {{ row.budgeted.amount | money: row.budgeted.currency }}
-                    </span>
-                    @if (!row.isPercentage) {
-                      <button
-                        appButton
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        (click)="openEdit(row.budget)"
-                        [attr.aria-label]="t('budgets.actions.edit')"
-                      >
-                        <app-icon name="pencil" [size]="16" />
-                      </button>
-                      <button
-                        appButton
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        (click)="deleteBudget(row.budget)"
-                        [attr.aria-label]="t('budgets.actions.delete')"
-                      >
-                        <app-icon name="trash" [size]="16" />
-                      </button>
-                    }
-                  </div>
-                </div>
-                <app-progress-bar [ratio]="row.ratio" />
-              </li>
-            }
-          </ul>
-        </app-card>
-      }
+    @if (!ratesReady()) {
+      <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3" aria-busy="true">
+        @for (i of [0, 1, 2]; track i; let first = $first) {
+          <app-skeleton height="4.25rem" [class]="first ? 'col-span-2 sm:col-span-1' : ''" />
+        }
+      </div>
+    } @else if (!isEmpty()) {
+      <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <app-stat-tile
+          class="col-span-2 sm:col-span-1"
+          [prominent]="true"
+          [label]="t('budgets.totals.remaining')"
+          [value]="totals().remaining.amount | money: totals().remaining.currency"
+          [tone]="valueTone(totals().remaining)"
+        />
+        <app-stat-tile
+          [label]="t('budgets.totals.budgeted')"
+          [value]="totals().budgeted.amount | money: totals().budgeted.currency"
+          [tone]="valueTone(totals().budgeted)"
+        />
+        <app-stat-tile
+          [label]="t('budgets.totals.spent')"
+          [value]="totals().spent.amount | money: totals().spent.currency"
+          [tone]="valueTone(totals().spent, true)"
+        />
+      </div>
+    }
 
-      @if (unbudgetedRows().length > 0) {
-        <div>
-          <h2 class="mb-2 text-sm font-semibold text-content-primary">
-            {{ t('budgets.unbudgeted.title') }}
-          </h2>
+    @if (isEmpty()) {
+      <app-empty-state
+        icon="piggy"
+        [title]="t('budgets.empty.title')"
+        [description]="t('budgets.empty.description')"
+      >
+        <button appButton variant="primary" type="button" (click)="openCreate()">
+          {{ t('budgets.actions.new') }}
+        </button>
+      </app-empty-state>
+    } @else {
+      <div class="flex flex-col gap-6">
+        <!-- Amounts + edit/delete: inline beside the name from `md` up, below
+             the progress bar on phones (both copies render, CSS picks one -
+             same trick as account-detail's balance card). -->
+        <ng-template #budgetAmounts let-row="row">
+          <span class="font-mono text-sm font-semibold tabular-nums">
+            {{ row.spent.amount | money: row.spent.currency }} /
+            {{ row.budgeted.amount | money: row.budgeted.currency }}
+          </span>
+          @if (!row.isPercentage) {
+            <!-- One flex item, so the phone row's justify-between spaces the
+                 amount from the buttons, not the buttons from each other. -->
+            <span class="flex shrink-0 items-center">
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                (click)="openEdit(row.budget)"
+                [attr.aria-label]="t('budgets.actions.edit')"
+              >
+                <app-icon name="pencil" [size]="16" />
+              </button>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                (click)="deleteBudget(row.budget)"
+                [attr.aria-label]="t('budgets.actions.delete')"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
+            </span>
+          }
+        </ng-template>
+
+        @if (budgetRows().length > 0) {
           <app-card [padded]="false">
+            <div class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
+              {{ t('budgets.list.title') }}
+            </div>
             <ul>
-              @for (row of unbudgetedRows(); track row.groupId) {
-                <li
-                  class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0"
-                >
-                  <div class="flex items-center gap-2">
-                    @if (row.group; as group) {
-                      <span
-                        class="flex size-7 items-center justify-center rounded-full"
-                        [style.background-color]="group.color + '1A'"
-                        [style.color]="group.color"
-                      >
-                        <app-icon [name]="group.icon" [size]="14" />
-                      </span>
-                      <span class="text-sm font-medium text-content-primary">{{
-                        group.name
-                      }}</span>
-                    }
+              @for (row of budgetRows(); track row.budget.id) {
+                <li class="flex flex-col gap-2 border-b border-border px-4 py-4 last:border-b-0">
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="flex min-w-0 items-center gap-2">
+                      @if (row.group; as group) {
+                        <span
+                          class="flex size-7 items-center justify-center rounded-full"
+                          [style.background-color]="group.color + '1A'"
+                          [style.color]="group.color"
+                        >
+                          <app-icon [name]="group.icon" [size]="14" />
+                        </span>
+                        <span class="truncate text-sm font-medium text-content-primary">{{
+                          group.name
+                        }}</span>
+                      }
+                      @if (row.state === 'over') {
+                        <app-badge tone="negative">{{ t('budgets.state.over') }}</app-badge>
+                      } @else if (row.state === 'near') {
+                        <app-badge tone="warning">{{ t('budgets.state.near') }}</app-badge>
+                      }
+                      @if (row.isPercentage) {
+                        <app-badge tone="accent">{{ row.percentage }}%</app-badge>
+                      }
+                    </div>
+                    <div class="hidden shrink-0 items-center gap-3 md:flex">
+                      <ng-container
+                        [ngTemplateOutlet]="budgetAmounts"
+                        [ngTemplateOutletContext]="{ row: row }"
+                      />
+                    </div>
                   </div>
-                  <div class="flex items-center gap-3">
-                    <span class="font-mono text-sm font-semibold tabular-nums text-content-muted">
-                      {{ row.spent.amount | money: row.spent.currency }}
-                    </span>
-                    <button
-                      appButton
-                      variant="secondary"
-                      size="sm"
-                      type="button"
-                      (click)="openCreateFor(row.groupId)"
-                    >
-                      {{ t('budgets.unbudgeted.setBudget') }}
-                    </button>
+                  <app-progress-bar [ratio]="row.ratio" />
+                  <div class="flex items-center justify-between gap-3 md:hidden">
+                    <ng-container
+                      [ngTemplateOutlet]="budgetAmounts"
+                      [ngTemplateOutletContext]="{ row: row }"
+                    />
                   </div>
                 </li>
               }
             </ul>
           </app-card>
-        </div>
-      }
-    </div>
+        }
+
+        @if (unbudgetedRows().length > 0) {
+          <div>
+            <h2 class="mb-2 text-sm font-semibold text-content-primary">
+              {{ t('budgets.unbudgeted.title') }}
+            </h2>
+            <app-card [padded]="false">
+              <ul>
+                @for (row of unbudgetedRows(); track row.groupId) {
+                  <li
+                    class="flex items-center justify-between gap-3 border-b border-border px-4 py-3 last:border-b-0"
+                  >
+                    <div class="flex min-w-0 flex-col gap-0.5">
+                      <div class="flex min-w-0 items-center gap-2">
+                        @if (row.group; as group) {
+                          <span
+                            class="flex size-7 items-center justify-center rounded-full"
+                            [style.background-color]="group.color + '1A'"
+                            [style.color]="group.color"
+                          >
+                            <app-icon [name]="group.icon" [size]="14" />
+                          </span>
+                          <span class="truncate text-sm font-medium text-content-primary">{{
+                            group.name
+                          }}</span>
+                        }
+                      </div>
+                      <span class="font-mono text-sm font-semibold tabular-nums text-content-muted">
+                        {{ row.spent.amount | money: row.spent.currency }}
+                      </span>
+                    </div>
+                    <button
+                      appButton
+                      variant="secondary"
+                      size="sm"
+                      type="button"
+                      class="shrink-0"
+                      (click)="openCreateFor(row.groupId)"
+                    >
+                      {{ t('budgets.unbudgeted.setBudget') }}
+                    </button>
+                  </li>
+                }
+              </ul>
+            </app-card>
+          </div>
+        }
+      </div>
+    }
   }
 
   <app-budget-form-modal

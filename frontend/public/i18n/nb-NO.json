@@ -953,6 +953,10 @@
     "list": {
       "title": "Månedlige grenser"
     },
+    "view": {
+      "chart": "Diagram",
+      "values": "Beløp"
+    },
     "planner": {
       "title": "Inntektsbasert budsjett",
       "description": "Fordel forventet inntekt på kategorier.",

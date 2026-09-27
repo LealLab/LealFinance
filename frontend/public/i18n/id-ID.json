@@ -953,6 +953,10 @@
     "list": {
       "title": "Batas bulanan"
     },
+    "view": {
+      "chart": "Grafik",
+      "values": "Jumlah"
+    },
     "planner": {
       "title": "Anggaran berdasarkan pendapatan",
       "description": "Bagikan pendapatan yang diharapkan ke berbagai kategori.",

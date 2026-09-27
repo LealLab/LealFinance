@@ -953,6 +953,10 @@
     "list": {
       "title": "Límites mensuales"
     },
+    "view": {
+      "chart": "Gráfico",
+      "values": "Importes"
+    },
     "planner": {
       "title": "Presupuesto basado en ingresos",
       "description": "Distribuye tus ingresos previstos entre las categorías.",

@@ -953,6 +953,10 @@
     "list": {
       "title": "Kuukausirajat"
     },
+    "view": {
+      "chart": "Kaavio",
+      "values": "Summat"
+    },
     "planner": {
       "title": "Tuloihin perustuva budjetti",
       "description": "Jaa odotetut tulosi eri luokkiin.",

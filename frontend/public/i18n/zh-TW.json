@@ -953,6 +953,10 @@
     "list": {
       "title": "每月上限"
     },
+    "view": {
+      "chart": "圖表",
+      "values": "金額"
+    },
     "planner": {
       "title": "依收入規劃預算",
       "description": "將預期收入分配至各個分類。",

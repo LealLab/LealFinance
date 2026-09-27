@@ -953,6 +953,10 @@
     "list": {
       "title": "Miesięczne limity"
     },
+    "view": {
+      "chart": "Wykres",
+      "values": "Kwoty"
+    },
     "planner": {
       "title": "Budżet oparty na przychodach",
       "description": "Rozdziel przewidywane przychody między kategorie.",

@@ -953,6 +953,10 @@
     "list": {
       "title": "月間上限"
     },
+    "view": {
+      "chart": "グラフ",
+      "values": "金額"
+    },
     "planner": {
       "title": "収入ベースの予算",
       "description": "予想収入をカテゴリに配分します。",

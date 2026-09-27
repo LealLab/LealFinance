@@ -953,6 +953,10 @@
     "list": {
       "title": "Měsíční limity"
     },
+    "view": {
+      "chart": "Graf",
+      "values": "Částky"
+    },
     "planner": {
       "title": "Rozpočet podle příjmů",
       "description": "Rozdělte očekávaný příjem mezi kategorie.",

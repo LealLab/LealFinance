@@ -953,6 +953,10 @@
     "list": {
       "title": "Hạn mức hàng tháng"
     },
+    "view": {
+      "chart": "Biểu đồ",
+      "values": "Số tiền"
+    },
     "planner": {
       "title": "Ngân sách theo thu nhập",
       "description": "Phân bổ thu nhập dự kiến cho các danh mục.",

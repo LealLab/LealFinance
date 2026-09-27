@@ -977,6 +977,10 @@
     "list": {
       "title": "Monthly limits"
     },
+    "view": {
+      "chart": "Chart",
+      "values": "Amounts"
+    },
     "planner": {
       "title": "Income-based budget",
       "description": "Distribute your expected income across categories.",

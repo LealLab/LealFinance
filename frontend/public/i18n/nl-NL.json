@@ -953,6 +953,10 @@
     "list": {
       "title": "Maandlimieten"
     },
+    "view": {
+      "chart": "Grafiek",
+      "values": "Bedragen"
+    },
     "planner": {
       "title": "Budget op basis van inkomsten",
       "description": "Verdeel je verwachte inkomsten over de categorieën.",
