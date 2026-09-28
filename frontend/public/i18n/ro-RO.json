@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Intrare",
       "outflow": "Ieșire"
+    },
+    "filter": {
+      "all": "Toate",
+      "empty": "Niciun element cu această stare."
+    },
+    "today": "Azi",
+    "help": {
+      "label": "Ce este {{label}}?",
+      "projectedCashImpact": "Ce urmează să intre minus ce urmează să iasă în următoarele 30 de zile: recurențe, facturi de card și rate de împrumut care nu au fost încă înregistrate. Pozitiv înseamnă surplus; negativ înseamnă deficit.",
+      "realizedCashImpact": "Intrări minus ieșiri pentru elementele din această fereastră de 30 de zile care au fost deja înregistrate sau plătite.",
+      "projectedOutflow": "Cât mai urmează să iasă în următoarele 30 de zile: cheltuieli recurente, facturi de card deschise și rate de împrumut scadente.",
+      "realizedOutflow": "Cât a ieșit deja în această fereastră de 30 de zile pentru elementele deja plătite."
     }
   },
   "exchange": {

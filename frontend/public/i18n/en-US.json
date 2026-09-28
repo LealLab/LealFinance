@@ -1494,6 +1494,18 @@
     "direction": {
       "inflow": "Inflow",
       "outflow": "Outflow"
+    },
+    "filter": {
+      "all": "All",
+      "empty": "No items with this status."
+    },
+    "today": "Today",
+    "help": {
+      "label": "What is {{label}}?",
+      "projectedCashImpact": "What is still coming in minus what is still going out over the next 30 days: recurring transactions, card invoices, and loan installments not yet posted. Positive means money left over; negative means a shortfall.",
+      "realizedCashImpact": "Inflows minus outflows for items in this 30-day window that were already posted or paid.",
+      "projectedOutflow": "How much is still going out over the next 30 days: recurring expenses, open card invoices, and loan installments due.",
+      "realizedOutflow": "How much has already gone out in this 30-day window for items that were already paid."
     }
   },
   "exchange": {

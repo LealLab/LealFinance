@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Indbetaling",
       "outflow": "Udbetaling"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Ingen poster med denne status."
+    },
+    "today": "I dag",
+    "help": {
+      "label": "Hvad er {{label}}?",
+      "projectedCashImpact": "Hvad der stadig kommer ind minus hvad der stadig går ud de næste 30 dage: gentagelser, kortregninger og låneafdrag, der endnu ikke er bogført. Positivt betyder overskud; negativt betyder underskud.",
+      "realizedCashImpact": "Indbetalinger minus udbetalinger for poster i dette 30-dages vindue, der allerede er bogført eller betalt.",
+      "projectedOutflow": "Hvor meget der stadig går ud de næste 30 dage: tilbagevendende udgifter, åbne kortregninger og forfaldne låneafdrag.",
+      "realizedOutflow": "Hvor meget der allerede er gået ud i dette 30-dages vindue for poster, der allerede er betalt."
     }
   },
   "exchange": {

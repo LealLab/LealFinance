@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Wpływ",
       "outflow": "Wypływ"
+    },
+    "filter": {
+      "all": "Wszystkie",
+      "empty": "Brak pozycji o tym statusie."
+    },
+    "today": "Dzisiaj",
+    "help": {
+      "label": "Czym jest {{label}}?",
+      "projectedCashImpact": "To, co jeszcze wpłynie, pomniejszone o to, co jeszcze wypłynie w ciągu najbliższych 30 dni: transakcje cykliczne, rachunki kart kredytowych i raty kredytów jeszcze niezaksięgowane. Wynik dodatni oznacza, że zostaną pieniądze; ujemny oznacza niedobór.",
+      "realizedCashImpact": "Wpływy pomniejszone o wypływy dla pozycji z tego 30-dniowego okresu, które zostały już zaksięgowane lub opłacone.",
+      "projectedOutflow": "Ile jeszcze wypłynie w ciągu najbliższych 30 dni: wydatki cykliczne, otwarte rachunki kart kredytowych i raty kredytów do zapłaty.",
+      "realizedOutflow": "Ile już wypłynęło w tym 30-dniowym okresie w przypadku pozycji, które zostały już opłacone."
     }
   },
   "exchange": {

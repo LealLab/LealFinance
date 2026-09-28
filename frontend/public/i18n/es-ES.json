@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Entrada",
       "outflow": "Salida"
+    },
+    "filter": {
+      "all": "Todos",
+      "empty": "No hay elementos con este estado."
+    },
+    "today": "Hoy",
+    "help": {
+      "label": "¿Qué es {{label}}?",
+      "projectedCashImpact": "Lo que aún va a entrar menos lo que aún va a salir en los próximos 30 días: recurrencias, facturas de tarjeta y cuotas de préstamo que todavía no se han registrado. Positivo significa que sobra dinero; negativo significa que falta dinero.",
+      "realizedCashImpact": "Entradas menos salidas de los elementos de esta ventana de 30 días que ya se registraron o pagaron.",
+      "projectedOutflow": "Cuánto va a salir todavía en los próximos 30 días: gastos recurrentes, facturas de tarjeta abiertas y cuotas de préstamo pendientes.",
+      "realizedOutflow": "Cuánto ha salido ya en esta ventana de 30 días por elementos que ya se pagaron."
     }
   },
   "exchange": {

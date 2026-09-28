@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Inflöde",
       "outflow": "Utflöde"
+    },
+    "filter": {
+      "all": "Alla",
+      "empty": "Inga poster med denna status."
+    },
+    "today": "Idag",
+    "help": {
+      "label": "Vad är {{label}}?",
+      "projectedCashImpact": "Vad som fortfarande kommer in minus vad som fortfarande går ut de kommande 30 dagarna: återkommande transaktioner, kortfakturor och lånebetalningar som ännu inte har bokförts. Positivt innebär överskott; negativt innebär underskott.",
+      "realizedCashImpact": "Inflöden minus utflöden för poster i detta 30-dagarsfönster som redan har bokförts eller betalats.",
+      "projectedOutflow": "Hur mycket som fortfarande går ut de kommande 30 dagarna: återkommande utgifter, öppna kortfakturor och förfallna lånebetalningar.",
+      "realizedOutflow": "Hur mycket som redan har gått ut i detta 30-dagarsfönster för poster som redan har betalats."
     }
   },
   "exchange": {

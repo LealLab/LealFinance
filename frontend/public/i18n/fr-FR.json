@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Entrée",
       "outflow": "Sortie"
+    },
+    "filter": {
+      "all": "Tous",
+      "empty": "Aucun élément avec ce statut."
+    },
+    "today": "Aujourd’hui",
+    "help": {
+      "label": "Qu’est-ce que {{label}} ?",
+      "projectedCashImpact": "Ce qui va encore entrer moins ce qui va encore sortir au cours des 30 prochains jours : récurrences, factures de carte et échéances de prêt pas encore comptabilisées. Positif signifie qu’il reste de l’argent ; négatif signifie un déficit.",
+      "realizedCashImpact": "Entrées moins sorties pour les éléments de cette fenêtre de 30 jours déjà comptabilisés ou payés.",
+      "projectedOutflow": "Ce qui va encore sortir au cours des 30 prochains jours : dépenses récurrentes, factures de carte ouvertes et échéances de prêt à venir.",
+      "realizedOutflow": "Ce qui est déjà sorti sur cette fenêtre de 30 jours pour les éléments déjà payés."
     }
   },
   "exchange": {

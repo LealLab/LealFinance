@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Inkomend",
       "outflow": "Uitgaand"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Geen items met deze status."
+    },
+    "today": "Vandaag",
+    "help": {
+      "label": "Wat is {{label}}?",
+      "projectedCashImpact": "Wat er de komende 30 dagen nog binnenkomt, minus wat er nog uitgaat: terugkerende transacties, creditcardfacturen en leningtermijnen die nog niet zijn geboekt. Positief betekent dat er geld overblijft; negatief betekent een tekort.",
+      "realizedCashImpact": "Wat er is binnengekomen minus wat er is uitgegaan, voor items in dit venster van 30 dagen die al zijn geboekt of betaald.",
+      "projectedOutflow": "Hoeveel er de komende 30 dagen nog uitgaat: terugkerende uitgaven, openstaande creditcardfacturen en verschuldigde leningtermijnen.",
+      "realizedOutflow": "Hoeveel er in dit venster van 30 dagen al is uitgegaan voor items die al zijn betaald."
     }
   },
   "exchange": {

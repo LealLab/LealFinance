@@ -180,6 +180,70 @@ describe('Agenda', () => {
     expect(fixture.componentInstance['agenda']()!.projected.outflow.amount).toBe('70.0000');
   });
 
+  it('filters entries by status and groups the mobile list by day', async () => {
+    const postedSalary: Transaction = {
+      id: 'tx-salary',
+      type: 'income',
+      date: todayIso(),
+      amount: '100.00',
+      currency: 'BRL',
+      accountId: 'checking',
+      description: 'Salary',
+      recurringRuleId: 'rule-salary',
+    };
+    await setup({ transactions: of([postedSalary]) });
+    const fixture = await render();
+    const element: HTMLElement = fixture.nativeElement;
+    const filter = (label: string) =>
+      Array.from(element.querySelectorAll<HTMLButtonElement>('[role="group"] button')).find(
+        (button) => button.textContent?.includes(label),
+      )!;
+
+    // Three days (today, invoice due, loan installment), today's header flagged.
+    const headers = element.querySelectorAll('.md\\:hidden > p');
+    expect(headers).toHaveLength(3);
+    expect(headers[0].textContent).toContain('Hoje');
+    expect(filter('Todos').textContent).toContain('3');
+
+    filter('Realizado').click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('tbody tr')).toHaveLength(1);
+    expect(element.querySelector('tbody')!.textContent).toContain('Salary');
+
+    filter('Projetado').click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('tbody tr')).toHaveLength(2);
+    expect(element.querySelector('tbody')!.textContent).not.toContain('Salary');
+  });
+
+  it('shows a "no items" message when the filter matches nothing', async () => {
+    await setup();
+    const fixture = await render();
+    const element: HTMLElement = fixture.nativeElement;
+    Array.from(element.querySelectorAll<HTMLButtonElement>('[role="group"] button'))
+      .find((button) => button.textContent?.includes('Realizado'))!
+      .click();
+    fixture.detectChanges();
+
+    expect(element.querySelector('tbody')).toBeNull();
+    expect(element.textContent).toContain('Nenhum item com essa situação.');
+  });
+
+  it('explains each summary tile in a popover', async () => {
+    await setup();
+    const fixture = await render();
+    const element: HTMLElement = fixture.nativeElement;
+    const triggers = element.querySelectorAll<HTMLButtonElement>('[dropdownTrigger]');
+    expect(triggers).toHaveLength(4);
+    expect(triggers[0].getAttribute('aria-label')).toBe('O que é Impacto de caixa projetado?');
+
+    triggers[3].click();
+    fixture.detectChanges();
+    const tiles = element.querySelectorAll('app-stat-tile');
+    expect(tiles[3].textContent).toContain('Quanto já saiu nesta janela de 30 dias');
+    expect(tiles[0].textContent).not.toContain('O que ainda vai entrar');
+  });
+
   it('shows the empty state when nothing is due', async () => {
     await setup({
       accounts: of([]),

@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Příjem",
       "outflow": "Výdaj"
+    },
+    "filter": {
+      "all": "Vše",
+      "empty": "Žádné položky s tímto stavem."
+    },
+    "today": "Dnes",
+    "help": {
+      "label": "Co je {{label}}?",
+      "projectedCashImpact": "Kolik ještě přijde minus kolik ještě odejde v příštích 30 dnech: opakování, faktury kreditní karty a splátky úvěru, které ještě nebyly zaúčtovány. Kladná hodnota znamená, že peníze zbydou; záporná znamená schodek.",
+      "realizedCashImpact": "Příjmy minus výdaje za položky v tomto 30denním období, které už byly zaúčtovány nebo zaplaceny.",
+      "projectedOutflow": "Kolik ještě odejde v příštích 30 dnech: opakující se výdaje, otevřené faktury kreditní karty a splatné splátky úvěru.",
+      "realizedOutflow": "Kolik už odešlo v tomto 30denním období u položek, které už byly zaplaceny."
     }
   },
   "exchange": {

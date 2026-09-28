@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Tulo",
       "outflow": "Meno"
+    },
+    "filter": {
+      "all": "Kaikki",
+      "empty": "Ei kohteita tässä tilassa."
+    },
+    "today": "Tänään",
+    "help": {
+      "label": "Mikä on {{label}}?",
+      "projectedCashImpact": "Mitä on vielä tulossa miinus mitä on vielä menossa seuraavien 30 päivän aikana: toistuvat tapahtumat, luottokorttilaskut ja lainanlyhennykset, joita ei ole vielä kirjattu. Positiivinen tarkoittaa ylijäämää, negatiivinen alijäämää.",
+      "realizedCashImpact": "Tulot miinus menot tämän 30 päivän jakson kohteille, jotka on jo kirjattu tai maksettu.",
+      "projectedOutflow": "Kuinka paljon on vielä menossa seuraavien 30 päivän aikana: toistuvat menot, avoimet luottokorttilaskut ja erääntyvät lainanlyhennykset.",
+      "realizedOutflow": "Kuinka paljon on jo mennyt tämän 30 päivän jakson aikana kohteille, jotka on jo maksettu."
     }
   },
   "exchange": {

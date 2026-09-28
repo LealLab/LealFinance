@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Tiền vào",
       "outflow": "Tiền ra"
+    },
+    "filter": {
+      "all": "Tất cả",
+      "empty": "Không có mục nào ở trạng thái này."
+    },
+    "today": "Hôm nay",
+    "help": {
+      "label": "{{label}} là gì?",
+      "projectedCashImpact": "Số tiền còn sẽ vào trừ đi số tiền còn sẽ ra trong 30 ngày tới: giao dịch định kỳ, hóa đơn thẻ và các kỳ trả khoản vay chưa ghi nhận. Dương nghĩa là còn dư; âm nghĩa là thiếu hụt.",
+      "realizedCashImpact": "Tiền vào trừ đi tiền ra của các mục trong khoảng 30 ngày này đã được ghi nhận hoặc thanh toán.",
+      "projectedOutflow": "Số tiền còn sẽ ra trong 30 ngày tới: chi phí định kỳ, hóa đơn thẻ chưa thanh toán và các kỳ trả khoản vay đến hạn.",
+      "realizedOutflow": "Số tiền đã ra trong khoảng 30 ngày này cho các mục đã được thanh toán."
     }
   },
   "exchange": {

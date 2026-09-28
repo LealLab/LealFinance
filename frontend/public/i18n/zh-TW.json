@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "流入",
       "outflow": "流出"
+    },
+    "filter": {
+      "all": "全部",
+      "empty": "沒有此狀態的項目。"
+    },
+    "today": "今天",
+    "help": {
+      "label": "什麼是{{label}}？",
+      "projectedCashImpact": "未來30天內預期流入減去預期流出：定期交易、信用卡帳單和尚未入帳的貸款分期。正值表示有結餘；負值表示有缺口。",
+      "realizedCashImpact": "本30天窗口期內已入帳或已支付項目的流入減去流出。",
+      "projectedOutflow": "未來30天內預期流出的金額：定期支出、未結清的信用卡帳單和到期的貸款分期。",
+      "realizedOutflow": "本30天窗口期內已支付項目的實際流出金額。"
     }
   },
   "exchange": {

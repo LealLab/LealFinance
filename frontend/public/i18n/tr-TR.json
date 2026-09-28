@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Giriş",
       "outflow": "Çıkış"
+    },
+    "filter": {
+      "all": "Tümü",
+      "empty": "Bu durumda hiçbir kalem yok."
+    },
+    "today": "Bugün",
+    "help": {
+      "label": "{{label}} nedir?",
+      "projectedCashImpact": "Önümüzdeki 30 günde hâlâ gelecek olan tutardan hâlâ çıkacak olan tutarın farkı: henüz işlenmemiş yinelenen işlemler, kredi kartı ekstreleri ve kredi taksitleri. Pozitifse para artar, negatifse açık oluşur.",
+      "realizedCashImpact": "Bu 30 günlük dönemde zaten işlenmiş veya ödenmiş kalemler için giriş eksi çıkış tutarı.",
+      "projectedOutflow": "Önümüzdeki 30 günde hâlâ ne kadar çıkış olacağı: yinelenen giderler, açık kredi kartı ekstreleri ve vadesi gelen kredi taksitleri.",
+      "realizedOutflow": "Bu 30 günlük dönemde zaten ödenmiş kalemler için ne kadar çıkış yapıldığı."
     }
   },
   "exchange": {

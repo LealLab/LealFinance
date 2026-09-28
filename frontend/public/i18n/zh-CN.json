@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "流入",
       "outflow": "流出"
+    },
+    "filter": {
+      "all": "全部",
+      "empty": "没有此状态的项目。"
+    },
+    "today": "今天",
+    "help": {
+      "label": "什么是{{label}}？",
+      "projectedCashImpact": "未来30天内预计流入减去预计流出：定期交易、信用卡账单和尚未入账的贷款分期。正值表示有结余；负值表示有缺口。",
+      "realizedCashImpact": "本30天窗口期内已入账或已支付项目的流入减去流出。",
+      "projectedOutflow": "未来30天内预计流出的金额：定期支出、未结清的信用卡账单和到期的贷款分期。",
+      "realizedOutflow": "本30天窗口期内已支付项目的实际流出金额。"
     }
   },
   "exchange": {

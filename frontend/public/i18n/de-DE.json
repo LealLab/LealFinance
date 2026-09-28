@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Zufluss",
       "outflow": "Abfluss"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Keine Einträge mit diesem Status."
+    },
+    "today": "Heute",
+    "help": {
+      "label": "Was ist {{label}}?",
+      "projectedCashImpact": "Was in den nächsten 30 Tagen noch eingeht, abzüglich dessen, was noch abgeht: wiederkehrende Transaktionen, Kartenrechnungen und Kreditraten, die noch nicht gebucht wurden. Positiv bedeutet, dass Geld übrig bleibt; negativ bedeutet einen Fehlbetrag.",
+      "realizedCashImpact": "Zuflüsse abzüglich Abflüsse für Einträge in diesem 30-Tage-Zeitraum, die bereits gebucht oder bezahlt wurden.",
+      "projectedOutflow": "Wie viel in den nächsten 30 Tagen noch abgeht: wiederkehrende Ausgaben, offene Kartenrechnungen und fällige Kreditraten.",
+      "realizedOutflow": "Wie viel in diesem 30-Tage-Zeitraum bereits abgegangen ist für Einträge, die bereits bezahlt wurden."
     }
   },
   "exchange": {

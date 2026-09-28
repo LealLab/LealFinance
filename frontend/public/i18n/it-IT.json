@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Entrata",
       "outflow": "Uscita"
+    },
+    "filter": {
+      "all": "Tutti",
+      "empty": "Nessuna voce con questo stato."
+    },
+    "today": "Oggi",
+    "help": {
+      "label": "Cos’è {{label}}?",
+      "projectedCashImpact": "Quanto deve ancora entrare meno quanto deve ancora uscire nei prossimi 30 giorni: transazioni ricorrenti, fatture della carta e rate del prestito non ancora registrate. Positivo significa che avanza denaro; negativo significa un disavanzo.",
+      "realizedCashImpact": "Entrate meno uscite per le voci di questa finestra di 30 giorni già registrate o pagate.",
+      "projectedOutflow": "Quanto deve ancora uscire nei prossimi 30 giorni: spese ricorrenti, fatture della carta aperte e rate del prestito in scadenza.",
+      "realizedOutflow": "Quanto è già uscito in questa finestra di 30 giorni per voci già pagate."
     }
   },
   "exchange": {

@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Arus masuk",
       "outflow": "Arus keluar"
+    },
+    "filter": {
+      "all": "Semua",
+      "empty": "Tidak ada item dengan status ini."
+    },
+    "today": "Hari ini",
+    "help": {
+      "label": "Apa itu {{label}}?",
+      "projectedCashImpact": "Yang masih akan masuk dikurangi yang masih akan keluar dalam 30 hari ke depan: transaksi berulang, tagihan kartu, dan angsuran pinjaman yang belum tercatat. Positif berarti ada sisa dana; negatif berarti kekurangan.",
+      "realizedCashImpact": "Arus masuk dikurangi arus keluar untuk item dalam jangka waktu 30 hari ini yang sudah tercatat atau dibayar.",
+      "projectedOutflow": "Berapa banyak yang masih akan keluar dalam 30 hari ke depan: pengeluaran berulang, tagihan kartu yang belum lunas, dan angsuran pinjaman yang jatuh tempo.",
+      "realizedOutflow": "Berapa banyak yang sudah keluar dalam jangka waktu 30 hari ini untuk item yang sudah dibayar."
     }
   },
   "exchange": {

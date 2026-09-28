@@ -1470,6 +1470,18 @@
     "direction": {
       "inflow": "Entrada",
       "outflow": "Saída"
+    },
+    "filter": {
+      "all": "Todos",
+      "empty": "Nenhum item com essa situação."
+    },
+    "today": "Hoje",
+    "help": {
+      "label": "O que é {{label}}?",
+      "projectedCashImpact": "O que ainda vai entrar menos o que ainda vai sair nos próximos 30 dias: recorrências, faturas de cartão e parcelas de empréstimo que ainda não foram lançadas. Positivo = sobra dinheiro; negativo = vai faltar.",
+      "realizedCashImpact": "Entradas menos saídas dos itens desta janela de 30 dias que já foram lançados ou pagos.",
+      "projectedOutflow": "Quanto ainda vai sair nos próximos 30 dias: despesas recorrentes, faturas de cartão em aberto e parcelas de empréstimo a pagar.",
+      "realizedOutflow": "Quanto já saiu nesta janela de 30 dias com itens que já foram pagos."
     }
   },
   "exchange": {
