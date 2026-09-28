@@ -803,15 +803,12 @@
       "delete": "削除",
       "collapse": "折りたたむ",
       "expand": "展開",
-      "dragHandle": "並べ替え"
+      "dragHandle": "並べ替え",
+      "more": "その他"
     },
     "empty": {
       "title": "カテゴリはまだありません",
       "description": "グループとカテゴリを作成して、取引を整理しましょう。"
-    },
-    "sections": {
-      "income": "収入カテゴリ",
-      "expense": "支出カテゴリ"
     },
     "delete": {
       "title": "カテゴリを削除しますか？",

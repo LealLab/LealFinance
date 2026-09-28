@@ -803,15 +803,12 @@
       "delete": "Poista",
       "collapse": "Pienennä",
       "expand": "Laajenna",
-      "dragHandle": "Muuta järjestystä"
+      "dragHandle": "Muuta järjestystä",
+      "more": "Lisää"
     },
     "empty": {
       "title": "Ei vielä luokkia",
       "description": "Luo ryhmiä ja luokkia tapahtumiesi järjestämistä varten."
-    },
-    "sections": {
-      "income": "Tuloluokat",
-      "expense": "Menoluokat"
     },
     "delete": {
       "title": "Poistetaanko luokka?",

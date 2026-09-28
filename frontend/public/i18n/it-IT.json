@@ -803,15 +803,12 @@
       "delete": "Elimina",
       "collapse": "Comprimi",
       "expand": "Espandi",
-      "dragHandle": "Riordina"
+      "dragHandle": "Riordina",
+      "more": "Altro"
     },
     "empty": {
       "title": "Nessuna categoria",
       "description": "Crea gruppi e categorie per organizzare le transazioni."
-    },
-    "sections": {
-      "income": "Categorie di entrata",
-      "expense": "Categorie di uscita"
     },
     "delete": {
       "title": "Eliminare la categoria?",

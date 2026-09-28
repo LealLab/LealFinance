@@ -803,15 +803,12 @@
       "delete": "Ta bort",
       "collapse": "Fäll ihop",
       "expand": "Expandera",
-      "dragHandle": "Ändra ordning"
+      "dragHandle": "Ändra ordning",
+      "more": "Mer"
     },
     "empty": {
       "title": "Inga kategorier ännu",
       "description": "Skapa grupper och kategorier för att organisera dina transaktioner."
-    },
-    "sections": {
-      "income": "Inkomstkategorier",
-      "expense": "Utgiftskategorier"
     },
     "delete": {
       "title": "Ta bort kategori?",

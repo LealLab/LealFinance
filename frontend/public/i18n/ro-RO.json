@@ -803,15 +803,12 @@
       "delete": "Șterge",
       "collapse": "Restrânge",
       "expand": "Extinde",
-      "dragHandle": "Reordonează"
+      "dragHandle": "Reordonează",
+      "more": "Mai mult"
     },
     "empty": {
       "title": "Nu există încă nicio categorie",
       "description": "Creează grupuri și categorii pentru a-ți organiza tranzacțiile."
-    },
-    "sections": {
-      "income": "Categorii de venituri",
-      "expense": "Categorii de cheltuieli"
     },
     "delete": {
       "title": "Ștergi categoria?",

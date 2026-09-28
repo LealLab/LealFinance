@@ -803,15 +803,12 @@
       "delete": "Sil",
       "collapse": "Daralt",
       "expand": "Genişlet",
-      "dragHandle": "Sıralamayı değiştir"
+      "dragHandle": "Sıralamayı değiştir",
+      "more": "Daha fazla"
     },
     "empty": {
       "title": "Henüz kategori yok",
       "description": "İşlemlerinizi düzenlemek için gruplar ve kategoriler oluşturun."
-    },
-    "sections": {
-      "income": "Gelir kategorileri",
-      "expense": "Gider kategorileri"
     },
     "delete": {
       "title": "Kategori silinsin mi?",

@@ -200,11 +200,11 @@ Registration is invite-only, except the very first user on an instance.
 | GET/PATCH | `/accounts/{id}` | user | |
 | POST | `/accounts/{id}/archive` | user | Body `{archived}`. |
 | DELETE | `/accounts/{id}` | user | Cascades: deletes the account's transactions, goals, loans, recurring rules, investment wallets, and reconciliations; clears `payment_account_id` on surviving accounts. No guard mode - always cascades. |
-| GET/POST | `/categories` | user | `position` is server-assigned on create. |
-| PATCH | `/categories/{id}` | user | |
+| GET/POST | `/categories` | user | `position` is server-assigned on create. `color` is optional and ignored: a category always takes its group's color. |
+| PATCH | `/categories/{id}` | user | `color` is ignored; moving to another group copies that group's color. |
 | DELETE | `/categories/{id}` | user | Blocked while referenced by transactions or recurring templates (409). |
 | GET/POST | `/category-groups` | user | `position` is server-assigned on create, scoped to the group kind. |
-| PATCH/DELETE | `/category-groups/{id}` | user | Kind changes and deletes are blocked while categories, budgets, or allocations reference the group (409). |
+| PATCH/DELETE | `/category-groups/{id}` | user | Kind changes and deletes are blocked while categories, budgets, or allocations reference the group (409). A color change is copied to every category in the group. |
 | POST | `/category-groups/reorder` | user | Body `{kind, ordered_ids}`. 204. Ids outside the kind are silently ignored, matching the frontend mock store. |
 | POST | `/categories/reorder` | user | Body `{kind, group_id, ordered_ids}`. 204. Ids outside the `(kind, group_id)` sibling group are silently ignored, matching the frontend mock store. |
 | GET | `/budgets` | user | |

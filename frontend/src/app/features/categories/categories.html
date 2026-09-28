@@ -1,11 +1,11 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('categories.title')" [description]="t('categories.description')">
+  <app-page-header [compact]="true" [title]="t('categories.title')" [description]="t('categories.description')">
     <button appButton variant="secondary" type="button" (click)="openCreateGroup()">
-      <app-icon name="folder" [size]="16" />
+      <app-icon name="folder" [size]="16" class="max-md:hidden" />
       {{ t('categories.actions.addGroup') }}
     </button>
     <button appButton variant="primary" type="button" (click)="openCreateCategory()">
-      <app-icon name="plus" [size]="16" />
+      <app-icon name="plus" [size]="16" class="max-md:hidden" />
       {{ t('categories.actions.addCategory') }}
     </button>
   </app-page-header>
@@ -27,177 +27,263 @@
       </button>
     </app-empty-state>
   } @else {
-    <div class="flex flex-col gap-6">
+    <!-- Same segmented control as budgets' view switcher. -->
+    <div
+      class="mb-6 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+      role="group"
+      [attr.aria-label]="t('categories.title')"
+    >
       @for (section of sections(); track section.kind) {
-        @if (section.rows.length > 0) {
-          <app-card [padded]="false">
-            <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
-              {{ t(section.titleKey) }}
-            </h2>
-            <ul
-              cdkDropList
-              [id]="'category-groups-' + section.kind"
-              (cdkDropListDropped)="onGroupDrop(section.kind, $event)"
-            >
-              @for (row of section.rows; track row.group.id; let rowIndex = $index) {
-                <li cdkDrag class="group/row border-b border-border last:border-b-0">
-                  <div class="flex items-center justify-between gap-4 px-4 py-3">
-                    <div class="flex min-w-0 items-center gap-1">
-                      <button
-                        cdkDragHandle
-                        type="button"
-                        class="flex size-6 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
-                        [attr.aria-label]="t('categories.actions.dragHandle')"
-                        (keydown.arrowup)="moveGroup(section.kind, rowIndex, -1, $event)"
-                        (keydown.arrowdown)="moveGroup(section.kind, rowIndex, 1, $event)"
-                      >
-                        <app-icon name="grip" [size]="14" />
-                      </button>
-                      <button
-                        type="button"
-                        class="flex size-6 cursor-pointer items-center justify-center text-content-muted hover:text-content-primary disabled:cursor-not-allowed"
-                        [attr.aria-expanded]="!isCollapsed(row.group)"
-                        [attr.aria-label]="isCollapsed(row.group) ? t('categories.actions.expand') : t('categories.actions.collapse')"
-                        [disabled]="row.categoryCount === 0"
-                        (click)="toggleCollapsed(row.group)"
-                      >
-                        @if (row.categoryCount > 0) {
-                          <app-icon [name]="isCollapsed(row.group) ? 'chevronRight' : 'chevronDown'" [size]="14" />
-                        }
-                      </button>
-                      <span
-                        class="flex size-7 shrink-0 items-center justify-center rounded-full"
-                        [style.background-color]="row.group.color + '1A'"
-                        [style.color]="row.group.color"
-                      >
-                        <app-icon [name]="row.group.icon" [size]="14" />
-                      </span>
-                      <span class="flex min-w-0 items-center gap-2 leading-5">
-                        <span class="truncate text-sm font-medium text-content-primary">{{ row.group.name }}</span>
-                        @if (ratesReady()) {
-                          <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">
-                            {{ row.spend.amount | money: row.spend.currency }}
-                          </span>
-                        } @else {
-                          <app-skeleton height="1rem" class="w-16 shrink-0" />
-                        }
-                      </span>
-                    </div>
-                    <div class="flex shrink-0 items-center gap-3">
-                      <div class="flex shrink-0 items-center gap-1">
-                        <button
-                          appButton
-                          variant="ghost"
-                          size="sm"
-                          type="button"
-                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                          (click)="openCreateCategoryIn(row.group)"
-                          [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
-                        >
-                          <app-icon name="plus" [size]="16" />
-                        </button>
-                        <button
-                          appButton
-                          variant="ghost"
-                          size="sm"
-                          type="button"
-                          class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                          (click)="openEditGroup(row.group)"
-                          [attr.aria-label]="t('categories.actions.edit')"
-                        >
-                          <app-icon name="pencil" [size]="16" />
-                        </button>
-                        @if (row.categoryCount === 0) {
-                          <button
-                            appButton
-                            variant="ghost"
-                            size="sm"
-                            type="button"
-                            class="opacity-0 transition-opacity hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                            (click)="deleteGroup(row.group)"
-                            [attr.aria-label]="t('categories.actions.delete')"
-                          >
-                            <app-icon name="trash" [size]="16" />
-                          </button>
-                        }
-                      </div>
-                      <span class="shrink-0 text-sm text-content-muted">({{ row.categoryCount }})</span>
-                    </div>
-                  </div>
-
-                  @if (row.categoryCount > 0 && !isCollapsed(row.group)) {
-                    <ul
-                      cdkDropList
-                      [id]="'category-list-' + row.group.id"
-                      class="border-t border-border bg-surface-sunken"
-                      (cdkDropListDropped)="onCategoryDrop(section.kind, row.group.id, $event)"
-                    >
-                      @for (categoryRow of row.categories; track categoryRow.category.id; let categoryIndex = $index) {
-                        <li cdkDrag class="group/row flex items-center justify-between gap-4 py-2 pe-4 ps-6">
-                          <div class="flex min-w-0 items-center gap-2">
-                            <button
-                              cdkDragHandle
-                              type="button"
-                              class="flex size-5 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
-                              [attr.aria-label]="t('categories.actions.dragHandle')"
-                              (keydown.arrowup)="moveCategory(section.kind, row.group.id, categoryIndex, -1, $event)"
-                              (keydown.arrowdown)="moveCategory(section.kind, row.group.id, categoryIndex, 1, $event)"
-                            >
-                              <app-icon name="grip" [size]="12" />
-                            </button>
-                            <span
-                              class="flex size-6 shrink-0 items-center justify-center rounded-full"
-                              [style.background-color]="categoryRow.category.color + '1A'"
-                              [style.color]="categoryRow.category.color"
-                            >
-                              <app-icon [name]="categoryRow.category.icon" [size]="12" />
-                            </span>
-                            <span class="flex min-w-0 items-baseline gap-2">
-                              <span class="truncate text-sm text-content-primary">{{ categoryRow.category.name }}</span>
-                              @if (ratesReady()) {
-                                <span class="shrink-0 font-mono text-xs font-medium tabular-nums text-content-muted">
-                                  {{ categoryRow.spend.amount | money: categoryRow.spend.currency }}
-                                </span>
-                              } @else {
-                                <app-skeleton height="0.875rem" class="w-14 shrink-0" />
-                              }
-                            </span>
-                          </div>
-                          <div class="flex shrink-0 items-center gap-1">
-                            <button
-                              appButton
-                              variant="ghost"
-                              size="sm"
-                              type="button"
-                              class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                              (click)="openEditCategory(categoryRow.category)"
-                              [attr.aria-label]="t('categories.actions.edit')"
-                            >
-                              <app-icon name="pencil" [size]="14" />
-                            </button>
-                            <button
-                              appButton
-                              variant="ghost"
-                              size="sm"
-                              type="button"
-                              class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                              (click)="deleteCategory(categoryRow.category)"
-                              [attr.aria-label]="t('categories.actions.delete')"
-                            >
-                              <app-icon name="trash" [size]="14" />
-                            </button>
-                          </div>
-                        </li>
-                      }
-                    </ul>
-                  }
-                </li>
-              }
-            </ul>
-          </app-card>
-        }
+        <button
+          type="button"
+          class="flex min-w-0 items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 [@media(pointer:coarse)]:min-h-10"
+          [class]="view() === section.kind ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-pressed]="view() === section.kind"
+          (click)="view.set(section.kind)"
+        >
+          <app-icon [name]="section.icon" [size]="16" class="max-sm:hidden" />
+          <span class="truncate">{{ t(section.labelKey) }}</span>
+        </button>
       }
     </div>
+
+    @let section = activeSection();
+    <app-card [padded]="false">
+      @if (section.rows.length === 0) {
+        <p class="px-4 py-6 text-center text-sm text-content-muted">{{ t('categories.empty.description') }}</p>
+      } @else {
+        <ul
+          cdkDropList
+          [id]="'category-groups-' + section.kind"
+          (cdkDropListDropped)="onGroupDrop(section.kind, $event)"
+        >
+          @for (row of section.rows; track row.group.id; let rowIndex = $index) {
+            <li cdkDrag class="group/row border-b border-border last:border-b-0">
+              <div class="flex items-center justify-between gap-2 py-3 pe-4 ps-2 md:gap-4 md:ps-4">
+                <div class="flex min-w-0 items-center gap-1">
+                  <button
+                    cdkDragHandle
+                    type="button"
+                    class="flex size-6 shrink-0 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
+                    [attr.aria-label]="t('categories.actions.dragHandle')"
+                    (keydown.arrowup)="moveGroup(section.kind, rowIndex, -1, $event)"
+                    (keydown.arrowdown)="moveGroup(section.kind, rowIndex, 1, $event)"
+                  >
+                    <app-icon name="grip" [size]="14" />
+                  </button>
+                  @if (row.categoryCount > 0) {
+                    <button
+                      type="button"
+                      class="flex size-6 shrink-0 cursor-pointer items-center justify-center text-content-muted hover:text-content-primary"
+                      [attr.aria-expanded]="!isCollapsed(row.group)"
+                      [attr.aria-label]="isCollapsed(row.group) ? t('categories.actions.expand') : t('categories.actions.collapse')"
+                      (click)="toggleCollapsed(row.group)"
+                    >
+                      <app-icon [name]="isCollapsed(row.group) ? 'chevronRight' : 'chevronDown'" [size]="14" />
+                    </button>
+                  } @else {
+                    <!-- Empty group: nothing to expand, keep the column aligned. -->
+                    <span class="size-6 shrink-0" aria-hidden="true"></span>
+                  }
+                  <span
+                    class="flex size-7 shrink-0 items-center justify-center rounded-full"
+                    [style.background-color]="row.group.color + '1A'"
+                    [style.color]="row.group.color"
+                  >
+                    <app-icon [name]="row.group.icon" [size]="14" />
+                  </span>
+                  <!-- Phones: the month's spend drops under the name. -->
+                  <span class="ms-1 flex min-w-0 flex-col leading-5 md:flex-row md:items-center md:gap-2">
+                    <span class="truncate text-sm font-medium text-content-primary">{{ row.group.name }}</span>
+                    @if (ratesReady()) {
+                      <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">
+                        {{ row.spend.amount | money: row.spend.currency }}
+                      </span>
+                    } @else {
+                      <app-skeleton height="1rem" class="w-16 shrink-0" />
+                    }
+                  </span>
+                </div>
+                <div class="flex shrink-0 items-center gap-3">
+                  <div class="flex shrink-0 items-center gap-1 max-md:hidden">
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                      (click)="openCreateCategoryIn(row.group)"
+                      [attr.aria-label]="t('categories.actions.addCategoryToGroup')"
+                    >
+                      <app-icon name="plus" [size]="16" />
+                    </button>
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      class="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                      (click)="openEditGroup(row.group)"
+                      [attr.aria-label]="t('categories.actions.edit')"
+                    >
+                      <app-icon name="pencil" [size]="16" />
+                    </button>
+                    @if (row.categoryCount === 0) {
+                      <button
+                        appButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        class="opacity-0 transition-opacity hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                        (click)="deleteGroup(row.group)"
+                        [attr.aria-label]="t('categories.actions.delete')"
+                      >
+                        <app-icon name="trash" [size]="16" />
+                      </button>
+                    }
+                  </div>
+                  <span class="shrink-0 text-sm text-content-muted max-md:hidden">({{ row.categoryCount }})</span>
+                  <!-- Phones: add/edit/delete live in one menu, same pattern as features/rules. -->
+                  <app-dropdown #groupMenu class="shrink-0 md:hidden" panelClass="w-60">
+                    <button
+                      dropdownTrigger
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [attr.aria-label]="t('categories.actions.more')"
+                    >
+                      <app-icon name="dots" [size]="16" />
+                    </button>
+                    <button
+                      type="button"
+                      class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                      (click)="groupMenu.open.set(false); openCreateCategoryIn(row.group)"
+                    >
+                      <app-icon name="plus" [size]="16" />
+                      {{ t('categories.actions.addCategory') }}
+                    </button>
+                    <button
+                      type="button"
+                      class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                      (click)="groupMenu.open.set(false); openEditGroup(row.group)"
+                    >
+                      <app-icon name="pencil" [size]="16" />
+                      {{ t('categories.actions.edit') }}
+                    </button>
+                    @if (row.categoryCount === 0) {
+                      <button
+                        type="button"
+                        class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                        (click)="groupMenu.open.set(false); deleteGroup(row.group)"
+                      >
+                        <app-icon name="trash" [size]="16" />
+                        {{ t('categories.actions.delete') }}
+                      </button>
+                    }
+                  </app-dropdown>
+                </div>
+              </div>
+
+              @if (row.categoryCount > 0 && !isCollapsed(row.group)) {
+                <ul
+                  cdkDropList
+                  [id]="'category-list-' + row.group.id"
+                  class="border-t border-border bg-surface-sunken"
+                  (cdkDropListDropped)="onCategoryDrop(section.kind, row.group.id, $event)"
+                >
+                  @for (categoryRow of row.categories; track categoryRow.category.id; let categoryIndex = $index) {
+                    <li cdkDrag class="group/row flex items-center justify-between gap-2 py-2 pe-4 ps-5 md:gap-4 md:ps-6">
+                      <div class="flex min-w-0 items-center gap-2">
+                        <button
+                          cdkDragHandle
+                          type="button"
+                          class="flex size-5 shrink-0 cursor-grab items-center justify-center text-content-muted hover:text-content-primary active:cursor-grabbing [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
+                          [attr.aria-label]="t('categories.actions.dragHandle')"
+                          (keydown.arrowup)="moveCategory(section.kind, row.group.id, categoryIndex, -1, $event)"
+                          (keydown.arrowdown)="moveCategory(section.kind, row.group.id, categoryIndex, 1, $event)"
+                        >
+                          <app-icon name="grip" [size]="12" />
+                        </button>
+                        <span
+                          class="flex size-6 shrink-0 items-center justify-center rounded-full"
+                          [style.background-color]="row.group.color + '1A'"
+                          [style.color]="row.group.color"
+                        >
+                          <app-icon [name]="categoryRow.category.icon" [size]="12" />
+                        </span>
+                        <span class="flex min-w-0 flex-col md:flex-row md:items-baseline md:gap-2">
+                          <span class="truncate text-sm text-content-primary">{{ categoryRow.category.name }}</span>
+                          @if (ratesReady()) {
+                            <span class="shrink-0 font-mono text-xs font-medium tabular-nums text-content-muted">
+                              {{ categoryRow.spend.amount | money: categoryRow.spend.currency }}
+                            </span>
+                          } @else {
+                            <app-skeleton height="0.875rem" class="w-14 shrink-0" />
+                          }
+                        </span>
+                      </div>
+                      <div class="flex shrink-0 items-center gap-1 max-md:hidden">
+                        <button
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                          (click)="openEditCategory(categoryRow.category)"
+                          [attr.aria-label]="t('categories.actions.edit')"
+                        >
+                          <app-icon name="pencil" [size]="14" />
+                        </button>
+                        <button
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/row:opacity-100 group-focus-within/row:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                          (click)="deleteCategory(categoryRow.category)"
+                          [attr.aria-label]="t('categories.actions.delete')"
+                        >
+                          <app-icon name="trash" [size]="14" />
+                        </button>
+                      </div>
+                      <app-dropdown #categoryMenu class="shrink-0 md:hidden" panelClass="w-44">
+                        <button
+                          dropdownTrigger
+                          appButton
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          [attr.aria-label]="t('categories.actions.more')"
+                        >
+                          <app-icon name="dots" [size]="16" />
+                        </button>
+                        <button
+                          type="button"
+                          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                          (click)="categoryMenu.open.set(false); openEditCategory(categoryRow.category)"
+                        >
+                          <app-icon name="pencil" [size]="16" />
+                          {{ t('categories.actions.edit') }}
+                        </button>
+                        <button
+                          type="button"
+                          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                          (click)="categoryMenu.open.set(false); deleteCategory(categoryRow.category)"
+                        >
+                          <app-icon name="trash" [size]="16" />
+                          {{ t('categories.actions.delete') }}
+                        </button>
+                      </app-dropdown>
+                    </li>
+                  }
+                </ul>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </app-card>
   }
 
   <app-category-form-modal

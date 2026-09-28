@@ -803,15 +803,12 @@
       "delete": "Xóa",
       "collapse": "Thu gọn",
       "expand": "Mở rộng",
-      "dragHandle": "Sắp xếp lại"
+      "dragHandle": "Sắp xếp lại",
+      "more": "Thêm"
     },
     "empty": {
       "title": "Chưa có danh mục nào",
       "description": "Tạo nhóm và danh mục để sắp xếp các giao dịch của bạn."
-    },
-    "sections": {
-      "income": "Danh mục thu nhập",
-      "expense": "Danh mục chi tiêu"
     },
     "delete": {
       "title": "Xóa danh mục?",

@@ -5,7 +5,7 @@
   <!-- transactions.type.* below is looked up dynamically. -->
   <!-- t(transactions.type.expense) t(transactions.type.income) -->
   @if (titleKey(); as title) {
-    <app-modal [(open)]="open" [titleText]="t(title)">
+    <app-modal [(open)]="open" [sheet]="true" [titleText]="t(title)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
         <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
           @for (kind of ['expense', 'income']; track kind) {
@@ -42,29 +42,32 @@
           </div>
         }
 
-        <div>
-          <label class="form-label" for="category-color">{{ t('categories.form.fields.color') }}</label>
-          <button
-            id="category-color"
-            type="button"
-            class="form-input flex h-10 items-center gap-2"
-            aria-haspopup="dialog"
-            (click)="colorPickerOpen.set(true)"
-          >
-            <span
-              class="size-5 shrink-0 rounded border border-border"
-              [style.background-color]="selectedColor()"
-              aria-hidden="true"
-            ></span>
-            <span class="font-mono text-sm">{{ selectedColor() }}</span>
-          </button>
-          <app-color-picker
-            [(open)]="colorPickerOpen"
-            [color]="selectedColor()"
-            [titleText]="t('categories.form.fields.color')"
-            (colorChange)="form.controls.color.setValue($event)"
-          />
-        </div>
+        <!-- Categories always wear their group's color (enforced by the API). -->
+        @if (mode() === 'group') {
+          <div>
+            <label class="form-label" for="category-color">{{ t('categories.form.fields.color') }}</label>
+            <button
+              id="category-color"
+              type="button"
+              class="form-input flex h-10 items-center gap-2"
+              aria-haspopup="dialog"
+              (click)="colorPickerOpen.set(true)"
+            >
+              <span
+                class="size-5 shrink-0 rounded border border-border"
+                [style.background-color]="selectedColor()"
+                aria-hidden="true"
+              ></span>
+              <span class="font-mono text-sm">{{ selectedColor() }}</span>
+            </button>
+            <app-color-picker
+              [(open)]="colorPickerOpen"
+              [color]="selectedColor()"
+              [titleText]="t('categories.form.fields.color')"
+              (colorChange)="form.controls.color.setValue($event)"
+            />
+          </div>
+        }
 
         <div>
           <label class="form-label" for="category-icon">{{ t('categories.form.fields.icon') }}</label>
@@ -90,10 +93,10 @@
         }
 
         <div class="mt-2 flex justify-end gap-2">
-          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+          <button appButton type="button" variant="secondary" class="max-md:flex-1" (click)="open.set(false)">
             {{ t('categories.form.actions.cancel') }}
           </button>
-          <button appButton type="submit" variant="primary" [disabled]="saving()">
+          <button appButton type="submit" variant="primary" class="max-md:flex-1" [disabled]="saving()">
             {{ t('categories.form.actions.save') }}
           </button>
         </div>

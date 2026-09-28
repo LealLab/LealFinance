@@ -803,15 +803,12 @@
       "delete": "刪除",
       "collapse": "收合",
       "expand": "展開",
-      "dragHandle": "重新排序"
+      "dragHandle": "重新排序",
+      "more": "更多"
     },
     "empty": {
       "title": "尚無分類",
       "description": "建立群組和分類來整理交易。"
-    },
-    "sections": {
-      "income": "收入分類",
-      "expense": "支出分類"
     },
     "delete": {
       "title": "要刪除分類嗎？",

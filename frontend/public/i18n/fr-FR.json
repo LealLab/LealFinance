@@ -803,15 +803,12 @@
       "delete": "Supprimer",
       "collapse": "Réduire",
       "expand": "Développer",
-      "dragHandle": "Réordonner"
+      "dragHandle": "Réordonner",
+      "more": "Plus"
     },
     "empty": {
       "title": "Aucune catégorie pour le moment",
       "description": "Créez des groupes et des catégories pour organiser vos opérations."
-    },
-    "sections": {
-      "income": "Catégories de revenus",
-      "expense": "Catégories de dépenses"
     },
     "delete": {
       "title": "Supprimer la catégorie ?",

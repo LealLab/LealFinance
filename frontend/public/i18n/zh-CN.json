@@ -803,15 +803,12 @@
       "delete": "删除",
       "collapse": "收起",
       "expand": "展开",
-      "dragHandle": "调整顺序"
+      "dragHandle": "调整顺序",
+      "more": "更多"
     },
     "empty": {
       "title": "暂无分类",
       "description": "创建分组和分类来整理交易。"
-    },
-    "sections": {
-      "income": "收入分类",
-      "expense": "支出分类"
     },
     "delete": {
       "title": "确认删除分类？",

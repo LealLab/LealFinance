@@ -334,6 +334,11 @@ async def test_plain_preview_rolls_back_and_restore_replaces_only_current_user(
         )
     ).one()
     assert restored_account.opening_balance == Decimal("123456789012345.4567")
+    restored_category = (
+        await db_session.scalars(select(Category).where(Category.user_id == user.id))
+    ).one()
+    # The fixture's per-category color is replaced by its group's.
+    assert restored_category.color == "#334455"
 
     await db_session.refresh(user)
     assert (user.locale, user.theme, user.base_currency, user.display_currency) == (

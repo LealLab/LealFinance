@@ -142,7 +142,8 @@ export class CategoryFormModal {
       name: raw.name.trim(),
       kind: raw.kind,
       groupId: raw.groupId,
-      color: raw.color,
+      // The API copies the group's color anyway; send it so the response matches.
+      color: this.allGroups().find((group) => group.id === raw.groupId)?.color ?? raw.color,
       icon: raw.icon
     };
     const request$ = existing

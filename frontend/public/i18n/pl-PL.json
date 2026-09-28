@@ -803,15 +803,12 @@
       "delete": "Usuń",
       "collapse": "Zwiń",
       "expand": "Rozwiń",
-      "dragHandle": "Zmień kolejność"
+      "dragHandle": "Zmień kolejność",
+      "more": "Więcej"
     },
     "empty": {
       "title": "Nie masz jeszcze żadnych kategorii",
       "description": "Utwórz grupy i kategorie, aby uporządkować transakcje."
-    },
-    "sections": {
-      "income": "Kategorie przychodów",
-      "expense": "Kategorie wydatków"
     },
     "delete": {
       "title": "Usunąć kategorię?",

@@ -6,6 +6,10 @@ kind-change guards that keep a category consistent with what references it.
 a stable domain error instead of reaching a foreign-key violation or
 corrupting a stored template. Budgets, allocations, and nesting are scoped
 to category groups now.
+
+A category always wears its group's color: any client-sent `color` is ignored,
+and the group's color is copied on create and on a move to another group
+(`category_groups.update_group` cascades later group color changes).
 """
 
 from uuid import UUID
@@ -22,10 +26,13 @@ from app.schemas.category import CategoryCreate, CategoryUpdate
 from app.services import ownership
 
 
-async def _validate_group(db: AsyncSession, user_id: UUID, group_id: UUID, kind: str) -> None:
+async def _validate_group(
+    db: AsyncSession, user_id: UUID, group_id: UUID, kind: str
+) -> CategoryGroup:
     group = await ownership.get_owned(db, CategoryGroup, group_id, user_id)
     if group.kind != kind:
         raise ValidationAppError(code="category.group_kind_mismatch")
+    return group
 
 
 async def _category_in_use(db: AsyncSession, category_id: UUID) -> bool:
@@ -55,7 +62,7 @@ async def list_categories(db: AsyncSession, user_id: UUID) -> list[Category]:
 
 
 async def create_category(db: AsyncSession, user_id: UUID, data: CategoryCreate) -> Category:
-    await _validate_group(db, user_id, data.group_id, data.kind)
+    group = await _validate_group(db, user_id, data.group_id, data.kind)
     position = await _next_position(db, user_id, data.kind, data.group_id)
 
     category = Category(
@@ -63,7 +70,7 @@ async def create_category(db: AsyncSession, user_id: UUID, data: CategoryCreate)
         name=data.name,
         kind=data.kind,
         group_id=data.group_id,
-        color=data.color,
+        color=group.color,
         icon=data.icon,
         position=position,
     )
@@ -78,6 +85,7 @@ async def update_category(
 ) -> Category:
     category = await ownership.get_owned(db, Category, category_id, user_id)
     changes = data.model_dump(exclude_unset=True)
+    changes.pop("color", None)
 
     new_kind = changes.get("kind", category.kind)
     new_group_id = changes.get("group_id", category.group_id)
@@ -85,7 +93,8 @@ async def update_category(
     group_changing = "group_id" in changes and changes["group_id"] != category.group_id
 
     if kind_changing or group_changing:
-        await _validate_group(db, user_id, new_group_id, new_kind)
+        group = await _validate_group(db, user_id, new_group_id, new_kind)
+        changes["color"] = group.color
 
     if kind_changing and await _category_in_use(db, category_id):
         raise ConflictError(code="category.kind_immutable")

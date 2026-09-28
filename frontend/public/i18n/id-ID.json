@@ -803,15 +803,12 @@
       "delete": "Hapus",
       "collapse": "Ciutkan",
       "expand": "Perluas",
-      "dragHandle": "Urutkan ulang"
+      "dragHandle": "Urutkan ulang",
+      "more": "Lainnya"
     },
     "empty": {
       "title": "Belum ada kategori",
       "description": "Buat grup dan kategori untuk mengatur transaksi Anda."
-    },
-    "sections": {
-      "income": "Kategori pendapatan",
-      "expense": "Kategori pengeluaran"
     },
     "delete": {
       "title": "Hapus kategori?",

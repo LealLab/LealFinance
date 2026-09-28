@@ -5,11 +5,13 @@ cannot change while any of those models still reference it. Deleting a group
 still requires it to be empty of categories - those carry transaction
 history - but budgets and allocations are pure planning data scoped to the
 group, so deletion cascades to them instead of being blocked by them.
+A color change is copied to every category in the group (categories always
+wear their group's color, see app/services/categories.py).
 """
 
 from uuid import UUID
 
-from sqlalchemy import delete, func, select
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ConflictError
@@ -80,6 +82,12 @@ async def update_group(
 
     for field, value in changes.items():
         setattr(group, field, value)
+    if "color" in changes:
+        await db.execute(
+            update(Category)
+            .where(Category.group_id == group_id, Category.user_id == user_id)
+            .values(color=group.color)
+        )
     await db.commit()
     await db.refresh(group)
     return group

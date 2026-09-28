@@ -803,15 +803,12 @@
       "delete": "삭제",
       "collapse": "접기",
       "expand": "펼치기",
-      "dragHandle": "순서 변경"
+      "dragHandle": "순서 변경",
+      "more": "더보기"
     },
     "empty": {
       "title": "아직 카테고리가 없습니다",
       "description": "그룹과 카테고리를 만들어 거래를 정리하세요."
-    },
-    "sections": {
-      "income": "수입 카테고리",
-      "expense": "지출 카테고리"
     },
     "delete": {
       "title": "카테고리를 삭제할까요?",

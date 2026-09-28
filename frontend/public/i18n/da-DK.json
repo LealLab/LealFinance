@@ -803,15 +803,12 @@
       "delete": "Slet",
       "collapse": "Fold sammen",
       "expand": "Udvid",
-      "dragHandle": "Omarranger"
+      "dragHandle": "Omarranger",
+      "more": "Mere"
     },
     "empty": {
       "title": "Ingen kategorier endnu",
       "description": "Opret grupper og kategorier for at organisere dine transaktioner."
-    },
-    "sections": {
-      "income": "Indtægtskategorier",
-      "expense": "Udgiftskategorier"
     },
     "delete": {
       "title": "Slet kategori?",

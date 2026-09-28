@@ -827,15 +827,12 @@
       "delete": "Delete",
       "collapse": "Collapse",
       "expand": "Expand",
-      "dragHandle": "Reorder"
+      "dragHandle": "Reorder",
+      "more": "More"
     },
     "empty": {
       "title": "No categories yet",
       "description": "Create groups and categories to organize your transactions."
-    },
-    "sections": {
-      "income": "Income categories",
-      "expense": "Expense categories"
     },
     "delete": {
       "title": "Delete category?",

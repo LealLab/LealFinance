@@ -103,7 +103,6 @@ class _ListCategoryGroupsArgs(_ToolArgs):
 class _CategoryChildArgs(_ToolArgs):
     name: str = Field(min_length=1, max_length=100)
     icon: str | None = None
-    color: str | None = Field(default=None, min_length=1, max_length=9)
 
 
 class _CreateCategoryGroupArgs(_ToolArgs):
@@ -299,8 +298,8 @@ async def _create_category_group(
 ) -> dict[str, Any]:
     parsed = _validate(_CreateCategoryGroupArgs, args)
     color = parsed.color or "#64748B"
-    # _CreateCategoryGroupArgs has already validated every child's name and
-    # color, so nothing below can 422 after the group row is written.
+    # _CreateCategoryGroupArgs has already validated every child's name, so
+    # nothing below can 422 after the group row is written.
     children = parsed.categories or []
     group_payload = _validate(
         CategoryGroupCreate,
@@ -320,7 +319,6 @@ async def _create_category_group(
             name=child.name,
             kind=parsed.kind,
             group_id=group.id,
-            color=child.color or color,
             icon=icon_or(child.icon, "tag"),
         )
         category = await categories_service.create_category(db, user_id, payload)
@@ -850,7 +848,12 @@ SPECS: list[ToolDef] = [
                 "name": {"type": "string"},
                 "kind": {"type": "string", "enum": ["income", "expense"]},
                 "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
-                "color": {"type": "string", "description": "Hex like #64748B. Defaults to grey."},
+                "color": {
+                    "type": "string",
+                    "description": (
+                        "Hex like #64748B. Defaults to grey. Its categories always share it."
+                    ),
+                },
                 "categories": {
                     "type": "array",
                     "description": "Categories to create in the new group.",
@@ -859,10 +862,6 @@ SPECS: list[ToolDef] = [
                         "properties": {
                             "name": {"type": "string"},
                             "icon": {"type": "string", "description": _CATEGORY_ICON_HINT},
-                            "color": {
-                                "type": "string",
-                                "description": "Hex colour; defaults to the group's colour.",
-                            },
                         },
                         "required": ["name"],
                         "additionalProperties": False,

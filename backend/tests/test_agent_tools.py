@@ -476,7 +476,7 @@ async def test_create_category_group_with_children_inherits_color_and_kind(
             "categories": [
                 {"name": "Food"},
                 {"name": "Vet", "icon": "heart"},
-                {"name": "Grooming", "color": "#ABCDEF"},
+                {"name": "Grooming"},
             ],
         },
     )
@@ -488,7 +488,8 @@ async def test_create_category_group_with_children_inherits_color_and_kind(
     assert names["Food"]["color"] == "#123456"
     assert names["Food"]["kind"] == "expense"
     assert names["Vet"]["icon"] == "heart"
-    assert names["Grooming"]["color"] == "#ABCDEF"
+    # Categories always wear their group's color.
+    assert {row["color"] for row in result["categories"]} == {"#123456"}
 
     groups = await category_groups_service.list_groups(db_session, user.id)
     assert [group.name for group in groups] == ["Pets"]
@@ -536,7 +537,7 @@ async def test_create_entities_validates_every_record_before_writing(
                 "entity": "category",
                 "records": [
                     {"name": "Would be first", "group_id": group_id},
-                    {"name": "Invalid color", "group_id": group_id, "color": "#" + "0" * 20},
+                    {"name": "x" * 101, "group_id": group_id},
                 ],
             },
         )
@@ -730,7 +731,7 @@ async def test_create_category_group_aborts_before_group_when_a_child_is_invalid
             {
                 "name": "Half",
                 "kind": "expense",
-                "categories": [{"name": "Fine"}, {"name": "Bad", "color": "#" + "0" * 20}],
+                "categories": [{"name": "Fine"}, {"name": "x" * 101}],
             },
         )
     assert error.value.code == "agents.tool_arguments_invalid"

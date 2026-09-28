@@ -803,15 +803,12 @@
       "delete": "Verwijderen",
       "collapse": "Inklappen",
       "expand": "Uitklappen",
-      "dragHandle": "Volgorde wijzigen"
+      "dragHandle": "Volgorde wijzigen",
+      "more": "Meer"
     },
     "empty": {
       "title": "Nog geen categorieën",
       "description": "Maak groepen en categorieën aan om je transacties te ordenen."
-    },
-    "sections": {
-      "income": "Inkomstencategorieën",
-      "expense": "Uitgavencategorieën"
     },
     "delete": {
       "title": "Categorie verwijderen?",

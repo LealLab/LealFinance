@@ -142,7 +142,7 @@ async def _prepare_category_group(
 async def _prepare_category(
     db: AsyncSession, user_id: UUID, data: dict[str, Any]
 ) -> dict[str, Any]:
-    """A category's kind is its group's kind and its colour defaults to the group's."""
+    """A category's kind and colour are always its group's."""
     try:
         group_id = UUID(str(data.get("group_id")))
     except ValueError:
@@ -151,7 +151,7 @@ async def _prepare_category(
     return {
         **data,
         "kind": group.kind,
-        "color": data.get("color") or group.color,
+        "color": group.color,
         "icon": icon_or(data.get("icon"), "tag"),
     }
 

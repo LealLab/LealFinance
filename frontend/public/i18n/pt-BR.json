@@ -803,15 +803,12 @@
       "delete": "Excluir",
       "collapse": "Recolher",
       "expand": "Expandir",
-      "dragHandle": "Reordenar"
+      "dragHandle": "Reordenar",
+      "more": "Mais"
     },
     "empty": {
       "title": "Nenhuma categoria cadastrada",
       "description": "Crie grupos e categorias para organizar suas transações."
-    },
-    "sections": {
-      "income": "Categorias de receita",
-      "expense": "Categorias de despesa"
     },
     "delete": {
       "title": "Excluir categoria?",

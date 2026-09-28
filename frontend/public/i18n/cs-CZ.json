@@ -803,15 +803,12 @@
       "delete": "Odstranit",
       "collapse": "Sbalit",
       "expand": "Rozbalit",
-      "dragHandle": "Změnit pořadí"
+      "dragHandle": "Změnit pořadí",
+      "more": "Více"
     },
     "empty": {
       "title": "Zatím nemáte žádné kategorie",
       "description": "Vytvořte skupiny a kategorie a uspořádejte si transakce."
-    },
-    "sections": {
-      "income": "Kategorie příjmů",
-      "expense": "Kategorie výdajů"
     },
     "delete": {
       "title": "Odstranit kategorii?",

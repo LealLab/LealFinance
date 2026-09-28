@@ -803,15 +803,12 @@
       "delete": "حذف",
       "collapse": "طيّ",
       "expand": "توسيع",
-      "dragHandle": "إعادة الترتيب"
+      "dragHandle": "إعادة الترتيب",
+      "more": "المزيد"
     },
     "empty": {
       "title": "لا توجد فئات بعد",
       "description": "أنشئ مجموعات وفئات لتنظيم معاملاتك."
-    },
-    "sections": {
-      "income": "فئات الدخل",
-      "expense": "فئات المصروفات"
     },
     "delete": {
       "title": "حذف الفئة؟",

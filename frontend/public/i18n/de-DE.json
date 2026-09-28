@@ -803,15 +803,12 @@
       "delete": "Löschen",
       "collapse": "Einklappen",
       "expand": "Ausklappen",
-      "dragHandle": "Reihenfolge ändern"
+      "dragHandle": "Reihenfolge ändern",
+      "more": "Mehr"
     },
     "empty": {
       "title": "Noch keine Kategorien",
       "description": "Erstellen Sie Gruppen und Kategorien, um Ihre Transaktionen zu organisieren."
-    },
-    "sections": {
-      "income": "Einnahmekategorien",
-      "expense": "Ausgabenkategorien"
     },
     "delete": {
       "title": "Kategorie löschen?",

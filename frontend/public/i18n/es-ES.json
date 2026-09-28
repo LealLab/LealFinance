@@ -803,15 +803,12 @@
       "delete": "Eliminar",
       "collapse": "Contraer",
       "expand": "Expandir",
-      "dragHandle": "Reordenar"
+      "dragHandle": "Reordenar",
+      "more": "Más"
     },
     "empty": {
       "title": "Aún no hay categorías",
       "description": "Crea grupos y categorías para organizar tus movimientos."
-    },
-    "sections": {
-      "income": "Categorías de ingresos",
-      "expense": "Categorías de gastos"
     },
     "delete": {
       "title": "¿Eliminar la categoría?",
