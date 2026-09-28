@@ -1133,6 +1133,7 @@
       "archive": "Archive loan",
       "unarchive": "Unarchive loan",
       "recordPayment": "Record payment",
+      "more": "More",
       "delete": "Delete loan"
     },
     "empty": {

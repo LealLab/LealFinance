@@ -1109,6 +1109,7 @@
       "archive": "Archiver le prêt",
       "unarchive": "Désarchiver le prêt",
       "recordPayment": "Enregistrer un paiement",
+      "more": "Plus",
       "delete": "Supprimer le prêt"
     },
     "empty": {

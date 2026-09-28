@@ -1109,6 +1109,7 @@
       "archive": "대출 보관",
       "unarchive": "대출 보관 해제",
       "recordPayment": "상환 기록",
+      "more": "더보기",
       "delete": "대출 삭제"
     },
     "empty": {

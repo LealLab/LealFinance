@@ -1109,6 +1109,7 @@
       "archive": "Archivia prestito",
       "unarchive": "Ripristina prestito",
       "recordPayment": "Registra pagamento",
+      "more": "Altro",
       "delete": "Elimina prestito"
     },
     "empty": {

@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -19,8 +20,10 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { Modal } from '../../shared/ui/modal/modal';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
@@ -47,13 +50,16 @@ interface LoanRow {
 @Component({
   selector: 'app-loans',
   imports: [
+    NgTemplateOutlet,
     TranslocoDirective,
     MoneyPipe,
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
+    Modal,
     PageHeader,
     ProgressBar,
     ExchangeRateWarning,
@@ -85,6 +91,11 @@ export class Loans {
   });
 
   protected readonly showArchived = signal(false);
+  protected readonly moreOpen = signal(false);
+  /** Loan whose schedule or history is shown in the mobile sheet; desktop keeps the inline details. */
+  protected readonly sheetLoan = signal<Loan | undefined>(undefined);
+  protected readonly sheetKind = signal<'schedule' | 'history'>('schedule');
+  protected readonly sheetOpen = signal(false);
   protected readonly formOpen = signal(false);
   protected readonly editingLoan = signal<Loan | undefined>(undefined);
   protected readonly paymentOpen = signal(false);
@@ -156,6 +167,12 @@ export class Loans {
   protected openPayment(loan: Loan): void {
     this.paymentLoan.set(loan);
     this.paymentOpen.set(true);
+  }
+
+  protected openSheet(loan: Loan, kind: 'schedule' | 'history'): void {
+    this.sheetLoan.set(loan);
+    this.sheetKind.set(kind);
+    this.sheetOpen.set(true);
   }
 
   protected onLoanSaved(): void {

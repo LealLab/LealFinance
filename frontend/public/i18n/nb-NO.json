@@ -1109,6 +1109,7 @@
       "archive": "Arkiver lån",
       "unarchive": "Opphev arkivering av lån",
       "recordPayment": "Registrer betaling",
+      "more": "Mer",
       "delete": "Slett lån"
     },
     "empty": {

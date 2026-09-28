@@ -1109,6 +1109,7 @@
       "archive": "Archivar préstamo",
       "unarchive": "Desarchivar préstamo",
       "recordPayment": "Registrar pago",
+      "more": "Más",
       "delete": "Eliminar préstamo"
     },
     "empty": {

@@ -1109,6 +1109,7 @@
       "archive": "ローンをアーカイブ",
       "unarchive": "ローンのアーカイブを解除",
       "recordPayment": "支払いを記録",
+      "more": "その他",
       "delete": "ローンを削除"
     },
     "empty": {
