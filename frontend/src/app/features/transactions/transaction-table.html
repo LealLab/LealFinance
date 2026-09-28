@@ -1,12 +1,12 @@
 <div *transloco="let t" class="rounded-md border border-border bg-surface-raised">
   <div class="hidden overflow-x-auto md:block">
-    <table class="w-full table-fixed text-sm">
+    <table class="w-full text-sm">
       <colgroup>
         <col style="width: 2.5rem" />
         @for (col of columns(); track col) {
-          <col [style.width.px]="widthOf(col)" />
+          <col [style.width.px]="widthOf(col)" [class.max-lg:hidden]="col === 'account'" />
         }
-        <col style="width: 6rem" />
+        <col class="w-32 [@media(pointer:coarse)]:w-44" />
       </colgroup>
       <thead>
         <tr class="border-b border-border text-left text-xs tracking-wide text-content-muted uppercase">
@@ -25,6 +25,7 @@
               scope="col"
               class="relative px-4 py-3"
               [class.text-right]="col === 'amount'"
+              [class.max-lg:hidden]="col === 'account'"
               draggable="true"
               [attr.aria-sort]="
                 col === 'date' || col === 'description' || col === 'amount'
@@ -81,7 +82,10 @@
               ></span>
             </th>
           }
-          <th scope="col" class="w-24 px-4 py-3"></th>
+          <th
+            scope="col"
+            class="sticky end-0 z-10 w-32 border-s border-border bg-surface-raised px-4 py-3 [@media(pointer:coarse)]:w-44"
+          ></th>
         </tr>
       </thead>
       <tbody>
@@ -137,7 +141,7 @@
                   </td>
                 }
                 @case ('account') {
-                  <td class="px-4 py-3 text-content-muted">
+                  <td class="px-4 py-3 text-content-muted max-lg:hidden">
                     <span class="block truncate">
                       {{ accountName(tx.accountId) }}
                       @if (tx.type === 'transfer') {
@@ -159,12 +163,13 @@
                 }
               }
             }
-            <td class="px-4 py-3">
+            <td class="sticky end-0 border-s border-border bg-surface-raised px-4 py-3">
               <div class="flex justify-end gap-1">
                 <button
                   appButton
                   variant="ghost"
                   size="sm"
+                  class="!px-1"
                   type="button"
                   (click)="edit.emit(tx)"
                   [attr.aria-label]="t('transactions.actions.edit')"
@@ -175,6 +180,7 @@
                   appButton
                   variant="ghost"
                   size="sm"
+                  class="!px-1"
                   type="button"
                   (click)="viewHistory.emit(tx)"
                   [attr.aria-label]="t('transactions.history.title')"
@@ -185,6 +191,7 @@
                   appButton
                   variant="ghost"
                   size="sm"
+                  class="!px-1"
                   type="button"
                   (click)="remove.emit(tx)"
                   [attr.aria-label]="t('transactions.actions.delete')"
@@ -241,9 +248,6 @@
               </span>
             </div>
             <span class="flex shrink-0 items-center gap-1">
-              <span class="font-mono font-semibold tabular-nums" [class]="rowToneClass(tx)">
-                {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
-              </span>
               <app-dropdown #menu panelClass="w-44">
                 <button
                   dropdownTrigger
@@ -282,6 +286,12 @@
               </app-dropdown>
             </span>
           </div>
+          <span
+            class="mt-1 block whitespace-nowrap text-right font-mono font-semibold tabular-nums"
+            [class]="rowToneClass(tx)"
+          >
+            {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
+          </span>
           <div class="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-content-muted">
             <span>{{ tx.date }}</span>
             @if (tx.type !== 'transfer' && category(tx); as cat) {
