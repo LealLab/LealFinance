@@ -139,8 +139,10 @@
     </div>
   </aside>
 
-  <div class="flex min-w-0 flex-1 flex-col">
-    <div class="sticky top-0 z-20 md:hidden">
+  <!-- Below md the column is viewport-tall and <main> is the only scroller,
+       so the scrollbar never runs over the header, tabs or bottom nav. -->
+  <div class="flex min-w-0 flex-1 flex-col max-md:h-dvh">
+    <div class="z-20 shrink-0 md:hidden">
       <header
         class="flex items-center gap-1 border-b border-border bg-surface-raised pt-[calc(0.5rem+env(safe-area-inset-top))] pr-[calc(1rem+env(safe-area-inset-right))] pb-2 pl-[calc(1rem+env(safe-area-inset-left))]"
       >
@@ -204,7 +206,7 @@
       <app-section-tabs />
     </div>
 
-    <main class="flex-1 px-4 pt-6 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:px-6 md:py-8">
+    <main class="flex-1 px-4 py-6 max-md:min-h-0 max-md:overflow-y-auto md:px-6 md:py-8">
       @if (mutationErrors.translationKey(); as key) {
         <div
           class="mb-4 flex items-center justify-between gap-3 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"

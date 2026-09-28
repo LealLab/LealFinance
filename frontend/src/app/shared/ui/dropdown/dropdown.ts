@@ -80,8 +80,10 @@ export class Dropdown {
 
   private fitsAbove(panel: HTMLElement): boolean {
     const trigger = this.host.nativeElement.getBoundingClientRect();
+    // On mobile the shell's <main> scrolls below the header, so its top is the ceiling.
+    const ceiling = panel.closest('main')?.getBoundingClientRect().top ?? 0;
     // 8px = the mt-2/mb-2 gap between trigger and panel.
-    return trigger.top - panel.offsetHeight - 8 >= 0;
+    return trigger.top - panel.offsetHeight - 8 >= ceiling;
   }
 
   protected readonly panelClasses = computed(

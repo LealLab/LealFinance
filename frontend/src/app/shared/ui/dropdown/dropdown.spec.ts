@@ -114,5 +114,21 @@ describe('Dropdown', () => {
       const outside = document.createElement('div');
       expect(openWith(outside, 0).className).not.toContain('bottom-full');
     });
+
+    it('stays below when the room above is behind the header, above the scrolling <main>', () => {
+      const main = document.createElement('main');
+      document.body.appendChild(main);
+      const { fixture, trigger, panel } = setup();
+      main.appendChild(fixture.nativeElement);
+      vi.spyOn(main, 'getBoundingClientRect').mockReturnValue({ top: 600 } as DOMRect);
+      document.elementFromPoint = () => document.createElement('div');
+      vi.spyOn(trigger.closest('app-dropdown')!, 'getBoundingClientRect').mockReturnValue({
+        top: 600,
+      } as DOMRect);
+      trigger.click();
+      fixture.detectChanges();
+      expect(panel()!.className).not.toContain('bottom-full');
+      main.remove();
+    });
   });
 });

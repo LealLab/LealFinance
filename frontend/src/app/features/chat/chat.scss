@@ -167,7 +167,7 @@
   }
 
   :host {
-    height: calc(100dvh - 12rem - env(safe-area-inset-bottom));
+    height: calc(100dvh - 13.5rem - env(safe-area-inset-bottom));
   }
 
   .chat-thread-header,
