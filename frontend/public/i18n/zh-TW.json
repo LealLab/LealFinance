@@ -1235,7 +1235,7 @@
       "editWallet": "編輯投資組合",
       "archiveWallet": "封存投資組合",
       "unarchiveWallet": "取消封存投資組合",
-      "view": "檢視",
+      "more": "更多",
       "newTransaction": "記錄交易",
       "editTransaction": "編輯交易",
       "deleteTransaction": "刪除交易",
@@ -1251,6 +1251,17 @@
       "marketValue": "市值",
       "unrealizedGain": "未實現收益",
       "multiCurrencyHint": "其他貨幣的投資組合不包含在這些總計中。"
+    },
+    "help": {
+      "label": "什麼是{{label}}？",
+      "marketValue": "您的持倉目前的價值：每項資產的數量乘以最新價格。若某項資產沒有價格，總計會顯示為 —。",
+      "bookValue": "您為目前持有的部位所支付的金額：每項資產的數量乘以平均買入成本。",
+      "unrealizedGain": "市值減去帳面價值：如果您今天賣出全部持倉，將獲得（或損失）的金額。只有在實際賣出時才會成為真正的收益。"
+    },
+    "view": {
+      "positions": "持倉",
+      "ledger": "交易",
+      "assets": "資產"
     },
     "empty": {
       "title": "尚無投資組合",

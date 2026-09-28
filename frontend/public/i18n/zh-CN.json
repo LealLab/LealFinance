@@ -1235,7 +1235,7 @@
       "editWallet": "编辑投资组合",
       "archiveWallet": "归档投资组合",
       "unarchiveWallet": "取消归档投资组合",
-      "view": "查看",
+      "more": "更多",
       "newTransaction": "记录交易",
       "editTransaction": "编辑交易",
       "deleteTransaction": "删除交易",
@@ -1251,6 +1251,17 @@
       "marketValue": "市场价值",
       "unrealizedGain": "未实现收益",
       "multiCurrencyHint": "其他货币的投资组合不包含在这些合计中。"
+    },
+    "help": {
+      "label": "什么是{{label}}？",
+      "marketValue": "您的持仓当前的价值：每项资产的数量乘以其最新价格。如果某项资产没有价格，合计将显示为 —。",
+      "bookValue": "您为目前持有的仓位所支付的金额：每项资产的数量乘以其平均买入成本。",
+      "unrealizedGain": "市场价值减去账面价值：如果您今天卖出全部持仓，将获得（或损失）的金额。只有在实际卖出时才会变成真正的收益。"
+    },
+    "view": {
+      "positions": "持仓",
+      "ledger": "交易",
+      "assets": "资产"
     },
     "empty": {
       "title": "暂无投资组合",

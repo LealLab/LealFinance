@@ -1235,7 +1235,7 @@
       "editWallet": "Chỉnh sửa danh mục đầu tư",
       "archiveWallet": "Lưu trữ danh mục đầu tư",
       "unarchiveWallet": "Bỏ lưu trữ danh mục đầu tư",
-      "view": "Xem",
+      "more": "Thêm",
       "newTransaction": "Ghi nhận giao dịch",
       "editTransaction": "Chỉnh sửa giao dịch",
       "deleteTransaction": "Xóa giao dịch",
@@ -1251,6 +1251,17 @@
       "marketValue": "Giá trị thị trường",
       "unrealizedGain": "Lãi chưa thực hiện",
       "multiCurrencyHint": "Các danh mục đầu tư bằng loại tiền tệ khác không được tính vào các tổng này."
+    },
+    "help": {
+      "label": "{{label}} là gì?",
+      "marketValue": "Giá trị hiện tại của các vị thế của bạn: số lượng mỗi tài sản nhân với giá mới nhất. Nếu tài sản nào không có giá, tổng sẽ hiển thị là —.",
+      "bookValue": "Số tiền bạn đã trả cho các vị thế bạn vẫn đang nắm giữ: số lượng mỗi tài sản nhân với giá vốn mua trung bình.",
+      "unrealizedGain": "Giá trị thị trường trừ giá trị sổ sách: số tiền bạn sẽ lãi (hoặc lỗ) nếu bán tất cả hôm nay. Đây chỉ trở thành lãi thực khi bạn bán."
+    },
+    "view": {
+      "positions": "Vị thế",
+      "ledger": "Giao dịch",
+      "assets": "Tài sản"
     },
     "empty": {
       "title": "Chưa có danh mục đầu tư",

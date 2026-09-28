@@ -1235,7 +1235,7 @@
       "editWallet": "Upravit investiční portfolio",
       "archiveWallet": "Archivovat investiční portfolio",
       "unarchiveWallet": "Zrušit archivaci investičního portfolia",
-      "view": "Zobrazit",
+      "more": "Více",
       "newTransaction": "Zaznamenat transakci",
       "editTransaction": "Upravit transakci",
       "deleteTransaction": "Odstranit transakci",
@@ -1251,6 +1251,17 @@
       "marketValue": "Tržní hodnota",
       "unrealizedGain": "Nerealizovaný zisk",
       "multiCurrencyHint": "Peněženky v jiných měnách nejsou do těchto součtů zahrnuty."
+    },
+    "help": {
+      "label": "Co je {{label}}?",
+      "marketValue": "Jakou hodnotu mají vaše pozice dnes: množství každého aktiva vynásobené jeho poslední cenou. Pokud některé aktivum nemá cenu, celkový součet se zobrazí jako —.",
+      "bookValue": "Kolik jste zaplatili za pozice, které stále držíte: množství každého aktiva vynásobené průměrnou nákladovou cenou.",
+      "unrealizedGain": "Tržní hodnota mínus účetní hodnota: kolik byste získali (nebo ztratili), kdybyste dnes vše prodali. Skutečným ziskem se stává až prodejem."
+    },
+    "view": {
+      "positions": "Pozice",
+      "ledger": "Transakce",
+      "assets": "Aktiva"
     },
     "empty": {
       "title": "Zatím žádná investiční portfolia",

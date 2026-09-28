@@ -33,6 +33,7 @@ const ICON_FILES = {
   cornerDownLeft: 'corner-down-left.svg',
   zap: 'zap.svg',
   grip: 'grip.svg',
+  dots: 'dots.svg',
   bank: 'bank.svg',
   piggy: 'piggy.svg',
   apple: 'apple.svg',

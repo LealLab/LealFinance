@@ -1235,7 +1235,7 @@
       "editWallet": "Redigér investeringsporteføljen",
       "archiveWallet": "Arkivér investeringsporteføljen",
       "unarchiveWallet": "Fjern investeringsporteføljen fra arkivet",
-      "view": "Vis",
+      "more": "Mere",
       "newTransaction": "Registrer transaktion",
       "editTransaction": "Redigér transaktion",
       "deleteTransaction": "Slet transaktion",
@@ -1251,6 +1251,17 @@
       "marketValue": "Markedsværdi",
       "unrealizedGain": "Urealiseret gevinst",
       "multiCurrencyHint": "Porteføljer i andre valutaer er ikke medtaget i disse totaler."
+    },
+    "help": {
+      "label": "Hvad er {{label}}?",
+      "marketValue": "Hvad dine beholdninger er værd i dag: hvert aktivs antal ganget med den seneste pris. Hvis et aktiv ikke har en pris, vises totalen som —.",
+      "bookValue": "Hvad du betalte for de beholdninger, du stadig har: hvert aktivs antal ganget med den gennemsnitlige kostpris.",
+      "unrealizedGain": "Markedsværdi minus bogført værdi: hvad du ville tjene (eller tabe), hvis du solgte alt i dag. Det bliver først en reel gevinst, når du sælger."
+    },
+    "view": {
+      "positions": "Beholdninger",
+      "ledger": "Transaktioner",
+      "assets": "Aktiver"
     },
     "empty": {
       "title": "Ingen investeringsporteføljer endnu",

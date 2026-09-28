@@ -1235,7 +1235,7 @@
       "editWallet": "Beleggingsportefeuille bewerken",
       "archiveWallet": "Beleggingsportefeuille archiveren",
       "unarchiveWallet": "Beleggingsportefeuille uit het archief halen",
-      "view": "Bekijken",
+      "more": "Meer",
       "newTransaction": "Transactie registreren",
       "editTransaction": "Transactie bewerken",
       "deleteTransaction": "Transactie verwijderen",
@@ -1251,6 +1251,17 @@
       "marketValue": "Marktwaarde",
       "unrealizedGain": "Ongerealiseerde winst",
       "multiCurrencyHint": "Portefeuilles in andere valuta's zijn niet opgenomen in deze totalen."
+    },
+    "help": {
+      "label": "Wat is {{label}}?",
+      "marketValue": "Wat je posities vandaag waard zijn: de hoeveelheid van elk actief vermenigvuldigd met de laatste koers. Als een actief geen prijs heeft, wordt het totaal weergegeven als —.",
+      "bookValue": "Wat je hebt betaald voor de posities die je nog aanhoudt: de hoeveelheid van elk actief vermenigvuldigd met de gemiddelde kostprijs.",
+      "unrealizedGain": "Marktwaarde min boekwaarde: wat je zou winnen (of verliezen) als je vandaag alles zou verkopen. Het wordt pas een echte winst zodra je verkoopt."
+    },
+    "view": {
+      "positions": "Posities",
+      "ledger": "Transacties",
+      "assets": "Activa"
     },
     "empty": {
       "title": "Nog geen beleggingsportefeuilles",

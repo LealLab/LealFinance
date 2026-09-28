@@ -1235,7 +1235,7 @@
       "editWallet": "Modifier le portefeuille d’investissement",
       "archiveWallet": "Archiver le portefeuille d’investissement",
       "unarchiveWallet": "Désarchiver le portefeuille d’investissement",
-      "view": "Voir",
+      "more": "Plus",
       "newTransaction": "Enregistrer une opération",
       "editTransaction": "Modifier l’opération",
       "deleteTransaction": "Supprimer l’opération",
@@ -1251,6 +1251,17 @@
       "marketValue": "Valeur de marché",
       "unrealizedGain": "Plus-value latente",
       "multiCurrencyHint": "Les portefeuilles dans d’autres devises ne sont pas inclus dans ces totaux."
+    },
+    "help": {
+      "label": "Qu’est-ce que {{label}} ?",
+      "marketValue": "Ce que valent vos positions aujourd’hui : la quantité de chaque actif multipliée par son dernier cours. Si un actif n’a pas de cours, le total s’affiche sous la forme —.",
+      "bookValue": "Ce que vous avez payé pour les positions que vous détenez encore : la quantité de chaque actif multipliée par son coût moyen d’achat.",
+      "unrealizedGain": "Valeur de marché moins valeur comptable : ce que vous gagneriez (ou perdriez) si vous vendiez tout aujourd’hui. Ce n’est un gain réel qu’au moment de la vente."
+    },
+    "view": {
+      "positions": "Positions",
+      "ledger": "Opérations",
+      "assets": "Actifs"
     },
     "empty": {
       "title": "Aucun portefeuille d’investissement pour le moment",

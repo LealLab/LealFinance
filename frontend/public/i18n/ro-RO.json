@@ -1235,7 +1235,7 @@
       "editWallet": "Editează portofoliul de investiții",
       "archiveWallet": "Arhivează portofoliul de investiții",
       "unarchiveWallet": "Scoate portofoliul de investiții din arhivă",
-      "view": "Vizualizează",
+      "more": "Mai mult",
       "newTransaction": "Înregistrează tranzacția",
       "editTransaction": "Editează tranzacția",
       "deleteTransaction": "Șterge tranzacția",
@@ -1251,6 +1251,17 @@
       "marketValue": "Valoare de piață",
       "unrealizedGain": "Câștig nerealizat",
       "multiCurrencyHint": "Portofoliile în alte monede nu sunt incluse în aceste totaluri."
+    },
+    "help": {
+      "label": "Ce este {{label}}?",
+      "marketValue": "Cât valorează astăzi pozițiile tale: cantitatea fiecărui activ înmulțită cu cea mai recentă cotație. Dacă un activ nu are preț, totalul este afișat ca —.",
+      "bookValue": "Cât ai plătit pentru pozițiile pe care le mai deții: cantitatea fiecărui activ înmulțită cu costul mediu de achiziție.",
+      "unrealizedGain": "Valoarea de piață minus valoarea contabilă: cât ai câștiga (sau pierde) dacă ai vinde totul astăzi. Devine un câștig real doar când vinzi."
+    },
+    "view": {
+      "positions": "Poziții",
+      "ledger": "Tranzacții",
+      "assets": "Active"
     },
     "empty": {
       "title": "Nu există încă portofolii de investiții",

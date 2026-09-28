@@ -1235,7 +1235,7 @@
       "editWallet": "Edit portofolio investasi",
       "archiveWallet": "Arsipkan portofolio investasi",
       "unarchiveWallet": "Batalkan arsip portofolio investasi",
-      "view": "Lihat",
+      "more": "Lainnya",
       "newTransaction": "Catat transaksi",
       "editTransaction": "Edit transaksi",
       "deleteTransaction": "Hapus transaksi",
@@ -1251,6 +1251,17 @@
       "marketValue": "Nilai pasar",
       "unrealizedGain": "Keuntungan belum terealisasi",
       "multiCurrencyHint": "Portofolio dalam mata uang lain tidak termasuk dalam total ini."
+    },
+    "help": {
+      "label": "Apa itu {{label}}?",
+      "marketValue": "Nilai posisi Anda saat ini: kuantitas setiap aset dikalikan harga terbarunya. Jika ada aset tanpa harga, totalnya ditampilkan sebagai —.",
+      "bookValue": "Jumlah yang Anda bayarkan untuk posisi yang masih Anda miliki: kuantitas setiap aset dikalikan biaya pembelian rata-ratanya.",
+      "unrealizedGain": "Nilai pasar dikurangi nilai buku: keuntungan (atau kerugian) yang akan Anda peroleh jika menjual semuanya hari ini. Ini baru menjadi keuntungan nyata saat Anda benar-benar menjual."
+    },
+    "view": {
+      "positions": "Posisi",
+      "ledger": "Transaksi",
+      "assets": "Aset"
     },
     "empty": {
       "title": "Belum ada portofolio investasi",

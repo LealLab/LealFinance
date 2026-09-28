@@ -1235,7 +1235,7 @@
       "editWallet": "Muokkaa sijoitussalkkua",
       "archiveWallet": "Arkistoi sijoitussalkku",
       "unarchiveWallet": "Poista sijoitussalkku arkistosta",
-      "view": "Näytä",
+      "more": "Lisää",
       "newTransaction": "Kirjaa tapahtuma",
       "editTransaction": "Muokkaa tapahtumaa",
       "deleteTransaction": "Poista tapahtuma",
@@ -1251,6 +1251,17 @@
       "marketValue": "Markkina-arvo",
       "unrealizedGain": "Realisoitumaton voitto",
       "multiCurrencyHint": "Muissa valuutoissa olevia sijoitussalkkuja ei sisällytetä näihin summiin."
+    },
+    "help": {
+      "label": "Mikä on {{label}}?",
+      "marketValue": "Kuinka paljon omistuksesi ovat tänään arvoisia: kunkin omaisuuserän määrä kerrottuna sen viimeisimmällä hinnalla. Jos jollain omaisuuserällä ei ole hintaa, summa näytetään merkillä —.",
+      "bookValue": "Kuinka paljon maksoit omistuksista, jotka sinulla on yhä: kunkin omaisuuserän määrä kerrottuna keskimääräisellä hankintahinnalla.",
+      "unrealizedGain": "Markkina-arvo miinus hankinta-arvo: kuinka paljon voittaisit (tai häviäisit), jos myisit kaiken tänään. Siitä tulee todellista voittoa vasta, kun myyt."
+    },
+    "view": {
+      "positions": "Omistukset",
+      "ledger": "Tapahtumat",
+      "assets": "Omaisuuserät"
     },
     "empty": {
       "title": "Sijoitussalkkuja ei ole vielä",

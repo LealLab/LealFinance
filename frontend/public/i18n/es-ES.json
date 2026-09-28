@@ -1235,7 +1235,7 @@
       "editWallet": "Editar cartera de inversión",
       "archiveWallet": "Archivar cartera de inversión",
       "unarchiveWallet": "Desarchivar cartera de inversión",
-      "view": "Ver",
+      "more": "Más",
       "newTransaction": "Registrar movimiento",
       "editTransaction": "Editar movimiento",
       "deleteTransaction": "Eliminar movimiento",
@@ -1251,6 +1251,17 @@
       "marketValue": "Valor de mercado",
       "unrealizedGain": "Ganancia no realizada",
       "multiCurrencyHint": "Las carteras en otras monedas no se incluyen en estos totales."
+    },
+    "help": {
+      "label": "¿Qué es {{label}}?",
+      "marketValue": "Lo que valen hoy tus posiciones: la cantidad de cada activo multiplicada por su última cotización. Si algún activo no tiene precio, el total se muestra como —.",
+      "bookValue": "Lo que pagaste por las posiciones que todavía tienes: la cantidad de cada activo multiplicada por su coste medio de compra.",
+      "unrealizedGain": "Valor de mercado menos valor contable: lo que ganarías (o perderías) si vendieras todo hoy. Solo se convierte en ganancia real cuando vendes."
+    },
+    "view": {
+      "positions": "Posiciones",
+      "ledger": "Movimientos",
+      "assets": "Activos"
     },
     "empty": {
       "title": "Aún no hay carteras de inversión",

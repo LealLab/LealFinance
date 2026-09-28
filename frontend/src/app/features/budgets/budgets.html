@@ -167,6 +167,7 @@
         <app-stat-tile
           class="col-span-2 sm:col-span-1"
           [prominent]="true"
+          prominentUntil="sm"
           [label]="t('budgets.totals.remaining')"
           [value]="totals().remaining.amount | money: totals().remaining.currency"
           [tone]="valueTone(totals().remaining)"

@@ -83,7 +83,7 @@ export function activeChips(f: TransactionFilters, ctx: ChipContext): FilterChip
   if (f.groupId) {
     chips.push({
       key: 'group',
-      icon: 'grip',
+      icon: 'folder',
       labelKey: 'transactions.filters.group',
       value: ctx.groupsById.get(f.groupId)?.name ?? f.groupId,
     });

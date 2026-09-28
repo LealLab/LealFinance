@@ -1235,7 +1235,7 @@
       "editWallet": "投資ポートフォリオを編集",
       "archiveWallet": "投資ポートフォリオをアーカイブ",
       "unarchiveWallet": "投資ポートフォリオのアーカイブを解除",
-      "view": "表示",
+      "more": "その他",
       "newTransaction": "取引を記録",
       "editTransaction": "取引を編集",
       "deleteTransaction": "取引を削除",
@@ -1251,6 +1251,17 @@
       "marketValue": "時価",
       "unrealizedGain": "未実現利益",
       "multiCurrencyHint": "他の通貨のポートフォリオはこれらの合計に含まれません。"
+    },
+    "help": {
+      "label": "{{label}}とは？",
+      "marketValue": "現在のポジションの評価額: 各資産の数量に最新の価格を掛けたものです。価格が取得できない資産がある場合、合計は「—」と表示されます。",
+      "bookValue": "現在保有しているポジションに支払った金額: 各資産の数量に平均取得単価を掛けたものです。",
+      "unrealizedGain": "時価から簿価を差し引いた額: 今日すべて売却した場合に得られる(または失う)金額です。実際に売却して初めて確定した利益になります。"
+    },
+    "view": {
+      "positions": "ポジション",
+      "ledger": "取引",
+      "assets": "資産"
     },
     "empty": {
       "title": "投資ポートフォリオはまだありません",

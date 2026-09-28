@@ -1235,7 +1235,7 @@
       "editWallet": "Edytuj portfel inwestycyjny",
       "archiveWallet": "Zarchiwizuj portfel inwestycyjny",
       "unarchiveWallet": "Przywróć portfel inwestycyjny z archiwum",
-      "view": "Wyświetl",
+      "more": "Więcej",
       "newTransaction": "Zarejestruj transakcję",
       "editTransaction": "Edytuj transakcję",
       "deleteTransaction": "Usuń transakcję",
@@ -1251,6 +1251,17 @@
       "marketValue": "Wartość rynkowa",
       "unrealizedGain": "Niezrealizowany zysk",
       "multiCurrencyHint": "Portfele w innych walutach nie są uwzględniane w tych sumach."
+    },
+    "help": {
+      "label": "Czym jest {{label}}?",
+      "marketValue": "Ile są dziś warte Twoje pozycje: ilość każdego aktywa pomnożona przez jego najnowszą cenę. Jeśli dla jakiegoś aktywa brak ceny, suma jest wyświetlana jako —.",
+      "bookValue": "Ile zapłaciłeś za pozycje, które nadal posiadasz: ilość każdego aktywa pomnożona przez jego średni koszt zakupu.",
+      "unrealizedGain": "Wartość rynkowa minus wartość księgowa: ile zyskałbyś (lub stracił) sprzedając wszystko dziś. Staje się realnym zyskiem dopiero po sprzedaży."
+    },
+    "view": {
+      "positions": "Pozycje",
+      "ledger": "Transakcje",
+      "assets": "Aktywa"
     },
     "empty": {
       "title": "Nie ma jeszcze portfeli inwestycyjnych",

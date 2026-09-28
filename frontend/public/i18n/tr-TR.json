@@ -1235,7 +1235,7 @@
       "editWallet": "Yatırım portföyünü düzenle",
       "archiveWallet": "Yatırım portföyünü arşivle",
       "unarchiveWallet": "Yatırım portföyünü arşivden çıkar",
-      "view": "Görüntüle",
+      "more": "Daha fazla",
       "newTransaction": "İşlem kaydet",
       "editTransaction": "İşlemi düzenle",
       "deleteTransaction": "İşlemi sil",
@@ -1251,6 +1251,17 @@
       "marketValue": "Piyasa değeri",
       "unrealizedGain": "Gerçekleşmemiş kazanç",
       "multiCurrencyHint": "Diğer para birimlerindeki portföyler bu toplamlara dahil değildir."
+    },
+    "help": {
+      "label": "{{label}} nedir?",
+      "marketValue": "Pozisyonlarınızın bugünkü değeri: her varlığın miktarı çarpı en güncel fiyatı. Herhangi bir varlığın fiyatı yoksa toplam — olarak gösterilir.",
+      "bookValue": "Hâlâ elinizde tuttuğunuz pozisyonlar için ödediğiniz tutar: her varlığın miktarı çarpı ortalama alış maliyeti.",
+      "unrealizedGain": "Piyasa değeri eksi defter değeri: bugün her şeyi satsaydınız kazanacağınız (veya kaybedeceğiniz) tutar. Yalnızca sattığınızda gerçek bir kazanca dönüşür."
+    },
+    "view": {
+      "positions": "Pozisyonlar",
+      "ledger": "İşlemler",
+      "assets": "Varlıklar"
     },
     "empty": {
       "title": "Henüz yatırım portföyü yok",

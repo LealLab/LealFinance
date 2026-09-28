@@ -15,13 +15,14 @@ import {
   InvestmentTransaction,
 } from '../../domain/models/investment';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
-import { isNegative, money, ratio, sum, Money } from '../../shared/money/money';
+import { isNegative, isZero, money, ratio, sum, Money } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
-import { Icon } from '../../shared/ui/icon/icon';
+import { Icon, IconName } from '../../shared/ui/icon/icon';
 import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
@@ -31,6 +32,8 @@ import { InvestmentTransactionFormModal } from './investment-transaction-form-mo
 import { InvestmentWalletFormModal } from './investment-wallet-form-modal';
 
 const PAGE_SIZE = 30;
+
+type WalletView = 'positions' | 'ledger' | 'assets';
 
 /**
  * Confirmation and error keys are dynamic values, so keep them marked for
@@ -46,6 +49,7 @@ const PAGE_SIZE = 30;
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     ExchangeRateWarning,
     Icon,
@@ -81,6 +85,14 @@ export class InvestmentDetail {
   });
   protected readonly assetsResource = rxResource({ stream: () => this.assets.list() });
 
+  protected readonly views = [
+    { key: 'positions', icon: 'pieChart' },
+    { key: 'ledger', icon: 'swap' },
+    { key: 'assets', icon: 'coins' },
+  ] as const satisfies readonly { key: WalletView; icon: IconName }[];
+  /** Which section of the wallet is shown; not persisted, like budgets/reports. */
+  protected readonly view = signal<WalletView>('positions');
+
   protected readonly rows = signal<InvestmentTransaction[]>([]);
   private readonly offset = signal(0);
   protected readonly exhausted = signal(false);
@@ -94,6 +106,9 @@ export class InvestmentDetail {
   protected readonly walletFormOpen = signal(false);
 
   protected readonly wallet = computed(() => this.walletResource.value());
+  private readonly symbolsById = computed(
+    () => new Map((this.assetsResource.value() ?? []).map((asset) => [asset.id, asset.symbol])),
+  );
   protected readonly positions = computed(() => this.positionsResource.value() ?? []);
   protected readonly totalBookValue = computed<Money | null>(() => {
     const wallet = this.wallet();
@@ -150,6 +165,14 @@ export class InvestmentDetail {
     return isNegative(money(amount, this.wallet()?.currency ?? 'USD'))
       ? 'text-negative'
       : 'text-positive';
+  }
+
+  protected assetSymbol(assetId: string | undefined): string | undefined {
+    return assetId ? this.symbolsById().get(assetId) : undefined;
+  }
+
+  protected hasFee(transaction: InvestmentTransaction): boolean {
+    return !isZero(money(transaction.fee, transaction.currency));
   }
 
   protected typeLabel(type: InvestmentTransaction['type']): string {

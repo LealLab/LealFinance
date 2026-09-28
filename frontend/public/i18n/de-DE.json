@@ -1235,7 +1235,7 @@
       "editWallet": "Investmentdepot bearbeiten",
       "archiveWallet": "Investmentdepot archivieren",
       "unarchiveWallet": "Investmentdepot aus dem Archiv holen",
-      "view": "Anzeigen",
+      "more": "Mehr",
       "newTransaction": "Transaktion erfassen",
       "editTransaction": "Transaktion bearbeiten",
       "deleteTransaction": "Transaktion löschen",
@@ -1251,6 +1251,17 @@
       "marketValue": "Marktwert",
       "unrealizedGain": "Nicht realisierter Gewinn",
       "multiCurrencyHint": "Depots in anderen Währungen sind in diesen Summen nicht enthalten."
+    },
+    "help": {
+      "label": "Was ist {{label}}?",
+      "marketValue": "Was Ihre Positionen heute wert sind: die Menge jeder Anlage multipliziert mit ihrem letzten Kurs. Hat eine Anlage keinen Kurs, wird die Summe als — angezeigt.",
+      "bookValue": "Was Sie für die Positionen bezahlt haben, die Sie noch halten: die Menge jeder Anlage multipliziert mit dem durchschnittlichen Einstandspreis.",
+      "unrealizedGain": "Marktwert minus Buchwert: was Sie gewinnen (oder verlieren) würden, wenn Sie heute alles verkaufen. Erst beim Verkauf wird daraus ein tatsächlicher Gewinn."
+    },
+    "view": {
+      "positions": "Positionen",
+      "ledger": "Transaktionen",
+      "assets": "Anlagen"
     },
     "empty": {
       "title": "Noch keine Investmentdepots",

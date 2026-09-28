@@ -1235,7 +1235,7 @@
       "editWallet": "Redigera investeringsportföljen",
       "archiveWallet": "Arkivera investeringsportföljen",
       "unarchiveWallet": "Ta bort investeringsportföljen från arkivet",
-      "view": "Visa",
+      "more": "Mer",
       "newTransaction": "Registrera transaktion",
       "editTransaction": "Redigera transaktion",
       "deleteTransaction": "Ta bort transaktion",
@@ -1251,6 +1251,17 @@
       "marketValue": "Marknadsvärde",
       "unrealizedGain": "Orealiserad vinst",
       "multiCurrencyHint": "Portföljer i andra valutor ingår inte i dessa totaler."
+    },
+    "help": {
+      "label": "Vad är {{label}}?",
+      "marketValue": "Vad dina positioner är värda idag: varje tillgångs antal gånger dess senaste pris. Om en tillgång saknar pris visas totalen som —.",
+      "bookValue": "Vad du betalade för de positioner du fortfarande innehar: varje tillgångs antal gånger dess genomsnittliga inköpskostnad.",
+      "unrealizedGain": "Marknadsvärde minus bokfört värde: vad du skulle vinna (eller förlora) om du sålde allt idag. Det blir en verklig vinst först när du säljer."
+    },
+    "view": {
+      "positions": "Innehav",
+      "ledger": "Transaktioner",
+      "assets": "Tillgångar"
     },
     "empty": {
       "title": "Inga investeringsportföljer ännu",

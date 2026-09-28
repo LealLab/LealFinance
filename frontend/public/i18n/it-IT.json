@@ -1235,7 +1235,7 @@
       "editWallet": "Modifica il portafoglio di investimenti",
       "archiveWallet": "Archivia il portafoglio di investimenti",
       "unarchiveWallet": "Rimuovi il portafoglio dall’archivio",
-      "view": "Visualizza",
+      "more": "Altro",
       "newTransaction": "Registra transazione",
       "editTransaction": "Modifica transazione",
       "deleteTransaction": "Elimina transazione",
@@ -1251,6 +1251,17 @@
       "marketValue": "Valore di mercato",
       "unrealizedGain": "Guadagno non realizzato",
       "multiCurrencyHint": "I portafogli in altre valute non sono inclusi in questi totali."
+    },
+    "help": {
+      "label": "Cos’è {{label}}?",
+      "marketValue": "Quanto valgono oggi le tue posizioni: la quantità di ciascun asset moltiplicata per la sua ultima quotazione. Se un asset non ha un prezzo, il totale viene mostrato come —.",
+      "bookValue": "Quanto hai pagato per le posizioni che detieni ancora: la quantità di ciascun asset moltiplicata per il suo costo medio di acquisto.",
+      "unrealizedGain": "Valore di mercato meno valore contabile: quanto guadagneresti (o perderesti) se vendessi tutto oggi. Diventa un guadagno reale solo quando vendi."
+    },
+    "view": {
+      "positions": "Posizioni",
+      "ledger": "Transazioni",
+      "assets": "Asset"
     },
     "empty": {
       "title": "Nessun portafoglio di investimenti",

@@ -1235,7 +1235,7 @@
       "editWallet": "투자 포트폴리오 수정",
       "archiveWallet": "투자 포트폴리오 보관",
       "unarchiveWallet": "투자 포트폴리오 보관 해제",
-      "view": "보기",
+      "more": "더보기",
       "newTransaction": "거래 기록",
       "editTransaction": "거래 수정",
       "deleteTransaction": "거래 삭제",
@@ -1251,6 +1251,17 @@
       "marketValue": "시장가",
       "unrealizedGain": "미실현 수익",
       "multiCurrencyHint": "다른 통화의 포트폴리오는 이 합계에 포함되지 않습니다."
+    },
+    "help": {
+      "label": "{{label}}은(는) 무엇인가요?",
+      "marketValue": "현재 보유 포지션의 가치: 각 자산의 수량에 최신 가격을 곱한 값입니다. 가격 정보가 없는 자산이 있으면 합계는 —로 표시됩니다.",
+      "bookValue": "현재 보유 중인 포지션에 지불한 금액: 각 자산의 수량에 평균 매입가를 곱한 값입니다.",
+      "unrealizedGain": "시장가에서 장부가를 뺀 값: 오늘 전부 매도할 경우 얻게 될(또는 잃게 될) 금액입니다. 실제로 매도해야 비로소 확정 수익이 됩니다."
+    },
+    "view": {
+      "positions": "포지션",
+      "ledger": "거래내역",
+      "assets": "자산"
     },
     "empty": {
       "title": "아직 투자 포트폴리오가 없습니다",

@@ -1261,7 +1261,7 @@
       "editWallet": "Edit wallet",
       "archiveWallet": "Archive wallet",
       "unarchiveWallet": "Unarchive wallet",
-      "view": "View",
+      "more": "More",
       "newTransaction": "Record transaction",
       "editTransaction": "Edit transaction",
       "deleteTransaction": "Delete transaction",
@@ -1277,6 +1277,17 @@
       "marketValue": "Market value",
       "unrealizedGain": "Unrealized gain",
       "multiCurrencyHint": "Wallets in other currencies aren't included in these totals."
+    },
+    "help": {
+      "label": "What is {{label}}?",
+      "marketValue": "What your positions are worth today: each asset's quantity times its latest quote. If any asset has no price, the total shows as —.",
+      "bookValue": "What you paid for the positions you still hold: each asset's quantity times its average purchase cost.",
+      "unrealizedGain": "Market value minus book value: what you would gain (or lose) if you sold everything today. It only becomes a real gain when you sell."
+    },
+    "view": {
+      "positions": "Positions",
+      "ledger": "Transactions",
+      "assets": "Assets"
     },
     "empty": {
       "title": "No investment wallets yet",

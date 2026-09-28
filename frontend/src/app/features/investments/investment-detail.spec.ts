@@ -17,6 +17,7 @@ import { MockStore } from '../../data/mock/mock-store';
 import { ConfirmService } from '../../core/confirm.service';
 import { InvestmentDetail } from './investment-detail';
 import { InvestmentAssetFormModal } from './investment-asset-form-modal';
+import { InvestmentAssetsCard } from './investment-assets-card';
 import { InvestmentTransactionFormModal } from './investment-transaction-form-modal';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
@@ -206,7 +207,9 @@ describe('InvestmentDetail', () => {
       openCreateAsset: () => void;
       assetsResource: { value: () => { id: string; symbol: string }[] | undefined };
       positions: () => { asset: { symbol: string } }[];
+      view: { set: (view: string) => void };
     };
+    component.view.set('assets');
 
     component.openCreateAsset();
     fixture.detectChanges();
@@ -293,5 +296,80 @@ describe('InvestmentDetail', () => {
     expect(
       component.assetsResource.value()?.find((current) => current.id === asset!.id)?.archived,
     ).toBe(true);
+  });
+
+  it('shows one wallet section at a time through the view switcher', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const tabs = (): HTMLButtonElement[] =>
+      Array.from(fixture.nativeElement.querySelectorAll('[role="group"] button[aria-pressed]'));
+    const text = (): string => fixture.nativeElement.textContent;
+
+    expect(tabs().map((tab) => tab.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false']);
+    expect(text()).toContain('Alocação');
+    expect(fixture.debugElement.query(By.directive(InvestmentAssetsCard))).toBeNull();
+
+    tabs()[1].click();
+    fixture.detectChanges();
+    expect(text()).toContain('Livro de transações');
+    expect(text()).not.toContain('Alocação');
+
+    tabs()[2].click();
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(InvestmentAssetsCard))).not.toBeNull();
+    expect(text()).not.toContain('Livro de transações');
+  });
+
+  it('opens the new-asset form from the mobile "More" menu', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const more = fixture.nativeElement.querySelector('app-page-header app-dropdown [dropdownTrigger]') as HTMLButtonElement;
+    more.click();
+    fixture.detectChanges();
+    const item = Array.from(
+      fixture.nativeElement.querySelectorAll('app-page-header app-dropdown button:not([dropdownTrigger])') as NodeListOf<HTMLButtonElement>,
+    ).find((button) => button.textContent?.includes('Novo ativo'));
+    expect(item).toBeDefined();
+    item!.click();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as { assetFormOpen: () => boolean };
+    expect(component.assetFormOpen()).toBe(true);
+  });
+
+  it('shows the asset and a compact quantity x price line on mobile ledger rows', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    (fixture.componentInstance as unknown as { view: { set: (view: string) => void } }).view.set('ledger');
+    fixture.detectChanges();
+
+    const rows = Array.from(
+      fixture.nativeElement.querySelectorAll('.divide-y > div') as NodeListOf<HTMLElement>,
+    );
+    const row = (date: string): string =>
+      rows.find((current) => current.textContent?.includes(date))?.textContent ?? '';
+
+    const buy = row('2026-07-01');
+    expect(buy).toContain('ACME');
+    expect(buy).toContain('10 ×');
+    expect(buy).toContain('Taxa');
+
+    // A dividend has no quantity/price and no fee: neither detail is shown.
+    const dividend = row('2026-08-10');
+    expect(dividend).toContain('WORLD');
+    expect(dividend).not.toContain('×');
+    expect(dividend).not.toContain('Taxa');
   });
 });
