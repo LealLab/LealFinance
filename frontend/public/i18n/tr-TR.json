@@ -1421,6 +1421,17 @@
       "expense": "Giderler",
       "netFlow": "Net akış",
       "categories": "Kategoriler"
+    },
+    "view": {
+      "flow": "Akış",
+      "categories": "Kategoriler",
+      "balance": "Bakiyeler"
+    },
+    "range": {
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "apply": "Sonuçları göster",
+      "invalid": "Bitiş ayı, başlangıç ayıyla aynı veya sonrasında olmalıdır."
     }
   },
   "agenda": {

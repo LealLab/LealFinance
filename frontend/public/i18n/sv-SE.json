@@ -1421,6 +1421,17 @@
       "expense": "Utgifter",
       "netFlow": "Nettoflöde",
       "categories": "Kategorier"
+    },
+    "view": {
+      "flow": "Flöde",
+      "categories": "Kategorier",
+      "balance": "Saldon"
+    },
+    "range": {
+      "from": "Från",
+      "to": "Till",
+      "apply": "Visa resultat",
+      "invalid": "Slutmånaden måste vara densamma som eller efter startmånaden."
     }
   },
   "agenda": {

@@ -1421,6 +1421,17 @@
       "expense": "Utgifter",
       "netFlow": "Netto kontantstrøm",
       "categories": "Kategorier"
+    },
+    "view": {
+      "flow": "Flyt",
+      "categories": "Kategorier",
+      "balance": "Saldoer"
+    },
+    "range": {
+      "from": "Fra",
+      "to": "Til",
+      "apply": "Vis resultater",
+      "invalid": "Sluttmåneden må være den samme som eller etter startmåneden."
     }
   },
   "agenda": {

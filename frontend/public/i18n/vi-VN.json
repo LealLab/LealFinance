@@ -1421,6 +1421,17 @@
       "expense": "Chi tiêu",
       "netFlow": "Dòng tiền ròng",
       "categories": "Danh mục"
+    },
+    "view": {
+      "flow": "Dòng tiền",
+      "categories": "Danh mục",
+      "balance": "Số dư"
+    },
+    "range": {
+      "from": "Từ",
+      "to": "Đến",
+      "apply": "Xem kết quả",
+      "invalid": "Tháng kết thúc phải cùng hoặc sau tháng bắt đầu."
     }
   },
   "agenda": {

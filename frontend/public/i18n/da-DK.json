@@ -1421,6 +1421,17 @@
       "expense": "Udgifter",
       "netFlow": "Netto pengestrøm",
       "categories": "Kategorier"
+    },
+    "view": {
+      "flow": "Pengestrøm",
+      "categories": "Kategorier",
+      "balance": "Saldi"
+    },
+    "range": {
+      "from": "Fra",
+      "to": "Til",
+      "apply": "Vis resultater",
+      "invalid": "Måneden i »Til« skal være den samme som eller ligge efter måneden i »Fra«."
     }
   },
   "agenda": {

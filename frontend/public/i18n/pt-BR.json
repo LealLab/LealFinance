@@ -1421,6 +1421,17 @@
       "expense": "Despesa",
       "netFlow": "Fluxo líquido",
       "categories": "Categorias"
+    },
+    "view": {
+      "flow": "Fluxo",
+      "categories": "Categorias",
+      "balance": "Saldos"
+    },
+    "range": {
+      "from": "De",
+      "to": "Até",
+      "apply": "Mostrar resultados",
+      "invalid": "O mês final precisa ser igual ou posterior ao inicial."
     }
   },
   "agenda": {

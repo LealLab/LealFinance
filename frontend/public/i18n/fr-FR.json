@@ -1421,6 +1421,17 @@
       "expense": "Dépenses",
       "netFlow": "Flux net",
       "categories": "Catégories"
+    },
+    "view": {
+      "flow": "Flux",
+      "categories": "Catégories",
+      "balance": "Soldes"
+    },
+    "range": {
+      "from": "Du",
+      "to": "Au",
+      "apply": "Afficher les résultats",
+      "invalid": "Le mois « Au » doit être identique ou postérieur au mois « Du »."
     }
   },
   "agenda": {

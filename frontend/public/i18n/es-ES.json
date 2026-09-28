@@ -1421,6 +1421,17 @@
       "expense": "Gastos",
       "netFlow": "Flujo neto",
       "categories": "Categorías"
+    },
+    "view": {
+      "flow": "Flujo",
+      "categories": "Categorías",
+      "balance": "Saldos"
+    },
+    "range": {
+      "from": "Desde",
+      "to": "Hasta",
+      "apply": "Mostrar resultados",
+      "invalid": "El mes de «Hasta» debe ser igual o posterior al mes de «Desde»."
     }
   },
   "agenda": {

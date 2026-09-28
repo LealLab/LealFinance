@@ -1421,6 +1421,17 @@
       "expense": "Výdaje",
       "netFlow": "Čistý peněžní tok",
       "categories": "Kategorie"
+    },
+    "view": {
+      "flow": "Tok",
+      "categories": "Kategorie",
+      "balance": "Zůstatky"
+    },
+    "range": {
+      "from": "Od",
+      "to": "Do",
+      "apply": "Zobrazit výsledky",
+      "invalid": "Měsíc „Do“ musí být stejný jako měsíc „Od“, nebo pozdější."
     }
   },
   "agenda": {

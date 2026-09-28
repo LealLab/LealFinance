@@ -1421,6 +1421,17 @@
       "expense": "Wydatki",
       "netFlow": "Przepływ netto",
       "categories": "Kategorie"
+    },
+    "view": {
+      "flow": "Przepływ",
+      "categories": "Kategorie",
+      "balance": "Salda"
+    },
+    "range": {
+      "from": "Od",
+      "to": "Do",
+      "apply": "Pokaż wyniki",
+      "invalid": "Miesiąc końcowy musi być taki sam jak miesiąc początkowy lub od niego późniejszy."
     }
   },
   "agenda": {

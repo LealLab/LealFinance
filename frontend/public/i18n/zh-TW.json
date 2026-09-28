@@ -1421,6 +1421,17 @@
       "expense": "支出",
       "netFlow": "淨現金流",
       "categories": "分類"
+    },
+    "view": {
+      "flow": "現金流",
+      "categories": "分類",
+      "balance": "餘額"
+    },
+    "range": {
+      "from": "開始日期",
+      "to": "結束日期",
+      "apply": "顯示結果",
+      "invalid": "結束月份必須與開始月份相同或晚於開始月份。"
     }
   },
   "agenda": {

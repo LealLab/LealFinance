@@ -1421,6 +1421,17 @@
       "expense": "Pengeluaran",
       "netFlow": "Arus bersih",
       "categories": "Kategori"
+    },
+    "view": {
+      "flow": "Arus",
+      "categories": "Kategori",
+      "balance": "Saldo"
+    },
+    "range": {
+      "from": "Dari",
+      "to": "Ke",
+      "apply": "Tampilkan hasil",
+      "invalid": "Bulan akhir harus sama dengan atau setelah bulan awal."
     }
   },
   "agenda": {

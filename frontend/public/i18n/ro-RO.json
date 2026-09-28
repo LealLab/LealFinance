@@ -1421,6 +1421,17 @@
       "expense": "Cheltuieli",
       "netFlow": "Flux net",
       "categories": "Categorii"
+    },
+    "view": {
+      "flow": "Flux",
+      "categories": "Categorii",
+      "balance": "Solduri"
+    },
+    "range": {
+      "from": "De la",
+      "to": "Până la",
+      "apply": "Afișează rezultatele",
+      "invalid": "Luna de final trebuie să fie aceeași cu luna de început sau după aceasta."
     }
   },
   "agenda": {

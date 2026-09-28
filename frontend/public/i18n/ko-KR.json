@@ -1421,6 +1421,17 @@
       "expense": "지출",
       "netFlow": "순현금 흐름",
       "categories": "카테고리"
+    },
+    "view": {
+      "flow": "흐름",
+      "categories": "카테고리",
+      "balance": "잔액"
+    },
+    "range": {
+      "from": "시작일",
+      "to": "종료일",
+      "apply": "결과 보기",
+      "invalid": "종료 월은 시작 월과 같거나 이후여야 합니다."
     }
   },
   "agenda": {

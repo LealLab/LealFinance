@@ -1421,6 +1421,17 @@
       "expense": "支出",
       "netFlow": "純キャッシュフロー",
       "categories": "カテゴリ"
+    },
+    "view": {
+      "flow": "フロー",
+      "categories": "カテゴリ",
+      "balance": "残高"
+    },
+    "range": {
+      "from": "開始日",
+      "to": "終了日",
+      "apply": "結果を表示",
+      "invalid": "終了月は開始月と同じか、それより後である必要があります。"
     }
   },
   "agenda": {

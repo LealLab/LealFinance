@@ -1421,6 +1421,17 @@
       "expense": "Menot",
       "netFlow": "Nettokassavirta",
       "categories": "Luokat"
+    },
+    "view": {
+      "flow": "Kassavirta",
+      "categories": "Luokat",
+      "balance": "Saldot"
+    },
+    "range": {
+      "from": "Alkaen",
+      "to": "Asti",
+      "apply": "Näytä tulokset",
+      "invalid": "Asti-kuukauden on oltava sama kuin Alkaen-kuukausi tai sitä myöhempi."
     }
   },
   "agenda": {

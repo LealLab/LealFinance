@@ -1445,6 +1445,17 @@
       "expense": "Expenses",
       "netFlow": "Net flow",
       "categories": "Categories"
+    },
+    "view": {
+      "flow": "Flow",
+      "categories": "Categories",
+      "balance": "Balances"
+    },
+    "range": {
+      "from": "From",
+      "to": "To",
+      "apply": "Show results",
+      "invalid": "The end month must be the same as or after the start month."
     }
   },
   "agenda": {

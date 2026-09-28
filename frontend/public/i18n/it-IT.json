@@ -1421,6 +1421,17 @@
       "expense": "Uscite",
       "netFlow": "Flusso netto",
       "categories": "Categorie"
+    },
+    "view": {
+      "flow": "Flusso",
+      "categories": "Categorie",
+      "balance": "Saldi"
+    },
+    "range": {
+      "from": "Da",
+      "to": "A",
+      "apply": "Mostra risultati",
+      "invalid": "Il mese di fine deve essere uguale o successivo al mese di inizio."
     }
   },
   "agenda": {

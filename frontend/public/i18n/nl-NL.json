@@ -1421,6 +1421,17 @@
       "expense": "Uitgaven",
       "netFlow": "Netto kasstroom",
       "categories": "Categorieën"
+    },
+    "view": {
+      "flow": "Kasstroom",
+      "categories": "Categorieën",
+      "balance": "Saldi"
+    },
+    "range": {
+      "from": "Vanaf",
+      "to": "Tot en met",
+      "apply": "Toon resultaten",
+      "invalid": "De eindmaand moet gelijk zijn aan of na de beginmaand liggen."
     }
   },
   "agenda": {

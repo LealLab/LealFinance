@@ -1421,6 +1421,17 @@
       "expense": "Ausgaben",
       "netFlow": "Netto-Cashflow",
       "categories": "Kategorien"
+    },
+    "view": {
+      "flow": "Cashflow",
+      "categories": "Kategorien",
+      "balance": "Kontostände"
+    },
+    "range": {
+      "from": "Von",
+      "to": "Bis",
+      "apply": "Ergebnisse anzeigen",
+      "invalid": "Der „Bis“-Monat muss dem „Von“-Monat entsprechen oder danach liegen."
     }
   },
   "agenda": {
