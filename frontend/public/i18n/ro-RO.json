@@ -846,9 +846,6 @@
     "eyebrow": "Automatizare",
     "title": "Reguli",
     "description": "Categorizează automat tranzacțiile când le imporți.",
-    "card": {
-      "title": "Reguli de categorizare"
-    },
     "actions": {
       "export": "Exportă",
       "import": "Importă",
@@ -856,8 +853,10 @@
       "reapply": "Aplică din nou",
       "add": "Adaugă",
       "delete": "Șterge",
-      "edit": "Editează"
+      "edit": "Editează",
+      "more": "Mai mult"
     },
+    "inactive": "Inactivă",
     "sort": {
       "label": "Sortează după",
       "priority": "Prioritate",

@@ -846,9 +846,6 @@
     "eyebrow": "자동화",
     "title": "규칙",
     "description": "가져오는 동안 거래를 자동으로 분류합니다.",
-    "card": {
-      "title": "분류 규칙"
-    },
     "actions": {
       "export": "내보내기",
       "import": "가져오기",
@@ -856,8 +853,10 @@
       "reapply": "다시 적용",
       "add": "추가",
       "delete": "삭제",
-      "edit": "편집"
+      "edit": "편집",
+      "more": "더보기"
     },
+    "inactive": "비활성",
     "sort": {
       "label": "정렬 기준",
       "priority": "우선순위",

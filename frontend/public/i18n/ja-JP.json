@@ -846,9 +846,6 @@
     "eyebrow": "自動化",
     "title": "ルール",
     "description": "インポート時に取引を自動で分類します。",
-    "card": {
-      "title": "分類ルール"
-    },
     "actions": {
       "export": "エクスポート",
       "import": "インポート",
@@ -856,8 +853,10 @@
       "reapply": "再適用",
       "add": "追加",
       "delete": "削除",
-      "edit": "編集"
+      "edit": "編集",
+      "more": "その他"
     },
+    "inactive": "無効",
     "sort": {
       "label": "並べ替え",
       "priority": "優先度",

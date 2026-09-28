@@ -846,9 +846,6 @@
     "eyebrow": "Automaatio",
     "title": "Säännöt",
     "description": "Luokittele tapahtumat automaattisesti tuonnin yhteydessä.",
-    "card": {
-      "title": "Luokittelusäännöt"
-    },
     "actions": {
       "export": "Vie",
       "import": "Tuo",
@@ -856,8 +853,10 @@
       "reapply": "Käytä uudelleen",
       "add": "Lisää",
       "delete": "Poista",
-      "edit": "Muokkaa"
+      "edit": "Muokkaa",
+      "more": "Lisää"
     },
+    "inactive": "Epäaktiivinen",
     "sort": {
       "label": "Järjestä",
       "priority": "Prioriteetti",

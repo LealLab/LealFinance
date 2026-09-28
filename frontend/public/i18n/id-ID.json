@@ -846,9 +846,6 @@
     "eyebrow": "Otomatisasi",
     "title": "Aturan",
     "description": "Kategorikan transaksi secara otomatis saat diimpor.",
-    "card": {
-      "title": "Aturan kategorisasi"
-    },
     "actions": {
       "export": "Ekspor",
       "import": "Impor",
@@ -856,8 +853,10 @@
       "reapply": "Terapkan ulang",
       "add": "Tambah",
       "delete": "Hapus",
-      "edit": "Edit"
+      "edit": "Edit",
+      "more": "Lainnya"
     },
+    "inactive": "Nonaktif",
     "sort": {
       "label": "Urutkan berdasarkan",
       "priority": "Prioritas",

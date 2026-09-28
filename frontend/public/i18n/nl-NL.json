@@ -846,9 +846,6 @@
     "eyebrow": "Automatisering",
     "title": "Regels",
     "description": "Categoriseer transacties automatisch tijdens het importeren.",
-    "card": {
-      "title": "Categorisatieregels"
-    },
     "actions": {
       "export": "Exporteren",
       "import": "Importeren",
@@ -856,8 +853,10 @@
       "reapply": "Opnieuw toepassen",
       "add": "Toevoegen",
       "delete": "Verwijderen",
-      "edit": "Bewerken"
+      "edit": "Bewerken",
+      "more": "Meer"
     },
+    "inactive": "Inactief",
     "sort": {
       "label": "Sorteren op",
       "priority": "Prioriteit",

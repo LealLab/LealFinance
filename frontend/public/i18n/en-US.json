@@ -870,9 +870,6 @@
     "eyebrow": "Automation",
     "title": "Rules",
     "description": "Automatically categorize transactions as you import them.",
-    "card": {
-      "title": "Categorization Rules"
-    },
     "actions": {
       "export": "Export",
       "import": "Import",
@@ -880,8 +877,10 @@
       "reapply": "Reapply",
       "add": "Add",
       "delete": "Delete",
-      "edit": "Edit"
+      "edit": "Edit",
+      "more": "More"
     },
+    "inactive": "Inactive",
     "sort": {
       "label": "Sort by",
       "priority": "Priority",

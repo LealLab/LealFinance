@@ -846,9 +846,6 @@
     "eyebrow": "Automatyzacja",
     "title": "Reguły",
     "description": "Automatycznie kategoryzuj transakcje podczas ich importowania.",
-    "card": {
-      "title": "Reguły kategoryzacji"
-    },
     "actions": {
       "export": "Eksportuj",
       "import": "Importuj",
@@ -856,8 +853,10 @@
       "reapply": "Zastosuj ponownie",
       "add": "Dodaj",
       "delete": "Usuń",
-      "edit": "Edytuj"
+      "edit": "Edytuj",
+      "more": "Więcej"
     },
+    "inactive": "Nieaktywna",
     "sort": {
       "label": "Sortuj według",
       "priority": "Priorytet",

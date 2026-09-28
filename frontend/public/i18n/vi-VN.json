@@ -846,9 +846,6 @@
     "eyebrow": "Tự động hóa",
     "title": "Quy tắc",
     "description": "Tự động phân loại giao dịch khi bạn nhập chúng.",
-    "card": {
-      "title": "Quy tắc phân loại"
-    },
     "actions": {
       "export": "Xuất",
       "import": "Nhập",
@@ -856,8 +853,10 @@
       "reapply": "Áp dụng lại",
       "add": "Thêm",
       "delete": "Xóa",
-      "edit": "Chỉnh sửa"
+      "edit": "Chỉnh sửa",
+      "more": "Thêm"
     },
+    "inactive": "Không hoạt động",
     "sort": {
       "label": "Sắp xếp theo",
       "priority": "Ưu tiên",

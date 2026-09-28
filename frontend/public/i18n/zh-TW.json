@@ -846,9 +846,6 @@
     "eyebrow": "自動化",
     "title": "規則",
     "description": "匯入交易時自動分類。",
-    "card": {
-      "title": "分類規則"
-    },
     "actions": {
       "export": "匯出",
       "import": "匯入",
@@ -856,8 +853,10 @@
       "reapply": "重新套用",
       "add": "新增",
       "delete": "刪除",
-      "edit": "編輯"
+      "edit": "編輯",
+      "more": "更多"
     },
+    "inactive": "停用",
     "sort": {
       "label": "排序依據",
       "priority": "優先順序",

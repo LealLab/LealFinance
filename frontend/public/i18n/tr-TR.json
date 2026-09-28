@@ -846,9 +846,6 @@
     "eyebrow": "Otomasyon",
     "title": "Kurallar",
     "description": "İçe aktarırken işlemleri otomatik olarak kategorilere ayırın.",
-    "card": {
-      "title": "Kategorilendirme kuralları"
-    },
     "actions": {
       "export": "Dışa aktar",
       "import": "İçe aktar",
@@ -856,8 +853,10 @@
       "reapply": "Yeniden uygula",
       "add": "Ekle",
       "delete": "Sil",
-      "edit": "Düzenle"
+      "edit": "Düzenle",
+      "more": "Daha fazla"
     },
+    "inactive": "Pasif",
     "sort": {
       "label": "Şuna göre sırala",
       "priority": "Öncelik",

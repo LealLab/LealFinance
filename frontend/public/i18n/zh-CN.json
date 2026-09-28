@@ -846,9 +846,6 @@
     "eyebrow": "自动化",
     "title": "规则",
     "description": "导入交易时自动进行分类。",
-    "card": {
-      "title": "分类规则"
-    },
     "actions": {
       "export": "导出",
       "import": "导入",
@@ -856,8 +853,10 @@
       "reapply": "重新应用",
       "add": "添加",
       "delete": "删除",
-      "edit": "编辑"
+      "edit": "编辑",
+      "more": "更多"
     },
+    "inactive": "已停用",
     "sort": {
       "label": "排序方式",
       "priority": "优先级",

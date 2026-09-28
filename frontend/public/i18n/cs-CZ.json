@@ -846,9 +846,6 @@
     "eyebrow": "Automatizace",
     "title": "Pravidla",
     "description": "Automaticky kategorizujte transakce při jejich importu.",
-    "card": {
-      "title": "Pravidla kategorizace"
-    },
     "actions": {
       "export": "Exportovat",
       "import": "Importovat",
@@ -856,8 +853,10 @@
       "reapply": "Použít znovu",
       "add": "Přidat",
       "delete": "Smazat",
-      "edit": "Upravit"
+      "edit": "Upravit",
+      "more": "Více"
     },
+    "inactive": "Neaktivní",
     "sort": {
       "label": "Řadit podle",
       "priority": "Priorita",

@@ -846,9 +846,6 @@
     "eyebrow": "Automatisering",
     "title": "Regler",
     "description": "Kategoriser transaktioner automatisk, når du importerer dem.",
-    "card": {
-      "title": "Kategoriseringsregler"
-    },
     "actions": {
       "export": "Eksportér",
       "import": "Importér",
@@ -856,8 +853,10 @@
       "reapply": "Anvend igen",
       "add": "Tilføj",
       "delete": "Slet",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "more": "Mere"
     },
+    "inactive": "Inaktiv",
     "sort": {
       "label": "Sortér efter",
       "priority": "Prioritet",
