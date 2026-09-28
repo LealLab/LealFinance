@@ -313,30 +313,4 @@ describe('Exchange', () => {
     expect(headings).toEqual([TestBed.inject(TranslocoService).translate('exchange.manualRates.title')]);
   });
 
-  it('lets an admin refresh from the mobile "More" menu', async () => {
-    sessionUser.set({ role: 'admin' });
-    const refreshSpy = vi
-      .spyOn(TestBed.inject(ExchangeRateRepository), 'refresh')
-      .mockReturnValue(of({ asOf: '2026-09-01', updated: 0, throttled: true, refreshedAt: null }));
-
-    const fixture = TestBed.createComponent(Exchange);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const el = fixture.nativeElement as HTMLElement;
-    (el.querySelector('app-page-header app-dropdown [dropdownTrigger]') as HTMLButtonElement).click();
-    fixture.detectChanges();
-
-    const refreshLabel = TestBed.inject(TranslocoService).translate('exchange.actions.refresh');
-    const item = Array.from(el.querySelectorAll('app-page-header app-dropdown button')).find(
-      (b) => !b.hasAttribute('dropdownTrigger') && b.textContent?.trim() === refreshLabel,
-    ) as HTMLButtonElement;
-    item.click();
-    fixture.detectChanges();
-
-    expect(refreshSpy).toHaveBeenCalledTimes(1);
-    expect(el.querySelector('app-page-header app-dropdown [dropdownTrigger] + *')).toBeNull();
-    expect(el.textContent).toContain(TestBed.inject(TranslocoService).translate('exchange.refresh.upToDate'));
-  });
 });

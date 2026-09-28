@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
@@ -48,7 +47,6 @@ type ExchangeView = 'pending' | 'live' | 'manual';
 @Component({
   selector: 'app-exchange',
   imports: [
-    NgTemplateOutlet,
     TranslocoDirective,
     MoneyPipe,
     Button,

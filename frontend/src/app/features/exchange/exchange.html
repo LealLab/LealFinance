@@ -1,44 +1,18 @@
 <div *transloco="let t">
   <app-page-header [compact]="true" [title]="t('exchange.title')" [description]="t('exchange.description')">
+    <!-- Admins get "Refresh now" beside "Add rate" at every size (icons drop on
+         phones so both fit at 320px); members only see "Add rate", full width. -->
     @if (isAdmin()) {
-      <!-- From md up "Refresh now" sits beside "Add rate"; on phones it folds into
-           the "More" menu. Two page-header children keep the mobile grid parity even,
-           see features/accounts/accounts.html. -->
-      <div class="hidden md:contents">
-        <button appButton variant="secondary" type="button" [disabled]="refreshing()" (click)="refreshRates()">
-          <app-icon name="refresh" [size]="16" />
-          {{ t('exchange.actions.refresh') }}
-        </button>
-      </div>
-      <div class="contents">
-        <ng-container [ngTemplateOutlet]="addRateButton" />
-        <app-dropdown #more class="md:hidden" panelClass="w-56">
-          <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
-            <app-icon name="dots" [size]="16" />
-            <span>{{ t('exchange.actions.more') }}</span>
-          </button>
-          <button
-            type="button"
-            class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken disabled:opacity-50 [@media(pointer:coarse)]:min-h-11"
-            [disabled]="refreshing()"
-            (click)="more.open.set(false); refreshRates()"
-          >
-            <app-icon name="refresh" [size]="16" />
-            {{ t('exchange.actions.refresh') }}
-          </button>
-        </app-dropdown>
-      </div>
-    } @else {
-      <ng-container [ngTemplateOutlet]="addRateButton" />
+      <button appButton variant="secondary" type="button" [disabled]="refreshing()" (click)="refreshRates()">
+        <app-icon name="refresh" [size]="16" class="max-md:hidden" />
+        {{ t('exchange.actions.refresh') }}
+      </button>
     }
-  </app-page-header>
-
-  <ng-template #addRateButton>
     <button appButton variant="primary" type="button" (click)="openCreateRate()">
-      <app-icon name="plus" [size]="16" />
+      <app-icon name="plus" [size]="16" [class]="isAdmin() ? 'max-md:hidden' : ''" />
       {{ t('exchange.manualRates.actions.add') }}
     </button>
-  </ng-template>
+  </app-page-header>
 
   @if (refreshResult(); as result) {
     <p class="-mt-3 mb-3 text-sm text-content-muted" role="status">
