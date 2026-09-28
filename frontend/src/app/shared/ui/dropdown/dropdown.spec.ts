@@ -85,4 +85,34 @@ describe('Dropdown', () => {
     expect(panel()).toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
+
+  describe('when the panel bottom is hidden', () => {
+    const original = document.elementFromPoint;
+    afterEach(() => {
+      document.elementFromPoint = original;
+      vi.restoreAllMocks();
+    });
+
+    function openWith(hit: Element | null, triggerTop: number) {
+      const { fixture, trigger, panel } = setup();
+      // Something other than the panel (e.g. a fixed bottom bar) sits on its bottom edge.
+      document.elementFromPoint = () => hit;
+      vi.spyOn(trigger.closest('app-dropdown')!, 'getBoundingClientRect').mockReturnValue(
+        { top: triggerTop } as DOMRect,
+      );
+      trigger.click();
+      fixture.detectChanges();
+      return panel()!;
+    }
+
+    it('opens above the trigger when there is room', () => {
+      const outside = document.createElement('div');
+      expect(openWith(outside, 600).className).toContain('bottom-full');
+    });
+
+    it('stays below when there is no room above', () => {
+      const outside = document.createElement('div');
+      expect(openWith(outside, 0).className).not.toContain('bottom-full');
+    });
+  });
 });
