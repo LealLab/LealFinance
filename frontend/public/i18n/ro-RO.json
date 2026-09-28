@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Gestionează-ți identitatea și securitatea contului.",
+    "view": { "account": "Cont", "security": "Securitate" },
     "identity": {
       "title": "Informații personale",
       "description": "Actualizează numele și adresa de e-mail folosite pentru contul tău.",

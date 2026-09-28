@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Hantera din identitet och kontosäkerhet.",
+    "view": { "account": "Konto", "security": "Säkerhet" },
     "identity": {
       "title": "Personuppgifter",
       "description": "Uppdatera namnet och e-postadressen som används för ditt konto.",

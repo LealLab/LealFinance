@@ -2010,6 +2010,7 @@
   "profile": {
     "title": "Profil",
     "description": "Verwalten Sie Ihre Identität und Kontosicherheit.",
+    "view": { "account": "Konto", "security": "Sicherheit" },
     "identity": {
       "title": "Persönliche Informationen",
       "description": "Aktualisieren Sie den Namen und die E-Mail-Adresse Ihres Kontos.",

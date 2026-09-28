@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Hồ sơ",
     "description": "Quản lý danh tính và bảo mật tài khoản của bạn.",
+    "view": { "account": "Tài khoản", "security": "Bảo mật" },
     "identity": {
       "title": "Thông tin cá nhân",
       "description": "Cập nhật tên và địa chỉ email được sử dụng cho tài khoản.",

@@ -5,6 +5,7 @@ import {
   effect,
   inject,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import {
@@ -24,14 +25,28 @@ import { TotpSetup, TotpStatus, userInitials } from '../../core/identity.models'
 import { SessionService } from '../../core/session.service';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Icon, IconName } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { PasskeysSection } from '../settings/passkeys-section';
+
+type ProfileView = 'account' | 'security';
+
+/** Deep links (command palette) name a section; both live on the security tab. */
+const SECURITY_FRAGMENTS = new Set(['profile-two-factor', 'profile-passkeys']);
 
 const notBlank = (control: AbstractControl) => (control.value.trim() ? null : { required: true });
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule, TranslocoDirective, Button, Card, PageHeader, PasskeysSection],
+  imports: [
+    ReactiveFormsModule,
+    TranslocoDirective,
+    Button,
+    Card,
+    Icon,
+    PageHeader,
+    PasskeysSection,
+  ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -59,6 +74,12 @@ export class Profile {
       validators: [Validators.required, Validators.minLength(12)],
     }),
   });
+  protected readonly views = [
+    { key: 'account', icon: 'user' },
+    { key: 'security', icon: 'shield' },
+  ] as const satisfies readonly { key: ProfileView; icon: IconName }[];
+  /** Which section is shown; not persisted, like settings. */
+  protected readonly view = signal<ProfileView>('account');
   protected readonly profileBusy = signal(false);
   protected readonly profileSaved = signal(false);
   protected readonly profileErrorCode = signal<string | undefined>(undefined);
@@ -79,6 +100,7 @@ export class Profile {
   });
   private readonly twoFactorSection = viewChild<ElementRef<HTMLElement>>('twoFactorSection');
   private readonly passkeysSection = viewChild<ElementRef<HTMLElement>>('passkeysSection');
+  private focusedFragment: string | null | undefined;
 
   protected readonly initials = () => userInitials(this.session.user());
 
@@ -92,6 +114,10 @@ export class Profile {
         { emitEvent: false },
       );
     });
+    // Only tracks the fragment, so the user can still leave the tab afterwards.
+    effect(() => {
+      if (SECURITY_FRAGMENTS.has(this.fragment() ?? '')) untracked(() => this.view.set('security'));
+    });
     effect(() => {
       const target =
         this.fragment() === 'profile-two-factor'
@@ -99,7 +125,9 @@ export class Profile {
           : this.fragment() === 'profile-passkeys'
             ? this.passkeysSection()?.nativeElement
             : undefined;
-      if (!target) return;
+      // Focus once per link: the target re-renders whenever its tab is reopened.
+      if (!target || this.fragment() === this.focusedFragment) return;
+      this.focusedFragment = this.fragment();
       target.scrollIntoView?.({ block: 'center' });
       target.focus();
     });

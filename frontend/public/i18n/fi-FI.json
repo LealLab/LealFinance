@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profiili",
     "description": "Hallitse henkilöllisyyttäsi ja tilisi turvallisuutta.",
+    "view": { "account": "Tili", "security": "Suojaus" },
     "identity": {
       "title": "Henkilötiedot",
       "description": "Päivitä tililläsi käytettävä nimi ja sähköpostiosoite.",

@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profiel",
     "description": "Beheer je identiteit en accountbeveiliging.",
+    "view": { "account": "Account", "security": "Beveiliging" },
     "identity": {
       "title": "Persoonlijke gegevens",
       "description": "Werk de naam en het e-mailadres voor je account bij.",

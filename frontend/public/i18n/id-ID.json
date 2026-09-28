@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Kelola identitas dan keamanan akun Anda.",
+    "view": { "account": "Akun", "security": "Keamanan" },
     "identity": {
       "title": "Informasi pribadi",
       "description": "Perbarui nama dan alamat email yang digunakan untuk akun Anda.",

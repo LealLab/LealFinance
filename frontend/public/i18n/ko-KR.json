@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "프로필",
     "description": "신원 및 계정 보안을 관리하세요.",
+    "view": { "account": "계정", "security": "보안" },
     "identity": {
       "title": "개인 정보",
       "description": "계정에 사용되는 이름과 이메일 주소를 업데이트하세요.",

@@ -2034,6 +2034,7 @@
   "profile": {
     "title": "Profile",
     "description": "Manage your identity and account security.",
+    "view": { "account": "Account", "security": "Security" },
     "identity": {
       "title": "Personal information",
       "description": "Update the name and email address used for your account.",

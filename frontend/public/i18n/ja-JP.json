@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "プロフィール",
     "description": "身元とアカウントのセキュリティを管理します。",
+    "view": { "account": "アカウント", "security": "セキュリティ" },
     "identity": {
       "title": "個人情報",
       "description": "アカウントで使用する名前とメールアドレスを更新します。",

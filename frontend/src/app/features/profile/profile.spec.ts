@@ -59,13 +59,59 @@ describe('Profile', () => {
     }).compileComponents();
   });
 
+  const clickTab = (
+    fixture: ReturnType<typeof TestBed.createComponent<Profile>>,
+    label: string,
+  ) => {
+    Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
+        '[role="group"] > button[aria-pressed]',
+      ),
+    )
+      .find((button) => button.textContent?.trim() === label)!
+      .click();
+    fixture.detectChanges();
+  };
+
   it('renders initials and both profile security sections', () => {
     const fixture = TestBed.createComponent(Profile);
     fixture.detectChanges();
-
     expect(fixture.nativeElement.textContent).toContain('AL');
+
+    clickTab(fixture, 'Segurança');
     expect(fixture.nativeElement.querySelector('#profile-two-factor')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('#profile-passkeys')).not.toBeNull();
+  });
+
+  it('switches between the account and security tabs', () => {
+    const fixture = TestBed.createComponent(Profile);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(el.querySelector('input[formControlName="email"]')).not.toBeNull();
+    expect(el.querySelector('#profile-two-factor')).toBeNull();
+
+    clickTab(fixture, 'Segurança');
+    expect(el.querySelector('input[formControlName="email"]')).toBeNull();
+    expect(el.querySelector('#profile-two-factor')).not.toBeNull();
+
+    clickTab(fixture, 'Conta');
+    expect(el.querySelector('input[formControlName="email"]')).not.toBeNull();
+  });
+
+  it('opens the security tab for a passkeys deep link', () => {
+    TestBed.overrideProvider(ActivatedRoute, {
+      useValue: {
+        fragment: new BehaviorSubject<string | null>('profile-passkeys').asObservable(),
+        snapshot: { fragment: 'profile-passkeys' },
+      },
+    });
+    const fixture = TestBed.createComponent(Profile);
+    fixture.detectChanges();
+
+    const section = fixture.nativeElement.querySelector('#profile-passkeys');
+    expect(section).not.toBeNull();
+    expect(document.activeElement).toBe(section);
   });
 
   it('requires the current password only when changing email and updates the session', async () => {

@@ -1,5 +1,7 @@
 <app-card *transloco="let t">
-  <h2 class="mb-1 text-sm font-semibold text-content-primary">{{ t('settings.passkeys.title') }}</h2>
+  <h2 class="mb-1 text-sm font-semibold text-content-primary">
+    {{ t('settings.passkeys.title') }}
+  </h2>
   <p class="mb-4 max-w-md text-sm text-content-muted">{{ t('settings.passkeys.description') }}</p>
 
   @if (!supported) {
@@ -22,7 +24,9 @@
               </p>
               <p class="text-xs text-content-muted">
                 @if (passkey.lastUsedAt) {
-                  {{ t('settings.passkeys.lastUsed', { date: formatPasskeyDate(passkey.lastUsedAt) }) }}
+                  {{
+                    t('settings.passkeys.lastUsed', { date: formatPasskeyDate(passkey.lastUsedAt) })
+                  }}
                 } @else {
                   {{ t('settings.passkeys.neverUsed') }}
                 }
@@ -47,7 +51,13 @@
     }
 
     @if (!adding()) {
-      <button appButton type="button" class="mt-4" [disabled]="busy()" (click)="startAdding()">
+      <button
+        appButton
+        type="button"
+        class="mt-4 max-md:w-full"
+        [disabled]="busy()"
+        (click)="startAdding()"
+      >
         {{ t('settings.passkeys.add') }}
       </button>
     } @else {
@@ -68,12 +78,20 @@
           <button
             appButton
             type="button"
+            class="max-md:flex-1"
             [disabled]="!newName().trim() || busy()"
             (click)="createPasskey()"
           >
             {{ busy() ? t('common.actions.saving') : t('settings.passkeys.create') }}
           </button>
-          <button appButton type="button" variant="ghost" [disabled]="busy()" (click)="cancelAdding()">
+          <button
+            appButton
+            type="button"
+            variant="ghost"
+            class="max-md:flex-1"
+            [disabled]="busy()"
+            (click)="cancelAdding()"
+          >
             {{ t('common.actions.cancel') }}
           </button>
         </div>

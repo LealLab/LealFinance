@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Zarządzaj swoją tożsamością i bezpieczeństwem konta.",
+    "view": { "account": "Konto", "security": "Zabezpieczenia" },
     "identity": {
       "title": "Dane osobowe",
       "description": "Zaktualizuj nazwę i adres e-mail używane na koncie.",

@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "个人资料",
     "description": "管理您的身份和账户安全。",
+    "view": { "account": "账户", "security": "安全性" },
     "identity": {
       "title": "个人信息",
       "description": "更新账户使用的姓名和电子邮件地址。",

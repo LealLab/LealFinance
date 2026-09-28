@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Kimliğinizi ve hesap güvenliğinizi yönetin.",
+    "view": { "account": "Hesap", "security": "Güvenlik" },
     "identity": {
       "title": "Kişisel bilgiler",
       "description": "Hesabınızda kullanılan adı ve e-posta adresini güncelleyin.",

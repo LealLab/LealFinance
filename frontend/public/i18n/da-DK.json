@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Administrer din identitet og kontosikkerhed.",
+    "view": { "account": "Konto", "security": "Sikkerhed" },
     "identity": {
       "title": "Personlige oplysninger",
       "description": "Opdater det navn og den e-mailadresse, der bruges til din konto.",

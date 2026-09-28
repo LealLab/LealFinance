@@ -1984,6 +1984,7 @@
   "profile": {
     "title": "Profil",
     "description": "Spravujte svou identitu a zabezpečení účtu.",
+    "view": { "account": "Účet", "security": "Zabezpečení" },
     "identity": {
       "title": "Osobní údaje",
       "description": "Aktualizujte jméno a e-mailovou adresu používané pro váš účet.",
