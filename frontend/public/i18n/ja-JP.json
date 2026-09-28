@@ -1713,11 +1713,19 @@
         "saveError": "キーを保存できませんでした。もう一度お試しください。"
       }
     },
+    "view": {
+      "general": "一般",
+      "backup": "バックアップ",
+      "investments": "投資",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AIエージェント",
       "description": "複数のプロバイダーとMCPのツールを使って財務データを扱うAIアシスタントです。デフォルトでは無効で、Docker Compose（AGENTS_ENABLED）で設定できます。",
       "disabled": "無効",
       "enabled": "有効",
+      "memberReady": "有効で、すぐに利用できます。",
+      "memberUnavailable": "無効です。AIへのアクセスをリクエストするには管理者にお問い合わせください。",
       "manage": "管理"
     },
     "twoFactor": {

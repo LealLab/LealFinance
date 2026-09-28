@@ -1713,11 +1713,19 @@
         "saveError": "키를 저장하지 못했습니다. 다시 시도하세요."
       }
     },
+    "view": {
+      "general": "일반",
+      "backup": "백업",
+      "investments": "투자",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI 에이전트",
       "description": "MCP를 통해 여러 제공업체와 도구로 금융 데이터를 다루는 AI 도우미입니다. 기본적으로 비활성화되어 있으며 Docker Compose에서 설정할 수 있습니다(AGENTS_ENABLED).",
       "disabled": "비활성화됨",
       "enabled": "활성화됨",
+      "memberReady": "활성화되어 바로 사용할 수 있습니다.",
+      "memberUnavailable": "비활성화되어 있습니다. AI 액세스를 요청하려면 관리자에게 문의하세요.",
       "manage": "관리"
     },
     "twoFactor": {

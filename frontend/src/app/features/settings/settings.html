@@ -1,325 +1,356 @@
 <div *transloco="let t">
   <!-- t(layout.languageSwitcher.options.en-US) t(layout.languageSwitcher.options.pt-BR) t(layout.languageSwitcher.options.es-ES) t(layout.languageSwitcher.options.fr-FR) t(layout.languageSwitcher.options.de-DE) t(layout.languageSwitcher.options.it-IT) t(layout.languageSwitcher.options.nl-NL) t(layout.languageSwitcher.options.pl-PL) t(layout.languageSwitcher.options.ru-RU) t(layout.languageSwitcher.options.uk-UA) t(layout.languageSwitcher.options.tr-TR) t(layout.languageSwitcher.options.ar) t(layout.languageSwitcher.options.he-IL) t(layout.languageSwitcher.options.hi-IN) t(layout.languageSwitcher.options.zh-CN) t(layout.languageSwitcher.options.zh-TW) t(layout.languageSwitcher.options.ja-JP) t(layout.languageSwitcher.options.ko-KR) t(layout.languageSwitcher.options.id-ID) t(layout.languageSwitcher.options.vi-VN) t(layout.languageSwitcher.options.th-TH) t(layout.languageSwitcher.options.sv-SE) t(layout.languageSwitcher.options.da-DK) t(layout.languageSwitcher.options.nb-NO) t(layout.languageSwitcher.options.fi-FI) t(layout.languageSwitcher.options.cs-CZ) t(layout.languageSwitcher.options.ro-RO) t(layout.languageSwitcher.options.el-GR) t(settings.investments.marketData.title, settings.investments.marketData.description, settings.investments.marketData.twelveData, settings.investments.marketData.brapi, settings.investments.marketData.configured, settings.investments.marketData.notConfigured, settings.investments.marketData.placeholder, settings.investments.marketData.save, settings.investments.marketData.clear, settings.investments.marketData.saveError) t(errors.backup.invalid_archive, errors.backup.invalid_file_type, errors.backup.file_too_large, errors.backup.recovery_key_required, errors.backup.recovery_key_invalid, errors.backup.version_unsupported, errors.backup.data_incompatible) t(settings.backup.restore.security, settings.backup.entities.institutions, settings.backup.entities.accounts, settings.backup.entities.category_groups, settings.backup.entities.categories, settings.backup.entities.categorization_rules, settings.backup.entities.budgets, settings.backup.entities.budget_allocations, settings.backup.entities.expected_income, settings.backup.entities.recurring_rules, settings.backup.entities.loans, settings.backup.entities.goals, settings.backup.entities.manual_rates, settings.backup.entities.transactions, settings.backup.entities.investment_wallets, settings.backup.entities.investment_assets, settings.backup.entities.investment_transactions, settings.backup.warnings.obsolete_setting_skipped, settings.backup.warnings.credentials_reconnect, settings.backup.status.exported, settings.backup.status.restored) -->
-  <app-page-header [title]="t('settings.title')" [description]="t('settings.description')" />
+  <!-- t(settings.view.general, settings.view.backup, settings.view.investments, settings.view.ai) -->
+  <app-page-header [compact]="true" [title]="t('settings.title')" [description]="t('settings.description')">
+    <button appButton variant="secondary" type="button" routerLink="/onboarding">
+      <app-icon name="sparkles" [size]="16" class="text-accent" />
+      {{ t('onboarding.actions.run') }}
+    </button>
+  </app-page-header>
 
-  <button
-    appButton
-    variant="secondary"
-    type="button"
-    class="mb-6 w-full md:w-auto"
-    routerLink="/onboarding"
+  @if (preferences.errorCode(); as code) {
+    <p
+      class="mb-4 rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
+      role="alert"
+    >
+      {{ t('errors.' + code) }}
+    </p>
+  }
+
+  <!-- Same segmented control as budgets/reports/exchange. -->
+  <div
+    class="mb-4 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+    role="group"
+    [attr.aria-label]="t('settings.title')"
   >
-    <app-icon name="sparkles" [size]="16" class="text-accent" />
-    {{ t('onboarding.actions.run') }}
-  </button>
+    @for (tab of views; track tab.key) {
+      <button
+        type="button"
+        class="flex min-w-0 items-center justify-center gap-1.5 rounded px-3 py-1 text-sm whitespace-nowrap max-md:flex-auto max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === tab.key ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === tab.key"
+        (click)="view.set(tab.key)"
+      >
+        <app-icon [name]="tab.icon" [size]="16" class="max-sm:hidden" />
+        <span class="truncate">{{ t('settings.view.' + tab.key) }}</span>
+      </button>
+    }
+  </div>
 
   <div class="flex max-w-2xl flex-col gap-6">
-    <app-card>
-      <h2 class="mb-4 text-sm font-semibold text-content-primary">
-        {{ t('settings.appearance.title') }}
-      </h2>
+    @if (view() === 'general') {
+      <app-card>
+        <h2 class="mb-4 text-sm font-semibold text-content-primary">
+          {{ t('settings.appearance.title') }}
+        </h2>
 
-      <div class="mb-4">
-        <span class="form-label">{{ t('settings.appearance.theme') }}</span>
-        <div class="mt-1 grid max-w-xs grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
-          <button
-            type="button"
-            class="flex items-center justify-center gap-2 rounded px-2 py-1.5 text-sm font-medium transition-colors"
-            [class]="
-              theme.current() === 'light'
-                ? 'bg-surface-raised text-content-primary shadow-sm'
-                : 'text-content-muted hover:text-content-primary'
-            "
-            (click)="setTheme('light')"
-          >
-            <app-icon name="sun" [size]="16" />
-            {{ t('settings.appearance.light') }}
-          </button>
-          <button
-            type="button"
-            class="flex items-center justify-center gap-2 rounded px-2 py-1.5 text-sm font-medium transition-colors"
-            [class]="
-              theme.current() === 'dark'
-                ? 'bg-surface-raised text-content-primary shadow-sm'
-                : 'text-content-muted hover:text-content-primary'
-            "
-            (click)="setTheme('dark')"
-          >
-            <app-icon name="moon" [size]="16" />
-            {{ t('settings.appearance.dark') }}
-          </button>
+        <div class="mb-4">
+          <span class="form-label">{{ t('settings.appearance.theme') }}</span>
+          <div class="mt-1 grid max-w-xs grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1">
+            <button
+              type="button"
+              class="flex items-center justify-center gap-2 rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              [class]="
+                theme.current() === 'light'
+                  ? 'bg-surface-raised text-content-primary shadow-sm'
+                  : 'text-content-muted hover:text-content-primary'
+              "
+              (click)="setTheme('light')"
+            >
+              <app-icon name="sun" [size]="16" />
+              {{ t('settings.appearance.light') }}
+            </button>
+            <button
+              type="button"
+              class="flex items-center justify-center gap-2 rounded px-2 py-1.5 text-sm font-medium transition-colors"
+              [class]="
+                theme.current() === 'dark'
+                  ? 'bg-surface-raised text-content-primary shadow-sm'
+                  : 'text-content-muted hover:text-content-primary'
+              "
+              (click)="setTheme('dark')"
+            >
+              <app-icon name="moon" [size]="16" />
+              {{ t('settings.appearance.dark') }}
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label class="form-label" for="settings-language">{{
-          t('settings.appearance.language')
-        }}</label>
-        <select
-          #languageSelect
-          id="settings-language"
-          class="form-input w-full max-w-xs"
-          (change)="setLang($any($event.target).value)"
-        >
-          @for (lang of availableLangs; track lang) {
-            <option
-              [value]="lang"
-              [selected]="lang === activeLang()"
-              [textContent]="t('layout.languageSwitcher.options.' + lang)"
-            ></option>
-          }
-        </select>
-      </div>
-    </app-card>
-
-    <app-card>
-      <h2 class="mb-4 text-sm font-semibold text-content-primary">
-        {{ t('settings.currency.title') }}
-      </h2>
-      <p class="mb-3 text-sm text-content-muted">{{ t('settings.currency.description') }}</p>
-      <app-currency-select
-        #displayCurrencySelect
-        [id]="'settings-display-currency'"
-        class="max-w-xs"
-        [value]="displayCurrencyService.currency()"
-        (valueChange)="setDisplayCurrency($event)"
-      />
-    </app-card>
-
-    <app-card>
-      <h2 class="mb-1 text-sm font-semibold text-content-primary">
-        {{ t('settings.backup.title') }}
-      </h2>
-      <p class="mb-4 text-sm text-content-muted">{{ t('settings.backup.description') }}</p>
-      <div #backupActions class="flex flex-col gap-2 sm:flex-row">
-        <button
-          id="settings-backup-export"
-          appButton
-          type="button"
-          variant="primary"
-          (click)="openExport()"
-        >
-          <app-icon name="arrowDownLeft" [size]="16" />
-          {{ t('settings.backup.export.action') }}
-        </button>
-        <button
-          id="settings-backup-restore"
-          appButton
-          type="button"
-          variant="secondary"
-          (click)="openRestore()"
-        >
-          <app-icon name="refresh" [size]="16" />
-          {{ t('settings.backup.restore.action') }}
-        </button>
-      </div>
-      @if (backupStatus(); as status) {
-        <p class="mt-3 text-sm text-positive" role="status">
-          {{ t('settings.backup.status.' + status) }}
-        </p>
-      }
-    </app-card>
-
-    <app-card>
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h2 class="mb-1 text-sm font-semibold text-content-primary">
-            {{ t('settings.investments.title') }}
-          </h2>
-          <p class="max-w-md text-sm text-content-muted">
-            {{ t('settings.investments.description') }}
-          </p>
+          <label class="form-label" for="settings-language">{{
+            t('settings.appearance.language')
+          }}</label>
+          <select
+            #languageSelect
+            id="settings-language"
+            class="form-input w-full max-w-xs"
+            (change)="setLang($any($event.target).value)"
+          >
+            @for (lang of availableLangs; track lang) {
+              <option
+                [value]="lang"
+                [selected]="lang === activeLang()"
+                [textContent]="t('layout.languageSwitcher.options.' + lang)"
+              ></option>
+            }
+          </select>
         </div>
-        <label class="flex items-center gap-2 text-sm text-content-muted sm:shrink-0">
-          <input
-            type="checkbox"
-            [checked]="preferences.preferences()?.investmentsEnabled ?? false"
-            (change)="setInvestmentsEnabled($any($event.target).checked)"
-          />
-          {{ t('settings.investments.enable') }}
-        </label>
-      </div>
+      </app-card>
 
-      <div class="mt-5 border-t border-border pt-4">
-        <h3 class="mb-1 text-sm font-semibold text-content-primary">
-          {{ t('settings.investments.marketData.title') }}
-        </h3>
-        <p class="mb-4 text-sm text-content-muted">
-          {{ t('settings.investments.marketData.description') }}
-        </p>
-        <div class="flex flex-col gap-4">
-          @for (provider of marketDataProviders; track provider.id) {
-            <div>
-              <div class="mb-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-                <label class="form-label" [for]="'market-data-' + provider.id">
-                  {{ t('settings.investments.marketData.' + provider.labelKey) }}
-                </label>
-                @if (provider.id === 'coingecko') {
-                  <span class="text-xs text-content-muted">{{ t('settings.investments.marketData.coinGeckoNoKeyHint') }}</span>
-                }
-                <span
-                  class="rounded-full px-2.5 py-1 text-xs font-medium"
-                  [class]="
-                    marketDataStatus(provider.id)?.configured
-                      ? 'bg-positive/10 text-positive'
-                      : 'bg-surface-sunken text-content-muted'
-                  "
-                >
-                  {{
-                    marketDataStatus(provider.id)?.configured
-                      ? t('settings.investments.marketData.configured')
-                      : t('settings.investments.marketData.notConfigured')
-                  }}
-                </span>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <input
-                  [id]="'market-data-' + provider.id"
-                  type="password"
-                  class="form-input min-w-0 flex-1 basis-40"
-                  [placeholder]="t('settings.investments.marketData.placeholder')"
-                  [value]="marketDataKeys[provider.id]()"
-                  (input)="setMarketDataKey(provider.id, $any($event.target).value)"
-                />
-                <button
-                  appButton
-                  type="button"
-                  variant="primary"
-                  [disabled]="!marketDataKeys[provider.id]().trim() || marketDataSaving() !== null"
-                  (click)="saveMarketDataKey(provider.id)"
-                >
-                  {{ t('settings.investments.marketData.save') }}
-                </button>
-                @if (marketDataStatus(provider.id)?.source === 'user') {
-                  <button
-                    appButton
-                    type="button"
-                    variant="secondary"
-                    [disabled]="marketDataSaving() !== null"
-                    (click)="clearMarketDataKey(provider.id)"
-                  >
-                    {{ t('settings.investments.marketData.clear') }}
-                  </button>
-                }
-              </div>
-            </div>
-          }
-        </div>
-        @if (marketDataSaveError()) {
-          <p class="mt-3 text-sm text-negative" role="alert">
-            {{ t('settings.investments.marketData.saveError') }}
-          </p>
-        }
-      </div>
-    </app-card>
+      <app-card>
+        <h2 class="mb-4 text-sm font-semibold text-content-primary">
+          {{ t('settings.currency.title') }}
+        </h2>
+        <p class="mb-3 text-sm text-content-muted">{{ t('settings.currency.description') }}</p>
+        <app-currency-select
+          #displayCurrencySelect
+          [id]="'settings-display-currency'"
+          class="max-w-xs"
+          [value]="displayCurrencyService.currency()"
+          (valueChange)="setDisplayCurrency($event)"
+        />
+      </app-card>
+    }
 
-    @if (session.user()?.role === 'admin' || session.user()?.aiChatEnabled) {
-      <!-- t(errors.agents.instructions_rejected, errors.agents.not_configured, errors.agents.provider_unavailable) -->
+    @if (view() === 'backup') {
       <app-card>
         <h2 class="mb-1 text-sm font-semibold text-content-primary">
-          {{ t('settings.aiInstructions.title') }}
+          {{ t('settings.backup.title') }}
         </h2>
-        <p class="mb-4 max-w-md text-sm text-content-muted">
-          {{ t('settings.aiInstructions.body') }}
-        </p>
-
-        @if (aiInstructionsLoadError()) {
-          <p class="mb-3 text-sm text-negative" role="alert">
-            {{ t('settings.aiInstructions.loadError') }}
-          </p>
-        }
-
-        <label class="form-label" for="settings-ai-instructions">
-          {{ t('settings.aiInstructions.label') }}
-        </label>
-        <textarea
-          id="settings-ai-instructions"
-          class="form-input min-h-32 w-full"
-          rows="5"
-          [attr.maxlength]="aiInstructionsMaxLength"
-          [value]="aiInstructions()"
-          [placeholder]="t('settings.aiInstructions.placeholder')"
-          (input)="setAiInstructions($any($event.target).value)"
-        ></textarea>
-        <p class="form-hint">
-          {{
-            t('settings.aiInstructions.counter', {
-              count: aiInstructions().length,
-              max: aiInstructionsMaxLength,
-            })
-          }}
-        </p>
-
-        <div class="mt-3 flex flex-wrap items-center gap-3">
+        <p class="mb-4 text-sm text-content-muted">{{ t('settings.backup.description') }}</p>
+        <div #backupActions class="flex flex-col gap-2 sm:flex-row">
           <button
+            id="settings-backup-export"
             appButton
             type="button"
-            [disabled]="aiInstructionsBusy() || aiInstructionsLoadError()"
-            (click)="saveAiInstructions()"
+            variant="primary"
+            (click)="openExport()"
           >
-            {{ t('settings.aiInstructions.save') }}
+            <app-icon name="arrowDownLeft" [size]="16" />
+            {{ t('settings.backup.export.action') }}
           </button>
-          @if (aiInstructionsSaved()) {
-            <span class="text-sm text-content-muted">{{ t('settings.aiInstructions.saved') }}</span>
-          }
+          <button
+            id="settings-backup-restore"
+            appButton
+            type="button"
+            variant="secondary"
+            (click)="openRestore()"
+          >
+            <app-icon name="refresh" [size]="16" />
+            {{ t('settings.backup.restore.action') }}
+          </button>
         </div>
-
-        @if (aiInstructionsErrorCode(); as code) {
-          <p class="mt-3 text-sm text-negative" role="alert">
-            {{ t('errors.' + code) }}
-            @if (aiInstructionsReason(); as reason) {
-              <span class="block text-content-muted">{{ reason }}</span>
-            }
+        @if (backupStatus(); as status) {
+          <p class="mt-3 text-sm text-positive" role="status">
+            {{ t('settings.backup.status.' + status) }}
           </p>
         }
       </app-card>
-
-      <app-memories-section />
     }
 
-    @if (preferences.errorCode(); as code) {
-      <p
-        class="rounded-md border border-negative/30 bg-negative/10 p-3 text-sm text-negative"
-        role="alert"
-      >
-        {{ t('errors.' + code) }}
-      </p>
-    }
-
-    <app-card>
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-        <div>
-          <h2 class="mb-1 flex items-center gap-2 text-sm font-semibold text-content-primary">
-            {{ t('settings.agents.title') }}
-          </h2>
-          <p class="max-w-md text-sm text-content-muted">{{ t('settings.agents.description') }}</p>
+    @if (view() === 'investments') {
+      <app-card>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <div>
+            <h2 class="mb-1 text-sm font-semibold text-content-primary">
+              {{ t('settings.investments.title') }}
+            </h2>
+            <p class="max-w-md text-sm text-content-muted">
+              {{ t('settings.investments.description') }}
+            </p>
+          </div>
+          <label class="flex items-center gap-2 text-sm text-content-muted sm:shrink-0">
+            <input
+              type="checkbox"
+              [checked]="preferences.preferences()?.investmentsEnabled ?? false"
+              (change)="setInvestmentsEnabled($any($event.target).checked)"
+            />
+            {{ t('settings.investments.enable') }}
+          </label>
         </div>
-        <div class="flex flex-wrap items-center gap-2 sm:shrink-0">
-          <span
-            class="rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted"
-          >
-            {{
-              metadata.settings()?.agentsEnabled
-                ? t('settings.agents.enabled')
-                : t('settings.agents.disabled')
-            }}
-          </span>
-          @if (metadata.settings()?.agentsEnabled && session.user()?.role === 'admin') {
-            <a
-              routerLink="/admin/providers"
-              class="rounded-full bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/20"
-            >
-              {{ t('settings.agents.manage') }}
-            </a>
+
+        <div class="mt-5 border-t border-border pt-4">
+          <h3 class="mb-1 text-sm font-semibold text-content-primary">
+            {{ t('settings.investments.marketData.title') }}
+          </h3>
+          <p class="mb-4 text-sm text-content-muted">
+            {{ t('settings.investments.marketData.description') }}
+          </p>
+          <div class="flex flex-col gap-4">
+            @for (provider of marketDataProviders; track provider.id) {
+              <div>
+                <div class="mb-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                  <label class="form-label" [for]="'market-data-' + provider.id">
+                    {{ t('settings.investments.marketData.' + provider.labelKey) }}
+                  </label>
+                  @if (provider.id === 'coingecko') {
+                    <span class="text-xs text-content-muted">{{ t('settings.investments.marketData.coinGeckoNoKeyHint') }}</span>
+                  }
+                  <span
+                    class="rounded-full px-2.5 py-1 text-xs font-medium"
+                    [class]="
+                      marketDataStatus(provider.id)?.configured
+                        ? 'bg-positive/10 text-positive'
+                        : 'bg-surface-sunken text-content-muted'
+                    "
+                  >
+                    {{
+                      marketDataStatus(provider.id)?.configured
+                        ? t('settings.investments.marketData.configured')
+                        : t('settings.investments.marketData.notConfigured')
+                    }}
+                  </span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <input
+                    [id]="'market-data-' + provider.id"
+                    type="password"
+                    class="form-input min-w-0 flex-1 basis-40"
+                    [placeholder]="t('settings.investments.marketData.placeholder')"
+                    [value]="marketDataKeys[provider.id]()"
+                    (input)="setMarketDataKey(provider.id, $any($event.target).value)"
+                  />
+                  <button
+                    appButton
+                    type="button"
+                    variant="primary"
+                    class="max-md:flex-1"
+                    [disabled]="!marketDataKeys[provider.id]().trim() || marketDataSaving() !== null"
+                    (click)="saveMarketDataKey(provider.id)"
+                  >
+                    {{ t('settings.investments.marketData.save') }}
+                  </button>
+                  @if (marketDataStatus(provider.id)?.source === 'user') {
+                    <button
+                      appButton
+                      type="button"
+                      variant="secondary"
+                      class="max-md:flex-1"
+                      [disabled]="marketDataSaving() !== null"
+                      (click)="clearMarketDataKey(provider.id)"
+                    >
+                      {{ t('settings.investments.marketData.clear') }}
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+          @if (marketDataSaveError()) {
+            <p class="mt-3 text-sm text-negative" role="alert">
+              {{ t('settings.investments.marketData.saveError') }}
+            </p>
           }
         </div>
-      </div>
-    </app-card>
+      </app-card>
+    }
+
+    @if (view() === 'ai') {
+      <app-card>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <div>
+            <h2 class="mb-1 flex items-center gap-2 text-sm font-semibold text-content-primary">
+              {{ t('settings.agents.title') }}
+            </h2>
+            <!-- Admins get the deployment detail; members just need to know whether chat works for them. -->
+            <p class="max-w-md text-sm text-content-muted">
+              {{
+                session.user()?.role === 'admin'
+                  ? t('settings.agents.description')
+                  : agentsStatusOn()
+                    ? t('settings.agents.memberReady')
+                    : t('settings.agents.memberUnavailable')
+              }}
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 sm:shrink-0">
+            <span
+              class="rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-content-muted"
+            >
+              {{ agentsStatusOn() ? t('settings.agents.enabled') : t('settings.agents.disabled') }}
+            </span>
+            @if (metadata.settings()?.agentsEnabled && session.user()?.role === 'admin') {
+              <a
+                routerLink="/admin/providers"
+                class="rounded-full bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/20"
+              >
+                {{ t('settings.agents.manage') }}
+              </a>
+            }
+          </div>
+        </div>
+      </app-card>
+
+      @if (hasChat()) {
+        <!-- t(errors.agents.instructions_rejected, errors.agents.not_configured, errors.agents.provider_unavailable) -->
+        <app-card>
+          <h2 class="mb-1 text-sm font-semibold text-content-primary">
+            {{ t('settings.aiInstructions.title') }}
+          </h2>
+          <p class="mb-4 max-w-md text-sm text-content-muted">
+            {{ t('settings.aiInstructions.body') }}
+          </p>
+
+          @if (aiInstructionsLoadError()) {
+            <p class="mb-3 text-sm text-negative" role="alert">
+              {{ t('settings.aiInstructions.loadError') }}
+            </p>
+          }
+
+          <label class="form-label" for="settings-ai-instructions">
+            {{ t('settings.aiInstructions.label') }}
+          </label>
+          <textarea
+            id="settings-ai-instructions"
+            class="form-input min-h-32 w-full"
+            rows="5"
+            [attr.maxlength]="aiInstructionsMaxLength"
+            [value]="aiInstructions()"
+            [placeholder]="t('settings.aiInstructions.placeholder')"
+            (input)="setAiInstructions($any($event.target).value)"
+          ></textarea>
+          <p class="form-hint">
+            {{
+              t('settings.aiInstructions.counter', {
+                count: aiInstructions().length,
+                max: aiInstructionsMaxLength,
+              })
+            }}
+          </p>
+
+          <div class="mt-3 flex flex-wrap items-center gap-3">
+            <button
+              appButton
+              type="button"
+              [disabled]="aiInstructionsBusy() || aiInstructionsLoadError()"
+              (click)="saveAiInstructions()"
+            >
+              {{ t('settings.aiInstructions.save') }}
+            </button>
+            @if (aiInstructionsSaved()) {
+              <span class="text-sm text-content-muted">{{ t('settings.aiInstructions.saved') }}</span>
+            }
+          </div>
+
+          @if (aiInstructionsErrorCode(); as code) {
+            <p class="mt-3 text-sm text-negative" role="alert">
+              {{ t('errors.' + code) }}
+              @if (aiInstructionsReason(); as reason) {
+                <span class="block text-content-muted">{{ reason }}</span>
+              }
+            </p>
+          }
+        </app-card>
+
+        <app-memories-section />
+      }
+    }
   </div>
 
   @if (exportOpen()) {
     <app-modal
       [open]="exportOpen()"
+      [sheet]="true"
       (openChange)="setExportOpen($event)"
       [titleText]="t('settings.backup.export.title')"
     >
@@ -425,6 +456,7 @@
   @if (restoreOpen()) {
     <app-modal
       [open]="restoreOpen()"
+      [sheet]="true"
       (openChange)="setRestoreOpen($event)"
       [titleText]="t('settings.backup.restore.title')"
     >

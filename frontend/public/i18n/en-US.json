@@ -1737,11 +1737,19 @@
         "saveError": "Could not save this key. Try again."
       }
     },
+    "view": {
+      "general": "General",
+      "backup": "Backup",
+      "investments": "Investments",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI agents",
       "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default - configurable in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disabled",
       "enabled": "Enabled",
+      "memberReady": "Active and ready to use.",
+      "memberUnavailable": "Disabled. Contact your administrator to request access to AI.",
       "manage": "Manage"
     },
     "twoFactor": {

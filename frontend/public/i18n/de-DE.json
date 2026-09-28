@@ -1713,11 +1713,19 @@
         "saveError": "Der Schlüssel konnte nicht gespeichert werden. Versuchen Sie es erneut."
       }
     },
+    "view": {
+      "general": "Allgemein",
+      "backup": "Sicherung",
+      "investments": "Investitionen",
+      "ai": "KI"
+    },
     "agents": {
       "title": "KI-Agenten",
       "description": "KI-Agenten für Ihre Finanzdaten mit mehreren Anbietern und Tools über MCP. Standardmäßig deaktiviert – in Docker Compose konfigurierbar (AGENTS_ENABLED).",
       "disabled": "Deaktiviert",
       "enabled": "Aktiviert",
+      "memberReady": "Aktiv und einsatzbereit.",
+      "memberUnavailable": "Deaktiviert. Wenden Sie sich an Ihren Admin, um Zugriff auf KI zu beantragen.",
       "manage": "Verwalten"
     },
     "twoFactor": {

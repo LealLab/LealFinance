@@ -1713,11 +1713,19 @@
         "saveError": "Impossible d’enregistrer cette clé. Réessayez."
       }
     },
+    "view": {
+      "general": "Général",
+      "backup": "Sauvegarde",
+      "investments": "Investissements",
+      "ai": "IA"
+    },
     "agents": {
       "title": "Agents IA",
       "description": "Assistants IA pour vos données financières, avec plusieurs fournisseurs et outils via MCP. Désactivé par défaut — configurable dans Docker Compose (AGENTS_ENABLED).",
       "disabled": "Désactivé",
       "enabled": "Activé",
+      "memberReady": "Actif et prêt à l'emploi.",
+      "memberUnavailable": "Désactivé. Contactez votre administrateur pour demander l'accès à l'IA.",
       "manage": "Gérer"
     },
     "twoFactor": {

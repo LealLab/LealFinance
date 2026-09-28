@@ -1713,11 +1713,19 @@
         "saveError": "Cheia nu a putut fi salvată. Încearcă din nou."
       }
     },
+    "view": {
+      "general": "General",
+      "backup": "Backup",
+      "investments": "Investiții",
+      "ai": "AI"
+    },
     "agents": {
       "title": "Agenți AI",
       "description": "Asistenți AI pentru datele tale financiare, cu mai mulți furnizori și instrumente prin MCP. Sunt dezactivați implicit și pot fi configurați în Docker Compose (AGENTS_ENABLED).",
       "disabled": "Dezactivați",
       "enabled": "Activați",
+      "memberReady": "Activi și gata de utilizare.",
+      "memberUnavailable": "Dezactivați. Contactează administratorul tău pentru a solicita acces la AI.",
       "manage": "Gestionare"
     },
     "twoFactor": {

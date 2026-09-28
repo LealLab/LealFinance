@@ -1713,11 +1713,19 @@
         "saveError": "Không thể lưu khóa này. Hãy thử lại."
       }
     },
+    "view": {
+      "general": "Chung",
+      "backup": "Sao lưu",
+      "investments": "Đầu tư",
+      "ai": "AI"
+    },
     "agents": {
       "title": "Tác nhân AI",
       "description": "Trợ lý AI trên dữ liệu tài chính của bạn, với nhiều nhà cung cấp và công cụ thông qua MCP. Tắt theo mặc định - có thể cấu hình trong Docker Compose (AGENTS_ENABLED).",
       "disabled": "Đã tắt",
       "enabled": "Đã bật",
+      "memberReady": "Đã bật và sẵn sàng sử dụng.",
+      "memberUnavailable": "Đã tắt. Hãy liên hệ với quản trị viên để yêu cầu quyền truy cập AI.",
       "manage": "Quản lý"
     },
     "twoFactor": {

@@ -1713,11 +1713,19 @@
         "saveError": "Não foi possível salvar esta chave. Tente novamente."
       }
     },
+    "view": {
+      "general": "Geral",
+      "backup": "Backup",
+      "investments": "Investimentos",
+      "ai": "IA"
+    },
     "agents": {
       "title": "Agentes de IA",
       "description": "Assistentes de IA sobre os seus dados financeiros, com múltiplos provedores e ferramentas via MCP. Desativado por padrão - configurável no Docker Compose (AGENTS_ENABLED).",
       "disabled": "Desativado",
       "enabled": "Ativado",
+      "memberReady": "Ativo e pronto para uso.",
+      "memberUnavailable": "Desativado. Entre em contato com o administrador para solicitar acesso à IA.",
       "manage": "Gerenciar"
     },
     "twoFactor": {

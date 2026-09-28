@@ -1713,11 +1713,19 @@
         "saveError": "Kunne ikke lagre nøkkelen. Prøv igjen."
       }
     },
+    "view": {
+      "general": "Generelt",
+      "backup": "Sikkerhetskopi",
+      "investments": "Investeringer",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agenter",
       "description": "AI-assistenter for økonomidataene dine, med flere leverandører og verktøy via MCP. Deaktivert som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Deaktivert",
       "enabled": "Aktivert",
+      "memberReady": "Aktiv og klar til bruk.",
+      "memberUnavailable": "Deaktivert. Kontakt administratoren din for å be om tilgang til AI.",
       "manage": "Administrer"
     },
     "twoFactor": {

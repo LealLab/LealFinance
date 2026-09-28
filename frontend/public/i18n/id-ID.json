@@ -1713,11 +1713,19 @@
         "saveError": "Kunci tidak dapat disimpan. Coba lagi."
       }
     },
+    "view": {
+      "general": "Umum",
+      "backup": "Cadangan",
+      "investments": "Investasi",
+      "ai": "AI"
+    },
     "agents": {
       "title": "Agen AI",
       "description": "Asisten AI untuk data keuangan Anda, dengan berbagai penyedia dan alat melalui MCP. Dinonaktifkan secara default — dapat dikonfigurasi di Docker Compose (AGENTS_ENABLED).",
       "disabled": "Dinonaktifkan",
       "enabled": "Diaktifkan",
+      "memberReady": "Aktif dan siap digunakan.",
+      "memberUnavailable": "Dinonaktifkan. Hubungi administrator Anda untuk meminta akses ke AI.",
       "manage": "Kelola"
     },
     "twoFactor": {

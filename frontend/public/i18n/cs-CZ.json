@@ -1713,11 +1713,19 @@
         "saveError": "Klíč se nepodařilo uložit. Zkuste to znovu."
       }
     },
+    "view": {
+      "general": "Obecné",
+      "backup": "Záloha",
+      "investments": "Investice",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI agenti",
       "description": "AI asistenti pracující s vašimi finančními daty, s podporou více poskytovatelů a nástrojů přes MCP. Ve výchozím nastavení jsou vypnuti – lze je nastavit v Docker Compose (AGENTS_ENABLED).",
       "disabled": "Vypnuto",
       "enabled": "Zapnuto",
+      "memberReady": "Aktivováno a připraveno k použití.",
+      "memberUnavailable": "Vypnuto. Pro přístup k AI kontaktujte svého správce.",
       "manage": "Spravovat"
     },
     "twoFactor": {

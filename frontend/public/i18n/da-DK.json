@@ -1713,11 +1713,19 @@
         "saveError": "Nøglen kunne ikke gemmes. Prøv igen."
       }
     },
+    "view": {
+      "general": "Generelt",
+      "backup": "Sikkerhedskopi",
+      "investments": "Investeringer",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agenter",
       "description": "AI-assistenter til dine finansielle data med flere udbydere og værktøjer via MCP. De er deaktiveret som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Deaktiveret",
       "enabled": "Aktiveret",
+      "memberReady": "Aktiveret og klar til brug.",
+      "memberUnavailable": "Deaktiveret. Kontakt din admin for at anmode om adgang til AI.",
       "manage": "Administrer"
     },
     "twoFactor": {

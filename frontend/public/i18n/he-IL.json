@@ -1713,11 +1713,19 @@
         "saveError": "לא ניתן לשמור את המפתח. נסו שוב."
       }
     },
+    "view": {
+      "general": "כללי",
+      "backup": "גיבוי",
+      "investments": "השקעות",
+      "ai": "AI"
+    },
     "agents": {
       "title": "סוכני AI",
       "description": "עוזרי AI מעל הנתונים הפיננסיים שלכם, עם כמה ספקים וכלים דרך MCP. מושבתים כברירת מחדל – ניתנים להגדרה ב־Docker Compose (AGENTS_ENABLED).",
       "disabled": "מושבתים",
       "enabled": "מופעלים",
+      "memberReady": "פעיל ומוכן לשימוש.",
+      "memberUnavailable": "מושבת. פנו למנהל המערכת שלכם כדי לבקש גישה ל-AI.",
       "manage": "ניהול"
     },
     "twoFactor": {

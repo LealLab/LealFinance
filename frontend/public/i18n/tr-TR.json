@@ -1713,11 +1713,19 @@
         "saveError": "Bu anahtar kaydedilemedi. Tekrar deneyin."
       }
     },
+    "view": {
+      "general": "Genel",
+      "backup": "Yedekleme",
+      "investments": "Yatırımlar",
+      "ai": "YZ"
+    },
     "agents": {
       "title": "Yapay zekâ aracıları",
       "description": "MCP üzerinden birden çok sağlayıcı ve araçla finansal verileriniz üzerinde çalışan yapay zekâ asistanları. Varsayılan olarak devre dışıdır; Docker Compose (AGENTS_ENABLED) üzerinden yapılandırılabilir.",
       "disabled": "Devre dışı",
       "enabled": "Etkin",
+      "memberReady": "Etkin ve kullanıma hazır.",
+      "memberUnavailable": "Devre dışı. Yapay zekâya erişim talep etmek için yöneticinizle iletişime geçin.",
       "manage": "Yönet"
     },
     "twoFactor": {

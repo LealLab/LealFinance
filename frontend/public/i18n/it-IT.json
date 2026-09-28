@@ -1713,11 +1713,19 @@
         "saveError": "Impossibile salvare la chiave. Riprova."
       }
     },
+    "view": {
+      "general": "Generale",
+      "backup": "Backup",
+      "investments": "Investimenti",
+      "ai": "IA"
+    },
     "agents": {
       "title": "Agenti IA",
       "description": "Assistenti IA sui tuoi dati finanziari, con più provider e strumenti tramite MCP. Disattivati per impostazione predefinita; configurabili in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disattivati",
       "enabled": "Attivati",
+      "memberReady": "Attivi e pronti all'uso.",
+      "memberUnavailable": "Disattivati. Contatta il tuo amministratore per richiedere l'accesso all'IA.",
       "manage": "Gestisci"
     },
     "twoFactor": {

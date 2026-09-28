@@ -1713,11 +1713,19 @@
         "saveError": "Nie udało się zapisać klucza. Spróbuj ponownie."
       }
     },
+    "view": {
+      "general": "Ogólne",
+      "backup": "Kopia zapasowa",
+      "investments": "Inwestycje",
+      "ai": "AI"
+    },
     "agents": {
       "title": "Agenci AI",
       "description": "Asystenci AI pracujący na danych finansowych, z wieloma dostawcami i narzędziami przez MCP. Domyślnie wyłączeni — można ich skonfigurować w Docker Compose (AGENTS_ENABLED).",
       "disabled": "Wyłączeni",
       "enabled": "Włączeni",
+      "memberReady": "Aktywni i gotowi do użycia.",
+      "memberUnavailable": "Wyłączeni. Skontaktuj się z administratorem, aby poprosić o dostęp do AI.",
       "manage": "Zarządzaj"
     },
     "twoFactor": {

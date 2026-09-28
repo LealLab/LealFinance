@@ -1713,11 +1713,19 @@
         "saveError": "Det gick inte att spara nyckeln. Försök igen."
       }
     },
+    "view": {
+      "general": "Allmänt",
+      "backup": "Säkerhetskopiering",
+      "investments": "Investeringar",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agenter",
       "description": "AI-assistenter för dina ekonomiska data, med flera leverantörer och verktyg via MCP. Inaktiverat som standard – kan konfigureras i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Inaktiverade",
       "enabled": "Aktiverade",
+      "memberReady": "Aktiverade och redo att användas.",
+      "memberUnavailable": "Inaktiverade. Kontakta din administratör för att begära åtkomst till AI.",
       "manage": "Hantera"
     },
     "twoFactor": {

@@ -1713,11 +1713,19 @@
         "saveError": "Avaimen tallennus epäonnistui. Yritä uudelleen."
       }
     },
+    "view": {
+      "general": "Yleiset",
+      "backup": "Varmuuskopio",
+      "investments": "Sijoitukset",
+      "ai": "Tekoäly"
+    },
     "agents": {
       "title": "Tekoälyagentit",
       "description": "Taloustietojasi käsittelevät tekoälyavustajat, jotka tukevat useita palveluntarjoajia ja MCP-työkaluja. Oletuksena pois käytöstä – määritettävissä Docker Composessa (AGENTS_ENABLED).",
       "disabled": "Pois käytöstä",
       "enabled": "Käytössä",
+      "memberReady": "Aktiivinen ja käyttövalmis.",
+      "memberUnavailable": "Pois käytöstä. Pyydä käyttöoikeus tekoälyyn järjestelmänvalvojaltasi.",
       "manage": "Hallinnoi"
     },
     "twoFactor": {

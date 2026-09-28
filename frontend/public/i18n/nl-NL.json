@@ -1713,11 +1713,19 @@
         "saveError": "Deze sleutel kon niet worden opgeslagen. Probeer het opnieuw."
       }
     },
+    "view": {
+      "general": "Algemeen",
+      "backup": "Back-up",
+      "investments": "Beleggingen",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agents",
       "description": "AI-agents voor je financiële gegevens, met meerdere aanbieders en tools via MCP. Standaard uitgeschakeld – instelbaar in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Uitgeschakeld",
       "enabled": "Ingeschakeld",
+      "memberReady": "Actief en klaar voor gebruik.",
+      "memberUnavailable": "Uitgeschakeld. Neem contact op met je beheerder om toegang tot AI aan te vragen.",
       "manage": "Beheren"
     },
     "twoFactor": {

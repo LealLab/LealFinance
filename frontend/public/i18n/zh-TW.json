@@ -1713,11 +1713,19 @@
         "saveError": "無法儲存此金鑰，請再試一次。"
       }
     },
+    "view": {
+      "general": "通用",
+      "backup": "備份",
+      "investments": "投資",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI 代理程式",
       "description": "透過 MCP 使用多個提供者與工具，操作你的財務資料的 AI 助手。預設停用，可在 Docker Compose（AGENTS_ENABLED）中設定。",
       "disabled": "已停用",
       "enabled": "已啟用",
+      "memberReady": "已啟用，可以使用。",
+      "memberUnavailable": "已停用。請聯絡管理員以申請 AI 使用權限。",
       "manage": "管理"
     },
     "twoFactor": {
