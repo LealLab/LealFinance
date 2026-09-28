@@ -1998,6 +1998,11 @@
       "title": "Aucun rapprochement sélectionné",
       "description": "Démarrez un rapprochement ci-dessus ou choisissez-en un précédent."
     },
+    "filter": {
+      "all": "Tous",
+      "pending": "En attente",
+      "empty": "Aucun élément avec ce statut."
+    },
     "loadError": "Impossible de charger les rapprochements. Réessayez.",
     "confirmDelete": {
       "title": "Supprimer le rapprochement ?",

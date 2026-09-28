@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Rekonsiliasi", "start": "Mulai rekonsiliasi", "complete": "Selesaikan", "reopen": "Buka kembali", "delete": "Hapus" },
     "status": { "open": "Terbuka", "completed": "Selesai" },
     "empty": { "title": "Tidak ada rekonsiliasi yang dipilih", "description": "Mulai rekonsiliasi di atas atau pilih rekonsiliasi sebelumnya." },
+    "filter": {
+      "all": "Semua",
+      "pending": "Tertunda",
+      "empty": "Tidak ada item dengan status ini."
+    },
     "loadError": "Rekonsiliasi tidak dapat dimuat. Coba lagi.",
     "confirmDelete": { "title": "Hapus rekonsiliasi?", "message": "Rekonsiliasi dan penandaannya akan dihapus. Lanjutkan?" }
   },

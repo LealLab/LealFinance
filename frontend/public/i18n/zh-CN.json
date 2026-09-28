@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "对账", "start": "开始对账", "complete": "完成", "reopen": "重新打开", "delete": "删除" },
     "status": { "open": "进行中", "completed": "已完成" },
     "empty": { "title": "未选择对账", "description": "在上方开始对账，或选择之前的对账。" },
+    "filter": {
+      "all": "全部",
+      "pending": "待对账",
+      "empty": "没有此状态的项目。"
+    },
     "loadError": "无法加载对账记录，请重试。",
     "confirmDelete": { "title": "删除对账？", "message": "对账记录及其标记将被删除。是否继续？" }
   },

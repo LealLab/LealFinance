@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Avstem", "start": "Start avstemming", "complete": "Fullfør", "reopen": "Åpne på nytt", "delete": "Slett" },
     "status": { "open": "Åpen", "completed": "Fullført" },
     "empty": { "title": "Ingen avstemming valgt", "description": "Start en avstemming ovenfor eller velg en tidligere." },
+    "filter": {
+      "all": "Alle",
+      "pending": "Ventende",
+      "empty": "Ingen poster med denne statusen."
+    },
     "loadError": "Kunne ikke laste inn avstemmingene. Prøv igjen.",
     "confirmDelete": { "title": "Slette avstemming?", "message": "Avstemmingen og markeringene slettes. Vil du fortsette?" }
   },

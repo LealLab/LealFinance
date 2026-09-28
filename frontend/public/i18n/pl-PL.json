@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Uzgodnij", "start": "Rozpocznij uzgodnienie", "complete": "Zakończ", "reopen": "Otwórz ponownie", "delete": "Usuń" },
     "status": { "open": "Otwarte", "completed": "Zakończone" },
     "empty": { "title": "Nie wybrano uzgodnienia", "description": "Rozpocznij uzgodnienie powyżej lub wybierz wcześniejsze." },
+    "filter": {
+      "all": "Wszystkie",
+      "pending": "Oczekująca",
+      "empty": "Brak pozycji o tym statusie."
+    },
     "loadError": "Nie udało się załadować uzgodnień. Spróbuj ponownie.",
     "confirmDelete": { "title": "Usunąć uzgodnienie?", "message": "Uzgodnienie i jego oznaczenia zostaną usunięte. Kontynuować?" }
   },

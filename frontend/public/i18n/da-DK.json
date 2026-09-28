@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Afstem", "start": "Start afstemning", "complete": "Gennemfør", "reopen": "Genåbn", "delete": "Slet" },
     "status": { "open": "Åben", "completed": "Gennemført" },
     "empty": { "title": "Ingen afstemning valgt", "description": "Start en afstemning ovenfor, eller vælg en tidligere." },
+    "filter": {
+      "all": "Alle",
+      "pending": "Udestående",
+      "empty": "Ingen poster med denne status."
+    },
     "loadError": "Afstemninger kunne ikke indlæses. Prøv igen.",
     "confirmDelete": { "title": "Slet afstemning?", "message": "Afstemningen og dens markeringer slettes. Vil du fortsætte?" }
   },

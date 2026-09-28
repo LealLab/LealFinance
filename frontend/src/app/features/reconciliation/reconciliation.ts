@@ -21,8 +21,11 @@ import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { LoadError } from '../../shared/ui/load-error/load-error';
+import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { StatTile, StatTone } from '../../shared/ui/stat-tile/stat-tile';
+
+type EntryFilter = 'all' | 'pending' | 'cleared';
 
 @Component({
   selector: 'app-reconciliation',
@@ -35,6 +38,7 @@ import { StatTile, StatTone } from '../../shared/ui/stat-tile/stat-tile';
     Card,
     EmptyState,
     LoadError,
+    Modal,
     PageHeader,
     StatTile,
   ],
@@ -61,6 +65,9 @@ export class Reconciliation {
   });
   protected readonly saving = signal(false);
   protected readonly mutationErrorKey = signal<string | undefined>(undefined);
+  protected readonly formOpen = signal(false);
+  protected readonly entryFilterOptions = ['all', 'pending', 'cleared'] as const;
+  protected readonly entryFilter = signal<EntryFilter>('all');
 
   protected readonly form = this.formBuilder.nonNullable.group({
     accountId: ['', Validators.required],
@@ -74,6 +81,19 @@ export class Reconciliation {
     if (!detail || isZero(money(detail.difference, detail.reconciliation.currency))) return 'default';
     return isNegative(money(detail.difference, detail.reconciliation.currency)) ? 'negative' : 'positive';
   });
+  protected readonly entryCounts = computed<Record<EntryFilter, number>>(() => {
+    const entries = this.selected()?.entries ?? [];
+    const cleared = entries.filter((entry) => entry.cleared).length;
+    return { all: entries.length, pending: entries.length - cleared, cleared };
+  });
+  protected readonly visibleEntries = computed(() => {
+    const entries = this.selected()?.entries ?? [];
+    const filter = this.entryFilter();
+    return filter === 'all' ? entries : entries.filter((entry) => entry.cleared === (filter === 'cleared'));
+  });
+  protected readonly emptyEntriesKey = computed(() =>
+    this.entryCounts().all === 0 ? 'reconciliation.entries.empty' : 'reconciliation.filter.empty',
+  );
   protected readonly canComplete = computed(() => {
     const detail = this.selected();
     return !!detail && detail.reconciliation.status === 'open' && isZero(
@@ -83,11 +103,19 @@ export class Reconciliation {
 
   constructor() {
     const accountId = this.route.snapshot.queryParamMap.get('accountId');
-    if (accountId) this.form.controls.accountId.setValue(accountId);
+    if (accountId) {
+      this.form.controls.accountId.setValue(accountId);
+      this.formOpen.set(true);
+    }
     effect(() => {
       const items = this.reconciliationsResource.value();
       if (!this.selectedId() && items?.[0]) this.selectedId.set(items[0].id);
     });
+  }
+
+  protected openForm(): void {
+    this.mutationErrorKey.set(undefined);
+    this.formOpen.set(true);
   }
 
   protected submit(): void {
@@ -101,6 +129,7 @@ export class Reconciliation {
     this.repository.create(input).subscribe({
       next: (reconciliation) => {
         this.saving.set(false);
+        this.formOpen.set(false);
         this.selectedId.set(reconciliation.id);
         this.reconciliationsResource.reload();
       },

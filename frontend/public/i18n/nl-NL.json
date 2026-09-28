@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Afstemmen", "start": "Afstemming starten", "complete": "Voltooien", "reopen": "Heropenen", "delete": "Verwijderen" },
     "status": { "open": "Open", "completed": "Voltooid" },
     "empty": { "title": "Geen afstemming geselecteerd", "description": "Start hierboven een afstemming of kies een eerdere." },
+    "filter": {
+      "all": "Alle",
+      "pending": "Openstaand",
+      "empty": "Geen items met deze status."
+    },
     "loadError": "Afstemmingen konden niet worden geladen. Probeer het opnieuw.",
     "confirmDelete": { "title": "Afstemming verwijderen?", "message": "De afstemming en gemarkeerde transacties worden verwijderd. Doorgaan?" }
   },

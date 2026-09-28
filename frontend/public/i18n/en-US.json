@@ -2022,6 +2022,11 @@
       "title": "No reconciliation selected",
       "description": "Start a reconciliation above or choose an earlier one."
     },
+    "filter": {
+      "all": "All",
+      "pending": "Pending",
+      "empty": "No items with this status."
+    },
     "loadError": "Could not load reconciliations. Try again.",
     "confirmDelete": {
       "title": "Delete reconciliation?",

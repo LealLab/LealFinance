@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Sladit", "start": "Zahájit odsouhlasení", "complete": "Dokončit", "reopen": "Znovu otevřít", "delete": "Smazat" },
     "status": { "open": "Otevřené", "completed": "Dokončené" },
     "empty": { "title": "Není vybráno žádné odsouhlasení", "description": "Začněte odsouhlasení výše nebo vyberte dřívější." },
+    "filter": {
+      "all": "Vše",
+      "pending": "Neodsouhlaseno",
+      "empty": "Žádné položky s tímto stavem."
+    },
     "loadError": "Odsouhlasení se nepodařilo načíst. Zkuste to znovu.",
     "confirmDelete": { "title": "Smazat odsouhlasení?", "message": "Odsouhlasení a jeho označení budou smazána. Pokračovat?" }
   },

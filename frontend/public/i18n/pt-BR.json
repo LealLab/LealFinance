@@ -1998,6 +1998,11 @@
       "title": "Nenhuma conciliação selecionada",
       "description": "Inicie uma conciliação acima ou escolha uma anterior."
     },
+    "filter": {
+      "all": "Todos",
+      "pending": "Pendentes",
+      "empty": "Nenhum item com essa situação."
+    },
     "loadError": "Não foi possível carregar as conciliações. Tente novamente.",
     "confirmDelete": {
       "title": "Excluir conciliação?",

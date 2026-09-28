@@ -1998,6 +1998,11 @@
       "title": "Kein Abgleich ausgewählt",
       "description": "Starten Sie oben einen Abgleich oder wählen Sie einen früheren aus."
     },
+    "filter": {
+      "all": "Alle",
+      "pending": "Offen",
+      "empty": "Keine Einträge mit diesem Status."
+    },
     "loadError": "Abgleiche konnten nicht geladen werden. Versuchen Sie es erneut.",
     "confirmDelete": {
       "title": "Abgleich löschen?",

@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Riconcilia", "start": "Avvia riconciliazione", "complete": "Completa", "reopen": "Riapri", "delete": "Elimina" },
     "status": { "open": "Aperta", "completed": "Completata" },
     "empty": { "title": "Nessuna riconciliazione selezionata", "description": "Avvia una riconciliazione sopra o scegline una precedente." },
+    "filter": {
+      "all": "Tutti",
+      "pending": "In sospeso",
+      "empty": "Nessuna voce con questo stato."
+    },
     "loadError": "Impossibile caricare le riconciliazioni. Riprova.",
     "confirmDelete": { "title": "Eliminare la riconciliazione?", "message": "La riconciliazione e le relative marcature verranno eliminate. Continuare?" }
   },

@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "對帳", "start": "開始對帳", "complete": "完成", "reopen": "重新開啟", "delete": "刪除" },
     "status": { "open": "進行中", "completed": "已完成" },
     "empty": { "title": "未選擇對帳", "description": "在上方開始對帳，或選擇之前的對帳。" },
+    "filter": {
+      "all": "全部",
+      "pending": "待對帳",
+      "empty": "沒有此狀態的項目。"
+    },
     "loadError": "無法載入對帳記錄，請再試一次。",
     "confirmDelete": { "title": "刪除對帳？", "message": "對帳記錄及其標記將被刪除。是否繼續？" }
   },

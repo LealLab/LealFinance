@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "照合", "start": "照合を開始", "complete": "完了", "reopen": "再開", "delete": "削除" },
     "status": { "open": "未完了", "completed": "完了" },
     "empty": { "title": "照合が選択されていません", "description": "上で照合を開始するか、以前の照合を選択してください。" },
+    "filter": {
+      "all": "すべて",
+      "pending": "未消込",
+      "empty": "この状態の項目はありません。"
+    },
     "loadError": "照合を読み込めませんでした。もう一度お試しください。",
     "confirmDelete": { "title": "照合を削除しますか？", "message": "照合と消込マークが削除されます。続行しますか？" }
   },

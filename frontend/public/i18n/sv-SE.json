@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Avstäm", "start": "Starta avstämning", "complete": "Slutför", "reopen": "Öppna igen", "delete": "Ta bort" },
     "status": { "open": "Öppen", "completed": "Slutförd" },
     "empty": { "title": "Ingen avstämning vald", "description": "Starta en avstämning ovan eller välj en tidigare." },
+    "filter": {
+      "all": "Alla",
+      "pending": "Väntande",
+      "empty": "Inga poster med denna status."
+    },
     "loadError": "Det gick inte att läsa in avstämningar. Försök igen.",
     "confirmDelete": { "title": "Ta bort avstämning?", "message": "Avstämningen och dess markeringar tas bort. Vill du fortsätta?" }
   },

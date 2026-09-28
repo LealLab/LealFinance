@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Reconciliere", "start": "Începe reconcilierea", "complete": "Finalizează", "reopen": "Redeschide", "delete": "Șterge" },
     "status": { "open": "Deschisă", "completed": "Finalizată" },
     "empty": { "title": "Nu este selectată nicio reconciliere", "description": "Începe o reconciliere mai sus sau alege una anterioară." },
+    "filter": {
+      "all": "Toate",
+      "pending": "În așteptare",
+      "empty": "Niciun element cu această stare."
+    },
     "loadError": "Reconciliile nu au putut fi încărcate. Încearcă din nou.",
     "confirmDelete": { "title": "Ștergi reconcilierea?", "message": "Reconcilierea și marcajele sale vor fi șterse. Continui?" }
   },

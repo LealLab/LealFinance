@@ -1,50 +1,70 @@
 <div *transloco="let t">
-  <!-- t(reconciliation.loadError, errors.reconciliation.account_archived, errors.reconciliation.already_open, errors.reconciliation.completed, errors.reconciliation.transaction_not_eligible, errors.reconciliation.leg_locked, errors.reconciliation.difference_not_zero, errors.transaction.reconciled, reconciliation.status.open, reconciliation.status.completed, reconciliation.entries.legType.own, reconciliation.entries.legType.incoming, reconciliation.confirmDelete.title, reconciliation.confirmDelete.message) -->
-  <app-page-header [title]="t('reconciliation.title')" [description]="t('reconciliation.description')" />
+  <!-- t(reconciliation.loadError, errors.reconciliation.account_archived, errors.reconciliation.already_open, errors.reconciliation.completed, errors.reconciliation.transaction_not_eligible, errors.reconciliation.leg_locked, errors.reconciliation.difference_not_zero, errors.transaction.reconciled, reconciliation.status.open, reconciliation.status.completed, reconciliation.entries.legType.own, reconciliation.entries.legType.incoming, reconciliation.confirmDelete.title, reconciliation.confirmDelete.message, reconciliation.filter.all, reconciliation.filter.pending, reconciliation.filter.empty, reconciliation.entries.empty) -->
+  <app-page-header [title]="t('reconciliation.title')" [description]="t('reconciliation.description')" [compact]="true">
+    <button appButton variant="primary" type="button" (click)="openForm()">
+      {{ t('reconciliation.actions.start') }}
+    </button>
+  </app-page-header>
 
   @if (accountsResource.error()) {
     <app-load-error [messageKey]="'reconciliation.loadError'" (retry)="accountsResource.reload()" />
   } @else if (accountsResource.value(); as accounts) {
-    <div class="flex flex-col gap-6">
-      <app-card>
-        <form class="grid grid-cols-1 gap-4 sm:grid-cols-4" [formGroup]="form" (ngSubmit)="submit()">
-          <label class="flex flex-col gap-1 text-sm text-content-muted sm:col-span-2">
-            {{ t('reconciliation.form.account') }}
-            <select class="form-input" formControlName="accountId">
-              <option value="">{{ t('reconciliation.form.chooseAccount') }}</option>
-              @for (account of accounts; track account.id) {
-                @if (!account.archived) {
-                  <option [value]="account.id">{{ account.name }} ({{ account.currency }})</option>
-                }
+    <app-modal [(open)]="formOpen" [sheet]="true" [titleText]="t('reconciliation.actions.start')">
+      <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
+        <div>
+          <label class="form-label" for="reconciliation-account">{{ t('reconciliation.form.account') }}</label>
+          <select id="reconciliation-account" class="form-input" formControlName="accountId">
+            <option value="">{{ t('reconciliation.form.chooseAccount') }}</option>
+            @for (account of accounts; track account.id) {
+              @if (!account.archived) {
+                <option [value]="account.id">{{ account.name }} ({{ account.currency }})</option>
               }
-            </select>
-          </label>
-          <label class="flex flex-col gap-1 text-sm text-content-muted">
-            {{ t('reconciliation.form.statementDate') }}
-            <input class="form-input" type="date" formControlName="statementDate" />
-          </label>
-          <label class="flex flex-col gap-1 text-sm text-content-muted">
-            {{ t('reconciliation.form.statementBalance') }}
-            <input class="form-input" type="text" inputmode="decimal" formControlName="statementBalance" />
-          </label>
-          <div class="flex items-end sm:col-span-4">
-            <button appButton variant="primary" type="submit" [disabled]="saving()">
-              {{ t('reconciliation.actions.start') }}
-            </button>
+            }
+          </select>
+        </div>
+        <div class="grid gap-3 min-[25rem]:grid-cols-2">
+          <div>
+            <label class="form-label" for="reconciliation-date">{{ t('reconciliation.form.statementDate') }}</label>
+            <input id="reconciliation-date" class="form-input" type="date" formControlName="statementDate" />
           </div>
-        </form>
-      </app-card>
+          <div>
+            <label class="form-label" for="reconciliation-balance">{{ t('reconciliation.form.statementBalance') }}</label>
+            <input
+              id="reconciliation-balance"
+              class="form-input"
+              type="text"
+              inputmode="decimal"
+              formControlName="statementBalance"
+            />
+          </div>
+        </div>
+        @if (mutationErrorKey(); as errorKey) {
+          <p class="text-sm font-medium text-negative" role="alert">{{ t(errorKey) }}</p>
+        }
+        <div class="flex flex-wrap justify-end gap-2 border-t border-border pt-4">
+          <button appButton variant="secondary" type="button" class="max-md:flex-1" (click)="formOpen.set(false)">
+            {{ t('common.actions.cancel') }}
+          </button>
+          <button appButton variant="primary" type="submit" class="max-md:flex-1" [disabled]="saving()">
+            {{ t('reconciliation.actions.start') }}
+          </button>
+        </div>
+      </form>
+    </app-modal>
 
+    <div class="flex flex-col gap-6">
       @if (reconciliationsResource.error()) {
         <app-load-error [messageKey]="'reconciliation.loadError'" (retry)="reconciliationsResource.reload()" />
       } @else if ((reconciliationsResource.value() ?? []).length > 0) {
-        <div class="flex flex-wrap gap-2">
+        <div class="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:pb-0">
           @for (item of reconciliationsResource.value(); track item.id) {
             <button
               appButton
               variant="secondary"
               type="button"
+              class="shrink-0 whitespace-nowrap"
               [class.border-accent]="selectedId() === item.id"
+              [attr.aria-pressed]="selectedId() === item.id"
               (click)="select(item.id)"
             >
               {{ accountName(item.accountId) }} · {{ item.statementDate }}
@@ -60,19 +80,50 @@
         <app-load-error [messageKey]="'reconciliation.loadError'" (retry)="detailResource.reload()" />
       } @else if (selected(); as detail) {
         <app-card>
-          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 class="text-lg font-semibold text-content-primary">{{ accountName(detail.reconciliation.accountId) }}</h2>
+          <div class="mb-4 flex flex-wrap items-start justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="text-lg font-semibold text-content-primary">{{ accountName(detail.reconciliation.accountId) }}</h2>
+                <app-badge [tone]="detail.reconciliation.status === 'completed' ? 'positive' : 'accent'">
+                  {{ t(reconciliationStatus(detail.reconciliation)) }}
+                </app-badge>
+              </div>
               <p class="text-sm text-content-muted">
                 {{ t('reconciliation.detail.asOf', { date: detail.reconciliation.statementDate }) }}
               </p>
             </div>
-            <app-badge [tone]="detail.reconciliation.status === 'completed' ? 'positive' : 'accent'">
-              {{ t(reconciliationStatus(detail.reconciliation)) }}
-            </app-badge>
+            <div class="flex gap-2 max-md:w-full">
+              @if (detail.reconciliation.status === 'open') {
+                <button
+                  appButton
+                  variant="primary"
+                  type="button"
+                  class="max-md:flex-1"
+                  [disabled]="saving() || !canComplete()"
+                  (click)="complete()"
+                >
+                  {{ t('reconciliation.actions.complete') }}
+                </button>
+              } @else {
+                <button appButton variant="secondary" type="button" class="max-md:flex-1" [disabled]="saving()" (click)="reopen()">
+                  {{ t('reconciliation.actions.reopen') }}
+                </button>
+              }
+              <button appButton variant="danger" type="button" class="max-md:flex-1" [disabled]="saving()" (click)="remove()">
+                {{ t('reconciliation.actions.delete') }}
+              </button>
+            </div>
           </div>
 
-          <div class="grid gap-3 sm:grid-cols-3">
+          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <app-stat-tile
+              class="col-span-2 sm:col-span-1"
+              [label]="t('reconciliation.stat.difference')"
+              [value]="detail.difference | money: detail.reconciliation.currency"
+              [tone]="differenceTone()"
+              [prominent]="true"
+              prominentUntil="sm"
+            />
             <app-stat-tile
               [label]="t('reconciliation.stat.statement')"
               [value]="detail.statementBalance | money: detail.reconciliation.currency"
@@ -81,21 +132,38 @@
               [label]="t('reconciliation.stat.cleared')"
               [value]="detail.clearedBalance | money: detail.reconciliation.currency"
             />
-            <app-stat-tile
-              [label]="t('reconciliation.stat.difference')"
-              [value]="detail.difference | money: detail.reconciliation.currency"
-              [tone]="differenceTone()"
-            />
           </div>
 
-          @if (mutationErrorKey(); as errorKey) {
+          @if (!formOpen() && mutationErrorKey(); as errorKey) {
             <p class="mt-4 rounded border border-negative/30 bg-negative/10 p-3 text-sm text-negative" role="alert">
               {{ t(errorKey) }}
             </p>
           }
 
-          <div class="mt-6 divide-y divide-border rounded border border-border md:hidden">
-            @for (entry of detail.entries; track entry.transactionId + entry.leg) {
+          <!-- Same segmented control as agenda. -->
+          <div
+            class="mt-6 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+            role="group"
+            [attr.aria-label]="t('reconciliation.entries.cleared')"
+          >
+            @for (option of entryFilterOptions; track option) {
+              <button
+                type="button"
+                class="flex items-center justify-center gap-1.5 rounded px-3 py-1 text-sm whitespace-nowrap max-md:min-w-0 max-md:flex-1 max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+                [class]="entryFilter() === option ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+                [attr.aria-pressed]="entryFilter() === option"
+                (click)="entryFilter.set(option)"
+              >
+                <span class="truncate">{{
+                  t(option === 'cleared' ? 'reconciliation.entries.cleared' : 'reconciliation.filter.' + option)
+                }}</span>
+                <span class="text-xs text-content-muted tabular-nums">{{ entryCounts()[option] }}</span>
+              </button>
+            }
+          </div>
+
+          <div class="mt-3 divide-y divide-border rounded border border-border md:hidden">
+            @for (entry of visibleEntries(); track entry.transactionId + entry.leg) {
               <label class="flex items-start gap-3 px-3 py-3 [@media(pointer:coarse)]:min-h-11">
                 <input
                   type="checkbox"
@@ -118,11 +186,11 @@
                 </div>
               </label>
             } @empty {
-              <p class="px-3 py-6 text-center text-content-muted">{{ t('reconciliation.entries.empty') }}</p>
+              <p class="px-3 py-6 text-center text-content-muted">{{ t(emptyEntriesKey()) }}</p>
             }
           </div>
 
-          <div class="mt-6 hidden overflow-x-auto rounded border border-border md:block">
+          <div class="mt-3 hidden overflow-x-auto rounded border border-border md:block">
             <table class="min-w-[34rem] w-full text-sm">
               <thead class="border-b border-border text-left text-xs uppercase tracking-wide text-content-muted">
                 <tr>
@@ -134,7 +202,7 @@
                 </tr>
               </thead>
               <tbody>
-                @for (entry of detail.entries; track entry.transactionId + entry.leg) {
+                @for (entry of visibleEntries(); track entry.transactionId + entry.leg) {
                   <tr class="border-b border-border last:border-b-0">
                     <td class="px-3 py-3 whitespace-nowrap text-content-muted">{{ entry.date }}</td>
                     <td class="px-3 py-3 text-content-primary">{{ entry.description }}</td>
@@ -154,25 +222,10 @@
                     </td>
                   </tr>
                 } @empty {
-                  <tr><td class="px-3 py-6 text-center text-content-muted" colspan="5">{{ t('reconciliation.entries.empty') }}</td></tr>
+                  <tr><td class="px-3 py-6 text-center text-content-muted" colspan="5">{{ t(emptyEntriesKey()) }}</td></tr>
                 }
               </tbody>
             </table>
-          </div>
-
-          <div class="mt-5 flex flex-wrap justify-end gap-2">
-            @if (detail.reconciliation.status === 'open') {
-              <button appButton variant="primary" type="button" [disabled]="saving() || !canComplete()" (click)="complete()">
-                {{ t('reconciliation.actions.complete') }}
-              </button>
-            } @else {
-              <button appButton variant="secondary" type="button" [disabled]="saving()" (click)="reopen()">
-                {{ t('reconciliation.actions.reopen') }}
-              </button>
-            }
-            <button appButton variant="danger" type="button" [disabled]="saving()" (click)="remove()">
-              {{ t('reconciliation.actions.delete') }}
-            </button>
           </div>
         </app-card>
       } @else {

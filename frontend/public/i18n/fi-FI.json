@@ -1975,6 +1975,11 @@
     "actions": { "reconcile": "Täsmäytä", "start": "Aloita täsmäytys", "complete": "Viimeistele", "reopen": "Avaa uudelleen", "delete": "Poista" },
     "status": { "open": "Avoin", "completed": "Valmis" },
     "empty": { "title": "Täsmäytystä ei ole valittu", "description": "Aloita täsmäytys ylhäältä tai valitse aiempi täsmäytys." },
+    "filter": {
+      "all": "Kaikki",
+      "pending": "Avoin",
+      "empty": "Ei kohteita tässä tilassa."
+    },
     "loadError": "Täsmäytyksiä ei voitu ladata. Yritä uudelleen.",
     "confirmDelete": { "title": "Poistetaanko täsmäytys?", "message": "Täsmäytys ja sen merkinnät poistetaan. Jatketaanko?" }
   },
