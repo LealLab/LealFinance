@@ -67,16 +67,86 @@ describe('Reports', () => {
     ).toBe(true);
   });
 
-  it('switches to a custom period and shows the date inputs', async () => {
+  it('shows one chart tab at a time', async () => {
     const fixture = TestBed.createComponent(Reports);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    const tabs = () => element.querySelectorAll<HTMLButtonElement>('[role="group"] button');
 
-    fixture.componentInstance['period'].set('custom');
+    expect(tabs()[0].getAttribute('aria-pressed')).toBe('true');
+    expect(element.querySelectorAll('app-chart')).toHaveLength(2);
+    expect(element.querySelector('table')).toBeNull();
+
+    tabs()[1].click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('app-chart')).toHaveLength(1);
+    expect(element.querySelector('table')).not.toBeNull();
+
+    tabs()[2].click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('app-chart')).toHaveLength(1);
+    expect(element.querySelector('table')).toBeNull();
+  });
+
+  it('edits the custom range in a sheet and applies it only when valid', async () => {
+    const fixture = TestBed.createComponent(Reports);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    const select = element.querySelector('select') as HTMLSelectElement;
+    const from = element.querySelector('#report-range-from') as HTMLInputElement;
+    const to = element.querySelector('#report-range-to') as HTMLInputElement;
+    const apply = () =>
+      element.querySelector('app-modal button[variant="primary"]') as HTMLButtonElement;
+    const type = (input: HTMLInputElement, value: string) => {
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    };
+
+    select.value = 'custom';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(element.querySelector('dialog')?.hasAttribute('open')).toBe(true);
+    expect(fixture.componentInstance['period']()).toBe('6m');
+
+    type(from, '2026-05');
+    type(to, '2026-02');
+    expect(apply().disabled).toBe(true);
+    expect(element.querySelector('app-modal [role="alert"]')).not.toBeNull();
+
+    type(to, '2026-07');
+    apply().click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance['period']()).toBe('custom');
+    expect(fixture.componentInstance['buckets']().map((bucket) => bucket.key)).toEqual([
+      '2026-05',
+      '2026-06',
+      '2026-07',
+    ]);
+    expect(element.querySelector('dialog')?.hasAttribute('open')).toBe(false);
+  });
+
+  it('restores the previous period when the custom range sheet is dismissed', async () => {
+    const fixture = TestBed.createComponent(Reports);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    const select = element.querySelector('select') as HTMLSelectElement;
+
+    select.value = 'custom';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    (element.querySelector('app-modal button[variant="secondary"]') as HTMLButtonElement).click();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelectorAll('input[type="month"]').length).toBe(2);
+    expect(element.querySelector('dialog')?.hasAttribute('open')).toBe(false);
+    expect(fixture.componentInstance['period']()).toBe('6m');
+    expect(select.value).toBe('6m');
   });
 
   it('refetches all aggregates when the report period changes', async () => {

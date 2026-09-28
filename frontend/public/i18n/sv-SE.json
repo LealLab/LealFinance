@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Visa alla",
+    "charts": {
+      "label": "Diagram"
+    },
     "ratesUnavailable": "Vissa totalsummor behöver en växelkurs som inte är tillgänglig just nu.",
     "title": "Översikt",
     "welcome": "Välkommen till LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Sparandegrad"
     },
     "cashFlow": {
+      "tab": "Kassaflöde",
       "title": "Kassaflöde (6 månader)",
       "income": "Inkomster",
       "expense": "Utgifter"
@@ -409,7 +414,8 @@
       "edit": "Redigera",
       "archive": "Arkivera",
       "unarchive": "Återställ",
-      "delete": "Ta bort konto"
+      "delete": "Ta bort konto",
+      "more": "Mer"
     },
     "archive": {
       "title": "Arkivera konto?",
@@ -541,6 +547,7 @@
     "title": "Transaktioner",
     "description": "Inkomster, utgifter och överföringar.",
     "actions": {
+      "more": "Mer",
       "new": "Ny transaktion",
       "edit": "Redigera",
       "delete": "Ta bort",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Transaktionshistorik","loading":"Läser in historik…","empty":"Ingen historik ännu.","loadError":"Det gick inte att läsa in transaktionshistoriken.","operation":{"create":"Skapad","update":"Uppdaterad","delete":"Borttagen"},"source":{"manual":"Manuell","import":"Import","import_undo":"Ångra import","recurring":"Återkommande","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massåtgärd"},"field":{"type":"Typ","date":"Datum","amount":"Belopp","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivning","notes":"Anteckningar","recurring_rule_id":"Återkommande regel","loan_id":"Lån","card_invoice_close_date":"Fakturans stängningsdatum","installment_group_id":"Avbetalningsgrupp","installment_number":"Avbetalningsnummer","installment_count":"Antal avbetalningar","conversion_amount":"Konverterat belopp","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsavgift","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskälla"}},
     "tabs": {
-      "transactions": "Transaktioner",
       "recurring": "Återkommande"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Överföring"
     },
     "filters": {
+      "apply": "Visa resultat",
       "type": "Typ",
       "account": "Konto",
       "category": "Kategori",
@@ -574,7 +581,6 @@
       "amountMin": "Lägsta belopp",
       "amountMax": "Högsta belopp",
       "any": "Alla",
-      "back": "Tillbaka",
       "dateRange": "Från {{from}} till {{to}}",
       "amountRange": "Från {{min}} till {{max}}",
       "removeChip": "Ta bort filtret {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Ta bort",
       "collapse": "Fäll ihop",
       "expand": "Expandera",
-      "dragHandle": "Ändra ordning"
+      "dragHandle": "Ändra ordning",
+      "more": "Mer"
     },
     "empty": {
       "title": "Inga kategorier ännu",
       "description": "Skapa grupper och kategorier för att organisera dina transaktioner."
-    },
-    "sections": {
-      "income": "Inkomstkategorier",
-      "expense": "Utgiftskategorier"
     },
     "delete": {
       "title": "Ta bort kategori?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatisering",
     "title": "Regler",
     "description": "Kategorisera transaktioner automatiskt när du importerar dem.",
-    "card": {
-      "title": "Kategoriseringsregler"
-    },
     "actions": {
       "export": "Exportera",
       "import": "Importera",
@@ -850,8 +850,10 @@
       "reapply": "Tillämpa igen",
       "add": "Lägg till",
       "delete": "Ta bort",
-      "edit": "Redigera"
+      "edit": "Redigera",
+      "more": "Mer"
     },
+    "inactive": "Inaktiv",
     "sort": {
       "label": "Sortera efter",
       "priority": "Prioritet",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Månadsgränser"
     },
+    "view": {
+      "chart": "Diagram",
+      "values": "Belopp"
+    },
     "planner": {
       "title": "Inkomstbaserad budget",
       "description": "Fördela din förväntade inkomst mellan kategorier.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Återställ mål",
       "deposit": "Lägg till pengar",
       "withdraw": "Ta ut pengar",
-      "interest": "Lägg till ränta"
+      "interest": "Lägg till ränta",
+      "more": "Mer"
     },
     "empty": {
       "title": "Inga mål ännu",
@@ -1098,6 +1105,7 @@
       "archive": "Arkivera lån",
       "unarchive": "Avarkivera lån",
       "recordPayment": "Registrera betalning",
+      "more": "Mer",
       "delete": "Ta bort lån"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Redigera investeringsportföljen",
       "archiveWallet": "Arkivera investeringsportföljen",
       "unarchiveWallet": "Ta bort investeringsportföljen från arkivet",
-      "view": "Visa",
+      "more": "Mer",
       "newTransaction": "Registrera transaktion",
       "editTransaction": "Redigera transaktion",
       "deleteTransaction": "Ta bort transaktion",
@@ -1239,6 +1247,17 @@
       "marketValue": "Marknadsvärde",
       "unrealizedGain": "Orealiserad vinst",
       "multiCurrencyHint": "Portföljer i andra valutor ingår inte i dessa totaler."
+    },
+    "help": {
+      "label": "Vad är {{label}}?",
+      "marketValue": "Vad dina positioner är värda idag: varje tillgångs antal gånger dess senaste pris. Om en tillgång saknar pris visas totalen som —.",
+      "bookValue": "Vad du betalade för de positioner du fortfarande innehar: varje tillgångs antal gånger dess genomsnittliga inköpskostnad.",
+      "unrealizedGain": "Marknadsvärde minus bokfört värde: vad du skulle vinna (eller förlora) om du sålde allt idag. Det blir en verklig vinst först när du säljer."
+    },
+    "view": {
+      "positions": "Innehav",
+      "ledger": "Transaktioner",
+      "assets": "Tillgångar"
     },
     "empty": {
       "title": "Inga investeringsportföljer ännu",
@@ -1411,6 +1430,17 @@
       "expense": "Utgifter",
       "netFlow": "Nettoflöde",
       "categories": "Kategorier"
+    },
+    "view": {
+      "flow": "Flöde",
+      "categories": "Kategorier",
+      "balance": "Saldon"
+    },
+    "range": {
+      "from": "Från",
+      "to": "Till",
+      "apply": "Visa resultat",
+      "invalid": "Slutmånaden måste vara densamma som eller efter startmånaden."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Inflöde",
       "outflow": "Utflöde"
+    },
+    "filter": {
+      "all": "Alla",
+      "empty": "Inga poster med denna status."
+    },
+    "today": "Idag",
+    "help": {
+      "label": "Vad är {{label}}?",
+      "projectedCashImpact": "Vad som fortfarande kommer in minus vad som fortfarande går ut de kommande 30 dagarna: återkommande transaktioner, kortfakturor och lånebetalningar som ännu inte har bokförts. Positivt innebär överskott; negativt innebär underskott.",
+      "realizedCashImpact": "Inflöden minus utflöden för poster i detta 30-dagarsfönster som redan har bokförts eller betalats.",
+      "projectedOutflow": "Hur mycket som fortfarande går ut de kommande 30 dagarna: återkommande utgifter, öppna kortfakturor och förfallna lånebetalningar.",
+      "realizedOutflow": "Hur mycket som redan har gått ut i detta 30-dagarsfönster för poster som redan har betalats."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Uppdatera nu"
+      "refresh": "Uppdatera nu",
+      "more": "Mer"
     },
     "refresh": {
       "updated": "{{count}} kurser uppdaterade.",
       "upToDate": "Kurserna är redan uppdaterade."
+    },
+    "help": {
+      "label": "Vad är {{label}}?",
+      "feesPaid": "Summan av omräkningsavgifterna på dina transaktioner i utländsk valuta, omräknad till din visningsvaluta."
+    },
+    "view": {
+      "pending": "Väntande",
+      "live": "Live",
+      "manual": "Manuella"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Det gick inte att spara nyckeln. Försök igen."
       }
     },
+    "view": {
+      "general": "Allmänt",
+      "backup": "Säkerhetskopiering",
+      "investments": "Investeringar",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agenter",
       "description": "AI-assistenter för dina ekonomiska data, med flera leverantörer och verktyg via MCP. Inaktiverat som standard – kan konfigureras i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Inaktiverade",
       "enabled": "Aktiverade",
+      "memberReady": "Aktiverade och redo att användas.",
+      "memberUnavailable": "Inaktiverade. Kontakta din administratör för att begära åtkomst till AI.",
       "manage": "Hantera"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Avstäm", "start": "Starta avstämning", "complete": "Slutför", "reopen": "Öppna igen", "delete": "Ta bort" },
     "status": { "open": "Öppen", "completed": "Slutförd" },
     "empty": { "title": "Ingen avstämning vald", "description": "Starta en avstämning ovan eller välj en tidigare." },
+    "filter": {
+      "all": "Alla",
+      "pending": "Väntande",
+      "empty": "Inga poster med denna status."
+    },
     "loadError": "Det gick inte att läsa in avstämningar. Försök igen.",
     "confirmDelete": { "title": "Ta bort avstämning?", "message": "Avstämningen och dess markeringar tas bort. Vill du fortsätta?" }
   },
   "profile": {
     "title": "Profil",
     "description": "Hantera din identitet och kontosäkerhet.",
+    "view": { "account": "Konto", "security": "Säkerhet" },
     "identity": {
       "title": "Personuppgifter",
       "description": "Uppdatera namnet och e-postadressen som används för ditt konto.",

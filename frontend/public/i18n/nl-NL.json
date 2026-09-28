@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Alles bekijken",
+    "charts": {
+      "label": "Grafiek"
+    },
     "ratesUnavailable": "Sommige totalen hebben een wisselkoers nodig die momenteel niet beschikbaar is.",
     "title": "Overzicht",
     "welcome": "Welkom bij LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Spaarpercentage"
     },
     "cashFlow": {
+      "tab": "Kasstroom",
       "title": "Kasstroom (6 maanden)",
       "income": "Inkomsten",
       "expense": "Uitgaven"
@@ -409,7 +414,8 @@
       "edit": "Bewerken",
       "archive": "Archiveren",
       "unarchive": "Uit archief halen",
-      "delete": "Rekening verwijderen"
+      "delete": "Rekening verwijderen",
+      "more": "Meer"
     },
     "archive": {
       "title": "Rekening archiveren?",
@@ -541,6 +547,7 @@
     "title": "Transacties",
     "description": "Inkomsten, uitgaven en overboekingen.",
     "actions": {
+      "more": "Meer",
       "new": "Nieuwe transactie",
       "edit": "Bewerken",
       "delete": "Verwijderen",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Transactiegeschiedenis","loading":"Geschiedenis laden…","empty":"Nog geen geschiedenis.","loadError":"De transactiegeschiedenis kon niet worden geladen.","operation":{"create":"Aangemaakt","update":"Bijgewerkt","delete":"Verwijderd"},"source":{"manual":"Handmatig","import":"Import","import_undo":"Import ongedaan maken","recurring":"Terugkerend","loan":"Lening","card":"Kaart","investment":"Belegging","bulk":"Bulk"},"field":{"type":"Type","date":"Datum","amount":"Bedrag","currency":"Valuta","account_id":"Rekening","to_account_id":"Doelrekening","category_id":"Categorie","description":"Beschrijving","notes":"Notities","recurring_rule_id":"Terugkerende regel","loan_id":"Lening","card_invoice_close_date":"Sluitingsdatum factuur","installment_group_id":"Termijngroep","installment_number":"Termijnnummer","installment_count":"Aantal termijnen","conversion_amount":"Omgerekend bedrag","conversion_currency":"Conversievaluta","conversion_fee":"Conversiekosten","conversion_rate":"Conversiekoers","conversion_source":"Conversiebron"}},
     "tabs": {
-      "transactions": "Transacties",
       "recurring": "Terugkerend"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Overboeking"
     },
     "filters": {
+      "apply": "Toon resultaten",
       "type": "Type",
       "account": "Rekening",
       "category": "Categorie",
@@ -574,7 +581,6 @@
       "amountMin": "Minimumsbedrag",
       "amountMax": "Maximumbedrag",
       "any": "Elke",
-      "back": "Terug",
       "dateRange": "Van {{from}} t/m {{to}}",
       "amountRange": "Van {{min}} t/m {{max}}",
       "removeChip": "Filter {{filter}} verwijderen"
@@ -797,15 +803,12 @@
       "delete": "Verwijderen",
       "collapse": "Inklappen",
       "expand": "Uitklappen",
-      "dragHandle": "Volgorde wijzigen"
+      "dragHandle": "Volgorde wijzigen",
+      "more": "Meer"
     },
     "empty": {
       "title": "Nog geen categorieën",
       "description": "Maak groepen en categorieën aan om je transacties te ordenen."
-    },
-    "sections": {
-      "income": "Inkomstencategorieën",
-      "expense": "Uitgavencategorieën"
     },
     "delete": {
       "title": "Categorie verwijderen?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatisering",
     "title": "Regels",
     "description": "Categoriseer transacties automatisch tijdens het importeren.",
-    "card": {
-      "title": "Categorisatieregels"
-    },
     "actions": {
       "export": "Exporteren",
       "import": "Importeren",
@@ -850,8 +850,10 @@
       "reapply": "Opnieuw toepassen",
       "add": "Toevoegen",
       "delete": "Verwijderen",
-      "edit": "Bewerken"
+      "edit": "Bewerken",
+      "more": "Meer"
     },
+    "inactive": "Inactief",
     "sort": {
       "label": "Sorteren op",
       "priority": "Prioriteit",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Maandlimieten"
     },
+    "view": {
+      "chart": "Grafiek",
+      "values": "Bedragen"
+    },
     "planner": {
       "title": "Budget op basis van inkomsten",
       "description": "Verdeel je verwachte inkomsten over de categorieën.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Doel uit archief halen",
       "deposit": "Geld toevoegen",
       "withdraw": "Geld opnemen",
-      "interest": "Rendement toevoegen"
+      "interest": "Rendement toevoegen",
+      "more": "Meer"
     },
     "empty": {
       "title": "Nog geen doelen",
@@ -1098,6 +1105,7 @@
       "archive": "Lening archiveren",
       "unarchive": "Lening dearchiveren",
       "recordPayment": "Betaling vastleggen",
+      "more": "Meer",
       "delete": "Lening verwijderen"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Beleggingsportefeuille bewerken",
       "archiveWallet": "Beleggingsportefeuille archiveren",
       "unarchiveWallet": "Beleggingsportefeuille uit het archief halen",
-      "view": "Bekijken",
+      "more": "Meer",
       "newTransaction": "Transactie registreren",
       "editTransaction": "Transactie bewerken",
       "deleteTransaction": "Transactie verwijderen",
@@ -1239,6 +1247,17 @@
       "marketValue": "Marktwaarde",
       "unrealizedGain": "Ongerealiseerde winst",
       "multiCurrencyHint": "Portefeuilles in andere valuta's zijn niet opgenomen in deze totalen."
+    },
+    "help": {
+      "label": "Wat is {{label}}?",
+      "marketValue": "Wat je posities vandaag waard zijn: de hoeveelheid van elk actief vermenigvuldigd met de laatste koers. Als een actief geen prijs heeft, wordt het totaal weergegeven als —.",
+      "bookValue": "Wat je hebt betaald voor de posities die je nog aanhoudt: de hoeveelheid van elk actief vermenigvuldigd met de gemiddelde kostprijs.",
+      "unrealizedGain": "Marktwaarde min boekwaarde: wat je zou winnen (of verliezen) als je vandaag alles zou verkopen. Het wordt pas een echte winst zodra je verkoopt."
+    },
+    "view": {
+      "positions": "Posities",
+      "ledger": "Transacties",
+      "assets": "Activa"
     },
     "empty": {
       "title": "Nog geen beleggingsportefeuilles",
@@ -1411,6 +1430,17 @@
       "expense": "Uitgaven",
       "netFlow": "Netto kasstroom",
       "categories": "Categorieën"
+    },
+    "view": {
+      "flow": "Kasstroom",
+      "categories": "Categorieën",
+      "balance": "Saldi"
+    },
+    "range": {
+      "from": "Vanaf",
+      "to": "Tot en met",
+      "apply": "Toon resultaten",
+      "invalid": "De eindmaand moet gelijk zijn aan of na de beginmaand liggen."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Inkomend",
       "outflow": "Uitgaand"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Geen items met deze status."
+    },
+    "today": "Vandaag",
+    "help": {
+      "label": "Wat is {{label}}?",
+      "projectedCashImpact": "Wat er de komende 30 dagen nog binnenkomt, minus wat er nog uitgaat: terugkerende transacties, creditcardfacturen en leningtermijnen die nog niet zijn geboekt. Positief betekent dat er geld overblijft; negatief betekent een tekort.",
+      "realizedCashImpact": "Wat er is binnengekomen minus wat er is uitgegaan, voor items in dit venster van 30 dagen die al zijn geboekt of betaald.",
+      "projectedOutflow": "Hoeveel er de komende 30 dagen nog uitgaat: terugkerende uitgaven, openstaande creditcardfacturen en verschuldigde leningtermijnen.",
+      "realizedOutflow": "Hoeveel er in dit venster van 30 dagen al is uitgegaan voor items die al zijn betaald."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Nu vernieuwen"
+      "refresh": "Nu vernieuwen",
+      "more": "Meer"
     },
     "refresh": {
       "updated": "{{count}} koersen bijgewerkt.",
       "upToDate": "De koersen zijn al up-to-date."
+    },
+    "help": {
+      "label": "Wat is {{label}}?",
+      "feesPaid": "Som van de conversiekosten die op je transacties in vreemde valuta zijn berekend, omgerekend naar je weergavevaluta."
+    },
+    "view": {
+      "pending": "Openstaand",
+      "live": "Live",
+      "manual": "Handmatig"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Deze sleutel kon niet worden opgeslagen. Probeer het opnieuw."
       }
     },
+    "view": {
+      "general": "Algemeen",
+      "backup": "Back-up",
+      "investments": "Beleggingen",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agents",
       "description": "AI-agents voor je financiële gegevens, met meerdere aanbieders en tools via MCP. Standaard uitgeschakeld – instelbaar in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Uitgeschakeld",
       "enabled": "Ingeschakeld",
+      "memberReady": "Actief en klaar voor gebruik.",
+      "memberUnavailable": "Uitgeschakeld. Neem contact op met je beheerder om toegang tot AI aan te vragen.",
       "manage": "Beheren"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Afstemmen", "start": "Afstemming starten", "complete": "Voltooien", "reopen": "Heropenen", "delete": "Verwijderen" },
     "status": { "open": "Open", "completed": "Voltooid" },
     "empty": { "title": "Geen afstemming geselecteerd", "description": "Start hierboven een afstemming of kies een eerdere." },
+    "filter": {
+      "all": "Alle",
+      "pending": "Openstaand",
+      "empty": "Geen items met deze status."
+    },
     "loadError": "Afstemmingen konden niet worden geladen. Probeer het opnieuw.",
     "confirmDelete": { "title": "Afstemming verwijderen?", "message": "De afstemming en gemarkeerde transacties worden verwijderd. Doorgaan?" }
   },
   "profile": {
     "title": "Profiel",
     "description": "Beheer je identiteit en accountbeveiliging.",
+    "view": { "account": "Account", "security": "Beveiliging" },
     "identity": {
       "title": "Persoonlijke gegevens",
       "description": "Werk de naam en het e-mailadres voor je account bij.",

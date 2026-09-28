@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Tümünü gör",
+    "charts": {
+      "label": "Grafik"
+    },
     "ratesUnavailable": "Bazı toplamlar şu anda kullanılamayan bir döviz kuruna ihtiyaç duyuyor.",
     "title": "Genel bakış",
     "welcome": "LealFinance'a hoş geldiniz",
@@ -359,6 +363,7 @@
       "savingsRate": "Tasarruf oranı"
     },
     "cashFlow": {
+      "tab": "Nakit akışı",
       "title": "Nakit akışı (6 ay)",
       "income": "Gelir",
       "expense": "Giderler"
@@ -409,7 +414,8 @@
       "edit": "Düzenle",
       "archive": "Arşivle",
       "unarchive": "Arşivden çıkar",
-      "delete": "Hesabı sil"
+      "delete": "Hesabı sil",
+      "more": "Daha fazla"
     },
     "archive": {
       "title": "Hesap arşivlensin mi?",
@@ -541,6 +547,7 @@
     "title": "İşlemler",
     "description": "Gelirler, giderler ve transferler.",
     "actions": {
+      "more": "Daha fazla",
       "new": "Yeni işlem",
       "edit": "Düzenle",
       "delete": "Sil",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"İşlem geçmişi","loading":"Geçmiş yükleniyor…","empty":"Henüz geçmiş yok.","loadError":"İşlem geçmişi yüklenemedi.","operation":{"create":"Oluşturuldu","update":"Güncellendi","delete":"Silindi"},"source":{"manual":"Manuel","import":"İçe aktarma","import_undo":"İçe aktarmayı geri al","recurring":"Tekrarlayan","loan":"Kredi","card":"Kart","investment":"Yatırım","bulk":"Toplu"},"field":{"type":"Tür","date":"Tarih","amount":"Tutar","currency":"Para birimi","account_id":"Hesap","to_account_id":"Hedef hesap","category_id":"Kategori","description":"Açıklama","notes":"Notlar","recurring_rule_id":"Tekrarlayan kural","loan_id":"Kredi","card_invoice_close_date":"Fatura kapanış tarihi","installment_group_id":"Taksit grubu","installment_number":"Taksit numarası","installment_count":"Taksit sayısı","conversion_amount":"Dönüştürülen tutar","conversion_currency":"Dönüşüm para birimi","conversion_fee":"Dönüşüm ücreti","conversion_rate":"Dönüşüm kuru","conversion_source":"Dönüşüm kaynağı"}},
     "tabs": {
-      "transactions": "İşlemler",
       "recurring": "Tekrarlayan"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Transfer"
     },
     "filters": {
+      "apply": "Sonuçları göster",
       "type": "Tür",
       "account": "Hesap",
       "category": "Kategori",
@@ -574,7 +581,6 @@
       "amountMin": "En az",
       "amountMax": "Maksimum",
       "any": "Herhangi",
-      "back": "Geri",
       "dateRange": "{{from}} ile {{to}} arası",
       "amountRange": "{{min}} ile {{max}} arası",
       "removeChip": "{{filter}} filtresini kaldır"
@@ -797,15 +803,12 @@
       "delete": "Sil",
       "collapse": "Daralt",
       "expand": "Genişlet",
-      "dragHandle": "Sıralamayı değiştir"
+      "dragHandle": "Sıralamayı değiştir",
+      "more": "Daha fazla"
     },
     "empty": {
       "title": "Henüz kategori yok",
       "description": "İşlemlerinizi düzenlemek için gruplar ve kategoriler oluşturun."
-    },
-    "sections": {
-      "income": "Gelir kategorileri",
-      "expense": "Gider kategorileri"
     },
     "delete": {
       "title": "Kategori silinsin mi?",
@@ -840,9 +843,6 @@
     "eyebrow": "Otomasyon",
     "title": "Kurallar",
     "description": "İçe aktarırken işlemleri otomatik olarak kategorilere ayırın.",
-    "card": {
-      "title": "Kategorilendirme kuralları"
-    },
     "actions": {
       "export": "Dışa aktar",
       "import": "İçe aktar",
@@ -850,8 +850,10 @@
       "reapply": "Yeniden uygula",
       "add": "Ekle",
       "delete": "Sil",
-      "edit": "Düzenle"
+      "edit": "Düzenle",
+      "more": "Daha fazla"
     },
+    "inactive": "Pasif",
     "sort": {
       "label": "Şuna göre sırala",
       "priority": "Öncelik",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Aylık limitler"
     },
+    "view": {
+      "chart": "Grafik",
+      "values": "Tutarlar"
+    },
     "planner": {
       "title": "Gelir bazlı bütçe",
       "description": "Beklenen gelirinizi kategorilere dağıtın.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Hedefi arşivden çıkar",
       "deposit": "Para ekle",
       "withdraw": "Para çek",
-      "interest": "Faiz ekle"
+      "interest": "Faiz ekle",
+      "more": "Daha fazla"
     },
     "empty": {
       "title": "Henüz hedef yok",
@@ -1098,6 +1105,7 @@
       "archive": "Krediyi arşivle",
       "unarchive": "Krediyi arşivden çıkar",
       "recordPayment": "Ödeme kaydet",
+      "more": "Daha fazla",
       "delete": "Krediyi sil"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Yatırım portföyünü düzenle",
       "archiveWallet": "Yatırım portföyünü arşivle",
       "unarchiveWallet": "Yatırım portföyünü arşivden çıkar",
-      "view": "Görüntüle",
+      "more": "Daha fazla",
       "newTransaction": "İşlem kaydet",
       "editTransaction": "İşlemi düzenle",
       "deleteTransaction": "İşlemi sil",
@@ -1239,6 +1247,17 @@
       "marketValue": "Piyasa değeri",
       "unrealizedGain": "Gerçekleşmemiş kazanç",
       "multiCurrencyHint": "Diğer para birimlerindeki portföyler bu toplamlara dahil değildir."
+    },
+    "help": {
+      "label": "{{label}} nedir?",
+      "marketValue": "Pozisyonlarınızın bugünkü değeri: her varlığın miktarı çarpı en güncel fiyatı. Herhangi bir varlığın fiyatı yoksa toplam — olarak gösterilir.",
+      "bookValue": "Hâlâ elinizde tuttuğunuz pozisyonlar için ödediğiniz tutar: her varlığın miktarı çarpı ortalama alış maliyeti.",
+      "unrealizedGain": "Piyasa değeri eksi defter değeri: bugün her şeyi satsaydınız kazanacağınız (veya kaybedeceğiniz) tutar. Yalnızca sattığınızda gerçek bir kazanca dönüşür."
+    },
+    "view": {
+      "positions": "Pozisyonlar",
+      "ledger": "İşlemler",
+      "assets": "Varlıklar"
     },
     "empty": {
       "title": "Henüz yatırım portföyü yok",
@@ -1411,6 +1430,17 @@
       "expense": "Giderler",
       "netFlow": "Net akış",
       "categories": "Kategoriler"
+    },
+    "view": {
+      "flow": "Akış",
+      "categories": "Kategoriler",
+      "balance": "Bakiyeler"
+    },
+    "range": {
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "apply": "Sonuçları göster",
+      "invalid": "Bitiş ayı, başlangıç ayıyla aynı veya sonrasında olmalıdır."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Giriş",
       "outflow": "Çıkış"
+    },
+    "filter": {
+      "all": "Tümü",
+      "empty": "Bu durumda hiçbir kalem yok."
+    },
+    "today": "Bugün",
+    "help": {
+      "label": "{{label}} nedir?",
+      "projectedCashImpact": "Önümüzdeki 30 günde hâlâ gelecek olan tutardan hâlâ çıkacak olan tutarın farkı: henüz işlenmemiş yinelenen işlemler, kredi kartı ekstreleri ve kredi taksitleri. Pozitifse para artar, negatifse açık oluşur.",
+      "realizedCashImpact": "Bu 30 günlük dönemde zaten işlenmiş veya ödenmiş kalemler için giriş eksi çıkış tutarı.",
+      "projectedOutflow": "Önümüzdeki 30 günde hâlâ ne kadar çıkış olacağı: yinelenen giderler, açık kredi kartı ekstreleri ve vadesi gelen kredi taksitleri.",
+      "realizedOutflow": "Bu 30 günlük dönemde zaten ödenmiş kalemler için ne kadar çıkış yapıldığı."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Şimdi yenile"
+      "refresh": "Şimdi yenile",
+      "more": "Daha fazla"
     },
     "refresh": {
       "updated": "{{count}} kur güncellendi.",
       "upToDate": "Kurlar zaten güncel."
+    },
+    "help": {
+      "label": "{{label}} nedir?",
+      "feesPaid": "Yabancı para birimindeki işlemlerinizden alınan dönüşüm ücretlerinin, görüntüleme para biriminize çevrilmiş toplamı."
+    },
+    "view": {
+      "pending": "Bekleyenler",
+      "live": "Canlı",
+      "manual": "Manuel"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Bu anahtar kaydedilemedi. Tekrar deneyin."
       }
     },
+    "view": {
+      "general": "Genel",
+      "backup": "Yedekleme",
+      "investments": "Yatırımlar",
+      "ai": "YZ"
+    },
     "agents": {
       "title": "Yapay zekâ aracıları",
       "description": "MCP üzerinden birden çok sağlayıcı ve araçla finansal verileriniz üzerinde çalışan yapay zekâ asistanları. Varsayılan olarak devre dışıdır; Docker Compose (AGENTS_ENABLED) üzerinden yapılandırılabilir.",
       "disabled": "Devre dışı",
       "enabled": "Etkin",
+      "memberReady": "Etkin ve kullanıma hazır.",
+      "memberUnavailable": "Devre dışı. Yapay zekâya erişim talep etmek için yöneticinizle iletişime geçin.",
       "manage": "Yönet"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Mutabakat", "start": "Mutabakatı başlat", "complete": "Tamamla", "reopen": "Yeniden aç", "delete": "Sil" },
     "status": { "open": "Açık", "completed": "Tamamlandı" },
     "empty": { "title": "Mutabakat seçilmedi", "description": "Yukarıdan bir mutabakat başlatın veya önceki bir mutabakatı seçin." },
+    "filter": {
+      "all": "Tümü",
+      "pending": "Bekleyen",
+      "empty": "Bu durumda hiçbir kalem yok."
+    },
     "loadError": "Mutabakatlar yüklenemedi. Tekrar deneyin.",
     "confirmDelete": { "title": "Mutabakat silinsin mi?", "message": "Mutabakat ve işaretleri silinecek. Devam edilsin mi?" }
   },
   "profile": {
     "title": "Profil",
     "description": "Kimliğinizi ve hesap güvenliğinizi yönetin.",
+    "view": { "account": "Hesap", "security": "Güvenlik" },
     "identity": {
       "title": "Kişisel bilgiler",
       "description": "Hesabınızda kullanılan adı ve e-posta adresini güncelleyin.",

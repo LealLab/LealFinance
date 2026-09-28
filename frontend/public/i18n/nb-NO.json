@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Vis alle",
+    "charts": {
+      "label": "Diagram"
+    },
     "ratesUnavailable": "Noen totaler trenger en valutakurs som ikke er tilgjengelig akkurat nå.",
     "title": "Oversikt",
     "welcome": "Velkommen til LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Sparegrad"
     },
     "cashFlow": {
+      "tab": "Kontantstrøm",
       "title": "Kontantstrøm (6 måneder)",
       "income": "Inntekter",
       "expense": "Utgifter"
@@ -409,7 +414,8 @@
       "edit": "Rediger",
       "archive": "Arkiver",
       "unarchive": "Gjenopprett",
-      "delete": "Slett konto"
+      "delete": "Slett konto",
+      "more": "Mer"
     },
     "archive": {
       "title": "Arkiver konto?",
@@ -541,6 +547,7 @@
     "title": "Transaksjoner",
     "description": "Inntekter, utgifter og overføringer.",
     "actions": {
+      "more": "Mer",
       "new": "Ny transaksjon",
       "edit": "Rediger",
       "delete": "Slett",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Transaksjonshistorikk","loading":"Laster inn historikk…","empty":"Ingen historikk ennå.","loadError":"Kunne ikke laste inn transaksjonshistorikken.","operation":{"create":"Opprettet","update":"Oppdatert","delete":"Slettet"},"source":{"manual":"Manuell","import":"Import","import_undo":"Angre import","recurring":"Gjentakende","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massehandling"},"field":{"type":"Type","date":"Dato","amount":"Beløp","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivelse","notes":"Notater","recurring_rule_id":"Gjentakelsesregel","loan_id":"Lån","card_invoice_close_date":"Fakturaperiodens sluttdato","installment_group_id":"Avdragsgruppe","installment_number":"Avdragsnummer","installment_count":"Antall avdrag","conversion_amount":"Konvertert beløp","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsgebyr","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskilde"}},
     "tabs": {
-      "transactions": "Transaksjoner",
       "recurring": "Gjentakende"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Overføring"
     },
     "filters": {
+      "apply": "Vis resultater",
       "type": "Type",
       "account": "Konto",
       "category": "Kategori",
@@ -574,7 +581,6 @@
       "amountMin": "Minstebeløp",
       "amountMax": "Maksimum",
       "any": "Alle",
-      "back": "Tilbake",
       "dateRange": "Fra {{from}} til {{to}}",
       "amountRange": "Fra {{min}} til {{max}}",
       "removeChip": "Fjern {{filter}}-filteret"
@@ -797,15 +803,12 @@
       "delete": "Slett",
       "collapse": "Slå sammen",
       "expand": "Utvid",
-      "dragHandle": "Endre rekkefølge"
+      "dragHandle": "Endre rekkefølge",
+      "more": "Mer"
     },
     "empty": {
       "title": "Ingen kategorier ennå",
       "description": "Opprett grupper og kategorier for å organisere transaksjonene dine."
-    },
-    "sections": {
-      "income": "Inntektskategorier",
-      "expense": "Utgiftskategorier"
     },
     "delete": {
       "title": "Slett kategori?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatisering",
     "title": "Regler",
     "description": "Kategoriser transaksjoner automatisk når du importerer dem.",
-    "card": {
-      "title": "Kategoriseringsregler"
-    },
     "actions": {
       "export": "Eksporter",
       "import": "Importer",
@@ -850,8 +850,10 @@
       "reapply": "Bruk på nytt",
       "add": "Legg til",
       "delete": "Slett",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "more": "Mer"
     },
+    "inactive": "Inaktiv",
     "sort": {
       "label": "Sorter etter",
       "priority": "Prioritet",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Månedlige grenser"
     },
+    "view": {
+      "chart": "Diagram",
+      "values": "Beløp"
+    },
     "planner": {
       "title": "Inntektsbasert budsjett",
       "description": "Fordel forventet inntekt på kategorier.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Gjenopprett mål",
       "deposit": "Legg til penger",
       "withdraw": "Ta ut penger",
-      "interest": "Legg til renter"
+      "interest": "Legg til renter",
+      "more": "Mer"
     },
     "empty": {
       "title": "Ingen mål ennå",
@@ -1098,6 +1105,7 @@
       "archive": "Arkiver lån",
       "unarchive": "Opphev arkivering av lån",
       "recordPayment": "Registrer betaling",
+      "more": "Mer",
       "delete": "Slett lån"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Rediger investeringsporteføljen",
       "archiveWallet": "Arkiver investeringsporteføljen",
       "unarchiveWallet": "Gjenopprett investeringsporteføljen fra arkivet",
-      "view": "Vis",
+      "more": "Mer",
       "newTransaction": "Registrer transaksjon",
       "editTransaction": "Rediger transaksjon",
       "deleteTransaction": "Slett transaksjon",
@@ -1239,6 +1247,17 @@
       "marketValue": "Markedsverdi",
       "unrealizedGain": "Urealisert gevinst",
       "multiCurrencyHint": "Porteføljer i andre valutaer er ikke inkludert i disse totalene."
+    },
+    "help": {
+      "label": "Hva er {{label}}?",
+      "marketValue": "Hva posisjonene dine er verdt i dag: antallet av hvert aktivum multiplisert med siste pris. Hvis et aktivum mangler pris, vises totalen som —.",
+      "bookValue": "Hva du betalte for posisjonene du fortsatt har: antallet av hvert aktivum multiplisert med gjennomsnittlig kjøpskostnad.",
+      "unrealizedGain": "Markedsverdi minus bokført verdi: hva du ville tjent (eller tapt) hvis du solgte alt i dag. Det blir først en reell gevinst når du selger."
+    },
+    "view": {
+      "positions": "Beholdninger",
+      "ledger": "Transaksjoner",
+      "assets": "Eiendeler"
     },
     "empty": {
       "title": "Ingen investeringsporteføljer ennå",
@@ -1411,6 +1430,17 @@
       "expense": "Utgifter",
       "netFlow": "Netto kontantstrøm",
       "categories": "Kategorier"
+    },
+    "view": {
+      "flow": "Flyt",
+      "categories": "Kategorier",
+      "balance": "Saldoer"
+    },
+    "range": {
+      "from": "Fra",
+      "to": "Til",
+      "apply": "Vis resultater",
+      "invalid": "Sluttmåneden må være den samme som eller etter startmåneden."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Innbetaling",
       "outflow": "Utbetaling"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Ingen poster med denne statusen."
+    },
+    "today": "I dag",
+    "help": {
+      "label": "Hva er {{label}}?",
+      "projectedCashImpact": "Det som fortsatt kommer inn minus det som fortsatt går ut de neste 30 dagene: gjentakelser, kredittkortfakturaer og låneavdrag som ennå ikke er bokført. Positivt betyr overskudd; negativt betyr underskudd.",
+      "realizedCashImpact": "Innbetalinger minus utbetalinger for poster i dette 30-dagersvinduet som allerede er bokført eller betalt.",
+      "projectedOutflow": "Hvor mye som fortsatt går ut de neste 30 dagene: tilbakevendende utgifter, åpne kredittkortfakturaer og forfalte låneavdrag.",
+      "realizedOutflow": "Hvor mye som allerede har gått ut i dette 30-dagersvinduet for poster som allerede er betalt."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Oppdater nå"
+      "refresh": "Oppdater nå",
+      "more": "Mer"
     },
     "refresh": {
       "updated": "{{count}} kurser oppdatert.",
       "upToDate": "Kursene er allerede oppdatert."
+    },
+    "help": {
+      "label": "Hva er {{label}}?",
+      "feesPaid": "Summen av omregningsgebyrene som er belastet på transaksjonene dine i utenlandsk valuta, omregnet til visningsvalutaen din."
+    },
+    "view": {
+      "pending": "Ventende",
+      "live": "Sanntid",
+      "manual": "Manuelle"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Kunne ikke lagre nøkkelen. Prøv igjen."
       }
     },
+    "view": {
+      "general": "Generelt",
+      "backup": "Sikkerhetskopi",
+      "investments": "Investeringer",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agenter",
       "description": "AI-assistenter for økonomidataene dine, med flere leverandører og verktøy via MCP. Deaktivert som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Deaktivert",
       "enabled": "Aktivert",
+      "memberReady": "Aktiv og klar til bruk.",
+      "memberUnavailable": "Deaktivert. Kontakt administratoren din for å be om tilgang til AI.",
       "manage": "Administrer"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Avstem", "start": "Start avstemming", "complete": "Fullfør", "reopen": "Åpne på nytt", "delete": "Slett" },
     "status": { "open": "Åpen", "completed": "Fullført" },
     "empty": { "title": "Ingen avstemming valgt", "description": "Start en avstemming ovenfor eller velg en tidligere." },
+    "filter": {
+      "all": "Alle",
+      "pending": "Ventende",
+      "empty": "Ingen poster med denne statusen."
+    },
     "loadError": "Kunne ikke laste inn avstemmingene. Prøv igjen.",
     "confirmDelete": { "title": "Slette avstemming?", "message": "Avstemmingen og markeringene slettes. Vil du fortsette?" }
   },
   "profile": {
     "title": "Profil",
     "description": "Administrer identiteten og kontosikkerheten din.",
+    "view": { "account": "Konto", "security": "Sikkerhet" },
     "identity": {
       "title": "Personlig informasjon",
       "description": "Oppdater navnet og e-postadressen som brukes for kontoen din.",

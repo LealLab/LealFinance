@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -15,8 +16,10 @@ import { ruleConditionSummary } from '../../domain/calc/rule-summary';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { RuleFormModal } from './rule-form-modal';
@@ -34,12 +37,15 @@ type RuleSortKey = 'priority' | 'name' | 'category';
 @Component({
   selector: 'app-rules',
   imports: [
+    NgTemplateOutlet,
     TranslocoDirective,
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
+    Modal,
     PageHeader,
     Skeleton,
     RuleFormModal,
@@ -65,6 +71,7 @@ export class Rules {
   protected readonly asc = signal(true);
   protected readonly formOpen = signal(false);
   protected readonly packsOpen = signal(false);
+  protected readonly reapplyOpen = signal(false);
   protected readonly editingRule = signal<CategorizationRule | undefined>(undefined);
   protected readonly overwrite = signal(false);
   protected readonly resultMessage = signal<string | undefined>(undefined);
@@ -100,6 +107,18 @@ export class Rules {
   protected openEdit(rule: CategorizationRule): void {
     this.editingRule.set(rule);
     this.formOpen.set(true);
+  }
+
+  protected onRowClick(rule: CategorizationRule, event: Event): void {
+    // Buttons inside the row (delete, the phone menu) own their clicks.
+    if ((event.target as HTMLElement).closest('button, app-dropdown')) return;
+    this.openEdit(rule);
+  }
+
+  protected onRowKey(rule: CategorizationRule, event: Event): void {
+    if (event.target !== event.currentTarget) return;
+    event.preventDefault();
+    this.openEdit(rule);
   }
 
   protected onSaved(): void {
@@ -204,14 +223,13 @@ export class Rules {
     this.importError.set(this.transloco.translate('rules.import.invalid', { count }));
   }
 
-  protected async reapplyRules(): Promise<void> {
-    const confirmed = await this.confirmService.confirm(
-      'rules.reapply.title',
-      'rules.reapply.message',
-      'danger',
-    );
-    if (!confirmed) return;
+  protected openReapply(): void {
+    this.overwrite.set(false);
+    this.reapplyOpen.set(true);
+  }
 
+  protected reapplyRules(): void {
+    this.reapplyOpen.set(false);
     this.ruleRepository.reapply(this.overwrite()).subscribe({
       next: (updated) => {
         this.resultMessage.set(this.transloco.translate('rules.reapply.done', { count: updated }));

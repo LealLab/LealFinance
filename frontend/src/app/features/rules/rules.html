@@ -1,57 +1,100 @@
 <div *transloco="let t">
   <app-page-header
+    [compact]="true"
     [eyebrow]="t('rules.eyebrow')"
     [title]="t('rules.title')"
     [description]="t('rules.description')"
-  />
+  >
+    <!-- From md up the secondary actions sit beside the primary one; on phones
+         they fold into the "More" menu below, same pattern as features/goals. -->
+    <div class="hidden md:contents">
+      <button appButton variant="secondary" type="button" [disabled]="rules().length === 0" (click)="exportRules()">
+        <app-icon name="arrowDownLeft" [size]="16" />
+        {{ t('rules.actions.export') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="fileInput.click()">
+        <app-icon name="arrowUpRight" [size]="16" />
+        {{ t('rules.actions.import') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="packsOpen.set(true)">
+        <app-icon name="package" [size]="16" />
+        {{ t('rules.actions.packs') }}
+      </button>
+      <button appButton variant="secondary" type="button" (click)="openReapply()">
+        <app-icon name="refresh" [size]="16" />
+        {{ t('rules.actions.reapply') }}
+      </button>
+    </div>
 
-  <app-card [padded]="false">
-    <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-border px-4 py-3">
-      <h2 class="min-w-0 break-words text-sm font-semibold text-content-primary">{{ t('rules.card.title') }}</h2>
-      <div class="flex flex-wrap items-center gap-2">
-        <button appButton variant="secondary" type="button" [disabled]="rules().length === 0" (click)="exportRules()">
+    <!-- One page-header child so the hidden block above doesn't flip the
+         odd/even parity of the mobile grid - see features/accounts/accounts.html. -->
+    <div class="contents">
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        <app-icon name="plus" [size]="16" />
+        {{ t('rules.actions.add') }}
+      </button>
+
+      <app-dropdown #more class="md:hidden" panelClass="w-56">
+        <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+          <app-icon name="dots" [size]="16" />
+          <span>{{ t('rules.actions.more') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken disabled:opacity-50 [@media(pointer:coarse)]:min-h-11"
+          [disabled]="rules().length === 0"
+          (click)="more.open.set(false); exportRules()"
+        >
           <app-icon name="arrowDownLeft" [size]="16" />
           {{ t('rules.actions.export') }}
         </button>
-        <button appButton variant="secondary" type="button" (click)="fileInput.click()">
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="more.open.set(false); fileInput.click()"
+        >
           <app-icon name="arrowUpRight" [size]="16" />
           {{ t('rules.actions.import') }}
         </button>
-        <input
-          #fileInput
-          type="file"
-          accept="application/json,.json"
-          hidden
-          (change)="onImportFile($event)"
-        />
-        <button appButton variant="secondary" type="button" (click)="packsOpen.set(true)">
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="more.open.set(false); packsOpen.set(true)"
+        >
           <app-icon name="package" [size]="16" />
           {{ t('rules.actions.packs') }}
         </button>
-        <label class="flex items-center gap-1.5 px-1 text-xs text-content-muted">
-          <input type="checkbox" [checked]="overwrite()" (change)="overwrite.set($any($event.target).checked)" />
-          {{ t('rules.reapply.overwrite') }}
-        </label>
-        <button appButton variant="secondary" type="button" (click)="reapplyRules()">
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="more.open.set(false); openReapply()"
+        >
           <app-icon name="refresh" [size]="16" />
           {{ t('rules.actions.reapply') }}
         </button>
-        <button appButton variant="primary" type="button" (click)="openCreate()">
-          <app-icon name="plus" [size]="16" />
-          {{ t('rules.actions.add') }}
-        </button>
-      </div>
+      </app-dropdown>
     </div>
+  </app-page-header>
 
-    <div class="flex flex-wrap items-center gap-2 border-b border-border px-4 py-3">
-      <span class="text-xs text-content-muted">{{ t('rules.sort.label') }}</span>
+  <input
+    #fileInput
+    type="file"
+    accept="application/json,.json"
+    hidden
+    (change)="onImportFile($event)"
+  />
+
+  <app-card [padded]="false">
+    <div class="flex items-center gap-2 overflow-x-auto border-b border-border px-4 py-2 [scrollbar-width:none]">
+      <span class="shrink-0 text-xs text-content-muted">{{ t('rules.sort.label') }}</span>
       @for (key of ['priority', 'name', 'category']; track key) {
         <button
           type="button"
-          class="rounded px-2.5 py-1 text-xs font-medium"
+          class="shrink-0 whitespace-nowrap rounded px-2.5 py-1 text-xs font-medium [@media(pointer:coarse)]:min-h-10"
           [class.bg-surface-sunken]="sortKey() === key"
           [class.text-content-primary]="sortKey() === key"
           [class.text-content-muted]="sortKey() !== key"
+          [attr.aria-pressed]="sortKey() === key"
           (click)="toggleSort($any(key))"
         >
           {{ t('rules.sort.' + key) }}
@@ -89,44 +132,107 @@
       <div class="flex flex-col">
         @for (rule of sortedRules(); track rule.id) {
           <article
-            class="group/row flex cursor-pointer flex-wrap items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-sunken"
+            class="flex cursor-pointer items-start gap-2 border-b border-border px-4 py-3 last:border-b-0 hover:bg-surface-sunken md:items-center md:gap-3"
             role="button"
             tabindex="0"
             [attr.aria-label]="t('rules.actions.edit') + ': ' + rule.name"
-            (click)="openEdit(rule)"
-            (keydown.enter)="openEdit(rule)"
-            (keydown.space)="$event.preventDefault(); openEdit(rule)"
+            (click)="onRowClick(rule, $event)"
+            (keydown.enter)="onRowKey(rule, $event)"
+            (keydown.space)="onRowKey(rule, $event)"
           >
-            <div class="min-w-40 max-w-full flex-1">
-              <div class="flex items-center gap-2">
+            <div class="min-w-0 flex-1" [class.opacity-60]="!rule.isActive">
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <strong class="min-w-0 break-words text-sm text-content-primary">{{ rule.name }}</strong>
                 <app-badge class="shrink-0">p:{{ rule.priority }}</app-badge>
+                @if (!rule.isActive) {
+                  <app-badge class="shrink-0">{{ t('rules.inactive') }}</app-badge>
+                }
               </div>
-              <div class="mt-1 break-words font-mono text-xs text-content-muted">{{ summary(rule) }}</div>
+              <div class="mt-1 break-words font-mono text-xs text-content-muted max-md:line-clamp-2">{{ summary(rule) }}</div>
+              <!-- Phones: the category drops under the summary. -->
+              <ng-container [ngTemplateOutlet]="categoryPill" [ngTemplateOutletContext]="{ $implicit: rule, class: 'mt-2 inline-flex md:hidden' }" />
             </div>
-            <span
-              class="max-w-full break-words rounded px-2 py-1 text-sm font-medium"
-              [style.color]="categoryColor(rule)"
-              [style.background-color]="categoryColor(rule) + '1A'"
-            >
-              → {{ categoryName(rule) }}
-            </span>
+            <ng-container [ngTemplateOutlet]="categoryPill" [ngTemplateOutletContext]="{ $implicit: rule, class: 'hidden max-w-[40%] shrink-0 md:inline-flex' }" />
             <button
               appButton
               variant="ghost"
               size="sm"
               type="button"
-              class="hover:text-negative"
+              class="hover:text-negative max-md:hidden"
               [attr.aria-label]="t('rules.actions.delete')"
-              (click)="$event.stopPropagation(); deleteRule(rule)"
+              (click)="deleteRule(rule)"
             >
               <app-icon name="trash" [size]="16" />
             </button>
+            <!-- Phones: edit/delete live in one menu; the row itself still opens the editor. -->
+            <app-dropdown #menu class="shrink-0 md:hidden" panelClass="w-44">
+              <button
+                dropdownTrigger
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                [attr.aria-label]="t('rules.actions.more')"
+              >
+                <app-icon name="dots" [size]="16" />
+              </button>
+              <button
+                type="button"
+                class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                (click)="menu.open.set(false); openEdit(rule)"
+              >
+                <app-icon name="pencil" [size]="16" />
+                {{ t('rules.actions.edit') }}
+              </button>
+              <button
+                type="button"
+                class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                (click)="menu.open.set(false); deleteRule(rule)"
+              >
+                <app-icon name="trash" [size]="16" />
+                {{ t('rules.actions.delete') }}
+              </button>
+            </app-dropdown>
           </article>
         }
       </div>
     }
   </app-card>
+
+  <ng-template #categoryPill let-rule let-class="class">
+    <span
+      class="max-w-full break-words rounded px-2 py-1 text-sm font-medium"
+      [class]="class"
+      [style.color]="categoryColor(rule)"
+      [style.background-color]="categoryColor(rule) + '1A'"
+    >
+      → {{ categoryName(rule) }}
+    </span>
+  </ng-template>
+
+  <app-modal class="contents" [sheet]="true" [(open)]="reapplyOpen" [titleText]="t('rules.reapply.title')">
+    <div class="flex flex-col gap-4">
+      <p class="text-sm text-content-primary">{{ t('rules.reapply.message') }}</p>
+      <label class="flex items-start gap-2 text-sm text-content-primary">
+        <input
+          id="rules-reapply-overwrite"
+          type="checkbox"
+          class="form-checkbox mt-0.5"
+          [checked]="overwrite()"
+          (change)="overwrite.set($any($event.target).checked)"
+        />
+        {{ t('rules.reapply.overwrite') }}
+      </label>
+      <div class="flex justify-end gap-2 border-t border-border pt-4">
+        <button appButton variant="secondary" type="button" class="max-md:flex-1" (click)="reapplyOpen.set(false)">
+          {{ t('common.actions.cancel') }}
+        </button>
+        <button appButton variant="primary" type="button" class="max-md:flex-1" (click)="reapplyRules()">
+          {{ t('rules.actions.reapply') }}
+        </button>
+      </div>
+    </div>
+  </app-modal>
 
   <app-rule-form-modal
     [(open)]="formOpen"

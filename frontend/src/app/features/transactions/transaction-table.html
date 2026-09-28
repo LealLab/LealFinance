@@ -206,7 +206,13 @@
        toggle here if mobile users ever ask for the others. -->
   <div class="divide-y divide-border md:hidden">
     @for (tx of rows(); track tx.id) {
-      <div class="flex items-start gap-3 px-4 py-3">
+      <div
+        role="button"
+        tabindex="0"
+        class="flex items-start gap-3 px-4 py-3"
+        (click)="onRowClick(tx, $event)"
+        (keydown.enter)="edit.emit(tx)"
+      >
         <input
           type="checkbox"
           class="form-checkbox mt-1"
@@ -234,11 +240,46 @@
                 {{ descriptionPreview(tx.description) }}
               </span>
             </div>
-            <span
-              class="shrink-0 font-mono font-semibold tabular-nums"
-              [class]="rowToneClass(tx)"
-            >
-              {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
+            <span class="flex shrink-0 items-center gap-1">
+              <span class="font-mono font-semibold tabular-nums" [class]="rowToneClass(tx)">
+                {{ rowSign(tx) }}{{ tx.amount | money: tx.currency }}
+              </span>
+              <app-dropdown #menu panelClass="w-44">
+                <button
+                  dropdownTrigger
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  [attr.aria-label]="t('transactions.actions.more')"
+                >
+                  <app-icon name="dots" [size]="16" />
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); edit.emit(tx)"
+                >
+                  <app-icon name="pencil" [size]="16" />
+                  {{ t('transactions.actions.edit') }}
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); viewHistory.emit(tx)"
+                >
+                  <app-icon name="eye" [size]="16" />
+                  {{ t('transactions.history.title') }}
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); remove.emit(tx)"
+                >
+                  <app-icon name="trash" [size]="16" />
+                  {{ t('transactions.actions.delete') }}
+                </button>
+              </app-dropdown>
             </span>
           </div>
           <div class="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-content-muted">
@@ -261,38 +302,6 @@
               <app-badge tone="neutral">{{ t('transactions.projected.badge') }}</app-badge>
             }
           </div>
-        </div>
-        <div class="flex shrink-0 flex-col gap-1">
-          <button
-            appButton
-            variant="ghost"
-            size="sm"
-            type="button"
-            (click)="edit.emit(tx)"
-            [attr.aria-label]="t('transactions.actions.edit')"
-          >
-            <app-icon name="pencil" [size]="16" />
-          </button>
-          <button
-            appButton
-            variant="ghost"
-            size="sm"
-            type="button"
-            (click)="viewHistory.emit(tx)"
-            [attr.aria-label]="t('transactions.history.title')"
-          >
-            <app-icon name="eye" [size]="16" />
-          </button>
-          <button
-            appButton
-            variant="ghost"
-            size="sm"
-            type="button"
-            (click)="remove.emit(tx)"
-            [attr.aria-label]="t('transactions.actions.delete')"
-          >
-            <app-icon name="trash" [size]="16" />
-          </button>
         </div>
       </div>
     }

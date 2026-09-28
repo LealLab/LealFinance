@@ -29,8 +29,13 @@
     @if (ratesFailed()) {
       <app-load-error messageKey="dashboard.ratesUnavailable" (retry)="retryRates()" />
     } @else if (ratesReady()) {
-      <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
-        <app-stat-tile [label]="t('dashboard.stats.netWorth')" [value]="netWorth().amount | money: netWorth().currency" />
+      <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
+        <app-stat-tile
+          class="col-span-2 md:col-span-4 lg:col-span-1"
+          [prominent]="true"
+          [label]="t('dashboard.stats.netWorth')"
+          [value]="netWorth().amount | money: netWorth().currency"
+        />
         <app-stat-tile [label]="t('dashboard.stats.realBalance')" [value]="realBalance().amount | money: realBalance().currency" />
         <app-stat-tile
           [label]="t('dashboard.stats.income')"
@@ -42,18 +47,43 @@
           [value]="monthTotals().expense.amount | money: monthTotals().expense.currency"
           tone="negative"
         />
-        <app-stat-tile class="col-span-2 md:col-span-1" [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
+        <app-stat-tile [label]="t('dashboard.stats.savingsRate')" [value]="savingsRate().toFixed(1) + '%'" />
       </div>
     } @else {
-      <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5" aria-busy="true">
-        @for (i of [0, 1, 2, 3, 4]; track i; let last = $last) {
-          <app-skeleton height="4.25rem" [class]="last ? 'col-span-2 md:col-span-1' : ''" />
+      <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5" aria-busy="true">
+        @for (i of [0, 1, 2, 3, 4]; track i; let first = $first) {
+          <app-skeleton height="4.25rem" [class]="first ? 'col-span-2 md:col-span-4 lg:col-span-1' : ''" />
         }
       </div>
     }
 
+    <div
+      class="mb-4 flex gap-1 rounded border border-border p-0.5 lg:hidden"
+      role="group"
+      [attr.aria-label]="t('dashboard.charts.label')"
+    >
+      <button
+        type="button"
+        class="flex-1 rounded px-3 py-1.5 text-sm font-medium [@media(pointer:coarse)]:min-h-10"
+        [class]="chartView() === 'cashFlow' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="chartView() === 'cashFlow'"
+        (click)="chartView.set('cashFlow')"
+      >
+        {{ t('dashboard.cashFlow.tab') }}
+      </button>
+      <button
+        type="button"
+        class="flex-1 rounded px-3 py-1.5 text-sm font-medium [@media(pointer:coarse)]:min-h-10"
+        [class]="chartView() === 'categories' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="chartView() === 'categories'"
+        (click)="chartView.set('categories')"
+      >
+        {{ t('dashboard.categoryChart.label') }}
+      </button>
+    </div>
+
     <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <app-card>
+      <app-card [class.max-lg:hidden]="chartView() !== 'cashFlow'">
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.cashFlow.title') }}</h2>
         @if (ratesFailed()) {
           <app-load-error messageKey="dashboard.ratesUnavailable" (retry)="retryRates()" />
@@ -66,7 +96,7 @@
         }
       </app-card>
 
-      <app-card>
+      <app-card [class.max-lg:hidden]="chartView() !== 'categories'">
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('dashboard.categoryChart.title') }}</h2>
         @if (ratesFailed()) {
           <app-load-error messageKey="dashboard.ratesUnavailable" (retry)="retryRates()" />
@@ -89,12 +119,22 @@
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <app-card [padded]="false">
-        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
-          {{ t('dashboard.accounts.title') }}
-        </h2>
+        <div class="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
+          <h2 class="text-sm font-semibold text-content-primary">{{ t('dashboard.accounts.title') }}</h2>
+          <a
+            routerLink="/accounts"
+            class="text-sm font-medium text-accent [@media(pointer:coarse)]:py-2"
+            [attr.aria-label]="t('dashboard.viewAll') + ': ' + t('dashboard.accounts.title')"
+          >
+            {{ t('dashboard.viewAll') }}
+          </a>
+        </div>
         <ul>
-          @for (row of accountRows(); track row.account.id) {
-            <li class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0">
+          @for (row of accountRows(); track row.account.id; let i = $index) {
+            <li
+              class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0"
+              [class.max-md:hidden]="i > 2"
+            >
               <span class="text-sm text-content-primary">{{ row.account.name }}</span>
               <span
                 class="font-mono text-sm font-medium tabular-nums"
@@ -108,15 +148,25 @@
       </app-card>
 
       <app-card [padded]="false">
-        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
-          {{ t('dashboard.recentTransactions.title') }}
-        </h2>
+        <div class="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
+          <h2 class="text-sm font-semibold text-content-primary">{{ t('dashboard.recentTransactions.title') }}</h2>
+          <a
+            routerLink="/transactions"
+            class="text-sm font-medium text-accent [@media(pointer:coarse)]:py-2"
+            [attr.aria-label]="t('dashboard.viewAll') + ': ' + t('dashboard.recentTransactions.title')"
+          >
+            {{ t('dashboard.viewAll') }}
+          </a>
+        </div>
         @if (recentTransactions().length === 0) {
           <p class="p-4 text-sm text-content-muted">{{ t('dashboard.recentTransactions.empty') }}</p>
         } @else {
           <ul>
-            @for (row of recentTransactions(); track row.tx.id) {
-              <li class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0">
+            @for (row of recentTransactions(); track row.tx.id; let i = $index) {
+              <li
+                class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5 last:border-b-0"
+                [class.max-md:hidden]="i > 3"
+              >
                 <div class="flex min-w-0 flex-col">
                   <span class="truncate text-sm text-content-primary">{{ row.tx.description }}</span>
                   <span class="text-xs text-content-subtle">{{ row.tx.date }}</span>
@@ -134,9 +184,16 @@
       </app-card>
 
       <app-card [padded]="false">
-        <h2 class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
-          {{ t('dashboard.budgets.title') }}
-        </h2>
+        <div class="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
+          <h2 class="text-sm font-semibold text-content-primary">{{ t('dashboard.budgets.title') }}</h2>
+          <a
+            routerLink="/budgets"
+            class="text-sm font-medium text-accent [@media(pointer:coarse)]:py-2"
+            [attr.aria-label]="t('dashboard.viewAll') + ': ' + t('dashboard.budgets.title')"
+          >
+            {{ t('dashboard.viewAll') }}
+          </a>
+        </div>
         @if (ratesFailed()) {
           <app-load-error messageKey="dashboard.ratesUnavailable" (retry)="retryRates()" />
         } @else if (!budgetRatesReady()) {
@@ -149,8 +206,8 @@
           <p class="p-4 text-sm text-content-muted">{{ t('dashboard.budgets.empty') }}</p>
         } @else {
           <ul class="flex flex-col gap-3 p-4">
-            @for (row of budgetPreview(); track row.groupId) {
-              <li class="flex flex-col gap-1">
+            @for (row of budgetPreview(); track row.groupId; let i = $index) {
+              <li class="flex flex-col gap-1" [class.max-md:hidden]="i > 2">
                 <div class="flex items-center justify-between text-sm">
                   <span class="text-content-primary">{{ row.categoryName }}</span>
                   <span class="font-mono text-xs text-content-muted tabular-nums">

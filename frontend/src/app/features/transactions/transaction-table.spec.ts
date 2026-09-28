@@ -44,6 +44,7 @@ function tx(id: string, over: Partial<Transaction> = {}): Transaction {
       [pageSizes]="[25, 50, 100]"
       (sortChange)="lastSort = $event"
       (columnMove)="lastColumnMove = $event"
+      (edit)="lastEdit = $event"
     />
   `,
 })
@@ -74,6 +75,7 @@ class TableHost {
   readonly pageCount = signal(3);
   lastSort?: TransactionSort;
   lastColumnMove?: { column: TransactionColumn; toIndex: number };
+  lastEdit?: Transaction;
 }
 
 describe('TransactionTable', () => {
@@ -166,6 +168,17 @@ describe('TransactionTable', () => {
     fixture.componentInstance.columns.set(['date', 'amount']);
     fixture.detectChanges();
     expect(el.querySelectorAll('colgroup col').length).toBe(4);
+  });
+
+  it('opens edit when the mobile card is tapped, but not from the checkbox', () => {
+    const { fixture, el } = setup();
+    const row = el.querySelector('.md\\:hidden > div[role="button"]') as HTMLElement;
+
+    (row.querySelector('input[type=checkbox]') as HTMLInputElement).click();
+    expect(fixture.componentInstance.lastEdit).toBeUndefined();
+
+    row.click();
+    expect(fixture.componentInstance.lastEdit?.id).toBe('1');
   });
 
   it('renders an elided page list for many pages', () => {

@@ -86,6 +86,28 @@ describe('Transactions', () => {
     expect(fixture.componentInstance['tab']()).toBe('recurring');
   });
 
+  it('drives the list, calendar and recurring views from one control', async () => {
+    const fixture = TestBed.createComponent(Transactions);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+
+    expect(component['view']()).toBe('list');
+
+    component['setView']('calendar');
+    expect(component['tab']()).toBe('transactions');
+    expect(component['mode']()).toBe('calendar');
+    expect(component['view']()).toBe('calendar');
+
+    component['setView']('recurring');
+    expect(component['tab']()).toBe('recurring');
+    expect(component['view']()).toBe('recurring');
+
+    component['setView']('list');
+    expect(component['tab']()).toBe('transactions');
+    expect(component['view']()).toBe('list');
+  });
+
   it('creates a new expense transaction end-to-end through the modal', async () => {
     const fixture = TestBed.createComponent(Transactions);
     fixture.detectChanges();
@@ -97,7 +119,8 @@ describe('Transactions', () => {
     newButton!.click();
     fixture.detectChanges();
 
-    const dialog = el.querySelector('dialog') as HTMLDialogElement;
+    // The filter sheet is also a <dialog> and precedes the form in the DOM.
+    const dialog = el.querySelector('#tx-account')!.closest('dialog') as HTMLDialogElement;
     expect(dialog.open).toBe(true);
 
     const accountSelect = dialog.querySelector('#tx-account') as HTMLSelectElement;
@@ -347,7 +370,7 @@ describe('Transactions - calendar with a cross-currency month', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    fixture.componentInstance['setMode']('calendar');
+    fixture.componentInstance['setView']('calendar');
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();

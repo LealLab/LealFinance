@@ -1,9 +1,11 @@
 import {
   Component,
   ElementRef,
+  computed,
   effect,
   inject,
   signal,
+  untracked,
   type WritableSignal,
   viewChild,
 } from '@angular/core';
@@ -29,12 +31,22 @@ import {
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { CurrencySelect } from '../../shared/ui/currency-select/currency-select';
-import { Icon } from '../../shared/ui/icon/icon';
+import { Icon, IconName } from '../../shared/ui/icon/icon';
 import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { MemoriesSection } from './memories-section';
 
 const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
+
+type SettingsView = 'general' | 'backup' | 'investments' | 'ai';
+
+/** Deep links (command palette, onboarding) name a control; this is the tab holding it. */
+const FRAGMENT_VIEWS: Record<string, SettingsView> = {
+  'settings-language': 'general',
+  'settings-display-currency': 'general',
+  'settings-backup-export': 'backup',
+  'settings-backup-restore': 'backup',
+};
 
 @Component({
   selector: 'app-settings',
@@ -80,6 +92,23 @@ export class Settings {
     brapi: signal(''),
     coingecko: signal(''),
   };
+  protected readonly views = [
+    { key: 'general', icon: 'settings' },
+    { key: 'backup', icon: 'archive' },
+    { key: 'investments', icon: 'chart' },
+    { key: 'ai', icon: 'sparkles' },
+  ] as const satisfies readonly { key: SettingsView; icon: IconName }[];
+  /** Admins always have chat; members only when an admin enabled it. */
+  protected readonly hasChat = computed(() => {
+    const user = this.session.user();
+    return user?.role === 'admin' || !!user?.aiChatEnabled;
+  });
+  /** Admins see the instance switch; members see whether chat actually works for them. */
+  protected readonly agentsStatusOn = computed(
+    () => !!this.metadata.settings()?.agentsEnabled && this.hasChat(),
+  );
+  /** Which section is shown; not persisted, like budgets/reports/exchange. */
+  protected readonly view = signal<SettingsView>('general');
   protected readonly exportOpen = signal(false);
   protected readonly exportEncrypted = signal(false);
   protected readonly exportLoading = signal(false);
@@ -122,11 +151,17 @@ export class Settings {
   private readonly displayCurrencySelect = viewChild('displayCurrencySelect', {
     read: ElementRef,
   });
+  private focusedFragment: string | null | undefined;
   private readonly backupActions = viewChild<ElementRef<HTMLDivElement>>('backupActions');
 
   constructor() {
     this.loadMarketDataCredentials();
     this.loadAiInstructions();
+    // Only tracks the fragment, so the user can still leave the tab afterwards.
+    effect(() => {
+      const tab = FRAGMENT_VIEWS[this.fragment() ?? ''];
+      if (tab) untracked(() => this.view.set(tab));
+    });
     effect(() => {
       const target =
         this.fragment() === 'settings-language'
@@ -145,7 +180,9 @@ export class Settings {
                   )
                 : undefined;
 
-      if (!target) return;
+      // Focus once per link: the target re-renders whenever its tab is reopened.
+      if (!target || this.fragment() === this.focusedFragment) return;
+      this.focusedFragment = this.fragment();
       target.scrollIntoView?.({ block: 'center' });
       target.focus();
     });
@@ -169,8 +206,7 @@ export class Settings {
   }
 
   private loadAiInstructions(): void {
-    const user = this.session.user();
-    if (user?.role !== 'admin' && !user?.aiChatEnabled) return;
+    if (!this.hasChat()) return;
     this.agentChatRepo.getInstructions().subscribe({
       next: (value) => {
         this.aiInstructions.set(value);

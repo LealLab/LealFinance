@@ -1,5 +1,6 @@
 <div *transloco="let t">
   <!-- t(investments.type.buy, investments.type.sell, investments.type.dividend, investments.type.fee) t(investments.assetClass.stock, investments.assetClass.etf, investments.assetClass.fund, investments.assetClass.crypto, investments.assetClass.bond, investments.assetClass.other) -->
+  <!-- t(investments.view.positions, investments.view.ledger, investments.view.assets) -->
   <button type="button" class="mb-4 inline-flex items-center gap-1 text-sm text-content-muted hover:text-content-primary" (click)="goBack()">
     <app-icon name="chevronRight" [size]="14" class="rotate-180" />{{ t('investments.detail.back') }}
   </button>
@@ -12,25 +13,70 @@
     </div>
   } @else if (wallet(); as wallet) {
     <app-page-header [title]="wallet.name" [description]="wallet.currency">
-      <button appButton variant="primary" type="button" (click)="openCreateTransaction()">
-        <app-icon name="plus" [size]="16" />{{ t('investments.actions.newTransaction') }}
-      </button>
-      <button appButton variant="secondary" type="button" (click)="openCreateAsset()">
-        <app-icon name="coins" [size]="16" />{{ t('investments.actions.newAsset') }}
-      </button>
-      <button appButton variant="secondary" type="button" (click)="openEditWallet()">
-        <app-icon name="pencil" [size]="16" />{{ t('investments.actions.editWallet') }}
-      </button>
-      <button appButton variant="secondary" type="button" (click)="toggleArchived()">
-        <app-icon name="archive" [size]="16" />{{ wallet.archived ? t('investments.actions.unarchiveWallet') : t('investments.actions.archiveWallet') }}
-      </button>
+      <!-- One page-header child for primary + "More" so the md-only group below
+           keeps the mobile grid even - see features/accounts/accounts.html. -->
+      <div class="contents">
+        <button appButton variant="primary" type="button" (click)="openCreateTransaction()">
+          <app-icon name="plus" [size]="16" />{{ t('investments.actions.newTransaction') }}
+        </button>
+
+        <app-dropdown #more class="md:hidden" panelClass="w-64">
+          <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+            <app-icon name="dots" [size]="16" />
+            <span>{{ t('investments.actions.more') }}</span>
+          </button>
+          <button type="button" class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11" (click)="more.open.set(false); openCreateAsset()">
+            <app-icon name="coins" [size]="16" />{{ t('investments.actions.newAsset') }}
+          </button>
+          <button type="button" class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11" (click)="more.open.set(false); openEditWallet()">
+            <app-icon name="pencil" [size]="16" />{{ t('investments.actions.editWallet') }}
+          </button>
+          <button type="button" class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11" (click)="more.open.set(false); toggleArchived()">
+            <app-icon name="archive" [size]="16" />{{ wallet.archived ? t('investments.actions.unarchiveWallet') : t('investments.actions.archiveWallet') }}
+          </button>
+        </app-dropdown>
+      </div>
+
+      <!-- From md up the secondary actions sit beside the primary one; on phones
+           they fold into the "More" menu above. -->
+      <div class="hidden md:contents">
+        <button appButton variant="secondary" type="button" (click)="openCreateAsset()">
+          <app-icon name="coins" [size]="16" />{{ t('investments.actions.newAsset') }}
+        </button>
+        <button appButton variant="secondary" type="button" (click)="openEditWallet()">
+          <app-icon name="pencil" [size]="16" />{{ t('investments.actions.editWallet') }}
+        </button>
+        <button appButton variant="secondary" type="button" (click)="toggleArchived()">
+          <app-icon name="archive" [size]="16" />{{ wallet.archived ? t('investments.actions.unarchiveWallet') : t('investments.actions.archiveWallet') }}
+        </button>
+      </div>
     </app-page-header>
 
     @if (wallet.archived) {
       <div class="mb-6"><app-badge tone="neutral">{{ t('investments.archived') }}</app-badge></div>
     }
 
-    <div class="flex flex-col gap-6">
+    <!-- Same segmented control as budgets/reports/agenda. -->
+    <div
+      class="mb-4 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+      role="group"
+      [attr.aria-label]="t('investments.wallet')"
+    >
+      @for (tab of views; track tab.key) {
+        <button
+          type="button"
+          class="flex min-w-0 items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+          [class]="view() === tab.key ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+          [attr.aria-pressed]="view() === tab.key"
+          (click)="view.set(tab.key)"
+        >
+          <app-icon [name]="tab.icon" [size]="16" class="max-sm:hidden" />
+          <span class="truncate">{{ t('investments.view.' + tab.key) }}</span>
+        </button>
+      }
+    </div>
+
+    @if (view() === 'positions') {
       <app-card [padded]="false">
         <div class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
           {{ t('investments.detail.positions') }}
@@ -49,21 +95,41 @@
               <div class="px-4 py-3">
                 <div class="flex items-start justify-between gap-2">
                   <div class="min-w-0">
-                    <div class="font-medium text-content-primary">{{ position.asset.symbol }}</div>
-                    <div class="truncate text-xs text-content-muted">{{ position.asset.name }} · {{ t('investments.assetClass.' + position.asset.assetClass) }}</div>
+                    <div class="font-medium break-words text-content-primary">{{ position.asset.symbol }}</div>
+                    <div class="text-xs break-words text-content-muted">{{ position.asset.name }} · {{ t('investments.assetClass.' + position.asset.assetClass) }}</div>
                   </div>
                   <div class="shrink-0 text-end font-mono text-sm font-semibold tabular-nums">
                     <div>{{ position.marketValue ? (position.marketValue | money: wallet.currency) : '—' }}</div>
                     <app-exchange-rate-warning [isFallback]="position.marketValueIsFallback" />
                   </div>
                 </div>
-                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
-                  <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ position.quantity }}</span></span>
-                  <span>{{ t('investments.columns.averageCost') }}: <span class="font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency : 'precise' }}</span></span>
-                  <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ position.price ? (position.price | money: position.asset.currency : 'precise') : '—' }}</span></span>
-                  <span>{{ t('investments.columns.unrealizedGain') }}: <span class="font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</span></span>
-                  <span>{{ t('investments.columns.allocation') }}: <span class="font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</span></span>
-                  @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
+                <dl class="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
+                  <div>
+                    <dt class="text-xs text-content-muted">{{ t('investments.columns.quantity') }}</dt>
+                    <dd class="font-mono tabular-nums">{{ position.quantity }}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs text-content-muted">{{ t('investments.columns.averageCost') }}</dt>
+                    <dd class="font-mono tabular-nums">{{ position.averageCost | money: position.asset.currency : 'precise' }}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs text-content-muted">{{ t('investments.columns.price') }}</dt>
+                    <dd class="font-mono tabular-nums">
+                      {{ position.price ? (position.price | money: position.asset.currency : 'precise') : '—' }}
+                      @if (position.priceIsStale) { <app-badge tone="warning">{{ t('investments.detail.stale') }}</app-badge> }
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs text-content-muted">{{ t('investments.columns.unrealizedGain') }}</dt>
+                    <dd class="font-mono tabular-nums" [class]="amountClass(position.unrealizedGain)">{{ position.unrealizedGain ? (position.unrealizedGain | money: wallet.currency) : '—' }}</dd>
+                  </div>
+                </dl>
+                <div class="mt-3 flex items-center gap-2 text-xs text-content-muted">
+                  <span>{{ t('investments.columns.allocation') }}</span>
+                  <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-sunken">
+                    <div class="h-full bg-accent" [style.width.%]="allocation(position)"></div>
+                  </div>
+                  <span class="font-mono tabular-nums">{{ allocation(position).toFixed(1) }}%</span>
                 </div>
               </div>
             }
@@ -118,7 +184,7 @@
           </div>
         }
       </app-card>
-
+    } @else if (view() === 'assets') {
       <app-investment-assets-card
         [assets]="assetsResource.value() ?? []"
         [positions]="positions()"
@@ -126,7 +192,7 @@
         (edit)="openEditAsset($event)"
         (archiveToggle)="archiveAsset($event)"
       />
-
+    } @else {
       <app-card [padded]="false">
         <div class="border-b border-border px-4 py-3 text-sm font-semibold text-content-primary">
           {{ t('investments.detail.ledger') }}
@@ -142,25 +208,41 @@
         } @else {
           <div class="divide-y divide-border md:hidden">
             @for (transaction of rows(); track transaction.id) {
-              <div class="flex items-start gap-3 px-4 py-3">
+              <!-- Same layout as the assets list: what (type + asset) over when and the
+                   quantity x price detail on the left; the amount in its own column,
+                   centred on the row; then "More". The fee only shows when there is one. -->
+              <div class="flex items-center gap-2 px-4 py-3">
                 <div class="min-w-0 flex-1">
-                  <div class="flex items-start justify-between gap-2">
-                    <div class="flex min-w-0 items-center gap-2">
-                      <app-badge tone="accent">{{ typeLabel(transaction.type) }}</app-badge>
-                      <span class="text-xs text-content-muted">{{ transaction.date }}</span>
-                    </div>
-                    <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">{{ transaction.amount | money: transaction.currency }}</span>
+                  <div class="flex min-w-0 items-center gap-2">
+                    <app-badge tone="accent">{{ typeLabel(transaction.type) }}</app-badge>
+                    @if (assetSymbol(transaction.assetId); as symbol) {
+                      <span class="truncate font-medium text-content-primary">{{ symbol }}</span>
+                    }
                   </div>
-                  <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-muted">
-                    <span>{{ t('investments.columns.quantity') }}: <span class="font-mono tabular-nums">{{ transaction.quantity ?? '—' }}</span></span>
-                    <span>{{ t('investments.columns.price') }}: <span class="font-mono tabular-nums">{{ transaction.price ? (transaction.price | money: transaction.currency : 'precise') : '—' }}</span></span>
-                    <span>{{ t('investments.columns.fee') }}: <span class="font-mono tabular-nums">{{ transaction.fee | money: transaction.currency }}</span></span>
+                  <div class="mt-1 flex flex-wrap items-center gap-x-2 text-xs text-content-muted">
+                    <span>{{ transaction.date }}</span>
+                    @if (transaction.quantity && transaction.price) {
+                      <span aria-hidden="true">·</span>
+                      <span class="font-mono tabular-nums">{{ transaction.quantity }} × {{ transaction.price | money: transaction.currency : 'precise' }}</span>
+                    }
+                    @if (hasFee(transaction)) {
+                      <span aria-hidden="true">·</span>
+                      <span>{{ t('investments.columns.fee') }} <span class="font-mono tabular-nums">{{ transaction.fee | money: transaction.currency }}</span></span>
+                    }
                   </div>
                 </div>
-                <div class="flex shrink-0 flex-col gap-1">
-                  <button appButton variant="ghost" size="sm" type="button" (click)="openEditTransaction(transaction)" [attr.aria-label]="t('investments.actions.editTransaction')"><app-icon name="pencil" [size]="16" /></button>
-                  <button appButton variant="ghost" size="sm" type="button" (click)="deleteTransaction(transaction)" [attr.aria-label]="t('investments.actions.deleteTransaction')"><app-icon name="trash" [size]="16" /></button>
-                </div>
+                <span class="shrink-0 font-mono text-sm font-semibold tabular-nums">{{ transaction.amount | money: transaction.currency }}</span>
+                <app-dropdown #menu panelClass="w-52">
+                  <button dropdownTrigger appButton variant="ghost" size="sm" type="button" [attr.aria-label]="t('investments.actions.more')">
+                    <app-icon name="dots" [size]="16" />
+                  </button>
+                  <button type="button" class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11" (click)="menu.open.set(false); openEditTransaction(transaction)">
+                    <app-icon name="pencil" [size]="16" />{{ t('investments.actions.editTransaction') }}
+                  </button>
+                  <button type="button" class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11" (click)="menu.open.set(false); deleteTransaction(transaction)">
+                    <app-icon name="trash" [size]="16" />{{ t('investments.actions.deleteTransaction') }}
+                  </button>
+                </app-dropdown>
               </div>
             }
           </div>
@@ -202,7 +284,7 @@
           }
         }
       </app-card>
-    </div>
+    }
 
     <app-investment-wallet-form-modal [(open)]="walletFormOpen" [wallet]="wallet" (saved)="onWalletSaved()" />
     <app-investment-transaction-form-modal [(open)]="transactionFormOpen" [walletId]="id()" [transaction]="editingTransaction()" [assets]="assetsResource.value() ?? []" (saved)="onTransactionSaved()" />

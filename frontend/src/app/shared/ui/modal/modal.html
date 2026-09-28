@@ -6,7 +6,7 @@
 <dialog
   #dialog
   *transloco="let t"
-  class="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-md border border-border bg-surface-raised p-0 text-content-primary backdrop:bg-black/40"
+  [class]="dialogClass()"
   [attr.aria-labelledby]="titleText() ? titleId : null"
   (close)="onNativeClose()"
   (click)="onBackdropClick($event)"

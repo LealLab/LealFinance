@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "View all",
+    "charts": {
+      "label": "Chart"
+    },
     "ratesUnavailable": "Some totals need an exchange rate that isn't available right now.",
     "title": "Dashboard",
     "welcome": "Welcome to LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Savings rate"
     },
     "cashFlow": {
+      "tab": "Cash flow",
       "title": "Cash flow (6 months)",
       "income": "Income",
       "expense": "Expenses"
@@ -433,7 +438,8 @@
       "edit": "Edit",
       "archive": "Archive",
       "unarchive": "Unarchive",
-      "delete": "Delete account"
+      "delete": "Delete account",
+      "more": "More"
     },
     "archive": {
       "title": "Archive account?",
@@ -565,6 +571,7 @@
     "title": "Transactions",
     "description": "Income, expenses, and transfers.",
     "actions": {
+      "more": "More",
       "new": "New transaction",
       "edit": "Edit",
       "delete": "Delete",
@@ -574,7 +581,6 @@
     },
     "history": {"title":"Transaction history","loading":"Loading history…","empty":"No history yet.","loadError":"Could not load transaction history.","operation":{"create":"Created","update":"Updated","delete":"Deleted"},"source":{"manual":"Manual","import":"Import","import_undo":"Import undo","recurring":"Recurring","loan":"Loan","card":"Card","investment":"Investment","bulk":"Bulk"},"field":{"type":"Type","date":"Date","amount":"Amount","currency":"Currency","account_id":"Account","to_account_id":"Destination account","category_id":"Category","description":"Description","notes":"Notes","recurring_rule_id":"Recurring rule","loan_id":"Loan","card_invoice_close_date":"Invoice close date","installment_group_id":"Installment group","installment_number":"Installment number","installment_count":"Installment count","conversion_amount":"Converted amount","conversion_currency":"Converted currency","conversion_fee":"Conversion fee","conversion_rate":"Conversion rate","conversion_source":"Conversion source"}},
     "tabs": {
-      "transactions": "Transactions",
       "recurring": "Recurring"
     },
     "type": {
@@ -583,6 +589,7 @@
       "transfer": "Transfer"
     },
     "filters": {
+      "apply": "Show results",
       "type": "Type",
       "account": "Account",
       "category": "Category",
@@ -598,7 +605,6 @@
       "amountMin": "Minimum",
       "amountMax": "Maximum",
       "any": "Any",
-      "back": "Back",
       "dateRange": "{{from}} — {{to}}",
       "amountRange": "{{min}} — {{max}}",
       "removeChip": "Remove {{filter}} filter"
@@ -821,15 +827,12 @@
       "delete": "Delete",
       "collapse": "Collapse",
       "expand": "Expand",
-      "dragHandle": "Reorder"
+      "dragHandle": "Reorder",
+      "more": "More"
     },
     "empty": {
       "title": "No categories yet",
       "description": "Create groups and categories to organize your transactions."
-    },
-    "sections": {
-      "income": "Income categories",
-      "expense": "Expense categories"
     },
     "delete": {
       "title": "Delete category?",
@@ -864,9 +867,6 @@
     "eyebrow": "Automation",
     "title": "Rules",
     "description": "Automatically categorize transactions as you import them.",
-    "card": {
-      "title": "Categorization Rules"
-    },
     "actions": {
       "export": "Export",
       "import": "Import",
@@ -874,8 +874,10 @@
       "reapply": "Reapply",
       "add": "Add",
       "delete": "Delete",
-      "edit": "Edit"
+      "edit": "Edit",
+      "more": "More"
     },
+    "inactive": "Inactive",
     "sort": {
       "label": "Sort by",
       "priority": "Priority",
@@ -971,6 +973,10 @@
     "list": {
       "title": "Monthly limits"
     },
+    "view": {
+      "chart": "Chart",
+      "values": "Amounts"
+    },
     "planner": {
       "title": "Income-based budget",
       "description": "Distribute your expected income across categories.",
@@ -1044,7 +1050,8 @@
       "unarchive": "Unarchive goal",
       "deposit": "Add money",
       "withdraw": "Withdraw",
-      "interest": "Add interest"
+      "interest": "Add interest",
+      "more": "More"
     },
     "empty": {
       "title": "No goals yet",
@@ -1122,6 +1129,7 @@
       "archive": "Archive loan",
       "unarchive": "Unarchive loan",
       "recordPayment": "Record payment",
+      "more": "More",
       "delete": "Delete loan"
     },
     "empty": {
@@ -1249,7 +1257,7 @@
       "editWallet": "Edit wallet",
       "archiveWallet": "Archive wallet",
       "unarchiveWallet": "Unarchive wallet",
-      "view": "View",
+      "more": "More",
       "newTransaction": "Record transaction",
       "editTransaction": "Edit transaction",
       "deleteTransaction": "Delete transaction",
@@ -1265,6 +1273,17 @@
       "marketValue": "Market value",
       "unrealizedGain": "Unrealized gain",
       "multiCurrencyHint": "Wallets in other currencies aren't included in these totals."
+    },
+    "help": {
+      "label": "What is {{label}}?",
+      "marketValue": "What your positions are worth today: each asset's quantity times its latest quote. If any asset has no price, the total shows as —.",
+      "bookValue": "What you paid for the positions you still hold: each asset's quantity times its average purchase cost.",
+      "unrealizedGain": "Market value minus book value: what you would gain (or lose) if you sold everything today. It only becomes a real gain when you sell."
+    },
+    "view": {
+      "positions": "Positions",
+      "ledger": "Transactions",
+      "assets": "Assets"
     },
     "empty": {
       "title": "No investment wallets yet",
@@ -1435,6 +1454,17 @@
       "expense": "Expenses",
       "netFlow": "Net flow",
       "categories": "Categories"
+    },
+    "view": {
+      "flow": "Flow",
+      "categories": "Categories",
+      "balance": "Balances"
+    },
+    "range": {
+      "from": "From",
+      "to": "To",
+      "apply": "Show results",
+      "invalid": "The end month must be the same as or after the start month."
     }
   },
   "agenda": {
@@ -1471,6 +1501,18 @@
     "direction": {
       "inflow": "Inflow",
       "outflow": "Outflow"
+    },
+    "filter": {
+      "all": "All",
+      "empty": "No items with this status."
+    },
+    "today": "Today",
+    "help": {
+      "label": "What is {{label}}?",
+      "projectedCashImpact": "What is still coming in minus what is still going out over the next 30 days: recurring transactions, card invoices, and loan installments not yet posted. Positive means money left over; negative means a shortfall.",
+      "realizedCashImpact": "Inflows minus outflows for items in this 30-day window that were already posted or paid.",
+      "projectedOutflow": "How much is still going out over the next 30 days: recurring expenses, open card invoices, and loan installments due.",
+      "realizedOutflow": "How much has already gone out in this 30-day window for items that were already paid."
     }
   },
   "exchange": {
@@ -1546,11 +1588,21 @@
       }
     },
     "actions": {
-      "refresh": "Refresh now"
+      "refresh": "Refresh now",
+      "more": "More"
     },
     "refresh": {
       "updated": "Updated {{count}} live rates.",
       "upToDate": "Rates are already up to date."
+    },
+    "help": {
+      "label": "What is {{label}}?",
+      "feesPaid": "Sum of the conversion fees charged on your foreign-currency transactions, converted to your display currency."
+    },
+    "view": {
+      "pending": "Pending",
+      "live": "Live",
+      "manual": "Manual"
     }
   },
   "settings": {
@@ -1682,11 +1734,19 @@
         "saveError": "Could not save this key. Try again."
       }
     },
+    "view": {
+      "general": "General",
+      "backup": "Backup",
+      "investments": "Investments",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI agents",
       "description": "AI assistants over your financial data, with multiple providers and tools through MCP. Disabled by default - configurable in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disabled",
       "enabled": "Enabled",
+      "memberReady": "Active and ready to use.",
+      "memberUnavailable": "Disabled. Contact your administrator to request access to AI.",
       "manage": "Manage"
     },
     "twoFactor": {
@@ -1962,6 +2022,11 @@
       "title": "No reconciliation selected",
       "description": "Start a reconciliation above or choose an earlier one."
     },
+    "filter": {
+      "all": "All",
+      "pending": "Pending",
+      "empty": "No items with this status."
+    },
     "loadError": "Could not load reconciliations. Try again.",
     "confirmDelete": {
       "title": "Delete reconciliation?",
@@ -1971,6 +2036,7 @@
   "profile": {
     "title": "Profile",
     "description": "Manage your identity and account security.",
+    "view": { "account": "Account", "security": "Security" },
     "identity": {
       "title": "Personal information",
       "description": "Update the name and email address used for your account.",

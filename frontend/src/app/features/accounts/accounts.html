@@ -1,23 +1,50 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('accounts.title')" [description]="t('accounts.description')">
-    <label
-      class="flex items-center gap-2 text-sm text-content-muted max-md:col-span-2 [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11"
-      [attr.title]="t('accounts.showArchived')"
-    >
-      <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
-      <span>{{ t('accounts.showArchived') }}</span>
-    </label>
-    <!-- One pair so the two buttons share a row below md regardless of how many
-         items precede them; md+ it disappears and they flow with the header. -->
-    <div class="grid grid-cols-2 gap-2 max-md:col-span-2 md:contents">
+  <app-page-header [compact]="true" [title]="t('accounts.title')" [description]="t('accounts.description')">
+    <!-- From md up the secondary actions sit beside the primary one; on
+         phones they fold into the "More" menu below so the page opens on
+         its content, same pattern as features/transactions. -->
+    <div class="hidden md:contents">
+      <label
+        class="flex items-center gap-2 text-sm text-content-muted"
+        [attr.title]="t('accounts.showArchived')"
+      >
+        <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
+        <span>{{ t('accounts.showArchived') }}</span>
+      </label>
       <button appButton variant="secondary" type="button" (click)="openCreateInstitution()">
         <app-icon name="bank" [size]="16" />
         {{ t('institutions.actions.new') }}
       </button>
+    </div>
+
+    <!-- Grouped into one page-header child so the "hidden md:contents" group
+         above doesn't flip the odd/even parity that decides whether the last
+         action spans the full row on mobile - see the same fix in
+         features/transactions/transactions.html. -->
+    <div class="contents">
       <button appButton variant="primary" type="button" (click)="openCreate()">
         <app-icon name="plus" [size]="16" />
         {{ t('accounts.actions.new') }}
       </button>
+
+      <app-dropdown class="md:hidden" [(open)]="moreOpen" panelClass="w-56">
+        <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+          <app-icon name="dots" [size]="16" />
+          <span>{{ t('accounts.actions.more') }}</span>
+        </button>
+        <button
+          type="button"
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+          (click)="moreOpen.set(false); openCreateInstitution()"
+        >
+          <app-icon name="bank" [size]="16" />
+          {{ t('institutions.actions.new') }}
+        </button>
+        <label class="flex w-full items-center gap-2 rounded px-2 py-2 text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11">
+          <input type="checkbox" [checked]="showArchived()" (change)="showArchived.set($any($event.target).checked)" />
+          <span>{{ t('accounts.showArchived') }}</span>
+        </label>
+      </app-dropdown>
     </div>
   </app-page-header>
 
@@ -51,7 +78,7 @@
                   variant="ghost"
                   size="sm"
                   type="button"
-                  class="opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                  class="max-md:opacity-100 opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                   (click)="openEditInstitution(institution, $event)"
                   [attr.aria-label]="t('institutions.actions.edit')"
                 >
@@ -62,7 +89,7 @@
                   variant="ghost"
                   size="sm"
                   type="button"
-                  class="opacity-0 transition-opacity hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
+                  class="max-md:opacity-100 opacity-0 transition-opacity hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
                   (click)="deleteInstitution(institution, $event)"
                   [attr.aria-label]="t('institutions.actions.delete')"
                 >
@@ -74,15 +101,17 @@
               }
             </div>
             @if (group.subtotal) {
-              <span
-                class="font-mono text-sm font-semibold tabular-nums"
-                [class]="amountClass(group.subtotal)"
-              >
-                {{ group.subtotal.amount | money: group.subtotal.currency }}
+              <span class="flex flex-col items-end">
+                <span
+                  class="font-mono text-sm font-semibold tabular-nums"
+                  [class]="amountClass(group.subtotal)"
+                >
+                  {{ group.subtotal.amount | money: group.subtotal.currency }}
+                </span>
                 @if (group.convertedSubtotal; as converted) {
-                  <span class="font-normal" [class]="amountClass(converted)"
-                    >({{ converted.amount | money: converted.currency }})</span
-                  >
+                  <span class="font-mono text-xs text-content-muted">
+                    {{ converted.amount | money: converted.currency }}
+                  </span>
                 }
               </span>
             } @else if (group.rows.length > 0) {
@@ -100,8 +129,8 @@
                 (keydown.enter)="openDetail(row.account)"
               >
                 <div class="flex min-w-0 flex-col gap-0.5">
-                  <span class="flex items-center gap-2 text-sm font-medium text-content-primary">
-                    {{ row.account.name }}
+                  <span class="flex min-w-0 items-center gap-2 text-sm font-medium text-content-primary">
+                    <span class="truncate">{{ row.account.name }}</span>
                     @if (row.account.archived) {
                       <app-badge tone="neutral">{{ t('accounts.archivedBadge') }}</app-badge>
                     }
@@ -113,52 +142,19 @@
                 </div>
 
                 <div class="ms-auto flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
-                  <span
-                    class="font-mono text-sm font-semibold tabular-nums"
-                    [class]="amountClass(row.balance)"
-                  >
-                    {{ row.balance.amount | money: row.balance.currency }}
+                  <span class="flex flex-col items-end">
+                    <span
+                      class="font-mono text-sm font-semibold tabular-nums"
+                      [class]="amountClass(row.balance)"
+                    >
+                      {{ row.balance.amount | money: row.balance.currency }}
+                    </span>
                     @if (row.convertedBalance; as converted) {
-                      <span class="font-normal" [class]="amountClass(converted)"
-                        >({{ converted.amount | money: converted.currency }})</span
-                      >
+                      <span class="font-mono text-xs text-content-muted">
+                        {{ converted.amount | money: converted.currency }}
+                      </span>
                     }
                   </span>
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                    (click)="openEdit(row.account, $event)"
-                    [attr.aria-label]="t('accounts.actions.edit')"
-                  >
-                    <app-icon name="pencil" [size]="16" />
-                  </button>
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    class="opacity-0 transition-opacity hover:!bg-surface-raised group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                    (click)="toggleArchived(row.account, $event)"
-                    [attr.aria-label]="
-                      row.account.archived ? t('accounts.actions.unarchive') : t('accounts.actions.archive')
-                    "
-                  >
-                    <app-icon name="archive" [size]="16" />
-                  </button>
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    class="opacity-0 transition-opacity hover:!bg-surface-raised hover:text-negative group-hover/card:opacity-100 group-focus-within/card:opacity-100 focus-visible:opacity-100 [@media(pointer:coarse)]:opacity-100"
-                    (click)="deleteAccount(row.account, $event)"
-                    [attr.aria-label]="t('accounts.actions.delete')"
-                  >
-                    <app-icon name="trash" [size]="16" />
-                  </button>
                 </div>
               </li>
             }
@@ -170,7 +166,6 @@
 
   <app-account-form-modal
     [(open)]="formOpen"
-    [account]="editingAccount()"
     (saved)="onSaved()"
   />
   <app-institution-form-modal

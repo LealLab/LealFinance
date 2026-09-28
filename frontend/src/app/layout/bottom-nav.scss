@@ -1,5 +1,6 @@
-// Utility classes in bottom-nav.html cover all styling; the nav itself is
-// position: fixed, so the host only needs to not add layout of its own.
+// Utility classes in bottom-nav.html cover all styling. The nav is the last
+// row of the shell's viewport-tall mobile column, so it must not shrink.
 :host {
   display: block;
+  flex-shrink: 0;
 }

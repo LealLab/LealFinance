@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "すべて見る",
+    "charts": {
+      "label": "グラフ"
+    },
     "ratesUnavailable": "一部の合計には、現在利用できない為替レートが必要です。",
     "title": "ダッシュボード",
     "welcome": "LealFinanceへようこそ",
@@ -359,6 +363,7 @@
       "savingsRate": "貯蓄率"
     },
     "cashFlow": {
+      "tab": "キャッシュフロー",
       "title": "キャッシュフロー（過去6か月）",
       "income": "収入",
       "expense": "支出"
@@ -409,7 +414,8 @@
       "edit": "編集",
       "archive": "アーカイブ",
       "unarchive": "アーカイブ解除",
-      "delete": "口座を削除"
+      "delete": "口座を削除",
+      "more": "その他"
     },
     "archive": {
       "title": "口座をアーカイブしますか？",
@@ -541,6 +547,7 @@
     "title": "取引",
     "description": "収入、支出、振替を管理します。",
     "actions": {
+      "more": "その他",
       "new": "新しい取引",
       "edit": "編集",
       "delete": "削除",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"取引履歴","loading":"履歴を読み込み中…","empty":"履歴はまだありません。","loadError":"取引履歴を読み込めませんでした。","operation":{"create":"作成","update":"更新","delete":"削除"},"source":{"manual":"手動","import":"インポート","import_undo":"インポートを取り消し","recurring":"定期","loan":"ローン","card":"カード","investment":"投資","bulk":"一括"},"field":{"type":"種類","date":"日付","amount":"金額","currency":"通貨","account_id":"口座","to_account_id":"移動先口座","category_id":"カテゴリ","description":"説明","notes":"メモ","recurring_rule_id":"定期ルール","loan_id":"ローン","card_invoice_close_date":"請求締め日","installment_group_id":"分割グループ","installment_number":"分割番号","installment_count":"分割回数","conversion_amount":"換算金額","conversion_currency":"換算通貨","conversion_fee":"換算手数料","conversion_rate":"換算レート","conversion_source":"換算元"}},
     "tabs": {
-      "transactions": "取引",
       "recurring": "定期取引"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "振替"
     },
     "filters": {
+      "apply": "結果を表示",
       "type": "種類",
       "account": "口座",
       "category": "カテゴリ",
@@ -574,7 +581,6 @@
       "amountMin": "最小",
       "amountMax": "最大",
       "any": "すべて",
-      "back": "戻る",
       "dateRange": "{{from}}〜{{to}}",
       "amountRange": "{{min}}〜{{max}}",
       "removeChip": "{{filter}}フィルターを削除"
@@ -797,15 +803,12 @@
       "delete": "削除",
       "collapse": "折りたたむ",
       "expand": "展開",
-      "dragHandle": "並べ替え"
+      "dragHandle": "並べ替え",
+      "more": "その他"
     },
     "empty": {
       "title": "カテゴリはまだありません",
       "description": "グループとカテゴリを作成して、取引を整理しましょう。"
-    },
-    "sections": {
-      "income": "収入カテゴリ",
-      "expense": "支出カテゴリ"
     },
     "delete": {
       "title": "カテゴリを削除しますか？",
@@ -840,9 +843,6 @@
     "eyebrow": "自動化",
     "title": "ルール",
     "description": "インポート時に取引を自動で分類します。",
-    "card": {
-      "title": "分類ルール"
-    },
     "actions": {
       "export": "エクスポート",
       "import": "インポート",
@@ -850,8 +850,10 @@
       "reapply": "再適用",
       "add": "追加",
       "delete": "削除",
-      "edit": "編集"
+      "edit": "編集",
+      "more": "その他"
     },
+    "inactive": "無効",
     "sort": {
       "label": "並べ替え",
       "priority": "優先度",
@@ -947,6 +949,10 @@
     "list": {
       "title": "月間上限"
     },
+    "view": {
+      "chart": "グラフ",
+      "values": "金額"
+    },
     "planner": {
       "title": "収入ベースの予算",
       "description": "予想収入をカテゴリに配分します。",
@@ -1020,7 +1026,8 @@
       "unarchive": "目標のアーカイブを解除",
       "deposit": "入金",
       "withdraw": "出金",
-      "interest": "利息を追加"
+      "interest": "利息を追加",
+      "more": "その他"
     },
     "empty": {
       "title": "目標はまだありません",
@@ -1098,6 +1105,7 @@
       "archive": "ローンをアーカイブ",
       "unarchive": "ローンのアーカイブを解除",
       "recordPayment": "支払いを記録",
+      "more": "その他",
       "delete": "ローンを削除"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "投資ポートフォリオを編集",
       "archiveWallet": "投資ポートフォリオをアーカイブ",
       "unarchiveWallet": "投資ポートフォリオのアーカイブを解除",
-      "view": "表示",
+      "more": "その他",
       "newTransaction": "取引を記録",
       "editTransaction": "取引を編集",
       "deleteTransaction": "取引を削除",
@@ -1239,6 +1247,17 @@
       "marketValue": "時価",
       "unrealizedGain": "未実現利益",
       "multiCurrencyHint": "他の通貨のポートフォリオはこれらの合計に含まれません。"
+    },
+    "help": {
+      "label": "{{label}}とは？",
+      "marketValue": "現在のポジションの評価額: 各資産の数量に最新の価格を掛けたものです。価格が取得できない資産がある場合、合計は「—」と表示されます。",
+      "bookValue": "現在保有しているポジションに支払った金額: 各資産の数量に平均取得単価を掛けたものです。",
+      "unrealizedGain": "時価から簿価を差し引いた額: 今日すべて売却した場合に得られる(または失う)金額です。実際に売却して初めて確定した利益になります。"
+    },
+    "view": {
+      "positions": "ポジション",
+      "ledger": "取引",
+      "assets": "資産"
     },
     "empty": {
       "title": "投資ポートフォリオはまだありません",
@@ -1411,6 +1430,17 @@
       "expense": "支出",
       "netFlow": "純キャッシュフロー",
       "categories": "カテゴリ"
+    },
+    "view": {
+      "flow": "フロー",
+      "categories": "カテゴリ",
+      "balance": "残高"
+    },
+    "range": {
+      "from": "開始日",
+      "to": "終了日",
+      "apply": "結果を表示",
+      "invalid": "終了月は開始月と同じか、それより後である必要があります。"
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "入金",
       "outflow": "出金"
+    },
+    "filter": {
+      "all": "すべて",
+      "empty": "この状態の項目はありません。"
+    },
+    "today": "今日",
+    "help": {
+      "label": "{{label}}とは？",
+      "projectedCashImpact": "今後30日間にまだ入ってくる金額から、まだ出ていく金額を差し引いたものです。定期取引、カード請求、まだ計上されていないローン返済が含まれます。プラスの場合は資金が余り、マイナスの場合は不足を意味します。",
+      "realizedCashImpact": "この30日間のうち、すでに計上または支払い済みの項目について、入金から出金を差し引いた金額です。",
+      "projectedOutflow": "今後30日間にまだ出ていく金額です。定期的な支出、未払いのカード請求、支払期日を迎えるローン返済が含まれます。",
+      "realizedOutflow": "この30日間のうち、すでに支払い済みの項目についてすでに出ていった金額です。"
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "今すぐ更新"
+      "refresh": "今すぐ更新",
+      "more": "その他"
     },
     "refresh": {
       "updated": "{{count}} 件のレートを更新しました。",
       "upToDate": "レートはすでに最新です。"
+    },
+    "help": {
+      "label": "{{label}}とは？",
+      "feesPaid": "外貨建て取引で請求された換算手数料の合計を、表示通貨に換算した金額です。"
+    },
+    "view": {
+      "pending": "未対応",
+      "live": "リアルタイム",
+      "manual": "手動"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "キーを保存できませんでした。もう一度お試しください。"
       }
     },
+    "view": {
+      "general": "一般",
+      "backup": "バックアップ",
+      "investments": "投資",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AIエージェント",
       "description": "複数のプロバイダーとMCPのツールを使って財務データを扱うAIアシスタントです。デフォルトでは無効で、Docker Compose（AGENTS_ENABLED）で設定できます。",
       "disabled": "無効",
       "enabled": "有効",
+      "memberReady": "有効で、すぐに利用できます。",
+      "memberUnavailable": "無効です。AIへのアクセスをリクエストするには管理者にお問い合わせください。",
       "manage": "管理"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "照合", "start": "照合を開始", "complete": "完了", "reopen": "再開", "delete": "削除" },
     "status": { "open": "未完了", "completed": "完了" },
     "empty": { "title": "照合が選択されていません", "description": "上で照合を開始するか、以前の照合を選択してください。" },
+    "filter": {
+      "all": "すべて",
+      "pending": "未消込",
+      "empty": "この状態の項目はありません。"
+    },
     "loadError": "照合を読み込めませんでした。もう一度お試しください。",
     "confirmDelete": { "title": "照合を削除しますか？", "message": "照合と消込マークが削除されます。続行しますか？" }
   },
   "profile": {
     "title": "プロフィール",
     "description": "身元とアカウントのセキュリティを管理します。",
+    "view": { "account": "アカウント", "security": "セキュリティ" },
     "identity": {
       "title": "個人情報",
       "description": "アカウントで使用する名前とメールアドレスを更新します。",

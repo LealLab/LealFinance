@@ -77,6 +77,9 @@ describe('Budgets', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
+    fixture.componentInstance['view'].set('values');
+    fixture.detectChanges();
+
     const el = fixture.nativeElement as HTMLElement;
     // No stable hook; queried by a Transloco-resolved label, not hardcoded copy.
     const setBudgetLabel = TestBed.inject(TranslocoService).translate('budgets.unbudgeted.setBudget');
@@ -105,6 +108,32 @@ describe('Budgets', () => {
     expect(
       fixture.componentInstance['budgetRows']().some((row) => row.budget.amount === '300'),
     ).toBe(true);
+  });
+
+  it('switches between the planner (chart) and the values sub-tabs', async () => {
+    const fixture = TestBed.createComponent(Budgets);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const transloco = TestBed.inject(TranslocoService);
+    const tab = (key: string) =>
+      Array.from(el.querySelectorAll('button[aria-pressed]')).find((b) =>
+        b.textContent?.includes(transloco.translate(key)),
+      ) as HTMLButtonElement;
+
+    // Chart tab first: planner visible, month limits not.
+    expect(tab('budgets.view.chart').getAttribute('aria-pressed')).toBe('true');
+    expect(el.querySelector('#expected-income')).toBeTruthy();
+    expect(el.textContent).not.toContain(transloco.translate('budgets.list.title'));
+
+    tab('budgets.view.values').click();
+    fixture.detectChanges();
+
+    expect(tab('budgets.view.values').getAttribute('aria-pressed')).toBe('true');
+    expect(el.querySelector('#expected-income')).toBeNull();
+    expect(el.textContent).toContain(transloco.translate('budgets.list.title'));
   });
 
   it('warns and does not save when percentage allocations exceed 100%', async () => {

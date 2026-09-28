@@ -10,7 +10,7 @@ from typing import Any, cast
 from uuid import UUID
 
 from cryptography.fernet import Fernet, InvalidToken
-from sqlalchemy import delete, func, select
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.elements import ColumnElement
@@ -455,6 +455,12 @@ async def _replace(
             db.add(table.model(**values))
         await db.flush()
         counts[table.name] = len(rows)
+    # Older backups may carry per-category colors; categories wear their group's.
+    await db.execute(
+        update(Category)
+        .where(Category.user_id == user_id, Category.group_id == CategoryGroup.id)
+        .values(color=CategoryGroup.color)
+    )
     return counts
 
 

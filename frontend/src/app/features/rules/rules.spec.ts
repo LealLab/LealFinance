@@ -48,7 +48,7 @@ interface RulesHarness {
   exportRules(): void;
   onImportFile(event: Event): Promise<void>;
   deleteRule(rule: ReturnType<RulesHarness['rules']>[number]): Promise<void>;
-  reapplyRules(): Promise<void>;
+  reapplyRules(): void;
 }
 
 describe('Rules', () => {
@@ -166,6 +166,58 @@ describe('Rules', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
+  it('opens rule packs from the phone "More" menu', async () => {
+    const fixture = TestBed.createComponent(Rules);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const packsLabel = TestBed.inject(TranslocoService).translate('rules.actions.packs');
+    (el.querySelector('app-page-header app-dropdown [dropdownTrigger]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    const packsItem = [...el.querySelectorAll('app-page-header app-dropdown button')].find(
+      (button) => !button.hasAttribute('dropdownTrigger') && button.textContent?.includes(packsLabel),
+    ) as HTMLButtonElement;
+    packsItem.click();
+    fixture.detectChanges();
+
+    expect((el.querySelector('app-rule-packs-modal dialog') as HTMLDialogElement).open).toBe(true);
+  });
+
+  it('reapplies from the sheet with the overwrite choice', async () => {
+    const fixture = TestBed.createComponent(Rules);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const reapply = vi.spyOn(TestBed.inject(CategorizationRuleRepository), 'reapply');
+    const reapplyLabel = TestBed.inject(TranslocoService).translate('rules.actions.reapply');
+    const headerButton = [...el.querySelectorAll('app-page-header button')].find((button) =>
+      button.textContent?.includes(reapplyLabel),
+    ) as HTMLButtonElement;
+    headerButton.click();
+    fixture.detectChanges();
+
+    const sheet = [...el.querySelectorAll('app-modal dialog')].find((dialog) =>
+      dialog.querySelector('#rules-reapply-overwrite'),
+    ) as HTMLDialogElement;
+    expect(sheet.open).toBe(true);
+    const overwrite = sheet.querySelector('#rules-reapply-overwrite') as HTMLInputElement;
+    overwrite.checked = true;
+    overwrite.dispatchEvent(new Event('change'));
+    const confirm = [...sheet.querySelectorAll('button')].find((button) =>
+      button.textContent?.includes(reapplyLabel),
+    ) as HTMLButtonElement;
+    confirm.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(reapply).toHaveBeenCalledWith(true);
+    expect(sheet.open).toBe(false);
+  });
+
   it('exports, imports, reapplies, sorts, and deletes rules', async () => {
     const fixture = TestBed.createComponent(Rules);
     fixture.detectChanges();
@@ -198,11 +250,9 @@ describe('Rules', () => {
     page.exportRules();
 
     const translate = vi.spyOn(TestBed.inject(TranslocoService), 'translate');
-    const reapply = page.reapplyRules();
+    page.reapplyRules();
     fixture.detectChanges();
-    TestBed.inject(ConfirmService).respond(true);
-    await reapply;
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(translate).toHaveBeenCalledWith('rules.reapply.done', { count: 0 });
 
     const fileInput = document.createElement('input');

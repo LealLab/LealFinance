@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Zobrazit vše",
+    "charts": {
+      "label": "Graf"
+    },
     "ratesUnavailable": "U některých součtů je potřeba směnný kurz, který momentálně není k dispozici.",
     "title": "Přehled",
     "welcome": "Vítejte v LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Míra úspor"
     },
     "cashFlow": {
+      "tab": "Peněžní tok",
       "title": "Peněžní tok (6 měsíců)",
       "income": "Příjmy",
       "expense": "Výdaje"
@@ -409,7 +414,8 @@
       "edit": "Upravit",
       "archive": "Archivovat",
       "unarchive": "Obnovit z archivu",
-      "delete": "Odstranit účet"
+      "delete": "Odstranit účet",
+      "more": "Více"
     },
     "archive": {
       "title": "Archivovat účet?",
@@ -541,6 +547,7 @@
     "title": "Transakce",
     "description": "Příjmy, výdaje a převody.",
     "actions": {
+      "more": "Více",
       "new": "Nová transakce",
       "edit": "Upravit",
       "delete": "Odstranit",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Historie transakcí","loading":"Načítání historie…","empty":"Zatím žádná historie.","loadError":"Historii transakce se nepodařilo načíst.","operation":{"create":"Vytvořeno","update":"Upraveno","delete":"Smazáno"},"source":{"manual":"Ruční","import":"Import","import_undo":"Zrušení importu","recurring":"Opakované","loan":"Půjčka","card":"Karta","investment":"Investice","bulk":"Hromadné"},"field":{"type":"Typ","date":"Datum","amount":"Částka","currency":"Měna","account_id":"Účet","to_account_id":"Cílový účet","category_id":"Kategorie","description":"Popis","notes":"Poznámky","recurring_rule_id":"Pravidlo opakování","loan_id":"Půjčka","card_invoice_close_date":"Datum uzavření faktury","installment_group_id":"Skupina splátek","installment_number":"Číslo splátky","installment_count":"Počet splátek","conversion_amount":"Převedená částka","conversion_currency":"Měna převodu","conversion_fee":"Poplatek za převod","conversion_rate":"Kurz převodu","conversion_source":"Zdroj převodu"}},
     "tabs": {
-      "transactions": "Transakce",
       "recurring": "Opakované"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Převod"
     },
     "filters": {
+      "apply": "Zobrazit výsledky",
       "type": "Typ",
       "account": "Účet",
       "category": "Kategorie",
@@ -574,7 +581,6 @@
       "amountMin": "Minimální částka",
       "amountMax": "Maximum",
       "any": "Libovolné",
-      "back": "Zpět",
       "dateRange": "Od {{from}} do {{to}}",
       "amountRange": "Od {{min}} do {{max}}",
       "removeChip": "Odebrat filtr {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Odstranit",
       "collapse": "Sbalit",
       "expand": "Rozbalit",
-      "dragHandle": "Změnit pořadí"
+      "dragHandle": "Změnit pořadí",
+      "more": "Více"
     },
     "empty": {
       "title": "Zatím nemáte žádné kategorie",
       "description": "Vytvořte skupiny a kategorie a uspořádejte si transakce."
-    },
-    "sections": {
-      "income": "Kategorie příjmů",
-      "expense": "Kategorie výdajů"
     },
     "delete": {
       "title": "Odstranit kategorii?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatizace",
     "title": "Pravidla",
     "description": "Automaticky kategorizujte transakce při jejich importu.",
-    "card": {
-      "title": "Pravidla kategorizace"
-    },
     "actions": {
       "export": "Exportovat",
       "import": "Importovat",
@@ -850,8 +850,10 @@
       "reapply": "Použít znovu",
       "add": "Přidat",
       "delete": "Smazat",
-      "edit": "Upravit"
+      "edit": "Upravit",
+      "more": "Více"
     },
+    "inactive": "Neaktivní",
     "sort": {
       "label": "Řadit podle",
       "priority": "Priorita",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Měsíční limity"
     },
+    "view": {
+      "chart": "Graf",
+      "values": "Částky"
+    },
     "planner": {
       "title": "Rozpočet podle příjmů",
       "description": "Rozdělte očekávaný příjem mezi kategorie.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Obnovit cíl z archivu",
       "deposit": "Přidat peníze",
       "withdraw": "Vybrat",
-      "interest": "Přidat úrok"
+      "interest": "Přidat úrok",
+      "more": "Více"
     },
     "empty": {
       "title": "Zatím nemáte žádné cíle",
@@ -1098,6 +1105,7 @@
       "archive": "Archivovat půjčku",
       "unarchive": "Zrušit archivaci půjčky",
       "recordPayment": "Zaznamenat splátku",
+      "more": "Více",
       "delete": "Odstranit půjčku"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Upravit investiční portfolio",
       "archiveWallet": "Archivovat investiční portfolio",
       "unarchiveWallet": "Zrušit archivaci investičního portfolia",
-      "view": "Zobrazit",
+      "more": "Více",
       "newTransaction": "Zaznamenat transakci",
       "editTransaction": "Upravit transakci",
       "deleteTransaction": "Odstranit transakci",
@@ -1239,6 +1247,17 @@
       "marketValue": "Tržní hodnota",
       "unrealizedGain": "Nerealizovaný zisk",
       "multiCurrencyHint": "Peněženky v jiných měnách nejsou do těchto součtů zahrnuty."
+    },
+    "help": {
+      "label": "Co je {{label}}?",
+      "marketValue": "Jakou hodnotu mají vaše pozice dnes: množství každého aktiva vynásobené jeho poslední cenou. Pokud některé aktivum nemá cenu, celkový součet se zobrazí jako —.",
+      "bookValue": "Kolik jste zaplatili za pozice, které stále držíte: množství každého aktiva vynásobené průměrnou nákladovou cenou.",
+      "unrealizedGain": "Tržní hodnota mínus účetní hodnota: kolik byste získali (nebo ztratili), kdybyste dnes vše prodali. Skutečným ziskem se stává až prodejem."
+    },
+    "view": {
+      "positions": "Pozice",
+      "ledger": "Transakce",
+      "assets": "Aktiva"
     },
     "empty": {
       "title": "Zatím žádná investiční portfolia",
@@ -1411,6 +1430,17 @@
       "expense": "Výdaje",
       "netFlow": "Čistý peněžní tok",
       "categories": "Kategorie"
+    },
+    "view": {
+      "flow": "Tok",
+      "categories": "Kategorie",
+      "balance": "Zůstatky"
+    },
+    "range": {
+      "from": "Od",
+      "to": "Do",
+      "apply": "Zobrazit výsledky",
+      "invalid": "Měsíc „Do“ musí být stejný jako měsíc „Od“, nebo pozdější."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Příjem",
       "outflow": "Výdaj"
+    },
+    "filter": {
+      "all": "Vše",
+      "empty": "Žádné položky s tímto stavem."
+    },
+    "today": "Dnes",
+    "help": {
+      "label": "Co je {{label}}?",
+      "projectedCashImpact": "Kolik ještě přijde minus kolik ještě odejde v příštích 30 dnech: opakování, faktury kreditní karty a splátky úvěru, které ještě nebyly zaúčtovány. Kladná hodnota znamená, že peníze zbydou; záporná znamená schodek.",
+      "realizedCashImpact": "Příjmy minus výdaje za položky v tomto 30denním období, které už byly zaúčtovány nebo zaplaceny.",
+      "projectedOutflow": "Kolik ještě odejde v příštích 30 dnech: opakující se výdaje, otevřené faktury kreditní karty a splatné splátky úvěru.",
+      "realizedOutflow": "Kolik už odešlo v tomto 30denním období u položek, které už byly zaplaceny."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Obnovit"
+      "refresh": "Obnovit",
+      "more": "Více"
     },
     "refresh": {
       "updated": "Aktualizováno kurzů: {{count}}.",
       "upToDate": "Kurzy jsou již aktuální."
+    },
+    "help": {
+      "label": "Co je {{label}}?",
+      "feesPaid": "Součet poplatků za převod účtovaných u vašich transakcí v cizí měně, přepočtený na zobrazovanou měnu."
+    },
+    "view": {
+      "pending": "Nevyřešené",
+      "live": "Živé",
+      "manual": "Ruční"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Klíč se nepodařilo uložit. Zkuste to znovu."
       }
     },
+    "view": {
+      "general": "Obecné",
+      "backup": "Záloha",
+      "investments": "Investice",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI agenti",
       "description": "AI asistenti pracující s vašimi finančními daty, s podporou více poskytovatelů a nástrojů přes MCP. Ve výchozím nastavení jsou vypnuti – lze je nastavit v Docker Compose (AGENTS_ENABLED).",
       "disabled": "Vypnuto",
       "enabled": "Zapnuto",
+      "memberReady": "Aktivováno a připraveno k použití.",
+      "memberUnavailable": "Vypnuto. Pro přístup k AI kontaktujte svého správce.",
       "manage": "Spravovat"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Sladit", "start": "Zahájit odsouhlasení", "complete": "Dokončit", "reopen": "Znovu otevřít", "delete": "Smazat" },
     "status": { "open": "Otevřené", "completed": "Dokončené" },
     "empty": { "title": "Není vybráno žádné odsouhlasení", "description": "Začněte odsouhlasení výše nebo vyberte dřívější." },
+    "filter": {
+      "all": "Vše",
+      "pending": "Neodsouhlaseno",
+      "empty": "Žádné položky s tímto stavem."
+    },
     "loadError": "Odsouhlasení se nepodařilo načíst. Zkuste to znovu.",
     "confirmDelete": { "title": "Smazat odsouhlasení?", "message": "Odsouhlasení a jeho označení budou smazána. Pokračovat?" }
   },
   "profile": {
     "title": "Profil",
     "description": "Spravujte svou identitu a zabezpečení účtu.",
+    "view": { "account": "Účet", "security": "Zabezpečení" },
     "identity": {
       "title": "Osobní údaje",
       "description": "Aktualizujte jméno a e-mailovou adresu používané pro váš účet.",

@@ -1,4 +1,4 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { WritableSignal, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
@@ -17,6 +17,7 @@ import { MockLoanRepository } from '../../data/mock/mock-loan.repository';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockStore } from '../../data/mock/mock-store';
+import { Loan } from '../../domain/models/loan';
 import { Loans } from './loans';
 import { LoanPaymentModal } from './loan-payment-modal';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
@@ -105,6 +106,63 @@ describe('Loans', () => {
     expect(fixture.componentInstance['loanTransactions'](loan).map((tx) => tx.id)).toEqual([
       linked.id,
     ]);
+  });
+
+  it('opens a loan schedule and history in the sheet', async () => {
+    const store = TestBed.inject(MockStore);
+    const loan = store.listLoans()[0];
+    store.createTransaction({
+      type: 'expense',
+      date: '2026-02-01',
+      amount: loan.installmentAmount,
+      currency: loan.currency,
+      accountId: 'account-checking',
+      categoryId: loan.categoryId,
+      description: 'Loan payment',
+      loanId: loan.id,
+      installmentNumber: 1,
+      installmentCount: loan.installmentCount,
+    });
+
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      openSheet(loan: Loan, kind: 'schedule' | 'history'): void;
+      sheetOpen(): boolean;
+    };
+    const dialog = () => (fixture.nativeElement as HTMLElement).querySelector('app-modal dialog')!;
+
+    component.openSheet(loan, 'schedule');
+    fixture.detectChanges();
+    expect(component.sheetOpen()).toBe(true);
+    expect(dialog().querySelector('h2')?.textContent).toContain(loan.name);
+    expect(dialog().textContent).toContain(`1/${loan.installmentCount}`);
+
+    component.openSheet(loan, 'history');
+    fixture.detectChanges();
+    expect(dialog().textContent).toContain('Loan payment');
+  });
+
+  it('toggles archived loans from the mobile "More" menu', async () => {
+    const fixture = TestBed.createComponent(Loans);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const component = fixture.componentInstance as unknown as {
+      moreOpen: WritableSignal<boolean>;
+      showArchived(): boolean;
+    };
+    component.moreOpen.set(true);
+    fixture.detectChanges();
+
+    const checkbox = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>(
+      'app-dropdown input[type="checkbox"]',
+    )!;
+    checkbox.click();
+
+    expect(component.showArchived()).toBe(true);
   });
 
   it('keeps the chosen payment mode across unrelated change-detection cycles', async () => {

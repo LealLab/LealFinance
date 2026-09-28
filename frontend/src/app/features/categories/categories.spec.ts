@@ -34,18 +34,19 @@ function findCategoryRow(el: HTMLElement, name: string): HTMLLIElement | null {
   return (span?.closest('li') as HTMLLIElement | null) ?? null;
 }
 
-function findDeleteButton(row: HTMLLIElement): HTMLButtonElement | null {
-  // The row's own action buttons only - not the delete buttons of nested
-  // category rows. Group rows nest their actions two divs deep; category
-  // rows keep them in the row's last child.
-  const actionButtons = row.querySelectorAll<HTMLButtonElement>(
-    ':scope > div > div:last-child > div > button, :scope > div:last-child > button',
-  );
+function findRowButton(row: HTMLLIElement, icon: string): HTMLButtonElement | null {
+  // The row's own inline (md+) action buttons only - not those of nested
+  // category rows (a sibling <ul>) nor the phone "More" menu items.
+  const buttons = row.querySelectorAll<HTMLButtonElement>(':scope > div button');
   return (
-    Array.from(actionButtons).find((button) =>
-      button.querySelector('app-icon[name="trash"]'),
+    Array.from(buttons).find(
+      (button) => !button.closest('app-dropdown') && button.querySelector(`app-icon[name="${icon}"]`),
     ) ?? null
   );
+}
+
+function findDeleteButton(row: HTMLLIElement): HTMLButtonElement | null {
+  return findRowButton(row, 'trash');
 }
 
 describe('Categories', () => {
@@ -274,10 +275,72 @@ describe('Categories', () => {
     fixture.detectChanges();
 
     const row = findGroupRow(fixture.nativeElement as HTMLElement, 'Moradia')!;
-    const editButton = row.querySelector<HTMLButtonElement>(
-      ':scope > div > div:last-child > div > button:nth-of-type(2)'
+    expect(findRowButton(row, 'pencil')).toBeTruthy();
+  });
+
+  it('switches between the expense and income tabs', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const tabs = Array.from(el.querySelectorAll<HTMLButtonElement>('[role="group"] > button'));
+    expect(tabs.map((tab) => tab.getAttribute('aria-pressed'))).toEqual(['true', 'false']);
+    expect(el.querySelector('#category-groups-expense')).not.toBeNull();
+    expect(findGroupRow(el, 'Moradia')).not.toBeNull();
+
+    tabs[1].click();
+    fixture.detectChanges();
+
+    expect(el.querySelector('#category-groups-expense')).toBeNull();
+    expect(el.querySelector('#category-groups-income')).not.toBeNull();
+    expect(findGroupRow(el, 'Moradia')).toBeNull();
+  });
+
+  it('deletes a category from its phone "More" menu', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const row = findCategoryRow(fixture.nativeElement as HTMLElement, 'Outras Despesas')!;
+    row.querySelector<HTMLButtonElement>('app-dropdown button[dropdownTrigger]')!.click();
+    fixture.detectChanges();
+    const deleteItem = Array.from(row.querySelectorAll<HTMLButtonElement>('app-dropdown button')).find(
+      (button) => button.textContent?.trim() === 'Delete',
     )!;
-    expect(editButton).toBeTruthy();
+    deleteItem.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(TestBed.inject(ConfirmService).request()?.titleKey).toBe('categories.delete.title');
+  });
+
+  it('hides the color picker for categories and saves with the group color', async () => {
+    const fixture = TestBed.createComponent(Categories);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const group = fixture.componentInstance['expenseRows']().find((row) => row.group.name === 'Moradia')!.group;
+    (fixture.componentInstance as unknown as { openCreateCategoryIn: (group: CategoryGroup) => void }).openCreateCategoryIn(group);
+    fixture.detectChanges();
+
+    const dialog = (fixture.nativeElement as HTMLElement).querySelector('dialog') as HTMLDialogElement;
+    expect(dialog.querySelector('#category-color')).toBeNull();
+    const nameInput = dialog.querySelector('#category-name') as HTMLInputElement;
+    nameInput.value = 'Garage';
+    nameInput.dispatchEvent(new Event('input'));
+    dialog.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const saved = fixture.componentInstance['expenseRows']()
+      .flatMap((row) => row.categories)
+      .find((row) => row.category.name === 'Garage')!;
+    expect(saved.category.color).toBe(group.color);
   });
 
   it('converts category spend when the display currency changes', async () => {

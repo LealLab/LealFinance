@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Näytä kaikki",
+    "charts": {
+      "label": "Kaavio"
+    },
     "ratesUnavailable": "Jotkin summat tarvitsevat valuuttakurssin, joka ei ole juuri nyt saatavilla.",
     "title": "Yhteenveto",
     "welcome": "Tervetuloa LealFinanceen",
@@ -359,6 +363,7 @@
       "savingsRate": "Säästöaste"
     },
     "cashFlow": {
+      "tab": "Kassavirta",
       "title": "Kassavirta (6 kuukautta)",
       "income": "Tulot",
       "expense": "Menot"
@@ -409,7 +414,8 @@
       "edit": "Muokkaa",
       "archive": "Arkistoi",
       "unarchive": "Palauta arkistosta",
-      "delete": "Poista tili"
+      "delete": "Poista tili",
+      "more": "Lisää"
     },
     "archive": {
       "title": "Arkistoidaanko tili?",
@@ -541,6 +547,7 @@
     "title": "Tapahtumat",
     "description": "Tulot, menot ja tilisiirrot.",
     "actions": {
+      "more": "Lisää",
       "new": "Uusi tapahtuma",
       "edit": "Muokkaa",
       "delete": "Poista",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Tapahtumahistoria","loading":"Ladataan historiaa…","empty":"Historiaa ei vielä ole.","loadError":"Tapahtumahistoriaa ei voitu ladata.","operation":{"create":"Luotu","update":"Päivitetty","delete":"Poistettu"},"source":{"manual":"Manuaalinen","import":"Tuonti","import_undo":"Tuonnin kumoaminen","recurring":"Toistuva","loan":"Laina","card":"Kortti","investment":"Sijoitus","bulk":"Joukkotoiminto"},"field":{"type":"Tyyppi","date":"Päivä","amount":"Summa","currency":"Valuutta","account_id":"Tili","to_account_id":"Kohdetili","category_id":"Luokka","description":"Kuvaus","notes":"Muistiinpanot","recurring_rule_id":"Toistosääntö","loan_id":"Laina","card_invoice_close_date":"Laskutuskauden päättymispäivä","installment_group_id":"Maksueräryhmä","installment_number":"Maksuerän numero","installment_count":"Maksuerien määrä","conversion_amount":"Muunnettu summa","conversion_currency":"Muunnosvaluutta","conversion_fee":"Muunnosmaksu","conversion_rate":"Muuntokurssi","conversion_source":"Muunnoksen lähde"}},
     "tabs": {
-      "transactions": "Tapahtumat",
       "recurring": "Toistuvat"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Tilisiirto"
     },
     "filters": {
+      "apply": "Näytä tulokset",
       "type": "Tyyppi",
       "account": "Tili",
       "category": "Luokka",
@@ -574,7 +581,6 @@
       "amountMin": "Vähintään",
       "amountMax": "Enintään",
       "any": "Mikä tahansa",
-      "back": "Takaisin",
       "dateRange": "{{from}} – {{to}}",
       "amountRange": "{{min}} – {{max}}",
       "removeChip": "Poista {{filter}}-suodatin"
@@ -797,15 +803,12 @@
       "delete": "Poista",
       "collapse": "Pienennä",
       "expand": "Laajenna",
-      "dragHandle": "Muuta järjestystä"
+      "dragHandle": "Muuta järjestystä",
+      "more": "Lisää"
     },
     "empty": {
       "title": "Ei vielä luokkia",
       "description": "Luo ryhmiä ja luokkia tapahtumiesi järjestämistä varten."
-    },
-    "sections": {
-      "income": "Tuloluokat",
-      "expense": "Menoluokat"
     },
     "delete": {
       "title": "Poistetaanko luokka?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automaatio",
     "title": "Säännöt",
     "description": "Luokittele tapahtumat automaattisesti tuonnin yhteydessä.",
-    "card": {
-      "title": "Luokittelusäännöt"
-    },
     "actions": {
       "export": "Vie",
       "import": "Tuo",
@@ -850,8 +850,10 @@
       "reapply": "Käytä uudelleen",
       "add": "Lisää",
       "delete": "Poista",
-      "edit": "Muokkaa"
+      "edit": "Muokkaa",
+      "more": "Lisää"
     },
+    "inactive": "Epäaktiivinen",
     "sort": {
       "label": "Järjestä",
       "priority": "Prioriteetti",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Kuukausirajat"
     },
+    "view": {
+      "chart": "Kaavio",
+      "values": "Summat"
+    },
     "planner": {
       "title": "Tuloihin perustuva budjetti",
       "description": "Jaa odotetut tulosi eri luokkiin.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Palauta tavoite arkistosta",
       "deposit": "Lisää rahaa",
       "withdraw": "Nosta rahaa",
-      "interest": "Lisää korko"
+      "interest": "Lisää korko",
+      "more": "Lisää"
     },
     "empty": {
       "title": "Ei vielä tavoitteita",
@@ -1098,6 +1105,7 @@
       "archive": "Arkistoi laina",
       "unarchive": "Palauta laina arkistosta",
       "recordPayment": "Kirjaa maksu",
+      "more": "Lisää",
       "delete": "Poista laina"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Muokkaa sijoitussalkkua",
       "archiveWallet": "Arkistoi sijoitussalkku",
       "unarchiveWallet": "Poista sijoitussalkku arkistosta",
-      "view": "Näytä",
+      "more": "Lisää",
       "newTransaction": "Kirjaa tapahtuma",
       "editTransaction": "Muokkaa tapahtumaa",
       "deleteTransaction": "Poista tapahtuma",
@@ -1239,6 +1247,17 @@
       "marketValue": "Markkina-arvo",
       "unrealizedGain": "Realisoitumaton voitto",
       "multiCurrencyHint": "Muissa valuutoissa olevia sijoitussalkkuja ei sisällytetä näihin summiin."
+    },
+    "help": {
+      "label": "Mikä on {{label}}?",
+      "marketValue": "Kuinka paljon omistuksesi ovat tänään arvoisia: kunkin omaisuuserän määrä kerrottuna sen viimeisimmällä hinnalla. Jos jollain omaisuuserällä ei ole hintaa, summa näytetään merkillä —.",
+      "bookValue": "Kuinka paljon maksoit omistuksista, jotka sinulla on yhä: kunkin omaisuuserän määrä kerrottuna keskimääräisellä hankintahinnalla.",
+      "unrealizedGain": "Markkina-arvo miinus hankinta-arvo: kuinka paljon voittaisit (tai häviäisit), jos myisit kaiken tänään. Siitä tulee todellista voittoa vasta, kun myyt."
+    },
+    "view": {
+      "positions": "Omistukset",
+      "ledger": "Tapahtumat",
+      "assets": "Omaisuuserät"
     },
     "empty": {
       "title": "Sijoitussalkkuja ei ole vielä",
@@ -1411,6 +1430,17 @@
       "expense": "Menot",
       "netFlow": "Nettokassavirta",
       "categories": "Luokat"
+    },
+    "view": {
+      "flow": "Kassavirta",
+      "categories": "Luokat",
+      "balance": "Saldot"
+    },
+    "range": {
+      "from": "Alkaen",
+      "to": "Asti",
+      "apply": "Näytä tulokset",
+      "invalid": "Asti-kuukauden on oltava sama kuin Alkaen-kuukausi tai sitä myöhempi."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Tulo",
       "outflow": "Meno"
+    },
+    "filter": {
+      "all": "Kaikki",
+      "empty": "Ei kohteita tässä tilassa."
+    },
+    "today": "Tänään",
+    "help": {
+      "label": "Mikä on {{label}}?",
+      "projectedCashImpact": "Mitä on vielä tulossa miinus mitä on vielä menossa seuraavien 30 päivän aikana: toistuvat tapahtumat, luottokorttilaskut ja lainanlyhennykset, joita ei ole vielä kirjattu. Positiivinen tarkoittaa ylijäämää, negatiivinen alijäämää.",
+      "realizedCashImpact": "Tulot miinus menot tämän 30 päivän jakson kohteille, jotka on jo kirjattu tai maksettu.",
+      "projectedOutflow": "Kuinka paljon on vielä menossa seuraavien 30 päivän aikana: toistuvat menot, avoimet luottokorttilaskut ja erääntyvät lainanlyhennykset.",
+      "realizedOutflow": "Kuinka paljon on jo mennyt tämän 30 päivän jakson aikana kohteille, jotka on jo maksettu."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Päivitä nyt"
+      "refresh": "Päivitä nyt",
+      "more": "Lisää"
     },
     "refresh": {
       "updated": "{{count}} kurssia päivitetty.",
       "upToDate": "Kurssit ovat jo ajan tasalla."
+    },
+    "help": {
+      "label": "Mikä on {{label}}?",
+      "feesPaid": "Ulkomaan valuutan tapahtumistasi veloitettujen vaihtokulujen summa näyttövaluuttaan muunnettuna."
+    },
+    "view": {
+      "pending": "Avoimet",
+      "live": "Reaaliaika",
+      "manual": "Manuaaliset"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Avaimen tallennus epäonnistui. Yritä uudelleen."
       }
     },
+    "view": {
+      "general": "Yleiset",
+      "backup": "Varmuuskopio",
+      "investments": "Sijoitukset",
+      "ai": "Tekoäly"
+    },
     "agents": {
       "title": "Tekoälyagentit",
       "description": "Taloustietojasi käsittelevät tekoälyavustajat, jotka tukevat useita palveluntarjoajia ja MCP-työkaluja. Oletuksena pois käytöstä – määritettävissä Docker Composessa (AGENTS_ENABLED).",
       "disabled": "Pois käytöstä",
       "enabled": "Käytössä",
+      "memberReady": "Aktiivinen ja käyttövalmis.",
+      "memberUnavailable": "Pois käytöstä. Pyydä käyttöoikeus tekoälyyn järjestelmänvalvojaltasi.",
       "manage": "Hallinnoi"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Täsmäytä", "start": "Aloita täsmäytys", "complete": "Viimeistele", "reopen": "Avaa uudelleen", "delete": "Poista" },
     "status": { "open": "Avoin", "completed": "Valmis" },
     "empty": { "title": "Täsmäytystä ei ole valittu", "description": "Aloita täsmäytys ylhäältä tai valitse aiempi täsmäytys." },
+    "filter": {
+      "all": "Kaikki",
+      "pending": "Avoin",
+      "empty": "Ei kohteita tässä tilassa."
+    },
     "loadError": "Täsmäytyksiä ei voitu ladata. Yritä uudelleen.",
     "confirmDelete": { "title": "Poistetaanko täsmäytys?", "message": "Täsmäytys ja sen merkinnät poistetaan. Jatketaanko?" }
   },
   "profile": {
     "title": "Profiili",
     "description": "Hallitse henkilöllisyyttäsi ja tilisi turvallisuutta.",
+    "view": { "account": "Tili", "security": "Suojaus" },
     "identity": {
       "title": "Henkilötiedot",
       "description": "Päivitä tililläsi käytettävä nimi ja sähköpostiosoite.",

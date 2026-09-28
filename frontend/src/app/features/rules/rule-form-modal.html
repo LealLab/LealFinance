@@ -1,6 +1,6 @@
 <div *transloco="let t">
   <!-- t(rules.form.newTitle) t(rules.form.editTitle) t(rules.form.saveError) t(rules.form.badRegex) t(rules.form.needCondition) t(rules.form.blankValue) -->
-  <app-modal [(open)]="open" [titleText]="t(titleKey())">
+  <app-modal [(open)]="open" [sheet]="true" [titleText]="t(titleKey())">
     <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
       <div>
         <label class="form-label" for="rule-name">{{ t('rules.form.name') }}</label>
@@ -232,10 +232,10 @@
       }
 
       <div class="mt-2 flex justify-end gap-2">
-        <button appButton type="button" variant="secondary" (click)="open.set(false)">
+        <button appButton type="button" variant="secondary" class="max-md:flex-1" (click)="open.set(false)">
           {{ t('common.actions.cancel') }}
         </button>
-        <button appButton type="submit" variant="primary" [disabled]="saving()">
+        <button appButton type="submit" variant="primary" class="max-md:flex-1" [disabled]="saving()">
           {{ saving() ? t('common.actions.saving') : t('common.actions.save') }}
         </button>
       </div>

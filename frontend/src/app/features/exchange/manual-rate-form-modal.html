@@ -1,6 +1,6 @@
 <div *transloco="let t">
   @if (titleKey(); as title) {
-    <app-modal [(open)]="open" [titleText]="t(title)">
+    <app-modal [(open)]="open" [sheet]="true" [titleText]="t(title)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
@@ -61,10 +61,10 @@
         }
 
         <div class="mt-2 flex justify-end gap-2">
-          <button appButton type="button" variant="secondary" (click)="open.set(false)">
+          <button appButton type="button" variant="secondary" class="max-md:flex-1" (click)="open.set(false)">
             {{ t('exchange.manualRates.form.actions.cancel') }}
           </button>
-          <button appButton type="submit" variant="primary" [disabled]="saving()">
+          <button appButton type="submit" variant="primary" class="max-md:flex-1" [disabled]="saving()">
             {{ t('exchange.manualRates.form.actions.save') }}
           </button>
         </div>

@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Vezi tot",
+    "charts": {
+      "label": "Grafic"
+    },
     "ratesUnavailable": "Unele totaluri au nevoie de un curs valutar care nu este disponibil momentan.",
     "title": "Panou de control",
     "welcome": "Bun venit la LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Rată de economisire"
     },
     "cashFlow": {
+      "tab": "Flux de numerar",
       "title": "Flux de numerar (6 luni)",
       "income": "Venituri",
       "expense": "Cheltuieli"
@@ -409,7 +414,8 @@
       "edit": "Editează",
       "archive": "Arhivează",
       "unarchive": "Restaurează din arhivă",
-      "delete": "Șterge contul"
+      "delete": "Șterge contul",
+      "more": "Mai mult"
     },
     "archive": {
       "title": "Arhivezi contul?",
@@ -541,6 +547,7 @@
     "title": "Tranzacții",
     "description": "Venituri, cheltuieli și transferuri.",
     "actions": {
+      "more": "Mai mult",
       "new": "Tranzacție nouă",
       "edit": "Editează",
       "delete": "Șterge",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Istoricul tranzacțiilor","loading":"Se încarcă istoricul…","empty":"Nu există încă istoric.","loadError":"Istoricul tranzacției nu a putut fi încărcat.","operation":{"create":"Creată","update":"Actualizată","delete":"Ștearsă"},"source":{"manual":"Manual","import":"Import","import_undo":"Anulare import","recurring":"Recurent","loan":"Împrumut","card":"Card","investment":"Investiție","bulk":"Operație în bloc"},"field":{"type":"Tip","date":"Data","amount":"Sumă","currency":"Monedă","account_id":"Cont","to_account_id":"Cont destinație","category_id":"Categorie","description":"Descriere","notes":"Note","recurring_rule_id":"Regulă recurentă","loan_id":"Împrumut","card_invoice_close_date":"Data închiderii facturii","installment_group_id":"Grup de rate","installment_number":"Numărul ratei","installment_count":"Număr de rate","conversion_amount":"Sumă convertită","conversion_currency":"Monedă de conversie","conversion_fee":"Comision de conversie","conversion_rate":"Curs de conversie","conversion_source":"Sursă conversie"}},
     "tabs": {
-      "transactions": "Tranzacții",
       "recurring": "Recurente"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Transfer"
     },
     "filters": {
+      "apply": "Afișează rezultatele",
       "type": "Tip",
       "account": "Cont",
       "category": "Categorie",
@@ -574,7 +581,6 @@
       "amountMin": "Minim",
       "amountMax": "Maxim",
       "any": "Oricare",
-      "back": "Înapoi",
       "dateRange": "De la {{from}} până la {{to}}",
       "amountRange": "De la {{min}} până la {{max}}",
       "removeChip": "Elimină filtrul {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Șterge",
       "collapse": "Restrânge",
       "expand": "Extinde",
-      "dragHandle": "Reordonează"
+      "dragHandle": "Reordonează",
+      "more": "Mai mult"
     },
     "empty": {
       "title": "Nu există încă nicio categorie",
       "description": "Creează grupuri și categorii pentru a-ți organiza tranzacțiile."
-    },
-    "sections": {
-      "income": "Categorii de venituri",
-      "expense": "Categorii de cheltuieli"
     },
     "delete": {
       "title": "Ștergi categoria?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatizare",
     "title": "Reguli",
     "description": "Categorizează automat tranzacțiile când le imporți.",
-    "card": {
-      "title": "Reguli de categorizare"
-    },
     "actions": {
       "export": "Exportă",
       "import": "Importă",
@@ -850,8 +850,10 @@
       "reapply": "Aplică din nou",
       "add": "Adaugă",
       "delete": "Șterge",
-      "edit": "Editează"
+      "edit": "Editează",
+      "more": "Mai mult"
     },
+    "inactive": "Inactivă",
     "sort": {
       "label": "Sortează după",
       "priority": "Prioritate",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Limite lunare"
     },
+    "view": {
+      "chart": "Grafic",
+      "values": "Sume"
+    },
     "planner": {
       "title": "Buget bazat pe venituri",
       "description": "Distribuie veniturile estimate între categorii.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Restaurează obiectivul din arhivă",
       "deposit": "Adaugă bani",
       "withdraw": "Retrage",
-      "interest": "Adaugă dobândă"
+      "interest": "Adaugă dobândă",
+      "more": "Mai mult"
     },
     "empty": {
       "title": "Nu există încă niciun obiectiv",
@@ -1098,6 +1105,7 @@
       "archive": "Arhivează împrumutul",
       "unarchive": "Dezarhivează împrumutul",
       "recordPayment": "Înregistrează o plată",
+      "more": "Mai mult",
       "delete": "Șterge împrumutul"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Editează portofoliul de investiții",
       "archiveWallet": "Arhivează portofoliul de investiții",
       "unarchiveWallet": "Scoate portofoliul de investiții din arhivă",
-      "view": "Vizualizează",
+      "more": "Mai mult",
       "newTransaction": "Înregistrează tranzacția",
       "editTransaction": "Editează tranzacția",
       "deleteTransaction": "Șterge tranzacția",
@@ -1239,6 +1247,17 @@
       "marketValue": "Valoare de piață",
       "unrealizedGain": "Câștig nerealizat",
       "multiCurrencyHint": "Portofoliile în alte monede nu sunt incluse în aceste totaluri."
+    },
+    "help": {
+      "label": "Ce este {{label}}?",
+      "marketValue": "Cât valorează astăzi pozițiile tale: cantitatea fiecărui activ înmulțită cu cea mai recentă cotație. Dacă un activ nu are preț, totalul este afișat ca —.",
+      "bookValue": "Cât ai plătit pentru pozițiile pe care le mai deții: cantitatea fiecărui activ înmulțită cu costul mediu de achiziție.",
+      "unrealizedGain": "Valoarea de piață minus valoarea contabilă: cât ai câștiga (sau pierde) dacă ai vinde totul astăzi. Devine un câștig real doar când vinzi."
+    },
+    "view": {
+      "positions": "Poziții",
+      "ledger": "Tranzacții",
+      "assets": "Active"
     },
     "empty": {
       "title": "Nu există încă portofolii de investiții",
@@ -1411,6 +1430,17 @@
       "expense": "Cheltuieli",
       "netFlow": "Flux net",
       "categories": "Categorii"
+    },
+    "view": {
+      "flow": "Flux",
+      "categories": "Categorii",
+      "balance": "Solduri"
+    },
+    "range": {
+      "from": "De la",
+      "to": "Până la",
+      "apply": "Afișează rezultatele",
+      "invalid": "Luna de final trebuie să fie aceeași cu luna de început sau după aceasta."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Intrare",
       "outflow": "Ieșire"
+    },
+    "filter": {
+      "all": "Toate",
+      "empty": "Niciun element cu această stare."
+    },
+    "today": "Azi",
+    "help": {
+      "label": "Ce este {{label}}?",
+      "projectedCashImpact": "Ce urmează să intre minus ce urmează să iasă în următoarele 30 de zile: recurențe, facturi de card și rate de împrumut care nu au fost încă înregistrate. Pozitiv înseamnă surplus; negativ înseamnă deficit.",
+      "realizedCashImpact": "Intrări minus ieșiri pentru elementele din această fereastră de 30 de zile care au fost deja înregistrate sau plătite.",
+      "projectedOutflow": "Cât mai urmează să iasă în următoarele 30 de zile: cheltuieli recurente, facturi de card deschise și rate de împrumut scadente.",
+      "realizedOutflow": "Cât a ieșit deja în această fereastră de 30 de zile pentru elementele deja plătite."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Actualizează acum"
+      "refresh": "Actualizează acum",
+      "more": "Mai mult"
     },
     "refresh": {
       "updated": "{{count}} cursuri actualizate.",
       "upToDate": "Cursurile sunt deja actualizate."
+    },
+    "help": {
+      "label": "Ce este {{label}}?",
+      "feesPaid": "Suma comisioanelor de conversie percepute pentru tranzacțiile tale în valută, convertită în moneda ta de afișare."
+    },
+    "view": {
+      "pending": "În așteptare",
+      "live": "Live",
+      "manual": "Manuale"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Cheia nu a putut fi salvată. Încearcă din nou."
       }
     },
+    "view": {
+      "general": "General",
+      "backup": "Backup",
+      "investments": "Investiții",
+      "ai": "AI"
+    },
     "agents": {
       "title": "Agenți AI",
       "description": "Asistenți AI pentru datele tale financiare, cu mai mulți furnizori și instrumente prin MCP. Sunt dezactivați implicit și pot fi configurați în Docker Compose (AGENTS_ENABLED).",
       "disabled": "Dezactivați",
       "enabled": "Activați",
+      "memberReady": "Activi și gata de utilizare.",
+      "memberUnavailable": "Dezactivați. Contactează administratorul tău pentru a solicita acces la AI.",
       "manage": "Gestionare"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Reconciliere", "start": "Începe reconcilierea", "complete": "Finalizează", "reopen": "Redeschide", "delete": "Șterge" },
     "status": { "open": "Deschisă", "completed": "Finalizată" },
     "empty": { "title": "Nu este selectată nicio reconciliere", "description": "Începe o reconciliere mai sus sau alege una anterioară." },
+    "filter": {
+      "all": "Toate",
+      "pending": "În așteptare",
+      "empty": "Niciun element cu această stare."
+    },
     "loadError": "Reconciliile nu au putut fi încărcate. Încearcă din nou.",
     "confirmDelete": { "title": "Ștergi reconcilierea?", "message": "Reconcilierea și marcajele sale vor fi șterse. Continui?" }
   },
   "profile": {
     "title": "Profil",
     "description": "Gestionează-ți identitatea și securitatea contului.",
+    "view": { "account": "Cont", "security": "Securitate" },
     "identity": {
       "title": "Informații personale",
       "description": "Actualizează numele și adresa de e-mail folosite pentru contul tău.",

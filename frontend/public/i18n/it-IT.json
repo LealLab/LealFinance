@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Vedi tutto",
+    "charts": {
+      "label": "Grafico"
+    },
     "ratesUnavailable": "Alcuni totali richiedono un tasso di cambio che al momento non è disponibile.",
     "title": "Panoramica",
     "welcome": "Ti diamo il benvenuto in LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Tasso di risparmio"
     },
     "cashFlow": {
+      "tab": "Flusso di cassa",
       "title": "Flusso di cassa (6 mesi)",
       "income": "Entrate",
       "expense": "Uscite"
@@ -409,7 +414,8 @@
       "edit": "Modifica",
       "archive": "Archivia",
       "unarchive": "Ripristina",
-      "delete": "Elimina conto"
+      "delete": "Elimina conto",
+      "more": "Altro"
     },
     "archive": {
       "title": "Archiviare il conto?",
@@ -541,6 +547,7 @@
     "title": "Transazioni",
     "description": "Entrate, uscite e trasferimenti.",
     "actions": {
+      "more": "Altro",
       "new": "Nuova transazione",
       "edit": "Modifica",
       "delete": "Elimina",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Cronologia delle transazioni","loading":"Caricamento della cronologia…","empty":"Nessuna cronologia.","loadError":"Impossibile caricare la cronologia della transazione.","operation":{"create":"Creata","update":"Aggiornata","delete":"Eliminata"},"source":{"manual":"Manuale","import":"Importazione","import_undo":"Annullamento importazione","recurring":"Ricorrente","loan":"Prestito","card":"Carta","investment":"Investimento","bulk":"Operazione di massa"},"field":{"type":"Tipo","date":"Data","amount":"Importo","currency":"Valuta","account_id":"Conto","to_account_id":"Conto di destinazione","category_id":"Categoria","description":"Descrizione","notes":"Note","recurring_rule_id":"Regola ricorrente","loan_id":"Prestito","card_invoice_close_date":"Data chiusura fattura","installment_group_id":"Gruppo rate","installment_number":"Numero rata","installment_count":"Numero rate","conversion_amount":"Importo convertito","conversion_currency":"Valuta di conversione","conversion_fee":"Commissione di conversione","conversion_rate":"Tasso di conversione","conversion_source":"Origine conversione"}},
     "tabs": {
-      "transactions": "Transazioni",
       "recurring": "Ricorrenze"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Trasferimento"
     },
     "filters": {
+      "apply": "Mostra risultati",
       "type": "Tipo",
       "account": "Conto",
       "category": "Categoria",
@@ -574,7 +581,6 @@
       "amountMin": "Minimo",
       "amountMax": "Massimo",
       "any": "Qualsiasi",
-      "back": "Indietro",
       "dateRange": "Da {{from}} a {{to}}",
       "amountRange": "Da {{min}} a {{max}}",
       "removeChip": "Rimuovi filtro {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Elimina",
       "collapse": "Comprimi",
       "expand": "Espandi",
-      "dragHandle": "Riordina"
+      "dragHandle": "Riordina",
+      "more": "Altro"
     },
     "empty": {
       "title": "Nessuna categoria",
       "description": "Crea gruppi e categorie per organizzare le transazioni."
-    },
-    "sections": {
-      "income": "Categorie di entrata",
-      "expense": "Categorie di uscita"
     },
     "delete": {
       "title": "Eliminare la categoria?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automazione",
     "title": "Regole",
     "description": "Categorizza automaticamente le transazioni quando vengono importate.",
-    "card": {
-      "title": "Regole di categorizzazione"
-    },
     "actions": {
       "export": "Esporta",
       "import": "Importa",
@@ -850,8 +850,10 @@
       "reapply": "Applica di nuovo",
       "add": "Aggiungi",
       "delete": "Elimina",
-      "edit": "Modifica"
+      "edit": "Modifica",
+      "more": "Altro"
     },
+    "inactive": "Inattiva",
     "sort": {
       "label": "Ordina per",
       "priority": "Priorità",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Limiti mensili"
     },
+    "view": {
+      "chart": "Grafico",
+      "values": "Importi"
+    },
     "planner": {
       "title": "Budget basato sulle entrate",
       "description": "Distribuisci le entrate previste tra le categorie.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Ripristina obiettivo",
       "deposit": "Aggiungi fondi",
       "withdraw": "Preleva",
-      "interest": "Aggiungi interessi"
+      "interest": "Aggiungi interessi",
+      "more": "Altro"
     },
     "empty": {
       "title": "Nessun obiettivo",
@@ -1098,6 +1105,7 @@
       "archive": "Archivia prestito",
       "unarchive": "Ripristina prestito",
       "recordPayment": "Registra pagamento",
+      "more": "Altro",
       "delete": "Elimina prestito"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Modifica il portafoglio di investimenti",
       "archiveWallet": "Archivia il portafoglio di investimenti",
       "unarchiveWallet": "Rimuovi il portafoglio dall’archivio",
-      "view": "Visualizza",
+      "more": "Altro",
       "newTransaction": "Registra transazione",
       "editTransaction": "Modifica transazione",
       "deleteTransaction": "Elimina transazione",
@@ -1239,6 +1247,17 @@
       "marketValue": "Valore di mercato",
       "unrealizedGain": "Guadagno non realizzato",
       "multiCurrencyHint": "I portafogli in altre valute non sono inclusi in questi totali."
+    },
+    "help": {
+      "label": "Cos’è {{label}}?",
+      "marketValue": "Quanto valgono oggi le tue posizioni: la quantità di ciascun asset moltiplicata per la sua ultima quotazione. Se un asset non ha un prezzo, il totale viene mostrato come —.",
+      "bookValue": "Quanto hai pagato per le posizioni che detieni ancora: la quantità di ciascun asset moltiplicata per il suo costo medio di acquisto.",
+      "unrealizedGain": "Valore di mercato meno valore contabile: quanto guadagneresti (o perderesti) se vendessi tutto oggi. Diventa un guadagno reale solo quando vendi."
+    },
+    "view": {
+      "positions": "Posizioni",
+      "ledger": "Transazioni",
+      "assets": "Asset"
     },
     "empty": {
       "title": "Nessun portafoglio di investimenti",
@@ -1411,6 +1430,17 @@
       "expense": "Uscite",
       "netFlow": "Flusso netto",
       "categories": "Categorie"
+    },
+    "view": {
+      "flow": "Flusso",
+      "categories": "Categorie",
+      "balance": "Saldi"
+    },
+    "range": {
+      "from": "Da",
+      "to": "A",
+      "apply": "Mostra risultati",
+      "invalid": "Il mese di fine deve essere uguale o successivo al mese di inizio."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Entrata",
       "outflow": "Uscita"
+    },
+    "filter": {
+      "all": "Tutti",
+      "empty": "Nessuna voce con questo stato."
+    },
+    "today": "Oggi",
+    "help": {
+      "label": "Cos’è {{label}}?",
+      "projectedCashImpact": "Quanto deve ancora entrare meno quanto deve ancora uscire nei prossimi 30 giorni: transazioni ricorrenti, fatture della carta e rate del prestito non ancora registrate. Positivo significa che avanza denaro; negativo significa un disavanzo.",
+      "realizedCashImpact": "Entrate meno uscite per le voci di questa finestra di 30 giorni già registrate o pagate.",
+      "projectedOutflow": "Quanto deve ancora uscire nei prossimi 30 giorni: spese ricorrenti, fatture della carta aperte e rate del prestito in scadenza.",
+      "realizedOutflow": "Quanto è già uscito in questa finestra di 30 giorni per voci già pagate."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Aggiorna ora"
+      "refresh": "Aggiorna ora",
+      "more": "Altro"
     },
     "refresh": {
       "updated": "{{count}} tassi aggiornati.",
       "upToDate": "I tassi sono già aggiornati."
+    },
+    "help": {
+      "label": "Cos’è {{label}}?",
+      "feesPaid": "Somma delle commissioni di conversione addebitate sulle tue transazioni in valuta estera, convertita nella tua valuta di visualizzazione."
+    },
+    "view": {
+      "pending": "In sospeso",
+      "live": "Tempo reale",
+      "manual": "Manuali"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Impossibile salvare la chiave. Riprova."
       }
     },
+    "view": {
+      "general": "Generale",
+      "backup": "Backup",
+      "investments": "Investimenti",
+      "ai": "IA"
+    },
     "agents": {
       "title": "Agenti IA",
       "description": "Assistenti IA sui tuoi dati finanziari, con più provider e strumenti tramite MCP. Disattivati per impostazione predefinita; configurabili in Docker Compose (AGENTS_ENABLED).",
       "disabled": "Disattivati",
       "enabled": "Attivati",
+      "memberReady": "Attivi e pronti all'uso.",
+      "memberUnavailable": "Disattivati. Contatta il tuo amministratore per richiedere l'accesso all'IA.",
       "manage": "Gestisci"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Riconcilia", "start": "Avvia riconciliazione", "complete": "Completa", "reopen": "Riapri", "delete": "Elimina" },
     "status": { "open": "Aperta", "completed": "Completata" },
     "empty": { "title": "Nessuna riconciliazione selezionata", "description": "Avvia una riconciliazione sopra o scegline una precedente." },
+    "filter": {
+      "all": "Tutti",
+      "pending": "In sospeso",
+      "empty": "Nessuna voce con questo stato."
+    },
     "loadError": "Impossibile caricare le riconciliazioni. Riprova.",
     "confirmDelete": { "title": "Eliminare la riconciliazione?", "message": "La riconciliazione e le relative marcature verranno eliminate. Continuare?" }
   },
   "profile": {
     "title": "Profilo",
     "description": "Gestisci la tua identità e la sicurezza del tuo account.",
+    "view": { "account": "Account", "security": "Sicurezza" },
     "identity": {
       "title": "Informazioni personali",
       "description": "Aggiorna il nome e l’indirizzo email usati per il tuo account.",

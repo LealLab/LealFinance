@@ -73,24 +73,37 @@ describe('TransactionFilterBar', () => {
     expect(fixture.componentInstance.lastSearch).toBe('coffee');
   });
 
-  it('drills into a submenu and applies a filter', () => {
+  it('applies a filter chosen in the filter sheet', () => {
     const { fixture, el } = setup();
-    (el.querySelector('[dropdownTrigger]') as HTMLButtonElement).click();
+    (el.querySelector('[data-action="open-filters"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(el.querySelector('dialog')!.open).toBe(true);
+
+    const select = el.querySelector<HTMLSelectElement>('#tx-sheet-group')!;
+    select.value = 'g';
+    select.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
-    const accountRow = el.querySelector<HTMLButtonElement>(
-      'app-dropdown > div > button:first-of-type',
-    )!;
-    accountRow.click();
-    fixture.detectChanges();
+    expect(fixture.componentInstance.filters().groupId).toBe('g');
+  });
 
-    const option = el.querySelector<HTMLButtonElement>(
-      'app-dropdown > div > div > button.filter-option:nth-of-type(2)',
-    )!;
-    option.click();
+  it('applies a quick filter chosen inline', () => {
+    const { fixture, el } = setup();
+    const select = el.querySelector<HTMLSelectElement>('#tx-filter-account')!;
+    select.value = 'acc-1';
+    select.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
     expect(fixture.componentInstance.filters().accountId).toBe('acc-1');
+  });
+
+  it('shows the number of active filters on the Filters button', () => {
+    const { fixture, el } = setup();
+    fixture.componentInstance.filters.set({ ...EMPTY_FILTERS, accountId: 'acc-1', groupId: 'g' });
+    fixture.detectChanges();
+
+    const button = el.querySelector<HTMLButtonElement>('[data-action="open-filters"]')!;
+    expect(button.textContent).toContain('2');
   });
 
   it('renders a chip for an active filter and removes just that filter', () => {
@@ -109,10 +122,14 @@ describe('TransactionFilterBar', () => {
     expect(fixture.componentInstance.filters().groupId).toBe('g');
   });
 
-  it('emits clearAll from the "Clear filters" button', () => {
+  it('hides "Clear filters" until something is active, then emits clearAll', () => {
     const { fixture, el } = setup();
-    const clear = el.querySelector<HTMLButtonElement>('button[variant="ghost"]')!;
-    clear.click();
+    expect(el.querySelector('[data-action="clear-filters"]')).toBeNull();
+
+    fixture.componentInstance.filters.set({ ...EMPTY_FILTERS, accountId: 'acc-1' });
+    fixture.detectChanges();
+    el.querySelector<HTMLButtonElement>('[data-action="clear-filters"]')!.click();
+
     expect(fixture.componentInstance.cleared).toBe(true);
   });
 });

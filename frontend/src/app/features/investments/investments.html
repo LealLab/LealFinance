@@ -1,5 +1,5 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('investments.title')" [description]="t('investments.description')">
+  <app-page-header [compact]="true" [title]="t('investments.title')" [description]="t('investments.description')">
     <button appButton variant="primary" type="button" (click)="openCreate()">
       <app-icon name="plus" [size]="16" />{{ t('investments.actions.newWallet') }}
     </button>
@@ -16,20 +16,40 @@
     </div>
   } @else {
     @if (summaryResource.value(); as summary) {
-      <div class="mb-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <app-stat-tile
-          [label]="t('investments.summary.bookValue') + ' (' + summaryCurrency() + ')'"
-          [value]="summary.totalBookValue | money: summaryCurrency()"
-        />
-        <app-stat-tile
-          [label]="t('investments.summary.marketValue') + ' (' + summaryCurrency() + ')'"
-          [value]="summary.totalMarketValue ? (summary.totalMarketValue | money: summaryCurrency()) : '—'"
-        />
-        <app-stat-tile
-          [label]="t('investments.summary.unrealizedGain') + ' (' + summaryCurrency() + ')'"
-          [value]="summary.totalUnrealizedGain ? (summary.totalUnrealizedGain | money: summaryCurrency()) : '—'"
-          tone="positive"
-        />
+      <!-- Market value leads and spans both columns on phones, same as the
+           dashboard's net worth; each tile explains itself behind a "?" like agenda. -->
+      <div class="mb-2 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        @for (tile of summaryTiles; track tile.key; let index = $index) {
+          @let amount = summary[tile.field];
+          <app-stat-tile
+            [class]="index === 0 ? 'col-span-2 sm:col-span-1' : ''"
+            [prominent]="index === 0"
+            prominentUntil="sm"
+            [label]="t('investments.summary.' + tile.key)"
+            [value]="amount ? (amount | money: summaryCurrency()) : '—'"
+            [tone]="tile.tone"
+          >
+            <!-- Static host so the panel anchors to the whole tile; the last tile
+                 sits in the right column at every size, so it opens from the end. -->
+            <app-dropdown
+              statTileAction
+              class="!static shrink-0"
+              [align]="index === summaryTiles.length - 1 ? 'end' : 'start'"
+              panelClass="w-64 !p-3 text-start"
+            >
+              <button
+                dropdownTrigger
+                type="button"
+                class="flex size-6 items-center justify-center rounded-full border border-border-strong text-xs font-semibold text-content-muted hover:text-content-primary [@media(pointer:coarse)]:-m-1 [@media(pointer:coarse)]:size-8"
+                [attr.aria-label]="t('investments.help.label', { label: t('investments.summary.' + tile.key) })"
+              >
+                ?
+              </button>
+              <p class="text-sm font-semibold text-content-primary">{{ t('investments.summary.' + tile.key) }}</p>
+              <p class="mt-1 text-sm text-content-muted">{{ t('investments.help.' + tile.key) }}</p>
+            </app-dropdown>
+          </app-stat-tile>
+        }
       </div>
       <div class="mb-4">
         @if (hasOtherCurrencyWallets()) {
@@ -52,18 +72,22 @@
       <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
         @for (wallet of walletsResource.value() ?? []; track wallet.id) {
           @let stats = walletStats(wallet);
-          <app-card>
+          <!-- The whole card opens the wallet: the title link stretches over it
+               (after:absolute), and the edit/archive tools sit above it (relative z-10). -->
+          <app-card class="relative hover:border-border-strong">
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 items-start gap-3">
                 <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
                   <app-icon name="chart" [size]="20" />
                 </div>
                 <div class="min-w-0">
-                  <h2 class="truncate text-base font-semibold text-content-primary">{{ wallet.name }}</h2>
+                  <h2 class="truncate text-base font-semibold text-content-primary">
+                    <a [routerLink]="['/investments', wallet.id]" class="after:absolute after:inset-0 after:rounded-md">{{ wallet.name }}</a>
+                  </h2>
                   <p class="mt-0.5 text-xs text-content-muted">{{ wallet.currency }}</p>
                 </div>
               </div>
-              <div class="flex shrink-0 items-center gap-1">
+              <div class="relative z-10 flex shrink-0 items-center gap-1">
                 @if (wallet.archived) {
                   <app-badge tone="neutral">{{ t('investments.archived') }}</app-badge>
                 }
@@ -76,14 +100,16 @@
               </div>
             </div>
 
-            <div class="mt-4 grid grid-cols-3 gap-2 border-t border-border pt-4 text-sm">
-              <div>
+            <!-- Phones: market value leads on its own row; from sm up the original
+                 positions | market value | gain order returns. -->
+            <div class="mt-4 grid grid-cols-2 gap-x-2 gap-y-3 border-t border-border pt-4 text-sm sm:grid-cols-3">
+              <div class="sm:order-first">
                 <div class="text-xs text-content-muted">{{ t('investments.detail.positions') }}</div>
                 <div class="font-mono tabular-nums">{{ stats.positionCount }}</div>
               </div>
-              <div>
+              <div class="order-first col-span-2 sm:order-none sm:col-span-1">
                 <div class="text-xs text-content-muted">{{ t('investments.columns.marketValue') }}</div>
-                <div class="font-mono tabular-nums">
+                <div class="font-mono tabular-nums max-sm:text-xl max-sm:font-semibold">
                   {{ stats.marketValue ? (stats.marketValue.amount | money: wallet.currency) : '—' }}
                 </div>
               </div>
@@ -97,13 +123,6 @@
             @if (stats.marketValueIsFallback) {
               <div class="mt-3"><app-exchange-rate-warning [isFallback]="true" /></div>
             }
-
-            <div class="mt-4 flex items-center justify-between border-t border-border pt-4">
-              <span class="text-sm text-content-muted">{{ t('investments.wallet') }}</span>
-              <a [routerLink]="['/investments', wallet.id]" class="text-sm font-medium text-accent hover:underline">
-                {{ t('investments.actions.view') }}
-              </a>
-            </div>
           </app-card>
         }
       </div>

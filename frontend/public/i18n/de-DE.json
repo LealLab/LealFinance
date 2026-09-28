@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Alle anzeigen",
+    "charts": {
+      "label": "Diagramm"
+    },
     "ratesUnavailable": "Für einige Summen wird ein Wechselkurs benötigt, der derzeit nicht verfügbar ist.",
     "title": "Übersicht",
     "welcome": "Willkommen bei LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Sparquote"
     },
     "cashFlow": {
+      "tab": "Cashflow",
       "title": "Cashflow (6 Monate)",
       "income": "Einnahmen",
       "expense": "Ausgaben"
@@ -409,7 +414,8 @@
       "edit": "Bearbeiten",
       "archive": "Archivieren",
       "unarchive": "Archivierung aufheben",
-      "delete": "Konto löschen"
+      "delete": "Konto löschen",
+      "more": "Mehr"
     },
     "archive": {
       "title": "Konto archivieren?",
@@ -541,6 +547,7 @@
     "title": "Transaktionen",
     "description": "Einnahmen, Ausgaben und Umbuchungen.",
     "actions": {
+      "more": "Mehr",
       "new": "Neue Transaktion",
       "edit": "Bearbeiten",
       "delete": "Löschen",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Transaktionsverlauf","loading":"Verlauf wird geladen…","empty":"Noch kein Verlauf.","loadError":"Der Transaktionsverlauf konnte nicht geladen werden.","operation":{"create":"Erstellt","update":"Aktualisiert","delete":"Gelöscht"},"source":{"manual":"Manuell","import":"Import","import_undo":"Import rückgängig","recurring":"Wiederkehrend","loan":"Darlehen","card":"Karte","investment":"Investment","bulk":"Massenaktion"},"field":{"type":"Typ","date":"Datum","amount":"Betrag","currency":"Währung","account_id":"Konto","to_account_id":"Zielkonto","category_id":"Kategorie","description":"Beschreibung","notes":"Notizen","recurring_rule_id":"Wiederholungsregel","loan_id":"Darlehen","card_invoice_close_date":"Rechnungsabschluss","installment_group_id":"Raten-Gruppe","installment_number":"Raten-Nummer","installment_count":"Anzahl Raten","conversion_amount":"Umgerechneter Betrag","conversion_currency":"Umrechnungswährung","conversion_fee":"Umrechnungsgebühr","conversion_rate":"Umrechnungskurs","conversion_source":"Umrechnungsquelle"}},
     "tabs": {
-      "transactions": "Transaktionen",
       "recurring": "Wiederkehrend"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Umbuchung"
     },
     "filters": {
+      "apply": "Ergebnisse anzeigen",
       "type": "Typ",
       "account": "Konto",
       "category": "Kategorie",
@@ -574,7 +581,6 @@
       "amountMin": "Mindestbetrag",
       "amountMax": "Höchstbetrag",
       "any": "Beliebig",
-      "back": "Zurück",
       "dateRange": "Von {{from}} bis {{to}}",
       "amountRange": "Von {{min}} bis {{max}}",
       "removeChip": "Filter {{filter}} entfernen"
@@ -797,15 +803,12 @@
       "delete": "Löschen",
       "collapse": "Einklappen",
       "expand": "Ausklappen",
-      "dragHandle": "Reihenfolge ändern"
+      "dragHandle": "Reihenfolge ändern",
+      "more": "Mehr"
     },
     "empty": {
       "title": "Noch keine Kategorien",
       "description": "Erstellen Sie Gruppen und Kategorien, um Ihre Transaktionen zu organisieren."
-    },
-    "sections": {
-      "income": "Einnahmekategorien",
-      "expense": "Ausgabenkategorien"
     },
     "delete": {
       "title": "Kategorie löschen?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatisierung",
     "title": "Regeln",
     "description": "Transaktionen beim Import automatisch kategorisieren.",
-    "card": {
-      "title": "Kategorisierungsregeln"
-    },
     "actions": {
       "export": "Exportieren",
       "import": "Importieren",
@@ -850,8 +850,10 @@
       "reapply": "Erneut anwenden",
       "add": "Hinzufügen",
       "delete": "Löschen",
-      "edit": "Bearbeiten"
+      "edit": "Bearbeiten",
+      "more": "Mehr"
     },
+    "inactive": "Inaktiv",
     "sort": {
       "label": "Sortieren nach",
       "priority": "Priorität",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Monatslimits"
     },
+    "view": {
+      "chart": "Diagramm",
+      "values": "Beträge"
+    },
     "planner": {
       "title": "Einkommensbasiertes Budget",
       "description": "Verteilen Sie Ihre erwarteten Einnahmen auf die Kategorien.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Archivierung des Sparziels aufheben",
       "deposit": "Einzahlen",
       "withdraw": "Auszahlen",
-      "interest": "Zinsen hinzufügen"
+      "interest": "Zinsen hinzufügen",
+      "more": "Mehr"
     },
     "empty": {
       "title": "Noch keine Sparziele",
@@ -1098,6 +1105,7 @@
       "archive": "Kredit archivieren",
       "unarchive": "Kredit wiederherstellen",
       "recordPayment": "Zahlung erfassen",
+      "more": "Mehr",
       "delete": "Kredit löschen"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Investmentdepot bearbeiten",
       "archiveWallet": "Investmentdepot archivieren",
       "unarchiveWallet": "Investmentdepot aus dem Archiv holen",
-      "view": "Anzeigen",
+      "more": "Mehr",
       "newTransaction": "Transaktion erfassen",
       "editTransaction": "Transaktion bearbeiten",
       "deleteTransaction": "Transaktion löschen",
@@ -1239,6 +1247,17 @@
       "marketValue": "Marktwert",
       "unrealizedGain": "Nicht realisierter Gewinn",
       "multiCurrencyHint": "Depots in anderen Währungen sind in diesen Summen nicht enthalten."
+    },
+    "help": {
+      "label": "Was ist {{label}}?",
+      "marketValue": "Was Ihre Positionen heute wert sind: die Menge jeder Anlage multipliziert mit ihrem letzten Kurs. Hat eine Anlage keinen Kurs, wird die Summe als — angezeigt.",
+      "bookValue": "Was Sie für die Positionen bezahlt haben, die Sie noch halten: die Menge jeder Anlage multipliziert mit dem durchschnittlichen Einstandspreis.",
+      "unrealizedGain": "Marktwert minus Buchwert: was Sie gewinnen (oder verlieren) würden, wenn Sie heute alles verkaufen. Erst beim Verkauf wird daraus ein tatsächlicher Gewinn."
+    },
+    "view": {
+      "positions": "Positionen",
+      "ledger": "Transaktionen",
+      "assets": "Anlagen"
     },
     "empty": {
       "title": "Noch keine Investmentdepots",
@@ -1411,6 +1430,17 @@
       "expense": "Ausgaben",
       "netFlow": "Netto-Cashflow",
       "categories": "Kategorien"
+    },
+    "view": {
+      "flow": "Cashflow",
+      "categories": "Kategorien",
+      "balance": "Kontostände"
+    },
+    "range": {
+      "from": "Von",
+      "to": "Bis",
+      "apply": "Ergebnisse anzeigen",
+      "invalid": "Der „Bis“-Monat muss dem „Von“-Monat entsprechen oder danach liegen."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Zufluss",
       "outflow": "Abfluss"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Keine Einträge mit diesem Status."
+    },
+    "today": "Heute",
+    "help": {
+      "label": "Was ist {{label}}?",
+      "projectedCashImpact": "Was in den nächsten 30 Tagen noch eingeht, abzüglich dessen, was noch abgeht: wiederkehrende Transaktionen, Kartenrechnungen und Kreditraten, die noch nicht gebucht wurden. Positiv bedeutet, dass Geld übrig bleibt; negativ bedeutet einen Fehlbetrag.",
+      "realizedCashImpact": "Zuflüsse abzüglich Abflüsse für Einträge in diesem 30-Tage-Zeitraum, die bereits gebucht oder bezahlt wurden.",
+      "projectedOutflow": "Wie viel in den nächsten 30 Tagen noch abgeht: wiederkehrende Ausgaben, offene Kartenrechnungen und fällige Kreditraten.",
+      "realizedOutflow": "Wie viel in diesem 30-Tage-Zeitraum bereits abgegangen ist für Einträge, die bereits bezahlt wurden."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Jetzt aktualisieren"
+      "refresh": "Jetzt aktualisieren",
+      "more": "Mehr"
     },
     "refresh": {
       "updated": "{{count}} Kurse aktualisiert.",
       "upToDate": "Die Kurse sind bereits aktuell."
+    },
+    "help": {
+      "label": "Was ist {{label}}?",
+      "feesPaid": "Summe der Umrechnungsgebühren, die für Ihre Transaktionen in Fremdwährung berechnet wurden, umgerechnet in Ihre Anzeigewährung."
+    },
+    "view": {
+      "pending": "Offen",
+      "live": "Live",
+      "manual": "Manuell"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Der Schlüssel konnte nicht gespeichert werden. Versuchen Sie es erneut."
       }
     },
+    "view": {
+      "general": "Allgemein",
+      "backup": "Sicherung",
+      "investments": "Investitionen",
+      "ai": "KI"
+    },
     "agents": {
       "title": "KI-Agenten",
       "description": "KI-Agenten für Ihre Finanzdaten mit mehreren Anbietern und Tools über MCP. Standardmäßig deaktiviert – in Docker Compose konfigurierbar (AGENTS_ENABLED).",
       "disabled": "Deaktiviert",
       "enabled": "Aktiviert",
+      "memberReady": "Aktiv und einsatzbereit.",
+      "memberUnavailable": "Deaktiviert. Wenden Sie sich an Ihren Admin, um Zugriff auf KI zu beantragen.",
       "manage": "Verwalten"
     },
     "twoFactor": {
@@ -1938,6 +1998,11 @@
       "title": "Kein Abgleich ausgewählt",
       "description": "Starten Sie oben einen Abgleich oder wählen Sie einen früheren aus."
     },
+    "filter": {
+      "all": "Alle",
+      "pending": "Offen",
+      "empty": "Keine Einträge mit diesem Status."
+    },
     "loadError": "Abgleiche konnten nicht geladen werden. Versuchen Sie es erneut.",
     "confirmDelete": {
       "title": "Abgleich löschen?",
@@ -1947,6 +2012,7 @@
   "profile": {
     "title": "Profil",
     "description": "Verwalten Sie Ihre Identität und Kontosicherheit.",
+    "view": { "account": "Konto", "security": "Sicherheit" },
     "identity": {
       "title": "Persönliche Informationen",
       "description": "Aktualisieren Sie den Namen und die E-Mail-Adresse Ihres Kontos.",

@@ -1,229 +1,294 @@
 <div *transloco="let t">
-  <app-page-header [title]="t('exchange.title')" [description]="t('exchange.description')">
+  <app-page-header [compact]="true" [title]="t('exchange.title')" [description]="t('exchange.description')">
+    <!-- Admins get "Refresh now" beside "Add rate" at every size (icons drop on
+         phones so both fit at 320px); members only see "Add rate", full width. -->
     @if (isAdmin()) {
-      <div class="flex flex-col items-end gap-1 max-md:items-stretch">
-        <button
-          appButton
-          variant="secondary"
-          size="sm"
-          type="button"
-          [disabled]="refreshing()"
-          (click)="refreshRates()"
-        >
-          {{ t('exchange.actions.refresh') }}
-        </button>
-        @if (refreshResult(); as result) {
-          <p class="text-xs text-content-muted" role="status">
-            @if (!result.throttled && result.updated > 0) {
-              {{ t('exchange.refresh.updated', { count: result.updated }) }}
-            } @else {
-              {{ t('exchange.refresh.upToDate') }}
-            }
-          </p>
-        }
-      </div>
+      <button appButton variant="secondary" type="button" [disabled]="refreshing()" (click)="refreshRates()">
+        <app-icon name="refresh" [size]="16" class="max-md:hidden" />
+        {{ t('exchange.actions.refresh') }}
+      </button>
     }
+    <button appButton variant="primary" type="button" (click)="openCreateRate()">
+      <app-icon name="plus" [size]="16" [class]="isAdmin() ? 'max-md:hidden' : ''" />
+      {{ t('exchange.manualRates.actions.add') }}
+    </button>
   </app-page-header>
 
-  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    @if (feeRatesReady()) {
-      <app-stat-tile
-        [label]="t('exchange.stats.feesPaid')"
-        [value]="totalFees().amount | money: totalFees().currency"
-      />
-    } @else {
-      <app-skeleton height="4.25rem" />
+  @if (refreshResult(); as result) {
+    <p class="-mt-3 mb-3 text-sm text-content-muted" role="status">
+      @if (!result.throttled && result.updated > 0) {
+        {{ t('exchange.refresh.updated', { count: result.updated }) }}
+      } @else {
+        {{ t('exchange.refresh.upToDate') }}
+      }
+    </p>
+  }
+
+  <!-- 2x2 until lg, four across from there; each tile explains itself behind a "?" like agenda. -->
+  <div class="mb-4 grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+    @for (tile of summaryTiles; track tile.key) {
+      @if (tile.key === 'feesPaid' && !feeRatesReady()) {
+        <app-skeleton height="4.25rem" />
+      } @else {
+        @let count =
+          tile.key === 'automaticRates'
+            ? automaticRates().length
+            : tile.key === 'needsAttention'
+              ? needsAttentionRows().length
+              : currenciesNeedingRate().length;
+        <app-stat-tile
+          [label]="t('exchange.stats.' + tile.key)"
+          [value]="tile.key === 'feesPaid' ? (totalFees().amount | money: totalFees().currency) : count + ''"
+          [tone]="
+            (tile.key === 'needsAttention' || tile.key === 'currenciesNeedingRate') && count > 0
+              ? 'negative'
+              : 'default'
+          "
+        >
+          <!-- Static host so the panel anchors to the whole tile: start edge in
+               the left column, end edge in the right one, never off-screen at 320px. -->
+          <app-dropdown
+            statTileAction
+            class="!static shrink-0"
+            [align]="$even ? 'start' : 'end'"
+            panelClass="w-64 !p-3 text-start"
+          >
+            <button
+              dropdownTrigger
+              type="button"
+              class="flex size-6 items-center justify-center rounded-full border border-border-strong text-xs font-semibold text-content-muted hover:text-content-primary [@media(pointer:coarse)]:-m-1 [@media(pointer:coarse)]:size-8"
+              [attr.aria-label]="t('exchange.help.label', { label: t('exchange.stats.' + tile.key) })"
+            >
+              ?
+            </button>
+            <p class="text-sm font-semibold text-content-primary">{{ t('exchange.stats.' + tile.key) }}</p>
+            <p class="mt-1 text-sm text-content-muted">{{ t(tile.help) }}</p>
+          </app-dropdown>
+        </app-stat-tile>
+      }
     }
-    <app-stat-tile
-      [label]="t('exchange.stats.automaticRates')"
-      [value]="automaticRates().length + ''"
-    />
-    <app-stat-tile
-      [label]="t('exchange.stats.needsAttention')"
-      [value]="needsAttentionRows().length + ''"
-      [tone]="needsAttentionRows().length > 0 ? 'negative' : 'default'"
-    />
-    <app-stat-tile
-      [label]="t('exchange.stats.currenciesNeedingRate')"
-      [value]="currenciesNeedingRate().length + ''"
-      [tone]="currenciesNeedingRate().length > 0 ? 'negative' : 'default'"
-    />
   </div>
 
-  <div class="mb-6">
-    <h2 class="mb-1 text-sm font-semibold text-content-primary">
-      {{ t('exchange.automaticRates.title') }}
-    </h2>
-    <p class="mb-3 text-sm text-content-muted">{{ t('exchange.automaticRates.description') }}</p>
+  <!-- Same segmented control as budgets/reports/agenda. Tabs size to their label on
+       phones, and only "Pending" keeps its count there, so nothing truncates at 320px. -->
+  <div
+    class="mb-4 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+    role="group"
+    [attr.aria-label]="t('exchange.title')"
+  >
+    @for (tab of views; track tab.key) {
+      <button
+        type="button"
+        class="flex min-w-0 items-center justify-center gap-1.5 rounded px-3 py-1 text-sm whitespace-nowrap max-md:flex-auto max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === tab.key ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === tab.key"
+        (click)="view.set(tab.key)"
+      >
+        <app-icon [name]="tab.icon" [size]="16" class="max-sm:hidden" />
+        <span class="truncate">{{ t('exchange.view.' + tab.key) }}</span>
+        <span
+          class="text-xs text-content-muted tabular-nums"
+          [class]="tab.key === 'pending' ? '' : 'max-md:hidden'"
+          >{{ viewCounts()[tab.key] }}</span
+        >
+      </button>
+    }
+  </div>
 
-    @if (isAutomaticRatesEmpty()) {
-      <app-empty-state
-        icon="refresh"
-        [title]="t('exchange.automaticRates.empty.title')"
-        [description]="t('exchange.automaticRates.empty.description')"
-      />
-    } @else {
-      <app-card [padded]="false">
+  @if (view() === 'pending') {
+    <div class="flex flex-col gap-4">
+      <app-card [padded]="false" class="overflow-hidden">
+        <div class="border-b border-border px-4 py-3">
+          <h2 class="text-sm font-semibold text-content-primary">{{ t('exchange.needsAttention.title') }}</h2>
+          <p class="mt-0.5 text-sm text-content-muted max-md:hidden">{{ t('exchange.needsAttention.description') }}</p>
+        </div>
+        @if (isNeedsAttentionEmpty()) {
+          <app-empty-state
+            icon="refresh"
+            [title]="t('exchange.needsAttention.empty.title')"
+            [description]="t('exchange.needsAttention.empty.description')"
+          />
+        } @else {
+          <ul>
+            @for (row of needsAttentionRows(); track row.tx.id) {
+              <li
+                class="grid gap-2 border-b border-border px-4 py-3 last:border-b-0 md:flex md:items-center md:justify-between md:gap-3"
+              >
+                <div class="min-w-0">
+                  <p class="text-sm font-medium break-words text-content-primary">
+                    {{ row.tx.description || row.account?.name }}
+                  </p>
+                  <p class="text-xs text-content-muted">
+                    {{ row.tx.date }} · {{ row.tx.currency }} → {{ row.tx.conversion!.currency }}
+                  </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 md:shrink-0">
+                  <span class="font-mono text-sm break-all tabular-nums text-content-muted">
+                    {{ row.tx.amount | money: row.tx.currency }} →
+                    {{ row.tx.conversion!.amount | money: row.tx.conversion!.currency }}
+                  </span>
+                  <button
+                    appButton
+                    variant="secondary"
+                    size="sm"
+                    type="button"
+                    class="max-md:w-full"
+                    (click)="openFix(row.tx)"
+                  >
+                    {{ t('exchange.needsAttention.actions.fix') }}
+                  </button>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </app-card>
+
+      <app-card [padded]="false" class="overflow-hidden">
+        <div class="border-b border-border px-4 py-3">
+          <h2 class="text-sm font-semibold text-content-primary">{{ t('exchange.currenciesNeedingRate.title') }}</h2>
+          <p class="mt-0.5 text-sm text-content-muted max-md:hidden">
+            {{ t('exchange.currenciesNeedingRate.description') }}
+          </p>
+        </div>
+        @if (isCurrenciesNeedingRateEmpty()) {
+          <app-empty-state
+            icon="refresh"
+            [title]="t('exchange.currenciesNeedingRate.empty.title')"
+            [description]="t('exchange.currenciesNeedingRate.empty.description')"
+          />
+        } @else {
+          <ul>
+            @for (currency of currenciesNeedingRate(); track currency) {
+              <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
+                <span class="font-mono text-sm font-semibold text-content-primary">
+                  {{ currency }} → {{ displayCurrency() }}
+                </span>
+                <button appButton variant="secondary" size="sm" type="button" (click)="openCreateRateFor(currency)">
+                  {{ t('currency.fallbackRateWarningAction') }}
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </app-card>
+    </div>
+  }
+
+  @if (view() === 'live') {
+    <app-card [padded]="false" class="overflow-hidden">
+      <div class="border-b border-border px-4 py-3">
+        <h2 class="text-sm font-semibold text-content-primary">{{ t('exchange.automaticRates.title') }}</h2>
+        <p class="mt-0.5 text-sm text-content-muted max-md:hidden">{{ t('exchange.automaticRates.description') }}</p>
+      </div>
+      @if (isAutomaticRatesEmpty()) {
+        <app-empty-state
+          icon="refresh"
+          [title]="t('exchange.automaticRates.empty.title')"
+          [description]="t('exchange.automaticRates.empty.description')"
+        />
+      } @else {
         <ul>
           @for (rate of automaticRates(); track rate.baseCode) {
-            <li
-              class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0"
-            >
-              <div class="flex items-center gap-2">
-                <span
-                  class="inline-block h-1.5 w-1.5 rounded-full bg-positive"
-                  aria-hidden="true"
-                ></span>
+            <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
+              <div class="min-w-0 md:flex md:items-center md:gap-2">
                 <span class="font-mono text-sm font-semibold text-content-primary">
+                  <span class="me-1.5 inline-block h-1.5 w-1.5 rounded-full bg-positive align-middle" aria-hidden="true"></span>
                   {{ rate.baseCode }} → {{ rate.quoteCode }}
                 </span>
-                <span class="text-xs text-content-muted">{{ rate.asOf }}</span>
+                <span class="block text-xs text-content-muted md:inline">{{ rate.asOf }}</span>
               </div>
               <span class="font-mono text-sm tabular-nums text-content-primary">{{ rate.rate }}</span>
             </li>
           }
         </ul>
-      </app-card>
-    }
-  </div>
+      }
+    </app-card>
+  }
 
-  <div class="mb-6">
-    <h2 class="mb-1 text-sm font-semibold text-content-primary">
-      {{ t('exchange.needsAttention.title') }}
-    </h2>
-    <p class="mb-3 text-sm text-content-muted">{{ t('exchange.needsAttention.description') }}</p>
-
-    @if (isNeedsAttentionEmpty()) {
-      <app-empty-state
-        icon="refresh"
-        [title]="t('exchange.needsAttention.empty.title')"
-        [description]="t('exchange.needsAttention.empty.description')"
-      />
-    } @else {
-      <app-card [padded]="false">
-        <ul>
-          @for (row of needsAttentionRows(); track row.tx.id) {
-            <li
-              class="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 last:border-b-0"
-            >
-              <div>
-                <p class="text-sm font-medium text-content-primary">
-                  {{ row.tx.description || row.account?.name }}
-                </p>
-                <p class="text-xs text-content-muted">
-                  {{ row.tx.date }} · {{ row.tx.currency }} → {{ row.tx.conversion!.currency }}
-                </p>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="font-mono text-sm tabular-nums text-content-muted">
-                  {{ row.tx.amount | money: row.tx.currency }} →
-                  {{ row.tx.conversion!.amount | money: row.tx.conversion!.currency }}
-                </span>
-                <button appButton variant="secondary" size="sm" type="button" (click)="openFix(row.tx)">
-                  {{ t('exchange.needsAttention.actions.fix') }}
-                </button>
-              </div>
-            </li>
-          }
-        </ul>
-      </app-card>
-    }
-  </div>
-
-  <div class="mb-6">
-    <h2 class="mb-1 text-sm font-semibold text-content-primary">
-      {{ t('exchange.currenciesNeedingRate.title') }}
-    </h2>
-    <p class="mb-3 text-sm text-content-muted">{{ t('exchange.currenciesNeedingRate.description') }}</p>
-
-    @if (isCurrenciesNeedingRateEmpty()) {
-      <app-empty-state
-        icon="refresh"
-        [title]="t('exchange.currenciesNeedingRate.empty.title')"
-        [description]="t('exchange.currenciesNeedingRate.empty.description')"
-      />
-    } @else {
-      <app-card [padded]="false">
-        <ul>
-          @for (currency of currenciesNeedingRate(); track currency) {
-            <li class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0">
-              <span class="font-mono text-sm font-semibold text-content-primary">
-                {{ currency }} → {{ displayCurrency() }}
-              </span>
-              <button appButton variant="secondary" size="sm" type="button" (click)="openCreateRateFor(currency)">
-                {{ t('currency.fallbackRateWarningAction') }}
-              </button>
-            </li>
-          }
-        </ul>
-      </app-card>
-    }
-  </div>
-
-  <div #manualRatesSection>
-    <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
-      <div>
+  @if (view() === 'manual') {
+    <app-card [padded]="false">
+      <div class="border-b border-border px-4 py-3">
         <h2 class="text-sm font-semibold text-content-primary">{{ t('exchange.manualRates.title') }}</h2>
-        <p class="text-sm text-content-muted">{{ t('exchange.manualRates.description') }}</p>
+        <p class="mt-0.5 text-sm text-content-muted max-md:hidden">{{ t('exchange.manualRates.description') }}</p>
       </div>
-      <button appButton variant="primary" type="button" (click)="openCreateRate()">
-        <app-icon name="plus" [size]="16" />
-        {{ t('exchange.manualRates.actions.add') }}
-      </button>
-    </div>
-
-    @if (isManualRatesEmpty()) {
-      <app-empty-state
-        icon="swap"
-        [title]="t('exchange.manualRates.empty.title')"
-        [description]="t('exchange.manualRates.empty.description')"
-      >
-        <button appButton variant="primary" type="button" (click)="openCreateRate()">
-          {{ t('exchange.manualRates.actions.add') }}
-        </button>
-      </app-empty-state>
-    } @else {
-      <app-card [padded]="false">
+      @if (isManualRatesEmpty()) {
+        <app-empty-state
+          icon="swap"
+          [title]="t('exchange.manualRates.empty.title')"
+          [description]="t('exchange.manualRates.empty.description')"
+        >
+          <button appButton variant="primary" type="button" (click)="openCreateRate()">
+            {{ t('exchange.manualRates.actions.add') }}
+          </button>
+        </app-empty-state>
+      } @else {
         <ul>
           @for (rate of manualRates(); track rate.id) {
-            <li
-              class="flex items-center justify-between gap-4 border-b border-border px-4 py-3 last:border-b-0"
-            >
-              <div class="flex items-center gap-2">
+            <li class="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0">
+              <div class="min-w-0 flex-1 md:flex md:items-center md:gap-2">
                 <span class="font-mono text-sm font-semibold text-content-primary">
                   {{ rate.baseCode }} → {{ rate.quoteCode }}
                 </span>
-                <span class="text-xs text-content-muted">{{ rate.asOf }}</span>
+                <span class="block text-xs text-content-muted md:inline">{{ rate.asOf }}</span>
               </div>
-              <div class="flex items-center gap-3">
-                <span class="font-mono text-sm tabular-nums text-content-primary">{{ rate.rate }}</span>
+              <span class="font-mono text-sm tabular-nums text-content-primary">{{ rate.rate }}</span>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                class="max-md:hidden"
+                (click)="openEditRate(rate)"
+                [attr.aria-label]="t('exchange.manualRates.actions.edit')"
+              >
+                <app-icon name="pencil" [size]="16" />
+              </button>
+              <button
+                appButton
+                variant="ghost"
+                size="sm"
+                type="button"
+                class="max-md:hidden"
+                (click)="deleteRate(rate)"
+                [attr.aria-label]="t('exchange.manualRates.actions.delete')"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
+              <app-dropdown #menu class="md:hidden" align="end" panelClass="w-48">
                 <button
+                  dropdownTrigger
                   appButton
                   variant="ghost"
                   size="sm"
                   type="button"
-                  (click)="openEditRate(rate)"
-                  [attr.aria-label]="t('exchange.manualRates.actions.edit')"
+                  [attr.aria-label]="t('exchange.actions.more')"
+                >
+                  <app-icon name="dots" [size]="16" />
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); openEditRate(rate)"
                 >
                   <app-icon name="pencil" [size]="16" />
+                  {{ t('exchange.manualRates.actions.edit') }}
                 </button>
                 <button
-                  appButton
-                  variant="ghost"
-                  size="sm"
                   type="button"
-                  (click)="deleteRate(rate)"
-                  [attr.aria-label]="t('exchange.manualRates.actions.delete')"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); deleteRate(rate)"
                 >
                   <app-icon name="trash" [size]="16" />
+                  {{ t('exchange.manualRates.actions.delete') }}
                 </button>
-              </div>
+              </app-dropdown>
             </li>
           }
         </ul>
-      </app-card>
-    }
-  </div>
+      }
+    </app-card>
+  }
 
   <app-transaction-form-modal
     [(open)]="txFormOpen"

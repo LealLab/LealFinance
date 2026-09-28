@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
@@ -18,6 +19,7 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { InfiniteScroll } from '../../shared/ui/infinite-scroll/infinite-scroll';
@@ -37,17 +39,19 @@ const PAGE_SIZE = 30;
  *
  * The confirmation keys below are passed dynamically through ConfirmService,
  * so the i18n extractor needs explicit markers:
- * t(accounts.archive.title, accounts.archive.message)
+ * t(accounts.archive.title, accounts.archive.message, accounts.delete.title, accounts.delete.message)
  */
 @Component({
   selector: 'app-account-detail',
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     TranslocoDirective,
     MoneyPipe,
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
     InfiniteScroll,
@@ -193,9 +197,27 @@ export class AccountDetail {
   });
 
   protected readonly formOpen = signal(false);
+  protected readonly moreOpen = signal(false);
 
   protected openEdit(): void {
     this.formOpen.set(true);
+  }
+
+  protected async deleteAccount(): Promise<void> {
+    const account = this.account();
+    if (!account) return;
+    const confirmed = await this.confirmService.confirm(
+      'accounts.delete.title',
+      'accounts.delete.message',
+      'danger',
+      { name: account.name }
+    );
+    if (!confirmed) return;
+
+    this.accountRepository.delete(account.id).subscribe({
+      next: () => this.router.navigate(['/accounts']),
+      error: () => this.mutationErrors.show(),
+    });
   }
 
   protected async toggleArchived(): Promise<void> {

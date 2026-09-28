@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Ver tudo",
+    "charts": {
+      "label": "Gráfico"
+    },
     "ratesUnavailable": "Alguns totais precisam de uma taxa de câmbio que não está disponível no momento.",
     "title": "Painel",
     "welcome": "Bem-vindo ao LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Taxa de poupança"
     },
     "cashFlow": {
+      "tab": "Fluxo de caixa",
       "title": "Fluxo de caixa (6 meses)",
       "income": "Receita",
       "expense": "Despesa"
@@ -409,7 +414,8 @@
       "edit": "Editar",
       "archive": "Arquivar",
       "unarchive": "Reativar",
-      "delete": "Excluir conta"
+      "delete": "Excluir conta",
+      "more": "Mais"
     },
     "archive": {
       "title": "Arquivar conta?",
@@ -541,6 +547,7 @@
     "title": "Transações",
     "description": "Lançamentos de receitas, despesas e transferências.",
     "actions": {
+      "more": "Mais",
       "new": "Nova transação",
       "edit": "Editar",
       "delete": "Excluir",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Histórico de transações","loading":"Carregando histórico…","empty":"Ainda não há histórico.","loadError":"Não foi possível carregar o histórico da transação.","operation":{"create":"Criada","update":"Atualizada","delete":"Excluída"},"source":{"manual":"Manual","import":"Importação","import_undo":"Desfazer importação","recurring":"Recorrente","loan":"Empréstimo","card":"Cartão","investment":"Investimento","bulk":"Em lote"},"field":{"type":"Tipo","date":"Data","amount":"Valor","currency":"Moeda","account_id":"Conta","to_account_id":"Conta de destino","category_id":"Categoria","description":"Descrição","notes":"Observações","recurring_rule_id":"Regra recorrente","loan_id":"Empréstimo","card_invoice_close_date":"Data de fechamento da fatura","installment_group_id":"Grupo de parcelas","installment_number":"Número da parcela","installment_count":"Quantidade de parcelas","conversion_amount":"Valor convertido","conversion_currency":"Moeda convertida","conversion_fee":"Taxa de conversão","conversion_rate":"Cotação de conversão","conversion_source":"Origem da conversão"}},
     "tabs": {
-      "transactions": "Transações",
       "recurring": "Recorrências"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Transferência"
     },
     "filters": {
+      "apply": "Mostrar resultados",
       "type": "Tipo",
       "account": "Conta",
       "category": "Categoria",
@@ -574,7 +581,6 @@
       "amountMin": "Mínimo",
       "amountMax": "Máximo",
       "any": "Qualquer",
-      "back": "Voltar",
       "dateRange": "De {{from}} a {{to}}",
       "amountRange": "De {{min}} a {{max}}",
       "removeChip": "Remover filtro {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Excluir",
       "collapse": "Recolher",
       "expand": "Expandir",
-      "dragHandle": "Reordenar"
+      "dragHandle": "Reordenar",
+      "more": "Mais"
     },
     "empty": {
       "title": "Nenhuma categoria cadastrada",
       "description": "Crie grupos e categorias para organizar suas transações."
-    },
-    "sections": {
-      "income": "Categorias de receita",
-      "expense": "Categorias de despesa"
     },
     "delete": {
       "title": "Excluir categoria?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automação",
     "title": "Regras",
     "description": "Categorize transações automaticamente durante a importação.",
-    "card": {
-      "title": "Regras de categorização"
-    },
     "actions": {
       "export": "Exportar",
       "import": "Importar",
@@ -850,8 +850,10 @@
       "reapply": "Reaplicar",
       "add": "Adicionar",
       "delete": "Excluir",
-      "edit": "Editar"
+      "edit": "Editar",
+      "more": "Mais"
     },
+    "inactive": "Inativa",
     "sort": {
       "label": "Ordenar por",
       "priority": "Prioridade",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Limites do mês"
     },
+    "view": {
+      "chart": "Gráfico",
+      "values": "Valores"
+    },
     "planner": {
       "title": "Orçamento baseado na renda",
       "description": "Distribua sua renda esperada entre as categorias.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Reativar meta",
       "deposit": "Aportar",
       "withdraw": "Resgatar",
-      "interest": "Adicionar rendimento"
+      "interest": "Adicionar rendimento",
+      "more": "Mais"
     },
     "empty": {
       "title": "Nenhuma meta cadastrada",
@@ -1098,6 +1105,7 @@
       "archive": "Arquivar empréstimo",
       "unarchive": "Desarquivar empréstimo",
       "recordPayment": "Registrar pagamento",
+      "more": "Mais",
       "delete": "Excluir empréstimo"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Editar carteira de investimentos",
       "archiveWallet": "Arquivar carteira de investimentos",
       "unarchiveWallet": "Desarquivar carteira de investimentos",
-      "view": "Ver",
+      "more": "Mais",
       "newTransaction": "Registrar transação",
       "editTransaction": "Editar transação",
       "deleteTransaction": "Excluir transação",
@@ -1239,6 +1247,17 @@
       "marketValue": "Valor de mercado",
       "unrealizedGain": "Ganho não realizado",
       "multiCurrencyHint": "Carteiras em outras moedas não são incluídas nestes totais."
+    },
+    "help": {
+      "label": "O que é {{label}}?",
+      "marketValue": "Quanto suas posições valem hoje: a quantidade de cada ativo vezes a cotação mais recente. Se algum ativo estiver sem preço, o total aparece como —.",
+      "bookValue": "Quanto você pagou pelas posições que ainda tem: a quantidade de cada ativo vezes o custo médio de compra.",
+      "unrealizedGain": "Valor de mercado menos valor contábil: quanto você ganharia (ou perderia) se vendesse tudo hoje. Só vira ganho de fato quando você vende."
+    },
+    "view": {
+      "positions": "Posições",
+      "ledger": "Transações",
+      "assets": "Ativos"
     },
     "empty": {
       "title": "Nenhuma carteira de investimentos ainda",
@@ -1411,6 +1430,17 @@
       "expense": "Despesa",
       "netFlow": "Fluxo líquido",
       "categories": "Categorias"
+    },
+    "view": {
+      "flow": "Fluxo",
+      "categories": "Categorias",
+      "balance": "Saldos"
+    },
+    "range": {
+      "from": "De",
+      "to": "Até",
+      "apply": "Mostrar resultados",
+      "invalid": "O mês final precisa ser igual ou posterior ao inicial."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Entrada",
       "outflow": "Saída"
+    },
+    "filter": {
+      "all": "Todos",
+      "empty": "Nenhum item com essa situação."
+    },
+    "today": "Hoje",
+    "help": {
+      "label": "O que é {{label}}?",
+      "projectedCashImpact": "O que ainda vai entrar menos o que ainda vai sair nos próximos 30 dias: recorrências, faturas de cartão e parcelas de empréstimo que ainda não foram lançadas. Positivo = sobra dinheiro; negativo = vai faltar.",
+      "realizedCashImpact": "Entradas menos saídas dos itens desta janela de 30 dias que já foram lançados ou pagos.",
+      "projectedOutflow": "Quanto ainda vai sair nos próximos 30 dias: despesas recorrentes, faturas de cartão em aberto e parcelas de empréstimo a pagar.",
+      "realizedOutflow": "Quanto já saiu nesta janela de 30 dias com itens que já foram pagos."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Atualizar agora"
+      "refresh": "Atualizar agora",
+      "more": "Mais"
     },
     "refresh": {
       "updated": "{{count}} taxas atualizadas.",
       "upToDate": "As taxas já estão atualizadas."
+    },
+    "help": {
+      "label": "O que é {{label}}?",
+      "feesPaid": "Soma das tarifas de conversão cobradas nas suas transações em outra moeda, convertida para a moeda de exibição."
+    },
+    "view": {
+      "pending": "Pendências",
+      "live": "Ao vivo",
+      "manual": "Manuais"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Não foi possível salvar esta chave. Tente novamente."
       }
     },
+    "view": {
+      "general": "Geral",
+      "backup": "Backup",
+      "investments": "Investimentos",
+      "ai": "IA"
+    },
     "agents": {
       "title": "Agentes de IA",
       "description": "Assistentes de IA sobre os seus dados financeiros, com múltiplos provedores e ferramentas via MCP. Desativado por padrão - configurável no Docker Compose (AGENTS_ENABLED).",
       "disabled": "Desativado",
       "enabled": "Ativado",
+      "memberReady": "Ativo e pronto para uso.",
+      "memberUnavailable": "Desativado. Entre em contato com o administrador para solicitar acesso à IA.",
       "manage": "Gerenciar"
     },
     "twoFactor": {
@@ -1938,6 +1998,11 @@
       "title": "Nenhuma conciliação selecionada",
       "description": "Inicie uma conciliação acima ou escolha uma anterior."
     },
+    "filter": {
+      "all": "Todos",
+      "pending": "Pendentes",
+      "empty": "Nenhum item com essa situação."
+    },
     "loadError": "Não foi possível carregar as conciliações. Tente novamente.",
     "confirmDelete": {
       "title": "Excluir conciliação?",
@@ -1947,6 +2012,7 @@
   "profile": {
     "title": "Perfil",
     "description": "Gerencie sua identidade e a seguranca da sua conta.",
+    "view": { "account": "Conta", "security": "Segurança" },
     "identity": {
       "title": "Informacoes pessoais",
       "description": "Atualize o nome e o email usados na sua conta.",

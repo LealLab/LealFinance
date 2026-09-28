@@ -1,4 +1,4 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, WritableSignal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { DisplayCurrencyService } from '../../core/display-currency.service';
@@ -13,6 +13,7 @@ import { MockInstitutionRepository } from '../../data/mock/mock-institution.repo
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { TransactionRepository } from '../../data/transaction.repository';
+import { Goal } from '../../domain/models/goal';
 import { Money, money, multiply } from '../../shared/money/money';
 import { Goals } from './goals';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
@@ -47,6 +48,50 @@ describe('Goals', () => {
     const row = fixture.componentInstance['rows']()[0]!;
     expect(row.progress.current).toEqual(money('1286.4', 'BRL'));
     expect(row.progress.target).toEqual(money('12000', 'BRL'));
+  });
+
+  it('opens a goal history in the sheet', async () => {
+    const fixture = TestBed.createComponent(Goals);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      rows(): { goal: Goal }[];
+      goalTransactions(goal: Goal): { description: string }[];
+      openHistory(goal: Goal): void;
+      historyOpen(): boolean;
+    };
+    const goal = component.rows()[0]!.goal;
+    const [tx] = component.goalTransactions(goal);
+    expect(tx).toBeDefined(); // the seeded goal account has movements
+
+    component.openHistory(goal);
+    fixture.detectChanges();
+
+    const dialog = (fixture.nativeElement as HTMLElement).querySelector('app-modal dialog')!;
+    expect(component.historyOpen()).toBe(true);
+    expect(dialog.querySelector('h2')?.textContent).toContain(goal.name);
+    expect(dialog.textContent).toContain(tx!.description);
+  });
+
+  it('toggles archived goals from the mobile "More" menu', async () => {
+    const fixture = TestBed.createComponent(Goals);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const component = fixture.componentInstance as unknown as {
+      moreOpen: WritableSignal<boolean>;
+      showArchived(): boolean;
+    };
+    component.moreOpen.set(true);
+    fixture.detectChanges();
+
+    const checkbox = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>(
+      'app-dropdown input[type="checkbox"]',
+    )!;
+    checkbox.click();
+
+    expect(component.showArchived()).toBe(true);
   });
 
   it('warns when a goal can only be shown at the 1:1 fallback rate', async () => {

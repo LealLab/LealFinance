@@ -12,11 +12,11 @@ async def _authed(client: AsyncClient, db_session: AsyncSession, email: str) -> 
 
 
 async def _create_category_group(
-    client: AsyncClient, *, name: str = "Expenses", kind: str = "expense"
+    client: AsyncClient, *, name: str = "Expenses", kind: str = "expense", color: str = "#112233"
 ) -> dict:
     response = await client.post(
         "/api/v1/category-groups",
-        json={"name": name, "kind": kind, "color": "#112233", "icon": "tag"},
+        json={"name": name, "kind": kind, "color": color, "icon": "tag"},
     )
     assert response.status_code == 201, response.text
     return response.json()
@@ -162,6 +162,44 @@ async def test_update_category_name(client: AsyncClient, db_session: AsyncSessio
     response = await client.patch(f"/api/v1/categories/{category['id']}", json={"name": "New Name"})
     assert response.status_code == 200
     assert response.json()["name"] == "New Name"
+
+
+async def test_category_color_always_follows_its_group(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "colette@example.com")
+    source = await _create_category_group(client, name="Source", color="#AA0000")
+    target = await _create_category_group(client, name="Target", color="#00BB00")
+
+    created = await client.post(
+        "/api/v1/categories",
+        json={
+            "name": "Groceries",
+            "kind": "expense",
+            "group_id": source["id"],
+            "color": "#123456",
+            "icon": "tag",
+        },
+    )
+    assert created.status_code == 201, created.text
+    category = created.json()
+    assert category["color"] == "#AA0000"
+
+    ignored = await client.patch(f"/api/v1/categories/{category['id']}", json={"color": "#123456"})
+    assert ignored.status_code == 200
+    assert ignored.json()["color"] == "#AA0000"
+
+    moved = await client.patch(
+        f"/api/v1/categories/{category['id']}", json={"group_id": target["id"]}
+    )
+    assert moved.json()["color"] == "#00BB00"
+
+    recolored = await client.patch(
+        f"/api/v1/category-groups/{target['id']}", json={"color": "#0000CC"}
+    )
+    assert recolored.status_code == 200
+    listed = (await client.get("/api/v1/categories")).json()
+    assert [row["color"] for row in listed if row["id"] == category["id"]] == ["#0000CC"]
 
 
 async def test_changing_category_kind_is_blocked_by_a_transaction(

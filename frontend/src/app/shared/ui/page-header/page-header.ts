@@ -23,6 +23,8 @@ export class PageHeader {
   readonly eyebrow = input<string>();
   readonly title = input.required<string>();
   readonly description = input<string>();
+  /** Visually hide the heading block on phones so dense pages open on their content. */
+  readonly compact = input(false);
 
   private readonly url = toSignal(
     this.router.events.pipe(
@@ -32,9 +34,8 @@ export class PageHeader {
     { initialValue: this.router.url },
   );
 
-  protected readonly headingClass = computed(() =>
-    isSectionRootUrl(this.url())
-      ? 'flex flex-col gap-1 sr-only md:not-sr-only'
-      : 'flex flex-col gap-1',
-  );
+  protected readonly headingClass = computed(() => {
+    if (isSectionRootUrl(this.url())) return 'flex flex-col gap-1 sr-only md:not-sr-only';
+    return this.compact() ? 'flex flex-col gap-1 max-md:sr-only' : 'flex flex-col gap-1';
+  });
 }

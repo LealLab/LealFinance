@@ -14,6 +14,7 @@ import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { LoadError } from '../../shared/ui/load-error/load-error';
@@ -31,6 +32,11 @@ interface WalletStats {
   marketValueIsFallback: boolean;
 }
 
+/**
+ * Dynamic translation keys used by the summary tiles and their help popovers:
+ * t(investments.summary.marketValue, investments.summary.bookValue, investments.summary.unrealizedGain)
+ * t(investments.help.marketValue, investments.help.bookValue, investments.help.unrealizedGain)
+ */
 @Component({
   selector: 'app-investments',
   imports: [
@@ -40,6 +46,7 @@ interface WalletStats {
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     ExchangeRateWarning,
     Icon,
@@ -74,6 +81,12 @@ export class Investments {
       this.summaryResource.status() === 'error' ||
       this.positionsResource.status() === 'error',
   );
+  /** Market value first: it is the number this page is about. */
+  protected readonly summaryTiles = [
+    { key: 'marketValue', field: 'totalMarketValue', tone: 'default' },
+    { key: 'bookValue', field: 'totalBookValue', tone: 'default' },
+    { key: 'unrealizedGain', field: 'totalUnrealizedGain', tone: 'positive' },
+  ] as const;
   protected readonly formOpen = signal(false);
   protected readonly editingWallet = signal<InvestmentWallet | undefined>(undefined);
   protected readonly isEmpty = computed(

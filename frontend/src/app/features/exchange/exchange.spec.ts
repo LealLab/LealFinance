@@ -1,6 +1,6 @@
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 import { of } from 'rxjs';
 import { SessionService } from '../../core/session.service';
@@ -269,4 +269,48 @@ describe('Exchange', () => {
       TestBed.inject(TranslocoService).translate('exchange.refresh.updated', { count: 3 }),
     );
   });
+  it('switches between the pending, live and manual tabs', async () => {
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const transloco = TestBed.inject(TranslocoService);
+    const el = fixture.nativeElement as HTMLElement;
+    const headings = () => Array.from(el.querySelectorAll('app-card h2')).map((h) => h.textContent?.trim());
+    const tab = (key: string) =>
+      Array.from(el.querySelectorAll('[role="group"] button')).find((b) =>
+        b.textContent?.includes(transloco.translate('exchange.view.' + key)),
+      ) as HTMLButtonElement;
+
+    // Pending is the default and holds both "needs attention" blocks.
+    expect(headings()).toEqual([
+      transloco.translate('exchange.needsAttention.title'),
+      transloco.translate('exchange.currenciesNeedingRate.title'),
+    ]);
+    expect(tab('pending').getAttribute('aria-pressed')).toBe('true');
+
+    tab('live').click();
+    fixture.detectChanges();
+    expect(headings()).toEqual([transloco.translate('exchange.automaticRates.title')]);
+
+    tab('manual').click();
+    fixture.detectChanges();
+    expect(headings()).toEqual([transloco.translate('exchange.manualRates.title')]);
+    expect(tab('manual').getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('opens the manual rates tab from the #manual-rates deep link', async () => {
+    await TestBed.inject(Router).navigateByUrl('/#manual-rates');
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const headings = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-card h2')).map((h) =>
+      h.textContent?.trim(),
+    );
+    expect(headings).toEqual([TestBed.inject(TranslocoService).translate('exchange.manualRates.title')]);
+  });
+
 });

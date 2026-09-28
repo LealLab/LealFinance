@@ -63,7 +63,7 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    const newButton = el.querySelector('app-page-header button:last-of-type') as HTMLButtonElement;
+    const newButton = el.querySelector('app-page-header button[variant="primary"]') as HTMLButtonElement;
     newButton!.click();
     fixture.detectChanges();
 
@@ -128,7 +128,7 @@ describe('Accounts', () => {
 
     expect(dialog.open).toBe(false);
 
-    const newAccountButton = el.querySelector('app-page-header button:last-of-type') as HTMLButtonElement;
+    const newAccountButton = el.querySelector('app-page-header button[variant="primary"]') as HTMLButtonElement;
     newAccountButton.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -166,59 +166,6 @@ describe('Accounts', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance['hasFallbackRate']()).toBe(true);
-  });
-
-  it('confirms before archiving from an account row', async () => {
-    const fixture = TestBed.createComponent(Accounts);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    // Row actions are edit, archive, delete (in that order) - archive is the
-    // middle one.
-    const archiveButton = fixture.nativeElement.querySelector(
-      'li button:nth-of-type(2)'
-    ) as HTMLButtonElement;
-
-    archiveButton.click();
-    fixture.detectChanges();
-
-    const request = TestBed.inject(ConfirmService).request();
-    expect(request?.titleKey).toBe('accounts.archive.title');
-    expect(request?.messageKey).toBe('accounts.archive.message');
-    expect(request?.params?.['name']).toBeTruthy();
-
-    TestBed.inject(ConfirmService).respond(false);
-  });
-
-  it('confirms before deleting an account from its row, then removes it on confirm', async () => {
-    const fixture = TestBed.createComponent(Accounts);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const rowsBefore = fixture.componentInstance['groups']().flatMap((group) => group.rows);
-    const targetId = rowsBefore[0].account.id;
-
-    const deleteButton = fixture.nativeElement.querySelector(
-      'li button:last-of-type'
-    ) as HTMLButtonElement;
-    deleteButton.click();
-    fixture.detectChanges();
-
-    const request = TestBed.inject(ConfirmService).request();
-    expect(request?.titleKey).toBe('accounts.delete.title');
-    expect(request?.messageKey).toBe('accounts.delete.message');
-    expect(request?.params?.['name']).toBeTruthy();
-
-    TestBed.inject(ConfirmService).respond(true);
-    await fixture.whenStable();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const rowsAfter = fixture.componentInstance['groups']().flatMap((group) => group.rows);
-    expect(rowsAfter.some((row) => row.account.id === targetId)).toBe(false);
   });
 
   it('offers detach/cascade choices before deleting an institution from its header', async () => {

@@ -1,9 +1,10 @@
 <div *transloco="let t">
   <!-- reports.period.* is looked up dynamically below. -->
   <!-- t(reports.period.month) t(reports.period.3m) t(reports.period.6m) t(reports.period.12m) t(reports.period.custom) -->
-  <app-page-header [title]="t('reports.title')" [description]="t('reports.description')">
+  <app-page-header [title]="t('reports.title')" [description]="t('reports.description')" [compact]="true">
     <select
-      class="form-input mt-0"
+      #periodSelect
+      class="form-input mt-0 max-md:col-span-2"
       [value]="period()"
       (change)="onPeriodChange($any($event.target).value)"
     >
@@ -12,18 +13,10 @@
       }
     </select>
     @if (period() === 'custom') {
-      <input
-        type="month"
-        class="form-input mt-0"
-        [value]="customFrom()"
-        (change)="customFrom.set($any($event.target).value)"
-      />
-      <input
-        type="month"
-        class="form-input mt-0"
-        [value]="customTo()"
-        (change)="customTo.set($any($event.target).value)"
-      />
+      <button appButton variant="secondary" type="button" class="max-md:col-span-2" (click)="openRange()">
+        <app-icon name="calendar" [size]="16" />
+        {{ rangeLabel() }}
+      </button>
     }
   </app-page-header>
 
@@ -38,64 +31,110 @@
   } @else if (isEmpty()) {
     <app-empty-state icon="chart" [title]="t('reports.empty.title')" [description]="t('reports.empty.description')" />
   } @else {
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <app-card>
-        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.incomeExpense') }}</h2>
-        @if (ratesFailed()) {
-          <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
-        } @else if (ratesReady()) {
-          <div class="h-48 sm:h-64">
-            <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
-          </div>
-        } @else {
-          <app-skeleton height="16rem" />
-        }
-      </app-card>
+    <!-- Same segmented control as transactions' and budgets' view switchers. -->
+    <div
+      class="mb-6 flex items-center gap-1 rounded border border-border p-0.5 md:w-fit"
+      role="group"
+      [attr.aria-label]="t('reports.title')"
+    >
+      <button
+        type="button"
+        class="flex min-w-0 items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === 'flow' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === 'flow'"
+        (click)="view.set('flow')"
+      >
+        <span class="inline-flex max-sm:hidden"><app-icon name="chart" [size]="16" /></span>
+        <span class="truncate">{{ t('reports.view.flow') }}</span>
+      </button>
+      <button
+        type="button"
+        class="flex min-w-0 items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === 'categories' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === 'categories'"
+        (click)="view.set('categories')"
+      >
+        <span class="inline-flex max-sm:hidden"><app-icon name="tag" [size]="16" /></span>
+        <span class="truncate">{{ t('reports.view.categories') }}</span>
+      </button>
+      <button
+        type="button"
+        class="flex min-w-0 items-center justify-center gap-1 rounded px-3 py-1 text-sm max-md:flex-1 max-md:px-2 [@media(pointer:coarse)]:min-h-10"
+        [class]="view() === 'balance' ? 'bg-surface-sunken text-content-primary' : 'text-content-muted'"
+        [attr.aria-pressed]="view() === 'balance'"
+        (click)="view.set('balance')"
+      >
+        <span class="inline-flex max-sm:hidden"><app-icon name="wallet" [size]="16" /></span>
+        <span class="truncate">{{ t('reports.view.balance') }}</span>
+      </button>
+    </div>
 
-      <app-card>
-        <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.netFlow') }}</h2>
-        @if (ratesFailed()) {
-          <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
-        } @else if (ratesReady()) {
-          <div class="h-48 sm:h-64">
-            <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
-          </div>
-        } @else {
-          <app-skeleton height="16rem" />
-        }
-      </app-card>
+    <!-- Each tab sits behind @if so its canvases are rebuilt at their real
+         size when shown, instead of resizing from a hidden container. -->
+    @if (view() === 'flow') {
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <app-card>
+          <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.incomeExpense') }}</h2>
+          @if (ratesFailed()) {
+            <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
+          } @else if (ratesReady()) {
+            <div class="h-48 sm:h-64">
+              <app-chart kind="bar" [labels]="incomeExpenseChart().labels" [datasets]="incomeExpenseChart().datasets" [formatValue]="formatMoney" />
+            </div>
+          } @else {
+            <app-skeleton height="16rem" />
+          }
+        </app-card>
 
+        <app-card>
+          <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.netFlow') }}</h2>
+          @if (ratesFailed()) {
+            <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
+          } @else if (ratesReady()) {
+            <div class="h-48 sm:h-64">
+              <app-chart kind="line" [labels]="netFlowChart().labels" [datasets]="netFlowChart().datasets" [formatValue]="formatMoney" />
+            </div>
+          } @else {
+            <app-skeleton height="16rem" />
+          }
+        </app-card>
+      </div>
+    } @else if (view() === 'categories') {
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.byCategory') }}</h2>
         @if (ratesFailed()) {
           <app-load-error messageKey="reports.ratesUnavailable" (retry)="retryRates()" />
         } @else if (ratesReady()) {
-          <div class="mx-auto aspect-square w-full max-w-56">
-            <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
+          <div class="grid gap-4 lg:grid-cols-[minmax(12rem,15rem)_minmax(0,1fr)] lg:items-center">
+            <div class="mx-auto aspect-square w-full max-w-52">
+              <app-chart kind="doughnut" [labels]="categoryChart().labels" [datasets]="categoryChart().datasets" [formatValue]="formatMoney" />
+            </div>
+            <table class="w-full table-fixed text-sm">
+              <tbody>
+                @for (row of categoryTable(); track row.groupId) {
+                  <tr class="border-t border-border">
+                    <td class="py-2 pe-2 [overflow-wrap:break-word]">
+                      <span class="inline-flex items-center gap-2">
+                        <span class="size-2.5 shrink-0 rounded-full" [style.background-color]="row.color"></span>
+                        {{ row.name }}
+                      </span>
+                    </td>
+                    <!-- Amount and share stacked in one column so the name keeps
+                         enough width not to break mid-word at 320px. -->
+                    <td class="w-28 py-2 text-end sm:w-36">
+                      <span class="block font-mono tabular-nums">{{ row.total.amount | money: row.total.currency }}</span>
+                      <span class="block text-xs text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
           </div>
-          <table class="mt-4 w-full table-fixed text-sm">
-            <tbody>
-              @for (row of categoryTable(); track row.groupId) {
-                <tr class="border-t border-border">
-                  <td class="py-2 pe-2 [overflow-wrap:anywhere]">
-                    <span class="inline-flex items-center gap-2">
-                      <span class="size-2.5 shrink-0 rounded-full" [style.background-color]="row.color"></span>
-                      {{ row.name }}
-                    </span>
-                  </td>
-                  <td class="w-28 py-2 pe-2 text-end font-mono tabular-nums sm:w-36">
-                    {{ row.total.amount | money: row.total.currency }}
-                  </td>
-                  <td class="w-14 py-2 text-end text-content-muted tabular-nums">{{ row.percent.toFixed(1) }}%</td>
-                </tr>
-              }
-            </tbody>
-          </table>
         } @else {
           <app-skeleton height="14rem" />
         }
       </app-card>
-
+    } @else {
       <app-card>
         <h2 class="mb-3 text-sm font-semibold text-content-primary">{{ t('reports.charts.balanceTrend') }}</h2>
         @if (ratesFailed()) {
@@ -113,6 +152,45 @@
           <app-skeleton height="16rem" />
         }
       </app-card>
-    </div>
+    }
   }
+
+  <app-modal [(open)]="rangeOpen" [sheet]="true" [titleText]="t('reports.period.custom')">
+    <div class="flex flex-col gap-4">
+      <div class="grid gap-3 min-[25rem]:grid-cols-2">
+        <div>
+          <label class="form-label" for="report-range-from">{{ t('reports.range.from') }}</label>
+          <input
+            id="report-range-from"
+            type="month"
+            class="form-input"
+            [value]="draftFrom()"
+            (input)="draftFrom.set($any($event.target).value)"
+          />
+        </div>
+        <div>
+          <label class="form-label" for="report-range-to">{{ t('reports.range.to') }}</label>
+          <input
+            id="report-range-to"
+            type="month"
+            class="form-input"
+            [min]="draftFrom()"
+            [value]="draftTo()"
+            (input)="draftTo.set($any($event.target).value)"
+          />
+        </div>
+      </div>
+      @if (draftInverted()) {
+        <p class="text-sm font-medium text-negative" role="alert">{{ t('reports.range.invalid') }}</p>
+      }
+      <div class="flex flex-wrap justify-end gap-2 border-t border-border pt-4">
+        <button appButton variant="secondary" type="button" (click)="rangeOpen.set(false)">
+          {{ t('common.actions.cancel') }}
+        </button>
+        <button appButton variant="primary" type="button" [disabled]="draftInvalid()" (click)="applyRange()">
+          {{ t('reports.range.apply') }}
+        </button>
+      </div>
+    </div>
+  </app-modal>
 </div>

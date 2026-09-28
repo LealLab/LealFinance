@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -115,6 +115,9 @@ export class Dashboard {
   protected readonly dataError = computed(() =>
     this.dataResources.some((resource) => resource.status() === 'error')
   );
+
+  /** Below `lg` the two charts share one card slot and this picks which shows. */
+  protected readonly chartView = signal<'cashFlow' | 'categories'>('cashFlow');
 
   protected readonly displayCurrencyService = inject(DisplayCurrencyService);
   protected readonly displayCurrency = this.displayCurrencyService.currency;

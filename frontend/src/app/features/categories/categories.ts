@@ -24,6 +24,7 @@ import { displayConverter } from '../../shared/money/display-converter';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
@@ -58,6 +59,7 @@ interface GroupRow {
     MoneyPipe,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
     PageHeader,
@@ -104,6 +106,9 @@ export class Categories {
   private readonly converter = this.rates.converter;
   protected readonly hasFallbackRate = this.rates.hasFallbackRate;
   protected readonly ratesReady = computed(() => this.converter() !== null);
+
+  /** Expense | Income tab; starts on expenses and isn't persisted. */
+  protected readonly view = signal<CategoryKind>('expense');
 
   protected readonly formOpen = signal(false);
   protected readonly formMode = signal<'category' | 'group'>('category');
@@ -167,16 +172,31 @@ export class Categories {
   protected readonly expenseRows = computed(() => this.buildRows('expense'));
 
   /**
-   * A plain array (not built inline in the template) so each section's
+   * A plain array (not built inline in the template) so each tab's
    * translation key is a property path the extractor can follow - see
-   * layout/sidebar.ts's NAV_ITEMS for the same reasoning.
+   * layout/sidebar.ts's NAV_ITEMS for the same reasoning. The short
+   * transaction type labels fit two tabs on a 320px screen.
    *
-   * t(categories.sections.expense, categories.sections.income)
+   * t(transactions.type.expense, transactions.type.income)
    */
   protected readonly sections = computed(() => [
-    { kind: 'expense' as const, rows: this.expenseRows(), titleKey: 'categories.sections.expense' },
-    { kind: 'income' as const, rows: this.incomeRows(), titleKey: 'categories.sections.income' }
+    {
+      kind: 'expense' as const,
+      rows: this.expenseRows(),
+      labelKey: 'transactions.type.expense',
+      icon: 'arrowDownLeft' as const
+    },
+    {
+      kind: 'income' as const,
+      rows: this.incomeRows(),
+      labelKey: 'transactions.type.income',
+      icon: 'arrowUpRight' as const
+    }
   ]);
+
+  protected readonly activeSection = computed(
+    () => this.sections().find((section) => section.kind === this.view())!
+  );
 
   protected readonly isEmpty = computed(
     () =>

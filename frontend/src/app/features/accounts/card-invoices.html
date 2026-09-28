@@ -27,17 +27,20 @@
             {{ current.remaining | money: current.currency }}
           </span>
         </div>
-        <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <span class="text-xs text-content-muted">
-            {{ t('accounts.detail.invoices.closesOn', { date: current.closeDate }) }} ·
-            {{ t('accounts.detail.invoices.total') }}: {{ current.total | money: current.currency }} ·
-            {{ t('accounts.detail.invoices.paid') }}: {{ current.paid | money: current.currency }}
-          </span>
+        <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-content-muted">
+            <span>{{ t('accounts.detail.invoices.closesOn', { date: current.closeDate }) }}</span>
+            <span class="hidden sm:inline">·</span>
+            <span>{{ t('accounts.detail.invoices.total') }}: {{ current.total | money: current.currency }}</span>
+            <span class="hidden sm:inline">·</span>
+            <span>{{ t('accounts.detail.invoices.paid') }}: {{ current.paid | money: current.currency }}</span>
+          </div>
           @if (canPay(current)) {
             <button
               appButton
               variant="primary"
               type="button"
+              class="max-sm:w-full"
               [disabled]="paying() === current.closeDate"
               (click)="pay(current)"
             >

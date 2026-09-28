@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Xem tất cả",
+    "charts": {
+      "label": "Biểu đồ"
+    },
     "ratesUnavailable": "Một số tổng số cần tỷ giá hiện không khả dụng.",
     "title": "Bảng điều khiển",
     "welcome": "Chào mừng bạn đến với LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Tỷ lệ tiết kiệm"
     },
     "cashFlow": {
+      "tab": "Dòng tiền",
       "title": "Dòng tiền (6 tháng)",
       "income": "Thu nhập",
       "expense": "Chi tiêu"
@@ -409,7 +414,8 @@
       "edit": "Chỉnh sửa",
       "archive": "Lưu trữ",
       "unarchive": "Bỏ lưu trữ",
-      "delete": "Xóa tài khoản"
+      "delete": "Xóa tài khoản",
+      "more": "Thêm"
     },
     "archive": {
       "title": "Lưu trữ tài khoản?",
@@ -541,6 +547,7 @@
     "title": "Giao dịch",
     "description": "Thu nhập, chi tiêu và các khoản chuyển tiền.",
     "actions": {
+      "more": "Thêm",
       "new": "Giao dịch mới",
       "edit": "Chỉnh sửa",
       "delete": "Xóa",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Lịch sử giao dịch","loading":"Đang tải lịch sử…","empty":"Chưa có lịch sử.","loadError":"Không thể tải lịch sử giao dịch.","operation":{"create":"Đã tạo","update":"Đã cập nhật","delete":"Đã xóa"},"source":{"manual":"Thủ công","import":"Nhập","import_undo":"Hoàn tác nhập","recurring":"Định kỳ","loan":"Khoản vay","card":"Thẻ","investment":"Đầu tư","bulk":"Hàng loạt"},"field":{"type":"Loại","date":"Ngày","amount":"Số tiền","currency":"Tiền tệ","account_id":"Tài khoản","to_account_id":"Tài khoản đích","category_id":"Danh mục","description":"Mô tả","notes":"Ghi chú","recurring_rule_id":"Quy tắc định kỳ","loan_id":"Khoản vay","card_invoice_close_date":"Ngày đóng hóa đơn","installment_group_id":"Nhóm trả góp","installment_number":"Số kỳ","installment_count":"Số kỳ trả góp","conversion_amount":"Số tiền đã quy đổi","conversion_currency":"Tiền tệ quy đổi","conversion_fee":"Phí quy đổi","conversion_rate":"Tỷ giá quy đổi","conversion_source":"Nguồn quy đổi"}},
     "tabs": {
-      "transactions": "Giao dịch",
       "recurring": "Giao dịch định kỳ"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Chuyển tiền"
     },
     "filters": {
+      "apply": "Xem kết quả",
       "type": "Loại",
       "account": "Tài khoản",
       "category": "Danh mục",
@@ -574,7 +581,6 @@
       "amountMin": "Tối thiểu",
       "amountMax": "Tối đa",
       "any": "Bất kỳ",
-      "back": "Quay lại",
       "dateRange": "{{from}} đến {{to}}",
       "amountRange": "{{min}} đến {{max}}",
       "removeChip": "Xóa bộ lọc {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Xóa",
       "collapse": "Thu gọn",
       "expand": "Mở rộng",
-      "dragHandle": "Sắp xếp lại"
+      "dragHandle": "Sắp xếp lại",
+      "more": "Thêm"
     },
     "empty": {
       "title": "Chưa có danh mục nào",
       "description": "Tạo nhóm và danh mục để sắp xếp các giao dịch của bạn."
-    },
-    "sections": {
-      "income": "Danh mục thu nhập",
-      "expense": "Danh mục chi tiêu"
     },
     "delete": {
       "title": "Xóa danh mục?",
@@ -840,9 +843,6 @@
     "eyebrow": "Tự động hóa",
     "title": "Quy tắc",
     "description": "Tự động phân loại giao dịch khi bạn nhập chúng.",
-    "card": {
-      "title": "Quy tắc phân loại"
-    },
     "actions": {
       "export": "Xuất",
       "import": "Nhập",
@@ -850,8 +850,10 @@
       "reapply": "Áp dụng lại",
       "add": "Thêm",
       "delete": "Xóa",
-      "edit": "Chỉnh sửa"
+      "edit": "Chỉnh sửa",
+      "more": "Thêm"
     },
+    "inactive": "Không hoạt động",
     "sort": {
       "label": "Sắp xếp theo",
       "priority": "Ưu tiên",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Hạn mức hàng tháng"
     },
+    "view": {
+      "chart": "Biểu đồ",
+      "values": "Số tiền"
+    },
     "planner": {
       "title": "Ngân sách theo thu nhập",
       "description": "Phân bổ thu nhập dự kiến cho các danh mục.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Bỏ lưu trữ mục tiêu",
       "deposit": "Thêm tiền",
       "withdraw": "Rút tiền",
-      "interest": "Thêm tiền lãi"
+      "interest": "Thêm tiền lãi",
+      "more": "Thêm"
     },
     "empty": {
       "title": "Chưa có mục tiêu nào",
@@ -1098,6 +1105,7 @@
       "archive": "Lưu trữ khoản vay",
       "unarchive": "Bỏ lưu trữ khoản vay",
       "recordPayment": "Ghi nhận thanh toán",
+      "more": "Thêm",
       "delete": "Xóa khoản vay"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Chỉnh sửa danh mục đầu tư",
       "archiveWallet": "Lưu trữ danh mục đầu tư",
       "unarchiveWallet": "Bỏ lưu trữ danh mục đầu tư",
-      "view": "Xem",
+      "more": "Thêm",
       "newTransaction": "Ghi nhận giao dịch",
       "editTransaction": "Chỉnh sửa giao dịch",
       "deleteTransaction": "Xóa giao dịch",
@@ -1239,6 +1247,17 @@
       "marketValue": "Giá trị thị trường",
       "unrealizedGain": "Lãi chưa thực hiện",
       "multiCurrencyHint": "Các danh mục đầu tư bằng loại tiền tệ khác không được tính vào các tổng này."
+    },
+    "help": {
+      "label": "{{label}} là gì?",
+      "marketValue": "Giá trị hiện tại của các vị thế của bạn: số lượng mỗi tài sản nhân với giá mới nhất. Nếu tài sản nào không có giá, tổng sẽ hiển thị là —.",
+      "bookValue": "Số tiền bạn đã trả cho các vị thế bạn vẫn đang nắm giữ: số lượng mỗi tài sản nhân với giá vốn mua trung bình.",
+      "unrealizedGain": "Giá trị thị trường trừ giá trị sổ sách: số tiền bạn sẽ lãi (hoặc lỗ) nếu bán tất cả hôm nay. Đây chỉ trở thành lãi thực khi bạn bán."
+    },
+    "view": {
+      "positions": "Vị thế",
+      "ledger": "Giao dịch",
+      "assets": "Tài sản"
     },
     "empty": {
       "title": "Chưa có danh mục đầu tư",
@@ -1411,6 +1430,17 @@
       "expense": "Chi tiêu",
       "netFlow": "Dòng tiền ròng",
       "categories": "Danh mục"
+    },
+    "view": {
+      "flow": "Dòng tiền",
+      "categories": "Danh mục",
+      "balance": "Số dư"
+    },
+    "range": {
+      "from": "Từ",
+      "to": "Đến",
+      "apply": "Xem kết quả",
+      "invalid": "Tháng kết thúc phải cùng hoặc sau tháng bắt đầu."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Tiền vào",
       "outflow": "Tiền ra"
+    },
+    "filter": {
+      "all": "Tất cả",
+      "empty": "Không có mục nào ở trạng thái này."
+    },
+    "today": "Hôm nay",
+    "help": {
+      "label": "{{label}} là gì?",
+      "projectedCashImpact": "Số tiền còn sẽ vào trừ đi số tiền còn sẽ ra trong 30 ngày tới: giao dịch định kỳ, hóa đơn thẻ và các kỳ trả khoản vay chưa ghi nhận. Dương nghĩa là còn dư; âm nghĩa là thiếu hụt.",
+      "realizedCashImpact": "Tiền vào trừ đi tiền ra của các mục trong khoảng 30 ngày này đã được ghi nhận hoặc thanh toán.",
+      "projectedOutflow": "Số tiền còn sẽ ra trong 30 ngày tới: chi phí định kỳ, hóa đơn thẻ chưa thanh toán và các kỳ trả khoản vay đến hạn.",
+      "realizedOutflow": "Số tiền đã ra trong khoảng 30 ngày này cho các mục đã được thanh toán."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Làm mới ngay"
+      "refresh": "Làm mới ngay",
+      "more": "Thêm"
     },
     "refresh": {
       "updated": "Đã cập nhật {{count}} tỷ giá.",
       "upToDate": "Tỷ giá đã được cập nhật."
+    },
+    "help": {
+      "label": "{{label}} là gì?",
+      "feesPaid": "Tổng phí quy đổi tính trên các giao dịch ngoại tệ của bạn, được quy đổi sang tiền tệ hiển thị."
+    },
+    "view": {
+      "pending": "Chờ xử lý",
+      "live": "Trực tiếp",
+      "manual": "Thủ công"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Không thể lưu khóa này. Hãy thử lại."
       }
     },
+    "view": {
+      "general": "Chung",
+      "backup": "Sao lưu",
+      "investments": "Đầu tư",
+      "ai": "AI"
+    },
     "agents": {
       "title": "Tác nhân AI",
       "description": "Trợ lý AI trên dữ liệu tài chính của bạn, với nhiều nhà cung cấp và công cụ thông qua MCP. Tắt theo mặc định - có thể cấu hình trong Docker Compose (AGENTS_ENABLED).",
       "disabled": "Đã tắt",
       "enabled": "Đã bật",
+      "memberReady": "Đã bật và sẵn sàng sử dụng.",
+      "memberUnavailable": "Đã tắt. Hãy liên hệ với quản trị viên để yêu cầu quyền truy cập AI.",
       "manage": "Quản lý"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Đối soát", "start": "Bắt đầu đối soát", "complete": "Hoàn tất", "reopen": "Mở lại", "delete": "Xóa" },
     "status": { "open": "Đang mở", "completed": "Đã hoàn tất" },
     "empty": { "title": "Chưa chọn đối soát", "description": "Bắt đầu đối soát ở trên hoặc chọn một lần trước đó." },
+    "filter": {
+      "all": "Tất cả",
+      "pending": "Chưa đối soát",
+      "empty": "Không có mục nào ở trạng thái này."
+    },
     "loadError": "Không thể tải các lần đối soát. Hãy thử lại.",
     "confirmDelete": { "title": "Xóa lần đối soát?", "message": "Lần đối soát và các dấu đánh dấu sẽ bị xóa. Tiếp tục?" }
   },
   "profile": {
     "title": "Hồ sơ",
     "description": "Quản lý danh tính và bảo mật tài khoản của bạn.",
+    "view": { "account": "Tài khoản", "security": "Bảo mật" },
     "identity": {
       "title": "Thông tin cá nhân",
       "description": "Cập nhật tên và địa chỉ email được sử dụng cho tài khoản.",

@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -69,6 +70,7 @@ interface BudgetRow extends BudgetProgress {
 @Component({
   selector: 'app-budgets',
   imports: [
+    NgTemplateOutlet,
     TranslocoDirective,
     MoneyPipe,
     Badge,
@@ -153,6 +155,8 @@ export class Budgets {
   private readonly percentageDraft = signal<Record<string, string>>({});
   protected readonly incomeDraft = signal('');
   protected readonly plannerError = signal<string | null>(null);
+  /** Which sub-tab is shown: the income planner (chart) or the month's totals and limits. */
+  protected readonly view = signal<'chart' | 'values'>('chart');
 
   constructor() {
     let previousMonth = this.selectedMonth();

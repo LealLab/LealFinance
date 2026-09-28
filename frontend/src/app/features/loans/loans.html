@@ -1,7 +1,9 @@
 <div *transloco="let t">
   <!-- t(loans.ratePeriod.annual, loans.ratePeriod.monthly) -->
-  <app-page-header [title]="t('loans.title')" [description]="t('loans.description')">
-    <label class="flex items-center gap-2 text-sm text-content-muted max-md:col-span-2">
+  <app-page-header [compact]="true" [title]="t('loans.title')" [description]="t('loans.description')">
+    <!-- From md up the checkbox sits beside the primary action; on phones it
+         folds into the "More" menu below, same pattern as features/goals. -->
+    <label class="hidden items-center gap-2 text-sm text-content-muted md:flex">
       <input
         type="checkbox"
         [checked]="showArchived()"
@@ -9,10 +11,32 @@
       />
       {{ t('loans.showArchived') }}
     </label>
-    <button appButton variant="primary" type="button" class="max-md:col-span-2" (click)="openCreate()">
-      <app-icon name="plus" [size]="16" />
-      {{ t('loans.actions.new') }}
-    </button>
+
+    <!-- One page-header child so the hidden label above doesn't flip the
+         odd/even parity of the mobile grid - see features/accounts/accounts.html. -->
+    <div class="contents">
+      <button appButton variant="primary" type="button" (click)="openCreate()">
+        <app-icon name="plus" [size]="16" />
+        {{ t('loans.actions.new') }}
+      </button>
+
+      <app-dropdown class="md:hidden" [(open)]="moreOpen" panelClass="w-56">
+        <button dropdownTrigger appButton variant="secondary" type="button" class="w-full">
+          <app-icon name="dots" [size]="16" />
+          <span>{{ t('loans.actions.more') }}</span>
+        </button>
+        <label
+          class="flex w-full items-center gap-2 rounded px-2 py-2 text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+        >
+          <input
+            type="checkbox"
+            [checked]="showArchived()"
+            (change)="showArchived.set($any($event.target).checked)"
+          />
+          <span>{{ t('loans.showArchived') }}</span>
+        </label>
+      </app-dropdown>
+    </div>
   </app-page-header>
 
   @if (hasFallbackRate()) {
@@ -76,6 +100,7 @@
                 variant="ghost"
                 size="sm"
                 type="button"
+                class="max-md:hidden"
                 (click)="openEdit(row.loan)"
                 [attr.aria-label]="t('loans.actions.edit')"
               >
@@ -86,6 +111,7 @@
                 variant="ghost"
                 size="sm"
                 type="button"
+                class="max-md:hidden"
                 (click)="archive(row.loan)"
                 [attr.aria-label]="
                   row.loan.archived ? t('loans.actions.unarchive') : t('loans.actions.archive')
@@ -98,27 +124,81 @@
                 variant="ghost"
                 size="sm"
                 type="button"
+                class="max-md:hidden"
                 (click)="deleteLoan(row.loan)"
                 [attr.aria-label]="t('loans.actions.delete')"
               >
                 <app-icon name="trash" [size]="16" />
               </button>
+              <!-- Phones: the card's secondary actions live in one menu. -->
+              <app-dropdown #menu class="md:hidden" panelClass="w-52">
+                <button
+                  dropdownTrigger
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  [attr.aria-label]="t('loans.actions.more')"
+                >
+                  <app-icon name="dots" [size]="16" />
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); openEdit(row.loan)"
+                >
+                  <app-icon name="pencil" [size]="16" />
+                  {{ t('loans.actions.edit') }}
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); openSheet(row.loan, 'schedule')"
+                >
+                  <app-icon name="calendar" [size]="16" />
+                  {{ t('loans.schedule.title') }}
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); openSheet(row.loan, 'history')"
+                >
+                  <app-icon name="eye" [size]="16" />
+                  {{ t('loans.history.title') }}
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); archive(row.loan)"
+                >
+                  <app-icon name="archive" [size]="16" />
+                  {{ row.loan.archived ? t('loans.actions.unarchive') : t('loans.actions.archive') }}
+                </button>
+                <button
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-negative hover:bg-surface-sunken [@media(pointer:coarse)]:min-h-11"
+                  (click)="menu.open.set(false); deleteLoan(row.loan)"
+                >
+                  <app-icon name="trash" [size]="16" />
+                  {{ t('loans.actions.delete') }}
+                </button>
+              </app-dropdown>
             </div>
           </div>
 
           <div class="mt-5 flex items-end justify-between gap-4">
-            <div>
+            <div class="min-w-0">
               <p class="text-xs text-content-muted">{{ t('loans.card.installment') }}</p>
               <p class="font-mono text-2xl font-semibold tabular-nums text-content-primary">
                 {{ row.loan.installmentAmount | money: row.loan.currency }}
-                @if (row.convertedInstallment; as converted) {
-                  <span class="text-sm font-normal text-content-muted"
-                    >({{ converted.amount | money: converted.currency }})</span
-                  >
-                }
               </p>
+              @if (row.convertedInstallment; as converted) {
+                <p class="font-mono text-sm tabular-nums text-content-muted">
+                  {{ converted.amount | money: converted.currency }}
+                </p>
+              }
             </div>
-            <div class="text-end">
+            <div class="min-w-0 text-end">
               <p class="text-xs text-content-muted">{{ t('loans.card.totalPayable') }}</p>
               <p class="font-mono text-sm font-semibold tabular-nums">
                 {{ row.progress.totalPayable.amount | money: row.progress.totalPayable.currency }}
@@ -136,7 +216,7 @@
             "
           />
 
-          <div class="mt-3 grid grid-cols-1 gap-3 text-sm sm:grid-cols-4">
+          <div class="mt-3 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
             <div>
               <p class="text-xs text-content-muted">{{ t('loans.card.borrowed') }}</p>
               <p class="font-mono font-semibold tabular-nums">
@@ -165,12 +245,12 @@
               <p class="text-xs text-content-muted">{{ t('loans.card.remaining') }}</p>
               <p class="font-mono font-semibold tabular-nums">
                 {{ row.progress.remaining.amount | money: row.progress.remaining.currency }}
-                @if (row.convertedRemaining; as converted) {
-                  <span class="text-xs font-normal text-content-muted"
-                    >({{ converted.amount | money: converted.currency }})</span
-                  >
-                }
               </p>
+              @if (row.convertedRemaining; as converted) {
+                <p class="font-mono text-xs tabular-nums text-content-muted">
+                  {{ converted.amount | money: converted.currency }}
+                </p>
+              }
             </div>
             @if (row.progress.nextDueDate; as due) {
               <div>
@@ -187,6 +267,7 @@
                 variant="primary"
                 size="sm"
                 type="button"
+                class="max-md:flex-1"
                 (click)="openPayment(row.loan)"
               >
                 <app-icon name="banknote" [size]="14" />{{ t('loans.actions.recordPayment') }}
@@ -196,80 +277,102 @@
             }
           </div>
 
-          <details class="mt-4 border-t border-border pt-3">
+          <details class="mt-4 border-t border-border pt-3 max-md:hidden">
             <summary class="cursor-pointer text-xs font-semibold text-content-muted">
               {{ t('loans.schedule.title') }}
             </summary>
-            @if (loanSchedule(row.loan).length === 0) {
-              <p class="py-3 text-sm text-content-muted">{{ t('loans.schedule.empty') }}</p>
-            } @else {
-              <ul class="mt-2 max-h-64 divide-y divide-border overflow-y-auto">
-                @for (installment of loanSchedule(row.loan); track installment.number) {
-                  <li class="flex items-center justify-between gap-3 py-2">
-                    <span class="min-w-0 truncate text-sm text-content-primary">
-                      {{ installment.number }}/{{ row.loan.installmentCount }}
-                      <span class="text-xs text-content-muted">
-                        ·
-                        {{
-                          installment.status === 'paid' && installment.paidDate
-                            ? t('loans.schedule.paidOn', { date: installment.paidDate })
-                            : installment.dueDate
-                        }}
-                      </span>
-                    </span>
-                    <span class="flex shrink-0 items-center gap-2">
-                      <app-badge
-                        [tone]="
-                          installment.status === 'paid'
-                            ? 'positive'
-                            : installment.status === 'overdue'
-                              ? 'warning'
-                              : 'neutral'
-                        "
-                      >
-                        {{ t('loans.schedule.status.' + installment.status) }}
-                      </app-badge>
-                      <span class="font-mono text-sm font-semibold tabular-nums">
-                        {{
-                          (installment.paidAmount ?? installment.amount).amount
-                            | money: (installment.paidAmount ?? installment.amount).currency
-                        }}
-                      </span>
-                    </span>
-                  </li>
-                }
-              </ul>
-            }
+            <ng-container [ngTemplateOutlet]="schedule" [ngTemplateOutletContext]="{ $implicit: row.loan }" />
           </details>
 
-          <details class="mt-4 border-t border-border pt-3">
+          <details class="mt-4 border-t border-border pt-3 max-md:hidden">
             <summary class="cursor-pointer text-xs font-semibold text-content-muted">
               {{ t('loans.history.title') }}
             </summary>
-            @if (loanTransactions(row.loan).length === 0) {
-              <p class="py-3 text-sm text-content-muted">{{ t('loans.history.empty') }}</p>
-            } @else {
-              <ul class="mt-2 divide-y divide-border">
-                @for (tx of loanTransactions(row.loan); track tx.id) {
-                  <li class="flex items-center justify-between gap-3 py-2">
-                    <span class="min-w-0 truncate text-sm text-content-primary">
-                      {{ tx.description }}
-                      <span class="text-xs text-content-muted">· {{ tx.date }}</span>
-                    </span>
-                    <span
-                      class="shrink-0 font-mono text-sm font-semibold tabular-nums text-negative"
-                    >
-                      −{{ tx.amount | money: tx.currency }}
-                    </span>
-                  </li>
-                }
-              </ul>
-            }
+            <ng-container [ngTemplateOutlet]="history" [ngTemplateOutletContext]="{ $implicit: row.loan }" />
           </details>
         </app-card>
       }
     </div>
   }
+
+  <ng-template #schedule let-loan>
+    @if (loanSchedule(loan).length === 0) {
+      <p class="py-3 text-sm text-content-muted">{{ t('loans.schedule.empty') }}</p>
+    } @else {
+      <ul class="mt-2 divide-y divide-border md:max-h-64 md:overflow-y-auto">
+        @for (installment of loanSchedule(loan); track installment.number) {
+          <li class="flex items-center justify-between gap-3 py-2">
+            <span class="min-w-0 truncate text-sm text-content-primary">
+              {{ installment.number }}/{{ loan.installmentCount }}
+              <span class="text-xs text-content-muted">
+                ·
+                {{
+                  installment.status === 'paid' && installment.paidDate
+                    ? t('loans.schedule.paidOn', { date: installment.paidDate })
+                    : installment.dueDate
+                }}
+              </span>
+            </span>
+            <span class="flex shrink-0 items-center gap-2">
+              <app-badge
+                [tone]="
+                  installment.status === 'paid'
+                    ? 'positive'
+                    : installment.status === 'overdue'
+                      ? 'warning'
+                      : 'neutral'
+                "
+              >
+                {{ t('loans.schedule.status.' + installment.status) }}
+              </app-badge>
+              <span class="font-mono text-sm font-semibold tabular-nums">
+                {{
+                  (installment.paidAmount ?? installment.amount).amount
+                    | money: (installment.paidAmount ?? installment.amount).currency
+                }}
+              </span>
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  </ng-template>
+
+  <ng-template #history let-loan>
+    @if (loanTransactions(loan).length === 0) {
+      <p class="py-3 text-sm text-content-muted">{{ t('loans.history.empty') }}</p>
+    } @else {
+      <ul class="mt-2 divide-y divide-border">
+        @for (tx of loanTransactions(loan); track tx.id) {
+          <li class="flex items-center justify-between gap-3 py-2">
+            <span class="min-w-0 truncate text-sm text-content-primary">
+              {{ tx.description }}
+              <span class="text-xs text-content-muted">· {{ tx.date }}</span>
+            </span>
+            <span class="shrink-0 font-mono text-sm font-semibold tabular-nums text-negative">
+              −{{ tx.amount | money: tx.currency }}
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  </ng-template>
+
+  <app-modal
+    class="contents"
+    [sheet]="true"
+    [(open)]="sheetOpen"
+    [titleText]="(sheetKind() === 'schedule' ? t('loans.schedule.title') : t('loans.history.title')) + ' · ' + (sheetLoan()?.name ?? '')"
+  >
+    <div class="p-4">
+      @if (sheetLoan(); as loan) {
+        <ng-container
+          [ngTemplateOutlet]="sheetKind() === 'schedule' ? schedule : history"
+          [ngTemplateOutletContext]="{ $implicit: loan }"
+        />
+      }
+    </div>
+  </app-modal>
 
   <app-loan-form-modal
     [(open)]="formOpen"

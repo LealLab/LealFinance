@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { TranslocoLocaleService } from '@jsverse/transloco-locale';
@@ -14,10 +14,13 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { categoryColorMap, resolveCssColor } from '../../shared/charts/chart-palette';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { Chart, ChartDataset } from '../../shared/charts/chart';
+import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
+import { Icon } from '../../shared/ui/icon/icon';
 import { LoadError } from '../../shared/ui/load-error/load-error';
+import { Modal } from '../../shared/ui/modal/modal';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { MonthBucket, ReportPeriod, resolveMonthBuckets } from './report-period';
@@ -37,8 +40,11 @@ interface CategoryTableRow {
   imports: [
     TranslocoDirective,
     MoneyPipe,
+    Button,
     Card,
     EmptyState,
+    Icon,
+    Modal,
     PageHeader,
     ExchangeRateWarning,
     Chart,
@@ -68,6 +74,30 @@ export class Reports {
   protected readonly period = signal<ReportPeriod>('6m');
   protected readonly customFrom = signal('');
   protected readonly customTo = signal('');
+  protected readonly view = signal<'flow' | 'categories' | 'balance'>('flow');
+
+  // The custom range is edited as a draft in a sheet and only lands in
+  // customFrom/customTo (and refetches) on apply.
+  protected readonly rangeOpen = signal(false);
+  protected readonly draftFrom = signal('');
+  protected readonly draftTo = signal('');
+  protected readonly draftInverted = computed(
+    () => !!this.draftFrom() && !!this.draftTo() && this.draftTo() < this.draftFrom(),
+  );
+  protected readonly draftInvalid = computed(
+    () => !this.draftFrom() || !this.draftTo() || this.draftInverted(),
+  );
+  private readonly periodSelect = viewChild<ElementRef<HTMLSelectElement>>('periodSelect');
+
+  constructor() {
+    // Picking "custom" only opens the sheet, so the native select already
+    // shows it; however the sheet closes, put the select back on the period
+    // actually in effect (unchanged unless the range was applied).
+    effect(() => {
+      const select = this.periodSelect()?.nativeElement;
+      if (!this.rangeOpen() && select) select.value = this.period();
+    });
+  }
 
   protected readonly buckets = computed<MonthBucket[]>(() =>
     resolveMonthBuckets(
@@ -317,7 +347,36 @@ export class Reports {
     return { labels: buckets.map((b) => b.label), datasets };
   });
 
+  protected readonly rangeLabel = computed(() => {
+    const buckets = this.buckets();
+    const format = new Intl.DateTimeFormat(this.localeService.getLocale(), {
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    });
+    return `${format.format(buckets[0].start)} – ${format.format(buckets.at(-1)!.start)}`;
+  });
+
   protected onPeriodChange(value: string): void {
+    if (value === 'custom') {
+      this.openRange();
+      return;
+    }
     this.period.set(value as ReportPeriod);
+  }
+
+  protected openRange(): void {
+    const buckets = this.buckets();
+    this.draftFrom.set(buckets[0].key);
+    this.draftTo.set(buckets.at(-1)!.key);
+    this.rangeOpen.set(true);
+  }
+
+  protected applyRange(): void {
+    if (this.draftInvalid()) return;
+    this.customFrom.set(this.draftFrom());
+    this.customTo.set(this.draftTo());
+    this.period.set('custom');
+    this.rangeOpen.set(false);
   }
 }

@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "Vis alle",
+    "charts": {
+      "label": "Diagram"
+    },
     "ratesUnavailable": "Nogle totaler kræver en valutakurs, som ikke er tilgængelig lige nu.",
     "title": "Oversigt",
     "welcome": "Velkommen til LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "Opsparingsprocent"
     },
     "cashFlow": {
+      "tab": "Pengestrøm",
       "title": "Pengestrøm (6 måneder)",
       "income": "Indtægter",
       "expense": "Udgifter"
@@ -409,7 +414,8 @@
       "edit": "Rediger",
       "archive": "Arkivér",
       "unarchive": "Gendan",
-      "delete": "Slet konto"
+      "delete": "Slet konto",
+      "more": "Mere"
     },
     "archive": {
       "title": "Arkivér konto?",
@@ -541,6 +547,7 @@
     "title": "Transaktioner",
     "description": "Indtægter, udgifter og overførsler.",
     "actions": {
+      "more": "Mere",
       "new": "Ny transaktion",
       "edit": "Rediger",
       "delete": "Slet",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"Transaktionshistorik","loading":"Indlæser historik…","empty":"Ingen historik endnu.","loadError":"Transaktionshistorikken kunne ikke indlæses.","operation":{"create":"Oprettet","update":"Opdateret","delete":"Slettet"},"source":{"manual":"Manuel","import":"Import","import_undo":"Fortryd import","recurring":"Gentagelse","loan":"Lån","card":"Kort","investment":"Investering","bulk":"Massehandling"},"field":{"type":"Type","date":"Dato","amount":"Beløb","currency":"Valuta","account_id":"Konto","to_account_id":"Målkonto","category_id":"Kategori","description":"Beskrivelse","notes":"Noter","recurring_rule_id":"Gentagelsesregel","loan_id":"Lån","card_invoice_close_date":"Fakturaperiodens slutdato","installment_group_id":"Afdragsgruppe","installment_number":"Afdragsnummer","installment_count":"Antal afdrag","conversion_amount":"Konverteret beløb","conversion_currency":"Konverteringsvaluta","conversion_fee":"Konverteringsgebyr","conversion_rate":"Konverteringskurs","conversion_source":"Konverteringskilde"}},
     "tabs": {
-      "transactions": "Transaktioner",
       "recurring": "Gentagne"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "Overførsel"
     },
     "filters": {
+      "apply": "Vis resultater",
       "type": "Type",
       "account": "Konto",
       "category": "Kategori",
@@ -574,7 +581,6 @@
       "amountMin": "Mindste beløb",
       "amountMax": "Maksimum",
       "any": "Alle",
-      "back": "Tilbage",
       "dateRange": "Fra {{from}} til {{to}}",
       "amountRange": "Fra {{min}} til {{max}}",
       "removeChip": "Fjern filteret {{filter}}"
@@ -797,15 +803,12 @@
       "delete": "Slet",
       "collapse": "Fold sammen",
       "expand": "Udvid",
-      "dragHandle": "Omarranger"
+      "dragHandle": "Omarranger",
+      "more": "Mere"
     },
     "empty": {
       "title": "Ingen kategorier endnu",
       "description": "Opret grupper og kategorier for at organisere dine transaktioner."
-    },
-    "sections": {
-      "income": "Indtægtskategorier",
-      "expense": "Udgiftskategorier"
     },
     "delete": {
       "title": "Slet kategori?",
@@ -840,9 +843,6 @@
     "eyebrow": "Automatisering",
     "title": "Regler",
     "description": "Kategoriser transaktioner automatisk, når du importerer dem.",
-    "card": {
-      "title": "Kategoriseringsregler"
-    },
     "actions": {
       "export": "Eksportér",
       "import": "Importér",
@@ -850,8 +850,10 @@
       "reapply": "Anvend igen",
       "add": "Tilføj",
       "delete": "Slet",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "more": "Mere"
     },
+    "inactive": "Inaktiv",
     "sort": {
       "label": "Sortér efter",
       "priority": "Prioritet",
@@ -947,6 +949,10 @@
     "list": {
       "title": "Månedlige grænser"
     },
+    "view": {
+      "chart": "Diagram",
+      "values": "Beløb"
+    },
     "planner": {
       "title": "Indkomstbaseret budget",
       "description": "Fordel din forventede indkomst på kategorier.",
@@ -1020,7 +1026,8 @@
       "unarchive": "Gendan mål",
       "deposit": "Tilføj penge",
       "withdraw": "Hæv",
-      "interest": "Tilføj renter"
+      "interest": "Tilføj renter",
+      "more": "Mere"
     },
     "empty": {
       "title": "Ingen mål endnu",
@@ -1098,6 +1105,7 @@
       "archive": "Arkivér lån",
       "unarchive": "Fjern lån fra arkiv",
       "recordPayment": "Registrér betaling",
+      "more": "Mere",
       "delete": "Slet lån"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "Redigér investeringsporteføljen",
       "archiveWallet": "Arkivér investeringsporteføljen",
       "unarchiveWallet": "Fjern investeringsporteføljen fra arkivet",
-      "view": "Vis",
+      "more": "Mere",
       "newTransaction": "Registrer transaktion",
       "editTransaction": "Redigér transaktion",
       "deleteTransaction": "Slet transaktion",
@@ -1239,6 +1247,17 @@
       "marketValue": "Markedsværdi",
       "unrealizedGain": "Urealiseret gevinst",
       "multiCurrencyHint": "Porteføljer i andre valutaer er ikke medtaget i disse totaler."
+    },
+    "help": {
+      "label": "Hvad er {{label}}?",
+      "marketValue": "Hvad dine beholdninger er værd i dag: hvert aktivs antal ganget med den seneste pris. Hvis et aktiv ikke har en pris, vises totalen som —.",
+      "bookValue": "Hvad du betalte for de beholdninger, du stadig har: hvert aktivs antal ganget med den gennemsnitlige kostpris.",
+      "unrealizedGain": "Markedsværdi minus bogført værdi: hvad du ville tjene (eller tabe), hvis du solgte alt i dag. Det bliver først en reel gevinst, når du sælger."
+    },
+    "view": {
+      "positions": "Beholdninger",
+      "ledger": "Transaktioner",
+      "assets": "Aktiver"
     },
     "empty": {
       "title": "Ingen investeringsporteføljer endnu",
@@ -1411,6 +1430,17 @@
       "expense": "Udgifter",
       "netFlow": "Netto pengestrøm",
       "categories": "Kategorier"
+    },
+    "view": {
+      "flow": "Pengestrøm",
+      "categories": "Kategorier",
+      "balance": "Saldi"
+    },
+    "range": {
+      "from": "Fra",
+      "to": "Til",
+      "apply": "Vis resultater",
+      "invalid": "Måneden i »Til« skal være den samme som eller ligge efter måneden i »Fra«."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "Indbetaling",
       "outflow": "Udbetaling"
+    },
+    "filter": {
+      "all": "Alle",
+      "empty": "Ingen poster med denne status."
+    },
+    "today": "I dag",
+    "help": {
+      "label": "Hvad er {{label}}?",
+      "projectedCashImpact": "Hvad der stadig kommer ind minus hvad der stadig går ud de næste 30 dage: gentagelser, kortregninger og låneafdrag, der endnu ikke er bogført. Positivt betyder overskud; negativt betyder underskud.",
+      "realizedCashImpact": "Indbetalinger minus udbetalinger for poster i dette 30-dages vindue, der allerede er bogført eller betalt.",
+      "projectedOutflow": "Hvor meget der stadig går ud de næste 30 dage: tilbagevendende udgifter, åbne kortregninger og forfaldne låneafdrag.",
+      "realizedOutflow": "Hvor meget der allerede er gået ud i dette 30-dages vindue for poster, der allerede er betalt."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "Opdater nu"
+      "refresh": "Opdater nu",
+      "more": "Mere"
     },
     "refresh": {
       "updated": "{{count}} kurser opdateret.",
       "upToDate": "Kurserne er allerede opdaterede."
+    },
+    "help": {
+      "label": "Hvad er {{label}}?",
+      "feesPaid": "Summen af omregningsgebyrer opkrævet på dine transaktioner i fremmed valuta, omregnet til din visningsvaluta."
+    },
+    "view": {
+      "pending": "Udestående",
+      "live": "Live",
+      "manual": "Manuelle"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "Nøglen kunne ikke gemmes. Prøv igen."
       }
     },
+    "view": {
+      "general": "Generelt",
+      "backup": "Sikkerhedskopi",
+      "investments": "Investeringer",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI-agenter",
       "description": "AI-assistenter til dine finansielle data med flere udbydere og værktøjer via MCP. De er deaktiveret som standard – kan konfigureres i Docker Compose (AGENTS_ENABLED).",
       "disabled": "Deaktiveret",
       "enabled": "Aktiveret",
+      "memberReady": "Aktiveret og klar til brug.",
+      "memberUnavailable": "Deaktiveret. Kontakt din admin for at anmode om adgang til AI.",
       "manage": "Administrer"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "Afstem", "start": "Start afstemning", "complete": "Gennemfør", "reopen": "Genåbn", "delete": "Slet" },
     "status": { "open": "Åben", "completed": "Gennemført" },
     "empty": { "title": "Ingen afstemning valgt", "description": "Start en afstemning ovenfor, eller vælg en tidligere." },
+    "filter": {
+      "all": "Alle",
+      "pending": "Udestående",
+      "empty": "Ingen poster med denne status."
+    },
     "loadError": "Afstemninger kunne ikke indlæses. Prøv igen.",
     "confirmDelete": { "title": "Slet afstemning?", "message": "Afstemningen og dens markeringer slettes. Vil du fortsætte?" }
   },
   "profile": {
     "title": "Profil",
     "description": "Administrer din identitet og kontosikkerhed.",
+    "view": { "account": "Konto", "security": "Sikkerhed" },
     "identity": {
       "title": "Personlige oplysninger",
       "description": "Opdater det navn og den e-mailadresse, der bruges til din konto.",

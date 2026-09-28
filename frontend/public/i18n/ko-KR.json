@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "전체 보기",
+    "charts": {
+      "label": "차트"
+    },
     "ratesUnavailable": "일부 합계에는 현재 사용할 수 없는 환율이 필요합니다.",
     "title": "대시보드",
     "welcome": "LealFinance에 오신 것을 환영합니다",
@@ -359,6 +363,7 @@
       "savingsRate": "저축률"
     },
     "cashFlow": {
+      "tab": "현금 흐름",
       "title": "현금 흐름(최근 6개월)",
       "income": "수입",
       "expense": "지출"
@@ -409,7 +414,8 @@
       "edit": "수정",
       "archive": "보관",
       "unarchive": "보관 해제",
-      "delete": "계좌 삭제"
+      "delete": "계좌 삭제",
+      "more": "더보기"
     },
     "archive": {
       "title": "계좌를 보관할까요?",
@@ -541,6 +547,7 @@
     "title": "거래내역",
     "description": "수입, 지출 및 이체를 관리하세요.",
     "actions": {
+      "more": "더보기",
       "new": "거래 추가",
       "edit": "수정",
       "delete": "삭제",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"거래 기록","loading":"기록을 불러오는 중…","empty":"아직 기록이 없습니다.","loadError":"거래 기록을 불러올 수 없습니다.","operation":{"create":"생성됨","update":"수정됨","delete":"삭제됨"},"source":{"manual":"수동","import":"가져오기","import_undo":"가져오기 취소","recurring":"반복","loan":"대출","card":"카드","investment":"투자","bulk":"일괄"},"field":{"type":"유형","date":"날짜","amount":"금액","currency":"통화","account_id":"계좌","to_account_id":"대상 계좌","category_id":"카테고리","description":"설명","notes":"메모","recurring_rule_id":"반복 규칙","loan_id":"대출","card_invoice_close_date":"청구서 마감일","installment_group_id":"할부 그룹","installment_number":"할부 번호","installment_count":"할부 횟수","conversion_amount":"환산 금액","conversion_currency":"환산 통화","conversion_fee":"환산 수수료","conversion_rate":"환율","conversion_source":"환산 출처"}},
     "tabs": {
-      "transactions": "거래내역",
       "recurring": "반복 거래"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "이체"
     },
     "filters": {
+      "apply": "결과 보기",
       "type": "유형",
       "account": "계좌",
       "category": "카테고리",
@@ -574,7 +581,6 @@
       "amountMin": "최소",
       "amountMax": "최대",
       "any": "모두",
-      "back": "뒤로",
       "dateRange": "{{from}}부터 {{to}}까지",
       "amountRange": "{{min}}부터 {{max}}까지",
       "removeChip": "{{filter}} 필터 제거"
@@ -797,15 +803,12 @@
       "delete": "삭제",
       "collapse": "접기",
       "expand": "펼치기",
-      "dragHandle": "순서 변경"
+      "dragHandle": "순서 변경",
+      "more": "더보기"
     },
     "empty": {
       "title": "아직 카테고리가 없습니다",
       "description": "그룹과 카테고리를 만들어 거래를 정리하세요."
-    },
-    "sections": {
-      "income": "수입 카테고리",
-      "expense": "지출 카테고리"
     },
     "delete": {
       "title": "카테고리를 삭제할까요?",
@@ -840,9 +843,6 @@
     "eyebrow": "자동화",
     "title": "규칙",
     "description": "가져오는 동안 거래를 자동으로 분류합니다.",
-    "card": {
-      "title": "분류 규칙"
-    },
     "actions": {
       "export": "내보내기",
       "import": "가져오기",
@@ -850,8 +850,10 @@
       "reapply": "다시 적용",
       "add": "추가",
       "delete": "삭제",
-      "edit": "편집"
+      "edit": "편집",
+      "more": "더보기"
     },
+    "inactive": "비활성",
     "sort": {
       "label": "정렬 기준",
       "priority": "우선순위",
@@ -947,6 +949,10 @@
     "list": {
       "title": "월별 한도"
     },
+    "view": {
+      "chart": "차트",
+      "values": "금액"
+    },
     "planner": {
       "title": "수입 기반 예산",
       "description": "예상 수입을 카테고리별로 배분하세요.",
@@ -1020,7 +1026,8 @@
       "unarchive": "목표 보관 해제",
       "deposit": "금액 추가",
       "withdraw": "금액 인출",
-      "interest": "이자 추가"
+      "interest": "이자 추가",
+      "more": "더보기"
     },
     "empty": {
       "title": "아직 목표가 없습니다",
@@ -1098,6 +1105,7 @@
       "archive": "대출 보관",
       "unarchive": "대출 보관 해제",
       "recordPayment": "상환 기록",
+      "more": "더보기",
       "delete": "대출 삭제"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "투자 포트폴리오 수정",
       "archiveWallet": "투자 포트폴리오 보관",
       "unarchiveWallet": "투자 포트폴리오 보관 해제",
-      "view": "보기",
+      "more": "더보기",
       "newTransaction": "거래 기록",
       "editTransaction": "거래 수정",
       "deleteTransaction": "거래 삭제",
@@ -1239,6 +1247,17 @@
       "marketValue": "시장가",
       "unrealizedGain": "미실현 수익",
       "multiCurrencyHint": "다른 통화의 포트폴리오는 이 합계에 포함되지 않습니다."
+    },
+    "help": {
+      "label": "{{label}}은(는) 무엇인가요?",
+      "marketValue": "현재 보유 포지션의 가치: 각 자산의 수량에 최신 가격을 곱한 값입니다. 가격 정보가 없는 자산이 있으면 합계는 —로 표시됩니다.",
+      "bookValue": "현재 보유 중인 포지션에 지불한 금액: 각 자산의 수량에 평균 매입가를 곱한 값입니다.",
+      "unrealizedGain": "시장가에서 장부가를 뺀 값: 오늘 전부 매도할 경우 얻게 될(또는 잃게 될) 금액입니다. 실제로 매도해야 비로소 확정 수익이 됩니다."
+    },
+    "view": {
+      "positions": "포지션",
+      "ledger": "거래내역",
+      "assets": "자산"
     },
     "empty": {
       "title": "아직 투자 포트폴리오가 없습니다",
@@ -1411,6 +1430,17 @@
       "expense": "지출",
       "netFlow": "순현금 흐름",
       "categories": "카테고리"
+    },
+    "view": {
+      "flow": "흐름",
+      "categories": "카테고리",
+      "balance": "잔액"
+    },
+    "range": {
+      "from": "시작일",
+      "to": "종료일",
+      "apply": "결과 보기",
+      "invalid": "종료 월은 시작 월과 같거나 이후여야 합니다."
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "유입",
       "outflow": "유출"
+    },
+    "filter": {
+      "all": "전체",
+      "empty": "이 상태의 항목이 없습니다."
+    },
+    "today": "오늘",
+    "help": {
+      "label": "{{label}}은(는) 무엇인가요?",
+      "projectedCashImpact": "앞으로 30일 동안 들어올 금액에서 나갈 금액을 뺀 것입니다: 아직 등록되지 않은 반복 거래, 카드 청구서, 대출 할부금이 포함됩니다. 양수면 여유 자금이 있다는 뜻이고, 음수면 부족하다는 뜻입니다.",
+      "realizedCashImpact": "이번 30일 기간 동안 이미 등록되었거나 결제된 항목의 유입에서 유출을 뺀 금액입니다.",
+      "projectedOutflow": "앞으로 30일 동안 아직 나갈 금액입니다: 반복 지출, 미결제 카드 청구서, 만기가 도래하는 대출 할부금이 포함됩니다.",
+      "realizedOutflow": "이번 30일 기간 동안 이미 결제된 항목에서 이미 나간 금액입니다."
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "지금 새로고침"
+      "refresh": "지금 새로고침",
+      "more": "더보기"
     },
     "refresh": {
       "updated": "{{count}}개의 환율을 업데이트했습니다.",
       "upToDate": "환율이 이미 최신 상태입니다."
+    },
+    "help": {
+      "label": "{{label}}은(는) 무엇인가요?",
+      "feesPaid": "외화 거래에 부과된 환산 수수료의 합계로, 표시 통화로 환산한 금액입니다."
+    },
+    "view": {
+      "pending": "대기 중",
+      "live": "실시간",
+      "manual": "수동"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "키를 저장하지 못했습니다. 다시 시도하세요."
       }
     },
+    "view": {
+      "general": "일반",
+      "backup": "백업",
+      "investments": "투자",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI 에이전트",
       "description": "MCP를 통해 여러 제공업체와 도구로 금융 데이터를 다루는 AI 도우미입니다. 기본적으로 비활성화되어 있으며 Docker Compose에서 설정할 수 있습니다(AGENTS_ENABLED).",
       "disabled": "비활성화됨",
       "enabled": "활성화됨",
+      "memberReady": "활성화되어 바로 사용할 수 있습니다.",
+      "memberUnavailable": "비활성화되어 있습니다. AI 액세스를 요청하려면 관리자에게 문의하세요.",
       "manage": "관리"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "대사", "start": "대사 시작", "complete": "완료", "reopen": "다시 열기", "delete": "삭제" },
     "status": { "open": "진행 중", "completed": "완료됨" },
     "empty": { "title": "선택한 대사가 없습니다", "description": "위에서 대사를 시작하거나 이전 대사를 선택하세요." },
+    "filter": {
+      "all": "전체",
+      "pending": "대사 대기",
+      "empty": "이 상태의 항목이 없습니다."
+    },
     "loadError": "대사를 불러오지 못했습니다. 다시 시도하세요.",
     "confirmDelete": { "title": "대사를 삭제할까요?", "message": "대사와 대사 표시가 삭제됩니다. 계속할까요?" }
   },
   "profile": {
     "title": "프로필",
     "description": "신원 및 계정 보안을 관리하세요.",
+    "view": { "account": "계정", "security": "보안" },
     "identity": {
       "title": "개인 정보",
       "description": "계정에 사용되는 이름과 이메일 주소를 업데이트하세요.",

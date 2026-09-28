@@ -5,6 +5,7 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
 
@@ -19,7 +20,7 @@ import { Icon } from '../../shared/ui/icon/icon';
  */
 @Component({
   selector: 'app-investment-assets-card',
-  imports: [TranslocoDirective, MoneyPipe, Badge, Button, Card, EmptyState, Icon],
+  imports: [TranslocoDirective, MoneyPipe, Badge, Button, Card, Dropdown, EmptyState, Icon],
   templateUrl: './investment-assets-card.html',
 })
 export class InvestmentAssetsCard {

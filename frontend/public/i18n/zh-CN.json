@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "查看全部",
+    "charts": {
+      "label": "图表"
+    },
     "ratesUnavailable": "部分总额需要使用当前不可用的汇率。",
     "title": "仪表盘",
     "welcome": "欢迎使用 LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "储蓄率"
     },
     "cashFlow": {
+      "tab": "现金流",
       "title": "现金流（近 6 个月）",
       "income": "收入",
       "expense": "支出"
@@ -409,7 +414,8 @@
       "edit": "编辑",
       "archive": "归档",
       "unarchive": "取消归档",
-      "delete": "删除账户"
+      "delete": "删除账户",
+      "more": "更多"
     },
     "archive": {
       "title": "确认归档账户？",
@@ -541,6 +547,7 @@
     "title": "交易",
     "description": "收入、支出和转账。",
     "actions": {
+      "more": "更多",
       "new": "新建交易",
       "edit": "编辑",
       "delete": "删除",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"交易历史","loading":"正在加载历史…","empty":"暂无历史记录。","loadError":"无法加载交易历史。","operation":{"create":"已创建","update":"已更新","delete":"已删除"},"source":{"manual":"手动","import":"导入","import_undo":"撤销导入","recurring":"重复","loan":"贷款","card":"卡片","investment":"投资","bulk":"批量"},"field":{"type":"类型","date":"日期","amount":"金额","currency":"货币","account_id":"账户","to_account_id":"目标账户","category_id":"分类","description":"描述","notes":"备注","recurring_rule_id":"重复规则","loan_id":"贷款","card_invoice_close_date":"账单结算日","installment_group_id":"分期组","installment_number":"分期编号","installment_count":"分期数","conversion_amount":"换算金额","conversion_currency":"换算货币","conversion_fee":"换算费用","conversion_rate":"换算汇率","conversion_source":"换算来源"}},
     "tabs": {
-      "transactions": "交易",
       "recurring": "周期性"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "转账"
     },
     "filters": {
+      "apply": "显示结果",
       "type": "类型",
       "account": "账户",
       "category": "分类",
@@ -574,7 +581,6 @@
       "amountMin": "最小值",
       "amountMax": "最大值",
       "any": "任意",
-      "back": "返回",
       "dateRange": "{{from}} 至 {{to}}",
       "amountRange": "{{min}} 至 {{max}}",
       "removeChip": "移除 {{filter}} 筛选条件"
@@ -797,15 +803,12 @@
       "delete": "删除",
       "collapse": "收起",
       "expand": "展开",
-      "dragHandle": "调整顺序"
+      "dragHandle": "调整顺序",
+      "more": "更多"
     },
     "empty": {
       "title": "暂无分类",
       "description": "创建分组和分类来整理交易。"
-    },
-    "sections": {
-      "income": "收入分类",
-      "expense": "支出分类"
     },
     "delete": {
       "title": "确认删除分类？",
@@ -840,9 +843,6 @@
     "eyebrow": "自动化",
     "title": "规则",
     "description": "导入交易时自动进行分类。",
-    "card": {
-      "title": "分类规则"
-    },
     "actions": {
       "export": "导出",
       "import": "导入",
@@ -850,8 +850,10 @@
       "reapply": "重新应用",
       "add": "添加",
       "delete": "删除",
-      "edit": "编辑"
+      "edit": "编辑",
+      "more": "更多"
     },
+    "inactive": "已停用",
     "sort": {
       "label": "排序方式",
       "priority": "优先级",
@@ -947,6 +949,10 @@
     "list": {
       "title": "每月限额"
     },
+    "view": {
+      "chart": "图表",
+      "values": "金额"
+    },
     "planner": {
       "title": "基于收入的预算",
       "description": "将预计收入分配到各个分类。",
@@ -1020,7 +1026,8 @@
       "unarchive": "取消归档目标",
       "deposit": "存入资金",
       "withdraw": "提取资金",
-      "interest": "添加利息"
+      "interest": "添加利息",
+      "more": "更多"
     },
     "empty": {
       "title": "暂无目标",
@@ -1098,6 +1105,7 @@
       "archive": "归档贷款",
       "unarchive": "取消归档贷款",
       "recordPayment": "记录还款",
+      "more": "更多",
       "delete": "删除贷款"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "编辑投资组合",
       "archiveWallet": "归档投资组合",
       "unarchiveWallet": "取消归档投资组合",
-      "view": "查看",
+      "more": "更多",
       "newTransaction": "记录交易",
       "editTransaction": "编辑交易",
       "deleteTransaction": "删除交易",
@@ -1239,6 +1247,17 @@
       "marketValue": "市场价值",
       "unrealizedGain": "未实现收益",
       "multiCurrencyHint": "其他货币的投资组合不包含在这些合计中。"
+    },
+    "help": {
+      "label": "什么是{{label}}？",
+      "marketValue": "您的持仓当前的价值：每项资产的数量乘以其最新价格。如果某项资产没有价格，合计将显示为 —。",
+      "bookValue": "您为目前持有的仓位所支付的金额：每项资产的数量乘以其平均买入成本。",
+      "unrealizedGain": "市场价值减去账面价值：如果您今天卖出全部持仓，将获得（或损失）的金额。只有在实际卖出时才会变成真正的收益。"
+    },
+    "view": {
+      "positions": "持仓",
+      "ledger": "交易",
+      "assets": "资产"
     },
     "empty": {
       "title": "暂无投资组合",
@@ -1411,6 +1430,17 @@
       "expense": "支出",
       "netFlow": "净现金流",
       "categories": "分类"
+    },
+    "view": {
+      "flow": "现金流",
+      "categories": "分类",
+      "balance": "余额"
+    },
+    "range": {
+      "from": "起始日期",
+      "to": "结束日期",
+      "apply": "显示结果",
+      "invalid": "结束月份必须与开始月份相同或晚于开始月份。"
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "流入",
       "outflow": "流出"
+    },
+    "filter": {
+      "all": "全部",
+      "empty": "没有此状态的项目。"
+    },
+    "today": "今天",
+    "help": {
+      "label": "什么是{{label}}？",
+      "projectedCashImpact": "未来30天内预计流入减去预计流出：定期交易、信用卡账单和尚未入账的贷款分期。正值表示有结余；负值表示有缺口。",
+      "realizedCashImpact": "本30天窗口期内已入账或已支付项目的流入减去流出。",
+      "projectedOutflow": "未来30天内预计流出的金额：定期支出、未结清的信用卡账单和到期的贷款分期。",
+      "realizedOutflow": "本30天窗口期内已支付项目的实际流出金额。"
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "立即刷新"
+      "refresh": "立即刷新",
+      "more": "更多"
     },
     "refresh": {
       "updated": "已更新 {{count}} 个汇率。",
       "upToDate": "汇率已是最新。"
+    },
+    "help": {
+      "label": "什么是{{label}}？",
+      "feesPaid": "你的外币交易所收取的换算费用总和，已换算为显示货币。"
+    },
+    "view": {
+      "pending": "待处理",
+      "live": "实时",
+      "manual": "手动"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "无法保存此密钥，请重试。"
       }
     },
+    "view": {
+      "general": "通用",
+      "backup": "备份",
+      "investments": "投资",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI 代理",
       "description": "使用 MCP 通过多个服务商和工具处理你的财务数据的 AI 助手。默认禁用——可在 Docker Compose 中配置（AGENTS_ENABLED）。",
       "disabled": "已禁用",
       "enabled": "已启用",
+      "memberReady": "已启用，可以使用。",
+      "memberUnavailable": "已禁用。请联系管理员以申请 AI 使用权限。",
       "manage": "管理"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "对账", "start": "开始对账", "complete": "完成", "reopen": "重新打开", "delete": "删除" },
     "status": { "open": "进行中", "completed": "已完成" },
     "empty": { "title": "未选择对账", "description": "在上方开始对账，或选择之前的对账。" },
+    "filter": {
+      "all": "全部",
+      "pending": "待对账",
+      "empty": "没有此状态的项目。"
+    },
     "loadError": "无法加载对账记录，请重试。",
     "confirmDelete": { "title": "删除对账？", "message": "对账记录及其标记将被删除。是否继续？" }
   },
   "profile": {
     "title": "个人资料",
     "description": "管理您的身份和账户安全。",
+    "view": { "account": "账户", "security": "安全性" },
     "identity": {
       "title": "个人信息",
       "description": "更新账户使用的姓名和电子邮件地址。",

@@ -7,3 +7,12 @@
   height: 100%;
   width: 100%;
 }
+
+// Chart.js pins the canvas to an inline px width. Without this, that width
+// becomes the min-content of any auto-sized ancestor (e.g. a grid with no
+// explicit columns), so after shrinking the window the container can't get
+// narrower than the old canvas and Chart.js never sees a resize. A
+// percentage max-width drops the canvas's min-content contribution to zero.
+canvas {
+  max-width: 100%;
+}

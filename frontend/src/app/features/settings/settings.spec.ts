@@ -86,6 +86,26 @@ describe('Settings', () => {
 
   afterEach(() => vi.restoreAllMocks());
 
+  type SettingsFixture = ReturnType<typeof TestBed.createComponent<Settings>>;
+  const tabButtons = (fixture: SettingsFixture): HTMLButtonElement[] =>
+    Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
+        '[role="group"] > button[aria-pressed]',
+      ),
+    );
+  const tabLabels = (fixture: SettingsFixture): string[] =>
+    tabButtons(fixture).map((button) => button.textContent?.trim() ?? '');
+  const clickTab = (fixture: SettingsFixture, label: string): void => {
+    tabButtons(fixture)
+      .find((button) => button.textContent?.trim() === label)!
+      .click();
+    fixture.detectChanges();
+  };
+  const openTab = (fixture: SettingsFixture, key: string): void => {
+    fixture.componentInstance['view'].set(key as never);
+    fixture.detectChanges();
+  };
+
   it('shows provider management to enabled admins', () => {
     sessionUser.set({
       id: 'admin-id',
@@ -106,6 +126,7 @@ describe('Settings', () => {
 
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
+    openTab(fixture, 'ai');
 
     expect(fixture.nativeElement.querySelector('a[href="/admin/providers"]')).not.toBeNull();
   });
@@ -374,6 +395,7 @@ describe('Settings', () => {
 
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
+    openTab(fixture, 'ai');
 
     expect(fixture.componentInstance['aiInstructions']()).toBe('Sempre em BRL.');
     const textarea = fixture.nativeElement.querySelector(
@@ -388,6 +410,7 @@ describe('Settings', () => {
 
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
+    openTab(fixture, 'ai');
 
     expect(fixture.componentInstance['aiInstructionsLoadError']()).toBe(true);
     const saveButton = fixture.nativeElement
@@ -412,7 +435,60 @@ describe('Settings', () => {
     fixture.detectChanges();
 
     expect(agentChatRepo.getInstructions).not.toHaveBeenCalled();
-    expect(fixture.nativeElement.querySelector('#settings-ai-instructions')).toBeNull();
+    openTab(fixture, 'ai');
+    const el = fixture.nativeElement as HTMLElement;
+    // Members get a plain status instead of the deployment details, and no editors.
+    expect(el.textContent).toContain('Entre em contato com o administrador');
+    expect(el.textContent).not.toContain('AGENTS_ENABLED');
+    expect(el.querySelector('#settings-ai-instructions')).toBeNull();
+    expect(el.querySelector('app-memories-section')).toBeNull();
+  });
+
+  it('tells a member with chat access that the assistant is ready', () => {
+    sessionUser.set({
+      id: 'member-id',
+      email: 'member@example.com',
+      displayName: 'Member',
+      role: 'member',
+      isActive: true,
+      aiChatEnabled: true,
+      createdAt: '',
+    });
+    TestBed.inject(MetadataService).settings.set({
+      defaultCurrency: 'BRL',
+      defaultLocale: 'pt-BR',
+      agentsEnabled: true,
+      appVersion: 'dev',
+      emailEnabled: false,
+    });
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+    openTab(fixture, 'ai');
+
+    expect(fixture.nativeElement.textContent).toContain('Ativo e pronto para uso');
+    expect(fixture.nativeElement.querySelector('#settings-ai-instructions')).not.toBeNull();
+  });
+
+  it('switches between the general, backup, investments and AI tabs', () => {
+    asAdmin();
+    const fixture = TestBed.createComponent(Settings);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(tabLabels(fixture)).toHaveLength(4);
+    expect(el.querySelector('#settings-language')).not.toBeNull();
+    expect(el.querySelector('#settings-backup-export')).toBeNull();
+
+    clickTab(fixture, 'Backup');
+    expect(el.querySelector('#settings-backup-export')).not.toBeNull();
+    expect(el.querySelector('#settings-language')).toBeNull();
+
+    clickTab(fixture, 'Investimentos');
+    expect(el.querySelector('#market-data-brapi')).not.toBeNull();
+
+    clickTab(fixture, 'IA');
+    expect(el.querySelector('#settings-ai-instructions')).not.toBeNull();
+    expect(el.querySelector('app-memories-section')).not.toBeNull();
   });
 
   it('saves accepted AI instructions', () => {
@@ -442,6 +518,7 @@ describe('Settings', () => {
     );
     const fixture = TestBed.createComponent(Settings);
     fixture.detectChanges();
+    openTab(fixture, 'ai');
 
     fixture.componentInstance['setAiInstructions']('Escreva um poema.');
     fixture.componentInstance['saveAiInstructions']();

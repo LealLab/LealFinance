@@ -344,6 +344,10 @@
     }
   },
   "dashboard": {
+    "viewAll": "查看全部",
+    "charts": {
+      "label": "圖表"
+    },
     "ratesUnavailable": "部分總額需要使用目前無法取得的匯率。",
     "title": "儀表板",
     "welcome": "歡迎使用 LealFinance",
@@ -359,6 +363,7 @@
       "savingsRate": "儲蓄率"
     },
     "cashFlow": {
+      "tab": "現金流",
       "title": "現金流（6 個月）",
       "income": "收入",
       "expense": "支出"
@@ -409,7 +414,8 @@
       "edit": "編輯",
       "archive": "封存",
       "unarchive": "取消封存",
-      "delete": "刪除帳戶"
+      "delete": "刪除帳戶",
+      "more": "更多"
     },
     "archive": {
       "title": "要封存帳戶嗎？",
@@ -541,6 +547,7 @@
     "title": "交易",
     "description": "收入、支出與轉帳。",
     "actions": {
+      "more": "更多",
       "new": "新增交易",
       "edit": "編輯",
       "delete": "刪除",
@@ -550,7 +557,6 @@
     },
     "history": {"title":"交易歷史","loading":"正在載入歷史…","empty":"尚無歷史記錄。","loadError":"無法載入交易歷史。","operation":{"create":"已建立","update":"已更新","delete":"已刪除"},"source":{"manual":"手動","import":"匯入","import_undo":"復原匯入","recurring":"週期性","loan":"貸款","card":"卡片","investment":"投資","bulk":"批次"},"field":{"type":"類型","date":"日期","amount":"金額","currency":"貨幣","account_id":"帳戶","to_account_id":"目標帳戶","category_id":"類別","description":"描述","notes":"備註","recurring_rule_id":"週期性規則","loan_id":"貸款","card_invoice_close_date":"帳單結算日","installment_group_id":"分期群組","installment_number":"分期編號","installment_count":"分期數","conversion_amount":"換算金額","conversion_currency":"換算貨幣","conversion_fee":"換算費用","conversion_rate":"換算匯率","conversion_source":"換算來源"}},
     "tabs": {
-      "transactions": "交易",
       "recurring": "週期性交易"
     },
     "type": {
@@ -559,6 +565,7 @@
       "transfer": "轉帳"
     },
     "filters": {
+      "apply": "顯示結果",
       "type": "類型",
       "account": "帳戶",
       "category": "分類",
@@ -574,7 +581,6 @@
       "amountMin": "最低",
       "amountMax": "最高",
       "any": "任何",
-      "back": "返回",
       "dateRange": "{{from}} 至 {{to}}",
       "amountRange": "{{min}} 至 {{max}}",
       "removeChip": "移除 {{filter}} 篩選條件"
@@ -797,15 +803,12 @@
       "delete": "刪除",
       "collapse": "收合",
       "expand": "展開",
-      "dragHandle": "重新排序"
+      "dragHandle": "重新排序",
+      "more": "更多"
     },
     "empty": {
       "title": "尚無分類",
       "description": "建立群組和分類來整理交易。"
-    },
-    "sections": {
-      "income": "收入分類",
-      "expense": "支出分類"
     },
     "delete": {
       "title": "要刪除分類嗎？",
@@ -840,9 +843,6 @@
     "eyebrow": "自動化",
     "title": "規則",
     "description": "匯入交易時自動分類。",
-    "card": {
-      "title": "分類規則"
-    },
     "actions": {
       "export": "匯出",
       "import": "匯入",
@@ -850,8 +850,10 @@
       "reapply": "重新套用",
       "add": "新增",
       "delete": "刪除",
-      "edit": "編輯"
+      "edit": "編輯",
+      "more": "更多"
     },
+    "inactive": "停用",
     "sort": {
       "label": "排序依據",
       "priority": "優先順序",
@@ -947,6 +949,10 @@
     "list": {
       "title": "每月上限"
     },
+    "view": {
+      "chart": "圖表",
+      "values": "金額"
+    },
     "planner": {
       "title": "依收入規劃預算",
       "description": "將預期收入分配至各個分類。",
@@ -1020,7 +1026,8 @@
       "unarchive": "取消封存目標",
       "deposit": "存入金額",
       "withdraw": "提領",
-      "interest": "新增利息"
+      "interest": "新增利息",
+      "more": "更多"
     },
     "empty": {
       "title": "尚無目標",
@@ -1098,6 +1105,7 @@
       "archive": "封存貸款",
       "unarchive": "取消封存貸款",
       "recordPayment": "記錄還款",
+      "more": "更多",
       "delete": "刪除貸款"
     },
     "empty": {
@@ -1223,7 +1231,7 @@
       "editWallet": "編輯投資組合",
       "archiveWallet": "封存投資組合",
       "unarchiveWallet": "取消封存投資組合",
-      "view": "檢視",
+      "more": "更多",
       "newTransaction": "記錄交易",
       "editTransaction": "編輯交易",
       "deleteTransaction": "刪除交易",
@@ -1239,6 +1247,17 @@
       "marketValue": "市值",
       "unrealizedGain": "未實現收益",
       "multiCurrencyHint": "其他貨幣的投資組合不包含在這些總計中。"
+    },
+    "help": {
+      "label": "什麼是{{label}}？",
+      "marketValue": "您的持倉目前的價值：每項資產的數量乘以最新價格。若某項資產沒有價格，總計會顯示為 —。",
+      "bookValue": "您為目前持有的部位所支付的金額：每項資產的數量乘以平均買入成本。",
+      "unrealizedGain": "市值減去帳面價值：如果您今天賣出全部持倉，將獲得（或損失）的金額。只有在實際賣出時才會成為真正的收益。"
+    },
+    "view": {
+      "positions": "持倉",
+      "ledger": "交易",
+      "assets": "資產"
     },
     "empty": {
       "title": "尚無投資組合",
@@ -1411,6 +1430,17 @@
       "expense": "支出",
       "netFlow": "淨現金流",
       "categories": "分類"
+    },
+    "view": {
+      "flow": "現金流",
+      "categories": "分類",
+      "balance": "餘額"
+    },
+    "range": {
+      "from": "開始日期",
+      "to": "結束日期",
+      "apply": "顯示結果",
+      "invalid": "結束月份必須與開始月份相同或晚於開始月份。"
     }
   },
   "agenda": {
@@ -1447,6 +1477,18 @@
     "direction": {
       "inflow": "流入",
       "outflow": "流出"
+    },
+    "filter": {
+      "all": "全部",
+      "empty": "沒有此狀態的項目。"
+    },
+    "today": "今天",
+    "help": {
+      "label": "什麼是{{label}}？",
+      "projectedCashImpact": "未來30天內預期流入減去預期流出：定期交易、信用卡帳單和尚未入帳的貸款分期。正值表示有結餘；負值表示有缺口。",
+      "realizedCashImpact": "本30天窗口期內已入帳或已支付項目的流入減去流出。",
+      "projectedOutflow": "未來30天內預期流出的金額：定期支出、未結清的信用卡帳單和到期的貸款分期。",
+      "realizedOutflow": "本30天窗口期內已支付項目的實際流出金額。"
     }
   },
   "exchange": {
@@ -1522,11 +1564,21 @@
       }
     },
     "actions": {
-      "refresh": "立即重新整理"
+      "refresh": "立即重新整理",
+      "more": "更多"
     },
     "refresh": {
       "updated": "已更新 {{count}} 個匯率。",
       "upToDate": "匯率已是最新。"
+    },
+    "help": {
+      "label": "什麼是{{label}}？",
+      "feesPaid": "你的外幣交易所收取的換算手續費總和，已換算為顯示貨幣。"
+    },
+    "view": {
+      "pending": "待處理",
+      "live": "即時",
+      "manual": "手動"
     }
   },
   "settings": {
@@ -1658,11 +1710,19 @@
         "saveError": "無法儲存此金鑰，請再試一次。"
       }
     },
+    "view": {
+      "general": "通用",
+      "backup": "備份",
+      "investments": "投資",
+      "ai": "AI"
+    },
     "agents": {
       "title": "AI 代理程式",
       "description": "透過 MCP 使用多個提供者與工具，操作你的財務資料的 AI 助手。預設停用，可在 Docker Compose（AGENTS_ENABLED）中設定。",
       "disabled": "已停用",
       "enabled": "已啟用",
+      "memberReady": "已啟用，可以使用。",
+      "memberUnavailable": "已停用。請聯絡管理員以申請 AI 使用權限。",
       "manage": "管理"
     },
     "twoFactor": {
@@ -1915,12 +1975,18 @@
     "actions": { "reconcile": "對帳", "start": "開始對帳", "complete": "完成", "reopen": "重新開啟", "delete": "刪除" },
     "status": { "open": "進行中", "completed": "已完成" },
     "empty": { "title": "未選擇對帳", "description": "在上方開始對帳，或選擇之前的對帳。" },
+    "filter": {
+      "all": "全部",
+      "pending": "待對帳",
+      "empty": "沒有此狀態的項目。"
+    },
     "loadError": "無法載入對帳記錄，請再試一次。",
     "confirmDelete": { "title": "刪除對帳？", "message": "對帳記錄及其標記將被刪除。是否繼續？" }
   },
   "profile": {
     "title": "個人資料",
     "description": "管理您的身分與帳戶安全性。",
+    "view": { "account": "帳戶", "security": "安全性" },
     "identity": {
       "title": "個人資訊",
       "description": "更新帳戶使用的姓名與電子郵件地址。",
