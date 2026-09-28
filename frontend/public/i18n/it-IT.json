@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Aggiorna ora"
+      "refresh": "Aggiorna ora",
+      "more": "Altro"
     },
     "refresh": {
       "updated": "{{count}} tassi aggiornati.",
       "upToDate": "I tassi sono già aggiornati."
+    },
+    "help": {
+      "label": "Cos’è {{label}}?",
+      "feesPaid": "Somma delle commissioni di conversione addebitate sulle tue transazioni in valuta estera, convertita nella tua valuta di visualizzazione."
+    },
+    "view": {
+      "pending": "In sospeso",
+      "live": "Tempo reale",
+      "manual": "Manuali"
     }
   },
   "settings": {

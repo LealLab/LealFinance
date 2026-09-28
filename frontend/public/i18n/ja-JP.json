@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "今すぐ更新"
+      "refresh": "今すぐ更新",
+      "more": "その他"
     },
     "refresh": {
       "updated": "{{count}} 件のレートを更新しました。",
       "upToDate": "レートはすでに最新です。"
+    },
+    "help": {
+      "label": "{{label}}とは？",
+      "feesPaid": "外貨建て取引で請求された換算手数料の合計を、表示通貨に換算した金額です。"
+    },
+    "view": {
+      "pending": "未対応",
+      "live": "リアルタイム",
+      "manual": "手動"
     }
   },
   "settings": {

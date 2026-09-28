@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "立即刷新"
+      "refresh": "立即刷新",
+      "more": "更多"
     },
     "refresh": {
       "updated": "已更新 {{count}} 个汇率。",
       "upToDate": "汇率已是最新。"
+    },
+    "help": {
+      "label": "什么是{{label}}？",
+      "feesPaid": "你的外币交易所收取的换算费用总和，已换算为显示货币。"
+    },
+    "view": {
+      "pending": "待处理",
+      "live": "实时",
+      "manual": "手动"
     }
   },
   "settings": {

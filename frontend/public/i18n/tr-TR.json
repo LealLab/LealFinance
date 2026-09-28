@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Şimdi yenile"
+      "refresh": "Şimdi yenile",
+      "more": "Daha fazla"
     },
     "refresh": {
       "updated": "{{count}} kur güncellendi.",
       "upToDate": "Kurlar zaten güncel."
+    },
+    "help": {
+      "label": "{{label}} nedir?",
+      "feesPaid": "Yabancı para birimindeki işlemlerinizden alınan dönüşüm ücretlerinin, görüntüleme para biriminize çevrilmiş toplamı."
+    },
+    "view": {
+      "pending": "Bekleyenler",
+      "live": "Canlı",
+      "manual": "Manuel"
     }
   },
   "settings": {

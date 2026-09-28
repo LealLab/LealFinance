@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Obnovit"
+      "refresh": "Obnovit",
+      "more": "Více"
     },
     "refresh": {
       "updated": "Aktualizováno kurzů: {{count}}.",
       "upToDate": "Kurzy jsou již aktuální."
+    },
+    "help": {
+      "label": "Co je {{label}}?",
+      "feesPaid": "Součet poplatků za převod účtovaných u vašich transakcí v cizí měně, přepočtený na zobrazovanou měnu."
+    },
+    "view": {
+      "pending": "Nevyřešené",
+      "live": "Živé",
+      "manual": "Ruční"
     }
   },
   "settings": {

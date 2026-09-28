@@ -1,4 +1,5 @@
-import { Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -22,13 +23,16 @@ import { zero } from '../../shared/money/money';
 import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
-import { Icon } from '../../shared/ui/icon/icon';
+import { Icon, IconName } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { Skeleton } from '../../shared/ui/skeleton/skeleton';
 import { StatTile } from '../../shared/ui/stat-tile/stat-tile';
 import { TransactionFormModal } from '../transactions/transaction-form-modal';
 import { ManualRateFormModal } from './manual-rate-form-modal';
+
+type ExchangeView = 'pending' | 'live' | 'manual';
 
 /**
  * The literal keys passed to `confirmService.confirm(...)` below are real
@@ -36,14 +40,20 @@ import { ManualRateFormModal } from './manual-rate-form-modal';
  * so transloco-keys-manager's extractor never sees them - same "dynamic
  * markings" situation as budgets.ts/transactions.ts:
  * t(exchange.manualRates.delete.title, exchange.manualRates.delete.message)
+ * Tab labels, tile labels and tile help are built from these keys:
+ * t(exchange.stats.feesPaid, exchange.stats.automaticRates, exchange.stats.needsAttention, exchange.stats.currenciesNeedingRate)
+ * t(exchange.view.pending, exchange.view.live, exchange.view.manual)
+ * t(exchange.help.feesPaid, exchange.automaticRates.description, exchange.needsAttention.description, exchange.currenciesNeedingRate.description)
  */
 @Component({
   selector: 'app-exchange',
   imports: [
+    NgTemplateOutlet,
     TranslocoDirective,
     MoneyPipe,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
     PageHeader,
@@ -182,16 +192,34 @@ export class Exchange {
   protected readonly editingRate = signal<ManualRate | undefined>(undefined);
   protected readonly prefillRatePair = signal<{ baseCode: string; quoteCode: string } | undefined>(undefined);
 
+  protected readonly views = [
+    { key: 'pending', icon: 'clock' },
+    { key: 'live', icon: 'refresh' },
+    { key: 'manual', icon: 'pencil' },
+  ] as const satisfies readonly { key: ExchangeView; icon: IconName }[];
+  /** Which section is shown; not persisted, like budgets/reports. */
+  protected readonly view = signal<ExchangeView>('pending');
+  protected readonly viewCounts = computed<Record<ExchangeView, number>>(() => ({
+    pending: this.needsAttentionRows().length + this.currenciesNeedingRate().length,
+    live: this.automaticRates().length,
+    manual: this.manualRates().length,
+  }));
+
+  /** The "?" help of each tile reuses its section's description, except the fees one. */
+  protected readonly summaryTiles = [
+    { key: 'feesPaid', help: 'exchange.help.feesPaid' },
+    { key: 'automaticRates', help: 'exchange.automaticRates.description' },
+    { key: 'needsAttention', help: 'exchange.needsAttention.description' },
+    { key: 'currenciesNeedingRate', help: 'exchange.currenciesNeedingRate.description' },
+  ] as const;
+
   // Deep-link support for the dashboard's fallback-rate warning and the
-  // command palette - mirrors features/settings/settings.ts's
-  // fragment-scroll pattern.
+  // command palette: `#manual-rates` opens the manual rates tab.
   private readonly fragment = toSignal(this.route.fragment, { initialValue: this.route.snapshot.fragment });
-  private readonly manualRatesSection = viewChild<ElementRef<HTMLElement>>('manualRatesSection');
 
   constructor() {
     effect(() => {
-      if (this.fragment() !== 'manual-rates') return;
-      this.manualRatesSection()?.nativeElement.scrollIntoView({ block: 'start' });
+      if (this.fragment() === 'manual-rates') this.view.set('manual');
     });
   }
 

@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Actualizează acum"
+      "refresh": "Actualizează acum",
+      "more": "Mai mult"
     },
     "refresh": {
       "updated": "{{count}} cursuri actualizate.",
       "upToDate": "Cursurile sunt deja actualizate."
+    },
+    "help": {
+      "label": "Ce este {{label}}?",
+      "feesPaid": "Suma comisioanelor de conversie percepute pentru tranzacțiile tale în valută, convertită în moneda ta de afișare."
+    },
+    "view": {
+      "pending": "În așteptare",
+      "live": "Live",
+      "manual": "Manuale"
     }
   },
   "settings": {

@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Jetzt aktualisieren"
+      "refresh": "Jetzt aktualisieren",
+      "more": "Mehr"
     },
     "refresh": {
       "updated": "{{count}} Kurse aktualisiert.",
       "upToDate": "Die Kurse sind bereits aktuell."
+    },
+    "help": {
+      "label": "Was ist {{label}}?",
+      "feesPaid": "Summe der Umrechnungsgebühren, die für Ihre Transaktionen in Fremdwährung berechnet wurden, umgerechnet in Ihre Anzeigewährung."
+    },
+    "view": {
+      "pending": "Offen",
+      "live": "Live",
+      "manual": "Manuell"
     }
   },
   "settings": {

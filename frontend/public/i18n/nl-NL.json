@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Nu vernieuwen"
+      "refresh": "Nu vernieuwen",
+      "more": "Meer"
     },
     "refresh": {
       "updated": "{{count}} koersen bijgewerkt.",
       "upToDate": "De koersen zijn al up-to-date."
+    },
+    "help": {
+      "label": "Wat is {{label}}?",
+      "feesPaid": "Som van de conversiekosten die op je transacties in vreemde valuta zijn berekend, omgerekend naar je weergavevaluta."
+    },
+    "view": {
+      "pending": "Openstaand",
+      "live": "Live",
+      "manual": "Handmatig"
     }
   },
   "settings": {

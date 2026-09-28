@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Actualizar ahora"
+      "refresh": "Actualizar ahora",
+      "more": "Más"
     },
     "refresh": {
       "updated": "Se actualizaron {{count}} tasas.",
       "upToDate": "Las tasas ya están actualizadas."
+    },
+    "help": {
+      "label": "¿Qué es {{label}}?",
+      "feesPaid": "Suma de las comisiones de conversión cobradas en tus movimientos en moneda extranjera, convertida a tu moneda de visualización."
+    },
+    "view": {
+      "pending": "Pendientes",
+      "live": "En vivo",
+      "manual": "Manuales"
     }
   },
   "settings": {

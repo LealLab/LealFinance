@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Odśwież teraz"
+      "refresh": "Odśwież teraz",
+      "more": "Więcej"
     },
     "refresh": {
       "updated": "Zaktualizowano kursy: {{count}}.",
       "upToDate": "Kursy są już aktualne."
+    },
+    "help": {
+      "label": "Czym jest {{label}}?",
+      "feesPaid": "Suma opłat za przewalutowanie naliczonych od Twoich transakcji w walutach obcych, przeliczona na walutę wyświetlania."
+    },
+    "view": {
+      "pending": "Oczekujące",
+      "live": "Na żywo",
+      "manual": "Ręczne"
     }
   },
   "settings": {

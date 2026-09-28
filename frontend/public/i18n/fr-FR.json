@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Actualiser"
+      "refresh": "Actualiser",
+      "more": "Plus"
     },
     "refresh": {
       "updated": "{{count}} taux mis à jour.",
       "upToDate": "Les taux sont déjà à jour."
+    },
+    "help": {
+      "label": "Qu’est-ce que {{label}} ?",
+      "feesPaid": "Somme des frais de conversion prélevés sur vos opérations en devise étrangère, convertie dans votre devise d’affichage."
+    },
+    "view": {
+      "pending": "En attente",
+      "live": "En direct",
+      "manual": "Manuels"
     }
   },
   "settings": {

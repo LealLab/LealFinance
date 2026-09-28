@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Päivitä nyt"
+      "refresh": "Päivitä nyt",
+      "more": "Lisää"
     },
     "refresh": {
       "updated": "{{count}} kurssia päivitetty.",
       "upToDate": "Kurssit ovat jo ajan tasalla."
+    },
+    "help": {
+      "label": "Mikä on {{label}}?",
+      "feesPaid": "Ulkomaan valuutan tapahtumistasi veloitettujen vaihtokulujen summa näyttövaluuttaan muunnettuna."
+    },
+    "view": {
+      "pending": "Avoimet",
+      "live": "Reaaliaika",
+      "manual": "Manuaaliset"
     }
   },
   "settings": {

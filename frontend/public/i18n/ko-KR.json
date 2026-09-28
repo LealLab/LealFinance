@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "지금 새로고침"
+      "refresh": "지금 새로고침",
+      "more": "더보기"
     },
     "refresh": {
       "updated": "{{count}}개의 환율을 업데이트했습니다.",
       "upToDate": "환율이 이미 최신 상태입니다."
+    },
+    "help": {
+      "label": "{{label}}은(는) 무엇인가요?",
+      "feesPaid": "외화 거래에 부과된 환산 수수료의 합계로, 표시 통화로 환산한 금액입니다."
+    },
+    "view": {
+      "pending": "대기 중",
+      "live": "실시간",
+      "manual": "수동"
     }
   },
   "settings": {

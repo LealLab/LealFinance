@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Làm mới ngay"
+      "refresh": "Làm mới ngay",
+      "more": "Thêm"
     },
     "refresh": {
       "updated": "Đã cập nhật {{count}} tỷ giá.",
       "upToDate": "Tỷ giá đã được cập nhật."
+    },
+    "help": {
+      "label": "{{label}} là gì?",
+      "feesPaid": "Tổng phí quy đổi tính trên các giao dịch ngoại tệ của bạn, được quy đổi sang tiền tệ hiển thị."
+    },
+    "view": {
+      "pending": "Chờ xử lý",
+      "live": "Trực tiếp",
+      "manual": "Thủ công"
     }
   },
   "settings": {

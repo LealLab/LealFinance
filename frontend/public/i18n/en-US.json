@@ -1591,11 +1591,21 @@
       }
     },
     "actions": {
-      "refresh": "Refresh now"
+      "refresh": "Refresh now",
+      "more": "More"
     },
     "refresh": {
       "updated": "Updated {{count}} live rates.",
       "upToDate": "Rates are already up to date."
+    },
+    "help": {
+      "label": "What is {{label}}?",
+      "feesPaid": "Sum of the conversion fees charged on your foreign-currency transactions, converted to your display currency."
+    },
+    "view": {
+      "pending": "Pending",
+      "live": "Live",
+      "manual": "Manual"
     }
   },
   "settings": {

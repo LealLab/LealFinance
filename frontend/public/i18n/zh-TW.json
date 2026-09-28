@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "立即重新整理"
+      "refresh": "立即重新整理",
+      "more": "更多"
     },
     "refresh": {
       "updated": "已更新 {{count}} 個匯率。",
       "upToDate": "匯率已是最新。"
+    },
+    "help": {
+      "label": "什麼是{{label}}？",
+      "feesPaid": "你的外幣交易所收取的換算手續費總和，已換算為顯示貨幣。"
+    },
+    "view": {
+      "pending": "待處理",
+      "live": "即時",
+      "manual": "手動"
     }
   },
   "settings": {

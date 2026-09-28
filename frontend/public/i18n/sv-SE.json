@@ -1567,11 +1567,21 @@
       }
     },
     "actions": {
-      "refresh": "Uppdatera nu"
+      "refresh": "Uppdatera nu",
+      "more": "Mer"
     },
     "refresh": {
       "updated": "{{count}} kurser uppdaterade.",
       "upToDate": "Kurserna är redan uppdaterade."
+    },
+    "help": {
+      "label": "Vad är {{label}}?",
+      "feesPaid": "Summan av omräkningsavgifterna på dina transaktioner i utländsk valuta, omräknad till din visningsvaluta."
+    },
+    "view": {
+      "pending": "Väntande",
+      "live": "Live",
+      "manual": "Manuella"
     }
   },
   "settings": {

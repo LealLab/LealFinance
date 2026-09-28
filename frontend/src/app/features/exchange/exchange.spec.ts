@@ -1,6 +1,6 @@
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 import { of } from 'rxjs';
 import { SessionService } from '../../core/session.service';
@@ -268,5 +268,75 @@ describe('Exchange', () => {
     expect(fixture.nativeElement.textContent).toContain(
       TestBed.inject(TranslocoService).translate('exchange.refresh.updated', { count: 3 }),
     );
+  });
+  it('switches between the pending, live and manual tabs', async () => {
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const transloco = TestBed.inject(TranslocoService);
+    const el = fixture.nativeElement as HTMLElement;
+    const headings = () => Array.from(el.querySelectorAll('app-card h2')).map((h) => h.textContent?.trim());
+    const tab = (key: string) =>
+      Array.from(el.querySelectorAll('[role="group"] button')).find((b) =>
+        b.textContent?.includes(transloco.translate('exchange.view.' + key)),
+      ) as HTMLButtonElement;
+
+    // Pending is the default and holds both "needs attention" blocks.
+    expect(headings()).toEqual([
+      transloco.translate('exchange.needsAttention.title'),
+      transloco.translate('exchange.currenciesNeedingRate.title'),
+    ]);
+    expect(tab('pending').getAttribute('aria-pressed')).toBe('true');
+
+    tab('live').click();
+    fixture.detectChanges();
+    expect(headings()).toEqual([transloco.translate('exchange.automaticRates.title')]);
+
+    tab('manual').click();
+    fixture.detectChanges();
+    expect(headings()).toEqual([transloco.translate('exchange.manualRates.title')]);
+    expect(tab('manual').getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('opens the manual rates tab from the #manual-rates deep link', async () => {
+    await TestBed.inject(Router).navigateByUrl('/#manual-rates');
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const headings = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-card h2')).map((h) =>
+      h.textContent?.trim(),
+    );
+    expect(headings).toEqual([TestBed.inject(TranslocoService).translate('exchange.manualRates.title')]);
+  });
+
+  it('lets an admin refresh from the mobile "More" menu', async () => {
+    sessionUser.set({ role: 'admin' });
+    const refreshSpy = vi
+      .spyOn(TestBed.inject(ExchangeRateRepository), 'refresh')
+      .mockReturnValue(of({ asOf: '2026-09-01', updated: 0, throttled: true, refreshedAt: null }));
+
+    const fixture = TestBed.createComponent(Exchange);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    (el.querySelector('app-page-header app-dropdown [dropdownTrigger]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    const refreshLabel = TestBed.inject(TranslocoService).translate('exchange.actions.refresh');
+    const item = Array.from(el.querySelectorAll('app-page-header app-dropdown button')).find(
+      (b) => !b.hasAttribute('dropdownTrigger') && b.textContent?.trim() === refreshLabel,
+    ) as HTMLButtonElement;
+    item.click();
+    fixture.detectChanges();
+
+    expect(refreshSpy).toHaveBeenCalledTimes(1);
+    expect(el.querySelector('app-page-header app-dropdown [dropdownTrigger] + *')).toBeNull();
+    expect(el.textContent).toContain(TestBed.inject(TranslocoService).translate('exchange.refresh.upToDate'));
   });
 });
