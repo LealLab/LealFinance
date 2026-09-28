@@ -1030,7 +1030,8 @@
       "unarchive": "Reativar meta",
       "deposit": "Aportar",
       "withdraw": "Resgatar",
-      "interest": "Adicionar rendimento"
+      "interest": "Adicionar rendimento",
+      "more": "Mais"
     },
     "empty": {
       "title": "Nenhuma meta cadastrada",

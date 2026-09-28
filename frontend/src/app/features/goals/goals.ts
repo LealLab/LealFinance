@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -16,8 +17,10 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
+import { Dropdown } from '../../shared/ui/dropdown/dropdown';
 import { EmptyState } from '../../shared/ui/empty-state/empty-state';
 import { Icon } from '../../shared/ui/icon/icon';
+import { Modal } from '../../shared/ui/modal/modal';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProgressBar } from '../../shared/ui/progress-bar/progress-bar';
@@ -38,13 +41,16 @@ interface GoalRow {
 @Component({
   selector: 'app-goals',
   imports: [
+    NgTemplateOutlet,
     TranslocoDirective,
     MoneyPipe,
     Badge,
     Button,
     Card,
+    Dropdown,
     EmptyState,
     Icon,
+    Modal,
     PageHeader,
     ProgressBar,
     ExchangeRateWarning,
@@ -66,6 +72,10 @@ export class Goals {
     stream: () => this.transactionRepository.list(),
   });
   protected readonly showArchived = signal(false);
+  protected readonly moreOpen = signal(false);
+  /** Goal whose history is shown in the mobile sheet; desktop keeps the inline details. */
+  protected readonly historyGoal = signal<Goal | undefined>(undefined);
+  protected readonly historyOpen = signal(false);
   protected readonly formOpen = signal(false);
   protected readonly editingGoal = signal<Goal | undefined>(undefined);
   protected readonly entryOpen = signal(false);
@@ -132,6 +142,11 @@ export class Goals {
     this.entryGoal.set(goal);
     this.entryMode.set(mode);
     this.entryOpen.set(true);
+  }
+
+  protected openHistory(goal: Goal): void {
+    this.historyGoal.set(goal);
+    this.historyOpen.set(true);
   }
 
   protected onGoalSaved(): void {

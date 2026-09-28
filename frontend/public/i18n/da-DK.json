@@ -1030,7 +1030,8 @@
       "unarchive": "Gendan mål",
       "deposit": "Tilføj penge",
       "withdraw": "Hæv",
-      "interest": "Tilføj renter"
+      "interest": "Tilføj renter",
+      "more": "Mere"
     },
     "empty": {
       "title": "Ingen mål endnu",

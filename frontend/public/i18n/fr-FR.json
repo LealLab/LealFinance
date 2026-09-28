@@ -1030,7 +1030,8 @@
       "unarchive": "Restaurer l’objectif",
       "deposit": "Verser",
       "withdraw": "Retirer",
-      "interest": "Ajouter des intérêts"
+      "interest": "Ajouter des intérêts",
+      "more": "Plus"
     },
     "empty": {
       "title": "Aucun objectif pour le moment",

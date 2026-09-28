@@ -1030,7 +1030,8 @@
       "unarchive": "目標のアーカイブを解除",
       "deposit": "入金",
       "withdraw": "出金",
-      "interest": "利息を追加"
+      "interest": "利息を追加",
+      "more": "その他"
     },
     "empty": {
       "title": "目標はまだありません",

@@ -1030,7 +1030,8 @@
       "unarchive": "Hedefi arşivden çıkar",
       "deposit": "Para ekle",
       "withdraw": "Para çek",
-      "interest": "Faiz ekle"
+      "interest": "Faiz ekle",
+      "more": "Daha fazla"
     },
     "empty": {
       "title": "Henüz hedef yok",

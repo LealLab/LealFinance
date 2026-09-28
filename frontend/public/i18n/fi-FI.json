@@ -1030,7 +1030,8 @@
       "unarchive": "Palauta tavoite arkistosta",
       "deposit": "Lisää rahaa",
       "withdraw": "Nosta rahaa",
-      "interest": "Lisää korko"
+      "interest": "Lisää korko",
+      "more": "Lisää"
     },
     "empty": {
       "title": "Ei vielä tavoitteita",

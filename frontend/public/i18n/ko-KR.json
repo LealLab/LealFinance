@@ -1030,7 +1030,8 @@
       "unarchive": "목표 보관 해제",
       "deposit": "금액 추가",
       "withdraw": "금액 인출",
-      "interest": "이자 추가"
+      "interest": "이자 추가",
+      "more": "더보기"
     },
     "empty": {
       "title": "아직 목표가 없습니다",

@@ -1030,7 +1030,8 @@
       "unarchive": "Archivierung des Sparziels aufheben",
       "deposit": "Einzahlen",
       "withdraw": "Auszahlen",
-      "interest": "Zinsen hinzufügen"
+      "interest": "Zinsen hinzufügen",
+      "more": "Mehr"
     },
     "empty": {
       "title": "Noch keine Sparziele",

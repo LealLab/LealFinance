@@ -1030,7 +1030,8 @@
       "unarchive": "Obnovit cíl z archivu",
       "deposit": "Přidat peníze",
       "withdraw": "Vybrat",
-      "interest": "Přidat úrok"
+      "interest": "Přidat úrok",
+      "more": "Více"
     },
     "empty": {
       "title": "Zatím nemáte žádné cíle",

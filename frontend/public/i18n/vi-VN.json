@@ -1030,7 +1030,8 @@
       "unarchive": "Bỏ lưu trữ mục tiêu",
       "deposit": "Thêm tiền",
       "withdraw": "Rút tiền",
-      "interest": "Thêm tiền lãi"
+      "interest": "Thêm tiền lãi",
+      "more": "Thêm"
     },
     "empty": {
       "title": "Chưa có mục tiêu nào",

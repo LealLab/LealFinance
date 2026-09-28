@@ -1030,7 +1030,8 @@
       "unarchive": "Ripristina obiettivo",
       "deposit": "Aggiungi fondi",
       "withdraw": "Preleva",
-      "interest": "Aggiungi interessi"
+      "interest": "Aggiungi interessi",
+      "more": "Altro"
     },
     "empty": {
       "title": "Nessun obiettivo",

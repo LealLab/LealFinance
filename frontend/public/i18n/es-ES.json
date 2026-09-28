@@ -1030,7 +1030,8 @@
       "unarchive": "Desarchivar objetivo",
       "deposit": "Aportar",
       "withdraw": "Retirar",
-      "interest": "Añadir intereses"
+      "interest": "Añadir intereses",
+      "more": "Más"
     },
     "empty": {
       "title": "Aún no hay objetivos",

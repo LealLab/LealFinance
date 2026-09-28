@@ -1030,7 +1030,8 @@
       "unarchive": "Doel uit archief halen",
       "deposit": "Geld toevoegen",
       "withdraw": "Geld opnemen",
-      "interest": "Rendement toevoegen"
+      "interest": "Rendement toevoegen",
+      "more": "Meer"
     },
     "empty": {
       "title": "Nog geen doelen",

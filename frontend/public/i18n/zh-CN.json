@@ -1030,7 +1030,8 @@
       "unarchive": "取消归档目标",
       "deposit": "存入资金",
       "withdraw": "提取资金",
-      "interest": "添加利息"
+      "interest": "添加利息",
+      "more": "更多"
     },
     "empty": {
       "title": "暂无目标",

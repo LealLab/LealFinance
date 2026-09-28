@@ -1054,7 +1054,8 @@
       "unarchive": "Unarchive goal",
       "deposit": "Add money",
       "withdraw": "Withdraw",
-      "interest": "Add interest"
+      "interest": "Add interest",
+      "more": "More"
     },
     "empty": {
       "title": "No goals yet",

@@ -1030,7 +1030,8 @@
       "unarchive": "Pulihkan target",
       "deposit": "Tambah dana",
       "withdraw": "Tarik dana",
-      "interest": "Tambah bunga"
+      "interest": "Tambah bunga",
+      "more": "Lainnya"
     },
     "empty": {
       "title": "Belum ada target",

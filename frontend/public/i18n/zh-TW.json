@@ -1030,7 +1030,8 @@
       "unarchive": "取消封存目標",
       "deposit": "存入金額",
       "withdraw": "提領",
-      "interest": "新增利息"
+      "interest": "新增利息",
+      "more": "更多"
     },
     "empty": {
       "title": "尚無目標",

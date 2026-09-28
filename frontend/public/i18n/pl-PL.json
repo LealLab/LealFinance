@@ -1030,7 +1030,8 @@
       "unarchive": "Przywróć cel z archiwum",
       "deposit": "Wpłać środki",
       "withdraw": "Wypłać środki",
-      "interest": "Dodaj odsetki"
+      "interest": "Dodaj odsetki",
+      "more": "Więcej"
     },
     "empty": {
       "title": "Nie masz jeszcze żadnych celów",

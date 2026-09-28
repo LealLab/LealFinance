@@ -1030,7 +1030,8 @@
       "unarchive": "Återställ mål",
       "deposit": "Lägg till pengar",
       "withdraw": "Ta ut pengar",
-      "interest": "Lägg till ränta"
+      "interest": "Lägg till ränta",
+      "more": "Mer"
     },
     "empty": {
       "title": "Inga mål ännu",

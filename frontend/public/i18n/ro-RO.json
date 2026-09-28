@@ -1030,7 +1030,8 @@
       "unarchive": "Restaurează obiectivul din arhivă",
       "deposit": "Adaugă bani",
       "withdraw": "Retrage",
-      "interest": "Adaugă dobândă"
+      "interest": "Adaugă dobândă",
+      "more": "Mai mult"
     },
     "empty": {
       "title": "Nu există încă niciun obiectiv",
