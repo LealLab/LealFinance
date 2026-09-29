@@ -11,6 +11,8 @@
       "placeholder": "Tanyakan tentang keuangan Anda…"
     },
     "send": "Kirim",
+    "attach": "Lampirkan file",
+    "removeAttachment": "Hapus {{name}}",
     "offTopic": "Saya dapat membantu tentang LealFinance dan keuangan Anda, tetapi bukan topik itu.",
     "thinking": "Sedang berpikir…",
     "toolRunning": "Menjalankan",
@@ -33,7 +35,11 @@
       "notConfigured": "Belum ada penyedia AI yang dikonfigurasi.",
       "providerUnavailable": "Penyedia AI sedang tidak tersedia.",
       "loopExhausted": "Asisten tidak dapat menyelesaikan permintaan ini.",
-      "generic": "Terjadi kesalahan. Silakan coba lagi."
+      "generic": "Terjadi kesalahan. Silakan coba lagi.",
+      "attachmentInvalid": "File ini tidak valid. Periksa nama dan isinya.",
+      "attachmentLimit": "Lampiran terlalu banyak atau besar. Gunakan paling banyak 3 file, masing-masing 5 MB.",
+      "attachmentUnsupported": "Jenis file ini tidak didukung. Gunakan gambar, PDF, teks, atau CSV.",
+      "attachmentVisionRequired": "Model yang dipilih tidak dapat membaca gambar atau halaman PDF."
     }
   },
   "app": {

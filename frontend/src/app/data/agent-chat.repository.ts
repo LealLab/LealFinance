@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentAttachmentUpload,
   AgentMemory,
   AgentStreamEvent,
   McpToken,
@@ -32,7 +33,11 @@ export abstract class AgentChatRepository {
   abstract createConversation(provider?: string): Observable<AgentConversation>;
   abstract getConversation(id: string): Observable<AgentConversationDetail>;
   abstract deleteConversation(id: string): Observable<void>;
-  abstract sendMessage(id: string, content: string): Observable<AgentStreamEvent>;
+  abstract sendMessage(
+    id: string,
+    content: string,
+    attachments?: AgentAttachmentUpload[],
+  ): Observable<AgentStreamEvent>;
   abstract confirm(
     id: string,
     toolCallId: string,

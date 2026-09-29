@@ -11,6 +11,8 @@
       "placeholder": "재무에 대해 질문해 보세요…"
     },
     "send": "보내기",
+    "attach": "파일 첨부",
+    "removeAttachment": "{{name}} 제거",
     "offTopic": "LealFinance와 재무 관련 도움을 드릴 수 있지만, 해당 주제에 대해서는 도와드릴 수 없습니다.",
     "thinking": "생각 중…",
     "toolRunning": "실행 중",
@@ -33,7 +35,11 @@
       "notConfigured": "아직 구성된 AI 제공업체가 없습니다.",
       "providerUnavailable": "현재 AI 제공업체를 사용할 수 없습니다.",
       "loopExhausted": "어시스턴트가 이 요청을 완료하지 못했습니다.",
-      "generic": "문제가 발생했습니다. 다시 시도해 주세요."
+      "generic": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "attachmentInvalid": "유효하지 않은 파일입니다. 이름과 내용을 확인하세요.",
+      "attachmentLimit": "첨부 파일이 너무 많거나 큽니다. 파일당 5 MB 이하로 최대 3개까지 가능합니다.",
+      "attachmentUnsupported": "지원하지 않는 파일 형식입니다. 이미지, PDF, 텍스트 또는 CSV를 사용하세요.",
+      "attachmentVisionRequired": "선택한 모델은 이미지나 PDF 페이지를 읽을 수 없습니다."
     }
   },
   "app": {

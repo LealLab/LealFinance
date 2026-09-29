@@ -138,6 +138,27 @@
                     <span class="chat-thinking text-content-muted">{{ t('chat.thinking') }}</span>
                   }
 
+                  @if (turn.attachments?.length) {
+                    <div class="mt-2 flex flex-wrap gap-2">
+                      @for (attachment of turn.attachments; track attachment.id || $index) {
+                        @if (attachment.id) {
+                          <a
+                            class="max-w-full truncate rounded border border-border px-2 py-1 text-xs underline"
+                            [href]="attachmentUrl(attachment.id)"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >{{ attachment.name }}</a
+                          >
+                        } @else {
+                          <span
+                            class="max-w-full truncate rounded border border-border px-2 py-1 text-xs"
+                            >{{ attachment.name }}</span
+                          >
+                        }
+                      }
+                    </div>
+                  }
+
                   @if (turn.pendingConfirm; as confirmation) {
                     <app-card class="chat-confirmation mt-3 border-warning/40 bg-warning/5">
                       <h2 class="text-sm font-semibold text-content-primary">
@@ -148,7 +169,10 @@
                       </p>
                       <dl class="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-xs">
                         @for (
-                          entry of confirmationEntries(confirmation.arguments, confirmation.preview);
+                          entry of confirmationEntries(
+                            confirmation.arguments,
+                            confirmation.preview
+                          );
                           track $index
                         ) {
                           <dt class="text-content-muted">
@@ -224,6 +248,36 @@
           }
 
           <div class="chat-composer shrink-0 pt-3">
+            @if (pendingAttachments().length) {
+              <div class="mb-2 flex flex-wrap gap-2">
+                @for (attachment of pendingAttachments(); track attachment) {
+                  <div
+                    class="flex max-w-full items-center gap-2 rounded border border-border bg-surface-raised p-1 text-xs"
+                  >
+                    @if (attachment.previewUrl) {
+                      <img
+                        [src]="attachment.previewUrl"
+                        [alt]="attachment.file.name"
+                        class="h-10 w-10 rounded object-cover"
+                      />
+                    }
+                    <span class="max-w-40 truncate">{{ attachment.file.name }}</span>
+                    <button
+                      appButton
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      class="!p-1"
+                      [attr.aria-label]="t('chat.removeAttachment', { name: attachment.file.name })"
+                      [disabled]="sending()"
+                      (click)="removeAttachment(attachment)"
+                    >
+                      <app-icon name="close" [size]="14" />
+                    </button>
+                  </div>
+                }
+              </div>
+            }
             <div
               class="chat-composer-surface flex min-w-0 items-end gap-2 rounded-lg border border-border bg-surface-raised p-2"
             >
@@ -240,6 +294,35 @@
                 (input)="composer.set($any($event.target).value)"
                 (keydown)="onComposerKeydown($event)"
               ></textarea>
+              <input
+                #fileInput
+                type="file"
+                multiple
+                class="sr-only"
+                accept=".jpg,.jpeg,.png,.webp,.pdf,.txt,.md,.csv,image/jpeg,image/png,image/webp,application/pdf,text/plain,text/markdown,text/csv"
+                [attr.aria-label]="t('chat.attach')"
+                [disabled]="
+                  sending() ||
+                  detail.value()?.status === 'awaiting_confirmation' ||
+                  liveMessages().some((turn) => turn.pendingConfirm)
+                "
+                (change)="onFilesSelected($event)"
+              />
+              <button
+                appButton
+                type="button"
+                variant="ghost"
+                class="shrink-0 !rounded-md !p-2.5"
+                [attr.aria-label]="t('chat.attach')"
+                [disabled]="
+                  sending() ||
+                  detail.value()?.status === 'awaiting_confirmation' ||
+                  liveMessages().some((turn) => turn.pendingConfirm)
+                "
+                (click)="fileInput.click()"
+              >
+                <app-icon name="plus" [size]="16" />
+              </button>
               <button
                 appButton
                 type="button"
@@ -248,7 +331,7 @@
                 [attr.aria-label]="sending() ? t('chat.thinking') : t('chat.send')"
                 [disabled]="
                   sending() ||
-                  !composer().trim() ||
+                  (!composer().trim() && !pendingAttachments().length) ||
                   detail.value()?.status === 'awaiting_confirmation' ||
                   liveMessages().some((turn) => turn.pendingConfirm)
                 "

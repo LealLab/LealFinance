@@ -580,7 +580,7 @@ async def test_stale_confirmation_returns_conflict(
     assert user.id == row.user_id
 
 
-async def test_message_while_awaiting_returns_sse_error(
+async def test_message_while_awaiting_returns_conflict(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _enable_agents(monkeypatch, anthropic_api_key="sk-env")
@@ -596,9 +596,8 @@ async def test_message_while_awaiting_returns_sse_error(
         f"/api/v1/agents/conversations/{conversation['id']}/messages",
         json={"content": "Try again"},
     )
-    assert _events(response.text) == [
-        ("error", {"code": "agents.awaiting_confirmation", "params": {}})
-    ]
+    assert response.status_code == 409
+    assert response.json()["error"]["code"] == "agents.awaiting_confirmation"
 
 
 async def test_foreign_conversation_is_hidden_from_all_routes(

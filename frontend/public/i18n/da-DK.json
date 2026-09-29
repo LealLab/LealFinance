@@ -11,6 +11,8 @@
       "placeholder": "Spørg om din økonomi…"
     },
     "send": "Send besked",
+    "attach": "Vedhæft filer",
+    "removeAttachment": "Fjern {{name}}",
     "offTopic": "Jeg kan hjælpe med LealFinance og din økonomi, men ikke med dette emne.",
     "thinking": "Tænker…",
     "toolRunning": "Kører",
@@ -33,7 +35,11 @@
       "notConfigured": "Der er endnu ikke konfigureret nogen AI-udbyder.",
       "providerUnavailable": "AI-udbyderen er ikke tilgængelig lige nu.",
       "loopExhausted": "Assistenten kunne ikke fuldføre denne anmodning.",
-      "generic": "Der er opstået en fejl. Prøv igen."
+      "generic": "Der er opstået en fejl. Prøv igen.",
+      "attachmentInvalid": "Filen er ugyldig. Kontroller navn og indhold.",
+      "attachmentLimit": "For mange eller for store vedhæftede filer. Brug højst 3 filer på 5 MB hver.",
+      "attachmentUnsupported": "Filtypen understøttes ikke. Brug billede, PDF, tekst eller CSV.",
+      "attachmentVisionRequired": "Den valgte model kan ikke læse billeder eller PDF-sider."
     }
   },
   "app": {

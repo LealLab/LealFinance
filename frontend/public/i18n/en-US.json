@@ -11,6 +11,8 @@
       "placeholder": "Ask about your finances…"
     },
     "send": "Send",
+    "attach": "Attach files",
+    "removeAttachment": "Remove {{name}}",
     "offTopic": "I can help with LealFinance and your finances, but not that topic.",
     "thinking": "Thinking…",
     "toolRunning": "Running",
@@ -33,7 +35,11 @@
       "notConfigured": "No AI provider is configured yet.",
       "providerUnavailable": "The AI provider is currently unavailable.",
       "loopExhausted": "The assistant could not complete this request.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "attachmentInvalid": "This file is invalid. Check its name and contents.",
+      "attachmentLimit": "Too many or oversized attachments. Use up to 3 files, 5 MB each.",
+      "attachmentUnsupported": "This file type is not supported. Use an image, PDF, text, or CSV file.",
+      "attachmentVisionRequired": "The selected model cannot read images or PDF pages."
     }
   },
   "app": {

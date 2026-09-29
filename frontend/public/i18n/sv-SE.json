@@ -11,6 +11,8 @@
       "placeholder": "Fråga om din ekonomi…"
     },
     "send": "Skicka",
+    "attach": "Bifoga filer",
+    "removeAttachment": "Ta bort {{name}}",
     "offTopic": "Jag kan hjälpa dig med LealFinance och din ekonomi, men inte med det ämnet.",
     "thinking": "Tänker…",
     "toolRunning": "Kör",
@@ -33,7 +35,11 @@
       "notConfigured": "Ingen AI-leverantör har konfigurerats ännu.",
       "providerUnavailable": "AI-leverantören är inte tillgänglig just nu.",
       "loopExhausted": "Assistenten kunde inte slutföra den här begäran.",
-      "generic": "Något gick fel. Försök igen."
+      "generic": "Något gick fel. Försök igen.",
+      "attachmentInvalid": "Filen är ogiltig. Kontrollera namn och innehåll.",
+      "attachmentLimit": "För många eller för stora bilagor. Använd högst 3 filer på 5 MB vardera.",
+      "attachmentUnsupported": "Filtypen stöds inte. Använd bild, PDF, text eller CSV.",
+      "attachmentVisionRequired": "Den valda modellen kan inte läsa bilder eller PDF-sidor."
     }
   },
   "app": {

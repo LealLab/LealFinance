@@ -11,6 +11,8 @@
       "placeholder": "Finansınız hakkında soru sorun…"
     },
     "send": "Gönder",
+    "attach": "Dosya ekle",
+    "removeAttachment": "{{name}} dosyasını kaldır",
     "offTopic": "LealFinance ve finansınız konusunda yardımcı olabilirim, ancak bu konuda yardımcı olamam.",
     "thinking": "Düşünüyor…",
     "toolRunning": "Çalışıyor",
@@ -33,7 +35,11 @@
       "notConfigured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
       "providerUnavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor.",
       "loopExhausted": "Asistan bu isteği tamamlayamadı.",
-      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "attachmentInvalid": "Bu dosya geçersiz. Adını ve içeriğini kontrol edin.",
+      "attachmentLimit": "Çok fazla veya çok büyük ek var. En fazla 3 dosya, her biri 5 MB.",
+      "attachmentUnsupported": "Bu dosya türü desteklenmiyor. Görsel, PDF, metin veya CSV kullanın.",
+      "attachmentVisionRequired": "Seçilen model görselleri veya PDF sayfalarını okuyamıyor."
     }
   },
   "app": {

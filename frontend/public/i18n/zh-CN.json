@@ -11,6 +11,8 @@
       "placeholder": "询问你的财务状况…"
     },
     "send": "发送",
+    "attach": "添加文件",
+    "removeAttachment": "移除 {{name}}",
     "offTopic": "我可以帮助你了解 LealFinance 和你的财务状况，但无法处理这个话题。",
     "thinking": "思考中…",
     "toolRunning": "运行中",
@@ -33,7 +35,11 @@
       "notConfigured": "尚未配置 AI 提供商。",
       "providerUnavailable": "AI 提供商当前不可用。",
       "loopExhausted": "助手无法完成此请求。",
-      "generic": "出了点问题，请重试。"
+      "generic": "出了点问题，请重试。",
+      "attachmentInvalid": "此文件无效。请检查文件名和内容。",
+      "attachmentLimit": "附件过多或过大。最多 3 个文件，每个不超过 5 MB。",
+      "attachmentUnsupported": "不支持此文件类型。请使用图片、PDF、文本或 CSV。",
+      "attachmentVisionRequired": "所选模型无法读取图片或 PDF 页面。"
     }
   },
   "app": {

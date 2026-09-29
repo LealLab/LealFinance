@@ -100,6 +100,87 @@ describe('Chat', () => {
     expect(fixture.nativeElement.textContent).toContain('Mock: Ola');
   });
 
+  it('sends a file without text and reopens its saved attachment', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const chat = fixture.componentInstance;
+    const sendMessage = vi.spyOn(chat['repo'], 'sendMessage');
+    const input = document.createElement('input');
+    const file = new File(['budget'], 'notes.txt', { type: 'text/plain' });
+    Object.defineProperty(input, 'files', { value: [file] });
+
+    chat['onFilesSelected']({ target: input } as unknown as Event);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('notes.txt');
+    await chat['send']('');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(sendMessage).toHaveBeenCalledWith('c1', '', [
+      { name: 'notes.txt', media_type: 'text/plain', data: 'YnVkZ2V0' },
+    ]);
+    expect(chat['liveMessages']()[0].text).toBe('');
+    expect(chat['liveMessages']()[0].attachments?.[0].name).toBe('notes.txt');
+    const link = fixture.nativeElement.querySelector(
+      '.chat-message-body--user a',
+    ) as HTMLAnchorElement;
+    expect(link.getAttribute('href')).toContain('/attachments/');
+  });
+
+  it('restores the text and selected file after an HTTP rejection', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const chat = fixture.componentInstance;
+    const stream = new Subject<AgentStreamEvent>();
+    chat['repo'].sendMessage = vi.fn().mockReturnValue(stream.asObservable());
+    const input = document.createElement('input');
+    Object.defineProperty(input, 'files', {
+      value: [new File(['data'], 'notes.txt', { type: 'text/plain' })],
+    });
+    chat['onFilesSelected']({ target: input } as unknown as Event);
+
+    await chat['send']('draft');
+    stream.next({ type: 'error', code: 'agents.attachment_invalid', params: {}, rejected: true });
+
+    expect(chat['composer']()).toBe('draft');
+    expect(chat['pendingAttachments']()).toHaveLength(1);
+    expect(chat['liveMessages']()).toHaveLength(0);
+    expect(chat['errorKey']()).toBe('chat.errors.attachmentInvalid');
+  });
+
+  it('removes a pending attachment before sending', async () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    fixture.componentInstance['newChat']();
+    await fixture.whenStable();
+    const input = document.createElement('input');
+    Object.defineProperty(input, 'files', {
+      value: [new File(['data'], 'notes.txt', { type: 'text/plain' })],
+    });
+    fixture.componentInstance['onFilesSelected']({ target: input } as unknown as Event);
+    fixture.detectChanges();
+
+    const removeLabel = TestBed.inject(TranslocoService).translate('chat.removeAttachment', {
+      name: 'notes.txt',
+    });
+    const remove = Array.from(fixture.nativeElement.querySelectorAll('button')).find(
+      (button) => (button as HTMLButtonElement).getAttribute('aria-label') === removeLabel,
+    ) as HTMLButtonElement;
+    remove.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['pendingAttachments']()).toHaveLength(0);
+    const sendLabel = TestBed.inject(TranslocoService).translate('chat.send');
+    const send = Array.from(fixture.nativeElement.querySelectorAll('button')).find(
+      (button) => (button as HTMLButtonElement).getAttribute('aria-label') === sendLabel,
+    ) as HTMLButtonElement;
+    expect(send.disabled).toBe(true);
+  });
+
   it('copies the plain text from an assistant code block', async () => {
     const fixture = setup();
     fixture.detectChanges();

@@ -29,6 +29,20 @@ export interface AgentMessage {
   isError: boolean;
   position: number;
   createdAt: string;
+  attachments?: AgentAttachment[];
+}
+
+export interface AgentAttachment {
+  id: string;
+  name: string;
+  mediaType: string;
+  size: number;
+}
+
+export interface AgentAttachmentUpload {
+  name: string;
+  media_type: string;
+  data: string;
 }
 
 export interface AgentConversationDetail extends AgentConversation {
@@ -47,7 +61,7 @@ export type AgentStreamEvent =
       preview?: Record<string, unknown>;
     }
   | { type: 'refusal'; code: string }
-  | { type: 'error'; code: string; params: Record<string, unknown> }
+  | { type: 'error'; code: string; params: Record<string, unknown>; rejected?: boolean }
   | { type: 'done'; status: AgentConversationStatus; messageId: string | null };
 
 export interface McpToken {

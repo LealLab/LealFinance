@@ -11,6 +11,8 @@
       "placeholder": "家計について質問…"
     },
     "send": "送信",
+    "attach": "ファイルを添付",
+    "removeAttachment": "{{name}} を削除",
     "offTopic": "LealFinanceや家計についてはお手伝いできますが、その話題には対応できません。",
     "thinking": "考え中…",
     "toolRunning": "実行中",
@@ -33,7 +35,11 @@
       "notConfigured": "AIプロバイダーがまだ設定されていません。",
       "providerUnavailable": "現在、AIプロバイダーを利用できません。",
       "loopExhausted": "アシスタントはこのリクエストを完了できませんでした。",
-      "generic": "問題が発生しました。もう一度お試しください。"
+      "generic": "問題が発生しました。もう一度お試しください。",
+      "attachmentInvalid": "このファイルは無効です。名前と内容を確認してください。",
+      "attachmentLimit": "添付ファイルが多すぎるか大きすぎます。各 5 MB 以下のファイルを最大 3 個まで使用できます。",
+      "attachmentUnsupported": "このファイル形式は対応していません。画像、PDF、テキスト、CSV を使用してください。",
+      "attachmentVisionRequired": "選択したモデルは画像や PDF ページを読み取れません。"
     }
   },
   "app": {
