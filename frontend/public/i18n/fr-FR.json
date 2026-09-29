@@ -11,6 +11,8 @@
       "placeholder": "Posez une question sur vos finances…"
     },
     "send": "Envoyer",
+    "attach": "Joindre des fichiers",
+    "removeAttachment": "Supprimer {{name}}",
     "offTopic": "Je peux vous aider avec LealFinance et vos finances, mais pas sur ce sujet.",
     "thinking": "Réflexion…",
     "toolRunning": "Exécution",
@@ -33,7 +35,11 @@
       "notConfigured": "Aucun fournisseur d’IA n’est encore configuré.",
       "providerUnavailable": "Le fournisseur d’IA est actuellement indisponible.",
       "loopExhausted": "L’assistant n’a pas pu terminer cette demande.",
-      "generic": "Une erreur s’est produite. Veuillez réessayer."
+      "generic": "Une erreur s’est produite. Veuillez réessayer.",
+      "attachmentInvalid": "Ce fichier est invalide. Vérifiez son nom et son contenu.",
+      "attachmentLimit": "Trop de pièces jointes ou fichiers trop volumineux. Utilisez au plus 3 fichiers de 5 Mo chacun.",
+      "attachmentUnsupported": "Ce type de fichier n’est pas pris en charge. Utilisez une image, un PDF, un texte ou un CSV.",
+      "attachmentVisionRequired": "Le modèle sélectionné ne peut pas lire les images ou les pages PDF."
     }
   },
   "app": {

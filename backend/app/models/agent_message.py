@@ -1,6 +1,7 @@
 """Persisted messages belonging to an AI chat conversation."""
 
 import uuid
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     Boolean,
@@ -13,9 +14,12 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import UserOwnedModel
+
+if TYPE_CHECKING:
+    from app.models.agent_attachment import AgentAttachment
 
 AGENT_MESSAGE_ROLE_USER = "user"
 AGENT_MESSAGE_ROLE_ASSISTANT = "assistant"
@@ -59,3 +63,6 @@ class AgentMessage(UserOwnedModel):
         Boolean, nullable=False, default=False, server_default=text("false")
     )
     position: Mapped[int] = mapped_column(Integer, nullable=False)
+    attachments: Mapped[list["AgentAttachment"]] = relationship(
+        "AgentAttachment", lazy="selectin", cascade="all, delete-orphan"
+    )

@@ -11,12 +11,13 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.agents import credentials, loop, prompt, tools
+from app.agents import chat, credentials, loop, prompt, tools
 from app.agents.credentials import ResolvedCredential
 from app.agents.events import Turn
 from app.agents.providers import PROVIDERS
 from app.core.db import session_scope
 from app.core.errors import ValidationAppError
+from app.models.agent_attachment import AgentAttachment
 from app.models.agent_conversation import (
     AGENT_CONVERSATION_STATUS_AWAITING,
     AGENT_CONVERSATION_STATUS_IDLE,
@@ -24,8 +25,8 @@ from app.models.agent_conversation import (
 )
 from app.models.agent_message import AgentMessage
 from app.models.user import User
-from app.schemas.agent import ConversationCreate
-from app.services import agent_memories, change_journal
+from app.schemas.agent import ConversationCreate, MessageCreate
+from app.services import agent_attachments, agent_memories, change_journal
 from app.services.agent_providers import _require_known_provider
 from app.services.investments import InvestmentPreviewChanged
 from app.services.ownership import get_owned, list_owned
@@ -56,6 +57,77 @@ async def get_conversation_detail(
 ) -> tuple[AgentConversation, list[AgentMessage]]:
     conversation = await get_conversation(db, user_id, conversation_id)
     return conversation, await _messages(db, conversation.id)
+
+
+async def get_attachment(
+    db: AsyncSession, user_id: UUID, conversation_id: UUID, attachment_id: UUID
+) -> AgentAttachment:
+    await get_conversation(db, user_id, conversation_id)
+    attachment = await get_owned(db, AgentAttachment, attachment_id, user_id)
+    message = await get_owned(db, AgentMessage, attachment.message_id, user_id)
+    if message.conversation_id != conversation_id:
+        from app.core.errors import NotFoundError
+
+        raise NotFoundError(code="agent_attachment.not_found")
+    return attachment
+
+
+async def prepare_message(
+    db: AsyncSession, user_id: UUID, conversation_id: UUID, payload: MessageCreate
+) -> None:
+    conversation = await get_conversation(db, user_id, conversation_id)
+    await db.execute(
+        select(AgentConversation).where(AgentConversation.id == conversation_id).with_for_update()
+    )
+    if conversation.status == AGENT_CONVERSATION_STATUS_AWAITING:
+        from app.core.errors import ConflictError
+
+        raise ConflictError(code="agents.awaiting_confirmation")
+
+    if len(payload.attachments) > 3:
+        raise ValidationAppError(code="agents.attachment_limit")
+    files = [agent_attachments.decode_file(file) for file in payload.attachments]
+    if (
+        files
+        and sum(len(data) for _, _, data in files)
+        + await agent_attachments.conversation_bytes(db, conversation_id)
+        > agent_attachments.MAX_CONVERSATION_BYTES
+    ):
+        raise ValidationAppError(code="agents.attachment_limit")
+    credential = await credentials.resolve(db, user_id, conversation.provider)
+    if credential is None:
+        raise ValidationAppError(code="agents.not_configured")
+    if any(
+        media_type.startswith("image/") or media_type == "application/pdf"
+        for _, media_type, _ in files
+    ) and not await chat.supports_images(credential):
+        raise ValidationAppError(code="agents.attachment_vision_required")
+
+    message = AgentMessage(
+        user_id=user_id,
+        conversation_id=conversation_id,
+        role="user",
+        content=payload.content,
+        position=await loop._next_position(db, user_id, conversation_id),
+    )
+    db.add(message)
+    await db.flush()
+    db.add_all(
+        [
+            AgentAttachment(
+                user_id=user_id,
+                message_id=message.id,
+                name=name,
+                media_type=media_type,
+                size=len(data),
+                data=data,
+            )
+            for name, media_type, data in files
+        ]
+    )
+    if conversation.title is None:
+        conversation.title = (payload.content.strip() or files[0][0])[:200]
+    await db.commit()
 
 
 async def delete_conversation(db: AsyncSession, user_id: UUID, conversation_id: UUID) -> None:
@@ -174,20 +246,12 @@ async def _context_turn(db: AsyncSession, user: User) -> Turn:
 
 
 async def stream_message(
-    user_id: UUID, conversation_id: UUID, content: str, today: date | None = None
+    user_id: UUID, conversation_id: UUID, today: date | None = None
 ) -> AsyncIterator[bytes]:
     async with session_scope() as db:
         conversation = await get_conversation(db, user_id, conversation_id)
-        if conversation.status == AGENT_CONVERSATION_STATUS_AWAITING:
-            yield _sse_frame("error", {"code": "agents.awaiting_confirmation", "params": {}})
-            return
-
         user = await db.get(User, user_id)
         assert user is not None
-        await loop.persist_message(db, conversation, role="user", content=content)
-        if conversation.title is None:
-            conversation.title = content[:200]
-            await db.commit()
 
         messages = await _messages(db, conversation.id)
         turns = loop.rehydrate_turns(messages)

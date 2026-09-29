@@ -251,9 +251,10 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/providers/{provider}/test` | admin | → `{ok, error_code?}`. |
 | GET | `/agents/conversations` | user | Lists conversations, newest first. |
 | POST | `/agents/conversations` | user | Creates a conversation, optionally pinned to a configured provider. |
-| GET | `/agents/conversations/{id}` | user | Returns a conversation and its ordered messages. |
-| DELETE | `/agents/conversations/{id}` | user | Deletes the conversation and its messages. |
-| POST | `/agents/conversations/{id}/messages` | user | Body `{content}`. Streams the assistant response as `text/event-stream`. Members need `ai_chat_enabled`. |
+| GET | `/agents/conversations/{id}` | user | Returns a conversation and its ordered messages, including attachment metadata. |
+| DELETE | `/agents/conversations/{id}` | user | Deletes the conversation, messages, and attachments. |
+| POST | `/agents/conversations/{id}/messages` | user | Body `{content?, attachments?: [{name, media_type, data}]}`; `data` is base64. Text or at least one file is required. Streams the assistant response as `text/event-stream`. Members need `ai_chat_enabled`. |
+| GET | `/agents/conversations/{id}/attachments/{attachment_id}` | user | Downloads a saved attachment after conversation and file ownership checks. |
 | POST | `/agents/conversations/{id}/confirm` | user | Body `{tool_call_id, approved, arguments?}`. Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
 | POST | `/agents/mcp-token` | admin | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Only active administrators can mint it. |
 | GET | `/agents/instructions` | user | → `{instructions}`, the caller's stored custom instructions, or `null`. |

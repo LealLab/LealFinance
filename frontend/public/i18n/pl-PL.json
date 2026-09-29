@@ -11,6 +11,8 @@
       "placeholder": "Zapytaj o swoje finanse…"
     },
     "send": "Wyślij",
+    "attach": "Dołącz pliki",
+    "removeAttachment": "Usuń {{name}}",
     "offTopic": "Mogę pomóc w sprawach LealFinance i Twoich finansów, ale nie w tym temacie.",
     "thinking": "Myślę…",
     "toolRunning": "Uruchamianie",
@@ -33,7 +35,11 @@
       "notConfigured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
       "providerUnavailable": "Dostawca AI jest obecnie niedostępny.",
       "loopExhausted": "Asystent nie mógł ukończyć tego żądania.",
-      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+      "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "attachmentInvalid": "Ten plik jest nieprawidłowy. Sprawdź nazwę i zawartość.",
+      "attachmentLimit": "Za dużo lub zbyt duże załączniki. Użyj maksymalnie 3 plików po 5 MB.",
+      "attachmentUnsupported": "Ten typ pliku nie jest obsługiwany. Użyj obrazu, PDF, tekstu lub CSV.",
+      "attachmentVisionRequired": "Wybrany model nie odczytuje obrazów ani stron PDF."
     }
   },
   "app": {

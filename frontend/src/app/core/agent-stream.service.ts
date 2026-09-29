@@ -96,6 +96,7 @@ export class AgentStreamService {
             type: 'error',
             code: String(error['code'] ?? 'error.generic'),
             params: record(error['params']),
+            rejected: true,
           });
           subscriber.complete();
           return;

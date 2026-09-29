@@ -11,6 +11,8 @@
       "placeholder": "שאלו על הכספים שלכם…"
     },
     "send": "שליחה",
+    "attach": "צירוף קבצים",
+    "removeAttachment": "הסרת {{name}}",
     "offTopic": "אני יכול לעזור עם LealFinance ועם הכספים שלכם, אבל לא בנושא הזה.",
     "thinking": "חושב…",
     "toolRunning": "בהרצה",
@@ -33,7 +35,11 @@
       "notConfigured": "עדיין לא הוגדר ספק AI.",
       "providerUnavailable": "ספק ה-AI אינו זמין כרגע.",
       "loopExhausted": "העוזר לא הצליח להשלים את הבקשה הזו.",
-      "generic": "משהו השתבש. נסו שוב."
+      "generic": "משהו השתבש. נסו שוב.",
+      "attachmentInvalid": "הקובץ אינו תקין. יש לבדוק את השם והתוכן שלו.",
+      "attachmentLimit": "יש יותר מדי קבצים מצורפים או שהם גדולים מדי. עד 3 קבצים של 5 MB כל אחד.",
+      "attachmentUnsupported": "סוג קובץ זה אינו נתמך. אפשר להשתמש בתמונה, PDF, טקסט או CSV.",
+      "attachmentVisionRequired": "המודל שנבחר אינו יכול לקרוא תמונות או דפי PDF."
     }
   },
   "app": {

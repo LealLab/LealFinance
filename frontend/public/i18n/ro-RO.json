@@ -11,6 +11,8 @@
       "placeholder": "Întreabă despre finanțele tale…"
     },
     "send": "Trimite",
+    "attach": "Atașează fișiere",
+    "removeAttachment": "Elimină {{name}}",
     "offTopic": "Te pot ajuta cu LealFinance și cu finanțele tale, dar nu cu acest subiect.",
     "thinking": "Mă gândesc…",
     "toolRunning": "Se execută",
@@ -33,7 +35,11 @@
       "notConfigured": "Nu este configurat încă niciun furnizor AI.",
       "providerUnavailable": "Furnizorul AI nu este disponibil momentan.",
       "loopExhausted": "Asistentul nu a putut finaliza această solicitare.",
-      "generic": "Ceva nu a funcționat. Încearcă din nou."
+      "generic": "Ceva nu a funcționat. Încearcă din nou.",
+      "attachmentInvalid": "Acest fișier nu este valid. Verifică numele și conținutul.",
+      "attachmentLimit": "Prea multe atașamente sau prea mari. Folosește cel mult 3 fișiere de câte 5 MB.",
+      "attachmentUnsupported": "Acest tip de fișier nu este acceptat. Folosește imagine, PDF, text sau CSV.",
+      "attachmentVisionRequired": "Modelul selectat nu poate citi imagini sau pagini PDF."
     }
   },
   "app": {

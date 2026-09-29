@@ -11,6 +11,8 @@
       "placeholder": "Frage nach deinen Finanzen…"
     },
     "send": "Senden",
+    "attach": "Dateien anhängen",
+    "removeAttachment": "{{name}} entfernen",
     "offTopic": "Ich kann dir bei LealFinance und deinen Finanzen helfen, aber nicht bei diesem Thema.",
     "thinking": "Denkt nach…",
     "toolRunning": "Wird ausgeführt",
@@ -33,7 +35,11 @@
       "notConfigured": "Noch kein KI-Anbieter konfiguriert.",
       "providerUnavailable": "Der KI-Anbieter ist derzeit nicht verfügbar.",
       "loopExhausted": "Der Assistent konnte diese Anfrage nicht abschließen.",
-      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "attachmentInvalid": "Diese Datei ist ungültig. Prüfen Sie Namen und Inhalt.",
+      "attachmentLimit": "Zu viele oder zu große Anhänge. Verwenden Sie bis zu 3 Dateien mit je 5 MB.",
+      "attachmentUnsupported": "Dieser Dateityp wird nicht unterstützt. Verwenden Sie Bild, PDF, Text oder CSV.",
+      "attachmentVisionRequired": "Das ausgewählte Modell kann keine Bilder oder PDF-Seiten lesen."
     }
   },
   "app": {

@@ -11,6 +11,8 @@
       "placeholder": "詢問你的財務狀況…"
     },
     "send": "傳送",
+    "attach": "附加檔案",
+    "removeAttachment": "移除 {{name}}",
     "offTopic": "我可以協助處理 LealFinance 和你的財務，但無法協助這個主題。",
     "thinking": "思考中…",
     "toolRunning": "執行中",
@@ -33,7 +35,11 @@
       "notConfigured": "尚未設定 AI 提供者。",
       "providerUnavailable": "AI 提供者目前無法使用。",
       "loopExhausted": "助理無法完成此要求。",
-      "generic": "發生錯誤，請再試一次。"
+      "generic": "發生錯誤，請再試一次。",
+      "attachmentInvalid": "此檔案無效。請檢查檔名與內容。",
+      "attachmentLimit": "附件過多或過大。最多 3 個檔案，每個不超過 5 MB。",
+      "attachmentUnsupported": "不支援此檔案類型。請使用圖片、PDF、文字或 CSV。",
+      "attachmentVisionRequired": "所選模型無法讀取圖片或 PDF 頁面。"
     }
   },
   "app": {

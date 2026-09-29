@@ -6,6 +6,7 @@ Every new model module must be imported here, or Alembic autogenerate and
 """
 
 from app.models.account import Account
+from app.models.agent_attachment import AgentAttachment
 from app.models.agent_conversation import AgentConversation
 from app.models.agent_credential import AgentCredential
 from app.models.agent_memory import AgentMemory
@@ -39,6 +40,7 @@ from app.models.webauthn import WebAuthnChallenge, WebAuthnCredential
 
 __all__ = [
     "Account",
+    "AgentAttachment",
     "AgentConversation",
     "AgentCredential",
     "AgentMemory",
