@@ -11,6 +11,8 @@
       "placeholder": "Hỏi về tài chính của bạn…"
     },
     "send": "Gửi",
+    "attach": "Đính kèm tệp",
+    "removeAttachment": "Xóa {{name}}",
     "offTopic": "Tôi có thể hỗ trợ về LealFinance và tài chính của bạn, nhưng không thể hỗ trợ chủ đề đó.",
     "thinking": "Đang suy nghĩ…",
     "toolRunning": "Đang chạy",
@@ -33,7 +35,11 @@
       "notConfigured": "Chưa cấu hình nhà cung cấp AI.",
       "providerUnavailable": "Nhà cung cấp AI hiện không khả dụng.",
       "loopExhausted": "Trợ lý không thể hoàn tất yêu cầu này.",
-      "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+      "attachmentInvalid": "Tệp này không hợp lệ. Hãy kiểm tra tên và nội dung.",
+      "attachmentLimit": "Quá nhiều tệp đính kèm hoặc tệp quá lớn. Tối đa 3 tệp, mỗi tệp 5 MB.",
+      "attachmentUnsupported": "Loại tệp này không được hỗ trợ. Hãy dùng ảnh, PDF, văn bản hoặc CSV.",
+      "attachmentVisionRequired": "Mô hình đã chọn không thể đọc ảnh hoặc trang PDF."
     }
   },
   "app": {

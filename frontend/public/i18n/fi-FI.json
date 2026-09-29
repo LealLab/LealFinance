@@ -11,6 +11,8 @@
       "placeholder": "Kysy taloudestasi…"
     },
     "send": "Lähetä",
+    "attach": "Liitä tiedostoja",
+    "removeAttachment": "Poista {{name}}",
     "offTopic": "Voin auttaa LealFinanceen ja talouteesi liittyvissä asioissa, mutta en tässä aiheessa.",
     "thinking": "Mietitään…",
     "toolRunning": "Suoritetaan",
@@ -33,7 +35,11 @@
       "notConfigured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
       "providerUnavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä.",
       "loopExhausted": "Avustaja ei voinut suorittaa pyyntöä loppuun.",
-      "generic": "Jokin meni pieleen. Yritä uudelleen."
+      "generic": "Jokin meni pieleen. Yritä uudelleen.",
+      "attachmentInvalid": "Tiedosto on virheellinen. Tarkista nimi ja sisältö.",
+      "attachmentLimit": "Liitteitä on liikaa tai ne ovat liian suuria. Enintään 3 tiedostoa, 5 Mt kukin.",
+      "attachmentUnsupported": "Tiedostotyyppiä ei tueta. Käytä kuvaa, PDF:ää, tekstiä tai CSV:tä.",
+      "attachmentVisionRequired": "Valittu malli ei voi lukea kuvia tai PDF-sivuja."
     }
   },
   "app": {

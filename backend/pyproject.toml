@@ -27,6 +27,8 @@ dependencies = [
     # decoding, and assertion signature verification are not things to
     # hand-roll. Wraps the already-present cryptography plus cbor2.
     "webauthn>=3,<4",
+    "pymupdf>=1.28.2",
+    "pillow>=12.3.0",
 ]
 
 [dependency-groups]

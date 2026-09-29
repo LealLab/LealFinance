@@ -23,6 +23,13 @@ ProviderEvent = TextDelta | ToolCall | TurnEnd
 
 
 @dataclass(frozen=True, slots=True)
+class Attachment:
+    name: str
+    media_type: str
+    data: bytes
+
+
+@dataclass(frozen=True, slots=True)
 class ToolResultInput:
     call_id: str
     name: str
@@ -36,6 +43,7 @@ class Turn:
     text: str = ""
     tool_calls: tuple[ToolCall, ...] = ()
     tool_results: tuple[ToolResultInput, ...] = ()
+    attachments: tuple[Attachment, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

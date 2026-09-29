@@ -18,6 +18,7 @@ from sqlalchemy.sql.elements import ColumnElement
 from app.core.config import get_settings
 from app.core.errors import AppError, ValidationAppError
 from app.models.account import Account
+from app.models.agent_attachment import AgentAttachment
 from app.models.agent_conversation import AgentConversation
 from app.models.agent_credential import AgentCredential
 from app.models.agent_memory import AgentMemory
@@ -93,6 +94,7 @@ EXCLUDED_USER_OWNED_MODELS = {
     # Chat history is transient and provider-specific, not restorable financial
     # state; it is never exported or reconstructed.
     AgentConversation: "agent_conversations",
+    AgentAttachment: "agent_attachments",
     AgentMessage: "agent_messages",
     # Learned from chat; adding it to BACKUP_TABLES would also make every existing
     # archive fail the exact table-set check on import.

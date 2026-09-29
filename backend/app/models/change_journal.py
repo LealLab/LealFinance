@@ -39,6 +39,7 @@ JOURNAL_OPERATIONS = ("insert", "update", "delete")
 # copy encrypted credentials into `before`/`after`, or recurse.
 UNJOURNALED_TABLES = frozenset(
     {
+        "agent_attachments",
         "agent_conversations",
         "agent_credentials",
         "agent_memories",

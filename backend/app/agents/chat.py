@@ -1,12 +1,15 @@
 """Streaming provider adapters using raw httpx and normalized events."""
 
+import base64
 import json
 import logging
+import re
 import uuid
 from collections.abc import AsyncIterator
 from typing import Any, Literal
 
 import httpx
+import pymupdf
 
 from app.agents.credentials import ResolvedCredential
 from app.agents.events import ProviderEvent, TextDelta, ToolCall, ToolSpec, Turn, TurnEnd
@@ -22,6 +25,74 @@ _TIMEOUT = httpx.Timeout(60.0)
 # "the official CLI" traffic. Required only in oauth mode; api_key mode
 # has no such restriction.
 _ANTHROPIC_OAUTH_SYSTEM_PREFIX = "You are Claude Code, Anthropic's official CLI for Claude."
+
+
+async def supports_images(credential: ResolvedCredential) -> bool:
+    """Check the selected model before sending image or PDF page content."""
+    model = credential.model.lower()
+    if credential.provider == PROVIDER_ANTHROPIC:
+        return bool(
+            re.match(r"^claude-(?:[345]|(?:sonnet|opus|haiku|fable)-[345])(?:[-.]|$)", model)
+        )
+    if credential.provider == PROVIDER_OPENAI and not credential.base_url:
+        return model.startswith(("gpt-4o", "gpt-4.1", "gpt-5", "gpt-6", "o1", "o3", "o4"))
+    if credential.base_url:
+        try:
+            async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
+                response = await client.post(
+                    f"{credential.base_url.rstrip('/')}/api/show", json={"model": credential.model}
+                )
+                response.raise_for_status()
+                capabilities = response.json().get("capabilities", [])
+                return isinstance(capabilities, list) and "vision" in capabilities
+        except (httpx.HTTPError, ValueError, AttributeError):
+            return False
+    return False
+
+
+def _user_parts(turn: Turn) -> list[dict[str, str]]:
+    parts: list[dict[str, str]] = []
+    if turn.text:
+        parts.append({"type": "text", "text": turn.text})
+    for attachment in turn.attachments:
+        name = attachment.name
+        media_type = attachment.media_type
+        if media_type.startswith("image/"):
+            parts.append({"type": "text", "text": f"Attached image: {name}"})
+            parts.append(
+                {
+                    "type": "image",
+                    "media_type": media_type,
+                    "data": base64.b64encode(attachment.data).decode("ascii"),
+                }
+            )
+        elif media_type == "application/pdf":
+            with pymupdf.open(stream=attachment.data, filetype="pdf") as document:  # type: ignore[no-untyped-call]
+                for index, page in enumerate(document):
+                    if index >= 10:
+                        break
+                    text = page.get_text().strip()
+                    if len(text) > 12_000:
+                        text = text[:12_000] + "\n[page text truncated]"
+                    label = f"Attachment {name}, page {index + 1}"
+                    parts.append({"type": "text", "text": f"{label}:\n{text}" if text else label})
+                    scale = min(1.5, 1280 / max(page.rect.width, page.rect.height))
+                    pixmap = page.get_pixmap(
+                        matrix=pymupdf.Matrix(scale, scale),  # type: ignore[no-untyped-call]
+                        alpha=False,
+                    )
+                    parts.append(
+                        {
+                            "type": "image",
+                            "media_type": "image/png",
+                            "data": base64.b64encode(pixmap.tobytes("png")).decode("ascii"),
+                        }
+                    )
+        else:
+            parts.append(
+                {"type": "text", "text": f"Attachment {name}:\n{attachment.data.decode('utf-8')}"}
+            )
+    return parts
 
 
 async def stream_turn(
@@ -95,7 +166,25 @@ def _anthropic_messages(turns: list[Turn]) -> list[dict[str, Any]]:
                 }
             )
         else:
-            messages.append({"role": "user", "content": turn.text})
+            if turn.attachments:
+                content = []
+                for part in _user_parts(turn):
+                    if part["type"] == "image":
+                        content.append(
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": part["media_type"],
+                                    "data": part["data"],
+                                },
+                            }
+                        )
+                    else:
+                        content.append(part)
+                messages.append({"role": "user", "content": content})
+            else:
+                messages.append({"role": "user", "content": turn.text})
     return messages
 
 
@@ -231,11 +320,24 @@ def _codex_input(turns: list[Turn]) -> list[dict[str, Any]]:
                 for result in turn.tool_results
             )
         else:
+            content = (
+                [
+                    {
+                        "type": "input_image",
+                        "image_url": f"data:{part['media_type']};base64,{part['data']}",
+                    }
+                    if part["type"] == "image"
+                    else {"type": "input_text", "text": part["text"]}
+                    for part in _user_parts(turn)
+                ]
+                if turn.attachments
+                else [{"type": "input_text", "text": turn.text}]
+            )
             inputs.append(
                 {
                     "type": "message",
                     "role": "user",
-                    "content": [{"type": "input_text", "text": turn.text}],
+                    "content": content,
                 }
             )
     return inputs
@@ -346,7 +448,19 @@ def _compatible_messages(turns: list[Turn], system: str) -> list[dict[str, Any]]
                 for result in turn.tool_results
             )
         else:
-            messages.append({"role": "user", "content": turn.text})
+            if turn.attachments:
+                content = [
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:{part['media_type']};base64,{part['data']}"},
+                    }
+                    if part["type"] == "image"
+                    else part
+                    for part in _user_parts(turn)
+                ]
+                messages.append({"role": "user", "content": content})
+            else:
+                messages.append({"role": "user", "content": turn.text})
     return messages
 
 

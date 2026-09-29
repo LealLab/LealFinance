@@ -798,6 +798,7 @@ describe('HTTP repositories', () => {
           is_error: false,
           position: 0,
           created_at: '2026-01-02',
+          attachments: [{ id: 'a1', name: 'budget.csv', media_type: 'text/csv', size: 42 }],
         },
       ],
     });
@@ -806,7 +807,7 @@ describe('HTTP repositories', () => {
       status: 'awaiting_confirmation',
       pendingCallId: 'w1',
       updatedAt: '2026-01-02',
-      messages: [{ toolCalls: [{ id: 'w1', name: 'create_transaction', arguments: {} }] }],
+      messages: [{ toolCalls: [{ id: 'w1', name: 'create_transaction', arguments: {} }], attachments: [{ id: 'a1', name: 'budget.csv', mediaType: 'text/csv', size: 42 }] }],
     });
 
     TestBed.inject(HttpAgentChatRepository).deleteConversation('c1').subscribe();

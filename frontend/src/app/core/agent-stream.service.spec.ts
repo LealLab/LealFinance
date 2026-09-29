@@ -27,7 +27,9 @@ describe('AgentStreamService.stream', () => {
     );
     const service = new AgentStreamService();
 
-    const events = await firstValueFrom(service.stream('/agents/conversations/c1/messages', {}).pipe(toArray()));
+    const events = await firstValueFrom(
+      service.stream('/agents/conversations/c1/messages', {}).pipe(toArray()),
+    );
 
     expect(events).toEqual([
       { type: 'delta', text: 'He' },
@@ -48,7 +50,9 @@ describe('AgentStreamService.stream', () => {
 
     const events = await firstValueFrom(service.stream('/x', {}).pipe(toArray()));
 
-    expect(events).toEqual([{ type: 'error', code: 'agents.chat_not_allowed', params: {} }]);
+    expect(events).toEqual([
+      { type: 'error', code: 'agents.chat_not_allowed', params: {}, rejected: true },
+    ]);
   });
 
   it('emits a generic error frame when fetch rejects', async () => {
@@ -80,7 +84,9 @@ describe('parseFrame', () => {
       ok: true,
     });
     expect(
-      parseFrame('event: tool_confirm\ndata: {"id":"w1","name":"create_transaction","arguments":{}}'),
+      parseFrame(
+        'event: tool_confirm\ndata: {"id":"w1","name":"create_transaction","arguments":{}}',
+      ),
     ).toEqual({ type: 'tool_confirm', id: 'w1', name: 'create_transaction', arguments: {} });
   });
 
@@ -89,9 +95,9 @@ describe('parseFrame', () => {
       type: 'refusal',
       code: 'agents.off_topic',
     });
-    expect(parseFrame('event: error\ndata: {"code":"agents.provider_unavailable","params":{}}')).toEqual(
-      { type: 'error', code: 'agents.provider_unavailable', params: {} },
-    );
+    expect(
+      parseFrame('event: error\ndata: {"code":"agents.provider_unavailable","params":{}}'),
+    ).toEqual({ type: 'error', code: 'agents.provider_unavailable', params: {} });
   });
 
   it('maps message_id to messageId on the done frame', () => {

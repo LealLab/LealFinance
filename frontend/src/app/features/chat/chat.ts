@@ -24,6 +24,8 @@ import { InvestmentWalletRepository } from '../../data/investment-wallet.reposit
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentAttachment,
+  AgentAttachmentUpload,
   AgentStreamEvent,
 } from '../../domain/models/agent-chat';
 import { ConfirmService } from '../../core/confirm.service';
@@ -54,6 +56,12 @@ interface ChatTurn {
   text: string;
   tools: ChatTool[];
   pendingConfirm?: PendingConfirm;
+  attachments?: AgentAttachment[];
+}
+
+interface PendingAttachment {
+  file: File;
+  previewUrl?: string;
 }
 
 interface ConfirmationEntry {
@@ -63,7 +71,7 @@ interface ConfirmationEntry {
 }
 
 /**
- * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.group, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.generic)
+ * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.attach, chat.removeAttachment, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.group, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.attachmentInvalid, chat.errors.attachmentLimit, chat.errors.attachmentUnsupported, chat.errors.attachmentVisionRequired, chat.errors.generic)
  */
 @Component({
   selector: 'app-chat',
@@ -107,6 +115,12 @@ export class Chat {
   protected readonly errorKey = signal<string | null>(null);
   protected readonly refused = signal(false);
   protected readonly composer = signal('');
+  protected readonly pendingAttachments = signal<PendingAttachment[]>([]);
+  private inFlightDraft?: {
+    content: string;
+    attachments: PendingAttachment[];
+    conversationId: string;
+  };
   private readonly messagesEl = viewChild<ElementRef<HTMLElement>>('messages');
   /** Follow the newest message unless the user scrolled up to read history. */
   private stickToBottom = true;
@@ -122,6 +136,10 @@ export class Chat {
   private seededFor: string | null = null;
 
   constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.clearPendingAttachments();
+      this.releaseInFlightDraft();
+    });
     effect(() => {
       const rows = this.conversations.value();
       if (rows) this.conversationList.set(rows);
@@ -160,6 +178,8 @@ export class Chat {
       return;
     }
     this.streamSubscription?.unsubscribe();
+    this.clearPendingAttachments();
+    this.releaseInFlightDraft();
     this.streamSubscription = undefined;
     this.sending.set(false);
     this.refreshDetailAfterConfirmation = false;
@@ -175,6 +195,11 @@ export class Chat {
     this.errorKey.set(null);
     this.repo.createConversation().subscribe({
       next: (conversation) => {
+        this.streamSubscription?.unsubscribe();
+        this.streamSubscription = undefined;
+        this.sending.set(false);
+        this.clearPendingAttachments();
+        this.releaseInFlightDraft();
         this.conversationList.update((rows) => [conversation, ...rows]);
         this.conversations.reload();
         this.liveMessages.set([]);
@@ -186,11 +211,43 @@ export class Chat {
     });
   }
 
-  protected send(text: string): void {
+  protected onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    input.value = '';
+    if (!files.length) return;
+    if (
+      this.pendingAttachments().length + files.length > 3 ||
+      files.some((file) => file.size > 5 * 1024 * 1024)
+    ) {
+      this.errorKey.set('chat.errors.attachmentLimit');
+      return;
+    }
+    this.errorKey.set(null);
+    this.pendingAttachments.update((current) => [
+      ...current,
+      ...files.map((file) => ({
+        file,
+        ...(file.type.startsWith('image/') ? { previewUrl: URL.createObjectURL(file) } : {}),
+      })),
+    ]);
+  }
+
+  protected removeAttachment(attachment: PendingAttachment): void {
+    if (attachment.previewUrl) URL.revokeObjectURL(attachment.previewUrl);
+    this.pendingAttachments.update((current) => current.filter((item) => item !== attachment));
+  }
+
+  protected attachmentUrl(attachmentId: string): string {
+    return `/api/v1/agents/conversations/${encodeURIComponent(this.activeId() ?? '')}/attachments/${encodeURIComponent(attachmentId)}`;
+  }
+
+  protected async send(text: string): Promise<void> {
     const content = text.trim();
     const id = this.activeId();
+    const attachments = this.pendingAttachments();
     if (
-      !content ||
+      (!content && !attachments.length) ||
       !id ||
       this.sending() ||
       this.detail.value()?.status === 'awaiting_confirmation' ||
@@ -198,16 +255,83 @@ export class Chat {
     )
       return;
 
+    this.sending.set(true);
+    let uploads: AgentAttachmentUpload[];
+    try {
+      uploads = attachments.length
+        ? await Promise.all(
+            attachments.map(async ({ file }) => ({
+              name: file.name,
+              media_type: this.mediaTypeFor(file),
+              data: await this.fileData(file),
+            })),
+          )
+        : [];
+    } catch {
+      this.sending.set(false);
+      this.errorKey.set('chat.errors.attachmentInvalid');
+      return;
+    }
+    if (this.activeId() !== id) {
+      this.sending.set(false);
+      return;
+    }
+
     this.composer.set('');
+    this.pendingAttachments.set([]);
+    this.inFlightDraft = { content, attachments, conversationId: id };
     this.errorKey.set(null);
     this.refused.set(false);
     this.stickToBottom = true;
     this.liveMessages.update((turns) => [
       ...turns,
-      { role: 'user', text: content, tools: [] },
+      {
+        role: 'user',
+        text: content,
+        tools: [],
+        attachments: attachments.map(({ file }) => ({
+          id: '',
+          name: file.name,
+          mediaType: file.type,
+          size: file.size,
+        })),
+      },
       { role: 'assistant', text: '', tools: [] },
     ]);
-    this.readStream(this.repo.sendMessage(id, content));
+    this.readStream(this.repo.sendMessage(id, content, uploads));
+  }
+
+  private fileData(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result).split(',', 2)[1] ?? '');
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private mediaTypeFor(file: File): string {
+    if (/\.md$|\.txt$/i.test(file.name)) return 'text/plain';
+    if (/\.csv$/i.test(file.name)) return 'text/csv';
+    if (/\.jpe?g$/i.test(file.name)) return 'image/jpeg';
+    if (/\.png$/i.test(file.name)) return 'image/png';
+    if (/\.webp$/i.test(file.name)) return 'image/webp';
+    if (/\.pdf$/i.test(file.name)) return 'application/pdf';
+    return file.type || 'application/octet-stream';
+  }
+
+  private clearPendingAttachments(): void {
+    for (const attachment of this.pendingAttachments()) {
+      if (attachment.previewUrl) URL.revokeObjectURL(attachment.previewUrl);
+    }
+    this.pendingAttachments.set([]);
+  }
+
+  private releaseInFlightDraft(): void {
+    for (const attachment of this.inFlightDraft?.attachments ?? []) {
+      if (attachment.previewUrl) URL.revokeObjectURL(attachment.previewUrl);
+    }
+    this.inFlightDraft = undefined;
   }
 
   protected onComposerKeydown(event: KeyboardEvent): void {
@@ -388,10 +512,44 @@ export class Chat {
         this.refreshDetailAfterConfirmation = false;
         this.errorKey.set(this.errorKeyFor(event.code));
         this.sending.set(false);
+        if (event.rejected && this.inFlightDraft?.conversationId === this.activeId()) {
+          this.composer.set(this.inFlightDraft.content);
+          this.pendingAttachments.set(this.inFlightDraft.attachments);
+          this.inFlightDraft = undefined;
+          this.liveMessages.update((turns) => turns.slice(0, -2));
+        } else {
+          this.releaseInFlightDraft();
+        }
         break;
       case 'done':
         this.sending.set(false);
         this.conversations.reload();
+        if (this.inFlightDraft?.attachments.length) {
+          const id = this.inFlightDraft.conversationId;
+          this.repo
+            .getConversation(id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (conversation) => {
+                if (this.activeId() !== id) return;
+                const saved = [...conversation.messages]
+                  .reverse()
+                  .find((message) => message.role === 'user');
+                if (!saved) return;
+                this.liveMessages.update((turns) => {
+                  const next = [...turns];
+                  for (let index = next.length - 1; index >= 0; index--) {
+                    if (next[index].role !== 'user') continue;
+                    next[index] = { ...next[index], attachments: saved.attachments ?? [] };
+                    break;
+                  }
+                  return next;
+                });
+              },
+              error: () => undefined,
+            });
+        }
+        this.releaseInFlightDraft();
         if (this.refreshDetailAfterConfirmation) {
           this.refreshDetailAfterConfirmation = false;
           // `seededFor` keeps this reload from clobbering streamed bubbles.
@@ -454,6 +612,7 @@ export class Chat {
       turns.push({
         role: message.role === 'user' ? 'user' : 'assistant',
         text: message.content,
+        attachments: message.attachments,
         tools: message.toolCalls?.map((tool) => ({ id: tool.id, name: tool.name })) ?? [],
         ...(pendingCall
           ? {
@@ -558,6 +717,10 @@ export class Chat {
         'agents.not_configured': 'chat.errors.notConfigured',
         'agents.provider_unavailable': 'chat.errors.providerUnavailable',
         'agents.tool_loop_exhausted': 'chat.errors.loopExhausted',
+        'agents.attachment_invalid': 'chat.errors.attachmentInvalid',
+        'agents.attachment_limit': 'chat.errors.attachmentLimit',
+        'agents.attachment_unsupported': 'chat.errors.attachmentUnsupported',
+        'agents.attachment_vision_required': 'chat.errors.attachmentVisionRequired',
       }[code] ?? 'chat.errors.generic'
     );
   }

@@ -1,13 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, from, mergeMap, of } from 'rxjs';
-import {
-  AgentChatRepository,
-  ImportSuggestion,
-  ImportSuggestItem,
-} from '../agent-chat.repository';
+import { AgentChatRepository, ImportSuggestion, ImportSuggestItem } from '../agent-chat.repository';
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentAttachmentUpload,
   AgentMemory,
   AgentMessage,
   AgentStreamEvent,
@@ -64,7 +61,11 @@ export class MockAgentChatRepository extends AgentChatRepository {
       this.rows.delete(id);
     }, this.latencyMs);
   }
-  sendMessage(id: string, content: string): Observable<AgentStreamEvent> {
+  sendMessage(
+    id: string,
+    content: string,
+    attachments: AgentAttachmentUpload[] = [],
+  ): Observable<AgentStreamEvent> {
     return this.events(
       id,
       [
@@ -73,6 +74,8 @@ export class MockAgentChatRepository extends AgentChatRepository {
         { type: 'done', status: 'idle', messageId: 'm' },
       ],
       content,
+      true,
+      attachments,
     );
   }
   confirm(id: string, toolCallId: string, approved: boolean): Observable<AgentStreamEvent> {
@@ -130,6 +133,7 @@ export class MockAgentChatRepository extends AgentChatRepository {
     events: AgentStreamEvent[],
     assistantText: string,
     addUser = true,
+    attachments: AgentAttachmentUpload[] = [],
   ): Observable<AgentStreamEvent> {
     return mockResult(() => {
       const row = this.rows.get(id);
@@ -146,6 +150,12 @@ export class MockAgentChatRepository extends AgentChatRepository {
             isError: false,
             position: row.messages.length,
             createdAt: now,
+            attachments: attachments.map((attachment) => ({
+              id: `a${this.nextId++}`,
+              name: attachment.name,
+              mediaType: attachment.media_type,
+              size: Math.floor((attachment.data.length * 3) / 4),
+            })),
           });
         row.messages.push({
           id: `m${this.nextId++}`,
@@ -157,6 +167,7 @@ export class MockAgentChatRepository extends AgentChatRepository {
           isError: false,
           position: row.messages.length,
           createdAt: now,
+          attachments: [],
         });
         row.conversation = { ...row.conversation, status: 'idle', updatedAt: now };
       }

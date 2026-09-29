@@ -5,17 +5,14 @@ import { ApiClient } from '../../core/api-client';
 import {
   AgentConversation,
   AgentConversationDetail,
+  AgentAttachmentUpload,
   AgentMemory,
   AgentMessage,
   AgentStreamEvent,
   AgentToolCall,
   McpToken,
 } from '../../domain/models/agent-chat';
-import {
-  AgentChatRepository,
-  ImportSuggestion,
-  ImportSuggestItem,
-} from '../agent-chat.repository';
+import { AgentChatRepository, ImportSuggestion, ImportSuggestItem } from '../agent-chat.repository';
 
 interface ConversationWire {
   id: string;
@@ -38,6 +35,7 @@ interface MessageWire {
   is_error: boolean;
   position: number;
   created_at: string;
+  attachments?: { id: string; name: string; media_type: string; size: number }[];
 }
 interface ConversationDetailWire extends ConversationWire {
   messages: MessageWire[];
@@ -82,6 +80,12 @@ const mapMessage = (value: MessageWire): AgentMessage => ({
   isError: value.is_error,
   position: value.position,
   createdAt: value.created_at,
+  attachments: (value.attachments ?? []).map((attachment) => ({
+    id: attachment.id,
+    name: attachment.name,
+    mediaType: attachment.media_type,
+    size: attachment.size,
+  })),
 });
 const mapMemory = (value: MemoryWire): AgentMemory => ({
   id: value.id,
@@ -123,10 +127,15 @@ export class HttpAgentChatRepository extends AgentChatRepository {
   deleteConversation(id: string): Observable<void> {
     return this.api.delete<void>(`/agents/conversations/${id}`);
   }
-  sendMessage(id: string, content: string): Observable<AgentStreamEvent> {
+  sendMessage(
+    id: string,
+    content: string,
+    attachments?: AgentAttachmentUpload[],
+  ): Observable<AgentStreamEvent> {
     return this.stream.stream(`/agents/conversations/${id}/messages`, {
       content,
       client_date: localDate(),
+      ...(attachments?.length ? { attachments } : {}),
     });
   }
   confirm(
@@ -142,9 +151,7 @@ export class HttpAgentChatRepository extends AgentChatRepository {
       ...(args ? { arguments: args } : {}),
     });
   }
-  suggestImportCategories(
-    items: readonly ImportSuggestItem[],
-  ): Observable<ImportSuggestion[]> {
+  suggestImportCategories(items: readonly ImportSuggestItem[]): Observable<ImportSuggestion[]> {
     return this.api
       .post<{ suggestions: SuggestionWire[] }>('/agents/import/suggest', { items })
       .pipe(
@@ -170,9 +177,7 @@ export class HttpAgentChatRepository extends AgentChatRepository {
       .pipe(map((value) => value.instructions ?? ''));
   }
   listMemories(): Observable<AgentMemory[]> {
-    return this.api
-      .get<MemoryWire[]>('/agents/memories')
-      .pipe(map((rows) => rows.map(mapMemory)));
+    return this.api.get<MemoryWire[]>('/agents/memories').pipe(map((rows) => rows.map(mapMemory)));
   }
   deleteMemory(id: string): Observable<void> {
     return this.api.delete<void>(`/agents/memories/${id}`);

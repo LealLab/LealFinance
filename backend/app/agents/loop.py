@@ -11,7 +11,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents import chat, tools
 from app.agents.credentials import ResolvedCredential
-from app.agents.events import ProviderEvent, TextDelta, ToolCall, ToolResultInput, Turn, TurnEnd
+from app.agents.events import (
+    Attachment,
+    ProviderEvent,
+    TextDelta,
+    ToolCall,
+    ToolResultInput,
+    Turn,
+    TurnEnd,
+)
 from app.agents.prompt import OFF_TOPIC_CODE, OFF_TOPIC_MARKER
 from app.core.errors import AppError, BadGatewayError
 from app.models.agent_conversation import (
@@ -371,7 +379,16 @@ def rehydrate_turns(messages: Sequence[AgentMessage]) -> list[Turn]:
     while index < len(ordered):
         message = ordered[index]
         if message.role == "user" and message.tool_call_id is None:
-            turns.append(Turn(role="user", text=message.content))
+            turns.append(
+                Turn(
+                    role="user",
+                    text=message.content,
+                    attachments=tuple(
+                        Attachment(item.name, item.media_type, item.data)
+                        for item in message.attachments
+                    ),
+                )
+            )
         elif message.role == "tool":
             results: list[ToolResultInput] = []
             while index < len(ordered) and ordered[index].role == "tool":

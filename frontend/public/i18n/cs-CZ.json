@@ -11,6 +11,8 @@
       "placeholder": "Zeptejte se na své finance…"
     },
     "send": "Odeslat",
+    "attach": "Připojit soubory",
+    "removeAttachment": "Odebrat {{name}}",
     "offTopic": "Mohu vám pomoci s LealFinance a vašimi financemi, ale ne s tímto tématem.",
     "thinking": "Přemýšlím…",
     "toolRunning": "Spouští se",
@@ -33,7 +35,11 @@
       "notConfigured": "Zatím není nastaven žádný poskytovatel AI.",
       "providerUnavailable": "Poskytovatel AI je momentálně nedostupný.",
       "loopExhausted": "Asistent nemohl tento požadavek dokončit.",
-      "generic": "Něco se pokazilo. Zkuste to prosím znovu."
+      "generic": "Něco se pokazilo. Zkuste to prosím znovu.",
+      "attachmentInvalid": "Soubor je neplatný. Zkontrolujte název a obsah.",
+      "attachmentLimit": "Příloh je příliš mnoho nebo jsou příliš velké. Nejvýše 3 soubory po 5 MB.",
+      "attachmentUnsupported": "Tento typ souboru není podporován. Použijte obrázek, PDF, text nebo CSV.",
+      "attachmentVisionRequired": "Vybraný model neumí číst obrázky ani stránky PDF."
     }
   },
   "app": {

@@ -5,7 +5,7 @@ from datetime import date, datetime
 from typing import Any, Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
 ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
@@ -87,6 +87,16 @@ class AgentMessageRead(BaseModel):
     is_error: bool
     position: int
     created_at: datetime
+    attachments: list["AgentAttachmentRead"] = []
+
+
+class AgentAttachmentRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    name: str
+    media_type: str
+    size: int
 
 
 class ConversationDetailRead(ConversationRead):
@@ -94,11 +104,24 @@ class ConversationDetailRead(ConversationRead):
 
 
 class MessageCreate(BaseModel):
-    content: str = Field(min_length=1, max_length=8000)
+    content: str = Field(default="", max_length=8000)
+    attachments: list["AgentAttachmentCreate"] = Field(default_factory=list)
     # The client's local calendar day, so "today" in the prompt matches the
     # user's timezone rather than the server's UTC. Falls back to the server
     # date when absent (e.g. an external MCP client).
     client_date: date | None = None
+
+    @model_validator(mode="after")
+    def require_content(self) -> "MessageCreate":
+        if not self.content.strip() and not self.attachments:
+            raise ValueError("message needs text or an attachment")
+        return self
+
+
+class AgentAttachmentCreate(BaseModel):
+    name: str
+    media_type: str
+    data: str
 
 
 class ConfirmCreate(BaseModel):

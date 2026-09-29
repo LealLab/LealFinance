@@ -21,6 +21,20 @@ in-app chat only; the standalone MCP server accepts active administrators only.
 Demoting or deactivating an administrator revokes their existing MCP tokens
 immediately.
 
+## Chat attachments
+
+Users can send up to three files with a message, or send files without text:
+JPEG, PNG, WebP, PDF, UTF-8 text or Markdown, and UTF-8 CSV. Each file is limited
+to 5 MB, attachments in one conversation to 10 MB, and a PDF to ten pages. PDFs
+are sent to the selected provider as page images with extractable page text, so
+scanned pages can be read by vision-capable models. Image and PDF uploads are
+rejected if the selected model lacks vision support; the app does not change
+models automatically.
+
+Files are stored with their messages and can be downloaded from conversation
+history by their owner. Deleting the conversation removes its files. Chat history,
+including attachments, remains excluded from financial backup export and restore.
+
 ## Custom instructions
 
 Each user can write their own instructions for the assistant from Settings.

@@ -4,10 +4,11 @@ by `_require_agents_enabled` and admin auth, so the whole surface 404s as
 entirely behind (see CLAUDE.md's AI Agents section)."""
 
 from datetime import UTC, datetime, timedelta
+from urllib.parse import quote
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 
 from app.agents import MCP_TOKEN_TTL_SECONDS
 from app.api.deps import AdminUser, AiChatUser, DbSession
@@ -154,18 +155,32 @@ async def delete_conversation(conversation_id: UUID, user: AiChatUser, db: DbSes
     await agent_chat.delete_conversation(db, user.id, conversation_id)
 
 
+@router.get("/conversations/{conversation_id}/attachments/{attachment_id}")
+async def get_attachment(
+    conversation_id: UUID, attachment_id: UUID, user: AiChatUser, db: DbSession
+) -> Response:
+    attachment = await agent_chat.get_attachment(db, user.id, conversation_id, attachment_id)
+    return Response(
+        content=attachment.data,
+        media_type=attachment.media_type,
+        headers={
+            "Content-Disposition": f"attachment; filename*=UTF-8''{quote(attachment.name)}",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": "sandbox",
+            "Cache-Control": "private, no-store",
+        },
+    )
+
+
 @router.post("/conversations/{conversation_id}/messages")
 async def post_message(
     conversation_id: UUID, payload: MessageCreate, user: AiChatUser, db: DbSession
 ) -> StreamingResponse:
-    await agent_chat.get_conversation(db, user.id, conversation_id)
-    # The request session is only for the pre-stream ownership check. The
-    # generator opens its own session because FastAPI may close this one first.
+    await agent_chat.prepare_message(db, user.id, conversation_id, payload)
+    # The generator opens its own session because FastAPI may close this one first.
     return StreamingResponse(
         agent_chat._heartbeat(
-            agent_chat.stream_message(
-                user.id, conversation_id, payload.content, payload.client_date
-            )
+            agent_chat.stream_message(user.id, conversation_id, payload.client_date)
         ),
         media_type="text/event-stream",
         headers={
