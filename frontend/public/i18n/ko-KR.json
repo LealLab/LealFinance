@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "{{label}}은(는) 무엇인가요?",
-      "marketValue": "현재 보유 포지션의 가치: 각 자산의 수량에 최신 가격을 곱한 값입니다. 가격 정보가 없는 자산이 있으면 합계는 —로 표시됩니다.",
+      "marketValue": "현재 보유 포지션의 가치: 각 자산의 수량에 최신 가격을 곱한 값입니다. 가격 정보가 없는 자산이 있으면 합계는 —로 표시됩니다. 누적 수익도 포함됩니다.",
       "bookValue": "현재 보유 중인 포지션에 지불한 금액: 각 자산의 수량에 평균 매입가를 곱한 값입니다.",
       "unrealizedGain": "시장가에서 장부가를 뺀 값: 오늘 전부 매도할 경우 얻게 될(또는 잃게 될) 금액입니다. 실제로 매도해야 비로소 확정 수익이 됩니다."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "거래 원장",
       "ledgerEmpty": {
         "title": "아직 거래가 없습니다",
-        "description": "원장을 시작하려면 매수, 매도, 배당 또는 수수료를 기록하세요."
+        "description": "거래를 기록하여 내역을 시작하세요."
       },
       "stale": "가격을 사용할 수 없습니다"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "평균 매입가",
       "price": "가격",
       "marketValue": "시장가",
+      "yieldBalance": "누적 수익",
       "unrealizedGain": "미실현 수익",
       "allocation": "배분",
       "type": "유형",
@@ -1296,7 +1297,8 @@
       "buy": "매수",
       "sell": "매도",
       "dividend": "배당",
-      "fee": "수수료"
+      "fee": "수수료",
+      "yield": "수익"
     },
     "assetClass": {
       "stock": "주식",
@@ -1354,7 +1356,8 @@
           "notes": "메모"
         },
         "errors": {
-          "invalid": "필수 항목을 올바른 값으로 입력하세요."
+          "invalid": "필수 항목을 올바른 값으로 입력하세요.",
+          "yieldAsset": "수동 가격이 설정되어 있고 현재 보유 중인 자산을 선택하세요."
         },
         "actions": {
           "cancel": "취소",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "해당 거래는 더 이상 존재하지 않습니다.",
       "quantity_price_required": "매수와 매도에는 수량과 가격이 필요합니다.",
-      "quantity_price_not_allowed": "배당금과 수수료에는 수량과 가격이 아닌 금액을 사용합니다.",
+      "quantity_price_not_allowed": "배당금과 수수료에는 수량과 가격이 아닌 금액을 사용합니다. 수익도 마찬가지입니다.",
       "asset_required": "이 거래의 자산을 선택하세요.",
       "currency_must_match_wallet": "거래 통화는 지갑 통화와 일치해야 합니다.",
       "insufficient_quantity": "현재 보유한 수량보다 많이 매도할 수 없습니다.",
       "settlement_amount_not_positive": "결제 금액은 0보다 커야 합니다.",
       "price_unavailable": "선택한 날짜의 가격을 사용할 수 없습니다.",
       "future_date": "이 거래에는 미래 날짜를 사용할 수 없습니다.",
-      "ledger_invalid": "이 변경으로 이후 거래가 유효하지 않게 됩니다. 먼저 해당 거래를 되돌리거나 수정하세요."
+      "ledger_invalid": "이 변경으로 이후 거래가 유효하지 않게 됩니다. 먼저 해당 거래를 되돌리거나 수정하세요.",
+      "yield_requires_manual_price": "수익을 기록하려면 이 자산에 수동 가격을 설정해야 합니다.",
+      "yield_amount_not_positive": "수익 금액은 0보다 커야 합니다.",
+      "yield_fee_not_allowed": "수익에는 수수료를 추가할 수 없습니다.",
+      "yield_requires_position": "수익을 기록하기 전에 이 자산을 보유해야 합니다."
     },
     "market_data_credential": {
       "not_found": "해당 제공업체의 API 키가 저장되어 있지 않습니다.",

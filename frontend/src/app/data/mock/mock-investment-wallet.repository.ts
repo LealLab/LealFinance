@@ -25,6 +25,7 @@ interface Fold {
   cost: number;
   realizedGain: number;
   dividendIncome: number;
+  yieldBalance: number;
   feesPaid: number;
 }
 
@@ -34,6 +35,7 @@ function fold(asset: InvestmentAsset, rows: InvestmentTransaction[]): Investment
     cost: 0,
     realizedGain: 0,
     dividendIncome: 0,
+    yieldBalance: 0,
     feesPaid: 0,
   };
 
@@ -53,9 +55,15 @@ function fold(asset: InvestmentAsset, rows: InvestmentTransaction[]): Investment
       result.realizedGain += quantity * price - fee - averageCost * quantity;
       result.quantity -= quantity;
       result.cost -= averageCost * quantity;
+      result.yieldBalance *= result.quantity / (result.quantity + quantity);
       if (result.quantity === 0) result.cost = 0;
     } else if (row.type === 'dividend') {
       result.dividendIncome += amount;
+    } else if (row.type === 'yield') {
+      if (asset.quoteProvider !== 'manual' || !(Number(asset.manualPrice) > 0) || result.quantity <= 0 || amount <= 0) {
+        throw new Error('yield requires a priced manual asset with a held position');
+      }
+      result.yieldBalance += amount;
     } else {
       result.feesPaid += amount;
     }
@@ -63,7 +71,7 @@ function fold(asset: InvestmentAsset, rows: InvestmentTransaction[]): Investment
 
   const price = asset.manualPrice;
   // ponytail: mock fixtures keep asset and wallet currencies equal; add conversion when quote pairs are mocked.
-  const marketValue = price === undefined ? undefined : result.quantity * Number(price);
+  const marketValue = price === undefined ? undefined : result.quantity * Number(price) + result.yieldBalance;
   return {
     asset,
     quantity: decimal(result.quantity),
@@ -76,6 +84,7 @@ function fold(asset: InvestmentAsset, rows: InvestmentTransaction[]): Investment
       marketValue === undefined ? undefined : decimal(marketValue - result.cost),
     realizedGain: decimal(result.realizedGain),
     dividendIncome: decimal(result.dividendIncome),
+    yieldBalance: decimal(result.yieldBalance),
     feesPaid: decimal(result.feesPaid),
     // ponytail: mock fixtures are same-currency and have no quote fallback source.
     marketValueIsFallback: false,

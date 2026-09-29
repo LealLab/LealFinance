@@ -1276,7 +1276,7 @@
     },
     "help": {
       "label": "What is {{label}}?",
-      "marketValue": "What your positions are worth today: each asset's quantity times its latest quote. If any asset has no price, the total shows as —.",
+      "marketValue": "What your positions are worth today: each asset's quantity times its latest quote. If any asset has no price, the total shows as —. This also includes accrued yield.",
       "bookValue": "What you paid for the positions you still hold: each asset's quantity times its average purchase cost.",
       "unrealizedGain": "Market value minus book value: what you would gain (or lose) if you sold everything today. It only becomes a real gain when you sell."
     },
@@ -1300,7 +1300,7 @@
       "ledger": "Transaction ledger",
       "ledgerEmpty": {
         "title": "No transactions yet",
-        "description": "Record a buy, sell, dividend, or fee to start the ledger."
+        "description": "Record a transaction to start the ledger."
       },
       "stale": "Price unavailable"
     },
@@ -1310,6 +1310,7 @@
       "averageCost": "Average cost",
       "price": "Price",
       "marketValue": "Market value",
+      "yieldBalance": "Accrued yield",
       "unrealizedGain": "Unrealized gain",
       "allocation": "Allocation",
       "type": "Type",
@@ -1322,7 +1323,8 @@
       "buy": "Buy",
       "sell": "Sell",
       "dividend": "Dividend",
-      "fee": "Fee"
+      "fee": "Fee",
+      "yield": "Yield"
     },
     "assetClass": {
       "stock": "Stock",
@@ -1380,7 +1382,8 @@
           "notes": "Notes"
         },
         "errors": {
-          "invalid": "Complete the required fields with valid values."
+          "invalid": "Complete the required fields with valid values.",
+          "yieldAsset": "Choose an asset with a manual price and an existing position."
         },
         "actions": {
           "cancel": "Cancel",
@@ -2184,14 +2187,18 @@
     "investment_transaction": {
       "not_found": "That transaction no longer exists.",
       "quantity_price_required": "Buys and sells need a quantity and a price.",
-      "quantity_price_not_allowed": "Dividends and fees use an amount, not a quantity and price.",
+      "quantity_price_not_allowed": "Dividends and fees use an amount, not a quantity and price. Yields do too.",
       "asset_required": "Choose an asset for this transaction.",
       "currency_must_match_wallet": "The transaction currency must match the wallet's currency.",
       "insufficient_quantity": "You can't sell more than you currently hold.",
       "settlement_amount_not_positive": "The settlement amount must be greater than zero.",
       "price_unavailable": "No price is available for the selected date.",
       "future_date": "A future date cannot be used for this transaction.",
-      "ledger_invalid": "This change would leave a later transaction invalid. Undo or edit that one first."
+      "ledger_invalid": "This change would leave a later transaction invalid. Undo or edit that one first.",
+      "yield_requires_manual_price": "This asset needs a configured manual price to record a yield.",
+      "yield_amount_not_positive": "The yield amount must be greater than zero.",
+      "yield_fee_not_allowed": "A yield cannot have a fee.",
+      "yield_requires_position": "Hold some units of this asset before recording a yield."
     },
     "market_data_credential": {
       "not_found": "No API key is stored for that provider.",

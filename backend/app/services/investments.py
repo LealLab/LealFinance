@@ -18,6 +18,8 @@ from app.models.investment import (
     INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
     INVESTMENT_TRANSACTION_TYPE_FEE,
     INVESTMENT_TRANSACTION_TYPE_SELL,
+    INVESTMENT_TRANSACTION_TYPE_YIELD,
+    QUOTE_PROVIDER_MANUAL,
     InvestmentAsset,
     InvestmentTransaction,
     InvestmentWallet,
@@ -257,9 +259,11 @@ def _validate_shape(
         raise ValidationAppError(code="investment_transaction.quantity_price_required")
     if type_ == INVESTMENT_TRANSACTION_TYPE_BUY and ((quantity is None) != (price is None)):
         raise ValidationAppError(code="investment_transaction.quantity_price_required")
-    if type_ in (INVESTMENT_TRANSACTION_TYPE_DIVIDEND, INVESTMENT_TRANSACTION_TYPE_FEE) and (
-        quantity is not None or price is not None
-    ):
+    if type_ in (
+        INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
+        INVESTMENT_TRANSACTION_TYPE_FEE,
+        INVESTMENT_TRANSACTION_TYPE_YIELD,
+    ) and (quantity is not None or price is not None):
         raise ValidationAppError(code="investment_transaction.quantity_price_not_allowed")
     if type_ != INVESTMENT_TRANSACTION_TYPE_FEE and asset_id is None:
         raise ValidationAppError(code="investment_transaction.asset_required")
@@ -325,6 +329,8 @@ async def _validate_transaction(
     type_: str,
     quantity: Decimal | None,
     price: Decimal | None,
+    amount: Decimal,
+    fee: Decimal,
     currency: str,
     exclude_transaction_id: UUID | None = None,
 ) -> tuple[InvestmentWallet, InvestmentAsset | None]:
@@ -351,6 +357,19 @@ async def _validate_transaction(
         )
         if quantity > position.quantity:
             raise ValidationAppError(code="investment_transaction.insufficient_quantity")
+    if type_ == INVESTMENT_TRANSACTION_TYPE_YIELD:
+        assert asset is not None
+        if asset.quote_provider != QUOTE_PROVIDER_MANUAL or not asset.manual_price:
+            raise ValidationAppError(code="investment_transaction.yield_requires_manual_price")
+        if amount <= 0:
+            raise ValidationAppError(code="investment_transaction.yield_amount_not_positive")
+        if fee != 0:
+            raise ValidationAppError(code="investment_transaction.yield_fee_not_allowed")
+        position = await investment_positions.get_position(
+            db, user_id, wallet.id, asset.id, exclude_transaction_id=exclude_transaction_id
+        )
+        if position.quantity <= 0:
+            raise ValidationAppError(code="investment_transaction.yield_requires_position")
     return wallet, asset
 
 
@@ -464,6 +483,8 @@ async def _prepare_investment_transaction(
         data.type,
         data.quantity,
         data.price,
+        data.amount,
+        data.fee,
         data.currency,
         exclude_transaction_id=exclude_transaction_id,
     )
@@ -574,6 +595,11 @@ async def create_investment_transaction(
     db.add(transaction)
     try:
         await db.flush()
+        if data.type == INVESTMENT_TRANSACTION_TYPE_YIELD:
+            assert data.asset_id is not None
+            await investment_positions.assert_ledger_still_folds(
+                db, user_id, data.wallet_id, data.asset_id
+            )
         if prepared.cash_account is not None and prepared.settlement is not None:
             posted = await _settle_cash_leg(
                 db,

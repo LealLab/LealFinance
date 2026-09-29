@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Mikä on {{label}}?",
-      "marketValue": "Kuinka paljon omistuksesi ovat tänään arvoisia: kunkin omaisuuserän määrä kerrottuna sen viimeisimmällä hinnalla. Jos jollain omaisuuserällä ei ole hintaa, summa näytetään merkillä —.",
+      "marketValue": "Kuinka paljon omistuksesi ovat tänään arvoisia: kunkin omaisuuserän määrä kerrottuna sen viimeisimmällä hinnalla. Jos jollain omaisuuserällä ei ole hintaa, summa näytetään merkillä —. Myös kertynyt tuotto sisältyy arvoon.",
       "bookValue": "Kuinka paljon maksoit omistuksista, jotka sinulla on yhä: kunkin omaisuuserän määrä kerrottuna keskimääräisellä hankintahinnalla.",
       "unrealizedGain": "Markkina-arvo miinus hankinta-arvo: kuinka paljon voittaisit (tai häviäisit), jos myisit kaiken tänään. Siitä tulee todellista voittoa vasta, kun myyt."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Tapahtumakirjanpito",
       "ledgerEmpty": {
         "title": "Tapahtumia ei ole vielä",
-        "description": "Kirjaa osto, myynti, osinko tai kulu aloittaaksesi tapahtumakirjanpidon."
+        "description": "Kirjaa tapahtuma aloittaaksesi tapahtumahistorian."
       },
       "stale": "Hinta ei ole saatavilla"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Keskimääräinen hankintahinta",
       "price": "Hinta",
       "marketValue": "Markkina-arvo",
+      "yieldBalance": "Kertynyt tuotto",
       "unrealizedGain": "Realisoitumaton voitto",
       "allocation": "Allokaatio",
       "type": "Tyyppi",
@@ -1296,7 +1297,8 @@
       "buy": "Osto",
       "sell": "Myynti",
       "dividend": "Osinko",
-      "fee": "Kulu"
+      "fee": "Kulu",
+      "yield": "Tuotto"
     },
     "assetClass": {
       "stock": "Osake",
@@ -1354,7 +1356,8 @@
           "notes": "Muistiinpanot"
         },
         "errors": {
-          "invalid": "Täytä pakolliset kentät kelvollisilla arvoilla."
+          "invalid": "Täytä pakolliset kentät kelvollisilla arvoilla.",
+          "yieldAsset": "Valitse omaisuuserä, jolla on manuaalinen hinta ja olemassa oleva omistus."
         },
         "actions": {
           "cancel": "Peruuta",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Tuota tapahtumaa ei ole enää olemassa.",
       "quantity_price_required": "Ostot ja myynnit vaativat määrän ja hinnan.",
-      "quantity_price_not_allowed": "Osingoissa ja kuluissa käytetään summaa, ei määrää ja hintaa.",
+      "quantity_price_not_allowed": "Osingoissa ja kuluissa käytetään summaa, ei määrää ja hintaa. Sama koskee tuottoja.",
       "asset_required": "Valitse tälle tapahtumalle omaisuuserä.",
       "currency_must_match_wallet": "Tapahtuman valuutan on oltava sama kuin lompakon valuutta.",
       "insufficient_quantity": "Et voi myydä enempää kuin omistat tällä hetkellä.",
       "settlement_amount_not_positive": "Selvityssumman on oltava suurempi kuin nolla.",
       "price_unavailable": "Valitulle päivälle ei ole hintaa saatavilla.",
       "future_date": "Tulevaa päivämäärää ei voi käyttää tässä tapahtumassa.",
-      "ledger_invalid": "Tämä muutos tekisi myöhemmästä tapahtumasta virheellisen. Kumoa tai muokkaa sitä ensin."
+      "ledger_invalid": "Tämä muutos tekisi myöhemmästä tapahtumasta virheellisen. Kumoa tai muokkaa sitä ensin.",
+      "yield_requires_manual_price": "Omaisuuserälle on asetettava manuaalinen hinta ennen tuoton kirjaamista.",
+      "yield_amount_not_positive": "Tuoton määrän on oltava suurempi kuin nolla.",
+      "yield_fee_not_allowed": "Tuottoon ei voi lisätä maksua.",
+      "yield_requires_position": "Sinun on omistettava tätä omaisuuserää ennen tuoton kirjaamista."
     },
     "market_data_credential": {
       "not_found": "Tälle palveluntarjoajalle ei ole tallennettu API-avainta.",

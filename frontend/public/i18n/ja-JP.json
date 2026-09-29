@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "{{label}}とは？",
-      "marketValue": "現在のポジションの評価額: 各資産の数量に最新の価格を掛けたものです。価格が取得できない資産がある場合、合計は「—」と表示されます。",
+      "marketValue": "現在のポジションの評価額: 各資産の数量に最新の価格を掛けたものです。価格が取得できない資産がある場合、合計は「—」と表示されます。 累積収益も含まれます。",
       "bookValue": "現在保有しているポジションに支払った金額: 各資産の数量に平均取得単価を掛けたものです。",
       "unrealizedGain": "時価から簿価を差し引いた額: 今日すべて売却した場合に得られる(または失う)金額です。実際に売却して初めて確定した利益になります。"
     },
@@ -1274,7 +1274,7 @@
       "ledger": "取引台帳",
       "ledgerEmpty": {
         "title": "取引はまだありません",
-        "description": "台帳を開始するには、買い、売り、配当、または手数料を記録してください。"
+        "description": "取引を記録して履歴を開始してください。"
       },
       "stale": "価格を取得できません"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "平均取得単価",
       "price": "価格",
       "marketValue": "時価",
+      "yieldBalance": "累積収益",
       "unrealizedGain": "未実現利益",
       "allocation": "配分",
       "type": "種類",
@@ -1296,7 +1297,8 @@
       "buy": "購入",
       "sell": "売却",
       "dividend": "配当",
-      "fee": "手数料"
+      "fee": "手数料",
+      "yield": "収益"
     },
     "assetClass": {
       "stock": "株式",
@@ -1354,7 +1356,8 @@
           "notes": "メモ"
         },
         "errors": {
-          "invalid": "必須項目に有効な値を入力してください。"
+          "invalid": "必須項目に有効な値を入力してください。",
+          "yieldAsset": "手動価格が設定され、保有中の資産を選択してください。"
         },
         "actions": {
           "cancel": "キャンセル",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "その取引は存在しなくなりました。",
       "quantity_price_required": "買いと売りには数量と価格が必要です。",
-      "quantity_price_not_allowed": "配当と手数料では、数量と価格ではなく金額を使います。",
+      "quantity_price_not_allowed": "配当と手数料では、数量と価格ではなく金額を使います。 収益も同様です。",
       "asset_required": "この取引の資産を選択してください。",
       "currency_must_match_wallet": "取引の通貨はウォレットの通貨と一致している必要があります。",
       "insufficient_quantity": "現在保有している数量を超えて売却することはできません。",
       "settlement_amount_not_positive": "決済額は 0 より大きくする必要があります。",
       "price_unavailable": "選択した日付の価格は利用できません。",
       "future_date": "この取引には未来の日付を使用できません。",
-      "ledger_invalid": "この変更を行うと、後の取引が無効になります。先にその取引を取り消すか編集してください。"
+      "ledger_invalid": "この変更を行うと、後の取引が無効になります。先にその取引を取り消すか編集してください。",
+      "yield_requires_manual_price": "収益を記録するには、この資産に手動価格を設定してください。",
+      "yield_amount_not_positive": "収益額はゼロより大きくする必要があります。",
+      "yield_fee_not_allowed": "収益に手数料は設定できません。",
+      "yield_requires_position": "収益を記録する前に、この資産を保有している必要があります。"
     },
     "market_data_credential": {
       "not_found": "そのプロバイダーの API キーは保存されていません。",

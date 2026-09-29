@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Apa itu {{label}}?",
-      "marketValue": "Nilai posisi Anda saat ini: kuantitas setiap aset dikalikan harga terbarunya. Jika ada aset tanpa harga, totalnya ditampilkan sebagai —.",
+      "marketValue": "Nilai posisi Anda saat ini: kuantitas setiap aset dikalikan harga terbarunya. Jika ada aset tanpa harga, totalnya ditampilkan sebagai —. Nilai ini juga mencakup akumulasi imbal hasil.",
       "bookValue": "Jumlah yang Anda bayarkan untuk posisi yang masih Anda miliki: kuantitas setiap aset dikalikan biaya pembelian rata-ratanya.",
       "unrealizedGain": "Nilai pasar dikurangi nilai buku: keuntungan (atau kerugian) yang akan Anda peroleh jika menjual semuanya hari ini. Ini baru menjadi keuntungan nyata saat Anda benar-benar menjual."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Buku transaksi",
       "ledgerEmpty": {
         "title": "Belum ada transaksi",
-        "description": "Catat pembelian, penjualan, dividen, atau biaya untuk memulai buku transaksi."
+        "description": "Catat transaksi untuk memulai riwayat."
       },
       "stale": "Harga tidak tersedia"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Biaya rata-rata",
       "price": "Harga",
       "marketValue": "Nilai pasar",
+      "yieldBalance": "Akumulasi imbal hasil",
       "unrealizedGain": "Keuntungan belum terealisasi",
       "allocation": "Alokasi",
       "type": "Jenis",
@@ -1296,7 +1297,8 @@
       "buy": "Beli",
       "sell": "Jual",
       "dividend": "Dividen",
-      "fee": "Biaya"
+      "fee": "Biaya",
+      "yield": "Imbal hasil"
     },
     "assetClass": {
       "stock": "Saham",
@@ -1354,7 +1356,8 @@
           "notes": "Catatan"
         },
         "errors": {
-          "invalid": "Lengkapi kolom wajib dengan nilai yang valid."
+          "invalid": "Lengkapi kolom wajib dengan nilai yang valid.",
+          "yieldAsset": "Pilih aset dengan harga manual dan posisi yang sudah ada."
         },
         "actions": {
           "cancel": "Batal",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Transaksi tersebut sudah tidak ada.",
       "quantity_price_required": "Pembelian dan penjualan memerlukan kuantitas dan harga.",
-      "quantity_price_not_allowed": "Dividen dan biaya menggunakan jumlah, bukan kuantitas dan harga.",
+      "quantity_price_not_allowed": "Dividen dan biaya menggunakan jumlah, bukan kuantitas dan harga. Imbal hasil juga demikian.",
       "asset_required": "Pilih aset untuk transaksi ini.",
       "currency_must_match_wallet": "Mata uang transaksi harus sama dengan mata uang dompet.",
       "insufficient_quantity": "Anda tidak dapat menjual lebih banyak daripada yang saat ini Anda miliki.",
       "settlement_amount_not_positive": "Jumlah penyelesaian harus lebih besar dari nol.",
       "price_unavailable": "Tidak ada harga yang tersedia untuk tanggal yang dipilih.",
       "future_date": "Tanggal mendatang tidak dapat digunakan untuk transaksi ini.",
-      "ledger_invalid": "Perubahan ini akan membuat transaksi berikutnya tidak valid. Batalkan atau edit transaksi tersebut terlebih dahulu."
+      "ledger_invalid": "Perubahan ini akan membuat transaksi berikutnya tidak valid. Batalkan atau edit transaksi tersebut terlebih dahulu.",
+      "yield_requires_manual_price": "Aset ini memerlukan harga manual untuk mencatat imbal hasil.",
+      "yield_amount_not_positive": "Jumlah imbal hasil harus lebih besar dari nol.",
+      "yield_fee_not_allowed": "Imbal hasil tidak boleh memiliki biaya.",
+      "yield_requires_position": "Miliki unit aset ini sebelum mencatat imbal hasil."
     },
     "market_data_credential": {
       "not_found": "Tidak ada kunci API yang tersimpan untuk penyedia tersebut.",

@@ -188,3 +188,93 @@ async def test_selling_full_quantity_zeroes_book_value(
     assert Decimal(position["quantity"]) == Decimal("0")
     assert Decimal(position["book_value"]) == Decimal("0")
     assert Decimal(position["average_cost"]) == Decimal("0")
+
+
+async def test_manual_yield_follows_held_quantity_and_recalculates_after_edits(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "positions-yield@example.com")
+    wallet_id, asset_id = await _wallet_and_asset(client)
+    priced = await client.patch(
+        f"/api/v1/investments/assets/{asset_id}", json={"manual_price": "10"}
+    )
+    assert priced.status_code == 200, priced.text
+    await _post(
+        client, wallet_id, asset_id, "buy", "2026-01-01", quantity="100", price="10", amount="1000"
+    )
+    payload = {
+        "wallet_id": wallet_id,
+        "asset_id": asset_id,
+        "type": "yield",
+        "date": "2026-01-02",
+        "amount": "10",
+        "currency": "BRL",
+    }
+    created = await client.post("/api/v1/investments/transactions", json=payload)
+    assert created.status_code == 201, created.text
+    yield_id = created.json()["id"]
+
+    async def position() -> dict:
+        response = await client.get(f"/api/v1/investments/wallets/{wallet_id}/positions")
+        assert response.status_code == 200, response.text
+        return response.json()[0]
+
+    first = await position()
+    assert Decimal(first["quantity"]) == 100
+    assert Decimal(first["book_value"]) == 1000
+    assert Decimal(first["yield_balance"]) == 10
+    assert Decimal(first["market_value"]) == 1010
+
+    await _post(
+        client, wallet_id, asset_id, "sell", "2026-01-03", quantity="40", price="15", amount="600"
+    )
+    partial = await position()
+    assert Decimal(partial["quantity"]) == 60
+    assert Decimal(partial["book_value"]) == 600
+    assert Decimal(partial["yield_balance"]) == 6
+    assert Decimal(partial["market_value"]) == 606
+
+    edited = await client.patch(
+        f"/api/v1/investments/transactions/{yield_id}", json={"amount": "20"}
+    )
+    assert edited.status_code == 200, edited.text
+    assert Decimal((await position())["yield_balance"]) == 12
+    deleted = await client.delete(f"/api/v1/investments/transactions/{yield_id}")
+    assert deleted.status_code == 204, deleted.text
+    assert Decimal((await position())["yield_balance"]) == 0
+
+
+async def test_yield_requires_held_manual_priced_asset(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "positions-yield-reject@example.com")
+    wallet_id, asset_id = await _wallet_and_asset(client)
+    payload = {
+        "wallet_id": wallet_id,
+        "asset_id": asset_id,
+        "type": "yield",
+        "date": "2026-01-02",
+        "amount": "10",
+        "currency": "BRL",
+    }
+    no_position = await client.post("/api/v1/investments/transactions", json=payload)
+    assert no_position.status_code == 422
+    assert no_position.json()["error"]["code"] == "investment_transaction.yield_requires_position"
+
+    await _post(
+        client, wallet_id, asset_id, "buy", "2026-01-01", quantity="1", price="10", amount="10"
+    )
+    missing_price = await client.patch(
+        f"/api/v1/investments/assets/{asset_id}", json={"manual_price": None}
+    )
+    assert missing_price.status_code == 200, missing_price.text
+    no_price = await client.post("/api/v1/investments/transactions", json=payload)
+    assert no_price.status_code == 422
+    assert no_price.json()["error"]["code"] == "investment_transaction.yield_requires_manual_price"
+
+    bad_amount = await client.post(
+        "/api/v1/investments/transactions", json={**payload, "amount": "0"}
+    )
+    assert bad_amount.status_code == 422
+    extra_fee = await client.post("/api/v1/investments/transactions", json={**payload, "fee": "1"})
+    assert extra_fee.status_code == 422

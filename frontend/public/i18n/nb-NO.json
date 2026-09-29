@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Hva er {{label}}?",
-      "marketValue": "Hva posisjonene dine er verdt i dag: antallet av hvert aktivum multiplisert med siste pris. Hvis et aktivum mangler pris, vises totalen som —.",
+      "marketValue": "Hva posisjonene dine er verdt i dag: antallet av hvert aktivum multiplisert med siste pris. Hvis et aktivum mangler pris, vises totalen som —. Opptjent avkastning er også inkludert.",
       "bookValue": "Hva du betalte for posisjonene du fortsatt har: antallet av hvert aktivum multiplisert med gjennomsnittlig kjøpskostnad.",
       "unrealizedGain": "Markedsverdi minus bokført verdi: hva du ville tjent (eller tapt) hvis du solgte alt i dag. Det blir først en reell gevinst når du selger."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Transaksjonsoversikt",
       "ledgerEmpty": {
         "title": "Ingen transaksjoner ennå",
-        "description": "Registrer et kjøp, salg, utbytte eller gebyr for å starte oversikten."
+        "description": "Registrer en transaksjon for å starte historikken."
       },
       "stale": "Pris utilgjengelig"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Gjennomsnittlig kostnad",
       "price": "Pris",
       "marketValue": "Markedsverdi",
+      "yieldBalance": "Opptjent avkastning",
       "unrealizedGain": "Urealisert gevinst",
       "allocation": "Fordeling",
       "type": "Type",
@@ -1296,7 +1297,8 @@
       "buy": "Kjøp",
       "sell": "Salg",
       "dividend": "Utbytte",
-      "fee": "Gebyr"
+      "fee": "Gebyr",
+      "yield": "Avkastning"
     },
     "assetClass": {
       "stock": "Aksje",
@@ -1354,7 +1356,8 @@
           "notes": "Notater"
         },
         "errors": {
-          "invalid": "Fyll ut de obligatoriske feltene med gyldige verdier."
+          "invalid": "Fyll ut de obligatoriske feltene med gyldige verdier.",
+          "yieldAsset": "Velg en eiendel med manuell pris og en eksisterende beholdning."
         },
         "actions": {
           "cancel": "Avbryt",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Den transaksjonen finnes ikke lenger.",
       "quantity_price_required": "Kjøp og salg krever en mengde og en pris.",
-      "quantity_price_not_allowed": "Utbytte og gebyrer bruker et beløp, ikke en mengde og pris.",
+      "quantity_price_not_allowed": "Utbytte og gebyrer bruker et beløp, ikke en mengde og pris. Det gjelder også avkastning.",
       "asset_required": "Velg et aktivum for denne transaksjonen.",
       "currency_must_match_wallet": "Transaksjonens valuta må samsvare med lommebokens valuta.",
       "insufficient_quantity": "Du kan ikke selge mer enn du eier nå.",
       "settlement_amount_not_positive": "Oppgjørsbeløpet må være større enn null.",
       "price_unavailable": "Det finnes ingen pris for den valgte datoen.",
       "future_date": "En fremtidig dato kan ikke brukes for denne transaksjonen.",
-      "ledger_invalid": "Denne endringen ville gjort en senere transaksjon ugyldig. Angre eller rediger den først."
+      "ledger_invalid": "Denne endringen ville gjort en senere transaksjon ugyldig. Angre eller rediger den først.",
+      "yield_requires_manual_price": "Eiendelen må ha en angitt manuell pris for å registrere avkastning.",
+      "yield_amount_not_positive": "Avkastningsbeløpet må være større enn null.",
+      "yield_fee_not_allowed": "Avkastning kan ikke ha gebyr.",
+      "yield_requires_position": "Du må eie enheter av eiendelen før du registrerer avkastning."
     },
     "market_data_credential": {
       "not_found": "Det er ikke lagret noen API-nøkkel for denne leverandøren.",

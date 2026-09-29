@@ -5,7 +5,7 @@ export type InvestmentAssetClass = 'stock' | 'etf' | 'fund' | 'crypto' | 'bond' 
 export type InvestmentQuoteProvider = 'twelve_data' | 'brapi' | 'coingecko' | 'manual';
 
 /** Ledger events that change an investment position or its income. */
-export type InvestmentTransactionType = 'buy' | 'sell' | 'dividend' | 'fee';
+export type InvestmentTransactionType = 'buy' | 'sell' | 'dividend' | 'fee' | 'yield';
 
 /** An investment account linked to a regular account for cash movements. */
 export interface InvestmentWallet {
@@ -59,6 +59,7 @@ export interface InvestmentPosition {
   unrealizedGain?: string;
   realizedGain: string;
   dividendIncome: string;
+  yieldBalance: string;
   feesPaid: string;
   marketValueIsFallback: boolean;
 }

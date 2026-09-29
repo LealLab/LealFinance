@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "{{label}} nedir?",
-      "marketValue": "Pozisyonlarınızın bugünkü değeri: her varlığın miktarı çarpı en güncel fiyatı. Herhangi bir varlığın fiyatı yoksa toplam — olarak gösterilir.",
+      "marketValue": "Pozisyonlarınızın bugünkü değeri: her varlığın miktarı çarpı en güncel fiyatı. Herhangi bir varlığın fiyatı yoksa toplam — olarak gösterilir. Birikmiş getiri de buna dahildir.",
       "bookValue": "Hâlâ elinizde tuttuğunuz pozisyonlar için ödediğiniz tutar: her varlığın miktarı çarpı ortalama alış maliyeti.",
       "unrealizedGain": "Piyasa değeri eksi defter değeri: bugün her şeyi satsaydınız kazanacağınız (veya kaybedeceğiniz) tutar. Yalnızca sattığınızda gerçek bir kazanca dönüşür."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "İşlem defteri",
       "ledgerEmpty": {
         "title": "Henüz işlem yok",
-        "description": "Defteri başlatmak için alış, satış, temettü veya ücret kaydedin."
+        "description": "İşlem geçmişini başlatmak için bir işlem kaydedin."
       },
       "stale": "Fiyat mevcut değil"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Ortalama maliyet",
       "price": "Fiyat",
       "marketValue": "Piyasa değeri",
+      "yieldBalance": "Birikmiş getiri",
       "unrealizedGain": "Gerçekleşmemiş kazanç",
       "allocation": "Dağılım",
       "type": "Tür",
@@ -1296,7 +1297,8 @@
       "buy": "Alış",
       "sell": "Satış",
       "dividend": "Temettü",
-      "fee": "Ücret"
+      "fee": "Ücret",
+      "yield": "Getiri"
     },
     "assetClass": {
       "stock": "Hisse senedi",
@@ -1354,7 +1356,8 @@
           "notes": "Notlar"
         },
         "errors": {
-          "invalid": "Zorunlu alanları geçerli değerlerle doldurun."
+          "invalid": "Zorunlu alanları geçerli değerlerle doldurun.",
+          "yieldAsset": "Manuel fiyatı ve mevcut pozisyonu olan bir varlık seçin."
         },
         "actions": {
           "cancel": "İptal",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Bu işlem artık mevcut değil.",
       "quantity_price_required": "Alım ve satım için miktar ve fiyat gerekir.",
-      "quantity_price_not_allowed": "Temettüler ve ücretlerde miktar ve fiyat yerine tutar kullanılır.",
+      "quantity_price_not_allowed": "Temettüler ve ücretlerde miktar ve fiyat yerine tutar kullanılır. Getiriler de böyledir.",
       "asset_required": "Bu işlem için bir varlık seçin.",
       "currency_must_match_wallet": "İşlemin para birimi cüzdanın para birimiyle eşleşmelidir.",
       "insufficient_quantity": "Şu anda sahip olduğunuzdan fazlasını satamazsınız.",
       "settlement_amount_not_positive": "Takas tutarı sıfırdan büyük olmalıdır.",
       "price_unavailable": "Seçilen tarih için fiyat bulunamadı.",
       "future_date": "Bu işlem için gelecek bir tarih kullanılamaz.",
-      "ledger_invalid": "Bu değişiklik daha sonraki bir işlemi geçersiz kılacak. Önce o işlemi geri alın veya düzenleyin."
+      "ledger_invalid": "Bu değişiklik daha sonraki bir işlemi geçersiz kılacak. Önce o işlemi geri alın veya düzenleyin.",
+      "yield_requires_manual_price": "Getiri kaydetmek için bu varlığın manuel fiyatı ayarlanmalıdır.",
+      "yield_amount_not_positive": "Getiri tutarı sıfırdan büyük olmalıdır.",
+      "yield_fee_not_allowed": "Getiriye ücret eklenemez.",
+      "yield_requires_position": "Getiri kaydetmeden önce bu varlıktan bir miktar elinizde bulundurun."
     },
     "market_data_credential": {
       "not_found": "Bu sağlayıcı için kayıtlı bir API anahtarı yok.",

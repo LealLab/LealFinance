@@ -54,8 +54,11 @@ async def _position_read(
             market_value *= rate.rate
             market_value_is_fallback = rate.is_fallback
         wallet_currency = wallet_currency or await get_active_currency(db, wallet.currency)
-        market_value = market_value.quantize(
-            Decimal(1).scaleb(-wallet_currency.decimal_digits), rounding=ROUND_HALF_UP
+        market_value = (
+            market_value.quantize(
+                Decimal(1).scaleb(-wallet_currency.decimal_digits), rounding=ROUND_HALF_UP
+            )
+            + position.yield_balance
         )
         unrealized_gain = market_value - position.book_value
 
@@ -71,6 +74,7 @@ async def _position_read(
         unrealized_gain=unrealized_gain,
         realized_gain=position.realized_gain,
         dividend_income=position.dividend_income,
+        yield_balance=position.yield_balance,
         fees_paid=position.fees_paid,
         market_value_is_fallback=market_value_is_fallback,
     )

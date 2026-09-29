@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "{{label}} là gì?",
-      "marketValue": "Giá trị hiện tại của các vị thế của bạn: số lượng mỗi tài sản nhân với giá mới nhất. Nếu tài sản nào không có giá, tổng sẽ hiển thị là —.",
+      "marketValue": "Giá trị hiện tại của các vị thế của bạn: số lượng mỗi tài sản nhân với giá mới nhất. Nếu tài sản nào không có giá, tổng sẽ hiển thị là —. Giá trị này cũng bao gồm lợi tức tích lũy.",
       "bookValue": "Số tiền bạn đã trả cho các vị thế bạn vẫn đang nắm giữ: số lượng mỗi tài sản nhân với giá vốn mua trung bình.",
       "unrealizedGain": "Giá trị thị trường trừ giá trị sổ sách: số tiền bạn sẽ lãi (hoặc lỗ) nếu bán tất cả hôm nay. Đây chỉ trở thành lãi thực khi bạn bán."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Sổ giao dịch",
       "ledgerEmpty": {
         "title": "Chưa có giao dịch",
-        "description": "Ghi nhận giao dịch mua, bán, cổ tức hoặc phí để bắt đầu sổ giao dịch."
+        "description": "Ghi một giao dịch để bắt đầu lịch sử."
       },
       "stale": "Không có giá"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Giá vốn trung bình",
       "price": "Giá",
       "marketValue": "Giá trị thị trường",
+      "yieldBalance": "Lợi tức tích lũy",
       "unrealizedGain": "Lãi chưa thực hiện",
       "allocation": "Phân bổ",
       "type": "Loại",
@@ -1296,7 +1297,8 @@
       "buy": "Mua",
       "sell": "Bán",
       "dividend": "Cổ tức",
-      "fee": "Phí"
+      "fee": "Phí",
+      "yield": "Lợi tức"
     },
     "assetClass": {
       "stock": "Cổ phiếu",
@@ -1354,7 +1356,8 @@
           "notes": "Ghi chú"
         },
         "errors": {
-          "invalid": "Hãy điền các trường bắt buộc bằng giá trị hợp lệ."
+          "invalid": "Hãy điền các trường bắt buộc bằng giá trị hợp lệ.",
+          "yieldAsset": "Chọn tài sản có giá thủ công và vị thế đang nắm giữ."
         },
         "actions": {
           "cancel": "Hủy",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Giao dịch đó không còn tồn tại.",
       "quantity_price_required": "Mua và bán cần có số lượng và giá.",
-      "quantity_price_not_allowed": "Cổ tức và phí sử dụng số tiền, không sử dụng số lượng và giá.",
+      "quantity_price_not_allowed": "Cổ tức và phí sử dụng số tiền, không sử dụng số lượng và giá. Lợi tức cũng vậy.",
       "asset_required": "Chọn tài sản cho giao dịch này.",
       "currency_must_match_wallet": "Loại tiền tệ của giao dịch phải khớp với loại tiền tệ của ví.",
       "insufficient_quantity": "Bạn không thể bán nhiều hơn số lượng đang nắm giữ.",
       "settlement_amount_not_positive": "Số tiền quyết toán phải lớn hơn 0.",
       "price_unavailable": "Không có giá cho ngày đã chọn.",
       "future_date": "Không thể dùng ngày trong tương lai cho giao dịch này.",
-      "ledger_invalid": "Thay đổi này sẽ khiến một giao dịch sau đó không hợp lệ. Trước tiên hãy hoàn tác hoặc chỉnh sửa giao dịch đó."
+      "ledger_invalid": "Thay đổi này sẽ khiến một giao dịch sau đó không hợp lệ. Trước tiên hãy hoàn tác hoặc chỉnh sửa giao dịch đó.",
+      "yield_requires_manual_price": "Tài sản này cần được đặt giá thủ công để ghi nhận lợi tức.",
+      "yield_amount_not_positive": "Số tiền lợi tức phải lớn hơn không.",
+      "yield_fee_not_allowed": "Lợi tức không được có phí.",
+      "yield_requires_position": "Bạn phải nắm giữ đơn vị tài sản này trước khi ghi nhận lợi tức."
     },
     "market_data_credential": {
       "not_found": "Chưa lưu khóa API cho nhà cung cấp đó.",

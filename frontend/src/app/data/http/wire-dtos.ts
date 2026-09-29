@@ -477,6 +477,7 @@ export interface InvestmentPositionWire {
   unrealized_gain: string | null;
   realized_gain: string;
   dividend_income: string;
+  yield_balance: string;
   fees_paid: string;
   market_value_is_fallback: boolean;
 }

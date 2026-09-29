@@ -8,6 +8,7 @@ import { InvestmentWalletRepository } from '../../data/investment-wallet.reposit
 import { todayIso } from '../../domain/calc/dates';
 import {
   InvestmentAsset,
+  InvestmentPosition,
   InvestmentTransaction,
   InvestmentTransactionType,
 } from '../../domain/models/investment';
@@ -17,7 +18,6 @@ import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { Button } from '../../shared/ui/button/button';
 import { Modal } from '../../shared/ui/modal/modal';
 
-const TRANSACTION_TYPES: readonly InvestmentTransactionType[] = ['buy', 'sell', 'dividend', 'fee'];
 type BuyEntryMode = 'quantity_price' | 'amount_spent';
 
 /** t(investments.transactions.form.newTitle, investments.transactions.form.editTitle, investments.transactions.form.saveError, investments.transactions.form.errors.invalid) */
@@ -35,10 +35,11 @@ export class InvestmentTransactionFormModal {
   readonly open = model.required<boolean>();
   readonly walletId = input.required<string>();
   readonly transaction = input<InvestmentTransaction | undefined>(undefined);
+  readonly transactionType = input<InvestmentTransactionType>('buy');
   readonly assets = input.required<InvestmentAsset[]>();
+  readonly positions = input.required<InvestmentPosition[]>();
   readonly saved = output<InvestmentTransaction>();
 
-  protected readonly transactionTypes = TRANSACTION_TYPES;
   protected readonly walletResource = rxResource({
     stream: () => this.wallets.get(this.walletId()),
   });
@@ -77,7 +78,15 @@ export class InvestmentTransactionFormModal {
   });
   protected readonly isTrade = computed(() => this.selectedType() === 'buy' || this.selectedType() === 'sell');
   protected readonly isBuy = computed(() => this.selectedType() === 'buy');
+  protected readonly isYield = computed(() => this.selectedType() === 'yield');
   protected readonly needsAsset = computed(() => this.selectedType() !== 'fee');
+  protected readonly availableAssets = computed(() =>
+    this.isYield()
+      ? this.assets().filter((asset) => asset.quoteProvider === 'manual' && Number(asset.manualPrice) > 0 &&
+          (this.transaction()?.assetId === asset.id ||
+            this.positions().some((position) => position.asset.id === asset.id && Number(position.quantity) > 0)))
+      : this.assets(),
+  );
   protected readonly isAmountSpent = computed(
     () => this.isBuy() && this.selectedEntryMode() === 'amount_spent',
   );
@@ -103,7 +112,7 @@ export class InvestmentTransactionFormModal {
       const transaction = this.transaction();
       this.applyingReset = true;
       this.form.reset({
-        type: transaction?.type ?? 'buy',
+        type: transaction?.type ?? this.transactionType(),
         entryMode: 'quantity_price',
         assetId: transaction?.assetId ?? '',
         date: transaction?.date ?? todayIso(),
@@ -125,7 +134,7 @@ export class InvestmentTransactionFormModal {
         this.form.controls.quantity.setValue('');
         this.form.controls.price.setValue('');
         this.form.controls.entryMode.setValue('quantity_price');
-      } else if (type === 'dividend') {
+      } else if (type === 'dividend' || type === 'yield') {
         this.form.controls.quantity.setValue('');
         this.form.controls.price.setValue('');
         this.form.controls.entryMode.setValue('quantity_price');
@@ -146,7 +155,11 @@ export class InvestmentTransactionFormModal {
     const raw = this.form.getRawValue();
     const trade = raw.type === 'buy' || raw.type === 'sell';
     const amountSpent = raw.type === 'buy' && raw.entryMode === 'amount_spent';
-    const amountEntry = raw.type === 'dividend' || raw.type === 'fee';
+    const amountEntry = raw.type === 'dividend' || raw.type === 'fee' || raw.type === 'yield';
+    if (raw.type === 'yield' && !this.availableAssets().some((asset) => asset.id === raw.assetId)) {
+      this.saveErrorKey.set('investments.transactions.form.errors.yieldAsset');
+      return;
+    }
     const valid =
       this.form.controls.type.valid &&
       this.form.controls.date.valid &&
@@ -158,7 +171,8 @@ export class InvestmentTransactionFormModal {
       Boolean(raw.currency) &&
       (!this.needsAsset() || Boolean(raw.assetId)) &&
       (!trade || amountSpent || (Boolean(raw.quantity) && Boolean(raw.price) && this.form.controls.quantity.valid && this.form.controls.price.valid)) &&
-      (!(amountEntry || amountSpent) || (Boolean(raw.amount) && this.form.controls.amount.valid));
+      (!(amountEntry || amountSpent) || (Boolean(raw.amount) && this.form.controls.amount.valid)) &&
+      (raw.type !== 'yield' || Number(raw.amount) > 0);
     const preview = this.quantityTimesPrice();
     if (!valid || (trade && !amountSpent && !preview)) {
       this.form.markAllAsTouched();
@@ -174,7 +188,7 @@ export class InvestmentTransactionFormModal {
       quantity: trade && !amountSpent ? raw.quantity || undefined : undefined,
       price: trade && !amountSpent ? raw.price || undefined : undefined,
       amount: amountSpent ? raw.amount : trade ? preview!.amount : raw.amount,
-      fee: raw.fee || '0',
+      fee: raw.type === 'yield' ? '0' : raw.fee || '0',
       currency: this.currency(),
       notes: raw.notes.trim() || undefined,
     } satisfies Omit<InvestmentTransaction, 'id' | 'transactionId'>;

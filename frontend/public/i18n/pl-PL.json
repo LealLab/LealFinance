@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Czym jest {{label}}?",
-      "marketValue": "Ile są dziś warte Twoje pozycje: ilość każdego aktywa pomnożona przez jego najnowszą cenę. Jeśli dla jakiegoś aktywa brak ceny, suma jest wyświetlana jako —.",
+      "marketValue": "Ile są dziś warte Twoje pozycje: ilość każdego aktywa pomnożona przez jego najnowszą cenę. Jeśli dla jakiegoś aktywa brak ceny, suma jest wyświetlana jako —. Uwzględnia to również naliczony zysk.",
       "bookValue": "Ile zapłaciłeś za pozycje, które nadal posiadasz: ilość każdego aktywa pomnożona przez jego średni koszt zakupu.",
       "unrealizedGain": "Wartość rynkowa minus wartość księgowa: ile zyskałbyś (lub stracił) sprzedając wszystko dziś. Staje się realnym zyskiem dopiero po sprzedaży."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Rejestr transakcji",
       "ledgerEmpty": {
         "title": "Nie ma jeszcze transakcji",
-        "description": "Zarejestruj kupno, sprzedaż, dywidendę lub opłatę, aby rozpocząć rejestr."
+        "description": "Zarejestruj transakcję, aby rozpocząć historię."
       },
       "stale": "Cena niedostępna"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Średni koszt",
       "price": "Cena",
       "marketValue": "Wartość rynkowa",
+      "yieldBalance": "Naliczony zysk",
       "unrealizedGain": "Niezrealizowany zysk",
       "allocation": "Alokacja",
       "type": "Typ",
@@ -1296,7 +1297,8 @@
       "buy": "Kupno",
       "sell": "Sprzedaż",
       "dividend": "Dywidenda",
-      "fee": "Opłata"
+      "fee": "Opłata",
+      "yield": "Zysk"
     },
     "assetClass": {
       "stock": "Akcja",
@@ -1354,7 +1356,8 @@
           "notes": "Notatki"
         },
         "errors": {
-          "invalid": "Uzupełnij wymagane pola prawidłowymi wartościami."
+          "invalid": "Uzupełnij wymagane pola prawidłowymi wartościami.",
+          "yieldAsset": "Wybierz aktywo z ceną ręczną i istniejącą pozycją."
         },
         "actions": {
           "cancel": "Anuluj",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Ta transakcja już nie istnieje.",
       "quantity_price_required": "Zakupy i sprzedaż wymagają podania ilości i ceny.",
-      "quantity_price_not_allowed": "Dywidendy i opłaty wymagają kwoty, a nie ilości i ceny.",
+      "quantity_price_not_allowed": "Dywidendy i opłaty wymagają kwoty, a nie ilości i ceny. Zyski również.",
       "asset_required": "Wybierz aktywo dla tej transakcji.",
       "currency_must_match_wallet": "Waluta transakcji musi odpowiadać walucie portfela.",
       "insufficient_quantity": "Nie możesz sprzedać więcej, niż obecnie posiadasz.",
       "settlement_amount_not_positive": "Kwota rozliczenia musi być większa od zera.",
       "price_unavailable": "Dla wybranej daty nie ma dostępnej ceny.",
       "future_date": "Nie można użyć przyszłej daty dla tej transakcji.",
-      "ledger_invalid": "Ta zmiana unieważniłaby późniejszą transakcję. Najpierw cofnij ją lub edytuj."
+      "ledger_invalid": "Ta zmiana unieważniłaby późniejszą transakcję. Najpierw cofnij ją lub edytuj.",
+      "yield_requires_manual_price": "Aby zapisać zysk, ustaw ręczną cenę tego aktywa.",
+      "yield_amount_not_positive": "Kwota zysku musi być większa od zera.",
+      "yield_fee_not_allowed": "Zysk nie może mieć opłaty.",
+      "yield_requires_position": "Przed zapisaniem zysku musisz posiadać jednostki tego aktywa."
     },
     "market_data_credential": {
       "not_found": "Dla tego dostawcy nie zapisano klucza API.",
