@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Was ist {{label}}?",
-      "marketValue": "Was Ihre Positionen heute wert sind: die Menge jeder Anlage multipliziert mit ihrem letzten Kurs. Hat eine Anlage keinen Kurs, wird die Summe als — angezeigt.",
+      "marketValue": "Was Ihre Positionen heute wert sind: die Menge jeder Anlage multipliziert mit ihrem letzten Kurs. Hat eine Anlage keinen Kurs, wird die Summe als — angezeigt. Aufgelaufene Erträge sind ebenfalls enthalten.",
       "bookValue": "Was Sie für die Positionen bezahlt haben, die Sie noch halten: die Menge jeder Anlage multipliziert mit dem durchschnittlichen Einstandspreis.",
       "unrealizedGain": "Marktwert minus Buchwert: was Sie gewinnen (oder verlieren) würden, wenn Sie heute alles verkaufen. Erst beim Verkauf wird daraus ein tatsächlicher Gewinn."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Transaktionsbuch",
       "ledgerEmpty": {
         "title": "Noch keine Transaktionen",
-        "description": "Erfassen Sie einen Kauf, Verkauf, eine Dividende oder Gebühr, um das Transaktionsbuch zu starten."
+        "description": "Erfassen Sie eine Transaktion, um das Transaktionsbuch zu beginnen."
       },
       "stale": "Preis nicht verfügbar"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Durchschnittlicher Einstandspreis",
       "price": "Preis",
       "marketValue": "Marktwert",
+      "yieldBalance": "Aufgelaufene Erträge",
       "unrealizedGain": "Nicht realisierter Gewinn",
       "allocation": "Aufteilung",
       "type": "Typ",
@@ -1296,7 +1297,8 @@
       "buy": "Kauf",
       "sell": "Verkauf",
       "dividend": "Dividende",
-      "fee": "Gebühr"
+      "fee": "Gebühr",
+      "yield": "Ertrag"
     },
     "assetClass": {
       "stock": "Aktie",
@@ -1354,7 +1356,8 @@
           "notes": "Notizen"
         },
         "errors": {
-          "invalid": "Füllen Sie die Pflichtfelder mit gültigen Werten aus."
+          "invalid": "Füllen Sie die Pflichtfelder mit gültigen Werten aus.",
+          "yieldAsset": "Wählen Sie einen Vermögenswert mit manuellem Preis und einer bestehenden Position."
         },
         "actions": {
           "cancel": "Abbrechen",
@@ -2160,14 +2163,18 @@
     "investment_transaction": {
       "not_found": "Diese Transaktion existiert nicht mehr.",
       "quantity_price_required": "Käufe und Verkäufe benötigen eine Menge und einen Preis.",
-      "quantity_price_not_allowed": "Dividenden und Gebühren verwenden einen Betrag, keine Menge und keinen Preis.",
+      "quantity_price_not_allowed": "Dividenden und Gebühren verwenden einen Betrag, keine Menge und keinen Preis. Erträge ebenso.",
       "asset_required": "Wähle ein Anlageobjekt für diese Transaktion aus.",
       "currency_must_match_wallet": "Die Transaktionswährung muss der Währung des Wallets entsprechen.",
       "insufficient_quantity": "Du kannst nicht mehr verkaufen, als du derzeit hältst.",
       "settlement_amount_not_positive": "Der Abrechnungsbetrag muss größer als null sein.",
       "price_unavailable": "Für das ausgewählte Datum ist kein Preis verfügbar.",
       "future_date": "Für diese Transaktion kann kein zukünftiges Datum verwendet werden.",
-      "ledger_invalid": "Diese Änderung würde eine spätere Transaktion ungültig machen. Mache sie zuerst rückgängig oder bearbeite sie."
+      "ledger_invalid": "Diese Änderung würde eine spätere Transaktion ungültig machen. Mache sie zuerst rückgängig oder bearbeite sie.",
+      "yield_requires_manual_price": "Für dieses Anlagegut muss ein manueller Preis festgelegt sein, um einen Ertrag zu erfassen.",
+      "yield_amount_not_positive": "Der Ertragsbetrag muss größer als null sein.",
+      "yield_fee_not_allowed": "Ein Ertrag darf keine Gebühr enthalten.",
+      "yield_requires_position": "Sie müssen Anteile dieses Anlageguts halten, bevor Sie einen Ertrag erfassen."
     },
     "market_data_credential": {
       "not_found": "Für diesen Anbieter ist kein API-Schlüssel gespeichert.",

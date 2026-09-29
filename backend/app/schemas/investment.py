@@ -11,7 +11,7 @@ from app.schemas.common import CurrencyCodeInput, PatchModel, serialize_decimal,
 
 InvestmentAssetClass = Literal["stock", "etf", "fund", "crypto", "bond", "other"]
 InvestmentQuoteProvider = Literal["twelve_data", "brapi", "coingecko", "manual"]
-InvestmentTransactionType = Literal["buy", "sell", "dividend", "fee"]
+InvestmentTransactionType = Literal["buy", "sell", "dividend", "fee", "yield"]
 MarketDataProvider = Literal["twelve_data", "brapi", "coingecko"]
 CredentialSource = Literal["user", "env", "none"]
 
@@ -158,6 +158,7 @@ class InvestmentPositionRead(BaseModel):
     unrealized_gain: Decimal | None
     realized_gain: Decimal
     dividend_income: Decimal
+    yield_balance: Decimal
     fees_paid: Decimal
     market_value_is_fallback: bool
 
@@ -169,6 +170,7 @@ class InvestmentPositionRead(BaseModel):
         "unrealized_gain",
         "realized_gain",
         "dividend_income",
+        "yield_balance",
         "fees_paid",
     )
     def _serialize_decimal(self, value: Decimal | None) -> str | None:

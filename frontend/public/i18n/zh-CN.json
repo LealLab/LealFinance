@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "什么是{{label}}？",
-      "marketValue": "您的持仓当前的价值：每项资产的数量乘以其最新价格。如果某项资产没有价格，合计将显示为 —。",
+      "marketValue": "您的持仓当前的价值：每项资产的数量乘以其最新价格。如果某项资产没有价格，合计将显示为 —。 其中还包括累计收益。",
       "bookValue": "您为目前持有的仓位所支付的金额：每项资产的数量乘以其平均买入成本。",
       "unrealizedGain": "市场价值减去账面价值：如果您今天卖出全部持仓，将获得（或损失）的金额。只有在实际卖出时才会变成真正的收益。"
     },
@@ -1274,7 +1274,7 @@
       "ledger": "交易流水",
       "ledgerEmpty": {
         "title": "暂无交易",
-        "description": "记录买入、卖出、股息或费用以开始记账。"
+        "description": "记录一笔交易以开始交易历史。"
       },
       "stale": "价格不可用"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "平均成本",
       "price": "价格",
       "marketValue": "市场价值",
+      "yieldBalance": "累计收益",
       "unrealizedGain": "未实现收益",
       "allocation": "配置",
       "type": "类型",
@@ -1296,7 +1297,8 @@
       "buy": "买入",
       "sell": "卖出",
       "dividend": "股息",
-      "fee": "费用"
+      "fee": "费用",
+      "yield": "收益"
     },
     "assetClass": {
       "stock": "股票",
@@ -1354,7 +1356,8 @@
           "notes": "备注"
         },
         "errors": {
-          "invalid": "请使用有效值填写必填字段。"
+          "invalid": "请使用有效值填写必填字段。",
+          "yieldAsset": "请选择已设置手动价格且当前持有的资产。"
         },
         "actions": {
           "cancel": "取消",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "该交易已不存在。",
       "quantity_price_required": "买入和卖出需要填写数量和价格。",
-      "quantity_price_not_allowed": "股息和费用使用金额，而不是数量和价格。",
+      "quantity_price_not_allowed": "股息和费用使用金额，而不是数量和价格。 收益也一样。",
       "asset_required": "请选择此交易的资产。",
       "currency_must_match_wallet": "交易货币必须与钱包货币一致。",
       "insufficient_quantity": "不能卖出超过当前持有的数量。",
       "settlement_amount_not_positive": "结算金额必须大于零。",
       "price_unavailable": "所选日期没有可用价格。",
       "future_date": "此交易不能使用未来日期。",
-      "ledger_invalid": "此更改会使后续交易无效。请先撤销或编辑该交易。"
+      "ledger_invalid": "此更改会使后续交易无效。请先撤销或编辑该交易。",
+      "yield_requires_manual_price": "要记录收益，必须为该资产设置手动价格。",
+      "yield_amount_not_positive": "收益金额必须大于零。",
+      "yield_fee_not_allowed": "收益不能包含费用。",
+      "yield_requires_position": "记录收益前必须持有该资产的份额。"
     },
     "market_data_credential": {
       "not_found": "该提供商未存储 API 密钥。",

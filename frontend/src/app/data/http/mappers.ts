@@ -874,6 +874,7 @@ export const mapInvestmentPosition = (wire: InvestmentPositionWire): InvestmentP
   unrealizedGain: wire.unrealized_gain ?? undefined,
   realizedGain: wire.realized_gain,
   dividendIncome: wire.dividend_income,
+  yieldBalance: wire.yield_balance,
   feesPaid: wire.fees_paid,
   marketValueIsFallback: wire.market_value_is_fallback,
 });

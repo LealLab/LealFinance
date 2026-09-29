@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Vad är {{label}}?",
-      "marketValue": "Vad dina positioner är värda idag: varje tillgångs antal gånger dess senaste pris. Om en tillgång saknar pris visas totalen som —.",
+      "marketValue": "Vad dina positioner är värda idag: varje tillgångs antal gånger dess senaste pris. Om en tillgång saknar pris visas totalen som —. Ackumulerad avkastning ingår också.",
       "bookValue": "Vad du betalade för de positioner du fortfarande innehar: varje tillgångs antal gånger dess genomsnittliga inköpskostnad.",
       "unrealizedGain": "Marknadsvärde minus bokfört värde: vad du skulle vinna (eller förlora) om du sålde allt idag. Det blir en verklig vinst först när du säljer."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Transaktionsbok",
       "ledgerEmpty": {
         "title": "Inga transaktioner ännu",
-        "description": "Registrera ett köp, en försäljning, en utdelning eller en avgift för att börja i boken."
+        "description": "Registrera en transaktion för att börja historiken."
       },
       "stale": "Pris ej tillgängligt"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Genomsnittlig kostnad",
       "price": "Pris",
       "marketValue": "Marknadsvärde",
+      "yieldBalance": "Ackumulerad avkastning",
       "unrealizedGain": "Orealiserad vinst",
       "allocation": "Fördelning",
       "type": "Typ",
@@ -1296,7 +1297,8 @@
       "buy": "Köp",
       "sell": "Försäljning",
       "dividend": "Utdelning",
-      "fee": "Avgift"
+      "fee": "Avgift",
+      "yield": "Avkastning"
     },
     "assetClass": {
       "stock": "Aktie",
@@ -1354,7 +1356,8 @@
           "notes": "Anteckningar"
         },
         "errors": {
-          "invalid": "Fyll i de obligatoriska fälten med giltiga värden."
+          "invalid": "Fyll i de obligatoriska fälten med giltiga värden.",
+          "yieldAsset": "Välj en tillgång med manuellt pris och ett befintligt innehav."
         },
         "actions": {
           "cancel": "Avbryt",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Den transaktionen finns inte längre.",
       "quantity_price_required": "Köp och försäljningar kräver en kvantitet och ett pris.",
-      "quantity_price_not_allowed": "Utdelningar och avgifter använder ett belopp, inte en kvantitet och ett pris.",
+      "quantity_price_not_allowed": "Utdelningar och avgifter använder ett belopp, inte en kvantitet och ett pris. Detsamma gäller avkastning.",
       "asset_required": "Välj en tillgång för den här transaktionen.",
       "currency_must_match_wallet": "Transaktionens valuta måste stämma överens med portföljens valuta.",
       "insufficient_quantity": "Du kan inte sälja mer än du har just nu.",
       "settlement_amount_not_positive": "Avräkningsbeloppet måste vara större än noll.",
       "price_unavailable": "Det finns inget pris för det valda datumet.",
       "future_date": "Ett framtida datum kan inte användas för denna transaktion.",
-      "ledger_invalid": "Den här ändringen skulle göra en senare transaktion ogiltig. Ångra eller redigera den först."
+      "ledger_invalid": "Den här ändringen skulle göra en senare transaktion ogiltig. Ångra eller redigera den först.",
+      "yield_requires_manual_price": "Tillgången behöver ett inställt manuellt pris för att registrera avkastning.",
+      "yield_amount_not_positive": "Avkastningsbeloppet måste vara större än noll.",
+      "yield_fee_not_allowed": "Avkastning kan inte ha en avgift.",
+      "yield_requires_position": "Du måste inneha enheter av tillgången innan du registrerar avkastning."
     },
     "market_data_credential": {
       "not_found": "Det finns ingen sparad API-nyckel för den leverantören.",

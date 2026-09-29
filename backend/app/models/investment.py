@@ -52,11 +52,13 @@ INVESTMENT_TRANSACTION_TYPE_BUY = "buy"
 INVESTMENT_TRANSACTION_TYPE_SELL = "sell"
 INVESTMENT_TRANSACTION_TYPE_DIVIDEND = "dividend"
 INVESTMENT_TRANSACTION_TYPE_FEE = "fee"
+INVESTMENT_TRANSACTION_TYPE_YIELD = "yield"
 INVESTMENT_TRANSACTION_TYPES = (
     INVESTMENT_TRANSACTION_TYPE_BUY,
     INVESTMENT_TRANSACTION_TYPE_SELL,
     INVESTMENT_TRANSACTION_TYPE_DIVIDEND,
     INVESTMENT_TRANSACTION_TYPE_FEE,
+    INVESTMENT_TRANSACTION_TYPE_YIELD,
 )
 
 
@@ -156,6 +158,10 @@ class InvestmentTransaction(UserOwnedModel):
         ),
         CheckConstraint("fee >= 0", name="ck_investment_transactions_fee_non_negative"),
         CheckConstraint("amount >= 0", name="ck_investment_transactions_amount_non_negative"),
+        CheckConstraint(
+            "type != 'yield' OR (quantity IS NULL AND price IS NULL AND amount > 0 AND fee = 0)",
+            name="ck_investment_transactions_yield_amount_fee",
+        ),
     )
 
     wallet_id: Mapped[uuid.UUID] = mapped_column(

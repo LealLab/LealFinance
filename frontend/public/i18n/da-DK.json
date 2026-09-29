@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Hvad er {{label}}?",
-      "marketValue": "Hvad dine beholdninger er værd i dag: hvert aktivs antal ganget med den seneste pris. Hvis et aktiv ikke har en pris, vises totalen som —.",
+      "marketValue": "Hvad dine beholdninger er værd i dag: hvert aktivs antal ganget med den seneste pris. Hvis et aktiv ikke har en pris, vises totalen som —. Akkumuleret afkast er også medregnet.",
       "bookValue": "Hvad du betalte for de beholdninger, du stadig har: hvert aktivs antal ganget med den gennemsnitlige kostpris.",
       "unrealizedGain": "Markedsværdi minus bogført værdi: hvad du ville tjene (eller tabe), hvis du solgte alt i dag. Det bliver først en reel gevinst, når du sælger."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Transaktionsoversigt",
       "ledgerEmpty": {
         "title": "Ingen transaktioner endnu",
-        "description": "Registrer et køb, salg, udbytte eller gebyr for at starte oversigten."
+        "description": "Registrer en transaktion for at starte historikken."
       },
       "stale": "Pris ikke tilgængelig"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Gennemsnitlig kostpris",
       "price": "Pris",
       "marketValue": "Markedsværdi",
+      "yieldBalance": "Akkumuleret afkast",
       "unrealizedGain": "Urealiseret gevinst",
       "allocation": "Fordeling",
       "type": "Type",
@@ -1296,7 +1297,8 @@
       "buy": "Køb",
       "sell": "Salg",
       "dividend": "Udbytte",
-      "fee": "Gebyr"
+      "fee": "Gebyr",
+      "yield": "Afkast"
     },
     "assetClass": {
       "stock": "Aktie",
@@ -1354,7 +1356,8 @@
           "notes": "Noter"
         },
         "errors": {
-          "invalid": "Udfyld de påkrævede felter med gyldige værdier."
+          "invalid": "Udfyld de påkrævede felter med gyldige værdier.",
+          "yieldAsset": "Vælg et aktiv med manuel pris og en eksisterende beholdning."
         },
         "actions": {
           "cancel": "Annuller",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Den transaktion findes ikke længere.",
       "quantity_price_required": "Køb og salg kræver en mængde og en pris.",
-      "quantity_price_not_allowed": "Udbytte og gebyrer bruger et beløb, ikke en mængde og en pris.",
+      "quantity_price_not_allowed": "Udbytte og gebyrer bruger et beløb, ikke en mængde og en pris. Det gælder også afkast.",
       "asset_required": "Vælg et aktiv til denne transaktion.",
       "currency_must_match_wallet": "Transaktionens valuta skal være den samme som kontoens valuta.",
       "insufficient_quantity": "Du kan ikke sælge mere, end du har.",
       "settlement_amount_not_positive": "Afviklingsbeløbet skal være større end nul.",
       "price_unavailable": "Der er ingen pris tilgængelig for den valgte dato.",
       "future_date": "En fremtidig dato kan ikke bruges til denne transaktion.",
-      "ledger_invalid": "Denne ændring ville gøre en senere transaktion ugyldig. Fortryd eller rediger den først."
+      "ledger_invalid": "Denne ændring ville gøre en senere transaktion ugyldig. Fortryd eller rediger den først.",
+      "yield_requires_manual_price": "Aktivet skal have en indstillet manuel pris for at registrere afkast.",
+      "yield_amount_not_positive": "Afkastbeløbet skal være større end nul.",
+      "yield_fee_not_allowed": "Afkast kan ikke have et gebyr.",
+      "yield_requires_position": "Du skal eje enheder af aktivet, før du registrerer afkast."
     },
     "market_data_credential": {
       "not_found": "Der er ikke gemt nogen API-nøgle for denne udbyder.",

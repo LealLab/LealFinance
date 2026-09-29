@@ -13,6 +13,7 @@ import {
   InvestmentAsset,
   InvestmentPosition,
   InvestmentTransaction,
+  InvestmentTransactionType,
 } from '../../domain/models/investment';
 import { ExchangeRateWarning } from '../../shared/exchange-rate-warning/exchange-rate-warning';
 import { isNegative, isZero, money, ratio, sum, Money } from '../../shared/money/money';
@@ -100,6 +101,9 @@ export class InvestmentDetail {
   private loadSubscription?: Subscription;
 
   protected readonly transactionFormOpen = signal(false);
+  protected readonly transactionMenuOpen = signal(false);
+  protected readonly transactionType = signal<InvestmentTransactionType>('buy');
+  protected readonly transactionTypes: readonly InvestmentTransactionType[] = ['buy', 'sell', 'dividend', 'fee', 'yield'];
   protected readonly editingTransaction = signal<InvestmentTransaction | undefined>(undefined);
   protected readonly assetFormOpen = signal(false);
   protected readonly editingAsset = signal<InvestmentAsset | undefined>(undefined);
@@ -131,7 +135,10 @@ export class InvestmentDetail {
         this.loadMore();
       });
     });
-    openOnNewParam(() => this.openCreateTransaction());
+    openOnNewParam(() => {
+      this.view.set('ledger');
+      this.transactionMenuOpen.set(true);
+    });
   }
 
   protected loadMore(): void {
@@ -179,8 +186,10 @@ export class InvestmentDetail {
     return this.transloco.translate(`investments.type.${type}`);
   }
 
-  protected openCreateTransaction(): void {
+  protected openCreateTransaction(type: InvestmentTransactionType = 'buy'): void {
     this.editingTransaction.set(undefined);
+    this.transactionType.set(type);
+    this.transactionMenuOpen.set(false);
     this.transactionFormOpen.set(true);
   }
 

@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Cos’è {{label}}?",
-      "marketValue": "Quanto valgono oggi le tue posizioni: la quantità di ciascun asset moltiplicata per la sua ultima quotazione. Se un asset non ha un prezzo, il totale viene mostrato come —.",
+      "marketValue": "Quanto valgono oggi le tue posizioni: la quantità di ciascun asset moltiplicata per la sua ultima quotazione. Se un asset non ha un prezzo, il totale viene mostrato come —. Include anche i rendimenti maturati.",
       "bookValue": "Quanto hai pagato per le posizioni che detieni ancora: la quantità di ciascun asset moltiplicata per il suo costo medio di acquisto.",
       "unrealizedGain": "Valore di mercato meno valore contabile: quanto guadagneresti (o perderesti) se vendessi tutto oggi. Diventa un guadagno reale solo quando vendi."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Registro delle transazioni",
       "ledgerEmpty": {
         "title": "Nessuna transazione",
-        "description": "Registra un acquisto, una vendita, un dividendo o una commissione per iniziare il registro."
+        "description": "Registra una transazione per iniziare lo storico."
       },
       "stale": "Prezzo non disponibile"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Costo medio",
       "price": "Prezzo",
       "marketValue": "Valore di mercato",
+      "yieldBalance": "Rendimenti maturati",
       "unrealizedGain": "Guadagno non realizzato",
       "allocation": "Allocazione",
       "type": "Tipo",
@@ -1296,7 +1297,8 @@
       "buy": "Acquisto",
       "sell": "Vendita",
       "dividend": "Dividendo",
-      "fee": "Commissione"
+      "fee": "Commissione",
+      "yield": "Rendimento"
     },
     "assetClass": {
       "stock": "Azione",
@@ -1354,7 +1356,8 @@
           "notes": "Note"
         },
         "errors": {
-          "invalid": "Completa i campi obbligatori con valori validi."
+          "invalid": "Completa i campi obbligatori con valori validi.",
+          "yieldAsset": "Seleziona un asset con prezzo manuale e una posizione esistente."
         },
         "actions": {
           "cancel": "Annulla",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Questa transazione non esiste più.",
       "quantity_price_required": "Acquisti e vendite richiedono una quantità e un prezzo.",
-      "quantity_price_not_allowed": "Dividendi e commissioni utilizzano un importo, non una quantità e un prezzo.",
+      "quantity_price_not_allowed": "Dividendi e commissioni utilizzano un importo, non una quantità e un prezzo. Anche i rendimenti.",
       "asset_required": "Scegli un asset per questa transazione.",
       "currency_must_match_wallet": "La valuta della transazione deve corrispondere a quella del portafoglio.",
       "insufficient_quantity": "Non puoi vendere più di quanto possiedi attualmente.",
       "settlement_amount_not_positive": "L'importo di regolamento deve essere maggiore di zero.",
       "price_unavailable": "Non è disponibile alcun prezzo per la data selezionata.",
       "future_date": "Non è possibile usare una data futura per questa transazione.",
-      "ledger_invalid": "Questa modifica renderebbe non valida una transazione successiva. Annullala o modificala prima."
+      "ledger_invalid": "Questa modifica renderebbe non valida una transazione successiva. Annullala o modificala prima.",
+      "yield_requires_manual_price": "Questo asset richiede un prezzo manuale configurato per registrare un rendimento.",
+      "yield_amount_not_positive": "L'importo del rendimento deve essere maggiore di zero.",
+      "yield_fee_not_allowed": "Un rendimento non può avere commissioni.",
+      "yield_requires_position": "Devi possedere quote di questo asset prima di registrare un rendimento."
     },
     "market_data_credential": {
       "not_found": "Non è memorizzata alcuna chiave API per questo provider.",

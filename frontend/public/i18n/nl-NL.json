@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Wat is {{label}}?",
-      "marketValue": "Wat je posities vandaag waard zijn: de hoeveelheid van elk actief vermenigvuldigd met de laatste koers. Als een actief geen prijs heeft, wordt het totaal weergegeven als —.",
+      "marketValue": "Wat je posities vandaag waard zijn: de hoeveelheid van elk actief vermenigvuldigd met de laatste koers. Als een actief geen prijs heeft, wordt het totaal weergegeven als —. Dit omvat ook opgebouwd rendement.",
       "bookValue": "Wat je hebt betaald voor de posities die je nog aanhoudt: de hoeveelheid van elk actief vermenigvuldigd met de gemiddelde kostprijs.",
       "unrealizedGain": "Marktwaarde min boekwaarde: wat je zou winnen (of verliezen) als je vandaag alles zou verkopen. Het wordt pas een echte winst zodra je verkoopt."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Transactieregister",
       "ledgerEmpty": {
         "title": "Nog geen transacties",
-        "description": "Registreer een aankoop, verkoop, dividend of kosten om het register te starten."
+        "description": "Registreer een transactie om het overzicht te starten."
       },
       "stale": "Prijs niet beschikbaar"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Gemiddelde kostprijs",
       "price": "Prijs",
       "marketValue": "Marktwaarde",
+      "yieldBalance": "Opgebouwd rendement",
       "unrealizedGain": "Ongerealiseerde winst",
       "allocation": "Allocatie",
       "type": "Type",
@@ -1296,7 +1297,8 @@
       "buy": "Kopen",
       "sell": "Verkopen",
       "dividend": "Dividend",
-      "fee": "Kosten"
+      "fee": "Kosten",
+      "yield": "Rendement"
     },
     "assetClass": {
       "stock": "Aandeel",
@@ -1354,7 +1356,8 @@
           "notes": "Notities"
         },
         "errors": {
-          "invalid": "Vul de verplichte velden in met geldige waarden."
+          "invalid": "Vul de verplichte velden in met geldige waarden.",
+          "yieldAsset": "Kies een bezit met een handmatige prijs en een bestaande positie."
         },
         "actions": {
           "cancel": "Annuleren",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Die transactie bestaat niet meer.",
       "quantity_price_required": "Aankopen en verkopen vereisen een hoeveelheid en een prijs.",
-      "quantity_price_not_allowed": "Voor dividenden en kosten gebruik je een bedrag, geen hoeveelheid en prijs.",
+      "quantity_price_not_allowed": "Voor dividenden en kosten gebruik je een bedrag, geen hoeveelheid en prijs. Rendement ook.",
       "asset_required": "Kies een actief voor deze transactie.",
       "currency_must_match_wallet": "De valuta van de transactie moet overeenkomen met de valuta van de wallet.",
       "insufficient_quantity": "Je kunt niet meer verkopen dan je momenteel bezit.",
       "settlement_amount_not_positive": "Het afwikkelingsbedrag moet groter zijn dan nul.",
       "price_unavailable": "Er is geen prijs beschikbaar voor de geselecteerde datum.",
       "future_date": "Een toekomstige datum kan niet voor deze transactie worden gebruikt.",
-      "ledger_invalid": "Door deze wijziging wordt een latere transactie ongeldig. Maak die eerst ongedaan of bewerk die."
+      "ledger_invalid": "Door deze wijziging wordt een latere transactie ongeldig. Maak die eerst ongedaan of bewerk die.",
+      "yield_requires_manual_price": "Voor dit bezit moet een handmatige prijs zijn ingesteld om rendement te registreren.",
+      "yield_amount_not_positive": "Het rendementsbedrag moet groter zijn dan nul.",
+      "yield_fee_not_allowed": "Rendement mag geen kosten hebben.",
+      "yield_requires_position": "Houd eerst eenheden van dit bezit aan voordat je rendement registreert."
     },
     "market_data_credential": {
       "not_found": "Er is geen API-sleutel voor die provider opgeslagen.",

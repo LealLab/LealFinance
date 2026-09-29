@@ -19,6 +19,7 @@ class Position:
     book_value: Decimal
     realized_gain: Decimal
     dividend_income: Decimal
+    yield_balance: Decimal
     fees_paid: Decimal
 
 
@@ -27,6 +28,7 @@ def _fold(asset: InvestmentAsset, rows: list[InvestmentTransaction]) -> Position
     cost = Decimal("0")
     realized_gain = Decimal("0")
     dividend_income = Decimal("0")
+    yield_balance = Decimal("0")
     fees_paid = Decimal("0")
 
     for row in rows:
@@ -40,12 +42,17 @@ def _fold(asset: InvestmentAsset, rows: list[InvestmentTransaction]) -> Position
                 raise ValueError("cannot sell more than the held quantity")
             average_cost = cost / quantity
             realized_gain += row.quantity * row.price - row.fee - average_cost * row.quantity
+            yield_balance *= (quantity - row.quantity) / quantity
             quantity -= row.quantity
             cost -= average_cost * row.quantity
             if quantity == 0:
                 cost = Decimal("0")
         elif row.type == "dividend":
             dividend_income += row.amount
+        elif row.type == "yield":
+            if quantity <= 0:
+                raise ValueError("cannot add yield without a held quantity")
+            yield_balance += row.amount
         elif row.type == "fee":
             fees_paid += row.amount
 
@@ -57,6 +64,7 @@ def _fold(asset: InvestmentAsset, rows: list[InvestmentTransaction]) -> Position
         book_value=cost,
         realized_gain=realized_gain,
         dividend_income=dividend_income,
+        yield_balance=yield_balance,
         fees_paid=fees_paid,
     )
 

@@ -1,21 +1,8 @@
 <div *transloco="let t">
-  <!-- t(investments.type.buy, investments.type.sell, investments.type.dividend, investments.type.fee) -->
+  <!-- t(investments.type.buy, investments.type.sell, investments.type.dividend, investments.type.fee, investments.type.yield) -->
   @if (titleKey(); as title) {
-    <app-modal [(open)]="open" [titleText]="t(title)">
+    <app-modal [(open)]="open" [titleText]="t(title) + ' · ' + t('investments.type.' + form.controls.type.value)">
       <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()">
-        <div class="grid grid-cols-2 gap-1 rounded-md bg-surface-sunken p-1 sm:grid-cols-4">
-          @for (type of transactionTypes; track type) {
-            <button
-              type="button"
-              class="min-w-0 truncate rounded px-2 py-1.5 text-sm font-medium transition-colors [@media(pointer:coarse)]:min-h-11"
-              [class]="form.controls.type.value === type ? 'bg-surface-raised text-content-primary shadow-sm' : 'text-content-muted hover:text-content-primary'"
-              (click)="form.controls.type.setValue(type)"
-            >
-              {{ t('investments.type.' + type) }}
-            </button>
-          }
-        </div>
-
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="form-label" for="investment-tx-date">{{ t('investments.transactions.form.fields.date') }}</label>
@@ -32,7 +19,7 @@
             <label class="form-label" for="investment-tx-asset">{{ t('investments.transactions.form.fields.asset') }}</label>
             <select id="investment-tx-asset" class="form-input" formControlName="assetId">
               <option value="" disabled>{{ t('investments.transactions.form.fields.selectAsset') }}</option>
-              @for (asset of assets(); track asset.id) {
+              @for (asset of availableAssets(); track asset.id) {
                 <option [value]="asset.id">{{ asset.symbol }} · {{ asset.name }}</option>
               }
             </select>
@@ -84,10 +71,12 @@
           </div>
         }
 
+        @if (!isYield()) {
         <div>
           <label class="form-label" for="investment-tx-fee">{{ t('investments.transactions.form.fields.fee') }}</label>
           <input id="investment-tx-fee" type="text" inputmode="decimal" class="form-input font-mono" formControlName="fee" />
         </div>
+        }
 
         <div>
           <label class="form-label" for="investment-tx-notes">{{ t('investments.transactions.form.fields.notes') }}</label>

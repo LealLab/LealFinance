@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "Ce este {{label}}?",
-      "marketValue": "Cât valorează astăzi pozițiile tale: cantitatea fiecărui activ înmulțită cu cea mai recentă cotație. Dacă un activ nu are preț, totalul este afișat ca —.",
+      "marketValue": "Cât valorează astăzi pozițiile tale: cantitatea fiecărui activ înmulțită cu cea mai recentă cotație. Dacă un activ nu are preț, totalul este afișat ca —. Include și randamentul acumulat.",
       "bookValue": "Cât ai plătit pentru pozițiile pe care le mai deții: cantitatea fiecărui activ înmulțită cu costul mediu de achiziție.",
       "unrealizedGain": "Valoarea de piață minus valoarea contabilă: cât ai câștiga (sau pierde) dacă ai vinde totul astăzi. Devine un câștig real doar când vinzi."
     },
@@ -1274,7 +1274,7 @@
       "ledger": "Registrul tranzacțiilor",
       "ledgerEmpty": {
         "title": "Nu există încă tranzacții",
-        "description": "Înregistrează o cumpărare, o vânzare, un dividend sau un comision pentru a începe registrul."
+        "description": "Înregistrează o tranzacție pentru a începe istoricul."
       },
       "stale": "Preț indisponibil"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "Cost mediu",
       "price": "Preț",
       "marketValue": "Valoare de piață",
+      "yieldBalance": "Randament acumulat",
       "unrealizedGain": "Câștig nerealizat",
       "allocation": "Alocare",
       "type": "Tip",
@@ -1296,7 +1297,8 @@
       "buy": "Cumpărare",
       "sell": "Vânzare",
       "dividend": "Dividend",
-      "fee": "Comision"
+      "fee": "Comision",
+      "yield": "Randament"
     },
     "assetClass": {
       "stock": "Acțiune",
@@ -1354,7 +1356,8 @@
           "notes": "Note"
         },
         "errors": {
-          "invalid": "Completează câmpurile obligatorii cu valori valide."
+          "invalid": "Completează câmpurile obligatorii cu valori valide.",
+          "yieldAsset": "Selectați un activ cu preț manual și o poziție existentă."
         },
         "actions": {
           "cancel": "Anulează",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "Această tranzacție nu mai există.",
       "quantity_price_required": "Cumpărările și vânzările necesită o cantitate și un preț.",
-      "quantity_price_not_allowed": "Dividendele și comisioanele folosesc o sumă, nu o cantitate și un preț.",
+      "quantity_price_not_allowed": "Dividendele și comisioanele folosesc o sumă, nu o cantitate și un preț. La fel și randamentele.",
       "asset_required": "Alege un activ pentru această tranzacție.",
       "currency_must_match_wallet": "Moneda tranzacției trebuie să corespundă monedei portofelului.",
       "insufficient_quantity": "Nu poți vinde mai mult decât deții în prezent.",
       "settlement_amount_not_positive": "Valoarea decontării trebuie să fie mai mare decât zero.",
       "price_unavailable": "Nu există un preț disponibil pentru data selectată.",
       "future_date": "Nu se poate folosi o dată viitoare pentru această tranzacție.",
-      "ledger_invalid": "Această modificare ar face invalidă o tranzacție ulterioară. Anuleaz-o sau editeaz-o mai întâi."
+      "ledger_invalid": "Această modificare ar face invalidă o tranzacție ulterioară. Anuleaz-o sau editeaz-o mai întâi.",
+      "yield_requires_manual_price": "Acest activ are nevoie de un preț manual configurat pentru a înregistra un randament.",
+      "yield_amount_not_positive": "Valoarea randamentului trebuie să fie mai mare decât zero.",
+      "yield_fee_not_allowed": "Un randament nu poate avea comision.",
+      "yield_requires_position": "Trebuie să deții unități din acest activ înainte de a înregistra un randament."
     },
     "market_data_credential": {
       "not_found": "Nu este stocată nicio cheie API pentru acel furnizor.",

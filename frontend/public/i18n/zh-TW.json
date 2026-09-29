@@ -1250,7 +1250,7 @@
     },
     "help": {
       "label": "什麼是{{label}}？",
-      "marketValue": "您的持倉目前的價值：每項資產的數量乘以最新價格。若某項資產沒有價格，總計會顯示為 —。",
+      "marketValue": "您的持倉目前的價值：每項資產的數量乘以最新價格。若某項資產沒有價格，總計會顯示為 —。 其中還包括累計收益。",
       "bookValue": "您為目前持有的部位所支付的金額：每項資產的數量乘以平均買入成本。",
       "unrealizedGain": "市值減去帳面價值：如果您今天賣出全部持倉，將獲得（或損失）的金額。只有在實際賣出時才會成為真正的收益。"
     },
@@ -1274,7 +1274,7 @@
       "ledger": "交易帳",
       "ledgerEmpty": {
         "title": "尚無交易",
-        "description": "記錄買入、賣出、股息或費用以開始記帳。"
+        "description": "記錄一筆交易以開始交易紀錄。"
       },
       "stale": "價格無法取得"
     },
@@ -1284,6 +1284,7 @@
       "averageCost": "平均成本",
       "price": "價格",
       "marketValue": "市值",
+      "yieldBalance": "累計收益",
       "unrealizedGain": "未實現收益",
       "allocation": "配置",
       "type": "類型",
@@ -1296,7 +1297,8 @@
       "buy": "買入",
       "sell": "賣出",
       "dividend": "股息",
-      "fee": "費用"
+      "fee": "費用",
+      "yield": "收益"
     },
     "assetClass": {
       "stock": "股票",
@@ -1354,7 +1356,8 @@
           "notes": "備註"
         },
         "errors": {
-          "invalid": "請使用有效值填寫必填欄位。"
+          "invalid": "請使用有效值填寫必填欄位。",
+          "yieldAsset": "請選擇已設定手動價格且目前持有的資產。"
         },
         "actions": {
           "cancel": "取消",
@@ -2130,14 +2133,18 @@
     "investment_transaction": {
       "not_found": "此交易已不存在。",
       "quantity_price_required": "買入和賣出需要填寫數量和價格。",
-      "quantity_price_not_allowed": "股息和費用使用金額，而不是數量和價格。",
+      "quantity_price_not_allowed": "股息和費用使用金額，而不是數量和價格。 收益也一樣。",
       "asset_required": "請為此交易選擇資產。",
       "currency_must_match_wallet": "交易貨幣必須與錢包貨幣一致。",
       "insufficient_quantity": "不能賣出超過目前持有的數量。",
       "settlement_amount_not_positive": "結算金額必須大於零。",
       "price_unavailable": "所選日期沒有可用價格。",
       "future_date": "此交易不能使用未來日期。",
-      "ledger_invalid": "此變更會使後續交易無效。請先撤銷或編輯該交易。"
+      "ledger_invalid": "此變更會使後續交易無效。請先撤銷或編輯該交易。",
+      "yield_requires_manual_price": "要記錄收益，必須為該資產設定手動價格。",
+      "yield_amount_not_positive": "收益金額必須大於零。",
+      "yield_fee_not_allowed": "收益不可包含費用。",
+      "yield_requires_position": "記錄收益前必須持有該資產的單位。"
     },
     "market_data_credential": {
       "not_found": "此提供者未儲存 API 金鑰。",
