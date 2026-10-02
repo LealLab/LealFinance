@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Indtast det samlede betalte beløb; gebyret trækkes fra før beregning af antallet.",
           "fee": "Gebyr",
           "currency": "Valuta",
+          "existingPosition": "Eksisterende beholdning (træk ikke fra kontantkontoen)",
+          "existingPositionHelpLabel": "Hvorfor findes denne mulighed?",
+          "existingPositionHelp": "Brug dette til aktiver, du allerede ejede, før du begyndte at bruge LealFinance. Beholdningen indgår i din nettoformue, men der trækkes ingen penge fra den tilknyttede kontantkonto, så du slipper for at registrere flere års tidligere transaktioner.",
           "notes": "Noter"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Aktivet skal have en indstillet manuel pris for at registrere afkast.",
       "yield_amount_not_positive": "Afkastbeløbet skal være større end nul.",
       "yield_fee_not_allowed": "Afkast kan ikke have et gebyr.",
-      "yield_requires_position": "Du skal eje enheder af aktivet, før du registrerer afkast."
+      "yield_requires_position": "Du skal eje enheder af aktivet, før du registrerer afkast.",
+      "existing_position_requires_buy": "Kun køb kan markeres som en eksisterende beholdning."
     },
     "market_data_credential": {
       "not_found": "Der er ikke gemt nogen API-nøgle for denne udbyder.",

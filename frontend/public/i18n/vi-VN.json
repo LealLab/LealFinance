@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Nhập tổng số tiền đã trả; phí được trừ trước khi tính số lượng.",
           "fee": "Phí",
           "currency": "Tiền tệ",
+          "existingPosition": "Vị thế hiện có (không trừ tiền từ tài khoản tiền mặt)",
+          "existingPositionHelpLabel": "Tại sao có tùy chọn này?",
+          "existingPositionHelp": "Dùng cho tài sản bạn đã nắm giữ trước khi bắt đầu dùng LealFinance. Vị thế được tính vào giá trị tài sản ròng của bạn, nhưng không có khoản tiền nào bị trừ khỏi tài khoản tiền mặt đã liên kết, nên bạn không cần ghi lại nhiều năm giao dịch trước đây.",
           "notes": "Ghi chú"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Tài sản này cần được đặt giá thủ công để ghi nhận lợi tức.",
       "yield_amount_not_positive": "Số tiền lợi tức phải lớn hơn không.",
       "yield_fee_not_allowed": "Lợi tức không được có phí.",
-      "yield_requires_position": "Bạn phải nắm giữ đơn vị tài sản này trước khi ghi nhận lợi tức."
+      "yield_requires_position": "Bạn phải nắm giữ đơn vị tài sản này trước khi ghi nhận lợi tức.",
+      "existing_position_requires_buy": "Chỉ giao dịch mua mới có thể đánh dấu là vị thế hiện có."
     },
     "market_data_credential": {
       "not_found": "Chưa lưu khóa API cho nhà cung cấp đó.",

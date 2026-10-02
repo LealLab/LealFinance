@@ -1177,3 +1177,176 @@ async def test_approved_investment_rechecks_price_before_writing(
         )
     assert saved.quantity == Decimal("5")
     assert price.await_count == 3
+
+
+async def _balances(client: AsyncClient) -> dict[str, str]:
+    return {
+        row["account_id"]: row["balance"]
+        for row in (await client.get("/api/v1/accounts/balances")).json()
+    }
+
+
+async def _existing_buy(
+    client: AsyncClient, wallet: dict[str, object], asset: dict[str, object], **overrides: object
+) -> dict[str, object]:
+    payload = {
+        "wallet_id": wallet["id"],
+        "asset_id": asset["id"],
+        "type": "buy",
+        "date": "2026-01-01",
+        "quantity": "10",
+        "price": "10",
+        "amount": "100",
+        "fee": "5",
+        "currency": "BRL",
+        "existing_position": True,
+        **overrides,
+    }
+    response = await client.post("/api/v1/investments/transactions", json=payload)
+    assert response.status_code == 201, response.text
+    return response.json()
+
+
+async def test_existing_position_buy_skips_cash_transfer_and_credits_wallet_account(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-existing-position@example.com")
+    cash = await _create_account(client, opening_balance="1000")
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client)
+
+    buy = await _existing_buy(client, wallet, asset)
+
+    assert buy["existing_position"] is True
+    assert buy["transaction_id"] is None
+    assert await db_session.scalar(select(Transaction.id)) is None
+    balances = await _balances(client)
+    assert balances[cash["id"]] == "1000.0000"
+    assert balances[wallet["account_id"]] == "105.0000"
+
+    # A regular buy on the same wallet still debits the cash account.
+    regular = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "buy",
+            "date": "2026-01-02",
+            "quantity": "1",
+            "price": "10",
+            "amount": "10",
+            "currency": "BRL",
+        },
+    )
+    assert regular.status_code == 201, regular.text
+    assert regular.json()["existing_position"] is False
+    assert regular.json()["transaction_id"] is not None
+    balances = await _balances(client)
+    assert balances[cash["id"]] == "990.0000"
+    assert balances[wallet["account_id"]] == "115.0000"
+
+
+async def test_existing_position_balance_follows_edit_and_delete(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-existing-edit@example.com")
+    cash = await _create_account(client, opening_balance="1000")
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client)
+    buy = await _existing_buy(client, wallet, asset)
+
+    patched = await client.patch(
+        f"/api/v1/investments/transactions/{buy['id']}",
+        json={"quantity": "20", "price": "10"},
+    )
+    assert patched.status_code == 200, patched.text
+    assert patched.json()["existing_position"] is True
+    assert patched.json()["transaction_id"] is None
+    balances = await _balances(client)
+    assert balances[cash["id"]] == "1000.0000"
+    assert balances[wallet["account_id"]] == "205.0000"
+
+    deleted = await client.delete(f"/api/v1/investments/transactions/{buy['id']}")
+    assert deleted.status_code == 204, deleted.text
+    balances = await _balances(client)
+    assert balances[cash["id"]] == "1000.0000"
+    assert balances[wallet["account_id"]] == "0.0000"
+
+
+async def test_existing_position_previews_without_settlement(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-existing-preview@example.com")
+    cash = await _create_account(client, opening_balance="1000")
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client)
+    user = (await db_session.scalars(select(User))).one()
+
+    preview = await investments_service.preview_create_investment_transaction(
+        db_session,
+        user.id,
+        InvestmentTransactionCreate(
+            wallet_id=wallet["id"],
+            asset_id=asset["id"],
+            type="buy",
+            date=date(2026, 1, 1),
+            quantity=Decimal("1"),
+            price=Decimal("10"),
+            amount=Decimal("10"),
+            currency="BRL",
+            existing_position=True,
+        ),
+    )
+
+    assert preview["settlement"] is None
+
+
+async def test_existing_position_is_buy_only(client: AsyncClient, db_session: AsyncSession) -> None:
+    await _authed(client, db_session, "investment-existing-buy-only@example.com")
+    cash = await _create_account(client, opening_balance="1000")
+    wallet = await _create_wallet(client, cash_account_id=cash["id"])
+    asset = await _create_asset(client)
+    buy = await _existing_buy(client, wallet, asset)
+
+    sell = await client.post(
+        "/api/v1/investments/transactions",
+        json={
+            "wallet_id": wallet["id"],
+            "asset_id": asset["id"],
+            "type": "sell",
+            "date": "2026-01-02",
+            "quantity": "1",
+            "price": "10",
+            "amount": "10",
+            "currency": "BRL",
+            "existing_position": True,
+        },
+    )
+    assert sell.status_code == 422
+    assert sell.json()["error"]["code"] == "investment_transaction.existing_position_requires_buy"
+
+    # The flag is not patchable, so turning the row into a sell is rejected too.
+    patched = await client.patch(
+        f"/api/v1/investments/transactions/{buy['id']}",
+        json={"type": "sell", "quantity": "1", "price": "10"},
+    )
+    assert patched.status_code == 422
+    assert (
+        patched.json()["error"]["code"] == "investment_transaction.existing_position_requires_buy"
+    )
+
+
+async def test_wallet_currency_change_is_rejected_after_existing_position(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "investment-existing-currency@example.com")
+    wallet = await _create_wallet(client)
+    asset = await _create_asset(client)
+    await _existing_buy(client, wallet, asset)
+
+    response = await client.patch(
+        f"/api/v1/investments/wallets/{wallet['id']}", json={"currency": "USD"}
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "investment_wallet.currency_in_use"

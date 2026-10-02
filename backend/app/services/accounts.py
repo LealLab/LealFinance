@@ -121,10 +121,29 @@ def _account_leg_deltas(user_id: UUID, *, as_of: date_type | None = None) -> Sel
         Transaction.user_id == user_id,
         Transaction.type == TRANSACTION_TYPE_TRANSFER,
     )
+    # Existing-position buys post no ledger row; they credit the wallet's
+    # investment account directly so net worth counts the position.
+    # ponytail: reconciliation can't clear these legs (no ledger row to
+    # match); add support if anyone reconciles an investment account.
+    position_leg = (
+        select(
+            InvestmentTransaction.id.label("transaction_id"),
+            InvestmentWallet.account_id.label("account_id"),
+            literal("position").label("leg"),
+            InvestmentTransaction.date.label("date"),
+            (InvestmentTransaction.amount + InvestmentTransaction.fee).label("delta"),
+        )
+        .join(InvestmentWallet, InvestmentWallet.id == InvestmentTransaction.wallet_id)
+        .where(
+            InvestmentTransaction.user_id == user_id,
+            InvestmentTransaction.existing_position,
+        )
+    )
     if as_of is not None:
         own_leg = own_leg.where(Transaction.date <= as_of)
         incoming_leg = incoming_leg.where(Transaction.date <= as_of)
-    return own_leg.union_all(incoming_leg)
+        position_leg = position_leg.where(InvestmentTransaction.date <= as_of)
+    return own_leg.union_all(incoming_leg, position_leg)
 
 
 async def account_balances(
@@ -285,7 +304,16 @@ async def account_has_ledger_references(db: AsyncSession, account_id: UUID, user
         .with_only_columns(RecurringRule.id)
         .exists()
     )
-    return bool(await db.scalar(select(transaction_ref | recurring_ref)))
+    # An existing-position buy has no ledger row but still contributes a
+    # balance leg in the wallet's currency (see _account_leg_deltas).
+    position_ref = (
+        ownership.owned(InvestmentTransaction, user_id)
+        .join(InvestmentWallet, InvestmentWallet.id == InvestmentTransaction.wallet_id)
+        .where(InvestmentWallet.account_id == account_id, InvestmentTransaction.existing_position)
+        .with_only_columns(InvestmentTransaction.id)
+        .exists()
+    )
+    return bool(await db.scalar(select(transaction_ref | recurring_ref | position_ref)))
 
 
 async def validate_account_identity_change(

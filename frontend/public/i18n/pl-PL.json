@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Wpisz łączną zapłaconą kwotę; opłata zostanie odjęta przed obliczeniem ilości.",
           "fee": "Opłata",
           "currency": "Waluta",
+          "existingPosition": "Istniejąca pozycja (nie obciążaj konta gotówkowego)",
+          "existingPositionHelpLabel": "Po co jest ta opcja?",
+          "existingPositionHelp": "Użyj tej opcji dla aktywów, które posiadałeś(-aś) przed rozpoczęciem korzystania z LealFinance. Pozycja wlicza się do majątku netto, ale z powiązanego konta gotówkowego nie są pobierane żadne środki, więc nie musisz wprowadzać wieloletniej historii transakcji.",
           "notes": "Notatki"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Aby zapisać zysk, ustaw ręczną cenę tego aktywa.",
       "yield_amount_not_positive": "Kwota zysku musi być większa od zera.",
       "yield_fee_not_allowed": "Zysk nie może mieć opłaty.",
-      "yield_requires_position": "Przed zapisaniem zysku musisz posiadać jednostki tego aktywa."
+      "yield_requires_position": "Przed zapisaniem zysku musisz posiadać jednostki tego aktywa.",
+      "existing_position_requires_buy": "Tylko zakupy można oznaczyć jako istniejącą pozycję."
     },
     "market_data_credential": {
       "not_found": "Dla tego dostawcy nie zapisano klucza API.",

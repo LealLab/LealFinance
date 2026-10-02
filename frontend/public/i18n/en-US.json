@@ -1385,6 +1385,9 @@
           "amountSpentHint": "Enter the gross cash paid; the fee is subtracted before quantity is calculated.",
           "fee": "Fee",
           "currency": "Currency",
+          "existingPosition": "Existing position (don't debit the cash account)",
+          "existingPositionHelpLabel": "Why does this option exist?",
+          "existingPositionHelp": "Use this for assets you already held before you started using LealFinance. The position counts toward your net worth, but no money is taken out of the linked cash account, so you don't have to record years of past transactions.",
           "notes": "Notes"
         },
         "errors": {
@@ -2204,7 +2207,8 @@
       "yield_requires_manual_price": "This asset needs a configured manual price to record a yield.",
       "yield_amount_not_positive": "The yield amount must be greater than zero.",
       "yield_fee_not_allowed": "A yield cannot have a fee.",
-      "yield_requires_position": "Hold some units of this asset before recording a yield."
+      "yield_requires_position": "Hold some units of this asset before recording a yield.",
+      "existing_position_requires_buy": "Only buys can be marked as an existing position."
     },
     "market_data_credential": {
       "not_found": "No API key is stored for that provider.",

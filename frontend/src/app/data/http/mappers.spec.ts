@@ -19,6 +19,9 @@ import {
   mapExchangeRate,
   mapImportPreview,
   mapImportPreviewRequest,
+  mapInvestmentTransaction,
+  mapInvestmentTransactionCreate,
+  mapInvestmentTransactionPatch,
   mapMonthlyTotal,
   mapRecurringRule,
   mapTransaction,
@@ -286,6 +289,41 @@ describe('HTTP wire mappers', () => {
       currency: 'BRL',
       balance: '300.0000',
     });
+  });
+
+  it('carries the existing-position flag in and out but never patches it', () => {
+    const wire = {
+      id: 'tx',
+      wallet_id: 'w',
+      asset_id: 'a',
+      type: 'buy' as const,
+      date: '2026-01-01',
+      quantity: '2',
+      price: '50',
+      amount: '100',
+      fee: '0',
+      currency: 'BRL',
+      transaction_id: null,
+      existing_position: true,
+      notes: null,
+    };
+    const input = {
+      walletId: 'w',
+      assetId: 'a',
+      type: 'buy' as const,
+      date: '2026-01-01',
+      quantity: '2',
+      price: '50',
+      amount: '100',
+      fee: '0',
+      currency: 'BRL',
+    };
+    expect(mapInvestmentTransaction(wire).existingPosition).toBe(true);
+    expect(
+      mapInvestmentTransactionCreate({ ...input, existingPosition: true }).existing_position,
+    ).toBe(true);
+    expect(mapInvestmentTransactionCreate(input).existing_position).toBe(false);
+    expect(mapInvestmentTransactionPatch({ quantity: '3' })).toEqual({ quantity: '3' });
   });
 
   it('maps analytics aggregate wire rows without changing money strings', () => {

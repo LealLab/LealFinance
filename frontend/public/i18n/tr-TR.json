@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Ödenen brüt nakit tutarını girin; miktar hesaplanmadan önce ücret düşülür.",
           "fee": "Ücret",
           "currency": "Para birimi",
+          "existingPosition": "Mevcut pozisyon (nakit hesabından düşme)",
+          "existingPositionHelpLabel": "Bu seçenek neden var?",
+          "existingPositionHelp": "LealFinance'i kullanmaya başlamadan önce zaten sahip olduğunuz varlıklar için kullanın. Pozisyon net varlığınıza dahil edilir, ancak bağlı nakit hesabından para çekilmez; böylece yıllarca geçmiş işlemi kaydetmeniz gerekmez.",
           "notes": "Notlar"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Getiri kaydetmek için bu varlığın manuel fiyatı ayarlanmalıdır.",
       "yield_amount_not_positive": "Getiri tutarı sıfırdan büyük olmalıdır.",
       "yield_fee_not_allowed": "Getiriye ücret eklenemez.",
-      "yield_requires_position": "Getiri kaydetmeden önce bu varlıktan bir miktar elinizde bulundurun."
+      "yield_requires_position": "Getiri kaydetmeden önce bu varlıktan bir miktar elinizde bulundurun.",
+      "existing_position_requires_buy": "Yalnızca alışlar mevcut pozisyon olarak işaretlenebilir."
     },
     "market_data_credential": {
       "not_found": "Bu sağlayıcı için kayıtlı bir API anahtarı yok.",

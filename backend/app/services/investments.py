@@ -475,6 +475,8 @@ async def _prepare_investment_transaction(
     settle_cash: bool = True,
 ) -> _PreparedInvestmentTransaction:
     currency = await get_active_currency(db, data.currency)
+    if data.existing_position and data.type != INVESTMENT_TRANSACTION_TYPE_BUY:
+        raise ValidationAppError(code="investment_transaction.existing_position_requires_buy")
     wallet, _asset = await _validate_transaction(
         db,
         user_id,
@@ -494,6 +496,7 @@ async def _prepare_investment_transaction(
     settlement = None
     if (
         settle_cash
+        and not data.existing_position
         and cash_account is not None
         and data.type
         in (
@@ -633,6 +636,8 @@ def _effective_transaction(
         "amount": changes.get("amount", transaction.amount),
         "fee": changes.get("fee", transaction.fee),
         "currency": changes.get("currency", transaction.currency),
+        # Not patchable: the flag decides whether a cash leg ever existed.
+        "existing_position": transaction.existing_position,
         "notes": changes.get("notes", transaction.notes),
     }
     return InvestmentTransactionCreate.model_validate(values)

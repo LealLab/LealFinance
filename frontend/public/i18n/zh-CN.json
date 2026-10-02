@@ -1359,6 +1359,9 @@
           "amountSpentHint": "输入实际支付的总金额；计算数量前会扣除手续费。",
           "fee": "费用",
           "currency": "货币",
+          "existingPosition": "现有持仓（不从现金账户扣款）",
+          "existingPositionHelpLabel": "为什么有此选项？",
+          "existingPositionHelp": "适用于你在开始使用 LealFinance 之前就已持有的资产。该持仓会计入你的净资产，但不会从关联的现金账户中扣除任何资金，因此无需补录多年的历史交易。",
           "notes": "备注"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "要记录收益，必须为该资产设置手动价格。",
       "yield_amount_not_positive": "收益金额必须大于零。",
       "yield_fee_not_allowed": "收益不能包含费用。",
-      "yield_requires_position": "记录收益前必须持有该资产的份额。"
+      "yield_requires_position": "记录收益前必须持有该资产的份额。",
+      "existing_position_requires_buy": "只有买入才能标记为现有持仓。"
     },
     "market_data_credential": {
       "not_found": "该提供商未存储 API 密钥。",

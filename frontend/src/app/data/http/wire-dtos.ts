@@ -458,11 +458,13 @@ export interface InvestmentTransactionWire {
   fee: string;
   currency: string;
   transaction_id: string | null;
+  existing_position: boolean;
   notes: string | null;
 }
 export type InvestmentTransactionInputWire = Omit<InvestmentTransactionWire, 'id' | 'transaction_id'>;
+// existing_position is fixed at creation, so it is not patchable.
 export type InvestmentTransactionPatchWire = NullablePatch<
-  Omit<InvestmentTransactionInputWire, 'wallet_id'>
+  Omit<InvestmentTransactionInputWire, 'wallet_id' | 'existing_position'>
 >;
 
 export interface InvestmentPositionWire {

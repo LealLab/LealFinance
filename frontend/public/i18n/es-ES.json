@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Introduce el importe bruto pagado; la comisión se resta antes de calcular la cantidad.",
           "fee": "Comisión",
           "currency": "Moneda",
+          "existingPosition": "Posición existente (no cargar a la cuenta de efectivo)",
+          "existingPositionHelpLabel": "¿Por qué existe esta opción?",
+          "existingPositionHelp": "Úsala para activos que ya tenías antes de empezar a usar LealFinance. La posición cuenta en tu patrimonio neto, pero no se retira dinero de la cuenta de efectivo vinculada, así que no tienes que registrar años de transacciones pasadas.",
           "notes": "Notas"
         },
         "errors": {
@@ -2180,7 +2183,8 @@
       "yield_requires_manual_price": "Este activo necesita un precio manual configurado para registrar un rendimiento.",
       "yield_amount_not_positive": "El importe del rendimiento debe ser mayor que cero.",
       "yield_fee_not_allowed": "Un rendimiento no puede tener comisión.",
-      "yield_requires_position": "Debes tener participaciones de este activo antes de registrar un rendimiento."
+      "yield_requires_position": "Debes tener participaciones de este activo antes de registrar un rendimiento.",
+      "existing_position_requires_buy": "Solo las compras se pueden marcar como posición existente."
     },
     "market_data_credential": {
       "not_found": "No hay ninguna clave de API guardada para ese proveedor.",

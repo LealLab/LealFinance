@@ -61,6 +61,7 @@ export class InvestmentTransactionFormModal {
     amount: ['', decimalAmountValidator()],
     fee: ['', decimalAmountValidator()],
     currency: [{ value: '', disabled: true }, Validators.required],
+    existingPosition: [false],
     notes: [''],
   });
 
@@ -79,6 +80,12 @@ export class InvestmentTransactionFormModal {
   protected readonly isTrade = computed(() => this.selectedType() === 'buy' || this.selectedType() === 'sell');
   protected readonly isBuy = computed(() => this.selectedType() === 'buy');
   protected readonly isYield = computed(() => this.selectedType() === 'yield');
+  // Only a new buy on a wallet that would otherwise debit a cash account can
+  // be flagged; the flag is fixed once the buy is saved.
+  protected readonly canMarkExistingPosition = computed(
+    () => this.isBuy() && !this.isEditing() && Boolean(this.walletResource.value()?.cashAccountId),
+  );
+  protected readonly existingPositionHelpOpen = signal(false);
   protected readonly needsAsset = computed(() => this.selectedType() !== 'fee');
   protected readonly availableAssets = computed(() =>
     this.isYield()
@@ -121,10 +128,12 @@ export class InvestmentTransactionFormModal {
         amount: transaction?.amount ?? '',
         fee: transaction?.fee ?? '',
         currency: transaction?.currency ?? this.currency(),
+        existingPosition: false,
         notes: transaction?.notes ?? '',
       });
       this.applyingReset = false;
       this.saveErrorKey.set(null);
+      this.existingPositionHelpOpen.set(false);
     });
 
     this.form.controls.type.valueChanges.subscribe((type) => {
@@ -190,6 +199,7 @@ export class InvestmentTransactionFormModal {
       amount: amountSpent ? raw.amount : trade ? preview!.amount : raw.amount,
       fee: raw.type === 'yield' ? '0' : raw.fee || '0',
       currency: this.currency(),
+      existingPosition: this.canMarkExistingPosition() && raw.existingPosition,
       notes: raw.notes.trim() || undefined,
     } satisfies Omit<InvestmentTransaction, 'id' | 'transactionId'>;
 

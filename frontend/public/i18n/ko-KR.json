@@ -1359,6 +1359,9 @@
           "amountSpentHint": "총 결제 금액을 입력하세요. 수량을 계산하기 전에 수수료가 차감됩니다.",
           "fee": "수수료",
           "currency": "통화",
+          "existingPosition": "기존 보유 포지션 (현금 계좌에서 차감하지 않음)",
+          "existingPositionHelpLabel": "이 옵션이 있는 이유",
+          "existingPositionHelp": "LealFinance를 사용하기 전부터 보유하고 있던 자산에 사용하세요. 이 포지션은 순자산에 포함되지만 연결된 현금 계좌에서는 돈이 빠져나가지 않으므로, 과거 수년간의 거래를 기록하지 않아도 됩니다.",
           "notes": "메모"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "수익을 기록하려면 이 자산에 수동 가격을 설정해야 합니다.",
       "yield_amount_not_positive": "수익 금액은 0보다 커야 합니다.",
       "yield_fee_not_allowed": "수익에는 수수료를 추가할 수 없습니다.",
-      "yield_requires_position": "수익을 기록하기 전에 이 자산을 보유해야 합니다."
+      "yield_requires_position": "수익을 기록하기 전에 이 자산을 보유해야 합니다.",
+      "existing_position_requires_buy": "매수만 기존 보유 포지션으로 표시할 수 있습니다."
     },
     "market_data_credential": {
       "not_found": "해당 제공업체의 API 키가 저장되어 있지 않습니다.",

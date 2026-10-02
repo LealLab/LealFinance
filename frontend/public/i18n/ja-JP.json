@@ -1359,6 +1359,9 @@
           "amountSpentHint": "支払った総額を入力してください。数量の計算前に手数料が差し引かれます。",
           "fee": "手数料",
           "currency": "通貨",
+          "existingPosition": "既存のポジション（現金口座から引き落とさない）",
+          "existingPositionHelpLabel": "このオプションの目的",
+          "existingPositionHelp": "LealFinance を使い始める前から保有していた資産に使用します。このポジションは純資産に含まれますが、連携した現金口座からは引き落とされないため、過去数年分の取引を記録する必要はありません。",
           "notes": "メモ"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "収益を記録するには、この資産に手動価格を設定してください。",
       "yield_amount_not_positive": "収益額はゼロより大きくする必要があります。",
       "yield_fee_not_allowed": "収益に手数料は設定できません。",
-      "yield_requires_position": "収益を記録する前に、この資産を保有している必要があります。"
+      "yield_requires_position": "収益を記録する前に、この資産を保有している必要があります。",
+      "existing_position_requires_buy": "既存のポジションとして設定できるのは購入のみです。"
     },
     "market_data_credential": {
       "not_found": "そのプロバイダーの API キーは保存されていません。",
