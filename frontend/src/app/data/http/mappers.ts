@@ -830,6 +830,7 @@ export const mapInvestmentTransaction = (
   fee: wire.fee,
   currency: wire.currency,
   transactionId: wire.transaction_id ?? undefined,
+  existingPosition: wire.existing_position,
   notes: wire.notes ?? undefined,
 });
 export const mapInvestmentTransactionCreate = (
@@ -844,6 +845,7 @@ export const mapInvestmentTransactionCreate = (
   amount: input.amount,
   fee: input.fee,
   currency: input.currency,
+  existing_position: input.existingPosition ?? false,
   notes: nullable(input.notes),
 });
 export function mapInvestmentTransactionPatch(

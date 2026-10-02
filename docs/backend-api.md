@@ -295,6 +295,15 @@ follows:
 | Buy | Cash account → investment account | `quantity * price + fee` |
 | Sell | Investment account → cash account | `quantity * price - fee` |
 
+A buy created with `existing_position: true` records a position held before
+tracking started. It posts no transfer and leaves `transaction_id` null, so the
+cash account is not debited. Instead, the wallet's investment account balance
+reads the buy as a derived `quantity * price + fee` leg dated on the buy, so net
+worth still counts the position. The flag is buy-only
+(`investment_transaction.existing_position_requires_buy`), is set on create and
+cannot be patched, and locks the wallet's currency
+(`investment_wallet.currency_in_use`) like any ledger row.
+
 Positions resolve each price independently in this order: manual price (or an
 asset configured for manual quotes), today's cached quote, one batched live
 provider request per provider in use, the newest cached quote marked stale,

@@ -424,7 +424,10 @@ ENTITIES: dict[str, EntitySpec] = {
                 "sell's proceeds - never subtract it from `amount` yourself. If the "
                 "wallet has a cash account, the matching transfer is created, "
                 "updated, and deleted automatically - never create or edit it "
-                "by hand."
+                "by hand. For a buy of a position the user already held before "
+                "tracking started, send `existing_position=true`: no cash transfer "
+                "is created and the cash account is not debited. It is buy-only "
+                "and cannot be changed on update."
             ),
         ),
     )

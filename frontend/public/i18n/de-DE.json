@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Geben Sie den insgesamt gezahlten Betrag ein; die Gebühr wird vor der Mengenberechnung abgezogen.",
           "fee": "Gebühr",
           "currency": "Währung",
+          "existingPosition": "Bestehende Position (Verrechnungskonto nicht belasten)",
+          "existingPositionHelpLabel": "Wozu dient diese Option?",
+          "existingPositionHelp": "Verwenden Sie dies für Anlagen, die Sie schon vor der Nutzung von LealFinance besaßen. Die Position zählt zu Ihrem Nettovermögen, aber vom verknüpften Verrechnungskonto wird kein Geld abgebucht, sodass Sie nicht jahrelange frühere Transaktionen erfassen müssen.",
           "notes": "Notizen"
         },
         "errors": {
@@ -2180,7 +2183,8 @@
       "yield_requires_manual_price": "Für dieses Anlagegut muss ein manueller Preis festgelegt sein, um einen Ertrag zu erfassen.",
       "yield_amount_not_positive": "Der Ertragsbetrag muss größer als null sein.",
       "yield_fee_not_allowed": "Ein Ertrag darf keine Gebühr enthalten.",
-      "yield_requires_position": "Sie müssen Anteile dieses Anlageguts halten, bevor Sie einen Ertrag erfassen."
+      "yield_requires_position": "Sie müssen Anteile dieses Anlageguts halten, bevor Sie einen Ertrag erfassen.",
+      "existing_position_requires_buy": "Nur Käufe können als bestehende Position markiert werden."
     },
     "market_data_credential": {
       "not_found": "Für diesen Anbieter ist kein API-Schlüssel gespeichert.",

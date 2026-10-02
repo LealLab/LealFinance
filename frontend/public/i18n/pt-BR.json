@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Informe o valor bruto pago; a taxa é descontada antes do cálculo da quantidade.",
           "fee": "Taxa",
           "currency": "Moeda",
+          "existingPosition": "Posição já existente (não debitar a conta de caixa)",
+          "existingPositionHelpLabel": "Por que esta opção existe?",
+          "existingPositionHelp": "Use para ativos que você já tinha antes de começar a usar o LealFinance. A posição entra no seu patrimônio líquido, mas nenhum dinheiro sai da conta de caixa vinculada, então você não precisa registrar anos de transações passadas.",
           "notes": "Notas"
         },
         "errors": {
@@ -2180,7 +2183,8 @@
       "yield_requires_manual_price": "Este ativo precisa de um preço manual configurado para registrar um rendimento.",
       "yield_amount_not_positive": "O valor do rendimento deve ser maior que zero.",
       "yield_fee_not_allowed": "Um rendimento não pode ter taxa.",
-      "yield_requires_position": "Tenha cotas deste ativo antes de registrar um rendimento."
+      "yield_requires_position": "Tenha cotas deste ativo antes de registrar um rendimento.",
+      "existing_position_requires_buy": "Somente compras podem ser marcadas como posição já existente."
     },
     "market_data_credential": {
       "not_found": "Nenhuma chave de API está armazenada para esse provedor.",

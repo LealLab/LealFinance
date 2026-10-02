@@ -1359,6 +1359,9 @@
           "amountSpentHint": "הזינו את הסכום הכולל ששולם; העמלה מופחתת לפני חישוב הכמות.",
           "fee": "עמלה",
           "currency": "מטבע",
+          "existingPosition": "פוזיציה קיימת (ללא חיוב חשבון המזומן)",
+          "existingPositionHelpLabel": "למה האפשרות הזו קיימת?",
+          "existingPositionHelp": "השתמשו באפשרות זו בנכסים שהחזקתם כבר לפני שהתחלתם להשתמש ב-LealFinance. הפוזיציה נכללת בהון הנקי שלכם, אך לא יורד כסף מחשבון המזומן המקושר, כך שאין צורך לתעד שנים של עסקאות קודמות.",
           "notes": "הערות"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "יש להגדיר מחיר ידני לנכס הזה כדי לרשום תשואה.",
       "yield_amount_not_positive": "סכום התשואה חייב להיות גדול מאפס.",
       "yield_fee_not_allowed": "לא ניתן להוסיף עמלה לתשואה.",
-      "yield_requires_position": "יש להחזיק יחידות של הנכס לפני רישום תשואה."
+      "yield_requires_position": "יש להחזיק יחידות של הנכס לפני רישום תשואה.",
+      "existing_position_requires_buy": "רק קנייה יכולה להיות מסומנת כפוזיציה קיימת."
     },
     "market_data_credential": {
       "not_found": "לא נשמר מפתח API עבור הספק הזה.",

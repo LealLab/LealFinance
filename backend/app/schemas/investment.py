@@ -107,6 +107,7 @@ class InvestmentTransactionRead(BaseModel):
     fee: Decimal
     currency: str
     transaction_id: UUID | None
+    existing_position: bool
     notes: str | None
 
     @field_serializer("price", "amount", "fee")
@@ -128,6 +129,7 @@ class InvestmentTransactionCreate(BaseModel):
     amount: Decimal = Field(ge=0)
     fee: Decimal = Field(default=Decimal("0"), ge=0)
     currency: CurrencyCodeInput
+    existing_position: bool = False
     notes: str | None = None
 
 

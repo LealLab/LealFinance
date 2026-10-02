@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Ange det brutto betalda beloppet; avgiften dras av innan antalet beräknas.",
           "fee": "Avgift",
           "currency": "Valuta",
+          "existingPosition": "Befintligt innehav (debitera inte likvidkontot)",
+          "existingPositionHelpLabel": "Varför finns det här alternativet?",
+          "existingPositionHelp": "Använd det här för tillgångar du redan ägde innan du började använda LealFinance. Innehavet räknas in i din nettoförmögenhet, men inga pengar dras från det kopplade likvidkontot, så du slipper registrera flera års gamla transaktioner.",
           "notes": "Anteckningar"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Tillgången behöver ett inställt manuellt pris för att registrera avkastning.",
       "yield_amount_not_positive": "Avkastningsbeloppet måste vara större än noll.",
       "yield_fee_not_allowed": "Avkastning kan inte ha en avgift.",
-      "yield_requires_position": "Du måste inneha enheter av tillgången innan du registrerar avkastning."
+      "yield_requires_position": "Du måste inneha enheter av tillgången innan du registrerar avkastning.",
+      "existing_position_requires_buy": "Bara köp kan markeras som ett befintligt innehav."
     },
     "market_data_credential": {
       "not_found": "Det finns ingen sparad API-nyckel för den leverantören.",

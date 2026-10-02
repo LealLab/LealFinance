@@ -12,6 +12,7 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
+    text,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
@@ -162,6 +163,10 @@ class InvestmentTransaction(UserOwnedModel):
             "type != 'yield' OR (quantity IS NULL AND price IS NULL AND amount > 0 AND fee = 0)",
             name="ck_investment_transactions_yield_amount_fee",
         ),
+        CheckConstraint(
+            "NOT existing_position OR type = 'buy'",
+            name="ck_investment_transactions_existing_position_buy",
+        ),
     )
 
     wallet_id: Mapped[uuid.UUID] = mapped_column(
@@ -202,6 +207,12 @@ class InvestmentTransaction(UserOwnedModel):
             ondelete="RESTRICT",
             name="fk_investment_transactions_transaction_id",
         ),
+    )
+    # A buy of a position held before tracking started: no cash transfer is
+    # posted, and the wallet's investment account balance reads it as a
+    # derived leg (see accounts._account_leg_deltas).
+    existing_position: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=text("false")
     )
     notes: Mapped[str | None] = mapped_column(Text)
 
