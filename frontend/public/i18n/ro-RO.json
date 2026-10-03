@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Introduceți suma brută plătită; comisionul se scade înainte de calcularea cantității.",
           "fee": "Comision",
           "currency": "Monedă",
+          "existingPosition": "Poziție existentă (nu debita contul de numerar)",
+          "existingPositionHelpLabel": "De ce există această opțiune?",
+          "existingPositionHelp": "Folosește această opțiune pentru activele pe care le dețineai înainte de a începe să folosești LealFinance. Poziția se include în averea ta netă, dar nu se scoate niciun ban din contul de numerar asociat, așa că nu trebuie să înregistrezi ani de tranzacții anterioare.",
           "notes": "Note"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Acest activ are nevoie de un preț manual configurat pentru a înregistra un randament.",
       "yield_amount_not_positive": "Valoarea randamentului trebuie să fie mai mare decât zero.",
       "yield_fee_not_allowed": "Un randament nu poate avea comision.",
-      "yield_requires_position": "Trebuie să deții unități din acest activ înainte de a înregistra un randament."
+      "yield_requires_position": "Trebuie să deții unități din acest activ înainte de a înregistra un randament.",
+      "existing_position_requires_buy": "Doar cumpărările pot fi marcate ca poziție existentă."
     },
     "market_data_credential": {
       "not_found": "Nu este stocată nicio cheie API pentru acel furnizor.",

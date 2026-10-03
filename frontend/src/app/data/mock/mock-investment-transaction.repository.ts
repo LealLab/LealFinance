@@ -15,6 +15,12 @@ export class MockInvestmentTransactionRepository extends InvestmentTransactionRe
   private readonly store = inject(MockStore);
   private readonly latencyMs = inject(MOCK_LATENCY_MS);
 
+  listExistingPositionBuys(dateFrom: string, dateTo: string): Observable<InvestmentTransaction[]> {
+    return mockResult(() => this.store.investmentTransactions().filter(
+      (transaction) => transaction.existingPosition && transaction.date >= dateFrom && transaction.date <= dateTo,
+    ), this.latencyMs);
+  }
+
   list(params: {
     walletId: string;
     limit?: number;

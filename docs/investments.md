@@ -55,6 +55,20 @@ The cash account and wallet may use different currencies. In that case the
 normal exchange-rate service performs the conversion and marks a 1:1 fallback
 so the UI can show its warning.
 
+### Existing positions
+
+Assets you already held before using LealFinance would otherwise debit the cash
+account when you record them, driving it negative. Tick **Existing position**
+(with the `?` help next to it) on a new buy in a wallet that has a cash account,
+or send `existing_position: true`, to avoid that. No transfer is posted and the
+cash account is untouched. The wallet's investment account balance still
+includes `quantity * price + fee`, so net worth counts the position.
+
+The option applies to buys only and is fixed when the buy is created. To change
+it, delete the buy and record it again. Deleting it, or editing its quantity or
+price, updates the investment account balance. Existing-position buys cannot yet
+be cleared in an account reconciliation, since they have no ledger row.
+
 ## Quotes
 
 Each position resolves a price with this precedence:

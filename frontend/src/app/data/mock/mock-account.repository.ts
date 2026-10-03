@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AccountRepository } from '../account.repository';
 import { Account, AccountBalance } from '../../domain/models/account';
 import { accountBalance } from '../../domain/calc/balances';
+import { add, money } from '../../shared/money/money';
 import { MOCK_LATENCY_MS } from './mock-latency';
 import { mockResult } from './mock-result';
 import { MockStore } from './mock-store';
@@ -21,11 +22,17 @@ export class MockAccountRepository extends AccountRepository {
       const transactions = asOf
         ? this.store.transactions().filter((transaction) => transaction.date <= asOf)
         : this.store.transactions();
-      return this.store.accounts().map((account) => ({
-        accountId: account.id,
-        currency: account.currency,
-        balance: accountBalance(account, transactions).amount,
-      }));
+      return this.store.accounts().map((account) => {
+        const wallet = this.store.investmentWallets().find((item) => item.accountId === account.id);
+        const buys = this.store.investmentTransactions().filter((buy) =>
+          buy.existingPosition && buy.walletId === wallet?.id && (!asOf || buy.date <= asOf),
+        );
+        const balance = buys.reduce(
+          (total, buy) => add(total, add(money(buy.amount, buy.currency), money(buy.fee, buy.currency))),
+          accountBalance(account, transactions),
+        );
+        return { accountId: account.id, currency: account.currency, balance: balance.amount };
+      });
     }, this.latencyMs);
   }
 

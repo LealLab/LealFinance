@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Skriv inn brutto betalt beløp; gebyret trekkes fra før antallet beregnes.",
           "fee": "Gebyr",
           "currency": "Valuta",
+          "existingPosition": "Eksisterende beholdning (ikke belast kontantkontoen)",
+          "existingPositionHelpLabel": "Hvorfor finnes dette alternativet?",
+          "existingPositionHelp": "Bruk dette for eiendeler du eide før du begynte å bruke LealFinance. Beholdningen regnes med i nettoformuen din, men ingen penger trekkes fra den tilknyttede kontantkontoen, så du slipper å registrere år med tidligere transaksjoner.",
           "notes": "Notater"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Eiendelen må ha en angitt manuell pris for å registrere avkastning.",
       "yield_amount_not_positive": "Avkastningsbeløpet må være større enn null.",
       "yield_fee_not_allowed": "Avkastning kan ikke ha gebyr.",
-      "yield_requires_position": "Du må eie enheter av eiendelen før du registrerer avkastning."
+      "yield_requires_position": "Du må eie enheter av eiendelen før du registrerer avkastning.",
+      "existing_position_requires_buy": "Bare kjøp kan merkes som en eksisterende beholdning."
     },
     "market_data_credential": {
       "not_found": "Det er ikke lagret noen API-nøkkel for denne leverandøren.",

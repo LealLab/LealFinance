@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Zadejte celkovou zaplacenou částku; poplatek se odečte před výpočtem množství.",
           "fee": "Poplatek",
           "currency": "Měna",
+          "existingPosition": "Stávající pozice (nestrhávat z hotovostního účtu)",
+          "existingPositionHelpLabel": "Proč tato možnost existuje?",
+          "existingPositionHelp": "Použijte u aktiv, která jste vlastnili ještě před zahájením používání LealFinance. Pozice se započítá do vašeho čistého jmění, ale z propojeného hotovostního účtu se nestrhnou žádné peníze, takže nemusíte zadávat roky minulých transakcí.",
           "notes": "Poznámky"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Pro zaznamenání výnosu musí mít aktivum nastavenou ruční cenu.",
       "yield_amount_not_positive": "Částka výnosu musí být větší než nula.",
       "yield_fee_not_allowed": "Výnos nesmí obsahovat poplatek.",
-      "yield_requires_position": "Před zaznamenáním výnosu musíte držet jednotky tohoto aktiva."
+      "yield_requires_position": "Před zaznamenáním výnosu musíte držet jednotky tohoto aktiva.",
+      "existing_position_requires_buy": "Jako stávající pozici lze označit pouze nákup."
     },
     "market_data_credential": {
       "not_found": "Pro tohoto poskytovatele není uložen žádný klíč API.",

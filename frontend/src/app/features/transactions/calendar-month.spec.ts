@@ -53,6 +53,26 @@ describe('buildMonthGrid', () => {
     expect(byDate.get('2026-03-10')!.balance).toBe('950.0000');
   });
 
+  it('applies existing-position buys and fees on their dates without activity rows or dots', () => {
+    const buy = {
+      id: 'buy-1', walletId: 'wallet-1', type: 'buy' as const, date: '2026-03-05',
+      amount: '100', fee: '5', currency: 'USD', existingPosition: true,
+    };
+    const toBrl: CurrencyConverter = (amount, target) =>
+      money(amount.currency === 'USD' ? String(Number(amount.amount) * 5) : amount.amount, target);
+    const march = buildMonthGrid('2026-03', [], [], opening, toBrl, 1, '2026-03-15', [buy]);
+    const byDate = new Map(march.map((day) => [day.date, day]));
+    expect(byDate.get('2026-03-04')!.balance).toBe('1000.0000');
+    expect(byDate.get('2026-03-05')!.balance).toBe('1525.0000');
+    expect(byDate.get('2026-03-31')!.balance).toBe('1525.0000');
+    expect(byDate.get('2026-03-05')!.transactions).toEqual([]);
+    expect(byDate.get('2026-03-05')!.hasIncome).toBe(false);
+    expect(byDate.get('2026-03-05')!.hasExpense).toBe(false);
+    expect(byDate.get('2026-03-05')!.hasTransfer).toBe(false);
+    const april = buildMonthGrid('2026-04', [], [], money('1525', 'BRL'), toBrl, 1, '2026-04-15');
+    expect(april.find((day) => day.date === '2026-04-01')!.balance).toBe('1525.0000');
+  });
+
   it('leaves the portfolio balance unchanged for a same-currency transfer', () => {
     const grid = buildMonthGrid(
       '2026-03',

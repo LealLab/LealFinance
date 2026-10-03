@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Voer het bruto betaalde bedrag in; de kosten worden afgetrokken voordat de hoeveelheid wordt berekend.",
           "fee": "Kosten",
           "currency": "Valuta",
+          "existingPosition": "Bestaande positie (kasrekening niet debiteren)",
+          "existingPositionHelpLabel": "Waarom bestaat deze optie?",
+          "existingPositionHelp": "Gebruik dit voor bezittingen die je al had voordat je LealFinance ging gebruiken. De positie telt mee in je nettovermogen, maar er wordt geen geld van de gekoppelde kasrekening afgeschreven, zodat je geen jaren aan eerdere transacties hoeft vast te leggen.",
           "notes": "Notities"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Voor dit bezit moet een handmatige prijs zijn ingesteld om rendement te registreren.",
       "yield_amount_not_positive": "Het rendementsbedrag moet groter zijn dan nul.",
       "yield_fee_not_allowed": "Rendement mag geen kosten hebben.",
-      "yield_requires_position": "Houd eerst eenheden van dit bezit aan voordat je rendement registreert."
+      "yield_requires_position": "Houd eerst eenheden van dit bezit aan voordat je rendement registreert.",
+      "existing_position_requires_buy": "Alleen aankopen kunnen als bestaande positie worden gemarkeerd."
     },
     "market_data_credential": {
       "not_found": "Er is geen API-sleutel voor die provider opgeslagen.",

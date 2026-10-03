@@ -1359,6 +1359,9 @@
           "amountSpentHint": "輸入實際支付的總金額；計算數量前會扣除手續費。",
           "fee": "費用",
           "currency": "貨幣",
+          "existingPosition": "既有持倉（不從現金帳戶扣款）",
+          "existingPositionHelpLabel": "為什麼有這個選項？",
+          "existingPositionHelp": "適用於你在開始使用 LealFinance 之前就已持有的資產。該持倉會計入你的淨資產，但不會從連結的現金帳戶扣除任何資金，因此無需補登多年的歷史交易。",
           "notes": "備註"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "要記錄收益，必須為該資產設定手動價格。",
       "yield_amount_not_positive": "收益金額必須大於零。",
       "yield_fee_not_allowed": "收益不可包含費用。",
-      "yield_requires_position": "記錄收益前必須持有該資產的單位。"
+      "yield_requires_position": "記錄收益前必須持有該資產的單位。",
+      "existing_position_requires_buy": "只有買入才能標記為既有持倉。"
     },
     "market_data_credential": {
       "not_found": "此提供者未儲存 API 金鑰。",

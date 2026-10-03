@@ -193,6 +193,64 @@ describe('InvestmentDetail', () => {
     expect(created?.price).toBeUndefined();
   });
 
+  it('sends the existing-position flag when a new buy is marked as one', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance as unknown as {
+      openCreateTransaction: () => void;
+      assetsResource: { value: () => { id: string }[] | undefined };
+    };
+    const assetId = component.assetsResource.value()?.[0]?.id;
+    component.openCreateTransaction();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const modal = fixture.debugElement.query(By.directive(InvestmentTransactionFormModal))
+      .componentInstance as InvestmentTransactionFormModal & {
+      form: { patchValue: (value: object) => void };
+      submit: () => void;
+    };
+    modal.form.patchValue({ assetId, quantity: '2', price: '50', existingPosition: true });
+    modal.submit();
+    await fixture.whenStable();
+
+    expect(TestBed.inject(MockStore).investmentTransactions().at(-1)?.existingPosition).toBe(true);
+  });
+
+  it('offers the existing-position option only for buys and explains it behind a ? button', async () => {
+    const fixture = TestBed.createComponent(InvestmentDetail);
+    fixture.componentRef.setInput('id', 'investment-wallet-europe');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    (fixture.componentInstance as unknown as { openCreateTransaction: () => void }).openCreateTransaction();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const root: HTMLElement = fixture.nativeElement;
+    const checkbox = () => root.querySelector('#investment-tx-existing-position');
+    expect(checkbox()).not.toBeNull();
+    const help = root.querySelector<HTMLButtonElement>('[aria-controls="investment-tx-existing-position-help"]')!;
+    expect(help.getAttribute('aria-expanded')).toBe('false');
+    expect(root.querySelector('#investment-tx-existing-position-help')).toBeNull();
+    help.click();
+    fixture.detectChanges();
+    expect(help.getAttribute('aria-expanded')).toBe('true');
+    expect(root.querySelector('#investment-tx-existing-position-help')).not.toBeNull();
+
+    const modal = fixture.debugElement.query(By.directive(InvestmentTransactionFormModal))
+      .componentInstance as { form: { patchValue: (value: object) => void } };
+    modal.form.patchValue({ type: 'sell' });
+    fixture.detectChanges();
+    expect(checkbox()).toBeNull();
+  });
+
   it('shows a newly created asset even before it has any transaction', async () => {
     // Regression test: positions are derived server-side from the
     // transaction ledger, so an asset with no transactions never appeared

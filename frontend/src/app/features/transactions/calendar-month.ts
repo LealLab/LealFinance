@@ -2,8 +2,9 @@ import { CurrencyConverter } from '../../domain/calc/aggregations';
 import { addDays, formatIsoDate, parseIsoDate } from '../../domain/calc/dates';
 import { effectiveAmount, sourceAmount } from '../../domain/calc/conversion';
 import { ProjectedTransaction } from '../../domain/models/recurring';
+import { InvestmentTransaction } from '../../domain/models/investment';
 import { Transaction } from '../../domain/models/transaction';
-import { add, Money, subtract, zero } from '../../shared/money/money';
+import { add, money, Money, subtract, zero } from '../../shared/money/money';
 
 export interface CalendarDay {
   date: string;
@@ -58,6 +59,7 @@ export function buildMonthGrid(
   convert: CurrencyConverter,
   weekStart: number,
   today: string,
+  existingPositionBuys: readonly InvestmentTransaction[] = [],
 ): CalendarDay[] {
   const first = parseIsoDate(`${month}-01`);
   const lead = (first.getUTCDay() - weekStart + 7) % 7;
@@ -70,6 +72,12 @@ export function buildMonthGrid(
     else byDate.set(tx.date, [tx]);
   }
   const projectedDates = new Set(projected.map((p) => p.date));
+  const buysByDate = new Map<string, InvestmentTransaction[]>();
+  for (const buy of existingPositionBuys) {
+    const list = buysByDate.get(buy.date);
+    if (list) list.push(buy);
+    else buysByDate.set(buy.date, [buy]);
+  }
 
   const target = opening?.currency ?? '';
   let running = opening;
@@ -83,6 +91,10 @@ export function buildMonthGrid(
     if (inMonth && running) {
       running = dayTransactions.reduce(
         (total, tx) => add(total, portfolioDelta(tx, convert, target)),
+        running,
+      );
+      running = (buysByDate.get(date) ?? []).reduce(
+        (total, buy) => add(total, convert(add(money(buy.amount, buy.currency), money(buy.fee, buy.currency)), target)),
         running,
       );
     }

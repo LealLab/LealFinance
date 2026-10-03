@@ -43,6 +43,8 @@ export interface InvestmentTransaction {
   fee: string;
   currency: string;
   transactionId?: string;
+  /** A buy of a position held before tracking started: no cash account is debited. */
+  existingPosition?: boolean;
   notes?: string;
 }
 

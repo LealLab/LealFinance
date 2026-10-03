@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Saisissez le montant brut payé ; les frais sont déduits avant le calcul de la quantité.",
           "fee": "Frais",
           "currency": "Devise",
+          "existingPosition": "Position existante (ne pas débiter le compte espèces)",
+          "existingPositionHelpLabel": "Pourquoi cette option existe-t-elle ?",
+          "existingPositionHelp": "Utilisez-la pour les actifs que vous déteniez déjà avant de commencer à utiliser LealFinance. La position compte dans votre patrimoine net, mais aucun argent n’est prélevé sur le compte espèces associé, ce qui vous évite de saisir des années de transactions passées.",
           "notes": "Notes"
         },
         "errors": {
@@ -2180,7 +2183,8 @@
       "yield_requires_manual_price": "Cet actif doit avoir un prix manuel configuré pour enregistrer un rendement.",
       "yield_amount_not_positive": "Le montant du rendement doit être supérieur à zéro.",
       "yield_fee_not_allowed": "Un rendement ne peut pas comporter de frais.",
-      "yield_requires_position": "Détenez des parts de cet actif avant d'enregistrer un rendement."
+      "yield_requires_position": "Détenez des parts de cet actif avant d'enregistrer un rendement.",
+      "existing_position_requires_buy": "Seul un achat peut être marqué comme position existante."
     },
     "market_data_credential": {
       "not_found": "Aucune clé API n’est enregistrée pour ce fournisseur.",

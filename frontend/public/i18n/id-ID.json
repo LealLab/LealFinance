@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Masukkan total pembayaran; biaya akan dikurangi sebelum kuantitas dihitung.",
           "fee": "Biaya",
           "currency": "Mata uang",
+          "existingPosition": "Posisi yang sudah ada (jangan debit akun kas)",
+          "existingPositionHelpLabel": "Mengapa opsi ini ada?",
+          "existingPositionHelp": "Gunakan untuk aset yang sudah Anda miliki sebelum mulai memakai LealFinance. Posisi ini dihitung dalam kekayaan bersih Anda, tetapi tidak ada uang yang dikurangi dari akun kas yang ditautkan, sehingga Anda tidak perlu mencatat transaksi bertahun-tahun yang lalu.",
           "notes": "Catatan"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Aset ini memerlukan harga manual untuk mencatat imbal hasil.",
       "yield_amount_not_positive": "Jumlah imbal hasil harus lebih besar dari nol.",
       "yield_fee_not_allowed": "Imbal hasil tidak boleh memiliki biaya.",
-      "yield_requires_position": "Miliki unit aset ini sebelum mencatat imbal hasil."
+      "yield_requires_position": "Miliki unit aset ini sebelum mencatat imbal hasil.",
+      "existing_position_requires_buy": "Hanya pembelian yang dapat ditandai sebagai posisi yang sudah ada."
     },
     "market_data_credential": {
       "not_found": "Tidak ada kunci API yang tersimpan untuk penyedia tersebut.",

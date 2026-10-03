@@ -1359,6 +1359,9 @@
           "amountSpentHint": "Syötä maksettu bruttosumma; maksu vähennetään ennen määrän laskemista.",
           "fee": "Kulu",
           "currency": "Valuutta",
+          "existingPosition": "Olemassa oleva omistus (älä veloita käteistiliä)",
+          "existingPositionHelpLabel": "Miksi tämä vaihtoehto on olemassa?",
+          "existingPositionHelp": "Käytä tätä omaisuuseriin, jotka omistit jo ennen LealFinancen käyttöönottoa. Omistus lasketaan mukaan nettovarallisuuteesi, mutta linkitetyltä käteistililtä ei oteta rahaa, joten sinun ei tarvitse kirjata vuosien takaisia tapahtumia.",
           "notes": "Muistiinpanot"
         },
         "errors": {
@@ -2150,7 +2153,8 @@
       "yield_requires_manual_price": "Omaisuuserälle on asetettava manuaalinen hinta ennen tuoton kirjaamista.",
       "yield_amount_not_positive": "Tuoton määrän on oltava suurempi kuin nolla.",
       "yield_fee_not_allowed": "Tuottoon ei voi lisätä maksua.",
-      "yield_requires_position": "Sinun on omistettava tätä omaisuuserää ennen tuoton kirjaamista."
+      "yield_requires_position": "Sinun on omistettava tätä omaisuuserää ennen tuoton kirjaamista.",
+      "existing_position_requires_buy": "Vain ostot voidaan merkitä olemassa olevaksi omistukseksi."
     },
     "market_data_credential": {
       "not_found": "Tälle palveluntarjoajalle ei ole tallennettu API-avainta.",
