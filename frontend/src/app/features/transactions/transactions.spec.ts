@@ -2,7 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of, Subject } from 'rxjs';
 import { ConfirmService } from '../../core/confirm.service';
 import { AccountRepository } from '../../data/account.repository';
 import { BudgetRepository } from '../../data/budget.repository';
@@ -10,25 +10,33 @@ import { CategoryRepository } from '../../data/category.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { ExchangeRateRepository } from '../../data/exchange-rate.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
+import { InvestmentTransactionRepository } from '../../data/investment-transaction.repository';
 import { MockAccountRepository } from '../../data/mock/mock-account.repository';
 import { MockBudgetRepository } from '../../data/mock/mock-budget.repository';
 import { MockCategoryRepository } from '../../data/mock/mock-category.repository';
 import { MockCategoryGroupRepository } from '../../data/mock/mock-category-group.repository';
 import { MockExchangeRateRepository } from '../../data/mock/mock-exchange-rate.repository';
 import { MockInstitutionRepository } from '../../data/mock/mock-institution.repository';
+import { MockInvestmentTransactionRepository } from '../../data/mock/mock-investment-transaction.repository';
+import { MockStore } from '../../data/mock/mock-store';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { MockRecurringRuleRepository } from '../../data/mock/mock-recurring-rule.repository';
 import { MockTransactionRepository } from '../../data/mock/mock-transaction.repository';
 import { formatIsoDate } from '../../domain/calc/dates';
 import { ProjectedTransaction, RecurringRule } from '../../domain/models/recurring';
 import { Transaction } from '../../domain/models/transaction';
+import { InvestmentTransaction } from '../../domain/models/investment';
+import { money } from '../../shared/money/money';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import { Page } from '../../core/api-client';
 import { ImportPreview, TransactionRepository } from '../../data/transaction.repository';
 import { Transactions } from './transactions';
+import { portfolioDelta } from './calendar-month';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Transactions', () => {
+  afterEach(() => vi.restoreAllMocks());
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -47,6 +55,7 @@ describe('Transactions', () => {
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: InvestmentTransactionRepository, useClass: MockInvestmentTransactionRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
@@ -106,6 +115,51 @@ describe('Transactions', () => {
     component['setView']('list');
     expect(component['tab']()).toBe('transactions');
     expect(component['view']()).toBe('list');
+  });
+
+  it('waits for existing-position buys before showing calendar balances', async () => {
+    const buys = new Subject<InvestmentTransaction[]>();
+    const listBuys = vi.spyOn(MockInvestmentTransactionRepository.prototype, 'listExistingPositionBuys')
+      .mockImplementation((from) => from === '2026-03-01' ? buys.asObservable() : of([]));
+    const fixture = TestBed.createComponent(Transactions);
+    const component = fixture.componentInstance;
+    component['calendarMonth'].set('2026-03');
+    fixture.detectChanges();
+    await vi.waitFor(() => expect(listBuys).toHaveBeenCalledWith('2026-03-01', '2026-03-31'));
+
+    expect(component['calendarDays']().find((day) => day.date === '2026-03-05')!.balance).toBeNull();
+    buys.next([{ id: 'buy-1', walletId: 'wallet-1', type: 'buy', date: '2026-03-05',
+      amount: '100', fee: '5', currency: 'BRL', existingPosition: true }]);
+    buys.complete();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const days = component['calendarDays']();
+    const before = Number(days.find((day) => day.date === '2026-03-04')!.balance);
+    const onDate = days.find((day) => day.date === '2026-03-05')!;
+    const target = component['displayCurrency']();
+    const convert = component['calendarConverter']()!;
+    const ordinaryDelta = onDate.transactions.reduce(
+      (total, tx) => total + Number(portfolioDelta(tx, convert, target).amount),
+      0,
+    );
+    expect(Number(onDate.balance)).toBeCloseTo(
+      before + ordinaryDelta + Number(convert(money('105', 'BRL'), target).amount), 4,
+    );
+    expect(onDate.transactions.every((tx) => tx.id !== 'buy-1')).toBe(true);
+  });
+
+  it('includes prior-month existing-position buys in the mock opening balance', async () => {
+    const store = TestBed.inject(MockStore);
+    const accounts = TestBed.inject(AccountRepository);
+    const wallet = store.investmentWallets()[0];
+    const balance = async () => Number((await firstValueFrom(accounts.balances('2026-04-01')))
+      .find((item) => item.accountId === wallet.accountId)!.balance);
+    const before = await balance();
+    store.createInvestmentTransaction({
+      walletId: wallet.id, type: 'buy', date: '2026-03-05', amount: '100', fee: '5',
+      currency: wallet.currency, existingPosition: true,
+    });
+    expect(await balance()).toBe(before + 105);
   });
 
   it('creates a new expense transaction end-to-end through the modal', async () => {
@@ -257,6 +311,7 @@ describe('Transactions - query parameters', () => {
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: InvestmentTransactionRepository, useClass: MockInvestmentTransactionRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository },
       ],
     }).compileComponents();
@@ -360,6 +415,7 @@ describe('Transactions - calendar with a cross-currency month', () => {
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: MockRecurringRuleRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: InvestmentTransactionRepository, useClass: MockInvestmentTransactionRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();
@@ -483,6 +539,7 @@ describe('Transactions - already-posted occurrences are not projected as ghosts'
         { provide: BudgetRepository, useClass: MockBudgetRepository },
         { provide: RecurringRuleRepository, useClass: StubRecurringRuleRepository },
         { provide: InstitutionRepository, useClass: MockInstitutionRepository },
+        { provide: InvestmentTransactionRepository, useClass: MockInvestmentTransactionRepository },
         { provide: ExchangeRateRepository, useClass: MockExchangeRateRepository }
       ]
     }).compileComponents();

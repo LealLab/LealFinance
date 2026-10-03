@@ -1246,6 +1246,41 @@ async def test_existing_position_buy_skips_cash_transfer_and_credits_wallet_acco
     assert balances[wallet["account_id"]] == "115.0000"
 
 
+async def test_existing_position_buys_are_date_and_user_scoped(
+    client: AsyncClient, other_client: AsyncClient, db_session: AsyncSession
+) -> None:
+    await _authed(client, db_session, "calendar-owner@example.com")
+    await _authed(other_client, db_session, "calendar-other@example.com")
+    wallet = await _create_wallet(client)
+    asset = await _create_asset(client)
+    before = await _existing_buy(client, wallet, asset, date="2026-02-28")
+    first = await _existing_buy(client, wallet, asset, date="2026-03-01")
+    last = await _existing_buy(client, wallet, asset, date="2026-03-31")
+    after = await _existing_buy(client, wallet, asset, date="2026-04-01")
+
+    url = (
+        "/api/v1/investments/transactions/existing-position-buys"
+        "?date_from=2026-03-01&date_to=2026-03-31"
+    )
+    response = await client.get(url)
+    assert response.status_code == 200, response.text
+    assert [row["id"] for row in response.json()] == [first["id"], last["id"]]
+    assert {row["id"] for row in response.json()}.isdisjoint({before["id"], after["id"]})
+    assert (await other_client.get(url)).json() == []
+
+    async def wallet_balance(as_of: str) -> str:
+        response = await client.get(f"/api/v1/accounts/balances?as_of={as_of}")
+        assert response.status_code == 200, response.text
+        return next(
+            row["balance"] for row in response.json() if row["account_id"] == wallet["account_id"]
+        )
+
+    assert await wallet_balance("2026-02-27") == "0.0000"
+    assert await wallet_balance("2026-03-01") == "210.0000"
+    assert await wallet_balance("2026-03-31") == "315.0000"
+    assert await wallet_balance("2026-04-01") == "420.0000"
+
+
 async def test_existing_position_balance_follows_edit_and_delete(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

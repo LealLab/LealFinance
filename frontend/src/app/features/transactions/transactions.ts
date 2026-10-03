@@ -11,6 +11,7 @@ import { AccountRepository } from '../../data/account.repository';
 import { CategoryGroupRepository } from '../../data/category-group.repository';
 import { CategoryRepository } from '../../data/category.repository';
 import { InstitutionRepository } from '../../data/institution.repository';
+import { InvestmentTransactionRepository } from '../../data/investment-transaction.repository';
 import { RecurringRuleRepository } from '../../data/recurring-rule.repository';
 import {
   SortOrder,
@@ -96,6 +97,7 @@ const SEARCH_DEBOUNCE_MS = 250;
 export class Transactions {
   private readonly mutationErrors = inject(MutationErrorService);
   private readonly transactionRepository = inject(TransactionRepository);
+  private readonly investmentTransactionRepository = inject(InvestmentTransactionRepository);
   private readonly accountRepository = inject(AccountRepository);
   private readonly categoryGroupRepository = inject(CategoryGroupRepository);
   private readonly categoryRepository = inject(CategoryRepository);
@@ -281,6 +283,12 @@ export class Transactions {
       this.transactionRepository.list({ dateFrom: params.start, dateTo: params.end }),
   });
 
+  protected readonly existingPositionBuysResource = rxResource({
+    params: () => this.monthBounds(),
+    stream: ({ params }) =>
+      this.investmentTransactionRepository.listExistingPositionBuys(params.start, params.end),
+  });
+
   protected readonly openingBalancesResource = rxResource({
     params: () => this.monthBounds().openingAsOf,
     stream: ({ params }) => this.accountRepository.balances(params),
@@ -296,12 +304,13 @@ export class Transactions {
   // passes the amount through unconverted and add()/subtract() throw on the
   // mismatch. See reports.ts for the same effectiveAmount().currency set.
   private readonly monthConverter = displayConverter(() => [
-    ...new Set(
-      (this.monthTxResource.value() ?? []).flatMap((tx) => [
+    ...new Set([
+      ...(this.monthTxResource.value() ?? []).flatMap((tx) => [
         tx.currency,
         effectiveAmount(tx).currency,
       ]),
-    ),
+      ...(this.existingPositionBuysResource.value() ?? []).map((buy) => buy.currency),
+    ]),
   ]);
 
   // Exposed to the calendar so its day-net panel converts with the same
@@ -322,12 +331,13 @@ export class Transactions {
     const openingConvert = this.openingConverter.converter();
     const target = this.displayCurrency();
     const balances = this.openingBalancesResource.value();
+    const buys = this.existingPositionBuysResource.value();
 
     // Running balances need both converters. Until every rate has arrived,
     // render the grid without balances rather than feeding an unconverted
     // passthrough into add()/subtract() (see display-converter.ts).
     const opening =
-      balances && openingConvert && convert
+      balances && buys && this.monthTxResource.hasValue() && openingConvert && convert
         ? balances.reduce(
             (acc, b) => add(acc, openingConvert(money(b.balance, b.currency), target)),
             zero(target),
@@ -345,6 +355,7 @@ export class Transactions {
       convert ?? identityConverter,
       weekStart,
       todayIso(),
+      buys ?? [],
     );
 
     // Filters narrow the activity dots and the day drill-down, but never the
@@ -521,6 +532,7 @@ export class Transactions {
   protected onTxSaved(): void {
     this.pageResource.reload();
     this.monthTxResource.reload();
+    this.existingPositionBuysResource.reload();
     this.openingBalancesResource.reload();
     this.postedOccurrencesResource.reload();
     this.recurringRulesResource.reload();

@@ -7,6 +7,7 @@ export type InvestmentTransactionUpdate = Partial<
 >;
 
 export abstract class InvestmentTransactionRepository {
+  abstract listExistingPositionBuys(dateFrom: string, dateTo: string): Observable<InvestmentTransaction[]>;
   abstract list(params: {
     walletId: string;
     limit?: number;

@@ -18,6 +18,15 @@ import { InvestmentTransactionWire } from './wire-dtos';
 export class HttpInvestmentTransactionRepository extends InvestmentTransactionRepository {
   private readonly api = inject(ApiClient);
 
+  listExistingPositionBuys(dateFrom: string, dateTo: string): Observable<InvestmentTransaction[]> {
+    return this.api
+      .get<InvestmentTransactionWire[]>('/investments/transactions/existing-position-buys', {
+        date_from: dateFrom,
+        date_to: dateTo,
+      })
+      .pipe(map((items) => items.map(mapInvestmentTransaction)));
+  }
+
   list(params: {
     walletId: string;
     limit?: number;

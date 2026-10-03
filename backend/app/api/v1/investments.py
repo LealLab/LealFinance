@@ -1,5 +1,6 @@
 """Investment wallets, assets, transactions, and computed positions."""
 
+from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Annotated
 from uuid import UUID
@@ -263,6 +264,13 @@ async def create_transaction(
     payload: InvestmentTransactionCreate, user: CurrentUser, db: DbSession
 ) -> InvestmentTransaction:
     return await investments_service.create_investment_transaction(db, user.id, payload)
+
+
+@router.get("/transactions/existing-position-buys", response_model=list[InvestmentTransactionRead])
+async def list_existing_position_buys(
+    user: CurrentUser, db: DbSession, date_from: date, date_to: date
+) -> list[InvestmentTransaction]:
+    return await investments_service.list_existing_position_buys(db, user.id, date_from, date_to)
 
 
 @router.get("/transactions/{transaction_id}", response_model=InvestmentTransactionRead)

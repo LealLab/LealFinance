@@ -244,6 +244,18 @@ async def list_wallet_transactions(
     return list(result.scalars().all())
 
 
+async def list_existing_position_buys(
+    db: AsyncSession, user_id: UUID, date_from: date, date_to: date
+) -> list[InvestmentTransaction]:
+    query = ownership.owned(InvestmentTransaction, user_id).where(
+        InvestmentTransaction.existing_position,
+        InvestmentTransaction.date >= date_from,
+        InvestmentTransaction.date <= date_to,
+    )
+    result = await db.execute(query.order_by(InvestmentTransaction.date, InvestmentTransaction.id))
+    return list(result.scalars().all())
+
+
 async def get_investment_transaction(
     db: AsyncSession, user_id: UUID, transaction_id: UUID
 ) -> InvestmentTransaction:
