@@ -201,16 +201,30 @@ export class IdentityApiService {
       .pipe(map(mapUser));
   }
 
-  passkeyRegisterOptions(): Observable<PublicKeyCredentialCreationOptionsJSON> {
+  // Adding or removing a passkey and starting 2FA enrollment re-ask for the
+  // account password, so a stolen session cannot plant a second factor.
+  passkeyRegisterOptions(
+    currentPassword: string,
+  ): Observable<PublicKeyCredentialCreationOptionsJSON> {
     return this.api.post<PublicKeyCredentialCreationOptionsJSON>(
       '/auth/passkeys/register/options',
-      {},
+      { current_password: currentPassword },
     );
   }
 
-  registerPasskey(name: string, challenge: string, credential: unknown): Observable<Passkey> {
+  registerPasskey(
+    name: string,
+    challenge: string,
+    credential: unknown,
+    currentPassword: string,
+  ): Observable<Passkey> {
     return this.api
-      .post<PasskeyWire>('/auth/passkeys/register', { name, challenge, credential })
+      .post<PasskeyWire>('/auth/passkeys/register', {
+        name,
+        challenge,
+        credential,
+        current_password: currentPassword,
+      })
       .pipe(map(mapPasskey));
   }
 
@@ -218,8 +232,10 @@ export class IdentityApiService {
     return this.api.get<PasskeyWire[]>('/auth/passkeys').pipe(map((rows) => rows.map(mapPasskey)));
   }
 
-  deletePasskey(id: string): Observable<void> {
-    return this.api.delete<void>('/auth/passkeys/' + id);
+  deletePasskey(id: string, currentPassword: string): Observable<void> {
+    return this.api.delete<void>('/auth/passkeys/' + id, undefined, {
+      current_password: currentPassword,
+    });
   }
 
   passkeyLoginOptions(): Observable<PublicKeyCredentialRequestOptionsJSON> {
@@ -251,9 +267,9 @@ export class IdentityApiService {
     );
   }
 
-  startTotpEnrollment(): Observable<TotpSetup> {
+  startTotpEnrollment(currentPassword: string): Observable<TotpSetup> {
     return this.api
-      .post<TotpSetupWire>('/auth/totp/setup', {})
+      .post<TotpSetupWire>('/auth/totp/setup', { current_password: currentPassword })
       .pipe(map((row) => ({ secret: row.secret, otpauthUri: row.otpauth_uri })));
   }
 
@@ -282,11 +298,13 @@ export class IdentityApiService {
     displayName: string;
     baseCurrency: string;
     locale: string;
+    setupToken?: string;
   }): Observable<User> {
     return this.api
       .post<UserWire>('/auth/register', {
         email: input.email,
         ...(input.token ? { token: input.token } : {}),
+        ...(input.setupToken ? { setup_token: input.setupToken } : {}),
         password: input.password,
         display_name: input.displayName,
         base_currency: input.baseCurrency,
@@ -298,9 +316,20 @@ export class IdentityApiService {
   /** Public probe: true while the instance has no users yet, meaning
    * POST /auth/register will accept a request with no invitation token. */
   setupStatus(): Observable<boolean> {
+    return this.setupInfo().pipe(map((r) => r.needsSetup));
+  }
+
+  /** Like setupStatus, plus whether the first registration needs the
+   * instance's SETUP_TOKEN ("setup code"). */
+  setupInfo(): Observable<{ needsSetup: boolean; setupTokenRequired: boolean }> {
     return this.api
-      .get<{ needs_setup: boolean }>('/auth/setup-status')
-      .pipe(map((r) => r.needs_setup));
+      .get<{ needs_setup: boolean; setup_token_required?: boolean }>('/auth/setup-status')
+      .pipe(
+        map((r) => ({
+          needsSetup: r.needs_setup,
+          setupTokenRequired: r.setup_token_required ?? false,
+        })),
+      );
   }
 
   logout(): Observable<void> {

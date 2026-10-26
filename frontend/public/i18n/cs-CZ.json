@@ -1783,6 +1783,10 @@
         "title": "Odebrat tento přístupový klíč?",
         "message": "Přestanete se s ním moci přihlašovat. Tuto akci nelze vrátit."
       }
+    },
+    "reauth": {
+      "title": "Potvrďte své heslo",
+      "description": "Pro vaši bezpečnost zadejte své aktuální heslo a pokračujte."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Token pozvánky",
       "totpCode": "Ověřovací kód",
       "recoveryCode": "Ověřovací nebo záložní kód",
-      "newPassword": "Nové heslo"
+      "newPassword": "Nové heslo",
+      "setupToken": "Instalační kód"
     },
     "login": {
       "title": "Přihlášení",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Zpět na přihlášení",
       "setup": {
         "title": "Vytvořit účet správce",
-        "description": "Toto je první účet v této instanci – bude mít úplný přístup správce."
+        "description": "Toto je první účet v této instanci – bude mít úplný přístup správce.",
+        "tokenHint": "Zkopírujte ho z řádku SETUP_TOKEN v souboru .env na serveru."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Tento kód není platný. Zkuste to znovu.",
       "totp_locked": "Příliš mnoho nesprávných kódů. Zkuste to za 15 minut.",
       "account_locked": "Příliš mnoho nesprávných hesel. Zkuste to znovu za 15 minut.",
-      "session_invalid": "Platnost relace vypršela. Přihlaste se znovu."
+      "session_invalid": "Platnost relace vypršela. Přihlaste se znovu.",
+      "setup_token_invalid": "Instalační kód není správný. Zkontrolujte řádek SETUP_TOKEN v souboru .env."
     },
     "invitation": {
       "not_found": "Pozvánka není platná.",

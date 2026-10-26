@@ -57,8 +57,12 @@ export class ApiClient {
     return this.http.patch<T>(`${this.base}${path}`, body ?? null);
   }
 
-  delete<T = void>(path: string, params?: ApiQueryParams): Observable<T> {
-    return this.http.delete<T>(`${this.base}${path}`, { params: this.toHttpParams(params) });
+  /** `body` is for the few deletes that must re-confirm the password. */
+  delete<T = void>(path: string, params?: ApiQueryParams, body?: unknown): Observable<T> {
+    return this.http.delete<T>(`${this.base}${path}`, {
+      params: this.toHttpParams(params),
+      ...(body === undefined ? {} : { body }),
+    });
   }
 
   private toHttpParams(params?: ApiQueryParams): HttpParams | undefined {

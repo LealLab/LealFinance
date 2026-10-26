@@ -1783,6 +1783,10 @@
         "title": "Deze passkey verwijderen?",
         "message": "Je kunt er daarna niet meer mee inloggen. Dit kan niet ongedaan worden gemaakt."
       }
+    },
+    "reauth": {
+      "title": "Bevestig je wachtwoord",
+      "description": "Voer voor je veiligheid je huidige wachtwoord in om door te gaan."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Uitnodigingstoken",
       "totpCode": "Verificatiecode",
       "recoveryCode": "Verificatie- of back-upcode",
-      "newPassword": "Nieuw wachtwoord"
+      "newPassword": "Nieuw wachtwoord",
+      "setupToken": "Installatiecode"
     },
     "login": {
       "title": "Inloggen",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Terug naar inloggen",
       "setup": {
         "title": "Beheerdersaccount aanmaken",
-        "description": "Dit is het eerste account op deze instantie en krijgt volledige beheerdersrechten."
+        "description": "Dit is het eerste account op deze instantie en krijgt volledige beheerdersrechten.",
+        "tokenHint": "Kopieer hem uit de regel SETUP_TOKEN in het .env-bestand van je server."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Die code is niet geldig. Probeer het opnieuw.",
       "totp_locked": "Te veel onjuiste codes. Probeer het over 15 minuten opnieuw.",
       "account_locked": "Te veel onjuiste wachtwoorden. Probeer het over 15 minuten opnieuw.",
-      "session_invalid": "Je sessie is verlopen. Meld je opnieuw aan."
+      "session_invalid": "Je sessie is verlopen. Meld je opnieuw aan.",
+      "setup_token_invalid": "Die installatiecode is onjuist. Controleer de regel SETUP_TOKEN in je .env-bestand."
     },
     "invitation": {
       "not_found": "De uitnodiging is ongeldig.",

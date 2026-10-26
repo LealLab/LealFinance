@@ -22,8 +22,8 @@ cd LealFinance
 task install:wizard
 ```
 
-The wizard asks for the homelab path, generates `POSTGRES_PASSWORD` and
-`API_SECRET_KEY`, walks through the optional blocks below (SMTP, AI
+The wizard asks for the homelab path, generates `POSTGRES_PASSWORD`,
+`API_SECRET_KEY` and a `SETUP_TOKEN`, walks through the optional blocks below (SMTP, AI
 providers, exchange rates - skip anything you don't need), writes `.env`,
 and starts the stack. Pass `--env-only` to only write `.env` and stop there,
 or `--yes` to accept every default without prompting.
@@ -38,6 +38,11 @@ Edit `.env`:
 
 - set `ENVIRONMENT=production`;
 - replace `POSTGRES_PASSWORD` and `API_SECRET_KEY` with strong random values;
+- set `SETUP_TOKEN` to another random value (for example `openssl rand -base64
+  18`). It is the **Setup code** the register page asks for when you create the
+  first administrator, so a stranger who reaches the new site before you cannot
+  claim it. Leave it empty to keep registration open (see
+  [Security](security.md#first-run-protection-setup_token));
 - leave `TAG=latest` to follow the newest release (recommended), or pin a
   version such as `TAG=v1.2.3` to control upgrades yourself (see
   [Updates](#updates));
@@ -84,7 +89,9 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml \
 
 Open `https://<LF_SITE_ADDRESS>`. The first account created on an empty
 instance becomes the administrator; after that an administrator invites
-everyone else.
+everyone else. If `.env` has a `SETUP_TOKEN` (the wizard sets one), the register
+page asks for it as the **Setup code**: copy the value from `.env`. It is only
+asked once, for that first account.
 
 Passkey sign-in (Settings -> Passkeys) needs a secure context and starts
 working as soon as the app is served over HTTPS - no extra configuration.

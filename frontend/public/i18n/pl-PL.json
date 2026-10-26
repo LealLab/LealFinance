@@ -1783,6 +1783,10 @@
         "title": "Usunąć ten klucz dostępu?",
         "message": "Nie będzie już można logować się za jego pomocą. Tej operacji nie można cofnąć."
       }
+    },
+    "reauth": {
+      "title": "Potwierdź hasło",
+      "description": "Dla bezpieczeństwa wpisz swoje aktualne hasło, aby kontynuować."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Token zaproszenia",
       "totpCode": "Kod uwierzytelniający",
       "recoveryCode": "Kod uwierzytelniający lub zapasowy",
-      "newPassword": "Nowe hasło"
+      "newPassword": "Nowe hasło",
+      "setupToken": "Kod konfiguracyjny"
     },
     "login": {
       "title": "Zaloguj się",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Wróć do logowania",
       "setup": {
         "title": "Utwórz konto administratora",
-        "description": "To pierwsze konto w tej instancji — będzie mieć pełny dostęp administratora."
+        "description": "To pierwsze konto w tej instancji — będzie mieć pełny dostęp administratora.",
+        "tokenHint": "Skopiuj go z linii SETUP_TOKEN w pliku .env na swoim serwerze."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Ten kod jest nieprawidłowy. Spróbuj ponownie.",
       "totp_locked": "Zbyt wiele błędnych kodów. Spróbuj ponownie za 15 minut.",
       "account_locked": "Zbyt wiele nieprawidłowych haseł. Spróbuj ponownie za 15 minut.",
-      "session_invalid": "Sesja wygasła. Zaloguj się ponownie."
+      "session_invalid": "Sesja wygasła. Zaloguj się ponownie.",
+      "setup_token_invalid": "Ten kod konfiguracyjny jest nieprawidłowy. Sprawdź linię SETUP_TOKEN w pliku .env."
     },
     "invitation": {
       "not_found": "Zaproszenie jest nieprawidłowe.",

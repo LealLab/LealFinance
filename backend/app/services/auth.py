@@ -10,6 +10,7 @@ call-then-serialize layer, matching app/services/exchange_rates.py's
 existing style.
 """
 
+import hmac
 import logging
 import secrets
 from dataclasses import dataclass, replace
@@ -169,6 +170,13 @@ async def _verify_password_with_lockout(
             await _engage_lock(db, user=user, limit=_PASSWORD_LIMIT)
         raise UnauthorizedError(code="auth.invalid_credentials")
     await _clear_attempts(db, user=user, limit=_PASSWORD_LIMIT)
+
+
+async def confirm_password(db: AsyncSession, *, user: User, password: str) -> None:
+    """Re-asks for the password before a sensitive credential change, so a
+    stolen session alone cannot plant a persistent second factor. Wrong guesses
+    count toward the same lockout as sign-in and password changes."""
+    await _verify_password_with_lockout(db, user=user, password=password)
 
 
 @dataclass(frozen=True)
@@ -640,6 +648,7 @@ async def register(
     display_name: str,
     base_currency: str = "USD",
     locale: str = "en-US",
+    setup_token: str | None = None,
 ) -> IssuedSession:
     invitation: Invitation | None = None
     if token:
@@ -655,6 +664,12 @@ async def register(
             # missing token shouldn't disclose whether the instance is
             # already set up.
             raise NotFoundError(code="invitation.not_found")
+        expected = (get_settings().setup_token or "").strip()
+        if expected and not hmac.compare_digest(
+            (setup_token or "").strip().encode("utf-8"), expected.encode("utf-8")
+        ):
+            security_event("setup_token_rejected", missing=not setup_token)
+            raise ForbiddenError(code="auth.setup_token_invalid")
         role = ROLE_ADMIN
 
     normalized = normalize_email(email)
@@ -684,6 +699,8 @@ async def register(
     # transaction - a half-accepted invitation is not a reachable state.
     issued = await _mint_session(db, user=user)
     await db.commit()
+    if invitation is None:
+        security_event("admin_bootstrapped", level=logging.INFO, user_id=user.id)
     return issued
 
 

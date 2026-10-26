@@ -1783,6 +1783,10 @@
         "title": "Elimini această cheie de acces?",
         "message": "Nu te vei mai putea autentifica folosind-o. Acțiunea nu poate fi anulată."
       }
+    },
+    "reauth": {
+      "title": "Confirmă-ți parola",
+      "description": "Pentru securitatea ta, introdu parola curentă pentru a continua."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Codul invitației",
       "totpCode": "Cod de autentificare",
       "recoveryCode": "Cod de autentificare sau de rezervă",
-      "newPassword": "Parolă nouă"
+      "newPassword": "Parolă nouă",
+      "setupToken": "Cod de configurare"
     },
     "login": {
       "title": "Autentificare",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Înapoi la autentificare",
       "setup": {
         "title": "Creează contul de administrator",
-        "description": "Acesta este primul cont din această instanță și va avea acces complet de administrator."
+        "description": "Acesta este primul cont din această instanță și va avea acces complet de administrator.",
+        "tokenHint": "Copiază-l de pe linia SETUP_TOKEN din fișierul .env al serverului tău."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Codul nu este valid. Încearcă din nou.",
       "totp_locked": "Prea multe coduri greșite. Încearcă din nou în 15 minute.",
       "account_locked": "Prea multe parole incorecte. Încearcă din nou peste 15 minute.",
-      "session_invalid": "Sesiunea ta a expirat. Conectează-te din nou."
+      "session_invalid": "Sesiunea ta a expirat. Conectează-te din nou.",
+      "setup_token_invalid": "Codul de configurare nu este corect. Verifică linia SETUP_TOKEN din fișierul .env."
     },
     "invitation": {
       "not_found": "Invitația nu este validă.",

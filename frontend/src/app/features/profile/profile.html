@@ -1,5 +1,5 @@
 <div *transloco="let t">
-  <!-- t(profile.title, profile.description, profile.identity.title, profile.identity.description, profile.identity.save, profile.identity.saved, profile.identity.currentPasswordHint, profile.password.title, profile.password.description, profile.password.save, profile.password.saved, profile.password.hint, errors.error.validation, errors.auth.invalid_credentials, errors.user.email_taken) -->
+  <!-- t(profile.title, profile.description, profile.identity.title, profile.identity.description, profile.identity.save, profile.identity.saved, profile.identity.currentPasswordHint, profile.password.title, profile.password.description, profile.password.save, profile.password.saved, profile.password.hint, errors.error.validation, errors.auth.invalid_credentials, errors.auth.account_locked, errors.user.email_taken, settings.reauth.title, settings.reauth.description) -->
   <!-- t(profile.view.account, profile.view.security) -->
   <app-page-header
     [compact]="true"
@@ -334,6 +334,12 @@
         @if (totpErrorCode(); as code) {
           <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.' + code) }}</p>
         }
+        <app-password-confirm
+          [(open)]="totpReauthOpen"
+          [busy]="totpBusy()"
+          [errorKey]="totpReauthError()"
+          (confirmed)="submitTotpPassword($event)"
+        />
       </app-card>
 
       <div #passkeysSection id="profile-passkeys" tabindex="-1">

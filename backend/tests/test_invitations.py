@@ -17,7 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import app.api.v1.auth as auth_router
 from app.core.config import get_settings
 from app.models.currency import Currency
-from app.models.user import ROLE_ADMIN, Invitation
+from app.models.user import ROLE_ADMIN, Invitation, User
 from tests.factories import login_as, make_user
 
 
@@ -409,3 +409,121 @@ async def test_register_rejects_inactive_base_currency(
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "currency.inactive"
+
+
+# --- SETUP_TOKEN: optional guard for the first-run admin bootstrap ----------------
+
+_FIRST = {
+    "email": "first-admin@example.com",
+    "password": "a-perfectly-fine-password",
+    "display_name": "First Admin",
+}
+
+
+def _set_setup_token(monkeypatch: pytest.MonkeyPatch, value: str | None) -> None:
+    monkeypatch.setattr(get_settings(), "setup_token", value)
+
+
+async def test_without_a_setup_token_bootstrap_stays_open(
+    client: AsyncClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _set_setup_token(monkeypatch, None)
+    status = await client.get("/api/v1/auth/setup-status")
+    assert status.json() == {"needs_setup": True, "setup_token_required": False}
+
+    response = await client.post("/api/v1/auth/register", json=_FIRST)
+
+    assert response.status_code == 201
+    assert response.json()["role"] == "admin"
+
+
+@pytest.mark.parametrize("configured", ["", "   "])
+async def test_an_empty_setup_token_is_the_same_as_unset(
+    client: AsyncClient, monkeypatch: pytest.MonkeyPatch, configured: str
+) -> None:
+    _set_setup_token(monkeypatch, configured)
+
+    status = await client.get("/api/v1/auth/setup-status")
+    response = await client.post("/api/v1/auth/register", json=_FIRST)
+
+    assert status.json()["setup_token_required"] is False
+    assert response.status_code == 201
+
+
+async def test_with_a_setup_token_the_first_registration_must_send_it(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    _set_setup_token(monkeypatch, "correct-horse-battery")
+    caplog.set_level("INFO", logger="lealfinance.security")
+    status = await client.get("/api/v1/auth/setup-status")
+    assert status.json() == {"needs_setup": True, "setup_token_required": True}
+
+    for body in (
+        _FIRST,
+        {**_FIRST, "setup_token": ""},
+        {**_FIRST, "setup_token": "wrong"},
+        {**_FIRST, "setup_token": "correct-horse-batter"},
+        {**_FIRST, "setup_token": "correct-horse-battery-x"},
+    ):
+        rejected = await client.post("/api/v1/auth/register", json=body)
+        assert rejected.status_code == 403, body
+        assert rejected.json()["error"]["code"] == "auth.setup_token_invalid"
+    assert (await db_session.scalar(select(User.id).limit(1))) is None
+    assert (await client.get("/api/v1/auth/me")).status_code == 401
+
+    accepted = await client.post(
+        "/api/v1/auth/register", json={**_FIRST, "setup_token": "correct-horse-battery"}
+    )
+
+    assert accepted.status_code == 201
+    assert accepted.json()["role"] == "admin"
+    events = [
+        r.extra_fields  # type: ignore[attr-defined]
+        for r in caplog.records
+        if r.name == "lealfinance.security"
+    ]
+    assert [e["event"] for e in events].count("setup_token_rejected") == 5
+    assert "admin_bootstrapped" in {e["event"] for e in events}
+    assert "correct-horse" not in str(events)
+
+
+async def test_the_setup_token_never_applies_once_a_user_exists(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _set_setup_token(monkeypatch, "correct-horse-battery")
+    await make_user(db_session, email="existing-admin@example.com", role=ROLE_ADMIN)
+
+    status = await client.get("/api/v1/auth/setup-status")
+    assert status.json() == {"needs_setup": False, "setup_token_required": False}
+
+    # Same answer as an instance without a token: not_found, whatever the token.
+    for token in (None, "wrong", "correct-horse-battery"):
+        response = await client.post(
+            "/api/v1/auth/register",
+            json={**_FIRST, "email": "late@example.com", "setup_token": token},
+        )
+        assert response.status_code == 404
+        assert response.json()["error"]["code"] == "invitation.not_found"
+
+
+async def test_invited_users_do_not_need_the_setup_token(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _set_setup_token(monkeypatch, "correct-horse-battery")
+    await _admin_client(client, db_session)
+    invite = await client.post(
+        "/api/v1/auth/invitations", json={"email": "invited@example.com", "role": "member"}
+    )
+    token = invite.json()["token"]
+    await client.post("/api/v1/auth/logout")
+
+    response = await client.post(
+        "/api/v1/auth/register",
+        json={**_FIRST, "email": "invited@example.com", "token": token},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["role"] == "member"

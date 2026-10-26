@@ -1783,6 +1783,10 @@
         "title": "이 패스키를 삭제할까요?",
         "message": "더 이상 이 패스키로 로그인할 수 없습니다. 되돌릴 수 없습니다."
       }
+    },
+    "reauth": {
+      "title": "비밀번호 확인",
+      "description": "보안을 위해 계속하려면 현재 비밀번호를 입력하세요."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "초대 토큰",
       "totpCode": "인증 코드",
       "recoveryCode": "인증 코드 또는 백업 코드",
-      "newPassword": "새 비밀번호"
+      "newPassword": "새 비밀번호",
+      "setupToken": "설정 코드"
     },
     "login": {
       "title": "로그인",
@@ -1811,7 +1816,8 @@
       "backToLogin": "로그인으로 돌아가기",
       "setup": {
         "title": "관리자 계정 만들기",
-        "description": "이 인스턴스의 첫 번째 계정이며 모든 관리자 권한을 갖게 됩니다."
+        "description": "이 인스턴스의 첫 번째 계정이며 모든 관리자 권한을 갖게 됩니다.",
+        "tokenHint": "서버의 .env 파일에 있는 SETUP_TOKEN 줄에서 복사하세요."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "코드가 올바르지 않습니다. 다시 시도하세요.",
       "totp_locked": "잘못된 코드를 너무 많이 입력했습니다. 15분 후에 다시 시도하세요.",
       "account_locked": "잘못된 비밀번호를 너무 많이 입력했습니다. 15분 후에 다시 시도하세요.",
-      "session_invalid": "세션이 만료되었습니다. 다시 로그인하세요."
+      "session_invalid": "세션이 만료되었습니다. 다시 로그인하세요.",
+      "setup_token_invalid": "설정 코드가 올바르지 않습니다. .env 파일의 SETUP_TOKEN 줄을 확인하세요."
     },
     "invitation": {
       "not_found": "초대장이 유효하지 않습니다.",

@@ -9,6 +9,8 @@ it does not do. To report a vulnerability, see [`SECURITY.md`](../SECURITY.md).
 | --- | --- | --- |
 | Per-IP rate limits | Slows password guessing and request floods | `docker/nginx/default.conf` |
 | Security headers | Blocks framing, MIME sniffing, and loading data from other sites | `docker/nginx/security-headers.conf`, `docker/caddy/Caddyfile` |
+| Setup code | Optional `SETUP_TOKEN` stops a stranger from registering first on a fresh instance | `backend/app/services/auth.py`, `scripts/wizard.py` |
+| Password re-confirmation | Adding or removing a passkey and starting two-factor enrollment ask for the password again | `backend/app/api/v1/auth.py` |
 | Account lockout | 5 bad passwords or codes lock one account for 15 minutes | `backend/app/services/auth.py` |
 | Security log | One JSON line per sign-in failure, lockout, and credential or admin change | `backend/app/core/logging.py` |
 | AI chat limits | Per-user daily message quota; saving a memory needs approval; provider URLs are validated | `backend/app/services/agent_chat.py`, `agent_providers.py` |
@@ -88,6 +90,38 @@ used to add one. After changing build options, check that
   that expensive but not impossible. Passkeys and trusted devices are not
   affected by a password lockout.
 
+## First-run protection (`SETUP_TOKEN`)
+
+A brand-new instance has no users, and the first person to register becomes
+its administrator. On a machine reachable from the internet, that window
+belongs to whoever finds the page first. Set `SETUP_TOKEN` to close it:
+
+- With `SETUP_TOKEN` set in `.env`, the first registration must enter it as the
+  **Setup code**. The register page shows that field only while setup is needed
+  and a code is configured. A missing or wrong code is `403
+  auth.setup_token_invalid` and creates nothing; the check uses a
+  constant-time comparison and each rejection is logged (`setup_token_rejected`,
+  never including the code).
+- `task install` / `task install:wizard` generate a random one for new
+  installs and keep an existing one on re-runs. The wizard does not print the
+  code; it tells you to copy the `SETUP_TOKEN` line from `.env`.
+- It only matters until the first administrator exists. After that the value is
+  ignored (registration then needs an invitation, as always), so you can leave
+  it in `.env` or clear it.
+- **Existing installs are unaffected.** If `SETUP_TOKEN` is unset or empty,
+  registration behaves exactly as before. Add a code before you first expose a
+  new instance, not after.
+- The code is as private as the rest of `.env`. It protects only this one
+  moment, so do not reuse a password for it.
+
+## Re-confirming the password
+
+Adding a passkey, removing a passkey and starting two-factor enrollment ask for
+the account password again, and the server checks it (the same lockout as
+sign-in applies, so wrong guesses are counted). Without this, anyone holding a
+stolen session cookie could add a passkey or an authenticator of their own and
+keep access after the session ends or the password changes.
+
 ## Security log
 
 Sign-in and account events go to a separate logger, `lealfinance.security`, as
@@ -109,6 +143,8 @@ email address, because people sometimes type a password into the email box.
 | `account_locked` | WARNING | A lockout just started (`factor`: `password` or `second_factor`) |
 | `second_factor_failed`, `second_factor_attempt_while_locked` | WARNING | Same, for authenticator and backup codes |
 | `recover_failed`, `passkey_login_failed` | WARNING | Failed password recovery or passkey sign-in |
+| `setup_token_rejected` | WARNING | A first-admin registration had a missing or wrong `SETUP_TOKEN` (`missing`: whether it was absent) |
+| `admin_bootstrapped` | INFO | The first administrator registered on an empty instance |
 | `login_success` | INFO | Successful sign-in (`method`: `password` or `passkey`) |
 | `password_changed`, `password_recovered` | INFO | Password reset |
 | `totp_enabled`, `backup_codes_regenerated`, `passkey_added`, `mcp_token_issued` | INFO | Credential created (`mcp_token_issued` carries the `scope`) |
@@ -198,6 +234,14 @@ If you build your own image or override that runs an application container as
 root or with an extra capability, these settings can stop it from starting.
 
 ## Known gaps
+
+- **Password recovery and passkeys.** Recovering a password (with an
+  authenticator or backup code) signs out other sessions and removes trusted
+  devices, but does not remove passkeys, and a passkey sign-in can skip the
+  password entirely. Someone who planted a passkey before you noticed keeps it
+  after recovery; check Profile -> Passkeys. Re-confirming the password when a
+  passkey is added (above) narrows this, but removing passkeys on recovery is a
+  separate behaviour change that has not been made.
 
 - **Redis has no password.** It is reachable only from the compose network (and
   from `127.0.0.1` in development), but any container on that network can read

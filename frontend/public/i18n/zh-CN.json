@@ -1783,6 +1783,10 @@
         "title": "要移除此通行密钥吗？",
         "message": "移除后将无法再使用它登录。此操作无法撤销。"
       }
+    },
+    "reauth": {
+      "title": "确认你的密码",
+      "description": "为了你的账户安全，请输入当前密码以继续。"
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "邀请令牌",
       "totpCode": "验证码",
       "recoveryCode": "验证码或备用码",
-      "newPassword": "新密码"
+      "newPassword": "新密码",
+      "setupToken": "安装码"
     },
     "login": {
       "title": "登录",
@@ -1811,7 +1816,8 @@
       "backToLogin": "返回登录",
       "setup": {
         "title": "创建管理员账户",
-        "description": "这是此实例上的第一个账户——将拥有完整的管理员权限。"
+        "description": "这是此实例上的第一个账户——将拥有完整的管理员权限。",
+        "tokenHint": "请从服务器 .env 文件的 SETUP_TOKEN 行复制。"
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "验证码无效，请重试。",
       "totp_locked": "错误次数过多，请在 15 分钟后重试。",
       "account_locked": "密码错误次数过多。请在 15 分钟后重试。",
-      "session_invalid": "您的会话已过期。请重新登录。"
+      "session_invalid": "您的会话已过期。请重新登录。",
+      "setup_token_invalid": "安装码不正确。请检查 .env 文件中的 SETUP_TOKEN 行。"
     },
     "invitation": {
       "not_found": "邀请无效。",

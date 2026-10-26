@@ -11,6 +11,7 @@ from uuid import UUID
 from fastapi import APIRouter, BackgroundTasks, Request, Response, status
 
 from app.api.deps import AdminUser, CurrentSession, CurrentUser, DbSession
+from app.core.config import get_settings
 from app.core.cookies import (
     TRUST_COOKIE_NAME,
     clear_session_cookies,
@@ -29,6 +30,7 @@ from app.schemas.auth import (
     InvitationCreated,
     InvitationRead,
     LoginRequest,
+    PasswordConfirmRequest,
     RecoverRequest,
     RegisterRequest,
     SetupStatus,
@@ -88,7 +90,11 @@ async def revoke_invitation(invitation_id: UUID, _admin: AdminUser, db: DbSessio
 
 @router.get("/setup-status", response_model=SetupStatus)
 async def setup_status(db: DbSession) -> SetupStatus:
-    return SetupStatus(needs_setup=await auth_service.needs_setup(db))
+    needs_setup = await auth_service.needs_setup(db)
+    return SetupStatus(
+        needs_setup=needs_setup,
+        setup_token_required=needs_setup and bool((get_settings().setup_token or "").strip()),
+    )
 
 
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
@@ -101,6 +107,7 @@ async def register(payload: RegisterRequest, response: Response, db: DbSession) 
         display_name=payload.display_name,
         base_currency=payload.base_currency,
         locale=payload.locale,
+        setup_token=payload.setup_token,
     )
     set_session_cookies(
         response,
@@ -189,7 +196,10 @@ async def get_totp_status(user: CurrentUser, db: DbSession) -> TotpStatus:
 
 
 @router.post("/totp/setup", response_model=TotpSetupResponse)
-async def setup_totp(user: CurrentUser, db: DbSession) -> TotpSetupResponse:
+async def setup_totp(
+    payload: PasswordConfirmRequest, user: CurrentUser, db: DbSession
+) -> TotpSetupResponse:
+    await auth_service.confirm_password(db, user=user, password=payload.current_password)
     secret, uri = await auth_service.start_totp_enrollment(db, user=user)
     return TotpSetupResponse(secret=secret, otpauth_uri=uri)
 
@@ -225,8 +235,9 @@ async def disable_totp(
 
 @router.post("/passkeys/register/options", response_model=dict[str, Any])
 async def passkey_register_options(
-    request: Request, user: CurrentUser, db: DbSession
+    payload: PasswordConfirmRequest, request: Request, user: CurrentUser, db: DbSession
 ) -> dict[str, Any]:
+    await auth_service.confirm_password(db, user=user, password=payload.current_password)
     rp_id, origin = relying_party(request)
     return await webauthn_service.begin_registration(db, user=user, rp_id=rp_id, origin=origin)
 
@@ -235,6 +246,7 @@ async def passkey_register_options(
 async def register_passkey(
     payload: PasskeyRegisterRequest, request: Request, user: CurrentUser, db: DbSession
 ) -> WebAuthnCredential:
+    await auth_service.confirm_password(db, user=user, password=payload.current_password)
     rp_id, origin = relying_party(request)
     return await webauthn_service.finish_registration(
         db,
@@ -253,7 +265,11 @@ async def list_passkeys(user: CurrentUser, db: DbSession) -> list[WebAuthnCreden
 
 
 @router.delete("/passkeys/{credential_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_passkey(credential_id: UUID, user: CurrentUser, db: DbSession) -> None:
+async def delete_passkey(
+    credential_id: UUID, payload: PasswordConfirmRequest, user: CurrentUser, db: DbSession
+) -> None:
+    # Checked before the lookup, so a wrong password cannot probe credential ids.
+    await auth_service.confirm_password(db, user=user, password=payload.current_password)
     await webauthn_service.delete_credential(db, user=user, credential_id=credential_id)
 
 

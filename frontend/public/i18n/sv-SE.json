@@ -1783,6 +1783,10 @@
         "title": "Ta bort den här passkeyn?",
         "message": "Du kommer inte längre att kunna logga in med den. Det går inte att ångra."
       }
+    },
+    "reauth": {
+      "title": "Bekräfta ditt lösenord",
+      "description": "Av säkerhetsskäl måste du ange ditt nuvarande lösenord för att fortsätta."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Inbjudningstoken",
       "totpCode": "Autentiseringskod",
       "recoveryCode": "Autentiserings- eller reservkod",
-      "newPassword": "Nytt lösenord"
+      "newPassword": "Nytt lösenord",
+      "setupToken": "Installationskod"
     },
     "login": {
       "title": "Logga in",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Tillbaka till inloggningen",
       "setup": {
         "title": "Skapa administratörskontot",
-        "description": "Det här är det första kontot på den här instansen – det får full administratörsbehörighet."
+        "description": "Det här är det första kontot på den här instansen – det får full administratörsbehörighet.",
+        "tokenHint": "Kopiera den från raden SETUP_TOKEN i .env-filen på din server."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Koden är ogiltig. Försök igen.",
       "totp_locked": "För många felaktiga koder. Försök igen om 15 minuter.",
       "account_locked": "För många felaktiga lösenord. Försök igen om 15 minuter.",
-      "session_invalid": "Din session har gått ut. Logga in igen."
+      "session_invalid": "Din session har gått ut. Logga in igen.",
+      "setup_token_invalid": "Installationskoden är felaktig. Kontrollera raden SETUP_TOKEN i din .env-fil."
     },
     "invitation": {
       "not_found": "Inbjudan är ogiltig.",

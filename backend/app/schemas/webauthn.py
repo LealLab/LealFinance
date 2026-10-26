@@ -17,6 +17,7 @@ class PasskeyRead(BaseModel):
 
 
 class PasskeyRegisterRequest(BaseModel):
+    current_password: str = Field(min_length=1, max_length=1024)
     name: str = Field(min_length=1, max_length=100)
     challenge: str = Field(min_length=1)
     credential: dict[str, Any]

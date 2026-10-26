@@ -66,6 +66,12 @@ class Settings(BaseSettings):
     # frontend builds its copy-link from the browser origin and never needs it.
     app_base_url: str | None = None
 
+    # Optional guard for the first-run admin bootstrap. When set, the very first
+    # registration (no invitation, no users yet) must send this value as
+    # `setup_token`; unset or empty keeps the original open behaviour. It has no
+    # effect once any user exists. See docs/security.md.
+    setup_token: str | None = None
+
     # --- AI Agents (optional, off by default) ---
     agents_enabled: bool = False
     # Instance-wide provider credentials - a per-user row in

@@ -49,6 +49,7 @@ _KEY_RE = re.compile(r"^(#\s*)?([A-Z][A-Z0-9_]*)=(.*)$")
 SECRET_KEYS = {
     "POSTGRES_PASSWORD",
     "API_SECRET_KEY",
+    "SETUP_TOKEN",
     "SMTP_PASSWORD",
     "ANTHROPIC_API_KEY",
     "OPENAI_API_KEY",
@@ -297,6 +298,18 @@ def gather_values(
         print("  Rotating this later invalidates sessions, invitations, stored")
         print("  provider credentials, and outstanding MCP tokens.")
 
+    # Stops a stranger who finds a fresh, internet-exposed instance from
+    # registering first and becoming its administrator. Only the very first
+    # registration asks for it; an existing code is kept on re-runs.
+    existing_setup = defaults.get("SETUP_TOKEN", "").strip()
+    if existing_setup:
+        print("  Keeping existing SETUP_TOKEN")
+        values["SETUP_TOKEN"] = existing_setup
+    else:
+        values["SETUP_TOKEN"] = secrets.token_urlsafe(16)
+        print("  Generated a SETUP_TOKEN. Creating the first administrator asks for it")
+        print("  as the \"Setup code\". It is saved in .env (the SETUP_TOKEN line).")
+
     tls_enabled = False
     if path_choice == "native":
         values["API_CORS_ORIGINS"] = "http://localhost:4200"
@@ -433,6 +446,14 @@ def summarize(values: dict[str, str]) -> None:
         print(f"  {key}={shown}")
 
 
+def print_setup_code_hint(values: dict[str, str]) -> None:
+    if values.get("SETUP_TOKEN"):
+        print(
+            "Registration will ask for a Setup code: copy the value of SETUP_TOKEN "
+            f"from {ENV_PATH}. It is only needed to create the first administrator."
+        )
+
+
 def start_stack(path_choice: str, tls_enabled: bool, values_for_url: dict[str, str]) -> None:
     if path_choice == "native":
         subprocess.run(
@@ -458,6 +479,7 @@ def start_stack(path_choice: str, tls_enabled: bool, values_for_url: dict[str, s
         print("  task backend:seed       # optional demo data")
         print("  task backend:dev        # terminal 1")
         print("  task frontend:dev       # terminal 2")
+        print_setup_code_hint(values_for_url)
         return
 
     if path_choice == "docker":
@@ -473,6 +495,7 @@ def start_stack(path_choice: str, tls_enabled: bool, values_for_url: dict[str, s
     print(f"\nWaiting for {url} to answer...")
     if wait_for_app(f"{url}/api/v1/auth/setup-status"):
         print(f"Up. Open {url} - the first account you register becomes the administrator.")
+        print_setup_code_hint(values_for_url)
     else:
         print(
             "Still not answering after 120s. Check `docker compose logs -f` - "

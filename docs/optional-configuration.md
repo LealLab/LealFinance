@@ -205,6 +205,7 @@ install` and `task update` pull. See
 | `SESSION_TTL_DAYS` | `30` | How long a login stays valid. |
 | `INVITATION_TTL_DAYS` | `7` | How long an invitation link works. |
 | `TRUSTED_DEVICE_TTL_DAYS` | `30` | How long "trust this device" skips the two-factor prompt on that browser. |
+| `SETUP_TOKEN` | empty | When set, the first administrator's registration must enter it as the "Setup code", so nobody else can claim a fresh instance. Ignored once a user exists; empty keeps registration open. `task install` generates one. See [Security](security.md#first-run-protection-setup_token). |
 
 ## Related settings
 

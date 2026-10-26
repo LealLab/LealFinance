@@ -19,6 +19,7 @@ from app.models.user import User
 from tests.factories import DEFAULT_PASSWORD, login_as, make_user
 
 NEW_PASSWORD = "a brand new sufficiently long password"
+CONFIRM = {"current_password": DEFAULT_PASSWORD}
 
 
 def code_for(secret: str, *, at: datetime | None = None) -> str:
@@ -31,7 +32,7 @@ def code_for(secret: str, *, at: datetime | None = None) -> str:
 async def enroll(client: AsyncClient, db: AsyncSession, user: User) -> tuple[str, list[str]]:
     """Runs a signed-in user through setup + enable. Returns the shared
     secret and the one-time backup codes."""
-    setup = await client.post("/api/v1/auth/totp/setup")
+    setup = await client.post("/api/v1/auth/totp/setup", json=CONFIRM)
     assert setup.status_code == 200, setup.text
     secret = setup.json()["secret"]
 
@@ -57,7 +58,7 @@ async def test_setup_returns_a_scannable_uri_and_stores_the_secret_encrypted(
     user, _password = await make_user(db_session, email="enroll@example.com")
     await login_as(client, email=user.email)
 
-    response = await client.post("/api/v1/auth/totp/setup")
+    response = await client.post("/api/v1/auth/totp/setup", json=CONFIRM)
 
     assert response.status_code == 200
     body = response.json()
@@ -78,7 +79,7 @@ async def test_setup_alone_does_not_enable_anything(
     """An abandoned enrollment must not start gating logins."""
     user, password = await make_user(db_session, email="abandoned@example.com")
     await login_as(client, email=user.email)
-    await client.post("/api/v1/auth/totp/setup")
+    await client.post("/api/v1/auth/totp/setup", json=CONFIRM)
 
     assert (await client.get("/api/v1/auth/totp")).json()["enabled"] is False
 
@@ -94,7 +95,7 @@ async def test_enable_with_a_wrong_code_is_rejected(
 ) -> None:
     user, _password = await make_user(db_session, email="mistyped@example.com")
     await login_as(client, email=user.email)
-    await client.post("/api/v1/auth/totp/setup")
+    await client.post("/api/v1/auth/totp/setup", json=CONFIRM)
 
     response = await client.post("/api/v1/auth/totp/enable", json={"code": "000000"})
 
@@ -124,7 +125,7 @@ async def test_setup_is_refused_once_already_enabled(
     await login_as(client, email=user.email)
     await enroll(client, db_session, user)
 
-    response = await client.post("/api/v1/auth/totp/setup")
+    response = await client.post("/api/v1/auth/totp/setup", json=CONFIRM)
 
     assert response.status_code == 409
     assert response.json()["error"]["code"] == "totp.already_enabled"
@@ -686,3 +687,38 @@ def test_verify_code_rejects_malformed_input() -> None:
 
     for candidate in ("", "abcdef", "12345", "1234567", "   "):
         assert totp.verify_code(secret, candidate, now=now) is None
+
+
+# --- Password re-confirmation ----------------------------------------------------
+
+
+async def test_setup_requires_the_current_password(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, _password = await make_user(db_session, email="stolen-session@example.com")
+    await login_as(client, email=user.email)
+
+    missing = await client.post("/api/v1/auth/totp/setup")
+    wrong = await client.post("/api/v1/auth/totp/setup", json={"current_password": "not it"})
+
+    assert missing.status_code == 422
+    assert wrong.status_code == 401
+    assert wrong.json()["error"]["code"] == "auth.invalid_credentials"
+    await db_session.refresh(user)
+    # Nothing was stored: a stolen session could not plant a secret.
+    assert user.totp_secret_ciphertext is None
+
+
+async def test_wrong_passwords_on_setup_count_toward_the_lockout(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, _password = await make_user(db_session, email="guessing@example.com")
+    await login_as(client, email=user.email)
+
+    for _ in range(5):
+        response = await client.post("/api/v1/auth/totp/setup", json={"current_password": "nope"})
+        assert response.status_code == 401
+    locked = await client.post("/api/v1/auth/totp/setup", json=CONFIRM)
+
+    assert locked.status_code == 401
+    assert locked.json()["error"]["code"] == "auth.account_locked"

@@ -1783,6 +1783,10 @@
         "title": "Supprimer cette clé d’accès ?",
         "message": "Vous ne pourrez plus vous connecter avec celle-ci. Cette action est irréversible."
       }
+    },
+    "reauth": {
+      "title": "Confirmez votre mot de passe",
+      "description": "Pour votre sécurité, saisissez votre mot de passe actuel pour continuer."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Jeton d’invitation",
       "totpCode": "Code d'authentification",
       "recoveryCode": "Code d'authentification ou de secours",
-      "newPassword": "Nouveau mot de passe"
+      "newPassword": "Nouveau mot de passe",
+      "setupToken": "Code de configuration"
     },
     "login": {
       "title": "Se connecter",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Retour à la connexion",
       "setup": {
         "title": "Créer le compte administrateur",
-        "description": "Il s’agit du premier compte de cette instance — il bénéficiera d’un accès administrateur complet."
+        "description": "Il s’agit du premier compte de cette instance — il bénéficiera d’un accès administrateur complet.",
+        "tokenHint": "Copiez-le depuis la ligne SETUP_TOKEN du fichier .env de votre serveur."
       }
     },
     "totp": {
@@ -2112,7 +2118,8 @@
       "totp_invalid": "Ce code n'est pas valide. Réessayez.",
       "totp_locked": "Trop de codes incorrects. Réessayez dans 15 minutes.",
       "account_locked": "Trop de mots de passe incorrects. Réessayez dans 15 minutes.",
-      "session_invalid": "Votre session a expiré. Connectez-vous à nouveau."
+      "session_invalid": "Votre session a expiré. Connectez-vous à nouveau.",
+      "setup_token_invalid": "Ce code de configuration est incorrect. Vérifiez la ligne SETUP_TOKEN de votre fichier .env."
     },
     "invitation": {
       "not_found": "L’invitation est invalide.",
