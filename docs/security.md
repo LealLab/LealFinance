@@ -13,6 +13,9 @@ it does not do. To report a vulnerability, see [`SECURITY.md`](../SECURITY.md).
 | Security log | One JSON line per sign-in failure, lockout, and credential or admin change | `backend/app/core/logging.py` |
 | Safe AI chat rendering | AI replies cannot load images or raw HTML from other sites | `frontend/src/app/shared/pipes/markdown.pipe.ts` |
 | Dependency scanning | `pip-audit`, `pnpm audit` and Trivy run on every PR | `.github/workflows/ci.yml` |
+| Secret scanning | gitleaks scans the full git history on every PR and push | `.github/workflows/ci.yml` |
+| Code scanning | CodeQL analyses Python and TypeScript on PRs, pushes to `main`, and weekly | `.github/workflows/codeql.yml` |
+| Container hardening | App containers drop all capabilities, cannot gain privileges, and have a process limit | `docker-compose.yml` |
 
 ## Rate limits (nginx)
 
@@ -148,6 +151,51 @@ image tag got through, the browser would refuse to load it.
   so no application setting can stop it. If that is a concern, put the site
   behind a network-level service (for example Cloudflare), or keep it
   private on a VPN such as Tailscale.
+
+## CI scanning
+
+- Workflows get a read-only `GITHUB_TOKEN` by default (`permissions: contents:
+  read`). A job that needs more, such as CodeQL uploading results, asks for it
+  itself. Every action is pinned to a commit SHA, and Dependabot keeps the pins
+  current.
+- **gitleaks** runs as the CLI (a pinned release, checked against its published
+  SHA-256), not as `gitleaks-action`, which needs a paid licence for
+  organisation repositories. It scans every commit in the history. A finding
+  fails the job: rotate the secret first, and only then decide whether to add an
+  allowlist entry in a `.gitleaks.toml`. Run it locally with
+  `docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo`.
+- **CodeQL** results appear under the repository's Security tab.
+- Dependabot watches the GitHub Actions, pip and npm dependencies, the base
+  images in `backend/Dockerfile` and `frontend/Dockerfile`, and the images
+  named in the compose files (Postgres, Redis, Ollama, Caddy).
+
+## Container hardening
+
+`api`, `worker`, `beat`, `mcp` and `web` run as a non-root user and set:
+
+- `cap_drop: [ALL]`: no Linux capabilities. They do not need any.
+- `security_opt: ["no-new-privileges:true"]`: a process cannot gain privileges
+  through setuid binaries.
+- `pids_limit: 512`: a runaway or abused process cannot fork without limit.
+
+Postgres, Redis, Ollama and Caddy are left as they are: their images start as
+root or bind privileged ports, so dropping capabilities would need testing per
+image.
+
+There are **no memory limits** on purpose. A limit set without measuring can
+get a busy container killed. To add one, watch `docker stats` under normal use
+and then set it with a margin on the service in your own compose override, for
+example `mem_limit: 1g` on `api`.
+
+If you build your own image or override that runs an application container as
+root or with an extra capability, these settings can stop it from starting.
+
+## Known gaps
+
+- **Redis has no password.** It is reachable only from the compose network (and
+  from `127.0.0.1` in development), but any container on that network can read
+  and write it. Adding one needs an upgrade path for existing installs, so it
+  is not done yet. Never publish the Redis port to other hosts.
 
 ## Logs
 

@@ -4,6 +4,18 @@
 # docker-compose.override.yml and are applied automatically by `docker
 # compose up` - no extra flag needed.
 
+# Shared hardening for the application containers (api, worker, beat, mcp, web).
+# They run as a non-root user and need no Linux capabilities. Not applied to
+# postgres, redis, ollama or caddy, whose images start as root or bind
+# privileged ports. No memory limit on purpose: a limit set without measuring
+# can get a busy container OOM-killed. See docs/security.md to add one.
+x-app-hardening: &app-hardening
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: [ALL]
+  pids_limit: 512
+  # Example, size it from `docker stats` first:
+  # mem_limit: 1g
+
 services:
   postgres:
     image: postgres:18.4-alpine
@@ -36,6 +48,7 @@ services:
       retries: 10
 
   api:
+    <<: *app-hardening
     build:
       context: ./backend
     restart: unless-stopped
@@ -88,6 +101,7 @@ services:
       retries: 5
 
   worker:
+    <<: *app-hardening
     build:
       context: ./backend
     restart: unless-stopped
@@ -118,6 +132,7 @@ services:
       retries: 5
 
   beat:
+    <<: *app-hardening
     build:
       context: ./backend
     restart: unless-stopped
@@ -146,6 +161,7 @@ services:
 
   # Publish port 8001 (or add an nginx location) to reach external MCP clients; operator decision.
   mcp:
+    <<: *app-hardening
     build:
       context: ./backend
     restart: unless-stopped
@@ -174,6 +190,7 @@ services:
       retries: 5
 
   web:
+    <<: *app-hardening
     build:
       context: .
       dockerfile: frontend/Dockerfile

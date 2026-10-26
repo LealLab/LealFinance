@@ -30,12 +30,26 @@ updates:
           - minor
           - patch
 
+  # Dockerfiles live in backend/ and frontend/, not at the repo root.
   - package-ecosystem: docker
-    directory: "/"
+    directories:
+      - "/backend"
+      - "/frontend"
     schedule:
       interval: weekly
     groups:
       docker-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Images named in docker-compose*.yml (postgres, redis, ollama, caddy).
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      compose-minor-patch:
         update-types:
           - minor
           - patch
