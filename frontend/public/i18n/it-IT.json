@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Qualcosa è andato storto. Riprova.",
+      "rate_limited": "Troppe richieste. Attendi un momento e riprova.",
       "validation": "Controlla i dati inseriti e riprova."
     },
     "job": {

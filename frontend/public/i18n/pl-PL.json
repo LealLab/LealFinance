@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "rate_limited": "Zbyt wiele żądań. Poczekaj chwilę i spróbuj ponownie.",
       "validation": "Sprawdź wprowadzone dane i spróbuj ponownie."
     },
     "job": {

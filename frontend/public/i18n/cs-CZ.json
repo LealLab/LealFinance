@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Něco se pokazilo. Zkuste to prosím znovu.",
+      "rate_limited": "Příliš mnoho požadavků. Chvíli počkejte a zkuste to znovu.",
       "validation": "Zkontrolujte zadané údaje a zkuste to znovu."
     },
     "job": {

@@ -2063,6 +2063,7 @@
     },
     "error": {
       "generic": "Algo ha salido mal. Inténtalo de nuevo.",
+      "rate_limited": "Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
       "validation": "Comprueba la información e inténtalo de nuevo."
     },
     "job": {

@@ -114,8 +114,9 @@ Registration is invite-only, except the very first user on an instance.
 - A TOTP code is burned once used: `users.totp_last_step` is the floor, so
   the same six digits can't be replayed inside their own window. Five
   consecutive bad codes lock the second factor for 15 minutes. That counter
-  is the only rate limiting in the API, and every code-accepting path shares
-  one verify function so none of them can bypass it.
+  is the only rate limiting inside the API itself (the bundled nginx adds
+  per-IP limits in front of it, see [`security.md`](security.md)), and every
+  code-accepting path shares one verify function so none of them can bypass it.
 - `POST /auth/recover` (public, like `/login`) takes `email`, `code`, and
   `new_password`, and returns 204. It issues no session; it revokes every
   session and every trusted device for the user, and burns the code it used.

@@ -2063,6 +2063,7 @@
     },
     "error": {
       "generic": "Algo deu errado. Tente novamente.",
+      "rate_limited": "Muitas solicitações. Aguarde um instante e tente novamente.",
       "validation": "Verifique as informações e tente novamente."
     },
     "job": {

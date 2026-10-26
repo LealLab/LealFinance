@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+      "rate_limited": "Quá nhiều yêu cầu. Vui lòng đợi một lát rồi thử lại.",
       "validation": "Vui lòng kiểm tra thông tin đã nhập và thử lại."
     },
     "job": {

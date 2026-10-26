@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Terjadi kesalahan. Silakan coba lagi.",
+      "rate_limited": "Terlalu banyak permintaan. Harap tunggu sebentar dan coba lagi.",
       "validation": "Periksa informasi yang Anda masukkan dan coba lagi."
     },
     "job": {

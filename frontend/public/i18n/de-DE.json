@@ -2063,6 +2063,7 @@
     },
     "error": {
       "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
+      "rate_limited": "Zu viele Anfragen. Warten Sie einen Moment und versuchen Sie es erneut.",
       "validation": "Überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
     },
     "job": {

