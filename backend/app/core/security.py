@@ -9,6 +9,7 @@ dump alone is enough to produce a valid token - replaying a hash requires
 also knowing API_SECRET_KEY, the HMAC key.
 """
 
+import asyncio
 import hmac
 import secrets
 from hashlib import sha256
@@ -19,6 +20,13 @@ from argon2.exceptions import InvalidHashError, VerificationError
 from app.core.config import get_settings
 
 _password_hasher = PasswordHasher()
+
+# Argon2 is deliberately slow and uses ~64 MiB per hash. Running it on the
+# event loop freezes every other request, so request handlers use the async
+# wrappers below, which hash in a worker thread. The semaphore caps how many
+# hashes run at once so a login flood cannot also exhaust memory.
+# ponytail: fixed cap of 4; make it a setting if one box needs more throughput.
+_hash_slots = asyncio.Semaphore(4)
 
 
 def hash_password(password: str) -> str:
@@ -31,6 +39,16 @@ def verify_password(password: str, password_hash: str) -> bool:
     except (InvalidHashError, VerificationError):
         return False
     return True
+
+
+async def hash_password_async(password: str) -> str:
+    async with _hash_slots:
+        return await asyncio.to_thread(hash_password, password)
+
+
+async def verify_password_async(password: str, password_hash: str) -> bool:
+    async with _hash_slots:
+        return await asyncio.to_thread(verify_password, password, password_hash)
 
 
 def generate_token() -> str:

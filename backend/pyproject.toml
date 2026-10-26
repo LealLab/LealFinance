@@ -29,6 +29,7 @@ dependencies = [
     "webauthn>=3,<4",
     "pymupdf>=1.28.2",
     "pillow>=13.0.0",
+    "regex>=2026.9.29",
 ]
 
 [dependency-groups]
@@ -38,6 +39,7 @@ dev = [
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
     "pytest-cov>=7.1.0",
+    "types-regex>=2026.9.29.20261017",
 ]
 
 [tool.ruff]

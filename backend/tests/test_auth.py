@@ -117,6 +117,43 @@ async def test_login_unknown_email_is_rejected_with_the_same_code(client: AsyncC
     assert response.json()["error"]["code"] == "auth.invalid_credentials"
 
 
+async def test_login_oversized_password_is_rejected_without_echoing_it(
+    client: AsyncClient,
+) -> None:
+    secret = "x" * 2000
+    response = await client.post(
+        "/api/v1/auth/login",
+        json={"email": "nobody@example.com", "password": secret},
+    )
+
+    assert response.status_code == 422
+    assert secret not in response.text
+    assert all("input" not in error for error in response.json()["error"]["params"]["errors"])
+
+
+async def test_password_hashing_does_not_block_the_event_loop() -> None:
+    from app.core.security import hash_password, verify_password_async
+
+    password_hash = hash_password("a-long-enough-password")
+    ticks = 0
+
+    async def ticker() -> None:
+        nonlocal ticks
+        while True:
+            await asyncio.sleep(0.001)
+            ticks += 1
+
+    task = asyncio.create_task(ticker())
+    try:
+        assert await verify_password_async("a-long-enough-password", password_hash)
+    finally:
+        task.cancel()
+
+    # A blocking verify never yields, so the ticker would not run at all.
+    # Only "at least once": Windows timers can be ~15 ms coarse.
+    assert ticks >= 1
+
+
 async def test_login_inactive_account_is_rejected(
     client: AsyncClient, db_session: AsyncSession
 ) -> None:

@@ -38,11 +38,11 @@ class ProfileUpdate(PatchModel):
 
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     email: EmailStr | None = None
-    current_password: str | None = None
+    current_password: str | None = Field(default=None, max_length=1024)
 
 
 class PasswordChange(BaseModel):
-    current_password: str = Field(min_length=1)
+    current_password: str = Field(min_length=1, max_length=1024)
     new_password: str = Field(min_length=12, max_length=128)
 
 

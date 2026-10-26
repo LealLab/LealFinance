@@ -1,10 +1,10 @@
 """DTOs for user-defined transaction categorization rules."""
 
-import re
 from decimal import Decimal, InvalidOperation
 from typing import Literal
 from uuid import UUID
 
+import regex
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.schemas.common import PatchModel
@@ -43,8 +43,8 @@ def _validate_leaf(leaf: "RuleLeaf") -> "RuleLeaf":
 
     if leaf.op == "regex":
         try:
-            pattern = re.compile(leaf.value)
-        except re.error:
+            pattern = regex.compile(leaf.value)
+        except regex.error:
             raise ValidationAppError(code="categorization_rule.invalid_regex") from None
         if pattern.match("") is not None:
             raise ValidationAppError(code="categorization_rule.invalid_regex")
