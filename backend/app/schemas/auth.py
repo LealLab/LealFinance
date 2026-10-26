@@ -20,7 +20,9 @@ class LoginRequest(BaseModel):
 
     email: EmailStr
     # Existing passwords may predate the registration/recovery length cap.
-    password: str = Field(min_length=1)
+    # The upper bound only stops a huge body being hashed; it is well above
+    # any legacy password.
+    password: str = Field(min_length=1, max_length=1024)
     # Also accepts a backup code, which is longer than six digits.
     totp_code: str | None = Field(default=None, max_length=64)
     trust_device: bool = False

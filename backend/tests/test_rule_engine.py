@@ -1,3 +1,4 @@
+import time
 from decimal import Decimal
 from uuid import uuid4
 
@@ -30,6 +31,17 @@ def test_normalize_and_text_operators() -> None:
     assert matches(_rule([{"field": "description", "op": "regex", "value": "^cafe"}]), row)
     assert matches(_rule([{"field": "description", "op": "not_contains", "value": "dinner"}]), row)
     assert matches(_rule([{"field": "description", "op": "not_equals", "value": "breakfast"}]), row)
+
+
+def test_catastrophic_regex_times_out_instead_of_hanging() -> None:
+    row = RuleInput("a" * 60 + "!", None, Decimal("1"), "expense")
+    rule = _rule([{"field": "description", "op": "regex", "value": "(a+)+$"}])
+
+    started = time.monotonic()
+    result = matches(rule, row)
+
+    assert result is False
+    assert time.monotonic() - started < 2
 
 
 def test_amount_type_groups_and_empty_values() -> None:

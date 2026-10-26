@@ -24,7 +24,15 @@ money and conversion rules.
   `code` is a stable, machine-readable string - a Transloco key suffix on
   the frontend, never a translated message. Validation failures use
   `error.validation` with `params.errors` holding FastAPI's per-field error
-  list.
+  list. The rejected value (`input`) is stripped from each entry so a
+  rejected password is never echoed back.
+- Password hashing (Argon2id) runs in a worker thread, at most 4 at a time,
+  so a burst of logins cannot block the event loop. Login and
+  password-change password fields accept up to 1024 characters; new
+  passwords are 12-128.
+- Categorization rule regexes are validated and matched with the `regex`
+  package under a 50 ms per-match timeout; a pattern that times out counts
+  as "no match".
 - Every route except `/health/*`, `/meta/currencies`, `/meta/settings`,
   `/auth/login`, `/auth/register`, `/auth/login/passkey`,
   `/auth/login/passkey/options`, and `/auth/setup-status` requires an
@@ -106,8 +114,9 @@ Registration is invite-only, except the very first user on an instance.
 - A TOTP code is burned once used: `users.totp_last_step` is the floor, so
   the same six digits can't be replayed inside their own window. Five
   consecutive bad codes lock the second factor for 15 minutes. That counter
-  is the only rate limiting in the API, and every code-accepting path shares
-  one verify function so none of them can bypass it.
+  is the only rate limiting inside the API itself (the bundled nginx adds
+  per-IP limits in front of it, see [`security.md`](security.md)), and every
+  code-accepting path shares one verify function so none of them can bypass it.
 - `POST /auth/recover` (public, like `/login`) takes `email`, `code`, and
   `new_password`, and returns 204. It issues no session; it revokes every
   session and every trusted device for the user, and burns the code it used.

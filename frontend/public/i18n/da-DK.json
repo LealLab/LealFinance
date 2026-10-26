@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Noget gik galt. Prøv igen.",
+      "rate_limited": "For mange anmodninger. Vent et øjeblik, og prøv igen.",
       "validation": "Tjek oplysningerne, og prøv igen."
     },
     "job": {

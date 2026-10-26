@@ -2063,6 +2063,7 @@
     },
     "error": {
       "generic": "Une erreur s’est produite. Réessayez.",
+      "rate_limited": "Trop de requêtes. Patientez un instant et réessayez.",
       "validation": "Vérifiez les informations saisies et réessayez."
     },
     "job": {

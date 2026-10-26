@@ -2087,6 +2087,7 @@
     },
     "error": {
       "generic": "Something went wrong. Please try again.",
+      "rate_limited": "Too many requests. Please wait a moment and try again.",
       "validation": "Check your information and try again."
     },
     "job": {

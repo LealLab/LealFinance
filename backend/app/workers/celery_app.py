@@ -32,6 +32,9 @@ celery_app.conf.update(
     result_serializer="json",
     timezone="UTC",
     enable_utc=True,
+    # A stuck task must not hold a worker forever: warn at 4 min, kill at 5.
+    task_soft_time_limit=240,
+    task_time_limit=300,
 )
 
 celery_app.conf.beat_schedule = {

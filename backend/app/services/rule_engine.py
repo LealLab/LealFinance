@@ -1,11 +1,16 @@
 """Pure matching engine for categorization rules."""
 
-import re
 import unicodedata
 from collections.abc import Sequence
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from uuid import UUID
+
+import regex
+
+# User-written patterns can backtrack exponentially (e.g. `(a+)+$`), so every
+# match has a hard deadline. Matching a short description takes microseconds.
+_REGEX_TIMEOUT_SECONDS = 0.05
 
 
 @dataclass(frozen=True)
@@ -68,8 +73,18 @@ def _matches_leaf(condition: dict[str, object], row: RuleInput) -> bool:
             return actual.endswith(expected)
         if op == "regex":
             try:
-                return re.search(_strip_marks(value), actual, flags=re.IGNORECASE) is not None
-            except re.error:
+                return (
+                    regex.search(
+                        _strip_marks(value),
+                        actual,
+                        flags=regex.IGNORECASE,
+                        timeout=_REGEX_TIMEOUT_SECONDS,
+                    )
+                    is not None
+                )
+            except (regex.error, TimeoutError):
+                # A pattern that backtracks catastrophically counts as no
+                # match rather than hanging the API.
                 return False
         return False
 

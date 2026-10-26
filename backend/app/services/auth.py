@@ -31,9 +31,10 @@ from app.core.errors import (
 from app.core.security import (
     generate_token,
     hash_password,
+    hash_password_async,
     hash_token,
     normalize_email,
-    verify_password,
+    verify_password_async,
 )
 from app.models.currency import Currency
 from app.models.totp import TotpBackupCode, TrustedDevice
@@ -67,7 +68,7 @@ async def _verify_password_with_lockout(
     now = datetime.now(UTC)
     if user.password_locked_until is not None and user.password_locked_until > now:
         raise UnauthorizedError(code="auth.account_locked")
-    if password is None or not verify_password(password, user.password_hash):
+    if password is None or not await verify_password_async(password, user.password_hash):
         user.password_failed_attempts += 1
         if user.password_failed_attempts >= _PASSWORD_MAX_ATTEMPTS:
             user.password_locked_until = now + _PASSWORD_LOCKOUT
@@ -139,7 +140,7 @@ async def login(
     user = result.scalars().first()
 
     if user is None:
-        verify_password(password, _DUMMY_PASSWORD_HASH)
+        await verify_password_async(password, _DUMMY_PASSWORD_HASH)
         raise UnauthorizedError(code="auth.invalid_credentials")
     await _verify_password_with_lockout(db, user=user, password=password)
     if not user.is_active:
@@ -404,7 +405,7 @@ async def recover_password(db: AsyncSession, *, email: str, code: str, new_passw
         # exactly like a wrong code, with the dummy hash keeping the timing
         # comparable - otherwise recovery becomes an oracle for which
         # addresses are registered and which of them have 2FA on.
-        verify_password(new_password, _DUMMY_PASSWORD_HASH)
+        await verify_password_async(new_password, _DUMMY_PASSWORD_HASH)
         raise UnauthorizedError(code="auth.invalid_credentials")
 
     try:
@@ -414,7 +415,7 @@ async def recover_password(db: AsyncSession, *, email: str, code: str, new_passw
         # the same reason: totp_invalid here would confirm the account exists.
         raise UnauthorizedError(code="auth.invalid_credentials") from exc
 
-    user.password_hash = hash_password(new_password)
+    user.password_hash = await hash_password_async(new_password)
     await _revoke_all_sessions(db, user_id=user.id)
     await _revoke_all_trusted_devices(db, user_id=user.id)
     await db.commit()
@@ -537,7 +538,7 @@ async def register(
     user = User(
         email=email.strip(),
         normalized_email=normalized,
-        password_hash=hash_password(password),
+        password_hash=await hash_password_async(password),
         display_name=display_name.strip(),
         role=role,
         locale=locale,
@@ -660,7 +661,7 @@ async def change_password(
 ) -> None:
     await _verify_password_with_lockout(db, user=user, password=current_password)
 
-    user.password_hash = hash_password(new_password)
+    user.password_hash = await hash_password_async(new_password)
     user.password_failed_attempts = 0
     user.password_locked_until = None
     await db.execute(
