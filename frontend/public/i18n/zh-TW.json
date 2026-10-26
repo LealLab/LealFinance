@@ -2043,7 +2043,9 @@
       "instructions_rejected": "這些指令未儲存：與你的財務或本應用程式無關。",
       "not_configured": "尚未設定 AI 提供者。",
       "provider_unavailable": "AI 提供者目前無法使用。",
-      "suggest_unreadable": "無法讀取 AI 回應。請再試一次。"
+      "suggest_unreadable": "無法讀取 AI 回應。請再試一次。",
+      "base_url_invalid": "請輸入以 http:// 或 https:// 開頭的完整伺服器位址，且不得包含使用者名稱、密碼或 # 片段。",
+      "daily_limit_reached": "你已達到今天的 AI 訊息上限，請稍後再試。"
     },
     "agent_memory": {
       "not_found": "這則記憶已不存在。"

@@ -2043,7 +2043,9 @@
       "instructions_rejected": "이 지침은 저장되지 않았습니다. 내 재정이나 이 앱과 관련된 내용이 아닙니다.",
       "not_configured": "아직 구성된 AI 제공업체가 없습니다.",
       "provider_unavailable": "현재 AI 제공업체를 사용할 수 없습니다.",
-      "suggest_unreadable": "AI 응답을 읽을 수 없습니다. 다시 시도하세요."
+      "suggest_unreadable": "AI 응답을 읽을 수 없습니다. 다시 시도하세요.",
+      "base_url_invalid": "http:// 또는 https://로 시작하는 전체 서버 주소를 입력하세요. 사용자 이름, 비밀번호, # 프래그먼트는 포함할 수 없습니다.",
+      "daily_limit_reached": "오늘의 AI 메시지 한도에 도달했습니다. 나중에 다시 시도하세요."
     },
     "agent_memory": {
       "not_found": "이 기억은 더 이상 존재하지 않습니다."

@@ -1075,6 +1075,9 @@ SPECS: list[ToolDef] = [
             "additionalProperties": False,
         },
         run=_remember,
+        # A prompt-injected "remember" would plant text that is replayed into
+        # every later conversation, so it needs the same approval as any write.
+        writes=True,
     ),
 ]
 

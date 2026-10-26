@@ -62,6 +62,14 @@ class BadGatewayError(AppError):
     code = "error.bad_gateway"
 
 
+class TooManyRequestsError(AppError):
+    """A per-user quota was used up (e.g. the daily AI message limit), as
+    opposed to nginx's per-IP `error.rate_limited`."""
+
+    status_code = status.HTTP_429_TOO_MANY_REQUESTS
+    code = "error.too_many_requests"
+
+
 async def app_error_handler(_request: Request, exc: Exception) -> JSONResponse:
     # FastAPI's add_exception_handler is keyed by the exact exception class at
     # registration time, so this handler only ever receives an AppError at

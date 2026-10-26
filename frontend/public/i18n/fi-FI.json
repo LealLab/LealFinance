@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Näitä ohjeita ei tallennettu: ne eivät liity talouteesi tai tähän sovellukseen.",
       "not_configured": "AI-palveluntarjoajaa ei ole vielä määritetty.",
       "provider_unavailable": "AI-palveluntarjoaja ei ole tällä hetkellä käytettävissä.",
-      "suggest_unreadable": "Tekoälyn vastausta ei voitu lukea. Yritä uudelleen."
+      "suggest_unreadable": "Tekoälyn vastausta ei voitu lukea. Yritä uudelleen.",
+      "base_url_invalid": "Anna täydellinen palvelimen osoite, joka alkaa http:// tai https://, ilman käyttäjänimeä, salasanaa tai #-osiota.",
+      "daily_limit_reached": "Olet saavuttanut tämän päivän tekoälyviestien rajan. Yritä myöhemmin uudelleen."
     },
     "agent_memory": {
       "not_found": "Tätä muistimerkintää ei enää ole."

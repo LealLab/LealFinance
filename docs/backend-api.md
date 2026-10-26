@@ -788,6 +788,8 @@ frames carrying the same `code`/`params`.
 | `agents.not_configured` | 422 |
 | `agents.api_key_required` | 422 |
 | `agents.base_url_required` | 422 |
+| `agents.base_url_invalid` | 422 |
+| `agents.daily_limit_reached` | 429 (before the stream starts) |
 | `agents.tool_arguments_invalid` | 422 |
 | `agents.instructions_rejected` | 422 |
 | `agents.suggest_unreadable` | 502 |

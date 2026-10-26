@@ -71,7 +71,7 @@ interface ConfirmationEntry {
 }
 
 /**
- * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.attach, chat.removeAttachment, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.group, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.attachmentInvalid, chat.errors.attachmentLimit, chat.errors.attachmentUnsupported, chat.errors.attachmentVisionRequired, chat.errors.generic)
+ * t(chat.title, chat.conversations, chat.newChat, chat.empty.title, chat.empty.body, chat.composer.placeholder, chat.attach, chat.removeAttachment, chat.send, chat.offTopic, chat.thinking, chat.toolRunning, chat.toolDone, chat.confirm.title, chat.confirm.body, chat.confirm.approve, chat.confirm.reject, chat.confirm.account, chat.confirm.category, chat.confirm.group, chat.confirm.institution, chat.delete.title, chat.delete.body, chat.errors.notConfigured, chat.errors.providerUnavailable, chat.errors.loopExhausted, chat.errors.attachmentInvalid, chat.errors.attachmentLimit, chat.errors.attachmentUnsupported, chat.errors.attachmentVisionRequired, chat.errors.generic, errors.agents.daily_limit_reached)
  */
 @Component({
   selector: 'app-chat',
@@ -721,6 +721,7 @@ export class Chat {
         'agents.attachment_limit': 'chat.errors.attachmentLimit',
         'agents.attachment_unsupported': 'chat.errors.attachmentUnsupported',
         'agents.attachment_vision_required': 'chat.errors.attachmentVisionRequired',
+        'agents.daily_limit_reached': 'errors.agents.daily_limit_reached',
       }[code] ?? 'chat.errors.generic'
     );
   }

@@ -11,6 +11,7 @@ it does not do. To report a vulnerability, see [`SECURITY.md`](../SECURITY.md).
 | Security headers | Blocks framing, MIME sniffing, and loading data from other sites | `docker/nginx/security-headers.conf`, `docker/caddy/Caddyfile` |
 | Account lockout | 5 bad passwords or codes lock one account for 15 minutes | `backend/app/services/auth.py` |
 | Security log | One JSON line per sign-in failure, lockout, and credential or admin change | `backend/app/core/logging.py` |
+| AI chat limits | Per-user daily message quota; saving a memory needs approval; provider URLs are validated | `backend/app/services/agent_chat.py`, `agent_providers.py` |
 | Safe AI chat rendering | AI replies cannot load images or raw HTML from other sites | `frontend/src/app/shared/pipes/markdown.pipe.ts` |
 | Dependency scanning | `pip-audit`, `pnpm audit` and Trivy run on every PR | `.github/workflows/ci.yml` |
 | Secret scanning | gitleaks scans the full git history on every PR and push | `.github/workflows/ci.yml` |
@@ -109,6 +110,7 @@ email address, because people sometimes type a password into the email box.
 | `password_changed`, `password_recovered` | INFO | Password reset |
 | `totp_enabled`, `backup_codes_regenerated`, `passkey_added`, `mcp_token_issued` | INFO | Credential created |
 | `totp_disabled`, `passkey_removed` | WARNING | A protection was removed |
+| `ai_quota_exceeded` | WARNING | A user hit `AGENTS_DAILY_MESSAGE_LIMIT` and a chat message was refused |
 | `user_updated` | INFO | An admin changed a role, active flag, or AI-chat access (`actor_id`, `target_id`) |
 
 Useful queries: `docker compose logs api | grep '"event": "account_locked"'` for

@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Te instrukcje nie zostały zapisane: nie dotyczą Twoich finansów ani tej aplikacji.",
       "not_configured": "Nie skonfigurowano jeszcze żadnego dostawcy AI.",
       "provider_unavailable": "Dostawca AI jest obecnie niedostępny.",
-      "suggest_unreadable": "Nie udało się odczytać odpowiedzi AI. Spróbuj ponownie."
+      "suggest_unreadable": "Nie udało się odczytać odpowiedzi AI. Spróbuj ponownie.",
+      "base_url_invalid": "Wpisz pełny adres serwera zaczynający się od http:// lub https://, bez nazwy użytkownika, hasła ani fragmentu #.",
+      "daily_limit_reached": "Osiągnięto dzisiejszy limit wiadomości AI. Spróbuj ponownie później."
     },
     "agent_memory": {
       "not_found": "Tego wpisu w pamięci już nie ma."

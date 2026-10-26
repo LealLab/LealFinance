@@ -4,6 +4,7 @@ actual HTTP calls to app/agents/oauth.py / app/agents/chat.py - this
 module is the CRUD + orchestration layer the router talks to.
 """
 
+from urllib.parse import urlsplit
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -57,10 +58,33 @@ async def list_provider_status(db: AsyncSession, user_id: UUID) -> list[Provider
     return [await _status(db, user_id, provider) for provider in PROVIDERS]
 
 
+def _require_valid_base_url(base_url: str) -> None:
+    """An absolute http(s) URL with a host, no credentials, no fragment.
+    Private and internal hosts are allowed on purpose: a local Ollama on the
+    Docker network is a supported setup."""
+    try:
+        parts = urlsplit(base_url)
+        parts.port  # noqa: B018 - raises ValueError on a malformed port
+    except ValueError:
+        raise ValidationAppError(code="agents.base_url_invalid") from None
+    if (
+        parts.scheme not in ("http", "https")
+        or not parts.hostname
+        or parts.username is not None
+        or parts.password is not None
+        or parts.fragment
+        or "#" in base_url
+        or any(char.isspace() or ord(char) < 32 for char in base_url)
+    ):
+        raise ValidationAppError(code="agents.base_url_invalid")
+
+
 async def link_api_key(
     db: AsyncSession, user_id: UUID, provider: str, data: ProviderLinkUpdate
 ) -> ProviderStatusRead:
     _require_known_provider(provider)
+    if data.base_url:
+        _require_valid_base_url(data.base_url)
 
     row = await credentials.get_user_row(db, user_id, provider)
 

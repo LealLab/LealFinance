@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Bu talimatlar kaydedilmedi: finanslarınızla ya da bu uygulamayla ilgili değiller.",
       "not_configured": "Henüz bir yapay zekâ sağlayıcısı yapılandırılmadı.",
       "provider_unavailable": "Yapay zekâ sağlayıcısı şu anda kullanılamıyor.",
-      "suggest_unreadable": "Yapay zekâ yanıtı okunamadı. Yeniden deneyin."
+      "suggest_unreadable": "Yapay zekâ yanıtı okunamadı. Yeniden deneyin.",
+      "base_url_invalid": "http:// veya https:// ile başlayan, kullanıcı adı, parola ya da # parçası içermeyen tam bir sunucu adresi girin.",
+      "daily_limit_reached": "Bugünkü yapay zeka mesaj sınırına ulaştınız. Lütfen daha sonra tekrar deneyin."
     },
     "agent_memory": {
       "not_found": "Bu kayıt artık mevcut değil."

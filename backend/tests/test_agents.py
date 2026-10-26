@@ -308,6 +308,55 @@ async def test_link_ollama_with_base_url(
     assert response.json()["configured"] is True
 
 
+@pytest.mark.parametrize(
+    "base_url",
+    [
+        "ollama:11434",
+        "ftp://ollama:11434",
+        "file:///etc/passwd",
+        "javascript:alert(1)",
+        "http://",
+        "http:///path",
+        "http://user:secret@ollama:11434",
+        "http://user@ollama:11434",
+        "http://ollama:11434/#frag",
+        "http://ollama:11434/ path",
+        "http://ollama:notaport",
+        "//ollama:11434",
+    ],
+)
+async def test_link_rejects_malformed_base_url(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch, base_url: str
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "ollama-bad-url@example.com")
+
+    response = await client.put("/api/v1/agents/providers/ollama", json={"base_url": base_url})
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "agents.base_url_invalid"
+
+
+@pytest.mark.parametrize(
+    "base_url",
+    [
+        "http://ollama:11434",
+        "https://models.example.com/v1",
+        "http://192.168.1.20:11434",
+        "http://127.0.0.1:11434",
+        "http://[::1]:11434",
+        "http://host.docker.internal:11434",
+    ],
+)
+async def test_link_accepts_private_and_internal_base_urls(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch, base_url: str
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "ollama-good-url@example.com")
+
+    response = await client.put("/api/v1/agents/providers/ollama", json={"base_url": base_url})
+    assert response.status_code == 200, response.text
+
+
 async def test_link_unknown_provider_returns_404(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:

@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Instruktionerna sparades inte: de handlar inte om din ekonomi eller den här appen.",
       "not_configured": "Ingen AI-leverantör har konfigurerats ännu.",
       "provider_unavailable": "AI-leverantören är inte tillgänglig just nu.",
-      "suggest_unreadable": "AI-svaret kunde inte läsas. Försök igen."
+      "suggest_unreadable": "AI-svaret kunde inte läsas. Försök igen.",
+      "base_url_invalid": "Ange en fullständig serveradress som börjar med http:// eller https://, utan användarnamn, lösenord eller #-fragment.",
+      "daily_limit_reached": "Du har nått dagens gräns för AI-meddelanden. Försök igen senare."
     },
     "agent_memory": {
       "not_found": "Det minnet finns inte längre."

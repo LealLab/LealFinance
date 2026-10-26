@@ -2043,7 +2043,9 @@
       "instructions_rejected": "这些指令未保存：它们与你的财务或本应用无关。",
       "not_configured": "尚未配置 AI 提供商。",
       "provider_unavailable": "AI 提供商当前不可用。",
-      "suggest_unreadable": "无法读取 AI 响应。请重试。"
+      "suggest_unreadable": "无法读取 AI 响应。请重试。",
+      "base_url_invalid": "请输入以 http:// 或 https:// 开头的完整服务器地址，不要包含用户名、密码或 # 片段。",
+      "daily_limit_reached": "你已达到今天的 AI 消息上限，请稍后再试。"
     },
     "agent_memory": {
       "not_found": "这条记忆已不存在。"

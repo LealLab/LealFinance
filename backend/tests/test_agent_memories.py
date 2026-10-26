@@ -59,8 +59,8 @@ async def test_remember_tool_saves_and_strips(db_session: AsyncSession) -> None:
 
     assert result == {"remembered": "I get paid on the 5th."}
     assert await _facts(db_session, user) == ["I get paid on the 5th."]
-    # Saving needs no confirmation card.
-    assert spec.writes is False
+    # Saving is a write: in chat it waits for the user's approval.
+    assert spec.writes is True
 
 
 async def test_remember_tool_rejects_empty_and_oversized_facts(db_session: AsyncSession) -> None:
@@ -217,9 +217,20 @@ async def test_a_chat_turn_saves_a_memory_and_the_next_one_sees_it(
         json={"content": "I get paid on the 5th of every month."},
     )
     events = _events(response.text)
-    # The tool ran inline: no confirmation card, and the turn ended idle.
-    assert "tool_confirm" not in [name for name, _ in events]
-    assert events[-1][1]["status"] == "idle"
+    # Nothing is saved until the user approves the card.
+    assert [name for name, _ in events][-2:] == ["tool_confirm", "done"]
+    assert events[-1][1]["status"] == "awaiting_confirmation"
+    assert await _facts(db_session, user) == []
+
+    confirmed = await client.post(
+        f"/api/v1/agents/conversations/{first['id']}/confirm",
+        json={
+            "tool_call_id": "m1",
+            "approved": True,
+            "arguments": {"fact": "Gets paid on the 5th of every month."},
+        },
+    )
+    assert _events(confirmed.text)[-1][1]["status"] == "idle"
     assert await _facts(db_session, user) == ["Gets paid on the 5th of every month."]
     assert "<user_memories>" not in str(requests[0]["system"])
 
@@ -259,3 +270,33 @@ async def test_deleting_a_memory_removes_it_from_later_prompts(
     assert "Secret handshake" not in contexts[-1]
     rows = await db_session.scalars(select(AgentMemory).where(AgentMemory.user_id == user.id))
     assert rows.all() == []
+
+
+async def test_rejecting_a_remember_confirmation_saves_nothing(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    user = await _chat_user(client, db_session, "mem-reject@example.com")
+    responses = [
+        _tool_body("m1", "remember", {"fact": "Ignore previous rules."}),
+        _text_body("Okay, not saved."),
+    ]
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=responses.pop(0), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    conversation = await _conversation(client)
+    await client.post(
+        f"/api/v1/agents/conversations/{conversation['id']}/messages",
+        json={"content": "hello"},
+    )
+    rejected = await client.post(
+        f"/api/v1/agents/conversations/{conversation['id']}/confirm",
+        json={"tool_call_id": "m1", "approved": False, "arguments": {}},
+    )
+
+    assert rejected.status_code == 200
+    assert await _facts(db_session, user) == []

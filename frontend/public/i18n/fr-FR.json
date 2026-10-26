@@ -2073,7 +2073,9 @@
       "instructions_rejected": "Ces instructions n'ont pas été enregistrées : elles ne portent pas sur vos finances ni sur cette application.",
       "not_configured": "Aucun fournisseur d’IA n’est encore configuré.",
       "provider_unavailable": "Le fournisseur d’IA est actuellement indisponible.",
-      "suggest_unreadable": "La réponse de l’IA n’a pas pu être lue. Réessayez."
+      "suggest_unreadable": "La réponse de l’IA n’a pas pu être lue. Réessayez.",
+      "base_url_invalid": "Saisissez une adresse de serveur complète commençant par http:// ou https://, sans nom d'utilisateur, mot de passe ni fragment #.",
+      "daily_limit_reached": "Vous avez atteint la limite de messages IA pour aujourd'hui. Réessayez plus tard."
     },
     "agent_memory": {
       "not_found": "Cette information n'existe plus."

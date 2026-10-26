@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ApiError } from '../../core/api-error';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import { AgentProviderStatus } from '../../domain/models/agent-provider';
 import { Button } from '../../shared/ui/button/button';
@@ -8,7 +9,7 @@ import { Modal } from '../../shared/ui/modal/modal';
 
 type LinkMode = 'api_key' | 'oauth';
 
-/** t(providers.form.apiKeyTitle, providers.form.oauthTitle, providers.form.ollamaTitle, providers.form.saveError, providers.form.oauth.startError, providers.form.oauth.completeError, providers.form.oauth.pasteHint, providers.form.oauth.pasteHintOpenai) */
+/** t(providers.form.apiKeyTitle, providers.form.oauthTitle, providers.form.ollamaTitle, providers.form.saveError, errors.agents.base_url_invalid, providers.form.oauth.startError, providers.form.oauth.completeError, providers.form.oauth.pasteHint, providers.form.oauth.pasteHintOpenai) */
 
 /**
  * Handles both link modes a provider can support: a plain api_key form
@@ -106,9 +107,13 @@ export class ProviderLinkModal {
           this.open.set(false);
           this.linked.emit(status);
         },
-        error: () => {
+        error: (error: unknown) => {
           this.saving.set(false);
-          this.errorKey.set('providers.form.saveError');
+          this.errorKey.set(
+            error instanceof ApiError && error.code === 'agents.base_url_invalid'
+              ? 'errors.agents.base_url_invalid'
+              : 'providers.form.saveError',
+          );
         },
       });
   }

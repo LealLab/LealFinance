@@ -4,19 +4,21 @@ import asyncio
 import contextlib
 import json
 from collections.abc import AsyncIterator
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from typing import Any, cast
 from uuid import UUID
 
-from sqlalchemy import select, update
+from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents import chat, credentials, loop, prompt, tools
 from app.agents.credentials import ResolvedCredential
 from app.agents.events import Turn
 from app.agents.providers import PROVIDERS
+from app.core.config import get_settings
 from app.core.db import session_scope
-from app.core.errors import ValidationAppError
+from app.core.errors import TooManyRequestsError, ValidationAppError
+from app.core.logging import security_event
 from app.models.agent_attachment import AgentAttachment
 from app.models.agent_conversation import (
     AGENT_CONVERSATION_STATUS_AWAITING,
@@ -72,6 +74,24 @@ async def get_attachment(
     return attachment
 
 
+async def _enforce_daily_limit(db: AsyncSession, user_id: UUID) -> None:
+    limit = get_settings().agents_daily_message_limit
+    if limit <= 0:
+        return
+    sent = await db.scalar(
+        select(func.count())
+        .select_from(AgentMessage)
+        .where(
+            AgentMessage.user_id == user_id,
+            AgentMessage.role == "user",
+            AgentMessage.created_at >= datetime.now(UTC) - timedelta(hours=24),
+        )
+    )
+    if (sent or 0) >= limit:
+        security_event("ai_quota_exceeded", user_id=user_id, limit=limit)
+        raise TooManyRequestsError(code="agents.daily_limit_reached", params={"limit": limit})
+
+
 async def prepare_message(
     db: AsyncSession, user_id: UUID, conversation_id: UUID, payload: MessageCreate
 ) -> None:
@@ -83,6 +103,7 @@ async def prepare_message(
         from app.core.errors import ConflictError
 
         raise ConflictError(code="agents.awaiting_confirmation")
+    await _enforce_daily_limit(db, user_id)
 
     if len(payload.attachments) > 3:
         raise ValidationAppError(code="agents.attachment_limit")

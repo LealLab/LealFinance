@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Hướng dẫn này không được lưu: nội dung không liên quan đến tài chính của bạn hoặc ứng dụng này.",
       "not_configured": "Chưa cấu hình nhà cung cấp AI.",
       "provider_unavailable": "Nhà cung cấp AI hiện không khả dụng.",
-      "suggest_unreadable": "Không thể đọc phản hồi của AI. Hãy thử lại."
+      "suggest_unreadable": "Không thể đọc phản hồi của AI. Hãy thử lại.",
+      "base_url_invalid": "Nhập địa chỉ máy chủ đầy đủ bắt đầu bằng http:// hoặc https://, không có tên người dùng, mật khẩu hay phần # (fragment).",
+      "daily_limit_reached": "Bạn đã đạt giới hạn tin nhắn AI của hôm nay. Vui lòng thử lại sau."
     },
     "agent_memory": {
       "not_found": "Mục này không còn tồn tại."

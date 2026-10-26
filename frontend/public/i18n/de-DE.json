@@ -2073,7 +2073,9 @@
       "instructions_rejected": "Diese Anweisungen wurden nicht gespeichert: Sie betreffen weder Ihre Finanzen noch diese App.",
       "not_configured": "Noch kein KI-Anbieter konfiguriert.",
       "provider_unavailable": "Der KI-Anbieter ist derzeit nicht verfügbar.",
-      "suggest_unreadable": "Die KI-Antwort konnte nicht gelesen werden. Bitte erneut versuchen."
+      "suggest_unreadable": "Die KI-Antwort konnte nicht gelesen werden. Bitte erneut versuchen.",
+      "base_url_invalid": "Gib eine vollständige Serveradresse ein, die mit http:// oder https:// beginnt, ohne Benutzername, Passwort oder #-Fragment.",
+      "daily_limit_reached": "Du hast das heutige Limit für KI-Nachrichten erreicht. Versuche es später erneut."
     },
     "agent_memory": {
       "not_found": "Diese Erinnerung existiert nicht mehr."

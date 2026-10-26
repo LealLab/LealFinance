@@ -766,6 +766,9 @@ describe('Chat', () => {
     const chat = fixture.componentInstance;
 
     expect(chat['errorKeyFor']('agents.not_configured')).toBe('chat.errors.notConfigured');
+    expect(chat['errorKeyFor']('agents.daily_limit_reached')).toBe(
+      'errors.agents.daily_limit_reached',
+    );
     expect(chat['errorKeyFor']('something.else')).toBe('chat.errors.generic');
 
     chat['setError'](new ApiError(422, 'agents.not_configured', {}));

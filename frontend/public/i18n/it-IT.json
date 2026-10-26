@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Queste istruzioni non sono state salvate: non riguardano le tue finanze né questa applicazione.",
       "not_configured": "Non è ancora configurato alcun provider AI.",
       "provider_unavailable": "Il provider AI non è al momento disponibile.",
-      "suggest_unreadable": "Impossibile leggere la risposta dell’IA. Riprova."
+      "suggest_unreadable": "Impossibile leggere la risposta dell’IA. Riprova.",
+      "base_url_invalid": "Inserisci un indirizzo del server completo che inizi con http:// o https://, senza nome utente, password o frammento #.",
+      "daily_limit_reached": "Hai raggiunto il limite di messaggi IA di oggi. Riprova più tardi."
     },
     "agent_memory": {
       "not_found": "Questo ricordo non esiste più."
