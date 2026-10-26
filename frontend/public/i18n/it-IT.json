@@ -1783,6 +1783,10 @@
         "title": "Rimuovere questa passkey?",
         "message": "Non potrai più accedere con questa passkey. L’azione non può essere annullata."
       }
+    },
+    "reauth": {
+      "title": "Conferma la tua password",
+      "description": "Per la tua sicurezza, inserisci la password attuale per continuare."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Token di invito",
       "totpCode": "Codice di autenticazione",
       "recoveryCode": "Codice di autenticazione o di backup",
-      "newPassword": "Nuova password"
+      "newPassword": "Nuova password",
+      "setupToken": "Codice di configurazione"
     },
     "login": {
       "title": "Accedi",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Torna all'accesso",
       "setup": {
         "title": "Crea l'account amministratore",
-        "description": "Questo è il primo account di questa istanza: avrà accesso completo come amministratore."
+        "description": "Questo è il primo account di questa istanza: avrà accesso completo come amministratore.",
+        "tokenHint": "Copialo dalla riga SETUP_TOKEN del file .env del tuo server."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Questo codice non è valido. Riprova.",
       "totp_locked": "Troppi codici errati. Riprova tra 15 minuti.",
       "account_locked": "Troppe password errate. Riprova tra 15 minuti.",
-      "session_invalid": "La tua sessione è scaduta. Accedi di nuovo."
+      "session_invalid": "La tua sessione è scaduta. Accedi di nuovo.",
+      "setup_token_invalid": "Il codice di configurazione non è corretto. Controlla la riga SETUP_TOKEN nel tuo file .env."
     },
     "invitation": {
       "not_found": "L'invito non è valido.",

@@ -35,10 +35,22 @@ class RegisterRequest(BaseModel):
     display_name: str = Field(min_length=1, max_length=100)
     base_currency: CurrencyCodeInput = "USD"
     locale: str = Field(default="en-US", min_length=2, max_length=10)
+    # Only read for the first-run bootstrap, and only when SETUP_TOKEN is set.
+    setup_token: str | None = Field(default=None, max_length=256)
 
 
 class SetupStatus(BaseModel):
     needs_setup: bool
+    # True only while setup is needed AND the instance has a SETUP_TOKEN, so the
+    # register page knows to ask for it. Never reveals the token itself.
+    setup_token_required: bool = False
+
+
+class PasswordConfirmRequest(BaseModel):
+    """Re-asks for the account password before a sensitive credential change
+    (adding or removing a passkey, starting two-factor enrollment)."""
+
+    current_password: str = Field(min_length=1, max_length=1024)
 
 
 class InvitationCreate(BaseModel):

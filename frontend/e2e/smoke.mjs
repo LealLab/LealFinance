@@ -29,6 +29,8 @@ try {
         password,
         display_name: 'Browser Smoke Test',
         base_currency: 'BRL',
+        // Only needed when the stack sets SETUP_TOKEN (CI's .env.example leaves it empty).
+        ...(process.env.E2E_SETUP_TOKEN ? { setup_token: process.env.E2E_SETUP_TOKEN } : {}),
       },
     });
     await requireOk(register, 'registering smoke user');

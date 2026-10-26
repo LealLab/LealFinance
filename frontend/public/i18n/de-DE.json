@@ -1783,6 +1783,10 @@
         "title": "Diesen Passkey entfernen?",
         "message": "Sie können sich damit nicht mehr anmelden. Dies kann nicht rückgängig gemacht werden."
       }
+    },
+    "reauth": {
+      "title": "Passwort bestätigen",
+      "description": "Geben Sie zu Ihrer Sicherheit Ihr aktuelles Passwort ein, um fortzufahren."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Einladungstoken",
       "totpCode": "Authentifizierungscode",
       "recoveryCode": "Authentifizierungs- oder Backup-Code",
-      "newPassword": "Neues Passwort"
+      "newPassword": "Neues Passwort",
+      "setupToken": "Einrichtungscode"
     },
     "login": {
       "title": "Anmelden",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Zurück zur Anmeldung",
       "setup": {
         "title": "Administratorkonto erstellen",
-        "description": "Dies ist das erste Konto dieser Instanz – es erhält vollständigen Administratorzugriff."
+        "description": "Dies ist das erste Konto dieser Instanz – es erhält vollständigen Administratorzugriff.",
+        "tokenHint": "Kopieren Sie ihn aus der Zeile SETUP_TOKEN in der .env-Datei Ihres Servers."
       }
     },
     "totp": {
@@ -2112,7 +2118,8 @@
       "totp_invalid": "Dieser Code ist ungültig. Versuche es erneut.",
       "totp_locked": "Zu viele falsche Codes. Versuche es in 15 Minuten erneut.",
       "account_locked": "Zu viele falsche Passwörter. Versuche es in 15 Minuten erneut.",
-      "session_invalid": "Deine Sitzung ist abgelaufen. Melde dich erneut an."
+      "session_invalid": "Deine Sitzung ist abgelaufen. Melde dich erneut an.",
+      "setup_token_invalid": "Dieser Einrichtungscode ist nicht korrekt. Prüfen Sie die Zeile SETUP_TOKEN in Ihrer .env-Datei."
     },
     "invitation": {
       "not_found": "Die Einladung ist ungültig.",

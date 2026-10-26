@@ -38,7 +38,7 @@ set at least `POSTGRES_PASSWORD` and `API_SECRET_KEY`. Then run it with:
 task install
 ```
 
-Then open `http://localhost:8081` (or the value of `WEB_PORT`) in your browser. The first account created on an empty instance becomes the administrator;
+Then open `http://localhost:8081` (or the value of `WEB_PORT`) in your browser. The first account created on an empty instance becomes the administrator (if `.env` has a `SETUP_TOKEN`, as `task install` sets, the register page asks for it as the Setup code);
 
 ### Optional Configurations
 

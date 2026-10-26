@@ -1783,6 +1783,10 @@
         "title": "Fjern denne adgangsnøgle?",
         "message": "Du kan ikke længere logge ind med den. Dette kan ikke fortrydes."
       }
+    },
+    "reauth": {
+      "title": "Bekræft din adgangskode",
+      "description": "Af hensyn til din sikkerhed skal du indtaste din nuværende adgangskode for at fortsætte."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Invitationstoken",
       "totpCode": "Godkendelseskode",
       "recoveryCode": "Godkendelses- eller reservekode",
-      "newPassword": "Ny adgangskode"
+      "newPassword": "Ny adgangskode",
+      "setupToken": "Opsætningskode"
     },
     "login": {
       "title": "Log ind",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Tilbage til login",
       "setup": {
         "title": "Opret administratorkontoen",
-        "description": "Dette er den første konto på denne installation – den får fuld administratoradgang."
+        "description": "Dette er den første konto på denne installation – den får fuld administratoradgang.",
+        "tokenHint": "Kopiér den fra linjen SETUP_TOKEN i serverens .env-fil."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Koden er ikke gyldig. Prøv igen.",
       "totp_locked": "For mange forkerte koder. Prøv igen om 15 minutter.",
       "account_locked": "For mange forkerte adgangskoder. Prøv igen om 15 minutter.",
-      "session_invalid": "Din session er udløbet. Log ind igen."
+      "session_invalid": "Din session er udløbet. Log ind igen.",
+      "setup_token_invalid": "Opsætningskoden er forkert. Tjek linjen SETUP_TOKEN i din .env-fil."
     },
     "invitation": {
       "not_found": "Invitationen er ugyldig.",

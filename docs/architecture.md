@@ -66,7 +66,8 @@ An id belonging to another user returns the same resource-specific `404` as an
 unknown id, avoiding a cross-user enumeration signal.
 
 Registration is invite-only after the first user. The first registration on an
-empty database creates the administrator; admins then create one-time
+empty database creates the administrator (and must present the optional
+`SETUP_TOKEN`, when one is configured); admins then create one-time
 invitations. Sessions use opaque cookies and a CSRF token, not JWTs.
 
 ## Frontend layout

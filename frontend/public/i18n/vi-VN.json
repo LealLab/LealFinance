@@ -1783,6 +1783,10 @@
         "title": "Xóa passkey này?",
         "message": "Bạn sẽ không thể đăng nhập bằng passkey này nữa. Không thể hoàn tác."
       }
+    },
+    "reauth": {
+      "title": "Xác nhận mật khẩu của bạn",
+      "description": "Để bảo mật, hãy nhập mật khẩu hiện tại của bạn để tiếp tục."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Mã lời mời",
       "totpCode": "Mã xác thực",
       "recoveryCode": "Mã xác thực hoặc mã dự phòng",
-      "newPassword": "Mật khẩu mới"
+      "newPassword": "Mật khẩu mới",
+      "setupToken": "Mã thiết lập"
     },
     "login": {
       "title": "Đăng nhập",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Quay lại đăng nhập",
       "setup": {
         "title": "Tạo tài khoản quản trị viên",
-        "description": "Đây là tài khoản đầu tiên trên hệ thống này - tài khoản sẽ có toàn quyền quản trị."
+        "description": "Đây là tài khoản đầu tiên trên hệ thống này - tài khoản sẽ có toàn quyền quản trị.",
+        "tokenHint": "Sao chép từ dòng SETUP_TOKEN trong tệp .env trên máy chủ của bạn."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Mã không hợp lệ. Hãy thử lại.",
       "totp_locked": "Quá nhiều mã sai. Hãy thử lại sau 15 phút.",
       "account_locked": "Quá nhiều mật khẩu không đúng. Hãy thử lại sau 15 phút.",
-      "session_invalid": "Phiên của bạn đã hết hạn. Hãy đăng nhập lại."
+      "session_invalid": "Phiên của bạn đã hết hạn. Hãy đăng nhập lại.",
+      "setup_token_invalid": "Mã thiết lập không đúng. Hãy kiểm tra dòng SETUP_TOKEN trong tệp .env của bạn."
     },
     "invitation": {
       "not_found": "Lời mời không hợp lệ.",

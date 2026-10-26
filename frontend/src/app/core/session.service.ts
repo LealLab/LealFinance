@@ -88,6 +88,7 @@ export class SessionService {
     displayName: string;
     baseCurrency: string;
     locale: string;
+    setupToken?: string;
   }): Observable<User> {
     const theme = this.theme.current();
     return this.api.register(input).pipe(

@@ -18,7 +18,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from webauthn.helpers import bytes_to_base64url
 
 from app.models.webauthn import WebAuthnChallenge, WebAuthnCredential
-from tests.factories import login_as, make_user
+from tests.factories import DEFAULT_PASSWORD, login_as, make_user
 
 
 class _SoftwareAuthenticator:
@@ -108,14 +108,28 @@ class _SoftwareAuthenticator:
         }
 
 
+CONFIRM = {"current_password": DEFAULT_PASSWORD}
+
+
+async def delete_passkey(
+    client: AsyncClient, credential_id: object, password: str = DEFAULT_PASSWORD
+):
+    return await client.request(
+        "DELETE",
+        f"/api/v1/auth/passkeys/{credential_id}",
+        json={"current_password": password},
+    )
+
+
 async def enroll(client: AsyncClient, db: AsyncSession) -> _SoftwareAuthenticator:
-    options_response = await client.post("/api/v1/auth/passkeys/register/options")
+    options_response = await client.post("/api/v1/auth/passkeys/register/options", json=CONFIRM)
     assert options_response.status_code == 200, options_response.text
     options = options_response.json()
     authenticator = _SoftwareAuthenticator()
     response = await client.post(
         "/api/v1/auth/passkeys/register",
         json={
+            **CONFIRM,
             "name": "Test laptop",
             "challenge": options["challenge"],
             "credential": authenticator.create(options),
@@ -157,7 +171,7 @@ async def test_enrolling_listing_and_deleting_a_passkey_round_trips_its_metadata
     assert body[0]["created_at"]
     assert body[0]["last_used_at"] is None
 
-    deleted = await client.delete(f"/api/v1/auth/passkeys/{body[0]['id']}")
+    deleted = await delete_passkey(client, body[0]["id"])
     assert deleted.status_code == 204, deleted.text
     assert (await client.get("/api/v1/auth/passkeys")).json() == []
 
@@ -361,7 +375,7 @@ async def test_another_users_passkey_cannot_be_deleted(
     assert stored is not None
     await login_as(other_client, email=other.email)
 
-    response = await other_client.delete(f"/api/v1/auth/passkeys/{stored.id}")
+    response = await delete_passkey(other_client, stored.id)
 
     assert response.status_code == 404, response.text
     assert response.json()["error"]["code"] == "webauthn.not_found"
@@ -374,7 +388,7 @@ async def test_plain_http_non_localhost_origin_is_refused(
     await login_as(client, email=user.email)
     client.headers["Origin"] = "http://192.168.1.9:8081"
 
-    response = await client.post("/api/v1/auth/passkeys/register/options")
+    response = await client.post("/api/v1/auth/passkeys/register/options", json=CONFIRM)
 
     assert response.status_code == 403, response.text
     assert response.json()["error"]["code"] == "webauthn.insecure_context"
@@ -387,3 +401,74 @@ async def test_a_missing_origin_is_refused_for_public_passkey_options(
 
     assert response.status_code == 403, response.text
     assert response.json()["error"]["code"] == "webauthn.origin_invalid"
+
+
+# --- Password re-confirmation ----------------------------------------------------
+
+
+async def test_adding_a_passkey_requires_the_current_password(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, _password = await make_user(db_session, email="pk-reauth@example.com")
+    client.headers["Origin"] = "http://localhost"
+    await login_as(client, email=user.email)
+
+    missing = await client.post("/api/v1/auth/passkeys/register/options")
+    wrong = await client.post(
+        "/api/v1/auth/passkeys/register/options", json={"current_password": "wrong"}
+    )
+    assert missing.status_code == 422
+    assert wrong.status_code == 401
+    assert wrong.json()["error"]["code"] == "auth.invalid_credentials"
+
+    # The second step re-checks it too: options obtained earlier are not enough.
+    options = (await client.post("/api/v1/auth/passkeys/register/options", json=CONFIRM)).json()
+    authenticator = _SoftwareAuthenticator()
+    body = {
+        "name": "Sneaky",
+        "challenge": options["challenge"],
+        "credential": authenticator.create(options),
+    }
+    without = await client.post("/api/v1/auth/passkeys/register", json=body)
+    wrong_finish = await client.post(
+        "/api/v1/auth/passkeys/register", json={**body, "current_password": "wrong"}
+    )
+    assert without.status_code == 422
+    assert wrong_finish.status_code == 401
+    assert (await client.get("/api/v1/auth/passkeys")).json() == []
+
+
+async def test_deleting_a_passkey_requires_the_current_password(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, _password = await make_user(db_session, email="pk-delete-reauth@example.com")
+    client.headers["Origin"] = "http://localhost"
+    await login_as(client, email=user.email)
+    await enroll(client, db_session)
+    passkey_id = (await client.get("/api/v1/auth/passkeys")).json()[0]["id"]
+
+    missing = await client.delete(f"/api/v1/auth/passkeys/{passkey_id}")
+    wrong = await delete_passkey(client, passkey_id, password="wrong")
+
+    assert missing.status_code == 422
+    assert wrong.status_code == 401
+    assert len((await client.get("/api/v1/auth/passkeys")).json()) == 1
+    assert (await delete_passkey(client, passkey_id)).status_code == 204
+
+
+async def test_wrong_passwords_on_passkey_changes_count_toward_the_lockout(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    user, _password = await make_user(db_session, email="pk-lockout@example.com")
+    client.headers["Origin"] = "http://localhost"
+    await login_as(client, email=user.email)
+
+    for _ in range(5):
+        response = await client.post(
+            "/api/v1/auth/passkeys/register/options", json={"current_password": "wrong"}
+        )
+        assert response.status_code == 401
+    locked = await client.post("/api/v1/auth/passkeys/register/options", json=CONFIRM)
+
+    assert locked.status_code == 401
+    assert locked.json()["error"]["code"] == "auth.account_locked"

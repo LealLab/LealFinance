@@ -1783,6 +1783,10 @@
         "title": "¿Eliminar esta clave de acceso?",
         "message": "Ya no podrás iniciar sesión con ella. Esta acción no se puede deshacer."
       }
+    },
+    "reauth": {
+      "title": "Confirma tu contraseña",
+      "description": "Por tu seguridad, introduce tu contraseña actual para continuar."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Token de invitación",
       "totpCode": "Código de autenticación",
       "recoveryCode": "Código de autenticación o de respaldo",
-      "newPassword": "Nueva contraseña"
+      "newPassword": "Nueva contraseña",
+      "setupToken": "Código de configuración"
     },
     "login": {
       "title": "Iniciar sesión",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Volver a iniciar sesión",
       "setup": {
         "title": "Crear la cuenta de administrador",
-        "description": "Esta es la primera cuenta de esta instancia; tendrá acceso total de administrador."
+        "description": "Esta es la primera cuenta de esta instancia; tendrá acceso total de administrador.",
+        "tokenHint": "Cópialo de la línea SETUP_TOKEN del archivo .env de tu servidor."
       }
     },
     "totp": {
@@ -2112,7 +2118,8 @@
       "totp_invalid": "Ese código no es válido. Inténtalo de nuevo.",
       "totp_locked": "Demasiados códigos incorrectos. Inténtalo de nuevo en 15 minutos.",
       "account_locked": "Demasiadas contraseñas incorrectas. Inténtalo de nuevo en 15 minutos.",
-      "session_invalid": "Tu sesión ha caducado. Inicia sesión de nuevo."
+      "session_invalid": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+      "setup_token_invalid": "El código de configuración no es correcto. Revisa la línea SETUP_TOKEN de tu archivo .env."
     },
     "invitation": {
       "not_found": "La invitación no es válida.",

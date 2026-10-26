@@ -1807,6 +1807,10 @@
         "title": "Remove this passkey?",
         "message": "You will no longer be able to sign in with it. This cannot be undone."
       }
+    },
+    "reauth": {
+      "title": "Confirm your password",
+      "description": "For your security, enter your current password to continue."
     }
   },
   "auth": {
@@ -1818,7 +1822,8 @@
       "invitationToken": "Invitation token",
       "totpCode": "Authentication code",
       "recoveryCode": "Authentication or backup code",
-      "newPassword": "New password"
+      "newPassword": "New password",
+      "setupToken": "Setup code"
     },
     "login": {
       "title": "Sign in",
@@ -1835,7 +1840,8 @@
       "backToLogin": "Back to sign in",
       "setup": {
         "title": "Create the administrator account",
-        "description": "This is the first account on this instance - it will have full administrator access."
+        "description": "This is the first account on this instance - it will have full administrator access.",
+        "tokenHint": "Copy it from the SETUP_TOKEN line in your server's .env file."
       }
     },
     "totp": {
@@ -2136,7 +2142,8 @@
       "totp_invalid": "That code is not valid. Try again.",
       "totp_locked": "Too many incorrect codes. Try again in 15 minutes.",
       "account_locked": "Too many incorrect passwords. Try again in 15 minutes.",
-      "session_invalid": "Your session has expired. Sign in again."
+      "session_invalid": "Your session has expired. Sign in again.",
+      "setup_token_invalid": "That setup code is not correct. Check the SETUP_TOKEN line in your .env file."
     },
     "invitation": {
       "not_found": "The invitation is invalid.",

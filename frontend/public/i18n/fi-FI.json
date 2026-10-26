@@ -1783,6 +1783,10 @@
         "title": "Poistetaanko tämä passkey?",
         "message": "Et voi enää kirjautua sillä. Tätä ei voi kumota."
       }
+    },
+    "reauth": {
+      "title": "Vahvista salasanasi",
+      "description": "Anna turvallisuuden vuoksi nykyinen salasanasi jatkaaksesi."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Kutsutunnus",
       "totpCode": "Todennuskoodi",
       "recoveryCode": "Todennus- tai varakoodi",
-      "newPassword": "Uusi salasana"
+      "newPassword": "Uusi salasana",
+      "setupToken": "Asennuskoodi"
     },
     "login": {
       "title": "Kirjaudu sisään",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Takaisin kirjautumiseen",
       "setup": {
         "title": "Luo järjestelmänvalvojan tili",
-        "description": "Tämä on tämän asennuksen ensimmäinen tili, joten sillä on täydet järjestelmänvalvojan oikeudet."
+        "description": "Tämä on tämän asennuksen ensimmäinen tili, joten sillä on täydet järjestelmänvalvojan oikeudet.",
+        "tokenHint": "Kopioi se palvelimesi .env-tiedoston SETUP_TOKEN-riviltä."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Koodi ei kelpaa. Yritä uudelleen.",
       "totp_locked": "Liian monta väärää koodia. Yritä uudelleen 15 minuutin kuluttua.",
       "account_locked": "Liian monta väärää salasanaa. Yritä uudelleen 15 minuutin kuluttua.",
-      "session_invalid": "Istuntosi on vanhentunut. Kirjaudu uudelleen."
+      "session_invalid": "Istuntosi on vanhentunut. Kirjaudu uudelleen.",
+      "setup_token_invalid": "Asennuskoodi ei ole oikea. Tarkista .env-tiedostosi SETUP_TOKEN-rivi."
     },
     "invitation": {
       "not_found": "Kutsu ei ole kelvollinen.",

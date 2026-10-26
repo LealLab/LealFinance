@@ -1783,6 +1783,10 @@
         "title": "Bu passkey kaldırılsın mı?",
         "message": "Bununla artık giriş yapamazsınız. Bu işlem geri alınamaz."
       }
+    },
+    "reauth": {
+      "title": "Parolanızı onaylayın",
+      "description": "Güvenliğiniz için devam etmek üzere mevcut parolanızı girin."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Davet kodu",
       "totpCode": "Doğrulama kodu",
       "recoveryCode": "Doğrulama veya yedek kod",
-      "newPassword": "Yeni parola"
+      "newPassword": "Yeni parola",
+      "setupToken": "Kurulum kodu"
     },
     "login": {
       "title": "Giriş yap",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Girişe dön",
       "setup": {
         "title": "Yönetici hesabı oluştur",
-        "description": "Bu, bu örnekteki ilk hesaptır ve tam yönetici erişimine sahip olacaktır."
+        "description": "Bu, bu örnekteki ilk hesaptır ve tam yönetici erişimine sahip olacaktır.",
+        "tokenHint": "Sunucunuzdaki .env dosyasının SETUP_TOKEN satırından kopyalayın."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Bu kod geçerli değil. Tekrar deneyin.",
       "totp_locked": "Çok fazla hatalı kod. 15 dakika sonra tekrar deneyin.",
       "account_locked": "Çok fazla hatalı parola. 15 dakika sonra tekrar deneyin.",
-      "session_invalid": "Oturumunuzun süresi doldu. Tekrar giriş yapın."
+      "session_invalid": "Oturumunuzun süresi doldu. Tekrar giriş yapın.",
+      "setup_token_invalid": "Kurulum kodu doğru değil. .env dosyanızdaki SETUP_TOKEN satırını kontrol edin."
     },
     "invitation": {
       "not_found": "Davet geçersiz.",

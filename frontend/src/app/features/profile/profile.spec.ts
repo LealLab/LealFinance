@@ -27,7 +27,11 @@ describe('Profile', () => {
     updateProfile: ReturnType<typeof vi.fn>;
     changePassword: ReturnType<typeof vi.fn>;
   };
-  let identityApi: { totpStatus: ReturnType<typeof vi.fn>; listPasskeys: ReturnType<typeof vi.fn> };
+  let identityApi: {
+    totpStatus: ReturnType<typeof vi.fn>;
+    listPasskeys: ReturnType<typeof vi.fn>;
+    startTotpEnrollment: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(async () => {
     sessionUser = signal<User | undefined>(USER);
@@ -39,6 +43,9 @@ describe('Profile', () => {
     identityApi = {
       totpStatus: vi.fn().mockReturnValue(of({ enabled: false, backupCodesRemaining: 0 })),
       listPasskeys: vi.fn().mockReturnValue(of([])),
+      startTotpEnrollment: vi
+        .fn()
+        .mockReturnValue(of({ secret: 'JBSWY3DPEHPK3PXP', otpauthUri: 'otpauth://totp/x' })),
     };
     await TestBed.configureTestingModule({
       imports: [Profile, provideTestTransloco()],
@@ -160,5 +167,46 @@ describe('Profile', () => {
 
     expect(session.changePassword).not.toHaveBeenCalled();
     expect(fixture.componentInstance['passwordForm'].invalid).toBe(true);
+  });
+
+  it('asks for the password before starting two-factor enrollment, and sends it', async () => {
+    const fixture = TestBed.createComponent(Profile);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+
+    component['startTotpEnrollment']();
+    expect(identityApi.startTotpEnrollment).not.toHaveBeenCalled();
+    expect(component['totpReauthOpen']()).toBe(true);
+
+    component['submitTotpPassword']('my-account-password');
+    await fixture.whenStable();
+
+    expect(identityApi.startTotpEnrollment).toHaveBeenCalledWith('my-account-password');
+    expect(component['totpSetup']()?.secret).toBe('JBSWY3DPEHPK3PXP');
+    expect(component['totpReauthOpen']()).toBe(false);
+    expect(component['totpBusy']()).toBe(false);
+  });
+
+  it('keeps the password dialog open on a wrong password, and shows other errors on the card', async () => {
+    const fixture = TestBed.createComponent(Profile);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    component['startTotpEnrollment']();
+
+    identityApi.startTotpEnrollment.mockReturnValue(
+      throwError(() => new ApiError(401, 'auth.invalid_credentials', {})),
+    );
+    component['submitTotpPassword']('wrong');
+    expect(component['totpReauthOpen']()).toBe(true);
+    expect(component['totpReauthError']()).toBe('errors.auth.invalid_credentials');
+    expect(component['totpSetup']()).toBeUndefined();
+
+    identityApi.startTotpEnrollment.mockReturnValue(
+      throwError(() => new ApiError(409, 'totp.already_enabled', {})),
+    );
+    component['submitTotpPassword']('right');
+    expect(component['totpReauthOpen']()).toBe(false);
+    expect(component['totpErrorCode']()).toBe('totp.already_enabled');
+    expect(component['totpBusy']()).toBe(false);
   });
 });

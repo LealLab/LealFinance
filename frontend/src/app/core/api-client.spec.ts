@@ -59,4 +59,17 @@ describe('ApiClient', () => {
     req.flush(null, { status: 204, statusText: 'No Content' });
     expect(completed).toBe(true);
   });
+
+  it('sends a JSON body with a DELETE only when one is given', () => {
+    api.delete('/items/one', undefined, { current_password: 'pw' }).subscribe();
+    const withBody = http.expectOne('/api/v1/items/one');
+    expect(withBody.request.method).toBe('DELETE');
+    expect(withBody.request.body).toEqual({ current_password: 'pw' });
+    withBody.flush(null, { status: 204, statusText: 'No Content' });
+
+    api.delete('/items/two').subscribe();
+    const without = http.expectOne('/api/v1/items/two');
+    expect(without.request.body).toBeNull();
+    without.flush(null, { status: 204, statusText: 'No Content' });
+  });
 });

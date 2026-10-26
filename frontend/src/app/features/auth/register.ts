@@ -38,6 +38,9 @@ export class Register {
   /** True while this instance has no users yet - the first registration
    * becomes the administrator and needs no invitation token. */
   protected readonly needsSetup = signal(false);
+  /** True when the instance sets SETUP_TOKEN: the first registration then
+   * also needs the "setup code" from the server's .env. */
+  protected readonly setupTokenRequired = signal(false);
   /** Fetched directly rather than through MetadataService - there is no
    * session yet on this page, so SessionService.ensureLoaded (the only
    * caller of MetadataService.hydrate()) never runs here. Passed to
@@ -56,6 +59,7 @@ export class Register {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    setupToken: new FormControl('', { nonNullable: true }),
     password: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(12)],
@@ -78,12 +82,17 @@ export class Register {
       (currencies) => this.currencies.set(currencies),
       (error: unknown) => this.errorCode.set(this.readCode(error)),
     );
-    this.identityApi.setupStatus().subscribe({
-      next: (needed) => {
-        if (!needed) return;
+    this.identityApi.setupInfo().subscribe({
+      next: ({ needsSetup, setupTokenRequired }) => {
+        if (!needsSetup) return;
         this.needsSetup.set(true);
         this.form.controls.token.removeValidators(Validators.required);
         this.form.controls.token.updateValueAndValidity();
+        if (setupTokenRequired) {
+          this.setupTokenRequired.set(true);
+          this.form.controls.setupToken.addValidators(Validators.required);
+          this.form.controls.setupToken.updateValueAndValidity();
+        }
       },
       error: (error: unknown) => this.errorCode.set(this.readCode(error)),
     });
@@ -94,7 +103,13 @@ export class Register {
     this.submitting.set(true);
     this.errorCode.set(undefined);
     try {
-      await firstValueFrom(this.session.register(this.form.getRawValue()));
+      const { setupToken, ...rest } = this.form.getRawValue();
+      await firstValueFrom(
+        this.session.register({
+          ...rest,
+          ...(this.setupTokenRequired() ? { setupToken: setupToken.trim() } : {}),
+        }),
+      );
       await this.router.navigateByUrl('/');
     } catch (error) {
       this.errorCode.set(this.readCode(error));

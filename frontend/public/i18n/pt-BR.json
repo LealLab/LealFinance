@@ -1783,6 +1783,10 @@
         "title": "Remover esta passkey?",
         "message": "Você não poderá mais entrar com ela. Não é possível desfazer esta ação."
       }
+    },
+    "reauth": {
+      "title": "Confirme sua senha",
+      "description": "Para sua segurança, digite sua senha atual para continuar."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Token do convite",
       "totpCode": "Código de autenticação",
       "recoveryCode": "Código de autenticação ou de backup",
-      "newPassword": "Nova senha"
+      "newPassword": "Nova senha",
+      "setupToken": "Código de configuração"
     },
     "login": {
       "title": "Entrar",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Voltar para entrar",
       "setup": {
         "title": "Criar a conta de administrador",
-        "description": "Esta é a primeira conta desta instância - ela terá acesso total de administrador."
+        "description": "Esta é a primeira conta desta instância - ela terá acesso total de administrador.",
+        "tokenHint": "Copie da linha SETUP_TOKEN do arquivo .env do seu servidor."
       }
     },
     "totp": {
@@ -2112,7 +2118,8 @@
       "totp_invalid": "Esse código não é válido. Tente novamente.",
       "totp_locked": "Muitos códigos incorretos. Tente novamente em 15 minutos.",
       "account_locked": "Muitas senhas incorretas. Tente novamente em 15 minutos.",
-      "session_invalid": "Sua sessão expirou. Entre novamente."
+      "session_invalid": "Sua sessão expirou. Entre novamente.",
+      "setup_token_invalid": "Esse código de configuração não está correto. Confira a linha SETUP_TOKEN no seu arquivo .env."
     },
     "invitation": {
       "not_found": "O convite é inválido.",

@@ -15,13 +15,13 @@ const CURRENCIES = [
 
 describe('Register', () => {
   let session: { register: ReturnType<typeof vi.fn> };
-  let identityApi: { currencies: ReturnType<typeof vi.fn>; setupStatus: ReturnType<typeof vi.fn> };
+  let identityApi: { currencies: ReturnType<typeof vi.fn>; setupInfo: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     session = { register: vi.fn().mockReturnValue(of({ id: 'u1' })) };
     identityApi = {
       currencies: vi.fn().mockReturnValue(of(CURRENCIES)),
-      setupStatus: vi.fn().mockReturnValue(of(false)),
+      setupInfo: vi.fn().mockReturnValue(of({ needsSetup: false, setupTokenRequired: false })),
     };
     await TestBed.configureTestingModule({
       imports: [
@@ -46,12 +46,87 @@ describe('Register', () => {
   });
 
   it('drops the token requirement and hides its field when setup is needed', () => {
-    identityApi.setupStatus.mockReturnValue(of(true));
+    identityApi.setupInfo.mockReturnValue(of({ needsSetup: true, setupTokenRequired: false }));
     const fixture = TestBed.createComponent(Register);
     fixture.detectChanges();
 
     expect(fixture.componentInstance['form'].controls.token.validator).toBeNull();
     expect(fixture.nativeElement.querySelector('input[formcontrolname="token"]')).toBeNull();
+    // No SETUP_TOKEN on the server: the field is not asked for.
+    expect(fixture.nativeElement.querySelector('#register-setup-token')).toBeNull();
+    expect(fixture.componentInstance['form'].controls.setupToken.validator).toBeNull();
+  });
+
+  it('asks for the setup code only on a fresh instance that has one configured', () => {
+    identityApi.setupInfo.mockReturnValue(of({ needsSetup: true, setupTokenRequired: true }));
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#register-setup-token')).toBeTruthy();
+    expect(fixture.componentInstance['form'].controls.setupToken.validator).toBeTruthy();
+  });
+
+  it('never shows the setup code field when setup is not needed', () => {
+    // The server would not send this combination, but the page must not trust it.
+    identityApi.setupInfo.mockReturnValue(of({ needsSetup: false, setupTokenRequired: true }));
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#register-setup-token')).toBeNull();
+  });
+
+  it('sends the trimmed setup code with the first registration', async () => {
+    identityApi.setupInfo.mockReturnValue(of({ needsSetup: true, setupTokenRequired: true }));
+    vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+
+    fixture.componentInstance['form'].setValue({
+      displayName: 'Ada Lovelace',
+      email: 'ada@example.com',
+      token: '',
+      setupToken: '  code-from-env  ',
+      password: 'a-very-long-password',
+      baseCurrency: 'USD',
+      locale: 'en-US',
+    });
+    await fixture.componentInstance['submit']();
+
+    expect(session.register).toHaveBeenCalledWith(
+      expect.objectContaining({ setupToken: 'code-from-env' }),
+    );
+  });
+
+  it('blocks the submit until the setup code is entered', async () => {
+    identityApi.setupInfo.mockReturnValue(of({ needsSetup: true, setupTokenRequired: true }));
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+
+    fixture.componentInstance['form'].patchValue({
+      displayName: 'Ada Lovelace',
+      email: 'ada@example.com',
+      password: 'a-very-long-password',
+    });
+    await fixture.componentInstance['submit']();
+
+    expect(session.register).not.toHaveBeenCalled();
+  });
+
+  it('shows a wrong setup code as a translated error', async () => {
+    identityApi.setupInfo.mockReturnValue(of({ needsSetup: true, setupTokenRequired: true }));
+    session.register.mockReturnValue(throwError(() => ({ code: 'auth.setup_token_invalid' })));
+    const fixture = TestBed.createComponent(Register);
+    fixture.detectChanges();
+    fixture.componentInstance['form'].patchValue({
+      displayName: 'Ada Lovelace',
+      email: 'ada@example.com',
+      setupToken: 'wrong',
+      password: 'a-very-long-password',
+    });
+
+    await fixture.componentInstance['submit']();
+
+    expect(fixture.componentInstance['errorCode']()).toBe('auth.setup_token_invalid');
   });
 
   it('populates currency options from the metadata endpoint', () => {
@@ -98,6 +173,7 @@ describe('Register', () => {
       displayName: 'Ada Lovelace',
       email: 'ada@example.com',
       token: 'invite-token',
+      setupToken: '',
       password: 'a-very-long-password',
       baseCurrency: 'USD',
       locale: 'pt-BR',
@@ -124,6 +200,7 @@ describe('Register', () => {
       displayName: 'Ada Lovelace',
       email: 'ada@example.com',
       token: 'invite-token',
+      setupToken: '',
       password: 'a-very-long-password',
       baseCurrency: 'USD',
       locale: 'pt-BR',

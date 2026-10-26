@@ -275,3 +275,32 @@ def test_all_credential_questions_use_hidden_input(monkeypatch) -> None:
         "Twelve Data API key",
         "Brapi token",
     }
+
+
+def test_new_installs_get_a_setup_token_and_reruns_keep_it(capsys) -> None:
+    first, _ = wizard.gather_values({}, "homelab", True, tls=False)
+    token = first["SETUP_TOKEN"]
+    assert len(token) >= 16
+    assert "SETUP_TOKEN" in wizard.SECRET_KEYS
+
+    again, _ = wizard.gather_values({"SETUP_TOKEN": token}, "homelab", True, tls=False)
+    assert again["SETUP_TOKEN"] == token
+    other, _ = wizard.gather_values({}, "homelab", True, tls=False)
+    assert other["SETUP_TOKEN"] != token
+
+    capsys.readouterr()
+    wizard.summarize(first)
+    wizard.print_setup_code_hint(first)
+    output = capsys.readouterr().out
+    # The value is only ever in .env: the summary and the hint point to it.
+    assert token not in output
+    assert "SETUP_TOKEN=***" in output
+    assert "first administrator" in output
+
+
+def test_setup_token_is_rendered_into_env_and_documented_in_the_example() -> None:
+    example = (Path(__file__).parents[2] / ".env.example").read_text(encoding="utf-8")
+    assert "\nSETUP_TOKEN=\n" in example
+    rendered = wizard.render_env(example, {"SETUP_TOKEN": "abc"})
+    assert "\nSETUP_TOKEN=abc\n" in rendered
+    assert wizard.print_setup_code_hint({"SETUP_TOKEN": ""}) is None

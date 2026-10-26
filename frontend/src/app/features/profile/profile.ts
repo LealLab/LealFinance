@@ -28,6 +28,7 @@ import { Card } from '../../shared/ui/card/card';
 import { Icon, IconName } from '../../shared/ui/icon/icon';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { PasskeysSection } from '../settings/passkeys-section';
+import { PasswordConfirm } from '../../shared/ui/password-confirm/password-confirm';
 
 type ProfileView = 'account' | 'security';
 
@@ -46,6 +47,7 @@ const notBlank = (control: AbstractControl) => (control.value.trim() ? null : { 
     Icon,
     PageHeader,
     PasskeysSection,
+    PasswordConfirm,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -92,6 +94,8 @@ export class Profile {
   protected readonly backupCodes = signal<string[] | undefined>(undefined);
   protected readonly totpCode = signal('');
   protected readonly totpBusy = signal(false);
+  protected readonly totpReauthOpen = signal(false);
+  protected readonly totpReauthError = signal<string | undefined>(undefined);
   protected readonly totpErrorCode = signal<string | undefined>(undefined);
   protected readonly backupCodesCopied = signal(false);
 
@@ -191,13 +195,42 @@ export class Profile {
     this.totpCode.set(value);
   }
 
+  /** The button only asks for the password; enrollment starts in `submitTotpPassword`. */
   protected startTotpEnrollment(): void {
-    this.runTotpAction(this.identityApi.startTotpEnrollment(), async (setup) => {
-      const qrcode = (await import('qrcode-generator')).default;
-      const qr = qrcode(0, 'M');
-      qr.addData(setup.otpauthUri);
-      qr.make();
-      this.totpSetup.set({ ...setup, qrDataUrl: qr.createDataURL(6, 2) });
+    this.totpReauthError.set(undefined);
+    this.totpErrorCode.set(undefined);
+    this.totpReauthOpen.set(true);
+  }
+
+  protected submitTotpPassword(password: string): void {
+    this.totpBusy.set(true);
+    this.totpReauthError.set(undefined);
+    this.identityApi.startTotpEnrollment(password).subscribe({
+      next: async (setup) => {
+        const done = this.pendingTasks.add();
+        try {
+          const qrcode = (await import('qrcode-generator')).default;
+          const qr = qrcode(0, 'M');
+          qr.addData(setup.otpauthUri);
+          qr.make();
+          this.totpSetup.set({ ...setup, qrDataUrl: qr.createDataURL(6, 2) });
+          this.totpReauthOpen.set(false);
+        } finally {
+          this.totpBusy.set(false);
+          done();
+        }
+      },
+      error: (error: unknown) => {
+        const code = this.codeOf(error);
+        if (code === 'auth.invalid_credentials' || code === 'auth.account_locked') {
+          // A wrong password is answered inside the dialog, which stays open.
+          this.totpReauthError.set(`errors.${code}`);
+        } else {
+          this.totpReauthOpen.set(false);
+          this.totpErrorCode.set(code);
+        }
+        this.totpBusy.set(false);
+      },
     });
   }
 

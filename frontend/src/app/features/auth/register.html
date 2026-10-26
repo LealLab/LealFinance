@@ -44,6 +44,22 @@
           />
         </label>
       }
+      @if (setupTokenRequired()) {
+        <label>
+          <span class="form-label">{{ t('auth.fields.setupToken') }}</span>
+          <input
+            id="register-setup-token"
+            class="form-input"
+            autocomplete="off"
+            formControlName="setupToken"
+            [attr.aria-invalid]="form.controls.setupToken.invalid && form.controls.setupToken.touched"
+            [attr.aria-describedby]="errorCode() ? 'register-error' : null"
+          />
+          <span class="mt-1 block text-xs text-content-subtle">{{
+            t('auth.register.setup.tokenHint')
+          }}</span>
+        </label>
+      }
       <label>
         <span class="form-label">{{ t('auth.fields.password') }}</span>
         <input

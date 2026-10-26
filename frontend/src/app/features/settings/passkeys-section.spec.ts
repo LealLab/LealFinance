@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { ConfirmService } from '../../core/confirm.service';
+import { of, throwError } from 'rxjs';
+import { ApiError } from '../../core/api-error';
 import { IdentityApiService } from '../../core/identity-api.service';
 import { Passkey } from '../../core/identity.models';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
@@ -19,7 +19,6 @@ describe('PasskeysSection', () => {
     registerPasskey: ReturnType<typeof vi.fn>;
     deletePasskey: ReturnType<typeof vi.fn>;
   };
-  let confirm: { confirm: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     Object.defineProperty(window, 'PublicKeyCredential', {
@@ -40,14 +39,12 @@ describe('PasskeysSection', () => {
       registerPasskey: vi.fn().mockReturnValue(of(passkey)),
       deletePasskey: vi.fn().mockReturnValue(of(undefined)),
     };
-    confirm = { confirm: vi.fn().mockResolvedValue(true) };
     await TestBed.configureTestingModule({
       imports: [PasskeysSection, provideTestTransloco()],
       providers: [
         provideZonelessChangeDetection(),
         provideTestTranslocoLocale(),
         { provide: IdentityApiService, useValue: identityApi },
-        { provide: ConfirmService, useValue: confirm },
       ],
     }).compileComponents();
   });
@@ -93,33 +90,93 @@ describe('PasskeysSection', () => {
     });
     fixture.componentInstance['startAdding']();
     fixture.componentInstance['newName'].set(' Office laptop ');
-    await fixture.componentInstance['createPasskey']();
+    fixture.componentInstance['createPasskey']();
+    // Nothing happens until the password is confirmed.
+    expect(identityApi.passkeyRegisterOptions).not.toHaveBeenCalled();
+    expect(fixture.componentInstance['reauthOpen']()).toBe(true);
+    await fixture.componentInstance['onPassword']('my-account-password');
     Object.defineProperty(window.navigator, 'credentials', {
       configurable: true,
       value: originalCredentials,
     });
 
-    expect(identityApi.passkeyRegisterOptions).toHaveBeenCalled();
+    expect(identityApi.passkeyRegisterOptions).toHaveBeenCalledWith('my-account-password');
     expect(identityApi.registerPasskey).toHaveBeenCalledWith(
       'Office laptop',
       'Y2hhbGxlbmdl',
       expect.objectContaining({ id: 'credential', type: 'public-key' }),
+      'my-account-password',
     );
+    expect(fixture.componentInstance['reauthOpen']()).toBe(false);
     expect(identityApi.listPasskeys).toHaveBeenCalledTimes(2);
     expect(fixture.componentInstance['adding']()).toBe(false);
   });
 
-  it('confirms before deleting a passkey', async () => {
+  it('asks for the password before deleting a passkey, and sends it', async () => {
     const fixture = TestBed.createComponent(PasskeysSection);
     fixture.detectChanges();
-    await fixture.componentInstance['removePasskey'](passkey);
+    fixture.componentInstance['removePasskey'](passkey);
 
-    expect(confirm.confirm).toHaveBeenCalledWith(
+    expect(identityApi.deletePasskey).not.toHaveBeenCalled();
+    expect(fixture.componentInstance['reauthOpen']()).toBe(true);
+    expect(fixture.componentInstance['reauthTitleKey']()).toBe(
       'settings.passkeys.removeConfirm.title',
-      'settings.passkeys.removeConfirm.message',
-      'danger',
     );
-    expect(identityApi.deletePasskey).toHaveBeenCalledWith('p1');
+    expect(fixture.componentInstance['reauthMessageKey']()).toBe(
+      'settings.passkeys.removeConfirm.message',
+    );
+
+    await fixture.componentInstance['onPassword']('my-account-password');
+
+    expect(identityApi.deletePasskey).toHaveBeenCalledWith('p1', 'my-account-password');
+    expect(fixture.componentInstance['reauthOpen']()).toBe(false);
+    expect(identityApi.listPasskeys).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps the dialog open and shows the error when the password is wrong', async () => {
+    identityApi.deletePasskey.mockReturnValue(
+      throwError(() => new ApiError(401, 'auth.invalid_credentials', {})),
+    );
+    const fixture = TestBed.createComponent(PasskeysSection);
+    fixture.detectChanges();
+    fixture.componentInstance['removePasskey'](passkey);
+
+    await fixture.componentInstance['onPassword']('wrong');
+
+    expect(fixture.componentInstance['reauthOpen']()).toBe(true);
+    expect(fixture.componentInstance['reauthError']()).toBe('errors.auth.invalid_credentials');
+    expect(fixture.componentInstance['errorCode']()).toBeUndefined();
+    expect(identityApi.listPasskeys).toHaveBeenCalledTimes(1);
+
+    identityApi.deletePasskey.mockReturnValue(
+      throwError(() => new ApiError(401, 'auth.account_locked', {})),
+    );
+    await fixture.componentInstance['onPassword']('wrong again');
+    expect(fixture.componentInstance['reauthError']()).toBe('errors.auth.account_locked');
+  });
+
+  it('closes the dialog and shows other errors on the section', async () => {
+    identityApi.deletePasskey.mockReturnValue(
+      throwError(() => new ApiError(404, 'webauthn.not_found', {})),
+    );
+    const fixture = TestBed.createComponent(PasskeysSection);
+    fixture.detectChanges();
+    fixture.componentInstance['removePasskey'](passkey);
+
+    await fixture.componentInstance['onPassword']('my-account-password');
+
+    expect(fixture.componentInstance['reauthOpen']()).toBe(false);
+    expect(fixture.componentInstance['errorCode']()).toBe('webauthn.not_found');
+  });
+
+  it('does not ask for a password until a name is entered', () => {
+    const fixture = TestBed.createComponent(PasskeysSection);
+    fixture.detectChanges();
+    fixture.componentInstance['startAdding']();
+
+    fixture.componentInstance['createPasskey']();
+
+    expect(fixture.componentInstance['reauthOpen']()).toBe(false);
   });
 
   it('explains when passkeys are unsupported', () => {

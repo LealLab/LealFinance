@@ -1783,6 +1783,10 @@
         "title": "要移除此通行密鑰嗎？",
         "message": "移除後將無法再使用它登入。此操作無法復原。"
       }
+    },
+    "reauth": {
+      "title": "確認你的密碼",
+      "description": "為了你的帳號安全，請輸入目前的密碼以繼續。"
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "邀請權杖",
       "totpCode": "驗證碼",
       "recoveryCode": "驗證碼或備用碼",
-      "newPassword": "新密碼"
+      "newPassword": "新密碼",
+      "setupToken": "安裝碼"
     },
     "login": {
       "title": "登入",
@@ -1811,7 +1816,8 @@
       "backToLogin": "返回登入",
       "setup": {
         "title": "建立管理員帳戶",
-        "description": "這是此執行個體上的第一個帳戶，將擁有完整的管理員存取權。"
+        "description": "這是此執行個體上的第一個帳戶，將擁有完整的管理員存取權。",
+        "tokenHint": "請從伺服器 .env 檔案的 SETUP_TOKEN 行複製。"
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "驗證碼無效，請再試一次。",
       "totp_locked": "錯誤次數過多，請於 15 分鐘後再試。",
       "account_locked": "密碼錯誤次數過多，請於 15 分鐘後再試。",
-      "session_invalid": "工作階段已過期，請重新登入。"
+      "session_invalid": "工作階段已過期，請重新登入。",
+      "setup_token_invalid": "安裝碼不正確。請檢查 .env 檔案中的 SETUP_TOKEN 行。"
     },
     "invitation": {
       "not_found": "邀請無效。",

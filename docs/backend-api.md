@@ -57,10 +57,18 @@ Registration is invite-only, except the very first user on an instance.
 1. **First admin**: while the `users` table is empty, `POST /auth/register`
    accepts a request with no `token` field and creates that user with
    `role=admin`. `GET /auth/setup-status` (public) returns
-   `{"needs_setup": true}` until that happens, so the frontend can hide the
-   invitation-token field for the very first registration. Once any user
-   exists, a token-less register is rejected with `invitation.not_found`,
-   the same code an unknown/wrong token gets.
+   `{"needs_setup": true, "setup_token_required": false}` until that happens,
+   so the frontend can hide the invitation-token field for the very first
+   registration. Once any user exists, a token-less register is rejected with
+   `invitation.not_found`, the same code an unknown/wrong token gets.
+   When the optional `SETUP_TOKEN` environment variable is set (non-empty),
+   that first registration must also send a matching `setup_token` in the body
+   (compared in constant time); otherwise it is rejected with
+   `auth.setup_token_invalid` (403) and no user is created. `setup-status` then
+   reports `setup_token_required: true`, but only while setup is still needed;
+   it never reveals the token. Once any user exists the token is ignored
+   entirely (the answer is the usual `invitation.not_found`), and invited users
+   never need it. Unset or empty keeps the original open behaviour.
 2. **Invite everyone else**: an admin calls `POST /auth/invitations`; the
    response includes the raw, one-time invitation token - the only time it
    is ever exposed. When SMTP is configured (`SMTP_HOST` + `APP_BASE_URL`)
@@ -88,10 +96,22 @@ Registration is invite-only, except the very first user on an instance.
   can't validate even if the session cookie's format is guessed.
 - `POST /auth/logout` revokes the current session and clears both cookies.
 
+### Password re-confirmation
+
+Adding a passkey (both `register/options` and `register`), deleting a passkey,
+and starting two-factor enrollment (`totp/setup`) take the account password in
+the request body as `current_password`. A stolen session alone therefore cannot
+plant a persistent second factor. The password goes through the same lockout as
+sign-in and password changes: a wrong one is `401 auth.invalid_credentials`, five
+wrong guesses lock the account for 15 minutes (`auth.account_locked`), and a
+missing field is a `422`. For `DELETE /auth/passkeys/{id}` the JSON body is sent
+with the DELETE request. The password is checked before the passkey is looked
+up, so a wrong password cannot be used to probe ids.
+
 ### Two-factor authentication (optional, per user)
 
-- Enrollment is `POST /auth/totp/setup` (returns a base32 secret plus its
-  `otpauth://` URI) then `POST /auth/totp/enable` with a working code. Only
+- Enrollment is `POST /auth/totp/setup` (body `{current_password}`; returns a
+  base32 secret plus its `otpauth://` URI) then `POST /auth/totp/enable` with a working code. Only
   the second step arms anything: the secret is stored encrypted
   (`app/core/crypto.py`) from the first, but `totp_confirmed_at` is what
   gates a login. Enabling returns ten single-use backup codes, shown once
@@ -187,16 +207,16 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/auth/invitations` | admin | Body `{email, role}`. Returns the raw token once. |
 | GET | `/auth/invitations` | admin | Never includes the token. |
 | DELETE | `/auth/invitations/{id}` | admin | Revoke. |
-| POST | `/auth/register` | public | Body `{email, token, password, display_name, base_currency?}`. Logs in on success; the selected base currency also initializes display currency. |
+| POST | `/auth/register` | public | Body `{email, token, password, display_name, base_currency?, setup_token?}`. Logs in on success; the selected base currency also initializes display currency. `setup_token` is only used for the first-ever registration, and only when the instance sets `SETUP_TOKEN` (see above). |
 | POST | `/auth/login` | public | Body `{email, password}`. |
 | POST | `/auth/login/passkey/options` | public | Begin a discoverable passkey login. |
 | POST | `/auth/login/passkey` | public | Complete passkey login and issue the normal session cookies. |
 | POST | `/auth/logout` | user | 204. |
 | GET | `/auth/me` | user | |
-| POST | `/auth/passkeys/register/options` | user | Begin passkey enrollment. |
-| POST | `/auth/passkeys/register` | user | Complete passkey enrollment. |
+| POST | `/auth/passkeys/register/options` | user | Begin passkey enrollment. Body `{current_password}`. |
+| POST | `/auth/passkeys/register` | user | Complete passkey enrollment. Body `{current_password, name, challenge, credential}`. |
 | GET | `/auth/passkeys` | user | List the current user's passkeys. |
-| DELETE | `/auth/passkeys/{credential_id}` | user | Remove one of the current user's passkeys. |
+| DELETE | `/auth/passkeys/{credential_id}` | user | Remove one of the current user's passkeys. Body `{current_password}`. |
 | GET | `/auth/users` | admin | |
 | PATCH | `/auth/users/{id}` | admin | `{role?, is_active?, display_name?}`. |
 | GET/PATCH | `/auth/preferences` | user | `{locale, theme, base_currency, display_currency, balances_hidden}` - stored as columns on `users`, not localStorage; only display currency is changeable here. |

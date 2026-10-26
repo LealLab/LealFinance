@@ -1783,6 +1783,10 @@
         "title": "Hapus passkey ini?",
         "message": "Anda tidak akan dapat masuk lagi dengannya. Tindakan ini tidak dapat dibatalkan."
       }
+    },
+    "reauth": {
+      "title": "Konfirmasi kata sandi Anda",
+      "description": "Demi keamanan, masukkan kata sandi Anda saat ini untuk melanjutkan."
     }
   },
   "auth": {
@@ -1794,7 +1798,8 @@
       "invitationToken": "Token undangan",
       "totpCode": "Kode autentikasi",
       "recoveryCode": "Kode autentikasi atau kode cadangan",
-      "newPassword": "Kata sandi baru"
+      "newPassword": "Kata sandi baru",
+      "setupToken": "Kode penyiapan"
     },
     "login": {
       "title": "Masuk",
@@ -1811,7 +1816,8 @@
       "backToLogin": "Kembali ke halaman masuk",
       "setup": {
         "title": "Buat akun administrator",
-        "description": "Ini adalah akun pertama pada instans ini — akun ini akan memiliki akses administrator penuh."
+        "description": "Ini adalah akun pertama pada instans ini — akun ini akan memiliki akses administrator penuh.",
+        "tokenHint": "Salin dari baris SETUP_TOKEN di file .env server Anda."
       }
     },
     "totp": {
@@ -2082,7 +2088,8 @@
       "totp_invalid": "Kode itu tidak valid. Coba lagi.",
       "totp_locked": "Terlalu banyak kode salah. Coba lagi dalam 15 menit.",
       "account_locked": "Terlalu banyak kata sandi yang salah. Coba lagi dalam 15 menit.",
-      "session_invalid": "Sesi Anda telah berakhir. Masuk lagi."
+      "session_invalid": "Sesi Anda telah berakhir. Masuk lagi.",
+      "setup_token_invalid": "Kode penyiapan tidak benar. Periksa baris SETUP_TOKEN di file .env Anda."
     },
     "invitation": {
       "not_found": "Undangan ini tidak valid.",
