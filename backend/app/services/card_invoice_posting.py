@@ -78,27 +78,37 @@ async def post_all_due_invoice_payments(
     and rolled back without aborting the run. Returns the number of payments
     posted and the number of failed cards."""
     today = today or date_type.today()
+    # Ids, not objects, and in a fixed order: a rollback after one card's failure
+    # expires every loaded instance, and async code cannot lazy-load them again
+    # (MissingGreenlet), which used to break every card after a failing one
+    # depending on the order the database returned rows. Each card is re-read
+    # fresh at its turn instead.
     result = await db.execute(
-        select(Account).where(
+        select(Account.id)
+        .where(
             Account.type == ACCOUNT_TYPE_CREDIT_CARD,
             Account.auto_pay.is_(True),
             Account.archived.is_(False),
         )
+        .order_by(Account.created_at, Account.id)
     )
-    cards = result.scalars().all()
+    card_ids = list(result.scalars().all())
 
     total = 0
     failures = 0
-    for card in cards:
+    for card_id in card_ids:
         try:
+            card = await db.get(Account, card_id)
+            if card is None:
+                continue
             total += len(await post_due_invoice_payments(db, card, today=today))
         except AppError:
             failures += 1
-            logger.exception("Failed to auto-pay invoices for card %s", card.id)
+            logger.exception("Failed to auto-pay invoices for card %s", card_id)
             await db.rollback()
         except Exception:
             failures += 1
-            logger.exception("Unexpected error auto-paying invoices for card %s", card.id)
+            logger.exception("Unexpected error auto-paying invoices for card %s", card_id)
             await db.rollback()
 
     return PostingResult(total, failures)

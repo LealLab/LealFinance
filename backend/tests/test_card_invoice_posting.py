@@ -175,3 +175,31 @@ async def test_one_card_failure_does_not_abort_the_run(
     assert posted.processed == 1
     assert len(await _card_payments(db_session, good_card)) == 1
     assert await _card_payments(db_session, broken_card) == []
+
+
+async def test_a_failing_card_does_not_stop_the_cards_after_it(
+    client: AsyncClient, db_session: AsyncSession
+) -> None:
+    """The failing card is processed first. Its rollback expires the other
+    loaded cards, which used to crash the next one with MissingGreenlet."""
+    await _authed(client, db_session, "auto5@example.com")
+    broken_checking = await _account(client, name="Broken")
+    good_checking = await _account(client, name="Good")
+    broken_card = await _card(client, broken_checking, auto_pay=True)
+    good_card = await _card(client, good_checking, auto_pay=True)
+    category_id = await _category(client)
+    await _charge(client, broken_card, category_id, "2026-03-05", "40.00")
+    await _charge(client, good_card, category_id, "2026-03-05", "90.00")
+
+    broken_source = (
+        await db_session.execute(select(Account).where(Account.id == broken_checking))
+    ).scalar_one()
+    broken_source.archived = True
+    await db_session.flush()
+
+    posted = await post_all_due_invoice_payments(db_session, today=date(2026, 3, 21))
+
+    assert posted.processed == 1
+    assert posted.failed == 1
+    assert await _card_payments(db_session, broken_card) == []
+    assert len(await _card_payments(db_session, good_card)) == 1
