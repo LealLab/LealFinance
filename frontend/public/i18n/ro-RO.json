@@ -1993,7 +1993,7 @@
       "neverUsed": "Niciodată utilizat",
       "revoke": "Revocă",
       "revokeTitle": "Revocă tokenul",
-      "revokeMessage": "Orice aplicație care folosește acest token nu va mai funcționa imediat. Acțiunea nu poate fi anulată.",
+      "revokeMessage": "Orice aplicație care folosește acest token va înceta imediat să funcționeze. Acțiunea nu poate fi anulată.",
       "revokeError": "Nu s-a putut revoca acest token. Încearcă din nou.",
       "listError": "Nu s-au putut încărca tokenurile tale. Încearcă din nou.",
       "legacyNote": "Tokenurile create înainte de adăugarea revocării nu mai funcționează. Generează un token nou și actualizează clientul MCP."

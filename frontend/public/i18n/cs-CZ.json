@@ -1991,7 +1991,7 @@
       "created": "Vytvořeno {{date}}",
       "lastUsed": "Naposledy použito {{date}}",
       "neverUsed": "Nikdy nepoužito",
-      "revoke": "Zrušit platnost",
+      "revoke": "Zneplatnit",
       "revokeTitle": "Zrušit platnost tokenu",
       "revokeMessage": "Každá aplikace, která tento token používá, okamžitě přestane fungovat. Tuto akci nelze vrátit zpět.",
       "revokeError": "Platnost tokenu se nepodařilo zrušit. Zkuste to znovu.",
