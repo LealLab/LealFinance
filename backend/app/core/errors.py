@@ -85,14 +85,20 @@ async def validation_error_handler(_request: Request, exc: Exception) -> JSONRes
     diagnostic metadata about a rejected request, not a monetary response
     value, so jsonable_encoder's float conversion here doesn't conflict
     with the "amounts are never JSON numbers" wire-format rule.
+
+    pydantic also echoes the rejected value under `input`; it is dropped so a
+    rejected password (or any other secret) is never sent back in the body.
     """
     assert isinstance(exc, RequestValidationError)
+    errors = [
+        {key: value for key, value in error.items() if key != "input"} for error in exc.errors()
+    ]
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content={
             "error": {
                 "code": "error.validation",
-                "params": {"errors": jsonable_encoder(exc.errors())},
+                "params": {"errors": jsonable_encoder(errors)},
             }
         },
     )
