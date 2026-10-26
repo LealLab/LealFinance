@@ -11,6 +11,8 @@ import {
   AgentStreamEvent,
   AgentToolCall,
   McpToken,
+  McpTokenInput,
+  McpTokenSummary,
 } from '../../domain/models/agent-chat';
 import { AgentChatRepository, ImportSuggestion, ImportSuggestItem } from '../agent-chat.repository';
 
@@ -48,9 +50,26 @@ interface MemoryWire {
   content: string;
   created_at: string;
 }
-interface McpTokenWire {
-  token: string;
+interface McpTokenSummaryWire {
+  id: string;
+  name: string | null;
+  scope: 'read' | 'write';
+  created_at: string;
+  last_used_at: string | null;
   expires_at: string;
+}
+interface McpTokenWire extends McpTokenSummaryWire {
+  token: string;
+}
+function mapMcpTokenSummary(wire: McpTokenSummaryWire): McpTokenSummary {
+  return {
+    id: wire.id,
+    name: wire.name,
+    scope: wire.scope,
+    createdAt: wire.created_at,
+    lastUsedAt: wire.last_used_at,
+    expiresAt: wire.expires_at,
+  };
 }
 interface SuggestionWire {
   index: number;
@@ -182,9 +201,17 @@ export class HttpAgentChatRepository extends AgentChatRepository {
   deleteMemory(id: string): Observable<void> {
     return this.api.delete<void>(`/agents/memories/${id}`);
   }
-  mintMcpToken(): Observable<McpToken> {
+  mintMcpToken(input: McpTokenInput = { scope: 'read' }): Observable<McpToken> {
     return this.api
-      .post<McpTokenWire>('/agents/mcp-token')
-      .pipe(map((value) => ({ token: value.token, expiresAt: value.expires_at })));
+      .post<McpTokenWire>('/agents/mcp-tokens', { scope: input.scope, name: input.name || null })
+      .pipe(map((value) => ({ ...mapMcpTokenSummary(value), token: value.token })));
+  }
+  listMcpTokens(): Observable<McpTokenSummary[]> {
+    return this.api
+      .get<McpTokenSummaryWire[]>('/agents/mcp-tokens')
+      .pipe(map((rows) => rows.map(mapMcpTokenSummary)));
+  }
+  revokeMcpToken(id: string): Observable<void> {
+    return this.api.delete<void>(`/agents/mcp-tokens/${id}`);
   }
 }

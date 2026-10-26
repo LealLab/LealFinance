@@ -5,7 +5,7 @@ from datetime import date, datetime
 from typing import Any, Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 ProviderId = Literal["anthropic", "openai", "ollama"]
 ReasoningEffort = Literal["low", "medium", "high", "xhigh"]
@@ -53,9 +53,39 @@ class ProviderTestRead(BaseModel):
     error_code: str | None = None
 
 
-class McpTokenRead(BaseModel):
-    token: str
+McpScope = Literal["read", "write"]
+
+
+class McpTokenCreate(BaseModel):
+    """Body of POST /agents/mcp-token(s). Both fields are optional so the
+    original bodyless call still works and yields a read-only token."""
+
+    scope: McpScope = "read"
+    name: str | None = Field(default=None, max_length=100)
+
+    @field_validator("name")
+    @classmethod
+    def _blank_name_is_none(cls, value: str | None) -> str | None:
+        return (value or "").strip() or None
+
+
+class McpTokenSummary(BaseModel):
+    """A token as listed: never the secret."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    name: str | None
+    scope: McpScope
+    created_at: datetime
+    last_used_at: datetime | None
     expires_at: datetime
+
+
+class McpTokenRead(McpTokenSummary):
+    """Returned once, at creation, and carries the only copy of the secret."""
+
+    token: str
 
 
 class ConversationCreate(BaseModel):

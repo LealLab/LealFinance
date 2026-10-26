@@ -1970,6 +1970,27 @@
         "writeSafety": "Le client vous demande de confirmer les outils d’écriture et chaque modification est journalisée afin de pouvoir être annulée."
       },
       "httpsNote": "En dehors d’un réseau de confiance, utilisez HTTPS (par exemple derrière un proxy inverse) : en HTTP simple, le jeton circule sans chiffrement et donne un accès administrateur pendant 30 jours."
+    },
+    "mcpTokens": {
+      "nameLabel": "Nom (facultatif)",
+      "namePlaceholder": "p. ex. Claude Desktop",
+      "scopeLabel": "Accès",
+      "scopeRead": "Lecture seule",
+      "scopeWrite": "Lecture et écriture",
+      "readHint": "Un jeton en lecture seule peut consulter vos données, mais pas les modifier.",
+      "writeWarning": "Un jeton en lecture et écriture permet à l'application connectée de créer, modifier et supprimer vos données financières. Chaque modification est journalisée et peut être annulée, mais ne le confiez qu'à des applications de confiance.",
+      "listTitle": "Jetons actifs",
+      "empty": "Aucun jeton actif.",
+      "unnamed": "Jeton sans nom",
+      "created": "Créé le {{date}}",
+      "lastUsed": "Dernière utilisation le {{date}}",
+      "neverUsed": "Jamais utilisé",
+      "revoke": "Révoquer",
+      "revokeTitle": "Révoquer le jeton",
+      "revokeMessage": "Toute application utilisant ce jeton cesse immédiatement de fonctionner. Cette action est irréversible.",
+      "revokeError": "Impossible de révoquer ce jeton. Réessayez.",
+      "listError": "Impossible de charger vos jetons. Réessayez.",
+      "legacyNote": "Les jetons créés avant l'ajout de la révocation ne fonctionnent plus. Générez un nouveau jeton et mettez à jour votre client MCP."
     }
   },
   "reconciliation": {

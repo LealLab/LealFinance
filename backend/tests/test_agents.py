@@ -9,13 +9,14 @@ from uuid import uuid4
 import httpx
 import pytest
 from httpx import AsyncClient
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import app.agents.credentials as credentials_module
 import app.api.v1.agents as agents_router
 import app.services.agent_providers as agent_providers_module
-from app.agents import MCP_TOKEN_TTL_SECONDS, oauth
 from app.agents import chat as chat_module
+from app.agents import oauth
 from app.agents.credentials import ResolvedCredential
 from app.agents.events import TextDelta, ToolCall, Turn, TurnEnd
 from app.agents.oauth import OAuthTokens
@@ -23,7 +24,9 @@ from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import BadGatewayError, ValidationAppError
 from app.models.agent_credential import AgentCredential
+from app.models.mcp_token import McpToken
 from app.models.user import ROLE_ADMIN, ROLE_MEMBER
+from app.services import mcp_tokens
 from tests.factories import login_as, make_user
 
 
@@ -692,27 +695,6 @@ def test_decrypt_returns_none_for_garbage() -> None:
     assert crypto.decrypt_secret("not-a-valid-fernet-token") is None
 
 
-def test_mcp_token_round_trip() -> None:
-    user_id = uuid4()
-    token = crypto.mint_mcp_token(user_id)
-    assert crypto.verify_mcp_token(token, max_age=MCP_TOKEN_TTL_SECONDS) == user_id
-
-
-def test_verify_mcp_token_returns_none_for_invalid_tokens() -> None:
-    token = crypto.mint_mcp_token(uuid4())
-    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
-
-    assert crypto.verify_mcp_token(tampered, max_age=MCP_TOKEN_TTL_SECONDS) is None
-    assert crypto.verify_mcp_token("garbage", max_age=MCP_TOKEN_TTL_SECONDS) is None
-    assert crypto.verify_mcp_token(token, max_age=-1) is None
-
-
-def test_mcp_tokens_are_domain_separated_from_credentials() -> None:
-    assert (
-        crypto.verify_mcp_token(crypto.encrypt_secret("x"), max_age=MCP_TOKEN_TTL_SECONDS) is None
-    )
-
-
 async def test_create_mcp_token_requires_admin_even_when_chat_enabled(
     client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -738,6 +720,102 @@ async def test_create_mcp_token_for_active_admin_without_ai_chat_flag(
 
     assert response.status_code == 200, response.text
     assert response.json()["token"]
+
+
+async def test_bodyless_mcp_token_request_yields_a_read_only_token(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "mcp-legacy@example.com", role=ROLE_ADMIN)
+
+    response = await client.post("/api/v1/agents/mcp-token")
+
+    body = response.json()
+    assert response.status_code == 200, response.text
+    assert body["scope"] == "read"
+    assert body["name"] is None
+    assert len(body["token"]) >= 43  # 256 random bits, urlsafe-encoded
+    assert body["expires_at"] > body["created_at"]
+
+
+async def test_create_list_and_revoke_mcp_tokens(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "mcp-manage@example.com", role=ROLE_ADMIN)
+
+    created = await client.post(
+        "/api/v1/agents/mcp-tokens", json={"scope": "write", "name": "  Claude Desktop  "}
+    )
+    assert created.status_code == 201, created.text
+    token = created.json()
+    assert (token["scope"], token["name"]) == ("write", "Claude Desktop")
+    await client.post("/api/v1/agents/mcp-tokens", json={"name": "   "})
+
+    listed = await client.get("/api/v1/agents/mcp-tokens")
+    assert listed.status_code == 200
+    rows = listed.json()
+    assert sorted((row["scope"], row["name"] or "") for row in rows) == [
+        ("read", ""),
+        ("write", "Claude Desktop"),
+    ]
+    assert all(
+        set(row) == {"id", "name", "scope", "created_at", "last_used_at", "expires_at"}
+        for row in rows
+    )
+    assert token["token"] not in listed.text
+    stored = (await db_session.scalars(select(McpToken))).all()
+    assert token["token"] not in {row.token_hash for row in stored}
+
+    assert (await client.delete(f"/api/v1/agents/mcp-tokens/{token['id']}")).status_code == 204
+    remaining = (await client.get("/api/v1/agents/mcp-tokens")).json()
+    assert [row["scope"] for row in remaining] == ["read"]
+    again = await client.delete(f"/api/v1/agents/mcp-tokens/{token['id']}")
+    assert again.status_code == 404
+    assert again.json()["error"]["code"] == "mcp_token.not_found"
+
+
+async def test_mcp_token_validation(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    await _authed(client, db_session, "mcp-validate@example.com", role=ROLE_ADMIN)
+
+    assert (
+        await client.post("/api/v1/agents/mcp-tokens", json={"scope": "admin"})
+    ).status_code == 422
+    assert (
+        await client.post("/api/v1/agents/mcp-tokens", json={"name": "x" * 101})
+    ).status_code == 422
+
+
+async def test_an_admin_cannot_list_or_revoke_another_admins_tokens(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    other, _ = await make_user(db_session, email="mcp-owner@example.com", role=ROLE_ADMIN)
+    row, _ = await mcp_tokens.create(db_session, user=other, scope="read", name="theirs")
+    await _authed(client, db_session, "mcp-intruder@example.com", role=ROLE_ADMIN)
+
+    assert (await client.get("/api/v1/agents/mcp-tokens")).json() == []
+    response = await client.delete(f"/api/v1/agents/mcp-tokens/{row.id}")
+    assert response.status_code == 404
+    await db_session.refresh(row)
+    assert row.revoked_at is None
+
+
+async def test_members_cannot_manage_mcp_tokens(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch)
+    user, password = await make_user(db_session, email="mcp-member@example.com", role=ROLE_MEMBER)
+    user.ai_chat_enabled = True
+    await db_session.commit()
+    await login_as(client, email=user.email, password=password)
+
+    assert (await client.get("/api/v1/agents/mcp-tokens")).status_code == 403
+    assert (await client.post("/api/v1/agents/mcp-tokens", json={})).status_code == 403
+    assert (await client.delete(f"/api/v1/agents/mcp-tokens/{uuid4()}")).status_code == 403
 
 
 async def test_mcp_token_route_is_disabled_with_agents_flag(

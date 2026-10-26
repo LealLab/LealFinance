@@ -1970,6 +1970,27 @@
         "writeSafety": "Klien meminta konfirmasi untuk alat tulis, dan setiap perubahan dicatat agar dapat dibatalkan."
       },
       "httpsNote": "Di luar jaringan tepercaya, gunakan HTTPS (misalnya di belakang reverse proxy): melalui HTTP biasa, token dikirim tanpa enkripsi dan memberi akses administrator selama 30 hari."
+    },
+    "mcpTokens": {
+      "nameLabel": "Nama (opsional)",
+      "namePlaceholder": "mis. Claude Desktop",
+      "scopeLabel": "Akses",
+      "scopeRead": "Hanya baca",
+      "scopeWrite": "Baca dan tulis",
+      "readHint": "Token hanya baca dapat melihat data Anda, tetapi tidak dapat mengubahnya.",
+      "writeWarning": "Token baca dan tulis memungkinkan aplikasi yang terhubung membuat, mengubah, dan menghapus data keuangan Anda. Setiap perubahan dicatat dan dapat dibatalkan, tetapi hanya berikan kepada aplikasi yang Anda percaya.",
+      "listTitle": "Token aktif",
+      "empty": "Tidak ada token aktif.",
+      "unnamed": "Token tanpa nama",
+      "created": "Dibuat {{date}}",
+      "lastUsed": "Terakhir digunakan {{date}}",
+      "neverUsed": "Belum pernah digunakan",
+      "revoke": "Cabut",
+      "revokeTitle": "Cabut token",
+      "revokeMessage": "Aplikasi apa pun yang memakai token ini langsung berhenti berfungsi. Tindakan ini tidak dapat dibatalkan.",
+      "revokeError": "Tidak dapat mencabut token ini. Coba lagi.",
+      "listError": "Tidak dapat memuat token Anda. Coba lagi.",
+      "legacyNote": "Token yang dibuat sebelum fitur pencabutan ditambahkan tidak lagi berfungsi. Buat token baru dan perbarui klien MCP Anda."
     }
   },
   "reconciliation": {

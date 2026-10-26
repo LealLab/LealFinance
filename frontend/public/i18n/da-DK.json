@@ -1970,6 +1970,27 @@
         "writeSafety": "Klienten beder dig bekræfte skriveværktøjer, og hver ændring journalføres, så den kan fortrydes."
       },
       "httpsNote": "Brug HTTPS uden for et pålideligt netværk (for eksempel bag en reverse proxy): over almindelig HTTP sendes token ukrypteret og giver administratoradgang i 30 dage."
+    },
+    "mcpTokens": {
+      "nameLabel": "Navn (valgfrit)",
+      "namePlaceholder": "fx Claude Desktop",
+      "scopeLabel": "Adgang",
+      "scopeRead": "Skrivebeskyttet",
+      "scopeWrite": "Læs og skriv",
+      "readHint": "Et token med skrivebeskyttet adgang kan se dine data, men ikke ændre dem.",
+      "writeWarning": "Et token med læse- og skriveadgang lader den tilsluttede app oprette, ændre og slette dine økonomiske data. Hver ændring journalføres og kan fortrydes, men giv det kun til apps, du stoler på.",
+      "listTitle": "Aktive tokens",
+      "empty": "Ingen aktive tokens.",
+      "unnamed": "Token uden navn",
+      "created": "Oprettet {{date}}",
+      "lastUsed": "Sidst brugt {{date}}",
+      "neverUsed": "Aldrig brugt",
+      "revoke": "Tilbagekald",
+      "revokeTitle": "Tilbagekald token",
+      "revokeMessage": "Alle apps, der bruger dette token, holder straks op med at virke. Det kan ikke fortrydes.",
+      "revokeError": "Tokenet kunne ikke tilbagekaldes. Prøv igen.",
+      "listError": "Dine tokens kunne ikke indlæses. Prøv igen.",
+      "legacyNote": "Tokens oprettet før tilbagekald blev tilføjet virker ikke længere. Opret et nyt token, og opdater din MCP-klient."
     }
   },
   "reconciliation": {

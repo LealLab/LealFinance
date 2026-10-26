@@ -12,6 +12,7 @@ it does not do. To report a vulnerability, see [`SECURITY.md`](../SECURITY.md).
 | Account lockout | 5 bad passwords or codes lock one account for 15 minutes | `backend/app/services/auth.py` |
 | Security log | One JSON line per sign-in failure, lockout, and credential or admin change | `backend/app/core/logging.py` |
 | AI chat limits | Per-user daily message quota; saving a memory needs approval; provider URLs are validated | `backend/app/services/agent_chat.py`, `agent_providers.py` |
+| Revocable, scoped MCP tokens | Tokens are hashed, read-only by default, listed and revoked by admins, and die with a password change, deactivation or demotion | `backend/app/services/mcp_tokens.py`, `backend/app/mcp/server.py` |
 | Safe AI chat rendering | AI replies cannot load images or raw HTML from other sites | `frontend/src/app/shared/pipes/markdown.pipe.ts` |
 | Dependency scanning | `pip-audit`, `pnpm audit` and Trivy run on every PR | `.github/workflows/ci.yml` |
 | Secret scanning | gitleaks scans the full git history on every PR and push | `.github/workflows/ci.yml` |
@@ -79,7 +80,9 @@ used to add one. After changing build options, check that
   (When you are already signed in, changing your password or email still says
   the account is locked.)
 - **Deactivating a user signs them out everywhere**, and the old sessions do
-  not come back if the user is reactivated later.
+  not come back if the user is reactivated later. Their MCP tokens are revoked
+  too (see [`ai-agents.md`](ai-agents.md#tokens)), as they are when a
+  password is changed or recovered or an administrator is demoted.
 - Lockout is per account, so someone who knows an email address can keep that
   account locked by guessing wrong on purpose. The per-IP limits above make
   that expensive but not impossible. Passkeys and trusted devices are not
@@ -108,7 +111,9 @@ email address, because people sometimes type a password into the email box.
 | `recover_failed`, `passkey_login_failed` | WARNING | Failed password recovery or passkey sign-in |
 | `login_success` | INFO | Successful sign-in (`method`: `password` or `passkey`) |
 | `password_changed`, `password_recovered` | INFO | Password reset |
-| `totp_enabled`, `backup_codes_regenerated`, `passkey_added`, `mcp_token_issued` | INFO | Credential created |
+| `totp_enabled`, `backup_codes_regenerated`, `passkey_added`, `mcp_token_issued` | INFO | Credential created (`mcp_token_issued` carries the `scope`) |
+| `mcp_token_revoked` | INFO | An administrator revoked one of their MCP tokens |
+| `mcp_token_rejected` | WARNING | The MCP server refused a token: unknown, revoked, expired, or its owner is no longer an active administrator (`reason`). Never includes the token |
 | `totp_disabled`, `passkey_removed` | WARNING | A protection was removed |
 | `ai_quota_exceeded` | WARNING | A user hit `AGENTS_DAILY_MESSAGE_LIMIT` and a chat message was refused |
 | `user_updated` | INFO | An admin changed a role, active flag, or AI-chat access (`actor_id`, `target_id`) |

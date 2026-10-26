@@ -1994,6 +1994,27 @@
         "writeSafety": "The client asks you to confirm write tools, and each change is journaled so it can be undone."
       },
       "httpsNote": "Outside a trusted network, use HTTPS (for example behind a reverse proxy): over plain HTTP the token travels unencrypted and grants administrator access for 30 days."
+    },
+    "mcpTokens": {
+      "nameLabel": "Name (optional)",
+      "namePlaceholder": "e.g. Claude Desktop",
+      "scopeLabel": "Access",
+      "scopeRead": "Read only",
+      "scopeWrite": "Read and write",
+      "readHint": "A read-only token can look at your data but cannot change it.",
+      "writeWarning": "A read and write token lets the connected app create, change and delete your financial data. Every change is journaled and can be undone, but only give it to apps you trust.",
+      "listTitle": "Active tokens",
+      "empty": "No active tokens.",
+      "unnamed": "Unnamed token",
+      "created": "Created {{date}}",
+      "lastUsed": "Last used {{date}}",
+      "neverUsed": "Never used",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke token",
+      "revokeMessage": "Any app using this token stops working immediately. This cannot be undone.",
+      "revokeError": "Couldn't revoke this token. Try again.",
+      "listError": "Couldn't load your tokens. Try again.",
+      "legacyNote": "Tokens created before revocation was added no longer work. Generate a new token and update your MCP client."
     }
   },
   "reconciliation": {

@@ -8,17 +8,30 @@ import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import { MockAgentProviderRepository } from '../../data/mock/mock-agent-provider.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
 import { AgentProviderStatus } from '../../domain/models/agent-provider';
+import { McpTokenSummary } from '../../domain/models/agent-chat';
 import { Providers } from './providers';
 import { provideTestTransloco, provideTestTranslocoLocale } from '../../../testing/transloco';
 
 describe('Providers', () => {
-  let agentChatRepo: { mintMcpToken: ReturnType<typeof vi.fn> };
+  const SUMMARY: McpTokenSummary = {
+    id: 't1',
+    name: 'Desktop',
+    scope: 'write',
+    createdAt: '2026-08-01T00:00:00Z',
+    lastUsedAt: null,
+    expiresAt: '2026-09-01T00:00:00Z',
+  };
+  let agentChatRepo: {
+    mintMcpToken: ReturnType<typeof vi.fn>;
+    listMcpTokens: ReturnType<typeof vi.fn>;
+    revokeMcpToken: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(async () => {
     agentChatRepo = {
-      mintMcpToken: vi
-        .fn()
-        .mockReturnValue(of({ token: 'mcp-secret', expiresAt: '2026-09-01T00:00:00Z' })),
+      mintMcpToken: vi.fn().mockReturnValue(of({ ...SUMMARY, token: 'mcp-secret' })),
+      listMcpTokens: vi.fn().mockReturnValue(of([SUMMARY])),
+      revokeMcpToken: vi.fn().mockReturnValue(of(undefined)),
     };
     await TestBed.configureTestingModule({
       imports: [
@@ -61,9 +74,88 @@ describe('Providers', () => {
     fixture.detectChanges();
 
     expect(agentChatRepo.mintMcpToken).toHaveBeenCalledTimes(1);
+    // Read-only and unnamed unless the admin chooses otherwise.
+    expect(agentChatRepo.mintMcpToken).toHaveBeenCalledWith({ scope: 'read', name: undefined });
     expect(
       (fixture.nativeElement.querySelector('#providers-mcp-token') as HTMLInputElement).value,
     ).toBe('mcp-secret');
+    // The list is reloaded so the new token appears.
+    expect(agentChatRepo.listMcpTokens).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the chosen scope and name, and warns before a write token is created', async () => {
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('#providers-mcp-write-warning')).toBeNull();
+
+    const select = fixture.nativeElement.querySelector('#providers-mcp-scope') as HTMLSelectElement;
+    select.value = 'write';
+    select.dispatchEvent(new Event('change'));
+    const name = fixture.nativeElement.querySelector('#providers-mcp-name') as HTMLInputElement;
+    name.value = '  Claude Desktop ';
+    name.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#providers-mcp-write-warning')).not.toBeNull();
+    fixture.componentInstance['generateMcpToken']();
+    await fixture.whenStable();
+
+    expect(agentChatRepo.mintMcpToken).toHaveBeenCalledWith({
+      scope: 'write',
+      name: 'Claude Desktop',
+    });
+    expect(fixture.componentInstance['mcpName']()).toBe('');
+  });
+
+  it('lists the active tokens without any secret', async () => {
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const list = fixture.nativeElement.querySelector('#providers-mcp-token-list') as HTMLElement;
+    expect(list.querySelectorAll('li')).toHaveLength(1);
+    expect(list.textContent).toContain('Desktop');
+  });
+
+  it('revokes a token after confirmation and reloads the list', async () => {
+    const confirm = vi.fn().mockResolvedValue(true);
+    vi.spyOn(TestBed.inject(ConfirmService), 'confirm').mockImplementation(confirm);
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    // A freshly created secret for the same token must stop being offered.
+    fixture.componentInstance['mcpToken'].set({ ...SUMMARY, token: 'mcp-secret' });
+
+    await fixture.componentInstance['revokeMcpToken'](SUMMARY);
+    await fixture.whenStable();
+
+    expect(confirm).toHaveBeenCalledWith(
+      'providers.mcpTokens.revokeTitle',
+      'providers.mcpTokens.revokeMessage',
+      'danger',
+    );
+    expect(agentChatRepo.revokeMcpToken).toHaveBeenCalledWith('t1');
+    expect(fixture.componentInstance['mcpToken']()).toBeUndefined();
+    expect(agentChatRepo.listMcpTokens).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not revoke when the confirmation is declined, and reports a failed revoke', async () => {
+    const confirm = vi.fn().mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+    vi.spyOn(TestBed.inject(ConfirmService), 'confirm').mockImplementation(confirm);
+    const fixture = TestBed.createComponent(Providers);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await fixture.componentInstance['revokeMcpToken'](SUMMARY);
+    expect(agentChatRepo.revokeMcpToken).not.toHaveBeenCalled();
+
+    agentChatRepo.revokeMcpToken.mockReturnValue(throwError(() => new Error('boom')));
+    await fixture.componentInstance['revokeMcpToken'](SUMMARY);
+    expect(fixture.componentInstance['mcpRevokeError']()).toBe(true);
   });
 
   it('opens MCP setup help from the question mark button', async () => {

@@ -1970,6 +1970,27 @@
         "writeSafety": "Der Client lässt dich Schreibwerkzeuge bestätigen; jede Änderung wird protokolliert und kann rückgängig gemacht werden."
       },
       "httpsNote": "Verwende außerhalb eines vertrauenswürdigen Netzwerks HTTPS (zum Beispiel hinter einem Reverse-Proxy): Über einfaches HTTP wird das Token unverschlüsselt übertragen und gewährt 30 Tage lang Administratorzugriff."
+    },
+    "mcpTokens": {
+      "nameLabel": "Name (optional)",
+      "namePlaceholder": "z. B. Claude Desktop",
+      "scopeLabel": "Zugriff",
+      "scopeRead": "Nur lesen",
+      "scopeWrite": "Lesen und schreiben",
+      "readHint": "Ein schreibgeschütztes Token kann deine Daten ansehen, aber nicht ändern.",
+      "writeWarning": "Mit einem Token zum Lesen und Schreiben kann die verbundene App deine Finanzdaten erstellen, ändern und löschen. Jede Änderung wird protokolliert und lässt sich rückgängig machen, gib es aber nur Apps, denen du vertraust.",
+      "listTitle": "Aktive Token",
+      "empty": "Keine aktiven Token.",
+      "unnamed": "Unbenanntes Token",
+      "created": "Erstellt am {{date}}",
+      "lastUsed": "Zuletzt verwendet am {{date}}",
+      "neverUsed": "Nie verwendet",
+      "revoke": "Widerrufen",
+      "revokeTitle": "Token widerrufen",
+      "revokeMessage": "Jede App, die dieses Token verwendet, funktioniert sofort nicht mehr. Das lässt sich nicht rückgängig machen.",
+      "revokeError": "Das Token konnte nicht widerrufen werden. Versuche es erneut.",
+      "listError": "Deine Token konnten nicht geladen werden. Versuche es erneut.",
+      "legacyNote": "Vor der Einführung des Widerrufs erstellte Token funktionieren nicht mehr. Erstelle ein neues Token und aktualisiere deinen MCP-Client."
     }
   },
   "reconciliation": {

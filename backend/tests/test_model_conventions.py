@@ -10,9 +10,9 @@ from app import models  # noqa: F401 - populates Base.registry.mappers
 from app.models.base import Base, UserOwnedModel
 
 # The only tables that are intentionally NOT scoped to a single user.
-# TotpBackupCode and TrustedDevice do carry a user_id, but like Session they
-# are auth infrastructure reached by token hash during login - before there is
-# a current user to scope to - not domain data fetched through
+# TotpBackupCode, TrustedDevice and McpToken do carry a user_id, but like Session they
+# are auth infrastructure reached by token hash (at login; for McpToken, at each MCP
+# call) - before there is a current user to scope to - not domain data fetched through
 # app/services/ownership.py.
 _GLOBAL_MODELS = {
     "Currency",
@@ -24,6 +24,7 @@ _GLOBAL_MODELS = {
     "Invitation",
     "TotpBackupCode",
     "TrustedDevice",
+    "McpToken",
     "WebAuthnCredential",
     "WebAuthnChallenge",
 }

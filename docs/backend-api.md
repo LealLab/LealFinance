@@ -265,7 +265,10 @@ Registration is invite-only, except the very first user on an instance.
 | POST | `/agents/conversations/{id}/messages` | user | Body `{content?, attachments?: [{name, media_type, data}]}`; `data` is base64. Text or at least one file is required. Streams the assistant response as `text/event-stream`. Members need `ai_chat_enabled`. |
 | GET | `/agents/conversations/{id}/attachments/{attachment_id}` | user | Downloads a saved attachment after conversation and file ownership checks. |
 | POST | `/agents/conversations/{id}/confirm` | user | Body `{tool_call_id, approved, arguments?}`. Confirms or rejects a pending write tool and streams the follow-up as `text/event-stream`. |
-| POST | `/agents/mcp-token` | admin | → `{token, expires_at}`, shown once. Long-lived bearer for the standalone MCP server. Only active administrators can mint it. |
+| POST | `/agents/mcp-tokens` | admin | Body `{scope?: "read" \| "write", name?: string (max 100)}`, both optional (default `read`, no name). `201` → `{id, token, name, scope, created_at, last_used_at, expires_at}`; `token` is shown once and only its hash is stored. Bearer for the standalone MCP server, valid 30 days. |
+| POST | `/agents/mcp-token` | admin | Original path of the same call, kept for existing clients; returns `200` and a read-only token unless a body asks for `write`. |
+| GET | `/agents/mcp-tokens` | admin | → the caller's own active (not revoked, not expired) tokens, newest first: `[{id, name, scope, created_at, last_used_at, expires_at}]`. Never the secret. |
+| DELETE | `/agents/mcp-tokens/{id}` | admin | 204. Revokes one of the caller's tokens immediately; an unknown, foreign or already-revoked id is `mcp_token.not_found` (404). |
 | GET | `/agents/instructions` | user | → `{instructions}`, the caller's stored custom instructions, or `null`. |
 | PUT | `/agents/instructions` | user | Body `{instructions}` (max 2000 chars). Classified before it is stored; off-topic text is refused with `agents.instructions_rejected` and never saved. An empty value clears the field without contacting a provider. |
 | GET | `/agents/memories` | user | → `[{id, content, created_at}]`, the facts the assistant saved about the caller, newest first. Created by the assistant's `remember` tool, not by an endpoint. |
@@ -727,7 +730,9 @@ precedence, the OAuth linking flow, the tool set, and the MCP server.
 Provider linking and MCP token issuance are administrator-only. Active
 administrators always have chat access; members are gated by the admin-set
 `ai_chat_enabled` flag on the user (see `PATCH /auth/users/{id}`) for in-app
-chat. The standalone MCP server accepts active administrator tokens only.
+chat. The standalone MCP server accepts active administrator tokens only; a
+`read` token can call read tools, a `write` token all of them. Tokens from before
+revocable tokens existed no longer work.
 
 ### Custom instructions
 

@@ -1970,6 +1970,27 @@
         "writeSafety": "Clientul îți cere să confirmi instrumentele de scriere, iar fiecare modificare este înregistrată pentru a putea fi anulată."
       },
       "httpsNote": "În afara unei rețele de încredere, folosește HTTPS (de exemplu, în spatele unui proxy invers): prin HTTP simplu, tokenul circulă necriptat și oferă acces de administrator timp de 30 de zile."
+    },
+    "mcpTokens": {
+      "nameLabel": "Nume (opțional)",
+      "namePlaceholder": "de ex. Claude Desktop",
+      "scopeLabel": "Acces",
+      "scopeRead": "Doar citire",
+      "scopeWrite": "Citire și scriere",
+      "readHint": "Un token doar pentru citire poate vedea datele tale, dar nu le poate modifica.",
+      "writeWarning": "Un token de citire și scriere permite aplicației conectate să creeze, să modifice și să șteargă datele tale financiare. Fiecare modificare este înregistrată și poate fi anulată, dar oferă-l doar aplicațiilor în care ai încredere.",
+      "listTitle": "Tokenuri active",
+      "empty": "Niciun token activ.",
+      "unnamed": "Token fără nume",
+      "created": "Creat la {{date}}",
+      "lastUsed": "Ultima utilizare: {{date}}",
+      "neverUsed": "Niciodată utilizat",
+      "revoke": "Revocă",
+      "revokeTitle": "Revocă tokenul",
+      "revokeMessage": "Orice aplicație care folosește acest token nu va mai funcționa imediat. Acțiunea nu poate fi anulată.",
+      "revokeError": "Nu s-a putut revoca acest token. Încearcă din nou.",
+      "listError": "Nu s-au putut încărca tokenurile tale. Încearcă din nou.",
+      "legacyNote": "Tokenurile create înainte de adăugarea revocării nu mai funcționează. Generează un token nou și actualizează clientul MCP."
     }
   },
   "reconciliation": {

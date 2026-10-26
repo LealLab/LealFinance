@@ -1970,6 +1970,27 @@
         "writeSafety": "Klient prosi o potwierdzenie użycia narzędzi zapisujących, a każda zmiana jest rejestrowana i można ją cofnąć."
       },
       "httpsNote": "Poza zaufaną siecią używaj HTTPS (na przykład za zwrotnym proxy): przez zwykłe HTTP token jest przesyłany bez szyfrowania i daje dostęp administratora na 30 dni."
+    },
+    "mcpTokens": {
+      "nameLabel": "Nazwa (opcjonalnie)",
+      "namePlaceholder": "np. Claude Desktop",
+      "scopeLabel": "Dostęp",
+      "scopeRead": "Tylko odczyt",
+      "scopeWrite": "Odczyt i zapis",
+      "readHint": "Token tylko do odczytu może przeglądać Twoje dane, ale nie może ich zmieniać.",
+      "writeWarning": "Token do odczytu i zapisu pozwala połączonej aplikacji tworzyć, zmieniać i usuwać Twoje dane finansowe. Każda zmiana jest rejestrowana i można ją cofnąć, ale udostępniaj go tylko aplikacjom, którym ufasz.",
+      "listTitle": "Aktywne tokeny",
+      "empty": "Brak aktywnych tokenów.",
+      "unnamed": "Token bez nazwy",
+      "created": "Utworzono: {{date}}",
+      "lastUsed": "Ostatnie użycie: {{date}}",
+      "neverUsed": "Nigdy nie użyto",
+      "revoke": "Unieważnij",
+      "revokeTitle": "Unieważnij token",
+      "revokeMessage": "Każda aplikacja używająca tego tokenu natychmiast przestanie działać. Tej operacji nie można cofnąć.",
+      "revokeError": "Nie udało się unieważnić tokenu. Spróbuj ponownie.",
+      "listError": "Nie udało się wczytać tokenów. Spróbuj ponownie.",
+      "legacyNote": "Tokeny utworzone przed dodaniem unieważniania już nie działają. Wygeneruj nowy token i zaktualizuj klienta MCP."
     }
   },
   "reconciliation": {

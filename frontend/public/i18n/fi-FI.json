@@ -1970,6 +1970,27 @@
         "writeSafety": "Asiakas pyytää sinua vahvistamaan kirjoitustyökalut, ja jokainen muutos kirjataan, jotta sen voi kumota."
       },
       "httpsNote": "Käytä luotetun verkon ulkopuolella HTTPS-yhteyttä (esimerkiksi käänteisen välityspalvelimen takana): tavallisella HTTP:llä tunnus kulkee salaamattomana ja antaa järjestelmänvalvojan oikeudet 30 päiväksi."
+    },
+    "mcpTokens": {
+      "nameLabel": "Nimi (valinnainen)",
+      "namePlaceholder": "esim. Claude Desktop",
+      "scopeLabel": "Käyttöoikeus",
+      "scopeRead": "Vain luku",
+      "scopeWrite": "Luku ja kirjoitus",
+      "readHint": "Vain luku -tunnus voi katsella tietojasi mutta ei muuttaa niitä.",
+      "writeWarning": "Luku- ja kirjoitustunnus antaa yhdistetyn sovelluksen luoda, muuttaa ja poistaa taloustietosi. Jokainen muutos kirjataan ja sen voi perua, mutta anna tunnus vain sovelluksille, joihin luotat.",
+      "listTitle": "Aktiiviset tunnukset",
+      "empty": "Ei aktiivisia tunnuksia.",
+      "unnamed": "Nimetön tunnus",
+      "created": "Luotu {{date}}",
+      "lastUsed": "Viimeksi käytetty {{date}}",
+      "neverUsed": "Ei koskaan käytetty",
+      "revoke": "Mitätöi",
+      "revokeTitle": "Mitätöi tunnus",
+      "revokeMessage": "Kaikki tätä tunnusta käyttävät sovellukset lakkaavat toimimasta heti. Tätä ei voi perua.",
+      "revokeError": "Tunnuksen mitätöinti epäonnistui. Yritä uudelleen.",
+      "listError": "Tunnusten lataus epäonnistui. Yritä uudelleen.",
+      "legacyNote": "Ennen mitätöintiominaisuuden lisäämistä luodut tunnukset eivät enää toimi. Luo uusi tunnus ja päivitä MCP-asiakasohjelmasi."
     }
   },
   "reconciliation": {
