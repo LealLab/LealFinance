@@ -58,4 +58,8 @@ HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=5 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health/live', timeout=2)" || exit 1
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# --proxy-headers / --forwarded-allow-ips: take the client address from
+# X-Forwarded-For so the security log shows the real visitor. Safe because
+# this port is never published: only the nginx web container reaches it, and
+# nginx overwrites that header with the address it observed (docker/nginx).
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]

@@ -136,9 +136,9 @@ tasks:
     desc: Run the API locally with reload
     dir: backend
     env:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
-      REDIS_HOST: localhost
+      REDIS_HOST: 127.0.0.1
       REDIS_PORT: '{{.REDIS_HOST_PORT | default "6379"}}'
     cmds:
       - uv run python -m app.dev
@@ -160,14 +160,14 @@ tasks:
     desc: Run backend tests
     dir: backend
     env:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
       # Tests build and drop their own schema - keep them off the dev
       # database. conftest.py refuses any database not named *_test and
       # creates this one on first run.
       POSTGRES_DB: '{{.POSTGRES_TEST_DB | default "lealfinance_test"}}'
       DATABASE_URL: ""
-      REDIS_HOST: localhost
+      REDIS_HOST: 127.0.0.1
       REDIS_PORT: '{{.REDIS_HOST_PORT | default "6379"}}'
     cmds:
       - uv run pytest -q
@@ -176,7 +176,7 @@ tasks:
     desc: Apply database migrations
     dir: backend
     env:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
     cmds:
       - uv run alembic upgrade head
@@ -185,7 +185,7 @@ tasks:
     desc: 'Generate a new migration: task backend:migration -- "message"'
     dir: backend
     env:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
     cmds:
       - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
@@ -196,7 +196,7 @@ tasks:
     deps:
       - backend:migrate
     env:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_PORT: '{{.POSTGRES_HOST_PORT | default "55433"}}'
     cmds:
       - uv run python -m scripts.seed

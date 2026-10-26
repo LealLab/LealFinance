@@ -28,12 +28,12 @@ class Settings(BaseSettings):
     postgres_user: str = "lealfinance"
     postgres_password: str = "change-me"
     postgres_db: str = "lealfinance"
-    postgres_host: str = "localhost"
+    postgres_host: str = "127.0.0.1"
     postgres_port: int = 5432
     database_url: str | None = None
 
     # --- Redis ---
-    redis_host: str = "localhost"
+    redis_host: str = "127.0.0.1"
     redis_port: int = 6379
     redis_db: int = 0
     redis_url: str | None = None

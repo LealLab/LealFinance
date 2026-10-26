@@ -10,6 +10,7 @@ it does not do. To report a vulnerability, see [`SECURITY.md`](../SECURITY.md).
 | Per-IP rate limits | Slows password guessing and request floods | `docker/nginx/default.conf` |
 | Security headers | Blocks framing, MIME sniffing, and loading data from other sites | `docker/nginx/security-headers.conf`, `docker/caddy/Caddyfile` |
 | Account lockout | 5 bad passwords or codes lock one account for 15 minutes | `backend/app/services/auth.py` |
+| Security log | One JSON line per sign-in failure, lockout, and credential or admin change | `backend/app/core/logging.py` |
 | Safe AI chat rendering | AI replies cannot load images or raw HTML from other sites | `frontend/src/app/shared/pipes/markdown.pipe.ts` |
 | Dependency scanning | `pip-audit`, `pnpm audit` and Trivy run on every PR | `.github/workflows/ci.yml` |
 
@@ -58,6 +59,75 @@ The production build must not contain inline scripts, or the CSP would block
 them. `angular.json` therefore turns off critical-CSS inlining, which is what
 used to add one. After changing build options, check that
 `dist/frontend/browser/index.html` has no inline `<script>`.
+
+## Sign-in protection
+
+- **Five wrong passwords lock the account for 15 minutes.** Five wrong
+  authenticator or backup codes lock the second factor for 15 minutes.
+- **Guesses are counted before they are checked**, in one atomic database
+  step. A burst of simultaneous guesses therefore cannot get more than five
+  checks, and a one-time code (authenticator or backup) can only be used once
+  even if it is sent twice at the same moment.
+- **A locked sign-in looks like a wrong password.** The public sign-in answers
+  `invalid credentials` while an account is locked, so "locked" cannot be used
+  to find out which email addresses have accounts. The side effect is that a
+  locked-out user sees a normal "wrong password" message for up to 15 minutes.
+  (When you are already signed in, changing your password or email still says
+  the account is locked.)
+- **Deactivating a user signs them out everywhere**, and the old sessions do
+  not come back if the user is reactivated later.
+- Lockout is per account, so someone who knows an email address can keep that
+  account locked by guessing wrong on purpose. The per-IP limits above make
+  that expensive but not impossible. Passkeys and trusted devices are not
+  affected by a password lockout.
+
+## Security log
+
+Sign-in and account events go to a separate logger, `lealfinance.security`, as
+one JSON line each on the API's output (`docker compose logs api`). Every line
+has `event`, `client_ip` (the real visitor address, see
+[Which IP is "the client"](#which-ip-is-the-client)), and a `user_id` when the
+account is known. A line never contains a password, a code, a token, or an
+email address, because people sometimes type a password into the email box.
+
+```json
+{"timestamp": "2026-10-26T11:08:09+00:00", "level": "WARNING", "logger": "lealfinance.security", "message": "password_failed", "event": "password_failed", "client_ip": "203.0.113.7", "user_id": "5b0f...", "attempt": 3}
+```
+
+| Event | Level | Meaning |
+| --- | --- | --- |
+| `login_failed` | WARNING | Unknown account (`reason: unknown_account`) or deactivated account |
+| `password_failed` | WARNING | Wrong password, with the `attempt` number. Also logged when a signed-in user mistypes their password |
+| `password_attempt_while_locked` | WARNING | A guess arrived while the account was locked |
+| `account_locked` | WARNING | A lockout just started (`factor`: `password` or `second_factor`) |
+| `second_factor_failed`, `second_factor_attempt_while_locked` | WARNING | Same, for authenticator and backup codes |
+| `recover_failed`, `passkey_login_failed` | WARNING | Failed password recovery or passkey sign-in |
+| `login_success` | INFO | Successful sign-in (`method`: `password` or `passkey`) |
+| `password_changed`, `password_recovered` | INFO | Password reset |
+| `totp_enabled`, `backup_codes_regenerated`, `passkey_added`, `mcp_token_issued` | INFO | Credential created |
+| `totp_disabled`, `passkey_removed` | WARNING | A protection was removed |
+| `user_updated` | INFO | An admin changed a role, active flag, or AI-chat access (`actor_id`, `target_id`) |
+
+Useful queries: `docker compose logs api | grep '"event": "account_locked"'` for
+lockouts, and the same with `password_failed` to see who is guessing.
+
+### Banning repeat offenders with fail2ban (example, not tested here)
+
+fail2ban can read these lines and block an address at the host firewall. This
+filter matches the failure events for Docker's default `json-file` log driver
+(it escapes the quotes). Adjust the log path to your container, and use a
+fail2ban action that works with Docker's published ports (the `DOCKER-USER`
+chain), since a plain `INPUT` rule does not apply to them.
+
+```ini
+# /etc/fail2ban/filter.d/lealfinance.conf
+[Definition]
+failregex = \\"event\\": \\"(?:login_failed|password_failed|password_attempt_while_locked|second_factor_failed|recover_failed|passkey_login_failed)\\", \\"client_ip\\": \\"<HOST>\\"
+```
+
+A successful ban only helps if the address in the log is the real visitor, so
+check a sample line first. An alert (email, chat message) on `account_locked`
+is a lighter alternative that needs no firewall changes.
 
 ## AI chat output
 

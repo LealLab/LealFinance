@@ -3,6 +3,7 @@ by `_require_agents_enabled` and admin auth, so the whole surface 404s as
 `agents.disabled` when `AGENTS_ENABLED=false` - the flag this router is
 entirely behind (see CLAUDE.md's AI Agents section)."""
 
+import logging
 from datetime import UTC, datetime, timedelta
 from urllib.parse import quote
 from uuid import UUID
@@ -15,6 +16,7 @@ from app.api.deps import AdminUser, AiChatUser, DbSession
 from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import ConflictError, NotFoundError
+from app.core.logging import security_event
 from app.models.agent_conversation import AGENT_CONVERSATION_STATUS_AWAITING, AgentConversation
 from app.models.agent_memory import AgentMemory
 from app.schemas.agent import (
@@ -93,6 +95,7 @@ async def test_provider(provider: str, admin: AdminUser, db: DbSession) -> Provi
 async def create_mcp_token(admin: AdminUser) -> McpTokenRead:
     token = crypto.mint_mcp_token(admin.id)
     expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
+    security_event("mcp_token_issued", level=logging.INFO, user_id=admin.id)
     return McpTokenRead(token=token, expires_at=expires_at)
 
 

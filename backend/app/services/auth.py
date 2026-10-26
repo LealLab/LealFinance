@@ -10,13 +10,16 @@ call-then-serialize layer, matching app/services/exchange_rates.py's
 existing style.
 """
 
+import logging
 import secrets
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
-from sqlalchemy import delete, func, select, text, update
+from sqlalchemy import delete, func, or_, select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import InstrumentedAttribute
+from sqlalchemy.orm.attributes import set_committed_value
 
 from app.core import totp
 from app.core.config import get_settings
@@ -28,6 +31,7 @@ from app.core.errors import (
     UnauthorizedError,
     ValidationAppError,
 )
+from app.core.logging import security_event
 from app.core.security import (
     generate_token,
     hash_password,
@@ -59,24 +63,112 @@ _TOTP_LOCKOUT = timedelta(minutes=15)
 _DUMMY_PASSWORD_HASH = hash_password("lealfinance-dummy-password-for-timing-safety")
 
 
+@dataclass(frozen=True)
+class _Limit:
+    """One lockout counter on the user row (password guesses, or second-factor
+    guesses), with how many guesses are allowed and how long a lockout lasts."""
+
+    factor: str
+    attempts: InstrumentedAttribute[int]
+    locked_until: InstrumentedAttribute[datetime | None]
+    max_attempts: int
+    lockout: timedelta
+
+
+_PASSWORD_LIMIT = _Limit(
+    "password",
+    User.password_failed_attempts,
+    User.password_locked_until,
+    _PASSWORD_MAX_ATTEMPTS,
+    _PASSWORD_LOCKOUT,
+)
+_SECOND_FACTOR_LIMIT = _Limit(
+    "second_factor",
+    User.totp_failed_attempts,
+    User.totp_locked_until,
+    _TOTP_MAX_ATTEMPTS,
+    _TOTP_LOCKOUT,
+)
+
+
+async def _reserve_attempt(db: AsyncSession, *, user: User, limit: _Limit) -> int | None:
+    """Counts one guess against the account's limit *before* the guess is checked.
+
+    The increment is a single atomic UPDATE, so parallel requests each get a
+    distinct guess number and at most `max_attempts` of them ever reach the
+    check. Reading the counter, checking, then writing it back would let a
+    burst of simultaneous guesses all see the old value and all be checked.
+    Returns the guess number (1-based), or None while the account is locked.
+    It commits straight away, so the count survives the exception that
+    usually follows a wrong guess and no row lock is held while the slow
+    password hash runs.
+    """
+    now = datetime.now(UTC)
+    result = await db.execute(
+        update(User)
+        .where(User.id == user.id, or_(limit.locked_until.is_(None), limit.locked_until <= now))
+        .values({limit.attempts: limit.attempts + 1})
+        .returning(limit.attempts)
+        .execution_options(synchronize_session=False)
+    )
+    count = result.scalar_one_or_none()
+    if count is not None and count > limit.max_attempts:
+        # Parallel guesses used up the allowance. Lock now, so the counter can
+        # never sit above the limit with no lock if the last allowed guess
+        # never finishes.
+        await _engage_lock(db, user=user, limit=limit)
+        return None
+    await db.commit()
+    return count
+
+
+async def _engage_lock(db: AsyncSession, *, user: User, limit: _Limit) -> None:
+    await db.execute(
+        update(User)
+        .where(User.id == user.id)
+        .values({limit.attempts: 0, limit.locked_until: datetime.now(UTC) + limit.lockout})
+        .execution_options(synchronize_session=False)
+    )
+    await db.commit()
+    security_event("account_locked", user_id=user.id, factor=limit.factor)
+
+
+async def _clear_attempts(db: AsyncSession, *, user: User, limit: _Limit) -> None:
+    await db.execute(
+        update(User)
+        .where(User.id == user.id)
+        .values({limit.attempts: 0, limit.locked_until: None})
+        .execution_options(synchronize_session=False)
+    )
+
+
 async def _verify_password_with_lockout(
     db: AsyncSession,
     *,
     user: User,
     password: str | None,
+    opaque_lock: bool = False,
 ) -> None:
-    now = datetime.now(UTC)
-    if user.password_locked_until is not None and user.password_locked_until > now:
+    """Checks a password against the account's attempt limit.
+
+    `opaque_lock` is for the public sign-in: while locked, answer exactly like
+    a wrong password (after the same hashing work), so "locked" cannot be used
+    to learn which email addresses have accounts. Signed-in callers (profile,
+    password change) keep the specific `auth.account_locked` error.
+    """
+    count = await _reserve_attempt(db, user=user, limit=_PASSWORD_LIMIT)
+    if count is None:
+        security_event("password_attempt_while_locked", user_id=user.id)
+        if opaque_lock:
+            await verify_password_async(password or "", _DUMMY_PASSWORD_HASH)
+            raise UnauthorizedError(code="auth.invalid_credentials")
         raise UnauthorizedError(code="auth.account_locked")
     if password is None or not await verify_password_async(password, user.password_hash):
-        user.password_failed_attempts += 1
-        if user.password_failed_attempts >= _PASSWORD_MAX_ATTEMPTS:
-            user.password_locked_until = now + _PASSWORD_LOCKOUT
-            user.password_failed_attempts = 0
-        await db.commit()
+        security_event("password_failed", user_id=user.id, attempt=count)
+        if count >= _PASSWORD_MAX_ATTEMPTS:
+            await _engage_lock(db, user=user, limit=_PASSWORD_LIMIT)
         raise UnauthorizedError(code="auth.invalid_credentials")
-    user.password_failed_attempts = 0
-    user.password_locked_until = None
+    await _clear_attempts(db, user=user, limit=_PASSWORD_LIMIT)
 
 
 @dataclass(frozen=True)
@@ -141,9 +233,11 @@ async def login(
 
     if user is None:
         await verify_password_async(password, _DUMMY_PASSWORD_HASH)
+        security_event("login_failed", reason="unknown_account")
         raise UnauthorizedError(code="auth.invalid_credentials")
-    await _verify_password_with_lockout(db, user=user, password=password)
+    await _verify_password_with_lockout(db, user=user, password=password, opaque_lock=True)
     if not user.is_active:
+        security_event("login_failed", user_id=user.id, reason="account_inactive")
         raise UnauthorizedError(code="auth.account_inactive")
 
     minted_trust: tuple[str, datetime] | None = None
@@ -159,6 +253,7 @@ async def login(
 
     issued = await _mint_session(db, user=user)
     await db.commit()
+    security_event("login_success", level=logging.INFO, user_id=user.id, method="password")
     if minted_trust is None:
         return issued
     return replace(issued, trust_token=minted_trust[0], trust_expires_at=minted_trust[1])
@@ -251,14 +346,16 @@ async def _consume_second_factor(db: AsyncSession, *, user: User, code: str) -> 
     Every path that takes a second factor - the login challenge, disabling
     TOTP, regenerating backup codes, and password recovery - routes through
     here, which is what gives the lockout below complete coverage. This app
-    has no other rate limiting and POST /auth/recover is public, so
+    has no other per-account limit and POST /auth/recover is public, so
     verifying a code anywhere else would reopen six digits to unlimited
     online guessing.
     """
-    now = datetime.now(UTC)
-    if user.totp_locked_until is not None and user.totp_locked_until > now:
+    count = await _reserve_attempt(db, user=user, limit=_SECOND_FACTOR_LIMIT)
+    if count is None:
+        security_event("second_factor_attempt_while_locked", user_id=user.id)
         raise UnauthorizedError(code="auth.totp_locked")
 
+    now = datetime.now(UTC)
     secret = (
         decrypt_secret(user.totp_secret_ciphertext)
         if user.totp_secret_ciphertext is not None and user.totp_confirmed_at is not None
@@ -270,32 +367,57 @@ async def _consume_second_factor(db: AsyncSession, *, user: User, code: str) -> 
         else None
     )
     if step is not None:
-        user.totp_last_step = step
-        user.totp_failed_attempts = 0
-        user.totp_locked_until = None
-        return
-
-    backup = await db.scalar(
-        select(TotpBackupCode).where(
-            TotpBackupCode.user_id == user.id,
-            TotpBackupCode.code_hash == hash_token(_normalize_backup_code(code)),
-            TotpBackupCode.used_at.is_(None),
+        if await _claim_totp_step(db, user=user, step=step):
+            await _clear_attempts(db, user=user, limit=_SECOND_FACTOR_LIMIT)
+            return
+    else:
+        backup = await db.scalar(
+            select(TotpBackupCode).where(
+                TotpBackupCode.user_id == user.id,
+                TotpBackupCode.code_hash == hash_token(_normalize_backup_code(code)),
+                TotpBackupCode.used_at.is_(None),
+            )
         )
-    )
-    if backup is not None:
-        backup.used_at = now
-        user.totp_failed_attempts = 0
-        user.totp_locked_until = None
-        return
+        if backup is not None and await _claim_backup_code(db, backup=backup, now=now):
+            await _clear_attempts(db, user=user, limit=_SECOND_FACTOR_LIMIT)
+            return
 
-    user.totp_failed_attempts += 1
-    if user.totp_failed_attempts >= _TOTP_MAX_ATTEMPTS:
-        user.totp_locked_until = now + _TOTP_LOCKOUT
-        user.totp_failed_attempts = 0
-    # Committed here rather than by the caller: the counter has to survive
-    # the exception on its way out, and every caller aborts on it.
-    await db.commit()
+    security_event("second_factor_failed", user_id=user.id, attempt=count)
+    if count >= _TOTP_MAX_ATTEMPTS:
+        await _engage_lock(db, user=user, limit=_SECOND_FACTOR_LIMIT)
     raise UnauthorizedError(code="auth.totp_invalid")
+
+
+async def _claim_totp_step(db: AsyncSession, *, user: User, step: int) -> bool:
+    """Records a TOTP step as used, but only if it is still newer than the last
+    one. Two requests racing with the same valid code both pass the check in
+    verify_code(); the conditional UPDATE lets exactly one of them win."""
+    result = await db.execute(
+        update(User)
+        .where(User.id == user.id, or_(User.totp_last_step.is_(None), User.totp_last_step < step))
+        .values(totp_last_step=step)
+        .returning(User.id)
+        .execution_options(synchronize_session=False)
+    )
+    if result.scalar_one_or_none() is None:
+        return False
+    set_committed_value(user, "totp_last_step", step)
+    return True
+
+
+async def _claim_backup_code(db: AsyncSession, *, backup: TotpBackupCode, now: datetime) -> bool:
+    """Marks a backup code used, but only if nobody used it first."""
+    result = await db.execute(
+        update(TotpBackupCode)
+        .where(TotpBackupCode.id == backup.id, TotpBackupCode.used_at.is_(None))
+        .values(used_at=now)
+        .returning(TotpBackupCode.id)
+        .execution_options(synchronize_session=False)
+    )
+    if result.scalar_one_or_none() is None:
+        return False
+    set_committed_value(backup, "used_at", now)
+    return True
 
 
 async def _replace_backup_codes(db: AsyncSession, *, user: User) -> list[str]:
@@ -356,6 +478,7 @@ async def confirm_totp(db: AsyncSession, *, user: User, code: str) -> list[str]:
     user.totp_last_step = step
     codes = await _replace_backup_codes(db, user=user)
     await db.commit()
+    security_event("totp_enabled", level=logging.INFO, user_id=user.id)
     return codes
 
 
@@ -365,6 +488,7 @@ async def regenerate_backup_codes(db: AsyncSession, *, user: User, code: str) ->
     await _consume_second_factor(db, user=user, code=code)
     codes = await _replace_backup_codes(db, user=user)
     await db.commit()
+    security_event("backup_codes_regenerated", level=logging.INFO, user_id=user.id)
     return codes
 
 
@@ -386,6 +510,7 @@ async def disable_totp(db: AsyncSession, *, user: User, code: str) -> None:
     await db.execute(delete(TotpBackupCode).where(TotpBackupCode.user_id == user.id))
     await _revoke_all_trusted_devices(db, user_id=user.id)
     await db.commit()
+    security_event("totp_disabled", user_id=user.id)
 
 
 async def recover_password(db: AsyncSession, *, email: str, code: str, new_password: str) -> None:
@@ -406,11 +531,13 @@ async def recover_password(db: AsyncSession, *, email: str, code: str, new_passw
         # comparable - otherwise recovery becomes an oracle for which
         # addresses are registered and which of them have 2FA on.
         await verify_password_async(new_password, _DUMMY_PASSWORD_HASH)
+        security_event("recover_failed", reason="unknown_or_ineligible_account")
         raise UnauthorizedError(code="auth.invalid_credentials")
 
     try:
         await _consume_second_factor(db, user=user, code=code)
     except UnauthorizedError as exc:
+        security_event("recover_failed", user_id=user.id, reason="bad_code_or_locked")
         # Collapsed into the same opaque failure as the branch above, for
         # the same reason: totp_invalid here would confirm the account exists.
         raise UnauthorizedError(code="auth.invalid_credentials") from exc
@@ -419,6 +546,7 @@ async def recover_password(db: AsyncSession, *, email: str, code: str, new_passw
     await _revoke_all_sessions(db, user_id=user.id)
     await _revoke_all_trusted_devices(db, user_id=user.id)
     await db.commit()
+    security_event("password_recovered", level=logging.INFO, user_id=user.id)
 
 
 # --- Invitations ----------------------------------------------------------------
@@ -606,6 +734,11 @@ async def update_user(
         if remaining.scalar_one() == 0:
             raise ConflictError(code="auth.last_admin")
 
+    before = {
+        "role": user.role,
+        "is_active": user.is_active,
+        "ai_chat_enabled": user.ai_chat_enabled,
+    }
     if role is not None:
         if role not in ROLES:
             raise ValidationAppError(code="auth.invalid_role")
@@ -616,9 +749,24 @@ async def update_user(
         user.display_name = display_name.strip()
     if ai_chat_enabled is not None:
         user.ai_chat_enabled = ai_chat_enabled
+    if deactivating:
+        # A deactivated account must stop working now, and must not come back
+        # with its old sessions if an admin reactivates it later.
+        await _revoke_all_sessions(db, user_id=user.id)
+        await _revoke_all_trusted_devices(db, user_id=user.id)
 
+    after = {
+        "role": user.role,
+        "is_active": user.is_active,
+        "ai_chat_enabled": user.ai_chat_enabled,
+    }
+    changed = {key: value for key, value in after.items() if value != before[key]}
     await db.commit()
     await db.refresh(user)
+    if changed:
+        security_event(
+            "user_updated", level=logging.INFO, actor_id=actor.id, target_id=user.id, **changed
+        )
     return user
 
 
@@ -662,8 +810,6 @@ async def change_password(
     await _verify_password_with_lockout(db, user=user, password=current_password)
 
     user.password_hash = await hash_password_async(new_password)
-    user.password_failed_attempts = 0
-    user.password_locked_until = None
     await db.execute(
         update(Session)
         .where(
@@ -675,6 +821,7 @@ async def change_password(
     )
     await _revoke_all_trusted_devices(db, user_id=user.id)
     await db.commit()
+    security_event("password_changed", level=logging.INFO, user_id=user.id)
 
 
 async def update_preferences(

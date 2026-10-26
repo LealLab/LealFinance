@@ -77,11 +77,13 @@ async def test_login_password_lockout_after_failed_attempts(
     assert user.password_failed_attempts == 0
     assert user.password_locked_until is not None
 
+    # The public sign-in answers a locked account like a wrong password, so
+    # "locked" cannot be used to discover which addresses have accounts.
     locked = await client.post(
         "/api/v1/auth/login", json={"email": user.email, "password": password}
     )
     assert locked.status_code == 401
-    assert locked.json()["error"]["code"] == "auth.account_locked"
+    assert locked.json()["error"]["code"] == "auth.invalid_credentials"
 
 
 def test_new_password_max_length_is_rejected() -> None:
