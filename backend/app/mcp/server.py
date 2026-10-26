@@ -1,8 +1,9 @@
 """Standalone MCP server for external clients.
 
 External MCP clients (for example, Claude Desktop) authenticate with a token
-minted at ``POST /api/v1/agents/mcp-token``. In-app chat does not use this
-server; it calls the tool registry in-process.
+minted at ``POST /api/v1/agents/mcp-tokens``. Tokens are revocable and carry a
+scope: ``read`` tokens can call only read tools, ``write`` tokens all of them.
+In-app chat does not use this server; it calls the tool registry in-process.
 """
 
 import json
@@ -11,6 +12,7 @@ from typing import Any
 from uuid import UUID, uuid4
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp.exceptions import ToolError
 from mcp.server.fastmcp.tools.base import Tool
 from mcp.server.fastmcp.utilities.func_metadata import ArgModelBase, FuncMetadata
 from pydantic import ConfigDict
@@ -18,14 +20,18 @@ from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from app.agents import MCP_TOKEN_TTL_SECONDS, tools
-from app.core import crypto
+from app.agents import tools
 from app.core.config import get_settings
 from app.core.db import session_scope
-from app.models.user import ROLE_ADMIN, User
-from app.services import change_journal
+from app.core.logging import client_ip_var, configure_logging
+from app.models.mcp_token import MCP_SCOPE_READ, MCP_SCOPE_WRITE
+from app.services import change_journal, mcp_tokens
+
+# Standalone process: the API's startup (app/main.py) never runs here.
+configure_logging(get_settings().log_level)
 
 _CURRENT_USER: ContextVar[UUID] = ContextVar("mcp_user_id")
+_CURRENT_SCOPE: ContextVar[str] = ContextVar("mcp_scope")
 
 
 class _ToolArguments(ArgModelBase):
@@ -38,6 +44,11 @@ class _ToolArguments(ArgModelBase):
 def _make_tool(spec: tools.ToolDef) -> Tool:
     async def run(**arguments: Any) -> Any:
         user_id = _CURRENT_USER.get()
+        if spec.writes and _CURRENT_SCOPE.get() != MCP_SCOPE_WRITE:
+            raise ToolError(
+                f"mcp.read_only_token: this token is read-only and cannot call {spec.name}. "
+                "Create a write-scope token under Administration -> AI providers."
+            )
         # MCP has no conversation, so each call is its own undo group.
         async with (
             session_scope() as db,
@@ -55,7 +66,16 @@ def _make_tool(spec: tools.ToolDef) -> Tool:
     )
 
 
-mcp = FastMCP(
+class _ScopedFastMCP(FastMCP):
+    async def list_tools(self) -> Any:
+        """A read token is not even shown the write tools (calls are refused too)."""
+        listed = await super().list_tools()
+        if _CURRENT_SCOPE.get(MCP_SCOPE_READ) == MCP_SCOPE_WRITE:
+            return listed
+        return [tool for tool in listed if not tools.SPEC_BY_NAME[tool.name].writes]
+
+
+mcp = _ScopedFastMCP(
     name="LealFinance",
     stateless_http=True,
     # Writes are exposed too: the MCP client confirms them in its own host UI, and
@@ -79,12 +99,6 @@ def _bearer_token(headers: list[tuple[bytes, bytes]]) -> str | None:
             return None
         return token or None
     return None
-
-
-async def _admin_allowed(user_id: UUID) -> bool:
-    async with session_scope() as db:
-        user = await db.get(User, user_id)
-    return bool(user and user.is_active and user.role == ROLE_ADMIN)
 
 
 async def _send_error(send: Send, status: int, code: str) -> None:
@@ -117,17 +131,25 @@ class _BearerAuth:
             await _send_error(send, 404, "agents.disabled")
             return
 
-        token = _bearer_token(scope.get("headers", []))
-        user_id = crypto.verify_mcp_token(token, max_age=MCP_TOKEN_TTL_SECONDS) if token else None
-        if user_id is None or not await _admin_allowed(user_id):
-            await _send_error(send, 401, "agents.chat_not_allowed")
-            return
-
-        context_token = _CURRENT_USER.set(user_id)
+        client = scope.get("client")
+        ip_token = client_ip_var.set(client[0] if client else None)
         try:
-            await self.app(scope, receive, send)
+            raw = _bearer_token(scope.get("headers", []))
+            async with session_scope() as db:
+                row = await mcp_tokens.authenticate(db, raw) if raw else None
+            if row is None:
+                await _send_error(send, 401, "agents.chat_not_allowed")
+                return
+
+            user_token = _CURRENT_USER.set(row.user_id)
+            scope_token = _CURRENT_SCOPE.set(row.scope)
+            try:
+                await self.app(scope, receive, send)
+            finally:
+                _CURRENT_SCOPE.reset(scope_token)
+                _CURRENT_USER.reset(user_token)
         finally:
-            _CURRENT_USER.reset(context_token)
+            client_ip_var.reset(ip_token)
 
 
 app = _BearerAuth(mcp.streamable_http_app())

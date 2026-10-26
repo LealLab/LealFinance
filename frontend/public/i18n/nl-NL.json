@@ -1970,6 +1970,27 @@
         "writeSafety": "De client vraagt je schrijfgereedschappen te bevestigen en legt elke wijziging vast, zodat je die ongedaan kunt maken."
       },
       "httpsNote": "Gebruik buiten een vertrouwd netwerk HTTPS (bijvoorbeeld achter een reverse proxy): via gewone HTTP wordt het token onversleuteld verstuurd en geeft het 30 dagen beheerderstoegang."
+    },
+    "mcpTokens": {
+      "nameLabel": "Naam (optioneel)",
+      "namePlaceholder": "bijv. Claude Desktop",
+      "scopeLabel": "Toegang",
+      "scopeRead": "Alleen lezen",
+      "scopeWrite": "Lezen en schrijven",
+      "readHint": "Een token voor alleen lezen kan je gegevens bekijken, maar niet wijzigen.",
+      "writeWarning": "Met een token voor lezen en schrijven kan de gekoppelde app je financiële gegevens aanmaken, wijzigen en verwijderen. Elke wijziging wordt vastgelegd en kan ongedaan worden gemaakt, maar geef het alleen aan apps die je vertrouwt.",
+      "listTitle": "Actieve tokens",
+      "empty": "Geen actieve tokens.",
+      "unnamed": "Naamloos token",
+      "created": "Aangemaakt op {{date}}",
+      "lastUsed": "Laatst gebruikt op {{date}}",
+      "neverUsed": "Nog nooit gebruikt",
+      "revoke": "Intrekken",
+      "revokeTitle": "Token intrekken",
+      "revokeMessage": "Elke app die dit token gebruikt, werkt meteen niet meer. Dit kan niet ongedaan worden gemaakt.",
+      "revokeError": "Dit token kon niet worden ingetrokken. Probeer het opnieuw.",
+      "listError": "Je tokens konden niet worden geladen. Probeer het opnieuw.",
+      "legacyNote": "Tokens die zijn aangemaakt voordat intrekken werd toegevoegd, werken niet meer. Maak een nieuw token aan en werk je MCP-client bij."
     }
   },
   "reconciliation": {

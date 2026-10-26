@@ -30,6 +30,7 @@ from app.models.investment import (
 from app.models.job_run import JobRun
 from app.models.loan import Loan
 from app.models.manual_rate import ManualRate
+from app.models.mcp_token import McpToken
 from app.models.reconciliation import Reconciliation, ReconciliationEntry
 from app.models.recurring import RecurringRule
 from app.models.totp import TotpBackupCode, TrustedDevice
@@ -66,6 +67,7 @@ __all__ = [
     "MarketDataCredential",
     "Invitation",
     "ManualRate",
+    "McpToken",
     "RecurringRule",
     "Reconciliation",
     "ReconciliationEntry",

@@ -1970,6 +1970,27 @@
         "writeSafety": "用戶端會要求你確認寫入工具，每項變更都會記錄下來，以便復原。"
       },
       "httpsNote": "在受信任的網路之外，請使用 HTTPS（例如置於反向代理之後）：透過一般 HTTP 傳輸時，權杖不會加密，並會授予 30 天的管理員存取權限。"
+    },
+    "mcpTokens": {
+      "nameLabel": "名稱（選填）",
+      "namePlaceholder": "例如 Claude Desktop",
+      "scopeLabel": "存取權限",
+      "scopeRead": "唯讀",
+      "scopeWrite": "讀取和寫入",
+      "readHint": "唯讀權杖可以檢視你的資料，但無法修改。",
+      "writeWarning": "讀寫權杖可讓已連線的應用程式建立、修改和刪除你的財務資料。每次變更都會記錄在日誌中且可還原，但請只提供給你信任的應用程式。",
+      "listTitle": "有效權杖",
+      "empty": "沒有有效的權杖。",
+      "unnamed": "未命名權杖",
+      "created": "建立於 {{date}}",
+      "lastUsed": "上次使用於 {{date}}",
+      "neverUsed": "從未使用",
+      "revoke": "撤銷",
+      "revokeTitle": "撤銷權杖",
+      "revokeMessage": "任何使用此權杖的應用程式會立即停止運作。此操作無法復原。",
+      "revokeError": "無法撤銷此權杖，請再試一次。",
+      "listError": "無法載入你的權杖，請再試一次。",
+      "legacyNote": "在加入撤銷功能之前建立的權杖已失效。請產生新的權杖並更新你的 MCP 用戶端。"
     }
   },
   "reconciliation": {

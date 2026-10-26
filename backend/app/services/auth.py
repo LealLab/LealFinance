@@ -43,7 +43,7 @@ from app.core.security import (
 from app.models.currency import Currency
 from app.models.totp import TotpBackupCode, TrustedDevice
 from app.models.user import ROLE_ADMIN, ROLES, THEMES, Invitation, Session, User
-from app.services import default_categories
+from app.services import default_categories, mcp_tokens
 from app.services.currencies import get_active_currency
 
 _SESSION_TOUCH_INTERVAL = timedelta(minutes=5)
@@ -545,6 +545,7 @@ async def recover_password(db: AsyncSession, *, email: str, code: str, new_passw
     user.password_hash = await hash_password_async(new_password)
     await _revoke_all_sessions(db, user_id=user.id)
     await _revoke_all_trusted_devices(db, user_id=user.id)
+    await mcp_tokens.revoke_all(db, user_id=user.id)
     await db.commit()
     security_event("password_recovered", level=logging.INFO, user_id=user.id)
 
@@ -754,6 +755,10 @@ async def update_user(
         # with its old sessions if an admin reactivates it later.
         await _revoke_all_sessions(db, user_id=user.id)
         await _revoke_all_trusted_devices(db, user_id=user.id)
+    if deactivating or demoting:
+        # MCP tokens only work for active administrators. Revoke them now so
+        # promoting the user back later does not resurrect old tokens.
+        await mcp_tokens.revoke_all(db, user_id=user.id)
 
     after = {
         "role": user.role,
@@ -820,6 +825,7 @@ async def change_password(
         .values(revoked_at=datetime.now(UTC))
     )
     await _revoke_all_trusted_devices(db, user_id=user.id)
+    await mcp_tokens.revoke_all(db, user_id=user.id)
     await db.commit()
     security_event("password_changed", level=logging.INFO, user_id=user.id)
 

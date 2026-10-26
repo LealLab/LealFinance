@@ -3,22 +3,19 @@ by `_require_agents_enabled` and admin auth, so the whole surface 404s as
 `agents.disabled` when `AGENTS_ENABLED=false` - the flag this router is
 entirely behind (see CLAUDE.md's AI Agents section)."""
 
-import logging
-from datetime import UTC, datetime, timedelta
+from typing import Annotated
 from urllib.parse import quote
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Body, Depends, status
 from fastapi.responses import Response, StreamingResponse
 
-from app.agents import MCP_TOKEN_TTL_SECONDS
 from app.api.deps import AdminUser, AiChatUser, DbSession
-from app.core import crypto
 from app.core.config import get_settings
 from app.core.errors import ConflictError, NotFoundError
-from app.core.logging import security_event
 from app.models.agent_conversation import AGENT_CONVERSATION_STATUS_AWAITING, AgentConversation
 from app.models.agent_memory import AgentMemory
+from app.models.mcp_token import McpToken
 from app.schemas.agent import (
     AgentMessageRead,
     ConfirmCreate,
@@ -29,7 +26,9 @@ from app.schemas.agent import (
     ImportSuggestRequest,
     InstructionsRead,
     InstructionsUpdate,
+    McpTokenCreate,
     McpTokenRead,
+    McpTokenSummary,
     MemoryRead,
     MessageCreate,
     OAuthCompleteCreate,
@@ -44,6 +43,7 @@ from app.services import (
     agent_memories,
     agent_providers,
     import_suggest,
+    mcp_tokens,
 )
 
 
@@ -91,12 +91,27 @@ async def test_provider(provider: str, admin: AdminUser, db: DbSession) -> Provi
     return await agent_providers.test_provider(db, admin.id, provider)
 
 
+# `/mcp-token` is the original path and still works (bodyless = a read-only token).
 @router.post("/mcp-token", response_model=McpTokenRead)
-async def create_mcp_token(admin: AdminUser) -> McpTokenRead:
-    token = crypto.mint_mcp_token(admin.id)
-    expires_at = datetime.now(UTC) + timedelta(seconds=MCP_TOKEN_TTL_SECONDS)
-    security_event("mcp_token_issued", level=logging.INFO, user_id=admin.id)
-    return McpTokenRead(token=token, expires_at=expires_at)
+@router.post("/mcp-tokens", response_model=McpTokenRead, status_code=status.HTTP_201_CREATED)
+async def create_mcp_token(
+    admin: AdminUser,
+    db: DbSession,
+    payload: Annotated[McpTokenCreate | None, Body()] = None,
+) -> McpTokenRead:
+    body = payload or McpTokenCreate()
+    row, raw = await mcp_tokens.create(db, user=admin, scope=body.scope, name=body.name)
+    return McpTokenRead(**McpTokenSummary.model_validate(row).model_dump(), token=raw)
+
+
+@router.get("/mcp-tokens", response_model=list[McpTokenSummary])
+async def list_mcp_tokens(admin: AdminUser, db: DbSession) -> list[McpToken]:
+    return await mcp_tokens.list_active(db, admin.id)
+
+
+@router.delete("/mcp-tokens/{token_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def revoke_mcp_token(token_id: UUID, admin: AdminUser, db: DbSession) -> None:
+    await mcp_tokens.revoke(db, user_id=admin.id, token_id=token_id)
 
 
 @router.post("/import/suggest", response_model=ImportSuggestRead)

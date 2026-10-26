@@ -18,8 +18,8 @@ administrator-only. Active administrators always have chat access. Members are
 gated by `ai_chat_enabled`, a flag an administrator sets from Administration ->
 Users (`PATCH /auth/users/{id}`), off by default. That flag grants members
 in-app chat only; the standalone MCP server accepts active administrators only.
-Demoting or deactivating an administrator revokes their existing MCP tokens
-immediately.
+Demoting or deactivating an administrator, or changing or recovering their
+password, revokes all of their MCP tokens immediately.
 
 ## Chat attachments
 
@@ -177,22 +177,59 @@ included in backup export/restore.
 
 The `agents` Compose profile also starts a standalone MCP server
 (`app/mcp/server.py`, port 8001, unpublished) exposing the same tool set to
-external MCP clients such as Claude Desktop. It authenticates with a per-admin
-bearer token from `POST /api/v1/agents/mcp-token` - a Fernet value derived from
-`API_SECRET_KEY` carrying only the user id, valid for 30 days, shown once.
-Only active administrators can mint or use the token; member-issued tokens no
-longer work.
+external MCP clients such as Claude Desktop.
 
-The MCP server exposes the same tools as the in-app chat, writes included.
+### Tokens
+
+> **Upgrading from an earlier version:** the old MCP tokens (long Fernet values
+> that could not be revoked) **stopped working** with this change. Each
+> administrator must create a new token under Administration -> AI providers and
+> update their MCP client configuration. Nothing is migrated, because an
+> unrevocable token cannot be made safe.
+
+A token is 256 random bits, shown **once** when it is created and stored only as
+an HMAC hash (the `mcp_tokens` table), like session cookies. It has:
+
+- a **scope**: `read` (the default) can call only read tools; `write` can also
+  call the write tools (`create_entity`, `update_entity`, `delete_entity`,
+  `create_category_group`, `delete_category_structure`, `undo_changes`,
+  `remember`). A read token is not shown the write tools, and calling one
+  anyway fails with a tool error that says the token is read-only. Choose
+  `write` only for a client you trust to change your data.
+- an optional **name** (up to 100 characters) so you can tell clients apart;
+- a **lifetime of 30 days**, and the time it was **last used** (updated at most
+  every 5 minutes, so it is a hint rather than an audit log).
+
+Administrators manage their own tokens on Administration -> AI providers
+(create, list, revoke), or through `POST /agents/mcp-tokens`,
+`GET /agents/mcp-tokens` and `DELETE /agents/mcp-tokens/{id}` (the original
+`POST /agents/mcp-token` still works and returns a read token). Revoking is
+immediate and permanent. All of a user's tokens are also revoked when their
+password is changed or recovered, when their account is deactivated, and when
+they are demoted from administrator (promoting them again does not bring old
+tokens back). Every create, revoke and rejected use is written to the
+[security log](security.md#security-log) (`mcp_token_issued`, `mcp_token_revoked`,
+`mcp_token_rejected`), never with the token itself.
+
+The table holds credential metadata, so it is deliberately **not journaled**
+(there is nothing for the AI to undo, and the journal would copy token hashes)
+and **not part of user backups** (a restored token would outlive the revocation
+that killed it). It is a plain model rather than a `UserOwnedModel`, which is
+what keeps it out of both registries (`UNJOURNALED_TABLES` and
+`EXCLUDED_USER_OWNED_MODELS` list only user-owned models). A full database dump
+(`scripts/backup.sh`) does contain the hashes, which are useless without
+`API_SECRET_KEY`.
+
+The MCP server exposes the same tools as the in-app chat, writes included for
+`write` tokens.
 The in-app chat asks the user to confirm each write; an MCP client is expected to
 do that in its own host UI, and every MCP call is journaled so it can be undone
 (see below). Every call runs through the same user-scoped service and is bounded
 to the token's user. Like the REST routes, the server answers `404
 agents.disabled` when `AGENTS_ENABLED=false`, so a token minted earlier stops
-working on an instance that has turned the agents off.
-Individual tokens cannot be revoked; the levers are demoting or deactivating
-the administrator, or rotating `API_SECRET_KEY`. Publishing port 8001 (or
-adding an nginx location) to reach it from the host is an operator decision.
+working on an instance that has turned the agents off. Rotating `API_SECRET_KEY`
+also invalidates every token. Publishing port 8001 (or adding an nginx location)
+to reach it from the host is an operator decision.
 
 Example Streamable HTTP client configuration:
 
@@ -210,8 +247,8 @@ Example Streamable HTTP client configuration:
 }
 ```
 
-The token is sent in a header and grants administrator access for 30 days, so
-outside a trusted network put the MCP endpoint behind an HTTPS reverse proxy and
+The token is sent in a header and grants access for 30 days (read-only or
+read and write, per its scope) until revoked, so outside a trusted network put the MCP endpoint behind an HTTPS reverse proxy and
 use an `https://` URL instead of plain HTTP.
 
 ## Undoing an AI change
@@ -309,8 +346,8 @@ they are encrypted with Fernet using a key derived from `API_SECRET_KEY`.
 Provider secrets are never returned by the API.
 
 Rotating `API_SECRET_KEY` invalidates sessions, invitations, stored provider
-credentials, and issued MCP tokens. Users must sign in again, relink providers,
-and re-issue any MCP token.
+credentials, and MCP tokens. Users must sign in again, relink providers,
+and create new MCP tokens.
 
 See [`backend-api.md`](backend-api.md#ai-agents) for the endpoint list and
 request/response contracts.

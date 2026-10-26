@@ -10,7 +10,7 @@ import {
   AgentProviderStatus,
   AgentReasoningEffort,
 } from '../../domain/models/agent-provider';
-import { McpToken } from '../../domain/models/agent-chat';
+import { McpToken, McpTokenScope, McpTokenSummary } from '../../domain/models/agent-chat';
 import { Badge } from '../../shared/ui/badge/badge';
 import { Button } from '../../shared/ui/button/button';
 import { Card } from '../../shared/ui/card/card';
@@ -19,12 +19,13 @@ import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProviderLinkModal } from './provider-link-modal';
 
 /**
- * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.model.label, providers.model.recommendedOption, providers.model.customOption, providers.model.customPlaceholder, providers.modelError, providers.effort.label, providers.mcpHelpLabel, providers.mcpHelp.title, providers.mcpHelp.steps.enableAgents, providers.mcpHelp.steps.exposeServer, providers.mcpHelp.steps.generateToken, providers.mcpHelp.steps.configureClient, providers.mcpHelp.steps.stdioBridge, providers.mcpHelp.steps.writeSafety, providers.mcpHelp.httpsNote)
+ * t(providers.status.configuredUser, providers.status.configuredEnv, providers.status.notConfigured, providers.names.anthropic, providers.names.openai, providers.names.ollama, providers.experimental, providers.unlinkError, providers.testOk, providers.testFailed, providers.model.label, providers.model.recommendedOption, providers.model.customOption, providers.model.customPlaceholder, providers.modelError, providers.effort.label, providers.mcpHelpLabel, providers.mcpHelp.title, providers.mcpHelp.steps.enableAgents, providers.mcpHelp.steps.exposeServer, providers.mcpHelp.steps.generateToken, providers.mcpHelp.steps.configureClient, providers.mcpHelp.steps.stdioBridge, providers.mcpHelp.steps.writeSafety, providers.mcpHelp.httpsNote, providers.mcpTokens.nameLabel, providers.mcpTokens.namePlaceholder, providers.mcpTokens.scopeLabel, providers.mcpTokens.scopeRead, providers.mcpTokens.scopeWrite, providers.mcpTokens.readHint, providers.mcpTokens.writeWarning, providers.mcpTokens.listTitle, providers.mcpTokens.empty, providers.mcpTokens.unnamed, providers.mcpTokens.created, providers.mcpTokens.lastUsed, providers.mcpTokens.neverUsed, providers.mcpTokens.revoke, providers.mcpTokens.revokeError, providers.mcpTokens.listError, providers.mcpTokens.legacyNote)
  *
  * The literal keys passed to `confirmService.confirm(...)` below are real
  * string literals but aren't calls to the `t` marker function, so
  * transloco-keys-manager's extractor never sees them - same situation as
- * exchange.ts: t(providers.unlink.title, providers.unlink.message)
+ * exchange.ts: t(providers.unlink.title, providers.unlink.message,
+ * providers.mcpTokens.revokeTitle, providers.mcpTokens.revokeMessage)
  */
 
 @Component({
@@ -53,6 +54,12 @@ export class Providers {
   protected readonly mcpBusy = signal(false);
   protected readonly mcpCopied = signal(false);
   protected readonly mcpError = signal(false);
+  protected readonly mcpScope = signal<McpTokenScope>('read');
+  protected readonly mcpName = signal('');
+  protected readonly mcpRevokeError = signal(false);
+  protected readonly mcpTokensResource = rxResource({
+    stream: () => this.agentChatRepo.listMcpTokens(),
+  });
 
   protected openLink(provider: AgentProviderStatus): void {
     this.linkModalProvider.set(provider);
@@ -129,15 +136,38 @@ export class Providers {
     this.mcpToken.set(undefined);
     this.mcpCopied.set(false);
     this.mcpError.set(false);
-    this.agentChatRepo.mintMcpToken().subscribe({
-      next: (token) => {
-        this.mcpToken.set(token);
-        this.mcpBusy.set(false);
+    this.mcpRevokeError.set(false);
+    this.agentChatRepo
+      .mintMcpToken({ scope: this.mcpScope(), name: this.mcpName().trim() || undefined })
+      .subscribe({
+        next: (token) => {
+          this.mcpToken.set(token);
+          this.mcpName.set('');
+          this.mcpBusy.set(false);
+          this.mcpTokensResource.reload();
+        },
+        error: () => {
+          this.mcpBusy.set(false);
+          this.mcpError.set(true);
+        },
+      });
+  }
+
+  protected async revokeMcpToken(token: McpTokenSummary): Promise<void> {
+    const confirmed = await this.confirmService.confirm(
+      'providers.mcpTokens.revokeTitle',
+      'providers.mcpTokens.revokeMessage',
+      'danger',
+    );
+    if (!confirmed) return;
+    this.mcpRevokeError.set(false);
+    this.agentChatRepo.revokeMcpToken(token.id).subscribe({
+      next: () => {
+        // The secret just shown (if it is this one) is dead; stop offering it.
+        if (this.mcpToken()?.id === token.id) this.mcpToken.set(undefined);
+        this.mcpTokensResource.reload();
       },
-      error: () => {
-        this.mcpBusy.set(false);
-        this.mcpError.set(true);
-      },
+      error: () => this.mcpRevokeError.set(true),
     });
   }
 

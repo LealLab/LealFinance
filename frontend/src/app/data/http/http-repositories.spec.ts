@@ -816,12 +816,81 @@ describe('HTTP repositories', () => {
     deleteReq.flush(null);
 
     TestBed.inject(HttpAgentChatRepository)
-      .mintMcpToken()
+      .mintMcpToken({ scope: 'write', name: 'Desktop' })
       .subscribe((result) => (token = result));
-    const tokenReq = http.expectOne('/api/v1/agents/mcp-token');
+    const tokenReq = http.expectOne('/api/v1/agents/mcp-tokens');
     expect(tokenReq.request.method).toBe('POST');
-    tokenReq.flush({ token: 'abc', expires_at: '2027-01-01' });
-    expect(token).toEqual({ token: 'abc', expiresAt: '2027-01-01' });
+    expect(tokenReq.request.body).toEqual({ scope: 'write', name: 'Desktop' });
+    tokenReq.flush({
+      id: 't1',
+      token: 'abc',
+      name: 'Desktop',
+      scope: 'write',
+      created_at: '2026-10-01',
+      last_used_at: null,
+      expires_at: '2027-01-01',
+    });
+    expect(token).toEqual({
+      id: 't1',
+      token: 'abc',
+      name: 'Desktop',
+      scope: 'write',
+      createdAt: '2026-10-01',
+      lastUsedAt: null,
+      expiresAt: '2027-01-01',
+    });
+  });
+
+  it('defaults to a read-only MCP token and lists and revokes tokens by id', () => {
+    let listed: unknown;
+    let revoked = false;
+
+    TestBed.inject(HttpAgentChatRepository).mintMcpToken().subscribe();
+    const createReq = http.expectOne('/api/v1/agents/mcp-tokens');
+    expect(createReq.request.body).toEqual({ scope: 'read', name: null });
+    createReq.flush({
+      id: 't0',
+      token: 'x',
+      name: null,
+      scope: 'read',
+      created_at: '2026-10-01',
+      last_used_at: null,
+      expires_at: '2027-01-01',
+    });
+
+    TestBed.inject(HttpAgentChatRepository)
+      .listMcpTokens()
+      .subscribe((result) => (listed = result));
+    const listReq = http.expectOne('/api/v1/agents/mcp-tokens');
+    expect(listReq.request.method).toBe('GET');
+    listReq.flush([
+      {
+        id: 't1',
+        name: null,
+        scope: 'read',
+        created_at: '2026-10-01',
+        last_used_at: '2026-10-02',
+        expires_at: '2027-01-01',
+      },
+    ]);
+    expect(listed).toEqual([
+      {
+        id: 't1',
+        name: null,
+        scope: 'read',
+        createdAt: '2026-10-01',
+        lastUsedAt: '2026-10-02',
+        expiresAt: '2027-01-01',
+      },
+    ]);
+
+    TestBed.inject(HttpAgentChatRepository)
+      .revokeMcpToken('t1')
+      .subscribe(() => (revoked = true));
+    const revokeReq = http.expectOne('/api/v1/agents/mcp-tokens/t1');
+    expect(revokeReq.request.method).toBe('DELETE');
+    revokeReq.flush(null);
+    expect(revoked).toBe(true);
   });
 
   it('lists the assistant memories, mapping the wire format, and deletes one by id', () => {

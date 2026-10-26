@@ -6,6 +6,8 @@ import {
   AgentMemory,
   AgentStreamEvent,
   McpToken,
+  McpTokenInput,
+  McpTokenSummary,
 } from '../domain/models/agent-chat';
 
 /** One import row handed to the categorizer - `index` ties the answer back
@@ -44,7 +46,9 @@ export abstract class AgentChatRepository {
     approved: boolean,
     args?: Record<string, unknown>,
   ): Observable<AgentStreamEvent>;
-  abstract mintMcpToken(): Observable<McpToken>;
+  abstract mintMcpToken(input?: McpTokenInput): Observable<McpToken>;
+  abstract listMcpTokens(): Observable<McpTokenSummary[]>;
+  abstract revokeMcpToken(id: string): Observable<void>;
   /** One-shot AI categorization for the transaction import page. Nothing is
    * written - the caller applies or discards each suggestion. */
   abstract suggestImportCategories(

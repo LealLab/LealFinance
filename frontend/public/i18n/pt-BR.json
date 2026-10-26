@@ -1970,6 +1970,27 @@
         "writeSafety": "O cliente pede sua confirmação para usar ferramentas de escrita, e cada alteração é registrada para que possa ser desfeita."
       },
       "httpsNote": "Fora de uma rede confiável, use HTTPS (por exemplo, atrás de um proxy reverso): em HTTP simples o token trafega sem criptografia e concede acesso de administrador por 30 dias."
+    },
+    "mcpTokens": {
+      "nameLabel": "Nome (opcional)",
+      "namePlaceholder": "ex.: Claude Desktop",
+      "scopeLabel": "Acesso",
+      "scopeRead": "Somente leitura",
+      "scopeWrite": "Leitura e escrita",
+      "readHint": "Um token somente leitura pode ver seus dados, mas não consegue alterá-los.",
+      "writeWarning": "Um token de leitura e escrita permite que o app conectado crie, altere e exclua seus dados financeiros. Toda alteração é registrada e pode ser desfeita, mas entregue-o apenas a apps em que você confia.",
+      "listTitle": "Tokens ativos",
+      "empty": "Nenhum token ativo.",
+      "unnamed": "Token sem nome",
+      "created": "Criado em {{date}}",
+      "lastUsed": "Último uso em {{date}}",
+      "neverUsed": "Nunca usado",
+      "revoke": "Revogar",
+      "revokeTitle": "Revogar token",
+      "revokeMessage": "Qualquer app que use este token deixa de funcionar imediatamente. Isso não pode ser desfeito.",
+      "revokeError": "Não foi possível revogar este token. Tente novamente.",
+      "listError": "Não foi possível carregar seus tokens. Tente novamente.",
+      "legacyNote": "Tokens criados antes da revogação ser adicionada não funcionam mais. Gere um novo token e atualize seu cliente MCP."
     }
   },
   "reconciliation": {

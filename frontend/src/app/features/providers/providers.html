@@ -169,14 +169,116 @@
         <p class="mt-1 text-xs text-content-muted">
           {{ t('settings.mcp.expires', { date: formatMcpExpiresAt(token.expiresAt) }) }}
         </p>
-      } @else {
-        <button appButton type="button" [disabled]="mcpBusy()" (click)="generateMcpToken()">
-          {{ t('settings.mcp.generate') }}
-        </button>
       }
+
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="min-w-0">
+          <label class="form-label" for="providers-mcp-name">
+            {{ t('providers.mcpTokens.nameLabel') }}
+          </label>
+          <input
+            id="providers-mcp-name"
+            class="form-input"
+            maxlength="100"
+            [placeholder]="t('providers.mcpTokens.namePlaceholder')"
+            [value]="mcpName()"
+            (input)="mcpName.set($any($event.target).value)"
+          />
+        </div>
+        <div class="min-w-0">
+          <label class="form-label" for="providers-mcp-scope">
+            {{ t('providers.mcpTokens.scopeLabel') }}
+          </label>
+          <select
+            id="providers-mcp-scope"
+            class="form-input"
+            [value]="mcpScope()"
+            (change)="mcpScope.set($any($event.target).value)"
+          >
+            <option value="read">{{ t('providers.mcpTokens.scopeRead') }}</option>
+            <option value="write">{{ t('providers.mcpTokens.scopeWrite') }}</option>
+          </select>
+        </div>
+      </div>
+      @if (mcpScope() === 'write') {
+        <p
+          id="providers-mcp-write-warning"
+          class="mt-3 rounded-md border border-warning/40 bg-warning/5 p-3 text-sm text-content-primary"
+          role="note"
+        >
+          {{ t('providers.mcpTokens.writeWarning') }}
+        </p>
+      } @else {
+        <p class="mt-3 text-sm text-content-muted">{{ t('providers.mcpTokens.readHint') }}</p>
+      }
+      <button
+        appButton
+        type="button"
+        class="mt-3"
+        [disabled]="mcpBusy()"
+        (click)="generateMcpToken()"
+      >
+        {{ t('settings.mcp.generate') }}
+      </button>
       @if (mcpError()) {
         <p class="mt-3 text-sm text-negative" role="alert">{{ t('errors.error.generic') }}</p>
       }
+
+      <h3 class="mb-2 mt-6 text-sm font-semibold text-content-primary">
+        {{ t('providers.mcpTokens.listTitle') }}
+      </h3>
+      @if (mcpTokensResource.error()) {
+        <p class="text-sm text-negative" role="alert">{{ t('providers.mcpTokens.listError') }}</p>
+      } @else if ((mcpTokensResource.value() ?? []).length === 0) {
+        <p class="text-sm text-content-muted">{{ t('providers.mcpTokens.empty') }}</p>
+      } @else {
+        <ul class="divide-y divide-border" id="providers-mcp-token-list">
+          @for (row of mcpTokensResource.value(); track row.id) {
+            <li class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3">
+              <div class="min-w-0 flex-1">
+                <p
+                  class="flex flex-wrap items-center gap-2 text-sm font-medium text-content-primary"
+                >
+                  <span class="[overflow-wrap:anywhere]">
+                    {{ row.name ?? t('providers.mcpTokens.unnamed') }}
+                  </span>
+                  <app-badge [tone]="row.scope === 'write' ? 'warning' : 'neutral'">
+                    {{
+                      row.scope === 'write'
+                        ? t('providers.mcpTokens.scopeWrite')
+                        : t('providers.mcpTokens.scopeRead')
+                    }}
+                  </app-badge>
+                </p>
+                <p class="mt-1 text-xs text-content-muted">
+                  {{ t('providers.mcpTokens.created', { date: formatMcpExpiresAt(row.createdAt) }) }}
+                  &middot;
+                  @if (row.lastUsedAt) {
+                    {{
+                      t('providers.mcpTokens.lastUsed', {
+                        date: formatMcpExpiresAt(row.lastUsedAt),
+                      })
+                    }}
+                  } @else {
+                    {{ t('providers.mcpTokens.neverUsed') }}
+                  }
+                  &middot;
+                  {{ t('settings.mcp.expires', { date: formatMcpExpiresAt(row.expiresAt) }) }}
+                </p>
+              </div>
+              <button appButton type="button" variant="secondary" (click)="revokeMcpToken(row)">
+                {{ t('providers.mcpTokens.revoke') }}
+              </button>
+            </li>
+          }
+        </ul>
+      }
+      @if (mcpRevokeError()) {
+        <p class="mt-3 text-sm text-negative" role="alert">
+          {{ t('providers.mcpTokens.revokeError') }}
+        </p>
+      }
+      <p class="mt-4 text-xs text-content-muted">{{ t('providers.mcpTokens.legacyNote') }}</p>
     </app-card>
   </div>
 

@@ -9,6 +9,8 @@ import {
   AgentMessage,
   AgentStreamEvent,
   McpToken,
+  McpTokenInput,
+  McpTokenSummary,
 } from '../../domain/models/agent-chat';
 import { ApiError } from '../../core/api-error';
 import { MOCK_LATENCY_MS } from './mock-latency';
@@ -25,6 +27,7 @@ export class MockAgentChatRepository extends AgentChatRepository {
   private nextId = 1;
   private instructions = '';
   private memories: AgentMemory[] = [];
+  private mcpTokens: McpTokenSummary[] = [];
 
   listConversations(): Observable<AgentConversation[]> {
     return mockResult(
@@ -118,14 +121,30 @@ export class MockAgentChatRepository extends AgentChatRepository {
     void items;
     return of([]);
   }
-  mintMcpToken(): Observable<McpToken> {
-    return mockResult(
-      () => ({
-        token: 'mock-mcp-token',
+  mintMcpToken(input: McpTokenInput = { scope: 'read' }): Observable<McpToken> {
+    return mockResult(() => {
+      const now = new Date().toISOString();
+      const summary: McpTokenSummary = {
+        id: `t${this.mcpTokens.length + 1}`,
+        name: input.name?.trim() || null,
+        scope: input.scope,
+        createdAt: now,
+        lastUsedAt: null,
         expiresAt: new Date(Date.now() + 3600000).toISOString(),
-      }),
-      this.latencyMs,
-    );
+      };
+      this.mcpTokens = [summary, ...this.mcpTokens];
+      return { ...summary, token: 'mock-mcp-token' };
+    }, this.latencyMs);
+  }
+  listMcpTokens(): Observable<McpTokenSummary[]> {
+    return mockResult(() => [...this.mcpTokens], this.latencyMs);
+  }
+  revokeMcpToken(id: string): Observable<void> {
+    return mockResult(() => {
+      if (!this.mcpTokens.some((token) => token.id === id))
+        throw new ApiError(404, 'mcp_token.not_found', { id });
+      this.mcpTokens = this.mcpTokens.filter((token) => token.id !== id);
+    }, this.latencyMs);
   }
 
   private events(

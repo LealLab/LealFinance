@@ -64,9 +64,26 @@ export type AgentStreamEvent =
   | { type: 'error'; code: string; params: Record<string, unknown>; rejected?: boolean }
   | { type: 'done'; status: AgentConversationStatus; messageId: string | null };
 
-export interface McpToken {
-  token: string;
+export type McpTokenScope = 'read' | 'write';
+
+/** A token as listed: never the secret. */
+export interface McpTokenSummary {
+  id: string;
+  name: string | null;
+  scope: McpTokenScope;
+  createdAt: string;
+  lastUsedAt: string | null;
   expiresAt: string;
+}
+
+/** Returned once, at creation: carries the only copy of the secret. */
+export interface McpToken extends McpTokenSummary {
+  token: string;
+}
+
+export interface McpTokenInput {
+  scope: McpTokenScope;
+  name?: string;
 }
 
 /** A durable fact the assistant saved about the user, injected into later chats. */

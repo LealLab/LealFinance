@@ -1970,6 +1970,27 @@
         "writeSafety": "客户端会要求你确认写入工具，每项更改都会记录下来，以便撤销。"
       },
       "httpsNote": "在受信任的网络之外，请使用 HTTPS（例如放在反向代理之后）：通过普通 HTTP 传输时，令牌不会加密，并且会授予 30 天的管理员访问权限。"
+    },
+    "mcpTokens": {
+      "nameLabel": "名称（可选）",
+      "namePlaceholder": "例如 Claude Desktop",
+      "scopeLabel": "访问权限",
+      "scopeRead": "只读",
+      "scopeWrite": "读取和写入",
+      "readHint": "只读令牌可以查看你的数据，但无法修改。",
+      "writeWarning": "读写令牌允许已连接的应用创建、修改和删除你的财务数据。每次更改都会记录在日志中并可撤销，但请仅将其提供给你信任的应用。",
+      "listTitle": "有效令牌",
+      "empty": "没有有效令牌。",
+      "unnamed": "未命名令牌",
+      "created": "创建于 {{date}}",
+      "lastUsed": "最后使用于 {{date}}",
+      "neverUsed": "从未使用",
+      "revoke": "吊销",
+      "revokeTitle": "吊销令牌",
+      "revokeMessage": "任何使用此令牌的应用将立即停止工作。此操作无法撤销。",
+      "revokeError": "无法吊销此令牌，请重试。",
+      "listError": "无法加载你的令牌，请重试。",
+      "legacyNote": "在加入吊销功能之前创建的令牌已失效。请生成新令牌并更新你的 MCP 客户端。"
     }
   },
   "reconciliation": {

@@ -1970,6 +1970,27 @@
         "writeSafety": "İstemci yazma araçlarını onaylamanızı ister ve her değişikliği geri alınabilmesi için günlüğe kaydeder."
       },
       "httpsNote": "Güvenilir bir ağın dışında HTTPS kullanın (örneğin bir ters proxy arkasında): düz HTTP üzerinden belirteç şifrelenmeden iletilir ve 30 gün boyunca yönetici erişimi sağlar."
+    },
+    "mcpTokens": {
+      "nameLabel": "Ad (isteğe bağlı)",
+      "namePlaceholder": "ör. Claude Desktop",
+      "scopeLabel": "Erişim",
+      "scopeRead": "Salt okunur",
+      "scopeWrite": "Okuma ve yazma",
+      "readHint": "Salt okunur bir belirteç verilerinizi görebilir ama değiştiremez.",
+      "writeWarning": "Okuma ve yazma belirteci, bağlı uygulamanın finansal verilerinizi oluşturmasına, değiştirmesine ve silmesine izin verir. Her değişiklik günlüğe kaydedilir ve geri alınabilir, ancak yalnızca güvendiğiniz uygulamalara verin.",
+      "listTitle": "Etkin belirteçler",
+      "empty": "Etkin belirteç yok.",
+      "unnamed": "Adsız belirteç",
+      "created": "Oluşturulma: {{date}}",
+      "lastUsed": "Son kullanım: {{date}}",
+      "neverUsed": "Hiç kullanılmadı",
+      "revoke": "İptal et",
+      "revokeTitle": "Belirteci iptal et",
+      "revokeMessage": "Bu belirteci kullanan tüm uygulamalar hemen çalışmayı bırakır. Bu işlem geri alınamaz.",
+      "revokeError": "Bu belirteç iptal edilemedi. Tekrar deneyin.",
+      "listError": "Belirteçleriniz yüklenemedi. Tekrar deneyin.",
+      "legacyNote": "İptal özelliği eklenmeden önce oluşturulan belirteçler artık çalışmıyor. Yeni bir belirteç oluşturun ve MCP istemcinizi güncelleyin."
     }
   },
   "reconciliation": {

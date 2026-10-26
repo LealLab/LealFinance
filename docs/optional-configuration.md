@@ -122,9 +122,11 @@ Things to know:
 
 - Assistant writes are never applied without your confirmation, and every one is
   journaled so it can be undone.
-- The MCP server accepts active administrators only, with a token minted from
-  `POST /api/v1/agents/mcp-token`. Publishing port 8001 to reach it from
-  another machine is your decision.
+- The MCP server accepts active administrators only, with a revocable token
+  created under Administration -> AI providers (read-only by default; write
+  access must be chosen explicitly). Tokens from versions before this existed no
+  longer work, so recreate them and update your MCP client. Publishing port 8001
+  to reach it from another machine is your decision.
 - Ollama is supported for plain chat; its tool-calling is best-effort.
 - Provider secrets are encrypted with a key derived from `API_SECRET_KEY` and
   never returned by the API. Rotating that key invalidates stored credentials

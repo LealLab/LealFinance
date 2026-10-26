@@ -1970,6 +1970,27 @@
         "writeSafety": "Ứng dụng yêu cầu bạn xác nhận các công cụ ghi dữ liệu và lưu nhật ký mọi thay đổi để có thể hoàn tác."
       },
       "httpsNote": "Bên ngoài mạng đáng tin cậy, hãy dùng HTTPS (ví dụ phía sau reverse proxy): qua HTTP thường, token được gửi không mã hóa và cấp quyền quản trị trong 30 ngày."
+    },
+    "mcpTokens": {
+      "nameLabel": "Tên (tùy chọn)",
+      "namePlaceholder": "ví dụ: Claude Desktop",
+      "scopeLabel": "Quyền truy cập",
+      "scopeRead": "Chỉ đọc",
+      "scopeWrite": "Đọc và ghi",
+      "readHint": "Token chỉ đọc có thể xem dữ liệu của bạn nhưng không thể thay đổi.",
+      "writeWarning": "Token đọc và ghi cho phép ứng dụng đã kết nối tạo, thay đổi và xóa dữ liệu tài chính của bạn. Mọi thay đổi đều được ghi nhật ký và có thể hoàn tác, nhưng chỉ nên cấp cho các ứng dụng bạn tin cậy.",
+      "listTitle": "Token đang hoạt động",
+      "empty": "Không có token nào đang hoạt động.",
+      "unnamed": "Token chưa đặt tên",
+      "created": "Tạo ngày {{date}}",
+      "lastUsed": "Dùng lần cuối {{date}}",
+      "neverUsed": "Chưa từng dùng",
+      "revoke": "Thu hồi",
+      "revokeTitle": "Thu hồi token",
+      "revokeMessage": "Mọi ứng dụng dùng token này sẽ ngừng hoạt động ngay lập tức. Không thể hoàn tác thao tác này.",
+      "revokeError": "Không thể thu hồi token này. Hãy thử lại.",
+      "listError": "Không thể tải token của bạn. Hãy thử lại.",
+      "legacyNote": "Các token tạo trước khi có tính năng thu hồi không còn hoạt động. Hãy tạo token mới và cập nhật ứng dụng khách MCP của bạn."
     }
   },
   "reconciliation": {
