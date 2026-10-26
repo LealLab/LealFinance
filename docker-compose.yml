@@ -37,7 +37,7 @@ services:
       retries: 10
 
   redis:
-    image: redis:8.8-alpine
+    image: redis:8.10-alpine
     restart: unless-stopped
     volumes:
       - redis_data:/data
@@ -209,7 +209,7 @@ services:
   # paid API key or subscription. Point OLLAMA_BASE_URL at
   # http://ollama:11434 (the in-container hostname) to use it.
   ollama:
-    image: ollama/ollama:0.33.3
+    image: ollama/ollama:0.40.9
     restart: unless-stopped
     profiles: ["agents"]
     volumes:
