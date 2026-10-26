@@ -24,7 +24,15 @@ money and conversion rules.
   `code` is a stable, machine-readable string - a Transloco key suffix on
   the frontend, never a translated message. Validation failures use
   `error.validation` with `params.errors` holding FastAPI's per-field error
-  list.
+  list. The rejected value (`input`) is stripped from each entry so a
+  rejected password is never echoed back.
+- Password hashing (Argon2id) runs in a worker thread, at most 4 at a time,
+  so a burst of logins cannot block the event loop. Login and
+  password-change password fields accept up to 1024 characters; new
+  passwords are 12-128.
+- Categorization rule regexes are validated and matched with the `regex`
+  package under a 50 ms per-match timeout; a pattern that times out counts
+  as "no match".
 - Every route except `/health/*`, `/meta/currencies`, `/meta/settings`,
   `/auth/login`, `/auth/register`, `/auth/login/passkey`,
   `/auth/login/passkey/options`, and `/auth/setup-status` requires an
