@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Disse instruksjonene ble ikke lagret: de handler ikke om økonomien din eller denne appen.",
       "not_configured": "Ingen AI-leverandør er konfigurert ennå.",
       "provider_unavailable": "AI-leverandøren er ikke tilgjengelig akkurat nå.",
-      "suggest_unreadable": "AI-svaret kunne ikke leses. Prøv igjen."
+      "suggest_unreadable": "AI-svaret kunne ikke leses. Prøv igjen.",
+      "base_url_invalid": "Skriv inn en fullstendig serveradresse som starter med http:// eller https://, uten brukernavn, passord eller #-fragment.",
+      "daily_limit_reached": "Du har nådd dagens grense for KI-meldinger. Prøv igjen senere."
     },
     "agent_memory": {
       "not_found": "Dette minnet finnes ikke lenger."

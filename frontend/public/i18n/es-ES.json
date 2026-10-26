@@ -2073,7 +2073,9 @@
       "instructions_rejected": "Estas instrucciones no se guardaron: no tratan sobre tus finanzas ni sobre esta aplicación.",
       "not_configured": "Aún no hay ningún proveedor de IA configurado.",
       "provider_unavailable": "El proveedor de IA no está disponible en este momento.",
-      "suggest_unreadable": "No se pudo leer la respuesta de la IA. Inténtalo de nuevo."
+      "suggest_unreadable": "No se pudo leer la respuesta de la IA. Inténtalo de nuevo.",
+      "base_url_invalid": "Introduce una dirección de servidor completa que empiece por http:// o https://, sin nombre de usuario, contraseña ni fragmento #.",
+      "daily_limit_reached": "Has alcanzado el límite de mensajes de IA de hoy. Inténtalo de nuevo más tarde."
     },
     "agent_memory": {
       "not_found": "Ese recuerdo ya no existe."

@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Tyto pokyny nebyly uloženy: netýkají se vašich financí ani této aplikace.",
       "not_configured": "Zatím není nastaven žádný poskytovatel AI.",
       "provider_unavailable": "Poskytovatel AI je momentálně nedostupný.",
-      "suggest_unreadable": "Odpověď AI se nepodařilo přečíst. Zkuste to znovu."
+      "suggest_unreadable": "Odpověď AI se nepodařilo přečíst. Zkuste to znovu.",
+      "base_url_invalid": "Zadejte úplnou adresu serveru začínající http:// nebo https://, bez uživatelského jména, hesla a fragmentu #.",
+      "daily_limit_reached": "Dosáhli jste dnešního limitu zpráv s AI. Zkuste to znovu později."
     },
     "agent_memory": {
       "not_found": "Tato položka v paměti už neexistuje."

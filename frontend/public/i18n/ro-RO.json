@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Aceste instrucțiuni nu au fost salvate: nu sunt despre finanțele tale sau despre această aplicație.",
       "not_configured": "Nu este configurat încă niciun furnizor AI.",
       "provider_unavailable": "Furnizorul AI nu este disponibil momentan.",
-      "suggest_unreadable": "Răspunsul AI nu a putut fi citit. Încearcă din nou."
+      "suggest_unreadable": "Răspunsul AI nu a putut fi citit. Încearcă din nou.",
+      "base_url_invalid": "Introdu o adresă de server completă care începe cu http:// sau https://, fără nume de utilizator, parolă sau fragment #.",
+      "daily_limit_reached": "Ai atins limita de mesaje AI pentru astăzi. Încearcă din nou mai târziu."
     },
     "agent_memory": {
       "not_found": "Această informație nu mai există în memorie."

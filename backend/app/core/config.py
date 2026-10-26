@@ -7,7 +7,7 @@ configuration. Nothing else in the app should read os.environ directly.
 from functools import lru_cache
 from typing import Literal, Self
 
-from pydantic import computed_field, model_validator
+from pydantic import Field, computed_field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -75,6 +75,9 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     ollama_base_url: str | None = None
     agents_default_provider: str | None = None
+    # Chat messages one user may send per rolling 24 hours, across all their
+    # conversations. Bounds provider spend if an account is abused. 0 = no limit.
+    agents_daily_message_limit: int = Field(default=200, ge=0)
 
     # --- Currency conversion (optional) ---
     # Free key from https://openexchangerates.org/signup/free. Without one,

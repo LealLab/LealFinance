@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Deze instructies zijn niet opgeslagen: ze gaan niet over je financiën of deze app.",
       "not_configured": "Er is nog geen AI-provider geconfigureerd.",
       "provider_unavailable": "De AI-provider is momenteel niet beschikbaar.",
-      "suggest_unreadable": "Het AI-antwoord kon niet worden gelezen. Probeer het opnieuw."
+      "suggest_unreadable": "Het AI-antwoord kon niet worden gelezen. Probeer het opnieuw.",
+      "base_url_invalid": "Voer een volledig serveradres in dat begint met http:// of https://, zonder gebruikersnaam, wachtwoord of #-fragment.",
+      "daily_limit_reached": "Je hebt de limiet voor AI-berichten van vandaag bereikt. Probeer het later opnieuw."
     },
     "agent_memory": {
       "not_found": "Deze herinnering bestaat niet meer."

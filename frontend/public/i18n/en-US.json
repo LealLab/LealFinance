@@ -2097,7 +2097,9 @@
       "instructions_rejected": "These instructions were not saved: they are not about your finances or this app.",
       "not_configured": "No AI provider is configured yet.",
       "provider_unavailable": "The AI provider is currently unavailable.",
-      "suggest_unreadable": "The AI response could not be read. Try again."
+      "suggest_unreadable": "The AI response could not be read. Try again.",
+      "base_url_invalid": "Enter a full server address starting with http:// or https://, without a username, password or # fragment.",
+      "daily_limit_reached": "You have reached today's AI message limit. Try again later."
     },
     "agent_memory": {
       "not_found": "That memory no longer exists."

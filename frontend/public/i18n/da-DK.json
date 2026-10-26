@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Disse instruktioner blev ikke gemt: de handler ikke om din økonomi eller denne app.",
       "not_configured": "Der er endnu ikke konfigureret nogen AI-udbyder.",
       "provider_unavailable": "AI-udbyderen er ikke tilgængelig lige nu.",
-      "suggest_unreadable": "AI-svaret kunne ikke læses. Prøv igen."
+      "suggest_unreadable": "AI-svaret kunne ikke læses. Prøv igen.",
+      "base_url_invalid": "Angiv en komplet serveradresse, der starter med http:// eller https://, uden brugernavn, adgangskode eller #-fragment.",
+      "daily_limit_reached": "Du har nået dagens grænse for AI-beskeder. Prøv igen senere."
     },
     "agent_memory": {
       "not_found": "Det punkt findes ikke længere."

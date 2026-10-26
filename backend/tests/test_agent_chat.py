@@ -1,8 +1,9 @@
 """Conversation CRUD and SSE chat routes."""
 
 import json
+import logging
 from contextlib import asynccontextmanager
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from unittest.mock import AsyncMock
 from uuid import UUID, uuid4
@@ -15,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import app.agents.credentials as credentials_module
 import app.api.v1.agents as agents_router
+import app.services.agent_chat as agent_chat_service
 from app.core.config import get_settings
 from app.models.agent_conversation import (
     AGENT_CONVERSATION_STATUS_AWAITING,
@@ -190,6 +192,116 @@ async def test_message_stream_persists_user_and_assistant(
     assert body["title"] == "Hello assistant"
     assert body["pending_call_id"] is None
     assert [message["role"] for message in body["messages"]] == ["user", "assistant"]
+
+
+def _limit_settings(monkeypatch: pytest.MonkeyPatch, limit: int) -> None:
+    patched = get_settings().model_copy(update={"agents_daily_message_limit": limit})
+    monkeypatch.setattr(agent_chat_service, "get_settings", lambda: patched)
+
+
+async def test_daily_message_limit_rejects_before_streaming(
+    client: AsyncClient,
+    db_session: AsyncSession,
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    _limit_settings(monkeypatch, 2)
+    caplog.set_level(logging.WARNING, logger="lealfinance.security")
+    user = await _chat_user(client, db_session, "chat-quota@example.com")
+    first, second = await _conversation(client), await _conversation(client)
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=_text_body("ok"), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    # The limit counts messages across every conversation of the user.
+    for conversation in (first, second):
+        ok = await client.post(
+            f"/api/v1/agents/conversations/{conversation['id']}/messages",
+            json={"content": "hi"},
+        )
+        assert ok.status_code == 200
+
+    blocked = await client.post(
+        f"/api/v1/agents/conversations/{first['id']}/messages", json={"content": "again"}
+    )
+    assert blocked.status_code == 429
+    assert blocked.json()["error"]["code"] == "agents.daily_limit_reached"
+    assert blocked.json()["error"]["params"] == {"limit": 2}
+    events = [r.extra_fields for r in caplog.records if r.name == "lealfinance.security"]  # type: ignore[attr-defined]
+    assert any(e["event"] == "ai_quota_exceeded" and e["user_id"] == user.id for e in events)
+    detail = await client.get(f"/api/v1/agents/conversations/{first['id']}")
+    assert [m["role"] for m in detail.json()["messages"]] == ["user", "assistant"]
+
+
+async def test_daily_message_limit_ignores_old_messages_and_other_users(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    _limit_settings(monkeypatch, 1)
+    user = await _chat_user(client, db_session, "chat-quota-window@example.com")
+    other, _ = await make_user(db_session, email="chat-quota-other@example.com")
+    conversation = await _conversation(client)
+    row = await db_session.get(AgentConversation, UUID(str(conversation["id"])))
+    assert row is not None
+    other_conversation = AgentConversation(
+        user_id=other.id, provider="anthropic", model="m", status="idle"
+    )
+    db_session.add(other_conversation)
+    await db_session.flush()
+    old = datetime.now(UTC) - timedelta(hours=25)
+    db_session.add_all(
+        [
+            AgentMessage(
+                user_id=user.id,
+                conversation_id=row.id,
+                role="user",
+                content="old",
+                position=1,
+                created_at=old,
+            ),
+            AgentMessage(
+                user_id=other.id,
+                conversation_id=other_conversation.id,
+                role="user",
+                content="theirs",
+                position=1,
+            ),
+        ]
+    )
+    await db_session.commit()
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=_text_body("ok"), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    url = f"/api/v1/agents/conversations/{conversation['id']}/messages"
+    assert (await client.post(url, json={"content": "now"})).status_code == 200
+    assert (await client.post(url, json={"content": "too many"})).status_code == 429
+
+
+async def test_daily_message_limit_zero_means_unlimited(
+    client: AsyncClient, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _enable_agents(monkeypatch, anthropic_api_key="sk-env")
+    _limit_settings(monkeypatch, 0)
+    await _chat_user(client, db_session, "chat-quota-off@example.com")
+    conversation = await _conversation(client)
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, content=_text_body("ok"), headers={"content-type": "text/event-stream"}
+        )
+
+    monkeypatch.setattr(httpx, "AsyncClient", _mock_client_factory(handler))
+    url = f"/api/v1/agents/conversations/{conversation['id']}/messages"
+    for _ in range(3):
+        assert (await client.post(url, json={"content": "hi"})).status_code == 200
 
 
 async def test_message_stream_uses_client_date_in_system_prompt(

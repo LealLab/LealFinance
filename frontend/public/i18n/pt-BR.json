@@ -2073,7 +2073,9 @@
       "instructions_rejected": "Estas instruções não foram salvas: não são sobre suas finanças nem sobre este aplicativo.",
       "not_configured": "Nenhum provedor de IA foi configurado ainda.",
       "provider_unavailable": "O provedor de IA está indisponível no momento.",
-      "suggest_unreadable": "Não foi possível ler a resposta da IA. Tente novamente."
+      "suggest_unreadable": "Não foi possível ler a resposta da IA. Tente novamente.",
+      "base_url_invalid": "Informe um endereço de servidor completo começando com http:// ou https://, sem nome de usuário, senha ou fragmento #.",
+      "daily_limit_reached": "Você atingiu o limite de mensagens de IA de hoje. Tente novamente mais tarde."
     },
     "agent_memory": {
       "not_found": "Essa memória não existe mais."

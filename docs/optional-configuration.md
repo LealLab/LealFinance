@@ -104,6 +104,7 @@ COMPOSE_PROFILES=agents
 | `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` | Instance-wide provider keys, used when no administrator has linked their own credential. A linked credential always wins. |
 | `OLLAMA_BASE_URL` | Address of an Ollama server. `http://ollama:11434` targets the bundled container; use your own URL for an external server. |
 | `COMPOSE_PROFILES=agents` | Also starts the bundled `ollama` container and the `mcp` server (port 8001, not published). |
+| `AGENTS_DAILY_MESSAGE_LIMIT` | Chat messages one user can send in any rolling 24 hours, across all conversations (default `200`, `0` = no limit). Past it, sending answers `429 agents.daily_limit_reached` before the provider is called. |
 | `AGENTS_DEFAULT_PROVIDER` | Accepted by the config and wizard, but nothing reads it yet, so it has no effect. |
 
 You do not need any key in `.env`: an administrator can link providers from

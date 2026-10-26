@@ -54,8 +54,12 @@ cannot reinstate text without re-running the check.
 
 The assistant remembers durable facts about a user across conversations ("I get
 paid on the 5th"). It saves them itself with the `remember` tool
-(`app/agents/tools.py`), which is not confirmation-gated: a memory is a note the
-assistant keeps, not ledger data, so nothing needs approving or undoing. Each
+(`app/agents/tools.py`). Saving is confirmation-gated like any write: text planted
+in your data (an imported transaction description, say) could otherwise make the
+assistant store a standing instruction that is replayed into every later
+conversation. The confirmation card shows the fact and nothing is saved until
+you approve it. Memories are notes, not ledger data, so there is no undo; delete
+one from Settings instead. Each
 memory is one short sentence in `agent_memories`, scoped to the user, unique per
 user, and capped at 100 (the oldest are dropped) because the whole list is
 included in each chat request's context turn.
@@ -69,7 +73,8 @@ memories** (`GET /agents/memories`, `DELETE /agents/memories/{id}`); deleting on
 takes effect on the next message. There is no in-chat "forget" tool. Memories
 are not journaled (`UNJOURNALED_TABLES`) and, like chat history, are excluded
 from backup export/restore. `remember` is part of the shared tool set, so
-external MCP clients can call it too.
+external MCP clients can call it too (their host UI confirms it, as with every
+other write).
 
 ## Import categorization
 
@@ -146,6 +151,23 @@ client shows the proposed values, and `/agents/conversations/{id}/confirm`
 either runs the tool or records the rejection before the assistant continues.
 A tool's own validation error (a missing category, a cross-user id) is fed back
 to the model, which is how it asks the user for what it needs.
+
+### Limits and provider URLs
+
+- **Daily message quota.** `AGENTS_DAILY_MESSAGE_LIMIT` (default 200, `0` = off)
+  caps the chat messages one user sends in any rolling 24 hours, counted across
+  all their conversations. Past it, `POST /agents/conversations/{id}/messages`
+  answers `429 agents.daily_limit_reached` before anything is streamed or sent to
+  the provider, and logs a `ai_quota_exceeded` security event. Confirmations and
+  tool calls do not count, only messages the user types. The check is not
+  atomic across simultaneous requests, so a burst can overshoot by a message or
+  two.
+- **Provider base URL.** The URL given when linking Ollama must be an absolute
+  `http` or `https` URL with a host, no `user:password@` part, and no `#fragment`;
+  otherwise linking fails with `422 agents.base_url_invalid`. Private and internal
+  addresses (`http://ollama:11434`, `http://192.168.x.x`) are deliberately
+  allowed, because a local model server is a supported setup. The URL is entered
+  by an administrator, who is trusted to point the server at hosts on its network.
 
 Conversations and every message - including tool calls and results - are
 persisted (`agent_conversations`, `agent_messages`). Chat history is never

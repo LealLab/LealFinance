@@ -1,5 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { throwError } from 'rxjs';
+import { ApiError } from '../../core/api-error';
 import { AgentProviderRepository } from '../../data/agent-provider.repository';
 import { MockAgentProviderRepository } from '../../data/mock/mock-agent-provider.repository';
 import { MOCK_LATENCY_MS } from '../../data/mock/mock-latency';
@@ -108,6 +110,42 @@ describe('ProviderLinkModal', () => {
     fixture.detectChanges();
 
     expect(emitted).toMatchObject({ provider: 'ollama', configured: true, authMode: 'none' });
+  });
+
+  it('shows the specific message when the server rejects the base URL', async () => {
+    const fixture = TestBed.createComponent(ProviderLinkModal);
+    fixture.componentRef.setInput('open', true);
+    fixture.componentRef.setInput('provider', OLLAMA_STATUS);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const component = fixture.componentInstance;
+    const repository = TestBed.inject(AgentProviderRepository);
+    vi.spyOn(repository, 'link').mockReturnValue(
+      throwError(() => new ApiError(422, 'agents.base_url_invalid', {})),
+    );
+    component['apiKeyForm'].controls.baseUrl.setValue('ftp://ollama');
+    component['submitApiKey']();
+
+    expect(component['errorKey']()).toBe('errors.agents.base_url_invalid');
+    expect(component.open()).toBe(true);
+  });
+
+  it('falls back to the generic save error for other failures', async () => {
+    const fixture = TestBed.createComponent(ProviderLinkModal);
+    fixture.componentRef.setInput('open', true);
+    fixture.componentRef.setInput('provider', OLLAMA_STATUS);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const component = fixture.componentInstance;
+    vi.spyOn(TestBed.inject(AgentProviderRepository), 'link').mockReturnValue(
+      throwError(() => new Error('boom')),
+    );
+    component['apiKeyForm'].controls.baseUrl.setValue('http://ollama:11434');
+    component['submitApiKey']();
+
+    expect(component['errorKey']()).toBe('providers.form.saveError');
   });
 
   it('walks the OAuth start-then-paste flow to completion', async () => {

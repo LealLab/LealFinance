@@ -2043,7 +2043,9 @@
       "instructions_rejected": "Instruksi ini tidak disimpan: tidak berkaitan dengan keuangan Anda atau aplikasi ini.",
       "not_configured": "Belum ada penyedia AI yang dikonfigurasi.",
       "provider_unavailable": "Penyedia AI sedang tidak tersedia.",
-      "suggest_unreadable": "Respons AI tidak dapat dibaca. Coba lagi."
+      "suggest_unreadable": "Respons AI tidak dapat dibaca. Coba lagi.",
+      "base_url_invalid": "Masukkan alamat server lengkap yang diawali http:// atau https://, tanpa nama pengguna, kata sandi, atau fragmen #.",
+      "daily_limit_reached": "Anda telah mencapai batas pesan AI hari ini. Coba lagi nanti."
     },
     "agent_memory": {
       "not_found": "Memori ini sudah tidak ada."
