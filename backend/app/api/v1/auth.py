@@ -4,6 +4,7 @@ Registration is invite-only, except the first user on an instance - see
 app/services/auth.py for the bootstrap rule.
 """
 
+import logging
 from typing import Any
 from uuid import UUID
 
@@ -17,6 +18,8 @@ from app.core.cookies import (
     set_session_cookies,
     set_trust_cookie,
 )
+from app.core.errors import UnauthorizedError
+from app.core.logging import security_event
 from app.core.webauthn_context import relying_party
 from app.models.user import Invitation, User
 from app.models.webauthn import WebAuthnCredential
@@ -265,13 +268,18 @@ async def login_with_passkey(
     payload: PasskeyLoginRequest, request: Request, response: Response, db: DbSession
 ) -> User:
     rp_id, origin = relying_party(request)
-    issued = await webauthn_service.finish_authentication(
-        db,
-        rp_id=rp_id,
-        origin=origin,
-        challenge=payload.challenge,
-        credential=payload.credential,
-    )
+    try:
+        issued = await webauthn_service.finish_authentication(
+            db,
+            rp_id=rp_id,
+            origin=origin,
+            challenge=payload.challenge,
+            credential=payload.credential,
+        )
+    except UnauthorizedError:
+        security_event("passkey_login_failed")
+        raise
+    security_event("login_success", level=logging.INFO, user_id=issued.user.id, method="passkey")
     set_session_cookies(
         response,
         session_token=issued.token,

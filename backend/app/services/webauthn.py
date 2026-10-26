@@ -1,6 +1,7 @@
 """WebAuthn registration, authentication, and passkey management."""
 
 import json
+import logging
 import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Any, cast
@@ -27,6 +28,7 @@ from webauthn.helpers.structs import (
 )
 
 from app.core.errors import ConflictError, NotFoundError, UnauthorizedError
+from app.core.logging import security_event
 from app.models.user import User
 from app.models.webauthn import WebAuthnChallenge, WebAuthnCredential
 from app.services.auth import IssuedSession, _mint_session
@@ -163,6 +165,7 @@ async def finish_registration(
     db.add(row_new)
     await db.commit()
     await db.refresh(row_new)
+    security_event("passkey_added", level=logging.INFO, user_id=user.id)
     return row_new
 
 
@@ -186,6 +189,7 @@ async def delete_credential(db: AsyncSession, *, user: User, credential_id: UUID
         raise NotFoundError(code="webauthn.not_found")
     await db.delete(credential)
     await db.commit()
+    security_event("passkey_removed", user_id=user.id)
 
 
 async def begin_authentication(db: AsyncSession, *, rp_id: str, origin: str) -> dict[str, Any]:

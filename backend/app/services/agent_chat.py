@@ -8,7 +8,7 @@ from datetime import date
 from typing import Any, cast
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents import chat, credentials, loop, prompt, tools
@@ -266,6 +266,48 @@ async def stream_message(
             yield _serialize(event)
 
 
+# While an approved call runs, pending_call_id holds this marker instead of the
+# call id. The conversation stays "awaiting_confirmation" (the database requires
+# a pending id in that state, and new messages stay blocked), but no second
+# approval can match it.
+_CLAIMED = "__running__"
+
+
+async def _claim_pending(db: AsyncSession, conversation_id: UUID, tool_call_id: str) -> bool:
+    """Atomically takes the pending tool call, so two approvals that arrive
+    together cannot both run it: only one UPDATE finds the call still pending."""
+    result = await db.execute(
+        update(AgentConversation)
+        .where(
+            AgentConversation.id == conversation_id,
+            AgentConversation.status == AGENT_CONVERSATION_STATUS_AWAITING,
+            AgentConversation.pending_call_id == tool_call_id,
+        )
+        .values(pending_call_id=_CLAIMED)
+        .returning(AgentConversation.id)
+        .execution_options(synchronize_session=False)
+    )
+    claimed = result.scalar_one_or_none() is not None
+    await db.commit()
+    return claimed
+
+
+async def _release_claim(db: AsyncSession, conversation_id: UUID, tool_call_id: str) -> None:
+    """Puts a claimed call back, when it did not run to completion and the user
+    has to approve it again."""
+    await db.execute(
+        update(AgentConversation)
+        .where(
+            AgentConversation.id == conversation_id,
+            AgentConversation.status == AGENT_CONVERSATION_STATUS_AWAITING,
+            AgentConversation.pending_call_id == _CLAIMED,
+        )
+        .values(pending_call_id=tool_call_id)
+        .execution_options(synchronize_session=False)
+    )
+    await db.commit()
+
+
 async def stream_confirm(
     user_id: UUID,
     conversation_id: UUID,
@@ -282,6 +324,9 @@ async def stream_confirm(
         ):
             yield _sse_frame("error", {"code": "agents.no_pending_tool", "params": {}})
             return
+        if not await _claim_pending(db, conversation.id, tool_call_id):
+            yield _sse_frame("error", {"code": "agents.no_pending_tool", "params": {}})
+            return
 
         messages = await _messages(db, conversation.id)
         pending: dict[str, object] | None = None
@@ -295,6 +340,7 @@ async def stream_confirm(
             if pending is not None:
                 break
         if pending is None:
+            await _release_claim(db, conversation.id, tool_call_id)
             yield _sse_frame("error", {"code": "agents.no_pending_tool", "params": {}})
             return
 
@@ -336,6 +382,7 @@ async def stream_confirm(
                         for call in message.tool_calls or []
                     ]
                     await db.commit()
+                    await _release_claim(db, conversation.id, tool_call_id)
                     yield _serialize(
                         loop.ToolAwaitingConfirmation(
                             tool_call_id, name, call_args, changed.preview
@@ -348,6 +395,11 @@ async def stream_confirm(
                         )
                     )
                     return
+                except Exception:
+                    # The tool did not finish, so the user can approve it again.
+                    await db.rollback()
+                    await _release_claim(db, conversation.id, tool_call_id)
+                    raise
             await loop.persist_message(
                 db,
                 conversation,

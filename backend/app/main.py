@@ -29,7 +29,7 @@ from app.core.errors import (
     http_exception_handler,
     validation_error_handler,
 )
-from app.core.logging import configure_logging
+from app.core.logging import ClientIPMiddleware, configure_logging
 from app.services.exchange_rates import ensure_rates_cached
 
 settings = get_settings()
@@ -88,6 +88,7 @@ def create_app() -> FastAPI:
         allow_headers=["Content-Type", "X-XSRF-TOKEN"],
         expose_headers=["X-Total-Count"],
     )
+    app.add_middleware(ClientIPMiddleware)
 
     app.add_exception_handler(AppError, app_error_handler)
     app.add_exception_handler(RequestValidationError, validation_error_handler)

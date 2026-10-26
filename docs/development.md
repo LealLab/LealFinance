@@ -57,11 +57,16 @@ For raw `uv` commands outside the Taskfile, use host addresses rather than
 Compose service names:
 
 ```dotenv
-DATABASE_URL=postgresql+psycopg://lealfinance:change-me@localhost:55433/lealfinance
-REDIS_URL=redis://localhost:6379/0
+DATABASE_URL=postgresql+psycopg://lealfinance:change-me@127.0.0.1:55433/lealfinance
+REDIS_URL=redis://127.0.0.1:6379/0
 ```
 
 Change the ports if they conflict with another service on the machine.
+
+Use `127.0.0.1`, not `localhost`. The development ports listen on IPv4
+loopback only, and on Windows `localhost` tries IPv6 first: every new
+connection then waits about 2 seconds for the IPv6 attempt to be refused
+before falling back, which makes the test suite many times slower.
 
 ## Full stack in Docker
 
