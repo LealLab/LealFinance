@@ -1993,7 +1993,7 @@
       "neverUsed": "Aldrig använd",
       "revoke": "Återkalla",
       "revokeTitle": "Återkalla token",
-      "revokeMessage": "Alla appar som använder den här token slutar fungera direkt. Det går inte att ångra.",
+      "revokeMessage": "Alla appar som använder den här tokenen slutar fungera direkt. Det går inte att ångra.",
       "revokeError": "Det gick inte att återkalla token. Försök igen.",
       "listError": "Det gick inte att läsa in dina tokens. Försök igen.",
       "legacyNote": "Tokens som skapades innan återkallning lades till fungerar inte längre. Skapa en ny token och uppdatera din MCP-klient."
