@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Jokin meni pieleen. Yritä uudelleen.",
+      "rate_limited": "Liian monta pyyntöä. Odota hetki ja yritä uudelleen.",
       "validation": "Tarkista antamasi tiedot ja yritä uudelleen."
     },
     "job": {

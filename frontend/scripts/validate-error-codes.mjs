@@ -8,6 +8,7 @@ const catalogPath = path.join(frontendDir, 'public', 'i18n', 'en-US.json');
 
 const allowlist = new Set([
   'error.generic',
+  'error.rate_limited', // emitted by the nginx edge, not the backend
   'error.validation',
   'backup.invalid_file_type',
   'import.row.invalid_amount',

@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Er is iets misgegaan. Probeer het opnieuw.",
+      "rate_limited": "Te veel verzoeken. Wacht even en probeer het opnieuw.",
       "validation": "Controleer de gegevens en probeer het opnieuw."
     },
     "job": {

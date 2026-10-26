@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Ceva nu a funcționat. Încearcă din nou.",
+      "rate_limited": "Prea multe solicitări. Așteaptă un moment și încearcă din nou.",
       "validation": "Verifică informațiile introduse și încearcă din nou."
     },
     "job": {

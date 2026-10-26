@@ -149,6 +149,7 @@ contributing.
 - [`docs/architecture.md`](docs/architecture.md) - services and project layout
 - [`docs/backend-api.md`](docs/backend-api.md) - API endpoints and contracts
 - [`docs/ai-agents.md`](docs/ai-agents.md) - optional AI provider setup
+- [`docs/security.md`](docs/security.md) - rate limits, security headers, and network exposure
 - [`docs/i18n.md`](docs/i18n.md) - translation workflow
 - [`docs/money-and-currency.md`](docs/money-and-currency.md) - money and exchange-rate rules
 

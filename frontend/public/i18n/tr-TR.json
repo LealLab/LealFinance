@@ -2033,6 +2033,7 @@
     },
     "error": {
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "rate_limited": "Çok fazla istek gönderildi. Lütfen biraz bekleyip tekrar deneyin.",
       "validation": "Girdiğiniz bilgileri kontrol edip tekrar deneyin."
     },
     "job": {

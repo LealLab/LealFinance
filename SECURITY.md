@@ -22,3 +22,8 @@ investigate before public disclosure.
 The project does not currently publish a formal version-support matrix. Include
 the exact commit or release you tested in every report so the affected scope can
 be established accurately.
+
+## Hardening
+
+For rate limits, security headers, and how to expose an install safely, see
+[`docs/security.md`](docs/security.md).

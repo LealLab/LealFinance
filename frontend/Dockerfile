@@ -31,6 +31,7 @@ RUN apk update && apk upgrade --no-cache \
 
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx/security-headers.conf /etc/nginx/snippets/security-headers.conf
 
 RUN chown -R app:app /var/cache/nginx /var/run /usr/share/nginx/html \
     && touch /var/run/nginx.pid \

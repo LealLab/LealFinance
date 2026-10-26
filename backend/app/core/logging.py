@@ -32,6 +32,8 @@ def configure_logging(level: str = "INFO") -> None:
     root.addHandler(handler)
     root.setLevel(level.upper())
 
-    # Quiet noisy third-party loggers down to the app's chosen level.
-    for noisy in ("uvicorn.access", "sqlalchemy.engine"):
+    # Quiet noisy third-party loggers down to the app's chosen level. httpx and
+    # httpcore log full request URLs at INFO, and some providers take their API
+    # key as a query parameter, so those would end up in the logs.
+    for noisy in ("uvicorn.access", "sqlalchemy.engine", "httpx", "httpcore"):
         logging.getLogger(noisy).setLevel(max(logging.WARNING, root.level))

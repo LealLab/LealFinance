@@ -12,5 +12,11 @@
 
 {$LF_SITE_ADDRESS} {
 	# tls internal
+
+	# Tell browsers to use HTTPS for this host for a year. Browsers remember
+	# it, so only keep this on if the site stays on HTTPS. Not sent over plain
+	# HTTP (browsers ignore it there).
+	header Strict-Transport-Security "max-age=31536000"
+
 	reverse_proxy web:8080
 }

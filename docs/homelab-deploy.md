@@ -330,7 +330,10 @@ the PostgreSQL volume during an update.
 already run Traefik, nginx, or your own Caddy, skip that overlay and point
 your proxy at the published `web` port instead - terminate TLS there, forward
 to `web:8080` (or the host's `WEB_PORT`), and keep `LF_SITE_ADDRESS` /
-`APP_BASE_URL` set to the HTTPS origin so cookies and passkeys work.
+`APP_BASE_URL` set to the HTTPS origin so cookies and passkeys work. Your proxy
+should also send `Strict-Transport-Security`. The per-IP rate limits only see
+real visitor addresses when the proxy sits inside `172.16.0.0/12`; see
+[`security.md`](security.md#which-ip-is-the-client).
 
 ## Optional AI providers
 
