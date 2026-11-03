@@ -18,7 +18,7 @@ x-app-hardening: &app-hardening
 
 services:
   postgres:
-    image: postgres:18.4-alpine
+    image: postgres:18.6-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-lealfinance}
@@ -209,7 +209,7 @@ services:
   # paid API key or subscription. Point OLLAMA_BASE_URL at
   # http://ollama:11434 (the in-container hostname) to use it.
   ollama:
-    image: ollama/ollama:0.40.9
+    image: ollama/ollama:0.40.13
     restart: unless-stopped
     profiles: ["agents"]
     volumes:
