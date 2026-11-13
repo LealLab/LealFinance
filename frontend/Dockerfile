@@ -5,7 +5,7 @@
 # the shared nginx config from docker/nginx/ alongside the frontend source.
 
 # --- Builder: install deps and produce a production build ---------------------
-FROM node:24-alpine AS builder
+FROM node:26-alpine AS builder
 
 WORKDIR /app
 ENV CI=true
