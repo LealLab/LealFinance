@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # --- Builder: resolve dependencies into a venv with uv ------------------------
-FROM python:3.13-slim AS builder
+FROM python:3.15-slim AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:0.12.3 /uv /uvx /bin/
 
@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
 # --- Runtime -------------------------------------------------------------------
-FROM python:3.13-slim AS runtime
+FROM python:3.15-slim AS runtime
 
 # Debian security patches not yet baked into the base image, and the
 # system pip (unused - the app runs from the uv-managed venv below, and
